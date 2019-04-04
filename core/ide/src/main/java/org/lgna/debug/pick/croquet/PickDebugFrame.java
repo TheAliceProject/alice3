@@ -64,73 +64,73 @@ import java.util.concurrent.CountDownLatch;
  * @author Dennis Cosgrove
  */
 public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
-	public PickDebugFrame() {
-		super( UUID.fromString( "946cd0cd-8b61-4b57-b398-c926e8c6a343" ) );
-		this.refreshOperation.setName( "refresh" );
-	}
+  public PickDebugFrame() {
+    super(UUID.fromString("946cd0cd-8b61-4b57-b398-c926e8c6a343"));
+    this.refreshOperation.setName("refresh");
+  }
 
-	public Operation getRefreshOperation() {
-		return this.refreshOperation;
-	}
+  public Operation getRefreshOperation() {
+    return this.refreshOperation;
+  }
 
-	//	@Override
-	//	public void handlePreActivation() {
-	//		super.handlePreActivation();
-	//		this.refreshOperation.fire();
-	//	}
+  //  @Override
+  //  public void handlePreActivation() {
+  //    super.handlePreActivation();
+  //    this.refreshOperation.fire();
+  //  }
 
-	@Override
-	protected PickDebugFrameView createView() {
-		return new PickDebugFrameView( this );
-	}
+  @Override
+  protected PickDebugFrameView createView() {
+    return new PickDebugFrameView(this);
+  }
 
-	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			Component awtComponent = getView().getAwtComponent();//org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
-			CursorUtilities.pushAndSet( awtComponent, Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
-			try {
-				final OnscreenRenderTarget<?> onscreenRenderTarget = StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
-				final int PIXELS_PER_PICK = 10;
-				final PickResult[][] pickResults = new PickResult[ onscreenRenderTarget.getSurfaceHeight() / PIXELS_PER_PICK ][ onscreenRenderTarget.getSurfaceWidth() / PIXELS_PER_PICK ];
-				final boolean IS_ASYCH = false;
-				if( IS_ASYCH ) {
-					final CountDownLatch latch = new CountDownLatch( pickResults.length * pickResults[ 0 ].length );
-					for( int y = 0; y < pickResults.length; y++ ) {
-						int yPixel = y * PIXELS_PER_PICK;
-						final int _y = y;
-						for( int x = 0; x < pickResults[ y ].length; x++ ) {
-							int xPixel = x * PIXELS_PER_PICK;
-							//pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
-							final int _x = x;
-							onscreenRenderTarget.getAsynchronousPicker().pickFrontMost( xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED, null, new PickFrontMostObserver() {
-								@Override
-								public void done( PickResult result ) {
-									pickResults[ _y ][ _x ] = result;
-									latch.countDown();
-								}
-							} );
-						}
-					}
-					try {
-						latch.await();
-					} catch( InterruptedException e ) {
-						e.printStackTrace();
-					}
-				} else {
-					for( int y = 0; y < pickResults.length; y++ ) {
-						int yPixel = y * PIXELS_PER_PICK;
-						for( int x = 0; x < pickResults[ y ].length; x++ ) {
-							int xPixel = x * PIXELS_PER_PICK;
-							pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED );
-						}
-					}
-				}
-				getView().setPickResults( pickResults );
-			} finally {
-				CursorUtilities.popAndSet( awtComponent );
-			}
-			return null;
-		}
-	} );
+  private final Operation refreshOperation = this.createActionOperation("refreshOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      Component awtComponent = getView().getAwtComponent(); //org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
+      CursorUtilities.pushAndSet(awtComponent, Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+      try {
+        final OnscreenRenderTarget<?> onscreenRenderTarget = StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
+        final int PIXELS_PER_PICK = 10;
+        final PickResult[][] pickResults = new PickResult[onscreenRenderTarget.getSurfaceHeight() / PIXELS_PER_PICK][onscreenRenderTarget.getSurfaceWidth() / PIXELS_PER_PICK];
+        final boolean IS_ASYCH = false;
+        if (IS_ASYCH) {
+          final CountDownLatch latch = new CountDownLatch(pickResults.length * pickResults[0].length);
+          for (int y = 0; y < pickResults.length; y++) {
+            int yPixel = y * PIXELS_PER_PICK;
+            final int _y = y;
+            for (int x = 0; x < pickResults[y].length; x++) {
+              int xPixel = x * PIXELS_PER_PICK;
+              //pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+              final int _x = x;
+              onscreenRenderTarget.getAsynchronousPicker().pickFrontMost(xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED, null, new PickFrontMostObserver() {
+                @Override
+                public void done(PickResult result) {
+                  pickResults[_y][_x] = result;
+                  latch.countDown();
+                }
+              });
+            }
+          }
+          try {
+            latch.await();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        } else {
+          for (int y = 0; y < pickResults.length; y++) {
+            int yPixel = y * PIXELS_PER_PICK;
+            for (int x = 0; x < pickResults[y].length; x++) {
+              int xPixel = x * PIXELS_PER_PICK;
+              pickResults[y][x] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost(xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED);
+            }
+          }
+        }
+        getView().setPickResults(pickResults);
+      } finally {
+        CursorUtilities.popAndSet(awtComponent);
+      }
+      return null;
+    }
+  });
 }

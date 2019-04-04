@@ -51,36 +51,36 @@ import java.awt.Container;
  * @author Dennis Cosgrove
  */
 public class ForgetUtilities {
-	private static void forgetTree( Component c, ForgetObserver forgetObserver ) {
-		if( c instanceof Container ) {
-			Container container = (Container)c;
-			for( Component component : container.getComponents() ) {
-				forgetTree( component, forgetObserver );
-			}
-			container.removeAll();
-		}
-		if( c instanceof Forgettable ) {
-			( (Forgettable)c ).forget();
-		}
-		if( forgetObserver != null ) {
-			forgetObserver.forget( c.getParent(), c );
-		}
-	}
+  private static void forgetTree(Component c, ForgetObserver forgetObserver) {
+    if (c instanceof Container) {
+      Container container = (Container) c;
+      for (Component component : container.getComponents()) {
+        forgetTree(component, forgetObserver);
+      }
+      container.removeAll();
+    }
+    if (c instanceof Forgettable) {
+      ((Forgettable) c).forget();
+    }
+    if (forgetObserver != null) {
+      forgetObserver.forget(c.getParent(), c);
+    }
+  }
 
-	public interface ForgetObserver {
-		public void forget( Container prevParent, Component awtComponent );
-	}
+  public interface ForgetObserver {
+    public void forget(Container prevParent, Component awtComponent);
+  }
 
-	public static void forgetAndRemoveComponent( Container container, Component component, ForgetObserver forgetObserver ) {
-		forgetTree( component, forgetObserver );
-		container.remove( component );
-	}
+  public static void forgetAndRemoveComponent(Container container, Component component, ForgetObserver forgetObserver) {
+    forgetTree(component, forgetObserver);
+    container.remove(component);
+  }
 
-	public static void forgetAndRemoveAllComponents( Container container, ForgetObserver forgetObserver ) {
-		Component[] components = container.getComponents();
-		for( Component component : components ) {
-			forgetTree( component, forgetObserver );
-		}
-		container.removeAll();
-	}
+  public static void forgetAndRemoveAllComponents(Container container, ForgetObserver forgetObserver) {
+    Component[] components = container.getComponents();
+    for (Component component : components) {
+      forgetTree(component, forgetObserver);
+    }
+    container.removeAll();
+  }
 }

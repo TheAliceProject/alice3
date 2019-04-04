@@ -54,53 +54,53 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class BooleanStateSwingModel {
-	/*package-private*/BooleanStateSwingModel( BooleanState state, ButtonModel buttonModel, boolean initialValue ) {
-		this.state = state;
-		this.buttonModel = buttonModel;
-		this.buttonModel.setSelected( initialValue );
-	}
+  /*package-private*/BooleanStateSwingModel(BooleanState state, ButtonModel buttonModel, boolean initialValue) {
+    this.state = state;
+    this.buttonModel = buttonModel;
+    this.buttonModel.setSelected(initialValue);
+  }
 
-	public ButtonModel getButtonModel() {
-		return this.buttonModel;
-	}
+  public ButtonModel getButtonModel() {
+    return this.buttonModel;
+  }
 
-	public Action getAction() {
-		return this.action;
-	}
+  public Action getAction() {
+    return this.action;
+  }
 
-	private boolean isTextVariable() {
-		return Objects.notEquals( this.state.getTrueText(), this.state.getFalseText() );
-	}
+  private boolean isTextVariable() {
+    return Objects.notEquals(this.state.getTrueText(), this.state.getFalseText());
+  }
 
-	private boolean isIconVariable() {
-		return Objects.notEquals( this.state.getTrueIcon(), this.state.getFalseIcon() );
-	}
+  private boolean isIconVariable() {
+    return Objects.notEquals(this.state.getTrueIcon(), this.state.getFalseIcon());
+  }
 
-	private final BooleanState state;
-	private final ButtonModel buttonModel;
-	private final Action action = new AbstractAction() {
-		@Override
-		public Object getValue( String key ) {
-			if( NAME.equals( key ) ) {
-				return state.getTextFor( buttonModel.isSelected() );
-			} else if( SMALL_ICON.equals( key ) ) {
-				return state.getIconFor( buttonModel.isSelected() );
-			} else {
-				return super.getValue( key );
-			}
-		}
+  private final BooleanState state;
+  private final ButtonModel buttonModel;
+  private final Action action = new AbstractAction() {
+    @Override
+    public Object getValue(String key) {
+      if (NAME.equals(key)) {
+        return state.getTextFor(buttonModel.isSelected());
+      } else if (SMALL_ICON.equals(key)) {
+        return state.getIconFor(buttonModel.isSelected());
+      } else {
+        return super.getValue(key);
+      }
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			boolean isSelected = buttonModel.isSelected();
-			if( isTextVariable() ) {
-				//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
-				this.putValue( NAME, state.getTextFor( isSelected ) );
-			}
-			if( isIconVariable() ) {
-				//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
-				this.putValue( SMALL_ICON, state.getIconFor( isSelected ) );
-			}
-		}
-	};
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      boolean isSelected = buttonModel.isSelected();
+      if (isTextVariable()) {
+        //this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
+        this.putValue(NAME, state.getTextFor(isSelected));
+      }
+      if (isIconVariable()) {
+        //this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
+        this.putValue(SMALL_ICON, state.getIconFor(isSelected));
+      }
+    }
+  };
 }

@@ -71,130 +71,123 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
-	private static final String APPLICATION_NAME = "Alice";
-	private static final float FONT_SCALE = 1.15f;
-	private static final Icon MEAN_QUEEN_ICON;
+  private static final String APPLICATION_NAME = "Alice";
+  private static final float FONT_SCALE = 1.15f;
+  private static final Icon MEAN_QUEEN_ICON;
 
-	static {
-		Icon icon = null;
-		try {
-			icon = IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
-		} catch( Throwable t ) {
-			t.printStackTrace();
-		}
-		MEAN_QUEEN_ICON = icon;
-	}
+  static {
+    Icon icon = null;
+    try {
+      icon = IconUtilities.createImageIcon(CaughtExceptionPane.class.getResource("images/meanQueen.png"));
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
+    MEAN_QUEEN_ICON = icon;
+  }
 
-	private static JLabel createLabel( String text ) {
-		JLabel rv = new JLabel( text );
-		rv.setForeground( Color.WHITE );
-		FontUtilities.setFontToScaledFont( rv, FONT_SCALE );
-		return rv;
-	}
+  private static JLabel createLabel(String text) {
+    JLabel rv = new JLabel(text);
+    rv.setForeground(Color.WHITE);
+    FontUtilities.setFontToScaledFont(rv, FONT_SCALE);
+    return rv;
+  }
 
-	public CaughtExceptionPane() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "<html>" );
-		sb.append( "An exception has been caught" );
+  public CaughtExceptionPane() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("<html>");
+    sb.append("An exception has been caught");
 
-		if( UserProgramRunningStateUtilities.isUserProgramRunning() ) {
-			sb.append( " during the running of your program.<p>" );
-			sb.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
-			sb.append( APPLICATION_NAME );
-			sb.append( ".<p>" );
-		} else {
-			sb.append( ".<p>" );
-		}
-		sb.append( "<p>Please accept our apologies and press the \"" );
-		sb.append( this.getSubmitAction().getValue( Action.NAME ) );
-		sb.append( "\" button.<p>" );
-		sb.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
-		sb.append( "</html>" );
+    if (UserProgramRunningStateUtilities.isUserProgramRunning()) {
+      sb.append(" during the running of your program.<p>");
+      sb.append("<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in ");
+      sb.append(APPLICATION_NAME);
+      sb.append(".<p>");
+    } else {
+      sb.append(".<p>");
+    }
+    sb.append("<p>Please accept our apologies and press the \"");
+    sb.append(this.getSubmitAction().getValue(Action.NAME));
+    sb.append("\" button.<p>");
+    sb.append("<p>We will do our best to fix the problem and make a new release.<p>");
+    sb.append("</html>");
 
-		JLabel message = createLabel( sb.toString() );
+    JLabel message = createLabel(sb.toString());
 
-		JButton hyperlink = new JButton( new CheckForNewAliceVersionAction() ) {
-			@Override
-			public void updateUI() {
-				HyperlinkUI hyperlinkUi = new HyperlinkUI();
-				this.setUI( hyperlinkUi );
-			}
-		};
-		FontUtilities.setFontToScaledFont( hyperlink, FONT_SCALE );
-		hyperlink.setForeground( Color.WHITE );
-		hyperlink.setOpaque( false );
-		hyperlink.setBorder( BorderFactory.createEmptyBorder() );
+    JButton hyperlink = new JButton(new CheckForNewAliceVersionAction()) {
+      @Override
+      public void updateUI() {
+        HyperlinkUI hyperlinkUi = new HyperlinkUI();
+        this.setUI(hyperlinkUi);
+      }
+    };
+    FontUtilities.setFontToScaledFont(hyperlink, FONT_SCALE);
+    hyperlink.setForeground(Color.WHITE);
+    hyperlink.setOpaque(false);
+    hyperlink.setBorder(BorderFactory.createEmptyBorder());
 
-		JPageAxisPane bottomPane = new JPageAxisPane(
-				createLabel( "Note: it is possible this bug has already been fixed." ),
-				new JLineAxisPane(
-						createLabel( "Check:  " ),
-						hyperlink,
-						createLabel( "  for the latest release." )
-				)
-				);
+    JPageAxisPane bottomPane = new JPageAxisPane(createLabel("Note: it is possible this bug has already been fixed."), new JLineAxisPane(createLabel("Check:  "), hyperlink, createLabel("  for the latest release.")));
 
-		JMigPane pane = new JMigPane( "insets 16 0 0 32", "[]16[]", "[top][bottom]" );
-		pane.add( new JLabel( MEAN_QUEEN_ICON ), "span 1 2" );
-		pane.add( message, "wrap, growy" );
-		pane.add( bottomPane, "wrap" );
-		pane.setBackground( Color.DARK_GRAY );
-		pane.setOpaque( true );
+    JMigPane pane = new JMigPane("insets 16 0 0 32", "[]16[]", "[top][bottom]");
+    pane.add(new JLabel(MEAN_QUEEN_ICON), "span 1 2");
+    pane.add(message, "wrap, growy");
+    pane.add(bottomPane, "wrap");
+    pane.setBackground(Color.DARK_GRAY);
+    pane.setOpaque(true);
 
-		this.add( pane, BorderLayout.NORTH );
-	}
+    this.add(pane, BorderLayout.NORTH);
+  }
 
-	@Override
-	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-		return new ReportSubmissionConfiguration();
-	}
+  @Override
+  protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+    return new ReportSubmissionConfiguration();
+  }
 
-	@Override
-	protected String getJIRAProjectKey() {
-		return "AIIIP";
-	}
+  @Override
+  protected String getJIRAProjectKey() {
+    return "AIIIP";
+  }
 
-	@Override
-	protected String[] getAffectsVersions() {
-		return new String[] { ProjectVersion.getCurrentVersionText() };
-	}
+  @Override
+  protected String[] getAffectsVersions() {
+    return new String[] {ProjectVersion.getCurrentVersionText()};
+  }
 
-	private boolean isClearedToAttachCurrentProject = false;
+  private boolean isClearedToAttachCurrentProject = false;
 
-	@Override
-	protected void submit() {
-		int option = JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION );
-		if( option == JOptionPane.CANCEL_OPTION ) {
-			//pass
-		} else {
-			this.isClearedToAttachCurrentProject = option == JOptionPane.YES_OPTION;
-			super.submit();
-		}
-	}
+  @Override
+  protected void submit() {
+    int option = JOptionPane.showConfirmDialog(this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION);
+    if (option == JOptionPane.CANCEL_OPTION) {
+      //pass
+    } else {
+      this.isClearedToAttachCurrentProject = option == JOptionPane.YES_OPTION;
+      super.submit();
+    }
+  }
 
-	@Override
-	protected AbstractReport addAttachments( AbstractReport rv ) {
-		rv = super.addAttachments( rv );
-		if( this.isClearedToAttachCurrentProject ) {
-			rv.addAttachment( new CurrentProjectAttachment() );
-		}
-		return rv;
-	}
+  @Override
+  protected AbstractReport addAttachments(AbstractReport rv) {
+    rv = super.addAttachments(rv);
+    if (this.isClearedToAttachCurrentProject) {
+      rv.addAttachment(new CurrentProjectAttachment());
+    }
+    return rv;
+  }
 
-	public static void main( String[] args ) {
-		UserProgramRunningStateUtilities.setUserProgramRunning( true );
+  public static void main(String[] args) {
+    UserProgramRunningStateUtilities.setUserProgramRunning(true);
 
-		CaughtExceptionPane pane = new CaughtExceptionPane();
+    CaughtExceptionPane pane = new CaughtExceptionPane();
 
-		try {
-			throw new RuntimeException( "DELETE ME" );
-		} catch( RuntimeException re ) {
-			pane.setThreadAndThrowable( Thread.currentThread(), re );
-		}
+    try {
+      throw new RuntimeException("DELETE ME");
+    } catch (RuntimeException re) {
+      pane.setThreadAndThrowable(Thread.currentThread(), re);
+    }
 
-		JDialog window = JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, WindowConstants.DISPOSE_ON_CLOSE );
-		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
-		window.setVisible( true );
-	}
+    JDialog window = JDialogUtilities.createPackedJDialog(pane, null, "Report Bug", true, WindowConstants.DISPOSE_ON_CLOSE);
+    window.getRootPane().setDefaultButton(pane.getSubmitButton());
+    window.setVisible(true);
+  }
 
 }

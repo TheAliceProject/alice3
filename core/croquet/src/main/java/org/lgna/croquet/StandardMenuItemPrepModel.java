@@ -52,9 +52,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StandardMenuItemPrepModel extends MenuItemPrepModel {
-	public StandardMenuItemPrepModel( UUID id ) {
-		super( id );
-	}
+  public StandardMenuItemPrepModel(UUID id) {
+    super(id);
+  }
 
-	public abstract ViewController<?, ?> createMenuItemAndAddTo( MenuItemContainer menuItemContainer );
+  public abstract ViewController<?, ?> createMenuItemAndAddTo(MenuItemContainer menuItemContainer);
 }

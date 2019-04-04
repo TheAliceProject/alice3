@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.map;
  * @author Dennis Cosgrove
  */
 public class MapToMap<A, B, V> extends AbstractMapToMap<A, B, V> {
-	public static <A, B, V> MapToMap<A, B, V> newInstance() {
-		return new MapToMap<A, B, V>();
-	}
+  public static <A, B, V> MapToMap<A, B, V> newInstance() {
+    return new MapToMap<A, B, V>();
+  }
 }

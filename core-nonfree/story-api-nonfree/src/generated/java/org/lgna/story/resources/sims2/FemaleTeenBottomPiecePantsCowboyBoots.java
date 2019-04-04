@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenBottomPiecePantsCowboyBoots implements FemaleTeenBottomPiece {
-	JEANS,
-	TRIANGLES,
-	WAVY,
-	BLACK;
+  JEANS, TRIANGLES, WAVY, BLACK
 
 }

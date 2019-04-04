@@ -78,175 +78,174 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProgramTypeUtilities {
-	private ProgramTypeUtilities() {
-		throw new AssertionError();
-	}
+  private ProgramTypeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static List<UserLocal> getLocals( UserCode code ) {
-		IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance( UserLocal.class );
-		code.getBodyProperty().getValue().crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-		return crawler.getList();
-	}
+  public static List<UserLocal> getLocals(UserCode code) {
+    IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance(UserLocal.class);
+    code.getBodyProperty().getValue().crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+    return crawler.getList();
+  }
 
-	public static List<FieldAccess> getFieldAccesses( NamedUserType programType, final AbstractField field, Criterion<Declaration> declarationFilter ) {
-		assert programType != null;
-		IsInstanceCrawler<FieldAccess> crawler = new IsInstanceCrawler<FieldAccess>( FieldAccess.class ) {
-			@Override
-			protected boolean isAcceptable( FieldAccess fieldAccess ) {
-				return fieldAccess.field.getValue() == field;
-			}
-		};
-		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
-		return crawler.getList();
-	}
+  public static List<FieldAccess> getFieldAccesses(NamedUserType programType, final AbstractField field, Criterion<Declaration> declarationFilter) {
+    assert programType != null;
+    IsInstanceCrawler<FieldAccess> crawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
+      @Override
+      protected boolean isAcceptable(FieldAccess fieldAccess) {
+        return fieldAccess.field.getValue() == field;
+      }
+    };
+    programType.crawl(crawler, CrawlPolicy.COMPLETE, declarationFilter);
+    return crawler.getList();
+  }
 
-	public static List<MethodInvocation> getMethodInvocations( NamedUserType programType, final AbstractMethod method, Criterion<Declaration> declarationFilter ) {
-		assert programType != null;
-		IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>(
-				MethodInvocation.class ) {
-			@Override
-			protected boolean isAcceptable( MethodInvocation methodInvocation ) {
-				return methodInvocation.method.getValue() == method;
-			}
-		};
-		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
-		return crawler.getList();
-	}
+  public static List<MethodInvocation> getMethodInvocations(NamedUserType programType, final AbstractMethod method, Criterion<Declaration> declarationFilter) {
+    assert programType != null;
+    IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>(MethodInvocation.class) {
+      @Override
+      protected boolean isAcceptable(MethodInvocation methodInvocation) {
+        return methodInvocation.method.getValue() == method;
+      }
+    };
+    programType.crawl(crawler, CrawlPolicy.COMPLETE, declarationFilter);
+    return crawler.getList();
+  }
 
-	public static List<SimpleArgumentListProperty> getArgumentLists( NamedUserType programType, final UserCode code, Criterion<Declaration> declarationFilter ) {
-		assert programType != null;
-		class ArgumentListCrawler implements Crawler {
-			private final List<SimpleArgumentListProperty> list = Lists.newLinkedList();
+  public static List<SimpleArgumentListProperty> getArgumentLists(NamedUserType programType, final UserCode code, Criterion<Declaration> declarationFilter) {
+    assert programType != null;
+    class ArgumentListCrawler implements Crawler {
+      private final List<SimpleArgumentListProperty> list = Lists.newLinkedList();
 
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-					if( methodInvocation.method.getValue() == code ) {
-						this.list.add( methodInvocation.requiredArguments );
-					}
-				} else if( crawlable instanceof InstanceCreation ) {
-					InstanceCreation instanceCreation = (InstanceCreation)crawlable;
-					if( instanceCreation.constructor.getValue() == code ) {
-						this.list.add( instanceCreation.requiredArguments );
-					}
-				}
-			}
+      @Override
+      public void visit(Crawlable crawlable) {
+        if (crawlable instanceof MethodInvocation) {
+          MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+          if (methodInvocation.method.getValue() == code) {
+            this.list.add(methodInvocation.requiredArguments);
+          }
+        } else if (crawlable instanceof InstanceCreation) {
+          InstanceCreation instanceCreation = (InstanceCreation) crawlable;
+          if (instanceCreation.constructor.getValue() == code) {
+            this.list.add(instanceCreation.requiredArguments);
+          }
+        }
+      }
 
-			public List<SimpleArgumentListProperty> getList() {
-				return this.list;
-			}
-		}
-		ArgumentListCrawler crawler = new ArgumentListCrawler();
-		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
-		return crawler.getList();
-	}
+      public List<SimpleArgumentListProperty> getList() {
+        return this.list;
+      }
+    }
+    ArgumentListCrawler crawler = new ArgumentListCrawler();
+    programType.crawl(crawler, CrawlPolicy.COMPLETE, declarationFilter);
+    return crawler.getList();
+  }
 
-	public static Set<Resource> getReferencedResources( Project project ) {
-		AbstractType<?, ?, ?> programType = project.getProgramType();
-		Set<Resource> resources = project.getResources();
-		IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>( ResourceExpression.class ) {
-			@Override
-			protected boolean isAcceptable( ResourceExpression resourceExpression ) {
-				return true;
-			}
-		};
-		programType.crawl( crawler, CrawlPolicy.COMPLETE );
+  public static Set<Resource> getReferencedResources(Project project) {
+    AbstractType<?, ?, ?> programType = project.getProgramType();
+    Set<Resource> resources = project.getResources();
+    IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
+      @Override
+      protected boolean isAcceptable(ResourceExpression resourceExpression) {
+        return true;
+      }
+    };
+    programType.crawl(crawler, CrawlPolicy.COMPLETE);
 
-		Set<Resource> rv = new HashSet<Resource>();
-		for( ResourceExpression resourceExpression : crawler.getList() ) {
-			Resource resource = resourceExpression.resource.getValue();
-			if( resources.contains( resource ) ) {
-				//pass
-			} else {
-				Logger.warning( "adding missing resource", resource );
-				resources.add( resource );
-			}
-			rv.add( resource );
-		}
-		return rv;
-	}
+    Set<Resource> rv = new HashSet<Resource>();
+    for (ResourceExpression resourceExpression : crawler.getList()) {
+      Resource resource = resourceExpression.resource.getValue();
+      if (resources.contains(resource)) {
+        //pass
+      } else {
+        Logger.warning("adding missing resource", resource);
+        resources.add(resource);
+      }
+      rv.add(resource);
+    }
+    return rv;
+  }
 
-	public static <N extends Node> N lookupNode( Project project, final UUID id ) {
-		final Node[] buffer = { null };
-		NamedUserType programType = project.getProgramType();
-		Crawler crawler = new Crawler() {
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof Node ) {
-					Node node = (Node)crawlable;
-					if( id.equals( node.getId() ) ) {
-						buffer[ 0 ] = node;
-					}
-				}
-			}
-		};
-		programType.crawl( crawler, CrawlPolicy.COMPLETE );
-		return (N)buffer[ 0 ];
-	}
+  public static <N extends Node> N lookupNode(Project project, final UUID id) {
+    final Node[] buffer = {null};
+    NamedUserType programType = project.getProgramType();
+    Crawler crawler = new Crawler() {
+      @Override
+      public void visit(Crawlable crawlable) {
+        if (crawlable instanceof Node) {
+          Node node = (Node) crawlable;
+          if (id.equals(node.getId())) {
+            buffer[0] = node;
+          }
+        }
+      }
+    };
+    programType.crawl(crawler, CrawlPolicy.COMPLETE);
+    return (N) buffer[0];
+  }
 
-	public static <R extends Resource> R lookupResource( Project project, UUID id ) {
-		for( Resource resource : project.getResources() ) {
-			if( resource.getId() == id ) {
-				return (R)resource;
-			}
-		}
-		return null;
-	}
+  public static <R extends Resource> R lookupResource(Project project, UUID id) {
+    for (Resource resource : project.getResources()) {
+      if (resource.getId() == id) {
+        return (R) resource;
+      }
+    }
+    return null;
+  }
 
-	private static DefaultNode<NamedUserType> getNode( NamedUserType type, DefaultNode<NamedUserType> root ) {
-		DefaultNode<NamedUserType> rv = root.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = DefaultNode.createSafeInstance( type, NamedUserType.class );
-			AbstractType<?, ?, ?> superType = type.getSuperType();
-			if( superType instanceof NamedUserType ) {
-				DefaultNode<NamedUserType> superNode = getNode( (NamedUserType)superType, root );
-				superNode.addChild( rv );
-			} else {
-				root.addChild( rv );
-			}
-		}
-		return rv;
-	}
+  private static DefaultNode<NamedUserType> getNode(NamedUserType type, DefaultNode<NamedUserType> root) {
+    DefaultNode<NamedUserType> rv = root.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = DefaultNode.createSafeInstance(type, NamedUserType.class);
+      AbstractType<?, ?, ?> superType = type.getSuperType();
+      if (superType instanceof NamedUserType) {
+        DefaultNode<NamedUserType> superNode = getNode((NamedUserType) superType, root);
+        superNode.addChild(rv);
+      } else {
+        root.addChild(rv);
+      }
+    }
+    return rv;
+  }
 
-	public static DefaultNode<NamedUserType> getNamedUserTypesAsTree( Project project ) {
-		DefaultNode<NamedUserType> root = DefaultNode.createSafeInstance( null, NamedUserType.class );
-		Iterable<NamedUserType> types = project.getNamedUserTypes();
-		for( NamedUserType type : types ) {
-			getNode( type, root );
-		}
-		return root;
-	}
+  public static DefaultNode<NamedUserType> getNamedUserTypesAsTree(Project project) {
+    DefaultNode<NamedUserType> root = DefaultNode.createSafeInstance(null, NamedUserType.class);
+    Iterable<NamedUserType> types = project.getNamedUserTypes();
+    for (NamedUserType type : types) {
+      getNode(type, root);
+    }
+    return root;
+  }
 
-	public static UserMethod getMainMethod( NamedUserType programType ) {
-		UserMethod rv = programType.getDeclaredMethod( "main", String[].class );
-		if( rv != null ) {
-			if( rv.isStatic() ) {
-				//pass
-			} else {
-				Logger.warning( "main method is not static", rv );
-			}
-		}
-		return rv;
-	}
+  public static UserMethod getMainMethod(NamedUserType programType) {
+    UserMethod rv = programType.getDeclaredMethod("main", String[].class);
+    if (rv != null) {
+      if (rv.isStatic()) {
+        //pass
+      } else {
+        Logger.warning("main method is not static", rv);
+      }
+    }
+    return rv;
+  }
 
-	public static UserMethod getMainMethod( Project project ) {
-		return getMainMethod( project.getProgramType() );
-	}
+  public static UserMethod getMainMethod(Project project) {
+    return getMainMethod(project.getProgramType());
+  }
 
-	public static void sanityCheckAllTypes( Project project ) {
-		for( NamedUserType type : project.getNamedUserTypes() ) {
-			for( NamedUserConstructor constructor : type.constructors ) {
-				assert constructor.getDeclaringType() == type : type;
-			}
-			for( UserMethod method : type.methods ) {
-				assert method.getDeclaringType() == type : type;
-			}
-			for( UserField field : type.fields ) {
-				assert field.getDeclaringType() == type : type;
-			}
-		}
-	}
+  public static void sanityCheckAllTypes(Project project) {
+    for (NamedUserType type : project.getNamedUserTypes()) {
+      for (NamedUserConstructor constructor : type.constructors) {
+        assert constructor.getDeclaringType() == type : type;
+      }
+      for (UserMethod method : type.methods) {
+        assert method.getDeclaringType() == type : type;
+      }
+      for (UserField field : type.fields) {
+        assert field.getDeclaringType() == type : type;
+      }
+    }
+  }
 }

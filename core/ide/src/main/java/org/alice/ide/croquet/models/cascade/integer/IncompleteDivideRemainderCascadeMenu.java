@@ -56,22 +56,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IncompleteDivideRemainderCascadeMenu extends ExpressionCascadeMenu<ArithmeticInfixExpression> {
-	private static class SingletonHolder {
-		private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static IncompleteDivideRemainderCascadeMenu instance = new IncompleteDivideRemainderCascadeMenu();
+  }
 
-	public static IncompleteDivideRemainderCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IncompleteDivideRemainderCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IncompleteDivideRemainderCascadeMenu() {
-		super( UUID.fromString( "a0289f52-a603-42a2-8afd-438b88ba54a4" ) );
-	}
+  private IncompleteDivideRemainderCascadeMenu() {
+    super(UUID.fromString("a0289f52-a603-42a2-8afd-438b88ba54a4"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ArithmeticInfixExpression> context ) {
-		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<ArithmeticInfixExpression> context) {
+    for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS) {
+      blankChildren.add(IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance(operator));
+    }
+  }
 }

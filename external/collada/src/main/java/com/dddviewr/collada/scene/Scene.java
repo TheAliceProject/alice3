@@ -4,12 +4,10 @@ import java.io.PrintStream;
 
 import com.dddviewr.collada.Base;
 
-public class Scene extends Base
-{
+public class Scene extends Base {
   protected InstanceVisualScene instanceVisualScene;
 
-  public InstanceVisualScene getInstanceVisualScene()
-  {
+  public InstanceVisualScene getInstanceVisualScene() {
     return this.instanceVisualScene;
   }
 
@@ -17,11 +15,11 @@ public class Scene extends Base
     this.instanceVisualScene = instanceVisualScene;
   }
 
-  public void dump(PrintStream out, int indent)
-  {
+  public void dump(PrintStream out, int indent) {
     String prefix = createIndent(indent);
     out.println(prefix + "Scene");
-    if (this.instanceVisualScene != null)
+    if (this.instanceVisualScene != null) {
       this.instanceVisualScene.dump(out, indent + 1);
+    }
   }
 }

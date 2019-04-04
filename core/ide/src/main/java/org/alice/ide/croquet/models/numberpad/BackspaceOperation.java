@@ -52,27 +52,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BackspaceOperation extends NumberPadOperation {
-	private static Map<NumberModel<?>, BackspaceOperation> map = Maps.newHashMap();
+  private static Map<NumberModel<?>, BackspaceOperation> map = Maps.newHashMap();
 
-	public static synchronized BackspaceOperation getInstance( NumberModel<?> model ) {
-		BackspaceOperation rv = map.get( model );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new BackspaceOperation( model );
-			map.put( model, rv );
-		}
-		return rv;
-	}
+  public static synchronized BackspaceOperation getInstance(NumberModel<?> model) {
+    BackspaceOperation rv = map.get(model);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new BackspaceOperation(model);
+      map.put(model, rv);
+    }
+    return rv;
+  }
 
-	private BackspaceOperation( NumberModel<?> model ) {
-		super( UUID.fromString( "16a86a58-7672-4eb7-8138-9853978f2d00" ), model );
-		this.setName( "\u2190" );
-	}
+  private BackspaceOperation(NumberModel<?> model) {
+    super(UUID.fromString("16a86a58-7672-4eb7-8138-9853978f2d00"), model);
+    this.setName("←");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.numberModel.delete();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.numberModel.delete();
+    activity.finish();
+  }
 }

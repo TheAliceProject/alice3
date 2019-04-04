@@ -48,26 +48,26 @@ import edu.cmu.cs.dennisc.javax.swing.components.JSideBySideScrollPane;
  * @author Dennis Cosgrove
  */
 public class SideBySideScrollPane extends SwingComponentView<JSideBySideScrollPane> {
-	public AwtComponentView<?> getLeadingView() {
-		return AwtComponentView.lookup( this.getAwtComponent().getLeadingView() );
-	}
+  public AwtComponentView<?> getLeadingView() {
+    return AwtComponentView.lookup(this.getAwtComponent().getLeadingView());
+  }
 
-	public void setLeadingView( AwtComponentView<?> leadingView ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setLeadingView( leadingView != null ? leadingView.getAwtComponent() : null );
-	}
+  public void setLeadingView(AwtComponentView<?> leadingView) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setLeadingView(leadingView != null ? leadingView.getAwtComponent() : null);
+  }
 
-	public AwtComponentView<?> getTrailingView() {
-		return AwtComponentView.lookup( this.getAwtComponent().getTrailingView() );
-	}
+  public AwtComponentView<?> getTrailingView() {
+    return AwtComponentView.lookup(this.getAwtComponent().getTrailingView());
+  }
 
-	public void setTrailingView( AwtComponentView<?> trailingView ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setTrailingView( trailingView != null ? trailingView.getAwtComponent() : null );
-	}
+  public void setTrailingView(AwtComponentView<?> trailingView) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setTrailingView(trailingView != null ? trailingView.getAwtComponent() : null);
+  }
 
-	@Override
-	protected JSideBySideScrollPane createAwtComponent() {
-		return new JSideBySideScrollPane();
-	}
+  @Override
+  protected JSideBySideScrollPane createAwtComponent() {
+    return new JSideBySideScrollPane();
+  }
 }

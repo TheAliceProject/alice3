@@ -56,83 +56,83 @@ import org.alice.interact.debug.DebugInteractUtilities;
  * @author David Culyba
  */
 public class StoodUpRotationRingHandle extends RotationRingHandle {
-	public StoodUpRotationRingHandle() {
-		super();
-		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( DebugInteractUtilities.isDebugEnabled() ) {
-			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
-		}
-	}
+  public StoodUpRotationRingHandle() {
+    super();
+    this.standUpReference.setName("Rotation StandUp Reference");
+    if (DebugInteractUtilities.isDebugEnabled()) {
+      this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+    }
+  }
 
-	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle ) {
-		this( handle.rotationAxisDirection, handle.handlePosition );
-		this.initFromHandle( handle );
-		this.handleOffset.set( handle.handleOffset );
-	}
+  public StoodUpRotationRingHandle(StoodUpRotationRingHandle handle) {
+    this(handle.rotationAxisDirection, handle.handlePosition);
+    this.initFromHandle(handle);
+    this.handleOffset.set(handle.handleOffset);
+  }
 
-	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection ) {
-		super( rotationAxisDirection );
-		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( DebugInteractUtilities.isDebugEnabled() ) {
-			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
-		}
-	}
+  public StoodUpRotationRingHandle(MovementDirection rotationAxisDirection) {
+    super(rotationAxisDirection);
+    this.standUpReference.setName("Rotation StandUp Reference");
+    if (DebugInteractUtilities.isDebugEnabled()) {
+      this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+    }
+  }
 
-	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
-		super( rotationAxisDirection, handlePosition );
-		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( DebugInteractUtilities.isDebugEnabled() ) {
-			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
-		}
-	}
+  public StoodUpRotationRingHandle(MovementDirection rotationAxisDirection, HandlePosition handlePosition) {
+    super(rotationAxisDirection, handlePosition);
+    this.standUpReference.setName("Rotation StandUp Reference");
+    if (DebugInteractUtilities.isDebugEnabled()) {
+      this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+    }
+  }
 
-	@Override
-	public StoodUpRotationRingHandle clone() {
-		return new StoodUpRotationRingHandle( this );
-	}
+  @Override
+  public StoodUpRotationRingHandle clone() {
+    return new StoodUpRotationRingHandle(this);
+  }
 
-	@Override
-	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		if( this.manipulatedObject != manipulatedObject ) {
-			if( this.manipulatedObject instanceof Transformable ) {
-				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this.propertyListener );
-			}
-			super.setManipulatedObject( manipulatedObject );
-			if( this.manipulatedObject != null ) {
-				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this.propertyListener );
-			}
-			positionRelativeToObject();
-		}
-	}
+  @Override
+  public void setManipulatedObject(AbstractTransformable manipulatedObject) {
+    if (this.manipulatedObject != manipulatedObject) {
+      if (this.manipulatedObject instanceof Transformable) {
+        ((Transformable) this.manipulatedObject).localTransformation.removePropertyListener(this.propertyListener);
+      }
+      super.setManipulatedObject(manipulatedObject);
+      if (this.manipulatedObject != null) {
+        ((Transformable) this.manipulatedObject).localTransformation.addPropertyListener(this.propertyListener);
+      }
+      positionRelativeToObject();
+    }
+  }
 
-	@Override
-	public ReferenceFrame getReferenceFrame() {
-		if( this.manipulatedObject != null ) {
-			this.standUpReference.setParent( this.manipulatedObject );
-			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
-			this.standUpReference.setAxesOnlyToStandUp();
-			return this.standUpReference;
-		} else {
-			return this;
-		}
-	}
+  @Override
+  public ReferenceFrame getReferenceFrame() {
+    if (this.manipulatedObject != null) {
+      this.standUpReference.setParent(this.manipulatedObject);
+      this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+      this.standUpReference.setAxesOnlyToStandUp();
+      return this.standUpReference;
+    } else {
+      return this;
+    }
+  }
 
-	@Override
-	public void positionRelativeToObject() {
-		this.setTransformation( this.getTransformationForAxis( this.rotationAxis ), this.getReferenceFrame() );
-		this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
-	}
+  @Override
+  public void positionRelativeToObject() {
+    this.setTransformation(this.getTransformationForAxis(this.rotationAxis), this.getReferenceFrame());
+    this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
+  }
 
-	private final PropertyListener propertyListener = new PropertyListener() {
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			positionRelativeToObject();
-		}
+  private final PropertyListener propertyListener = new PropertyListener() {
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      positionRelativeToObject();
+    }
 
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
 
-		}
-	};
-	private final Transformable standUpReference = new Transformable();
+    }
+  };
+  private final Transformable standUpReference = new Transformable();
 }

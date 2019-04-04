@@ -50,7 +50,7 @@ import org.lgna.common.Resource;
  * @author Dennis Cosgrove
  */
 public class ResourceProperty extends InstanceProperty<Resource> {
-	public ResourceProperty( InstancePropertyOwner owner ) {
-		super( owner, null );
-	}
+  public ResourceProperty(InstancePropertyOwner owner) {
+    super(owner, null);
+  }
 }

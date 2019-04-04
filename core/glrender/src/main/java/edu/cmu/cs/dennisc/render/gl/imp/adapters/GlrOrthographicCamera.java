@@ -57,87 +57,87 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera<OrthographicCamera> {
-	private static ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
+  private static ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
 
-	//	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
+  //  private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
 
-	@Override
-	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
-		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
-			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
-			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
-			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
-			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
-			double near = owner.nearClippingPlaneDistance.getValue();
-			//double far = m_element.farClippingPlaneDistance.getValue();
+  @Override
+  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+    synchronized (s_actualPicturePlaneBufferForReuse) {
+      getActualPicturePlane(s_actualPicturePlaneBufferForReuse, actualViewport);
+      double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
+      double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
+      double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
+      double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
+      double near = owner.nearClippingPlaneDistance.getValue();
+      //double far = m_element.farClippingPlaneDistance.getValue();
 
-			//Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
-			yPixel = actualViewport.height - yPixel;
+      //Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
+      yPixel = actualViewport.height - yPixel;
 
-			double xPortion = ( xPixel - actualViewport.x ) / (double)actualViewport.width;
-			double yPortion = ( yPixel - actualViewport.y ) / (double)actualViewport.height;
+      double xPortion = (xPixel - actualViewport.x) / (double) actualViewport.width;
+      double yPortion = (yPixel - actualViewport.y) / (double) actualViewport.height;
 
-			double x = left + ( ( right - left ) * xPortion );
-			double y = bottom + ( ( top - bottom ) * yPortion );
-			double z = near;
-			rv.setOrigin( x, y, z );
+      double x = left + ((right - left) * xPortion);
+      double y = bottom + ((top - bottom) * yPortion);
+      double z = near;
+      rv.setOrigin(x, y, z);
 
-			rv.setDirection( 0, 0, -1 );
-		}
-		return rv;
-	}
+      rv.setDirection(0, 0, -1);
+    }
+    return rv;
+  }
 
-	@Override
-	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
-		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
-			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
-			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
-			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
-			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
-			double near = owner.nearClippingPlaneDistance.getValue();
-			double far = owner.farClippingPlaneDistance.getValue();
+  @Override
+  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+    synchronized (s_actualPicturePlaneBufferForReuse) {
+      getActualPicturePlane(s_actualPicturePlaneBufferForReuse, actualViewport);
+      double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
+      double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
+      double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
+      double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
+      double near = owner.nearClippingPlaneDistance.getValue();
+      double far = owner.farClippingPlaneDistance.getValue();
 
-			rv.setIdentity();
+      rv.setIdentity();
 
-			rv.right.x = 2 / ( right - left );
-			rv.up.y = 2 / ( top - bottom );
-			rv.backward.z = -2 / ( far - near );
+      rv.right.x = 2 / (right - left);
+      rv.up.y = 2 / (top - bottom);
+      rv.backward.z = -2 / (far - near);
 
-			rv.translation.x = -( right + left ) / ( right - left );
-			rv.translation.y = -( top + bottom ) / ( top - bottom );
-			rv.translation.z = -( far + near ) / ( far - near );
-		}
-		return rv;
-	}
+      rv.translation.x = -(right + left) / (right - left);
+      rv.translation.y = -(top + bottom) / (top - bottom);
+      rv.translation.z = -(far + near) / (far - near);
+    }
+    return rv;
+  }
 
-	@Override
-	protected Rectangle performLetterboxing( Rectangle rv ) {
-		//todo: handle NaN
-		return rv;
-	}
+  @Override
+  protected Rectangle performLetterboxing(Rectangle rv) {
+    //todo: handle NaN
+    return rv;
+  }
 
-	public final ClippedZPlane getActualPicturePlane( ClippedZPlane rv, Rectangle actualViewport ) {
-		//		rv.set( m_picturePlane, actualViewport );
-		rv.set( owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI( actualViewport ) );
-		return rv;
-	}
+  public final ClippedZPlane getActualPicturePlane(ClippedZPlane rv, Rectangle actualViewport) {
+    //    rv.set( m_picturePlane, actualViewport );
+    rv.set(owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI(actualViewport));
+    return rv;
+  }
 
-	@Override
-	protected void setupProjection( Context context, Rectangle actualViewport, float near, float far ) {
-		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
-			context.gl.glOrtho( s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far );
-		}
-	}
+  @Override
+  protected void setupProjection(Context context, Rectangle actualViewport, float near, float far) {
+    synchronized (s_actualPicturePlaneBufferForReuse) {
+      getActualPicturePlane(s_actualPicturePlaneBufferForReuse, actualViewport);
+      context.gl.glOrtho(s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far);
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.picturePlane ) {
-			//pass
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.picturePlane) {
+      //pass
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

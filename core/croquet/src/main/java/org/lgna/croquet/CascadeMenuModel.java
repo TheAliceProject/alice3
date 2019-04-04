@@ -49,12 +49,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeMenuModel<FB> extends AbstractCascadeMenuModel<FB, FB> {
-	public CascadeMenuModel( UUID id ) {
-		super( id );
-	}
+  public CascadeMenuModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected FB convertValue( FB value ) {
-		return value;
-	}
+  @Override
+  protected FB convertValue(FB value) {
+    return value;
+  }
 }

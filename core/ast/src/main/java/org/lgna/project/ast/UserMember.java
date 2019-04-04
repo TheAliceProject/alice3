@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface UserMember extends Node {
-	public UserType<?> getDeclaringType();
+  public UserType<?> getDeclaringType();
 
-	public ManagementLevel getManagementLevel();
+  public ManagementLevel getManagementLevel();
 }

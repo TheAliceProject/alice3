@@ -72,87 +72,87 @@ import org.lgna.project.ast.StatementListProperty;
  * @author Dennis Cosgrove
  */
 public abstract class MutableAstI18nFactory extends AstI18nFactory {
-	private final Group group;
+  private final Group group;
 
-	public MutableAstI18nFactory( Group group ) {
-		this.group = group;
-	}
+  public MutableAstI18nFactory(Group group) {
+    this.group = group;
+  }
 
-	@Override
-	public SwingComponentView<?> createNameView( AbstractDeclaration declaration ) {
-		final boolean IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME = false;
-		if( IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME ) {
-			//			if( declaration instanceof org.lgna.project.ast.Code ) {
-			//				org.lgna.project.ast.Code code = (org.lgna.project.ast.Code)declaration;
-			//				//todo
-			//				if( this.isSignatureLocked( code ) ) {
-			//					return super.createNameView( declaration );
-			//				}
-			//			}
-			return DeclarationNameState.getInstance( declaration ).createSubduedTextField();
-		} else {
-			return super.createNameView( declaration );
-		}
-	}
+  @Override
+  public SwingComponentView<?> createNameView(AbstractDeclaration declaration) {
+    final boolean IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME = false;
+    if (IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME) {
+      //      if( declaration instanceof org.lgna.project.ast.Code ) {
+      //        org.lgna.project.ast.Code code = (org.lgna.project.ast.Code)declaration;
+      //        //todo
+      //        if( this.isSignatureLocked( code ) ) {
+      //          return super.createNameView( declaration );
+      //        }
+      //      }
+      return DeclarationNameState.getInstance(declaration).createSubduedTextField();
+    } else {
+      return super.createNameView(declaration);
+    }
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return null;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+    return null;
+  }
 
-	public boolean isStatementListPropertyMutable( StatementListProperty statementListProperty ) {
-		return true;
-	}
+  public boolean isStatementListPropertyMutable(StatementListProperty statementListProperty) {
+    return true;
+  }
 
-	public boolean isKeyedArgumentListMutable( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
-		return true;
-	}
+  public boolean isKeyedArgumentListMutable(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
+    return true;
+  }
 
-	@Override
-	protected SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty ) {
-		ArgumentOwner owner = argumentListProperty.getOwner();
-		DeclarationProperty<? extends AbstractCode> codeProperty = owner.getParameterOwnerProperty();
-		AbstractCode code = codeProperty.getValue();
-		if( code.getKeyedParameter() != null ) {
-			return new KeyedArgumentListPropertyView( this, argumentListProperty );
-		} else {
-			return new Label();
-		}
+  @Override
+  protected SwingComponentView<?> createKeyedArgumentListPropertyPane(KeyedArgumentListProperty argumentListProperty) {
+    ArgumentOwner owner = argumentListProperty.getOwner();
+    DeclarationProperty<? extends AbstractCode> codeProperty = owner.getParameterOwnerProperty();
+    AbstractCode code = codeProperty.getValue();
+    if (code.getKeyedParameter() != null) {
+      return new KeyedArgumentListPropertyView(this, argumentListProperty);
+    } else {
+      return new Label();
+    }
 
-	}
+  }
 
-	@Override
-	protected SwingComponentView<?> createIdeExpressionPane( IdeExpression ideExpression ) {
-		throw new RuntimeException( ideExpression.toString() );
-	}
+  @Override
+  protected SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression) {
+    throw new RuntimeException(ideExpression.toString());
+  }
 
-	@Override
-	protected SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
-	}
+  @Override
+  protected SwingComponentView<?> createSimpleArgumentListPropertyPane(SimpleArgumentListProperty argumentListProperty) {
+    return new ArgumentListPropertyPane(this, argumentListProperty);
+  }
 
-	@Override
-	public SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredValueType ) {
-		SwingComponentView<?> rv = new ExpressionPropertyView( this, expressionProperty );
-		if( this.isDropDownDesiredFor( expressionProperty ) ) {
-			DefaultExpressionPropertyCascade model = DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
-			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );
-			rv = expressionPropertyDropDownPane;
-		}
-		return rv;
-	}
+  @Override
+  public SwingComponentView<?> createExpressionPropertyPane(ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredValueType) {
+    SwingComponentView<?> rv = new ExpressionPropertyView(this, expressionProperty);
+    if (this.isDropDownDesiredFor(expressionProperty)) {
+      DefaultExpressionPropertyCascade model = DefaultExpressionPropertyCascade.getInstance(group, expressionProperty, desiredValueType);
+      ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane(model.getRoot().getPopupPrepModel(), null, rv, expressionProperty);
+      rv = expressionPropertyDropDownPane;
+    }
+    return rv;
+  }
 
-	protected boolean isStatementContextMenuDesiredFor( Statement statement ) {
-		return true;
-	}
+  protected boolean isStatementContextMenuDesiredFor(Statement statement) {
+    return true;
+  }
 
-	@Override
-	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
-		AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
-		if( this.isStatementContextMenuDesiredFor( statement ) ) {
-			abstractStatementPane.setPopupPrepModel( StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
-		}
-		return abstractStatementPane;
-	}
+  @Override
+  public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
+    AbstractStatementPane abstractStatementPane = super.createStatementPane(dragModel, statement, statementListProperty);
+    if (this.isStatementContextMenuDesiredFor(statement)) {
+      abstractStatementPane.setPopupPrepModel(StatementContextMenu.getInstance(statement).getPopupPrepModel());
+    }
+    return abstractStatementPane;
+  }
 
 }

@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.GlrRenderFactory;
  * @author Dennis Cosgrove
  */
 public class RenderUtils {
-	public static RenderFactory getDefaultRenderFactory() {
-		return GlrRenderFactory.getInstance();
-	}
+  public static RenderFactory getDefaultRenderFactory() {
+    return GlrRenderFactory.getInstance();
+  }
 }

@@ -70,132 +70,125 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddPersonResourceManagedFieldComposite extends AddManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddPersonResourceManagedFieldComposite instance = new AddPersonResourceManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddPersonResourceManagedFieldComposite instance = new AddPersonResourceManagedFieldComposite();
+  }
 
-	public static AddPersonResourceManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddPersonResourceManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
-		if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			return instanceCreation.constructor.getValue().getDeclaringType();
-		} else {
-			return null;
-		}
-	}
+  private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer(Expression expression) {
+    if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      return instanceCreation.constructor.getValue().getDeclaringType();
+    } else {
+      return null;
+    }
+  }
 
-	private InstanceCreation initialInstanceCreation;
+  private InstanceCreation initialInstanceCreation;
 
-	private AddPersonResourceManagedFieldComposite() {
-		super( UUID.fromString( "a3484b6d-bee1-40b6-9162-a8066bd9b015" ), new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build() );
-	}
+  private AddPersonResourceManagedFieldComposite() {
+    super(UUID.fromString("a3484b6d-bee1-40b6-9162-a8066bd9b015"), new FieldDetailsBuilder().valueComponentType(ApplicabilityStatus.DISPLAYED, null).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false).initializer(ApplicabilityStatus.EDITABLE, null).build());
+  }
 
-	private static InstanceCreation createPersonInstanceCreationFromPersonResourceInstanceCreation( InstanceCreation personResourceInstanceCreation ) {
-		if( personResourceInstanceCreation != null ) {
-			NamedUserType type = TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation( personResourceInstanceCreation );
+  private static InstanceCreation createPersonInstanceCreationFromPersonResourceInstanceCreation(InstanceCreation personResourceInstanceCreation) {
+    if (personResourceInstanceCreation != null) {
+      NamedUserType type = TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation(personResourceInstanceCreation);
 
-			return AstUtilities.createInstanceCreation(
-					type.getDeclaredConstructors().get( 0 ),
-					personResourceInstanceCreation
-					);
-		} else {
-			return null;
-		}
-	}
+      return AstUtilities.createInstanceCreation(type.getDeclaredConstructors().get(0), personResourceInstanceCreation);
+    } else {
+      return null;
+    }
+  }
 
-	public void setInitialPersonResourceInstanceCreation( InstanceCreation argumentExpression ) {
-		this.initialInstanceCreation = createPersonInstanceCreationFromPersonResourceInstanceCreation( argumentExpression );
-	}
+  public void setInitialPersonResourceInstanceCreation(InstanceCreation argumentExpression) {
+    this.initialInstanceCreation = createPersonInstanceCreationFromPersonResourceInstanceCreation(argumentExpression);
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return this.initialInstanceCreation;
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return this.initialInstanceCreation;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		return getDeclaringTypeFromInitializer( this.getInitializer() );
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+    return getDeclaringTypeFromInitializer(this.getInitializer());
+  }
 
-	private static final class PersonResourceToPersonConverter extends ValueConverter<InstanceCreation, InstanceCreation> {
-		public PersonResourceToPersonConverter( ValueCreator<InstanceCreation> valueCreator ) {
-			super( UUID.fromString( "f04fd1b1-24a6-444d-af92-b885e18a3887" ), valueCreator );
-		}
+  private static final class PersonResourceToPersonConverter extends ValueConverter<InstanceCreation, InstanceCreation> {
+    public PersonResourceToPersonConverter(ValueCreator<InstanceCreation> valueCreator) {
+      super(UUID.fromString("f04fd1b1-24a6-444d-af92-b885e18a3887"), valueCreator);
+    }
 
-		@Override
-		protected InstanceCreation convert( InstanceCreation value ) {
-			return createPersonInstanceCreationFromPersonResourceInstanceCreation( value );
-		}
-	}
+    @Override
+    protected InstanceCreation convert(InstanceCreation value) {
+      return createPersonInstanceCreationFromPersonResourceInstanceCreation(value);
+    }
+  }
 
-	private final ValueConverter<InstanceCreation, InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToPersonConverter( PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter() );
+  private final ValueConverter<InstanceCreation, InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToPersonConverter(PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter());
 
-	private class InitializerContext implements ExpressionCascadeContext {
-		@Override
-		public Expression getPreviousExpression() {
-			//todo: investigate
-			Expression initializer = getInitializer();
-			if( initializer instanceof InstanceCreation ) {
-				InstanceCreation instanceCreation = (InstanceCreation)initializer;
-				if( instanceCreation.requiredArguments.size() == 1 ) {
-					return instanceCreation.requiredArguments.get( 0 ).expression.getValue();
-				}
-			}
-			return null;
-		}
+  private class InitializerContext implements ExpressionCascadeContext {
+    @Override
+    public Expression getPreviousExpression() {
+      //todo: investigate
+      Expression initializer = getInitializer();
+      if (initializer instanceof InstanceCreation) {
+        InstanceCreation instanceCreation = (InstanceCreation) initializer;
+        if (instanceCreation.requiredArguments.size() == 1) {
+          return instanceCreation.requiredArguments.get(0).expression.getValue();
+        }
+      }
+      return null;
+    }
 
-		@Override
-		public BlockStatementIndexPair getBlockStatementIndexPair() {
-			return null;
-		}
-	}
+    @Override
+    public BlockStatementIndexPair getBlockStatementIndexPair() {
+      return null;
+    }
+  }
 
-	private class PersonResourceInitializerCustomizer implements ItemStateCustomizer<Expression> {
-		private ExpressionCascadeContext pushedContext;
+  private class PersonResourceInitializerCustomizer implements ItemStateCustomizer<Expression> {
+    private ExpressionCascadeContext pushedContext;
 
-		@Override
-		public CascadeFillIn getFillInFor( Expression value ) {
-			return null;
-		}
+    @Override
+    public CascadeFillIn getFillInFor(Expression value) {
+      return null;
+    }
 
-		@Override
-		public void prologue() {
-			this.pushedContext = new InitializerContext();
-			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		}
+    @Override
+    public void prologue() {
+      this.pushedContext = new InitializerContext();
+      IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+    }
 
-		@Override
-		public void epilogue() {
-			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
-			this.pushedContext = null;
-		}
+    @Override
+    public void epilogue() {
+      IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(this.pushedContext);
+      this.pushedContext = null;
+    }
 
-		@Override
-		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-			blankChildren.add( previousResourceExpressionValueConverter.getFillIn() );
-		}
-	}
+    @Override
+    public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+      blankChildren.add(previousResourceExpressionValueConverter.getFillIn());
+    }
+  }
 
-	@Override
-	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
-		return DimensionUtilities.constrainToMaximumHeight( super.calculateWindowSize( window ), 400 );
-	}
+  @Override
+  protected Dimension calculateWindowSize(AbstractWindow<?> window) {
+    return DimensionUtilities.constrainToMaximumHeight(super.calculateWindowSize(window), 400);
+  }
 
-	@Override
-	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
-		return new PersonResourceInitializerCustomizer();
-	}
+  @Override
+  protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
+    return new PersonResourceInitializerCustomizer();
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		this.initialInstanceCreation = null;
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    this.initialInstanceCreation = null;
+  }
 }

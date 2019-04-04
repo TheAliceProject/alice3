@@ -43,79 +43,73 @@
 
 package org.lgna.story.resources;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JointId {
 
-	private final JointId parent;
-	private final Class<? extends JointedModelResource> containingClass;
-	private Field fld;
+  private final JointId parent;
+  private final Class<? extends JointedModelResource> containingClass;
+  private Field fld;
 
-	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
-		this.parent = parent;
-		this.containingClass = containingClass;
-	}
+  public JointId(JointId parent, Class<? extends JointedModelResource> containingClass) {
+    this.parent = parent;
+    this.containingClass = containingClass;
+  }
 
-	public JointId getParent() {
-		return this.parent;
-	}
+  public JointId getParent() {
+    return this.parent;
+  }
 
-	public Visibility getVisibility() {
-		Field jointField = getPublicStaticFinalFld();
-		if( jointField != null && jointField.isAnnotationPresent( FieldTemplate.class ) ) {
-			FieldTemplate propertyFieldTemplate = jointField.getAnnotation( FieldTemplate.class );
-			return propertyFieldTemplate.visibility();
-		}
-		return Visibility.PRIME_TIME;
-	}
+  public Visibility getVisibility() {
+    Field jointField = getPublicStaticFinalFld();
+    if (jointField != null && jointField.isAnnotationPresent(FieldTemplate.class)) {
+      FieldTemplate propertyFieldTemplate = jointField.getAnnotation(FieldTemplate.class);
+      return propertyFieldTemplate.visibility();
+    }
+    return Visibility.PRIME_TIME;
+  }
 
-	public Field getPublicStaticFinalFld() {
-		if( this.fld != null ) {
-			//pass
-		} else if (this.containingClass != null ){
-			for( Field fld : this.containingClass.getFields() ) {
-				int modifiers = fld.getModifiers();
-				if( Modifier.isPublic( modifiers ) ) {
-					if( Modifier.isStatic( modifiers ) ) {
-						if( Modifier.isFinal( modifiers ) ) {
-							try {
-								Object o = fld.get( null );
-								if( o == this ) {
-									this.fld = fld;
-									break;
-								}
-							} catch( IllegalAccessException iae ) {
-								Logger.throwable( iae, fld );
-							}
-						}
-					}
-				}
-			}
-		}
-		return this.fld;
-	}
+  public Field getPublicStaticFinalFld() {
+    if (this.fld != null) {
+      //pass
+    } else if (this.containingClass != null) {
+      for (Field fld : this.containingClass.getFields()) {
+        int modifiers = fld.getModifiers();
+        if (Modifier.isPublic(modifiers)) {
+          if (Modifier.isStatic(modifiers)) {
+            if (Modifier.isFinal(modifiers)) {
+              try {
+                Object o = fld.get(null);
+                if (o == this) {
+                  this.fld = fld;
+                  break;
+                }
+              } catch (IllegalAccessException iae) {
+                Logger.throwable(iae, fld);
+              }
+            }
+          }
+        }
+      }
+    }
+    return this.fld;
+  }
 
-	@Override
-	public String toString() {
-		Field fld = this.getPublicStaticFinalFld();
-		if( fld != null ) {
-			return fld.getName();
-		} else {
-			return super.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    Field fld = this.getPublicStaticFinalFld();
+    if (fld != null) {
+      return fld.getName();
+    } else {
+      return super.toString();
+    }
+  }
 }

@@ -56,50 +56,50 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class PushButton extends BooleanStateButton<JButton> {
-	private Color selectedColor = Color.YELLOW;
+  private Color selectedColor = Color.YELLOW;
 
-	public PushButton( BooleanState model ) {
-		super( model );
-	}
+  public PushButton(BooleanState model) {
+    super(model);
+  }
 
-	@Override
-	protected JButton createAwtComponent() {
-		JButton rv = new JButton() {
-			@Override
-			public void updateUI() {
-				super.updateUI();
-				this.setUI( new MetalToggleButtonUI() {
-					@Override
-					protected Color getSelectColor() {
-						return PushButton.this.getSelectedColor();
-					}
+  @Override
+  protected JButton createAwtComponent() {
+    JButton rv = new JButton() {
+      @Override
+      public void updateUI() {
+        super.updateUI();
+        this.setUI(new MetalToggleButtonUI() {
+          @Override
+          protected Color getSelectColor() {
+            return PushButton.this.getSelectedColor();
+          }
 
-					@Override
-					protected void paintFocus( Graphics g, javax.swing.AbstractButton b, Rectangle viewRect, Rectangle textRect, Rectangle iconRect ) {
-					}
-				} );
-			}
+          @Override
+          protected void paintFocus(Graphics g, javax.swing.AbstractButton b, Rectangle viewRect, Rectangle textRect, Rectangle iconRect) {
+          }
+        });
+      }
 
-			//			@Override
-			//			public java.awt.Color getForeground() {
-			//				javax.swing.ButtonModel buttonModel = this.getModel();
-			//				if( buttonModel.isPressed() || buttonModel.isSelected() ) {
-			//					return java.awt.Color.YELLOW;
-			//				} else {
-			//					return java.awt.Color.BLACK;
-			//				}
-			//			}
-		};
-		rv.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		return rv;
-	}
+      //    @Override
+      //    public java.awt.Color getForeground() {
+      //      javax.swing.ButtonModel buttonModel = this.getModel();
+      //      if( buttonModel.isPressed() || buttonModel.isSelected() ) {
+      //        return java.awt.Color.YELLOW;
+      //      } else {
+      //        return java.awt.Color.BLACK;
+      //      }
+      //    }
+    };
+    rv.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    return rv;
+  }
 
-	public Color getSelectedColor() {
-		return this.selectedColor;
-	}
+  public Color getSelectedColor() {
+    return this.selectedColor;
+  }
 
-	public void setSelectedColor( Color selectedColor ) {
-		this.selectedColor = selectedColor;
-		this.repaint();
-	}
+  public void setSelectedColor(Color selectedColor) {
+    this.selectedColor = selectedColor;
+    this.repaint();
+  }
 }

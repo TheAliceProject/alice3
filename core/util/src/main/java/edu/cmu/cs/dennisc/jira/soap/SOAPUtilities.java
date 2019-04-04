@@ -58,75 +58,75 @@ import java.rmi.RemoteException;
  */
 public class SOAPUtilities {
 
-	private static RemoteCustomFieldValue createCustomField( int key, String value ) {
-		return new RemoteCustomFieldValue( "customfield_" + key, "", new String[] { value } );
-	}
+  private static RemoteCustomFieldValue createCustomField(int key, String value) {
+    return new RemoteCustomFieldValue("customfield_" + key, "", new String[] {value});
+  }
 
-	private static RemoteVersion[] getRemoteAffectsVersions( JIRAReport jiraReport, JiraSoapService service, String token, String project ) {
-		String[] affectsVersions = jiraReport.getAffectsVersions();
-		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
-			String affectsVersion = affectsVersions[ 0 ];
-			RemoteVersion[] versions;
-			try {
-				versions = service.getVersions( token, project );
-			} catch (RemoteException e) {
-				e.printStackTrace();
-				return new RemoteVersion[] {};
-			}
-			for( RemoteVersion version : versions ) {
-				String versionName = version.getName();
-				if( ( versionName != null ) && ( versionName.length() > 0 ) ) {
-					if( versionName.equals( affectsVersion ) ) {
-						return new RemoteVersion[] { version };
-					}
-				}
-			}
-		}
-		return new RemoteVersion[] {};
-	}
+  private static RemoteVersion[] getRemoteAffectsVersions(JIRAReport jiraReport, JiraSoapService service, String token, String project) {
+    String[] affectsVersions = jiraReport.getAffectsVersions();
+    if ((affectsVersions != null) && (affectsVersions.length > 0)) {
+      String affectsVersion = affectsVersions[0];
+      RemoteVersion[] versions;
+      try {
+        versions = service.getVersions(token, project);
+      } catch (RemoteException e) {
+        e.printStackTrace();
+        return new RemoteVersion[] {};
+      }
+      for (RemoteVersion version : versions) {
+        String versionName = version.getName();
+        if ((versionName != null) && (versionName.length() > 0)) {
+          if (versionName.equals(affectsVersion)) {
+            return new RemoteVersion[] {version};
+          }
+        }
+      }
+    }
+    return new RemoteVersion[] {};
+  }
 
-	private static RemoteIssue createPreparedIssue( JIRAReport jiraReport ) {
-		RemoteIssue remoteIssue = new RemoteIssue();
-		remoteIssue.setSummary( jiraReport.getTruncatedSummary() );
-		remoteIssue.setType( Integer.toString( jiraReport.getTypeID() ) );
+  private static RemoteIssue createPreparedIssue(JIRAReport jiraReport) {
+    RemoteIssue remoteIssue = new RemoteIssue();
+    remoteIssue.setSummary(jiraReport.getTruncatedSummary());
+    remoteIssue.setType(Integer.toString(jiraReport.getTypeID()));
 
-		String description = jiraReport.getCreditedDescription();
-		remoteIssue.setDescription( description );
+    String description = jiraReport.getCreditedDescription();
+    remoteIssue.setDescription(description);
 
-		RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
-		RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
-		remoteIssue.setCustomFieldValues( new RemoteCustomFieldValue[] { steps, exception } );
+    RemoteCustomFieldValue steps = createCustomField(10000, jiraReport.getSteps());
+    RemoteCustomFieldValue exception = createCustomField(10001, jiraReport.getException());
+    remoteIssue.setCustomFieldValues(new RemoteCustomFieldValue[] {steps, exception});
 
-		StringBuffer environment = new StringBuffer();
-		String[] affectsVersions = jiraReport.getAffectsVersions();
-		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
-			environment.append( "version: " );
-			environment.append( affectsVersions[ 0 ] );
-			environment.append( ";\n" );
-		}
-		remoteIssue.setEnvironment( jiraReport.getEnvironment() );
-		return remoteIssue;
-	}
+    StringBuffer environment = new StringBuffer();
+    String[] affectsVersions = jiraReport.getAffectsVersions();
+    if ((affectsVersions != null) && (affectsVersions.length > 0)) {
+      environment.append("version: ");
+      environment.append(affectsVersions[0]);
+      environment.append(";\n");
+    }
+    remoteIssue.setEnvironment(jiraReport.getEnvironment());
+    return remoteIssue;
+  }
 
-	public static RemoteIssue createIssue( JIRAReport jiraReport, JiraSoapService service, String token ) throws RemoteException {
-		String project = jiraReport.getProjectKey();
-		RemoteIssue remoteIssue = createPreparedIssue( jiraReport );
-		remoteIssue.setProject( project );
-		RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( jiraReport, service, token, project );
-		remoteIssue.setAffectsVersions( remoteAffectsVersions );
-		return service.createIssue( token, remoteIssue );
-	}
+  public static RemoteIssue createIssue(JIRAReport jiraReport, JiraSoapService service, String token) throws RemoteException {
+    String project = jiraReport.getProjectKey();
+    RemoteIssue remoteIssue = createPreparedIssue(jiraReport);
+    remoteIssue.setProject(project);
+    RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions(jiraReport, service, token, project);
+    remoteIssue.setAffectsVersions(remoteAffectsVersions);
+    return service.createIssue(token, remoteIssue);
+  }
 
-	public static RemoteIssue addAttachment( RemoteIssue rv, Attachment attachment, JiraSoapService service, String token ) throws RemoteException {
-		String[] names = { attachment.getFileName() };
-		final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
-		if( isBase64EncodingDesired ) {
-			String[] base64s = { Base64.encode( attachment.getBytes() ) };
-			service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
-		} else {
-			byte[][] data = { attachment.getBytes() };
-			service.addAttachmentsToIssue( token, rv.getKey(), names, data );
-		}
-		return rv;
-	}
+  public static RemoteIssue addAttachment(RemoteIssue rv, Attachment attachment, JiraSoapService service, String token) throws RemoteException {
+    String[] names = {attachment.getFileName()};
+    final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
+    if (isBase64EncodingDesired) {
+      String[] base64s = {Base64.encode(attachment.getBytes())};
+      service.addBase64EncodedAttachmentsToIssue(token, rv.getKey(), names, base64s);
+    } else {
+      byte[][] data = {attachment.getBytes()};
+      service.addAttachmentsToIssue(token, rv.getKey(), names, data);
+    }
+    return rv;
+  }
 }

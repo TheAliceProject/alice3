@@ -51,29 +51,29 @@ import java.util.List;
  * @author David Culyba
  */
 public class ManipulationEventManager {
-	public void addManipulationListener( ManipulationListener listener ) {
-		if( !this.manipulationListeners.contains( listener ) ) {
-			this.manipulationListeners.add( listener );
-		} else {
-			Logger.errln( listener, "already in", this );
-		}
-	}
+  public void addManipulationListener(ManipulationListener listener) {
+    if (!this.manipulationListeners.contains(listener)) {
+      this.manipulationListeners.add(listener);
+    } else {
+      Logger.errln(listener, "already in", this);
+    }
+  }
 
-	public void removeManipulationListener( ManipulationListener listener ) {
-		this.manipulationListeners.remove( listener );
-	}
+  public void removeManipulationListener(ManipulationListener listener) {
+    this.manipulationListeners.remove(listener);
+  }
 
-	public void triggerEvent( ManipulationEvent event, boolean isActivate ) {
-		for( ManipulationListener currentListener : this.manipulationListeners ) {
-			if( currentListener.matches( event ) ) {
-				if( isActivate ) {
-					currentListener.activate( event );
-				} else {
-					currentListener.deactivate( event );
-				}
-			}
-		}
-	}
+  public void triggerEvent(ManipulationEvent event, boolean isActivate) {
+    for (ManipulationListener currentListener : this.manipulationListeners) {
+      if (currentListener.matches(event)) {
+        if (isActivate) {
+          currentListener.activate(event);
+        } else {
+          currentListener.deactivate(event);
+        }
+      }
+    }
+  }
 
-	private final List<ManipulationListener> manipulationListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ManipulationListener> manipulationListeners = Lists.newCopyOnWriteArrayList();
 }

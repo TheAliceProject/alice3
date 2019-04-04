@@ -51,51 +51,51 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public class JDropProxy extends JProxy {
-	public static interface Hider {
-		public void setDragSource( DragComponent<?> dragSource );
-	}
+  public static interface Hider {
+    public void setDragSource(DragComponent<?> dragSource);
+  }
 
-	public JDropProxy( DragComponent<?> dragComponent ) {
-		super( dragComponent );
-	}
+  public JDropProxy(DragComponent<?> dragComponent) {
+    super(dragComponent);
+  }
 
-	@Override
-	protected float getAlpha() {
-		return 0.6f;
-	}
+  @Override
+  protected float getAlpha() {
+    return 0.6f;
+  }
 
-	@Override
-	protected void paintProxy( Graphics2D g2 ) {
-		this.getSubject().getAwtComponent().print( g2 );
-		g2.setColor( new Color( 0, 0, 0, 127 ) );
-		//		java.awt.geom.AffineTransform m = g2.getTransform();
-		//		try {
-		//			int height = this.getHeight();
-		//			if( this.availableHeight != -1 && this.availableHeight < height ) {
-		//				double yScale = this.availableHeight / (double)height;
-		//				g2.scale( 1.0, yScale );
-		//			}
-		fillBounds( g2 );
-		//		} finally {
-		//			g2.setTransform( m );
-		//		}
-	}
+  @Override
+  protected void paintProxy(Graphics2D g2) {
+    this.getSubject().getAwtComponent().print(g2);
+    g2.setColor(new Color(0, 0, 0, 127));
+    //  java.awt.geom.AffineTransform m = g2.getTransform();
+    //  try {
+    //    int height = this.getHeight();
+    //    if( this.availableHeight != -1 && this.availableHeight < height ) {
+    //      double yScale = this.availableHeight / (double)height;
+    //      g2.scale( 1.0, yScale );
+    //    }
+    fillBounds(g2);
+    //  } finally {
+    //    g2.setTransform( m );
+    //  }
+  }
 
-	private int availableHeight = -1;
+  private int availableHeight = -1;
 
-	@Override
-	public int getAvailableHeight() {
-		if( this.availableHeight != -1 ) {
-			return this.availableHeight;
-		} else {
-			return super.getAvailableHeight();
-		}
-	}
+  @Override
+  public int getAvailableHeight() {
+    if (this.availableHeight != -1) {
+      return this.availableHeight;
+    } else {
+      return super.getAvailableHeight();
+    }
+  }
 
-	public void setAvailableHeight( int availableHeight ) {
-		if( this.availableHeight != availableHeight ) {
-			this.availableHeight = availableHeight;
-			this.repaint();
-		}
-	}
+  public void setAvailableHeight(int availableHeight) {
+    if (this.availableHeight != availableHeight) {
+      this.availableHeight = availableHeight;
+      this.repaint();
+    }
+  }
 }

@@ -53,21 +53,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ExitOperation extends Operation {
-	private static class SingletonHolder {
-		private static ExitOperation instance = new ExitOperation();
-	}
+  private static class SingletonHolder {
+    private static ExitOperation instance = new ExitOperation();
+  }
 
-	public static ExitOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ExitOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ExitOperation() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "0079ff1b-f22f-4888-a30d-5594125435ab" ) );
-	}
+  private ExitOperation() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("0079ff1b-f22f-4888-a30d-5594125435ab"));
+  }
 
-	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-		//todo: create substep?
-		IDE.getActiveInstance().handleQuit( userActivity );
-	}
+  @Override
+  protected void performInActivity(UserActivity userActivity) {
+    //todo: create substep?
+    IDE.getActiveInstance().handleQuit(userActivity);
+  }
 }

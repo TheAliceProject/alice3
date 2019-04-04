@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.texture.Texture;
  * @author Dennis Cosgrove
  */
 public interface NonfreeTexturePaint extends Paint {
-	boolean isTextureValid();
+  boolean isTextureValid();
 
-	Texture getTexture();
+  Texture getTexture();
 
-	Paint getFallback();
+  Paint getFallback();
 }

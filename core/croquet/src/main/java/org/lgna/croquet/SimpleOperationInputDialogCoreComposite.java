@@ -50,18 +50,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends LaunchOperationInputDialogCoreComposite<V> {
-	public SimpleOperationInputDialogCoreComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId, operationGroup );
-		this.getImp().createAndRegisterNullKeyLaunchOperation();
-	}
+  public SimpleOperationInputDialogCoreComposite(UUID migrationId, Group operationGroup) {
+    super(migrationId, operationGroup);
+    this.getImp().createAndRegisterNullKeyLaunchOperation();
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getImp().getName() : null;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    Operation launchOperation = this.getLaunchOperation();
+    return launchOperation != null ? launchOperation.getImp().getName() : null;
+  }
 
-	public Operation getLaunchOperation() {
-		return this.getImp().getLaunchOperation( null );
-	}
+  public Operation getLaunchOperation() {
+    return this.getImp().getLaunchOperation(null);
+  }
 }

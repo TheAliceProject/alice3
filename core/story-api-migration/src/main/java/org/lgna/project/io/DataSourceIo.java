@@ -13,34 +13,37 @@ import java.util.zip.ZipOutputStream;
 
 public abstract class DataSourceIo {
 
-    protected static void writeDataSources(OutputStream os, List<DataSource> dataSources ) throws IOException {
-        ZipOutputStream zos = new ZipOutputStream( os );
-        for( DataSource dataSource : dataSources ) {
-            ZipUtilities.write( zos, dataSource );
-        }
-        zos.flush();
-        zos.close();
+  protected static void writeDataSources(OutputStream os, List<DataSource> dataSources) throws IOException {
+    ZipOutputStream zos = new ZipOutputStream(os);
+    for (DataSource dataSource : dataSources) {
+      ZipUtilities.write(zos, dataSource);
     }
+    zos.flush();
+    zos.close();
+  }
 
-    protected static void writeDataSources(File outputDirectory, List<DataSource> dataSources ) throws IOException {
-        outputDirectory.mkdirs();
-        for( DataSource dataSource : dataSources ) {
-            File outputFile = new File(outputDirectory, dataSource.getName());
-            FileUtilities.createParentDirectoriesIfNecessary(outputFile);
-            FileOutputStream fos = new FileOutputStream(outputFile);
-            dataSource.write(fos);
-            fos.close();
-        }
+  protected static void writeDataSources(File outputDirectory, List<DataSource> dataSources) throws IOException {
+    outputDirectory.mkdirs();
+    for (DataSource dataSource : dataSources) {
+      File outputFile = new File(outputDirectory, dataSource.getName());
+      FileUtilities.createParentDirectoriesIfNecessary(outputFile);
+      FileOutputStream fos = new FileOutputStream(outputFile);
+      dataSource.write(fos);
+      fos.close();
     }
+  }
 
+  protected static DataSource createDataSource(String name, String content) {
+    return new DataSource() {
+      @Override
+      public String getName() {
+        return name;
+      }
 
-    protected static DataSource createDataSource( String name, String content ) {
-        return new DataSource() {
-            @Override public String getName() { return name; }
-
-            @Override public void write( OutputStream os ) throws IOException {
-                os.write( content.getBytes() );
-            }
-        };
-    }
+      @Override
+      public void write(OutputStream os) throws IOException {
+        os.write(content.getBytes());
+      }
+    };
+  }
 }

@@ -58,55 +58,55 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class LinkScaleButton extends BooleanStateButton<AbstractButton> {
-	public LinkScaleButton( BooleanState state ) {
-		super( state );
-	}
+  public LinkScaleButton(BooleanState state) {
+    super(state);
+  }
 
-	@Override
-	protected AbstractButton createAwtComponent() {
-		AbstractButton rv = new JToggleButton() {
-			@Override
-			protected void paintComponent( Graphics g ) {
-				super.paintComponent( g );
-				ButtonModel buttonModel = this.getModel();
-				Color colorA;
-				Color colorB;
-				if( buttonModel.isPressed() ) {
-					colorA = Color.DARK_GRAY;
-					colorB = Color.WHITE;
-				} else if( buttonModel.isRollover() ) {
-					colorA = Color.WHITE;
-					colorB = Color.DARK_GRAY;
-				} else {
-					colorA = null;
-					colorB = null;
-				}
-				if( ( colorA != null ) && ( colorB != null ) ) {
-					int leftX = 0;
-					int topY = 0;
-					int rightX = this.getWidth() - 1;
-					int bottomY = this.getHeight() - 1;
-					g.setColor( colorA );
-					g.drawLine( leftX, topY, rightX, topY );
-					g.drawLine( leftX, topY, leftX, bottomY );
-					g.setColor( colorB );
-					g.drawLine( leftX, bottomY, rightX, bottomY );
-					g.drawLine( rightX, topY, rightX, bottomY );
-				}
-			}
+  @Override
+  protected AbstractButton createAwtComponent() {
+    AbstractButton rv = new JToggleButton() {
+      @Override
+      protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        ButtonModel buttonModel = this.getModel();
+        Color colorA;
+        Color colorB;
+        if (buttonModel.isPressed()) {
+          colorA = Color.DARK_GRAY;
+          colorB = Color.WHITE;
+        } else if (buttonModel.isRollover()) {
+          colorA = Color.WHITE;
+          colorB = Color.DARK_GRAY;
+        } else {
+          colorA = null;
+          colorB = null;
+        }
+        if ((colorA != null) && (colorB != null)) {
+          int leftX = 0;
+          int topY = 0;
+          int rightX = this.getWidth() - 1;
+          int bottomY = this.getHeight() - 1;
+          g.setColor(colorA);
+          g.drawLine(leftX, topY, rightX, topY);
+          g.drawLine(leftX, topY, leftX, bottomY);
+          g.setColor(colorB);
+          g.drawLine(leftX, bottomY, rightX, bottomY);
+          g.drawLine(rightX, topY, rightX, bottomY);
+        }
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( BasicToggleButtonUI.createUI( this ) );
-			}
-		};
-		rv.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		rv.setRolloverEnabled( true );
-		rv.setFocusable( false );
-		rv.setRolloverEnabled( true );
-		rv.setOpaque( false );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(BasicToggleButtonUI.createUI(this));
+      }
+    };
+    rv.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    rv.setRolloverEnabled(true);
+    rv.setFocusable(false);
+    rv.setRolloverEnabled(true);
+    rv.setOpaque(false);
+    return rv;
+  }
 }
 
 //import java.awt.Color;
@@ -119,122 +119,122 @@ public class LinkScaleButton extends BooleanStateButton<AbstractButton> {
 //
 //public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton>
 //{
-//	private ImageIcon linkedIcon;
-//	private ImageIcon unlinkedIcon;
-//	private Dimension size;
+//  private ImageIcon linkedIcon;
+//  private ImageIcon unlinkedIcon;
+//  private Dimension size;
 //
-//	public LinkScaleButton( BooleanState booleanState, URL linkedResource, URL unlinkedResource ) {
-//		super( booleanState );
-//		this.linkedIcon = new ImageIcon( linkedResource );
-//		this.unlinkedIcon = new ImageIcon( unlinkedResource );
-//		this.size = new Dimension( this.linkedIcon.getIconWidth(), this.linkedIcon.getIconHeight() );
-//		this.updateLabel();
-//	}
+//  public LinkScaleButton( BooleanState booleanState, URL linkedResource, URL unlinkedResource ) {
+//    super( booleanState );
+//    this.linkedIcon = new ImageIcon( linkedResource );
+//    this.unlinkedIcon = new ImageIcon( unlinkedResource );
+//    this.size = new Dimension( this.linkedIcon.getIconWidth(), this.linkedIcon.getIconHeight() );
+//    this.updateLabel();
+//  }
 //
-//	public LinkScaleButton( BooleanState booleanState ) {
-//		this( booleanState, IsAllScaleLinkedState.class.getResource( "images/scaleLinked.png" ), IsAllScaleLinkedState.class.getResource( "images/scaleUnlinked.png" ) );
-//	}
+//  public LinkScaleButton( BooleanState booleanState ) {
+//    this( booleanState, IsAllScaleLinkedState.class.getResource( "images/scaleLinked.png" ), IsAllScaleLinkedState.class.getResource( "images/scaleUnlinked.png" ) );
+//  }
 //
-//	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
-//		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
-//			LinkScaleButton.this.updateLabel();
-//		}
-//	};
+//  private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+//    public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+//      LinkScaleButton.this.updateLabel();
+//    }
+//  };
 //
-//	@Override
-//	protected void handleDisplayable() {
-//		super.handleDisplayable();
-//		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeNewSchoolValueListener( this.valueListener );
-//	}
+//  @Override
+//  protected void handleDisplayable() {
+//    super.handleDisplayable();
+//    org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeNewSchoolValueListener( this.valueListener );
+//  }
 //
-//	@Override
-//	protected void handleUndisplayable() {
-//		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeNewSchoolValueListener( this.valueListener );
-//		super.handleUndisplayable();
-//	}
+//  @Override
+//  protected void handleUndisplayable() {
+//    org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeNewSchoolValueListener( this.valueListener );
+//    super.handleUndisplayable();
+//  }
 //
-//	@Override
-//	protected javax.swing.AbstractButton createAwtComponent()
-//	{
-//		return new javax.swing.JRadioButton()
-//		{
-//			@Override
-//			public Dimension getPreferredSize()
-//			{
-//				return LinkScaleButton.this.size;
-//			}
+//  @Override
+//  protected javax.swing.AbstractButton createAwtComponent()
+//  {
+//    return new javax.swing.JRadioButton()
+//    {
+//      @Override
+//      public Dimension getPreferredSize()
+//      {
+//        return LinkScaleButton.this.size;
+//      }
 //
-//			@Override
-//			public Dimension getMinimumSize()
-//			{
-//				return LinkScaleButton.this.size;
-//			}
+//      @Override
+//      public Dimension getMinimumSize()
+//      {
+//        return LinkScaleButton.this.size;
+//      }
 //
-//			@Override
-//			public Dimension getMaximumSize()
-//			{
-//				return LinkScaleButton.this.size;
-//			}
+//      @Override
+//      public Dimension getMaximumSize()
+//      {
+//        return LinkScaleButton.this.size;
+//      }
 //
-//			@Override
-//			public boolean isRolloverEnabled()
-//			{
-//				return true;
-//			}
+//      @Override
+//      public boolean isRolloverEnabled()
+//      {
+//        return true;
+//      }
 //
-//			@Override
-//			public boolean isFocusable() {
-//				return false;
-//			}
+//      @Override
+//      public boolean isFocusable() {
+//        return false;
+//      }
 //
-//			@Override
-//			public boolean isOpaque() {
-//				return false;
-//			}
+//      @Override
+//      public boolean isOpaque() {
+//        return false;
+//      }
 //
-//			@Override
-//			protected void paintComponent( java.awt.Graphics g ) {
-//				if( this.getModel().isRollover() )
-//				{
-//					int leftX = 0;
-//					int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
-//					int topY = 0;
-//					int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
-//					g.setColor( Color.WHITE );
-//					g.drawLine( leftX, topY, rightX, topY );
-//					g.drawLine( leftX, topY, leftX, bottomY );
-//					g.setColor( Color.DARK_GRAY );
-//					g.drawLine( leftX, bottomY, rightX, bottomY );
-//					g.drawLine( rightX, topY, rightX, bottomY );
-//				}
-//				if( this.getModel().isPressed() )
-//				{
-//					int leftX = 0;
-//					int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
-//					int topY = 0;
-//					int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
-//					g.setColor( Color.DARK_GRAY );
-//					g.drawLine( leftX, topY, rightX, topY );
-//					g.drawLine( leftX, topY, leftX, bottomY );
-//					g.setColor( Color.WHITE );
-//					g.drawLine( leftX, bottomY, rightX, bottomY );
-//					g.drawLine( rightX, topY, rightX, bottomY );
-//				}
-//				if( this.getModel().isSelected() )
-//				{
-//					g.drawImage( LinkScaleButton.this.linkedIcon.getImage(), 0, 0, null );
-//				}
-//				else
-//				{
-//					g.drawImage( LinkScaleButton.this.unlinkedIcon.getImage(), 0, 0, null );
-//				}
-//				//				super.paintComponent(g);
-//			}
-//		};
-//	}
+//      @Override
+//      protected void paintComponent( java.awt.Graphics g ) {
+//        if( this.getModel().isRollover() )
+//        {
+//          int leftX = 0;
+//          int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
+//          int topY = 0;
+//          int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
+//          g.setColor( Color.WHITE );
+//          g.drawLine( leftX, topY, rightX, topY );
+//          g.drawLine( leftX, topY, leftX, bottomY );
+//          g.setColor( Color.DARK_GRAY );
+//          g.drawLine( leftX, bottomY, rightX, bottomY );
+//          g.drawLine( rightX, topY, rightX, bottomY );
+//        }
+//        if( this.getModel().isPressed() )
+//        {
+//          int leftX = 0;
+//          int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
+//          int topY = 0;
+//          int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
+//          g.setColor( Color.DARK_GRAY );
+//          g.drawLine( leftX, topY, rightX, topY );
+//          g.drawLine( leftX, topY, leftX, bottomY );
+//          g.setColor( Color.WHITE );
+//          g.drawLine( leftX, bottomY, rightX, bottomY );
+//          g.drawLine( rightX, topY, rightX, bottomY );
+//        }
+//        if( this.getModel().isSelected() )
+//        {
+//          g.drawImage( LinkScaleButton.this.linkedIcon.getImage(), 0, 0, null );
+//        }
+//        else
+//        {
+//          g.drawImage( LinkScaleButton.this.unlinkedIcon.getImage(), 0, 0, null );
+//        }
+//        //        super.paintComponent(g);
+//      }
+//    };
+//  }
 //
-//	void updateLabel()
-//	{
-//		this.repaint();
-//	}
+//  void updateLabel()
+//  {
+//    this.repaint();
+//  }
 //}

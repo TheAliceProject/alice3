@@ -63,89 +63,89 @@ import org.lgna.croquet.history.UserActivity;
  * @author Matt May
  */
 public class UploadOperation extends SingleThreadIteratingOperation {
-	public UploadOperation( ProjectDocumentFrame projectDocumentFrame ) {
-		super( IDE.EXPORT_GROUP, UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public UploadOperation(ProjectDocumentFrame projectDocumentFrame) {
+    super(IDE.EXPORT_GROUP, UUID.fromString("9a855203-b1ce-4ba3-983d-b941a36b2c10"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
-		if ( this.exportToYouTubeWizardDialogComposite == null ) {
-			this.exportToYouTubeWizardDialogComposite = new ExportToYouTubeWizardDialogComposite();
-		}
-		return this.exportToYouTubeWizardDialogComposite;
-	}
+  private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
+    if (this.exportToYouTubeWizardDialogComposite == null) {
+      this.exportToYouTubeWizardDialogComposite = new ExportToYouTubeWizardDialogComposite();
+    }
+    return this.exportToYouTubeWizardDialogComposite;
+  }
 
-	private File getFFmpegFileIfNotExecutable() {
-		File fileKnownToBeNotExecuable;
-		if( FFmpegProcess.isArchitectureSpecificCommandAbsolute() ) {
-			String command = FFmpegProcess.getArchitectureSpecificCommand();
-			File file = new File( command );
-			if( file.exists() ) {
-				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
-			} else {
-				fileKnownToBeNotExecuable = null;
-			}
-		} else {
-			fileKnownToBeNotExecuable = null;
-		}
-		return fileKnownToBeNotExecuable;
-	}
+  private File getFFmpegFileIfNotExecutable() {
+    File fileKnownToBeNotExecuable;
+    if (FFmpegProcess.isArchitectureSpecificCommandAbsolute()) {
+      String command = FFmpegProcess.getArchitectureSpecificCommand();
+      File file = new File(command);
+      if (file.exists()) {
+        fileKnownToBeNotExecuable = file.canExecute() ? null : file;
+      } else {
+        fileKnownToBeNotExecuable = null;
+      }
+    } else {
+      fileKnownToBeNotExecuable = null;
+    }
+    return fileKnownToBeNotExecuable;
+  }
 
-	private Triggerable getExecutionPermissionModel( File file ) {
-		ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( file );
-		return composite.getLaunchOperation();
-	}
+  private Triggerable getExecutionPermissionModel(File file) {
+    ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite(file);
+    return composite.getLaunchOperation();
+  }
 
-	private Triggerable getWizardModel() {
-		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getUpToDateProgramType();
-		}
-		wizard.setProject( ProjectStack.peekProject() );
-		return wizard.getLaunchOperation();
-	}
+  private Triggerable getWizardModel() {
+    ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getUpToDateProgramType();
+    }
+    wizard.setProject(ProjectStack.peekProject());
+    return wizard.getLaunchOperation();
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		int size = finishedSteps.size();
-		if( size == 0 ) {
-			return true;
-		}
-		if( size == 1 ) {
-			UserActivity prevStep = finishedSteps.get( 0 );
-			CompletionModel prevModel = prevStep.getCompletionModel();
-			if ( prevModel instanceof OwnedByCompositeOperation ) {
-				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
-				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
-				if ( composite instanceof ExecutionPermissionFailedDialogComposite ) {
-					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite) composite;
-					return executionComposite.getIsFixed();
-				}
-			}
-		}
-		return false;
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    int size = finishedSteps.size();
+    if (size == 0) {
+      return true;
+    }
+    if (size == 1) {
+      UserActivity prevStep = finishedSteps.get(0);
+      CompletionModel prevModel = prevStep.getCompletionModel();
+      if (prevModel instanceof OwnedByCompositeOperation) {
+        OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
+        OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
+        if (composite instanceof ExecutionPermissionFailedDialogComposite) {
+          ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite) composite;
+          return executionComposite.getIsFixed();
+        }
+      }
+    }
+    return false;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
-		if( finishedSteps.size() == 0 ) {
-			if( fileKnownToBeNotExecuable != null ) {
-				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
-			} else {
-				return getWizardModel();
-			}
-		} else {
-			assert fileKnownToBeNotExecuable == null : "this should be null check logic in getNext()";
-			return getWizardModel();
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+    if (finishedSteps.size() == 0) {
+      if (fileKnownToBeNotExecuable != null) {
+        return getExecutionPermissionModel(fileKnownToBeNotExecuable);
+      } else {
+        return getWizardModel();
+      }
+    } else {
+      assert fileKnownToBeNotExecuable == null : "this should be null check logic in getNext()";
+      return getWizardModel();
+    }
+  }
 
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
-	}
+  @Override
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity) {
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
 }

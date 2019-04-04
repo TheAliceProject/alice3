@@ -52,37 +52,37 @@ import java.lang.reflect.InvocationTargetException;
  */
 
 public interface RenderFactory {
-	ImageBuffer createImageBuffer( Color4f backgroundColor );
+  ImageBuffer createImageBuffer(Color4f backgroundColor);
 
-	ImageBuffer createTransparentBackgroundImageBuffer();
+  ImageBuffer createTransparentBackgroundImageBuffer();
 
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
+  HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
 
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
+  LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
 
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
+  OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities);
 
-	ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
+  ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities);
 
-	void acquireRenderingLock();
+  void acquireRenderingLock();
 
-	void releaseRenderingLock();
+  void releaseRenderingLock();
 
-	void addAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener );
+  void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener);
 
-	void removeAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener );
+  void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener);
 
-	Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners();
+  Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners();
 
-	int getAutomaticDisplayCount();
+  int getAutomaticDisplayCount();
 
-	void incrementAutomaticDisplayCount();
+  void incrementAutomaticDisplayCount();
 
-	void decrementAutomaticDisplayCount();
+  void decrementAutomaticDisplayCount();
 
-	void invokeLater( Runnable runnable );
+  void invokeLater(Runnable runnable);
 
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, InvocationTargetException;
+  void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;
 
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+  void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable);
 }

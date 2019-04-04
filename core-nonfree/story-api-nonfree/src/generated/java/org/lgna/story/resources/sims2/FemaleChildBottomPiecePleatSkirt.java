@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildBottomPiecePleatSkirt implements FemaleChildBottomPiece {
-	PVT_SCHOOL_BLUE,
-	PVT_SCHOOL_RED,
-	PVT_SCHOOL_GREEN,
-	PVT_SCHOOL_BLUE_REBEL;
+  PVT_SCHOOL_BLUE, PVT_SCHOOL_RED, PVT_SCHOOL_GREEN, PVT_SCHOOL_BLUE_REBEL
 
 }

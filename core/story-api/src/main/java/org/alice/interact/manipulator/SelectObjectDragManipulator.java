@@ -54,61 +54,61 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class SelectObjectDragManipulator extends AbstractManipulator {
-	public SelectObjectDragManipulator( DragAdapter dragAdapter ) {
-		this.dragAdapter = dragAdapter;
-	}
+  public SelectObjectDragManipulator(DragAdapter dragAdapter) {
+    this.dragAdapter = dragAdapter;
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-	}
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
-		//Do nothing
-	}
+  @Override
+  public void doClickManipulator(InputState clickInput, InputState previousInput) {
+    //Do nothing
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Select";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Select";
+  }
 
-	@Override
-	public boolean isUndoable() {
-		return false;
-	}
+  @Override
+  public boolean isUndoable() {
+    return false;
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		//		PrintUtilities.println("SelectObjectDragManipulator!!!");
-		PickHint clickedObjectType = startInput.getClickPickHint();
-		if( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ) ) {
-			this.dragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable( true ) );
-		} else if( clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) ) {
-			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable( true );
-			if( pickedHandle instanceof RotationRingHandle ) {
-				this.dragAdapter.triggerSgObjectSelection( ( (RotationRingHandle)pickedHandle ).getManipulatedObject() );
-			}
-		} else if( clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) ) {
-			//Do nothing since the 2D handles don't select anything right now
-		} else {
-			this.dragAdapter.triggerImplementationSelection( null );
-		}
-		return true;
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    //    PrintUtilities.println("SelectObjectDragManipulator!!!");
+    PickHint clickedObjectType = startInput.getClickPickHint();
+    if (clickedObjectType.intersects(PickHint.PickType.SELECTABLE.pickHint())) {
+      this.dragAdapter.triggerSgObjectSelection(startInput.getClickPickedTransformable(true));
+    } else if (clickedObjectType.intersects(PickHint.PickType.THREE_D_HANDLE.pickHint())) {
+      AbstractTransformable pickedHandle = startInput.getClickPickedTransformable(true);
+      if (pickedHandle instanceof RotationRingHandle) {
+        this.dragAdapter.triggerSgObjectSelection(((RotationRingHandle) pickedHandle).getManipulatedObject());
+      }
+    } else if (clickedObjectType.intersects(PickHint.PickType.TWO_D_HANDLE.pickHint())) {
+      //Do nothing since the 2D handles don't select anything right now
+    } else {
+      this.dragAdapter.triggerImplementationSelection(null);
+    }
+    return true;
 
-	}
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-	}
+  @Override
+  public void doTimeUpdateManipulator(double time, InputState currentInput) {
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return null;
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return null;
+  }
 
-	private final DragAdapter dragAdapter;
+  private final DragAdapter dragAdapter;
 }

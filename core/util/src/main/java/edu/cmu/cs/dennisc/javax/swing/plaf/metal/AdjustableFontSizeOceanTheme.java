@@ -49,112 +49,112 @@ import javax.swing.plaf.metal.OceanTheme;
  * @author Dennis Cosgrove
  */
 public class AdjustableFontSizeOceanTheme extends OceanTheme {
-	private float sizeDelta = 0.0f;
-	private float sizeMinimum = 0.0f;
+  private float sizeDelta = 0.0f;
+  private float sizeMinimum = 0.0f;
 
-	private FontUIResource createDeltaFontIfNecessary( FontUIResource fontUIResource ) {
-		FontUIResource rv;
-		if( this.sizeDelta != 0 ) {
-			float nextSize = Math.max( this.sizeMinimum, fontUIResource.getSize() + this.sizeDelta );
-			rv = new FontUIResource( fontUIResource.deriveFont( nextSize ) );
-		} else {
-			rv = fontUIResource;
-		}
-		return rv;
-	}
+  private FontUIResource createDeltaFontIfNecessary(FontUIResource fontUIResource) {
+    FontUIResource rv;
+    if (this.sizeDelta != 0) {
+      float nextSize = Math.max(this.sizeMinimum, fontUIResource.getSize() + this.sizeDelta);
+      rv = new FontUIResource(fontUIResource.deriveFont(nextSize));
+    } else {
+      rv = fontUIResource;
+    }
+    return rv;
+  }
 
-	public float getSizeMinimum() {
-		return this.sizeMinimum;
-	}
+  public float getSizeMinimum() {
+    return this.sizeMinimum;
+  }
 
-	public void setSizeMinimum( float sizeMinimum ) {
-		this.sizeMinimum = sizeMinimum;
-	}
+  public void setSizeMinimum(float sizeMinimum) {
+    this.sizeMinimum = sizeMinimum;
+  }
 
-	public float getSizeDelta() {
-		return this.sizeDelta;
-	}
+  public float getSizeDelta() {
+    return this.sizeDelta;
+  }
 
-	public void setSizeDelta( float sizeDelta ) {
-		if( this.sizeDelta != sizeDelta ) {
-			this.sizeDelta = sizeDelta;
-			this.controlTextFont = null;
-			this.menuTextFont = null;
-			this.subTextFont = null;
-			this.systemTextFont = null;
-			this.userTextFont = null;
-			this.windowTitleTextFont = null;
-		}
-	}
+  public void setSizeDelta(float sizeDelta) {
+    if (this.sizeDelta != sizeDelta) {
+      this.sizeDelta = sizeDelta;
+      this.controlTextFont = null;
+      this.menuTextFont = null;
+      this.subTextFont = null;
+      this.systemTextFont = null;
+      this.userTextFont = null;
+      this.windowTitleTextFont = null;
+    }
+  }
 
-	public void adjustSizeDelta( float sizeDeltaDelta ) {
-		setSizeDelta( this.sizeDelta + sizeDeltaDelta );
-	}
+  public void adjustSizeDelta(float sizeDeltaDelta) {
+    setSizeDelta(this.sizeDelta + sizeDeltaDelta);
+  }
 
-	private FontUIResource controlTextFont = null;
-	private FontUIResource menuTextFont = null;
-	private FontUIResource subTextFont = null;
-	private FontUIResource systemTextFont = null;
-	private FontUIResource userTextFont = null;
-	private FontUIResource windowTitleTextFont = null;
+  private FontUIResource controlTextFont = null;
+  private FontUIResource menuTextFont = null;
+  private FontUIResource subTextFont = null;
+  private FontUIResource systemTextFont = null;
+  private FontUIResource userTextFont = null;
+  private FontUIResource windowTitleTextFont = null;
 
-	@Override
-	public FontUIResource getControlTextFont() {
-		if( this.controlTextFont != null ) {
-			//pass
-		} else {
-			this.controlTextFont = this.createDeltaFontIfNecessary( super.getControlTextFont() );
-		}
-		return this.controlTextFont;
-	}
+  @Override
+  public FontUIResource getControlTextFont() {
+    if (this.controlTextFont != null) {
+      //pass
+    } else {
+      this.controlTextFont = this.createDeltaFontIfNecessary(super.getControlTextFont());
+    }
+    return this.controlTextFont;
+  }
 
-	@Override
-	public FontUIResource getMenuTextFont() {
-		if( this.menuTextFont != null ) {
-			//pass
-		} else {
-			this.menuTextFont = this.createDeltaFontIfNecessary( super.getMenuTextFont() );
-		}
-		return this.menuTextFont;
-	}
+  @Override
+  public FontUIResource getMenuTextFont() {
+    if (this.menuTextFont != null) {
+      //pass
+    } else {
+      this.menuTextFont = this.createDeltaFontIfNecessary(super.getMenuTextFont());
+    }
+    return this.menuTextFont;
+  }
 
-	@Override
-	public FontUIResource getSubTextFont() {
-		if( this.subTextFont != null ) {
-			//pass
-		} else {
-			this.subTextFont = this.createDeltaFontIfNecessary( super.getSubTextFont() );
-		}
-		return this.subTextFont;
-	}
+  @Override
+  public FontUIResource getSubTextFont() {
+    if (this.subTextFont != null) {
+      //pass
+    } else {
+      this.subTextFont = this.createDeltaFontIfNecessary(super.getSubTextFont());
+    }
+    return this.subTextFont;
+  }
 
-	@Override
-	public FontUIResource getSystemTextFont() {
-		if( this.systemTextFont != null ) {
-			//pass
-		} else {
-			this.systemTextFont = this.createDeltaFontIfNecessary( super.getSystemTextFont() );
-		}
-		return this.systemTextFont;
-	}
+  @Override
+  public FontUIResource getSystemTextFont() {
+    if (this.systemTextFont != null) {
+      //pass
+    } else {
+      this.systemTextFont = this.createDeltaFontIfNecessary(super.getSystemTextFont());
+    }
+    return this.systemTextFont;
+  }
 
-	@Override
-	public FontUIResource getUserTextFont() {
-		if( this.userTextFont != null ) {
-			//pass
-		} else {
-			this.userTextFont = this.createDeltaFontIfNecessary( super.getUserTextFont() );
-		}
-		return this.userTextFont;
-	}
+  @Override
+  public FontUIResource getUserTextFont() {
+    if (this.userTextFont != null) {
+      //pass
+    } else {
+      this.userTextFont = this.createDeltaFontIfNecessary(super.getUserTextFont());
+    }
+    return this.userTextFont;
+  }
 
-	@Override
-	public FontUIResource getWindowTitleFont() {
-		if( this.windowTitleTextFont != null ) {
-			//pass
-		} else {
-			this.windowTitleTextFont = this.createDeltaFontIfNecessary( super.getWindowTitleFont() );
-		}
-		return this.windowTitleTextFont;
-	}
+  @Override
+  public FontUIResource getWindowTitleFont() {
+    if (this.windowTitleTextFont != null) {
+      //pass
+    } else {
+      this.windowTitleTextFont = this.createDeltaFontIfNecessary(super.getWindowTitleFont());
+    }
+    return this.windowTitleTextFont;
+  }
 }

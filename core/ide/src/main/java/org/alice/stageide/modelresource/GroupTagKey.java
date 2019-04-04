@@ -52,15 +52,15 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GroupTagKey extends TagKey {
-	private final IconFactory iconFactory;
+  private final IconFactory iconFactory;
 
-	public GroupTagKey( String groupTag, List<AbstractSingleSourceImageIconFactory> iconFactories ) {
-		super( groupTag );
-		this.iconFactory = new GroupIconFactory( iconFactories );
-	}
+  public GroupTagKey(String groupTag, List<AbstractSingleSourceImageIconFactory> iconFactories) {
+    super(groupTag);
+    this.iconFactory = new GroupIconFactory(iconFactories);
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return this.iconFactory;
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return this.iconFactory;
+  }
 }

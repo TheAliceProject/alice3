@@ -50,17 +50,17 @@ import edu.cmu.cs.dennisc.animation.Style;
  * @author Dennis Cosgrove
  */
 public abstract class FloatAnimation extends InterpolationAnimation<Float> {
-	public FloatAnimation( Number duration, Style style, Float f0, Float f1 ) {
-		super( duration, style, f0, f1 );
-	}
+  public FloatAnimation(Number duration, Style style, Float f0, Float f1) {
+    super(duration, style, f0, f1);
+  }
 
-	@Override
-	protected Float newE( Float other ) {
-		return other;
-	}
+  @Override
+  protected Float newE(Float other) {
+    return other;
+  }
 
-	@Override
-	protected Float interpolate( Float rv, Float v0, Float v1, double portion ) {
-		return (float)( v0 + ( ( v1 - v0 ) * portion ) );
-	}
+  @Override
+  protected Float interpolate(Float rv, Float v0, Float v1, double portion) {
+    return (float) (v0 + ((v1 - v0) * portion));
+  }
 }

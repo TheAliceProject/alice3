@@ -57,39 +57,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PrintAllOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintAllOperation instance = new PrintAllOperation();
-	}
+  private static class SingletonHolder {
+    private static PrintAllOperation instance = new PrintAllOperation();
+  }
 
-	public static PrintAllOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PrintAllOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PrintAllOperation() {
-		super( UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
-	}
+  private PrintAllOperation() {
+    super(UUID.fromString("6a205070-e8e0-48a7-a059-fff15b7350a3"));
+  }
 
-	@Override
-	protected Printable getPrintable() {
-		return new Printable() {
-			@Override
-			public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				} else {
-					Graphics2D g2 = (Graphics2D)g;
-					Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
-					int width = frame.getWidth();
-					int height = frame.getHeight();
-					double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
-					g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-					if( scale > 1.0 ) {
-						g2.scale( 1.0 / scale, 1.0 / scale );
-					}
-					frame.getAwtComponent().paintAll( g2 );
-					return PAGE_EXISTS;
-				}
-			}
-		};
-	}
+  @Override
+  protected Printable getPrintable() {
+    return new Printable() {
+      @Override
+      public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        if (pageIndex > 0) {
+          return NO_SUCH_PAGE;
+        } else {
+          Graphics2D g2 = (Graphics2D) g;
+          Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
+          int width = frame.getWidth();
+          int height = frame.getHeight();
+          double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
+          g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+          if (scale > 1.0) {
+            g2.scale(1.0 / scale, 1.0 / scale);
+          }
+          frame.getAwtComponent().paintAll(g2);
+          return PAGE_EXISTS;
+        }
+      }
+    };
+  }
 }

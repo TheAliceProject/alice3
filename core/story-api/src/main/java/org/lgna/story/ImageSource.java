@@ -48,13 +48,13 @@ import org.lgna.common.resources.ImageResource;
  * @author Dennis Cosgrove
  */
 public final class ImageSource implements Paint {
-	private final ImageResource imageResource;
+  private final ImageResource imageResource;
 
-	public ImageSource( ImageResource imageResource ) {
-		this.imageResource = imageResource;
-	}
+  public ImageSource(ImageResource imageResource) {
+    this.imageResource = imageResource;
+  }
 
-	public ImageResource getImageResource() {
-		return this.imageResource;
-	}
+  public ImageResource getImageResource() {
+    return this.imageResource;
+  }
 }

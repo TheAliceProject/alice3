@@ -46,15 +46,15 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class LgnaVmNullPointerException extends LgnaVmException {
-	public LgnaVmNullPointerException( String message, VirtualMachine vm ) {
-		super( message, vm );
-	}
+  public LgnaVmNullPointerException(String message, VirtualMachine vm) {
+    super(message, vm);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		String message = this.getMessage();
-		if( message != null ) {
-			sb.append( message );
-		}
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    String message = this.getMessage();
+    if (message != null) {
+      sb.append(message);
+    }
+  }
 }

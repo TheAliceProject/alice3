@@ -54,24 +54,23 @@ import java.awt.Toolkit;
  * @author Dennis Cosgrove
  */
 public class JOptionPaneUtilities {
-	private JOptionPaneUtilities() {
-		throw new Error();
-	}
+  private JOptionPaneUtilities() {
+    throw new Error();
+  }
 
-	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType) {
-		assert ( messageType == JOptionPane.ERROR_MESSAGE ) || ( messageType == JOptionPane.INFORMATION_MESSAGE )
-			|| ( messageType == JOptionPane.WARNING_MESSAGE ) || ( messageType == JOptionPane.PLAIN_MESSAGE );
-		JTextArea textArea = new JTextArea( text );
-		textArea.setEditable( false );
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		JOptionPane.showMessageDialog( owner, new JScrollPaneCoveringLinuxPaintBug( textArea ) {
-			@Override
-			public Dimension getPreferredSize() {
-				Dimension rv = super.getPreferredSize();
-				rv.width = Math.min( rv.width, screenSize.width - 120 );
-				rv.height = Math.min( rv.height, screenSize.height - 150 );
-				return rv;
-			}
-		}, title, messageType );
-	}
+  public static void showMessageDialogInScrollableUneditableTextArea(Component owner, String text, String title, int messageType) {
+    assert (messageType == JOptionPane.ERROR_MESSAGE) || (messageType == JOptionPane.INFORMATION_MESSAGE) || (messageType == JOptionPane.WARNING_MESSAGE) || (messageType == JOptionPane.PLAIN_MESSAGE);
+    JTextArea textArea = new JTextArea(text);
+    textArea.setEditable(false);
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    JOptionPane.showMessageDialog(owner, new JScrollPaneCoveringLinuxPaintBug(textArea) {
+      @Override
+      public Dimension getPreferredSize() {
+        Dimension rv = super.getPreferredSize();
+        rv.width = Math.min(rv.width, screenSize.width - 120);
+        rv.height = Math.min(rv.height, screenSize.height - 150);
+        return rv;
+      }
+    }, title, messageType);
+  }
 }

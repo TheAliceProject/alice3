@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MPoint2I {
-	public MPoint2I( int x, int y ) {
-		this.x = x;
-		this.y = y;
-	}
+  public MPoint2I(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
 
-	public final int x;
-	public final int y;
+  public final int x;
+  public final int y;
 }

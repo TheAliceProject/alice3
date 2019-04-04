@@ -47,5 +47,5 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public interface LgnaStackTraceElement {
-	public void appendFormatted( StringBuilder sb );
+  public void appendFormatted(StringBuilder sb);
 }

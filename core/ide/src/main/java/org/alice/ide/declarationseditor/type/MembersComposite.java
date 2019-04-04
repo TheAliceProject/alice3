@@ -55,16 +55,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MembersComposite<T extends UserMember> extends ListDataComposite<T, MembersView<T>> {
-	public MembersComposite( UUID migrationId, FilteredMemberData<T> data ) {
-		super( migrationId, data );
-	}
+  public MembersComposite(UUID migrationId, FilteredMemberData<T> data) {
+    super(migrationId, data);
+  }
 
-	public NamedUserType getType() {
-		return ( (FilteredMemberData<T>)this.getData() ).getType();
-	}
+  public NamedUserType getType() {
+    return ((FilteredMemberData<T>) this.getData()).getType();
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

@@ -101,383 +101,383 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class InstanceFactorySelectionPanel extends PanelViewController<InstanceFactoryState> {
-	private static final class InstanceFactoryLayout implements LayoutManager2 {
-		private static final int INDENT = 16;
+  private static final class InstanceFactoryLayout implements LayoutManager2 {
+    private static final int INDENT = 16;
 
-		@Override
-		public void addLayoutComponent( String name, Component comp ) {
-			this.invalidateLayout( comp.getParent() );
-		}
+    @Override
+    public void addLayoutComponent(String name, Component comp) {
+      this.invalidateLayout(comp.getParent());
+    }
 
-		@Override
-		public void addLayoutComponent( Component comp, Object constraints ) {
-			this.invalidateLayout( comp.getParent() );
-		}
+    @Override
+    public void addLayoutComponent(Component comp, Object constraints) {
+      this.invalidateLayout(comp.getParent());
+    }
 
-		@Override
-		public void removeLayoutComponent( Component comp ) {
-			this.invalidateLayout( comp.getParent() );
-		}
+    @Override
+    public void removeLayoutComponent(Component comp) {
+      this.invalidateLayout(comp.getParent());
+    }
 
-		@Override
-		public void invalidateLayout( Container target ) {
-			synchronized( this ) {
-				this.xChildren = null;
-				this.yChildren = null;
-				this.xTotal = null;
-				this.yTotal = null;
-			}
-		}
+    @Override
+    public void invalidateLayout(Container target) {
+      synchronized (this) {
+        this.xChildren = null;
+        this.yChildren = null;
+        this.xTotal = null;
+        this.yTotal = null;
+      }
+    }
 
-		private void ensureSizeRequirementsUpToDate( Container target ) {
-			synchronized( this ) {
-				if( ( xChildren == null ) || ( yChildren == null ) ) {
-					int nChildren = target.getComponentCount();
-					xChildren = new SizeRequirements[ nChildren ];
-					yChildren = new SizeRequirements[ nChildren ];
-					for( int i = 0; i < nChildren; i++ ) {
-						Component c = target.getComponent( i );
-						if( c.isVisible() ) {
-							Dimension min = c.getMinimumSize();
-							Dimension typ = c.getPreferredSize();
-							Dimension max = c.getMaximumSize();
-							xChildren[ i ] = new SizeRequirements( min.width, typ.width, max.width, c.getAlignmentX() );
-							yChildren[ i ] = new SizeRequirements( min.height, typ.height, max.height, c.getAlignmentY() );
-						} else {
-							xChildren[ i ] = new SizeRequirements( 0, 0, 0, c.getAlignmentX() );
-							yChildren[ i ] = new SizeRequirements( 0, 0, 0, c.getAlignmentY() );
-						}
-					}
-					xTotal = SizeRequirements.getAlignedSizeRequirements( xChildren );
-					yTotal = SizeRequirements.getTiledSizeRequirements( yChildren );
-				}
-			}
-		}
+    private void ensureSizeRequirementsUpToDate(Container target) {
+      synchronized (this) {
+        if ((xChildren == null) || (yChildren == null)) {
+          int nChildren = target.getComponentCount();
+          xChildren = new SizeRequirements[nChildren];
+          yChildren = new SizeRequirements[nChildren];
+          for (int i = 0; i < nChildren; i++) {
+            Component c = target.getComponent(i);
+            if (c.isVisible()) {
+              Dimension min = c.getMinimumSize();
+              Dimension typ = c.getPreferredSize();
+              Dimension max = c.getMaximumSize();
+              xChildren[i] = new SizeRequirements(min.width, typ.width, max.width, c.getAlignmentX());
+              yChildren[i] = new SizeRequirements(min.height, typ.height, max.height, c.getAlignmentY());
+            } else {
+              xChildren[i] = new SizeRequirements(0, 0, 0, c.getAlignmentX());
+              yChildren[i] = new SizeRequirements(0, 0, 0, c.getAlignmentY());
+            }
+          }
+          xTotal = SizeRequirements.getAlignedSizeRequirements(xChildren);
+          yTotal = SizeRequirements.getTiledSizeRequirements(yChildren);
+        }
+      }
+    }
 
-		@Override
-		public Dimension minimumLayoutSize( Container parent ) {
-			this.ensureSizeRequirementsUpToDate( parent );
-			Insets insets = parent.getInsets();
+    @Override
+    public Dimension minimumLayoutSize(Container parent) {
+      this.ensureSizeRequirementsUpToDate(parent);
+      Insets insets = parent.getInsets();
 
-			return new Dimension( this.xTotal.minimum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].minimum, this.yTotal.minimum + insets.top + insets.bottom );
-		}
+      return new Dimension(this.xTotal.minimum + insets.left + insets.right + INDENT + xChildren[xChildren.length - 1].minimum, this.yTotal.minimum + insets.top + insets.bottom);
+    }
 
-		@Override
-		public Dimension preferredLayoutSize( Container parent ) {
-			this.ensureSizeRequirementsUpToDate( parent );
-			Insets insets = parent.getInsets();
-			return new Dimension( this.xTotal.preferred + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].preferred, this.yTotal.preferred + insets.top + insets.bottom );
-		}
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+      this.ensureSizeRequirementsUpToDate(parent);
+      Insets insets = parent.getInsets();
+      return new Dimension(this.xTotal.preferred + insets.left + insets.right + INDENT + xChildren[xChildren.length - 1].preferred, this.yTotal.preferred + insets.top + insets.bottom);
+    }
 
-		@Override
-		public Dimension maximumLayoutSize( Container parent ) {
-			this.ensureSizeRequirementsUpToDate( parent );
-			Insets insets = parent.getInsets();
-			return new Dimension( this.xTotal.maximum + insets.left + insets.right + INDENT + xChildren[ xChildren.length - 1 ].maximum, this.yTotal.maximum + insets.top + insets.bottom );
-		}
+    @Override
+    public Dimension maximumLayoutSize(Container parent) {
+      this.ensureSizeRequirementsUpToDate(parent);
+      Insets insets = parent.getInsets();
+      return new Dimension(this.xTotal.maximum + insets.left + insets.right + INDENT + xChildren[xChildren.length - 1].maximum, this.yTotal.maximum + insets.top + insets.bottom);
+    }
 
-		@Override
-		public void layoutContainer( Container parent ) {
-			int nChildren = parent.getComponentCount();
-			int[] xOffsets = new int[ nChildren ];
-			int[] xSpans = new int[ nChildren ];
-			int[] yOffsets = new int[ nChildren ];
-			int[] ySpans = new int[ nChildren ];
+    @Override
+    public void layoutContainer(Container parent) {
+      int nChildren = parent.getComponentCount();
+      int[] xOffsets = new int[nChildren];
+      int[] xSpans = new int[nChildren];
+      int[] yOffsets = new int[nChildren];
+      int[] ySpans = new int[nChildren];
 
-			Dimension size = parent.getSize();
-			Insets insets = parent.getInsets();
+      Dimension size = parent.getSize();
+      Insets insets = parent.getInsets();
 
-			Dimension availableSpace = new Dimension( size );
-			availableSpace.width -= insets.left + insets.right;
-			availableSpace.height -= insets.top + insets.bottom;
+      Dimension availableSpace = new Dimension(size);
+      availableSpace.width -= insets.left + insets.right;
+      availableSpace.height -= insets.top + insets.bottom;
 
-			synchronized( this ) {
-				this.ensureSizeRequirementsUpToDate( parent );
-				SizeRequirements.calculateAlignedPositions( availableSpace.width, xTotal, xChildren, xOffsets, xSpans, true );
-				SizeRequirements.calculateTiledPositions( availableSpace.height, yTotal, yChildren, yOffsets, ySpans );
-			}
+      synchronized (this) {
+        this.ensureSizeRequirementsUpToDate(parent);
+        SizeRequirements.calculateAlignedPositions(availableSpace.width, xTotal, xChildren, xOffsets, xSpans, true);
+        SizeRequirements.calculateTiledPositions(availableSpace.height, yTotal, yChildren, yOffsets, ySpans);
+      }
 
-			for( int i = 0; i < nChildren; i++ ) {
-				Component c = parent.getComponent( i );
-				int x = insets.left + xOffsets[ i ];
-				int y = insets.top + yOffsets[ i ];
-				if( i > 0 ) {
-					x += INDENT;
-				}
-				c.setBounds( x, y, xSpans[ i ], ySpans[ i ] );
-			}
+      for (int i = 0; i < nChildren; i++) {
+        Component c = parent.getComponent(i);
+        int x = insets.left + xOffsets[i];
+        int y = insets.top + yOffsets[i];
+        if (i > 0) {
+          x += INDENT;
+        }
+        c.setBounds(x, y, xSpans[i], ySpans[i]);
+      }
 
-			Rectangle boundsI = new Rectangle();
-			int indexOfFirstComponentThatFails = -1;
-			int indexOfSelectedComponent = -1;
-			for( int i = 0; i < ( nChildren - 1 ); i++ ) {
-				Component c = parent.getComponent( i );
-				if( indexOfFirstComponentThatFails == -1 ) {
-					c.getBounds( boundsI );
-					if( ( boundsI.y + boundsI.height ) >= ( size.height - insets.bottom ) ) {
-						indexOfFirstComponentThatFails = i;
-					}
-				}
-				if( c instanceof AbstractButton ) {
-					AbstractButton button = (AbstractButton)c;
-					if( button.isSelected() ) {
-						indexOfSelectedComponent = i;
-					}
-				}
-			}
+      Rectangle boundsI = new Rectangle();
+      int indexOfFirstComponentThatFails = -1;
+      int indexOfSelectedComponent = -1;
+      for (int i = 0; i < (nChildren - 1); i++) {
+        Component c = parent.getComponent(i);
+        if (indexOfFirstComponentThatFails == -1) {
+          c.getBounds(boundsI);
+          if ((boundsI.y + boundsI.height) >= (size.height - insets.bottom)) {
+            indexOfFirstComponentThatFails = i;
+          }
+        }
+        if (c instanceof AbstractButton) {
+          AbstractButton button = (AbstractButton) c;
+          if (button.isSelected()) {
+            indexOfSelectedComponent = i;
+          }
+        }
+      }
 
-			Component lastComponent = parent.getComponent( nChildren - 1 );
-			if( indexOfFirstComponentThatFails != -1 ) {
-				if( indexOfFirstComponentThatFails > 0 ) {
-					for( int i = indexOfFirstComponentThatFails - 1; i < ( nChildren - 1 ); i++ ) {
-						if( i == indexOfSelectedComponent ) {
-							//pass
-						} else {
-							parent.getComponent( i ).setSize( 0, 0 );
-						}
-					}
-					int i = indexOfFirstComponentThatFails - 1;
-					Point p = parent.getComponent( i ).getLocation();
-					if( indexOfSelectedComponent >= i ) {
-						Component c = parent.getComponent( indexOfSelectedComponent );
-						c.setLocation( p );
-						p.x += c.getWidth();
-					}
-					lastComponent.setLocation( p );
-				}
-			} else {
-				lastComponent.setSize( 0, 0 );
-			}
-		}
+      Component lastComponent = parent.getComponent(nChildren - 1);
+      if (indexOfFirstComponentThatFails != -1) {
+        if (indexOfFirstComponentThatFails > 0) {
+          for (int i = indexOfFirstComponentThatFails - 1; i < (nChildren - 1); i++) {
+            if (i == indexOfSelectedComponent) {
+              //pass
+            } else {
+              parent.getComponent(i).setSize(0, 0);
+            }
+          }
+          int i = indexOfFirstComponentThatFails - 1;
+          Point p = parent.getComponent(i).getLocation();
+          if (indexOfSelectedComponent >= i) {
+            Component c = parent.getComponent(indexOfSelectedComponent);
+            c.setLocation(p);
+            p.x += c.getWidth();
+          }
+          lastComponent.setLocation(p);
+        }
+      } else {
+        lastComponent.setSize(0, 0);
+      }
+    }
 
-		@Override
-		public float getLayoutAlignmentX( Container target ) {
-			this.ensureSizeRequirementsUpToDate( target );
-			return this.xTotal.alignment;
-		}
+    @Override
+    public float getLayoutAlignmentX(Container target) {
+      this.ensureSizeRequirementsUpToDate(target);
+      return this.xTotal.alignment;
+    }
 
-		@Override
-		public float getLayoutAlignmentY( Container target ) {
-			this.ensureSizeRequirementsUpToDate( target );
-			return this.yTotal.alignment;
-		}
+    @Override
+    public float getLayoutAlignmentY(Container target) {
+      this.ensureSizeRequirementsUpToDate(target);
+      return this.yTotal.alignment;
+    }
 
-		private SizeRequirements[] xChildren;
-		private SizeRequirements[] yChildren;
-		private SizeRequirements xTotal;
-		private SizeRequirements yTotal;
-	}
+    private SizeRequirements[] xChildren;
+    private SizeRequirements[] yChildren;
+    private SizeRequirements xTotal;
+    private SizeRequirements yTotal;
+  }
 
-	private static final class InternalButton extends SwingComponentView<AbstractButton> {
-		private final InstanceFactory instanceFactory;
-		private final Action action = new AbstractAction() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( InternalButton.this.instanceFactory );
-			}
+  private static final class InternalButton extends SwingComponentView<AbstractButton> {
+    private final InstanceFactory instanceFactory;
+    private final Action action = new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly(InternalButton.this.instanceFactory);
+      }
 
-		};
+    };
 
-		private final AltTriggerMouseAdapter altTriggerMouseAdapter = new AltTriggerMouseAdapter() {
-			@Override
-			protected void altTriggered( MouseEvent e ) {
-				InternalButton.this.handleAltTriggered( e );
-			}
-		};
+    private final AltTriggerMouseAdapter altTriggerMouseAdapter = new AltTriggerMouseAdapter() {
+      @Override
+      protected void altTriggered(MouseEvent e) {
+        InternalButton.this.handleAltTriggered(e);
+      }
+    };
 
-		public InternalButton( InstanceFactory instanceFactory ) {
-			this.instanceFactory = instanceFactory;
-		}
+    public InternalButton(InstanceFactory instanceFactory) {
+      this.instanceFactory = instanceFactory;
+    }
 
-		@Override
-		protected AbstractButton createAwtComponent() {
-			JRadioButton rv = new JRadioButton( this.action ) {
-				@Override
-				protected void paintComponent( Graphics g ) {
-					//note: do not invoke super
-					//super.paintComponent( g );
-				}
+    @Override
+    protected AbstractButton createAwtComponent() {
+      JRadioButton rv = new JRadioButton(this.action) {
+        @Override
+        protected void paintComponent(Graphics g) {
+          //note: do not invoke super
+          //super.paintComponent( g );
+        }
 
-				@Override
-				protected void paintChildren( Graphics g ) {
-					//todo: better indication of selection/rollover
-					Graphics2D g2 = (Graphics2D)g;
+        @Override
+        protected void paintChildren(Graphics g) {
+          //todo: better indication of selection/rollover
+          Graphics2D g2 = (Graphics2D) g;
 
-					Composite prevComposite = g2.getComposite();
+          Composite prevComposite = g2.getComposite();
 
-					Composite nextComposite = prevComposite;
-					float alpha;
-					if( model.isSelected() ) {
-						if( model.isRollover() ) {
-							alpha = 1.0f;
-						} else {
-							alpha = 0.9f;
-						}
-						nextComposite = prevComposite;
-					} else {
-						if( model.isRollover() ) {
-							alpha = 0.5f;
-						} else {
-							alpha = 0.25f;
-						}
-					}
-					nextComposite = AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha );
+          Composite nextComposite = prevComposite;
+          float alpha;
+          if (model.isSelected()) {
+            if (model.isRollover()) {
+              alpha = 1.0f;
+            } else {
+              alpha = 0.9f;
+            }
+            nextComposite = prevComposite;
+          } else {
+            if (model.isRollover()) {
+              alpha = 0.5f;
+            } else {
+              alpha = 0.25f;
+            }
+          }
+          nextComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 
-					g2.setComposite( nextComposite );
-					try {
-						super.paintChildren( g );
-					} finally {
-						g2.setComposite( prevComposite );
-					}
-				}
-			};
-			rv.setOpaque( false );
+          g2.setComposite(nextComposite);
+          try {
+            super.paintChildren(g);
+          } finally {
+            g2.setComposite(prevComposite);
+          }
+        }
+      };
+      rv.setOpaque(false);
 
-			rv.setLayout( new BoxLayout( rv, BoxLayout.LINE_AXIS ) );
-			Expression expression = this.instanceFactory.createTransientExpression();
-			rv.add( PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent() );
-			return rv;
-		}
+      rv.setLayout(new BoxLayout(rv, BoxLayout.LINE_AXIS));
+      Expression expression = this.instanceFactory.createTransientExpression();
+      rv.add(PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent());
+      return rv;
+    }
 
-		protected void handleAltTriggered( MouseEvent e ) {
-			OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( MouseEventTrigger.createUserActivity( e ) );
-		}
+    protected void handleAltTriggered(MouseEvent e) {
+      OneShotMenuModel.getInstance(this.instanceFactory).getPopupPrepModel().fire(MouseEventTrigger.createUserActivity(e));
+    }
 
-		@Override
-		protected void handleDisplayable() {
-			super.handleDisplayable();
-			this.addMouseListener( this.altTriggerMouseAdapter );
-		}
+    @Override
+    protected void handleDisplayable() {
+      super.handleDisplayable();
+      this.addMouseListener(this.altTriggerMouseAdapter);
+    }
 
-		@Override
-		protected void handleUndisplayable() {
-			this.removeMouseListener( this.altTriggerMouseAdapter );
-			super.handleUndisplayable();
-		}
-	}
+    @Override
+    protected void handleUndisplayable() {
+      this.removeMouseListener(this.altTriggerMouseAdapter);
+      super.handleUndisplayable();
+    }
+  }
 
-	private static final class InternalPanel extends Panel {
-		public InternalPanel() {
-			this.setBackgroundColor( null );
-			this.dropDown = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
-		}
+  private static final class InternalPanel extends Panel {
+    public InternalPanel() {
+      this.setBackgroundColor(null);
+      this.dropDown = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
+    }
 
-		private InternalButton getButtonFor( InstanceFactory instanceFactory ) {
-			InternalButton rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InternalButton( instanceFactory );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
+    private InternalButton getButtonFor(InstanceFactory instanceFactory) {
+      InternalButton rv = map.get(instanceFactory);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new InternalButton(instanceFactory);
+        map.put(instanceFactory, rv);
+      }
+      return rv;
+    }
 
-		@Override
-		protected LayoutManager createLayoutManager( JPanel jPanel ) {
-			return new InstanceFactoryLayout();
-		}
+    @Override
+    protected LayoutManager createLayoutManager(JPanel jPanel) {
+      return new InstanceFactoryLayout();
+    }
 
-		@Override
-		protected void internalRefresh() {
-			super.internalRefresh();
-			this.removeAllComponents();
-			List<InternalButton> buttons = Lists.newLinkedList();
-			buttons.add( getButtonFor( ThisInstanceFactory.getInstance() ) );
-			StageIDE ide = StageIDE.getActiveInstance();
-			ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-			NamedUserType sceneType = ide.getSceneType();
-			if( sceneType != null ) {
-				for( UserField field : sceneType.fields ) {
-					if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-						if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-							buttons.add( getButtonFor( ThisFieldAccessFactory.getInstance( field ) ) );
-						}
-					}
-				}
-			}
-			for( InternalButton button : buttons ) {
-				this.internalAddComponent( button );
-				this.buttonGroup.add( button.getAwtComponent() );
-			}
+    @Override
+    protected void internalRefresh() {
+      super.internalRefresh();
+      this.removeAllComponents();
+      List<InternalButton> buttons = Lists.newLinkedList();
+      buttons.add(getButtonFor(ThisInstanceFactory.getInstance()));
+      StageIDE ide = StageIDE.getActiveInstance();
+      ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+      NamedUserType sceneType = ide.getSceneType();
+      if (sceneType != null) {
+        for (UserField field : sceneType.fields) {
+          if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+            if (apiConfigurationManager.isInstanceFactoryDesiredForType(field.getValueType())) {
+              buttons.add(getButtonFor(ThisFieldAccessFactory.getInstance(field)));
+            }
+          }
+        }
+      }
+      for (InternalButton button : buttons) {
+        this.internalAddComponent(button);
+        this.buttonGroup.add(button.getAwtComponent());
+      }
 
-			this.internalAddComponent( this.dropDown );
-			this.setSelected( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue() );
-		}
+      this.internalAddComponent(this.dropDown);
+      this.setSelected(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue());
+    }
 
-		private void setSelected( InstanceFactory instanceFactory ) {
-			InternalButton button;
-			if( instanceFactory != null ) {
-				button = this.map.get( instanceFactory );
-			} else {
-				button = null;
-			}
-			if( button != null ) {
-				this.buttonGroup.setSelected( button.getAwtComponent().getModel(), true );
-			} else {
-				ButtonModel buttonModel = this.buttonGroup.getSelection();
-				if( buttonModel != null ) {
-					this.buttonGroup.setSelected( buttonModel, false );
-				}
-			}
-		}
+    private void setSelected(InstanceFactory instanceFactory) {
+      InternalButton button;
+      if (instanceFactory != null) {
+        button = this.map.get(instanceFactory);
+      } else {
+        button = null;
+      }
+      if (button != null) {
+        this.buttonGroup.setSelected(button.getAwtComponent().getModel(), true);
+      } else {
+        ButtonModel buttonModel = this.buttonGroup.getSelection();
+        if (buttonModel != null) {
+          this.buttonGroup.setSelected(buttonModel, false);
+        }
+      }
+    }
 
-		private final ButtonGroup buttonGroup = new ButtonGroup();
-		private final Map<InstanceFactory, InternalButton> map = Maps.newHashMap();
-		private final PopupButton dropDown;
-	}
+    private final ButtonGroup buttonGroup = new ButtonGroup();
+    private final Map<InstanceFactory, InternalButton> map = Maps.newHashMap();
+    private final PopupButton dropDown;
+  }
 
-	public InstanceFactorySelectionPanel() {
-		super( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel() );
-		this.setBackgroundColor( null );
-		this.getAwtComponent().setOpaque( false );
-	}
+  public InstanceFactorySelectionPanel() {
+    super(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel());
+    this.setBackgroundColor(null);
+    this.getAwtComponent().setOpaque(false);
+  }
 
-	public UserType getType() {
-		return this.type;
-	}
+  public UserType getType() {
+    return this.type;
+  }
 
-	public void setType( UserType type ) {
-		if( this.type != type ) {
-			if( this.type != null ) {
-				this.type.fields.removeListPropertyListener( this.fieldsListener );
-			}
-			this.type = type;
-			if( this.type != null ) {
-				this.type.fields.addListPropertyListener( this.fieldsListener );
-			}
-			this.getInternalPanel().refreshLater();
-		}
-	}
+  public void setType(UserType type) {
+    if (this.type != type) {
+      if (this.type != null) {
+        this.type.fields.removeListPropertyListener(this.fieldsListener);
+      }
+      this.type = type;
+      if (this.type != null) {
+        this.type.fields.addListPropertyListener(this.fieldsListener);
+      }
+      this.getInternalPanel().refreshLater();
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addNewSchoolValueListener( this.instanceFactoryListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getModel().addNewSchoolValueListener(this.instanceFactoryListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removeNewSchoolValueListener( this.instanceFactoryListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().removeNewSchoolValueListener(this.instanceFactoryListener);
+    super.handleUndisplayable();
+  }
 
-	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
-		@Override
-		public void valueChanged( ValueEvent<InstanceFactory> e ) {
-			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
-		}
-	};
+  private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
+    @Override
+    public void valueChanged(ValueEvent<InstanceFactory> e) {
+      InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
+    }
+  };
 
-	private UserType type;
-	private ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
-		@Override
-		protected void changing( ListPropertyEvent<UserField> e ) {
-		}
+  private UserType type;
+  private ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
+    @Override
+    protected void changing(ListPropertyEvent<UserField> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<UserField> e ) {
-			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
-		}
-	};
+    @Override
+    protected void changed(ListPropertyEvent<UserField> e) {
+      InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
+    }
+  };
 }

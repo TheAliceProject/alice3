@@ -49,20 +49,20 @@ import org.lgna.issue.IssueReportRemoteUser;
  * @author Dennis Cosgrove
  */
 public class AliceIssueReportRemoteUser implements IssueReportRemoteUser {
-	private final RemoteUser jiraRemoteUser;
+  private final RemoteUser jiraRemoteUser;
 
-	public AliceIssueReportRemoteUser( RemoteUser jiraRemoteUser ) {
-		this.jiraRemoteUser = jiraRemoteUser;
-	}
+  public AliceIssueReportRemoteUser(RemoteUser jiraRemoteUser) {
+    this.jiraRemoteUser = jiraRemoteUser;
+  }
 
-	@Override
-	public String getAccountId() {
-		return this.jiraRemoteUser.getName();
-	}
+  @Override
+  public String getAccountId() {
+    return this.jiraRemoteUser.getName();
+  }
 
-	@Override
-	public String getFullName() {
-		return this.jiraRemoteUser.getFullname();
-	}
+  @Override
+  public String getFullName() {
+    return this.jiraRemoteUser.getFullname();
+  }
 
 }

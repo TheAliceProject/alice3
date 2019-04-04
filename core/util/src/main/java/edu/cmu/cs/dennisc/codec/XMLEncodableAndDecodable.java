@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.codec;
  * @author Dennis Cosgrove
  */
 public interface XMLEncodableAndDecodable {
-	//to support immutability, implement
-	//public constructor( XMLDecoder xmlDecoder );
-	//instead of
-	//public void decode( XMLDecoder xmlDecoder );
-	//why doesn't java support this?
-	public void encode( XMLEncoder xmlEncoder );
+  //to support immutability, implement
+  //public constructor( XMLDecoder xmlDecoder );
+  //instead of
+  //public void decode( XMLDecoder xmlDecoder );
+  //why doesn't java support this?
+  public void encode(XMLEncoder xmlEncoder);
 }

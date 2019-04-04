@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public interface FrameObserver {
-	public void update( double tCurrent );
+  public void update(double tCurrent);
 
-	//todo: better name
-	public void complete();
+  //todo: better name
+  public void complete();
 }

@@ -57,185 +57,184 @@ import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class AliceResourceClassUtilities {
-	public static final String DEFAULT_PACKAGE = "";
-	public static final String RESOURCE_SUFFIX = "Resource";
+  public static final String DEFAULT_PACKAGE = "";
+  public static final String RESOURCE_SUFFIX = "Resource";
 
-	private AliceResourceClassUtilities() {
-		throw new AssertionError();
-	}
+  private AliceResourceClassUtilities() {
+    throw new AssertionError();
+  }
 
-	public static boolean isTopLevelResource( Class<? extends ModelResource> resourceClass ) {
-		if( resourceClass.isAnnotationPresent( ResourceTemplate.class ) ) {
-			ResourceTemplate resourceTemplate = resourceClass.getAnnotation( ResourceTemplate.class );
-			return resourceTemplate.isTopLevelResource();
-		} else {
-			return false;
-		}
-	}
+  public static boolean isTopLevelResource(Class<? extends ModelResource> resourceClass) {
+    if (resourceClass.isAnnotationPresent(ResourceTemplate.class)) {
+      ResourceTemplate resourceTemplate = resourceClass.getAnnotation(ResourceTemplate.class);
+      return resourceTemplate.isTopLevelResource();
+    } else {
+      return false;
+    }
+  }
 
-	public static Class<? extends SModel> getModelClassForResourceClass( Class<? extends ModelResource> resourceClass ) {
-		if( resourceClass.isAnnotationPresent( ResourceTemplate.class ) ) {
-			ResourceTemplate resourceTemplate = resourceClass.getAnnotation( ResourceTemplate.class );
-			Class<?> cls = resourceTemplate.modelClass();
-			if( SModel.class.isAssignableFrom( cls ) ) {
-				return (Class<? extends SModel>)cls;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static Class<? extends SModel> getModelClassForResourceClass(Class<? extends ModelResource> resourceClass) {
+    if (resourceClass.isAnnotationPresent(ResourceTemplate.class)) {
+      ResourceTemplate resourceTemplate = resourceClass.getAnnotation(ResourceTemplate.class);
+      Class<?> cls = resourceTemplate.modelClass();
+      if (SModel.class.isAssignableFrom(cls)) {
+        return (Class<? extends SModel>) cls;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static Class<? extends ModelResource> getResourceClassForModelClass( Class<? extends SModel> modelClass ) {
-		Constructor<?>[] constructors = modelClass.getConstructors();
-		Constructor<?> firstConstructor = ( constructors != null ) && ( constructors.length > 0 ) ? constructors[ 0 ] : null;
-		if( firstConstructor != null ) {
-			Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
-			if( ( parameterTypes != null ) ) {
-				for( Class<?> parameterType : parameterTypes ) {
-					if( ModelResource.class.isAssignableFrom( parameterType ) ) {
-						return (Class<? extends ModelResource>)parameterType;
-					}
-				}
-			}
-		}
-		return null;
-	}
+  public static Class<? extends ModelResource> getResourceClassForModelClass(Class<? extends SModel> modelClass) {
+    Constructor<?>[] constructors = modelClass.getConstructors();
+    Constructor<?> firstConstructor = (constructors != null) && (constructors.length > 0) ? constructors[0] : null;
+    if (firstConstructor != null) {
+      Class<?>[] parameterTypes = firstConstructor.getParameterTypes();
+      if ((parameterTypes != null)) {
+        for (Class<?> parameterType : parameterTypes) {
+          if (ModelResource.class.isAssignableFrom(parameterType)) {
+            return (Class<? extends ModelResource>) parameterType;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	public static Class<? extends ModelResource> getResourceClassForAliceName( String aliceClassName ) {
-		String className = "org.lgna.story.resources." + aliceClassName + RESOURCE_SUFFIX;
-		try {
-			return (Class<? extends ModelResource>)Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			Logger.warning("No class found for "+className);
-			return null;
-		}
-	}
+  public static Class<? extends ModelResource> getResourceClassForAliceName(String aliceClassName) {
+    String className = "org.lgna.story.resources." + aliceClassName + RESOURCE_SUFFIX;
+    try {
+      return (Class<? extends ModelResource>) Class.forName(className);
+    } catch (ClassNotFoundException e) {
+      Logger.warning("No class found for " + className);
+      return null;
+    }
+  }
 
-	public static String getAliceMethodNameForEnum( String enumName ) {
-		StringBuilder sb = new StringBuilder();
-		String[] nameParts = enumName.split( "_" );
-		for( String s : nameParts ) {
-			sb.append( uppercaseFirstLetter( s ) );
-		}
-		return sb.toString();
-	}
+  public static String getAliceMethodNameForEnum(String enumName) {
+    StringBuilder sb = new StringBuilder();
+    String[] nameParts = enumName.split("_");
+    for (String s : nameParts) {
+      sb.append(uppercaseFirstLetter(s));
+    }
+    return sb.toString();
+  }
 
-	public static String getAliceClassName( String name ) {
-		int resourceIndex = name.indexOf( RESOURCE_SUFFIX );
-		if( resourceIndex != -1 ) {
-			name = name.substring( 0, resourceIndex );
-		}
-		name = getClassNameFromName( name );
-		return name;
-	}
+  public static String getAliceClassName(String name) {
+    int resourceIndex = name.indexOf(RESOURCE_SUFFIX);
+    if (resourceIndex != -1) {
+      name = name.substring(0, resourceIndex);
+    }
+    name = getClassNameFromName(name);
+    return name;
+  }
 
-	public static String getAliceClassName( Class<?> resourceClass ) {
-		return getAliceClassName( resourceClass.getSimpleName() );
-	}
+  public static String getAliceClassName(Class<?> resourceClass) {
+    return getAliceClassName(resourceClass.getSimpleName());
+  }
 
-	public static List<String> splitOnCapitalsAndNumbers( String s ) {
-		StringBuilder sb = new StringBuilder();
-		List<String> split = Lists.newLinkedList();
-		boolean isOnNumber = false;
-		for( int i = 0; i < s.length(); i++ ) {
-			boolean shouldRestart = false;
-			if( Character.isDigit( s.charAt( i ) ) ) {
-				if( !isOnNumber ) {
-					shouldRestart = true;
-				}
-				isOnNumber = true;
-			} else {
-				if( isOnNumber ) {
-					shouldRestart = true;
-				}
-				isOnNumber = false;
-			}
-			if( Character.isUpperCase( s.charAt( i ) ) ) {
-				shouldRestart = true;
-			}
-			if( shouldRestart ) {
-				split.add( sb.toString() );
-				sb = new StringBuilder();
-			}
-			sb.append( s.charAt( i ) );
-		}
-		if( sb.length() > 0 ) {
-			split.add( sb.toString() );
-		}
-		return split;
-	}
+  public static List<String> splitOnCapitalsAndNumbers(String s) {
+    StringBuilder sb = new StringBuilder();
+    List<String> split = Lists.newLinkedList();
+    boolean isOnNumber = false;
+    for (int i = 0; i < s.length(); i++) {
+      boolean shouldRestart = false;
+      if (Character.isDigit(s.charAt(i))) {
+        if (!isOnNumber) {
+          shouldRestart = true;
+        }
+        isOnNumber = true;
+      } else {
+        if (isOnNumber) {
+          shouldRestart = true;
+        }
+        isOnNumber = false;
+      }
+      if (Character.isUpperCase(s.charAt(i))) {
+        shouldRestart = true;
+      }
+      if (shouldRestart) {
+        split.add(sb.toString());
+        sb = new StringBuilder();
+      }
+      sb.append(s.charAt(i));
+    }
+    if (sb.length() > 0) {
+      split.add(sb.toString());
+    }
+    return split;
+  }
 
-	public static String uppercaseFirstLetter( String s ) {
-		if( s == null ) {
-			return null;
-		}
-		if( s.length() <= 1 ) {
-			return s.toUpperCase();
-		}
-		return s.substring( 0, 1 ).toUpperCase( Locale.ENGLISH ) + s.substring( 1 ).toLowerCase( Locale.ENGLISH );
-	}
+  public static String uppercaseFirstLetter(String s) {
+    if (s == null) {
+      return null;
+    }
+    if (s.length() <= 1) {
+      return s.toUpperCase();
+    }
+    return s.substring(0, 1).toUpperCase(Locale.ENGLISH) + s.substring(1).toLowerCase(Locale.ENGLISH);
+  }
 
-	public static String[] fullStringSplit( String name ) {
-		List<String> strings = Lists.newLinkedList();
-		String[] nameParts = name.split( "[_ -]" );
-		for( String s : nameParts ) {
-			List<String> capitalSplit = splitOnCapitalsAndNumbers( s );
-			for( String subS : capitalSplit ) {
-				if( subS.length() > 0 ) {
-					strings.add( subS );
-				}
-			}
-		}
-		return strings.toArray( new String[ strings.size() ] );
-	}
+  public static String[] fullStringSplit(String name) {
+    List<String> strings = Lists.newLinkedList();
+    String[] nameParts = name.split("[_ -]");
+    for (String s : nameParts) {
+      List<String> capitalSplit = splitOnCapitalsAndNumbers(s);
+      for (String subS : capitalSplit) {
+        if (subS.length() > 0) {
+          strings.add(subS);
+        }
+      }
+    }
+    return strings.toArray(new String[strings.size()]);
+  }
 
-	public static String getClassNameFromName( String name ) {
-		StringBuilder sb = new StringBuilder();
-		String[] nameParts = fullStringSplit( name );
-		for( String s : nameParts ) {
-			sb.append( uppercaseFirstLetter( s ) );
-		}
-		return sb.toString();
-	}
+  public static String getClassNameFromName(String name) {
+    StringBuilder sb = new StringBuilder();
+    String[] nameParts = fullStringSplit(name);
+    for (String s : nameParts) {
+      sb.append(uppercaseFirstLetter(s));
+    }
+    return sb.toString();
+  }
 
-	public static Field[] getFieldsOfType( Class<?> ownerClass, Class<?> ofType ) {
-		Field[] fields = ownerClass.getFields();
-		List<Field> fieldsOfType = Lists.newLinkedList();
-		for( Field f : fields ) {
-			boolean matchesType = ofType.isAssignableFrom( f.getType() );
-			boolean matchesOwner = f.getDeclaringClass() == ownerClass;
-			if( matchesType && matchesOwner ) {
-				fieldsOfType.add( f );
-			}
-		}
-		return fieldsOfType.toArray( new Field[ fieldsOfType.size() ] );
-	}
+  public static Field[] getFieldsOfType(Class<?> ownerClass, Class<?> ofType) {
+    Field[] fields = ownerClass.getFields();
+    List<Field> fieldsOfType = Lists.newLinkedList();
+    for (Field f : fields) {
+      boolean matchesType = ofType.isAssignableFrom(f.getType());
+      boolean matchesOwner = f.getDeclaringClass() == ownerClass;
+      if (matchesType && matchesOwner) {
+        fieldsOfType.add(f);
+      }
+    }
+    return fieldsOfType.toArray(new Field[fieldsOfType.size()]);
+  }
 
+  public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
+    List<JointId> baseJoints = new ArrayList<>();
+    addJoints(resourceClass, baseJoints);
+    for (Class<?> parent : resourceClass.getInterfaces()) {
+      addJoints(parent, baseJoints);
+    }
+    return baseJoints;
+  }
 
-	public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
-		List<JointId> baseJoints = new ArrayList<>();
-		addJoints( resourceClass, baseJoints );
-		for ( Class<?> parent : resourceClass.getInterfaces() ) {
-			addJoints( parent, baseJoints );
-		}
-		return baseJoints;
-	}
-
-	private static void addJoints( Class<?> resourceClass, List<JointId> baseJoints ) {
-		Field[] jointFields = getFieldsOfType( resourceClass, JointId.class);
-		for (Field f : jointFields) {
-			try {
-				JointId id = (JointId) f.get(null);
-				baseJoints.add(id);
-			} catch (IllegalAccessException iae) {
-				iae.printStackTrace();
-			}
-		}
-	}
+  private static void addJoints(Class<?> resourceClass, List<JointId> baseJoints) {
+    Field[] jointFields = getFieldsOfType(resourceClass, JointId.class);
+    for (Field f : jointFields) {
+      try {
+        JointId id = (JointId) f.get(null);
+        baseJoints.add(id);
+      } catch (IllegalAccessException iae) {
+        iae.printStackTrace();
+      }
+    }
+  }
 
 }

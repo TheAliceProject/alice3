@@ -51,16 +51,16 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class ListCellRenderer<E> extends DefaultListCellRenderer {
-	protected abstract JLabel getListCellRendererComponent( JLabel rv, JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
+  protected abstract JLabel getListCellRendererComponent(JLabel rv, JList list, E value, int index, boolean isSelected, boolean cellHasFocus);
 
-	@Override
-	public final Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-		if( rv instanceof JLabel ) {
-			getListCellRendererComponent( (JLabel)rv, list, (E)value, index, isSelected, cellHasFocus );
-		} else {
-			//todo
-		}
-		return rv;
-	}
+  @Override
+  public final Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component rv = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    if (rv instanceof JLabel) {
+      getListCellRendererComponent((JLabel) rv, list, (E) value, index, isSelected, cellHasFocus);
+    } else {
+      //todo
+    }
+    return rv;
+  }
 }

@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceBaggyPants implements FemaleAdultBottomPiece {
-	BROWN,
-	WHITE,
-	OLIVE,
-	KHAKI,
-	PINK,
-	GREEN;
+  BROWN, WHITE, OLIVE, KHAKI, PINK, GREEN
 
 }

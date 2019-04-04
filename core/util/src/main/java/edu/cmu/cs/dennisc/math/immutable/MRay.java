@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MRay {
-	public MRay( MPoint3 origin, MVector3 direction ) {
-		this.origin = origin;
-		this.direction = direction;
-	}
+  public MRay(MPoint3 origin, MVector3 direction) {
+    this.origin = origin;
+    this.direction = direction;
+  }
 
-	public MRay createTransformed( MAffineMatrix4x4 m ) {
-		return new MRay( this.origin.createTransformed( m ), this.direction.createTransformed( m ) );
-	}
+  public MRay createTransformed(MAffineMatrix4x4 m) {
+    return new MRay(this.origin.createTransformed(m), this.direction.createTransformed(m));
+  }
 
-	public MPoint3 calculatePointAlong( double t ) {
-		return MPoint3.createAddition( MPoint3.createMultiplication( this.direction, t ), this.origin );
-	}
+  public MPoint3 calculatePointAlong(double t) {
+    return MPoint3.createAddition(MPoint3.createMultiplication(this.direction, t), this.origin);
+  }
 
-	public final MPoint3 origin;
-	public final MVector3 direction;
+  public final MPoint3 origin;
+  public final MVector3 direction;
 }

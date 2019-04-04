@@ -47,21 +47,20 @@ package edu.cmu.cs.dennisc.java.awt.font;
  * @author Dennis Cosgrove
  */
 public enum TextPosture implements TextAttribute<Float> {
-	REGULAR( java.awt.font.TextAttribute.POSTURE_REGULAR ),
-	OBLIQUE( java.awt.font.TextAttribute.POSTURE_OBLIQUE );
-	private Float m_value;
+  REGULAR(java.awt.font.TextAttribute.POSTURE_REGULAR), OBLIQUE(java.awt.font.TextAttribute.POSTURE_OBLIQUE);
+  private Float m_value;
 
-	private TextPosture( Float value ) {
-		m_value = value;
-	}
+  private TextPosture(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.POSTURE;
-	}
+  @Override
+  public java.awt.font.TextAttribute getKey() {
+    return java.awt.font.TextAttribute.POSTURE;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

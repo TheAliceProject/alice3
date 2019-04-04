@@ -63,121 +63,106 @@ import org.lgna.story.implementation.TransformableImp;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class CameraMoveActionOperation extends ActionOperation {
 
-	private UserField markerField;
-	private CameraMarkerImp cameraMarker;
-	private CameraImp<SymmetricPerspectiveCamera> camera;
+  private UserField markerField;
+  private CameraMarkerImp cameraMarker;
+  private CameraImp<SymmetricPerspectiveCamera> camera;
 
-	private TransformableImp toMoveImp;
-	private TransformableImp toMoveToImp;
-	private String toMoveToName;
-	private String toMoveName;
+  private TransformableImp toMoveImp;
+  private TransformableImp toMoveToImp;
+  private String toMoveToName;
+  private String toMoveName;
 
-	private MoveToImageIcon imageIcon;
+  private MoveToImageIcon imageIcon;
 
-	protected CameraMoveActionOperation( UUID id ) {
-		super( Application.PROJECT_GROUP, id );
-		this.markerField = null;
-		this.cameraMarker = null;
-		this.imageIcon = new MoveToImageIcon();
-		this.setButtonIcon( imageIcon );
-		this.updateBasedOnSettings();
-	}
+  protected CameraMoveActionOperation(UUID id) {
+    super(Application.PROJECT_GROUP, id);
+    this.markerField = null;
+    this.cameraMarker = null;
+    this.imageIcon = new MoveToImageIcon();
+    this.setButtonIcon(imageIcon);
+    this.updateBasedOnSettings();
+  }
 
-	protected abstract void updateMoveFields( UserField markerField, CameraMarkerImp cameraMarkerImp );
+  protected abstract void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp);
 
-	protected void setToMoveToImp( TransformableImp toMoveTo, Icon icon, String toMoveToName ) {
-		this.toMoveToImp = toMoveTo;
-		this.toMoveToName = toMoveToName;
-		if( this.toMoveToImp != null ) {
-			this.imageIcon.setRightImage( icon );
-		}
-		else {
-			this.imageIcon.setRightImage( null );
-		}
-	}
+  protected void setToMoveToImp(TransformableImp toMoveTo, Icon icon, String toMoveToName) {
+    this.toMoveToImp = toMoveTo;
+    this.toMoveToName = toMoveToName;
+    if (this.toMoveToImp != null) {
+      this.imageIcon.setRightImage(icon);
+    } else {
+      this.imageIcon.setRightImage(null);
+    }
+  }
 
-	protected void setToMoveImp( TransformableImp toMove, Icon icon, String toMoveName ) {
-		this.toMoveImp = toMove;
-		this.toMoveName = toMoveName;
-		if( this.toMoveImp != null ) {
-			this.imageIcon.setLeftImage( icon );
-		}
-		else {
-			this.imageIcon.setLeftImage( null );
-		}
-	}
+  protected void setToMoveImp(TransformableImp toMove, Icon icon, String toMoveName) {
+    this.toMoveImp = toMove;
+    this.toMoveName = toMoveName;
+    if (this.toMoveImp != null) {
+      this.imageIcon.setLeftImage(icon);
+    } else {
+      this.imageIcon.setLeftImage(null);
+    }
+  }
 
-	private void updateBasedOnSettings()
-	{
-		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) )
-		{
-			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
-			MessageFormat formatter = new MessageFormat( "" );
-			formatter.setLocale( JComponent.getDefaultLocale() );
-			formatter.applyPattern( unformattedTooltipText );
-			String tooltipText = formatter.format( new Object[] { this.toMoveName, this.toMoveToName } );
-			this.setToolTipText( tooltipText );
-			this.setEnabled( true );
-		}
-		else
-		{
-			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
-			this.setEnabled( false );
-		}
-		this.setButtonIcon( this.imageIcon );
+  private void updateBasedOnSettings() {
+    if ((this.toMoveImp != null) && (this.toMoveToImp != null)) {
+      String unformattedTooltipText = this.findLocalizedText("tooltip");
+      MessageFormat formatter = new MessageFormat("");
+      formatter.setLocale(JComponent.getDefaultLocale());
+      formatter.applyPattern(unformattedTooltipText);
+      String tooltipText = formatter.format(new Object[] {this.toMoveName, this.toMoveToName});
+      this.setToolTipText(tooltipText);
+      this.setEnabled(true);
+    } else {
+      this.setToolTipText(this.findLocalizedText("disabledTooltip"));
+      this.setEnabled(false);
+    }
+    this.setButtonIcon(this.imageIcon);
 
-	}
+  }
 
-	public void setCamera( CameraImp<SymmetricPerspectiveCamera> camera ) {
-		this.camera = camera;
-	}
+  public void setCamera(CameraImp<SymmetricPerspectiveCamera> camera) {
+    this.camera = camera;
+  }
 
-	protected CameraImp<SymmetricPerspectiveCamera> getCamera() {
-		return this.camera;
-	}
+  protected CameraImp<SymmetricPerspectiveCamera> getCamera() {
+    return this.camera;
+  }
 
-	public void setMarkerField( UserField markerField )
-	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( CameraMarker.class ) )
-		{
-			this.markerField = markerField;
-		}
-		else
-		{
-			this.markerField = null;
-		}
-		updateMoveFields( this.markerField, this.cameraMarker );
-		this.updateBasedOnSettings();
-	}
+  public void setMarkerField(UserField markerField) {
+    if ((markerField == null) || markerField.getValueType().isAssignableTo(CameraMarker.class)) {
+      this.markerField = markerField;
+    } else {
+      this.markerField = null;
+    }
+    updateMoveFields(this.markerField, this.cameraMarker);
+    this.updateBasedOnSettings();
+  }
 
-	public void setCameraMarker( CameraMarkerImp cameraMarker )
-	{
-		if( ( cameraMarker != null ) && ( cameraMarker instanceof PerspectiveCameraMarkerImp ) )
-		{
-			this.cameraMarker = cameraMarker;
-		}
-		else {
-			this.cameraMarker = null;
-		}
-		updateMoveFields( this.markerField, this.cameraMarker );
-		this.updateBasedOnSettings();
-	}
+  public void setCameraMarker(CameraMarkerImp cameraMarker) {
+    if ((cameraMarker != null) && (cameraMarker instanceof PerspectiveCameraMarkerImp)) {
+      this.cameraMarker = cameraMarker;
+    } else {
+      this.cameraMarker = null;
+    }
+    updateMoveFields(this.markerField, this.cameraMarker);
+    this.updateBasedOnSettings();
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) &&
-				( this.toMoveImp.getAbstraction() instanceof SMovableTurnable ) &&
-				( this.toMoveToImp.getAbstraction() != null ) ) {
+  @Override
+  protected void perform(UserActivity activity) {
+    if ((this.toMoveImp != null) && (this.toMoveToImp != null) && (this.toMoveImp.getAbstraction() instanceof SMovableTurnable) && (this.toMoveToImp.getAbstraction() != null)) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( activity, (SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
-			activity.commitAndInvokeDo( edit );
-		} else {
-			activity.cancel();
-		}
-	}
+      MoveAndOrientToEdit edit = new MoveAndOrientToEdit(activity, (SMovableTurnable) this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
+      activity.commitAndInvokeDo(edit);
+    } else {
+      activity.cancel();
+    }
+  }
 
 }

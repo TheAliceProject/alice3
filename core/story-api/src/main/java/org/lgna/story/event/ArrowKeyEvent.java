@@ -51,72 +51,71 @@ import java.util.List;
 
 public class ArrowKeyEvent extends AbstractKeyEvent {
 
-	public enum MoveDirectionPlane {
-		FORWARD_BACKWARD_LEFT_RIGHT,
-		UP_DOWN_LEFT_RIGHT;
-	};
+  public enum MoveDirectionPlane {
+    FORWARD_BACKWARD_LEFT_RIGHT, UP_DOWN_LEFT_RIGHT
+  }
 
-	public static final List<Key> ARROWS = Lists.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
+  public static final List<Key> ARROWS = Lists.newArrayList(Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W);
 
-	public ArrowKeyEvent( java.awt.event.KeyEvent e ) {
-		super( e );
-		boolean isArrow = false;
-		for( Key k : ARROWS ) {
-			if( this.isKey( k ) ) {
-				isArrow = true;
-				break;
-			}
-		}
-		assert isArrow : e;
-	}
+  public ArrowKeyEvent(java.awt.event.KeyEvent e) {
+    super(e);
+    boolean isArrow = false;
+    for (Key k : ARROWS) {
+      if (this.isKey(k)) {
+        isArrow = true;
+        break;
+      }
+    }
+    assert isArrow : e;
+  }
 
-	public ArrowKeyEvent( AbstractKeyEvent other ) {
-		this( other.getJavaEvent() );
-	}
+  public ArrowKeyEvent(AbstractKeyEvent other) {
+    this(other.getJavaEvent());
+  }
 
-	public MoveDirection getMoveDirection( MoveDirectionPlane plane ) {
-		if( plane.equals( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ) ) {
-			return getUpDownLeftRightMoveDirection();
-		}
-		return getForwardBackwardLeftRightMoveDirection();
-	}
+  public MoveDirection getMoveDirection(MoveDirectionPlane plane) {
+    if (plane.equals(MoveDirectionPlane.UP_DOWN_LEFT_RIGHT)) {
+      return getUpDownLeftRightMoveDirection();
+    }
+    return getForwardBackwardLeftRightMoveDirection();
+  }
 
-	public TurnDirection getTurnDirection() {
-		if( this.isKey( Key.A ) || this.isKey( Key.LEFT ) ) {
-			return TurnDirection.LEFT;
-		} else if( this.isKey( Key.S ) || this.isKey( Key.DOWN ) ) {
-			return TurnDirection.BACKWARD;
-		} else if( this.isKey( Key.W ) || this.isKey( Key.UP ) ) {
-			return TurnDirection.FORWARD;
-		} else if( this.isKey( Key.D ) || this.isKey( Key.RIGHT ) ) {
-			return TurnDirection.RIGHT;
-		}
-		return null;
-	}
+  public TurnDirection getTurnDirection() {
+    if (this.isKey(Key.A) || this.isKey(Key.LEFT)) {
+      return TurnDirection.LEFT;
+    } else if (this.isKey(Key.S) || this.isKey(Key.DOWN)) {
+      return TurnDirection.BACKWARD;
+    } else if (this.isKey(Key.W) || this.isKey(Key.UP)) {
+      return TurnDirection.FORWARD;
+    } else if (this.isKey(Key.D) || this.isKey(Key.RIGHT)) {
+      return TurnDirection.RIGHT;
+    }
+    return null;
+  }
 
-	private MoveDirection getForwardBackwardLeftRightMoveDirection() {
-		if( this.isKey( Key.A ) || this.isKey( Key.LEFT ) ) {
-			return MoveDirection.LEFT;
-		} else if( this.isKey( Key.S ) || this.isKey( Key.DOWN ) ) {
-			return MoveDirection.BACKWARD;
-		} else if( this.isKey( Key.W ) || this.isKey( Key.UP ) ) {
-			return MoveDirection.FORWARD;
-		} else if( this.isKey( Key.D ) || this.isKey( Key.RIGHT ) ) {
-			return MoveDirection.RIGHT;
-		}
-		return null;
-	}
+  private MoveDirection getForwardBackwardLeftRightMoveDirection() {
+    if (this.isKey(Key.A) || this.isKey(Key.LEFT)) {
+      return MoveDirection.LEFT;
+    } else if (this.isKey(Key.S) || this.isKey(Key.DOWN)) {
+      return MoveDirection.BACKWARD;
+    } else if (this.isKey(Key.W) || this.isKey(Key.UP)) {
+      return MoveDirection.FORWARD;
+    } else if (this.isKey(Key.D) || this.isKey(Key.RIGHT)) {
+      return MoveDirection.RIGHT;
+    }
+    return null;
+  }
 
-	private MoveDirection getUpDownLeftRightMoveDirection() {
-		if( this.isKey( Key.A ) || this.isKey( Key.LEFT ) ) {
-			return MoveDirection.LEFT;
-		} else if( this.isKey( Key.S ) || this.isKey( Key.DOWN ) ) {
-			return MoveDirection.DOWN;
-		} else if( this.isKey( Key.W ) || this.isKey( Key.UP ) ) {
-			return MoveDirection.UP;
-		} else if( this.isKey( Key.D ) || this.isKey( Key.RIGHT ) ) {
-			return MoveDirection.RIGHT;
-		}
-		return null;
-	}
+  private MoveDirection getUpDownLeftRightMoveDirection() {
+    if (this.isKey(Key.A) || this.isKey(Key.LEFT)) {
+      return MoveDirection.LEFT;
+    } else if (this.isKey(Key.S) || this.isKey(Key.DOWN)) {
+      return MoveDirection.DOWN;
+    } else if (this.isKey(Key.W) || this.isKey(Key.UP)) {
+      return MoveDirection.UP;
+    } else if (this.isKey(Key.D) || this.isKey(Key.RIGHT)) {
+      return MoveDirection.RIGHT;
+    }
+    return null;
+  }
 }

@@ -62,41 +62,41 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class DoubleFillerInner extends AbstractNumberFillerInner {
-	public static double[] getLiterals( ValueDetails<?> details ) {
-		if( details instanceof NumberValueDetails ) {
-			return ( (NumberValueDetails)details ).getLiterals();
-		} else {
-			return new double[] { 0, 0.25, 0.5, 1.0, 2.0, 10.0 };
-		}
-	}
+  public static double[] getLiterals(ValueDetails<?> details) {
+    if (details instanceof NumberValueDetails) {
+      return ((NumberValueDetails) details).getLiterals();
+    } else {
+      return new double[] {0, 0.25, 0.5, 1.0, 2.0, 10.0};
+    }
+  }
 
-	public DoubleFillerInner() {
-		super( Double.class );
-	}
+  public DoubleFillerInner() {
+    super(Double.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		super.appendItems( items, details, isTop, prevExpression );
-		double[] literals = getLiterals( details );
-		for( double d : literals ) {
-			items.add( DoubleLiteralFillIn.getInstance( d ) );
-		}
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( RandomCascadeMenu.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( IntegerToRealCascadeMenu.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( MathCascadeMenu.getInstance() );
-		}
-		items.add( CascadeLineSeparator.getInstance() );
-		IDE ide = IDE.getActiveInstance();
-		ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		CascadeItem item = apiConfigurationManager.getCustomFillInFor( details );
-		if( item != null ) {
-			items.add( item );
-		} else {
-			items.add( DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    super.appendItems(items, details, isTop, prevExpression);
+    double[] literals = getLiterals(details);
+    for (double d : literals) {
+      items.add(DoubleLiteralFillIn.getInstance(d));
+    }
+    if (isTop && (prevExpression != null)) {
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(RandomCascadeMenu.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(IntegerToRealCascadeMenu.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(MathCascadeMenu.getInstance());
+    }
+    items.add(CascadeLineSeparator.getInstance());
+    IDE ide = IDE.getActiveInstance();
+    ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+    CascadeItem item = apiConfigurationManager.getCustomFillInFor(details);
+    if (item != null) {
+      items.add(item);
+    } else {
+      items.add(DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+    }
+  }
 }

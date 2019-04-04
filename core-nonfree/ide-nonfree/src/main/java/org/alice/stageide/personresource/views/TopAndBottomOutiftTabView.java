@@ -58,23 +58,23 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class TopAndBottomOutiftTabView extends OutfitTabView {
-	public TopAndBottomOutiftTabView( TopAndBottomOutfitTabComposite composite ) {
-		super( composite );
-		Color backgroundColor = this.getBackgroundColor();
+  public TopAndBottomOutiftTabView(TopAndBottomOutfitTabComposite composite) {
+    super(composite);
+    Color backgroundColor = this.getBackgroundColor();
 
-		List<TopPiece> topList = new HorizontalWrapList<TopPiece>( composite.getTopPieceState(), -1, TopPieceListCellRenderer.getInstance() );
-		topList.setBackgroundColor( backgroundColor );
-		ScrollPane topScrollPane = new ScrollPane( topList );
-		topScrollPane.setBothScrollBarIncrements( 66, 66 );
-		topScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		topScrollPane.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.WHITE ) );
+    List<TopPiece> topList = new HorizontalWrapList<TopPiece>(composite.getTopPieceState(), -1, TopPieceListCellRenderer.getInstance());
+    topList.setBackgroundColor(backgroundColor);
+    ScrollPane topScrollPane = new ScrollPane(topList);
+    topScrollPane.setBothScrollBarIncrements(66, 66);
+    topScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
+    topScrollPane.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
 
-		List<BottomPiece> bottomList = new HorizontalWrapList<BottomPiece>( composite.getBottomPieceState(), -1, BottomPieceListCellRenderer.getInstance() );
-		bottomList.setBackgroundColor( backgroundColor );
-		ScrollPane bottomScrollPane = new ScrollPane( bottomList );
-		bottomScrollPane.setBothScrollBarIncrements( 66, 66 );
-		bottomScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
+    List<BottomPiece> bottomList = new HorizontalWrapList<BottomPiece>(composite.getBottomPieceState(), -1, BottomPieceListCellRenderer.getInstance());
+    bottomList.setBackgroundColor(backgroundColor);
+    ScrollPane bottomScrollPane = new ScrollPane(bottomList);
+    bottomScrollPane.setBothScrollBarIncrements(66, 66);
+    bottomScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
 
-		this.addCenterComponent( GridPanel.createSingleColumnGridPane( topScrollPane, bottomScrollPane ) );
-	}
+    this.addCenterComponent(GridPanel.createSingleColumnGridPane(topScrollPane, bottomScrollPane));
+  }
 }

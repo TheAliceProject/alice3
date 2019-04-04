@@ -53,17 +53,17 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class InstancePropertyLabelView extends AbstractPropertyPane<InstanceProperty<Object>, Object> {
-	private final Label label = new Label();
+  private final Label label = new Label();
 
-	public InstancePropertyLabelView( AstI18nFactory factory, InstanceProperty<Object> property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-		this.addComponent( this.label );
-		this.refreshLater();
-	}
+  public InstancePropertyLabelView(AstI18nFactory factory, InstanceProperty<Object> property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+    this.addComponent(this.label);
+    this.refreshLater();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.label.setText( getProperty().getValue().toString() );
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.label.setText(getProperty().getValue().toString());
+  }
 }

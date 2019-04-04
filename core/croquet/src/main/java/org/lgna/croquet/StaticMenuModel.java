@@ -53,39 +53,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StaticMenuModel extends MenuModel {
-	private StandardMenuItemPrepModel[] models;
+  private StandardMenuItemPrepModel[] models;
 
-	public StaticMenuModel( UUID individualId ) {
-		super( individualId );
-	}
+  public StaticMenuModel(UUID individualId) {
+    super(individualId);
+  }
 
-	protected abstract StandardMenuItemPrepModel[] createModels();
+  protected abstract StandardMenuItemPrepModel[] createModels();
 
-	private StandardMenuItemPrepModel[] getModels() {
-		if( this.models != null ) {
-			//pass
-		} else {
-			this.models = this.createModels();
-			assert this.models != null : this;
-		}
-		return this.models;
-	}
+  private StandardMenuItemPrepModel[] getModels() {
+    if (this.models != null) {
+      //pass
+    } else {
+      this.models = this.createModels();
+      assert this.models != null : this;
+    }
+    return this.models;
+  }
 
-	private void updateMenuItemContainer( MenuItemContainer menuItemContainer ) {
-		MenuItemContainerUtilities.setMenuElements( menuItemContainer, this.getModels() );
-	}
+  private void updateMenuItemContainer(MenuItemContainer menuItemContainer) {
+    MenuItemContainerUtilities.setMenuElements(menuItemContainer, this.getModels());
+  }
 
-	@Override
-	public final Menu createMenu() {
-		Menu rv = super.createMenu();
-		this.updateMenuItemContainer( rv );
-		return rv;
-	}
+  @Override
+  public final Menu createMenu() {
+    Menu rv = super.createMenu();
+    this.updateMenuItemContainer(rv);
+    return rv;
+  }
 
-	@Override
-	public final void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-		super.handlePopupMenuPrologue( popupMenu );
-		this.updateMenuItemContainer( popupMenu );
-	}
+  @Override
+  public final void handlePopupMenuPrologue(PopupMenu popupMenu) {
+    super.handlePopupMenuPrologue(popupMenu);
+    this.updateMenuItemContainer(popupMenu);
+  }
 
 }

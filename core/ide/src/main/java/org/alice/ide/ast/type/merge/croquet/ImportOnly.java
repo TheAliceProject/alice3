@@ -48,22 +48,22 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public final class ImportOnly<M extends Member> {
-	private final MemberHub<M> importHub;
+  private final MemberHub<M> importHub;
 
-	public ImportOnly( M importMember ) {
-		this.importHub = new MemberHub<M>( importMember, true ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				if( getIsDesiredState().getValue() ) {
-					return ActionStatus.ADD_UNIQUE;
-				} else {
-					return ActionStatus.OMIT;
-				}
-			}
-		};
-	}
+  public ImportOnly(M importMember) {
+    this.importHub = new MemberHub<M>(importMember, true) {
+      @Override
+      public ActionStatus getActionStatus() {
+        if (getIsDesiredState().getValue()) {
+          return ActionStatus.ADD_UNIQUE;
+        } else {
+          return ActionStatus.OMIT;
+        }
+      }
+    };
+  }
 
-	public MemberHub<M> getImportHub() {
-		return this.importHub;
-	}
+  public MemberHub<M> getImportHub() {
+    return this.importHub;
+  }
 }

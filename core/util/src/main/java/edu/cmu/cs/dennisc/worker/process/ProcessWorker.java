@@ -52,74 +52,74 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class ProcessWorker extends WorkerWithProgress<Integer, String> {
-	private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
-	private static final String FIRST_CHUNK_FOR_PROCESS = "__PROCESS_WORKER_FIRST_CHUNK_FOR_PROCESS__";
-	private final ProcessBuilder[] processBuilders;
+  private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
+  private static final String FIRST_CHUNK_FOR_PROCESS = "__PROCESS_WORKER_FIRST_CHUNK_FOR_PROCESS__";
+  private final ProcessBuilder[] processBuilders;
 
-	public ProcessWorker( ProcessBuilder... processBuilders ) {
-		this.processBuilders = processBuilders;
-	}
+  public ProcessWorker(ProcessBuilder... processBuilders) {
+    this.processBuilders = processBuilders;
+  }
 
-	public ProcessBuilder[] getProcessBuilders() {
-		return this.processBuilders;
-	}
+  public ProcessBuilder[] getProcessBuilders() {
+    return this.processBuilders;
+  }
 
-	@Override
-	protected Integer do_onBackgroundThread() throws Exception {
-		int rv = 0; //?
-		this.publish( FIRST_CHUNK );
-		int i = 0;
-		for( ProcessBuilder processBuilder : this.processBuilders ) {
-			if( processBuilder.redirectErrorStream() ) {
-				//pass
-			} else {
-				Logger.outln( "NOTE: redirecting error stream", processBuilder );
-				processBuilder.redirectErrorStream( true );
-			}
-			Process process = processBuilder.start();
-			this.publish( FIRST_CHUNK_FOR_PROCESS + i );
-			InputStream standardOutAndStandardError = process.getInputStream();
-			byte[] buffer = new byte[ 256 ];
-			while( true ) {
-				if( this.isCancelled() ) {
-					process.destroy();
-				} else {
-					int count = standardOutAndStandardError.read( buffer, 0, buffer.length );
-					if( count != -1 ) {
-						this.publish( new String( buffer, 0, count ) );
-					} else {
-						break;
-					}
-				}
-			}
-			rv = process.exitValue();
-			i++;
-		}
-		return rv;
-	}
+  @Override
+  protected Integer do_onBackgroundThread() throws Exception {
+    int rv = 0; //?
+    this.publish(FIRST_CHUNK);
+    int i = 0;
+    for (ProcessBuilder processBuilder : this.processBuilders) {
+      if (processBuilder.redirectErrorStream()) {
+        //pass
+      } else {
+        Logger.outln("NOTE: redirecting error stream", processBuilder);
+        processBuilder.redirectErrorStream(true);
+      }
+      Process process = processBuilder.start();
+      this.publish(FIRST_CHUNK_FOR_PROCESS + i);
+      InputStream standardOutAndStandardError = process.getInputStream();
+      byte[] buffer = new byte[256];
+      while (true) {
+        if (this.isCancelled()) {
+          process.destroy();
+        } else {
+          int count = standardOutAndStandardError.read(buffer, 0, buffer.length);
+          if (count != -1) {
+            this.publish(new String(buffer, 0, count));
+          } else {
+            break;
+          }
+        }
+      }
+      rv = process.exitValue();
+      i++;
+    }
+    return rv;
+  }
 
-	protected abstract void handleStart_onEventDispatchThread();
+  protected abstract void handleStart_onEventDispatchThread();
 
-	protected abstract void handleStartProcess_onEventDispatchThread( int i );
+  protected abstract void handleStartProcess_onEventDispatchThread(int i);
 
-	protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s );
+  protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread(String s);
 
-	@Override
-	protected final void handleProcess_onEventDispatchThread( List<String> chunks ) {
-		StringBuilder sb = new StringBuilder();
-		for( String chunk : chunks ) {
-			if( chunk != null ) {
-				if( FIRST_CHUNK.equals( chunk ) ) {
-					this.handleStart_onEventDispatchThread();
-				} else if( chunk.startsWith( FIRST_CHUNK_FOR_PROCESS ) ) {
-					//todo
-					String nText = chunk.substring( FIRST_CHUNK_FOR_PROCESS.length() );
-					this.handleStartProcess_onEventDispatchThread( Integer.parseInt( nText ) );
-				} else {
-					sb.append( chunk );
-				}
-			}
-		}
-		this.handleProcessStandardOutAndStandardError_onEventDispatchThread( sb.toString() );
-	}
+  @Override
+  protected final void handleProcess_onEventDispatchThread(List<String> chunks) {
+    StringBuilder sb = new StringBuilder();
+    for (String chunk : chunks) {
+      if (chunk != null) {
+        if (FIRST_CHUNK.equals(chunk)) {
+          this.handleStart_onEventDispatchThread();
+        } else if (chunk.startsWith(FIRST_CHUNK_FOR_PROCESS)) {
+          //todo
+          String nText = chunk.substring(FIRST_CHUNK_FOR_PROCESS.length());
+          this.handleStartProcess_onEventDispatchThread(Integer.parseInt(nText));
+        } else {
+          sb.append(chunk);
+        }
+      }
+    }
+    this.handleProcessStandardOutAndStandardError_onEventDispatchThread(sb.toString());
+  }
 }

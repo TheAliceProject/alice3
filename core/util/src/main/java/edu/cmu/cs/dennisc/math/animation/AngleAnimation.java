@@ -51,26 +51,26 @@ import edu.cmu.cs.dennisc.math.AngleInRadians;
  * @author Dennis Cosgrove
  */
 public abstract class AngleAnimation extends InterpolationAnimation<Angle> {
-	public AngleAnimation( Number duration, Style style, Angle a0, Angle a1 ) {
-		super( duration, style, a0, a1 );
-	}
+  public AngleAnimation(Number duration, Style style, Angle a0, Angle a1) {
+    super(duration, style, a0, a1);
+  }
 
-	@Override
-	protected Angle newE( Angle other ) {
-		Angle rv;
-		if( other != null ) {
-			rv = new AngleInRadians( other );
-		} else {
-			rv = new AngleInRadians( Double.NaN );
-		}
-		return rv;
-	}
+  @Override
+  protected Angle newE(Angle other) {
+    Angle rv;
+    if (other != null) {
+      rv = new AngleInRadians(other);
+    } else {
+      rv = new AngleInRadians(Double.NaN);
+    }
+    return rv;
+  }
 
-	@Override
-	protected Angle interpolate( Angle rv, Angle v0, Angle v1, double portion ) {
-		assert v0.isNaN() == false;
-		assert v1.isNaN() == false;
-		rv.setToInterpolation( v0, v1, portion );
-		return rv;
-	}
+  @Override
+  protected Angle interpolate(Angle rv, Angle v0, Angle v1, double portion) {
+    assert v0.isNaN() == false;
+    assert v1.isNaN() == false;
+    rv.setToInterpolation(v0, v1, portion);
+    return rv;
+  }
 }

@@ -49,7 +49,7 @@ import org.lgna.croquet.undo.UndoHistory;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryEvent extends Event<UndoHistory> {
-	public HistoryEvent( UndoHistory source ) {
-		super( source );
-	}
+  public HistoryEvent(UndoHistory source) {
+    super(source);
+  }
 }

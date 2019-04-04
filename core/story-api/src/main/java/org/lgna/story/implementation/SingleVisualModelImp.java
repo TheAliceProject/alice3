@@ -55,36 +55,36 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public abstract class SingleVisualModelImp extends VisualScaleModelImp {
-	public SingleVisualModelImp( Visual sgVisual ) {
-		this.sgVisuals = new Visual[] { sgVisual };
-		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
-		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
-		this.putInstance( this.sgVisuals[ 0 ] );
-		this.putInstance( this.sgAppearances[ 0 ] );
-	}
+  public SingleVisualModelImp(Visual sgVisual) {
+    this.sgVisuals = new Visual[] {sgVisual};
+    this.sgVisuals[0].frontFacingAppearance.setValue(this.sgAppearances[0]);
+    this.sgVisuals[0].setParent(this.getSgComposite());
+    this.putInstance(this.sgVisuals[0]);
+    this.putInstance(this.sgAppearances[0]);
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	@Override
-	protected final SimpleAppearance[] getSgPaintAppearances() {
-		return this.sgAppearances;
-	}
+  @Override
+  protected final SimpleAppearance[] getSgPaintAppearances() {
+    return this.sgAppearances;
+  }
 
-	@Override
-	protected final SimpleAppearance[] getSgOpacityAppearances() {
-		return this.getSgPaintAppearances();
-	}
+  @Override
+  protected final SimpleAppearance[] getSgOpacityAppearances() {
+    return this.getSgPaintAppearances();
+  }
 
-	//todo: ???
-	public PickResult createFauxPickResult( Component sgSource ) {
-		Visual sgVisual = this.getSgVisuals()[ 0 ];
-		Geometry sgGeometry = sgVisual.getGeometry();
-		return new PickResult( sgSource, sgVisual, true, sgGeometry, -1, Point3.createNaN() );
-	}
+  //todo: ???
+  public PickResult createFauxPickResult(Component sgSource) {
+    Visual sgVisual = this.getSgVisuals()[0];
+    Geometry sgGeometry = sgVisual.getGeometry();
+    return new PickResult(sgSource, sgVisual, true, sgGeometry, -1, Point3.createNaN());
+  }
 
-	private final Visual[] sgVisuals;
-	private final TexturedAppearance[] sgAppearances = new TexturedAppearance[] { new TexturedAppearance() };
+  private final Visual[] sgVisuals;
+  private final TexturedAppearance[] sgAppearances = new TexturedAppearance[] {new TexturedAppearance()};
 }

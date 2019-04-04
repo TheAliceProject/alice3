@@ -59,81 +59,81 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceBundleUtilities {
-	private ResourceBundleUtilities() {
-		throw new AssertionError();
-	}
+  private ResourceBundleUtilities() {
+    throw new AssertionError();
+  }
 
-	private static final class Utf8ResourceBundleControl extends ResourceBundle.Control {
-		@Override
-		public ResourceBundle newBundle( String baseName, Locale locale, String format, ClassLoader loader, boolean reload ) throws IllegalAccessException, InstantiationException, IOException {
-			String bundleName = this.toBundleName( baseName, locale );
-			String resourceName = this.toResourceName( bundleName, "properties" );
-			InputStream stream = null;
-			if( reload ) {
-				URL url = loader.getResource( resourceName );
-				if( url != null ) {
-					URLConnection connection = url.openConnection();
-					if( connection != null ) {
-						connection.setUseCaches( false );
-						stream = connection.getInputStream();
-					}
-				}
-			} else {
-				stream = loader.getResourceAsStream( resourceName );
-			}
-			ResourceBundle bundle = null;
-			if( stream != null ) {
-				try {
-					bundle = new PropertyResourceBundle( new InputStreamReader( stream, "UTF-8" ) );
-				} finally {
-					stream.close();
-				}
-			}
-			return bundle;
-		}
-	}
+  private static final class Utf8ResourceBundleControl extends ResourceBundle.Control {
+    @Override
+    public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+      String bundleName = this.toBundleName(baseName, locale);
+      String resourceName = this.toResourceName(bundleName, "properties");
+      InputStream stream = null;
+      if (reload) {
+        URL url = loader.getResource(resourceName);
+        if (url != null) {
+          URLConnection connection = url.openConnection();
+          if (connection != null) {
+            connection.setUseCaches(false);
+            stream = connection.getInputStream();
+          }
+        }
+      } else {
+        stream = loader.getResourceAsStream(resourceName);
+      }
+      ResourceBundle bundle = null;
+      if (stream != null) {
+        try {
+          bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+        } finally {
+          stream.close();
+        }
+      }
+      return bundle;
+    }
+  }
 
-	public static ResourceBundle getUtf8Bundle( String baseName, Locale locale ) {
-		return ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
-	}
+  public static ResourceBundle getUtf8Bundle(String baseName, Locale locale) {
+    return ResourceBundle.getBundle(baseName, locale, new Utf8ResourceBundleControl());
+  }
 
-	private static ResourceBundle getUtf8Bundle(String bundleName) {
-		return getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-	}
+  private static ResourceBundle getUtf8Bundle(String bundleName) {
+    return getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+  }
 
-	public static String getStringForKey( String key, String bundleName) {
-		try {
-			return getUtf8Bundle( bundleName ).getString( key );
-		} catch( MissingResourceException mre ) {
-			Logger.throwable( mre, bundleName, key );
-			return key;
-		}
-	}
+  public static String getStringForKey(String key, String bundleName) {
+    try {
+      return getUtf8Bundle(bundleName).getString(key);
+    } catch (MissingResourceException mre) {
+      Logger.throwable(mre, bundleName, key);
+      return key;
+    }
+  }
 
-	public static String getStringForKey( String key, Class<?> cls ) {
-		return getStringForKey( key, cls.getPackage().getName() + ".croquet" );
-	}
+  public static String getStringForKey(String key, Class<?> cls) {
+    return getStringForKey(key, cls.getPackage().getName() + ".croquet");
+  }
 
-	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
-		ResourceBundle resourceBundle = getUtf8Bundle( baseName );
-		String key;
-		Class<?> c = cls;
-		do {
-			if( c != null ) {
-				key = c.getSimpleName();
-				c = c.getSuperclass();
-			} else {
-				throw new RuntimeException( "cannot find resource for " + cls );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "cannot find resource for", cls );
-				//return null;
-			}
-			try {
-				String unused = resourceBundle.getString( key );
-				break;
-			} catch( RuntimeException re ) {
-				//pass;
-			}
-		} while( true );
-		return resourceBundle.getString( key );
-	}
+  public static String getStringFromSimpleNames(Class<?> cls, String baseName) {
+    ResourceBundle resourceBundle = getUtf8Bundle(baseName);
+    String key;
+    Class<?> c = cls;
+    do {
+      if (c != null) {
+        key = c.getSimpleName();
+        c = c.getSuperclass();
+      } else {
+        throw new RuntimeException("cannot find resource for " + cls);
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "cannot find resource for", cls );
+        //return null;
+      }
+      try {
+        String unused = resourceBundle.getString(key);
+        break;
+      } catch (RuntimeException re) {
+        //pass;
+      }
+    } while (true);
+    return resourceBundle.getString(key);
+  }
 }

@@ -52,27 +52,27 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class PasteFromClipboardEdit extends ClipboardEdit {
-	public PasteFromClipboardEdit( UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( userActivity, statement, blockStatementIndexPair );
-	}
+  public PasteFromClipboardEdit(UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair) {
+    super(userActivity, statement, blockStatementIndexPair);
+  }
 
-	public PasteFromClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public PasteFromClipboardEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		this.popAndAdd();
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    this.popAndAdd();
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.pushAndRemove();
-	}
+  @Override
+  protected void undoInternal() {
+    this.pushAndRemove();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "paste from clipboard " );
-		NodeUtilities.safeAppendRepr( rv, this.getStatement() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("paste from clipboard ");
+    NodeUtilities.safeAppendRepr(rv, this.getStatement());
+  }
 }

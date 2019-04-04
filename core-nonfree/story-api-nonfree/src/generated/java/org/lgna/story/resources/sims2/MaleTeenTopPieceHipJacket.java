@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenTopPieceHipJacket implements MaleTeenTopPiece {
-	DENIM_DARK,
-	FLEECE,
-	LEATHER_BLACK,
-	LEATHER_BROWN,
-	DENIM_LIGHT;
+  DENIM_DARK, FLEECE, LEATHER_BLACK, LEATHER_BROWN, DENIM_LIGHT
 
 }

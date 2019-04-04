@@ -49,55 +49,53 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 
 import java.util.List;
 import java.util.ListIterator;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlank<B> {
-	public CascadeBlank() {
-	}
+  public CascadeBlank() {
+  }
 
-	protected abstract void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode );
+  protected abstract void updateChildren(List<CascadeBlankChild> children, BlankNode<B> blankNode);
 
-	private static boolean isEmptySeparator( CascadeBlankChild child ) {
-		return ( child instanceof CascadeLineSeparator ) ||
-			   ( ( child instanceof CascadeLabelSeparator ) && (!((CascadeLabelSeparator) child).isValid()) );
-	}
+  private static boolean isEmptySeparator(CascadeBlankChild child) {
+    return (child instanceof CascadeLineSeparator) || ((child instanceof CascadeLabelSeparator) && (!((CascadeLabelSeparator) child).isValid()));
+  }
 
-	public final CascadeBlankChild[] getFilteredChildren( BlankNode<B> blankNode ) {
-		List<CascadeBlankChild> children = Lists.newLinkedList();
-		this.updateChildren( children, blankNode );
-		for( CascadeBlankChild child : children ) {
-			assert child != null;
-		}
+  public final CascadeBlankChild[] getFilteredChildren(BlankNode<B> blankNode) {
+    List<CascadeBlankChild> children = Lists.newLinkedList();
+    this.updateChildren(children, blankNode);
+    for (CascadeBlankChild child : children) {
+      assert child != null;
+    }
 
-		ListIterator<CascadeBlankChild> listIterator = children.listIterator();
-		boolean isLineSeparatorAcceptable = false;
-		while( listIterator.hasNext() ) {
-			CascadeBlankChild child = listIterator.next();
-			if( isEmptySeparator( child ) ) {
-				if ( !isLineSeparatorAcceptable ) {
-					listIterator.remove();
-				}
-				isLineSeparatorAcceptable = false;
-			} else {
-				isLineSeparatorAcceptable = true;
-			}
-		}
+    ListIterator<CascadeBlankChild> listIterator = children.listIterator();
+    boolean isLineSeparatorAcceptable = false;
+    while (listIterator.hasNext()) {
+      CascadeBlankChild child = listIterator.next();
+      if (isEmptySeparator(child)) {
+        if (!isLineSeparatorAcceptable) {
+          listIterator.remove();
+        }
+        isLineSeparatorAcceptable = false;
+      } else {
+        isLineSeparatorAcceptable = true;
+      }
+    }
 
-		//remove separators at the end
-		//there should be a maximum of only 1 but we loop anyway 
-		final int N = children.size();
-		for( int i = 0; i < N; i++ ) {
-			int index = N - i - 1;
-			if( isEmptySeparator( children.get( index ) ) ) {
-				children.remove( index );
-			} else {
-				break;
-			}
-		}
+    //remove separators at the end
+    //there should be a maximum of only 1 but we loop anyway
+    final int N = children.size();
+    for (int i = 0; i < N; i++) {
+      int index = N - i - 1;
+      if (isEmptySeparator(children.get(index))) {
+        children.remove(index);
+      } else {
+        break;
+      }
+    }
 
-		return ArrayUtilities.createArray( children, CascadeBlankChild.class );
-	}
+    return ArrayUtilities.createArray(children, CascadeBlankChild.class);
+  }
 }

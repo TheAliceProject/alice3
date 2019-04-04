@@ -53,25 +53,25 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<T> {
-	protected abstract void setupProjection( Context context, Rectangle actualViewport, float near, float far );
+  protected abstract void setupProjection(Context context, Rectangle actualViewport, float near, float far);
 
-	@Override
-	protected void setupProjection( Context context, Rectangle actualViewport ) {
-		setupProjection( context, actualViewport, this.near, this.far );
-	}
+  @Override
+  protected void setupProjection(Context context, Rectangle actualViewport) {
+    setupProjection(context, actualViewport, this.near, this.far);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.nearClippingPlaneDistance ) {
-			this.near = owner.nearClippingPlaneDistance.getValue().floatValue();
-		} else if( property == owner.farClippingPlaneDistance ) {
-			this.far = owner.farClippingPlaneDistance.getValue().floatValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.nearClippingPlaneDistance) {
+      this.near = owner.nearClippingPlaneDistance.getValue().floatValue();
+    } else if (property == owner.farClippingPlaneDistance) {
+      this.far = owner.farClippingPlaneDistance.getValue().floatValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float near;
-	private float far;
+  private float near;
+  private float far;
 
 }

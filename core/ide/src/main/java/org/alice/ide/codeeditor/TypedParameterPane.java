@@ -54,8 +54,8 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class TypedParameterPane extends TypedDeclarationPane {
-	public TypedParameterPane( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( TypeComponent.createInstance( parameter.getValueType() ), new ParameterPane( parametersProperty, parameter ) );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-	}
+  public TypedParameterPane(NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(TypeComponent.createInstance(parameter.getValueType()), new ParameterPane(parametersProperty, parameter));
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+  }
 }

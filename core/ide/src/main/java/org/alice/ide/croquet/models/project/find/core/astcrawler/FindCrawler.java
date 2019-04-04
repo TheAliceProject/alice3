@@ -60,59 +60,59 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  */
 public class FindCrawler implements Crawler {
 
-	private final List<Criterion> criteria;
-	private final List<SearchResult> results;
+  private final List<Criterion> criteria;
+  private final List<SearchResult> results;
 
-	public FindCrawler( List<Criterion> criteria, List<SearchResult> results ) {
-		this.criteria = criteria;
-		this.results = results;
-	}
+  public FindCrawler(List<Criterion> criteria, List<SearchResult> results) {
+    this.criteria = criteria;
+    this.results = results;
+  }
 
-	@Override
-	public void visit( Crawlable crawlable ) {
-		if( crawlable instanceof MethodInvocation ) {
-			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			SearchResult checkFind = checkFind( methodInv.method.getValue() );
-			if( referenceIsValid( methodInv, checkFind ) ) {
-				checkFind.addReference( methodInv );
-			}
-		} else if( crawlable instanceof FieldAccess ) {
-			FieldAccess fieldAccess = (FieldAccess)crawlable;
-			SearchResult checkFind = checkFind( fieldAccess.field.getValue() );
-			if( referenceIsValid( fieldAccess, checkFind ) ) {
-				checkFind.addReference( fieldAccess );
-			}
-		} else if( crawlable instanceof LocalAccess ) {
-			LocalAccess localAccess = (LocalAccess)crawlable;
-			SearchResult checkFind = checkFind( localAccess.local.getValue() );
-			if( referenceIsValid( localAccess, checkFind ) ) {
-				checkFind.addReference( localAccess );
-			}
-		}
-	}
+  @Override
+  public void visit(Crawlable crawlable) {
+    if (crawlable instanceof MethodInvocation) {
+      MethodInvocation methodInv = (MethodInvocation) crawlable;
+      SearchResult checkFind = checkFind(methodInv.method.getValue());
+      if (referenceIsValid(methodInv, checkFind)) {
+        checkFind.addReference(methodInv);
+      }
+    } else if (crawlable instanceof FieldAccess) {
+      FieldAccess fieldAccess = (FieldAccess) crawlable;
+      SearchResult checkFind = checkFind(fieldAccess.field.getValue());
+      if (referenceIsValid(fieldAccess, checkFind)) {
+        checkFind.addReference(fieldAccess);
+      }
+    } else if (crawlable instanceof LocalAccess) {
+      LocalAccess localAccess = (LocalAccess) crawlable;
+      SearchResult checkFind = checkFind(localAccess.local.getValue());
+      if (referenceIsValid(localAccess, checkFind)) {
+        checkFind.addReference(localAccess);
+      }
+    }
+  }
 
-	private boolean referenceIsValid( Expression reference, SearchResult checkFind ) {
-		boolean accepted = true;
-		if( checkFind != null ) {
-			for( Criterion<Expression> criterion : criteria ) {
-				if( !criterion.accept( reference ) ) {
-					accepted = false;
-					break;
-				}
-			}
-			return accepted;
-		} else {
-			return false;
-		}
-	}
+  private boolean referenceIsValid(Expression reference, SearchResult checkFind) {
+    boolean accepted = true;
+    if (checkFind != null) {
+      for (Criterion<Expression> criterion : criteria) {
+        if (!criterion.accept(reference)) {
+          accepted = false;
+          break;
+        }
+      }
+      return accepted;
+    } else {
+      return false;
+    }
+  }
 
-	private SearchResult checkFind( AbstractDeclaration searchObject ) {
-		for( SearchResult object : results ) {
-			if( object.getDeclaration().equals( searchObject ) ) {
-				return object;
-			}
-		}
-		return null;
-	}
+  private SearchResult checkFind(AbstractDeclaration searchObject) {
+    for (SearchResult object : results) {
+      if (object.getDeclaration().equals(searchObject)) {
+        return object;
+      }
+    }
+    return null;
+  }
 
 }

@@ -50,21 +50,21 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class Color4fProperty extends InstanceProperty<Color4f> {
-	public Color4fProperty( InstancePropertyOwner owner, Color4f value, boolean isNaNAcceptable ) {
-		super( owner, value );
-		this.isNaNAcceptable = isNaNAcceptable;
-	}
+  public Color4fProperty(InstancePropertyOwner owner, Color4f value, boolean isNaNAcceptable) {
+    super(owner, value);
+    this.isNaNAcceptable = isNaNAcceptable;
+  }
 
-	public Color4fProperty( InstancePropertyOwner owner, Color4f value ) {
-		this( owner, value, false );
-	}
+  public Color4fProperty(InstancePropertyOwner owner, Color4f value) {
+    this(owner, value, false);
+  }
 
-	@Override
-	public void setValue( Color4f value ) {
-		assert value != null : this;
-		assert ( value.isNaN() == false ) || this.isNaNAcceptable : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(Color4f value) {
+    assert value != null : this;
+    assert (value.isNaN() == false) || this.isNaNAcceptable : this;
+    super.setValue(value);
+  }
 
-	private final boolean isNaNAcceptable;
+  private final boolean isNaNAcceptable;
 }

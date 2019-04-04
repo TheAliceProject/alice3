@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dave Culyba
  */
 public class PredeterminedSetLocalTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
-	public PredeterminedSetLocalTransformationActionOperation( Group group, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
-	}
+  public PredeterminedSetLocalTransformationActionOperation(Group group, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey) {
+    super(group, UUID.fromString("6c925ae4-ad06-4929-8da9-3e13dd17035c"), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey);
+  }
 }

@@ -57,33 +57,32 @@ import org.lgna.story.implementation.PaintProperty;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSetPaintEdit<I extends ModelImp> extends MethodInvocationEdit {
-	private transient I modelImp;
-	private transient Paint value;
+  private transient I modelImp;
+  private transient Paint value;
 
-	AbstractSetPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method,
-												Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  AbstractSetPaintEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	protected abstract PaintProperty getPaintProperty( I modelImp );
+  protected abstract PaintProperty getPaintProperty(I modelImp);
 
-	@Override
-	protected final void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof SThing ) {
-			SThing thing = (SThing)instance;
-			this.modelImp = EmployeesOnly.getImplementation( thing );
-			this.value = this.getPaintProperty( this.modelImp ).getValue();
-		} else {
-			Logger.severe( instance );
-			this.modelImp = null;
-			this.value = null;
-		}
-	}
+  @Override
+  protected final void preserveUndoInfo(Object instance, boolean isDo) {
+    if (instance instanceof SThing) {
+      SThing thing = (SThing) instance;
+      this.modelImp = EmployeesOnly.getImplementation(thing);
+      this.value = this.getPaintProperty(this.modelImp).getValue();
+    } else {
+      Logger.severe(instance);
+      this.modelImp = null;
+      this.value = null;
+    }
+  }
 
-	@Override
-	protected final void undoInternal() {
-		if( ( this.modelImp != null ) && ( this.value != null ) ) {
-			this.getPaintProperty( this.modelImp ).animateValue( this.value );
-		}
-	}
+  @Override
+  protected final void undoInternal() {
+    if ((this.modelImp != null) && (this.value != null)) {
+      this.getPaintProperty(this.modelImp).animateValue(this.value);
+    }
+  }
 }

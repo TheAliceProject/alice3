@@ -60,64 +60,64 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MemberListData extends RefreshableListData<Member> {
-	private final StringState filterState;
+  private final StringState filterState;
 
-	private final ValueListener<String> filterListener = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			refresh();
-		}
-	};
-	private List<Member> allMembers;
+  private final ValueListener<String> filterListener = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      refresh();
+    }
+  };
+  private List<Member> allMembers;
 
-	public MemberListData( StringState filterState ) {
-		super( NodeCodec.getInstance( Member.class ) );
-		this.filterState = filterState;
-	}
+  public MemberListData(StringState filterState) {
+    super(NodeCodec.getInstance(Member.class));
+    this.filterState = filterState;
+  }
 
-	private static void build( List<Member> list, TypeNode typeNode ) {
-		AbstractType<?, ?, ?> type = typeNode.getType();
-		list.addAll( type.getDeclaredMethods() );
-		final int N = typeNode.getChildCount();
-		for( int i = 0; i < N; i++ ) {
-			build( list, (TypeNode)typeNode.getChildAt( i ) );
-		}
-	}
+  private static void build(List<Member> list, TypeNode typeNode) {
+    AbstractType<?, ?, ?> type = typeNode.getType();
+    list.addAll(type.getDeclaredMethods());
+    final int N = typeNode.getChildCount();
+    for (int i = 0; i < N; i++) {
+      build(list, (TypeNode) typeNode.getChildAt(i));
+    }
+  }
 
-	public void connect( TypeNode root ) {
-		List<Member> list = Lists.newLinkedList();
-		build( list, root );
-		Collections.sort( list, new Comparator<Member>() {
-			@Override
-			public int compare( Member o1, Member o2 ) {
-				return o1.getName().compareTo( o2.getName() );
-			}
-		} );
-		this.allMembers = list;
-		this.filterState.addAndInvokeNewSchoolValueListener( this.filterListener );
-	}
+  public void connect(TypeNode root) {
+    List<Member> list = Lists.newLinkedList();
+    build(list, root);
+    Collections.sort(list, new Comparator<Member>() {
+      @Override
+      public int compare(Member o1, Member o2) {
+        return o1.getName().compareTo(o2.getName());
+      }
+    });
+    this.allMembers = list;
+    this.filterState.addAndInvokeNewSchoolValueListener(this.filterListener);
+  }
 
-	public void disconnect() {
-		this.filterState.removeNewSchoolValueListener( this.filterListener );
-	}
+  public void disconnect() {
+    this.filterState.removeNewSchoolValueListener(this.filterListener);
+  }
 
-	@Override
-	protected List<Member> createValues() {
-		if( ( this.allMembers != null ) && ( this.allMembers.size() > 0 ) ) {
-			String filter = this.filterState.getValue();
-			if( ( filter != null ) && ( filter.length() > 0 ) ) {
-				List<Member> rv = Lists.newLinkedList();
-				for( Member member : this.allMembers ) {
-					if( member.getName().contains( filter ) ) {
-						rv.add( member );
-					}
-				}
-				return rv;
-			} else {
-				return this.allMembers;
-			}
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  protected List<Member> createValues() {
+    if ((this.allMembers != null) && (this.allMembers.size() > 0)) {
+      String filter = this.filterState.getValue();
+      if ((filter != null) && (filter.length() > 0)) {
+        List<Member> rv = Lists.newLinkedList();
+        for (Member member : this.allMembers) {
+          if (member.getName().contains(filter)) {
+            rv.add(member);
+          }
+        }
+        return rv;
+      } else {
+        return this.allMembers;
+      }
+    } else {
+      return Collections.emptyList();
+    }
+  }
 }

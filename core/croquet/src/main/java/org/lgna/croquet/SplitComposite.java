@@ -49,22 +49,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SplitComposite extends ImmutableSplitComposite {
-	private final Composite<?> leadingComposite;
-	private final Composite<?> trailingComposite;
+  private final Composite<?> leadingComposite;
+  private final Composite<?> trailingComposite;
 
-	public SplitComposite( UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
-		super( id );
-		this.leadingComposite = leadingComposite;
-		this.trailingComposite = trailingComposite;
-	}
+  public SplitComposite(UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite) {
+    super(id);
+    this.leadingComposite = leadingComposite;
+    this.trailingComposite = trailingComposite;
+  }
 
-	@Override
-	public Composite<?> getLeadingComposite() {
-		return this.leadingComposite;
-	}
+  @Override
+  public Composite<?> getLeadingComposite() {
+    return this.leadingComposite;
+  }
 
-	@Override
-	public Composite<?> getTrailingComposite() {
-		return this.trailingComposite;
-	}
+  @Override
+  public Composite<?> getTrailingComposite() {
+    return this.trailingComposite;
+  }
 }

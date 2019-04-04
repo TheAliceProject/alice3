@@ -60,117 +60,117 @@ import org.lgna.story.SThing;
 import org.lgna.story.implementation.ModelImp;
 
 public class ResizeDragManipulator extends AbstractManipulator {
-	private static final double RESIZE_SCALE = .005;
-	public static final double MIN_SCALE = .1;
+  private static final double RESIZE_SCALE = .005;
+  public static final double MIN_SCALE = .1;
 
-	public ResizeDragManipulator( Resizer... resizers ) {
-		this.resizers = resizers;
-	}
+  public ResizeDragManipulator(Resizer... resizers) {
+    this.resizers = resizers;
+  }
 
-	@Override
-	public void doClickManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doClickManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) ) {
-			int xDif = currentInput.getMouseLocation().x - this.initialPoint.x;
-			int yDif = -( currentInput.getMouseLocation().y - this.initialPoint.y );
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    if (!currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
+      int xDif = currentInput.getMouseLocation().x - this.initialPoint.x;
+      int yDif = -(currentInput.getMouseLocation().y - this.initialPoint.y);
 
-			double scaleAmount = ( ( xDif + yDif ) * RESIZE_SCALE );
-			applyScale( scaleAmount );
-		}
-	}
+      double scaleAmount = ((xDif + yDif) * RESIZE_SCALE);
+      applyScale(scaleAmount);
+    }
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	protected void initManipulator( InputState startInput ) {
-		this.initialPoint = new Point( startInput.getMouseLocation() );
-	}
+  protected void initManipulator(InputState startInput) {
+    this.initialPoint = new Point(startInput.getMouseLocation());
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
-		if( this.manipulatedTransformable != null ) {
-			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			if( scalable != null ) {
-				this.activeResizer = null;
-				for( Resizer toUse : this.resizers ) {
-					for( Resizer r : scalable.getResizers() ) {
-						if( r == toUse ) {
-							this.activeResizer = r;
-							break;
-						}
-					}
-					if( this.activeResizer != null ) {
-						break;
-					}
-				}
-				if( this.activeResizer != null ) {
-					initialScale = scalable.getValueForResizer( this.activeResizer );
-				} else {
-					return false;
-				}
-			}
-			this.initManipulator( startInput );
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    this.setManipulatedTransformable(startInput.getClickPickTransformable());
+    if (this.manipulatedTransformable != null) {
+      Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+      if (scalable != null) {
+        this.activeResizer = null;
+        for (Resizer toUse : this.resizers) {
+          for (Resizer r : scalable.getResizers()) {
+            if (r == toUse) {
+              this.activeResizer = r;
+              break;
+            }
+          }
+          if (this.activeResizer != null) {
+            break;
+          }
+        }
+        if (this.activeResizer != null) {
+          initialScale = scalable.getValueForResizer(this.activeResizer);
+        } else {
+          return false;
+        }
+      }
+      this.initManipulator(startInput);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	protected void applyScale( double scaleAmount ) {
-		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-		if( scalable != null ) {
-			if( ( this.initialScale + scaleAmount ) < MIN_SCALE ) {
-				scaleAmount = MIN_SCALE - this.initialScale;
-			}
-			this.accumulatedScale = this.initialScale + scaleAmount;
-			scalable.setValueForResizer( this.activeResizer, this.accumulatedScale );
-		}
-	}
+  protected void applyScale(double scaleAmount) {
+    Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+    if (scalable != null) {
+      if ((this.initialScale + scaleAmount) < MIN_SCALE) {
+        scaleAmount = MIN_SCALE - this.initialScale;
+      }
+      this.accumulatedScale = this.initialScale + scaleAmount;
+      scalable.setValueForResizer(this.activeResizer, this.accumulatedScale);
+    }
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
-	}
+  @Override
+  public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return null;
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return null;
+  }
 
-	@Override
-	public void undoRedoBeginManipulation() {
-		accumulatedScale = this.initialScale;
-	}
+  @Override
+  public void undoRedoBeginManipulation() {
+    accumulatedScale = this.initialScale;
+  }
 
-	@Override
-	public void undoRedoEndManipulation() {
-		if( this.getManipulatedTransformable() != null ) {
-			Animator animator;
-			if( this.dragAdapter != null ) {
-				animator = this.dragAdapter.getAnimator();
-			} else {
-				animator = null;
-			}
-			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			SThing aliceThing = ( (ModelImp)scalable ).getAbstraction();
-			UserField scalableField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Application.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
-			undoOperation.fire();
-		}
-	}
+  @Override
+  public void undoRedoEndManipulation() {
+    if (this.getManipulatedTransformable() != null) {
+      Animator animator;
+      if (this.dragAdapter != null) {
+        animator = this.dragAdapter.getAnimator();
+      } else {
+        animator = null;
+      }
+      Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+      SThing aliceThing = ((ModelImp) scalable).getAbstraction();
+      UserField scalableField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(aliceThing);
+      PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation(Application.PROJECT_GROUP, false, animator, scalableField, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription());
+      undoOperation.fire();
+    }
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Resize";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Resize";
+  }
 
-	private Point initialPoint;
-	private double initialScale = 1d;
-	private double accumulatedScale = 1d;
-	private final Resizer[] resizers;
-	private Resizer activeResizer;
+  private Point initialPoint;
+  private double initialScale = 1d;
+  private double accumulatedScale = 1d;
+  private final Resizer[] resizers;
+  private Resizer activeResizer;
 }

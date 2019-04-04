@@ -71,72 +71,72 @@ import org.lgna.croquet.views.ScrollPane;
  */
 public class ExecutionPermissionFailedDialogComposite extends MessageDialogComposite<ExecutionPermissionFailedDialogView> {
 
-	private final StringValue explanation = createStringValue( "explanation" );
-	private boolean isFixed = false;
-	private final Operation browserOperation = new ImmutableBrowserOperation( UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), HelpBrowserOperation.HELP_URL_SPEC + "w/page/68664600/FFmpeg_execute_permission" );
-	private final File ffmpegFile;
+  private final StringValue explanation = createStringValue("explanation");
+  private boolean isFixed = false;
+  private final Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("06d89886-9433-4b52-85b6-10615412eb0c"), HelpBrowserOperation.HELP_URL_SPEC + "w/page/68664600/FFmpeg_execute_permission");
+  private final File ffmpegFile;
 
-	public ExecutionPermissionFailedDialogComposite( File f ) {
-		super( UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
-		this.ffmpegFile = f;
-	}
+  public ExecutionPermissionFailedDialogComposite(File f) {
+    super(UUID.fromString("d60cddc2-ec53-40bd-949b-7a445b92b43b"), MessageType.ERROR);
+    this.ffmpegFile = f;
+  }
 
-	private final ActionOperation troubleShootAction = createActionOperation( "troubleShoot", new Action() {
+  private final ActionOperation troubleShootAction = createActionOperation("troubleShoot", new Action() {
 
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			if( SystemUtilities.isMac() ) {
-				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
-				isFixed = ( ffmpegFile != null ) && ffmpegFile.canExecute();
-				if( isFixed ) {
-					closeDown();
-				}
-			} else if( SystemUtilities.isWindows() ) {
-				// TODO later perhaps? (mmay)
-				//				DesktopUtilities.open( ffmpegFile.getParentFile() );
-			}
-			return null;
-		}
-	} );
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      if (SystemUtilities.isMac()) {
+        RuntimeUtilities.exec("chmod a+x " + ffmpegFile.getAbsolutePath());
+        isFixed = (ffmpegFile != null) && ffmpegFile.canExecute();
+        if (isFixed) {
+          closeDown();
+        }
+      } else if (SystemUtilities.isWindows()) {
+        // TODO later perhaps? (mmay)
+        //        DesktopUtilities.open( ffmpegFile.getParentFile() );
+      }
+      return null;
+    }
+  });
 
-	private void closeDown() {
-		Container awtComponent = ExecutionPermissionFailedDialogComposite.this.getView().getAwtComponent();
-		while( ( awtComponent != null ) && !( awtComponent instanceof JDialog ) ) {
-			awtComponent = awtComponent.getParent();
-		}
-		assert awtComponent != null;
-		( (JDialog)awtComponent ).setVisible( false );
-	}
+  private void closeDown() {
+    Container awtComponent = ExecutionPermissionFailedDialogComposite.this.getView().getAwtComponent();
+    while ((awtComponent != null) && !(awtComponent instanceof JDialog)) {
+      awtComponent = awtComponent.getParent();
+    }
+    assert awtComponent != null;
+    ((JDialog) awtComponent).setVisible(false);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected ExecutionPermissionFailedDialogView createView() {
-		return new ExecutionPermissionFailedDialogView( this );
-	}
+  @Override
+  protected ExecutionPermissionFailedDialogView createView() {
+    return new ExecutionPermissionFailedDialogView(this);
+  }
 
-	public boolean getIsFixed() {
-		return isFixed;
-	}
+  public boolean getIsFixed() {
+    return isFixed;
+  }
 
-	public StringValue getExplanation() {
-		return this.explanation;
-	}
+  public StringValue getExplanation() {
+    return this.explanation;
+  }
 
-	public Operation getBrowserOperation() {
-		return this.browserOperation;
-	}
+  public Operation getBrowserOperation() {
+    return this.browserOperation;
+  }
 
-	public ActionOperation getTroubleShootAction() {
-		return SystemUtilities.isMac() ? this.troubleShootAction : null;
-	}
+  public ActionOperation getTroubleShootAction() {
+    return SystemUtilities.isMac() ? this.troubleShootAction : null;
+  }
 
-	public static void main( String[] args ) {
-		SimpleApplication app = new SimpleApplication();
-		new ExecutionPermissionFailedDialogComposite( new File( FFmpegProcess.getArchitectureSpecificCommand() ) ).getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) {
+    SimpleApplication app = new SimpleApplication();
+    new ExecutionPermissionFailedDialogComposite(new File(FFmpegProcess.getArchitectureSpecificCommand())).getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

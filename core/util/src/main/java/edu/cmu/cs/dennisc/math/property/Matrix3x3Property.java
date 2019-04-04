@@ -50,24 +50,24 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class Matrix3x3Property extends CopyableInstanceProperty<Matrix3x3> {
-	public Matrix3x3Property( InstancePropertyOwner owner, Matrix3x3 value ) {
-		super( owner, value );
-	}
+  public Matrix3x3Property(InstancePropertyOwner owner, Matrix3x3 value) {
+    super(owner, value);
+  }
 
-	@Override
-	public Matrix3x3 getCopy( Matrix3x3 rv ) {
-		rv.setValue( this.getValue() );
-		return rv;
-	}
+  @Override
+  public Matrix3x3 getCopy(Matrix3x3 rv) {
+    rv.setValue(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final Matrix3x3 getCopy() {
-		return this.getCopy( Matrix3x3.createNaN() );
-	}
+  @Override
+  public final Matrix3x3 getCopy() {
+    return this.getCopy(Matrix3x3.createNaN());
+  }
 
-	@Override
-	public void setCopy( Matrix3x3 value ) {
-		//todo?
-		this.setValue( new Matrix3x3( value ) );
-	}
+  @Override
+  public void setCopy(Matrix3x3 value) {
+    //todo?
+    this.setValue(new Matrix3x3(value));
+  }
 }

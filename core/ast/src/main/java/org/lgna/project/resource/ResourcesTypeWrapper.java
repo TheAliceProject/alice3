@@ -63,107 +63,95 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class ResourcesTypeWrapper {
-	private static final String NAME_FOR_UNNAMED = "UNNAMED";
+  private static final String NAME_FOR_UNNAMED = "UNNAMED";
 
-	private static String fixNameIfNecessary( String name ) {
-		StringBuilder sb = new StringBuilder();
+  private static String fixNameIfNecessary(String name) {
+    StringBuilder sb = new StringBuilder();
 
-		if( name != null ) {
-			for( char c : name.toCharArray() ) {
-				if( Character.isLetterOrDigit( c ) ) {
-					sb.append( c );
-				} else {
-					sb.append( '_' );
-				}
-			}
-		}
+    if (name != null) {
+      for (char c : name.toCharArray()) {
+        if (Character.isLetterOrDigit(c)) {
+          sb.append(c);
+        } else {
+          sb.append('_');
+        }
+      }
+    }
 
-		if( sb.length() > 0 ) {
-			char c0 = sb.charAt( 0 );
-			if( Character.isLetter( c0 ) || ( c0 == '_' ) ) {
-				//pass
-			} else {
-				sb.insert( 0, "_" );
-			}
-			return sb.toString();
-		} else {
-			return NAME_FOR_UNNAMED;
-		}
-	}
+    if (sb.length() > 0) {
+      char c0 = sb.charAt(0);
+      if (Character.isLetter(c0) || (c0 == '_')) {
+        //pass
+      } else {
+        sb.insert(0, "_");
+      }
+      return sb.toString();
+    } else {
+      return NAME_FOR_UNNAMED;
+    }
+  }
 
-	public static final String getTypeName() {
-		return "Resources";
-	}
+  public static final String getTypeName() {
+    return "Resources";
+  }
 
-	public static final String getFixedName( Resource resource ) {
-		return fixNameIfNecessary( resource.getName() );
-	}
+  public static final String getFixedName(Resource resource) {
+    return fixNameIfNecessary(resource.getName());
+  }
 
-	public ResourcesTypeWrapper( Project project ) {
-		Set<Resource> resources = project.getResources();
-		if( ( resources != null ) && ( resources.size() > 0 ) ) {
-			this.type = new NamedUserType();
-			this.type.name.setValue( getTypeName() );
-			this.type.superType.setValue( JavaType.OBJECT_TYPE );
-			int unnamedCount = 0;
-			int duplicateCount = 0;
-			for( Resource resource : resources ) {
-				UserField field = new UserField();
-				field.accessLevel.setValue( AccessLevel.PUBLIC );
-				field.isStatic.setValue( true );
-				field.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
-				field.valueType.setValue( JavaType.getInstance( resource.getClass() ) );
+  public ResourcesTypeWrapper(Project project) {
+    Set<Resource> resources = project.getResources();
+    if ((resources != null) && (resources.size() > 0)) {
+      this.type = new NamedUserType();
+      this.type.name.setValue(getTypeName());
+      this.type.superType.setValue(JavaType.OBJECT_TYPE);
+      int unnamedCount = 0;
+      int duplicateCount = 0;
+      for (Resource resource : resources) {
+        UserField field = new UserField();
+        field.accessLevel.setValue(AccessLevel.PUBLIC);
+        field.isStatic.setValue(true);
+        field.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
+        field.valueType.setValue(JavaType.getInstance(resource.getClass()));
 
-				String name = getFixedName( resource );
-				for( UserField prevField : type.fields ) {
-					if( prevField.name.getValue().equals( name ) ) {
-						if( name.equals( NAME_FOR_UNNAMED ) ) {
-							name += "_" + unnamedCount;
-							unnamedCount++;
-						} else {
-							name += "_duplicate_" + duplicateCount;
-							duplicateCount++;
-						}
-					}
-				}
+        String name = getFixedName(resource);
+        for (UserField prevField : type.fields) {
+          if (prevField.name.getValue().equals(name)) {
+            if (name.equals(NAME_FOR_UNNAMED)) {
+              name += "_" + unnamedCount;
+              unnamedCount++;
+            } else {
+              name += "_duplicate_" + duplicateCount;
+              duplicateCount++;
+            }
+          }
+        }
 
-				field.name.setValue( name );
-				field.initializer.setValue( AstUtilities.createInstanceCreation(
-						resource.getClass(),
-						new Class<?>[] {
-								Class.class,
-								String.class,
-								String.class
-						},
-						new Expression[] {
-								new TypeLiteral( this.type ),
-								new StringLiteral( "resources/" + resource.getOriginalFileName() ),
-								new StringLiteral( resource.getContentType() )
-						}
-						) );
+        field.name.setValue(name);
+        field.initializer.setValue(AstUtilities.createInstanceCreation(resource.getClass(), new Class<?>[] {Class.class, String.class, String.class}, new Expression[] {new TypeLiteral(this.type), new StringLiteral("resources/" + resource.getOriginalFileName()), new StringLiteral(resource.getContentType())}));
 
-				Logger.outln( field );
-				this.type.fields.add( field );
-			}
-			this.mapResourceToField = Maps.newHashMap();
-		} else {
-			this.type = null;
-			this.mapResourceToField = null;
-		}
-	}
+        Logger.outln(field);
+        this.type.fields.add(field);
+      }
+      this.mapResourceToField = Maps.newHashMap();
+    } else {
+      this.type = null;
+      this.mapResourceToField = null;
+    }
+  }
 
-	public NamedUserType getType() {
-		return this.type;
-	}
+  public NamedUserType getType() {
+    return this.type;
+  }
 
-	public UserField getFieldForResource( Resource resource ) {
-		if( this.mapResourceToField != null ) {
-			return this.mapResourceToField.get( resource );
-		} else {
-			return null;
-		}
-	}
+  public UserField getFieldForResource(Resource resource) {
+    if (this.mapResourceToField != null) {
+      return this.mapResourceToField.get(resource);
+    } else {
+      return null;
+    }
+  }
 
-	private final NamedUserType type;
-	private final Map<Resource, UserField> mapResourceToField;
+  private final NamedUserType type;
+  private final Map<Resource, UserField> mapResourceToField;
 }

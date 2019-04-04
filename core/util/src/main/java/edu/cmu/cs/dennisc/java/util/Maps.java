@@ -51,40 +51,40 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Dennis Cosgrove
  */
 public class Maps {
-	private Maps() {
-		throw new Error();
-	}
+  private Maps() {
+    throw new Error();
+  }
 
-	public static <K, V> HashMap<K, V> newHashMap() {
-		return new HashMap<K, V>();
-	}
+  public static <K, V> HashMap<K, V> newHashMap() {
+    return new HashMap<K, V>();
+  }
 
-	public static <K, V> WeakHashMap<K, V> newWeakHashMap() {
-		return new WeakHashMap<K, V>();
-	}
+  public static <K, V> WeakHashMap<K, V> newWeakHashMap() {
+    return new WeakHashMap<K, V>();
+  }
 
-	public static <K, V> InitializingIfAbsentMap<K, V> newInitializingIfAbsentHashMap() {
-		return new InitializingIfAbsentHashMap<K, V>();
-	}
+  public static <K, V> InitializingIfAbsentMap<K, V> newInitializingIfAbsentHashMap() {
+    return new InitializingIfAbsentHashMap<K, V>();
+  }
 
-	public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
-		return new InitializingIfAbsentListHashMap<K, E>();
-	}
+  public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
+    return new InitializingIfAbsentListHashMap<K, E>();
+  }
 
-	public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
-		return new InitializingIfAbsentMapHashMap<K, K2, E2>();
-	}
+  public static <K, K2, E2> InitializingIfAbsentMapHashMap<K, K2, E2> newInitializingIfAbsentMapHashMap() {
+    return new InitializingIfAbsentMapHashMap<K, K2, E2>();
+  }
 
-	public static <A, B> HashMap<B, A> newInverseHashMap( Map<A, B> map ) {
-		HashMap<B, A> rv = newHashMap();
-		for( A a : map.keySet() ) {
-			B b = map.get( a );
-			rv.put( b, a );
-		}
-		return rv;
-	}
+  public static <A, B> HashMap<B, A> newInverseHashMap(Map<A, B> map) {
+    HashMap<B, A> rv = newHashMap();
+    for (A a : map.keySet()) {
+      B b = map.get(a);
+      rv.put(b, a);
+    }
+    return rv;
+  }
 
-	public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
-		return new ConcurrentHashMap<K, V>();
-	}
+  public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+    return new ConcurrentHashMap<K, V>();
+  }
 }

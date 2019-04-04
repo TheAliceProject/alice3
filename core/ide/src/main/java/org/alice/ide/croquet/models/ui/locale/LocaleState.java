@@ -54,45 +54,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocaleState extends PreferenceMutableDataSingleSelectListState<Locale> {
-	private static class SingletonHolder {
-		private static LocaleState instance = new LocaleState();
-	}
+  private static class SingletonHolder {
+    private static LocaleState instance = new LocaleState();
+  }
 
-	public static LocaleState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static LocaleState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private LocaleState() {
-		super(
-				Application.APPLICATION_UI_GROUP, UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
-				0,
-				LocaleCodec.SINGLETON,
-				new Locale( "en", "US" ),
-				//				new java.util.Locale( "pt" ),
-				new Locale( "pt", "BR" ),
-				new Locale( "es" ),
-				//				new java.util.Locale( "fr" ),
-				//				new java.util.Locale( "fr", "BE" ),
-				//				new java.util.Locale( "it" ),
-				//				new java.util.Locale( "nl" ),
-				//				new java.util.Locale( "de" ),
-				new Locale( "el" ),
-				new Locale( "ro" ),
-				//				new java.util.Locale( "cs" ),
-				new Locale( "sl" ),
-				//				new java.util.Locale( "lt" ),
-				new Locale( "ru" ),
-				new Locale( "uk" ),
-				new Locale( "tr" ),
-				new Locale( "ar" ),
-				//				new java.util.Locale( "iw" ),
-				//				new java.util.Locale( "in" ),
-				new Locale( "zh", "CN" ),
-				new Locale( "ja" ),
-				new Locale( "bg" )
-		//				new java.util.Locale( "zh", "TW" ),
-		//				new java.util.Locale( "ko" ) 
-		);
-		this.addNewSchoolValueListener( e -> RestartRequiredOperation.getInstance().fire() );
-	}
+  private LocaleState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("b9ed4d66-2eef-4d7d-b816-55451b437721"), 0, LocaleCodec.SINGLETON, new Locale("en", "US"),
+          //        new java.util.Locale( "pt" ),
+          new Locale("pt", "BR"), new Locale("es"),
+          //        new java.util.Locale( "fr" ),
+          //        new java.util.Locale( "fr", "BE" ),
+          //        new java.util.Locale( "it" ),
+          //        new java.util.Locale( "nl" ),
+          //        new java.util.Locale( "de" ),
+          new Locale("el"), new Locale("ro"),
+          //        new java.util.Locale( "cs" ),
+          new Locale("sl"),
+          //        new java.util.Locale( "lt" ),
+          new Locale("ru"), new Locale("uk"), new Locale("tr"), new Locale("ar"),
+          //        new java.util.Locale( "iw" ),
+          //        new java.util.Locale( "in" ),
+          new Locale("zh", "CN"), new Locale("ja"), new Locale("bg")
+          //        new java.util.Locale( "zh", "TW" ),
+          //        new java.util.Locale( "ko" )
+    );
+    this.addNewSchoolValueListener(e -> RestartRequiredOperation.getInstance().fire());
+  }
 }

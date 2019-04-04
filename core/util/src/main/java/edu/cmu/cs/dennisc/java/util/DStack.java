@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public interface DStack<E> {
-	void push( E item );
+  void push(E item);
 
-	E pop();
+  E pop();
 
-	E peek();
+  E peek();
 
-	boolean isEmpty();
+  boolean isEmpty();
 
-	int size();
+  int size();
 
-	E get( int index );
+  E get(int index);
 
-	void clear();
+  void clear();
 
-	void setSize( int size );
+  void setSize(int size);
 }

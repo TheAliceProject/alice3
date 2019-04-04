@@ -50,13 +50,13 @@ import java.awt.Transparency;
  * @author Dennis Cosgrove
  */
 public abstract class TranslucentRenderer extends Renderer {
-	@Override
-	protected int getTransparency() {
-		return Transparency.TRANSLUCENT;
-	}
+  @Override
+  protected int getTransparency() {
+    return Transparency.TRANSLUCENT;
+  }
 
-	protected void clear( Graphics2D g2, int x, int y, int width, int height ) {
-		g2.setComposite( AlphaComposite.Clear );
-		g2.fillRect( x, y, width, height );
-	}
+  protected void clear(Graphics2D g2, int x, int y, int width, int height) {
+    g2.setComposite(AlphaComposite.Clear);
+    g2.fillRect(x, y, width, height);
+  }
 }

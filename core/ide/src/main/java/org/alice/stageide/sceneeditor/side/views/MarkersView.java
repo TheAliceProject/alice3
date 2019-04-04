@@ -83,204 +83,201 @@ import java.util.Map;
  */
 public abstract class MarkersView extends BorderPanel {
 
-	public static final Color BACKGROUND_COLOR = new Color( 173, 167, 208 );
-	public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB( Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+  public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
+  public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
+  public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0, 0.9, 0.8);
 
-	private static class MarkerView extends BooleanStateButton<AbstractButton> {
-		public MarkerView( BooleanState model ) {
-			super( model );
-		}
+  private static class MarkerView extends BooleanStateButton<AbstractButton> {
+    public MarkerView(BooleanState model) {
+      super(model);
+    }
 
-		@Override
-		protected AbstractButton createAwtComponent() {
-			JToggleButton rv = new JToggleButton() {
-				@Override
-				public Color getBackground() {
-					if( this.isSelected() ) {
-						return SELECTED_COLOR;
-					} else {
-						return UNSELECTED_COLOR;
-					}
-				}
-			};
+    @Override
+    protected AbstractButton createAwtComponent() {
+      JToggleButton rv = new JToggleButton() {
+        @Override
+        public Color getBackground() {
+          if (this.isSelected()) {
+            return SELECTED_COLOR;
+          } else {
+            return UNSELECTED_COLOR;
+          }
+        }
+      };
 
-			//rv.setLayout( new java.awt.BorderLayout() );
-			//rv.add( new javax.swing.JLabel( "hello" ), java.awt.BorderLayout.LINE_END );
-			return rv;
-		}
-	}
+      //rv.setLayout( new java.awt.BorderLayout() );
+      //rv.add( new javax.swing.JLabel( "hello" ), java.awt.BorderLayout.LINE_END );
+      return rv;
+    }
+  }
 
-	private class MarkerListView extends CustomRadioButtons<UserField> {
-		private class MarkerPopupButton extends PopupButton {
-			private final UserField field;
+  private class MarkerListView extends CustomRadioButtons<UserField> {
+    private class MarkerPopupButton extends PopupButton {
+      private final UserField field;
 
-			public MarkerPopupButton( UserField field ) {
-				super( FieldMenuModel.getInstance( field ).getPopupPrepModel() );
-				this.field = field;
-			}
+      public MarkerPopupButton(UserField field) {
+        super(FieldMenuModel.getInstance(field).getPopupPrepModel());
+        this.field = field;
+      }
 
-			private boolean isFieldSelected() {
-				return MarkerListView.this.getModel().getValue() == field;
-			}
+      private boolean isFieldSelected() {
+        return MarkerListView.this.getModel().getValue() == field;
+      }
 
-			@Override
-			protected AbstractButton createSwingButton() {
-				return new JPopupButton() {
-					@Override
-					public void paint( Graphics g ) {
-						Graphics2D g2 = (Graphics2D)g;
-						boolean isAlphaDesired = isFieldSelected();
-						Composite prevComposite = g2.getComposite();
-						if( isAlphaDesired ) {
-							//pass
-						} else {
-							g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 0.2f ) );
-						}
-						try {
-							super.paint( g );
-						} finally {
-							if( isAlphaDesired ) {
-								//pass
-							} else {
-								g2.setComposite( prevComposite );
-							}
-						}
+      @Override
+      protected AbstractButton createSwingButton() {
+        return new JPopupButton() {
+          @Override
+          public void paint(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            boolean isAlphaDesired = isFieldSelected();
+            Composite prevComposite = g2.getComposite();
+            if (isAlphaDesired) {
+              //pass
+            } else {
+              g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
+            }
+            try {
+              super.paint(g);
+            } finally {
+              if (isAlphaDesired) {
+                //pass
+              } else {
+                g2.setComposite(prevComposite);
+              }
+            }
 
-					}
+          }
 
-					//					@Override
-					//					public boolean contains( int x, int y ) {
-					//						if( isFieldSelected() ) {
-					//							return super.contains( x, y );
-					//						} else {
-					//							return false;
-					//						}
-					//					}
-				};
-			}
-		}
+          //          @Override
+          //          public boolean contains( int x, int y ) {
+          //            if( isFieldSelected() ) {
+          //              return super.contains( x, y );
+          //            } else {
+          //              return false;
+          //            }
+          //          }
+        };
+      }
+    }
 
-		private final Map<UserField, MarkerPopupButton> mapFieldToPopupButton = Maps.newHashMap();
+    private final Map<UserField, MarkerPopupButton> mapFieldToPopupButton = Maps.newHashMap();
 
-		private final ValueListener<UserField> selectionListener = new ValueListener<UserField>() {
-			@Override
-			public void valueChanged( ValueEvent<UserField> e ) {
-				MarkersView.this.repaint();
-			}
-		};
+    private final ValueListener<UserField> selectionListener = new ValueListener<UserField>() {
+      @Override
+      public void valueChanged(ValueEvent<UserField> e) {
+        MarkersView.this.repaint();
+      }
+    };
 
-		public MarkerListView( RefreshableDataSingleSelectListState<UserField> model ) {
-			super( model );
-		}
+    public MarkerListView(RefreshableDataSingleSelectListState<UserField> model) {
+      super(model);
+    }
 
-		@Override
-		protected void handleAddedTo( AwtComponentView<?> parent ) {
-			super.handleAddedTo( parent );
-			this.getModel().addNewSchoolValueListener( this.selectionListener );
-		}
+    @Override
+    protected void handleAddedTo(AwtComponentView<?> parent) {
+      super.handleAddedTo(parent);
+      this.getModel().addNewSchoolValueListener(this.selectionListener);
+    }
 
-		@Override
-		protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-			this.getModel().removeNewSchoolValueListener( this.selectionListener );
-			super.handleRemovedFrom( parent );
-		}
+    @Override
+    protected void handleRemovedFrom(AwtComponentView<?> parent) {
+      this.getModel().removeNewSchoolValueListener(this.selectionListener);
+      super.handleRemovedFrom(parent);
+    }
 
-		@Override
-		protected LayoutManager createLayoutManager( JPanel jPanel ) {
-			return new MigLayout();
-		}
+    @Override
+    protected LayoutManager createLayoutManager(JPanel jPanel) {
+      return new MigLayout();
+    }
 
-		@Override
-		protected void removeAllDetails() {
-			this.internalRemoveAllComponents();
-		}
+    @Override
+    protected void removeAllDetails() {
+      this.internalRemoveAllComponents();
+    }
 
-		@Override
-		protected void addPrologue( int count ) {
-		}
+    @Override
+    protected void addPrologue(int count) {
+    }
 
-		@Override
-		protected void addItem( UserField item, BooleanStateButton<?> button ) {
-			this.internalAddComponent( this.mapFieldToPopupButton.get( item ) );
-			this.internalAddComponent( button, "wrap, grow" );
-		}
+    @Override
+    protected void addItem(UserField item, BooleanStateButton<?> button) {
+      this.internalAddComponent(this.mapFieldToPopupButton.get(item));
+      this.internalAddComponent(button, "wrap, grow");
+    }
 
-		@Override
-		protected void addEpilogue() {
-		}
+    @Override
+    protected void addEpilogue() {
+    }
 
-		@Override
-		protected BooleanStateButton<?> createButtonForItemSelectedState( final UserField item, final BooleanState itemSelectedState ) {
-			itemSelectedState.setIconForBothTrueAndFalse( MarkerUtilities.getIconForMarkerField( item ) );
+    @Override
+    protected BooleanStateButton<?> createButtonForItemSelectedState(final UserField item, final BooleanState itemSelectedState) {
+      itemSelectedState.setIconForBothTrueAndFalse(MarkerUtilities.getIconForMarkerField(item));
 
-			item.name.addPropertyListener( new PropertyListener() {
-				@Override
-				public void propertyChanging( PropertyEvent e ) {
-				}
+      item.name.addPropertyListener(new PropertyListener() {
+        @Override
+        public void propertyChanging(PropertyEvent e) {
+        }
 
-				@Override
-				public void propertyChanged( PropertyEvent e ) {
-					itemSelectedState.setTextForBothTrueAndFalse( item.name.getValue() );
-				}
-			} );
+        @Override
+        public void propertyChanged(PropertyEvent e) {
+          itemSelectedState.setTextForBothTrueAndFalse(item.name.getValue());
+        }
+      });
 
-			MarkerView rv = new MarkerView( itemSelectedState );
-			rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
-			this.mapFieldToPopupButton.put( item, new MarkerPopupButton( item ) );
-			return rv;
-		}
-	}
+      MarkerView rv = new MarkerView(itemSelectedState);
+      rv.setHorizontalAlignment(HorizontalAlignment.LEADING);
+      this.mapFieldToPopupButton.put(item, new MarkerPopupButton(item));
+      return rv;
+    }
+  }
 
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			unselectMarker();
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      unselectMarker();
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 
-	public MarkersView( MarkersToolPalette<?> composite ) {
-		super( composite );
-		this.addPageStartComponent( new FlowPanel( FlowPanel.Alignment.LEADING,
-				composite.getMoveToMarkerOperation().createButton(),
-				composite.getMoveMarkerToOperation().createButton() ) );
-		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
-		this.addPageEndComponent( new FlowPanel( FlowPanel.Alignment.LEADING,
-				composite.getAddOperation().createButton() ) );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
-	}
+  public MarkersView(MarkersToolPalette<?> composite) {
+    super(composite);
+    this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
+    this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
+    this.addPageEndComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getAddOperation().createButton()));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor());
+  }
 
-	private void unselectMarker() {
-		Logger.outln( "unselectMarker" );
-		MarkersToolPalette<?> composite = (MarkersToolPalette<?>)this.getComposite();
-		composite.getMarkerListState().clearSelection();
-	}
+  private void unselectMarker() {
+    Logger.outln("unselectMarker");
+    MarkersToolPalette<?> composite = (MarkersToolPalette<?>) this.getComposite();
+    composite.getMarkerListState().clearSelection();
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		super.handleAddedTo( parent );
-		this.addMouseListener( this.mouseListener );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    super.handleAddedTo(parent);
+    this.addMouseListener(this.mouseListener);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		this.removeMouseListener( this.mouseListener );
-		super.handleRemovedFrom( parent );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    this.removeMouseListener(this.mouseListener);
+    super.handleRemovedFrom(parent);
+  }
 }

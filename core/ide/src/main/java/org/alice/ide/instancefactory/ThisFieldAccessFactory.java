@@ -61,82 +61,82 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory extends AbstractInstanceFactory {
-	private static Map<UserField, ThisFieldAccessFactory> map = Maps.newHashMap();
+  private static Map<UserField, ThisFieldAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized ThisFieldAccessFactory getInstance( UserField field ) {
-		assert field != null;
-		ThisFieldAccessFactory rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisFieldAccessFactory( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized ThisFieldAccessFactory getInstance(UserField field) {
+    assert field != null;
+    ThisFieldAccessFactory rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ThisFieldAccessFactory(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private ThisFieldAccessFactory( UserField field ) {
-		super( field.name );
-		this.field = field;
-	}
+  private ThisFieldAccessFactory(UserField field) {
+    super(field.name);
+    this.field = field;
+  }
 
-	@Override
-	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		AbstractType<?, ?, ?> fieldDeclaringType = this.field.getDeclaringType();
-		if( fieldDeclaringType != null ) {
-			return fieldDeclaringType.isAssignableFrom( type );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    AbstractType<?, ?, ?> fieldDeclaringType = this.field.getDeclaringType();
+    if (fieldDeclaringType != null) {
+      return fieldDeclaringType.isAssignableFrom(type);
+    } else {
+      return false;
+    }
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	private FieldAccess createFieldAccess( Expression expression ) {
-		return new FieldAccess( expression, this.field );
-	}
+  private FieldAccess createFieldAccess(Expression expression) {
+    return new FieldAccess(expression, this.field);
+  }
 
-	@Override
-	public FieldAccess createTransientExpression() {
-		return this.createFieldAccess( createTransientThisExpression() );
-	}
+  @Override
+  public FieldAccess createTransientExpression() {
+    return this.createFieldAccess(createTransientThisExpression());
+  }
 
-	@Override
-	public FieldAccess createExpression() {
-		return this.createFieldAccess( createThisExpression() );
-	}
+  @Override
+  public FieldAccess createExpression() {
+    return this.createFieldAccess(createThisExpression());
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.field.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.field.getValueType();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		IconFactory fallbackIconFactory = IconFactoryManager.getIconFactoryForField( this.field );
-		if( ( fallbackIconFactory != null ) && ( fallbackIconFactory != EmptyIconFactory.getInstance() ) ) {
-			//pass;
-		} else {
-			fallbackIconFactory = super.getIconFactory();
-		}
+  @Override
+  public IconFactory getIconFactory() {
+    IconFactory fallbackIconFactory = IconFactoryManager.getIconFactoryForField(this.field);
+    if ((fallbackIconFactory != null) && (fallbackIconFactory != EmptyIconFactory.getInstance())) {
+      //pass;
+    } else {
+      fallbackIconFactory = super.getIconFactory();
+    }
 
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		if( projectDocumentFrame != null ) {
-			return projectDocumentFrame.getIconFactoryManager().getIconFactory( this.field, fallbackIconFactory );
-		} else {
-			return fallbackIconFactory;
-		}
-	}
+    ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+    if (projectDocumentFrame != null) {
+      return projectDocumentFrame.getIconFactoryManager().getIconFactory(this.field, fallbackIconFactory);
+    } else {
+      return fallbackIconFactory;
+    }
+  }
 
-	@Override
-	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "this." );
-		sb.append( this.field.getName() );
-		return sb.toString();
-	}
+  @Override
+  public String getRepr() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("this.");
+    sb.append(this.field.getName());
+    return sb.toString();
+  }
 }

@@ -47,35 +47,35 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestBootstrap {
-	public static void main( String[] args ) {
-		org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
-		org.lgna.project.ast.NamedUserType programType;
-		if( template.isRoom() ) {
-			System.err.println( "ROOM not supported. Non-free assets not enabled." );
-			return;
-			//			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
-		} else {
-			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
-		}
-		//org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.SGround.SurfaceAppearance.GRASS, null, Double.NaN, org.lgna.story.Color.WHITE, null );
-		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		vm.registerAbstractClassAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
-		if( false ) {
-			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-			//			vm.ENTRY_POINT_invoke( null, programType.methods.get( 1 ) );
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			System.err.println();
-		} else {
-			vm.ENTRY_POINT_invoke( null, org.lgna.project.ProgramTypeUtilities.getMainMethod( programType ), (Object)args );
-		}
-	}
+  public static void main(String[] args) {
+    org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+    org.lgna.project.ast.NamedUserType programType;
+    if (template.isRoom()) {
+      System.err.println("ROOM not supported. Non-free assets not enabled.");
+      return;
+      //      programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
+    } else {
+      programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+    }
+    //org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.SGround.SurfaceAppearance.GRASS, null, Double.NaN, org.lgna.story.Color.WHITE, null );
+    org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+    vm.registerAbstractClassAdapter(org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class);
+    vm.registerAbstractClassAdapter(org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class);
+    if (false) {
+      org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance(programType);
+      vm.ENTRY_POINT_invoke(programInstance, programType.findMethod("initializeInFrame", String[].class), (Object) args);
+      System.err.println();
+      System.err.println();
+      System.err.println();
+      System.err.println();
+      vm.ENTRY_POINT_invoke(programInstance, programType.methods.get(0));
+      //      vm.ENTRY_POINT_invoke( null, programType.methods.get( 1 ) );
+      System.err.println();
+      System.err.println();
+      System.err.println();
+      System.err.println();
+    } else {
+      vm.ENTRY_POINT_invoke(null, org.lgna.project.ProgramTypeUtilities.getMainMethod(programType), (Object) args);
+    }
+  }
 }

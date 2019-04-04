@@ -50,58 +50,58 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public abstract class Renderer {
-	private BufferedImage m_bufferedImage = null;
+  private BufferedImage m_bufferedImage = null;
 
-	protected void createBufferedImageIfNecessary( GraphicsConfiguration gc, int width, int height, int transparency ) {
-		if( m_bufferedImage != null ) {
-			if( ( m_bufferedImage.getWidth() < width ) || ( m_bufferedImage.getHeight() < height ) || ( m_bufferedImage.getTransparency() != transparency ) ) {
-				m_bufferedImage = null;
-			}
-		}
-		if( m_bufferedImage != null ) {
-			//pass
-		} else {
-			m_bufferedImage = gc.createCompatibleImage( width, height, transparency );
-		}
-	}
+  protected void createBufferedImageIfNecessary(GraphicsConfiguration gc, int width, int height, int transparency) {
+    if (m_bufferedImage != null) {
+      if ((m_bufferedImage.getWidth() < width) || (m_bufferedImage.getHeight() < height) || (m_bufferedImage.getTransparency() != transparency)) {
+        m_bufferedImage = null;
+      }
+    }
+    if (m_bufferedImage != null) {
+      //pass
+    } else {
+      m_bufferedImage = gc.createCompatibleImage(width, height, transparency);
+    }
+  }
 
-	protected BufferedImage getBufferedImage() {
-		return m_bufferedImage;
-	}
+  protected BufferedImage getBufferedImage() {
+    return m_bufferedImage;
+  }
 
-	protected int getAllocatedWidth() {
-		if( m_bufferedImage != null ) {
-			return m_bufferedImage.getWidth();
-		} else {
-			return 0;
-		}
-	}
+  protected int getAllocatedWidth() {
+    if (m_bufferedImage != null) {
+      return m_bufferedImage.getWidth();
+    } else {
+      return 0;
+    }
+  }
 
-	protected int getAllocatedHeight() {
-		if( m_bufferedImage != null ) {
-			return m_bufferedImage.getHeight();
-		} else {
-			return 0;
-		}
-	}
+  protected int getAllocatedHeight() {
+    if (m_bufferedImage != null) {
+      return m_bufferedImage.getHeight();
+    } else {
+      return 0;
+    }
+  }
 
-	protected abstract int getWidth();
+  protected abstract int getWidth();
 
-	protected abstract int getHeight();
+  protected abstract int getHeight();
 
-	protected abstract int getTransparency();
+  protected abstract int getTransparency();
 
-	public abstract void renderIntoBufferedImage( GraphicsConfiguration gc );
+  public abstract void renderIntoBufferedImage(GraphicsConfiguration gc);
 
-	public abstract void paintBackground( Graphics2D g2 );
+  public abstract void paintBackground(Graphics2D g2);
 
-	public void paint( Graphics2D g2 ) {
-		paint( g2, getWidth(), getHeight() );
-	}
+  public void paint(Graphics2D g2) {
+    paint(g2, getWidth(), getHeight());
+  }
 
-	protected final void paint( Graphics2D g2, int width, int height ) {
-		paintBackground( g2 );
-		renderIntoBufferedImage( g2.getDeviceConfiguration() );
-		g2.drawImage( m_bufferedImage, 0, 0, width, height, null );
-	}
+  protected final void paint(Graphics2D g2, int width, int height) {
+    paintBackground(g2);
+    renderIntoBufferedImage(g2.getDeviceConfiguration());
+    g2.drawImage(m_bufferedImage, 0, 0, width, height, null);
+  }
 }

@@ -50,24 +50,19 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public enum MoveDirection {
-	LEFT( Vector3.createNegativeXAxis() ),
-	RIGHT( Vector3.createPositiveXAxis() ),
-	UP( Vector3.createPositiveYAxis() ),
-	DOWN( Vector3.createNegativeYAxis() ),
-	FORWARD( Vector3.createNegativeZAxis() ),
-	BACKWARD( Vector3.createPositiveZAxis() );
+  LEFT(Vector3.createNegativeXAxis()), RIGHT(Vector3.createPositiveXAxis()), UP(Vector3.createPositiveYAxis()), DOWN(Vector3.createNegativeYAxis()), FORWARD(Vector3.createNegativeZAxis()), BACKWARD(Vector3.createPositiveZAxis());
 
-	private final Vector3 axis;
+  private final Vector3 axis;
 
-	private MoveDirection( Vector3 axis ) {
-		this.axis = axis;
-	}
+  private MoveDirection(Vector3 axis) {
+    this.axis = axis;
+  }
 
-	/* package-private */Vector3 getAxis() {
-		return this.axis;
-	}
+  /* package-private */Vector3 getAxis() {
+    return this.axis;
+  }
 
-	/* package-private */Point3 createTranslation( double scalar ) {
-		return new Point3( this.axis.x * scalar, this.axis.y * scalar, this.axis.z * scalar );
-	}
+  /* package-private */Point3 createTranslation(double scalar) {
+    return new Point3(this.axis.x * scalar, this.axis.y * scalar, this.axis.z * scalar);
+  }
 }

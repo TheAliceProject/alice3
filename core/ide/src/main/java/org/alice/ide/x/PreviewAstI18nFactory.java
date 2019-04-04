@@ -53,26 +53,26 @@ import org.lgna.project.ast.StatementListProperty;
  * @author Dennis Cosgrove
  */
 public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
-	private static class SingletonHolder {
-		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
+  }
 
-	public static PreviewAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PreviewAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PreviewAstI18nFactory() {
-	}
+  private PreviewAstI18nFactory() {
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return null;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+    return null;
+  }
 
-	@Override
-	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
-		//todo
-		dragModel = null;
-		return super.createStatementPane( dragModel, statement, statementListProperty );
-	}
+  @Override
+  public AbstractStatementPane createStatementPane(DragModel dragModel, Statement statement, StatementListProperty statementListProperty) {
+    //todo
+    dragModel = null;
+    return super.createStatementPane(dragModel, statement, statementListProperty);
+  }
 }

@@ -63,86 +63,86 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
-		this.setName( "Delete" );
-	}
+  public DeleteParameterOperation(NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(UUID.fromString("853fb6a3-ea7b-4575-93d6-547f687a7033"), parametersProperty, parameter);
+    this.setName("Delete");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		final UserMethod method = ClassUtilities.getInstance( this.getCode(), UserMethod.class );
-		final int index = method.requiredParameters.indexOf( this.getParameter() );
-		if( ( method != null ) && ( index >= 0 ) ) {
-			IsInstanceCrawler<ParameterAccess> crawler = new IsInstanceCrawler<ParameterAccess>( ParameterAccess.class ) {
-				@Override
-				protected boolean isAcceptable( ParameterAccess parameterAccess ) {
-					return parameterAccess.parameter.getValue() == getParameter();
-				}
-			};
-			method.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			List<ParameterAccess> parameterAccesses = crawler.getList();
-			final int N_ACCESSES = parameterAccesses.size();
+  @Override
+  protected void perform(UserActivity activity) {
+    final UserMethod method = ClassUtilities.getInstance(this.getCode(), UserMethod.class);
+    final int index = method.requiredParameters.indexOf(this.getParameter());
+    if ((method != null) && (index >= 0)) {
+      IsInstanceCrawler<ParameterAccess> crawler = new IsInstanceCrawler<ParameterAccess>(ParameterAccess.class) {
+        @Override
+        protected boolean isAcceptable(ParameterAccess parameterAccess) {
+          return parameterAccess.parameter.getValue() == getParameter();
+        }
+      };
+      method.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+      List<ParameterAccess> parameterAccesses = crawler.getList();
+      final int N_ACCESSES = parameterAccesses.size();
 
-			List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations( method );
-			final int N_INVOCATIONS = methodInvocations.size();
-			if( N_ACCESSES > 0 ) {
-				StringBuffer sb = new StringBuffer();
-				sb.append( "<html><body>There " );
-				if( N_ACCESSES == 1 ) {
-					sb.append( "is 1 access" );
-				} else {
-					sb.append( "are " );
-					sb.append( N_ACCESSES );
-					sb.append( " accesses" );
-				}
-				sb.append( " to this parameter.<br>You must remove the " );
-				if( N_ACCESSES == 1 ) {
-					sb.append( "access" );
-				} else {
-					sb.append( "accesses" );
-				}
-				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				Dialogs.showInfo( sb.toString() );
-				activity.cancel();
-			} else {
-				if( N_INVOCATIONS > 0 ) {
-					String codeText;
-					if( method.isProcedure() ) {
-						codeText = "procedure";
-					} else {
-						codeText = "function";
-					}
-					StringBuffer sb = new StringBuffer();
-					sb.append( "<html><body>There " );
-					if( N_INVOCATIONS == 1 ) {
-						sb.append( "is 1 invocation" );
-					} else {
-						sb.append( "are " );
-						sb.append( N_INVOCATIONS );
-						sb.append( " invocations" );
-					}
-					sb.append( " to this " );
-					sb.append( codeText );
-					sb.append( " in your program.<br>Deleting this parameter will also delete the arguments from those " );
-					if( N_INVOCATIONS == 1 ) {
-						sb.append( "invocation" );
-					} else {
-						sb.append( "invocations" );
-					}
-					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					if ( !Dialogs.confirm( "Delete Parameter", sb.toString() ) ) {
-						activity.cancel();
-					}
-				}
-			}
-			if( activity.isCanceled() ) {
-				//pass
-			} else {
-				activity.commitAndInvokeDo( new DeleteParameterEdit( activity, this.getCode(), this.getParameter() ) );
-			}
-		} else {
-			Logger.todo( "cancel" );
-			activity.cancel();
-		}
-	}
+      List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations(method);
+      final int N_INVOCATIONS = methodInvocations.size();
+      if (N_ACCESSES > 0) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<html><body>There ");
+        if (N_ACCESSES == 1) {
+          sb.append("is 1 access");
+        } else {
+          sb.append("are ");
+          sb.append(N_ACCESSES);
+          sb.append(" accesses");
+        }
+        sb.append(" to this parameter.<br>You must remove the ");
+        if (N_ACCESSES == 1) {
+          sb.append("access");
+        } else {
+          sb.append("accesses");
+        }
+        sb.append(" before you may delete the parameter.<br>Canceling.</body></html>");
+        Dialogs.showInfo(sb.toString());
+        activity.cancel();
+      } else {
+        if (N_INVOCATIONS > 0) {
+          String codeText;
+          if (method.isProcedure()) {
+            codeText = "procedure";
+          } else {
+            codeText = "function";
+          }
+          StringBuffer sb = new StringBuffer();
+          sb.append("<html><body>There ");
+          if (N_INVOCATIONS == 1) {
+            sb.append("is 1 invocation");
+          } else {
+            sb.append("are ");
+            sb.append(N_INVOCATIONS);
+            sb.append(" invocations");
+          }
+          sb.append(" to this ");
+          sb.append(codeText);
+          sb.append(" in your program.<br>Deleting this parameter will also delete the arguments from those ");
+          if (N_INVOCATIONS == 1) {
+            sb.append("invocation");
+          } else {
+            sb.append("invocations");
+          }
+          sb.append("<br>Would you like to continue with the deletion?</body></html>");
+          if (!Dialogs.confirm("Delete Parameter", sb.toString())) {
+            activity.cancel();
+          }
+        }
+      }
+      if (activity.isCanceled()) {
+        //pass
+      } else {
+        activity.commitAndInvokeDo(new DeleteParameterEdit(activity, this.getCode(), this.getParameter()));
+      }
+    } else {
+      Logger.todo("cancel");
+      activity.cancel();
+    }
+  }
 }

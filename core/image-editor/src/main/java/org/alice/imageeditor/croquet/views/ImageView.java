@@ -51,16 +51,16 @@ import java.awt.Image;
  * @author Dennis Cosgrove
  */
 public class ImageView extends SwingComponentView<JImageView> {
-	@Override
-	protected JImageView createAwtComponent() {
-		return new JImageView();
-	}
+  @Override
+  protected JImageView createAwtComponent() {
+    return new JImageView();
+  }
 
-	public Image getImage() {
-		return this.getAwtComponent().getImage();
-	}
+  public Image getImage() {
+    return this.getAwtComponent().getImage();
+  }
 
-	public void setImage( Image image ) {
-		this.getAwtComponent().setImage( image );
-	}
+  public void setImage(Image image) {
+    this.getAwtComponent().setImage(image);
+  }
 }

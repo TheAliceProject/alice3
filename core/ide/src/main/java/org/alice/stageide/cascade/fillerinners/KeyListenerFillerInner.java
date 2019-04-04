@@ -52,12 +52,12 @@ import org.lgna.story.event.KeyPressListener;
 import java.util.List;
 
 public class KeyListenerFillerInner extends ExpressionFillerInner {
-	public KeyListenerFillerInner() {
-		super( KeyPressListener.class );
-	}
+  public KeyListenerFillerInner() {
+    super(KeyPressListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( KeyAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(KeyAdapterFillIn.getInstance());
+  }
 }

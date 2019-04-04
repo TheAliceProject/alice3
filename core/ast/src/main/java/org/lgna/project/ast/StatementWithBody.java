@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface StatementWithBody extends Node { //todo: extends interface Statement
-	public NodeProperty<BlockStatement> getBodyProperty();
+  public NodeProperty<BlockStatement> getBodyProperty();
 }

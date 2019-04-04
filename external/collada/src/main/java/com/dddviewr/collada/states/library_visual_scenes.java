@@ -8,16 +8,16 @@ import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.visualscene.LibraryVisualScenes;
 
 public class library_visual_scenes extends State {
-	protected LibraryVisualScenes library = new LibraryVisualScenes();
+  protected LibraryVisualScenes library = new LibraryVisualScenes();
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
 
-		Collada collada = ((COLLADA) getParent()).getCollada();
-		collada.setLibraryVisualScenes(this.library);
-	}
+    Collada collada = ((COLLADA) getParent()).getCollada();
+    collada.setLibraryVisualScenes(this.library);
+  }
 
-	public LibraryVisualScenes getLibrary() {
-		return this.library;
-	}
+  public LibraryVisualScenes getLibrary() {
+    return this.library;
+  }
 }

@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty;
 
 /**
  * defined by a regular pyramidal frustum
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class FrustumPerspectiveCamera extends AbstractPerspectiveCamera {
-	public final ClippedZPlaneProperty picturePlane = new ClippedZPlaneProperty( this, new ClippedZPlane() );
+  public final ClippedZPlaneProperty picturePlane = new ClippedZPlaneProperty(this, new ClippedZPlane());
 }

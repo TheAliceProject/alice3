@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitHipJersey implements MaleTeenFullBodyOutfit {
-	BLACK,
-	RED,
-	BLUE;
+  BLACK, RED, BLUE
 
 }

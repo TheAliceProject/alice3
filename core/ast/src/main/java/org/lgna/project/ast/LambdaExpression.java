@@ -47,37 +47,37 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class LambdaExpression extends Expression {
-	public LambdaExpression() {
-	}
+  public LambdaExpression() {
+  }
 
-	public LambdaExpression( Lambda value ) {
-		this.value.setValue( value );
-	}
+  public LambdaExpression(Lambda value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		Lambda lambda = this.value.getValue();
-		if( lambda != null ) {
-			return lambda.getReturnType();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    Lambda lambda = this.value.getValue();
+    if (lambda != null) {
+      return lambda.getReturnType();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		Lambda lambda = this.value.getValue();
-		if( lambda instanceof UserLambda ) {
-			UserLambda userLambda = (UserLambda)lambda;
-			userLambda.appendCode( generator );
-		}
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    Lambda lambda = this.value.getValue();
+    if (lambda instanceof UserLambda) {
+      UserLambda userLambda = (UserLambda) lambda;
+      userLambda.appendCode(generator);
+    }
+  }
 
-	public final DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
-		//todo?
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
+  public final DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>(this) {
+    //todo?
+    @Override
+    public boolean isReference() {
+      return false;
+    }
+  };
 }

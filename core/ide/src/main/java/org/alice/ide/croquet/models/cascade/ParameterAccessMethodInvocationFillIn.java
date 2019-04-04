@@ -55,26 +55,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static ParameterAccessMethodInvocationFillIn getInstance( UserParameter parameter, AbstractMethod method ) {
-		assert parameter != null;
-		assert method != null;
-		return mapToMap.getInitializingIfAbsent( parameter, method, new MapToMap.Initializer<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
-			@Override
-			public ParameterAccessMethodInvocationFillIn initialize( UserParameter parameter, AbstractMethod method ) {
-				return new ParameterAccessMethodInvocationFillIn( parameter, method );
-			}
-		} );
-	}
+  public static ParameterAccessMethodInvocationFillIn getInstance(UserParameter parameter, AbstractMethod method) {
+    assert parameter != null;
+    assert method != null;
+    return mapToMap.getInitializingIfAbsent(parameter, method, new MapToMap.Initializer<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
+      @Override
+      public ParameterAccessMethodInvocationFillIn initialize(UserParameter parameter, AbstractMethod method) {
+        return new ParameterAccessMethodInvocationFillIn(parameter, method);
+      }
+    });
+  }
 
-	private ParameterAccessMethodInvocationFillIn( UserParameter parameter, AbstractMethod method ) {
-		super( UUID.fromString( "356231af-d038-417c-a58b-f4ad3d77a743" ), new ParameterAccess( parameter ), method );
-	}
+  private ParameterAccessMethodInvocationFillIn(UserParameter parameter, AbstractMethod method) {
+    super(UUID.fromString("356231af-d038-417c-a58b-f4ad3d77a743"), new ParameterAccess(parameter), method);
+  }
 
-	@Override
-	protected Expression createExpression( Expression transientValueExpression ) {
-		ParameterAccess transientValueParameterAccess = (ParameterAccess)transientValueExpression;
-		return new ParameterAccess( transientValueParameterAccess.parameter.getValue() );
-	}
+  @Override
+  protected Expression createExpression(Expression transientValueExpression) {
+    ParameterAccess transientValueParameterAccess = (ParameterAccess) transientValueExpression;
+    return new ParameterAccess(transientValueParameterAccess.parameter.getValue());
+  }
 }

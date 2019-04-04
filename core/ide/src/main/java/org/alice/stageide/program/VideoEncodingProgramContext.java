@@ -61,86 +61,86 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
-	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
-	private static final Dimension SIZE = new Dimension( 640, 360 );
+  private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
+  private static final Dimension SIZE = new Dimension(640, 360);
 
-	private static OnscreenRenderTarget<?> createOnscreenRenderTarget() {
-		RenderCapabilities requestedCapabilities = new RenderCapabilities.Builder().build();
-		return IS_CAPTURE_READY_FOR_PRIME_TIME ? new GlrCaptureFauxOnscreenRenderTarget( SIZE, null, requestedCapabilities ) : GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget( requestedCapabilities );
-	}
+  private static OnscreenRenderTarget<?> createOnscreenRenderTarget() {
+    RenderCapabilities requestedCapabilities = new RenderCapabilities.Builder().build();
+    return IS_CAPTURE_READY_FOR_PRIME_TIME ? new GlrCaptureFauxOnscreenRenderTarget(SIZE, null, requestedCapabilities) : GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget(requestedCapabilities);
+  }
 
-	public static class FrameBasedProgramImp extends ProgramImp {
-		private FrameBasedAnimator animator = new FrameBasedAnimator();
+  public static class FrameBasedProgramImp extends ProgramImp {
+    private FrameBasedAnimator animator = new FrameBasedAnimator();
 
-		public FrameBasedProgramImp( SProgram abstraction ) {
-			super( abstraction, createOnscreenRenderTarget() );
-		}
+    public FrameBasedProgramImp(SProgram abstraction) {
+      super(abstraction, createOnscreenRenderTarget());
+    }
 
-		@Override
-		public FrameBasedAnimator getAnimator() {
-			return this.animator;
-		}
+    @Override
+    public FrameBasedAnimator getAnimator() {
+      return this.animator;
+    }
 
-		public void setAnimator( FrameBasedAnimator animator ) {
-			this.animator = animator;
-		}
+    public void setAnimator(FrameBasedAnimator animator) {
+      this.animator = animator;
+    }
 
-		private boolean isAnimating;
+    private boolean isAnimating;
 
-		class AnimatorThread extends Thread {
-			@Override
-			public void run() {
-				while( isAnimating ) {
-					animator.update();
-					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
-				}
-			}
-		}
+    class AnimatorThread extends Thread {
+      @Override
+      public void run() {
+        while (isAnimating) {
+          animator.update();
+          //edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1 );
+        }
+      }
+    }
 
-		@Override
-		public void startAnimator() {
-			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
-				this.isAnimating = true;
-				new AnimatorThread().start();
-			} else {
-				super.startAnimator();
-			}
-		}
+    @Override
+    public void startAnimator() {
+      if (IS_CAPTURE_READY_FOR_PRIME_TIME) {
+        this.isAnimating = true;
+        new AnimatorThread().start();
+      } else {
+        super.startAnimator();
+      }
+    }
 
-		@Override
-		public void stopAnimator() {
-			if( IS_CAPTURE_READY_FOR_PRIME_TIME ) {
-				this.isAnimating = false;
-			} else {
-				super.stopAnimator();
-			}
-		}
-	}
+    @Override
+    public void stopAnimator() {
+      if (IS_CAPTURE_READY_FOR_PRIME_TIME) {
+        this.isAnimating = false;
+      } else {
+        super.stopAnimator();
+      }
+    }
+  }
 
-	public VideoEncodingProgramContext( NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
-	}
+  public VideoEncodingProgramContext(NamedUserType programType, double frameRate) {
+    super(programType);
+    this.getProgramImp().getAnimator().setFramesPerSecond(frameRate);
+  }
 
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
-	}
+  public VideoEncodingProgramContext(double frameRate) {
+    this(getUpToDateProgramTypeFromActiveIde(), frameRate);
+  }
 
-	@Override
-	public FrameBasedProgramImp getProgramImp() {
-		return (FrameBasedProgramImp)super.getProgramImp();
-	}
+  @Override
+  public FrameBasedProgramImp getProgramImp() {
+    return (FrameBasedProgramImp) super.getProgramImp();
+  }
 
-	@Override
-	protected UserInstance createProgramInstance( NamedUserType programType ) {
-		ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
-		return super.createProgramInstance( programType );
-	}
+  @Override
+  protected UserInstance createProgramInstance(NamedUserType programType) {
+    ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance(FrameBasedProgramImp.class);
+    return super.createProgramInstance(programType);
+  }
 
-	//todo: add String[] args?
-	public void initializeInContainer( Container container ) {
-		Component awtComponent = this.getProgramImp().getOnscreenRenderTarget().getAwtComponent();
-		awtComponent.setSize( SIZE );
-		container.add( awtComponent );
-	}
+  //todo: add String[] args?
+  public void initializeInContainer(Container container) {
+    Component awtComponent = this.getProgramImp().getOnscreenRenderTarget().getAwtComponent();
+    awtComponent.setSize(SIZE);
+    container.add(awtComponent);
+  }
 }

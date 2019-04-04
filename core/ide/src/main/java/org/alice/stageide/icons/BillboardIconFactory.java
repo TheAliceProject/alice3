@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class BillboardIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static BillboardIconFactory instance = new BillboardIconFactory();
-	}
+  private static class SingletonHolder {
+    private static BillboardIconFactory instance = new BillboardIconFactory();
+  }
 
-	public static BillboardIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BillboardIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BillboardIconFactory() {
-	}
+  private BillboardIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new BillboardIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new BillboardIcon(size);
+  }
 }

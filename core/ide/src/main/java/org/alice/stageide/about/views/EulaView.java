@@ -53,10 +53,10 @@ import org.lgna.croquet.views.ScrollPane;
  * @author Dennis Cosgrove
  */
 public class EulaView extends BorderPanel {
-	public EulaView( EulaComposite composite ) {
-		PlainMultiLineLabel label = new PlainMultiLineLabel( composite.getEulaText() );
-		ScrollPane scrollPane = new ScrollPane( label );
-		this.addCenterComponent( scrollPane );
-		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
-	}
+  public EulaView(EulaComposite composite) {
+    PlainMultiLineLabel label = new PlainMultiLineLabel(composite.getEulaText());
+    ScrollPane scrollPane = new ScrollPane(label);
+    this.addCenterComponent(scrollPane);
+    this.setPreferredSize(DimensionUtilities.createWiderGoldenRatioSizeFromWidth(600));
+  }
 }

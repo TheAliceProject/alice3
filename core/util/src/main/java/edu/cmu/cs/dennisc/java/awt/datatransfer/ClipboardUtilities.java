@@ -56,31 +56,31 @@ import java.awt.datatransfer.Transferable;
  * @author Dennis Cosgrove
  */
 public class ClipboardUtilities {
-	private static class DoNothingOnLostOwnershipClipboardOwner implements ClipboardOwner {
-		@Override
-		public void lostOwnership( Clipboard clipboard, Transferable contents ) {
-			//pass
-		}
-	}
+  private static class DoNothingOnLostOwnershipClipboardOwner implements ClipboardOwner {
+    @Override
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
+      //pass
+    }
+  }
 
-	public static void setClipboardContents( String s ) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new StringSelection( s ), new DoNothingOnLostOwnershipClipboardOwner() );
-	}
+  public static void setClipboardContents(String s) {
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(new StringSelection(s), new DoNothingOnLostOwnershipClipboardOwner());
+  }
 
-	public static void setClipboardContents( Image image ) {
-		setClipboardContents( image, null );
-	}
+  public static void setClipboardContents(Image image) {
+    setClipboardContents(image, null);
+  }
 
-	public static void setClipboardContents( Image image, Integer dpi ) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new TransferableImageWithDpi( image, dpi ), new DoNothingOnLostOwnershipClipboardOwner() );
-	}
+  public static void setClipboardContents(Image image, Integer dpi) {
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    clipboard.setContents(new TransferableImageWithDpi(image, dpi), new DoNothingOnLostOwnershipClipboardOwner());
+  }
 
-	public static void main( String[] args ) throws Exception {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		DataFlavor[] dataFlavors = clipboard.getAvailableDataFlavors();
-		Object data = clipboard.getData( dataFlavors[ 0 ] );
-		Logger.outln( dataFlavors[ 0 ], data );
-	}
+  public static void main(String[] args) throws Exception {
+    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    DataFlavor[] dataFlavors = clipboard.getAvailableDataFlavors();
+    Object data = clipboard.getData(dataFlavors[0]);
+    Logger.outln(dataFlavors[0], data);
+  }
 }

@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDoubleLiteralFillIn extends ExpressionFillInWithoutBlanks<DoubleLiteral> {
-	private final DoubleLiteral transientValue;
+  private final DoubleLiteral transientValue;
 
-	public AbstractDoubleLiteralFillIn( UUID id, double value ) {
-		super( id );
-		this.transientValue = new DoubleLiteral( value );
-	}
+  public AbstractDoubleLiteralFillIn(UUID id, double value) {
+    super(id);
+    this.transientValue = new DoubleLiteral(value);
+  }
 
-	@Override
-	public DoubleLiteral getTransientValue( ItemNode<? super DoubleLiteral, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public DoubleLiteral getTransientValue(ItemNode<? super DoubleLiteral, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public DoubleLiteral createValue( ItemNode<? super DoubleLiteral, Void> node ) {
-		return new DoubleLiteral( this.transientValue.value.getValue() );
-	}
+  @Override
+  public DoubleLiteral createValue(ItemNode<? super DoubleLiteral, Void> node) {
+    return new DoubleLiteral(this.transientValue.value.getValue());
+  }
 }

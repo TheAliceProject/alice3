@@ -56,106 +56,106 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButton> {
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			//	public void run() {
-			showWindow();
-			//	}
-			//} );
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      //javax.swing.SwingUtilities.invokeLater( new Runnable() {
+      //  public void run() {
+      showWindow();
+      //  }
+      //} );
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			//	public void run() {
-			hideWindow();
-			//	}
-			//} );
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+      //javax.swing.SwingUtilities.invokeLater( new Runnable() {
+      //  public void run() {
+      hideWindow();
+      //  }
+      //} );
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 
-	private final JWindow window;
-	private final HoverPopupElement element;
+  private final JWindow window;
+  private final HoverPopupElement element;
 
-	public HoverPopupView( HoverPopupElement element ) {
-		this.element = element;
-		this.window = new JWindow();
-		this.window.setAlwaysOnTop( true );
-	}
+  public HoverPopupView(HoverPopupElement element) {
+    this.element = element;
+    this.window = new JWindow();
+    this.window.setAlwaysOnTop(true);
+  }
 
-	private void showWindow() {
-		this.element.getComposite().handlePreActivation();
-		synchronized( this.window.getTreeLock() ) {
-			assert this.window.isVisible() == false;
-			Point p = this.getLocationOnScreen();
-			this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
-			this.window.setLocation( p.x + this.getWidth() + 16, ( p.y + this.getHeight() ) - 4 );
-			this.window.pack();
-			this.window.setVisible( true );
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show", this );
-		}
-	}
+  private void showWindow() {
+    this.element.getComposite().handlePreActivation();
+    synchronized (this.window.getTreeLock()) {
+      assert this.window.isVisible() == false;
+      Point p = this.getLocationOnScreen();
+      this.window.getContentPane().add(this.element.getComposite().getRootComponent().getAwtComponent());
+      this.window.setLocation(p.x + this.getWidth() + 16, (p.y + this.getHeight()) - 4);
+      this.window.pack();
+      this.window.setVisible(true);
+      //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show", this );
+    }
+  }
 
-	private void hideWindow() {
-		synchronized( this.window.getTreeLock() ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "hide", this );
-			this.window.setVisible( false );
-			this.window.getContentPane().removeAll();
-			final boolean EPIC_HACK_isAccountingForHideNotAlwaysWorking = true;
-			if( EPIC_HACK_isAccountingForHideNotAlwaysWorking ) {
-				this.window.pack();
-			} else {
-				this.window.setSize( 1000, 1000 );
-			}
-		}
-		this.element.getComposite().handlePostDeactivation();
-	}
+  private void hideWindow() {
+    synchronized (this.window.getTreeLock()) {
+      //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "hide", this );
+      this.window.setVisible(false);
+      this.window.getContentPane().removeAll();
+      final boolean EPIC_HACK_isAccountingForHideNotAlwaysWorking = true;
+      if (EPIC_HACK_isAccountingForHideNotAlwaysWorking) {
+        this.window.pack();
+      } else {
+        this.window.setSize(1000, 1000);
+      }
+    }
+    this.element.getComposite().handlePostDeactivation();
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		this.addMouseListener( this.mouseListener );
-		super.handleAddedTo( parent );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    this.addMouseListener(this.mouseListener);
+    super.handleAddedTo(parent);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		super.handleRemovedFrom( parent );
-		this.removeMouseListener( this.mouseListener );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    super.handleRemovedFrom(parent);
+    this.removeMouseListener(this.mouseListener);
+  }
 
-	private class JHoverPopupView extends JButton {
-		public JHoverPopupView() {
-			this.setRolloverEnabled( true );
-			this.setOpaque( false );
-		}
+  private class JHoverPopupView extends JButton {
+    public JHoverPopupView() {
+      this.setRolloverEnabled(true);
+      this.setOpaque(false);
+    }
 
-		@Override
-		public void updateUI() {
-			this.setUI( BasicButtonUI.createUI( this ) );
-		}
+    @Override
+    public void updateUI() {
+      this.setUI(BasicButtonUI.createUI(this));
+    }
 
-		@Override
-		public Icon getRolloverIcon() {
-			return super.getRolloverIcon();
-		}
-	}
+    @Override
+    public Icon getRolloverIcon() {
+      return super.getRolloverIcon();
+    }
+  }
 
-	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		return new JHoverPopupView();
-	}
+  @Override
+  protected javax.swing.AbstractButton createAwtComponent() {
+    return new JHoverPopupView();
+  }
 }

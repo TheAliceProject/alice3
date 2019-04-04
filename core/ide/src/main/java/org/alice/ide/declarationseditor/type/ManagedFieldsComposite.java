@@ -54,24 +54,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ManagedFieldsComposite extends FieldsComposite {
-	private static Map<NamedUserType, ManagedFieldsComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, ManagedFieldsComposite> map = Maps.newHashMap();
 
-	public static synchronized ManagedFieldsComposite getInstance( NamedUserType type ) {
-		if( IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-			ManagedFieldsComposite rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ManagedFieldsComposite( type );
-				map.put( type, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static synchronized ManagedFieldsComposite getInstance(NamedUserType type) {
+    if (IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields(type)) {
+      ManagedFieldsComposite rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ManagedFieldsComposite(type);
+        map.put(type, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	private ManagedFieldsComposite( NamedUserType type ) {
-		super( UUID.fromString( "02ffb55e-ab8b-4464-b6c8-72e54fc29522" ), new ManagedFieldData( type ) );
-	}
+  private ManagedFieldsComposite(NamedUserType type) {
+    super(UUID.fromString("02ffb55e-ab8b-4464-b6c8-72e54fc29522"), new ManagedFieldData(type));
+  }
 }

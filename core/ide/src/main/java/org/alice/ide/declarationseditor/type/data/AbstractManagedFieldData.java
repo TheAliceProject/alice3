@@ -51,12 +51,12 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractManagedFieldData extends FieldData {
-	public AbstractManagedFieldData( NamedUserType type ) {
-		super( type );
-	}
+  public AbstractManagedFieldData(NamedUserType type) {
+    super(type);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return value.managementLevel.getValue() == ManagementLevel.MANAGED;
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return value.managementLevel.getValue() == ManagementLevel.MANAGED;
+  }
 }

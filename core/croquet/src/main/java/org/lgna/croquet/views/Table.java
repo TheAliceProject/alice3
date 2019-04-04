@@ -51,14 +51,14 @@ import javax.swing.JTable;
  * @author Dennis Cosgrove
  */
 public class Table<T> extends ViewController<JTable, SingleSelectTableRowState<T>> {
-	public Table( SingleSelectTableRowState<T> model ) {
-		super( model );
-	}
+  public Table(SingleSelectTableRowState<T> model) {
+    super(model);
+  }
 
-	@Override
-	protected JTable createAwtComponent() {
-		SingleSelectTableRowState<T>.SwingModel swingModel = this.getModel().getSwingModel();
-		JTable rv = new JTable( swingModel.getTableModel(), swingModel.getTableColumnModel(), swingModel.getListSelectionModel() );
-		return rv;
-	}
+  @Override
+  protected JTable createAwtComponent() {
+    SingleSelectTableRowState<T>.SwingModel swingModel = this.getModel().getSwingModel();
+    JTable rv = new JTable(swingModel.getTableModel(), swingModel.getTableColumnModel(), swingModel.getListSelectionModel());
+    return rv;
+  }
 }

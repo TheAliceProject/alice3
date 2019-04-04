@@ -64,41 +64,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldArrayAtIndexAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
-	private static Map<UserField, FieldArrayAtIndexAssignmentFillIn> map = Maps.newHashMap();
+  private static Map<UserField, FieldArrayAtIndexAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized FieldArrayAtIndexAssignmentFillIn getInstance( UserField field ) {
-		FieldArrayAtIndexAssignmentFillIn rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayAtIndexAssignmentFillIn( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized FieldArrayAtIndexAssignmentFillIn getInstance(UserField field) {
+    FieldArrayAtIndexAssignmentFillIn rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FieldArrayAtIndexAssignmentFillIn(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final AssignmentExpression transientValue;
+  private final AssignmentExpression transientValue;
 
-	private FieldArrayAtIndexAssignmentFillIn( UserField field ) {
-		super( UUID.fromString( "3385e94e-3299-42d2-941f-435af105dee4" ),
-				ExpressionBlank.getBlankForType( Integer.class, ArrayIndexDetails.SINGLETON ),
-				ExpressionBlank.getBlankForType( field.valueType.getValue().getComponentType() ) );
-		this.transientValue = AstUtilities.createFieldArrayAssignment( new ThisExpression(), field, new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( field.valueType.getValue().getComponentType() ) );
-	}
+  private FieldArrayAtIndexAssignmentFillIn(UserField field) {
+    super(UUID.fromString("3385e94e-3299-42d2-941f-435af105dee4"), ExpressionBlank.getBlankForType(Integer.class, ArrayIndexDetails.SINGLETON), ExpressionBlank.getBlankForType(field.valueType.getValue().getComponentType()));
+    this.transientValue = AstUtilities.createFieldArrayAssignment(new ThisExpression(), field, new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE), new EmptyExpression(field.valueType.getValue().getComponentType()));
+  }
 
-	private UserField getField() {
-		ArrayAccess arrayAccess = (ArrayAccess)this.transientValue.leftHandSide.getValue();
-		FieldAccess fieldAccess = (FieldAccess)arrayAccess.array.getValue();
-		return (UserField)fieldAccess.field.getValue();
-	}
+  private UserField getField() {
+    ArrayAccess arrayAccess = (ArrayAccess) this.transientValue.leftHandSide.getValue();
+    FieldAccess fieldAccess = (FieldAccess) arrayAccess.array.getValue();
+    return (UserField) fieldAccess.field.getValue();
+  }
 
-	@Override
-	protected AssignmentExpression createValue( Expression[] expressions ) {
-		return AstUtilities.createFieldArrayAssignment( this.getField(), expressions[ 0 ], expressions[ 1 ] );
-	}
+  @Override
+  protected AssignmentExpression createValue(Expression[] expressions) {
+    return AstUtilities.createFieldArrayAssignment(this.getField(), expressions[0], expressions[1]);
+  }
 
-	@Override
-	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public AssignmentExpression getTransientValue(ItemNode<? super AssignmentExpression, Expression> node) {
+    return this.transientValue;
+  }
 }

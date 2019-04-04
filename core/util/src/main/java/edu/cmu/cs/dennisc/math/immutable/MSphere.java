@@ -46,67 +46,67 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MSphere {
-	public final MPoint3 center;
-	public final double radius;
+  public final MPoint3 center;
+  public final double radius;
 
-	public MSphere( MPoint3 center, double radius ) {
-		this.center = center;
-		this.radius = radius;
-	}
+  public MSphere(MPoint3 center, double radius) {
+    this.center = center;
+    this.radius = radius;
+  }
 
-	public double intersect( MRay ray ) {
-		MVector3 vOriginToCenter = MVector3.createSubtraction( ray.origin, this.center );
-		double a = MVector3.calculateDotProduct( ray.direction, ray.direction );
-		double b = 2 * MVector3.calculateDotProduct( ray.direction, vOriginToCenter );
-		double c = MVector3.calculateDotProduct( vOriginToCenter, vOriginToCenter ) - ( this.radius * this.radius );
+  public double intersect(MRay ray) {
+    MVector3 vOriginToCenter = MVector3.createSubtraction(ray.origin, this.center);
+    double a = MVector3.calculateDotProduct(ray.direction, ray.direction);
+    double b = 2 * MVector3.calculateDotProduct(ray.direction, vOriginToCenter);
+    double c = MVector3.calculateDotProduct(vOriginToCenter, vOriginToCenter) - (this.radius * this.radius);
 
-		double descriminant = ( b * b ) - ( 4 * a * c );
+    double descriminant = (b * b) - (4 * a * c);
 
-		if( descriminant < 0 ) {
-			return Double.NaN;
-		} else {
-			double sqrtDescriminant = Math.sqrt( descriminant );
+    if (descriminant < 0) {
+      return Double.NaN;
+    } else {
+      double sqrtDescriminant = Math.sqrt(descriminant);
 
-			//account for b close to sqrtDescriminant
-			double q = ( b < 0 ) ? ( -b - sqrtDescriminant ) / 2.0 : ( -b + sqrtDescriminant ) / 2.0;
-			double tSolution0 = q / a;
-			double tSolution1 = c / q;
+      //account for b close to sqrtDescriminant
+      double q = (b < 0) ? (-b - sqrtDescriminant) / 2.0 : (-b + sqrtDescriminant) / 2.0;
+      double tSolution0 = q / a;
+      double tSolution1 = c / q;
 
-			double tMin;
-			double tMax;
-			if( tSolution0 < tSolution1 ) {
-				tMin = tSolution0;
-				tMax = tSolution1;
-			} else {
-				tMin = tSolution1;
-				tMax = tSolution0;
-			}
+      double tMin;
+      double tMax;
+      if (tSolution0 < tSolution1) {
+        tMin = tSolution0;
+        tMax = tSolution1;
+      } else {
+        tMin = tSolution1;
+        tMax = tSolution0;
+      }
 
-			if( tMax < 0 ) {
-				return Double.NaN;
-			} else {
-				if( tMin < 0 ) {
-					return tMax;
-				} else {
-					return tMin;
-				}
-			}
-		}
-	}
+      if (tMax < 0) {
+        return Double.NaN;
+      } else {
+        if (tMin < 0) {
+          return tMax;
+        } else {
+          return tMin;
+        }
+      }
+    }
+  }
 
-	public MSphere createTransformed( MAffineMatrix4x4 m ) {
-		return new MSphere( this.center.createTransformed( m ), this.radius );
-	}
+  public MSphere createTransformed(MAffineMatrix4x4 m) {
+    return new MSphere(this.center.createTransformed(m), this.radius);
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[center=" );
-		sb.append( this.center );
-		sb.append( ",radius=" );
-		sb.append( this.radius );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[center=");
+    sb.append(this.center);
+    sb.append(",radius=");
+    sb.append(this.radius);
+    sb.append("]");
+    return sb.toString();
+  }
 }

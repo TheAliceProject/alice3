@@ -43,173 +43,156 @@
 package org.lgna.story.resourceutilities;
 
 import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.Preferences;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
 import javax.swing.JOptionPane;
 
 public enum NebulousStorytellingResources {
-	INSTANCE;
+  INSTANCE;
 
-	private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
+  private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
 
-	public static final String NEBULOUS_RESOURCE_INSTALL_PATH = "assets/sims";
+  public static final String NEBULOUS_RESOURCE_INSTALL_PATH = "assets/sims";
 
-	private final List<File> simsPathsLoaded = new LinkedList<File>();
+  private final List<File> simsPathsLoaded = new LinkedList<File>();
 
-	private File[] getNebulousDirsFromGalleryPref() {
-		return StorytellingResources.getDirsFromPref( StorytellingResources.GALLERY_DIRECTORY_PREF_KEY, NEBULOUS_RESOURCE_INSTALL_PATH );
-	}
+  private File[] getNebulousDirsFromGalleryPref() {
+    return StorytellingResources.getDirsFromPref(StorytellingResources.GALLERY_DIRECTORY_PREF_KEY, NEBULOUS_RESOURCE_INSTALL_PATH);
+  }
 
-	public void setNebulousResourceDir( String[] dirs ) {
-		Preferences rv = Preferences.userRoot();
-		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, StorytellingResources.makeDirectoryPreferenceString( dirs ) );
-	}
+  public void setNebulousResourceDir(String[] dirs) {
+    Preferences rv = Preferences.userRoot();
+    rv.put(NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, StorytellingResources.makeDirectoryPreferenceString(dirs));
+  }
 
-	public File[] getNebulousDirsFromPref() {
-		File[] dirs = StorytellingResources.getDirsFromPref( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
-		if( dirs != null ) {
-			return dirs;
-		}
-		else {
-			return getNebulousDirsFromGalleryPref();
-		}
-	}
+  public File[] getNebulousDirsFromPref() {
+    File[] dirs = StorytellingResources.getDirsFromPref(NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "");
+    if (dirs != null) {
+      return dirs;
+    } else {
+      return getNebulousDirsFromGalleryPref();
+    }
+  }
 
-	private List<File> findSimsBundles() {
-		File simsPath = StorytellingResources.findResourcePath( NEBULOUS_RESOURCE_INSTALL_PATH );
-		if( simsPath != null ) {
-			ResourcePathManager.addPath( ResourcePathManager.SIMS_RESOURCE_KEY, simsPath );
-			return ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
-		} else {
-			LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
-			File[] resourceDirs = getNebulousDirsFromPref();
-			if( resourceDirs != null ) {
-				Collections.addAll( directoryFromSavedPreference, resourceDirs );
-			}
-			return directoryFromSavedPreference;
-		}
-	}
+  private List<File> findSimsBundles() {
+    File simsPath = StorytellingResources.findResourcePath(NEBULOUS_RESOURCE_INSTALL_PATH);
+    if (simsPath != null) {
+      ResourcePathManager.addPath(ResourcePathManager.SIMS_RESOURCE_KEY, simsPath);
+      return ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+    } else {
+      LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
+      File[] resourceDirs = getNebulousDirsFromPref();
+      if (resourceDirs != null) {
+        Collections.addAll(directoryFromSavedPreference, resourceDirs);
+      }
+      return directoryFromSavedPreference;
+    }
+  }
 
-	private NebulousStorytellingResources() {
-	}
+  private NebulousStorytellingResources() {
+  }
 
-	private void clearSimsResourceInfo()
-	{
-		ResourcePathManager.clearPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
-		Preferences rv = Preferences.userRoot();
-		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
-		rv.put( StorytellingResources.GALLERY_DIRECTORY_PREF_KEY, "" );
-	}
+  private void clearSimsResourceInfo() {
+    ResourcePathManager.clearPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+    Preferences rv = Preferences.userRoot();
+    rv.put(NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "");
+    rv.put(StorytellingResources.GALLERY_DIRECTORY_PREF_KEY, "");
+  }
 
-	private int loadSimsBundlesFromPaths( List<File> resourcePaths ) {
-		int count = 0;
-		for( File path : resourcePaths ) {
-			if( path.exists() ) {
-				for( File file : path.listFiles() ) {
-					if( !simsPathsLoaded.contains( file ) ) {
-						try {
-							if( file.getName().endsWith( "txt" ) ) {
-								//pass
-							} else {
-								Manager.addBundle( file );
-								simsPathsLoaded.add( file );
-								count++;
-							}
-						} catch( Throwable t ) {
-							t.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-		return count;
-	}
+  private int loadSimsBundlesFromPaths(List<File> resourcePaths) {
+    int count = 0;
+    for (File path : resourcePaths) {
+      if (path.exists()) {
+        for (File file : path.listFiles()) {
+          if (!simsPathsLoaded.contains(file)) {
+            try {
+              if (file.getName().endsWith("txt")) {
+                //pass
+              } else {
+                Manager.addBundle(file);
+                simsPathsLoaded.add(file);
+                count++;
+              }
+            } catch (Throwable t) {
+              t.printStackTrace();
+            }
+          }
+        }
+      }
+    }
+    return count;
+  }
 
-	public void loadSimsBundles() {
+  public void loadSimsBundles() {
 
-		//DEBUG
+    //DEBUG
 
-		String DEBUG_rawPathValue = System.getProperty( "org.alice.ide.simsDebugResourcePath" );
-		if( DEBUG_rawPathValue != null ) {
-			File rawResourcePath = new File( DEBUG_rawPathValue );
-			if( rawResourcePath.exists() ) {
-				Manager.setRawResourcePath( rawResourcePath );
-			}
-		}
+    String DEBUG_rawPathValue = System.getProperty("org.alice.ide.simsDebugResourcePath");
+    if (DEBUG_rawPathValue != null) {
+      File rawResourcePath = new File(DEBUG_rawPathValue);
+      if (rawResourcePath.exists()) {
+        Manager.setRawResourcePath(rawResourcePath);
+      }
+    }
 
-		List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
-		if( resourcePaths.size() == 0 ) {
-			resourcePaths = findSimsBundles();
-		}
-		int loaded = loadSimsBundlesFromPaths( resourcePaths );
-		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
-			//Clear previously cached info
-			clearSimsResourceInfo();
-			File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
-			if( galleryDir == null )
-			{
-				FindResourcesPanel.getInstance().show( null );
-				galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
-			}
-			if( galleryDir != null ) {
-				//Save the directory to the preference
-				String[] dirArray = { galleryDir.getAbsolutePath() };
-				StorytellingResources.INSTANCE.setGalleryResourceDirs( dirArray );
-				//Try finding the resources again
-				resourcePaths = findSimsBundles();
-				loaded = loadSimsBundlesFromPaths( resourcePaths );
-			}
-		}
-		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
-			clearSimsResourceInfo();
-			StringBuilder sb = new StringBuilder();
-			sb.append( "Cannot find The Sims (TM) 2 Art Assets." );
-			if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
-				sb.append( "\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once." );
-			} else {
-				sb.append( "\nSearched in " );
-				String separator = "";
-				for( File path : resourcePaths ) {
-					sb.append( separator + "'" + path + "'" );
-					if( separator.length() == 0 ) {
-						separator = ", ";
-					}
-				}
-				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
-				sb.append( "\nVerify that " + phrase + " and verify that Alice is properly installed." );
-			}
-			JOptionPane.showMessageDialog( null, sb.toString() );
+    List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.SIMS_RESOURCE_KEY);
+    if (resourcePaths.size() == 0) {
+      resourcePaths = findSimsBundles();
+    }
+    int loaded = loadSimsBundlesFromPaths(resourcePaths);
+    if ((loaded == 0) && (simsPathsLoaded.size() == 0)) {
+      //Clear previously cached info
+      clearSimsResourceInfo();
+      File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+      if (galleryDir == null) {
+        FindResourcesPanel.getInstance().show(null);
+        galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+      }
+      if (galleryDir != null) {
+        //Save the directory to the preference
+        String[] dirArray = {galleryDir.getAbsolutePath()};
+        StorytellingResources.INSTANCE.setGalleryResourceDirs(dirArray);
+        //Try finding the resources again
+        resourcePaths = findSimsBundles();
+        loaded = loadSimsBundlesFromPaths(resourcePaths);
+      }
+    }
+    if ((loaded == 0) && (simsPathsLoaded.size() == 0)) {
+      clearSimsResourceInfo();
+      StringBuilder sb = new StringBuilder();
+      sb.append("Cannot find The Sims (TM) 2 Art Assets.");
+      if ((resourcePaths == null) || (resourcePaths.size() == 0)) {
+        sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+      } else {
+        sb.append("\nSearched in ");
+        String separator = "";
+        for (File path : resourcePaths) {
+          sb.append(separator + "'" + path + "'");
+          if (separator.length() == 0) {
+            separator = ", ";
+          }
+        }
+        String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+        sb.append("\nVerify that " + phrase + " and verify that Alice is properly installed.");
+      }
+      JOptionPane.showMessageDialog(null, sb.toString());
 
-		} else {
-			String[] galleryDirs = new String[ simsPathsLoaded.size() ];
-			for( int i = 0; i < simsPathsLoaded.size(); i++ ) {
-				File galleryFile = simsPathsLoaded.get( i );
-				if( galleryFile.isDirectory() ) {
-					galleryDirs[ i ] = galleryFile.getAbsolutePath();
-				}
-				else
-				{
-					galleryDirs[ i ] = galleryFile.getParentFile().getAbsolutePath();
-				}
-			}
-			setNebulousResourceDir( galleryDirs );
-		}
-	}
+    } else {
+      String[] galleryDirs = new String[simsPathsLoaded.size()];
+      for (int i = 0; i < simsPathsLoaded.size(); i++) {
+        File galleryFile = simsPathsLoaded.get(i);
+        if (galleryFile.isDirectory()) {
+          galleryDirs[i] = galleryFile.getAbsolutePath();
+        } else {
+          galleryDirs[i] = galleryFile.getParentFile().getAbsolutePath();
+        }
+      }
+      setNebulousResourceDir(galleryDirs);
+    }
+  }
 }

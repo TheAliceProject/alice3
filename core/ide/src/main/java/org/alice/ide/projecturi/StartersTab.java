@@ -58,33 +58,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StartersTab extends ListUriTab {
-	public StartersTab() {
-		super( UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ) );
-		File starterProjectsDirectory = StoryApiDirectoryUtilities.getStarterProjectsDirectory();
-		File[] files = FileUtilities.listFiles( starterProjectsDirectory, "a3p" );
-		URI[] uris = new URI[ files.length ];
-		int i = 0;
-		Arrays.sort( files );
-		for( File file : files ) {
-			uris[ i ] = StarterProjectUtilities.toUri( file );
-			i++;
-		}
-		this.listState = this.createImmutableListState( "listState", URI.class, UriCodec.SINGLETON, -1, uris );
-	}
+  public StartersTab() {
+    super(UUID.fromString("e31ab4b2-c305-4d04-8dcc-5de8cbb6facf"));
+    File starterProjectsDirectory = StoryApiDirectoryUtilities.getStarterProjectsDirectory();
+    File[] files = FileUtilities.listFiles(starterProjectsDirectory, "a3p");
+    URI[] uris = new URI[files.length];
+    int i = 0;
+    Arrays.sort(files);
+    for (File file : files) {
+      uris[i] = StarterProjectUtilities.toUri(file);
+      i++;
+    }
+    this.listState = this.createImmutableListState("listState", URI.class, UriCodec.SINGLETON, -1, uris);
+  }
 
-	@Override
-	protected void refresh() {
-	}
+  @Override
+  protected void refresh() {
+  }
 
-	@Override
-	public ImmutableDataSingleSelectListState<URI> getListSelectionState() {
-		return this.listState;
-	}
+  @Override
+  public ImmutableDataSingleSelectListState<URI> getListSelectionState() {
+    return this.listState;
+  }
 
-	@Override
-	protected ListContentPanel createView() {
-		return new ListContentPanel( this );
-	}
+  @Override
+  protected ListContentPanel createView() {
+    return new ListContentPanel(this);
+  }
 
-	private final ImmutableDataSingleSelectListState<URI> listState;
+  private final ImmutableDataSingleSelectListState<URI> listState;
 }

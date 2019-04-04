@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Matt May
  */
 public class AddCollisionEndListener {
-	@ClassTemplate( keywordFactoryCls = AddCollisionEndListener.class )
-	public interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = AddCollisionEndListener.class) public interface Detail {
+  }
 
-	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
-		return multipleEventPolicy;
-	}
+  public static MultipleEventPolicy multipleEventPolicy(MultipleEventPolicy multipleEventPolicy) {
+    return multipleEventPolicy;
+  }
 }

@@ -53,53 +53,53 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class GraphicsDeviceUtilities {
-	private GraphicsDeviceUtilities() {
-		throw new AssertionError();
-	}
+  private GraphicsDeviceUtilities() {
+    throw new AssertionError();
+  }
 
-	public static Rectangle getGraphicsDeviceConfigurationBoundsFor( GraphicsDevice[] graphicsDevices, Point p ) {
-		for( GraphicsDevice graphicsDevice : graphicsDevices ) {
-			GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
-			Rectangle bounds = graphicsConfiguration.getBounds();
-			if( bounds.contains( p ) ) {
-				return bounds;
-			}
+  public static Rectangle getGraphicsDeviceConfigurationBoundsFor(GraphicsDevice[] graphicsDevices, Point p) {
+    for (GraphicsDevice graphicsDevice : graphicsDevices) {
+      GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+      Rectangle bounds = graphicsConfiguration.getBounds();
+      if (bounds.contains(p)) {
+        return bounds;
+      }
 
-			// slllllllllllllowwwwwwwwwwwww
-			// for( java.awt.GraphicsConfiguration graphicsConfiguration : graphicsDevice.getConfigurations() ) {
+      // slllllllllllllowwwwwwwwwwwww
+      // for( java.awt.GraphicsConfiguration graphicsConfiguration : graphicsDevice.getConfigurations() ) {
 
-			// returns null
-			//java.awt.Window window = graphicsDevice.getFullScreenWindow();
-			//if( window != null ) {
-			//	java.awt.Rectangle bounds = window.getBounds();
-			//}
-		}
-		return null;
-	}
+      // returns null
+      //java.awt.Window window = graphicsDevice.getFullScreenWindow();
+      //if( window != null ) {
+      //  java.awt.Rectangle bounds = window.getBounds();
+      //}
+    }
+    return null;
+  }
 
-	public static Rectangle getGraphicsDeviceConfigurationBoundsFor( Point p ) {
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		return getGraphicsDeviceConfigurationBoundsFor( graphicsEnvironment.getScreenDevices(), p );
-	}
+  public static Rectangle getGraphicsDeviceConfigurationBoundsFor(Point p) {
+    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    return getGraphicsDeviceConfigurationBoundsFor(graphicsEnvironment.getScreenDevices(), p);
+  }
 
-	public static Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-		if( screenDeviceIndex < graphicsDevices.length ) {
-			GraphicsDevice graphicsDevice = graphicsDevices[ screenDeviceIndex ];
-			GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
-			return graphicsConfiguration.getBounds();
-		} else {
-			return null;
-		}
-	}
-	//	public static void main( String[] args ) {
-	//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-	//			public void run() {
-	////				new javax.swing.JFrame().setVisible( true );
-	//				java.awt.Rectangle bounds = getGraphicsDeviceConfigurationBoundsFor( new java.awt.Point( -1000, 100 ) );
-	//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( bounds );
-	//			}
-	//		} );
-	//	}
+  public static Rectangle getScreenDeviceDefaultConfigurationBounds(int screenDeviceIndex) {
+    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+    if (screenDeviceIndex < graphicsDevices.length) {
+      GraphicsDevice graphicsDevice = graphicsDevices[screenDeviceIndex];
+      GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
+      return graphicsConfiguration.getBounds();
+    } else {
+      return null;
+    }
+  }
+  //  public static void main( String[] args ) {
+  //    javax.swing.SwingUtilities.invokeLater( new Runnable() {
+  //      public void run() {
+  ////        new javax.swing.JFrame().setVisible( true );
+  //        java.awt.Rectangle bounds = getGraphicsDeviceConfigurationBoundsFor( new java.awt.Point( -1000, 100 ) );
+  //        edu.cmu.cs.dennisc.java.util.logging.Logger.outln( bounds );
+  //      }
+  //    } );
+  //  }
 }

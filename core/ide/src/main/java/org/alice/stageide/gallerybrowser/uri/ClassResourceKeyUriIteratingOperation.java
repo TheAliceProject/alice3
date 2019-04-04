@@ -55,43 +55,44 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIteratingOperation {
-	private static class SingletonHolder {
-		private static ClassResourceKeyUriIteratingOperation instance = new ClassResourceKeyUriIteratingOperation();
-	}
+  private static class SingletonHolder {
+    private static ClassResourceKeyUriIteratingOperation instance = new ClassResourceKeyUriIteratingOperation();
+  }
 
-	/*package-private*/static ClassResourceKeyUriIteratingOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  /*package-private*/
+  static ClassResourceKeyUriIteratingOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ClassResourceKeyUriIteratingOperation() {
-		super( UUID.fromString( "e0b90c6a-46be-4b26-ae19-43314f6271b8" ) );
-	}
+  private ClassResourceKeyUriIteratingOperation() {
+    super(UUID.fromString("e0b90c6a-46be-4b26-ae19-43314f6271b8"));
+  }
 
-	@Override
-	protected int getStepCount() {
-		return 3;
-	}
+  @Override
+  protected int getStepCount() {
+    return 3;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-		switch( finishedSteps.size() ) {
-		case 0:
-			EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
-			composite.setClassResourceKey( classResourceKey );
-			return composite.getValueCreator();
-		case 1:
-			UserActivity prevSubStep = finishedSteps.get( 0 );
-			if( prevSubStep.getProducedValue() != null ) {
-				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getProducedValue();
-				return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
-			} else {
-				return null;
-			}
-		case 2:
-			return this.getMergeTypeOperation();
-		default:
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    ClassResourceKey classResourceKey = (ClassResourceKey) this.resourceKey;
+    switch (finishedSteps.size()) {
+    case 0:
+      EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
+      composite.setClassResourceKey(classResourceKey);
+      return composite.getValueCreator();
+    case 1:
+      UserActivity prevSubStep = finishedSteps.get(0);
+      if (prevSubStep.getProducedValue() != null) {
+        EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey) prevSubStep.getProducedValue();
+        return this.getAddResourceKeyManagedFieldCompositeOperation(enumConstantResourceKey);
+      } else {
+        return null;
+      }
+    case 2:
+      return this.getMergeTypeOperation();
+    default:
+      return null;
+    }
+  }
 }

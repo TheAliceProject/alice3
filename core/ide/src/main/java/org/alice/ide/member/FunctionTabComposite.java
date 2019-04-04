@@ -64,109 +64,109 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FunctionTabComposite extends MemberTabComposite<FunctionTabView> {
-	private static final String GROUP_BY_RETURN_TYPE_KEY = "groupByReturnType";
+  private static final String GROUP_BY_RETURN_TYPE_KEY = "groupByReturnType";
 
-	private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ), this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ) );
+  private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState("sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText(GROUP_BY_CATEGORY_KEY), this.findLocalizedText(SORT_ALPHABETICALLY_KEY), this.findLocalizedText(GROUP_BY_RETURN_TYPE_KEY));
 
-	public FunctionTabComposite() {
-		super( UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
-	}
+  public FunctionTabComposite() {
+    super(UUID.fromString("a2a01f20-37ba-468f-b35b-2b6a2ed94ac7"), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel());
+  }
 
-	@Override
-	public ImmutableDataSingleSelectListState<String> getSortState() {
-		return this.sortState;
-	}
+  @Override
+  public ImmutableDataSingleSelectListState<String> getSortState() {
+    return this.sortState;
+  }
 
-	@Override
-	protected UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type ) {
-		return UserFunctionsSubComposite.getInstance( type );
-	}
+  @Override
+  protected UserMethodsSubComposite getUserMethodsSubComposite(NamedUserType type) {
+    return UserFunctionsSubComposite.getInstance(type);
+  }
 
-	@Override
-	protected boolean isAcceptable( AbstractMethod method ) {
-		return method.isFunction();
-	}
+  @Override
+  protected boolean isAcceptable(AbstractMethod method) {
+    return method.isFunction();
+  }
 
-	@Override
-	protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
-		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
-	}
+  @Override
+  protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+    return IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
+  }
 
-	@Override
-	protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
-		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
-	}
+  @Override
+  protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+    return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
+  }
 
-	private List<MethodsSubComposite> getByReturnTypeSubComposites() {
-		Map<AbstractType<?, ?, ?>, List<AbstractMethod>> map = Maps.newHashMap();
+  private List<MethodsSubComposite> getByReturnTypeSubComposites() {
+    Map<AbstractType<?, ?, ?>, List<AbstractMethod>> map = Maps.newHashMap();
 
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		if( instanceFactory != null ) {
-			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-			while( type != null ) {
-				for( AbstractMethod method : type.getDeclaredMethods() ) {
-					AbstractType<?, ?, ?> returnType = method.getReturnType();
-					if( returnType == JavaType.VOID_TYPE ) {
-						//pass
-					} else {
-						if( isInclusionDesired( method ) ) {
-							List<AbstractMethod> list = map.get( returnType );
-							if( list != null ) {
-								//pass
-							} else {
-								list = Lists.newLinkedList();
-								map.put( returnType, list );
-							}
-							list.add( method );
-						}
-					}
-				}
-				if( type.isFollowToSuperClassDesired() ) {
-					type = type.getSuperType();
-				} else {
-					break;
-				}
-			}
-		}
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    if (instanceFactory != null) {
+      AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+      while (type != null) {
+        for (AbstractMethod method : type.getDeclaredMethods()) {
+          AbstractType<?, ?, ?> returnType = method.getReturnType();
+          if (returnType == JavaType.VOID_TYPE) {
+            //pass
+          } else {
+            if (isInclusionDesired(method)) {
+              List<AbstractMethod> list = map.get(returnType);
+              if (list != null) {
+                //pass
+              } else {
+                list = Lists.newLinkedList();
+                map.put(returnType, list);
+              }
+              list.add(method);
+            }
+          }
+        }
+        if (type.isFollowToSuperClassDesired()) {
+          type = type.getSuperType();
+        } else {
+          break;
+        }
+      }
+    }
 
-		List<AbstractType<?, ?, ?>> types = Lists.newArrayList( map.keySet() );
-		Collections.sort( types, IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		List<MethodsSubComposite> rv = Lists.newArrayListWithInitialCapacity( types.size() );
-		for( AbstractType<?, ?, ?> type : types ) {
-			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
-			subComposite.setMethods( map.get( type ) );
-			rv.add( subComposite );
-		}
-		return rv;
-	}
+    List<AbstractType<?, ?, ?>> types = Lists.newArrayList(map.keySet());
+    Collections.sort(types, IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator());
+    List<MethodsSubComposite> rv = Lists.newArrayListWithInitialCapacity(types.size());
+    for (AbstractType<?, ?, ?> type : types) {
+      FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance(type);
+      subComposite.setMethods(map.get(type));
+      rv.add(subComposite);
+    }
+    return rv;
+  }
 
-	@Override
-	public List<MethodsSubComposite> getSubComposites() {
-		if( this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ).equals( this.getSortState().getValue() ) ) {
-			return this.getByReturnTypeSubComposites();
-		} else {
-			return super.getSubComposites();
-		}
-	}
+  @Override
+  public List<MethodsSubComposite> getSubComposites() {
+    if (this.findLocalizedText(GROUP_BY_RETURN_TYPE_KEY).equals(this.getSortState().getValue())) {
+      return this.getByReturnTypeSubComposites();
+    } else {
+      return super.getSubComposites();
+    }
+  }
 
-	@Override
-	protected FunctionTabView createView() {
-		return new FunctionTabView( this );
-	}
+  @Override
+  protected FunctionTabView createView() {
+    return new FunctionTabView(this);
+  }
 
-	@Override
-	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-		return UnclaimedJavaFunctionsComposite.getInstance();
-	}
-	//todo
-	//	@Override
-	//	public void handlePreActivation() {
-	//		super.handlePreActivation();
-	//		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
-	//	}
-	//	@Override
-	//	public void handlePostDeactivation() {
-	//		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
-	//		super.handlePostDeactivation();
-	//	}
+  @Override
+  protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
+    return UnclaimedJavaFunctionsComposite.getInstance();
+  }
+  //todo
+  //  @Override
+  //  public void handlePreActivation() {
+  //    super.handlePreActivation();
+  //    org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+  //  }
+  //  @Override
+  //  public void handlePostDeactivation() {
+  //    org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
+  //    super.handlePostDeactivation();
+  //  }
 }

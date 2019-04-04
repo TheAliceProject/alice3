@@ -43,5 +43,5 @@
 package org.lgna.story.event;
 
 public interface NumberKeyPressListener {
-	public void numberKeyPressed( NumberKeyEvent event );
+  public void numberKeyPressed(NumberKeyEvent event);
 }

@@ -55,84 +55,84 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Dennis Cosgrove
  */
 public final class MutableListData<T> extends AbstractMutableListData<T> {
-	private final CopyOnWriteArrayList<T> values;
+  private final CopyOnWriteArrayList<T> values;
 
-	public MutableListData( ItemCodec<T> itemCodec ) {
-		super( itemCodec );
-		this.values = Lists.newCopyOnWriteArrayList();
-	}
+  public MutableListData(ItemCodec<T> itemCodec) {
+    super(itemCodec);
+    this.values = Lists.newCopyOnWriteArrayList();
+  }
 
-	public MutableListData( ItemCodec<T> itemCodec, T[] values ) {
-		super( itemCodec );
-		this.values = Lists.newCopyOnWriteArrayList( values );
-	}
+  public MutableListData(ItemCodec<T> itemCodec, T[] values) {
+    super(itemCodec);
+    this.values = Lists.newCopyOnWriteArrayList(values);
+  }
 
-	public MutableListData( ItemCodec<T> itemCodec, Collection<T> values ) {
-		super( itemCodec );
-		this.values = Lists.newCopyOnWriteArrayList( values );
-	}
+  public MutableListData(ItemCodec<T> itemCodec, Collection<T> values) {
+    super(itemCodec);
+    this.values = Lists.newCopyOnWriteArrayList(values);
+  }
 
-	@Override
-	public boolean contains( T item ) {
-		return this.values.contains( item );
-	}
+  @Override
+  public boolean contains(T item) {
+    return this.values.contains(item);
+  }
 
-	@Override
-	public T getItemAt( int index ) {
-		if( index >= 0 ) {
-			if( index < this.getItemCount() ) {
-				return this.values.get( index );
-			} else {
-				Logger.severe( index, this.getItemCount() );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public T getItemAt(int index) {
+    if (index >= 0) {
+      if (index < this.getItemCount()) {
+        return this.values.get(index);
+      } else {
+        Logger.severe(index, this.getItemCount());
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public int getItemCount() {
-		return this.values.size();
-	}
+  @Override
+  public int getItemCount() {
+    return this.values.size();
+  }
 
-	@Override
-	public Iterator<T> iterator() {
-		return this.values.iterator();
-	}
+  @Override
+  public Iterator<T> iterator() {
+    return this.values.iterator();
+  }
 
-	@Override
-	public int indexOf( T item ) {
-		return this.values.indexOf( item );
-	}
+  @Override
+  public int indexOf(T item) {
+    return this.values.indexOf(item);
+  }
 
-	@Override
-	protected final T[] toArray( Class<T> componentType ) {
-		return ArrayUtilities.createArray( this.values, componentType );
-	}
+  @Override
+  protected final T[] toArray(Class<T> componentType) {
+    return ArrayUtilities.createArray(this.values, componentType);
+  }
 
-	@Override
-	public void internalAddItem( int index, T item ) {
-		this.values.add( index, item );
-		this.fireContentsChanged();
-	}
+  @Override
+  public void internalAddItem(int index, T item) {
+    this.values.add(index, item);
+    this.fireContentsChanged();
+  }
 
-	@Override
-	public void internalRemoveItem( T item ) {
-		this.values.remove( item );
-		this.fireContentsChanged();
-	}
+  @Override
+  public void internalRemoveItem(T item) {
+    this.values.remove(item);
+    this.fireContentsChanged();
+  }
 
-	@Override
-	public void internalSetAllItems( Collection<T> items ) {
-		this.values.clear();
-		this.values.addAll( items );
-		this.fireContentsChanged();
-	}
+  @Override
+  public void internalSetAllItems(Collection<T> items) {
+    this.values.clear();
+    this.values.addAll(items);
+    this.fireContentsChanged();
+  }
 
-	@Override
-	public void internalSetItemAt( int index, T item ) {
-		this.values.set( index, item );
-		this.fireContentsChanged();
-	}
+  @Override
+  public void internalSetItemAt(int index, T item) {
+    this.values.set(index, item);
+    this.fireContentsChanged();
+  }
 }

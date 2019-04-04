@@ -51,24 +51,25 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum EnumConstantResourceKeyCodec implements ItemCodec<EnumConstantResourceKey> {
-	SINGLETON;
-	@Override
-	public Class<EnumConstantResourceKey> getValueClass() {
-		return EnumConstantResourceKey.class;
-	}
+  SINGLETON;
 
-	@Override
-	public EnumConstantResourceKey decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Class<EnumConstantResourceKey> getValueClass() {
+    return EnumConstantResourceKey.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, EnumConstantResourceKey value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public EnumConstantResourceKey decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, EnumConstantResourceKey value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, EnumConstantResourceKey value) {
+    throw new RuntimeException("todo");
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, EnumConstantResourceKey value) {
+    sb.append(value);
+  }
 }

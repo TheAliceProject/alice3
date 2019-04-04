@@ -50,7 +50,7 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldsView extends MembersView<UserField> {
-	public FieldsView( FieldsToolPalette composite ) {
-		super( composite, ThemeUtilities.getActiveTheme().getFieldColor() );
-	}
+  public FieldsView(FieldsToolPalette composite) {
+    super(composite, ThemeUtilities.getActiveTheme().getFieldColor());
+  }
 }

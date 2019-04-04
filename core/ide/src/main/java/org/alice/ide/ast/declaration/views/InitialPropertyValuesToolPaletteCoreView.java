@@ -57,16 +57,16 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class InitialPropertyValuesToolPaletteCoreView extends FormPanel {
-	public InitialPropertyValuesToolPaletteCoreView( InitialPropertyValuesToolPaletteCoreComposite composite ) {
-		super( composite );
-	}
+  public InitialPropertyValuesToolPaletteCoreView(InitialPropertyValuesToolPaletteCoreComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		InitialPropertyValuesToolPaletteCoreComposite composite = (InitialPropertyValuesToolPaletteCoreComposite)this.getComposite();
-		AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
-		for( CustomItemState<Expression> state : composite.getInitialPropertyValueExpressionStates() ) {
-			rows.add( new LabeledFormRow( state.getSidekickLabel(), new ExpressionDropDown( state, factory ), false ) );
-		}
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    InitialPropertyValuesToolPaletteCoreComposite composite = (InitialPropertyValuesToolPaletteCoreComposite) this.getComposite();
+    AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
+    for (CustomItemState<Expression> state : composite.getInitialPropertyValueExpressionStates()) {
+      rows.add(new LabeledFormRow(state.getSidekickLabel(), new ExpressionDropDown(state, factory), false));
+    }
+  }
 }

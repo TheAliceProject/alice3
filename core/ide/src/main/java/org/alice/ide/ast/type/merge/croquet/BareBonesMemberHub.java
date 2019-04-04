@@ -48,17 +48,17 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public class BareBonesMemberHub<M extends Member> {
-	private final IsMemberDesiredState<M> isDesiredState;
+  private final IsMemberDesiredState<M> isDesiredState;
 
-	public BareBonesMemberHub( M member, boolean initialValue ) {
-		this.isDesiredState = new IsMemberDesiredState<M>( member, initialValue );
-	}
+  public BareBonesMemberHub(M member, boolean initialValue) {
+    this.isDesiredState = new IsMemberDesiredState<M>(member, initialValue);
+  }
 
-	public M getMember() {
-		return this.isDesiredState.getMember();
-	}
+  public M getMember() {
+    return this.isDesiredState.getMember();
+  }
 
-	public IsMemberDesiredState<M> getIsDesiredState() {
-		return this.isDesiredState;
-	}
+  public IsMemberDesiredState<M> getIsDesiredState() {
+    return this.isDesiredState;
+  }
 }

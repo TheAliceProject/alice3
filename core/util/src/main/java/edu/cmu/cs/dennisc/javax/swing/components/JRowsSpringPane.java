@@ -50,28 +50,28 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class JRowsSpringPane extends JPane {
-	private int xPad;
-	private int yPad;
+  private int xPad;
+  private int yPad;
 
-	public JRowsSpringPane( int xPad, int yPad ) {
-		this.xPad = xPad;
-		this.yPad = yPad;
-	}
+  public JRowsSpringPane(int xPad, int yPad) {
+    this.xPad = xPad;
+    this.yPad = yPad;
+  }
 
-	@Override
-	public void addNotify() {
-		if( getLayout() instanceof SpringLayout ) {
-			//pass
-		} else {
-			List<Component[]> componentRows = this.createComponentRows();
-			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
-		}
-		super.addNotify();
-	}
+  @Override
+  public void addNotify() {
+    if (getLayout() instanceof SpringLayout) {
+      //pass
+    } else {
+      List<Component[]> componentRows = this.createComponentRows();
+      SpringUtilities.springItUpANotch(this, componentRows, this.xPad, this.yPad);
+    }
+    super.addNotify();
+  }
 
-	protected abstract List<Component[]> addComponentRows( List<Component[]> rv );
+  protected abstract List<Component[]> addComponentRows(List<Component[]> rv);
 
-	private List<Component[]> createComponentRows() {
-		return addComponentRows( new LinkedList<Component[]>() );
-	}
+  private List<Component[]> createComponentRows() {
+    return addComponentRows(new LinkedList<Component[]>());
+  }
 }

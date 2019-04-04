@@ -53,41 +53,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MenuBarComposite extends AbstractComposite<MenuBar> {
-	private final List<StandardMenuItemPrepModel> items = Lists.newCopyOnWriteArrayList();
+  private final List<StandardMenuItemPrepModel> items = Lists.newCopyOnWriteArrayList();
 
-	public MenuBarComposite( UUID id ) {
-		super( id );
-	}
+  public MenuBarComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public boolean contains( Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			return this.items.contains( model );
-		}
-	}
+  @Override
+  public boolean contains(Model model) {
+    if (super.contains(model)) {
+      return true;
+    } else {
+      return this.items.contains(model);
+    }
+  }
 
-	@Override
-	protected final ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected final ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	public void addItem( StandardMenuItemPrepModel item ) {
-		this.items.add( item );
-	}
+  public void addItem(StandardMenuItemPrepModel item) {
+    this.items.add(item);
+  }
 
-	public void removeItem( StandardMenuItemPrepModel item ) {
-		this.items.remove( item );
-	}
+  public void removeItem(StandardMenuItemPrepModel item) {
+    this.items.remove(item);
+  }
 
-	public Iterable<StandardMenuItemPrepModel> getChildren() {
-		return this.items;
-	}
+  public Iterable<StandardMenuItemPrepModel> getChildren() {
+    return this.items;
+  }
 
-	@Override
-	protected MenuBar createView() {
-		return new MenuBar( this );
-	}
+  @Override
+  protected MenuBar createView() {
+    return new MenuBar(this);
+  }
 
 }

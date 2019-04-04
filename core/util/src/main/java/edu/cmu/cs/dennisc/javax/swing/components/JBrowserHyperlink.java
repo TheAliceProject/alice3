@@ -55,38 +55,38 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class JBrowserHyperlink extends AbstractHyperlink {
-	private Action action = new AbstractAction() {
-		@Override
-		public void actionPerformed( ActionEvent event ) {
-			String uri = JBrowserHyperlink.this.getURI();
-			try {
-				BrowserUtilities.browse( uri );
-			} catch( Exception e ) {
-				e.printStackTrace();
-				ClipboardUtilities.setClipboardContents( uri );
-				JOptionPane.showMessageDialog( JBrowserHyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
-			}
-		}
-	};
+  private Action action = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+      String uri = JBrowserHyperlink.this.getURI();
+      try {
+        BrowserUtilities.browse(uri);
+      } catch (Exception e) {
+        e.printStackTrace();
+        ClipboardUtilities.setClipboardContents(uri);
+        JOptionPane.showMessageDialog(JBrowserHyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser.");
+      }
+    }
+  };
 
-	public JBrowserHyperlink( String uri ) {
-		this.setURI( uri );
-		this.setAction( action );
-	}
+  public JBrowserHyperlink(String uri) {
+    this.setURI(uri);
+    this.setAction(action);
+  }
 
-	public JBrowserHyperlink( URI uri ) {
-		this( uri.getRawPath() );
-	}
+  public JBrowserHyperlink(URI uri) {
+    this(uri.getRawPath());
+  }
 
-	public String getURI() {
-		return (String)this.action.getValue( Action.NAME );
-	}
+  public String getURI() {
+    return (String) this.action.getValue(Action.NAME);
+  }
 
-	public void setURI( String uri ) {
-		this.action.putValue( Action.NAME, uri );
-	}
+  public void setURI(String uri) {
+    this.action.putValue(Action.NAME, uri);
+  }
 
-	public void setURI( URI uri ) {
-		setURI( uri.getRawPath() );
-	}
+  public void setURI(URI uri) {
+    setURI(uri.getRawPath());
+  }
 }

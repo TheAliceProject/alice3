@@ -57,29 +57,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CustomExpressionCreatorComposite<V extends CustomExpressionCreatorView> extends PreviewContainingValueCreatorInputDialogCoreComposite<V, Expression> {
-	private final PlainStringValue valueLabel = this.createStringValue( "valueLabel" );
+  private final PlainStringValue valueLabel = this.createStringValue("valueLabel");
 
-	public CustomExpressionCreatorComposite( UUID id ) {
-		super( id );
-	}
+  public CustomExpressionCreatorComposite(UUID id) {
+    super(id);
+  }
 
-	public PlainStringValue getValueLabel() {
-		return this.valueLabel;
-	}
+  public PlainStringValue getValueLabel() {
+    return this.valueLabel;
+  }
 
-	protected abstract void initializeToPreviousExpression( Expression expression );
+  protected abstract void initializeToPreviousExpression(Expression expression);
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		ExpressionCascadeManager expressionCascadeManager = IDE.getActiveInstance().getExpressionCascadeManager();
-		this.initializeToPreviousExpression( expressionCascadeManager.getPreviousExpression() );
-		expressionCascadeManager.pushNullContext();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    ExpressionCascadeManager expressionCascadeManager = IDE.getActiveInstance().getExpressionCascadeManager();
+    this.initializeToPreviousExpression(expressionCascadeManager.getPreviousExpression());
+    expressionCascadeManager.pushNullContext();
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
+  }
 }

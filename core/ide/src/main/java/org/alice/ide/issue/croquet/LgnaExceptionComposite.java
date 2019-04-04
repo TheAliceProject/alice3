@@ -53,30 +53,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LgnaExceptionComposite extends SimpleOperationUnadornedDialogCoreComposite<LgnaExceptionView> {
-	private final Thread thread;
-	private final LgnaRuntimeException lgnaRuntimeException;
+  private final Thread thread;
+  private final LgnaRuntimeException lgnaRuntimeException;
 
-	public LgnaExceptionComposite( Thread thread, LgnaRuntimeException lgnaRuntimeException ) {
-		super( UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), Application.INFORMATION_GROUP );
-		this.thread = thread;
-		this.lgnaRuntimeException = lgnaRuntimeException;
-	}
+  public LgnaExceptionComposite(Thread thread, LgnaRuntimeException lgnaRuntimeException) {
+    super(UUID.fromString("430294d2-f4e4-4a69-93af-93fc2f7a89ba"), Application.INFORMATION_GROUP);
+    this.thread = thread;
+    this.lgnaRuntimeException = lgnaRuntimeException;
+  }
 
-	@Override
-	protected LgnaExceptionView createView() {
-		return new LgnaExceptionView( this );
-	}
+  @Override
+  protected LgnaExceptionView createView() {
+    return new LgnaExceptionView(this);
+  }
 
-	public Thread getThread() {
-		return this.thread;
-	}
+  public Thread getThread() {
+    return this.thread;
+  }
 
-	public LgnaRuntimeException getLgnaRuntimeException() {
-		return this.lgnaRuntimeException;
-	}
+  public LgnaRuntimeException getLgnaRuntimeException() {
+    return this.lgnaRuntimeException;
+  }
 
-	@Override
-	protected String getDialogTitle() {
-		return this.lgnaRuntimeException.getClass().getSimpleName();
-	}
+  @Override
+  protected String getDialogTitle() {
+    return this.lgnaRuntimeException.getClass().getSimpleName();
+  }
 }

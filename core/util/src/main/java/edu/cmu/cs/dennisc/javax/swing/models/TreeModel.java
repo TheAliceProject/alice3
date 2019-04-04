@@ -48,11 +48,11 @@ import javax.swing.tree.TreePath;
  * @author Dennis Cosgrove
  */
 public interface TreeModel<E> extends javax.swing.tree.TreeModel {
-	@Override
-	public E getChild( Object parent, int index );
+  @Override
+  public E getChild(Object parent, int index);
 
-	@Override
-	public E getRoot();
+  @Override
+  public E getRoot();
 
-	public TreePath getTreePath( E e );
+  public TreePath getTreePath(E e);
 }

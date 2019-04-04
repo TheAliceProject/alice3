@@ -54,39 +54,39 @@ import java.awt.Component;
 import java.awt.GridLayout;
 
 public abstract class SnapshotListCellRenderer implements ListCellRenderer {
-	private final int PANEL_INSET = 4;
-	private final int LABEL_INSET = 8;
-	private JPanel panel = new JPanel();
-	private JLabel label = new JLabel();
+  private final int PANEL_INSET = 4;
+  private final int LABEL_INSET = 8;
+  private JPanel panel = new JPanel();
+  private JLabel label = new JLabel();
 
-	public SnapshotListCellRenderer() {
-		this.panel.setOpaque( false );
-		this.label.setOpaque( true );
-		this.panel.setBorder( BorderFactory.createEmptyBorder( PANEL_INSET, PANEL_INSET, PANEL_INSET, PANEL_INSET ) );
-		this.label.setBorder( BorderFactory.createEmptyBorder( LABEL_INSET, LABEL_INSET, LABEL_INSET, LABEL_INSET ) );
-		this.label.setHorizontalTextPosition( SwingConstants.CENTER );
-		this.label.setVerticalTextPosition( SwingConstants.BOTTOM );
-		this.label.setHorizontalAlignment( SwingConstants.CENTER );
-		this.panel.setLayout( new GridLayout( 1, 1 ) );
-		this.panel.add( this.label );
-	}
+  public SnapshotListCellRenderer() {
+    this.panel.setOpaque(false);
+    this.label.setOpaque(true);
+    this.panel.setBorder(BorderFactory.createEmptyBorder(PANEL_INSET, PANEL_INSET, PANEL_INSET, PANEL_INSET));
+    this.label.setBorder(BorderFactory.createEmptyBorder(LABEL_INSET, LABEL_INSET, LABEL_INSET, LABEL_INSET));
+    this.label.setHorizontalTextPosition(SwingConstants.CENTER);
+    this.label.setVerticalTextPosition(SwingConstants.BOTTOM);
+    this.label.setHorizontalAlignment(SwingConstants.CENTER);
+    this.panel.setLayout(new GridLayout(1, 1));
+    this.panel.add(this.label);
+  }
 
-	protected abstract JLabel updateLabel( JLabel rv, Object value );
+  protected abstract JLabel updateLabel(JLabel rv, Object value);
 
-	@Override
-	public final Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		this.updateLabel( this.label, value );
-		Color background;
-		Color foreground;
-		if( isSelected ) {
-			background = new Color( 63, 63, 127 );
-			foreground = Color.YELLOW;
-		} else {
-			background = Color.WHITE;
-			foreground = Color.BLACK;
-		}
-		this.label.setBackground( background );
-		this.label.setForeground( foreground );
-		return this.panel;
-	}
+  @Override
+  public final Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    this.updateLabel(this.label, value);
+    Color background;
+    Color foreground;
+    if (isSelected) {
+      background = new Color(63, 63, 127);
+      foreground = Color.YELLOW;
+    } else {
+      background = Color.WHITE;
+      foreground = Color.BLACK;
+    }
+    this.label.setBackground(background);
+    this.label.setForeground(foreground);
+    return this.panel;
+  }
 }

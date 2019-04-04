@@ -47,5 +47,5 @@ package org.lgna.project.annotations;
  * @author Dennis Cosgrove
  */
 public interface ValueDetails<T> {
-	public Class<T> getSupportedCls();
+  public Class<T> getSupportedCls();
 }

@@ -58,57 +58,57 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/class BooleanStateMenuModel extends MenuModel {
-	public BooleanStateMenuModel( BooleanState state ) {
-		super( UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
-		this.state = state;
-	}
+  public BooleanStateMenuModel(BooleanState state) {
+    super(UUID.fromString("89447818-3c15-4707-9464-79c3f0283262"), state.getClass());
+    this.state = state;
+  }
 
-	@Override
-	protected void initialize() {
-		this.state.initializeIfNecessary();
-		super.initialize();
-	}
+  @Override
+  protected void initialize() {
+    this.state.initializeIfNecessary();
+    super.initialize();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return "menu";
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return "menu";
+  }
 
-	public BooleanState getBooleanState() {
-		return this.state;
-	}
+  public BooleanState getBooleanState() {
+    return this.state;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.state.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.state.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.state.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.state.setEnabled(isEnabled);
+  }
 
-	@Override
-	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		Logger.todo( menuItemContainer, e );
-		super.handleShowing( menuItemContainer, e );
-		ButtonGroup buttonGroup = new ButtonGroup();
-		for( boolean isTrue : new boolean[] { true, false } ) {
-			Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
-			operation.initializeIfNecessary();
-			Action action = operation.getImp().getSwingModel().getAction();
-			JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem( action );
-			buttonGroup.add( jMenuItem );
-			jMenuItem.setSelected( this.state.getValue() == isTrue );
-			menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
-		}
-	}
+  @Override
+  protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    Logger.todo(menuItemContainer, e);
+    super.handleShowing(menuItemContainer, e);
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (boolean isTrue : new boolean[] {true, false}) {
+      Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
+      operation.initializeIfNecessary();
+      Action action = operation.getImp().getSwingModel().getAction();
+      JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(action);
+      buttonGroup.add(jMenuItem);
+      jMenuItem.setSelected(this.state.getValue() == isTrue);
+      menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
+    }
+  }
 
-	@Override
-	protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		menuItemContainer.forgetAndRemoveAllMenuItems();
-		super.handleHiding( menuItemContainer, e );
-	}
+  @Override
+  protected void handleHiding(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    menuItemContainer.forgetAndRemoveAllMenuItems();
+    super.handleHiding(menuItemContainer, e);
+  }
 
-	private final BooleanState state;
+  private final BooleanState state;
 }

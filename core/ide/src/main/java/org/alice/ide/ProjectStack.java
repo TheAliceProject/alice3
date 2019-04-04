@@ -52,51 +52,51 @@ import org.lgna.project.Project;
  * @author Dennis Cosgrove
  */
 public class ProjectStack {
-	private ProjectStack() {
-		throw new AssertionError();
-	}
+  private ProjectStack() {
+    throw new AssertionError();
+  }
 
-	private static final DStack<Project> projectStack = Stacks.newStack();
+  private static final DStack<Project> projectStack = Stacks.newStack();
 
-	private static Project peekProject( boolean isUpToDate ) {
-		if( projectStack.size() > 0 ) {
-			return projectStack.peek();
-		} else {
-			IDE ide = IDE.getActiveInstance();
-			if( ide != null ) {
-				if( isUpToDate ) {
-					return ide.getProject();
-				} else {
-					return ide.getUpToDateProject();
-				}
-			} else {
-				return null;
-			}
-		}
-	}
+  private static Project peekProject(boolean isUpToDate) {
+    if (projectStack.size() > 0) {
+      return projectStack.peek();
+    } else {
+      IDE ide = IDE.getActiveInstance();
+      if (ide != null) {
+        if (isUpToDate) {
+          return ide.getProject();
+        } else {
+          return ide.getUpToDateProject();
+        }
+      } else {
+        return null;
+      }
+    }
+  }
 
-	//todo?
-	public static Project peekProject() {
-		return peekProject( false );
-	}
+  //todo?
+  public static Project peekProject() {
+    return peekProject(false);
+  }
 
-	public static Project peekUpToDateProject() {
-		return peekProject( true );
-	}
+  public static Project peekUpToDateProject() {
+    return peekProject(true);
+  }
 
-	public static void pushProject( Project project ) {
-		projectStack.push( project );
-	}
+  public static void pushProject(Project project) {
+    projectStack.push(project);
+  }
 
-	public static Project popProject() {
-		return projectStack.pop();
-	}
+  public static Project popProject() {
+    return projectStack.pop();
+  }
 
-	public static Project popAndCheckProject( Project expectedProject ) {
-		Project poppedProject = popProject();
-		if( poppedProject != expectedProject ) {
-			Logger.severe( poppedProject, expectedProject );
-		}
-		return poppedProject;
-	}
+  public static Project popAndCheckProject(Project expectedProject) {
+    Project poppedProject = popProject();
+    if (poppedProject != expectedProject) {
+      Logger.severe(poppedProject, expectedProject);
+    }
+    return poppedProject;
+  }
 }

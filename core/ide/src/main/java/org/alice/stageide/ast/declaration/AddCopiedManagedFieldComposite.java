@@ -82,172 +82,167 @@ import java.util.UUID;
  * @author user
  */
 public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddCopiedManagedFieldComposite instance = new AddCopiedManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddCopiedManagedFieldComposite instance = new AddCopiedManagedFieldComposite();
+  }
 
-	public static AddCopiedManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddCopiedManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
-		if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			return instanceCreation.constructor.getValue().getDeclaringType();
-		} else {
-			return null;
-		}
-	}
+  private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer(Expression expression) {
+    if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      return instanceCreation.constructor.getValue().getDeclaringType();
+    } else {
+      return null;
+    }
+  }
 
-	private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
-		@Override
-		public void valueChanged( ValueEvent<Expression> e ) {
-			AddCopiedManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
+    @Override
+    public void valueChanged(ValueEvent<Expression> e) {
+      AddCopiedManagedFieldComposite.this.handleInitializerChanged(e.getNextValue());
+    }
+  };
 
-	private InstanceCreation initialInstanceCreation;
-	private UserField fieldToCopy = null;
+  private InstanceCreation initialInstanceCreation;
+  private UserField fieldToCopy = null;
 
-	private AddCopiedManagedFieldComposite() {
-		super( UUID.fromString( "a14a3088-185c-4dfd-983c-af05e1d8dc14" ), new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, null )
-				.build() );
-		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
-	}
+  private AddCopiedManagedFieldComposite() {
+    super(UUID.fromString("a14a3088-185c-4dfd-983c-af05e1d8dc14"), new FieldDetailsBuilder().valueComponentType(ApplicabilityStatus.DISPLAYED, null).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false).initializer(ApplicabilityStatus.DISPLAYED, null).build());
+    this.getInitializerState().addAndInvokeNewSchoolValueListener(initializerListener);
+  }
 
-	@Override
-	protected EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv ) {
-		AffineMatrix4x4 initialTransform = null;
-		DropSite dropSite = userActivity.findDropSite();
-		if( dropSite instanceof SceneDropSite ) {
-			SceneDropSite sceneDropSite = (SceneDropSite)dropSite;
-			initialTransform = sceneDropSite.getTransform();
-		} else {
-			AbstractType<?, ?, ?> type = field.getValueType();
-			JavaType javaType = type.getFirstEncounteredJavaType();
-			Class<?> cls = javaType.getClassReflectionProxy().getReification();
-			if( SModel.class.isAssignableFrom( cls ) ) {
-				initialTransform = AliceResourceUtilties.getDefaultInitialTransform( AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends SModel>)cls ) );
-			}
-			else {
-				initialTransform = null;
-			}
-		}
-		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
-		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
-		Statement[] doStatements = sceneEditor.getDoStatementsForCopyField( this.fieldToCopy, field, initialTransform );
-		for( Statement s : doStatements ) {
-			rv.addDoStatement( s );
-		}
-		Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
-		for( Statement s : undoStatements ) {
-			rv.addUndoStatement( s );
-		}
-		return rv;
-	}
+  @Override
+  protected EditCustomization customize(UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv) {
+    AffineMatrix4x4 initialTransform = null;
+    DropSite dropSite = userActivity.findDropSite();
+    if (dropSite instanceof SceneDropSite) {
+      SceneDropSite sceneDropSite = (SceneDropSite) dropSite;
+      initialTransform = sceneDropSite.getTransform();
+    } else {
+      AbstractType<?, ?, ?> type = field.getValueType();
+      JavaType javaType = type.getFirstEncounteredJavaType();
+      Class<?> cls = javaType.getClassReflectionProxy().getReification();
+      if (SModel.class.isAssignableFrom(cls)) {
+        initialTransform = AliceResourceUtilties.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
+      } else {
+        initialTransform = null;
+      }
+    }
+    initialTransform = this.updateInitialTransformIfNecessary(initialTransform);
+    AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
+    Statement[] doStatements = sceneEditor.getDoStatementsForCopyField(this.fieldToCopy, field, initialTransform);
+    for (Statement s : doStatements) {
+      rv.addDoStatement(s);
+    }
+    Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField(field);
+    for (Statement s : undoStatements) {
+      rv.addUndoStatement(s);
+    }
+    return rv;
+  }
 
-	private void setInitializerInitialValue( InstanceCreation initialInstanceCreation ) {
-		this.initialInstanceCreation = initialInstanceCreation;
-	}
+  private void setInitializerInitialValue(InstanceCreation initialInstanceCreation) {
+    this.initialInstanceCreation = initialInstanceCreation;
+  }
 
-	@Override
-	protected String generateName() {
-		String sourceName =  fieldToCopy == null ? super.generateName() : fieldToCopy.getName();
-		// Remove trailing digits to avoid odd name suggestions
-		return sourceName.replaceAll("\\d*$", "");
-	}
+  @Override
+  protected String generateName() {
+    String sourceName = fieldToCopy == null ? super.generateName() : fieldToCopy.getName();
+    // Remove trailing digits to avoid odd name suggestions
+    return sourceName.replaceAll("\\d*$", "");
+  }
 
-	public void setFieldToBeCopied( UserField fieldToCopy, Statement... setupStatements ) {
-		this.fieldToCopy = fieldToCopy;
-		Expression newInitializer = AstUtilities.createCopy( fieldToCopy.initializer.getValue(), (NamedUserType)fieldToCopy.getDeclaringType() );
-		assert fieldToCopy.initializer.getValue() instanceof InstanceCreation;
-		setInitializerInitialValue( (InstanceCreation)newInitializer );
-	}
+  public void setFieldToBeCopied(UserField fieldToCopy, Statement... setupStatements) {
+    this.fieldToCopy = fieldToCopy;
+    Expression newInitializer = AstUtilities.createCopy(fieldToCopy.initializer.getValue(), (NamedUserType) fieldToCopy.getDeclaringType());
+    assert fieldToCopy.initializer.getValue() instanceof InstanceCreation;
+    setInitializerInitialValue((InstanceCreation) newInitializer);
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return this.initialInstanceCreation;
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return this.initialInstanceCreation;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		return getDeclaringTypeFromInitializer( this.getInitializer() );
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+    return getDeclaringTypeFromInitializer(this.getInitializer());
+  }
 
-	private void handleInitializerChanged( Expression nextValue ) {
-		AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
-		this.getValueComponentTypeState().setValueTransactionlessly( type );
-		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
-		this.refreshStatus();
-		final AbstractWindow<?> root = this.getView().getRoot();
-		if( root != null ) {
-			Dimension preferredSize = root.getAwtComponent().getPreferredSize();
-			Dimension size = root.getSize();
-			if( ( preferredSize.width > size.width ) || ( preferredSize.height > size.height ) ) {
-				root.pack();
-			}
-		}
-	}
+  private void handleInitializerChanged(Expression nextValue) {
+    AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer(nextValue);
+    this.getValueComponentTypeState().setValueTransactionlessly(type);
+    this.getNameState().setValueTransactionlessly(this.getNameInitialValue());
+    this.refreshStatus();
+    final AbstractWindow<?> root = this.getView().getRoot();
+    if (root != null) {
+      Dimension preferredSize = root.getAwtComponent().getPreferredSize();
+      Dimension size = root.getSize();
+      if ((preferredSize.width > size.width) || (preferredSize.height > size.height)) {
+        root.pack();
+      }
+    }
+  }
 
-	private class InitializerContext implements ExpressionCascadeContext {
-		@Override
-		public Expression getPreviousExpression() {
-			//todo: investigate
-			//org.lgna.project.ast.UserField field = getPreviewValue();
-			//return field.initializer.getValue();
-			return getInitializer();
-			//return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
-		}
+  private class InitializerContext implements ExpressionCascadeContext {
+    @Override
+    public Expression getPreviousExpression() {
+      //todo: investigate
+      //org.lgna.project.ast.UserField field = getPreviewValue();
+      //return field.initializer.getValue();
+      return getInitializer();
+      //return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
+    }
 
-		@Override
-		public BlockStatementIndexPair getBlockStatementIndexPair() {
-			return null;
-		}
-	}
+    @Override
+    public BlockStatementIndexPair getBlockStatementIndexPair() {
+      return null;
+    }
+  }
 
-	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
-		private ExpressionCascadeContext pushedContext;
+  private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
+    private ExpressionCascadeContext pushedContext;
 
-		@Override
-		public CascadeFillIn getFillInFor( Expression value ) {
-			return null;
-		}
+    @Override
+    public CascadeFillIn getFillInFor(Expression value) {
+      return null;
+    }
 
-		@Override
-		public void prologue() {
-			this.pushedContext = new InitializerContext();
-			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		}
+    @Override
+    public void prologue() {
+      this.pushedContext = new InitializerContext();
+      IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+    }
 
-		@Override
-		public void epilogue() {
-			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
-			this.pushedContext = null;
-		}
+    @Override
+    public void epilogue() {
+      IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(this.pushedContext);
+      this.pushedContext = null;
+    }
 
-		@Override
-		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-			Expression initializer = getInitializer();
-			if( initializer instanceof InstanceCreation ) {
-				InstanceCreation instanceCreation = (InstanceCreation)initializer;
-				AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				blankChildren.add( InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
-				blankChildren.add( CascadeLineSeparator.getInstance() );
-			}
-		}
-	}
+    @Override
+    public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+      Expression initializer = getInitializer();
+      if (initializer instanceof InstanceCreation) {
+        InstanceCreation instanceCreation = (InstanceCreation) initializer;
+        AbstractConstructor constructor = instanceCreation.constructor.getValue();
+        blankChildren.add(InstanceCreationFillInWithGalleryResourceParameter.getInstance(constructor));
+        blankChildren.add(CascadeLineSeparator.getInstance());
+      }
+    }
+  }
 
-	@Override
-	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
-		return new ResourceKeyInitializerCustomizer();
-	}
+  @Override
+  protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
+    return new ResourceKeyInitializerCustomizer();
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		this.initialInstanceCreation = null;
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    this.initialInstanceCreation = null;
+  }
 }

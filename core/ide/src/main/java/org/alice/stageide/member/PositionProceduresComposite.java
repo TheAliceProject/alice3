@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PositionProceduresComposite extends NameFilteredJavaProceduresComposite {
-	private static class SingletonHolder {
-		private static PositionProceduresComposite instance = new PositionProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static PositionProceduresComposite instance = new PositionProceduresComposite();
+  }
 
-	public static PositionProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PositionProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PositionProceduresComposite() {
-		super( UUID.fromString( "906e4b87-f77f-479a-a7da-bac92d95c976" ), "move", "moveToward", "moveAwayFrom", "moveTo", "place" );
-	}
+  private PositionProceduresComposite() {
+    super(UUID.fromString("906e4b87-f77f-479a-a7da-bac92d95c976"), "move", "moveToward", "moveAwayFrom", "moveTo", "place");
+  }
 }

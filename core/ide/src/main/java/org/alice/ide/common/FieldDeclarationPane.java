@@ -61,90 +61,90 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationPane extends LineAxisPanel {
-	private final AstI18nFactory factory;
-	private final UserField field;
-	private final Label finalLabel = new Label();
-	private final boolean isDropDownDesired;
-	private final boolean isFinalDesiredIfAppropriate;
+  private final AstI18nFactory factory;
+  private final UserField field;
+  private final Label finalLabel = new Label();
+  private final boolean isDropDownDesired;
+  private final boolean isFinalDesiredIfAppropriate;
 
-	public FieldDeclarationPane( AstI18nFactory factory, UserField field, boolean isDropDownDesired, boolean isFinalDesiredIfAppropriate ) {
-		this.factory = factory;
-		this.field = field;
-		this.isDropDownDesired = isDropDownDesired;
-		this.isFinalDesiredIfAppropriate = isFinalDesiredIfAppropriate;
-	}
+  public FieldDeclarationPane(AstI18nFactory factory, UserField field, boolean isDropDownDesired, boolean isFinalDesiredIfAppropriate) {
+    this.factory = factory;
+    this.field = field;
+    this.isDropDownDesired = isDropDownDesired;
+    this.isFinalDesiredIfAppropriate = isFinalDesiredIfAppropriate;
+  }
 
-	public FieldDeclarationPane( AstI18nFactory factory, UserField field, boolean isDropDownDesired ) {
-		this( factory, field, isDropDownDesired, true );
-	}
+  public FieldDeclarationPane(AstI18nFactory factory, UserField field, boolean isDropDownDesired) {
+    this(factory, field, isDropDownDesired, true);
+  }
 
-	public FieldDeclarationPane( AstI18nFactory factory, UserField field ) {
-		this( factory, field, false );
-	}
+  public FieldDeclarationPane(AstI18nFactory factory, UserField field) {
+    this(factory, field, false);
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		if( isFinalDesiredIfAppropriate && IsExposingReassignableStatusState.getInstance().getValue() ) {
-			this.addComponent( finalLabel );
-		}
-		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
-		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		AwtComponentView<?> nameLabel = this.createNameLabel();
-		nameLabel.scaleFont( 1.5f );
-		this.addComponent( nameLabel );
-		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		this.addComponent( new GetsPane( true ) );
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.forgetAndRemoveAllComponents();
+    if (isFinalDesiredIfAppropriate && IsExposingReassignableStatusState.getInstance().getValue()) {
+      this.addComponent(finalLabel);
+    }
+    this.addComponent(TypeComponent.createInstance(field.getValueType()));
+    this.addComponent(BoxUtilities.createHorizontalSliver(8));
+    AwtComponentView<?> nameLabel = this.createNameLabel();
+    nameLabel.scaleFont(1.5f);
+    this.addComponent(nameLabel);
+    this.addComponent(BoxUtilities.createHorizontalSliver(8));
+    this.addComponent(new GetsPane(true));
 
-		AwtComponentView<?> component;
-		if( isDropDownDesired ) {
-			component = new ExpressionDropDown( FieldInitializerState.getInstance( this.field ), DialogAstI18nFactory.getInstance() );
-		} else {
-			component = new ExpressionPropertyView( factory, field.initializer );
-		}
-		this.addComponent( component );
-	}
+    AwtComponentView<?> component;
+    if (isDropDownDesired) {
+      component = new ExpressionDropDown(FieldInitializerState.getInstance(this.field), DialogAstI18nFactory.getInstance());
+    } else {
+      component = new ExpressionPropertyView(factory, field.initializer);
+    }
+    this.addComponent(component);
+  }
 
-	protected AwtComponentView<?> createNameLabel() {
-		return this.factory.createNameView( this.field );
-	}
+  protected AwtComponentView<?> createNameLabel() {
+    return this.factory.createNameView(this.field);
+  }
 
-	private void updateFinalLabel() {
-		String text;
-		if( field.isFinal() ) {
-			text = FormatterState.getInstance().getValue().getFinalText() + " ";
-		} else {
-			text = "";
-		}
-		this.finalLabel.setText( text );
-	}
+  private void updateFinalLabel() {
+    String text;
+    if (field.isFinal()) {
+      text = FormatterState.getInstance().getValue().getFinalText() + " ";
+    } else {
+      text = "";
+    }
+    this.finalLabel.setText(text);
+  }
 
-	private PropertyListener propertyListener = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private PropertyListener propertyListener = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			updateFinalLabel();
-		}
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      updateFinalLabel();
+    }
+  };
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.updateFinalLabel();
-		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.updateFinalLabel();
+    this.field.finalVolatileOrNeither.addPropertyListener(this.propertyListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.field.finalVolatileOrNeither.addPropertyListener(this.propertyListener);
+    super.handleUndisplayable();
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 }

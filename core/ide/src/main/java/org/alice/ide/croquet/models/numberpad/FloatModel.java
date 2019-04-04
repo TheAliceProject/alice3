@@ -51,30 +51,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FloatModel extends NumberModel<FloatLiteral> {
-	private static class SingletonHolder {
-		private static FloatModel instance = new FloatModel();
-	}
+  private static class SingletonHolder {
+    private static FloatModel instance = new FloatModel();
+  }
 
-	public static FloatModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FloatModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FloatModel() {
-		super( NUMBER_PAD_GROUP, UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ) );
-	}
+  private FloatModel() {
+    super(NUMBER_PAD_GROUP, UUID.fromString("f34ce6db-6de0-48cb-ba43-98e89f55b59b"));
+  }
 
-	@Override
-	public boolean isDecimalPointSupported() {
-		return true;
-	}
+  @Override
+  public boolean isDecimalPointSupported() {
+    return true;
+  }
 
-	@Override
-	protected FloatLiteral valueOf( String s ) {
-		float f = (float)DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
-		if( Float.isNaN( f ) ) {
-			return null;
-		} else {
-			return new FloatLiteral( f );
-		}
-	}
+  @Override
+  protected FloatLiteral valueOf(String s) {
+    float f = (float) DoubleUtilities.parseDoubleInCurrentDefaultLocale(s);
+    if (Float.isNaN(f)) {
+      return null;
+    } else {
+      return new FloatLiteral(f);
+    }
+  }
 }

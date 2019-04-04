@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleModelImp extends SingleVisualModelImp {
-	public SimpleModelImp() {
-		super( new Visual() );
-	}
+  public SimpleModelImp() {
+    super(new Visual());
+  }
 }

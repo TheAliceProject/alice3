@@ -75,175 +75,175 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GlrScene extends GlrComposite<Scene> {
-	@Override
-	public void initialize( Scene sgElement ) {
-		super.initialize( sgElement );
-		for( Component sgComponent : VisitUtilities.getAll( owner, Component.class ) ) {
-			GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgComponent );
-			this.addDescendant( glrComponent );
-		}
-	}
+  @Override
+  public void initialize(Scene sgElement) {
+    super.initialize(sgElement);
+    for (Component sgComponent : VisitUtilities.getAll(owner, Component.class)) {
+      GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor(sgComponent);
+      this.addDescendant(glrComponent);
+    }
+  }
 
-	public GlrBackground getBackgroundAdapter() {
-		return this.backgroundAdapter;
-	}
+  public GlrBackground getBackgroundAdapter() {
+    return this.backgroundAdapter;
+  }
 
-	protected void addDescendant( GlrComponent<?> glrDescendant ) {
-		if( glrDescendant instanceof GlrGhost ) {
-			synchronized( this.glrGhostDescendants ) {
-				this.glrGhostDescendants.add( (GlrGhost)glrDescendant );
-			}
-		} else if( glrDescendant instanceof GlrVisual<?> ) {
-			synchronized( this.glrVisualDescendants ) {
-				this.glrVisualDescendants.add( (GlrVisual<?>)glrDescendant );
-			}
-			if( glrDescendant instanceof GlrPlanarReflector ) {
-				synchronized( this.glrPlanarReflectorDescendants ) {
-					this.glrPlanarReflectorDescendants.add( (GlrPlanarReflector)glrDescendant );
-				}
-			}
-		}
-	}
+  protected void addDescendant(GlrComponent<?> glrDescendant) {
+    if (glrDescendant instanceof GlrGhost) {
+      synchronized (this.glrGhostDescendants) {
+        this.glrGhostDescendants.add((GlrGhost) glrDescendant);
+      }
+    } else if (glrDescendant instanceof GlrVisual<?>) {
+      synchronized (this.glrVisualDescendants) {
+        this.glrVisualDescendants.add((GlrVisual<?>) glrDescendant);
+      }
+      if (glrDescendant instanceof GlrPlanarReflector) {
+        synchronized (this.glrPlanarReflectorDescendants) {
+          this.glrPlanarReflectorDescendants.add((GlrPlanarReflector) glrDescendant);
+        }
+      }
+    }
+  }
 
-	protected void removeDescendant( GlrComponent<?> glrDescendant ) {
-		if( glrDescendant instanceof GlrGhost ) {
-			synchronized( this.glrGhostDescendants ) {
-				this.glrGhostDescendants.remove( glrDescendant );
-			}
-		} else if( glrDescendant instanceof GlrVisual<?> ) {
-			synchronized( this.glrVisualDescendants ) {
-				this.glrVisualDescendants.remove( glrDescendant );
-			}
-			if( glrDescendant instanceof GlrPlanarReflector ) {
-				synchronized( this.glrPlanarReflectorDescendants ) {
-					this.glrPlanarReflectorDescendants.remove( glrDescendant );
-				}
-			}
-		}
-	}
+  protected void removeDescendant(GlrComponent<?> glrDescendant) {
+    if (glrDescendant instanceof GlrGhost) {
+      synchronized (this.glrGhostDescendants) {
+        this.glrGhostDescendants.remove(glrDescendant);
+      }
+    } else if (glrDescendant instanceof GlrVisual<?>) {
+      synchronized (this.glrVisualDescendants) {
+        this.glrVisualDescendants.remove(glrDescendant);
+      }
+      if (glrDescendant instanceof GlrPlanarReflector) {
+        synchronized (this.glrPlanarReflectorDescendants) {
+          this.glrPlanarReflectorDescendants.remove(glrDescendant);
+        }
+      }
+    }
+  }
 
-	@Deprecated
-	public void EPIC_HACK_FOR_THUMBNAIL_MAKER_removeDescendant( GlrComponent<?> glrDescendant ) {
-		this.removeDescendant( glrDescendant );
-	}
+  @Deprecated
+  public void EPIC_HACK_FOR_THUMBNAIL_MAKER_removeDescendant(GlrComponent<?> glrDescendant) {
+    this.removeDescendant(glrDescendant);
+  }
 
-	public void renderAlphaBlended( RenderContext rc ) {
-		// todo depth sort
-		//rc.gl.glDisable( GL_DEPTH_TEST );
-		//		rc.gl.glDepthMask( false );
-		//		try {
-		synchronized( this.glrGhostDescendants ) {
-			for( GlrGhost ghostAdapter : this.glrGhostDescendants ) {
-				ghostAdapter.renderGhost( rc, ghostAdapter );
-			}
-		}
-		synchronized( this.glrVisualDescendants ) {
-			for( GlrVisual<? extends Visual> visualAdapter : this.glrVisualDescendants ) {
-				if( visualAdapter.isAlphaBlended() ) {
-					//todo: adapters should be removed
-					if( ( visualAdapter.owner != null ) && ( visualAdapter.owner.getRoot() instanceof Scene ) ) {
-						if( visualAdapter.isAllAlpha() ) {
-							visualAdapter.renderAllAlphaBlended( rc );
-						} else {
-							visualAdapter.renderAlphaBlended( rc );
-						}
-					}
-				}
-			}
-		}
-		//		} finally {
-		//			rc.gl.glDepthMask( true );
-		//		}
-		//rc.gl.glEnable( GL_DEPTH_TEST );
-	}
+  public void renderAlphaBlended(RenderContext rc) {
+    // todo depth sort
+    //rc.gl.glDisable( GL_DEPTH_TEST );
+    //    rc.gl.glDepthMask( false );
+    //    try {
+    synchronized (this.glrGhostDescendants) {
+      for (GlrGhost ghostAdapter : this.glrGhostDescendants) {
+        ghostAdapter.renderGhost(rc, ghostAdapter);
+      }
+    }
+    synchronized (this.glrVisualDescendants) {
+      for (GlrVisual<? extends Visual> visualAdapter : this.glrVisualDescendants) {
+        if (visualAdapter.isAlphaBlended()) {
+          //todo: adapters should be removed
+          if ((visualAdapter.owner != null) && (visualAdapter.owner.getRoot() instanceof Scene)) {
+            if (visualAdapter.isAllAlpha()) {
+              visualAdapter.renderAllAlphaBlended(rc);
+            } else {
+              visualAdapter.renderAlphaBlended(rc);
+            }
+          }
+        }
+      }
+    }
+    //    } finally {
+    //      rc.gl.glDepthMask( true );
+    //    }
+    //rc.gl.glEnable( GL_DEPTH_TEST );
+  }
 
-	@Override
-	public void setupAffectors( RenderContext rc ) {
-		rc.setGlobalBrightness( this.globalBrightness );
-		rc.beginAffectorSetup();
-		super.setupAffectors( rc );
-		rc.endAffectorSetup();
-	}
+  @Override
+  public void setupAffectors(RenderContext rc) {
+    rc.setGlobalBrightness(this.globalBrightness);
+    rc.beginAffectorSetup();
+    super.setupAffectors(rc);
+    rc.endAffectorSetup();
+  }
 
-	private void renderScene( RenderContext rc ) {
-		rc.gl.glDisable( GL_BLEND );
-		renderOpaque( rc );
-		rc.gl.glEnable( GL_BLEND );
-		rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-		renderAlphaBlended( rc );
-		rc.gl.glDisable( GL_BLEND );
-	}
+  private void renderScene(RenderContext rc) {
+    rc.gl.glDisable(GL_BLEND);
+    renderOpaque(rc);
+    rc.gl.glEnable(GL_BLEND);
+    rc.gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderAlphaBlended(rc);
+    rc.gl.glDisable(GL_BLEND);
+  }
 
-	public void renderScene( RenderContext rc, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrBackground backgroundAdapter ) {
-		rc.gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			rc.gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
+  public void renderScene(RenderContext rc, GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrBackground backgroundAdapter) {
+    rc.gl.glMatrixMode(GL_MODELVIEW);
+    synchronized (cameraAdapter) {
+      rc.gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
+    }
 
-		if( backgroundAdapter != null ) {
-			//pass
-		} else {
-			backgroundAdapter = this.backgroundAdapter;
-		}
-		if( backgroundAdapter != null ) {
-			backgroundAdapter.setup( rc );
-		}
+    if (backgroundAdapter != null) {
+      //pass
+    } else {
+      backgroundAdapter = this.backgroundAdapter;
+    }
+    if (backgroundAdapter != null) {
+      backgroundAdapter.setup(rc);
+    }
 
-		if( this.glrPlanarReflectorDescendants.size() > 0 ) {
-			GlrPlanarReflector planarReflectorAdapter = this.glrPlanarReflectorDescendants.get( 0 );
-			if( planarReflectorAdapter.isFacing( cameraAdapter ) ) {
-				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
-				rc.gl.glColorMask( false, false, false, false );
-				rc.gl.glEnable( GL_STENCIL_TEST );
-				rc.gl.glStencilFunc( GL_ALWAYS, 1, 1 );
-				rc.gl.glStencilOp( GL_KEEP, GL_KEEP, GL_REPLACE );
-				rc.gl.glDisable( GL_DEPTH_TEST );
-				planarReflectorAdapter.renderStencil( rc, GlrVisual.RenderType.OPAQUE );
-				rc.gl.glEnable( GL_DEPTH_TEST );
-				rc.gl.glColorMask( true, true, true, true );
-				rc.gl.glStencilFunc( GL_EQUAL, 1, 1 );
-				rc.gl.glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
-				rc.gl.glEnable( GL_CLIP_PLANE0 );
-				rc.gl.glPushMatrix();
-				planarReflectorAdapter.applyReflection( rc );
-				rc.gl.glFrontFace( GL_CW );
-				setupAffectors( rc );
-				renderScene( rc );
-				rc.gl.glFrontFace( GL_CCW );
-				rc.gl.glPopMatrix();
-				rc.gl.glDisable( GL_CLIP_PLANE0 );
-				rc.gl.glDisable( GL_STENCIL_TEST );
-				setupAffectors( rc );
-				rc.gl.glEnable( GL_BLEND );
-				rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-				planarReflectorAdapter.renderStencil( rc, GlrVisual.RenderType.ALPHA_BLENDED );
-				rc.gl.glDisable( GL_BLEND );
-			} else {
-				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-				setupAffectors( rc );
-			}
-		} else {
-			rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-			setupAffectors( rc );
-		}
-		renderScene( rc );
-	}
+    if (this.glrPlanarReflectorDescendants.size() > 0) {
+      GlrPlanarReflector planarReflectorAdapter = this.glrPlanarReflectorDescendants.get(0);
+      if (planarReflectorAdapter.isFacing(cameraAdapter)) {
+        rc.gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        rc.gl.glColorMask(false, false, false, false);
+        rc.gl.glEnable(GL_STENCIL_TEST);
+        rc.gl.glStencilFunc(GL_ALWAYS, 1, 1);
+        rc.gl.glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+        rc.gl.glDisable(GL_DEPTH_TEST);
+        planarReflectorAdapter.renderStencil(rc, GlrVisual.RenderType.OPAQUE);
+        rc.gl.glEnable(GL_DEPTH_TEST);
+        rc.gl.glColorMask(true, true, true, true);
+        rc.gl.glStencilFunc(GL_EQUAL, 1, 1);
+        rc.gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+        rc.gl.glEnable(GL_CLIP_PLANE0);
+        rc.gl.glPushMatrix();
+        planarReflectorAdapter.applyReflection(rc);
+        rc.gl.glFrontFace(GL_CW);
+        setupAffectors(rc);
+        renderScene(rc);
+        rc.gl.glFrontFace(GL_CCW);
+        rc.gl.glPopMatrix();
+        rc.gl.glDisable(GL_CLIP_PLANE0);
+        rc.gl.glDisable(GL_STENCIL_TEST);
+        setupAffectors(rc);
+        rc.gl.glEnable(GL_BLEND);
+        rc.gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        planarReflectorAdapter.renderStencil(rc, GlrVisual.RenderType.ALPHA_BLENDED);
+        rc.gl.glDisable(GL_BLEND);
+      } else {
+        rc.gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        setupAffectors(rc);
+      }
+    } else {
+      rc.gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      setupAffectors(rc);
+    }
+    renderScene(rc);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.background ) {
-			this.backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
-		} else if( property == owner.globalBrightness ) {
-			this.globalBrightness = owner.globalBrightness.getValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.background) {
+      this.backgroundAdapter = AdapterFactory.getAdapterFor(owner.background.getValue());
+    } else if (property == owner.globalBrightness) {
+      this.globalBrightness = owner.globalBrightness.getValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private GlrBackground backgroundAdapter;
-	private float globalBrightness;
-	private final List<GlrGhost> glrGhostDescendants = Lists.newLinkedList();
-	private final List<GlrVisual<?>> glrVisualDescendants = Lists.newLinkedList();
-	private final List<GlrPlanarReflector> glrPlanarReflectorDescendants = Lists.newLinkedList();
-	private boolean isInitialized = false;
+  private GlrBackground backgroundAdapter;
+  private float globalBrightness;
+  private final List<GlrGhost> glrGhostDescendants = Lists.newLinkedList();
+  private final List<GlrVisual<?>> glrVisualDescendants = Lists.newLinkedList();
+  private final List<GlrPlanarReflector> glrPlanarReflectorDescendants = Lists.newLinkedList();
+  private boolean isInitialized = false;
 }

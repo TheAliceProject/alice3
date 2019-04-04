@@ -52,40 +52,40 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionTemplate extends ExpressionCreatorPane {
-	private boolean isInitialized = false;
+  private boolean isInitialized = false;
 
-	public ExpressionTemplate( AbstractExpressionDragModel model ) {
-		super( model );
-	}
+  public ExpressionTemplate(AbstractExpressionDragModel model) {
+    super(model);
+  }
 
-	protected abstract Expression createIncompleteExpression();
+  protected abstract Expression createIncompleteExpression();
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.refresh();
-			this.isInitialized = true;
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.isInitialized) {
+      //pass
+    } else {
+      this.refresh();
+      this.isInitialized = true;
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//this.removeAllComponents();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    //this.removeAllComponents();
+    super.handleUndisplayable();
+  }
 
-	protected void refresh() {
-		this.removeAllComponents();
-		Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
-	}
+  protected void refresh() {
+    this.removeAllComponents();
+    Expression incompleteExpression = this.createIncompleteExpression();
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
+    this.addComponent(TemplateAstI18nFactory.getInstance().createComponent(incompleteExpression));
+  }
 
-	//	@Override
-	//	protected boolean isPressed() {
-	//		return false;
-	//	}
+  //  @Override
+  //  protected boolean isPressed() {
+  //    return false;
+  //  }
 }

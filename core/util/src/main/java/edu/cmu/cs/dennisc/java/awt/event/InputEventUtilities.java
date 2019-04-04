@@ -50,34 +50,34 @@ import java.awt.event.InputEvent;
  * @author Dennis Cosgrove
  */
 public class InputEventUtilities {
-	public static int getCompleteModifiers( InputEvent e ) {
-		return e.getModifiers() | e.getModifiersEx();
-	}
+  public static int getCompleteModifiers(InputEvent e) {
+    return e.getModifiers() | e.getModifiersEx();
+  }
 
-	public static int performPlatformModifiersFilter( int originalModifiers ) {
-		int rv;
-		if( SystemUtilities.isMac() ) {
-			//todo
-			rv = originalModifiers;
-		} else {
-			rv = originalModifiers;
-		}
-		return rv;
-	}
+  public static int performPlatformModifiersFilter(int originalModifiers) {
+    int rv;
+    if (SystemUtilities.isMac()) {
+      //todo
+      rv = originalModifiers;
+    } else {
+      rv = originalModifiers;
+    }
+    return rv;
+  }
 
-	public static int getAcceleratorMask() {
-		if( SystemUtilities.isMac() ) {
-			return InputEvent.META_MASK;
-		} else {
-			return InputEvent.CTRL_MASK;
-		}
-	}
+  public static int getAcceleratorMask() {
+    if (SystemUtilities.isMac()) {
+      return InputEvent.META_MASK;
+    } else {
+      return InputEvent.CTRL_MASK;
+    }
+  }
 
-	public static boolean isQuoteControlUnquoteDown( InputEvent e ) {
-		if( SystemUtilities.isMac() ) {
-			return e.isAltDown();
-		} else {
-			return e.isControlDown();
-		}
-	}
+  public static boolean isQuoteControlUnquoteDown(InputEvent e) {
+    if (SystemUtilities.isMac()) {
+      return e.isAltDown();
+    } else {
+      return e.isControlDown();
+    }
+  }
 }

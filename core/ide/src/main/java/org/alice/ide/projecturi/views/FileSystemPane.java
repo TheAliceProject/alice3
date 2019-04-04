@@ -50,15 +50,10 @@ import org.lgna.croquet.views.BorderPanel;
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
-	public FileSystemPane( FileSystemTab composite ) {
-		super( composite );
-		BorderPanel pane = new BorderPanel.Builder()
-				.hgap( 4 )
-				.lineStart( composite.getPathState().getSidekickLabel().createLabel() )
-				.center( composite.getPathState().createTextField() )
-				.lineEnd( composite.getBrowseOperation().createButton() )
-				.build();
+  public FileSystemPane(FileSystemTab composite) {
+    super(composite);
+    BorderPanel pane = new BorderPanel.Builder().hgap(4).lineStart(composite.getPathState().getSidekickLabel().createLabel()).center(composite.getPathState().createTextField()).lineEnd(composite.getBrowseOperation().createButton()).build();
 
-		this.addPageStartComponent( pane );
-	}
+    this.addPageStartComponent(pane);
+  }
 }

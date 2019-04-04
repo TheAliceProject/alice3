@@ -53,28 +53,28 @@ import org.lgna.story.resources.ModelResource;
  * @author Dennis Cosgrove
  */
 public class SceneEditorUpdatingProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
-	private static class SingletonHolder {
-		private static SceneEditorUpdatingProjectEditorAstI18nFactory instance = new SceneEditorUpdatingProjectEditorAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static SceneEditorUpdatingProjectEditorAstI18nFactory instance = new SceneEditorUpdatingProjectEditorAstI18nFactory();
+  }
 
-	public static SceneEditorUpdatingProjectEditorAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SceneEditorUpdatingProjectEditorAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SceneEditorUpdatingProjectEditorAstI18nFactory() {
-	}
+  private SceneEditorUpdatingProjectEditorAstI18nFactory() {
+  }
 
-	@Override
-	protected ExpressionPropertyCascade getArgumentCascade( SimpleArgument simpleArgument ) {
-		InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( InstanceCreation.class );
-		if( instanceCreation != null ) {
-			UserField field = instanceCreation.getFirstAncestorAssignableTo( UserField.class );
-			if( field != null ) {
-				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( ModelResource.class ) ) {
-					return SceneEditorUpdatingArgumentCascade.getInstance( simpleArgument );
-				}
-			}
-		}
-		return super.getArgumentCascade( simpleArgument );
-	}
+  @Override
+  protected ExpressionPropertyCascade getArgumentCascade(SimpleArgument simpleArgument) {
+    InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo(InstanceCreation.class);
+    if (instanceCreation != null) {
+      UserField field = instanceCreation.getFirstAncestorAssignableTo(UserField.class);
+      if (field != null) {
+        if (simpleArgument.parameter.getValue().getValueType().isAssignableTo(ModelResource.class)) {
+          return SceneEditorUpdatingArgumentCascade.getInstance(simpleArgument);
+        }
+      }
+    }
+    return super.getArgumentCascade(simpleArgument);
+  }
 }

@@ -58,39 +58,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DissolveStatementWithBodyOperation extends ActionOperation {
-	private static Map<AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = Maps.newHashMap();
+  private static Map<AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = Maps.newHashMap();
 
-	public static synchronized DissolveStatementWithBodyOperation getInstance( AbstractStatementWithBody statementWithBody ) {
-		DissolveStatementWithBodyOperation rv = map.get( statementWithBody );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DissolveStatementWithBodyOperation( statementWithBody );
-			map.put( statementWithBody, rv );
-		}
-		return rv;
-	}
+  public static synchronized DissolveStatementWithBodyOperation getInstance(AbstractStatementWithBody statementWithBody) {
+    DissolveStatementWithBodyOperation rv = map.get(statementWithBody);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DissolveStatementWithBodyOperation(statementWithBody);
+      map.put(statementWithBody, rv);
+    }
+    return rv;
+  }
 
-	private AbstractStatementWithBody statementWithBody;
+  private AbstractStatementWithBody statementWithBody;
 
-	private DissolveStatementWithBodyOperation( AbstractStatementWithBody statementWithBody ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
-		this.statementWithBody = statementWithBody;
-	}
+  private DissolveStatementWithBodyOperation(AbstractStatementWithBody statementWithBody) {
+    super(Application.PROJECT_GROUP, UUID.fromString("b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d"));
+    this.statementWithBody = statementWithBody;
+  }
 
-	public AbstractStatementWithBody getStatementWithBody() {
-		return this.statementWithBody;
-	}
+  public AbstractStatementWithBody getStatementWithBody() {
+    return this.statementWithBody;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		String statementName = ResourceBundleUtilities.getStringFromSimpleNames( statementWithBody.getClass(), "org.alice.ide.controlflow.Templates");
-		this.setName( getImp().getName() + " " + statementName );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    String statementName = ResourceBundleUtilities.getStringFromSimpleNames(statementWithBody.getClass(), "org.alice.ide.controlflow.Templates");
+    this.setName(getImp().getName() + " " + statementName);
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new DissolveStatementWithBodyEdit( activity ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new DissolveStatementWithBodyEdit(activity));
+  }
 }

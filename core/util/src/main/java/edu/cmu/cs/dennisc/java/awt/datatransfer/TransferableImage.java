@@ -52,30 +52,30 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class TransferableImage implements Transferable {
-	private static final DataFlavor[] DATA_FLAVORS = { DataFlavor.imageFlavor };
-	private final Image image;
+  private static final DataFlavor[] DATA_FLAVORS = {DataFlavor.imageFlavor};
+  private final Image image;
 
-	public TransferableImage( Image image ) {
-		assert image != null : this;
-		this.image = image;
-	}
+  public TransferableImage(Image image) {
+    assert image != null : this;
+    this.image = image;
+  }
 
-	@Override
-	public DataFlavor[] getTransferDataFlavors() {
-		return DATA_FLAVORS;
-	}
+  @Override
+  public DataFlavor[] getTransferDataFlavors() {
+    return DATA_FLAVORS;
+  }
 
-	@Override
-	public boolean isDataFlavorSupported( DataFlavor flavor ) {
-		return DataFlavor.imageFlavor.equals( flavor );
-	}
+  @Override
+  public boolean isDataFlavorSupported(DataFlavor flavor) {
+    return DataFlavor.imageFlavor.equals(flavor);
+  }
 
-	@Override
-	public Object getTransferData( DataFlavor flavor ) throws UnsupportedFlavorException, IOException {
-		if( DataFlavor.imageFlavor.equals( flavor ) ) {
-			return this.image;
-		} else {
-			throw new UnsupportedFlavorException( flavor );
-		}
-	}
+  @Override
+  public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+    if (DataFlavor.imageFlavor.equals(flavor)) {
+      return this.image;
+    } else {
+      throw new UnsupportedFlavorException(flavor);
+    }
+  }
 }

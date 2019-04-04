@@ -58,30 +58,30 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceUtilities {
-	private GalleryResourceUtilities() {
-		throw new AssertionError();
-	}
+  private GalleryResourceUtilities() {
+    throw new AssertionError();
+  }
 
-	public static <B> void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode, AbstractType<?, ?, ?> type ) {
-		Iterable<AbstractDeclaration> declarations = IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
-		for( AbstractDeclaration declaration : declarations ) {
-			if( declaration instanceof AbstractType<?, ?, ?> ) {
-				AbstractType<?, ?, ?> childType = (AbstractType<?, ?, ?>)declaration;
-				if( NebulousIde.nonfree.isAssignableToPersonResource( childType ) ) {
-					CascadeBlankChild personFillIn = NebulousIde.nonfree.getGalleryPersonResourceFillInInstance( childType );
-					if( personFillIn != null ) {
-						children.add( personFillIn );
-					}
-					children.add( CascadeLineSeparator.getInstance() );
-				} else {
-					children.add( GalleryResourceMenu.getInstance( childType ) );
-				}
-			} else if( declaration instanceof AbstractField ) {
-				AbstractField childField = (AbstractField)declaration;
-				children.add( GalleryResourceFieldFillIn.getInstance( childField ) );
-			} else {
-				throw new AssertionError();
-			}
-		}
-	}
+  public static <B> void updateChildren(List<CascadeBlankChild> children, BlankNode<B> blankNode, AbstractType<?, ?, ?> type) {
+    Iterable<AbstractDeclaration> declarations = IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor(type);
+    for (AbstractDeclaration declaration : declarations) {
+      if (declaration instanceof AbstractType<?, ?, ?>) {
+        AbstractType<?, ?, ?> childType = (AbstractType<?, ?, ?>) declaration;
+        if (NebulousIde.nonfree.isAssignableToPersonResource(childType)) {
+          CascadeBlankChild personFillIn = NebulousIde.nonfree.getGalleryPersonResourceFillInInstance(childType);
+          if (personFillIn != null) {
+            children.add(personFillIn);
+          }
+          children.add(CascadeLineSeparator.getInstance());
+        } else {
+          children.add(GalleryResourceMenu.getInstance(childType));
+        }
+      } else if (declaration instanceof AbstractField) {
+        AbstractField childField = (AbstractField) declaration;
+        children.add(GalleryResourceFieldFillIn.getInstance(childField));
+      } else {
+        throw new AssertionError();
+      }
+    }
+  }
 }

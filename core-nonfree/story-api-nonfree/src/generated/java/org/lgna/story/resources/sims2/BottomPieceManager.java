@@ -44,93 +44,30 @@
 package org.lgna.story.resources.sims2;
 
 public class BottomPieceManager extends IngredientManager<BottomPiece> {
-	private static BottomPieceManager singleton = new BottomPieceManager();
+  private static BottomPieceManager singleton = new BottomPieceManager();
 
-	public static BottomPieceManager getSingleton() {
-		return singleton;
-	}
+  public static BottomPieceManager getSingleton() {
+    return singleton;
+  }
 
-	private BottomPieceManager() {
-		this.add( FemaleElderBottomPiece.class,
-				FemaleElderBottomPiecePantsCowboyBoots.class,
-				FemaleElderBottomPieceSlacks.class,
-				FemaleElderBottomPieceSlacksHeels.class,
-				FemaleElderBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleElderBottomPiece.class,
-				MaleElderBottomPieceCowboyJeans.class,
-				MaleElderBottomPieceLongShorts.class,
-				MaleElderBottomPiecePantsSocksShoes.class,
-				MaleElderBottomPieceShorts.class
-				);
-		this.add( FemaleTeenBottomPiece.class,
-				FemaleTeenBottomPieceBaggyPants.class,
-				FemaleTeenBottomPieceCargoPants.class,
-				FemaleTeenBottomPieceFlairedPantsSandals.class,
-				FemaleTeenBottomPieceHipFlarePantsBoots.class,
-				FemaleTeenBottomPieceHipMicroMiniSkirt.class,
-				FemaleTeenBottomPieceMiniShorts.class,
-				FemaleTeenBottomPiecePantsCowboyBoots.class,
-				FemaleTeenBottomPieceShorts.class,
-				FemaleTeenBottomPieceShortShorts.class,
-				FemaleTeenBottomPieceSkirt.class,
-				FemaleTeenBottomPieceSkirtUBoots.class,
-				FemaleTeenBottomPieceSlacksHeels.class
-				);
-		this.add( MaleTeenBottomPiece.class,
-				MaleTeenBottomPieceBoardShorts.class,
-				MaleTeenBottomPieceBoxers.class,
-				MaleTeenBottomPieceCargoPants.class,
-				MaleTeenBottomPieceKneeShorts.class,
-				MaleTeenBottomPiecePantsCuffsBoots.class,
-				MaleTeenBottomPieceSwimShort.class,
-				MaleTeenBottomPieceTightPantsPointyToe.class
-				);
-		this.add( MaleChildBottomPiece.class,
-				MaleChildBottomPieceBigShorts.class,
-				MaleChildBottomPieceCowboyJeans.class,
-				MaleChildBottomPieceShorts.class,
-				ChildBottomPieceBaggyPants.class,
-				ChildBottomPiecePuffyLeg.class
-				);
-		this.add( FemaleChildBottomPiece.class,
-				FemaleChildBottomPieceMiniSkirt.class,
-				FemaleChildBottomPiecePleatSkirt.class,
-				FemaleChildBottomPieceShorts.class,
-				ChildBottomPieceBaggyPants.class,
-				ChildBottomPiecePuffyLeg.class
-				);
-		this.add( MaleAdultBottomPiece.class,
-				MaleAdultBottomPieceCargoPants.class,
-				MaleAdultBottomPieceCowboyJeans.class,
-				MaleAdultBottomPieceLongShorts.class,
-				MaleAdultBottomPiecePants.class,
-				MaleAdultBottomPieceWillPants.class
-				);
-		this.add( FemaleAdultBottomPiece.class,
-				FemaleAdultBottomPieceBaggyPants.class,
-				FemaleAdultBottomPieceCapriSneaks.class,
-				FemaleAdultBottomPieceCargoPants.class,
-				FemaleAdultBottomPieceFlairedPantsSandals.class,
-				FemaleAdultBottomPieceMomTailored.class,
-				FemaleAdultBottomPiecePantsCowboyBoots.class,
-				FemaleAdultBottomPieceShorts.class,
-				FemaleAdultBottomPieceShortShorts.class,
-				FemaleAdultBottomPieceShortSkirtBoots.class,
-				FemaleAdultBottomPieceShortSkirtShoes.class,
-				FemaleAdultBottomPieceSkirtTight.class,
-				FemaleAdultBottomPieceSlacksHeels.class,
-				FemaleAdultBottomPieceSlinkySkirtBoots.class
-				);
-	}
+  private BottomPieceManager() {
+    this.add(FemaleElderBottomPiece.class, FemaleElderBottomPiecePantsCowboyBoots.class, FemaleElderBottomPieceSlacks.class, FemaleElderBottomPieceSlacksHeels.class, FemaleElderBottomPieceSlinkySkirtBoots.class);
+    this.add(MaleElderBottomPiece.class, MaleElderBottomPieceCowboyJeans.class, MaleElderBottomPieceLongShorts.class, MaleElderBottomPiecePantsSocksShoes.class, MaleElderBottomPieceShorts.class);
+    this.add(FemaleTeenBottomPiece.class, FemaleTeenBottomPieceBaggyPants.class, FemaleTeenBottomPieceCargoPants.class, FemaleTeenBottomPieceFlairedPantsSandals.class, FemaleTeenBottomPieceHipFlarePantsBoots.class, FemaleTeenBottomPieceHipMicroMiniSkirt.class, FemaleTeenBottomPieceMiniShorts.class, FemaleTeenBottomPiecePantsCowboyBoots.class, FemaleTeenBottomPieceShorts.class, FemaleTeenBottomPieceShortShorts.class, FemaleTeenBottomPieceSkirt.class, FemaleTeenBottomPieceSkirtUBoots.class, FemaleTeenBottomPieceSlacksHeels.class);
+    this.add(MaleTeenBottomPiece.class, MaleTeenBottomPieceBoardShorts.class, MaleTeenBottomPieceBoxers.class, MaleTeenBottomPieceCargoPants.class, MaleTeenBottomPieceKneeShorts.class, MaleTeenBottomPiecePantsCuffsBoots.class, MaleTeenBottomPieceSwimShort.class, MaleTeenBottomPieceTightPantsPointyToe.class);
+    this.add(MaleChildBottomPiece.class, MaleChildBottomPieceBigShorts.class, MaleChildBottomPieceCowboyJeans.class, MaleChildBottomPieceShorts.class, ChildBottomPieceBaggyPants.class, ChildBottomPiecePuffyLeg.class);
+    this.add(FemaleChildBottomPiece.class, FemaleChildBottomPieceMiniSkirt.class, FemaleChildBottomPiecePleatSkirt.class, FemaleChildBottomPieceShorts.class, ChildBottomPieceBaggyPants.class, ChildBottomPiecePuffyLeg.class);
+    this.add(MaleAdultBottomPiece.class, MaleAdultBottomPieceCargoPants.class, MaleAdultBottomPieceCowboyJeans.class, MaleAdultBottomPieceLongShorts.class, MaleAdultBottomPiecePants.class, MaleAdultBottomPieceWillPants.class);
+    this.add(FemaleAdultBottomPiece.class, FemaleAdultBottomPieceBaggyPants.class, FemaleAdultBottomPieceCapriSneaks.class, FemaleAdultBottomPieceCargoPants.class, FemaleAdultBottomPieceFlairedPantsSandals.class, FemaleAdultBottomPieceMomTailored.class, FemaleAdultBottomPiecePantsCowboyBoots.class, FemaleAdultBottomPieceShorts.class, FemaleAdultBottomPieceShortShorts.class, FemaleAdultBottomPieceShortSkirtBoots.class, FemaleAdultBottomPieceShortSkirtShoes.class, FemaleAdultBottomPieceSkirtTight.class, FemaleAdultBottomPieceSlacksHeels.class, FemaleAdultBottomPieceSlinkySkirtBoots.class);
+  }
 
-	@Override
-	protected Class<Class<? extends BottomPiece>> getImplementingClassesComponentType() {
-		return (Class<Class<? extends BottomPiece>>)BottomPiece.class.getClass();
-	}
+  @Override
+  protected Class<Class<? extends BottomPiece>> getImplementingClassesComponentType() {
+    return (Class<Class<? extends BottomPiece>>) BottomPiece.class.getClass();
+  }
 
-	@Override
-	protected Class<? extends BottomPiece> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender ) {
-		return lifeStage.getGenderedBottomPieceInterfaceClass( gender );
-	}
+  @Override
+  protected Class<? extends BottomPiece> getGenderedInterfaceClass(LifeStage lifeStage, Gender gender) {
+    return lifeStage.getGenderedBottomPieceInterfaceClass(gender);
+  }
 }

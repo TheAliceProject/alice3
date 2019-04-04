@@ -58,48 +58,48 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class CheckIcon extends AbstractIcon {
-	private final Shape shape;
-	private final Stroke innerStroke;
-	private final Stroke outerStroke;
+  private final Shape shape;
+  private final Stroke innerStroke;
+  private final Stroke outerStroke;
 
-	public CheckIcon( Dimension size ) {
-		super( size );
-		int unit = size.width;
+  public CheckIcon(Dimension size) {
+    super(size);
+    int unit = size.width;
 
-		double xA = 0.2;
-		double xC = 0.8;
-		double xB = xA + ( ( xC - xA ) * 0.3 );
+    double xA = 0.2;
+    double xC = 0.8;
+    double xB = xA + ((xC - xA) * 0.3);
 
-		double yA = 0.45;
-		double yB = xC;
-		double yC = xA;
+    double yA = 0.45;
+    double yB = xC;
+    double yC = xA;
 
-		GeneralPath path = new GeneralPath();
-		path.moveTo( xA * unit, yA * unit );
-		path.lineTo( xB * unit, yB * unit );
-		path.lineTo( xC * unit, yC * unit );
-		shape = path;
-		innerStroke = new BasicStroke( unit * 0.2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-		outerStroke = new BasicStroke( unit * 0.25f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-	}
+    GeneralPath path = new GeneralPath();
+    path.moveTo(xA * unit, yA * unit);
+    path.lineTo(xB * unit, yB * unit);
+    path.lineTo(xC * unit, yC * unit);
+    shape = path;
+    innerStroke = new BasicStroke(unit * 0.2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    outerStroke = new BasicStroke(unit * 0.25f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  }
 
-	protected Paint getInnerPaint( Component c ) {
-		return new Color( 0, 127, 0 );
-	}
+  protected Paint getInnerPaint(Component c) {
+    return new Color(0, 127, 0);
+  }
 
-	protected Paint getOuterPaint( Component c ) {
-		return Color.WHITE;
-	}
+  protected Paint getOuterPaint(Component c) {
+    return Color.WHITE;
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		Stroke prevStroke = g2.getStroke();
-		g2.setStroke( outerStroke );
-		g2.setPaint( this.getOuterPaint( c ) );
-		g2.draw( shape );
-		g2.setStroke( innerStroke );
-		g2.setPaint( this.getInnerPaint( c ) );
-		g2.draw( shape );
-		g2.setStroke( prevStroke );
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    Stroke prevStroke = g2.getStroke();
+    g2.setStroke(outerStroke);
+    g2.setPaint(this.getOuterPaint(c));
+    g2.draw(shape);
+    g2.setStroke(innerStroke);
+    g2.setPaint(this.getInnerPaint(c));
+    g2.draw(shape);
+    g2.setStroke(prevStroke);
+  }
 }

@@ -8,15 +8,15 @@ import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.effects.LibraryEffects;
 
 public class library_effects extends State {
-	protected LibraryEffects library = new LibraryEffects();
+  protected LibraryEffects library = new LibraryEffects();
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		Collada collada = ((COLLADA) getParent()).getCollada();
-		collada.setLibraryEffects(this.library);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    Collada collada = ((COLLADA) getParent()).getCollada();
+    collada.setLibraryEffects(this.library);
+  }
 
-	public LibraryEffects getLibrary() {
-		return this.library;
-	}
+  public LibraryEffects getLibrary() {
+    return this.library;
+  }
 }

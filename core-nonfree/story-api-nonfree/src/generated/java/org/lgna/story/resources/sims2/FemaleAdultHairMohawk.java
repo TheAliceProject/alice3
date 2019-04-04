@@ -44,26 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultHairMohawk implements FemaleAdultHair, FemaleElderHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY,
-	RED,
-	BLUE,
-	PINK,
-	RAINBOW,
-	PLATINUM,
-	PURPLE;
+  BLACK, BLOND, BROWN, GREY, RED, BLUE, PINK, RAINBOW, PLATINUM, PURPLE;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

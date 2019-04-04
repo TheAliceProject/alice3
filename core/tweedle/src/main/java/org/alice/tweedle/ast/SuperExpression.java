@@ -8,22 +8,25 @@ import org.alice.tweedle.run.TweedleObject;
 
 public class SuperExpression extends TweedleExpression implements InvocableMethodHolder {
 
-	public SuperExpression( ) {
-		super();
-	}
+  public SuperExpression() {
+    super();
+  }
 
-	@Override public TweedleValue evaluate( Frame frame ) {
-		return null;
+  @Override
+  public TweedleValue evaluate(Frame frame) {
+    return null;
 
-		// TODO track on execution frame and read from there
-		// return frame.getThis().getSuper();
-	}
+    // TODO track on execution frame and read from there
+    // return frame.getThis().getSuper();
+  }
 
-	@Override public void invoke( Frame frame, TweedleObject target, TweedleMethod method, TweedleValue[] arguments ) {
+  @Override
+  public void invoke(Frame frame, TweedleObject target, TweedleMethod method, TweedleValue[] arguments) {
 
-	}
+  }
 
-	@Override public String getName() {
-		return "super";
-	}
+  @Override
+  public String getName() {
+    return "super";
+  }
 }

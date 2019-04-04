@@ -52,67 +52,67 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class ByteArrayDataSource extends PullDataSource {
-	private byte[] data;
-	private String contentType;
+  private byte[] data;
+  private String contentType;
 
-	public ByteArrayDataSource( byte[] data, String contentType ) {
-		this.data = data;
-		this.contentType = contentType;
-	}
+  public ByteArrayDataSource(byte[] data, String contentType) {
+    this.data = data;
+    this.contentType = contentType;
+  }
 
-	public byte[] getData() {
-		return this.data;
-	}
+  public byte[] getData() {
+    return this.data;
+  }
 
-	@Override
-	public String getContentType() {
-		return this.contentType;
-	}
+  @Override
+  public String getContentType() {
+    return this.contentType;
+  }
 
-	@Override
-	public Time getDuration() {
-		return Duration.DURATION_UNKNOWN;
-	}
+  @Override
+  public Time getDuration() {
+    return Duration.DURATION_UNKNOWN;
+  }
 
-	@Override
-	public void connect() throws IOException {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource connect" );
-	}
+  @Override
+  public void connect() throws IOException {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource connect" );
+  }
 
-	@Override
-	public void disconnect() {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource disconnect" );
-	}
+  @Override
+  public void disconnect() {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource disconnect" );
+  }
 
-	@Override
-	public void start() throws IOException {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource start" );
-	}
+  @Override
+  public void start() throws IOException {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource start" );
+  }
 
-	@Override
-	public void stop() throws IOException {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource stop" );
-	}
+  @Override
+  public void stop() throws IOException {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource stop" );
+  }
 
-	@Override
-	public Object getControl( String parm1 ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControl", parm1 );
-		return null;
-	}
+  @Override
+  public Object getControl(String parm1) {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControl", parm1 );
+    return null;
+  }
 
-	@Override
-	public Object[] getControls() {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControls" );
-		return null;
-	}
+  @Override
+  public Object[] getControls() {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControls" );
+    return null;
+  }
 
-	@Override
-	public PullSourceStream[] getStreams() {
-		return new PullSourceStream[] { new ByteArraySeekablePullSourceStream( this.data ) };
-	}
+  @Override
+  public PullSourceStream[] getStreams() {
+    return new PullSourceStream[] {new ByteArraySeekablePullSourceStream(this.data)};
+  }
 
-	@Override
-	public String toString() {
-		return ByteArrayDataSource.class.getName() + "[contentType=" + this.contentType + "]";
-	}
+  @Override
+  public String toString() {
+    return ByteArrayDataSource.class.getName() + "[contentType=" + this.contentType + "]";
+  }
 }

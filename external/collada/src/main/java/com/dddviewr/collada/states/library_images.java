@@ -8,15 +8,15 @@ import com.dddviewr.collada.StateManager;
 import com.dddviewr.collada.images.LibraryImages;
 
 public class library_images extends State {
-	protected LibraryImages library = new LibraryImages();
+  protected LibraryImages library = new LibraryImages();
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
-		Collada collada = ((COLLADA) getParent()).getCollada();
-		collada.setLibraryImages(this.library);
-	}
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
+    Collada collada = ((COLLADA) getParent()).getCollada();
+    collada.setLibraryImages(this.library);
+  }
 
-	public LibraryImages getLibrary() {
-		return this.library;
-	}
+  public LibraryImages getLibrary() {
+    return this.library;
+  }
 }

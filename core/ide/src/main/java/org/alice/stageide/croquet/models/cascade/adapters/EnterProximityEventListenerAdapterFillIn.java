@@ -51,15 +51,15 @@ import java.util.UUID;
  */
 public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn {
 
-	private static class SingletonHolder {
-		private static EnterProximityEventListenerAdapterFillIn instance = new EnterProximityEventListenerAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static EnterProximityEventListenerAdapterFillIn instance = new EnterProximityEventListenerAdapterFillIn();
+  }
 
-	public static EnterProximityEventListenerAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static EnterProximityEventListenerAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public EnterProximityEventListenerAdapterFillIn() {
-		super( UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ), ProximityEnterListener.class );
-	}
+  public EnterProximityEventListenerAdapterFillIn() {
+    super(UUID.fromString("db25d316-7282-493f-9838-124d272db0ca"), ProximityEnterListener.class);
+  }
 }

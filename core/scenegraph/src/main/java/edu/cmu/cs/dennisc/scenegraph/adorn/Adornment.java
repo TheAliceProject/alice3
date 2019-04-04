@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  * @author Dennis Cosgrove
  */
 public abstract class Adornment extends Component {
-	public final InstanceProperty<Composite> adorningRoot = new InstanceProperty<Composite>( this, null );
+  public final InstanceProperty<Composite> adorningRoot = new InstanceProperty<Composite>(this, null);
 }

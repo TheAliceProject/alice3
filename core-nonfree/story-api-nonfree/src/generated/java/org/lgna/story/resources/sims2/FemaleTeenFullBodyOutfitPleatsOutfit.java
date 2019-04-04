@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitPleatsOutfit implements FemaleTeenFullBodyOutfit {
-	BLACK,
-	PINK,
-	BLUE,
-	GREEN,
-	RED;
+  BLACK, PINK, BLUE, GREEN, RED
 
 }

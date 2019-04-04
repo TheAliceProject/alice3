@@ -48,7 +48,7 @@ import org.lgna.project.Version;
  * @author Dennis Cosgrove
  */
 public interface Migration {
-	public boolean isApplicable( Version version );
+  public boolean isApplicable(Version version);
 
-	public Version getResultVersion();
+  public Version getResultVersion();
 }

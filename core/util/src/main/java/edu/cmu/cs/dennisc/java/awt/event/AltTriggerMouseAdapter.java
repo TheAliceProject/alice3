@@ -49,28 +49,28 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public abstract class AltTriggerMouseAdapter implements MouseListener {
-	protected abstract void altTriggered( MouseEvent e );
+  protected abstract void altTriggered(MouseEvent e);
 
-	@Override
-	public void mouseEntered( MouseEvent e ) {
-	}
+  @Override
+  public void mouseEntered(MouseEvent e) {
+  }
 
-	@Override
-	public void mouseExited( MouseEvent e ) {
-	}
+  @Override
+  public void mouseExited(MouseEvent e) {
+  }
 
-	@Override
-	public void mousePressed( MouseEvent e ) {
-		if( MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			this.altTriggered( e );
-		}
-	}
+  @Override
+  public void mousePressed(MouseEvent e) {
+    if (MouseEventUtilities.isQuoteRightUnquoteMouseButton(e)) {
+      this.altTriggered(e);
+    }
+  }
 
-	@Override
-	public void mouseReleased( MouseEvent e ) {
-	}
+  @Override
+  public void mouseReleased(MouseEvent e) {
+  }
 
-	@Override
-	public void mouseClicked( MouseEvent e ) {
-	}
+  @Override
+  public void mouseClicked(MouseEvent e) {
+  }
 }

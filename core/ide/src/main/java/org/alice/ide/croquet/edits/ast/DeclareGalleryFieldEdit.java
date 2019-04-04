@@ -56,43 +56,43 @@ import org.lgna.project.ast.UserType;
  * @author Dennis Cosgrove
  */
 public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
-	private final AbstractSceneEditor sceneEditor;
-	private final Statement[] doStatements;
-	private final Statement[] undoStatements;
+  private final AbstractSceneEditor sceneEditor;
+  private final Statement[] doStatements;
+  private final Statement[] undoStatements;
 
-	public DeclareGalleryFieldEdit( UserActivity userActivity, AbstractSceneEditor sceneEditor, UserType<?> declaringType, UserField field, Statement[] doStatements, Statement[] undoStatements ) {
-		super( userActivity, declaringType, field );
-		this.sceneEditor = sceneEditor;
-		this.doStatements = doStatements;
-		this.undoStatements = undoStatements;
-	}
+  public DeclareGalleryFieldEdit(UserActivity userActivity, AbstractSceneEditor sceneEditor, UserType<?> declaringType, UserField field, Statement[] doStatements, Statement[] undoStatements) {
+    super(userActivity, declaringType, field);
+    this.sceneEditor = sceneEditor;
+    this.doStatements = doStatements;
+    this.undoStatements = undoStatements;
+  }
 
-	public DeclareGalleryFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		assert false : "todo";
-		this.sceneEditor = null;
-		this.doStatements = null;
-		this.undoStatements = null;
-	}
+  public DeclareGalleryFieldEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    assert false : "todo";
+    this.sceneEditor = null;
+    this.doStatements = null;
+    this.undoStatements = null;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		assert false : this;
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    assert false : this;
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		int index = this.getDeclaringType().fields.size();
-		try {
-			sceneEditor.addField(this.getDeclaringType(), getField(), index, doStatements);
-		} catch (RuntimeException e) {
-			throw new CancelException("Field creation failed.", e);
-		}
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    int index = this.getDeclaringType().fields.size();
+    try {
+      sceneEditor.addField(this.getDeclaringType(), getField(), index, doStatements);
+    } catch (RuntimeException e) {
+      throw new CancelException("Field creation failed.", e);
+    }
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.sceneEditor.removeField( this.getDeclaringType(), this.getField(), this.undoStatements );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.sceneEditor.removeField(this.getDeclaringType(), this.getField(), this.undoStatements);
+  }
 }

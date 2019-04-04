@@ -49,35 +49,36 @@ import org.lgna.croquet.Composite;
  * @author Dennis Cosgrove
  */
 public abstract class FormPanel extends MigPanel {
-	private java.util.List<LabeledFormRow> rows;
+  private java.util.List<LabeledFormRow> rows;
 
-	public FormPanel( Composite<?> composite ) {
-		super( composite, "", "[right][left,grow]", "" );
-	}
+  public FormPanel(Composite<?> composite) {
+    super(composite, "", "[right][left,grow]", "");
+  }
 
-	public FormPanel() {
-		this( null );
-	}
+  public FormPanel() {
+    this(null);
+  }
 
-	protected abstract void appendRows( java.util.List<LabeledFormRow> rows );
+  protected abstract void appendRows(java.util.List<LabeledFormRow> rows);
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.rows != null ) {
-			//pass
-		} else {
-			this.rows = Lists.newLinkedList();
-			this.appendRows( this.rows );
-			for( FormRow row : rows ) {
-				row.addComponents( this );
-			}
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.rows != null) {
+      //pass
+    } else {
+      this.rows = Lists.newLinkedList();
+      this.appendRows(this.rows);
+      for (FormRow row : rows) {
+        row.addComponents(this);
+      }
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//todo?
-		super.handleUndisplayable();
-	};
+  @Override
+  protected void handleUndisplayable() {
+    //todo?
+    super.handleUndisplayable();
+  }
+
 }

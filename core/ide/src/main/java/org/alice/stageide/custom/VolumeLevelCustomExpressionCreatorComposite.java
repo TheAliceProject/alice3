@@ -56,69 +56,69 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class VolumeLevelCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<VolumeLevelCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static VolumeLevelCustomExpressionCreatorComposite instance = new VolumeLevelCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static VolumeLevelCustomExpressionCreatorComposite instance = new VolumeLevelCustomExpressionCreatorComposite();
+  }
 
-	public static VolumeLevelCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static VolumeLevelCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", VolumeLevelUtilities.createDetails() );
-	private final StringValue silentLabel = this.createStringValue( "silentLabel" );
-	private final StringValue normalLabel = this.createStringValue( "normalLabel" );
-	private final StringValue louderLabel = this.createStringValue( "louderLabel" );
+  private final BoundedIntegerState valueState = this.createBoundedIntegerState("valueState", VolumeLevelUtilities.createDetails());
+  private final StringValue silentLabel = this.createStringValue("silentLabel");
+  private final StringValue normalLabel = this.createStringValue("normalLabel");
+  private final StringValue louderLabel = this.createStringValue("louderLabel");
 
-	private VolumeLevelCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
-	}
+  private VolumeLevelCustomExpressionCreatorComposite() {
+    super(UUID.fromString("1c80a46b-6ff8-4fbd-8003-5bbab71a3fca"));
+  }
 
-	@Override
-	protected VolumeLevelCustomExpressionCreatorView createView() {
-		return new VolumeLevelCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected VolumeLevelCustomExpressionCreatorView createView() {
+    return new VolumeLevelCustomExpressionCreatorView(this);
+  }
 
-	public BoundedIntegerState getValueState() {
-		return this.valueState;
-	}
+  public BoundedIntegerState getValueState() {
+    return this.valueState;
+  }
 
-	public StringValue getLouderLabel() {
-		return this.louderLabel;
-	}
+  public StringValue getLouderLabel() {
+    return this.louderLabel;
+  }
 
-	public StringValue getNormalLabel() {
-		return this.normalLabel;
-	}
+  public StringValue getNormalLabel() {
+    return this.normalLabel;
+  }
 
-	public StringValue getSilentLabel() {
-		return this.silentLabel;
-	}
+  public StringValue getSilentLabel() {
+    return this.silentLabel;
+  }
 
-	@Override
-	protected Expression createValue() {
-		double actualVolume = VolumeLevelUtilities.toDouble( this.valueState.getValue() );
-		return new DoubleLiteral( actualVolume );
-	}
+  @Override
+  protected Expression createValue() {
+    double actualVolume = VolumeLevelUtilities.toDouble(this.valueState.getValue());
+    return new DoubleLiteral(actualVolume);
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		double actualVolume;
-		if( expression instanceof DoubleLiteral ) {
-			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
-			actualVolume = doubleLiteral.value.getValue();
-		} else {
-			actualVolume = Double.NaN;
-		}
-		if( Double.isNaN( actualVolume ) ) {
-			//pass
-		} else {
-			int value = VolumeLevelUtilities.toInt( actualVolume );
-			this.valueState.setValueTransactionlessly( value );
-		}
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    double actualVolume;
+    if (expression instanceof DoubleLiteral) {
+      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+      actualVolume = doubleLiteral.value.getValue();
+    } else {
+      actualVolume = Double.NaN;
+    }
+    if (Double.isNaN(actualVolume)) {
+      //pass
+    } else {
+      int value = VolumeLevelUtilities.toInt(actualVolume);
+      this.valueState.setValueTransactionlessly(value);
+    }
+  }
 }

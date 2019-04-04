@@ -57,59 +57,59 @@ import java.io.File;
  * @author Dennis Cosgrove
  */
 public class VlcjUtilities {
-	private static boolean isInitializationAttempted = false;
-	private static boolean isInitialized = false;
+  private static boolean isInitializationAttempted = false;
+  private static boolean isInitialized = false;
 
-	private static void initializeIfNecessary() {
-		if( isInitializationAttempted ) {
-			//pass
-		} else {
-			isInitializationAttempted = true;
-			Timer timer = new Timer( "initialize vlcj" );
-			timer.start();
-			String vlcLibraryName = RuntimeUtil.getLibVlcLibraryName();
-			boolean isWorthAttemptingToLoad;
-			if( SystemUtilities.isLinux() ) {
-				isWorthAttemptingToLoad = true;
-			} else {
-				File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
-				File vlcDirectory = new File( archDirectory, "libvlc" );
-				File toBeSearchedDirectory;
-				if( SystemUtilities.isMac() ) {
-					toBeSearchedDirectory = new File( vlcDirectory, "lib" );
-				} else {
-					toBeSearchedDirectory = vlcDirectory;
-				}
-				if( toBeSearchedDirectory.exists() ) {
-					NativeLibrary.addSearchPath( vlcLibraryName, toBeSearchedDirectory.getAbsolutePath() );
-					isWorthAttemptingToLoad = true;
-				} else {
-					isWorthAttemptingToLoad = false;
-				}
-			}
+  private static void initializeIfNecessary() {
+    if (isInitializationAttempted) {
+      //pass
+    } else {
+      isInitializationAttempted = true;
+      Timer timer = new Timer("initialize vlcj");
+      timer.start();
+      String vlcLibraryName = RuntimeUtil.getLibVlcLibraryName();
+      boolean isWorthAttemptingToLoad;
+      if (SystemUtilities.isLinux()) {
+        isWorthAttemptingToLoad = true;
+      } else {
+        File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
+        File vlcDirectory = new File(archDirectory, "libvlc");
+        File toBeSearchedDirectory;
+        if (SystemUtilities.isMac()) {
+          toBeSearchedDirectory = new File(vlcDirectory, "lib");
+        } else {
+          toBeSearchedDirectory = vlcDirectory;
+        }
+        if (toBeSearchedDirectory.exists()) {
+          NativeLibrary.addSearchPath(vlcLibraryName, toBeSearchedDirectory.getAbsolutePath());
+          isWorthAttemptingToLoad = true;
+        } else {
+          isWorthAttemptingToLoad = false;
+        }
+      }
 
-			if( isWorthAttemptingToLoad ) {
-				try {
-					Native.loadLibrary( vlcLibraryName, LibVlc.class );
-					isInitialized = true;
-				} catch( UnsatisfiedLinkError ule ) {
-					//uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
-					//isWorthAttemptingToLoad = nativeDiscovery.discover();
-					ule.printStackTrace();
-				}
-			} else {
-				System.err.println( "failed to discover vlc" );
-			}
-			timer.stopAndPrintResults();
-		}
-	}
+      if (isWorthAttemptingToLoad) {
+        try {
+          Native.loadLibrary(vlcLibraryName, LibVlc.class);
+          isInitialized = true;
+        } catch (UnsatisfiedLinkError ule) {
+          //uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+          //isWorthAttemptingToLoad = nativeDiscovery.discover();
+          ule.printStackTrace();
+        }
+      } else {
+        System.err.println("failed to discover vlc");
+      }
+      timer.stopAndPrintResults();
+    }
+  }
 
-	public static VideoPlayer createVideoPlayer() {
-		initializeIfNecessary();
-		if( isInitialized ) {
-			return new VlcjVideoPlayer();
-		} else {
-			return null;
-		}
-	}
+  public static VideoPlayer createVideoPlayer() {
+    initializeIfNecessary();
+    if (isInitialized) {
+      return new VlcjVideoPlayer();
+    } else {
+      return null;
+    }
+  }
 }

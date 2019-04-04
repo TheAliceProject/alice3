@@ -52,33 +52,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T, RefreshableListData<T>> {
-	private final ListDataListener listDataListener = new ListDataListener() {
-		@Override
-		public void contentsChanged( ListDataEvent e ) {
-			fireContentsChanged( e.getIndex0(), e.getIndex1() );
-		}
+  private final ListDataListener listDataListener = new ListDataListener() {
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+      fireContentsChanged(e.getIndex0(), e.getIndex1());
+    }
 
-		@Override
-		public void intervalAdded( ListDataEvent e ) {
-			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
-		}
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+      fireIntervalAdded(e.getIndex0(), e.getIndex1());
+    }
 
-		@Override
-		public void intervalRemoved( ListDataEvent e ) {
-			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
-		}
-	};
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
+      fireIntervalRemoved(e.getIndex0(), e.getIndex1());
+    }
+  };
 
-	public RefreshableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, RefreshableListData<T> data ) {
-		super( group, migrationId, selectionIndex, data );
-		data.addListener( this.listDataListener );
-	}
+  public RefreshableDataSingleSelectListState(Group group, UUID migrationId, int selectionIndex, RefreshableListData<T> data) {
+    super(group, migrationId, selectionIndex, data);
+    data.addListener(this.listDataListener);
+  }
 
-	//	public final void refresh() {
-	//		//todo: track selection
-	//		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
-	//		if( isDataChanged ) {
-	//			this.fireContentsChanged( 0, this.getItemCount() );
-	//		}
-	//	}
+  //  public final void refresh() {
+  //  //todo: track selection
+  //  boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
+  //  if( isDataChanged ) {
+  //    this.fireContentsChanged( 0, this.getItemCount() );
+  //  }
+  //  }
 }

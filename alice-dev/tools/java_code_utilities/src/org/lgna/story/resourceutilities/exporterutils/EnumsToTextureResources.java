@@ -13,17 +13,13 @@ import java.io.FileWriter;
  */
 public class EnumsToTextureResources {
 
-    public static final String MAP_FILE_NAME = "ENUM_MAP.txt";
+  public static final String MAP_FILE_NAME = "ENUM_MAP.txt";
 
-    public void writeMap(String fileName)
-    {
-		try
-		{
+  public void writeMap(String fileName) {
+    try {
 
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }

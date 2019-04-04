@@ -50,14 +50,14 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public enum Gender implements LocalizedResource {
-	FEMALE,
-	MALE;
-	public static Gender getRandom() {
-		return RandomUtilities.getRandomEnumConstant( Gender.class );
-	}
+  FEMALE, MALE;
 
-	@Override
-	public String getLocalizedDisplayText() {
-		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( Locale.ENGLISH ) );
-	}
+  public static Gender getRandom() {
+    return RandomUtilities.getRandomEnumConstant(Gender.class);
+  }
+
+  @Override
+  public String getLocalizedDisplayText() {
+    return PersonResource.getLocalizedDisplayText(this.name().toLowerCase(Locale.ENGLISH));
+  }
 }

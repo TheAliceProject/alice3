@@ -49,57 +49,57 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public final class FieldReflectionProxy extends MemberReflectionProxy<Field> {
-	private final String name;
+  private final String name;
 
-	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
-		super( declaringClassReflectionProxy );
-		this.name = name;
-	}
+  public FieldReflectionProxy(ClassReflectionProxy declaringClassReflectionProxy, String name) {
+    super(declaringClassReflectionProxy);
+    this.name = name;
+  }
 
-	public FieldReflectionProxy( Field fld ) {
-		super( fld, fld.getDeclaringClass() );
-		this.name = fld.getName();
-	}
+  public FieldReflectionProxy(Field fld) {
+    super(fld, fld.getDeclaringClass());
+    this.name = fld.getName();
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = super.hashCodeNonReifiable();
-		rv = ( 37 * rv ) + this.name.hashCode();
-		return rv;
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    int rv = super.hashCodeNonReifiable();
+    rv = (37 * rv) + this.name.hashCode();
+    return rv;
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
-			FieldReflectionProxy other = (FieldReflectionProxy)o;
-			return this.name != null ? this.name.equals( other.name ) : other.name == null;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    if (super.equalsInstanceOfSameClassButNonReifiable(o)) {
+      FieldReflectionProxy other = (FieldReflectionProxy) o;
+      return this.name != null ? this.name.equals(other.name) : other.name == null;
+    } else {
+      return false;
+    }
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	protected Field reify() {
-		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			try {
-				return cls.getField( this.name );
-			} catch( NoSuchFieldException nsfe ) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Field reify() {
+    Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
+    if (cls != null) {
+      try {
+        return cls.getField(this.name);
+      } catch (NoSuchFieldException nsfe) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( ";name=" );
-		sb.append( this.name );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(";name=");
+    sb.append(this.name);
+  }
 }

@@ -50,20 +50,20 @@ import org.lgna.common.Resource;
  * @author Dennis Cosgrove
  */
 public class ResourceContentEvent extends Event<Resource> {
-	private String contentType;
-	private byte[] data;
+  private String contentType;
+  private byte[] data;
 
-	public ResourceContentEvent( Resource source, String contentType, byte[] data ) {
-		super( source );
-		this.contentType = contentType;
-		this.data = data;
-	}
+  public ResourceContentEvent(Resource source, String contentType, byte[] data) {
+    super(source);
+    this.contentType = contentType;
+    this.data = data;
+  }
 
-	public String getContentType() {
-		return this.contentType;
-	}
+  public String getContentType() {
+    return this.contentType;
+  }
 
-	public byte[] getData() {
-		return this.data;
-	}
+  public byte[] getData() {
+    return this.data;
+  }
 }

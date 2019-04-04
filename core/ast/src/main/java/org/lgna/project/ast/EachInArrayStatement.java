@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface EachInArrayStatement extends EachInStatement {
-	public ExpressionProperty getArrayProperty();
+  public ExpressionProperty getArrayProperty();
 }

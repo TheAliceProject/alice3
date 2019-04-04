@@ -53,27 +53,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class IntegerCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static IntegerCustomExpressionCreatorComposite instance = new IntegerCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static IntegerCustomExpressionCreatorComposite instance = new IntegerCustomExpressionCreatorComposite();
+  }
 
-	public static IntegerCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IntegerCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IntegerCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), IntegerModel.getInstance() );
-	}
+  private IntegerCustomExpressionCreatorComposite() {
+    super(UUID.fromString("a81686d4-eb5a-4bab-8d0b-6ae56ae67391"), IntegerModel.getInstance());
+  }
 
-	@Override
-	protected String getTextForPreviousExpression( Expression expression ) {
-		String text;
-		if( expression instanceof IntegerLiteral ) {
-			IntegerLiteral integerLiteral = (IntegerLiteral)expression;
-			text = Integer.toString( integerLiteral.value.getValue() );
-		} else {
-			text = "";
-		}
-		return text;
-	}
+  @Override
+  protected String getTextForPreviousExpression(Expression expression) {
+    String text;
+    if (expression instanceof IntegerLiteral) {
+      IntegerLiteral integerLiteral = (IntegerLiteral) expression;
+      text = Integer.toString(integerLiteral.value.getValue());
+    } else {
+      text = "";
+    }
+    return text;
+  }
 }

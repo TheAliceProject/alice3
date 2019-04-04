@@ -64,45 +64,42 @@ import javax.swing.JOptionPane;
  */
 public class HeapWatchDog {
 
-	private static final double MEMORY_FULL_WARNING_THRESHOLD = Double.valueOf( System.getProperty( "edu.wustl.lookingglass.memoryWarningThreshold", "0.80" ) );
-	private static final long MEMORY_CHECK_INTERVAL_SECONDS = Long.valueOf( System.getProperty( "edu.wustl.lookingglass.memoryCheckInterval", "10" ) );
-	private static final String BUNDLE_NAME = "edu.wustl.lookingglass.utilities.memory.HeapWatchDog";
+  private static final double MEMORY_FULL_WARNING_THRESHOLD = Double.valueOf(System.getProperty("edu.wustl.lookingglass.memoryWarningThreshold", "0.80"));
+  private static final long MEMORY_CHECK_INTERVAL_SECONDS = Long.valueOf(System.getProperty("edu.wustl.lookingglass.memoryCheckInterval", "10"));
+  private static final String BUNDLE_NAME = "edu.wustl.lookingglass.utilities.memory.HeapWatchDog";
 
-	private ScheduledFuture<?> task;
+  private ScheduledFuture<?> task;
 
-	public HeapWatchDog() {
-		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+  public HeapWatchDog() {
+    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-		task = service.scheduleAtFixedRate( this::checkHeapHealth, MEMORY_CHECK_INTERVAL_SECONDS, MEMORY_CHECK_INTERVAL_SECONDS, TimeUnit.SECONDS );
-	}
+    task = service.scheduleAtFixedRate(this::checkHeapHealth, MEMORY_CHECK_INTERVAL_SECONDS, MEMORY_CHECK_INTERVAL_SECONDS, TimeUnit.SECONDS);
+  }
 
-	private double computeHeapUsage() {
-		Runtime runtime = Runtime.getRuntime();
-		double used = runtime.totalMemory() - runtime.freeMemory();
-		return used / runtime.maxMemory();
-	}
+  private double computeHeapUsage() {
+    Runtime runtime = Runtime.getRuntime();
+    double used = runtime.totalMemory() - runtime.freeMemory();
+    return used / runtime.maxMemory();
+  }
 
-	private void checkHeapHealth() {
-		double usage = computeHeapUsage();
-		Logger.info( "Memory " + usage + "% full." );
+  private void checkHeapHealth() {
+    double usage = computeHeapUsage();
+    Logger.info("Memory " + usage + "% full.");
 
-		// Should we garbage collect?
-		if( usage >= MEMORY_FULL_WARNING_THRESHOLD ) {
-			System.gc();
-			usage = computeHeapUsage();
-		}
+    // Should we garbage collect?
+    if (usage >= MEMORY_FULL_WARNING_THRESHOLD) {
+      System.gc();
+      usage = computeHeapUsage();
+    }
 
-		if( usage >= MEMORY_FULL_WARNING_THRESHOLD ) {
-			showMemoryWarning();
-			task.cancel( true );
-		}
-	}
+    if (usage >= MEMORY_FULL_WARNING_THRESHOLD) {
+      showMemoryWarning();
+      task.cancel(true);
+    }
+  }
 
-	private void showMemoryWarning() {
-		Logger.warning( "Memory " + ( MEMORY_FULL_WARNING_THRESHOLD * 100.0 ) + "% full." );
-		JOptionPane.showMessageDialog(null,
-						ResourceBundleUtilities.getStringForKey( "message", BUNDLE_NAME ),
-						ResourceBundleUtilities.getStringForKey( "title", BUNDLE_NAME ),
-						JOptionPane.WARNING_MESSAGE);
-	}
+  private void showMemoryWarning() {
+    Logger.warning("Memory " + (MEMORY_FULL_WARNING_THRESHOLD * 100.0) + "% full.");
+    JOptionPane.showMessageDialog(null, ResourceBundleUtilities.getStringForKey("message", BUNDLE_NAME), ResourceBundleUtilities.getStringForKey("title", BUNDLE_NAME), JOptionPane.WARNING_MESSAGE);
+  }
 }

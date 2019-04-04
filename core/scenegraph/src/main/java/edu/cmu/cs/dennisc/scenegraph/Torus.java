@@ -50,79 +50,79 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Torus extends Shape {
-	public static enum CoordinatePlane {
-		XY( true, true, false ),
-		XZ( true, false, true ),
-		YZ( false, true, true );
-		CoordinatePlane( boolean isX, boolean isY, boolean isZ ) {
-			this.isX = isX;
-			this.isY = isY;
-			this.isZ = isZ;
-		}
+  public static enum CoordinatePlane {
+    XY(true, true, false), XZ(true, false, true), YZ(false, true, true);
 
-		public void updateBoundingBox( AxisAlignedBox boundingBox, double yesRadius, double noRadius ) {
-			double x;
-			double y;
-			double z;
-			if( this.isX ) {
-				x = yesRadius;
-			} else {
-				x = noRadius;
-			}
-			if( this.isY ) {
-				y = yesRadius;
-			} else {
-				y = noRadius;
-			}
-			if( this.isZ ) {
-				z = yesRadius;
-			} else {
-				z = noRadius;
-			}
-			boundingBox.setMinimum( -x, -y, -z );
-			boundingBox.setMaximum( +x, +y, +z );
-		}
+    CoordinatePlane(boolean isX, boolean isY, boolean isZ) {
+      this.isX = isX;
+      this.isY = isY;
+      this.isZ = isZ;
+    }
 
-		private final boolean isX;
-		private final boolean isY;
-		private final boolean isZ;
-	}
+    public void updateBoundingBox(AxisAlignedBox boundingBox, double yesRadius, double noRadius) {
+      double x;
+      double y;
+      double z;
+      if (this.isX) {
+        x = yesRadius;
+      } else {
+        x = noRadius;
+      }
+      if (this.isY) {
+        y = yesRadius;
+      } else {
+        y = noRadius;
+      }
+      if (this.isZ) {
+        z = yesRadius;
+      } else {
+        z = noRadius;
+      }
+      boundingBox.setMinimum(-x, -y, -z);
+      boundingBox.setMaximum(+x, +y, +z);
+    }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double yesRadius = majorRadius.getValue() + minorRadius.getValue();
-		double noRadius = minorRadius.getValue();
-		this.coordinatePlane.getValue().updateBoundingBox( boundingBox, yesRadius, noRadius );
-	}
+    private final boolean isX;
+    private final boolean isY;
+    private final boolean isZ;
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		double outerRadius = majorRadius.getValue() + minorRadius.getValue();
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = outerRadius;
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double yesRadius = majorRadius.getValue() + minorRadius.getValue();
+    double noRadius = minorRadius.getValue();
+    this.coordinatePlane.getValue().updateBoundingBox(boundingBox, yesRadius, noRadius);
+  }
 
-	public final InstanceProperty<CoordinatePlane> coordinatePlane = new InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
-		@Override
-		public void setValue( CoordinatePlane value ) {
-			//todo: check isEqual
-			Torus.this.markBoundsDirty();
-			super.setValue( value );
-			Torus.this.fireBoundChanged();
-		};
-	};
-	public final BoundDoubleProperty minorRadius = new BoundDoubleProperty( this, 0.1 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	public final BoundDoubleProperty majorRadius = new BoundDoubleProperty( this, 0.9 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    double outerRadius = majorRadius.getValue() + minorRadius.getValue();
+    boundingSphere.center.set(0, 0, 0);
+    boundingSphere.radius = outerRadius;
+  }
+
+  public final InstanceProperty<CoordinatePlane> coordinatePlane = new InstanceProperty<CoordinatePlane>(this, CoordinatePlane.XZ) {
+    @Override
+    public void setValue(CoordinatePlane value) {
+      //todo: check isEqual
+      Torus.this.markBoundsDirty();
+      super.setValue(value);
+      Torus.this.fireBoundChanged();
+    }
+
+  };
+  public final BoundDoubleProperty minorRadius = new BoundDoubleProperty(this, 0.1) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  public final BoundDoubleProperty majorRadius = new BoundDoubleProperty(this, 0.9) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
 }

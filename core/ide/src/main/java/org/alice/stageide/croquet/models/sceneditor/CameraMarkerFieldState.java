@@ -53,15 +53,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CameraMarkerFieldState extends MutableDataSingleSelectListState<UserField> {
-	private static class SingletonHolder {
-		private static CameraMarkerFieldState instance = new CameraMarkerFieldState();
-	}
+  private static class SingletonHolder {
+    private static CameraMarkerFieldState instance = new CameraMarkerFieldState();
+  }
 
-	public static CameraMarkerFieldState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CameraMarkerFieldState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CameraMarkerFieldState() {
-		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), NodeCodec.getInstance( UserField.class ) );
-	}
+  private CameraMarkerFieldState() {
+    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d"), NodeCodec.getInstance(UserField.class));
+  }
 }

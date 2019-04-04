@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.property.event;
  * @author Dennis Cosgrove
  */
 public interface ListPropertyListener<E> {
-	public void adding( AddListPropertyEvent<E> e );
+  public void adding(AddListPropertyEvent<E> e);
 
-	public void added( AddListPropertyEvent<E> e );
+  public void added(AddListPropertyEvent<E> e);
 
-	public void clearing( ClearListPropertyEvent<E> e );
+  public void clearing(ClearListPropertyEvent<E> e);
 
-	public void cleared( ClearListPropertyEvent<E> e );
+  public void cleared(ClearListPropertyEvent<E> e);
 
-	public void removing( RemoveListPropertyEvent<E> e );
+  public void removing(RemoveListPropertyEvent<E> e);
 
-	public void removed( RemoveListPropertyEvent<E> e );
+  public void removed(RemoveListPropertyEvent<E> e);
 
-	public void setting( SetListPropertyEvent<E> e );
+  public void setting(SetListPropertyEvent<E> e);
 
-	public void set( SetListPropertyEvent<E> e );
+  public void set(SetListPropertyEvent<E> e);
 }

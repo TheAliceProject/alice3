@@ -61,28 +61,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GlrDebugFrame extends DebugFrame<GlrComponent<?>> {
-	public static ZTreeNode.Builder<GlrComponent<?>> createBuilder( GlrComponent<?> glrComponent ) {
-		ZTreeNode.Builder<GlrComponent<?>> rv = new ZTreeNode.Builder<GlrComponent<?>>( glrComponent, glrComponent instanceof GlrLeaf<?> );
-		if( glrComponent instanceof GlrComposite<?> ) {
-			GlrComposite<?> glrComposite = (GlrComposite<?>)glrComponent;
-			for( GlrComponent<?> glrChild : glrComposite.accessChildren() ) {
-				rv.addChildBuilder( createBuilder( glrChild ) );
-			}
-		}
-		return rv;
-	}
+  public static ZTreeNode.Builder<GlrComponent<?>> createBuilder(GlrComponent<?> glrComponent) {
+    ZTreeNode.Builder<GlrComponent<?>> rv = new ZTreeNode.Builder<GlrComponent<?>>(glrComponent, glrComponent instanceof GlrLeaf<?>);
+    if (glrComponent instanceof GlrComposite<?>) {
+      GlrComposite<?> glrComposite = (GlrComposite<?>) glrComponent;
+      for (GlrComponent<?> glrChild : glrComposite.accessChildren()) {
+        rv.addChildBuilder(createBuilder(glrChild));
+      }
+    }
+    return rv;
+  }
 
-	public GlrDebugFrame() {
-		super( UUID.fromString( "502e2f7e-cd4a-4ae5-a06d-20890d8e1eb6" ) );
-	}
+  public GlrDebugFrame() {
+    super(UUID.fromString("502e2f7e-cd4a-4ae5-a06d-20890d8e1eb6"));
+  }
 
-	@Override
-	protected ZTreeNode.Builder<GlrComponent<?>> capture() {
-		UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-		SScene scene = sceneUserInstance.getJavaInstance( SScene.class );
-		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
-		Scene sgScene = sceneImp.getSgComposite();
-		GlrScene glrScene = AdapterFactory.getAdapterFor( sgScene );
-		return createBuilder( glrScene );
-	}
+  @Override
+  protected ZTreeNode.Builder<GlrComponent<?>> capture() {
+    UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
+    SScene scene = sceneUserInstance.getJavaInstance(SScene.class);
+    SceneImp sceneImp = EmployeesOnly.getImplementation(scene);
+    Scene sgScene = sceneImp.getSgComposite();
+    GlrScene glrScene = AdapterFactory.getAdapterFor(sgScene);
+    return createBuilder(glrScene);
+  }
 }

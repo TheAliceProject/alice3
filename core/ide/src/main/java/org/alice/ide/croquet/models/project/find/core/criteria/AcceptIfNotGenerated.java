@@ -52,17 +52,17 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  */
 public class AcceptIfNotGenerated implements Criterion<Expression> {
 
-	private static class SingletonHolder {
-		public final static AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
-	}
+  private static class SingletonHolder {
+    public static final AcceptIfNotGenerated filteredInstance = new AcceptIfNotGenerated();
+  }
 
-	public static AcceptIfNotGenerated getInstance() {
-		return SingletonHolder.filteredInstance;
-	}
+  public static AcceptIfNotGenerated getInstance() {
+    return SingletonHolder.filteredInstance;
+  }
 
-	@Override
-	public boolean accept( Expression e ) {
-		UserMethod userMethod = e.getFirstAncestorAssignableTo( UserMethod.class );
-		return !userMethod.getManagementLevel().isGenerated();
-	}
+  @Override
+  public boolean accept(Expression e) {
+    UserMethod userMethod = e.getFirstAncestorAssignableTo(UserMethod.class);
+    return !userMethod.getManagementLevel().isGenerated();
+  }
 }

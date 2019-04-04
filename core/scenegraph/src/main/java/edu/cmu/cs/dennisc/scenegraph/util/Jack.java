@@ -48,27 +48,27 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public class Jack extends Transformable {
-	public Jack() {
-		this.sgAxesModest.setParent( this );
-	}
+  public Jack() {
+    this.sgAxesModest.setParent(this);
+  }
 
-	//todo: rename
-	public boolean isModest() {
-		return this.sgAxesModest.getParent() == this;
-	}
+  //todo: rename
+  public boolean isModest() {
+    return this.sgAxesModest.getParent() == this;
+  }
 
-	public void setModest( boolean isModest ) {
-		if( isModest != isModest() ) {
-			if( isModest ) {
-				this.sgAxesModest.setParent( this );
-				this.sgAxesOrnate.setParent( null );
-			} else {
-				this.sgAxesModest.setParent( null );
-				this.sgAxesOrnate.setParent( this );
-			}
-		}
-	}
+  public void setModest(boolean isModest) {
+    if (isModest != isModest()) {
+      if (isModest) {
+        this.sgAxesModest.setParent(this);
+        this.sgAxesOrnate.setParent(null);
+      } else {
+        this.sgAxesModest.setParent(null);
+        this.sgAxesOrnate.setParent(this);
+      }
+    }
+  }
 
-	private final ModestAxes sgAxesModest = new ModestAxes( 0.1 );
-	private final ExtravagantAxes sgAxesOrnate = new ExtravagantAxes( 0.5 );
+  private final ModestAxes sgAxesModest = new ModestAxes(0.1);
+  private final ExtravagantAxes sgAxesOrnate = new ExtravagantAxes(0.5);
 }

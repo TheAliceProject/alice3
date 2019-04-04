@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class DoublePreference extends Preference<Double> {
-	public DoublePreference( Double defaultValue ) {
-		super( defaultValue );
-	}
+  public DoublePreference(Double defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected Double getValue( Preferences utilPrefs, String key, Double defaultValue ) {
-		return utilPrefs.getDouble( key, defaultValue );
-	}
+  @Override
+  protected Double getValue(Preferences utilPrefs, String key, Double defaultValue) {
+    return utilPrefs.getDouble(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, Double nextValue ) {
-		utilPrefs.putDouble( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, Double nextValue) {
+    utilPrefs.putDouble(key, nextValue);
+  }
 }

@@ -55,22 +55,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
-	public CascadeFillIn( UUID id ) {
-		super( id );
-	}
+  public CascadeFillIn(UUID id) {
+    super(id);
+  }
 
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
-	}
+  public boolean isAutomaticallySelectedWhenSoleOption() {
+    return false;
+  }
 
-	protected B[] createFromBlanks( ItemNode<? super F, B> itemNode, Class<B> cls ) {
-		List<? extends CascadeBlank<B>> blanks = this.getBlanks();
-		B[] rv = ReflectionUtilities.newTypedArrayInstance( cls, blanks.size() );
-		for( int i = 0; i < rv.length; i++ ) {
-			BlankNode<B> blankStep = itemNode.getBlankStepAt( i );
-			AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
-			rv[ i ] = selectedFillInContext.createValue();// itemNode != null ? itemNode.getTransientValue() : null BlankActor.CREATE_VALUES.act( selectedFillInContext );
-		}
-		return rv;
-	}
+  protected B[] createFromBlanks(ItemNode<? super F, B> itemNode, Class<B> cls) {
+    List<? extends CascadeBlank<B>> blanks = this.getBlanks();
+    B[] rv = ReflectionUtilities.newTypedArrayInstance(cls, blanks.size());
+    for (int i = 0; i < rv.length; i++) {
+      BlankNode<B> blankStep = itemNode.getBlankStepAt(i);
+      AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
+      rv[i] = selectedFillInContext.createValue(); // itemNode != null ? itemNode.getTransientValue() : null BlankActor.CREATE_VALUES.act( selectedFillInContext );
+    }
+    return rv;
+  }
 }

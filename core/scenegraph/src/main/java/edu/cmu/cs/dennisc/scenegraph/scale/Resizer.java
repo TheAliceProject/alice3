@@ -46,11 +46,5 @@ package edu.cmu.cs.dennisc.scenegraph.scale;
  * @author Dennis Cosgrove
  */
 public enum Resizer {
-	X_AXIS,
-	Y_AXIS,
-	Z_AXIS,
-	XY_PLANE,
-	XZ_PLANE,
-	YZ_PLANE,
-	UNIFORM
+  X_AXIS, Y_AXIS, Z_AXIS, XY_PLANE, XZ_PLANE, YZ_PLANE, UNIFORM
 }

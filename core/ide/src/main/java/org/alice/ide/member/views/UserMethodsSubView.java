@@ -48,18 +48,18 @@ import org.alice.ide.member.UserMethodsSubComposite;
  * @author Dennis Cosgrove
  */
 public class UserMethodsSubView extends MethodsSubView<UserMethodsSubComposite> {
-	public UserMethodsSubView( UserMethodsSubComposite composite ) {
-		super( composite );
-	}
+  public UserMethodsSubView(UserMethodsSubComposite composite) {
+    super(composite);
+  }
 
-	//	@Override
-	//	protected void internalRefresh() {
-	//		super.internalRefresh();
-	//		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-	//			//pass
-	//		} else {
-	//			org.alice.ide.member.UserMethodsSubComposite composite = this.getComposite();
-	//			this.addComponent( composite.getAddMethodOperation().createButton() );
-	//		}
-	//	}
+  //  @Override
+  //  protected void internalRefresh() {
+  //    super.internalRefresh();
+  //    if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+  //      //pass
+  //    } else {
+  //      org.alice.ide.member.UserMethodsSubComposite composite = this.getComposite();
+  //      this.addComponent( composite.getAddMethodOperation().createButton() );
+  //    }
+  //  }
 }

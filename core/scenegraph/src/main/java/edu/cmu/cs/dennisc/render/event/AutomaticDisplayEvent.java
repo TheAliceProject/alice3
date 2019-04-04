@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.render.RenderFactory;
  * @author Dennis Cosgrove
  */
 public class AutomaticDisplayEvent extends Event<RenderFactory> {
-	public AutomaticDisplayEvent( RenderFactory renderFactory ) {
-		super( renderFactory );
-	}
+  public AutomaticDisplayEvent(RenderFactory renderFactory) {
+    super(renderFactory);
+  }
 }

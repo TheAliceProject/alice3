@@ -66,48 +66,39 @@ import java.util.UUID;
  */
 public class FileMenuModel extends StaticMenuModel {
 
-	// Set to true to enable export feature that is still in development
-	private static final boolean ENABLE_EXPORT = false;
+  // Set to true to enable export feature that is still in development
+  private static final boolean ENABLE_EXPORT = false;
 
-	public FileMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public FileMenuModel(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("121c8088-7297-43d4-b7b7-61416f1d4eb0"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	@Override
-	protected StandardMenuItemPrepModel[] createModels() {
-		List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
-				projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
-				projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				RecentProjectsMenuModel.getInstance(),
-				MenuModel.SEPARATOR,
-				new ImportGalleryResourceOperation().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
-		if ( ENABLE_EXPORT ) {
-			list.add( new ExportProjectOperation().getMenuItemPrepModel() );
-		}
-		list.add( MenuModel.SEPARATOR );
-		list.add( RevertProjectOperation.getInstance().getMenuItemPrepModel() );
+  @Override
+  protected StandardMenuItemPrepModel[] createModels() {
+    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(), projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, RecentProjectsMenuModel.getInstance(), MenuModel.SEPARATOR, new ImportGalleryResourceOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, SaveProjectOperation.getInstance().getMenuItemPrepModel(), SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
+    if (ENABLE_EXPORT) {
+      list.add(new ExportProjectOperation().getMenuItemPrepModel());
+    }
+    list.add(MenuModel.SEPARATOR);
+    list.add(RevertProjectOperation.getInstance().getMenuItemPrepModel());
 
-		Operation[] uploadOperations = this.projectDocumentFrame.getUploadOperations();
-		if( uploadOperations.length > 0 ) {
-			list.add( MenuModel.SEPARATOR );
-			for( Operation operation : uploadOperations ) {
-				list.add( operation.getMenuItemPrepModel() );
-			}
-		}
-		list.add( MenuModel.SEPARATOR );
-		list.add( PrintMenuModel.getInstance() );
-		list.add( CaptureMenuModel.getInstance() );
-		if (!SystemUtilities.isMac()) {
-			list.add( MenuModel.SEPARATOR );
-			list.add( ExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return ArrayUtilities.createArray( list, StandardMenuItemPrepModel.class );
-	}
+    Operation[] uploadOperations = this.projectDocumentFrame.getUploadOperations();
+    if (uploadOperations.length > 0) {
+      list.add(MenuModel.SEPARATOR);
+      for (Operation operation : uploadOperations) {
+        list.add(operation.getMenuItemPrepModel());
+      }
+    }
+    list.add(MenuModel.SEPARATOR);
+    list.add(PrintMenuModel.getInstance());
+    list.add(CaptureMenuModel.getInstance());
+    if (!SystemUtilities.isMac()) {
+      list.add(MenuModel.SEPARATOR);
+      list.add(ExitOperation.getInstance().getMenuItemPrepModel());
+    }
+    return ArrayUtilities.createArray(list, StandardMenuItemPrepModel.class);
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
+  private final ProjectDocumentFrame projectDocumentFrame;
 }

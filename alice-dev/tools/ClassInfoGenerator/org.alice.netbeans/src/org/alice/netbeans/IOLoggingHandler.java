@@ -52,40 +52,44 @@ import org.openide.windows.OutputWriter;
  * @author Dennis Cosgrove
  */
 public class IOLoggingHandler extends java.util.logging.Handler {
-	private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
-	private static InputOutput io = IOProvider.getDefault().getIO( "ClassInfo Generator", true );
+  private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
+  private static InputOutput io = IOProvider.getDefault().getIO("ClassInfo Generator", true);
 
-	public static void printStackTrace( Throwable t ) {
-		io.getErr().write(ThrowableUtilities.getStackTraceAsString(t));
-	}
+  public static void printStackTrace(Throwable t) {
+    io.getErr().write(ThrowableUtilities.getStackTraceAsString(t));
+  }
 
-	private static void writeln( OutputWriter writer, Object o ) {
-		writer.write( o != null ? o.toString() : "null" );
-		writer.write( "\n" );
-		writer.flush();
-	}
-	public static void errln( Object o ) {
-		writeln(io.getErr(), o);
-	}
-	public static void outln( Object o ) {
-		writeln(io.getOut(), o);
-	}
+  private static void writeln(OutputWriter writer, Object o) {
+    writer.write(o != null ? o.toString() : "null");
+    writer.write("\n");
+    writer.flush();
+  }
 
-	@Override
-	public void publish( java.util.logging.LogRecord record ) {
-		OutputWriter os;
-		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
-			os = io.getErr();
-		} else {
-			os = io.getOut();
-		}
-		os.print( this.getFormatter().format( record ) );
-		os.flush();
-	}
-	@Override
-	public void flush() {
-	}
-	@Override
-	public void close() throws java.lang.SecurityException {
-	}
+  public static void errln(Object o) {
+    writeln(io.getErr(), o);
+  }
+
+  public static void outln(Object o) {
+    writeln(io.getOut(), o);
+  }
+
+  @Override
+  public void publish(java.util.logging.LogRecord record) {
+    OutputWriter os;
+    if (record.getLevel().intValue() >= ERROR_LEVEL.intValue()) {
+      os = io.getErr();
+    } else {
+      os = io.getOut();
+    }
+    os.print(this.getFormatter().format(record));
+    os.flush();
+  }
+
+  @Override
+  public void flush() {
+  }
+
+  @Override
+  public void close() throws java.lang.SecurityException {
+  }
 }

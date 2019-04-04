@@ -54,31 +54,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
-	private final boolean isNew;
+  private final boolean isNew;
 
-	PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, boolean isNew ) {
-		super( migrationId, SelectProjectUriComposite.getInstance().getValueCreator() );
-		this.isNew = isNew;
-	}
+  PotentialClearanceUriCreatorIteratingOperation(UUID migrationId, boolean isNew) {
+    super(migrationId, SelectProjectUriComposite.getInstance().getValueCreator());
+    this.isNew = isNew;
+  }
 
-	@Override
-	protected List<Triggerable> createIteratingData() {
-		List<Triggerable> rv = super.createIteratingData();
-		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
-		return rv;
-	}
+  @Override
+  protected List<Triggerable> createIteratingData() {
+    List<Triggerable> rv = super.createIteratingData();
+    SelectProjectUriComposite.getInstance().selectAppropriateTab(this.isNew);
+    return rv;
+  }
 
-	@Override
-	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
-		if( subSteps.size() > 0 ) {
-			return (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getProducedValue();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected UriProjectLoader getUriProjectLoader(List<UserActivity> subSteps) {
+    if (subSteps.size() > 0) {
+      return (UriProjectLoader) subSteps.get(subSteps.size() - 1).getProducedValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
-	}
+  @Override
+  public boolean isToolBarTextClobbered() {
+    return true;
+  }
 }

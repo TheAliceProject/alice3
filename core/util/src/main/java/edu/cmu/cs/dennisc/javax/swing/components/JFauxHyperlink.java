@@ -48,7 +48,7 @@ import javax.swing.Action;
  * @author Dennis Cosgrove
  */
 public class JFauxHyperlink extends AbstractHyperlink {
-	public JFauxHyperlink( Action action ) {
-		this.setAction( action );
-	}
+  public JFauxHyperlink(Action action) {
+    this.setAction(action);
+  }
 }

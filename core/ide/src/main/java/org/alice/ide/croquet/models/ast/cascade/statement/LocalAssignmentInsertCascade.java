@@ -56,25 +56,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAssignmentInsertCascade extends SimpleAssignmentInsertCascade {
-	private final UserLocal local;
+  private final UserLocal local;
 
-	public LocalAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, UserLocal local ) {
-		super( UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, ExpressionBlank.createBlanks( local.getValueType() ) );
-		this.local = local;
-	}
+  public LocalAssignmentInsertCascade(BlockStatementIndexPair blockStatementIndexPair, UserLocal local) {
+    super(UUID.fromString("ae9cd20c-b158-4298-bcee-720810dcbef9"), blockStatementIndexPair, ExpressionBlank.createBlanks(local.getValueType()));
+    this.local = local;
+  }
 
-	@Override
-	protected String getDeclarationName() {
-		return this.local.getName();
-	}
+  @Override
+  protected String getDeclarationName() {
+    return this.local.getName();
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueType() {
-		return this.local.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueType() {
+    return this.local.getValueType();
+  }
 
-	@Override
-	protected Expression createLeftHandSide( Expression... expressions ) {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createLeftHandSide(Expression... expressions) {
+    return new LocalAccess(this.local);
+  }
 }

@@ -57,102 +57,102 @@ import jogamp.opengl.GLDrawableImpl;
  * @author Dennis Cosgrove
  */
 public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
-	private GLDrawableImpl glDrawable;
-	private GLContextImpl glContext;
+  private GLDrawableImpl glDrawable;
+  private GLContextImpl glContext;
 
-	private final Runnable displayAdapter = new Runnable() {
-		@Override
-		public void run() {
-			fireDisplay( glContext.getGL().getGL2() );
-		}
-	};
-	private final Runnable initAdapter = new Runnable() {
-		@Override
-		public void run() {
-		}
-	};
-	private GLDrawableHelper drawableHelper;
+  private final Runnable displayAdapter = new Runnable() {
+    @Override
+    public void run() {
+      fireDisplay(glContext.getGL().getGL2());
+    }
+  };
+  private final Runnable initAdapter = new Runnable() {
+    @Override
+    public void run() {
+    }
+  };
+  private GLDrawableHelper drawableHelper;
 
-	public SoftwareOffscreenDrawable( DisplayCallback callback ) {
-		super( callback );
-	}
+  public SoftwareOffscreenDrawable(DisplayCallback callback) {
+    super(callback);
+  }
 
-	@Override
-	protected GLDrawable getGlDrawable() {
-		return this.glDrawable;
-	}
+  @Override
+  protected GLDrawable getGlDrawable() {
+    return this.glDrawable;
+  }
 
-	@Override
-	public void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
-		assert this.glDrawable == null : this;
-		GLCapabilities glCapabilities;
-		if( IS_HARDWARE_ACCELERATION_DESIRED ) {
-			glCapabilities = glRequestedCapabilities;
-		} else {
-			glCapabilities = (GLCapabilities)glRequestedCapabilities.clone();
-			glCapabilities.setHardwareAccelerated( false );
-		}
-		this.glDrawable = GlDrawableUtils.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
-		this.glDrawable.setRealized( true );
-		this.glContext = (GLContextImpl)this.glDrawable.createContext( glShareContext );
-		//this.glContext.setSynchronized( true );
-	}
+  @Override
+  public void initialize(GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
+    assert this.glDrawable == null : this;
+    GLCapabilities glCapabilities;
+    if (IS_HARDWARE_ACCELERATION_DESIRED) {
+      glCapabilities = glRequestedCapabilities;
+    } else {
+      glCapabilities = (GLCapabilities) glRequestedCapabilities.clone();
+      glCapabilities.setHardwareAccelerated(false);
+    }
+    this.glDrawable = GlDrawableUtils.createOffscreenDrawable(glCapabilities, glCapabilitiesChooser, width, height);
+    this.glDrawable.setRealized(true);
+    this.glContext = (GLContextImpl) this.glDrawable.createContext(glShareContext);
+    //this.glContext.setSynchronized( true );
+  }
 
-	@Override
-	public void destroy() {
-		assert false;
-		if( this.glContext != null ) {
-			this.glContext.destroy();
-			this.glContext = null;
-		}
-		if( this.glDrawable != null ) {
-			AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
-			this.glDrawable.setRealized( false );
-			this.glDrawable = null;
-			if( graphicsDevice != null ) {
-				graphicsDevice.close();
-			}
-		}
-	}
+  @Override
+  public void destroy() {
+    assert false;
+    if (this.glContext != null) {
+      this.glContext.destroy();
+      this.glContext = null;
+    }
+    if (this.glDrawable != null) {
+      AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
+      this.glDrawable.setRealized(false);
+      this.glDrawable = null;
+      if (graphicsDevice != null) {
+        graphicsDevice.close();
+      }
+    }
+  }
 
-	@Override
-	public void display() {
-		if( this.drawableHelper != null ) {
-			//pass
-		} else {
-			this.drawableHelper = new GLDrawableHelper();
-		}
-		if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.glContext );
-			this.drawableHelper.invokeGL( this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter );
-		} else {
-			StringBuilder sb = new StringBuilder();
-			if( this.glDrawable != null ) {
-				//pass
-			} else {
-				sb.append( "glDrawable is null;" );
-			}
-			if( this.glContext != null ) {
-				//pass
-			} else {
-				sb.append( "glContext is null;" );
-			}
-			if( this.displayAdapter != null ) {
-				//pass
-			} else {
-				sb.append( "displayAdapter is null;" );
-			}
-			if( this.initAdapter != null ) {
-				//pass
-			} else {
-				sb.append( "initAdapter is null;" );
-			}
-			throw new GLException( sb.toString() );
-		}
-	}
+  @Override
+  public void display() {
+    if (this.drawableHelper != null) {
+      //pass
+    } else {
+      this.drawableHelper = new GLDrawableHelper();
+    }
+    if ((this.glDrawable != null) && (this.glContext != null) && (this.displayAdapter != null) && (this.initAdapter != null)) {
+      //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.glContext );
+      this.drawableHelper.invokeGL(this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter);
+    } else {
+      StringBuilder sb = new StringBuilder();
+      if (this.glDrawable != null) {
+        //pass
+      } else {
+        sb.append("glDrawable is null;");
+      }
+      if (this.glContext != null) {
+        //pass
+      } else {
+        sb.append("glContext is null;");
+      }
+      if (this.displayAdapter != null) {
+        //pass
+      } else {
+        sb.append("displayAdapter is null;");
+      }
+      if (this.initAdapter != null) {
+        //pass
+      } else {
+        sb.append("initAdapter is null;");
+      }
+      throw new GLException(sb.toString());
+    }
+  }
 
-	@Override
-	public boolean isHardwareAccelerated() {
-		return false;
-	}
+  @Override
+  public boolean isHardwareAccelerated() {
+    return false;
+  }
 }

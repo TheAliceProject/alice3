@@ -52,12 +52,12 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class HairHatStyleListData extends IngredientListData<HairHatStyle> {
-	public HairHatStyleListData() {
-		super( HairHatStyleCodec.SINGLETON );
-	}
+  public HairHatStyleListData() {
+    super(HairHatStyleCodec.SINGLETON);
+  }
 
-	@Override
-	protected List<HairHatStyle> createValues( LifeStage lifeStage, Gender gender ) {
-		return HairUtilities.getHairHatStyles( lifeStage, gender );
-	}
+  @Override
+  protected List<HairHatStyle> createValues(LifeStage lifeStage, Gender gender) {
+    return HairUtilities.getHairHatStyles(lifeStage, gender);
+  }
 }

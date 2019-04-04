@@ -62,86 +62,82 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class TreeOwningGalleryTabView extends GalleryTabView {
-	private class ModelResourceDirectoryView extends TreeDirectoryViewController<ResourceNode> {
-		public ModelResourceDirectoryView( SingleSelectTreeState<ResourceNode> model ) {
-			super( model );
-		}
+  private class ModelResourceDirectoryView extends TreeDirectoryViewController<ResourceNode> {
+    public ModelResourceDirectoryView(SingleSelectTreeState<ResourceNode> model) {
+      super(model);
+    }
 
-		@Override
-		protected SwingComponentView<?> getComponentFor( ResourceNode value ) {
-			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value, getModel() );
-		}
-	}
+    @Override
+    protected SwingComponentView<?> getComponentFor(ResourceNode value) {
+      return TreeOwningGalleryTabView.this.getGalleryDragComponent(value, getModel());
+    }
+  }
 
-	private final ValueListener<ResourceNode> treeListener = new ValueListener<ResourceNode>() {
-		@Override
-		public void valueChanged( ValueEvent<ResourceNode> e ) {
-			handleChanged( e.getPreviousValue(), e.getNextValue() );
-		}
-	};
+  private final ValueListener<ResourceNode> treeListener = new ValueListener<ResourceNode>() {
+    @Override
+    public void valueChanged(ValueEvent<ResourceNode> e) {
+      handleChanged(e.getPreviousValue(), e.getNextValue());
+    }
+  };
 
-	private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
-	private final ScrollPane scrollPane;
-	private final ModelResourceDirectoryView view;
+  private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
+  private final ScrollPane scrollPane;
+  private final ModelResourceDirectoryView view;
 
-	public TreeOwningGalleryTabView( TreeOwningGalleryTab composite ) {
-		super( composite );
+  public TreeOwningGalleryTabView(TreeOwningGalleryTab composite) {
+    super(composite);
 
-		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
-		view = new ModelResourceDirectoryView( state );
+    ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+    view = new ModelResourceDirectoryView(state);
 
-		this.scrollPane = createGalleryScrollPane( view );
+    this.scrollPane = createGalleryScrollPane(view);
 
-		BorderPanel panel = new BorderPanel.Builder()
-				.vgap( PAD )
-				.pageStart( new TreePathViewController( state, null ) )
-				.center( scrollPane )
-				.build();
+    BorderPanel panel = new BorderPanel.Builder().vgap(PAD).pageStart(new TreePathViewController(state, null)).center(scrollPane).build();
 
-		this.addCenterComponent( panel );
+    this.addCenterComponent(panel);
 
-		//todo
-		view.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-	}
+    //todo
+    view.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    panel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		TreeOwningGalleryTab composite = (TreeOwningGalleryTab)this.getComposite();
-		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
-		state.addNewSchoolValueListener( this.treeListener );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    TreeOwningGalleryTab composite = (TreeOwningGalleryTab) this.getComposite();
+    ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+    state.addNewSchoolValueListener(this.treeListener);
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		TreeOwningGalleryTab composite = (TreeOwningGalleryTab)this.getComposite();
-		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
-		state.removeNewSchoolValueListener( this.treeListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    TreeOwningGalleryTab composite = (TreeOwningGalleryTab) this.getComposite();
+    ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+    state.removeNewSchoolValueListener(this.treeListener);
+  }
 
-	private void handleChanged( ResourceNode prevValue, ResourceNode nextValue ) {
-		final JScrollBar jHorizontalScrollBar = this.scrollPane.getAwtComponent().getHorizontalScrollBar();
-		this.mapNodeToHorizontalScrollPosition.put( prevValue, jHorizontalScrollBar.getValue() );
-		Integer i = this.mapNodeToHorizontalScrollPosition.get( nextValue );
-		final int nextScrollPosition;
-		if( i != null ) {
-			nextScrollPosition = i;
-		} else {
-			nextScrollPosition = 0;
-		}
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				jHorizontalScrollBar.setValue( nextScrollPosition );
-			}
-		} );
-	}
+  private void handleChanged(ResourceNode prevValue, ResourceNode nextValue) {
+    final JScrollBar jHorizontalScrollBar = this.scrollPane.getAwtComponent().getHorizontalScrollBar();
+    this.mapNodeToHorizontalScrollPosition.put(prevValue, jHorizontalScrollBar.getValue());
+    Integer i = this.mapNodeToHorizontalScrollPosition.get(nextValue);
+    final int nextScrollPosition;
+    if (i != null) {
+      nextScrollPosition = i;
+    } else {
+      nextScrollPosition = 0;
+    }
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        jHorizontalScrollBar.setValue(nextScrollPosition);
+      }
+    });
+  }
 
-	@Override
-	public void modelUpdated() {
-		view.modelUpdated();
-	}
+  @Override
+  public void modelUpdated() {
+    view.modelUpdated();
+  }
 }

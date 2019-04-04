@@ -56,70 +56,70 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class MultilineText extends Transformable {
-	private edu.cmu.cs.dennisc.java.awt.MultilineText multilineText;
-	private Font font;
-	private TextAlignment alignment;
-	private Paint paint;
-	private float wrapWidth;
+  private edu.cmu.cs.dennisc.java.awt.MultilineText multilineText;
+  private Font font;
+  private TextAlignment alignment;
+  private Paint paint;
+  private float wrapWidth;
 
-	public MultilineText( String text, Font font, TextAlignment alignment, Paint paint ) {
-		this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText( text );
-		this.font = font;
-		this.alignment = alignment;
-		this.paint = paint;
-		this.wrapWidth = Float.NaN;
-	}
+  public MultilineText(String text, Font font, TextAlignment alignment, Paint paint) {
+    this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText(text);
+    this.font = font;
+    this.alignment = alignment;
+    this.paint = paint;
+    this.wrapWidth = Float.NaN;
+  }
 
-	public Font getFont() {
-		return this.font;
-	}
+  public Font getFont() {
+    return this.font;
+  }
 
-	public void setFont( Font font ) {
-		this.font = font;
-	}
+  public void setFont(Font font) {
+    this.font = font;
+  }
 
-	public TextAlignment getAlignment() {
-		return this.alignment;
-	}
+  public TextAlignment getAlignment() {
+    return this.alignment;
+  }
 
-	public void setAlignment( TextAlignment alignment ) {
-		this.alignment = alignment;
-	}
+  public void setAlignment(TextAlignment alignment) {
+    this.alignment = alignment;
+  }
 
-	public Paint getPaint() {
-		return this.paint;
-	}
+  public Paint getPaint() {
+    return this.paint;
+  }
 
-	public void setPaint( Paint paint ) {
-		this.paint = paint;
-	}
+  public void setPaint(Paint paint) {
+    this.paint = paint;
+  }
 
-	public float getWrapWidth() {
-		return this.wrapWidth;
-	}
+  public float getWrapWidth() {
+    return this.wrapWidth;
+  }
 
-	public void setWrapWidth( float wrapWidth ) {
-		this.wrapWidth = wrapWidth;
-	}
+  public void setWrapWidth(float wrapWidth) {
+    this.wrapWidth = wrapWidth;
+  }
 
-	public Rectangle2D getBounds( Graphics g ) {
-		Dimension2D size = this.multilineText.getDimension( g, this.wrapWidth );
-		double width = size.getWidth();
-		double height = size.getHeight();
-		return new Rectangle2D.Double( -width * 0.5, -height * 0.5, width, height );
-	}
+  public Rectangle2D getBounds(Graphics g) {
+    Dimension2D size = this.multilineText.getDimension(g, this.wrapWidth);
+    double width = size.getWidth();
+    double height = size.getHeight();
+    return new Rectangle2D.Double(-width * 0.5, -height * 0.5, width, height);
+  }
 
-	@Override
-	protected void paintComponent( GraphicsContext gc ) {
-		Graphics2D g2 = gc.getAWTGraphics2D();
-		g2.setPaint( this.paint );
-		Rectangle2D bounds = this.getBounds( g2 );
-		this.multilineText.paint( g2, this.wrapWidth, this.alignment, bounds );
-	}
+  @Override
+  protected void paintComponent(GraphicsContext gc) {
+    Graphics2D g2 = gc.getAWTGraphics2D();
+    g2.setPaint(this.paint);
+    Rectangle2D bounds = this.getBounds(g2);
+    this.multilineText.paint(g2, this.wrapWidth, this.alignment, bounds);
+  }
 
-	@Override
-	protected Area update( Area rv, TransformContext tc ) {
-		//todo
-		return rv;
-	}
+  @Override
+  protected Area update(Area rv, TransformContext tc) {
+    //todo
+    return rv;
+  }
 }

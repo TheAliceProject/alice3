@@ -64,52 +64,52 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class JointedTypeMenuModel extends CascadeMenuModel<InstanceFactory> {
-	private final List<JointedTypeInfo> jointedTypeInfos;
-	private final int index;
+  private final List<JointedTypeInfo> jointedTypeInfos;
+  private final int index;
 
-	public JointedTypeMenuModel( UUID id, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( id );
-		this.jointedTypeInfos = jointedTypeInfos;
-		this.index = index;
-	}
+  public JointedTypeMenuModel(UUID id, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    super(id);
+    this.jointedTypeInfos = jointedTypeInfos;
+    this.index = index;
+  }
 
-	protected abstract CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method );
+  protected abstract CascadeFillIn<InstanceFactory, ?> getFillIn(AbstractMethod method);
 
-	protected abstract JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index );
+  protected abstract JointedTypeMenuModel getInstance(List<JointedTypeInfo> jointedTypeInfos, int index);
 
-	@Override
-	protected final void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode ) {
-		JointedTypeInfo info = jointedTypeInfos.get( this.index );
-		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() );
-		CascadeBlankChild child;
-		if( jointedTypeInfos.size() > ( this.index + 1 ) ) {
-			child = new CascadeItemMenuCombo( separator, this.getInstance( this.jointedTypeInfos, this.index + 1 ) );
-		} else {
-			child = separator;
-		}
-		blankChildren.add( child );
+  @Override
+  protected final void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+    JointedTypeInfo info = jointedTypeInfos.get(this.index);
+    JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance(info.getType());
+    CascadeBlankChild child;
+    if (jointedTypeInfos.size() > (this.index + 1)) {
+      child = new CascadeItemMenuCombo(separator, this.getInstance(this.jointedTypeInfos, this.index + 1));
+    } else {
+      child = separator;
+    }
+    blankChildren.add(child);
 
-		JointsSubMenu<InstanceFactory>[] subMenus = JointsSubMenuManager.getSubMenusForType( info.getType() );
+    JointsSubMenu<InstanceFactory>[] subMenus = JointsSubMenuManager.getSubMenusForType(info.getType());
 
-		for( AbstractMethod method : info.getJointGetters() ) {
-			CascadeFillIn<InstanceFactory, ?> fillIn = this.getFillIn( method );
-			if( fillIn != null ) {
-				boolean isConsumed = false;
-				for( JointsSubMenu<InstanceFactory> subMenu : subMenus ) {
-					if( subMenu.consumeIfAppropriate( method, fillIn ) ) {
-						isConsumed = true;
-						break;
-					}
-				}
-				if( isConsumed ) {
-					//pass
-				} else {
-					blankChildren.add( fillIn );
-				}
-			} else {
-				Logger.info( "no fillIn for", method );
-			}
-		}
-		Collections.addAll( blankChildren, subMenus );
-	}
+    for (AbstractMethod method : info.getJointGetters()) {
+      CascadeFillIn<InstanceFactory, ?> fillIn = this.getFillIn(method);
+      if (fillIn != null) {
+        boolean isConsumed = false;
+        for (JointsSubMenu<InstanceFactory> subMenu : subMenus) {
+          if (subMenu.consumeIfAppropriate(method, fillIn)) {
+            isConsumed = true;
+            break;
+          }
+        }
+        if (isConsumed) {
+          //pass
+        } else {
+          blankChildren.add(fillIn);
+        }
+      } else {
+        Logger.info("no fillIn for", method);
+      }
+    }
+    Collections.addAll(blankChildren, subMenus);
+  }
 }

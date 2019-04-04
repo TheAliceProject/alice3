@@ -54,58 +54,56 @@ import org.lgna.project.ast.MethodInvocation;
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 
-	public MethodInvocationFactory( AbstractMethod method, InstanceProperty<?>... mutablePropertiesOfInterest ) {
-		super( mutablePropertiesOfInterest );
-		this.method = method;
-	}
+  public MethodInvocationFactory(AbstractMethod method, InstanceProperty<?>... mutablePropertiesOfInterest) {
+    super(mutablePropertiesOfInterest);
+    this.method = method;
+  }
 
-	protected abstract AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code );
+  protected abstract AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code);
 
-	@Override
-	protected final boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
-		return ( methodDeclarationType != null ) && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
-	}
+  @Override
+  protected final boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
+    return (methodDeclarationType != null) && methodDeclarationType.isAssignableFrom(this.getValidInstanceType(type, code));
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 
-	protected abstract Expression createTransientExpressionForMethodInvocation();
+  protected abstract Expression createTransientExpressionForMethodInvocation();
 
-	protected abstract Expression createExpressionForMethodInvocation();
+  protected abstract Expression createExpressionForMethodInvocation();
 
-	private MethodInvocation createMethodInvocation( Expression access ) {
-		return new MethodInvocation(
-				access,
-				this.method );
-	}
+  private MethodInvocation createMethodInvocation(Expression access) {
+    return new MethodInvocation(access, this.method);
+  }
 
-	@Override
-	public final MethodInvocation createTransientExpression() {
-		return this.createMethodInvocation( this.createTransientExpressionForMethodInvocation() );
-	}
+  @Override
+  public final MethodInvocation createTransientExpression() {
+    return this.createMethodInvocation(this.createTransientExpressionForMethodInvocation());
+  }
 
-	@Override
-	public final MethodInvocation createExpression() {
-		return this.createMethodInvocation( this.createExpressionForMethodInvocation() );
-	}
+  @Override
+  public final MethodInvocation createExpression() {
+    return this.createMethodInvocation(this.createExpressionForMethodInvocation());
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getValueType() {
-		return this.method.getReturnType();
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getValueType() {
+    return this.method.getReturnType();
+  }
 
-	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
+  protected abstract StringBuilder addAccessRepr(StringBuilder rv);
 
-	@Override
-	public final String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		this.addAccessRepr( sb );
-		sb.append( "'s " );
-		sb.append( this.method.getName().substring( 3 ) );
-		return sb.toString();
-	}
+  @Override
+  public final String getRepr() {
+    StringBuilder sb = new StringBuilder();
+    this.addAccessRepr(sb);
+    sb.append("'s ");
+    sb.append(this.method.getName().substring(3));
+    return sb.toString();
+  }
 }

@@ -46,7 +46,6 @@ package org.alice.ide.ast.draganddrop.expression;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
 import org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation;
 import org.alice.ide.statementfactory.LocalStatementCascade;
 import org.lgna.croquet.DropSite;
@@ -62,44 +61,44 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAccessDragModel extends AbstractExpressionDragModel {
-	private static InitializingIfAbsentMap<UserLocal, LocalAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserLocal, LocalAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static LocalAccessDragModel getInstance( UserLocal local ) {
-		return map.getInitializingIfAbsent( local, new InitializingIfAbsentMap.Initializer<UserLocal, LocalAccessDragModel>() {
-			@Override
-			public LocalAccessDragModel initialize( UserLocal local ) {
-				return new LocalAccessDragModel( local );
-			}
-		} );
-	}
+  public static LocalAccessDragModel getInstance(UserLocal local) {
+    return map.getInitializingIfAbsent(local, new InitializingIfAbsentMap.Initializer<UserLocal, LocalAccessDragModel>() {
+      @Override
+      public LocalAccessDragModel initialize(UserLocal local) {
+        return new LocalAccessDragModel(local);
+      }
+    });
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalAccessDragModel( UserLocal local ) {
-		super( UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
-		this.local = local;
-	}
+  private LocalAccessDragModel(UserLocal local) {
+    super(UUID.fromString("57dbd70e-11e0-4311-905e-954a95403950"));
+    this.local = local;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.local.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.local.getValueType();
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return this.local.isFinal.getValue() == false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return this.local.isFinal.getValue() == false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return LocalAccessOperation.getInstance( this.local, expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return LocalAccessOperation.getInstance(this.local, expressionProperty);
+  }
 
-	@Override
-	public final Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		if( dropSite instanceof BlockStatementIndexPair ) {
-			return LocalStatementCascade.getInstance( this.local, (BlockStatementIndexPair)dropSite );
-		}
-		return super.getDropOperation( step, dropSite );
-	}
+  @Override
+  public final Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    if (dropSite instanceof BlockStatementIndexPair) {
+      return LocalStatementCascade.getInstance(this.local, (BlockStatementIndexPair) dropSite);
+    }
+    return super.getDropOperation(step, dropSite);
+  }
 }

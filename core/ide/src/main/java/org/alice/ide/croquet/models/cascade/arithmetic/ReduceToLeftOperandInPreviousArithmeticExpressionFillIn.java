@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReduceToLeftOperandInPreviousArithmeticExpressionFillIn extends ReduceToOperandInPreviousArithmeticExpressionFillIn {
-	private static class SingletonHolder {
-		private static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn instance = new ReduceToLeftOperandInPreviousArithmeticExpressionFillIn();
-	}
+  private static class SingletonHolder {
+    private static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn instance = new ReduceToLeftOperandInPreviousArithmeticExpressionFillIn();
+  }
 
-	public static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ReduceToLeftOperandInPreviousArithmeticExpressionFillIn() {
-		super( UUID.fromString( "3bfcb639-6737-4b8d-9261-d670957ec095" ) );
-	}
+  private ReduceToLeftOperandInPreviousArithmeticExpressionFillIn() {
+    super(UUID.fromString("3bfcb639-6737-4b8d-9261-d670957ec095"));
+  }
 
-	@Override
-	protected Expression getOperand( ArithmeticInfixExpression previousArithmetic ) {
-		return previousArithmetic.leftOperand.getValue();
-	}
+  @Override
+  protected Expression getOperand(ArithmeticInfixExpression previousArithmetic) {
+    return previousArithmetic.leftOperand.getValue();
+  }
 }

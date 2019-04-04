@@ -54,35 +54,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AssignmentInsertCascade extends ExpressionStatementInsertCascade {
-	public AssignmentInsertCascade( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, ExpressionBlank[] blanks ) {
-		super( migrationId, blockStatementIndexPair, blanks );
-	}
+  public AssignmentInsertCascade(UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, ExpressionBlank[] blanks) {
+    super(migrationId, blockStatementIndexPair, blanks);
+  }
 
-	protected abstract String getDeclarationName();
+  protected abstract String getDeclarationName();
 
-	@Override
-	protected final String modifyMenuTextIfDesired( String text ) {
-		text = super.modifyMenuTextIfDesired( text );
-		if( text != null ) {
-			text = text.replace( "</name/>", this.getDeclarationName() );
-		}
-		return text;
-	}
+  @Override
+  protected final String modifyMenuTextIfDesired(String text) {
+    text = super.modifyMenuTextIfDesired(text);
+    if (text != null) {
+      text = text.replace("</name/>", this.getDeclarationName());
+    }
+    return text;
+  }
 
-	protected abstract AbstractType<?, ?, ?> getValueType();
+  protected abstract AbstractType<?, ?, ?> getValueType();
 
-	protected abstract Expression createLeftHandSide( Expression... expressions );
+  protected abstract Expression createLeftHandSide(Expression... expressions);
 
-	protected abstract int getIndexOfRightHandSide();
+  protected abstract int getIndexOfRightHandSide();
 
-	@Override
-	protected final Expression createExpression( Expression... expressions ) {
-		AssignmentExpression rv = new AssignmentExpression(
-				this.getValueType(),
-				this.createLeftHandSide( expressions ),
-				AssignmentExpression.Operator.ASSIGN,
-				expressions[ this.getIndexOfRightHandSide() ]
-				);
-		return rv;
-	}
+  @Override
+  protected final Expression createExpression(Expression... expressions) {
+    AssignmentExpression rv = new AssignmentExpression(this.getValueType(), this.createLeftHandSide(expressions), AssignmentExpression.Operator.ASSIGN, expressions[this.getIndexOfRightHandSide()]);
+    return rv;
+  }
 }

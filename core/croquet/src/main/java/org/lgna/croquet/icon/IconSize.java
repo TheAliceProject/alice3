@@ -48,18 +48,14 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public enum IconSize {
-	EXTRA_SMALL( 16 ),
-	SMALL( 22 ),
-	MEDIUM( 32 ),
-	LARGE( 48 ),
-	EXTRA_LARGE( 256 );
-	private final Dimension size;
+  EXTRA_SMALL(16), SMALL(22), MEDIUM(32), LARGE(48), EXTRA_LARGE(256);
+  private final Dimension size;
 
-	private IconSize( int size ) {
-		this.size = new Dimension( size, size );
-	}
+  private IconSize(int size) {
+    this.size = new Dimension(size, size);
+  }
 
-	public Dimension getSize() {
-		return this.size;
-	}
+  public Dimension getSize() {
+    return this.size;
+  }
 }

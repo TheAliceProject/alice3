@@ -49,25 +49,25 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
-	private NodeUtilities() {
-		throw new AssertionError();
-	}
+  private NodeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static void safeAppendRepr( StringBuilder sbRepr, Node node, Locale locale ) {
-		if( node != null ) {
-			sbRepr.append( node.getRepr() );
-		} else {
-			sbRepr.append( "null" );
-		}
-		//		if( node instanceof AbstractNode ) {
-		//			( (AbstractNode)node ).appendRepr( sbRepr, locale );
-		//		} else {
-		//			//todo?
-		//			sbRepr.append( node );
-		//		}
-	}
+  public static void safeAppendRepr(StringBuilder sbRepr, Node node, Locale locale) {
+    if (node != null) {
+      sbRepr.append(node.getRepr());
+    } else {
+      sbRepr.append("null");
+    }
+    //    if( node instanceof AbstractNode ) {
+    //      ( (AbstractNode)node ).appendRepr( sbRepr, locale );
+    //    } else {
+    //      //todo?
+    //      sbRepr.append( node );
+    //    }
+  }
 
-	public static void safeAppendRepr( StringBuilder sbRepr, Node node ) {
-		safeAppendRepr( sbRepr, node, JComponent.getDefaultLocale() );
-	}
+  public static void safeAppendRepr(StringBuilder sbRepr, Node node) {
+    safeAppendRepr(sbRepr, node, JComponent.getDefaultLocale());
+  }
 }

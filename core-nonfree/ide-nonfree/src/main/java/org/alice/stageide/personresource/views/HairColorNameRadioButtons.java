@@ -58,42 +58,42 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class HairColorNameRadioButtons extends CustomRadioButtons<HairColorName> {
-	public HairColorNameRadioButtons( RefreshableDataSingleSelectListState<HairColorName> model ) {
-		super( model );
-	}
+  public HairColorNameRadioButtons(RefreshableDataSingleSelectListState<HairColorName> model) {
+    super(model);
+  }
 
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( HairColorName item, BooleanState itemSelectedState ) {
-		Icon icon = item.getIcon();
-		itemSelectedState.initializeIfNecessary();
-		itemSelectedState.setIconForBothTrueAndFalse( icon );
-		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
-		ToggleButton rv = itemSelectedState.createToggleButton();
-		rv.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
-		rv.setToolTipText( item.name() );
-		return rv;
-	}
+  @Override
+  protected BooleanStateButton<?> createButtonForItemSelectedState(HairColorName item, BooleanState itemSelectedState) {
+    Icon icon = item.getIcon();
+    itemSelectedState.initializeIfNecessary();
+    itemSelectedState.setIconForBothTrueAndFalse(icon);
+    itemSelectedState.setTextForBothTrueAndFalse(icon != null ? null : item.name());
+    ToggleButton rv = itemSelectedState.createToggleButton();
+    rv.tightenUpMargin(IngredientsView.COLOR_BUTTON_MARGIN);
+    rv.setToolTipText(item.name());
+    return rv;
+  }
 
-	@Override
-	protected void addPrologue( int count ) {
-	}
+  @Override
+  protected void addPrologue(int count) {
+  }
 
-	@Override
-	protected void addItem( HairColorName item, BooleanStateButton<?> button ) {
-		this.internalAddComponent( button );
-	}
+  @Override
+  protected void addItem(HairColorName item, BooleanStateButton<?> button) {
+    this.internalAddComponent(button);
+  }
 
-	@Override
-	protected void addEpilogue() {
-	}
+  @Override
+  protected void addEpilogue() {
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new MigLayout();
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new MigLayout();
+  }
 
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
+  @Override
+  protected void removeAllDetails() {
+    this.internalRemoveAllComponents();
+  }
 }

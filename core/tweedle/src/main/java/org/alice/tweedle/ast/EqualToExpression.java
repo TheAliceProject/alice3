@@ -6,11 +6,12 @@ import org.alice.tweedle.TweedleValue;
 
 public class EqualToExpression extends BinaryExpression {
 
-	public EqualToExpression( TweedleExpression lhs, TweedleExpression rhs) {
-		super( lhs, rhs, TweedleTypes.BOOLEAN );
-	}
+  public EqualToExpression(TweedleExpression lhs, TweedleExpression rhs) {
+    super(lhs, rhs, TweedleTypes.BOOLEAN);
+  }
 
-	@Override TweedlePrimitiveValue<Boolean> evaluate( TweedleValue left, TweedleValue right ) {
-		return TweedleTypes.BOOLEAN.createValue( left.equals( right ) );
-	}
+  @Override
+  TweedlePrimitiveValue<Boolean> evaluate(TweedleValue left, TweedleValue right) {
+    return TweedleTypes.BOOLEAN.createValue(left.equals(right));
+  }
 }

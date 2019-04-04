@@ -52,67 +52,67 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
  * @author Dennis Cosgrove
  */
 public class Limb extends ModelTransformable {
-	private ModelTransformable m_sgB = new ModelTransformable();
-	private ModelTransformable m_sgC = new ModelTransformable();
+  private ModelTransformable m_sgB = new ModelTransformable();
+  private ModelTransformable m_sgC = new ModelTransformable();
 
-	public Limb( double abLength, double bcLength, double ctLength ) {
-		double sphereRadius = Math.min( abLength, Math.min( bcLength, ctLength ) ) * 0.25;
-		double cylinderRadius = sphereRadius * 0.5;
+  public Limb(double abLength, double bcLength, double ctLength) {
+    double sphereRadius = Math.min(abLength, Math.min(bcLength, ctLength)) * 0.25;
+    double cylinderRadius = sphereRadius * 0.5;
 
-		m_sgB.setLocalTransformation( AffineMatrix4x4.createTranslation( 0, 0, abLength ) );
-		m_sgC.setLocalTransformation( AffineMatrix4x4.createTranslation( 0, 0, bcLength ) );
+    m_sgB.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0, abLength));
+    m_sgC.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0, bcLength));
 
-		Sphere sgSphere = new Sphere();
-		sgSphere.radius.setValue( sphereRadius );
+    Sphere sgSphere = new Sphere();
+    sgSphere.radius.setValue(sphereRadius);
 
-		this.getSGVisual().geometries.setValue( new Geometry[] { sgSphere } );
-		m_sgB.getSGVisual().geometries.setValue( new Geometry[] { sgSphere } );
-		m_sgC.getSGVisual().geometries.setValue( new Geometry[] { sgSphere } );
+    this.getSGVisual().geometries.setValue(new Geometry[] {sgSphere});
+    m_sgB.getSGVisual().geometries.setValue(new Geometry[] {sgSphere});
+    m_sgC.getSGVisual().geometries.setValue(new Geometry[] {sgSphere});
 
-		this.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor( Color4f.RED );
-		m_sgB.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor( Color4f.GREEN );
-		m_sgC.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor( Color4f.BLUE );
+    this.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor(Color4f.RED);
+    m_sgB.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor(Color4f.GREEN);
+    m_sgC.getSGVisual().frontFacingAppearance.getValue().setDiffuseColor(Color4f.BLUE);
 
-		ModelVisual sgVisualAB = new ModelVisual();
-		ModelVisual sgVisualBC = new ModelVisual();
-		ModelVisual sgVisualCT = new ModelVisual();
+    ModelVisual sgVisualAB = new ModelVisual();
+    ModelVisual sgVisualBC = new ModelVisual();
+    ModelVisual sgVisualCT = new ModelVisual();
 
-		Cylinder sgCylinderAB = new Cylinder();
-		Cylinder sgCylinderBC = new Cylinder();
-		Cylinder sgCylinderCT = new Cylinder();
+    Cylinder sgCylinderAB = new Cylinder();
+    Cylinder sgCylinderBC = new Cylinder();
+    Cylinder sgCylinderCT = new Cylinder();
 
-		sgCylinderAB.topRadius.setValue( cylinderRadius );
-		sgCylinderAB.bottomRadius.setValue( cylinderRadius );
-		sgCylinderAB.originAlignment.setValue( Cylinder.OriginAlignment.BOTTOM );
-		sgCylinderAB.bottomToTopAxis.setValue( Cylinder.BottomToTopAxis.POSITIVE_Z );
-		sgCylinderAB.length.setValue( abLength );
+    sgCylinderAB.topRadius.setValue(cylinderRadius);
+    sgCylinderAB.bottomRadius.setValue(cylinderRadius);
+    sgCylinderAB.originAlignment.setValue(Cylinder.OriginAlignment.BOTTOM);
+    sgCylinderAB.bottomToTopAxis.setValue(Cylinder.BottomToTopAxis.POSITIVE_Z);
+    sgCylinderAB.length.setValue(abLength);
 
-		sgCylinderBC.topRadius.setValue( cylinderRadius );
-		sgCylinderBC.bottomRadius.setValue( cylinderRadius );
-		sgCylinderBC.originAlignment.setValue( Cylinder.OriginAlignment.BOTTOM );
-		sgCylinderBC.bottomToTopAxis.setValue( Cylinder.BottomToTopAxis.POSITIVE_Z );
-		sgCylinderBC.length.setValue( bcLength );
+    sgCylinderBC.topRadius.setValue(cylinderRadius);
+    sgCylinderBC.bottomRadius.setValue(cylinderRadius);
+    sgCylinderBC.originAlignment.setValue(Cylinder.OriginAlignment.BOTTOM);
+    sgCylinderBC.bottomToTopAxis.setValue(Cylinder.BottomToTopAxis.POSITIVE_Z);
+    sgCylinderBC.length.setValue(bcLength);
 
-		sgCylinderCT.topRadius.setValue( 0.0 );
-		sgCylinderCT.bottomRadius.setValue( cylinderRadius );
-		sgCylinderCT.originAlignment.setValue( Cylinder.OriginAlignment.BOTTOM );
-		sgCylinderCT.bottomToTopAxis.setValue( Cylinder.BottomToTopAxis.POSITIVE_Z );
-		sgCylinderCT.length.setValue( ctLength );
+    sgCylinderCT.topRadius.setValue(0.0);
+    sgCylinderCT.bottomRadius.setValue(cylinderRadius);
+    sgCylinderCT.originAlignment.setValue(Cylinder.OriginAlignment.BOTTOM);
+    sgCylinderCT.bottomToTopAxis.setValue(Cylinder.BottomToTopAxis.POSITIVE_Z);
+    sgCylinderCT.length.setValue(ctLength);
 
-		sgVisualAB.frontFacingAppearance.getValue().setDiffuseColor( Color4f.YELLOW );
-		sgVisualBC.frontFacingAppearance.getValue().setDiffuseColor( Color4f.CYAN );
-		sgVisualCT.frontFacingAppearance.getValue().setDiffuseColor( Color4f.WHITE );
+    sgVisualAB.frontFacingAppearance.getValue().setDiffuseColor(Color4f.YELLOW);
+    sgVisualBC.frontFacingAppearance.getValue().setDiffuseColor(Color4f.CYAN);
+    sgVisualCT.frontFacingAppearance.getValue().setDiffuseColor(Color4f.WHITE);
 
-		sgVisualAB.geometries.setValue( new Geometry[] { sgCylinderAB } );
-		sgVisualAB.setParent( this );
+    sgVisualAB.geometries.setValue(new Geometry[] {sgCylinderAB});
+    sgVisualAB.setParent(this);
 
-		sgVisualBC.geometries.setValue( new Geometry[] { sgCylinderBC } );
-		sgVisualBC.setParent( m_sgB );
+    sgVisualBC.geometries.setValue(new Geometry[] {sgCylinderBC});
+    sgVisualBC.setParent(m_sgB);
 
-		sgVisualCT.geometries.setValue( new Geometry[] { sgCylinderCT } );
-		sgVisualCT.setParent( m_sgC );
+    sgVisualCT.geometries.setValue(new Geometry[] {sgCylinderCT});
+    sgVisualCT.setParent(m_sgC);
 
-		m_sgC.setParent( m_sgB );
-		m_sgB.setParent( this );
-	}
+    m_sgC.setParent(m_sgB);
+    m_sgB.setParent(this);
+  }
 }

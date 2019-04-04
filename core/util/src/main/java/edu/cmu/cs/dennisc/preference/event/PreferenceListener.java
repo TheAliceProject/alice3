@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.preference.event;
  * @author Dennis Cosgrove
  */
 public interface PreferenceListener<E> {
-	public void valueChanging( PreferenceEvent<E> e );
+  public void valueChanging(PreferenceEvent<E> e);
 
-	public void valueChanged( PreferenceEvent<E> e );
+  public void valueChanged(PreferenceEvent<E> e);
 }

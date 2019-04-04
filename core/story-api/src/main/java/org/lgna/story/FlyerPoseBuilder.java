@@ -50,66 +50,66 @@ import org.lgna.story.resources.JointId;
  * @author Matt May
  */
 public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
-	public FlyerPoseBuilder joint( JointId jointId, Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
-	}
+  public FlyerPoseBuilder joint(JointId jointId, Orientation orientation) {
+    this.addJointIdQuaternionPair(jointId, orientation);
+    return this;
+  }
 
-	public FlyerPoseBuilder joint( JointId jointId, Number x, Number y, Number z, Number w ) {
-		this.addJointIdQuaternionPair( jointId, new Orientation( x, y, z, w ) );
-		return this;
-	}
+  public FlyerPoseBuilder joint(JointId jointId, Number x, Number y, Number z, Number w) {
+    this.addJointIdQuaternionPair(jointId, new Orientation(x, y, z, w));
+    return this;
+  }
 
-	public FlyerPoseBuilder rightWingShoulder( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_WING_SHOULDER, orientation );
-	}
+  public FlyerPoseBuilder rightWingShoulder(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_WING_SHOULDER, orientation);
+  }
 
-	public FlyerPoseBuilder rightWingElbow( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_WING_ELBOW, orientation );
-	}
+  public FlyerPoseBuilder rightWingElbow(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_WING_ELBOW, orientation);
+  }
 
-	public FlyerPoseBuilder rightWingWrist( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_WING_WRIST, orientation );
-	}
+  public FlyerPoseBuilder rightWingWrist(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_WING_WRIST, orientation);
+  }
 
-	public FlyerPoseBuilder rightHip( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_HIP, orientation );
-	}
+  public FlyerPoseBuilder rightHip(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_HIP, orientation);
+  }
 
-	public FlyerPoseBuilder rightKnee( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_KNEE, orientation );
-	}
+  public FlyerPoseBuilder rightKnee(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_KNEE, orientation);
+  }
 
-	public FlyerPoseBuilder rightAnkle( Orientation orientation ) {
-		return this.joint( FlyerResource.RIGHT_ANKLE, orientation );
-	}
+  public FlyerPoseBuilder rightAnkle(Orientation orientation) {
+    return this.joint(FlyerResource.RIGHT_ANKLE, orientation);
+  }
 
-	public FlyerPoseBuilder leftWingShoulder( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_WING_SHOULDER, orientation );
-	}
+  public FlyerPoseBuilder leftWingShoulder(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_WING_SHOULDER, orientation);
+  }
 
-	public FlyerPoseBuilder leftWingElbow( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_WING_ELBOW, orientation );
-	}
+  public FlyerPoseBuilder leftWingElbow(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_WING_ELBOW, orientation);
+  }
 
-	public FlyerPoseBuilder leftWingWrist( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_WING_WRIST, orientation );
-	}
+  public FlyerPoseBuilder leftWingWrist(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_WING_WRIST, orientation);
+  }
 
-	public FlyerPoseBuilder leftHip( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_HIP, orientation );
-	}
+  public FlyerPoseBuilder leftHip(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_HIP, orientation);
+  }
 
-	public FlyerPoseBuilder leftKnee( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_KNEE, orientation );
-	}
+  public FlyerPoseBuilder leftKnee(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_KNEE, orientation);
+  }
 
-	public FlyerPoseBuilder leftAnkle( Orientation orientation ) {
-		return this.joint( FlyerResource.LEFT_ANKLE, orientation );
-	}
+  public FlyerPoseBuilder leftAnkle(Orientation orientation) {
+    return this.joint(FlyerResource.LEFT_ANKLE, orientation);
+  }
 
-	@Override
-	protected FlyerPose build( JointIdTransformationPair[] buffer ) {
-		return new FlyerPose( buffer );
-	}
+  @Override
+  protected FlyerPose build(JointIdTransformationPair[] buffer) {
+    return new FlyerPose(buffer);
+  }
 }

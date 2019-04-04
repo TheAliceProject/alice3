@@ -52,24 +52,25 @@ import org.lgna.ik.core.solver.Bone;
  * @author Dennis Cosgrove
  */
 public enum BoneCodec implements ItemCodec<Bone> {
-	SINGLETON;
-	@Override
-	public Bone decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException();
-	}
+  SINGLETON;
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Bone value ) {
-		throw new RuntimeException();
-	}
+  @Override
+  public Bone decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException();
+  }
 
-	@Override
-	public Class<Bone> getValueClass() {
-		return Bone.class;
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Bone value) {
+    throw new RuntimeException();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, Bone value ) {
-		sb.append( value );
-	}
+  @Override
+  public Class<Bone> getValueClass() {
+    return Bone.class;
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, Bone value) {
+    sb.append(value);
+  }
 }

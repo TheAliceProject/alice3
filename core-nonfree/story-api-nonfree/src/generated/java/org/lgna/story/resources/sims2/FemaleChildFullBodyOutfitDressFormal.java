@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildFullBodyOutfitDressFormal implements FemaleChildFullBodyOutfit {
-	PINK,
-	EMERALD,
-	PEACH,
-	PEACH_WHITE,
-	PINK_WHITE;
+  PINK, EMERALD, PEACH, PEACH_WHITE, PINK_WHITE
 
 }

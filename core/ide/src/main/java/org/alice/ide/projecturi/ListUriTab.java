@@ -52,14 +52,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ListUriTab extends SelectUriTab {
-	public ListUriTab( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ListUriTab(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public abstract SingleSelectListState<URI, ?> getListSelectionState();
+  public abstract SingleSelectListState<URI, ?> getListSelectionState();
 
-	@Override
-	public UriProjectLoader getSelectedUri() {
-		return UriProjectLoader.createInstance( this.getListSelectionState().getValue() );
-	}
+  @Override
+  public UriProjectLoader getSelectedUri() {
+    return UriProjectLoader.createInstance(this.getListSelectionState().getValue());
+  }
 }

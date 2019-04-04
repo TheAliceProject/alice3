@@ -49,98 +49,98 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public class AngleInDegrees implements Angle {
-	private double m_degrees;
+  private double m_degrees;
 
-	public AngleInDegrees( double degrees ) {
-		setAsDegrees( degrees );
-	}
+  public AngleInDegrees(double degrees) {
+    setAsDegrees(degrees);
+  }
 
-	public AngleInDegrees( Angle other ) {
-		set( other );
-	}
+  public AngleInDegrees(Angle other) {
+    set(other);
+  }
 
-	@Override
-	public void decode( BinaryDecoder binaryDecoder ) {
-		m_degrees = binaryDecoder.decodeDouble();
-	}
+  @Override
+  public void decode(BinaryDecoder binaryDecoder) {
+    m_degrees = binaryDecoder.decodeDouble();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_degrees );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(m_degrees);
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Angle ) {
-			Angle a = (Angle)obj;
-			return m_degrees == a.getAsDegrees();
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Angle) {
+      Angle a = (Angle) obj;
+      return m_degrees == a.getAsDegrees();
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isNaN() {
-		return Double.isNaN( m_degrees );
-	}
+  @Override
+  public boolean isNaN() {
+    return Double.isNaN(m_degrees);
+  }
 
-	@Override
-	public void setNaN() {
-		m_degrees = Double.NaN;
-	}
+  @Override
+  public void setNaN() {
+    m_degrees = Double.NaN;
+  }
 
-	@Override
-	public double getAsRadians() {
-		return AngleUtilities.degreesToRadians( m_degrees );
-	}
+  @Override
+  public double getAsRadians() {
+    return AngleUtilities.degreesToRadians(m_degrees);
+  }
 
-	@Override
-	public double getAsDegrees() {
-		return m_degrees;
-	}
+  @Override
+  public double getAsDegrees() {
+    return m_degrees;
+  }
 
-	@Override
-	public double getAsRevolutions() {
-		return AngleUtilities.degreesToRevolutions( m_degrees );
-	}
+  @Override
+  public double getAsRevolutions() {
+    return AngleUtilities.degreesToRevolutions(m_degrees);
+  }
 
-	@Override
-	public void setAsRadians( double radians ) {
-		m_degrees = AngleUtilities.radiansToDegrees( radians );
-	}
+  @Override
+  public void setAsRadians(double radians) {
+    m_degrees = AngleUtilities.radiansToDegrees(radians);
+  }
 
-	@Override
-	public void setAsDegrees( double degrees ) {
-		m_degrees = degrees;
-	}
+  @Override
+  public void setAsDegrees(double degrees) {
+    m_degrees = degrees;
+  }
 
-	@Override
-	public void setAsRevolutions( double revolutions ) {
-		m_degrees = AngleUtilities.revolutionsToDegrees( revolutions );
-	}
+  @Override
+  public void setAsRevolutions(double revolutions) {
+    m_degrees = AngleUtilities.revolutionsToDegrees(revolutions);
+  }
 
-	@Override
-	public Angle createCopy() {
-		return new AngleInDegrees( this );
-	}
+  @Override
+  public Angle createCopy() {
+    return new AngleInDegrees(this);
+  }
 
-	@Override
-	public void set( Angle other ) {
-		setAsDegrees( other.getAsDegrees() );
-	}
+  @Override
+  public void set(Angle other) {
+    setAsDegrees(other.getAsDegrees());
+  }
 
-	@Override
-	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
-		setAsDegrees( InterpolationUtilities.interpolate( a0.getAsDegrees(), a1.getAsDegrees(), portion ) );
-	}
+  @Override
+  public void setToInterpolation(Angle a0, Angle a1, double portion) {
+    setAsDegrees(InterpolationUtilities.interpolate(a0.getAsDegrees(), a1.getAsDegrees(), portion));
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( AngleInDegrees.class.getName() );
-		sb.append( "[" );
-		sb.append( m_degrees );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(AngleInDegrees.class.getName());
+    sb.append("[");
+    sb.append(m_degrees);
+    sb.append("]");
+    return sb.toString();
+  }
 }

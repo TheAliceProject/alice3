@@ -59,225 +59,225 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GlyphVector {
-	public GlyphVector( String text, Font font, float xFactor, float yFactor ) {
-		this.text = text;
-		this.font = font;
-		this.xFactor = xFactor;
-		this.yFactor = yFactor;
-	}
+  public GlyphVector(String text, Font font, float xFactor, float yFactor) {
+    this.text = text;
+    this.font = font;
+    this.xFactor = xFactor;
+    this.yFactor = yFactor;
+  }
 
-	private void markShapesDirty() {
-		this.glyphVector = null;
-		this.facesShape = null;
-		this.outlinesShape = null;
-		this.outlineLines = null;
-		this.faceContours = null;
+  private void markShapesDirty() {
+    this.glyphVector = null;
+    this.facesShape = null;
+    this.outlinesShape = null;
+    this.outlineLines = null;
+    this.faceContours = null;
 
-		this.bounds = null;
-	}
+    this.bounds = null;
+  }
 
-	private java.awt.font.GlyphVector getGlyphVector() {
-		if( this.glyphVector == null ) {
-			//this.glyphVector = this.font.layoutGlyphVector( s_frc, this.text.toCharArray(), 0, this.text.length(), java.awt.Font.LAYOUT_LEFT_TO_RIGHT );
-			this.glyphVector = this.font.createGlyphVector( s_frc, this.text );
-		}
-		return this.glyphVector;
-	}
+  private java.awt.font.GlyphVector getGlyphVector() {
+    if (this.glyphVector == null) {
+      //this.glyphVector = this.font.layoutGlyphVector( s_frc, this.text.toCharArray(), 0, this.text.length(), java.awt.Font.LAYOUT_LEFT_TO_RIGHT );
+      this.glyphVector = this.font.createGlyphVector(s_frc, this.text);
+    }
+    return this.glyphVector;
+  }
 
-	public Shape getFacesShape() {
-		if( this.facesShape == null ) {
-			java.awt.font.GlyphVector glyphVector = getGlyphVector();
-			this.facesShape = glyphVector.getOutline();
-		}
-		return this.facesShape;
-	}
+  public Shape getFacesShape() {
+    if (this.facesShape == null) {
+      java.awt.font.GlyphVector glyphVector = getGlyphVector();
+      this.facesShape = glyphVector.getOutline();
+    }
+    return this.facesShape;
+  }
 
-	public Shape getOutlinesShape() {
-		if( this.outlinesShape == null ) {
-			Shape facesShape = getFacesShape();
-			this.outlinesShape = s_stroke.createStrokedShape( facesShape );
-		}
-		return this.outlinesShape;
-	}
+  public Shape getOutlinesShape() {
+    if (this.outlinesShape == null) {
+      Shape facesShape = getFacesShape();
+      this.outlinesShape = s_stroke.createStrokedShape(facesShape);
+    }
+    return this.outlinesShape;
+  }
 
-	//	private static void reverse( java.util.List<edu.cmu.cs.dennisc.math.Point2d> v ) {
-	//		int n = v.size();
-	//		for( int i=0; i<n/2; i++ ) {
-	//			int j = n-i-1;
-	//			edu.cmu.cs.dennisc.math.Point2d temp = v.elementAt( i );
-	//			v.setElementAt( v.elementAt( j ), i );
-	//			v.setElementAt( temp, j );
-	//		}
-	//	}
+  //  private static void reverse( java.util.List<edu.cmu.cs.dennisc.math.Point2d> v ) {
+  //    int n = v.size();
+  //    for( int i=0; i<n/2; i++ ) {
+  //      int j = n-i-1;
+  //      edu.cmu.cs.dennisc.math.Point2d temp = v.elementAt( i );
+  //      v.setElementAt( v.elementAt( j ), i );
+  //      v.setElementAt( temp, j );
+  //    }
+  //  }
 
-	public List<List<Point2f>> acquireFaceContours() {
-		//todo
-		//		try {
-		//			this.faceContoursLock.wait();
-		//		} catch( InterruptedException ie ) {
-		//			//todo?
-		//		}
-		if( this.faceContours == null ) {
-			this.faceContours = iterate( getFacesShape(), this.xFactor, this.yFactor );
-		}
-		return this.faceContours;
-	}
+  public List<List<Point2f>> acquireFaceContours() {
+    //todo
+    //    try {
+    //      this.faceContoursLock.wait();
+    //    } catch( InterruptedException ie ) {
+    //      //todo?
+    //    }
+    if (this.faceContours == null) {
+      this.faceContours = iterate(getFacesShape(), this.xFactor, this.yFactor);
+    }
+    return this.faceContours;
+  }
 
-	public void releaseFaceContours() {
-		//todo
-		//		this.faceContoursLock.notify();
-	}
+  public void releaseFaceContours() {
+    //todo
+    //    this.faceContoursLock.notify();
+  }
 
-	public List<List<Point2f>> acquireOutlineLines() {
-		//todo
-		//		try {
-		//			this.outlineLinesLock.wait();
-		//		} catch( InterruptedException ie ) {
-		//			//todo?
-		//		}
-		if( this.outlineLines == null ) {
-			this.outlineLines = iterate( getOutlinesShape(), this.xFactor, this.yFactor );
-		}
-		return this.outlineLines;
-	}
+  public List<List<Point2f>> acquireOutlineLines() {
+    //todo
+    //    try {
+    //      this.outlineLinesLock.wait();
+    //    } catch( InterruptedException ie ) {
+    //      //todo?
+    //    }
+    if (this.outlineLines == null) {
+      this.outlineLines = iterate(getOutlinesShape(), this.xFactor, this.yFactor);
+    }
+    return this.outlineLines;
+  }
 
-	public void releaseOutlineLines() {
-		//todo
-		//		this.outlineLinesLock.notify();
-	}
+  public void releaseOutlineLines() {
+    //todo
+    //    this.outlineLinesLock.notify();
+  }
 
-	public Rectangle2D.Float getBounds( Rectangle2D.Float rv ) {
-		if( this.bounds == null ) {
-			//todo: convert to use convex hulls instead of flatness?
+  public Rectangle2D.Float getBounds(Rectangle2D.Float rv) {
+    if (this.bounds == null) {
+      //todo: convert to use convex hulls instead of flatness?
 
-			float xMin = Float.MAX_VALUE;
-			float yMin = Float.MAX_VALUE;
-			float xMax = -Float.MAX_VALUE;
-			float yMax = -Float.MAX_VALUE;
+      float xMin = Float.MAX_VALUE;
+      float yMin = Float.MAX_VALUE;
+      float xMax = -Float.MAX_VALUE;
+      float yMax = -Float.MAX_VALUE;
 
-			float[] segment = new float[ 6 ];
-			PathIterator pi = getFacesShape().getPathIterator( null, GlyphVector.FLATNESS );
-			while( !pi.isDone() ) {
-				switch( pi.currentSegment( segment ) ) {
-				case PathIterator.SEG_MOVETO:
-				case PathIterator.SEG_LINETO:
-					float xCurr = segment[ 0 ] * this.xFactor;
-					float yCurr = segment[ 1 ] * this.yFactor;
-					xMin = Math.min( xMin, xCurr );
-					xMax = Math.max( xMax, xCurr );
-					yMin = Math.min( yMin, yCurr );
-					yMax = Math.max( yMax, yCurr );
-					break;
-				case PathIterator.SEG_CLOSE:
-					break;
+      float[] segment = new float[6];
+      PathIterator pi = getFacesShape().getPathIterator(null, GlyphVector.FLATNESS);
+      while (!pi.isDone()) {
+        switch (pi.currentSegment(segment)) {
+        case PathIterator.SEG_MOVETO:
+        case PathIterator.SEG_LINETO:
+          float xCurr = segment[0] * this.xFactor;
+          float yCurr = segment[1] * this.yFactor;
+          xMin = Math.min(xMin, xCurr);
+          xMax = Math.max(xMax, xCurr);
+          yMin = Math.min(yMin, yCurr);
+          yMax = Math.max(yMax, yCurr);
+          break;
+        case PathIterator.SEG_CLOSE:
+          break;
 
-				case PathIterator.SEG_QUADTO:
-					throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-				case PathIterator.SEG_CUBICTO:
-					throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-				default:
-					throw new RuntimeException( "unhandled segment: should not occur" );
-				}
-				pi.next();
-			}
-			if( ( xMin != Float.MAX_VALUE ) && ( yMin != Float.MAX_VALUE ) && ( xMax != -Float.MAX_VALUE ) && ( yMax != -Float.MAX_VALUE ) ) {
-				this.bounds = new Rectangle2D.Float( xMin, yMin, xMax - xMin, yMax - yMin );
-			} else {
-				this.bounds = new Rectangle2D.Float( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
-			}
-		}
-		rv.setFrame( this.bounds );
+        case PathIterator.SEG_QUADTO:
+          throw new RuntimeException("SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument");
+        case PathIterator.SEG_CUBICTO:
+          throw new RuntimeException("SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument");
+        default:
+          throw new RuntimeException("unhandled segment: should not occur");
+        }
+        pi.next();
+      }
+      if ((xMin != Float.MAX_VALUE) && (yMin != Float.MAX_VALUE) && (xMax != -Float.MAX_VALUE) && (yMax != -Float.MAX_VALUE)) {
+        this.bounds = new Rectangle2D.Float(xMin, yMin, xMax - xMin, yMax - yMin);
+      } else {
+        this.bounds = new Rectangle2D.Float(Float.NaN, Float.NaN, Float.NaN, Float.NaN);
+      }
+    }
+    rv.setFrame(this.bounds);
 
-		return rv;
-	}
+    return rv;
+  }
 
-	public Rectangle2D.Float getBounds() {
-		return getBounds( new Rectangle2D.Float() );
-	}
+  public Rectangle2D.Float getBounds() {
+    return getBounds(new Rectangle2D.Float());
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	public boolean setText( String text ) {
-		if( Objects.notEquals( this.text, text ) ) {
-			this.text = text;
-			markShapesDirty();
-			return true;
-		} else {
-			return false;
-		}
-	}
+  public boolean setText(String text) {
+    if (Objects.notEquals(this.text, text)) {
+      this.text = text;
+      markShapesDirty();
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	public Font getFont() {
-		return this.font;
-	}
+  public Font getFont() {
+    return this.font;
+  }
 
-	public boolean setFont( Font font ) {
-		if( Objects.notEquals( this.font, font ) ) {
-			this.font = font;
-			markShapesDirty();
-			return true;
-		} else {
-			return false;
-		}
-	}
+  public boolean setFont(Font font) {
+    if (Objects.notEquals(this.font, font)) {
+      this.font = font;
+      markShapesDirty();
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	private static FontRenderContext s_frc = new FontRenderContext( null, false, true );
-	private static Stroke s_stroke = new BasicStroke( 0 );
+  private static FontRenderContext s_frc = new FontRenderContext(null, false, true);
+  private static Stroke s_stroke = new BasicStroke(0);
 
-	private String text;
-	private Font font;
-	private final float xFactor;
-	private final float yFactor;
+  private String text;
+  private Font font;
+  private final float xFactor;
+  private final float yFactor;
 
-	public static final double FLATNESS = 0.01;
+  public static final double FLATNESS = 0.01;
 
-	private java.awt.font.GlyphVector glyphVector = null;
-	private Shape facesShape = null;
-	private Shape outlinesShape = null;
+  private java.awt.font.GlyphVector glyphVector = null;
+  private Shape facesShape = null;
+  private Shape outlinesShape = null;
 
-	private List<List<Point2f>> faceContours = null;
-	//private Object faceContoursLock = new Object();
-	private List<List<Point2f>> outlineLines = null;
-	//private Object outlineLinesLock = new Object();
+  private List<List<Point2f>> faceContours = null;
+  //private Object faceContoursLock = new Object();
+  private List<List<Point2f>> outlineLines = null;
+  //private Object outlineLinesLock = new Object();
 
-	private Rectangle2D.Float bounds;
+  private Rectangle2D.Float bounds;
 
-	private static List<List<Point2f>> iterate( Shape shape, float xFactor, float yFactor ) {
-		PathIterator pi = shape.getPathIterator( null, FLATNESS );
+  private static List<List<Point2f>> iterate(Shape shape, float xFactor, float yFactor) {
+    PathIterator pi = shape.getPathIterator(null, FLATNESS);
 
-		List<List<Point2f>> polylines = Lists.newLinkedList();
-		List<Point2f> polyline = null;
+    List<List<Point2f>> polylines = Lists.newLinkedList();
+    List<Point2f> polyline = null;
 
-		float[] segment = new float[ 6 ];
-		while( !pi.isDone() ) {
-			switch( pi.currentSegment( segment ) ) {
-			case PathIterator.SEG_MOVETO:
-				polyline = Lists.newLinkedList();
-				//note: no break
-			case PathIterator.SEG_LINETO:
-				assert polyline != null;
-				polyline.add( new Point2f( segment[ 0 ] * xFactor, segment[ 1 ] * yFactor ) );
-				break;
-			case PathIterator.SEG_CLOSE:
-				assert polyline != null;
-				//				if( this.isReversed ) {
-				//					reverse( polyline );
-				//				}
-				polylines.add( polyline );
-				polyline = null;
-				break;
+    float[] segment = new float[6];
+    while (!pi.isDone()) {
+      switch (pi.currentSegment(segment)) {
+      case PathIterator.SEG_MOVETO:
+        polyline = Lists.newLinkedList();
+        //note: no break
+      case PathIterator.SEG_LINETO:
+        assert polyline != null;
+        polyline.add(new Point2f(segment[0] * xFactor, segment[1] * yFactor));
+        break;
+      case PathIterator.SEG_CLOSE:
+        assert polyline != null;
+        //        if( this.isReversed ) {
+        //          reverse( polyline );
+        //        }
+        polylines.add(polyline);
+        polyline = null;
+        break;
 
-			case PathIterator.SEG_QUADTO:
-				throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-			case PathIterator.SEG_CUBICTO:
-				throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-			default:
-				throw new RuntimeException( "unhandled segment: should not occur" );
-			}
-			pi.next();
-		}
-		return polylines;
-	}
+      case PathIterator.SEG_QUADTO:
+        throw new RuntimeException("SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument");
+      case PathIterator.SEG_CUBICTO:
+        throw new RuntimeException("SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument");
+      default:
+        throw new RuntimeException("unhandled segment: should not occur");
+      }
+      pi.next();
+    }
+    return polylines;
+  }
 }

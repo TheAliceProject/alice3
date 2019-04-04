@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReduceToRightOperandInPreviousConditionalExpressionFillIn extends ReduceToOperandInPreviousConditionalExpressionFillIn {
-	private static class SingletonHolder {
-		private static ReduceToRightOperandInPreviousConditionalExpressionFillIn instance = new ReduceToRightOperandInPreviousConditionalExpressionFillIn();
-	}
+  private static class SingletonHolder {
+    private static ReduceToRightOperandInPreviousConditionalExpressionFillIn instance = new ReduceToRightOperandInPreviousConditionalExpressionFillIn();
+  }
 
-	public static ReduceToRightOperandInPreviousConditionalExpressionFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ReduceToRightOperandInPreviousConditionalExpressionFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ReduceToRightOperandInPreviousConditionalExpressionFillIn() {
-		super( UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
-	}
+  private ReduceToRightOperandInPreviousConditionalExpressionFillIn() {
+    super(UUID.fromString("56cba468-e24c-461d-acdd-163bb2e6dbb0"));
+  }
 
-	@Override
-	protected Expression getOperand( ConditionalInfixExpression previousConditional ) {
-		return previousConditional.rightOperand.getValue();
-	}
+  @Override
+  protected Expression getOperand(ConditionalInfixExpression previousConditional) {
+    return previousConditional.rightOperand.getValue();
+  }
 }

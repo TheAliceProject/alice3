@@ -47,5 +47,5 @@ package org.lgna.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public interface RuntimeResolver<T> {
-	public T getResolved();
+  public T getResolved();
 }

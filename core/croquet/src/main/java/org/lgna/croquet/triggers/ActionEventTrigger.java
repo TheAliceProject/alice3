@@ -52,11 +52,11 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class ActionEventTrigger extends EventObjectTrigger<ActionEvent> {
-	public static UserActivity createUserActivity( ActionEvent actionEvent ) {
-		return new ActionEventTrigger( actionEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(ActionEvent actionEvent) {
+    return new ActionEventTrigger(actionEvent).getUserActivity();
+  }
 
-	private ActionEventTrigger( ActionEvent actionEvent ) {
-		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, actionEvent );
-	}
+  private ActionEventTrigger(ActionEvent actionEvent) {
+    super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, actionEvent);
+  }
 }

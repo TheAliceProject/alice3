@@ -52,13 +52,10 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class RenamePanel extends BorderPanel {
-	public RenamePanel( RenameComposite composite ) {
-		super( composite );
-		BorderPanel line = new BorderPanel.Builder()
-				.lineStart( composite.getNameState().getSidekickLabel().createLabel() )
-				.center( composite.getNameState().createTextField() )
-				.build();
-		this.addPageStartComponent( line );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+  public RenamePanel(RenameComposite composite) {
+    super(composite);
+    BorderPanel line = new BorderPanel.Builder().lineStart(composite.getNameState().getSidekickLabel().createLabel()).center(composite.getNameState().createTextField()).build();
+    this.addPageStartComponent(line);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 }

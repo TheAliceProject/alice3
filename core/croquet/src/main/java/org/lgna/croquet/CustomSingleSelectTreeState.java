@@ -55,86 +55,86 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
-	private final AbstractMutableTreeModel<T> treeModel = new AbstractMutableTreeModel<T>() {
-		@Override
-		public int getChildCount( Object parent ) {
-			return CustomSingleSelectTreeState.this.getChildCount( (T)parent );
-		}
+  private final AbstractMutableTreeModel<T> treeModel = new AbstractMutableTreeModel<T>() {
+    @Override
+    public int getChildCount(Object parent) {
+      return CustomSingleSelectTreeState.this.getChildCount((T) parent);
+    }
 
-		@Override
-		public T getChild( Object parent, int index ) {
-			return CustomSingleSelectTreeState.this.getChild( (T)parent, index );
-		}
+    @Override
+    public T getChild(Object parent, int index) {
+      return CustomSingleSelectTreeState.this.getChild((T) parent, index);
+    }
 
-		@Override
-		public int getIndexOfChild( Object parent, Object child ) {
-			return CustomSingleSelectTreeState.this.getIndexOfChild( (T)parent, (T)child );
-		}
+    @Override
+    public int getIndexOfChild(Object parent, Object child) {
+      return CustomSingleSelectTreeState.this.getIndexOfChild((T) parent, (T) child);
+    }
 
-		@Override
-		public T getRoot() {
-			return CustomSingleSelectTreeState.this.getRoot();
-		}
+    @Override
+    public T getRoot() {
+      return CustomSingleSelectTreeState.this.getRoot();
+    }
 
-		@Override
-		public boolean isLeaf( Object node ) {
-			return CustomSingleSelectTreeState.this.isLeaf( (T)node );
-		}
+    @Override
+    public boolean isLeaf(Object node) {
+      return CustomSingleSelectTreeState.this.isLeaf((T) node);
+    }
 
-		private Object[] getPathToRoot( T node ) {
-			List<T> collection = Lists.newLinkedList();
-			T n = node;
-			if( n != null ) {
-				T root = this.getRoot();
-				while( n != root ) {
-					T parent = CustomSingleSelectTreeState.this.getParent( n );
-					if( parent != null ) {
-						collection.add( 0, n );
-						n = parent;
-					} else {
-						break;
-					}
-				}
-				collection.add( 0, root );
-			}
-			return collection.toArray();
-		}
+    private Object[] getPathToRoot(T node) {
+      List<T> collection = Lists.newLinkedList();
+      T n = node;
+      if (n != null) {
+        T root = this.getRoot();
+        while (n != root) {
+          T parent = CustomSingleSelectTreeState.this.getParent(n);
+          if (parent != null) {
+            collection.add(0, n);
+            n = parent;
+          } else {
+            break;
+          }
+        }
+        collection.add(0, root);
+      }
+      return collection.toArray();
+    }
 
-		@Override
-		public TreePath getTreePath( Object node ) {
-			if( node != null ) {
-				Object[] nodes = this.getPathToRoot( (T)node );
-				assert nodes != null : CustomSingleSelectTreeState.this;
-				assert nodes.length > 0 : CustomSingleSelectTreeState.this;
-				return new TreePath( nodes );
-			} else {
-				return null;
-			}
-		}
-	};
+    @Override
+    public TreePath getTreePath(Object node) {
+      if (node != null) {
+        Object[] nodes = this.getPathToRoot((T) node);
+        assert nodes != null : CustomSingleSelectTreeState.this;
+        assert nodes.length > 0 : CustomSingleSelectTreeState.this;
+        return new TreePath(nodes);
+      } else {
+        return null;
+      }
+    }
+  };
 
-	public CustomSingleSelectTreeState( Group group, UUID id, T initialSelection, ItemCodec<T> itemCodec ) {
-		super( group, id, initialSelection, itemCodec );
-	}
+  public CustomSingleSelectTreeState(Group group, UUID id, T initialSelection, ItemCodec<T> itemCodec) {
+    super(group, id, initialSelection, itemCodec);
+  }
 
-	protected abstract int getChildCount( T parent );
+  protected abstract int getChildCount(T parent);
 
-	protected abstract T getChild( T parent, int index );
+  protected abstract T getChild(T parent, int index);
 
-	protected abstract int getIndexOfChild( T parent, T child );
+  protected abstract int getIndexOfChild(T parent, T child);
 
-	protected abstract T getRoot();
+  protected abstract T getRoot();
 
-	@Override
-	public abstract boolean isLeaf( T node );
+  @Override
+  public abstract boolean isLeaf(T node);
 
-	@Override
-	public TreeModel<T> getTreeModel() {
-		return this.treeModel;
-	}
+  @Override
+  public TreeModel<T> getTreeModel() {
+    return this.treeModel;
+  }
 
-	@Override
-	public void refresh( T node ) {
-		this.treeModel.reload( node );
-	}
+  @Override
+  public void refresh(T node) {
+    this.treeModel.reload(node);
+  }
 }

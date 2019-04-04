@@ -50,52 +50,52 @@ import javax.swing.ButtonModel;
  * @author Dennis Cosgrove
  */
 public class ClearableButtonGroup extends ButtonGroup {
-	private ButtonModel selection;
+  private ButtonModel selection;
 
-	@Override
-	public void add( AbstractButton b ) {
-		super.add( b );
-		ButtonModel buttonModel = b.getModel();
-		if( buttonModel.isSelected() ) {
-			this.selection = buttonModel;
-		}
-	}
+  @Override
+  public void add(AbstractButton b) {
+    super.add(b);
+    ButtonModel buttonModel = b.getModel();
+    if (buttonModel.isSelected()) {
+      this.selection = buttonModel;
+    }
+  }
 
-	@Override
-	public void remove( AbstractButton b ) {
-		super.remove( b );
-		ButtonModel buttonModel = b.getModel();
-		if( this.selection == buttonModel ) {
-			this.selection = null;
-		}
-	}
+  @Override
+  public void remove(AbstractButton b) {
+    super.remove(b);
+    ButtonModel buttonModel = b.getModel();
+    if (this.selection == buttonModel) {
+      this.selection = null;
+    }
+  }
 
-	@Override
-	public void setSelected( ButtonModel m, boolean b ) {
-		super.setSelected( m, b );
-		if( b ) {
-			this.selection = m;
-		} else {
-			if( this.selection == m ) {
-				this.selection = null;
-				m.setSelected( false );
-			}
-		}
-	}
+  @Override
+  public void setSelected(ButtonModel m, boolean b) {
+    super.setSelected(m, b);
+    if (b) {
+      this.selection = m;
+    } else {
+      if (this.selection == m) {
+        this.selection = null;
+        m.setSelected(false);
+      }
+    }
+  }
 
-	@Override
-	public ButtonModel getSelection() {
-		return this.selection;
-	}
+  @Override
+  public ButtonModel getSelection() {
+    return this.selection;
+  }
 
-	@Override
-	public boolean isSelected( ButtonModel m ) {
-		return this.getSelection() == m;
-	}
+  @Override
+  public boolean isSelected(ButtonModel m) {
+    return this.getSelection() == m;
+  }
 
-	public void clearSelectedModel() {
-		if( this.selection != null ) {
-			this.setSelected( this.selection, false );
-		}
-	}
+  public void clearSelectedModel() {
+    if (this.selection != null) {
+      this.setSelected(this.selection, false);
+    }
+  }
 }

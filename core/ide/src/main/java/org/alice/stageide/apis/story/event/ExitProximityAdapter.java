@@ -50,13 +50,13 @@ import org.lgna.story.event.ProximityExitListener;
 
 public class ExitProximityAdapter extends AbstractAdapter implements ProximityExitListener {
 
-	public ExitProximityAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public ExitProximityAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void proximityExited( ExitProximityEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void proximityExited(ExitProximityEvent e) {
+    invokeEntryPoint(e);
+  }
 
 }

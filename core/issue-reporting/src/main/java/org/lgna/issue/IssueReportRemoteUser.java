@@ -46,7 +46,7 @@ package org.lgna.issue;
  * @author Dennis Cosgrove
  */
 public interface IssueReportRemoteUser {
-	String getAccountId();
+  String getAccountId();
 
-	String getFullName();
+  String getFullName();
 }

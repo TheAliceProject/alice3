@@ -52,12 +52,12 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 import java.util.List;
 
 public class MouseClickedOnScreenFillerInner extends ExpressionFillerInner {
-	public MouseClickedOnScreenFillerInner() {
-		super( MouseClickOnScreenListener.class );
-	}
+  public MouseClickedOnScreenFillerInner() {
+    super(MouseClickOnScreenListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( MouseClickedOnScreenAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(MouseClickedOnScreenAdapterFillIn.getInstance());
+  }
 }

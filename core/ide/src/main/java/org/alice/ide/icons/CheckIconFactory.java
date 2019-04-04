@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class CheckIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static CheckIconFactory instance = new CheckIconFactory();
-	}
+  private static class SingletonHolder {
+    private static CheckIconFactory instance = new CheckIconFactory();
+  }
 
-	public static CheckIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CheckIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CheckIconFactory() {
-	}
+  private CheckIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new CheckIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new CheckIcon(size);
+  }
 }

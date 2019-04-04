@@ -51,19 +51,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T, MutableListData<T>> {
-	public MutableDataTabState( Group group, UUID migrationId, int selectionIndex, MutableListData<T> data ) {
-		super( group, migrationId, selectionIndex, data );
-	}
+  public MutableDataTabState(Group group, UUID migrationId, int selectionIndex, MutableListData<T> data) {
+    super(group, migrationId, selectionIndex, data);
+  }
 
-	public MutableDataTabState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, Collection<T> values ) {
-		this( group, migrationId, selectionIndex, new MutableListData<T>( itemCodec, values ) );
-	}
+  public MutableDataTabState(Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, Collection<T> values) {
+    this(group, migrationId, selectionIndex, new MutableListData<T>(itemCodec, values));
+  }
 
-	public MutableDataTabState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
-		this( group, migrationId, selectionIndex, new MutableListData<T>( itemCodec, values ) );
-	}
+  public MutableDataTabState(Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values) {
+    this(group, migrationId, selectionIndex, new MutableListData<T>(itemCodec, values));
+  }
 
-	public MutableDataTabState( Group group, UUID migrationId, ItemCodec<T> itemCodec ) {
-		this( group, migrationId, -1, new MutableListData<T>( itemCodec ) );
-	}
+  public MutableDataTabState(Group group, UUID migrationId, ItemCodec<T> itemCodec) {
+    this(group, migrationId, -1, new MutableListData<T>(itemCodec));
+  }
 }

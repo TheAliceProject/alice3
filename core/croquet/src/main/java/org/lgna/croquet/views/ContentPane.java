@@ -48,39 +48,39 @@ import java.awt.BorderLayout;
 /**
  * @author Dennis Cosgrove
  */
-public final class ContentPane extends SwingComponentView<JPanel> {//Container<java.awt.Container> {
-	private final AbstractWindow<?> window;
+public final class ContentPane extends SwingComponentView<JPanel> { //Container<java.awt.Container> {
+  private final AbstractWindow<?> window;
 
-	/* package-private */ContentPane( AbstractWindow<?> window ) {
-		this.window = window;
-	}
+  /* package-private */ContentPane(AbstractWindow<?> window) {
+    this.window = window;
+  }
 
-	@Override
-	protected JPanel createAwtComponent() {
-		return (JPanel)this.window.getAwtContentPane();
-	}
+  @Override
+  protected JPanel createAwtComponent() {
+    return (JPanel) this.window.getAwtContentPane();
+  }
 
-	public void addCenterComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, BorderLayout.CENTER );
-	}
+  public void addCenterComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component, BorderLayout.CENTER);
+  }
 
-	public void addPageStartComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, BorderLayout.PAGE_START );
-	}
+  public void addPageStartComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component, BorderLayout.PAGE_START);
+  }
 
-	public void addPageEndComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, BorderLayout.PAGE_END );
-	}
+  public void addPageEndComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component, BorderLayout.PAGE_END);
+  }
 
-	public void addLineStartComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, BorderLayout.LINE_START );
-	}
+  public void addLineStartComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component, BorderLayout.LINE_START);
+  }
 
-	public void addLineEndComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, BorderLayout.LINE_END );
-	}
+  public void addLineEndComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component, BorderLayout.LINE_END);
+  }
 
-	public void removeComponent( AwtComponentView<?> component ) {
-		this.internalRemoveComponent( component );
-	}
+  public void removeComponent(AwtComponentView<?> component) {
+    this.internalRemoveComponent(component);
+  }
 }

@@ -47,58 +47,58 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class Dimension3 extends Tuple3 {
-	public Dimension3() {
-	}
+  public Dimension3() {
+  }
 
-	public Dimension3( Tuple3 other ) {
-		super( other );
-	}
+  public Dimension3(Tuple3 other) {
+    super(other);
+  }
 
-	public Dimension3( double x, double y, double z ) {
-		super( x, y, z );
-	}
+  public Dimension3(double x, double y, double z) {
+    super(x, y, z);
+  }
 
-	public static Dimension3 createZero() {
-		return (Dimension3)setReturnValueToZero( new Dimension3() );
-	}
+  public static Dimension3 createZero() {
+    return (Dimension3) setReturnValueToZero(new Dimension3());
+  }
 
-	public static Dimension3 createNaN() {
-		return (Dimension3)setReturnValueToNaN( new Dimension3() );
-	}
+  public static Dimension3 createNaN() {
+    return (Dimension3) setReturnValueToNaN(new Dimension3());
+  }
 
-	public static Dimension3 createAddition( Tuple3 a, Tuple3 b ) {
-		return (Dimension3)setReturnValueToAddition( new Dimension3(), a, b );
-	}
+  public static Dimension3 createAddition(Tuple3 a, Tuple3 b) {
+    return (Dimension3) setReturnValueToAddition(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createSubtraction( Tuple3 a, Tuple3 b ) {
-		return (Dimension3)setReturnValueToSubtraction( new Dimension3(), a, b );
-	}
+  public static Dimension3 createSubtraction(Tuple3 a, Tuple3 b) {
+    return (Dimension3) setReturnValueToSubtraction(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createNegation( Tuple3 a ) {
-		return (Dimension3)setReturnValueToNegation( new Dimension3(), a );
-	}
+  public static Dimension3 createNegation(Tuple3 a) {
+    return (Dimension3) setReturnValueToNegation(new Dimension3(), a);
+  }
 
-	public static Dimension3 createMultiplication( Tuple3 a, Tuple3 b ) {
-		return (Dimension3)setReturnValueToMultiplication( new Dimension3(), a, b );
-	}
+  public static Dimension3 createMultiplication(Tuple3 a, Tuple3 b) {
+    return (Dimension3) setReturnValueToMultiplication(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createMultiplication( Tuple3 a, double b ) {
-		return (Dimension3)setReturnValueToMultiplication( new Dimension3(), a, b );
-	}
+  public static Dimension3 createMultiplication(Tuple3 a, double b) {
+    return (Dimension3) setReturnValueToMultiplication(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createDivision( Tuple3 a, Tuple3 b ) {
-		return (Dimension3)setReturnValueToDivision( new Dimension3(), a, b );
-	}
+  public static Dimension3 createDivision(Tuple3 a, Tuple3 b) {
+    return (Dimension3) setReturnValueToDivision(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createDivision( Tuple3 a, double b ) {
-		return (Dimension3)setReturnValueToDivision( new Dimension3(), a, b );
-	}
+  public static Dimension3 createDivision(Tuple3 a, double b) {
+    return (Dimension3) setReturnValueToDivision(new Dimension3(), a, b);
+  }
 
-	public static Dimension3 createInterpolation( Tuple3 a, Tuple3 b, double portion ) {
-		return (Dimension3)setReturnValueToInterpolation( new Dimension3(), a, b, portion );
-	}
+  public static Dimension3 createInterpolation(Tuple3 a, Tuple3 b, double portion) {
+    return (Dimension3) setReturnValueToInterpolation(new Dimension3(), a, b, portion);
+  }
 
-	public static Dimension3 createNormalized( Tuple3 a ) {
-		return (Dimension3)setReturnValueToNormalized( new Dimension3(), a );
-	}
+  public static Dimension3 createNormalized(Tuple3 a) {
+    return (Dimension3) setReturnValueToNormalized(new Dimension3(), a);
+  }
 }

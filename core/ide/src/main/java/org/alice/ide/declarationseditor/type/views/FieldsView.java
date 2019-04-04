@@ -50,12 +50,12 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldsView extends MembersView<UserField> {
-	public FieldsView( FieldsComposite composite ) {
-		super( composite );
-	}
+  public FieldsView(FieldsComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> createComponentForItem( UserField field ) {
-		return new FieldView( field );
-	}
+  @Override
+  protected SwingComponentView<?> createComponentForItem(UserField field) {
+    return new FieldView(field);
+  }
 }

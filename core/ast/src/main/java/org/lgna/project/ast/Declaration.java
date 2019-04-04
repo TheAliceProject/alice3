@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.property.StringProperty;
  * @author Dennis Cosgrove
  */
 public interface Declaration extends Node, Nameable {
-	public StringProperty getNamePropertyIfItExists();
+  public StringProperty getNamePropertyIfItExists();
 }

@@ -54,106 +54,106 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Visual extends Leaf {
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if( frontFacingAppearance.getValue() != null ) {
-			frontFacingAppearance.getValue().release();
-		}
-		if( backFacingAppearance.getValue() != null ) {
-			backFacingAppearance.getValue().release();
-		}
-		for( Geometry geometry : geometries.getValue() ) {
-			geometry.release();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    if (frontFacingAppearance.getValue() != null) {
+      frontFacingAppearance.getValue().release();
+    }
+    if (backFacingAppearance.getValue() != null) {
+      backFacingAppearance.getValue().release();
+    }
+    for (Geometry geometry : geometries.getValue()) {
+      geometry.release();
+    }
+  }
 
-	public Geometry getGeometryAt( int index ) {
-		return this.geometries.getValue()[ index ];
-	}
+  public Geometry getGeometryAt(int index) {
+    return this.geometries.getValue()[index];
+  }
 
-	public int getGeometryCount() {
-		return this.geometries.getValue().length;
-	}
+  public int getGeometryCount() {
+    return this.geometries.getValue().length;
+  }
 
-	@Deprecated
-	public Geometry getGeometry() {
-		Geometry[] array = this.geometries.getValue();
-		if( ( array != null ) && ( array.length > 0 ) ) {
-			return array[ 0 ];
-		} else {
-			return null;
-		}
-	}
+  @Deprecated
+  public Geometry getGeometry() {
+    Geometry[] array = this.geometries.getValue();
+    if ((array != null) && (array.length > 0)) {
+      return array[0];
+    } else {
+      return null;
+    }
+  }
 
-	@Deprecated
-	public void setGeometry( Geometry geometry ) {
-		Geometry[] geometries;
-		if( geometry != null ) {
-			geometries = new Geometry[] { geometry };
-		} else {
-			geometries = new Geometry[] {};
-		}
-		this.geometries.setValue( geometries );
-	}
+  @Deprecated
+  public void setGeometry(Geometry geometry) {
+    Geometry[] geometries;
+    if (geometry != null) {
+      geometries = new Geometry[] {geometry};
+    } else {
+      geometries = new Geometry[] {};
+    }
+    this.geometries.setValue(geometries);
+  }
 
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
-		if( getGeometry() != null ) {
-			//todo
-			getGeometry().getAxisAlignedMinimumBoundingBox( rv );
-			rv.scale( scale.getValue() );
-		} else {
-			rv.setNaN();
-		}
-		if( rv.isNaN() || rv.getMaximum().isNaN() || rv.getMaximum().isNaN() ) {
-			System.err.append( "NaN" );
-		}
-		return rv;
-	}
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+    if (getGeometry() != null) {
+      //todo
+      getGeometry().getAxisAlignedMinimumBoundingBox(rv);
+      rv.scale(scale.getValue());
+    } else {
+      rv.setNaN();
+    }
+    if (rv.isNaN() || rv.getMaximum().isNaN() || rv.getMaximum().isNaN()) {
+      System.err.append("NaN");
+    }
+    return rv;
+  }
 
-	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-		return getAxisAlignedMinimumBoundingBox( new AxisAlignedBox() );
-	}
+  public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    return getAxisAlignedMinimumBoundingBox(new AxisAlignedBox());
+  }
 
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-		if( getGeometry() != null ) {
-			//todo
-			getGeometry().getBoundingSphere( rv );
-			rv.scale( scale.getValue() );
-		} else {
-			rv.setNaN();
-		}
-		return rv;
-	}
+  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
+    if (getGeometry() != null) {
+      //todo
+      getGeometry().getBoundingSphere(rv);
+      rv.scale(scale.getValue());
+    } else {
+      rv.setNaN();
+    }
+    return rv;
+  }
 
-	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
-		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
-	}
+  public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
+    return getBoundingSphere(new edu.cmu.cs.dennisc.math.Sphere());
+  }
 
-	public final InstanceProperty<Appearance> frontFacingAppearance = new InstanceProperty<Appearance>( this, null );
-	public final InstanceProperty<Appearance> backFacingAppearance = new InstanceProperty<Appearance>( this, null );
-	public final Matrix3x3Property scale = new Matrix3x3Property( this, Matrix3x3.createIdentity() );
-	public final BooleanProperty isShowing = new BooleanProperty( this, true );
-	public final BooleanProperty isPickable = new BooleanProperty( this, true );
-	public final InstanceProperty<Silhouette> silouette = new InstanceProperty<Silhouette>( this, null );
-	public final CopyableArrayProperty<Geometry> geometries = new CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
-		@Override
-		protected Geometry[] createArray( int length ) {
-			return new Geometry[ length ];
-		}
+  public final InstanceProperty<Appearance> frontFacingAppearance = new InstanceProperty<Appearance>(this, null);
+  public final InstanceProperty<Appearance> backFacingAppearance = new InstanceProperty<Appearance>(this, null);
+  public final Matrix3x3Property scale = new Matrix3x3Property(this, Matrix3x3.createIdentity());
+  public final BooleanProperty isShowing = new BooleanProperty(this, true);
+  public final BooleanProperty isPickable = new BooleanProperty(this, true);
+  public final InstanceProperty<Silhouette> silouette = new InstanceProperty<Silhouette>(this, null);
+  public final CopyableArrayProperty<Geometry> geometries = new CopyableArrayProperty<Geometry>(this, new Geometry[0]) {
+    @Override
+    protected Geometry[] createArray(int length) {
+      return new Geometry[length];
+    }
 
-		@Override
-		protected Geometry createCopy( Geometry src ) {
-			//todo?
-			return src;
-		}
+    @Override
+    protected Geometry createCopy(Geometry src) {
+      //todo?
+      return src;
+    }
 
-		@Override
-		public void setValue( Geometry[] value ) {
-			for( Geometry geometry : value ) {
-				assert geometry != null : this;
-			}
-			super.setValue( value );
-		}
-	};
+    @Override
+    public void setValue(Geometry[] value) {
+      for (Geometry geometry : value) {
+        assert geometry != null : this;
+      }
+      super.setValue(value);
+    }
+  };
 }

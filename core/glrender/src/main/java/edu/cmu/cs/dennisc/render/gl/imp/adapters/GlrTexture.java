@@ -61,106 +61,107 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class GlrTexture<T extends Texture> extends GlrObject<T> {
-	/*package-private*/static void handleTextureChanged( TextureEvent e ) {
-		GlrTexture<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		textureAdapter.handleTextureChanged();
-	}
+  /*package-private*/
+  static void handleTextureChanged(TextureEvent e) {
+    GlrTexture<?> textureAdapter = AdapterFactory.getAdapterFor(e.getTypedSource());
+    textureAdapter.handleTextureChanged();
+  }
 
-	public boolean isPotentiallyAlphaBlended() {
-		return owner.isPotentiallyAlphaBlended();
-	}
+  public boolean isPotentiallyAlphaBlended() {
+    return owner.isPotentiallyAlphaBlended();
+  }
 
-	public boolean isValid() {
-		if( owner != null ) {
-			return owner.isValid();
-		} else {
-			return false;
-		}
-	}
+  public boolean isValid() {
+    if (owner != null) {
+      return owner.isValid();
+    } else {
+      return false;
+    }
+  }
 
-	public void addRenderContext( RenderContext rc ) {
-		this.renderContexts.add( rc );
-	}
+  public void addRenderContext(RenderContext rc) {
+    this.renderContexts.add(rc);
+  }
 
-	public void removeRenderContext( RenderContext rc ) {
-		this.renderContexts.remove( rc );
-	}
+  public void removeRenderContext(RenderContext rc) {
+    this.renderContexts.remove(rc);
+  }
 
-	//Simple reference counting
-	//Single textures (like ground textures) can be referenced by multiple objects
-	//The ref adding and removing is handled by GlrTexturedAppearance when a new adapter is acquired
-	public void addReference() {
-		this.refCount++;
-	}
+  //Simple reference counting
+  //Single textures (like ground textures) can be referenced by multiple objects
+  //The ref adding and removing is handled by GlrTexturedAppearance when a new adapter is acquired
+  public void addReference() {
+    this.refCount++;
+  }
 
-	public void removeReference() {
-		if( this.refCount <= 0 ) {
-			Logger.severe( "TRYING TO REMOVE REFERENCE WHEN REFCOUNT IN <= 0 " + this.hashCode() );
-		} else {
-			this.refCount--;
-		}
-	}
+  public void removeReference() {
+    if (this.refCount <= 0) {
+      Logger.severe("TRYING TO REMOVE REFERENCE WHEN REFCOUNT IN <= 0 " + this.hashCode());
+    } else {
+      this.refCount--;
+    }
+  }
 
-	public boolean isReferenced() {
-		return this.refCount > 0;
-	}
+  public boolean isReferenced() {
+    return this.refCount > 0;
+  }
 
-	@Override
-	protected void handleReleased() {
-		super.handleReleased();
-		if( this.renderContexts.size() > 0 ) {
-			for( RenderContext rc : this.renderContexts ) {
-				rc.forgetTextureAdapter( this, true );
-			}
-			this.renderContexts.clear();
-		}
-	}
+  @Override
+  protected void handleReleased() {
+    super.handleReleased();
+    if (this.renderContexts.size() > 0) {
+      for (RenderContext rc : this.renderContexts) {
+        rc.forgetTextureAdapter(this, true);
+      }
+      this.renderContexts.clear();
+    }
+  }
 
-	private void handleTextureChanged() {
-		setDirty( true );
-	}
+  private void handleTextureChanged() {
+    setDirty(true);
+  }
 
-	protected boolean isDirty() {
-		return this.isTextureDataDirty;
-	}
+  protected boolean isDirty() {
+    return this.isTextureDataDirty;
+  }
 
-	protected void setDirty( boolean isDirty ) {
-		this.isTextureDataDirty = isDirty;
-	}
+  protected void setDirty(boolean isDirty) {
+    this.isTextureDataDirty = isDirty;
+  }
 
-	//todo: map u and v for non power of 2 textures?
-	public float mapU( float u ) {
-		return u;
-	}
+  //todo: map u and v for non power of 2 textures?
+  public float mapU(float u) {
+    return u;
+  }
 
-	public float mapV( float v ) {
-		return v;
-	}
+  public float mapV(float v) {
+    return v;
+  }
 
-	protected static TextureData newTextureData( GL gl, BufferedImage image, boolean isMipMapDesired ) {
-		TextureData rv = AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
-		return rv;
-		//return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
-	}
+  protected static TextureData newTextureData(GL gl, BufferedImage image, boolean isMipMapDesired) {
+    TextureData rv = AWTTextureIO.newTextureData(gl.getGLProfile(), image, isMipMapDesired);
+    return rv;
+    //return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
+  }
 
-	protected abstract TextureData newTextureData( GL gl, TextureData currentTexture );
+  protected abstract TextureData newTextureData(GL gl, TextureData currentTexture);
 
-	public ForgettableBinding bindTexture( RenderContext rc ) {
-		if( this.isDirty() ) {
-			if( this.textureData != null ) {
-				Logger.info( "new texture data", this );
-			}
-			this.textureData = this.newTextureData( rc.gl, this.textureData );
-			this.setDirty( false );
-		}
-		this.textureBinding.ensureUpToDate( rc, this.textureData );
-		return this.textureBinding;
-	}
+  public ForgettableBinding bindTexture(RenderContext rc) {
+    if (this.isDirty()) {
+      if (this.textureData != null) {
+        Logger.info("new texture data", this);
+      }
+      this.textureData = this.newTextureData(rc.gl, this.textureData);
+      this.setDirty(false);
+    }
+    this.textureBinding.ensureUpToDate(rc, this.textureData);
+    return this.textureBinding;
+  }
 
-	private final TextureBinding textureBinding = new TextureBinding();
-	private final List<RenderContext> renderContexts = Lists.newCopyOnWriteArrayList();
-	private TextureData textureData;
-	private boolean isTextureDataDirty = true;
+  private final TextureBinding textureBinding = new TextureBinding();
+  private final List<RenderContext> renderContexts = Lists.newCopyOnWriteArrayList();
+  private TextureData textureData;
+  private boolean isTextureDataDirty = true;
 
-	private int refCount = 0;
+  private int refCount = 0;
 }

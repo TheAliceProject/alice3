@@ -55,25 +55,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
+  }
 
-	public static AddSphereManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddSphereManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SSphere.class, "setRadius", Number.class, SetRadius.Detail[].class );
+  private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState("radiusState", 0.5, SSphere.class, "setRadius", Number.class, SetRadius.Detail[].class);
 
-	private AddSphereManagedFieldComposite() {
-		super( UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ), SSphere.class );
-	}
+  private AddSphereManagedFieldComposite() {
+    super(UUID.fromString("1e534a32-fcbd-41a8-870b-ca050ea94b1d"), SSphere.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return SphereDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return SphereDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getRadiusState() {
-		return this.radiusState;
-	}
+  public CustomItemState<Expression> getRadiusState() {
+    return this.radiusState;
+  }
 }

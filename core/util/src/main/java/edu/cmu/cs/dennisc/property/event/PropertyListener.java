@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.property.event;
  * @author Dennis Cosgrove
  */
 public interface PropertyListener {
-	public void propertyChanging( PropertyEvent e );
+  public void propertyChanging(PropertyEvent e);
 
-	public void propertyChanged( PropertyEvent e );
+  public void propertyChanged(PropertyEvent e);
 }

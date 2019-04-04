@@ -74,292 +74,292 @@ import org.lgna.story.SProgram;
  */
 public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<StatisticsMethodFrequencyView> {
 
-	private final BooleanState showFunctionsState = this.createBooleanState( "areFunctionsShowing", true );
-	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
-	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
+  private final BooleanState showFunctionsState = this.createBooleanState("areFunctionsShowing", true);
+  private final BooleanState showProceduresState = this.createBooleanState("areProceduresShowing", true);
+  private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
 
-	private final MutableDataSingleSelectListState<UserMethod> userMethodListState = createMutableListState( "userMethodList", UserMethod.class, NodeCodec.getInstance( UserMethod.class ), -1 );
-	public static final UserMethod root = new UserMethod();
-	private Integer maximum;
+  private final MutableDataSingleSelectListState<UserMethod> userMethodListState = createMutableListState("userMethodList", UserMethod.class, NodeCodec.getInstance(UserMethod.class), -1);
+  public static final UserMethod root = new UserMethod();
+  private Integer maximum;
 
-	public StatisticsMethodFrequencyTabComposite() {
-		super( UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ), IsCloseable.FALSE );
-		refresh();
-	}
+  public StatisticsMethodFrequencyTabComposite() {
+    super(UUID.fromString("93b531e2-69a3-4721-b2c8-d2793181a41c"), IsCloseable.FALSE);
+    refresh();
+  }
 
-	private void refresh() {
-		userMethodListState.clear();
-		mapMethodToInvocationCounts.clear();
-		IDE ide = IDE.getActiveInstance();
-		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
-		ide.crawlFilteredProgramType( crawler );
+  private void refresh() {
+    userMethodListState.clear();
+    mapMethodToInvocationCounts.clear();
+    IDE ide = IDE.getActiveInstance();
+    MethodInvocationCrawler crawler = new MethodInvocationCrawler();
+    ide.crawlFilteredProgramType(crawler);
 
-		for( AbstractMethod method : crawler.getMethods() ) {
-			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
-			for( MethodInvocation invocation : invocations ) {
-				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
-				InvocationCounts invocationCounts = this.getMapMethodToInvocationCounts().get( invocationOwner );
-				if( ( invocationOwner != null ) && !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( SProgram.class ) ) {
-					if( invocationCounts != null ) {
-						//pass
-					} else {
-						invocationCounts = new InvocationCounts();
-						this.getMapMethodToInvocationCounts().put( invocationOwner, invocationCounts );
-					}
-					Statement statement = invocation.getFirstAncestorAssignableTo( Statement.class );
-					if( statement.isEnabled.getValue() ) {
-						invocationCounts.addInvocation( invocation );
-					}
-				}
-			}
-		}
+    for (AbstractMethod method : crawler.getMethods()) {
+      List<MethodInvocation> invocations = crawler.getInvocationsFor(method);
+      for (MethodInvocation invocation : invocations) {
+        UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo(UserMethod.class);
+        InvocationCounts invocationCounts = this.getMapMethodToInvocationCounts().get(invocationOwner);
+        if ((invocationOwner != null) && !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo(SProgram.class)) {
+          if (invocationCounts != null) {
+            //pass
+          } else {
+            invocationCounts = new InvocationCounts();
+            this.getMapMethodToInvocationCounts().put(invocationOwner, invocationCounts);
+          }
+          Statement statement = invocation.getFirstAncestorAssignableTo(Statement.class);
+          if (statement.isEnabled.getValue()) {
+            invocationCounts.addInvocation(invocation);
+          }
+        }
+      }
+    }
 
-		setMaximum();
-		root.setName( "Project" );
-		List<UserMethod> a = new LinkedList<UserMethod>();
-		for( UserMethod method : getMapMethodToInvocationCounts().keySet() ) {
-			a.add( method );
-		}
-		sort( a );
-		for( UserMethod method : a ) {
-			getUserMethodList().addItem( method );
-		}
-		updateTotals();
-		userMethodListState.setSelectedIndex( 0 );
-	}
+    setMaximum();
+    root.setName("Project");
+    List<UserMethod> a = new LinkedList<UserMethod>();
+    for (UserMethod method : getMapMethodToInvocationCounts().keySet()) {
+      a.add(method);
+    }
+    sort(a);
+    for (UserMethod method : a) {
+      getUserMethodList().addItem(method);
+    }
+    updateTotals();
+    userMethodListState.setSelectedIndex(0);
+  }
 
-	private void updateTotals() {
-		InvocationCounts total = new InvocationCounts();
-		for( UserMethod key : mapMethodToInvocationCounts.keySet() ) {
-			if( key != root ) {
-				InvocationCounts invocationCounts = mapMethodToInvocationCounts.get( key );
-				for( MethodCountPair pair : invocationCounts.methodCountPairs ) {
-					for( int i = 0; i != pair.count; ++i ) {
-						total.addMethod( pair.method );
-					}
-				}
-			}
-		}
-		mapMethodToInvocationCounts.put( root, total );
-	}
+  private void updateTotals() {
+    InvocationCounts total = new InvocationCounts();
+    for (UserMethod key : mapMethodToInvocationCounts.keySet()) {
+      if (key != root) {
+        InvocationCounts invocationCounts = mapMethodToInvocationCounts.get(key);
+        for (MethodCountPair pair : invocationCounts.methodCountPairs) {
+          for (int i = 0; i != pair.count; ++i) {
+            total.addMethod(pair.method);
+          }
+        }
+      }
+    }
+    mapMethodToInvocationCounts.put(root, total);
+  }
 
-	public void setMaximum() {
-		InvocationCounts invocationCounts = new InvocationCounts();
-		getMapMethodToInvocationCounts().put( root, invocationCounts );
-		maximum = getCount( root, null );
-	}
+  public void setMaximum() {
+    InvocationCounts invocationCounts = new InvocationCounts();
+    getMapMethodToInvocationCounts().put(root, invocationCounts);
+    maximum = getCount(root, null);
+  }
 
-	public Integer getMaximum() {
-		if( maximum != null ) {
-			InvocationCounts invocationCounts = new InvocationCounts();
-			for( UserMethod method : getMapMethodToInvocationCounts().keySet() ) {
-				for( MethodCountPair pair : getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
-					for( int i = 0; i != pair.getCount(); ++i ) {
-						invocationCounts.addMethod( pair.getMethod() );
-					}
-				}
-			}
-			getMapMethodToInvocationCounts().put( StatisticsMethodFrequencyTabComposite.root, invocationCounts );
-			maximum = getCount( StatisticsMethodFrequencyTabComposite.root, null );
-		}
-		return this.maximum;
-	}
+  public Integer getMaximum() {
+    if (maximum != null) {
+      InvocationCounts invocationCounts = new InvocationCounts();
+      for (UserMethod method : getMapMethodToInvocationCounts().keySet()) {
+        for (MethodCountPair pair : getMapMethodToInvocationCounts().get(method).getMethodCountPairs()) {
+          for (int i = 0; i != pair.getCount(); ++i) {
+            invocationCounts.addMethod(pair.getMethod());
+          }
+        }
+      }
+      getMapMethodToInvocationCounts().put(StatisticsMethodFrequencyTabComposite.root, invocationCounts);
+      maximum = getCount(StatisticsMethodFrequencyTabComposite.root, null);
+    }
+    return this.maximum;
+  }
 
-	public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
-		int count = 0;
-		if( methodTwo != null ) {
-			count = getMapMethodToInvocationCounts().get( method ).get( methodTwo ).getCount();
-		} else {
-			if( getMapMethodToInvocationCounts().get( method ) != null ) {
-				for( MethodCountPair pair : getMapMethodToInvocationCounts().get( method ).methodCountPairs ) {
-					if( pair.getMethod() != root ) {
-						count += pair.getCount();
-					}
-				}
-			}
-		}
-		return count;
-	}
+  public int getCount(AbstractMethod method, AbstractMethod methodTwo) {
+    int count = 0;
+    if (methodTwo != null) {
+      count = getMapMethodToInvocationCounts().get(method).get(methodTwo).getCount();
+    } else {
+      if (getMapMethodToInvocationCounts().get(method) != null) {
+        for (MethodCountPair pair : getMapMethodToInvocationCounts().get(method).methodCountPairs) {
+          if (pair.getMethod() != root) {
+            count += pair.getCount();
+          }
+        }
+      }
+    }
+    return count;
+  }
 
-	private void sort( List<? extends AbstractMethod> a ) {
-		Collections.sort( a, new Comparator<AbstractMethod>() {
+  private void sort(List<? extends AbstractMethod> a) {
+    Collections.sort(a, new Comparator<AbstractMethod>() {
 
-			@Override
-			public int compare( AbstractMethod o1, AbstractMethod o2 ) {
-				return o1.getName().compareTo( o2.getName() );
-			}
-		} );
-	}
+      @Override
+      public int compare(AbstractMethod o1, AbstractMethod o2) {
+        return o1.getName().compareTo(o2.getName());
+      }
+    });
+  }
 
-	@Override
-	protected StatisticsMethodFrequencyView createView() {
-		return new StatisticsMethodFrequencyView( this );
-	}
+  @Override
+  protected StatisticsMethodFrequencyView createView() {
+    return new StatisticsMethodFrequencyView(this);
+  }
 
-	public MutableDataSingleSelectListState<UserMethod> getUserMethodList() {
-		return this.userMethodListState;
-	}
+  public MutableDataSingleSelectListState<UserMethod> getUserMethodList() {
+    return this.userMethodListState;
+  }
 
-	public BooleanState getShowFunctionsState() {
-		return this.showFunctionsState;
-	}
+  public BooleanState getShowFunctionsState() {
+    return this.showFunctionsState;
+  }
 
-	public BooleanState getShowProceduresState() {
-		return this.showProceduresState;
-	}
+  public BooleanState getShowProceduresState() {
+    return this.showProceduresState;
+  }
 
-	public Map<UserMethod, InvocationCounts> getMapMethodToInvocationCounts() {
-		return this.mapMethodToInvocationCounts;
-	}
+  public Map<UserMethod, InvocationCounts> getMapMethodToInvocationCounts() {
+    return this.mapMethodToInvocationCounts;
+  }
 
-	public void setMapMethodToInvocationCounts( Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts ) {
-		this.mapMethodToInvocationCounts = mapMethodToInvocationCounts;
-	}
+  public void setMapMethodToInvocationCounts(Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts) {
+    this.mapMethodToInvocationCounts = mapMethodToInvocationCounts;
+  }
 
-	private static class MethodInvocationCrawler implements Crawler {
-		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
+  private static class MethodInvocationCrawler implements Crawler {
+    private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
 
-		@Override
-		public void visit( Crawlable crawlable ) {
-			if( crawlable instanceof MethodInvocation ) {
-				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-				AbstractMethod method = methodInvocation.method.getValue();
-				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
-				if( list != null ) {
-					list.add( methodInvocation );
-				} else {
-					list = Lists.newLinkedList( methodInvocation );
-					this.mapMethodToInvocations.put( method, list );
-				}
-			}
-		}
+    @Override
+    public void visit(Crawlable crawlable) {
+      if (crawlable instanceof MethodInvocation) {
+        MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+        AbstractMethod method = methodInvocation.method.getValue();
+        List<MethodInvocation> list = this.mapMethodToInvocations.get(method);
+        if (list != null) {
+          list.add(methodInvocation);
+        } else {
+          list = Lists.newLinkedList(methodInvocation);
+          this.mapMethodToInvocations.put(method, list);
+        }
+      }
+    }
 
-		public Set<AbstractMethod> getMethods() {
-			return this.mapMethodToInvocations.keySet();
-		}
+    public Set<AbstractMethod> getMethods() {
+      return this.mapMethodToInvocations.keySet();
+    }
 
-		public List<MethodInvocation> getInvocationsFor( AbstractMethod method ) {
-			return this.mapMethodToInvocations.get( method );
-		}
+    public List<MethodInvocation> getInvocationsFor(AbstractMethod method) {
+      return this.mapMethodToInvocations.get(method);
+    }
 
-	}
+  }
 
-	public LinkedList<String> getLeftColVals( UserMethod selected ) {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		LinkedList<String> rv = new LinkedList<String>();
-		InvocationCounts invocationsCount = getMapMethodToInvocationCounts().get( selected );
-		for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
-			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
-				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
-					rv.add( formatter.getNameForDeclaration(pair.getMethod() ) );
-				}
-			}
-		}
-		return rv;
-	}
+  public LinkedList<String> getLeftColVals(UserMethod selected) {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    LinkedList<String> rv = new LinkedList<String>();
+    InvocationCounts invocationsCount = getMapMethodToInvocationCounts().get(selected);
+    for (MethodCountPair pair : invocationsCount.getMethodCountPairs()) {
+      if (!pair.getMethod().isFunction() || getShowFunctionsState().getValue()) {
+        if (!pair.getMethod().isProcedure() || getShowProceduresState().getValue()) {
+          rv.add(formatter.getNameForDeclaration(pair.getMethod()));
+        }
+      }
+    }
+    return rv;
+  }
 
-	public List<Integer> getRightColVals( UserMethod selected ) {
-		LinkedList<Integer> rv = new LinkedList<Integer>();
-		InvocationCounts invocationCount = getMapMethodToInvocationCounts().get( selected );
-		for( MethodCountPair pair : invocationCount.getMethodCountPairs() ) {
-			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
-				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
-					rv.add( getCount( selected, pair.getMethod() ) );
-				}
-			}
-		}
-		return rv;
-	}
+  public List<Integer> getRightColVals(UserMethod selected) {
+    LinkedList<Integer> rv = new LinkedList<Integer>();
+    InvocationCounts invocationCount = getMapMethodToInvocationCounts().get(selected);
+    for (MethodCountPair pair : invocationCount.getMethodCountPairs()) {
+      if (!pair.getMethod().isFunction() || getShowFunctionsState().getValue()) {
+        if (!pair.getMethod().isProcedure() || getShowProceduresState().getValue()) {
+          rv.add(getCount(selected, pair.getMethod()));
+        }
+      }
+    }
+    return rv;
+  }
 
-	public int getSize( UserMethod selected ) {
-		if( selected != null ) {
-			InvocationCounts invocationCounts = mapMethodToInvocationCounts.get( selected );
-			int count = 1;
-			for( MethodCountPair pair : invocationCounts.getMethodCountPairs() ) {
-				if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
-					if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
-						++count;
-					}
-				}
-			}
-			return count;
-		}
-		return 0;
-	}
+  public int getSize(UserMethod selected) {
+    if (selected != null) {
+      InvocationCounts invocationCounts = mapMethodToInvocationCounts.get(selected);
+      int count = 1;
+      for (MethodCountPair pair : invocationCounts.getMethodCountPairs()) {
+        if (!pair.getMethod().isFunction() || getShowFunctionsState().getValue()) {
+          if (!pair.getMethod().isProcedure() || getShowProceduresState().getValue()) {
+            ++count;
+          }
+        }
+      }
+      return count;
+    }
+    return 0;
+  }
 
-	public static class MethodCountPair {
-		private final AbstractMethod method;
-		private int count;
+  public static class MethodCountPair {
+    private final AbstractMethod method;
+    private int count;
 
-		public MethodCountPair( AbstractMethod method ) {
-			this.method = method;
-			this.count = 1;
-		}
+    public MethodCountPair(AbstractMethod method) {
+      this.method = method;
+      this.count = 1;
+    }
 
-		public void bumpItUpANotch() {
-			this.count++;
-		}
+    public void bumpItUpANotch() {
+      this.count++;
+    }
 
-		public AbstractMethod getMethod() {
-			return this.method;
-		}
+    public AbstractMethod getMethod() {
+      return this.method;
+    }
 
-		public int getCount() {
-			return this.count;
-		}
-	}
+    public int getCount() {
+      return this.count;
+    }
+  }
 
-	public static class InvocationCounts {
-		private List<MethodCountPair> methodCountPairs = Lists.newLinkedList();
+  public static class InvocationCounts {
+    private List<MethodCountPair> methodCountPairs = Lists.newLinkedList();
 
-		public void addInvocation( MethodInvocation invocation ) {
-			addMethod( invocation.method.getValue() );
-		}
+    public void addInvocation(MethodInvocation invocation) {
+      addMethod(invocation.method.getValue());
+    }
 
-		public List<MethodCountPair> getMethodCountPairs() {
-			return this.methodCountPairs;
-		}
+    public List<MethodCountPair> getMethodCountPairs() {
+      return this.methodCountPairs;
+    }
 
-		public void addMethod( AbstractMethod method ) {
-			if( get( method ) != null ) {
-				get( method ).bumpItUpANotch();
-			} else {
-				methodCountPairs.add( new MethodCountPair( method ) );
-				sort();
-			}
-		}
+    public void addMethod(AbstractMethod method) {
+      if (get(method) != null) {
+        get(method).bumpItUpANotch();
+      } else {
+        methodCountPairs.add(new MethodCountPair(method));
+        sort();
+      }
+    }
 
-		private void sort() {
-			Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
+    private void sort() {
+      Collections.sort(methodCountPairs, new Comparator<MethodCountPair>() {
 
-				@Override
-				public int compare( MethodCountPair o1, MethodCountPair o2 ) {
-					return o1.getMethod().getName().compareTo( o2.getMethod().getName() );
-				}
-			} );
-		}
+        @Override
+        public int compare(MethodCountPair o1, MethodCountPair o2) {
+          return o1.getMethod().getName().compareTo(o2.getMethod().getName());
+        }
+      });
+    }
 
-		public int size() {
-			return methodCountPairs.size();
-		}
+    public int size() {
+      return methodCountPairs.size();
+    }
 
-		public AbstractMethod get( int i ) {
-			return methodCountPairs.get( i ).getMethod();
-		}
+    public AbstractMethod get(int i) {
+      return methodCountPairs.get(i).getMethod();
+    }
 
-		public MethodCountPair get( AbstractMethod method ) {
-			for( MethodCountPair methodCountPair : this.methodCountPairs ) {
-				if( methodCountPair.getMethod().equals( method ) ) {
-					return methodCountPair;
-				}
-			}
-			return null;
-		}
-	}
+    public MethodCountPair get(AbstractMethod method) {
+      for (MethodCountPair methodCountPair : this.methodCountPairs) {
+        if (methodCountPair.getMethod().equals(method)) {
+          return methodCountPair;
+        }
+      }
+      return null;
+    }
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		refresh();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    refresh();
+  }
 }

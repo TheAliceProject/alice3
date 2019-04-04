@@ -64,8 +64,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.util.Map;
@@ -75,336 +73,339 @@ import java.util.Map;
  */
 //todo: better name
 public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
-	private static Map<Component, AbstractWindow<?>> map = Maps.newWeakHashMap();
+  private static Map<Component, AbstractWindow<?>> map = Maps.newWeakHashMap();
 
-	 /*package-private*/ static AbstractWindow<?> lookup( Component component ) {
-		if( component != null ) {
-			return AbstractWindow.map.get( component );
-		} else {
-			return null;
-		}
-	}
+  /*package-private*/
+  static AbstractWindow<?> lookup(Component component) {
+    if (component != null) {
+      return AbstractWindow.map.get(component);
+    } else {
+      return null;
+    }
+  }
 
-	private final W window;
+  private final W window;
 
-	private final ContentPane contentPane;
-	private final RootPane rootPane;
+  private final ContentPane contentPane;
+  private final RootPane rootPane;
 
-	public AbstractWindow( W window ) {
-		this.window = window;
-		AbstractWindow.map.put( window, this );
-		this.contentPane = new ContentPane( this );
-		this.rootPane = new RootPane( this );
-	}
+  public AbstractWindow(W window) {
+    this.window = window;
+    AbstractWindow.map.put(window, this);
+    this.contentPane = new ContentPane(this);
+    this.rootPane = new RootPane(this);
+  }
 
-	@Override
-	public final W getAwtComponent() {
-		return this.window;
-	}
+  @Override
+  public final W getAwtComponent() {
+    return this.window;
+  }
 
-	public void release() {
-		window.dispose();
-		AbstractWindow.map.remove( window );
-	}
+  public void release() {
+    window.dispose();
+    AbstractWindow.map.remove(window);
+  }
 
-	@Override
-	public AbstractWindow<?> getRoot() {
-		return this;
-	}
+  @Override
+  public AbstractWindow<?> getRoot() {
+    return this;
+  }
 
-	/* package-private */abstract Container getAwtContentPane();
+  /* package-private */
+  abstract Container getAwtContentPane();
 
-	/* package-private */abstract JRootPane getJRootPane();
+  /* package-private */
+  abstract JRootPane getJRootPane();
 
-	public ContentPane getContentPane() {
-		return this.contentPane;
-	}
+  public ContentPane getContentPane() {
+    return this.contentPane;
+  }
 
-	public RootPane getRootPane() {
-		return this.rootPane;
-	}
+  public RootPane getRootPane() {
+    return this.rootPane;
+  }
 
-	public void addWindowListener( WindowListener listener ) {
-		this.window.addWindowListener( listener );
-	}
+  public void addWindowListener(WindowListener listener) {
+    this.window.addWindowListener(listener);
+  }
 
-	public void removeWindowListener( WindowListener listener ) {
-		this.window.removeWindowListener( listener );
-	}
+  public void removeWindowListener(WindowListener listener) {
+    this.window.removeWindowListener(listener);
+  }
 
-	public void addWindowStateListener( WindowStateListener listener ) {
-		this.window.addWindowStateListener( listener );
-	}
+  public void addWindowStateListener(WindowStateListener listener) {
+    this.window.addWindowStateListener(listener);
+  }
 
-	public void removeWindowStateListener( WindowStateListener listener ) {
-		this.window.removeWindowStateListener( listener );
-	}
+  public void removeWindowStateListener(WindowStateListener listener) {
+    this.window.removeWindowStateListener(listener);
+  }
 
-	public boolean isVisible() {
-		return this.window.isVisible();
-	}
+  public boolean isVisible() {
+    return this.window.isVisible();
+  }
 
-	public void setVisible( boolean isVisible ) {
-		this.window.setVisible( isVisible );
-	}
+  public void setVisible(boolean isVisible) {
+    this.window.setVisible(isVisible);
+  }
 
-	public int getX() {
-		return this.window.getX();
-	}
+  public int getX() {
+    return this.window.getX();
+  }
 
-	public int getY() {
-		return this.window.getY();
-	}
+  public int getY() {
+    return this.window.getY();
+  }
 
-	public Point getLocation( ScreenElement asSeenBy ) {
-		if( asSeenBy.getAwtComponent().isVisible() && this.isVisible() ) {
-			Point ptAsSeenBy = asSeenBy.getAwtComponent().getLocationOnScreen();
-			Point ptThis = this.getAwtComponent().getLocationOnScreen();
-			return new Point( ptThis.x - ptAsSeenBy.x, ptThis.y - ptAsSeenBy.y );
-		} else {
-			return null;
-		}
-	}
+  public Point getLocation(ScreenElement asSeenBy) {
+    if (asSeenBy.getAwtComponent().isVisible() && this.isVisible()) {
+      Point ptAsSeenBy = asSeenBy.getAwtComponent().getLocationOnScreen();
+      Point ptThis = this.getAwtComponent().getLocationOnScreen();
+      return new Point(ptThis.x - ptAsSeenBy.x, ptThis.y - ptAsSeenBy.y);
+    } else {
+      return null;
+    }
+  }
 
-	public void setLocation( Point location ) {
-		this.window.setLocation( location );
-	}
+  public void setLocation(Point location) {
+    this.window.setLocation(location);
+  }
 
-	public void setLocation( int x, int y ) {
-		this.window.setLocation( x, y );
-	}
+  public void setLocation(int x, int y) {
+    this.window.setLocation(x, y);
+  }
 
-	public boolean isLocationByPlatform() {
-		return this.window.isLocationByPlatform();
-	}
+  public boolean isLocationByPlatform() {
+    return this.window.isLocationByPlatform();
+  }
 
-	public void setLocationByPlatform( boolean isLocationByPlatform ) {
-		this.window.setLocationByPlatform( isLocationByPlatform );
-	}
+  public void setLocationByPlatform(boolean isLocationByPlatform) {
+    this.window.setLocationByPlatform(isLocationByPlatform);
+  }
 
-	public void setLocationRelativeTo( ScreenElement component ) {
-		this.window.setLocationRelativeTo( component.getAwtComponent() );
-	}
+  public void setLocationRelativeTo(ScreenElement component) {
+    this.window.setLocationRelativeTo(component.getAwtComponent());
+  }
 
-	public int getWidth() {
-		return this.window.getWidth();
-	}
+  public int getWidth() {
+    return this.window.getWidth();
+  }
 
-	public int getHeight() {
-		return this.window.getHeight();
-	}
+  public int getHeight() {
+    return this.window.getHeight();
+  }
 
-	public void setSize( Dimension size ) {
-		this.window.setSize( size );
-	}
+  public void setSize(Dimension size) {
+    this.window.setSize(size);
+  }
 
-	public void setSize( int width, int height ) {
-		this.window.setSize( width, height );
-	}
+  public void setSize(int width, int height) {
+    this.window.setSize(width, height);
+  }
 
-	//	public java.awt.Rectangle getBounds() {
-	//		return this.window.getBounds();
-	//	}
-	//	public java.awt.Rectangle getLocalBounds() {
-	//		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
-	//	}
-	public Rectangle getBounds( ScreenElement asSeenBy ) {
-		Point pt = this.getLocation( asSeenBy );
-		if( pt != null ) {
-			return new Rectangle( pt.x, pt.y, this.getWidth(), this.getHeight() );
-		} else {
-			return null;
-		}
-	}
+  //  public java.awt.Rectangle getBounds() {
+  //  return this.window.getBounds();
+  //  }
+  //  public java.awt.Rectangle getLocalBounds() {
+  //  return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
+  //  }
+  public Rectangle getBounds(ScreenElement asSeenBy) {
+    Point pt = this.getLocation(asSeenBy);
+    if (pt != null) {
+      return new Rectangle(pt.x, pt.y, this.getWidth(), this.getHeight());
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Shape getShape( ScreenElement asSeenBy, Insets insets ) {
-		return RectangleUtilities.inset( this.getBounds( asSeenBy ), insets );
-	}
+  @Override
+  public Shape getShape(ScreenElement asSeenBy, Insets insets) {
+    return RectangleUtilities.inset(this.getBounds(asSeenBy), insets);
+  }
 
-	@Override
-	public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets ) {
-		return this.getShape( asSeenBy, insets );
-	}
+  @Override
+  public Shape getVisibleShape(ScreenElement asSeenBy, Insets insets) {
+    return this.getShape(asSeenBy, insets);
+  }
 
-	@Override
-	public ScrollPane getScrollPaneAncestor() {
-		return null;
-	}
+  @Override
+  public ScrollPane getScrollPaneAncestor() {
+    return null;
+  }
 
-	@Override
-	public boolean isInView() {
-		return this.isVisible();
-	}
+  @Override
+  public boolean isInView() {
+    return this.isVisible();
+  }
 
-	public TrackableShape getCloseButtonTrackableShape() {
-		return new TrackableShape() {
-			@Override
-			public Shape getShape( ScreenElement asSeenBy, Insets insets ) {
-				Rectangle bounds = AbstractWindow.this.getBounds( asSeenBy );
-				if( bounds != null ) {
-					bounds.height = bounds.height - AbstractWindow.this.getRootPane().getHeight();
-					bounds.height -= 8;
-					return RectangleUtilities.inset( bounds, insets );
-				} else {
-					return null;
-				}
-			}
+  public TrackableShape getCloseButtonTrackableShape() {
+    return new TrackableShape() {
+      @Override
+      public Shape getShape(ScreenElement asSeenBy, Insets insets) {
+        Rectangle bounds = AbstractWindow.this.getBounds(asSeenBy);
+        if (bounds != null) {
+          bounds.height = bounds.height - AbstractWindow.this.getRootPane().getHeight();
+          bounds.height -= 8;
+          return RectangleUtilities.inset(bounds, insets);
+        } else {
+          return null;
+        }
+      }
 
-			@Override
-			public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets ) {
-				return this.getShape( asSeenBy, insets );
-			}
+      @Override
+      public Shape getVisibleShape(ScreenElement asSeenBy, Insets insets) {
+        return this.getShape(asSeenBy, insets);
+      }
 
-			@Override
-			public ScrollPane getScrollPaneAncestor() {
-				return null;
-			}
+      @Override
+      public ScrollPane getScrollPaneAncestor() {
+        return null;
+      }
 
-			@Override
-			public boolean isInView() {
-				return AbstractWindow.this.isInView();
-			}
+      @Override
+      public boolean isInView() {
+        return AbstractWindow.this.isInView();
+      }
 
-			@Override
-			public void addComponentListener( ComponentListener listener ) {
-				AbstractWindow.this.addComponentListener( listener );
-			}
+      @Override
+      public void addComponentListener(ComponentListener listener) {
+        AbstractWindow.this.addComponentListener(listener);
+      }
 
-			@Override
-			public void removeComponentListener( ComponentListener listener ) {
-				AbstractWindow.this.removeComponentListener( listener );
-			}
+      @Override
+      public void removeComponentListener(ComponentListener listener) {
+        AbstractWindow.this.removeComponentListener(listener);
+      }
 
-			@Override
-			public void addHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-				AbstractWindow.this.addHierarchyBoundsListener( listener );
-			}
+      @Override
+      public void addHierarchyBoundsListener(HierarchyBoundsListener listener) {
+        AbstractWindow.this.addHierarchyBoundsListener(listener);
+      }
 
-			@Override
-			public void removeHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-				AbstractWindow.this.removeHierarchyBoundsListener( listener );
-			}
-		};
-	}
+      @Override
+      public void removeHierarchyBoundsListener(HierarchyBoundsListener listener) {
+        AbstractWindow.this.removeHierarchyBoundsListener(listener);
+      }
+    };
+  }
 
-	public void pack() {
-		this.getAwtComponent().pack();
-	}
+  public void pack() {
+    this.getAwtComponent().pack();
+  }
 
-	private static Button lookupButton( JButton jButton ) {
-		AwtComponentView<?> component = AwtComponentView.lookup( jButton );
-		if( component instanceof Button ) {
-			Button button = (Button)component;
-			return button;
-		} else {
-			return null;
-		}
-	}
+  private static Button lookupButton(JButton jButton) {
+    AwtComponentView<?> component = AwtComponentView.lookup(jButton);
+    if (component instanceof Button) {
+      Button button = (Button) component;
+      return button;
+    } else {
+      return null;
+    }
+  }
 
-	public Button getDefaultButton() {
-		return lookupButton( this.getJRootPane().getDefaultButton() );
-	}
+  public Button getDefaultButton() {
+    return lookupButton(this.getJRootPane().getDefaultButton());
+  }
 
-	public void setDefaultButton( Button button ) {
-		this.getJRootPane().setDefaultButton( button.getAwtComponent() );
-	}
+  public void setDefaultButton(Button button) {
+    this.getJRootPane().setDefaultButton(button.getAwtComponent());
+  }
 
-	private DStack<JButton> defaultJButtonStack;
+  private DStack<JButton> defaultJButtonStack;
 
-	public void pushDefaultButton( Button button ) {
-		if( this.defaultJButtonStack != null ) {
-			//pass
-		} else {
-			this.defaultJButtonStack = Stacks.newStack();
-		}
-		this.defaultJButtonStack.push( this.getJRootPane().getDefaultButton() );
-		this.setDefaultButton( button );
-	}
+  public void pushDefaultButton(Button button) {
+    if (this.defaultJButtonStack != null) {
+      //pass
+    } else {
+      this.defaultJButtonStack = Stacks.newStack();
+    }
+    this.defaultJButtonStack.push(this.getJRootPane().getDefaultButton());
+    this.setDefaultButton(button);
+  }
 
-	public Button popDefaultButton() {
-		Button rv;
-		if( this.defaultJButtonStack != null ) {
-			if( this.defaultJButtonStack.isEmpty() ) {
-				Logger.warning( this.defaultJButtonStack );
-				rv = null;
-			} else {
-				JButton jButton = this.defaultJButtonStack.pop();
-				this.getJRootPane().setDefaultButton( jButton );
-				rv = lookupButton( jButton );
-			}
-		} else {
-			Logger.warning( this.defaultJButtonStack );
-			rv = null;
-		}
-		return rv;
-	}
+  public Button popDefaultButton() {
+    Button rv;
+    if (this.defaultJButtonStack != null) {
+      if (this.defaultJButtonStack.isEmpty()) {
+        Logger.warning(this.defaultJButtonStack);
+        rv = null;
+      } else {
+        JButton jButton = this.defaultJButtonStack.pop();
+        this.getJRootPane().setDefaultButton(jButton);
+        rv = lookupButton(jButton);
+      }
+    } else {
+      Logger.warning(this.defaultJButtonStack);
+      rv = null;
+    }
+    return rv;
+  }
 
-	private MenuBarComposite menuBarComposite;
-	private ToolBarComposite toolBarComposite;
-	private Composite<?> mainComposite;
+  private MenuBarComposite menuBarComposite;
+  private ToolBarComposite toolBarComposite;
+  private Composite<?> mainComposite;
 
-	public Composite<?> getMainComposite() {
-		return this.mainComposite;
-	}
+  public Composite<?> getMainComposite() {
+    return this.mainComposite;
+  }
 
-	public void setToolBarComposite( ToolBarComposite toolBarComposite ) {
-		if( this.toolBarComposite != toolBarComposite ) {
-			synchronized( this.getAwtComponent().getTreeLock() ) {
-				if( this.toolBarComposite != null ) {
-					this.getContentPane().removeComponent( this.toolBarComposite.getView() );
-					this.toolBarComposite.handlePostDeactivation();
-				}
-				this.toolBarComposite = toolBarComposite;
-				if( this.toolBarComposite != null ) {
-					this.toolBarComposite.handlePreActivation();
-					this.getContentPane().addPageStartComponent( this.toolBarComposite.getView() );
-				}
-			}
-			this.getContentPane().revalidateAndRepaint();
-		}
-	}
+  public void setToolBarComposite(ToolBarComposite toolBarComposite) {
+    if (this.toolBarComposite != toolBarComposite) {
+      synchronized (this.getAwtComponent().getTreeLock()) {
+        if (this.toolBarComposite != null) {
+          this.getContentPane().removeComponent(this.toolBarComposite.getView());
+          this.toolBarComposite.handlePostDeactivation();
+        }
+        this.toolBarComposite = toolBarComposite;
+        if (this.toolBarComposite != null) {
+          this.toolBarComposite.handlePreActivation();
+          this.getContentPane().addPageStartComponent(this.toolBarComposite.getView());
+        }
+      }
+      this.getContentPane().revalidateAndRepaint();
+    }
+  }
 
-	public void setMainComposite( Composite<?> mainComposite ) {
-		if( this.mainComposite != mainComposite ) {
-			synchronized( this.getAwtComponent().getTreeLock() ) {
-				if( this.mainComposite != null ) {
-					this.getContentPane().removeComponent( this.mainComposite.getView() );
-					this.mainComposite.handlePostDeactivation();
-				}
-				this.mainComposite = mainComposite;
-				if( this.mainComposite != null ) {
-					this.mainComposite.handlePreActivation();
-					this.getContentPane().addCenterComponent( this.mainComposite.getView() );
-				}
-			}
-			this.getContentPane().revalidateAndRepaint();
-		}
-	}
+  public void setMainComposite(Composite<?> mainComposite) {
+    if (this.mainComposite != mainComposite) {
+      synchronized (this.getAwtComponent().getTreeLock()) {
+        if (this.mainComposite != null) {
+          this.getContentPane().removeComponent(this.mainComposite.getView());
+          this.mainComposite.handlePostDeactivation();
+        }
+        this.mainComposite = mainComposite;
+        if (this.mainComposite != null) {
+          this.mainComposite.handlePreActivation();
+          this.getContentPane().addCenterComponent(this.mainComposite.getView());
+        }
+      }
+      this.getContentPane().revalidateAndRepaint();
+    }
+  }
 
-	public MenuBarComposite getMenuBarComposite() {
-		return this.menuBarComposite;
-	}
+  public MenuBarComposite getMenuBarComposite() {
+    return this.menuBarComposite;
+  }
 
-	protected abstract void setJMenuBar( JMenuBar jMenuBar );
+  protected abstract void setJMenuBar(JMenuBar jMenuBar);
 
-	public void setMenuBarComposite( MenuBarComposite menuBarComposite ) {
-		if( this.menuBarComposite != menuBarComposite ) {
-			synchronized( this.getAwtComponent().getTreeLock() ) {
-				if( this.menuBarComposite != null ) {
-					this.menuBarComposite.handlePostDeactivation();
-				}
-				this.menuBarComposite = menuBarComposite;
-				JMenuBar jMenuBar;
-				if( this.menuBarComposite != null ) {
-					this.menuBarComposite.handlePreActivation();
-					jMenuBar = menuBarComposite.getView().getAwtComponent();
-				} else {
-					jMenuBar = null;
-				}
-				this.setJMenuBar( jMenuBar );
-			}
+  public void setMenuBarComposite(MenuBarComposite menuBarComposite) {
+    if (this.menuBarComposite != menuBarComposite) {
+      synchronized (this.getAwtComponent().getTreeLock()) {
+        if (this.menuBarComposite != null) {
+          this.menuBarComposite.handlePostDeactivation();
+        }
+        this.menuBarComposite = menuBarComposite;
+        JMenuBar jMenuBar;
+        if (this.menuBarComposite != null) {
+          this.menuBarComposite.handlePreActivation();
+          jMenuBar = menuBarComposite.getView().getAwtComponent();
+        } else {
+          jMenuBar = null;
+        }
+        this.setJMenuBar(jMenuBar);
+      }
 
-		}
-	}
+    }
+  }
 }

@@ -51,44 +51,44 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class EmptyIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static EmptyIconFactory instance = new EmptyIconFactory();
-	}
+  private static class SingletonHolder {
+    private static EmptyIconFactory instance = new EmptyIconFactory();
+  }
 
-	public static EmptyIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static EmptyIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private EmptyIconFactory() {
-		super( IsCachingDesired.FALSE );
-	}
+  private EmptyIconFactory() {
+    super(IsCachingDesired.FALSE);
+  }
 
-	@Override
-	protected Icon createIcon( final Dimension size ) {
-		return new Icon() {
-			@Override
-			public int getIconWidth() {
-				return size.width;
-			}
+  @Override
+  protected Icon createIcon(final Dimension size) {
+    return new Icon() {
+      @Override
+      public int getIconWidth() {
+        return size.width;
+      }
 
-			@Override
-			public int getIconHeight() {
-				return size.height;
-			}
+      @Override
+      public int getIconHeight() {
+        return size.height;
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-			}
-		};
-	}
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+      }
+    };
+  }
 
-	@Override
-	public Dimension getTrimmedSizeForWidth( int width ) {
-		return new Dimension( width, 0 );
-	}
+  @Override
+  public Dimension getTrimmedSizeForWidth(int width) {
+    return new Dimension(width, 0);
+  }
 
-	@Override
-	public Dimension getTrimmedSizeForHeight( int height ) {
-		return new Dimension( 0, height );
-	}
+  @Override
+  public Dimension getTrimmedSizeForHeight(int height) {
+    return new Dimension(0, height);
+  }
 }

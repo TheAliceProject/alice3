@@ -62,169 +62,167 @@ import java.util.UUID;
  * @author Matt May
  */
 public final class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
-	private static class IssueTypeInitializer implements Initializer<ReportIssueComposite> {
-		public IssueTypeInitializer( IssueType initialReportTypeValue ) {
-			this.initialReportTypeValue = initialReportTypeValue;
-		}
+  private static class IssueTypeInitializer implements Initializer<ReportIssueComposite> {
+    public IssueTypeInitializer(IssueType initialReportTypeValue) {
+      this.initialReportTypeValue = initialReportTypeValue;
+    }
 
-		@Override
-		public void initialize( ReportIssueComposite value ) {
-			value.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
-		}
+    @Override
+    public void initialize(ReportIssueComposite value) {
+      value.reportTypeState.setValueTransactionlessly(this.initialReportTypeValue);
+    }
 
-		private final IssueType initialReportTypeValue;
-	}
+    private final IssueType initialReportTypeValue;
+  }
 
-	public ReportIssueComposite() {
-		super( UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), IsModal.FALSE );
-		this.reportTypeState = createImmutableListStateForEnum( "reportTypeState", IssueType.class, null );
-		this.registerSubComposite( logInOutComposite );
-		this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "reportBug", new IssueTypeInitializer( IssueType.BUG ) );
-		this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "requestNewFeature", new IssueTypeInitializer( IssueType.NEW_FEATURE ) );
-		this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "suggestImprovement", new IssueTypeInitializer( IssueType.IMPROVEMENT ) );
-	}
+  public ReportIssueComposite() {
+    super(UUID.fromString("96e23d44-c8b1-4da1-8d59-aea9f7ee7b42"), IsModal.FALSE);
+    this.reportTypeState = createImmutableListStateForEnum("reportTypeState", IssueType.class, null);
+    this.registerSubComposite(logInOutComposite);
+    this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation("reportBug", new IssueTypeInitializer(IssueType.BUG));
+    this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation("requestNewFeature", new IssueTypeInitializer(IssueType.NEW_FEATURE));
+    this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation("suggestImprovement", new IssueTypeInitializer(IssueType.IMPROVEMENT));
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		//todo
-		return null;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    //todo
+    return null;
+  }
 
-	@Override
-	protected Thread getThread() {
-		return null;
-	}
+  @Override
+  protected Thread getThread() {
+    return null;
+  }
 
-	@Override
-	protected Throwable getThrowable() {
-		return null;
-	}
+  @Override
+  protected Throwable getThrowable() {
+    return null;
+  }
 
-	@Override
-	protected boolean isPublic() {
-		return this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC );
-	}
+  @Override
+  protected boolean isPublic() {
+    return this.getVisibilityState().getValue().equals(BugSubmitVisibility.PUBLIC);
+  }
 
-	public ImmutableDataSingleSelectListState<BugSubmitVisibility> getVisibilityState() {
-		return this.visibilityState;
-	}
+  public ImmutableDataSingleSelectListState<BugSubmitVisibility> getVisibilityState() {
+    return this.visibilityState;
+  }
 
-	@Override
-	protected IssueType getReportType() {
-		return this.reportTypeState.getValue();
-	}
+  @Override
+  protected IssueType getReportType() {
+    return this.reportTypeState.getValue();
+  }
 
-	public ImmutableDataSingleSelectListState<IssueType> getReportTypeState() {
-		return this.reportTypeState;
-	}
+  public ImmutableDataSingleSelectListState<IssueType> getReportTypeState() {
+    return this.reportTypeState;
+  }
 
-	@Override
-	protected String getSummaryText() {
-		return this.summaryState.getValue();
-	}
+  @Override
+  protected String getSummaryText() {
+    return this.summaryState.getValue();
+  }
 
-	public StringState getSummaryState() {
-		return this.summaryState;
-	}
+  public StringState getSummaryState() {
+    return this.summaryState;
+  }
 
-	@Override
-	protected String getDescriptionText() {
-		return this.descriptionState.getValue();
-	}
+  @Override
+  protected String getDescriptionText() {
+    return this.descriptionState.getValue();
+  }
 
-	public StringState getDescriptionState() {
-		return this.descriptionState;
-	}
+  public StringState getDescriptionState() {
+    return this.descriptionState;
+  }
 
-	public ImmutableDataSingleSelectListState<BugSubmitAttachment> getAttachmentState() {
-		return this.attachmentState;
-	}
+  public ImmutableDataSingleSelectListState<BugSubmitAttachment> getAttachmentState() {
+    return this.attachmentState;
+  }
 
-	public CardOwnerComposite getLogInOutCardComposite() {
-		return this.logInOutComposite;
-	}
+  public CardOwnerComposite getLogInOutCardComposite() {
+    return this.logInOutComposite;
+  }
 
-	@Override
-	protected ReportIssueView createView() {
-		return new ReportIssueView( this );
-	}
+  @Override
+  protected ReportIssueView createView() {
+    return new ReportIssueView(this);
+  }
 
-	public Operation getBrowserOperation() {
-		return this.browserOperation;
-	}
+  public Operation getBrowserOperation() {
+    return this.browserOperation;
+  }
 
-	@Override
-	protected boolean isProjectAttachmentDesired() {
-		return this.attachmentState.getValue().equals( BugSubmitAttachment.YES );
-	}
+  @Override
+  protected boolean isProjectAttachmentDesired() {
+    return this.attachmentState.getValue().equals(BugSubmitAttachment.YES);
+  }
 
-	@Override
-	protected boolean isClearedToSubmitBug() {
-		boolean rv;
-		if( this.attachmentState.getValue() != null ) {
-			rv = true;
-		} else {
-			YesNoCancelResult result =
-				Dialogs.confirmOrCancel( "Attach current project?",
-										 "Is your current project relevant to this issue report?" );
-			if( result == YesNoCancelResult.YES ) {
-				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
-				rv = true;
-			} else if( result == YesNoCancelResult.NO ) {
-				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.NO );
-				rv = true;
-			} else {
-				rv = false;
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected boolean isClearedToSubmitBug() {
+    boolean rv;
+    if (this.attachmentState.getValue() != null) {
+      rv = true;
+    } else {
+      YesNoCancelResult result = Dialogs.confirmOrCancel("Attach current project?", "Is your current project relevant to this issue report?");
+      if (result == YesNoCancelResult.YES) {
+        this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.YES);
+        rv = true;
+      } else if (result == YesNoCancelResult.NO) {
+        this.attachmentState.setValueTransactionlessly(BugSubmitAttachment.NO);
+        rv = true;
+      } else {
+        rv = false;
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		this.summaryState.setValueTransactionlessly( "" );
-		this.descriptionState.setValueTransactionlessly( "" );
-		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
-		this.attachmentState.setValueTransactionlessly( null );
+  @Override
+  public void handlePreActivation() {
+    this.summaryState.setValueTransactionlessly("");
+    this.descriptionState.setValueTransactionlessly("");
+    this.visibilityState.setValueTransactionlessly(BugSubmitVisibility.PUBLIC);
+    this.attachmentState.setValueTransactionlessly(null);
 
-		this.summaryState.addAndInvokeNewSchoolValueListener( this.adapter );
-		super.handlePreActivation();
-	}
+    this.summaryState.addAndInvokeNewSchoolValueListener(this.adapter);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.summaryState.removeNewSchoolValueListener( this.adapter );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.summaryState.removeNewSchoolValueListener(this.adapter);
+  }
 
-	public Operation getReportBugLaunchOperation() {
-		return this.reportBugLaunchOperation;
-	}
+  public Operation getReportBugLaunchOperation() {
+    return this.reportBugLaunchOperation;
+  }
 
-	public Operation getRequestNewFeatureLaunchOperation() {
-		return this.requestNewFeatureLaunchOperation;
-	}
+  public Operation getRequestNewFeatureLaunchOperation() {
+    return this.requestNewFeatureLaunchOperation;
+  }
 
-	public Operation getSuggestImprovementLaunchOperation() {
-		return this.suggestImprovementLaunchOperation;
-	}
+  public Operation getSuggestImprovementLaunchOperation() {
+    return this.suggestImprovementLaunchOperation;
+  }
 
-	private final ImmutableDataSingleSelectListState<BugSubmitVisibility> visibilityState = createImmutableListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+  private final ImmutableDataSingleSelectListState<BugSubmitVisibility> visibilityState = createImmutableListStateForEnum("visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE);
 
-	private final ImmutableDataSingleSelectListState<IssueType> reportTypeState;
-	private final StringState summaryState = createStringState( "summaryState" );
-	private final StringState descriptionState = createStringState( "descriptionState" );
-	private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
-	private final Operation browserOperation = new ImmutableBrowserOperation( UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), ReportSubmissionConfiguration.JIRA_URL );
-	private final LogInOutComposite logInOutComposite = new LogInOutComposite( UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
-	private final Operation reportBugLaunchOperation;
-	private final Operation requestNewFeatureLaunchOperation;
-	private final Operation suggestImprovementLaunchOperation;
+  private final ImmutableDataSingleSelectListState<IssueType> reportTypeState;
+  private final StringState summaryState = createStringState("summaryState");
+  private final StringState descriptionState = createStringState("descriptionState");
+  private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum("attachmentState", BugSubmitAttachment.class, null);
+  private final Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
+  private final LogInOutComposite logInOutComposite = new LogInOutComposite(UUID.fromString("079f108d-c3bb-4581-b107-f21b8d7286ca"), BugLoginComposite.getInstance());
+  private final Operation reportBugLaunchOperation;
+  private final Operation requestNewFeatureLaunchOperation;
+  private final Operation suggestImprovementLaunchOperation;
 
-	private final ValueListener<String> adapter = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
-		}
-	};
+  private final ValueListener<String> adapter = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      getSubmitBugOperation().setEnabled(summaryState.getValue().length() > 0);
+    }
+  };
 }

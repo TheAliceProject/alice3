@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionsToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
-	public FunctionsToolPaletteCoreComposite( NamedUserType type ) {
-		super( UUID.fromString( "47e05482-b982-4dd6-a49a-7ec62cf783c6" ), FunctionsComposite.getInstance( type ), AddFunctionComposite.getInstance( type ).getLaunchOperation() );
-	}
+  public FunctionsToolPaletteCoreComposite(NamedUserType type) {
+    super(UUID.fromString("47e05482-b982-4dd6-a49a-7ec62cf783c6"), FunctionsComposite.getInstance(type), AddFunctionComposite.getInstance(type).getLaunchOperation());
+  }
 
-	@Override
-	protected FunctionsToolPaletteCoreView createView() {
-		return new FunctionsToolPaletteCoreView( this );
-	}
+  @Override
+  protected FunctionsToolPaletteCoreView createView() {
+    return new FunctionsToolPaletteCoreView(this);
+  }
 }

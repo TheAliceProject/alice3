@@ -49,29 +49,29 @@ import org.lgna.project.ast.ArithmeticInfixExpression;
  * @author Dennis Cosgrove
  */
 public class ArithmeticUtilities {
-	private ArithmeticUtilities() {
-		throw new AssertionError();
-	}
+  private ArithmeticUtilities() {
+    throw new AssertionError();
+  }
 
-	public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS = {
-			ArithmeticInfixExpression.Operator.PLUS,
-			ArithmeticInfixExpression.Operator.MINUS,
-			ArithmeticInfixExpression.Operator.TIMES,
-			ArithmeticInfixExpression.Operator.REAL_DIVIDE
-	};
-	public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS = {
-			ArithmeticInfixExpression.Operator.REAL_REMAINDER,
-			ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
-			ArithmeticInfixExpression.Operator.INTEGER_REMAINDER,
-	};
+  public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS = {
+      ArithmeticInfixExpression.Operator.PLUS,
+      ArithmeticInfixExpression.Operator.MINUS,
+      ArithmeticInfixExpression.Operator.TIMES,
+      ArithmeticInfixExpression.Operator.REAL_DIVIDE
+  };
+  public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS = {
+      ArithmeticInfixExpression.Operator.REAL_REMAINDER,
+      ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
+      ArithmeticInfixExpression.Operator.INTEGER_REMAINDER,
+  };
 
-	public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS = {
-			ArithmeticInfixExpression.Operator.PLUS,
-			ArithmeticInfixExpression.Operator.MINUS,
-			ArithmeticInfixExpression.Operator.TIMES,
-	};
-	public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS = {
-			ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
-			ArithmeticInfixExpression.Operator.INTEGER_REMAINDER
-	};
+  public static final ArithmeticInfixExpression.Operator[] PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS = {
+      ArithmeticInfixExpression.Operator.PLUS,
+      ArithmeticInfixExpression.Operator.MINUS,
+      ArithmeticInfixExpression.Operator.TIMES,
+  };
+  public static final ArithmeticInfixExpression.Operator[] TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS = {
+      ArithmeticInfixExpression.Operator.INTEGER_DIVIDE,
+      ArithmeticInfixExpression.Operator.INTEGER_REMAINDER
+  };
 }

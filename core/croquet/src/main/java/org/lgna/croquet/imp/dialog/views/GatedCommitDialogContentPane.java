@@ -57,40 +57,40 @@ import java.awt.GridBagConstraints;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogContentPane extends DialogContentPane {
-	public static final Color ERROR_COLOR = Color.RED.darker().darker();
+  public static final Color ERROR_COLOR = Color.RED.darker().darker();
 
-	private final StatusLabel statusLabel = new StatusLabel();
-	private final LineAxisPanel controlLine = new LineAxisPanel();
+  private final StatusLabel statusLabel = new StatusLabel();
+  private final LineAxisPanel controlLine = new LineAxisPanel();
 
-	public GatedCommitDialogContentPane( GatedCommitDialogContentComposite<?> composite ) {
-		super( composite );
-		controlLine.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+  public GatedCommitDialogContentPane(GatedCommitDialogContentComposite<?> composite) {
+    super(composite);
+    controlLine.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		GridBagPanel pageEndPanel = new GridBagPanel();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.weightx = 1.0;
-		gbc.weighty = 0.0;
-		GatedCommitDialogCoreComposite<?, ?> coreComposite = (GatedCommitDialogCoreComposite<?, ?>)composite.getCoreComposite();
-		if( coreComposite.isStatusLineDesired() ) {
-			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
-		}
-		pageEndPanel.addComponent( Separator.createInstanceSeparatingTopFromBottom(), gbc );
-		pageEndPanel.addComponent( controlLine, gbc );
-		controlLine.setBackgroundColor( null );
+    GridBagPanel pageEndPanel = new GridBagPanel();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTH;
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1.0;
+    gbc.weighty = 0.0;
+    GatedCommitDialogCoreComposite<?, ?> coreComposite = (GatedCommitDialogCoreComposite<?, ?>) composite.getCoreComposite();
+    if (coreComposite.isStatusLineDesired()) {
+      pageEndPanel.addComponent(this.getStatusLabel(), gbc);
+    }
+    pageEndPanel.addComponent(Separator.createInstanceSeparatingTopFromBottom(), gbc);
+    pageEndPanel.addComponent(controlLine, gbc);
+    controlLine.setBackgroundColor(null);
 
-		this.addPageEndComponent( pageEndPanel );
+    this.addPageEndComponent(pageEndPanel);
 
-		this.statusLabel.setForegroundColor( ERROR_COLOR );
-	}
+    this.statusLabel.setForegroundColor(ERROR_COLOR);
+  }
 
-	protected LineAxisPanel getControlLine() {
-		return this.controlLine;
-	}
+  protected LineAxisPanel getControlLine() {
+    return this.controlLine;
+  }
 
-	public StatusLabel getStatusLabel() {
-		return this.statusLabel;
-	}
+  public StatusLabel getStatusLabel() {
+    return this.statusLabel;
+  }
 }

@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenTopPieceShortSleevedTie implements MaleTeenTopPiece {
-	PATTERN,
-	STRIPED;
+  PATTERN, STRIPED
 
 }

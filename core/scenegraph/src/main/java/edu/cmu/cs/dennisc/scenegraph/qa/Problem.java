@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.scenegraph.qa;
  * @author Dennis Cosgrove
  */
 public interface Problem {
-	public void mend( Mender mender );
+  public void mend(Mender mender);
 }

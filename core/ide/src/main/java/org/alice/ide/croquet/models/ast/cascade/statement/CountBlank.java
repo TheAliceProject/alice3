@@ -55,21 +55,21 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class CountBlank extends ExpressionBlank {
-	private static class SingletonHolder {
-		private static CountBlank instance = new CountBlank();
-	}
+  private static class SingletonHolder {
+    private static CountBlank instance = new CountBlank();
+  }
 
-	public static CountBlank getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CountBlank getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CountBlank() {
-		super( Integer.class, CountDetails.SINGLETON );
-	}
+  private CountBlank() {
+    super(Integer.class, CountDetails.SINGLETON);
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		children.add( CountSeparator.getInstance() );
-		super.updateChildren( children, blankNode );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    children.add(CountSeparator.getInstance());
+    super.updateChildren(children, blankNode);
+  }
 }

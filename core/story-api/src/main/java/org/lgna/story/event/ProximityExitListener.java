@@ -44,6 +44,6 @@ package org.lgna.story.event;
 
 public interface ProximityExitListener {
 
-	public void proximityExited( ExitProximityEvent event );
+  public void proximityExited(ExitProximityEvent event);
 
 }

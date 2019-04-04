@@ -54,33 +54,33 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class ButtonWithRightClickCascade extends Button {
-	private final Cascade<?> cascade;
-	private final LenientMouseClickAdapter mouseClickListener = new LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
-			if( e.getButton() == MouseEvent.BUTTON3 ) {
-				cascade.fire( MouseEventTrigger.createUserActivity( ButtonWithRightClickCascade.this, e ) );
-			}
-		}
-	};
+  private final Cascade<?> cascade;
+  private final LenientMouseClickAdapter mouseClickListener = new LenientMouseClickAdapter() {
+    @Override
+    protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickCountUnquote) {
+      if (e.getButton() == MouseEvent.BUTTON3) {
+        cascade.fire(MouseEventTrigger.createUserActivity(ButtonWithRightClickCascade.this, e));
+      }
+    }
+  };
 
-	public ButtonWithRightClickCascade( Operation model, Cascade<?> cascade ) {
-		super( model );
-		this.cascade = cascade;
-	}
+  public ButtonWithRightClickCascade(Operation model, Cascade<?> cascade) {
+    super(model);
+    this.cascade = cascade;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.addMouseListener( this.mouseClickListener );
-		this.addMouseMotionListener( this.mouseClickListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.addMouseListener(this.mouseClickListener);
+    this.addMouseMotionListener(this.mouseClickListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.removeMouseMotionListener( this.mouseClickListener );
-		this.removeMouseListener( this.mouseClickListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.removeMouseMotionListener(this.mouseClickListener);
+    this.removeMouseListener(this.mouseClickListener);
+    super.handleUndisplayable();
+  }
 
 }

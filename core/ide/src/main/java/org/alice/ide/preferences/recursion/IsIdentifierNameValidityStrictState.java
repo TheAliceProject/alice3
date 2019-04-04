@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIdentifierNameValidityStrictState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIdentifierNameValidityStrictState instance = new IsIdentifierNameValidityStrictState();
-	}
+  private static class SingletonHolder {
+    private static IsIdentifierNameValidityStrictState instance = new IsIdentifierNameValidityStrictState();
+  }
 
-	public static IsIdentifierNameValidityStrictState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIdentifierNameValidityStrictState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIdentifierNameValidityStrictState() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "4cbb1a11-c028-463b-9468-366481885dd3" ), true );
-	}
+  private IsIdentifierNameValidityStrictState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("4cbb1a11-c028-463b-9468-366481885dd3"), true);
+  }
 }

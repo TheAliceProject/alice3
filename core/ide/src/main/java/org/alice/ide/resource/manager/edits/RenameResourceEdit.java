@@ -53,47 +53,47 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public final class RenameResourceEdit extends AbstractEdit {
-	private final Resource resource;
-	private final String prevValue;
-	private final String nextValue;
+  private final Resource resource;
+  private final String prevValue;
+  private final String nextValue;
 
-	public RenameResourceEdit( UserActivity userActivity, Resource resource, String prevValue, String nextValue ) {
-		super( userActivity );
-		this.resource = resource;
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
-	}
+  public RenameResourceEdit(UserActivity userActivity, Resource resource, String prevValue, String nextValue) {
+    super(userActivity);
+    this.resource = resource;
+    this.prevValue = prevValue;
+    this.nextValue = nextValue;
+  }
 
-	public RenameResourceEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.resource = ResourceCodec.getInstance( Resource.class ).decodeValue( binaryDecoder );
-		this.prevValue = binaryDecoder.decodeString();
-		this.nextValue = binaryDecoder.decodeString();
-	}
+  public RenameResourceEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.resource = ResourceCodec.getInstance(Resource.class).decodeValue(binaryDecoder);
+    this.prevValue = binaryDecoder.decodeString();
+    this.nextValue = binaryDecoder.decodeString();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		ResourceCodec.getInstance( Resource.class ).encodeValue( binaryEncoder, this.resource );
-		binaryEncoder.encode( this.prevValue );
-		binaryEncoder.encode( this.nextValue );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    ResourceCodec.getInstance(Resource.class).encodeValue(binaryEncoder, this.resource);
+    binaryEncoder.encode(this.prevValue);
+    binaryEncoder.encode(this.nextValue);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		resource.setName( this.nextValue );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    resource.setName(this.nextValue);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		resource.setName( this.prevValue );
-	}
+  @Override
+  protected final void undoInternal() {
+    resource.setName(this.prevValue);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "rename resource: " );
-		rv.append( this.prevValue );
-		rv.append( " ===> " );
-		rv.append( this.nextValue );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("rename resource: ");
+    rv.append(this.prevValue);
+    rv.append(" ===> ");
+    rv.append(this.nextValue);
+  }
 }

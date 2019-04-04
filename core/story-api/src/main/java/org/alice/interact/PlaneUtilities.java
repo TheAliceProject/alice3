@@ -54,38 +54,38 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author David Culyba
  */
 public class PlaneUtilities {
-	public static Point3 getPointInPlane( Plane plane, Ray ray ) {
-		double t = plane.intersect( ray );
-		if( Double.isNaN( t ) || ( t < 0 ) ) {
-			return null;
-		} else {
-			return ray.getPointAlong( t );
-		}
-	}
+  public static Point3 getPointInPlane(Plane plane, Ray ray) {
+    double t = plane.intersect(ray);
+    if (Double.isNaN(t) || (t < 0)) {
+      return null;
+    } else {
+      return ray.getPointAlong(t);
+    }
+  }
 
-	public static Ray getRayFromPixel( RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
-		Ray ray = renderTarget.getRayAtPixel( xPixel, yPixel, camera );
-		AffineMatrix4x4 m = camera.getAbsoluteTransformation();
-		ray.transform( m );
-		return ray;
-	}
+  public static Ray getRayFromPixel(RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel) {
+    Ray ray = renderTarget.getRayAtPixel(xPixel, yPixel, camera);
+    AffineMatrix4x4 m = camera.getAbsoluteTransformation();
+    ray.transform(m);
+    return ray;
+  }
 
-	public static double distanceToPlane( Plane plane, Point3 point ) {
-		double[] equation = plane.getEquation();
-		double topVal = ( equation[ 0 ] * point.x ) + ( equation[ 1 ] * point.y ) + ( equation[ 2 ] * point.z ) + equation[ 3 ];
-		double bottomVal = Math.sqrt( ( equation[ 0 ] * equation[ 0 ] ) + ( equation[ 1 ] * equation[ 1 ] ) + ( equation[ 2 ] * equation[ 2 ] ) );
-		return topVal / bottomVal;
-	}
+  public static double distanceToPlane(Plane plane, Point3 point) {
+    double[] equation = plane.getEquation();
+    double topVal = (equation[0] * point.x) + (equation[1] * point.y) + (equation[2] * point.z) + equation[3];
+    double bottomVal = Math.sqrt((equation[0] * equation[0]) + (equation[1] * equation[1]) + (equation[2] * equation[2]));
+    return topVal / bottomVal;
+  }
 
-	public static Vector3 getPlaneNormal( Plane plane ) {
-		double[] equation = plane.getEquation();
-		return new Vector3( equation[ 0 ], equation[ 1 ], equation[ 2 ] );
-	}
+  public static Vector3 getPlaneNormal(Plane plane) {
+    double[] equation = plane.getEquation();
+    return new Vector3(equation[0], equation[1], equation[2]);
+  }
 
-	public static Point3 projectPointIntoPlane( Plane plane, Point3 point ) {
-		double distanceToPlane = distanceToPlane( plane, point );
-		Vector3 offsetVector = Vector3.createMultiplication( getPlaneNormal( plane ), -distanceToPlane );
-		return Point3.createAddition( point, offsetVector );
-	}
+  public static Point3 projectPointIntoPlane(Plane plane, Point3 point) {
+    double distanceToPlane = distanceToPlane(plane, point);
+    Vector3 offsetVector = Vector3.createMultiplication(getPlaneNormal(plane), -distanceToPlane);
+    return Point3.createAddition(point, offsetVector);
+  }
 
 }

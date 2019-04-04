@@ -46,5 +46,5 @@ package org.lgna.issue;
  * @author Dennis Cosgrove
  */
 public interface IssueReportingRemoteUserObserver {
-	void remoteUserAttemptCompleted( boolean isConnectionSeeminglyPossible, IssueReportRemoteUser user );
+  void remoteUserAttemptCompleted(boolean isConnectionSeeminglyPossible, IssueReportRemoteUser user);
 }

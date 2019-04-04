@@ -53,15 +53,13 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 public abstract class IdeIssueConfiguration implements ApplicationIssueConfiguration {
-	@Override
-	public String getSubmitActionName() {
-		return "submit bug report";
-	}
+  @Override
+  public String getSubmitActionName() {
+    return "submit bug report";
+  }
 
-	@Override
-	public JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		return originalThrowableOrTarget instanceof GLException
-				? new JGraphicsHeaderPane( this )
-				: new JStandardHeaderPane( this );
-	}
+  @Override
+  public JPanel createHeaderPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget) {
+    return originalThrowableOrTarget instanceof GLException ? new JGraphicsHeaderPane(this) : new JStandardHeaderPane(this);
+  }
 }

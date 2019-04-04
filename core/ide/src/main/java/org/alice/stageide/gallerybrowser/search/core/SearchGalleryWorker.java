@@ -55,94 +55,94 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SearchGalleryWorker extends WorkerWithProgress<List<ResourceNode>, ResourceNode> {
-	private static enum Criterion {
-		STARTS_WITH {
-			@Override
-			public boolean accept( String lcName, String lcFilter ) {
-				return lcName.startsWith( lcFilter );
-			}
-		},
-		CONTAINS_BUT_DOES_NOT_START_WITH {
-			@Override
-			public boolean accept( String lcName, String lcFilter ) {
-				return ( lcName.startsWith( lcFilter ) == false ) && lcName.contains( lcFilter );
-			}
-		};
-		public abstract boolean accept( String lcName, String lcFilter );
-	}
+  private static enum Criterion {
+    STARTS_WITH {
+      @Override
+      public boolean accept(String lcName, String lcFilter) {
+        return lcName.startsWith(lcFilter);
+      }
+    }, CONTAINS_BUT_DOES_NOT_START_WITH {
+      @Override
+      public boolean accept(String lcName, String lcFilter) {
+        return (lcName.startsWith(lcFilter) == false) && lcName.contains(lcFilter);
+      }
+    };
 
-	public SearchGalleryWorker( String filter, SearchTabView searchTabView ) {
-		this.filter = filter;
-		this.searchTabView = searchTabView;
-	}
+    public abstract boolean accept(String lcName, String lcFilter);
+  }
 
-	private void appendIfMatch( List<ResourceNode> rv, ResourceNode node, String lcFilter, Criterion criterion, String text ) {
-		if( rv.contains( node ) ) {
-			//pass
-		} else {
-			String lcName = text.toLowerCase();
-			if( criterion.accept( lcName, lcFilter ) ) {
-				rv.add( node );
-				this.publish( node );
-			}
-		}
-	}
+  public SearchGalleryWorker(String filter, SearchTabView searchTabView) {
+    this.filter = filter;
+    this.searchTabView = searchTabView;
+  }
 
-	private void appendMatches( List<ResourceNode> matches, ResourceNode node, String lcFilter, Criterion criterion, boolean isTag ) {
-		if( this.isCancelled() ) {
-			//pass
-		} else {
-			if( isTag ) {
-				String[] tags = node.getResourceKey().getTags();
-				if( ( tags != null ) && ( tags.length > 0 ) ) {
-					for( String tag : tags ) {
-						appendIfMatch( matches, node, lcFilter, criterion, tag );
-					}
-				}
-			} else {
-				String searchText = node.getResourceKey().getSearchText();
-				if( ( searchText != null ) && ( searchText.length() > 0 ) ) {
-					appendIfMatch( matches, node, lcFilter, criterion, searchText );
-				}
-			}
-			if( node.getResourceKey().isLeaf() ) {
-				//pass
-			} else {
-				for( ResourceNode child : node.getNodeChildren() ) {
-					appendMatches( matches, child, lcFilter, criterion, isTag );
-				}
-			}
-		}
-	}
+  private void appendIfMatch(List<ResourceNode> rv, ResourceNode node, String lcFilter, Criterion criterion, String text) {
+    if (rv.contains(node)) {
+      //pass
+    } else {
+      String lcName = text.toLowerCase();
+      if (criterion.accept(lcName, lcFilter)) {
+        rv.add(node);
+        this.publish(node);
+      }
+    }
+  }
 
-	@Override
-	protected List<ResourceNode> do_onBackgroundThread() throws Exception {
-		if( filter.length() > 0 ) {
-			ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
-			List<ResourceNode> matchingNodes = Lists.newLinkedList();
-			String lcFilter = filter.toLowerCase();
-			for( boolean isTag : new boolean[] { false, true } ) {
-				appendMatches( matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag );
-				if( lcFilter.length() > 2 ) {
-					appendMatches( matchingNodes, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag );
-				}
-			}
-			return matchingNodes;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  private void appendMatches(List<ResourceNode> matches, ResourceNode node, String lcFilter, Criterion criterion, boolean isTag) {
+    if (this.isCancelled()) {
+      //pass
+    } else {
+      if (isTag) {
+        String[] tags = node.getResourceKey().getTags();
+        if ((tags != null) && (tags.length > 0)) {
+          for (String tag : tags) {
+            appendIfMatch(matches, node, lcFilter, criterion, tag);
+          }
+        }
+      } else {
+        String searchText = node.getResourceKey().getSearchText();
+        if ((searchText != null) && (searchText.length() > 0)) {
+          appendIfMatch(matches, node, lcFilter, criterion, searchText);
+        }
+      }
+      if (node.getResourceKey().isLeaf()) {
+        //pass
+      } else {
+        for (ResourceNode child : node.getNodeChildren()) {
+          appendMatches(matches, child, lcFilter, criterion, isTag);
+        }
+      }
+    }
+  }
 
-	@Override
-	protected void handleProcess_onEventDispatchThread( List<ResourceNode> chunks ) {
-		this.searchTabView.addGalleryDragComponents( chunks );
-	}
+  @Override
+  protected List<ResourceNode> do_onBackgroundThread() throws Exception {
+    if (filter.length() > 0) {
+      ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
+      List<ResourceNode> matchingNodes = Lists.newLinkedList();
+      String lcFilter = filter.toLowerCase();
+      for (boolean isTag : new boolean[] {false, true}) {
+        appendMatches(matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag);
+        if (lcFilter.length() > 2) {
+          appendMatches(matchingNodes, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag);
+        }
+      }
+      return matchingNodes;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	@Override
-	protected void handleDone_onEventDispatchThread( List<ResourceNode> matchingNodes ) {
-		this.searchTabView.setComponentsToGalleryDragComponents( this.filter, matchingNodes );
-	}
+  @Override
+  protected void handleProcess_onEventDispatchThread(List<ResourceNode> chunks) {
+    this.searchTabView.addGalleryDragComponents(chunks);
+  }
 
-	private final String filter;
-	private final SearchTabView searchTabView;
+  @Override
+  protected void handleDone_onEventDispatchThread(List<ResourceNode> matchingNodes) {
+    this.searchTabView.setComponentsToGalleryDragComponents(this.filter, matchingNodes);
+  }
+
+  private final String filter;
+  private final SearchTabView searchTabView;
 }

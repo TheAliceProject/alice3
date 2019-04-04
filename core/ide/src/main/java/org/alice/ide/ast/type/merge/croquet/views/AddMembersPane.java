@@ -59,41 +59,41 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class AddMembersPane extends MigPanel {
-	private void addToolPaletteViewIfAppropriate( MembersToolPalette<?, ?> composite, MigPanel panel ) {
-		if( composite.getTotalCount() > 0 ) {
-			ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
-			toolPaletteView.getTitle().setInert( true );
-			toolPaletteView.getTitle().setBackgroundColor( ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
-			//toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-			toolPaletteView.getTitle().setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-			panel.addComponent( toolPaletteView, "grow, shrink, gap 16, wrap" );
-		}
-	}
+  private void addToolPaletteViewIfAppropriate(MembersToolPalette<?, ?> composite, MigPanel panel) {
+    if (composite.getTotalCount() > 0) {
+      ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
+      toolPaletteView.getTitle().setInert(true);
+      toolPaletteView.getTitle().setBackgroundColor(ColorUtilities.scaleHSB(composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85));
+      //toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+      toolPaletteView.getTitle().setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+      panel.addComponent(toolPaletteView, "grow, shrink, gap 16, wrap");
+    }
+  }
 
-	public AddMembersPane( AddMembersPage composite ) {
-		super( composite, "fillx" );
-		Label classLabel = new Label( "class", TypeIcon.getInstance( composite.getDstType() ) );
-		classLabel.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
-		this.addComponent( classLabel, "wrap" );
+  public AddMembersPane(AddMembersPage composite) {
+    super(composite, "fillx");
+    Label classLabel = new Label("class", TypeIcon.getInstance(composite.getDstType()));
+    classLabel.setHorizontalTextPosition(HorizontalTextPosition.LEADING);
+    this.addComponent(classLabel, "wrap");
 
-		MigPanel panel = new MigPanel( null, "fill, insets 0" );
-		this.addToolPaletteViewIfAppropriate( composite.getAddProceduresComposite(), panel );
-		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite(), panel );
-		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite(), panel );
+    MigPanel panel = new MigPanel(null, "fill, insets 0");
+    this.addToolPaletteViewIfAppropriate(composite.getAddProceduresComposite(), panel);
+    this.addToolPaletteViewIfAppropriate(composite.getAddFunctionsComposite(), panel);
+    this.addToolPaletteViewIfAppropriate(composite.getAddFieldsComposite(), panel);
 
-		ScrollPane scrollPane = new ScrollPane( panel );
-		this.addComponent( scrollPane, "grow, shrink, wrap" );
+    ScrollPane scrollPane = new ScrollPane(panel);
+    this.addComponent(scrollPane, "grow, shrink, wrap");
 
-		if( composite.isContainingDifferentImplementations() ) {
-			this.addComponent( composite.getDifferentImplementationsHeader().createLabel(), "gaptop 32, wrap" );
-			this.addComponent( composite.getDifferentImplementationsSubHeader().createLabel(), "wrap" );
-			this.addComponent( composite.getAcceptAllDifferentImplementationsOperation().createButton(), "split 2" );
-			this.addComponent( composite.getRejectAllDifferentImplementationsOperation().createButton() );
-		}
+    if (composite.isContainingDifferentImplementations()) {
+      this.addComponent(composite.getDifferentImplementationsHeader().createLabel(), "gaptop 32, wrap");
+      this.addComponent(composite.getDifferentImplementationsSubHeader().createLabel(), "wrap");
+      this.addComponent(composite.getAcceptAllDifferentImplementationsOperation().createButton(), "split 2");
+      this.addComponent(composite.getRejectAllDifferentImplementationsOperation().createButton());
+    }
 
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getTypeColor() );
-		panel.setBackgroundColor( this.getBackgroundColor() );
-		scrollPane.setBackgroundColor( this.getBackgroundColor() );
-		this.setMinimumPreferredWidth( 800 );
-	}
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getTypeColor());
+    panel.setBackgroundColor(this.getBackgroundColor());
+    scrollPane.setBackgroundColor(this.getBackgroundColor());
+    this.setMinimumPreferredWidth(800);
+  }
 }

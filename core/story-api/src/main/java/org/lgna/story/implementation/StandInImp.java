@@ -54,38 +54,38 @@ import org.lgna.story.SThing;
  * @author Dennis Cosgrove
  */
 public class StandInImp extends AbstractTransformableImp implements Reusable {
-	public StandInImp() {
-		this.putInstance( this.sgStandIn );
-	}
+  public StandInImp() {
+    this.putInstance(this.sgStandIn);
+  }
 
-	@Override
-	protected Composite getSgVehicle() {
-		return this.sgStandIn.getVehicle();
-	}
+  @Override
+  protected Composite getSgVehicle() {
+    return this.sgStandIn.getVehicle();
+  }
 
-	@Override
-	protected void setSgVehicle( Composite sgVehicle ) {
-		this.sgStandIn.setVehicle( sgVehicle );
-	}
+  @Override
+  protected void setSgVehicle(Composite sgVehicle) {
+    this.sgStandIn.setVehicle(sgVehicle);
+  }
 
-	@Override
-	public SThing getAbstraction() {
-		return null;
-	}
+  @Override
+  public SThing getAbstraction() {
+    return null;
+  }
 
-	@Override
-	public StandIn getSgComposite() {
-		return this.sgStandIn;
-	}
+  @Override
+  public StandIn getSgComposite() {
+    return this.sgStandIn;
+  }
 
-	public void release() {
-		this.setVehicle( null );
-	}
+  public void release() {
+    this.setVehicle(null);
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    return rv;
+  }
 
-	private final StandIn sgStandIn = new StandIn();
+  private final StandIn sgStandIn = new StandIn();
 }

@@ -55,31 +55,31 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class EventAccessorMethodsPanel extends LineAxisPanel {
-	public EventAccessorMethodsPanel( UserCode code ) {
-		for( UserParameter parameter : code.getRequiredParamtersProperty() ) {
-			this.addComponentsForParameter( parameter );
-		}
-	}
+  public EventAccessorMethodsPanel(UserCode code) {
+    for (UserParameter parameter : code.getRequiredParamtersProperty()) {
+      this.addComponentsForParameter(parameter);
+    }
+  }
 
-	private void addComponentsForParameter( UserParameter parameter ) {
-		AbstractType<?, ?, ?> type = parameter.getValueType();
-		while( type != null ) {
-			for( AbstractMethod method : type.getDeclaredMethods() ) {
-				if( method.isFunction() ) {
-					if( method.isPublicAccess() ) {
-						Visibility visibility = method.getVisibility();
-						if( ( visibility == null ) || visibility.equals( Visibility.PRIME_TIME ) ) {
-							this.addComponent( new EventAccessorMethodDragView( ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
-							this.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-						}
-					}
-				}
-			}
-			if( type.isFollowToSuperClassDesired() ) {
-				type = type.getSuperType();
-			} else {
-				break;
-			}
-		}
-	}
+  private void addComponentsForParameter(UserParameter parameter) {
+    AbstractType<?, ?, ?> type = parameter.getValueType();
+    while (type != null) {
+      for (AbstractMethod method : type.getDeclaredMethods()) {
+        if (method.isFunction()) {
+          if (method.isPublicAccess()) {
+            Visibility visibility = method.getVisibility();
+            if ((visibility == null) || visibility.equals(Visibility.PRIME_TIME)) {
+              this.addComponent(new EventAccessorMethodDragView(ParameterAccessorMethodDragModel.getInstance(parameter, method)));
+              this.addComponent(BoxUtilities.createHorizontalSliver(4));
+            }
+          }
+        }
+      }
+      if (type.isFollowToSuperClassDesired()) {
+        type = type.getSuperType();
+      } else {
+        break;
+      }
+    }
+  }
 }

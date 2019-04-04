@@ -52,17 +52,17 @@ import org.lgna.project.ast.ResourceExpression;
  * @author Dennis Cosgrove
  */
 public class ImageResourceFillerInner extends ResourceFillerInner<ImageResource> {
-	public ImageResourceFillerInner() {
-		super( ImageResource.class );
-	}
+  public ImageResourceFillerInner() {
+    super(ImageResource.class);
+  }
 
-	@Override
-	protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( ImageResource resource ) {
-		return ImageResourceExpressionFillIn.getInstance( resource );
-	}
+  @Override
+  protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn(ImageResource resource) {
+    return ImageResourceExpressionFillIn.getInstance(resource);
+  }
 
-	@Override
-	protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
-		return ImageResourceImportValueCreator.getInstance().getFillIn();
-	}
+  @Override
+  protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
+    return ImageResourceImportValueCreator.getInstance().getFillIn();
+  }
 }

@@ -60,163 +60,163 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class Text extends Geometry {
-	private static final String DEFAULT_TEXT = "";
-	private static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 12 );
+  private static final String DEFAULT_TEXT = "";
+  private static final Font DEFAULT_FONT = new Font(null, Font.PLAIN, 12);
 
-	public GlyphVector getGlyphVector() {
-		return this.glyphVector;
-	}
+  public GlyphVector getGlyphVector() {
+    return this.glyphVector;
+  }
 
-	protected void updateUnalignedBoundingBoxIfNecessary() {
-		if( this.unalignedBoundingBox.isNaN() ) {
-			Rectangle2D.Float bounds = this.glyphVector.getBounds();
-			this.unalignedBoundingBox.setMinimum( bounds.x, bounds.y, 0 );
-			this.unalignedBoundingBox.setMaximum( bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue() );
-		}
+  protected void updateUnalignedBoundingBoxIfNecessary() {
+    if (this.unalignedBoundingBox.isNaN()) {
+      Rectangle2D.Float bounds = this.glyphVector.getBounds();
+      this.unalignedBoundingBox.setMinimum(bounds.x, bounds.y, 0);
+      this.unalignedBoundingBox.setMaximum(bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue());
+    }
 
-		if( this.unalignedBoundingBox.isNaN() ) {
-			Logger.todo( this );
-			this.unalignedBoundingBox.setMinimum( 0, 0, 0 );
-			this.unalignedBoundingBox.setMaximum( 0, 0, 0 );
-		}
-	}
+    if (this.unalignedBoundingBox.isNaN()) {
+      Logger.todo(this);
+      this.unalignedBoundingBox.setMinimum(0, 0, 0);
+      this.unalignedBoundingBox.setMaximum(0, 0, 0);
+    }
+  }
 
-	//todo: cache result?
-	public Vector3 getAlignmentOffset() {
-		updateUnalignedBoundingBoxIfNecessary();
-		Vector3 alignmentOffset = new Vector3();
+  //todo: cache result?
+  public Vector3 getAlignmentOffset() {
+    updateUnalignedBoundingBoxIfNecessary();
+    Vector3 alignmentOffset = new Vector3();
 
-		LeftToRightAlignment leftToRightAlignment = this.leftToRightAlignment.getValue();
-		TopToBottomAlignment topToBottomAlignment = this.topToBottomAlignment.getValue();
-		FrontToBackAlignment frontToBackAlignment = this.frontToBackAlignment.getValue();
+    LeftToRightAlignment leftToRightAlignment = this.leftToRightAlignment.getValue();
+    TopToBottomAlignment topToBottomAlignment = this.topToBottomAlignment.getValue();
+    FrontToBackAlignment frontToBackAlignment = this.frontToBackAlignment.getValue();
 
-		if( leftToRightAlignment == LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
-			alignmentOffset.x = -( this.unalignedBoundingBox.getXMinimum() + ( this.unalignedBoundingBox.getWidth() / 2 ) );
-		} else if( leftToRightAlignment == LeftToRightAlignment.ALIGN_LEFT ) {
-			alignmentOffset.x = -this.unalignedBoundingBox.getXMinimum();
-		} else if( leftToRightAlignment == LeftToRightAlignment.ALIGN_RIGHT ) {
-			alignmentOffset.x = -this.unalignedBoundingBox.getXMaximum();
-		} else {
-			throw new RuntimeException();
-		}
+    if (leftToRightAlignment == LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT) {
+      alignmentOffset.x = -(this.unalignedBoundingBox.getXMinimum() + (this.unalignedBoundingBox.getWidth() / 2));
+    } else if (leftToRightAlignment == LeftToRightAlignment.ALIGN_LEFT) {
+      alignmentOffset.x = -this.unalignedBoundingBox.getXMinimum();
+    } else if (leftToRightAlignment == LeftToRightAlignment.ALIGN_RIGHT) {
+      alignmentOffset.x = -this.unalignedBoundingBox.getXMaximum();
+    } else {
+      throw new RuntimeException();
+    }
 
-		if( topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BOTTOM ) {
-			alignmentOffset.y = -( this.unalignedBoundingBox.getYMinimum() + ( this.unalignedBoundingBox.getHeight() / 2 ) );
-		} else if( topToBottomAlignment == TopToBottomAlignment.ALIGN_TOP ) {
-			alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum();
-		} else if( topToBottomAlignment == TopToBottomAlignment.ALIGN_BOTTOM ) {
-			alignmentOffset.y = -this.unalignedBoundingBox.getYMinimum();
-		} else if( topToBottomAlignment == TopToBottomAlignment.ALIGN_BASELINE ) {
-			alignmentOffset.y = 0;
-		} else if( topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BASELINE ) {
-			alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum() / 2;
-		} else {
-			throw new RuntimeException();
-		}
+    if (topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BOTTOM) {
+      alignmentOffset.y = -(this.unalignedBoundingBox.getYMinimum() + (this.unalignedBoundingBox.getHeight() / 2));
+    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_TOP) {
+      alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum();
+    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_BOTTOM) {
+      alignmentOffset.y = -this.unalignedBoundingBox.getYMinimum();
+    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_BASELINE) {
+      alignmentOffset.y = 0;
+    } else if (topToBottomAlignment == TopToBottomAlignment.ALIGN_CENTER_OF_TOP_AND_BASELINE) {
+      alignmentOffset.y = -this.unalignedBoundingBox.getYMaximum() / 2;
+    } else {
+      throw new RuntimeException();
+    }
 
-		if( frontToBackAlignment == FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
-			alignmentOffset.z = -depth.getValue() / 2;
-		} else if( frontToBackAlignment == FrontToBackAlignment.ALIGN_FRONT ) {
-			alignmentOffset.z = 0;
-		} else if( frontToBackAlignment == FrontToBackAlignment.ALIGN_BACK ) {
-			alignmentOffset.z = -depth.getValue();
-		} else {
-			throw new RuntimeException();
-		}
+    if (frontToBackAlignment == FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK) {
+      alignmentOffset.z = -depth.getValue() / 2;
+    } else if (frontToBackAlignment == FrontToBackAlignment.ALIGN_FRONT) {
+      alignmentOffset.z = 0;
+    } else if (frontToBackAlignment == FrontToBackAlignment.ALIGN_BACK) {
+      alignmentOffset.z = -depth.getValue();
+    } else {
+      throw new RuntimeException();
+    }
 
-		return alignmentOffset;
-	}
+    return alignmentOffset;
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		updateUnalignedBoundingBoxIfNecessary();
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    updateUnalignedBoundingBoxIfNecessary();
 
-		Vector3 alignmentOffset = getAlignmentOffset();
+    Vector3 alignmentOffset = getAlignmentOffset();
 
-		boundingBox.set( this.unalignedBoundingBox );
-		boundingBox.translate( alignmentOffset );
+    boundingBox.set(this.unalignedBoundingBox);
+    boundingBox.translate(alignmentOffset);
 
-	}
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		//todo
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    //todo
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    throw new RuntimeException("TODO");
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    throw new RuntimeException("TODO");
+  }
 
-	public final StringProperty text = new StringProperty( this, DEFAULT_TEXT ) {
-		@Override
-		public void setValue( String value ) {
-			markBoundsDirty();
-			super.setValue( value );
-			glyphVector.setText( value.toString() );
-			unalignedBoundingBox.setNaN();
-			fireBoundChanged();
-		}
-	};
-	public final InstanceProperty<Font> font = new InstanceProperty<Font>( this, DEFAULT_FONT ) {
-		@Override
-		public void setValue( Font value ) {
-			markBoundsDirty();
-			super.setValue( value );
-			glyphVector.setFont( value );
-			unalignedBoundingBox.setNaN();
-			fireBoundChanged();
-		}
-	};
+  public final StringProperty text = new StringProperty(this, DEFAULT_TEXT) {
+    @Override
+    public void setValue(String value) {
+      markBoundsDirty();
+      super.setValue(value);
+      glyphVector.setText(value.toString());
+      unalignedBoundingBox.setNaN();
+      fireBoundChanged();
+    }
+  };
+  public final InstanceProperty<Font> font = new InstanceProperty<Font>(this, DEFAULT_FONT) {
+    @Override
+    public void setValue(Font value) {
+      markBoundsDirty();
+      super.setValue(value);
+      glyphVector.setFont(value);
+      unalignedBoundingBox.setNaN();
+      fireBoundChanged();
+    }
+  };
 
-	public final BoundDoubleProperty depth = new BoundDoubleProperty( this, 0.25 ) {
-		@Override
-		public void setValue( Double value ) {
-			super.setValue( value );
-			unalignedBoundingBox.setNaN();
-		}
-	};
+  public final BoundDoubleProperty depth = new BoundDoubleProperty(this, 0.25) {
+    @Override
+    public void setValue(Double value) {
+      super.setValue(value);
+      unalignedBoundingBox.setNaN();
+    }
+  };
 
-	public final InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new InstanceProperty<LeftToRightAlignment>( this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
-		@Override
-		public void setValue( LeftToRightAlignment value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				markBoundsDirty();
-				super.setValue( value );
-				unalignedBoundingBox.setNaN();
-				fireBoundChanged();
-			}
-		}
-	};
-	public final InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new InstanceProperty<TopToBottomAlignment>( this, TopToBottomAlignment.ALIGN_BASELINE ) {
-		@Override
-		public void setValue( TopToBottomAlignment value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				markBoundsDirty();
-				super.setValue( value );
-				unalignedBoundingBox.setNaN();
-				fireBoundChanged();
-			}
-		}
-	};
-	public final InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new InstanceProperty<FrontToBackAlignment>( this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
-		@Override
-		public void setValue( FrontToBackAlignment value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				markBoundsDirty();
-				super.setValue( value );
-				unalignedBoundingBox.setNaN();
-				fireBoundChanged();
-			}
-		}
-	};
+  public final InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new InstanceProperty<LeftToRightAlignment>(this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT) {
+    @Override
+    public void setValue(LeftToRightAlignment value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        markBoundsDirty();
+        super.setValue(value);
+        unalignedBoundingBox.setNaN();
+        fireBoundChanged();
+      }
+    }
+  };
+  public final InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new InstanceProperty<TopToBottomAlignment>(this, TopToBottomAlignment.ALIGN_BASELINE) {
+    @Override
+    public void setValue(TopToBottomAlignment value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        markBoundsDirty();
+        super.setValue(value);
+        unalignedBoundingBox.setNaN();
+        fireBoundChanged();
+      }
+    }
+  };
+  public final InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new InstanceProperty<FrontToBackAlignment>(this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK) {
+    @Override
+    public void setValue(FrontToBackAlignment value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        markBoundsDirty();
+        super.setValue(value);
+        unalignedBoundingBox.setNaN();
+        fireBoundChanged();
+      }
+    }
+  };
 
-	private final AxisAlignedBox unalignedBoundingBox = AxisAlignedBox.createNaN();
+  private final AxisAlignedBox unalignedBoundingBox = AxisAlignedBox.createNaN();
 
-	private final GlyphVector glyphVector = new GlyphVector( DEFAULT_TEXT, DEFAULT_FONT, -1, -1 );
+  private final GlyphVector glyphVector = new GlyphVector(DEFAULT_TEXT, DEFAULT_FONT, -1, -1);
 }

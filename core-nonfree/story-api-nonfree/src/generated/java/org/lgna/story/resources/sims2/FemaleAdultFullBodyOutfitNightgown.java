@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitNightgown implements FemaleAdultFullBodyOutfit {
-	FLORAL_WHITE,
-	FLORAL_PINK,
-	FLORAL_YELLOW;
+  FLORAL_WHITE, FLORAL_PINK, FLORAL_YELLOW
 
 }

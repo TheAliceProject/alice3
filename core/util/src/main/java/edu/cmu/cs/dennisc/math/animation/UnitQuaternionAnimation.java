@@ -50,26 +50,26 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  * @author Dennis Cosgrove
  */
 public abstract class UnitQuaternionAnimation extends InterpolationAnimation<UnitQuaternion> {
-	public UnitQuaternionAnimation( Number duration, Style style, UnitQuaternion q0, UnitQuaternion q1 ) {
-		super( duration, style, q0, q1 );
-	}
+  public UnitQuaternionAnimation(Number duration, Style style, UnitQuaternion q0, UnitQuaternion q1) {
+    super(duration, style, q0, q1);
+  }
 
-	@Override
-	protected UnitQuaternion newE( UnitQuaternion other ) {
-		UnitQuaternion rv;
-		if( other != null ) {
-			rv = new UnitQuaternion( other );
-		} else {
-			rv = new UnitQuaternion( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
-		}
-		return rv;
-	}
+  @Override
+  protected UnitQuaternion newE(UnitQuaternion other) {
+    UnitQuaternion rv;
+    if (other != null) {
+      rv = new UnitQuaternion(other);
+    } else {
+      rv = new UnitQuaternion(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+    }
+    return rv;
+  }
 
-	@Override
-	protected UnitQuaternion interpolate( UnitQuaternion rv, UnitQuaternion v0, UnitQuaternion v1, double portion ) {
-		assert v0.isNaN() == false;
-		assert v1.isNaN() == false;
-		rv.setToInterpolation( v0, v1, portion );
-		return rv;
-	}
+  @Override
+  protected UnitQuaternion interpolate(UnitQuaternion rv, UnitQuaternion v0, UnitQuaternion v1, double portion) {
+    assert v0.isNaN() == false;
+    assert v1.isNaN() == false;
+    rv.setToInterpolation(v0, v1, portion);
+    return rv;
+  }
 }

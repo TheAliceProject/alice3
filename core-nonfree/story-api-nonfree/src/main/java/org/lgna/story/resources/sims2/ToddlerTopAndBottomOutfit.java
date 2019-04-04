@@ -46,7 +46,7 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public abstract class ToddlerTopAndBottomOutfit<T extends ToddlerTopPiece, B extends ToddlerBottomPiece> extends TopAndBottomOutfit<T, B> {
-	public ToddlerTopAndBottomOutfit( T topPiece, B bottomPiece ) {
-		super( topPiece, bottomPiece );
-	}
+  public ToddlerTopAndBottomOutfit(T topPiece, B bottomPiece) {
+    super(topPiece, bottomPiece);
+  }
 }

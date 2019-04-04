@@ -57,13 +57,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	public MenuBarComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		this.addItem( new FileMenuModel( projectDocumentFrame ) );
-		this.addItem( new EditMenuModel( projectDocumentFrame ) );
-		this.addItem( new ProjectMenuModel( projectDocumentFrame ) );
-		this.addItem( new RunMenuModel( projectDocumentFrame ) );
-		this.addItem( new WindowMenuModel( projectDocumentFrame ) );
-		this.addItem( IdeApp.INSTANCE.getHelpMenu() );
-	}
+  public MenuBarComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("f621208a-244e-4cbe-8263-52ebb6916c2d"));
+    this.addItem(new FileMenuModel(projectDocumentFrame));
+    this.addItem(new EditMenuModel(projectDocumentFrame));
+    this.addItem(new ProjectMenuModel(projectDocumentFrame));
+    this.addItem(new RunMenuModel(projectDocumentFrame));
+    this.addItem(new WindowMenuModel(projectDocumentFrame));
+    this.addItem(IdeApp.INSTANCE.getHelpMenu());
+  }
 }

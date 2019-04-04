@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PromptUserFunctionsComposite extends NameFilteredJavaFunctionsComposite {
-	private static class SingletonHolder {
-		private static PromptUserFunctionsComposite instance = new PromptUserFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static PromptUserFunctionsComposite instance = new PromptUserFunctionsComposite();
+  }
 
-	public static PromptUserFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PromptUserFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PromptUserFunctionsComposite() {
-		super( UUID.fromString( "919ded0a-4c7b-476a-ae8f-81abff24f0b3" ), "getBooleanFromUser", "getStringFromUser", "getDoubleFromUser", "getIntegerFromUser" );
-	}
+  private PromptUserFunctionsComposite() {
+    super(UUID.fromString("919ded0a-4c7b-476a-ae8f-81abff24f0b3"), "getBooleanFromUser", "getStringFromUser", "getDoubleFromUser", "getIntegerFromUser");
+  }
 }

@@ -68,84 +68,84 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
-	private class LaunchFocusWindowOperation extends Operation {
-		private final Frame window = new Frame();
-		private final WindowFocusListener windowFocusListener = new WindowFocusListener() {
-			@Override
-			public void windowGainedFocus( WindowEvent e ) {
-			}
+  private class LaunchFocusWindowOperation extends Operation {
+    private final Frame window = new Frame();
+    private final WindowFocusListener windowFocusListener = new WindowFocusListener() {
+      @Override
+      public void windowGainedFocus(WindowEvent e) {
+      }
 
-			@Override
-			public void windowLostFocus( WindowEvent e ) {
-				JFrame window = (JFrame)e.getComponent();
-				if( window.isUndecorated() ) {
-					//note: dialog operations or browser operations will need to be addressed 
-					e.getComponent().setVisible( false );
-				}
-			}
-		};
+      @Override
+      public void windowLostFocus(WindowEvent e) {
+        JFrame window = (JFrame) e.getComponent();
+        if (window.isUndecorated()) {
+          //note: dialog operations or browser operations will need to be addressed
+          e.getComponent().setVisible(false);
+        }
+      }
+    };
 
-		private final ActionListener decoratedListener = new ActionListener() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				window.setUndecorated( window.isUndecorated() == false );
-			}
-		};
+    private final ActionListener decoratedListener = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        window.setUndecorated(window.isUndecorated() == false);
+      }
+    };
 
-		public LaunchFocusWindowOperation() {
-			super( Application.INFORMATION_GROUP, UUID.fromString( "91cee3e8-4f91-4eb2-be0e-fb86498a2031" ) );
-			window.getAwtComponent().addWindowFocusListener( this.windowFocusListener );
-			window.getAwtComponent().setUndecorated( true );
-			window.getAwtComponent().getRootPane().registerKeyboardAction( this.decoratedListener, KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ), JComponent.WHEN_IN_FOCUSED_WINDOW );
-		}
+    public LaunchFocusWindowOperation() {
+      super(Application.INFORMATION_GROUP, UUID.fromString("91cee3e8-4f91-4eb2-be0e-fb86498a2031"));
+      window.getAwtComponent().addWindowFocusListener(this.windowFocusListener);
+      window.getAwtComponent().setUndecorated(true);
+      window.getAwtComponent().getRootPane().registerKeyboardAction(this.decoratedListener, KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return FocusWindowComposite.this.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return FocusWindowComposite.this.getClassUsedForLocalization();
+    }
 
-		@Override
-		protected void performInActivity( UserActivity userActivity ) {
-			SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
-			if( view.getParent() == null ) {
-				window.getContentPane().addCenterComponent( view );
-			}
-			window.pack();
-			final Trigger trigger = userActivity.getTrigger();
-			if( trigger instanceof EventObjectTrigger ) {
-				EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>)trigger;
-				EventObject eventObject = eventObjectTrigger.getEvent();
-				Object source = eventObject.getSource();
-				if( source instanceof Component ) {
-					Component awtSource = (Component)source;
-					window.setLocation( calculateLocationOnScreenForFocusWindow( awtSource, window ) );
-				}
-			} else {
-				Logger.outln( trigger );
-			}
-			window.setVisible( true );
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					window.getAwtComponent().getRootPane().requestFocus();
-				}
-			} );
-		}
-	}
+    @Override
+    protected void performInActivity(UserActivity userActivity) {
+      SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
+      if (view.getParent() == null) {
+        window.getContentPane().addCenterComponent(view);
+      }
+      window.pack();
+      final Trigger trigger = userActivity.getTrigger();
+      if (trigger instanceof EventObjectTrigger) {
+        EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>) trigger;
+        EventObject eventObject = eventObjectTrigger.getEvent();
+        Object source = eventObject.getSource();
+        if (source instanceof Component) {
+          Component awtSource = (Component) source;
+          window.setLocation(calculateLocationOnScreenForFocusWindow(awtSource, window));
+        }
+      } else {
+        Logger.outln(trigger);
+      }
+      window.setVisible(true);
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          window.getAwtComponent().getRootPane().requestFocus();
+        }
+      });
+    }
+  }
 
-	private final LaunchFocusWindowOperation launchOperation = new LaunchFocusWindowOperation();
+  private final LaunchFocusWindowOperation launchOperation = new LaunchFocusWindowOperation();
 
-	public FocusWindowComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public FocusWindowComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public Operation getLaunchOperation() {
-		return this.launchOperation;
-	}
+  public Operation getLaunchOperation() {
+    return this.launchOperation;
+  }
 
-	protected Point calculateLocationOnScreenForFocusWindow( Component awtSource, Frame focusWindow ) {
-		Point p = awtSource.getLocationOnScreen();
-		final int PAD = 8;
-		return new Point( p.x + awtSource.getWidth() + PAD, p.y );
-	}
+  protected Point calculateLocationOnScreenForFocusWindow(Component awtSource, Frame focusWindow) {
+    Point p = awtSource.getLocationOnScreen();
+    final int PAD = 8;
+    return new Point(p.x + awtSource.getWidth() + PAD, p.y);
+  }
 }

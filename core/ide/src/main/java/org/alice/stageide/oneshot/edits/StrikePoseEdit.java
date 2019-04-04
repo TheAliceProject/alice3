@@ -67,121 +67,121 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class StrikePoseEdit extends MethodInvocationEdit {
-	private static class JointUndoRunnable implements Runnable {
-		private final JointImp joint;
-		private final AffineMatrix4x4 transformation;
+  private static class JointUndoRunnable implements Runnable {
+    private final JointImp joint;
+    private final AffineMatrix4x4 transformation;
 
-		public JointUndoRunnable( JointImp joint ) {
-			this.joint = joint;
-			this.transformation = this.joint.getLocalTransformation();
-		}
+    public JointUndoRunnable(JointImp joint) {
+      this.joint = joint;
+      this.transformation = this.joint.getLocalTransformation();
+    }
 
-		//Returns true if the pose will actually change the orientation and position of the joint
-		//Scale is passed in because poses that affect the translation of a joint must apply the model's scale to the translation
-		public boolean isUndoNecessary( Pose<? extends SJointedModel> pose, Dimension3 scale ) {
-			AffineMatrix4x4 poseTransform = null;
-			boolean willNotRotateJoint = true;
-			boolean willNotTranslateJoint = true;
-			boolean affectsTranslation = false;
-			for( JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs() ) {
-				if( idTransformPair.getJointId() == this.joint.getJointId() ) {
-					poseTransform = new AffineMatrix4x4( idTransformPair.getTransformation() );
-					if( idTransformPair.affectsTranslation() ) {
-						//Apply the scale of the model to the translation
-						poseTransform.translation.multiply( scale );
-						affectsTranslation = true;
-					}
-					break;
-				}
-			}
-			if( poseTransform != null ) {
-				willNotRotateJoint = poseTransform.orientation.createUnitQuaternion().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( this.transformation.orientation.createUnitQuaternion() );
-				if( affectsTranslation ) {
-					willNotTranslateJoint = poseTransform.translation.isWithinReasonableEpsilonOf( this.transformation.translation );
-				}
-			}
-			return !willNotRotateJoint || !willNotTranslateJoint;
-		}
+    //Returns true if the pose will actually change the orientation and position of the joint
+    //Scale is passed in because poses that affect the translation of a joint must apply the model's scale to the translation
+    public boolean isUndoNecessary(Pose<? extends SJointedModel> pose, Dimension3 scale) {
+      AffineMatrix4x4 poseTransform = null;
+      boolean willNotRotateJoint = true;
+      boolean willNotTranslateJoint = true;
+      boolean affectsTranslation = false;
+      for (JointIdTransformationPair idTransformPair : pose.getJointIdTransformationPairs()) {
+        if (idTransformPair.getJointId() == this.joint.getJointId()) {
+          poseTransform = new AffineMatrix4x4(idTransformPair.getTransformation());
+          if (idTransformPair.affectsTranslation()) {
+            //Apply the scale of the model to the translation
+            poseTransform.translation.multiply(scale);
+            affectsTranslation = true;
+          }
+          break;
+        }
+      }
+      if (poseTransform != null) {
+        willNotRotateJoint = poseTransform.orientation.createUnitQuaternion().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.transformation.orientation.createUnitQuaternion());
+        if (affectsTranslation) {
+          willNotTranslateJoint = poseTransform.translation.isWithinReasonableEpsilonOf(this.transformation.translation);
+        }
+      }
+      return !willNotRotateJoint || !willNotTranslateJoint;
+    }
 
-		@Override
-		public void run() {
-			this.joint.animateTransformation( this.joint.getVehicle(), this.transformation );
-		}
-	}
+    @Override
+    public void run() {
+      this.joint.animateTransformation(this.joint.getVehicle(), this.transformation);
+    }
+  }
 
-	private transient JointUndoRunnable[] jointUndoRunnables;
+  private transient JointUndoRunnable[] jointUndoRunnables;
 
-	private transient Pose<? extends SJointedModel> pose;
+  private transient Pose<? extends SJointedModel> pose;
 
-	private Pose<? extends SJointedModel> getPose( AbstractMethod method, Expression[] argumentExpressions ) {
-		if( argumentExpressions.length > 0 ) {
-			if( argumentExpressions[ 0 ] instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)argumentExpressions[ 0 ];
-				JavaField poseField = (JavaField)fieldAccess.field.getValue();
-				if( poseField.isStatic() ) {
-					Field fld = poseField.getFieldReflectionProxy().getReification();
-					try {
-						Object o = fld.get( null );
-						if( o != null ) {
-							if( o instanceof Pose<?> ) {
-								return (Pose<?>)o;
-							}
-						}
-					} catch( IllegalAccessException iae ) {
-						iae.printStackTrace();
-					}
-				}
-			}
-		} else {
-			//TODO: How to get the pose from "spreadWings" and "foldWings" and such.
-		}
-		return null;
-	}
+  private Pose<? extends SJointedModel> getPose(AbstractMethod method, Expression[] argumentExpressions) {
+    if (argumentExpressions.length > 0) {
+      if (argumentExpressions[0] instanceof FieldAccess) {
+        FieldAccess fieldAccess = (FieldAccess) argumentExpressions[0];
+        JavaField poseField = (JavaField) fieldAccess.field.getValue();
+        if (poseField.isStatic()) {
+          Field fld = poseField.getFieldReflectionProxy().getReification();
+          try {
+            Object o = fld.get(null);
+            if (o != null) {
+              if (o instanceof Pose<?>) {
+                return (Pose<?>) o;
+              }
+            }
+          } catch (IllegalAccessException iae) {
+            iae.printStackTrace();
+          }
+        }
+      }
+    } else {
+      //TODO: How to get the pose from "spreadWings" and "foldWings" and such.
+    }
+    return null;
+  }
 
-	public StrikePoseEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-		this.pose = getPose( method, argumentExpressions );
-	}
+  public StrikePoseEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+    this.pose = getPose(method, argumentExpressions);
+  }
 
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof SJointedModel ) {
-			SJointedModel jointedModel = (SJointedModel)instance;
-			JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation( jointedModel );
-			Iterable<JointImp> joints = jointedModelImp.getJoints();
-			List<JointUndoRunnable> list = Lists.newLinkedList();
-			//TODO: Possibly use the captured pose to determine if undo is appropriate per joint?
-			for( JointImp joint : joints ) {
-				JointUndoRunnable jointUndoRunnable = new JointUndoRunnable( joint );
-				if( this.pose != null ) {
-					if( jointUndoRunnable.isUndoNecessary( this.pose, jointedModelImp.getScale() ) ) {
-						list.add( jointUndoRunnable );
-					}
-				} else {
-					list.add( jointUndoRunnable );
-				}
-			}
-			this.jointUndoRunnables = ArrayUtilities.createArray( list, JointUndoRunnable.class );
-		} else {
-			this.jointUndoRunnables = new JointUndoRunnable[] {};
-		}
-	}
+  @Override
+  protected void preserveUndoInfo(Object instance, boolean isDo) {
+    if (instance instanceof SJointedModel) {
+      SJointedModel jointedModel = (SJointedModel) instance;
+      JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+      Iterable<JointImp> joints = jointedModelImp.getJoints();
+      List<JointUndoRunnable> list = Lists.newLinkedList();
+      //TODO: Possibly use the captured pose to determine if undo is appropriate per joint?
+      for (JointImp joint : joints) {
+        JointUndoRunnable jointUndoRunnable = new JointUndoRunnable(joint);
+        if (this.pose != null) {
+          if (jointUndoRunnable.isUndoNecessary(this.pose, jointedModelImp.getScale())) {
+            list.add(jointUndoRunnable);
+          }
+        } else {
+          list.add(jointUndoRunnable);
+        }
+      }
+      this.jointUndoRunnables = ArrayUtilities.createArray(list, JointUndoRunnable.class);
+    } else {
+      this.jointUndoRunnables = new JointUndoRunnable[] {};
+    }
+  }
 
-	@Override
-	protected void undoInternal() {
-		switch( this.jointUndoRunnables.length ) {
-		case 0:
-			break;
-		case 1:
-			this.jointUndoRunnables[ 0 ].run();
-			break;
-		default:
-			new Thread() {
-				@Override
-				public void run() {
-					ThreadUtilities.doTogether( jointUndoRunnables );
-				}
-			}.start();
-		}
-	}
+  @Override
+  protected void undoInternal() {
+    switch (this.jointUndoRunnables.length) {
+    case 0:
+      break;
+    case 1:
+      this.jointUndoRunnables[0].run();
+      break;
+    default:
+      new Thread() {
+        @Override
+        public void run() {
+          ThreadUtilities.doTogether(jointUndoRunnables);
+        }
+      }.start();
+    }
+  }
 }

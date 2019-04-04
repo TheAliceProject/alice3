@@ -52,12 +52,12 @@ import org.lgna.story.resources.sims2.LifeStage;
  * @author Dennis Cosgrove
  */
 public class HairFillerInner extends IngredientFillerInner {
-	public HairFillerInner() {
-		super( JavaType.getInstance( Hair.class ) );
-	}
+  public HairFillerInner() {
+    super(JavaType.getInstance(Hair.class));
+  }
 
-	@Override
-	protected Class<?>[] getClses( LifeStage lifeStage, Gender gender ) {
-		return HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
-	}
+  @Override
+  protected Class<?>[] getClses(LifeStage lifeStage, Gender gender) {
+    return HairManager.getSingleton().getImplementingClasses(lifeStage, gender);
+  }
 }

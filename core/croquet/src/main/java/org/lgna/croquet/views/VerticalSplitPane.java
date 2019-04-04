@@ -51,7 +51,7 @@ import javax.swing.JSplitPane;
  * @author Dennis Cosgrove
  */
 public class VerticalSplitPane extends SplitPane {
-	public VerticalSplitPane( ImmutableSplitComposite splitComposite ) {
-		super( splitComposite, JSplitPane.VERTICAL_SPLIT );
-	}
+  public VerticalSplitPane(ImmutableSplitComposite splitComposite) {
+    super(splitComposite, JSplitPane.VERTICAL_SPLIT);
+  }
 }

@@ -48,33 +48,33 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class GoldenRatio {
-	public static final double PHI = 1.6180339887;
+  public static final double PHI = 1.6180339887;
 
-	private GoldenRatio() {
-		throw new AssertionError();
-	}
+  private GoldenRatio() {
+    throw new AssertionError();
+  }
 
-	public static int getShorterSideLength( int longerSideLength ) {
-		return (int)( longerSideLength / PHI );
-	}
+  public static int getShorterSideLength(int longerSideLength) {
+    return (int) (longerSideLength / PHI);
+  }
 
-	public static int getLongerSideLength( int shorterSideLength ) {
-		return (int)( shorterSideLength * PHI );
-	}
+  public static int getLongerSideLength(int shorterSideLength) {
+    return (int) (shorterSideLength * PHI);
+  }
 
-	public static Dimension createWiderSizeFromWidth( int width ) {
-		return new Dimension( width, getShorterSideLength( width ) );
-	}
+  public static Dimension createWiderSizeFromWidth(int width) {
+    return new Dimension(width, getShorterSideLength(width));
+  }
 
-	public static Dimension createWiderSizeFromHeight( int height ) {
-		return new Dimension( getLongerSideLength( height ), height );
-	}
+  public static Dimension createWiderSizeFromHeight(int height) {
+    return new Dimension(getLongerSideLength(height), height);
+  }
 
-	public static Dimension createTallerSizeFromWidth( int width ) {
-		return new Dimension( width, getLongerSideLength( width ) );
-	}
+  public static Dimension createTallerSizeFromWidth(int width) {
+    return new Dimension(width, getLongerSideLength(width));
+  }
 
-	public static Dimension createTallerSizeFromHeight( int height ) {
-		return new Dimension( getShorterSideLength( height ), height );
-	}
+  public static Dimension createTallerSizeFromHeight(int height) {
+    return new Dimension(getShorterSideLength(height), height);
+  }
 }

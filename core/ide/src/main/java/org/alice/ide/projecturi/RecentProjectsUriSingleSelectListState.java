@@ -54,7 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RecentProjectsUriSingleSelectListState extends SingleSelectListState<URI, RecentProjectsListData> {
-	public RecentProjectsUriSingleSelectListState() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), -1, RecentProjectsListData.getInstance() );
-	}
+  public RecentProjectsUriSingleSelectListState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("27771d96-8702-4536-888a-0038a39bee2b"), -1, RecentProjectsListData.getInstance());
+  }
 }

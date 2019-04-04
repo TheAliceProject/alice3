@@ -49,38 +49,38 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class BeveledRectangle extends BeveledShape {
-	public BeveledRectangle() {
-	}
+  public BeveledRectangle() {
+  }
 
-	public BeveledRectangle( Rectangle2D.Float rect ) {
-		initialize( rect );
-	}
+  public BeveledRectangle(Rectangle2D.Float rect) {
+    initialize(rect);
+  }
 
-	public BeveledRectangle( float x0, float y0, float width, float height ) {
-		initialize( x0, y0, width, height );
-	}
+  public BeveledRectangle(float x0, float y0, float width, float height) {
+    initialize(x0, y0, width, height);
+  }
 
-	public void initialize( float x, float y, float width, float height ) {
-		Rectangle2D.Float base = new Rectangle2D.Float( x, y, width, height );
-		GeneralPath high = new GeneralPath();
-		GeneralPath neut = null;
-		GeneralPath shad = new GeneralPath();
+  public void initialize(float x, float y, float width, float height) {
+    Rectangle2D.Float base = new Rectangle2D.Float(x, y, width, height);
+    GeneralPath high = new GeneralPath();
+    GeneralPath neut = null;
+    GeneralPath shad = new GeneralPath();
 
-		float x1 = x + width;
-		float y1 = y + height;
+    float x1 = x + width;
+    float y1 = y + height;
 
-		high.moveTo( x1, y );
-		high.lineTo( x, y );
-		high.lineTo( x, y1 );
+    high.moveTo(x1, y);
+    high.lineTo(x, y);
+    high.lineTo(x, y1);
 
-		shad.moveTo( x, y1 );
-		shad.lineTo( x1, y1 );
-		shad.lineTo( x1, y );
+    shad.moveTo(x, y1);
+    shad.lineTo(x1, y1);
+    shad.lineTo(x1, y);
 
-		initialize( base, high, neut, shad );
-	}
+    initialize(base, high, neut, shad);
+  }
 
-	public void initialize( Rectangle2D.Float rect ) {
-		initialize( rect.x, rect.y, rect.width, rect.height );
-	}
+  public void initialize(Rectangle2D.Float rect) {
+    initialize(rect.x, rect.y, rect.width, rect.height);
+  }
 }

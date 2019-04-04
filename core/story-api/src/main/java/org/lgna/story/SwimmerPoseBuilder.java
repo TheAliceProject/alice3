@@ -49,18 +49,18 @@ import org.lgna.story.resources.JointId;
  * @author user
  */
 public class SwimmerPoseBuilder extends PoseBuilder<SSwimmer, SwimmerPose> {
-	public SwimmerPoseBuilder joint( JointId jointId, Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
-	}
+  public SwimmerPoseBuilder joint(JointId jointId, Orientation orientation) {
+    this.addJointIdQuaternionPair(jointId, orientation);
+    return this;
+  }
 
-	public SwimmerPoseBuilder joint( JointId jointId, Number x, Number y, Number z, Number w ) {
-		this.addJointIdQuaternionPair( jointId, new Orientation( x, y, z, w ) );
-		return this;
-	}
+  public SwimmerPoseBuilder joint(JointId jointId, Number x, Number y, Number z, Number w) {
+    this.addJointIdQuaternionPair(jointId, new Orientation(x, y, z, w));
+    return this;
+  }
 
-	@Override
-	protected SwimmerPose build( JointIdTransformationPair[] buffer ) {
-		return new SwimmerPose( buffer );
-	}
+  @Override
+  protected SwimmerPose build(JointIdTransformationPair[] buffer) {
+    return new SwimmerPose(buffer);
+  }
 }

@@ -53,53 +53,53 @@ import org.lgna.croquet.event.ValueListener;
 import java.util.UUID;
 
 public class ObjectPropertiesToolPalette extends SideToolPalette<SceneObjectPropertyManagerPanel> {
-	private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
-		@Override
-		public void valueChanged( ValueEvent<InstanceFactory> e ) {
-			ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
-		}
-	};
+  private final ValueListener<InstanceFactory> instanceFactoryListener = new ValueListener<InstanceFactory>() {
+    @Override
+    public void valueChanged(ValueEvent<InstanceFactory> e) {
+      ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
+    }
+  };
 
-	public ObjectPropertiesToolPalette() {
-		super( UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( IndirectCurrentAccessibleTypeIcon.SINGLTON );
-	}
+  public ObjectPropertiesToolPalette() {
+    super(UUID.fromString("d1a8567a-672a-40e0-967c-96cef5005e28"), true);
+    this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse(IndirectCurrentAccessibleTypeIcon.SINGLTON);
+  }
 
-	@Override
-	protected SceneObjectPropertyManagerPanel createView() {
-		return new SceneObjectPropertyManagerPanel();
-	}
+  @Override
+  protected SceneObjectPropertyManagerPanel createView() {
+    return new SceneObjectPropertyManagerPanel();
+  }
 
-	@Override
-	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
-		text = super.modifyTextIfNecessary( text, isExpanded );
-		if( text != null ) {
-			InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-			String repr;
-			if( instanceFactory != null ) {
-				repr = instanceFactory.getRepr();
-			} else {
-				repr = null;
-			}
-			if( repr != null ) {
-				//pass
-			} else {
-				repr = "";
-			}
-			text = text.replace( "</selection/>", repr );
-		}
-		return text;
-	}
+  @Override
+  protected String modifyTextIfNecessary(String text, boolean isExpanded) {
+    text = super.modifyTextIfNecessary(text, isExpanded);
+    if (text != null) {
+      InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+      String repr;
+      if (instanceFactory != null) {
+        repr = instanceFactory.getRepr();
+      } else {
+        repr = null;
+      }
+      if (repr != null) {
+        //pass
+      } else {
+        repr = "";
+      }
+      text = text.replace("</selection/>", repr);
+    }
+    return text;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactoryListener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener(this.instanceFactoryListener);
+    super.handlePostDeactivation();
+  }
 }

@@ -51,40 +51,41 @@ import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class GlrObject<T extends Releasable> {
-	/*package-private*/static void handleReleased( ReleaseEvent e ) {
-		Releasable releasable = e.getTypedSource();
-		GlrObject<?> glrObject = AdapterFactory.getAdapterFor( releasable );
-		if( glrObject != null ) {
-			glrObject.handleReleased();
-		}
-	}
+  /*package-private*/
+  static void handleReleased(ReleaseEvent e) {
+    Releasable releasable = e.getTypedSource();
+    GlrObject<?> glrObject = AdapterFactory.getAdapterFor(releasable);
+    if (glrObject != null) {
+      glrObject.handleReleased();
+    }
+  }
 
-	public T getOwner() {
-		return this.owner;
-	}
+  public T getOwner() {
+    return this.owner;
+  }
 
-	protected void handleReleased() {
-		if( this.owner == null ) {
-			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
-		}
-		AdapterFactory.forget( this.owner );
-		ChangeHandler.removeListeners( this.owner );
-		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + this.element.hashCode() + " : " + this + "->" + this.element );
-		this.owner = null;
-	}
+  protected void handleReleased() {
+    if (this.owner == null) {
+      Logger.severe("TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode());
+    }
+    AdapterFactory.forget(this.owner);
+    ChangeHandler.removeListeners(this.owner);
+    //    Logger.severe( "RELEASING " + this.hashCode() + "->" + this.element.hashCode() + " : " + this + "->" + this.element );
+    this.owner = null;
+  }
 
-	public void initialize( T element ) {
-		this.owner = element;
-	}
+  public void initialize(T element) {
+    this.owner = element;
+  }
 
-	@Override
-	public String toString() {
-		if( this.owner != null ) {
-			return getClass().getName() + " " + this.owner.toString();
-		} else {
-			return super.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    if (this.owner != null) {
+      return getClass().getName() + " " + this.owner.toString();
+    } else {
+      return super.toString();
+    }
+  }
 
-	protected T owner;
+  protected T owner;
 }

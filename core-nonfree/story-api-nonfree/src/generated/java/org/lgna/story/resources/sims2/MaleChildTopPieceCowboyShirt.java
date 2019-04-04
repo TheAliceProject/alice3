@@ -44,15 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleChildTopPieceCowboyShirt implements MaleChildTopPiece {
-	RED,
-	BLUE,
-	PINK_PATTERN,
-	GREEN_PATTERN,
-	BLUE_PATTERN,
-	WHITE,
-	GREEN,
-	BROWN,
-	BLACK,
-	YELLOW;
+  RED, BLUE, PINK_PATTERN, GREEN_PATTERN, BLUE_PATTERN, WHITE, GREEN, BROWN, BLACK, YELLOW
 
 }

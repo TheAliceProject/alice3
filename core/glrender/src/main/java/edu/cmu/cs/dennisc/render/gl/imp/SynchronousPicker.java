@@ -77,262 +77,262 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.SynchronousPicker {
-	private static class ActualPicker {
-		private static final int SELECTION_CAPACITY = 256;
-		private final PickContext pickContext = new PickContext( true );
-		private final IntBuffer selectionAsIntBuffer;
+  private static class ActualPicker {
+    private static final int SELECTION_CAPACITY = 256;
+    private final PickContext pickContext = new PickContext(true);
+    private final IntBuffer selectionAsIntBuffer;
 
-		private final GLCapabilitiesChooser glCapabilitiesChooser;
-		private final GLCapabilities glRequestedCapabilities;
-		private final GLContext glShareContext;
+    private final GLCapabilitiesChooser glCapabilitiesChooser;
+    private final GLCapabilities glRequestedCapabilities;
+    private final GLContext glShareContext;
 
-		private PickParameters pickParameters;
+    private PickParameters pickParameters;
 
-		public ActualPicker() {
-			final int SIZEOF_INT = 4;
-			ByteBuffer byteBuffer = ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
-			byteBuffer.order( ByteOrder.nativeOrder() );
-			this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
+    public ActualPicker() {
+      final int SIZEOF_INT = 4;
+      ByteBuffer byteBuffer = ByteBuffer.allocateDirect(SIZEOF_INT * SELECTION_CAPACITY);
+      byteBuffer.order(ByteOrder.nativeOrder());
+      this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 
-			GLProfile glProfile = GLProfile.getDefault();
-			this.glRequestedCapabilities = new GLCapabilities( glProfile );
-			this.glRequestedCapabilities.setDoubleBuffered( false );
-			this.glCapabilitiesChooser = new DefaultGLCapabilitiesChooser();
-			this.glShareContext = null;
-		}
+      GLProfile glProfile = GLProfile.getDefault();
+      this.glRequestedCapabilities = new GLCapabilities(glProfile);
+      this.glRequestedCapabilities.setDoubleBuffered(false);
+      this.glCapabilitiesChooser = new DefaultGLCapabilitiesChooser();
+      this.glShareContext = null;
+    }
 
-		public void setPickParameters( RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver ) {
-			this.pickParameters = new PickParameters( renderTarget, sgCamera, x, y, isSubElementRequired, pickObserver );
-		}
+    public void setPickParameters(RenderTarget renderTarget, AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, PickObserver pickObserver) {
+      this.pickParameters = new PickParameters(renderTarget, sgCamera, x, y, isSubElementRequired, pickObserver);
+    }
 
-		public void clearPickParameters() {
-			this.pickParameters = null;
-		}
+    public void clearPickParameters() {
+      this.pickParameters = null;
+    }
 
-		public List<PickResult> accessAllPickResults() {
-			return this.pickParameters.accessAllPickResults();
-		}
+    public List<PickResult> accessAllPickResults() {
+      return this.pickParameters.accessAllPickResults();
+    }
 
-		public PickResult accessFrontMostPickResult() {
-			return this.pickParameters.accessFrontMostPickResult();
-		}
+    public PickResult accessFrontMostPickResult() {
+      return this.pickParameters.accessFrontMostPickResult();
+    }
 
-		private OffscreenDrawable glOffscreenDrawable;
+    private OffscreenDrawable glOffscreenDrawable;
 
-		private synchronized OffscreenDrawable getOffscreenDrawable() {
-			if( this.glOffscreenDrawable != null ) {
-				//pass
-			} else {
-				this.glOffscreenDrawable = OffscreenDrawable.createInstance( new OffscreenDrawable.DisplayCallback() {
-					@Override
-					public void display( GL2 gl ) {
-						sharedActualPicker.performPick( gl );
-					}
-				}, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-			}
-			return this.glOffscreenDrawable;
-		}
+    private synchronized OffscreenDrawable getOffscreenDrawable() {
+      if (this.glOffscreenDrawable != null) {
+        //pass
+      } else {
+        this.glOffscreenDrawable = OffscreenDrawable.createInstance(new OffscreenDrawable.DisplayCallback() {
+          @Override
+          public void display(GL2 gl) {
+            sharedActualPicker.performPick(gl);
+          }
+        }, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+      }
+      return this.glOffscreenDrawable;
+    }
 
-		private void performPick( GL2 gl ) {
-			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary( gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable );
+    private void performPick(GL2 gl) {
+      this.pickContext.gl = gl;
+      ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary(gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable);
 
-			ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+      ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 
-			if( pickParameters != null ) {
-				PickObserver pickObserver = pickParameters.getPickObserver();
-				if( pickObserver != null ) {
-					pickObserver.prePick();
-				}
-				ChangeHandler.handleBufferedChanges();
-				AbstractCamera sgCamera = pickParameters.getSGCamera();
-				GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+      if (pickParameters != null) {
+        PickObserver pickObserver = pickParameters.getPickObserver();
+        if (pickObserver != null) {
+          pickObserver.prePick();
+        }
+        ChangeHandler.handleBufferedChanges();
+        AbstractCamera sgCamera = pickParameters.getSGCamera();
+        GlrAbstractCamera<? extends AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor(sgCamera);
 
-				this.selectionAsIntBuffer.rewind();
-				this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
+        this.selectionAsIntBuffer.rewind();
+        this.pickContext.gl.glSelectBuffer(SELECTION_CAPACITY, this.selectionAsIntBuffer);
 
-				this.pickContext.gl.glRenderMode( GL2.GL_SELECT );
-				this.pickContext.gl.glInitNames();
+        this.pickContext.gl.glRenderMode(GL2.GL_SELECT);
+        this.pickContext.gl.glInitNames();
 
-				RenderTarget renderTarget = pickParameters.getRenderTarget();
-				Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle( sgCamera );
-				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
-				this.pickContext.gl.glFlush();
+        RenderTarget renderTarget = pickParameters.getRenderTarget();
+        Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle(sgCamera);
+        this.pickContext.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
+        cameraAdapter.performPick(this.pickContext, pickParameters, actualViewport);
+        this.pickContext.gl.glFlush();
 
-				this.selectionAsIntBuffer.rewind();
-				int length = this.pickContext.gl.glRenderMode( GL2.GL_RENDER );
-				//todo: invesigate negative length
-				//assert length >= 0;
+        this.selectionAsIntBuffer.rewind();
+        int length = this.pickContext.gl.glRenderMode(GL2.GL_RENDER);
+        //todo: invesigate negative length
+        //assert length >= 0;
 
-				if( length > 0 ) {
-					SelectionBufferInfo[] selectionBufferInfos = new SelectionBufferInfo[ length ];
-					int offset = 0;
-					for( int i = 0; i < length; i++ ) {
-						selectionBufferInfos[ i ] = new SelectionBufferInfo( this.pickContext, this.selectionAsIntBuffer, offset );
-						offset += 7;
-					}
+        if (length > 0) {
+          SelectionBufferInfo[] selectionBufferInfos = new SelectionBufferInfo[length];
+          int offset = 0;
+          for (int i = 0; i < length; i++) {
+            selectionBufferInfos[i] = new SelectionBufferInfo(this.pickContext, this.selectionAsIntBuffer, offset);
+            offset += 7;
+          }
 
-					if( pickDetails.isPickFunctioningCorrectly() ) {
-						double x = pickParameters.getX();
-						double y = pickParameters.getFlippedY( actualViewport );
+          if (pickDetails.isPickFunctioningCorrectly()) {
+            double x = pickParameters.getX();
+            double y = pickParameters.getFlippedY(actualViewport);
 
-						Matrix4x4 m = new Matrix4x4();
-						m.translation.set( actualViewport.width - ( 2 * ( x - actualViewport.x ) ), actualViewport.height - ( 2 * ( y - actualViewport.y ) ), 0, 1 );
-						ScaleUtilities.applyScale( m, actualViewport.width, actualViewport.height, 1.0 );
+            Matrix4x4 m = new Matrix4x4();
+            m.translation.set(actualViewport.width - (2 * (x - actualViewport.x)), actualViewport.height - (2 * (y - actualViewport.y)), 0, 1);
+            ScaleUtilities.applyScale(m, actualViewport.width, actualViewport.height, 1.0);
 
-						Matrix4x4 p = new Matrix4x4();
-						cameraAdapter.getActualProjectionMatrix( p, actualViewport );
+            Matrix4x4 p = new Matrix4x4();
+            cameraAdapter.getActualProjectionMatrix(p, actualViewport);
 
-						m.applyMultiplication( p );
-						m.invert();
-						for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-							selectionBufferInfo.updatePointInSource( m );
-						}
-					} else {
-						Ray ray = new Ray();
-						ray.setNaN();
-						cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport );
-						ray.accessDirection().normalize();
-						AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
-						for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-							selectionBufferInfo.updatePointInSource( ray, inverseAbsoluteTransformation );
-						}
-					}
+            m.applyMultiplication(p);
+            m.invert();
+            for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
+              selectionBufferInfo.updatePointInSource(m);
+            }
+          } else {
+            Ray ray = new Ray();
+            ray.setNaN();
+            cameraAdapter.getRayAtPixel(ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+            ray.accessDirection().normalize();
+            AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
+            for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
+              selectionBufferInfo.updatePointInSource(ray, inverseAbsoluteTransformation);
+            }
+          }
 
-					if( length > 1 ) {
-						//				float front0 = selectionBufferInfos[ 0 ].getZFront();
-						//				boolean isDifferentiated = false;
-						//				for( int i=1; i<length; i++ ) {
-						//					if( front0 == selectionBufferInfos[ i ].getZFront() ) {
-						//						//pass
-						//					} else {
-						//						isDifferentiated = true;
-						//						break;
-						//					}
-						//				}
-						//				java.util.Comparator< SelectionBufferInfo > comparator;
-						//				if( isDifferentiated ) {
-						//					comparator = new java.util.Comparator< SelectionBufferInfo >() {
-						//						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-						//							return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
-						//						}
-						//					};
-						//				} else {
-						//					if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-						//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: conformance test reports pick is functioning correctly" );
-						//						comparator = null;
-						//					} else {
-						//						edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
-						//						ray.setNaN();
-						//						cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
-						//						for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-						//							selectionBufferInfo.updatePointInSource( ray );
-						//						}
-						//						comparator = new java.util.Comparator< SelectionBufferInfo >() {
-						//							public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-						//								return Double.compare( sbi1.getPointInSource().z, sbi2.getPointInSource().z );
-						//							}
-						//						};
-						//					}
-						//				}
-						Comparator<SelectionBufferInfo> comparator;
-						if( pickDetails.isPickFunctioningCorrectly() ) {
-							comparator = new Comparator<SelectionBufferInfo>() {
-								@Override
-								public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-									return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
-								}
-							};
-						} else {
-							comparator = new Comparator<SelectionBufferInfo>() {
-								@Override
-								public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-									double z1 = -sbi1.getPointInSource().z;
-									double z2 = -sbi2.getPointInSource().z;
-									return Double.compare( z1, z2 );
-								}
-							};
-						}
-						Arrays.sort( selectionBufferInfos, comparator );
-					}
-					for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-						pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSgVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
-					}
-				}
-				if( pickObserver != null ) {
-					pickObserver.postPick();
-				}
-				ChangeHandler.handleBufferedChanges();
-			}
-		}
+          if (length > 1) {
+            //        float front0 = selectionBufferInfos[ 0 ].getZFront();
+            //        boolean isDifferentiated = false;
+            //        for( int i=1; i<length; i++ ) {
+            //          if( front0 == selectionBufferInfos[ i ].getZFront() ) {
+            //            //pass
+            //          } else {
+            //            isDifferentiated = true;
+            //            break;
+            //          }
+            //        }
+            //        java.util.Comparator< SelectionBufferInfo > comparator;
+            //        if( isDifferentiated ) {
+            //          comparator = new java.util.Comparator< SelectionBufferInfo >() {
+            //            public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
+            //              return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
+            //            }
+            //          };
+            //        } else {
+            //          if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: conformance test reports pick is functioning correctly" );
+            //            comparator = null;
+            //          } else {
+            //            edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
+            //            ray.setNaN();
+            //            cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+            //            for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
+            //              selectionBufferInfo.updatePointInSource( ray );
+            //            }
+            //            comparator = new java.util.Comparator< SelectionBufferInfo >() {
+            //              public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
+            //                return Double.compare( sbi1.getPointInSource().z, sbi2.getPointInSource().z );
+            //              }
+            //            };
+            //          }
+            //        }
+            Comparator<SelectionBufferInfo> comparator;
+            if (pickDetails.isPickFunctioningCorrectly()) {
+              comparator = new Comparator<SelectionBufferInfo>() {
+                @Override
+                public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
+                  return Float.compare(sbi1.getZFront(), sbi2.getZFront());
+                }
+              };
+            } else {
+              comparator = new Comparator<SelectionBufferInfo>() {
+                @Override
+                public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
+                  double z1 = -sbi1.getPointInSource().z;
+                  double z2 = -sbi2.getPointInSource().z;
+                  return Double.compare(z1, z2);
+                }
+              };
+            }
+            Arrays.sort(selectionBufferInfos, comparator);
+          }
+          for (SelectionBufferInfo selectionBufferInfo : selectionBufferInfos) {
+            pickParameters.addPickResult(sgCamera, selectionBufferInfo.getSgVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource());
+          }
+        }
+        if (pickObserver != null) {
+          pickObserver.postPick();
+        }
+        ChangeHandler.handleBufferedChanges();
+      }
+    }
 
-		private PickResult pickFrontMost( RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver ) {
-			AbstractCamera sgCamera = rtImp.getCameraAtPixel( xPixel, yPixel );
-			OffscreenDrawable impl = this.getOffscreenDrawable();
-			if( impl != null ) {
-				this.setPickParameters( rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-				try {
-					if( sgCamera != null ) {
-						impl.display();
-					}
-					return this.accessFrontMostPickResult();
-				} finally {
-					this.clearPickParameters();
-				}
-			} else {
-				return new PickResult( sgCamera );
-			}
-		}
+    private PickResult pickFrontMost(RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver) {
+      AbstractCamera sgCamera = rtImp.getCameraAtPixel(xPixel, yPixel);
+      OffscreenDrawable impl = this.getOffscreenDrawable();
+      if (impl != null) {
+        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver);
+        try {
+          if (sgCamera != null) {
+            impl.display();
+          }
+          return this.accessFrontMostPickResult();
+        } finally {
+          this.clearPickParameters();
+        }
+      } else {
+        return new PickResult(sgCamera);
+      }
+    }
 
-		private List<PickResult> pickAll( RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver ) {
-			AbstractCamera sgCamera = rtImp.getCameraAtPixel( xPixel, yPixel );
-			OffscreenDrawable impl = this.getOffscreenDrawable();
-			if( impl != null ) {
-				this.setPickParameters( rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-				try {
-					if( sgCamera != null ) {
-						impl.display();
-					}
-					return this.accessAllPickResults();
-				} finally {
-					this.clearPickParameters();
-				}
-			} else {
-				return Collections.emptyList();
-			}
-		}
-	}
+    private List<PickResult> pickAll(RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, PickObserver pickObserver) {
+      AbstractCamera sgCamera = rtImp.getCameraAtPixel(xPixel, yPixel);
+      OffscreenDrawable impl = this.getOffscreenDrawable();
+      if (impl != null) {
+        this.setPickParameters(rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver);
+        try {
+          if (sgCamera != null) {
+            impl.display();
+          }
+          return this.accessAllPickResults();
+        } finally {
+          this.clearPickParameters();
+        }
+      } else {
+        return Collections.emptyList();
+      }
+    }
+  }
 
-	private static ActualPicker sharedActualPicker = new ActualPicker();
+  private static ActualPicker sharedActualPicker = new ActualPicker();
 
-	public SynchronousPicker( RenderTargetImp rtImp ) {
-		this.rtImp = rtImp;
-	}
+  public SynchronousPicker(RenderTargetImp rtImp) {
+    this.rtImp = rtImp;
+  }
 
-	@Override
-	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
-		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
-	}
+  @Override
+  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickAll(xPixel, yPixel, pickSubElementPolicy, null);
+  }
 
-	@Override
-	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
-		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickAll( this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver );
-		}
-	}
+  @Override
+  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+    synchronized (sharedActualPicker) {
+      return sharedActualPicker.pickAll(this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
+    }
+  }
 
-	@Override
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
-		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
-	}
+  @Override
+  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickFrontMost(xPixel, yPixel, pickSubElementPolicy, null);
+  }
 
-	@Override
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
-		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickFrontMost( this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver );
-		}
-	}
+  @Override
+  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+    synchronized (sharedActualPicker) {
+      return sharedActualPicker.pickFrontMost(this.rtImp, xPixel, yPixel, pickSubElementPolicy == PickSubElementPolicy.REQUIRED, pickObserver);
+    }
+  }
 
-	private final RenderTargetImp rtImp;
+  private final RenderTargetImp rtImp;
 }

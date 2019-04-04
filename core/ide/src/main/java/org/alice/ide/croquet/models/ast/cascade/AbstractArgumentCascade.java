@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgumentCascade extends ProjectExpressionPropertyCascade {
-	private final SimpleArgument argument;
+  private final SimpleArgument argument;
 
-	public AbstractArgumentCascade( UUID migrationId, SimpleArgument argument ) {
-		super( migrationId, argument.expression, ParameterBlank.getInstance( argument.parameter.getValue() ) );
-		this.argument = argument;
-	}
+  public AbstractArgumentCascade(UUID migrationId, SimpleArgument argument) {
+    super(migrationId, argument.expression, ParameterBlank.getInstance(argument.parameter.getValue()));
+    this.argument = argument;
+  }
 
-	public final SimpleArgument getArgument() {
-		return this.argument;
-	}
+  public final SimpleArgument getArgument() {
+    return this.argument;
+  }
 
-	@Override
-	protected final Expression createExpression( Expression[] expressions ) {
-		assert expressions.length == 1;
-		return expressions[ 0 ];
-	}
+  @Override
+  protected final Expression createExpression(Expression[] expressions) {
+    assert expressions.length == 1;
+    return expressions[0];
+  }
 }

@@ -54,68 +54,68 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public class ShapeIcon implements Icon {
-	private Shape shape;
-	private Paint fillPaint;
-	private Paint drawPaint;
-	private int top;
-	private int left;
-	private int bottom;
-	private int right;
+  private Shape shape;
+  private Paint fillPaint;
+  private Paint drawPaint;
+  private int top;
+  private int left;
+  private int bottom;
+  private int right;
 
-	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint, int top, int left, int bottom, int right ) {
-		this.shape = shape;
-		this.fillPaint = fillPaint;
-		this.drawPaint = drawPaint;
-		this.top = top;
-		this.left = left;
-		this.bottom = bottom;
-		this.right = right;
-	}
+  public ShapeIcon(Shape shape, Paint fillPaint, Paint drawPaint, int top, int left, int bottom, int right) {
+    this.shape = shape;
+    this.fillPaint = fillPaint;
+    this.drawPaint = drawPaint;
+    this.top = top;
+    this.left = left;
+    this.bottom = bottom;
+    this.right = right;
+  }
 
-	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint, Insets insets ) {
-		this( shape, fillPaint, drawPaint, insets.top, insets.left, insets.bottom, insets.right );
-	}
+  public ShapeIcon(Shape shape, Paint fillPaint, Paint drawPaint, Insets insets) {
+    this(shape, fillPaint, drawPaint, insets.top, insets.left, insets.bottom, insets.right);
+  }
 
-	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint ) {
-		this( shape, fillPaint, drawPaint, 0, 0, 0, 0 );
-	}
+  public ShapeIcon(Shape shape, Paint fillPaint, Paint drawPaint) {
+    this(shape, fillPaint, drawPaint, 0, 0, 0, 0);
+  }
 
-	@Override
-	public int getIconWidth() {
-		int rv = this.shape.getBounds().width;
-		rv += this.left;
-		rv += this.right;
-		rv += 1;
-		return rv;
-	}
+  @Override
+  public int getIconWidth() {
+    int rv = this.shape.getBounds().width;
+    rv += this.left;
+    rv += this.right;
+    rv += 1;
+    return rv;
+  }
 
-	@Override
-	public int getIconHeight() {
-		int rv = this.shape.getBounds().height;
-		rv += this.top;
-		rv += this.bottom;
-		rv += 1;
-		return rv;
-	}
+  @Override
+  public int getIconHeight() {
+    int rv = this.shape.getBounds().height;
+    rv += this.top;
+    rv += this.bottom;
+    rv += 1;
+    return rv;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
 
-		g2.translate( x + this.left, y + this.top );
+    g2.translate(x + this.left, y + this.top);
 
-		Paint prevPaint = g2.getPaint();
-		if( this.fillPaint != null ) {
-			g2.setPaint( this.fillPaint );
-			g2.fill( this.shape );
-		}
-		if( this.drawPaint != null ) {
-			g2.setPaint( this.drawPaint );
-			g2.draw( this.shape );
-		}
+    Paint prevPaint = g2.getPaint();
+    if (this.fillPaint != null) {
+      g2.setPaint(this.fillPaint);
+      g2.fill(this.shape);
+    }
+    if (this.drawPaint != null) {
+      g2.setPaint(this.drawPaint);
+      g2.draw(this.shape);
+    }
 
-		g2.translate( -( x + this.left ), -( y + this.top ) );
+    g2.translate(-(x + this.left), -(y + this.top));
 
-		g2.setPaint( prevPaint );
-	}
+    g2.setPaint(prevPaint);
+  }
 }

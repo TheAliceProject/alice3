@@ -50,33 +50,33 @@ import org.lgna.story.implementation.BillboardImp;
  * @author Dennis Cosgrove
  */
 public class SBillboard extends SModel {
-	private final BillboardImp implementation = new BillboardImp( this );
+  private final BillboardImp implementation = new BillboardImp(this);
 
-	@Override
-	/* package-private */BillboardImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */BillboardImp getImplementation() {
+    return this.implementation;
+  }
 
-	@MethodTemplate( )
-	@Override
-	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-		if( paint instanceof ImageSource ) {
-			this.getImplementation().updateAspectRatio();
-		}
-	}
+  @MethodTemplate()
+  @Override
+  public void setPaint(Paint paint, SetPaint.Detail... details) {
+    this.getImplementation().paint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+    if (paint instanceof ImageSource) {
+      this.getImplementation().updateAspectRatio();
+    }
+  }
 
-	@MethodTemplate( )
-	@GetterTemplate( isPersistent = true )
-	public Paint getBackPaint() {
-		return this.getImplementation().backPaint.getValue();
-	}
+  @MethodTemplate()
+  @GetterTemplate(isPersistent = true)
+  public Paint getBackPaint() {
+    return this.getImplementation().backPaint.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
-		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-		if( paint instanceof ImageSource ) {
-			this.getImplementation().updateAspectRatio();
-		}
-	}
+  @MethodTemplate()
+  public void setBackPaint(Paint paint, SetBackPaint.Detail... details) {
+    this.getImplementation().backPaint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+    if (paint instanceof ImageSource) {
+      this.getImplementation().updateAspectRatio();
+    }
+  }
 }

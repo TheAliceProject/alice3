@@ -52,29 +52,29 @@ import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
  * @author Dennis Cosgrove
  */
 public interface InstancePropertyOwner {
-	public Iterable<InstanceProperty<?>> getProperties();
+  public Iterable<InstanceProperty<?>> getProperties();
 
-	public InstanceProperty<?> getPropertyNamed( String name );
+  public InstanceProperty<?> getPropertyNamed(String name);
 
-	public String lookupNameFor( InstanceProperty<?> instanceProperty );
+  public String lookupNameFor(InstanceProperty<?> instanceProperty);
 
-	public void firePropertyChanging( PropertyEvent e );
+  public void firePropertyChanging(PropertyEvent e);
 
-	public void firePropertyChanged( PropertyEvent e );
+  public void firePropertyChanged(PropertyEvent e);
 
-	public void fireAdding( AddListPropertyEvent<?> e );
+  public void fireAdding(AddListPropertyEvent<?> e);
 
-	public void fireAdded( AddListPropertyEvent<?> e );
+  public void fireAdded(AddListPropertyEvent<?> e);
 
-	public void fireClearing( ClearListPropertyEvent<?> e );
+  public void fireClearing(ClearListPropertyEvent<?> e);
 
-	public void fireCleared( ClearListPropertyEvent<?> e );
+  public void fireCleared(ClearListPropertyEvent<?> e);
 
-	public void fireRemoving( RemoveListPropertyEvent<?> e );
+  public void fireRemoving(RemoveListPropertyEvent<?> e);
 
-	public void fireRemoved( RemoveListPropertyEvent<?> e );
+  public void fireRemoved(RemoveListPropertyEvent<?> e);
 
-	public void fireSetting( SetListPropertyEvent<?> e );
+  public void fireSetting(SetListPropertyEvent<?> e);
 
-	public void fireSet( SetListPropertyEvent<?> e );
+  public void fireSet(SetListPropertyEvent<?> e);
 }

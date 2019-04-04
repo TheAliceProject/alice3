@@ -57,59 +57,59 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  */
 public interface ManipulationHandle extends Cloneable {
 
-	public void setHandleManager( HandleManager handleManager );
+  public void setHandleManager(HandleManager handleManager);
 
-	public HandleManager getHandleManager();
+  public HandleManager getHandleManager();
 
-	public HandleSet getHandleSet();
+  public HandleSet getHandleSet();
 
-	public boolean isAlwaysVisible();
+  public boolean isAlwaysVisible();
 
-	public void addToSet( HandleSet handleSet );
+  public void addToSet(HandleSet handleSet);
 
-	public void addToGroup( HandleSet.HandleGroup group );
+  public void addToGroup(HandleSet.HandleGroup group);
 
-	public void addToGroups( HandleSet.HandleGroup... groups );
+  public void addToGroups(HandleSet.HandleGroup... groups);
 
-	public boolean isMemberOf( HandleSet set );
+  public boolean isMemberOf(HandleSet set);
 
-	public boolean isMemberOf( HandleSet.HandleGroup group );
+  public boolean isMemberOf(HandleSet.HandleGroup group);
 
-	public AbstractTransformable getManipulatedObject();
+  public AbstractTransformable getManipulatedObject();
 
-	public void setSelectedObject( AbstractTransformable manipulatedObject );
+  public void setSelectedObject(AbstractTransformable manipulatedObject);
 
-	public void setHandleRollover( boolean rollover );
+  public void setHandleRollover(boolean rollover);
 
-	public void setHandleVisible( boolean visible );
+  public void setHandleVisible(boolean visible);
 
-	public boolean isHandleVisible();
+  public boolean isHandleVisible();
 
-	public void setHandleActive( boolean active );
+  public void setHandleActive(boolean active);
 
-	public void setVisualsShowing( boolean showing );
+  public void setVisualsShowing(boolean showing);
 
-	public boolean isRenderable();
+  public boolean isRenderable();
 
-	public boolean isPickable();
+  public boolean isPickable();
 
-	public HandleState getHandleStateCopy();
+  public HandleState getHandleStateCopy();
 
-	public AbstractManipulator getManipulation( InputState input );
+  public AbstractManipulator getManipulation(InputState input);
 
-	public void setManipulation( AbstractManipulator manipulation );
+  public void setManipulation(AbstractManipulator manipulation);
 
-	public PickHint getPickHint();
+  public PickHint getPickHint();
 
-	public void setDragAdapterAndAddHandle( DragAdapter dragAdapter );
+  public void setDragAdapterAndAddHandle(DragAdapter dragAdapter);
 
-	public void setDragAdapter( DragAdapter dragAdapter );
+  public void setDragAdapter(DragAdapter dragAdapter);
 
-	public void setCameraPosition( Point3 cameraPosition );
+  public void setCameraPosition(Point3 cameraPosition);
 
-	public void clear();
+  public void clear();
 
-	public void setName( String name );
+  public void setName(String name);
 
-	public String getName();
+  public String getName();
 }

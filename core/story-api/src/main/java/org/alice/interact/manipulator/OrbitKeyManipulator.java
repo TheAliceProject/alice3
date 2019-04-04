@@ -45,17 +45,17 @@ package org.alice.interact.manipulator;
 import org.alice.interact.MovementKey;
 
 public abstract class OrbitKeyManipulator extends KeyManipulator {
-	OrbitKeyManipulator( MovementKey[] keys ) {
-		super(keys);
-	}
+  OrbitKeyManipulator(MovementKey[] keys) {
+    super(keys);
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Orbit";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Orbit";
+  }
 
-	@Override
-	protected void manipulate( double amountToMove, MovementKey key ) {
-		key.applyOrbit(manipulatedTransformable, amountToMove );
-	}
+  @Override
+  protected void manipulate(double amountToMove, MovementKey key) {
+    key.applyOrbit(manipulatedTransformable, amountToMove);
+  }
 }

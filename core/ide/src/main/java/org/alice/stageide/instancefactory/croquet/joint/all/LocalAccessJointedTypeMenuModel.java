@@ -59,41 +59,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static MapToMap<UserLocal, Integer, LocalAccessJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, Integer, LocalAccessJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
 
-	public static LocalAccessJointedTypeMenuModel getInstance( UserLocal value ) {
-		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( value.getValueType() );
-		return getInstance( value, jointedTypeInfos, 0 );
-	}
+  public static LocalAccessJointedTypeMenuModel getInstance(UserLocal value) {
+    List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(value.getValueType());
+    return getInstance(value, jointedTypeInfos, 0);
+  }
 
-	private static LocalAccessJointedTypeMenuModel getInstance( UserLocal value, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		//todo
-		synchronized( mapToMap ) {
-			LocalAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new LocalAccessJointedTypeMenuModel( value, jointedTypeInfos, index );
-				mapToMap.put( value, index, rv );
-			}
-			return rv;
-		}
-	}
+  private static LocalAccessJointedTypeMenuModel getInstance(UserLocal value, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    //todo
+    synchronized (mapToMap) {
+      LocalAccessJointedTypeMenuModel rv = mapToMap.get(value, index);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new LocalAccessJointedTypeMenuModel(value, jointedTypeInfos, index);
+        mapToMap.put(value, index, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalAccessJointedTypeMenuModel( UserLocal local, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), jointedTypeInfos, index );
-		this.local = local;
-	}
+  private LocalAccessJointedTypeMenuModel(UserLocal local, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    super(UUID.fromString("68729d94-33e9-4da7-a04c-cb88939b8c93"), jointedTypeInfos, index);
+    this.local = local;
+  }
 
-	@Override
-	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		return getInstance( this.local, jointedTypeInfos, index );
-	}
+  @Override
+  protected JointedTypeMenuModel getInstance(List<JointedTypeInfo> jointedTypeInfos, int index) {
+    return getInstance(this.local, jointedTypeInfos, index);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
-		return InstanceFactoryFillIn.getInstance( LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
-	}
+  @Override
+  protected CascadeFillIn<InstanceFactory, ?> getFillIn(AbstractMethod method) {
+    return InstanceFactoryFillIn.getInstance(LocalAccessMethodInvocationFactory.getInstance(this.local, method));
+  }
 }

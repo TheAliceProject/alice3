@@ -59,30 +59,30 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class OneShotUtilities {
-	private OneShotUtilities() {
-		throw new AssertionError();
-	}
+  private OneShotUtilities() {
+    throw new AssertionError();
+  }
 
-	public static List<StandardMenuItemPrepModel> createMenuItemPrepModels( InstanceFactory instanceFactory ) {
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-		models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-		models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-		if( instanceFactory instanceof ThisFieldAccessFactory ) {
-			ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
-			UserField field = thisFieldAccessFactory.getField();
-			models.add( RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
-			//Prevent users from deleting the camera or the scene
-			if( field.getValueType().isAssignableTo( SCamera.class ) || field.getValueType().isAssignableTo( SScene.class ) ) {
-				//pass
-			} else {
-				models.add( DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-			}
-			//			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
-			//				models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
-			//				models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
-			//			}
-			models.add( RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-		}
-		return models;
-	}
+  public static List<StandardMenuItemPrepModel> createMenuItemPrepModels(InstanceFactory instanceFactory) {
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    models.add(InstanceFactoryLabelSeparatorModel.getInstance(instanceFactory));
+    models.add(ProceduresCascade.getInstance(instanceFactory).getMenuModel());
+    if (instanceFactory instanceof ThisFieldAccessFactory) {
+      ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+      UserField field = thisFieldAccessFactory.getField();
+      models.add(RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
+      //Prevent users from deleting the camera or the scene
+      if (field.getValueType().isAssignableTo(SCamera.class) || field.getValueType().isAssignableTo(SScene.class)) {
+        //pass
+      } else {
+        models.add(DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
+      }
+      //      if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
+      //        models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
+      //        models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
+      //      }
+      models.add(RevertFieldOperation.getInstance(field).getMenuItemPrepModel());
+    }
+    return models;
+  }
 }

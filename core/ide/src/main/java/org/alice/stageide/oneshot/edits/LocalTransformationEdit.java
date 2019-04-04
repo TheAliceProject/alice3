@@ -58,30 +58,30 @@ import org.lgna.story.implementation.AsSeenBy;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationEdit extends MethodInvocationEdit {
-	private transient AbstractTransformableImp transformable;
-	private transient AffineMatrix4x4 m;
+  private transient AbstractTransformableImp transformable;
+  private transient AffineMatrix4x4 m;
 
-	public LocalTransformationEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  public LocalTransformationEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof STurnable ) {
-			STurnable turnable = (STurnable)instance;
-			this.transformable = EmployeesOnly.getImplementation( turnable );
-			this.m = this.transformable.getLocalTransformation();
-		} else {
-			Logger.severe( instance );
-			this.transformable = null;
-			this.m = null;
-		}
-	}
+  @Override
+  protected void preserveUndoInfo(Object instance, boolean isDo) {
+    if (instance instanceof STurnable) {
+      STurnable turnable = (STurnable) instance;
+      this.transformable = EmployeesOnly.getImplementation(turnable);
+      this.m = this.transformable.getLocalTransformation();
+    } else {
+      Logger.severe(instance);
+      this.transformable = null;
+      this.m = null;
+    }
+  }
 
-	@Override
-	protected void undoInternal() {
-		if( ( this.transformable != null ) && ( this.m != null ) ) {
-			this.transformable.animateTransformation( AsSeenBy.PARENT, this.m );
-		}
-	}
+  @Override
+  protected void undoInternal() {
+    if ((this.transformable != null) && (this.m != null)) {
+      this.transformable.animateTransformation(AsSeenBy.PARENT, this.m);
+    }
+  }
 }

@@ -50,20 +50,20 @@ import edu.cmu.cs.dennisc.preference.Preference;
  * @author Dennis Cosgrove
  */
 public class PreferenceEvent<E> extends Event<Preference<E>> {
-	private E prevValue;
-	private E nextValue;
+  private E prevValue;
+  private E nextValue;
 
-	public PreferenceEvent( Preference<E> source, E prevValue, E nextValue ) {
-		super( source );
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
-	}
+  public PreferenceEvent(Preference<E> source, E prevValue, E nextValue) {
+    super(source);
+    this.prevValue = prevValue;
+    this.nextValue = nextValue;
+  }
 
-	public E getPreviousValue() {
-		return this.prevValue;
-	}
+  public E getPreviousValue() {
+    return this.prevValue;
+  }
 
-	public E getNextValue() {
-		return this.nextValue;
-	}
+  public E getNextValue() {
+    return this.nextValue;
+  }
 }

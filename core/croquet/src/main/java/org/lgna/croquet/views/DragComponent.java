@@ -71,459 +71,459 @@ import java.awt.event.MouseMotionListener;
 import java.util.EventObject;
 
 public abstract class DragComponent<M extends DragModel> extends ViewController<JDragView, M> {
-	private static final float DEFAULT_CLICK_THRESHOLD = 5.0f;
+  private static final float DEFAULT_CLICK_THRESHOLD = 5.0f;
 
-	private final MouseListener mouseListener;
-	private final MouseMotionListener mouseMotionListener;
-	private final ComponentListener componentListener;
+  private final MouseListener mouseListener;
+  private final MouseMotionListener mouseMotionListener;
+  private final ComponentListener componentListener;
 
-	private final JDragProxy dragProxy;
-	private final JDropProxy dropProxy;
+  private final JDragProxy dragProxy;
+  private final JDropProxy dropProxy;
 
-	private float clickThreshold = DEFAULT_CLICK_THRESHOLD;
-	private boolean isWithinClickThreshold = false;
+  private float clickThreshold = DEFAULT_CLICK_THRESHOLD;
+  private boolean isWithinClickThreshold = false;
 
-	private MouseEvent mousePressedEvent = null;
-	private MouseEvent leftButtonPressedEvent = null;
+  private MouseEvent mousePressedEvent = null;
+  private MouseEvent leftButtonPressedEvent = null;
 
-	private DragStep dragStep;
+  private DragStep dragStep;
 
-	private boolean isDueQuoteExitedUnquote;
+  private boolean isDueQuoteExitedUnquote;
 
-	public DragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
-		super( model );
-		if( model != null ) {
-			this.mouseListener = new MouseListener() {
-				@Override
-				public void mousePressed( MouseEvent e ) {
-					DragComponent.this.handleMousePressed( e );
-				}
+  public DragComponent(M model, boolean isAlphaDesiredWhenOverDropReceptor) {
+    super(model);
+    if (model != null) {
+      this.mouseListener = new MouseListener() {
+        @Override
+        public void mousePressed(MouseEvent e) {
+          DragComponent.this.handleMousePressed(e);
+        }
 
-				@Override
-				public void mouseReleased( MouseEvent e ) {
-					DragComponent.this.handleMouseReleased( e );
-				}
+        @Override
+        public void mouseReleased(MouseEvent e) {
+          DragComponent.this.handleMouseReleased(e);
+        }
 
-				@Override
-				public void mouseClicked( MouseEvent e ) {
-					DragComponent.this.handleMouseClicked( e );
-				}
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          DragComponent.this.handleMouseClicked(e);
+        }
 
-				@Override
-				public void mouseEntered( MouseEvent e ) {
-					DragComponent.this.handleMouseEntered( e );
-				}
+        @Override
+        public void mouseEntered(MouseEvent e) {
+          DragComponent.this.handleMouseEntered(e);
+        }
 
-				@Override
-				public void mouseExited( MouseEvent e ) {
-					DragComponent.this.handleMouseExited( e );
-				}
-			};
-			this.mouseMotionListener = new MouseMotionListener() {
-				@Override
-				public void mouseMoved( MouseEvent e ) {
-					DragComponent.this.handleMouseMoved( e );
-				}
+        @Override
+        public void mouseExited(MouseEvent e) {
+          DragComponent.this.handleMouseExited(e);
+        }
+      };
+      this.mouseMotionListener = new MouseMotionListener() {
+        @Override
+        public void mouseMoved(MouseEvent e) {
+          DragComponent.this.handleMouseMoved(e);
+        }
 
-				@Override
-				public void mouseDragged( MouseEvent e ) {
-					DragComponent.this.handleMouseDragged( e );
-				}
-			};
-			this.componentListener = new ComponentListener() {
-				@Override
-				public void componentHidden( ComponentEvent arg0 ) {
-				}
+        @Override
+        public void mouseDragged(MouseEvent e) {
+          DragComponent.this.handleMouseDragged(e);
+        }
+      };
+      this.componentListener = new ComponentListener() {
+        @Override
+        public void componentHidden(ComponentEvent arg0) {
+        }
 
-				@Override
-				public void componentMoved( ComponentEvent e ) {
-				}
+        @Override
+        public void componentMoved(ComponentEvent e) {
+        }
 
-				@Override
-				public void componentResized( ComponentEvent e ) {
-					DragComponent.this.updateProxySizes();
-				}
+        @Override
+        public void componentResized(ComponentEvent e) {
+          DragComponent.this.updateProxySizes();
+        }
 
-				@Override
-				public void componentShown( ComponentEvent e ) {
-				}
-			};
-			this.dragProxy = new JDragProxy( this, isAlphaDesiredWhenOverDropReceptor );
-			this.dropProxy = new JDropProxy( this );
-		} else {
-			this.mouseListener = null;
-			this.mouseMotionListener = null;
-			this.componentListener = null;
-			this.dragProxy = null;
-			this.dropProxy = null;
-		}
-	}
+        @Override
+        public void componentShown(ComponentEvent e) {
+        }
+      };
+      this.dragProxy = new JDragProxy(this, isAlphaDesiredWhenOverDropReceptor);
+      this.dropProxy = new JDropProxy(this);
+    } else {
+      this.mouseListener = null;
+      this.mouseMotionListener = null;
+      this.componentListener = null;
+      this.dragProxy = null;
+      this.dropProxy = null;
+    }
+  }
 
-	protected boolean isClickAndClackAppropriate() {
-		return false;
-	}
+  protected boolean isClickAndClackAppropriate() {
+    return false;
+  }
 
-	private boolean isActuallyPotentiallyDraggable() {
-		return this.dragProxy != null;
-	}
+  private boolean isActuallyPotentiallyDraggable() {
+    return this.dragProxy != null;
+  }
 
-	protected void handleMouseQuoteEnteredUnquote() {
-		this.setActive( true );
-	}
+  protected void handleMouseQuoteEnteredUnquote() {
+    this.setActive(true);
+  }
 
-	protected void handleMouseQuoteExitedUnquote() {
-		this.setActive( false );
-		this.isDueQuoteExitedUnquote = false;
-	}
+  protected void handleMouseQuoteExitedUnquote() {
+    this.setActive(false);
+    this.isDueQuoteExitedUnquote = false;
+  }
 
-	protected void handleLeftMouseButtonQuoteClickedUnquote( MouseEvent e ) {
-	}
+  protected void handleLeftMouseButtonQuoteClickedUnquote(MouseEvent e) {
+  }
 
-	protected void handleBackButtonClicked( MouseEvent e ) {
-	}
+  protected void handleBackButtonClicked(MouseEvent e) {
+  }
 
-	protected void handleForwardButtonClicked( MouseEvent e ) {
-	}
+  protected void handleForwardButtonClicked(MouseEvent e) {
+  }
 
-	private final void handleMouseEntered( MouseEvent e ) {
-		if( Application.getActiveInstance().isDragInProgress() ) {
-			//pass
-		} else {
-			this.handleMouseQuoteEnteredUnquote();
-		}
-	}
+  private final void handleMouseEntered(MouseEvent e) {
+    if (Application.getActiveInstance().isDragInProgress()) {
+      //pass
+    } else {
+      this.handleMouseQuoteEnteredUnquote();
+    }
+  }
 
-	private final void handleMouseExited( MouseEvent e ) {
-		this.isDueQuoteExitedUnquote = Application.getActiveInstance().isDragInProgress();
-		if( this.isDueQuoteExitedUnquote ) {
-			//pass
-		} else {
-			this.handleMouseQuoteExitedUnquote();
-		}
-	}
+  private final void handleMouseExited(MouseEvent e) {
+    this.isDueQuoteExitedUnquote = Application.getActiveInstance().isDragInProgress();
+    if (this.isDueQuoteExitedUnquote) {
+      //pass
+    } else {
+      this.handleMouseQuoteExitedUnquote();
+    }
+  }
 
-	private void handleLeftMouseButtonDraggedOutsideOfClickThreshold( MouseEvent e ) {
-		DragModel dragModel = this.getModel();
-		if( dragModel != null ) {
-			Application application = Application.getActiveInstance();
-			application.setDragInProgress( true );
-			this.updateProxySizes();
-			this.updateProxyPosition( e );
+  private void handleLeftMouseButtonDraggedOutsideOfClickThreshold(MouseEvent e) {
+    DragModel dragModel = this.getModel();
+    if (dragModel != null) {
+      Application application = Application.getActiveInstance();
+      application.setDragInProgress(true);
+      this.updateProxySizes();
+      this.updateProxyPosition(e);
 
-			JLayeredPane layeredPane = getLayeredPane();
-			layeredPane.add( this.dragProxy, new Integer( 1 ) );
-			layeredPane.setLayer( this.dragProxy, JLayeredPane.DRAG_LAYER );
+      JLayeredPane layeredPane = getLayeredPane();
+      layeredPane.add(this.dragProxy, new Integer(1));
+      layeredPane.setLayer(this.dragProxy, JLayeredPane.DRAG_LAYER);
 
-			final UserActivity activity = application.acquireOpenActivity().getActivityWithoutTrigger();
-			dragStep = activity.addDragStep(dragModel, DragTrigger.createUserInstance( this, leftButtonPressedEvent ) );
-			this.dragStep.setLatestMouseEvent( e );
-			this.dragStep.fireDragStarted();
-			dragModel.handleDragStarted( this.dragStep );
-			this.showDragProxy();
-		}
-	}
+      final UserActivity activity = application.acquireOpenActivity().getActivityWithoutTrigger();
+      dragStep = activity.addDragStep(dragModel, DragTrigger.createUserInstance(this, leftButtonPressedEvent));
+      this.dragStep.setLatestMouseEvent(e);
+      this.dragStep.fireDragStarted();
+      dragModel.handleDragStarted(this.dragStep);
+      this.showDragProxy();
+    }
+  }
 
-	private void handleMouseDraggedOutsideOfClickThreshold( MouseEvent e, boolean isClickAndClack ) {
-		this.isWithinClickThreshold = false;
-		if( isActuallyPotentiallyDraggable() ) {
-			if( isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				this.handleLeftMouseButtonDraggedOutsideOfClickThreshold( e );
-			}
-		}
-	}
+  private void handleMouseDraggedOutsideOfClickThreshold(MouseEvent e, boolean isClickAndClack) {
+    this.isWithinClickThreshold = false;
+    if (isActuallyPotentiallyDraggable()) {
+      if (isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
+        this.handleLeftMouseButtonDraggedOutsideOfClickThreshold(e);
+      }
+    }
+  }
 
-	private boolean isInTheMidstOfClickAndClack() {
-		if( isActuallyPotentiallyDraggable() ) {
-			if( this.isClickAndClackAppropriate() ) {
-				ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
-				if( eventQueue.isClickAndClackSupported() ) {
-					Component peekComponent = eventQueue.peekClickAndClackComponent();
-					Component awtComponent = this.getAwtComponent();
-					if( awtComponent == peekComponent ) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+  private boolean isInTheMidstOfClickAndClack() {
+    if (isActuallyPotentiallyDraggable()) {
+      if (this.isClickAndClackAppropriate()) {
+        ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
+        if (eventQueue.isClickAndClackSupported()) {
+          Component peekComponent = eventQueue.peekClickAndClackComponent();
+          Component awtComponent = this.getAwtComponent();
+          if (awtComponent == peekComponent) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	private void handleQuoteMouseDraggedUnquote( MouseEvent e, boolean isClickAndClack ) {
-		if( this.isWithinClickThreshold ) {
-			int dx = e.getX() - this.mousePressedEvent.getX();
-			int dy = e.getY() - this.mousePressedEvent.getY();
-			if( ( ( dx * dx ) + ( dy * dy ) ) > ( this.clickThreshold * this.clickThreshold ) ) {
-				this.handleMouseDraggedOutsideOfClickThreshold( e, isClickAndClack );
-			}
-		}
-		if( isActuallyPotentiallyDraggable() ) {
-			if( isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
-				if( this.isWithinClickThreshold ) {
-					//pass
-				} else {
-					this.updateProxyPosition( e );
-					if( this.dragStep != null ) {
-						this.dragStep.handleMouseDragged( e );
-					}
-				}
-			}
-		}
-	}
+  private void handleQuoteMouseDraggedUnquote(MouseEvent e, boolean isClickAndClack) {
+    if (this.isWithinClickThreshold) {
+      int dx = e.getX() - this.mousePressedEvent.getX();
+      int dy = e.getY() - this.mousePressedEvent.getY();
+      if (((dx * dx) + (dy * dy)) > (this.clickThreshold * this.clickThreshold)) {
+        this.handleMouseDraggedOutsideOfClickThreshold(e, isClickAndClack);
+      }
+    }
+    if (isActuallyPotentiallyDraggable()) {
+      if (isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
+        if (this.isWithinClickThreshold) {
+          //pass
+        } else {
+          this.updateProxyPosition(e);
+          if (this.dragStep != null) {
+            this.dragStep.handleMouseDragged(e);
+          }
+        }
+      }
+    }
+  }
 
-	private void handleMouseDragged( MouseEvent e ) {
-		this.handleQuoteMouseDraggedUnquote( e, false );
-	}
+  private void handleMouseDragged(MouseEvent e) {
+    this.handleQuoteMouseDraggedUnquote(e, false);
+  }
 
-	private void handleMouseMoved( MouseEvent e ) {
-		if( this.isInTheMidstOfClickAndClack() ) {
-			this.handleQuoteMouseDraggedUnquote( e, true );
-		}
-	}
+  private void handleMouseMoved(MouseEvent e) {
+    if (this.isInTheMidstOfClickAndClack()) {
+      this.handleQuoteMouseDraggedUnquote(e, true);
+    }
+  }
 
-	private void handleMousePressed( MouseEvent e ) {
-		if( MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( Application.getActiveInstance().isDragInProgress() ) {
-				this.handleCancel( e );
-			}
-		} else {
-			if( this.isInTheMidstOfClickAndClack() ) {
-				//pass
-			} else {
-				this.isWithinClickThreshold = true;
-				this.mousePressedEvent = e;
-				if( MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-					this.leftButtonPressedEvent = e;
-				} else {
-					this.leftButtonPressedEvent = null;
-				}
-			}
-		}
-	}
+  private void handleMousePressed(MouseEvent e) {
+    if (MouseEventUtilities.isQuoteRightUnquoteMouseButton(e)) {
+      if (Application.getActiveInstance().isDragInProgress()) {
+        this.handleCancel(e);
+      }
+    } else {
+      if (this.isInTheMidstOfClickAndClack()) {
+        //pass
+      } else {
+        this.isWithinClickThreshold = true;
+        this.mousePressedEvent = e;
+        if (MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
+          this.leftButtonPressedEvent = e;
+        } else {
+          this.leftButtonPressedEvent = null;
+        }
+      }
+    }
+  }
 
-	private void handleMouseReleased( MouseEvent e ) {
-		boolean isClack = this.isInTheMidstOfClickAndClack();
-		if( isClack ) {
-			ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
-			eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
-		}
-		if( isActuallyPotentiallyDraggable() ) {
-			if( isClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				if( this.isWithinClickThreshold ) {
-					if( this.isClickAndClackAppropriate() ) {
-						ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
-						if( eventQueue.isClickAndClackSupported() ) {
-							Component peekComponent = eventQueue.peekClickAndClackComponent();
-							Component awtComponent = this.getAwtComponent();
-							if( awtComponent == peekComponent ) {
-								//pass
-							} else {
-								eventQueue.pushClickAndClackMouseFocusComponent( awtComponent );
-							}
-						}
-					} else {
-						this.handleLeftMouseButtonQuoteClickedUnquote( e );
-					}
-				} else {
-					Application.getActiveInstance().setDragInProgress( false );
-					if( this.isDueQuoteExitedUnquote ) {
-						this.handleMouseQuoteExitedUnquote();
-					}
-					//					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
-					JLayeredPane layeredPane = getLayeredPane();
-					Rectangle bounds = this.dragProxy.getBounds();
-					layeredPane.remove( this.dragProxy );
-					layeredPane.repaint( bounds );
-					if( this.dragStep != null ) {
-						this.dragStep.handleMouseReleased( e );
-						this.dragStep = null;
-					}
-				}
-			}
-		}
-	}
+  private void handleMouseReleased(MouseEvent e) {
+    boolean isClack = this.isInTheMidstOfClickAndClack();
+    if (isClack) {
+      ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
+      eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
+    }
+    if (isActuallyPotentiallyDraggable()) {
+      if (isClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
+        if (this.isWithinClickThreshold) {
+          if (this.isClickAndClackAppropriate()) {
+            ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
+            if (eventQueue.isClickAndClackSupported()) {
+              Component peekComponent = eventQueue.peekClickAndClackComponent();
+              Component awtComponent = this.getAwtComponent();
+              if (awtComponent == peekComponent) {
+                //pass
+              } else {
+                eventQueue.pushClickAndClackMouseFocusComponent(awtComponent);
+              }
+            }
+          } else {
+            this.handleLeftMouseButtonQuoteClickedUnquote(e);
+          }
+        } else {
+          Application.getActiveInstance().setDragInProgress(false);
+          if (this.isDueQuoteExitedUnquote) {
+            this.handleMouseQuoteExitedUnquote();
+          }
+          //        this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
+          JLayeredPane layeredPane = getLayeredPane();
+          Rectangle bounds = this.dragProxy.getBounds();
+          layeredPane.remove(this.dragProxy);
+          layeredPane.repaint(bounds);
+          if (this.dragStep != null) {
+            this.dragStep.handleMouseReleased(e);
+            this.dragStep = null;
+          }
+        }
+      }
+    }
+  }
 
-	private void handleMouseClicked( MouseEvent e ) {
-		int button = e.getButton();
-		switch( button ) {
-		case 4:
-			this.handleBackButtonClicked( e );
-			break;
-		case 5:
-			this.handleForwardButtonClicked( e );
-			break;
-		}
-	}
+  private void handleMouseClicked(MouseEvent e) {
+    int button = e.getButton();
+    switch (button) {
+    case 4:
+      this.handleBackButtonClicked(e);
+      break;
+    case 5:
+      this.handleForwardButtonClicked(e);
+      break;
+    }
+  }
 
-	public void handleCancel( EventObject e ) {
-		Application.getActiveInstance().setDragInProgress( false );
-		if( this.isDueQuoteExitedUnquote ) {
-			this.handleMouseQuoteExitedUnquote();
-		}
-		if( this.isInTheMidstOfClickAndClack() ) {
-			ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
-			eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
-		}
-		JLayeredPane layeredPane = this.getLayeredPane();
-		if( layeredPane != null ) {
-			Rectangle bounds = this.dragProxy.getBounds();
-			layeredPane.remove( this.dragProxy );
-			layeredPane.repaint( bounds );
-		}
-		if( this.dragStep != null ) {
-			this.dragStep.handleCancel( e );
-			this.dragStep = null;
-		}
-	}
+  public void handleCancel(EventObject e) {
+    Application.getActiveInstance().setDragInProgress(false);
+    if (this.isDueQuoteExitedUnquote) {
+      this.handleMouseQuoteExitedUnquote();
+    }
+    if (this.isInTheMidstOfClickAndClack()) {
+      ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
+      eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
+    }
+    JLayeredPane layeredPane = this.getLayeredPane();
+    if (layeredPane != null) {
+      Rectangle bounds = this.dragProxy.getBounds();
+      layeredPane.remove(this.dragProxy);
+      layeredPane.repaint(bounds);
+    }
+    if (this.dragStep != null) {
+      this.dragStep.handleCancel(e);
+      this.dragStep = null;
+    }
+  }
 
-	private JLayeredPane getLayeredPane() {
-		AbstractWindow<?> root = this.getRoot();
-		if( root != null ) {
-			JRootPane rootPane = root.getJRootPane();
-			if( rootPane != null ) {
-				return rootPane.getLayeredPane();
-			} else {
-				//throw new RuntimeException( "cannot find rootPane: " + this );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  private JLayeredPane getLayeredPane() {
+    AbstractWindow<?> root = this.getRoot();
+    if (root != null) {
+      JRootPane rootPane = root.getJRootPane();
+      if (rootPane != null) {
+        return rootPane.getLayeredPane();
+      } else {
+        //throw new RuntimeException( "cannot find rootPane: " + this );
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public SwingComponentView<?> getSubject() {
-		return this;
-	}
+  public SwingComponentView<?> getSubject() {
+    return this;
+  }
 
-	public JDragProxy getDragProxy() {
-		return this.dragProxy;
-	}
+  public JDragProxy getDragProxy() {
+    return this.dragProxy;
+  }
 
-	public JDropProxy getDropProxy() {
-		return this.dropProxy;
-	}
+  public JDropProxy getDropProxy() {
+    return this.dropProxy;
+  }
 
-	public void showDragProxy() {
-		this.dragProxy.setVisible( true );
-	}
+  public void showDragProxy() {
+    this.dragProxy.setVisible(true);
+  }
 
-	public void hideDragProxy() {
-		this.dragProxy.setVisible( false );
-	}
+  public void hideDragProxy() {
+    this.dragProxy.setVisible(false);
+  }
 
-	public Dimension getDropProxySize() {
-		return this.dropProxy.getSize();
-	}
+  public Dimension getDropProxySize() {
+    return this.dropProxy.getSize();
+  }
 
-	private void updateProxySizes() {
-		if( this.isActuallyPotentiallyDraggable() ) {
-			this.dragProxy.setSize( this.dragProxy.getProxySize() );
-			this.dropProxy.setSize( this.dropProxy.getProxySize() );
-		}
-	}
+  private void updateProxySizes() {
+    if (this.isActuallyPotentiallyDraggable()) {
+      this.dragProxy.setSize(this.dragProxy.getProxySize());
+      this.dropProxy.setSize(this.dropProxy.getProxySize());
+    }
+  }
 
-	private synchronized void updateProxyPosition( MouseEvent e ) {
-		if( this.isActuallyPotentiallyDraggable() ) {
-			if( this.leftButtonPressedEvent != null ) {
-				JLayeredPane layeredPane = getLayeredPane();
-				Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
-				Point locationOnScreen = this.getLocationOnScreen();
-				int dx = locationOnScreen.x - locationOnScreenLayeredPane.x;
-				int dy = locationOnScreen.y - locationOnScreenLayeredPane.y;
+  private synchronized void updateProxyPosition(MouseEvent e) {
+    if (this.isActuallyPotentiallyDraggable()) {
+      if (this.leftButtonPressedEvent != null) {
+        JLayeredPane layeredPane = getLayeredPane();
+        Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
+        Point locationOnScreen = this.getLocationOnScreen();
+        int dx = locationOnScreen.x - locationOnScreenLayeredPane.x;
+        int dy = locationOnScreen.y - locationOnScreenLayeredPane.y;
 
-				dx -= mousePressedEvent.getX();
-				dy -= mousePressedEvent.getY();
+        dx -= mousePressedEvent.getX();
+        dy -= mousePressedEvent.getY();
 
-				boolean isCopyDesired = InputEventUtilities.isQuoteControlUnquoteDown( e );
-				int x = e.getX() + dx;
-				int y = e.getY() + dy;
-				this.dragProxy.setCopyDesired( isCopyDesired );
-				this.dragProxy.setLocation( x, y );
-				//layeredPane.setPosition( dragProxy, dy );
-				this.dropProxy.setCopyDesired( isCopyDesired );
-			}
-		}
-	}
+        boolean isCopyDesired = InputEventUtilities.isQuoteControlUnquoteDown(e);
+        int x = e.getX() + dx;
+        int y = e.getY() + dy;
+        this.dragProxy.setCopyDesired(isCopyDesired);
+        this.dragProxy.setLocation(x, y);
+        //layeredPane.setPosition( dragProxy, dy );
+        this.dropProxy.setCopyDesired(isCopyDesired);
+      }
+    }
+  }
 
-	public void setDropProxyLocationAndShowIfNecessary( Point p, AwtComponentView<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
-		JLayeredPane layeredPane = getLayeredPane();
-		p = SwingUtilities.convertPoint( asSeenBy.getAwtComponent(), p, layeredPane );
+  public void setDropProxyLocationAndShowIfNecessary(Point p, AwtComponentView<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight) {
+    JLayeredPane layeredPane = getLayeredPane();
+    p = SwingUtilities.convertPoint(asSeenBy.getAwtComponent(), p, layeredPane);
 
-		this.dropProxy.setAvailableHeight( availableHeight );
-		if( heightToAlignLeftCenterOn != null ) {
-			p.y += ( heightToAlignLeftCenterOn - this.dropProxy.getAvailableHeight() ) / 2;
-		}
+    this.dropProxy.setAvailableHeight(availableHeight);
+    if (heightToAlignLeftCenterOn != null) {
+      p.y += (heightToAlignLeftCenterOn - this.dropProxy.getAvailableHeight()) / 2;
+    }
 
-		this.dropProxy.setLocation( p );
-		if( this.dropProxy.getParent() != null ) {
-			//pass
-		} else {
-			layeredPane.add( this.dropProxy, new Integer( 1 ) );
-			layeredPane.setLayer( this.dropProxy, JLayeredPane.DEFAULT_LAYER );
-		}
-	}
+    this.dropProxy.setLocation(p);
+    if (this.dropProxy.getParent() != null) {
+      //pass
+    } else {
+      layeredPane.add(this.dropProxy, new Integer(1));
+      layeredPane.setLayer(this.dropProxy, JLayeredPane.DEFAULT_LAYER);
+    }
+  }
 
-	public void hideDropProxyIfNecessary() {
-		Container parent = this.dropProxy.getParent();
-		if( parent != null ) {
-			Rectangle bounds = this.dropProxy.getBounds();
-			parent.remove( this.dropProxy );
-			parent.repaint( bounds.x, bounds.y, bounds.width, bounds.height );
-		}
-	}
+  public void hideDropProxyIfNecessary() {
+    Container parent = this.dropProxy.getParent();
+    if (parent != null) {
+      Rectangle bounds = this.dropProxy.getBounds();
+      parent.remove(this.dropProxy);
+      parent.repaint(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+  }
 
-	private boolean isActive;
+  private boolean isActive;
 
-	public boolean isActive() {
-		return this.isActive;
-	}
+  public boolean isActive() {
+    return this.isActive;
+  }
 
-	private void setActive( boolean isActive ) {
-		if( this.isActive != isActive ) {
-			this.isActive = isActive;
-			this.repaint();
-		}
-	}
+  private void setActive(boolean isActive) {
+    if (this.isActive != isActive) {
+      this.isActive = isActive;
+      this.repaint();
+    }
+  }
 
-	protected abstract void fillBounds( Graphics2D g2, int x, int y, int width, int height );
+  protected abstract void fillBounds(Graphics2D g2, int x, int y, int width, int height);
 
-	protected abstract void paintPrologue( Graphics2D g2, int x, int y, int width, int height );
+  protected abstract void paintPrologue(Graphics2D g2, int x, int y, int width, int height);
 
-	protected abstract void paintEpilogue( Graphics2D g2, int x, int y, int width, int height );
+  protected abstract void paintEpilogue(Graphics2D g2, int x, int y, int width, int height);
 
-	public float getClickThreshold() {
-		return this.clickThreshold;
-	}
+  public float getClickThreshold() {
+    return this.clickThreshold;
+  }
 
-	public void setClickThreshold( float clickThreshold ) {
-		this.clickThreshold = clickThreshold;
-	}
+  public void setClickThreshold(float clickThreshold) {
+    this.clickThreshold = clickThreshold;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.mouseListener != null ) {
-			this.addMouseListener( this.mouseListener );
-		}
-		if( this.mouseMotionListener != null ) {
-			this.addMouseMotionListener( this.mouseMotionListener );
-		}
-		if( this.componentListener != null ) {
-			this.addComponentListener( this.componentListener );
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.mouseListener != null) {
+      this.addMouseListener(this.mouseListener);
+    }
+    if (this.mouseMotionListener != null) {
+      this.addMouseMotionListener(this.mouseMotionListener);
+    }
+    if (this.componentListener != null) {
+      this.addComponentListener(this.componentListener);
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.componentListener != null ) {
-			this.removeComponentListener( this.componentListener );
-		}
-		if( this.mouseMotionListener != null ) {
-			this.removeMouseMotionListener( this.mouseMotionListener );
-		}
-		if( this.mouseListener != null ) {
-			this.removeMouseListener( this.mouseListener );
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.componentListener != null) {
+      this.removeComponentListener(this.componentListener);
+    }
+    if (this.mouseMotionListener != null) {
+      this.removeMouseMotionListener(this.mouseMotionListener);
+    }
+    if (this.mouseListener != null) {
+      this.removeMouseListener(this.mouseListener);
+    }
+    super.handleUndisplayable();
+  }
 }

@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitChef implements MaleAdultFullBodyOutfit {
-	WHITE_BLUE,
-	WHITE_GREY,
-	WHITE_KHAKI,
-	WHITE_CHECKS;
+  WHITE_BLUE, WHITE_GREY, WHITE_KHAKI, WHITE_CHECKS
 
 }

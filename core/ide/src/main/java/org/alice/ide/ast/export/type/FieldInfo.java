@@ -46,19 +46,19 @@ package org.alice.ide.ast.export.type;
  * @author Dennis Cosgrove
  */
 public final class FieldInfo {
-	private final String valueClassName;
-	private final String name;
+  private final String valueClassName;
+  private final String name;
 
-	public FieldInfo( String valueClassName, String name ) {
-		this.valueClassName = valueClassName;
-		this.name = name;
-	}
+  public FieldInfo(String valueClassName, String name) {
+    this.valueClassName = valueClassName;
+    this.name = name;
+  }
 
-	public String getValueClassName() {
-		return this.valueClassName;
-	}
+  public String getValueClassName() {
+    return this.valueClassName;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 }

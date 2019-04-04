@@ -60,66 +60,66 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NodeCodec<T extends Node> implements ItemCodec<T> {
-	private static Map<Class<?>, NodeCodec<?>> map = Maps.newHashMap();
+  private static Map<Class<?>, NodeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends Node> NodeCodec<T> getInstance( Class<T> cls ) {
-		NodeCodec<?> rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new NodeCodec<T>( cls );
-		}
-		return (NodeCodec<T>)rv;
-	}
+  public static synchronized <T extends Node> NodeCodec<T> getInstance(Class<T> cls) {
+    NodeCodec<?> rv = map.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new NodeCodec<T>(cls);
+    }
+    return (NodeCodec<T>) rv;
+  }
 
-	private static Map<UUID, Node> mapIdToNode = Maps.newWeakHashMap();
+  private static Map<UUID, Node> mapIdToNode = Maps.newWeakHashMap();
 
-	public static void addNodeToGlobalMap( Node node ) {
-		mapIdToNode.put( node.getId(), node );
-	}
+  public static void addNodeToGlobalMap(Node node) {
+    mapIdToNode.put(node.getId(), node);
+  }
 
-	public static void removeNodeFromGlobalMap( Node node ) {
-		mapIdToNode.remove( node.getId() );
-	}
+  public static void removeNodeFromGlobalMap(Node node) {
+    mapIdToNode.remove(node.getId());
+  }
 
-	private Class<T> valueCls;
+  private Class<T> valueCls;
 
-	private NodeCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  private NodeCodec(Class<T> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<T> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<T> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public T decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			UUID id = binaryDecoder.decodeId();
-			if( mapIdToNode.containsKey( id ) ) {
-				return (T)mapIdToNode.get( id );
-			} else {
-				Project project = ProjectStack.peekProject();
-				return ProgramTypeUtilities.lookupNode( project, id );
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public T decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      UUID id = binaryDecoder.decodeId();
+      if (mapIdToNode.containsKey(id)) {
+        return (T) mapIdToNode.get(id);
+      } else {
+        Project project = ProjectStack.peekProject();
+        return ProgramTypeUtilities.lookupNode(project, id);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getId() );
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      binaryEncoder.encode(value.getId());
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, T value ) {
-		NodeUtilities.safeAppendRepr( sb, value, Application.getLocale() );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, T value) {
+    NodeUtilities.safeAppendRepr(sb, value, Application.getLocale());
+  }
 }

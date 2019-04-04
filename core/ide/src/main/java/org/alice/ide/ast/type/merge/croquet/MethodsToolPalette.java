@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodsToolPalette<V extends MethodsView> extends MembersToolPalette<V, UserMethod> {
-	public MethodsToolPalette( UUID migrationId, URI uriForDescriptionPurposesOnly, List<UserMethod> projectMethods ) {
-		super( migrationId, uriForDescriptionPurposesOnly, projectMethods );
-	}
+  public MethodsToolPalette(UUID migrationId, URI uriForDescriptionPurposesOnly, List<UserMethod> projectMethods) {
+    super(migrationId, uriForDescriptionPurposesOnly, projectMethods);
+  }
 }

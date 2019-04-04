@@ -55,15 +55,15 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class FullBodyOutfitTabView extends OutfitTabView {
-	public FullBodyOutfitTabView( FullBodyOutfitTabComposite composite ) {
-		super( composite );
-		Color backgroundColor = this.getBackgroundColor();
-		List<FullBodyOutfit> list = new HorizontalWrapList<FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, FullBodyOutfitListCellRenderer.getInstance() );
-		list.setBackgroundColor( backgroundColor );
-		ScrollPane scrollPane = new ScrollPane( list );
-		scrollPane.setBothScrollBarIncrements( 66, 66 );
-		scrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
+  public FullBodyOutfitTabView(FullBodyOutfitTabComposite composite) {
+    super(composite);
+    Color backgroundColor = this.getBackgroundColor();
+    List<FullBodyOutfit> list = new HorizontalWrapList<FullBodyOutfit>(composite.getFullBodyOutfitState(), -1, FullBodyOutfitListCellRenderer.getInstance());
+    list.setBackgroundColor(backgroundColor);
+    ScrollPane scrollPane = new ScrollPane(list);
+    scrollPane.setBothScrollBarIncrements(66, 66);
+    scrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
 
-		this.addCenterComponent( scrollPane );
-	}
+    this.addCenterComponent(scrollPane);
+  }
 }

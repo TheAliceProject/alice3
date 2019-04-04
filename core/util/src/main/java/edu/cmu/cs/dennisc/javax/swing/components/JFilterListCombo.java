@@ -55,86 +55,86 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class JFilterListCombo extends JPanel {
-	class Model extends AbstractListModel {
-		private String[] m_data = {};
-		private List<String> m_filteredData = new LinkedList<String>();
+  class Model extends AbstractListModel {
+    private String[] m_data = {};
+    private List<String> m_filteredData = new LinkedList<String>();
 
-		@Override
-		public Object getElementAt( int index ) {
-			return m_filteredData.get( index );
-		}
+    @Override
+    public Object getElementAt(int index) {
+      return m_filteredData.get(index);
+    }
 
-		@Override
-		public int getSize() {
-			return m_filteredData.size();
-		}
+    @Override
+    public int getSize() {
+      return m_filteredData.size();
+    }
 
-		public void setData( String[] data ) {
-			m_data = data;
-		}
+    public void setData(String[] data) {
+      m_data = data;
+    }
 
-		public void handleFilterChange( String filter ) {
-			//todo: allow sensitive and insensitive filtering
-			String filterLower = filter.toLowerCase();
-			m_filteredData = new LinkedList<String>();
-			for( String s : m_data ) {
-				String sLower = s.toLowerCase();
-				if( sLower.contains( filterLower ) ) {
-					m_filteredData.add( s );
-				}
-			}
-			fireContentsChanged( this, 0, getSize() );
-		}
-	}
+    public void handleFilterChange(String filter) {
+      //todo: allow sensitive and insensitive filtering
+      String filterLower = filter.toLowerCase();
+      m_filteredData = new LinkedList<String>();
+      for (String s : m_data) {
+        String sLower = s.toLowerCase();
+        if (sLower.contains(filterLower)) {
+          m_filteredData.add(s);
+        }
+      }
+      fireContentsChanged(this, 0, getSize());
+    }
+  }
 
-	private Model m_model = new Model();
+  private Model m_model = new Model();
 
-	private JTextField m_filter = new JTextField();
-	private JList<String> m_list = new JList<String>();
+  private JTextField m_filter = new JTextField();
+  private JList<String> m_list = new JList<String>();
 
-	public JFilterListCombo() {
-		m_list.setModel( m_model );
-		m_filter.getDocument().addDocumentListener( new DocumentListener() {
-			@Override
-			public void changedUpdate( DocumentEvent e ) {
-				JFilterListCombo.this.handleFilterChange( e );
-			}
+  public JFilterListCombo() {
+    m_list.setModel(m_model);
+    m_filter.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        JFilterListCombo.this.handleFilterChange(e);
+      }
 
-			@Override
-			public void insertUpdate( DocumentEvent e ) {
-				JFilterListCombo.this.handleFilterChange( e );
-			}
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        JFilterListCombo.this.handleFilterChange(e);
+      }
 
-			@Override
-			public void removeUpdate( DocumentEvent e ) {
-				JFilterListCombo.this.handleFilterChange( e );
-			}
-		} );
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        JFilterListCombo.this.handleFilterChange(e);
+      }
+    });
 
-		setLayout( new BorderLayout() );
-		add( m_filter, BorderLayout.NORTH );
-		add( new javax.swing.JScrollPane( m_list ), BorderLayout.CENTER );
+    setLayout(new BorderLayout());
+    add(m_filter, BorderLayout.NORTH);
+    add(new javax.swing.JScrollPane(m_list), BorderLayout.CENTER);
 
-	}
+  }
 
-	public JTextField getTextField() {
-		return m_filter;
-	}
+  public JTextField getTextField() {
+    return m_filter;
+  }
 
-	public JList<String> getList() {
-		return m_list;
-	}
+  public JList<String> getList() {
+    return m_list;
+  }
 
-	public String getElementAt( int index ) {
-		return (String)m_model.getElementAt( index );
-	}
+  public String getElementAt(int index) {
+    return (String) m_model.getElementAt(index);
+  }
 
-	public void setData( String[] data ) {
-		m_model.setData( data );
-		m_model.handleFilterChange( m_filter.getText() );
-	}
+  public void setData(String[] data) {
+    m_model.setData(data);
+    m_model.handleFilterChange(m_filter.getText());
+  }
 
-	private void handleFilterChange( DocumentEvent e ) {
-		m_model.handleFilterChange( m_filter.getText() );
-	}
+  private void handleFilterChange(DocumentEvent e) {
+    m_model.handleFilterChange(m_filter.getText());
+  }
 }

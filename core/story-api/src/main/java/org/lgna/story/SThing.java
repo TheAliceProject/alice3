@@ -53,82 +53,82 @@ import org.lgna.story.implementation.EntityImp;
 /**
  * @author Dennis Cosgrove
  */
-@ClassTemplate( isFollowToSuperClassDesired = false )
-public abstract class SThing implements Rider {
-	/* package-private */abstract EntityImp getImplementation();
+@ClassTemplate(isFollowToSuperClassDesired = false) public abstract class SThing implements Rider {
+  /* package-private */
+  abstract EntityImp getImplementation();
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public String getName() {
-		return this.getImplementation().getName();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public String getName() {
+    return this.getImplementation().getName();
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void setName( String name ) {
-		this.getImplementation().setName( name );
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public void setName(String name) {
+    this.getImplementation().setName(name);
+  }
 
-	@Override
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public SThing getVehicle() {
-		EntityImp vehicleImplementation = this.getImplementation().getVehicle();
-		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
-	}
+  @Override
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public SThing getVehicle() {
+    EntityImp vehicleImplementation = this.getImplementation().getVehicle();
+    return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
+  }
 
-	public VantagePoint getVantagePoint( SThing entity ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
-	}
+  public VantagePoint getVantagePoint(SThing entity) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
+    return VantagePoint.createInstance(this.getImplementation().getTransformation(entity.getImplementation()));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public void delay( Number duration ) {
-		LgnaIllegalArgumentException.checkArgumentIsNumber( duration, 0 );
-		this.getImplementation().delay( duration.doubleValue() );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public void delay(Number duration) {
+    LgnaIllegalArgumentException.checkArgumentIsNumber(duration, 0);
+    this.getImplementation().delay(duration.doubleValue());
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public void playAudio( AudioSource audioSource ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( audioSource, 0 );
-		this.getImplementation().playAudio( audioSource );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public void playAudio(AudioSource audioSource) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(audioSource, 0);
+    this.getImplementation().playAudio(audioSource);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public Boolean isCollidingWith( SThing other ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
-		return this.getImplementation().isCollidingWith( other );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public Boolean isCollidingWith(SThing other) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(other, 0);
+    return this.getImplementation().isCollidingWith(other);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public Boolean getBooleanFromUser( String message ) {
-		return this.getImplementation().getBooleanFromUser( message );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public Boolean getBooleanFromUser(String message) {
+    return this.getImplementation().getBooleanFromUser(message);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public String getStringFromUser( String message ) {
-		return this.getImplementation().getStringFromUser( message );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public String getStringFromUser(String message) {
+    return this.getImplementation().getStringFromUser(message);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public Double getDoubleFromUser( String message ) {
-		return this.getImplementation().getDoubleFromUser( message );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public Double getDoubleFromUser(String message) {
+    return this.getImplementation().getDoubleFromUser(message);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	public Integer getIntegerFromUser( String message ) {
-		return this.getImplementation().getIntegerFromUser( message );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public Integer getIntegerFromUser(String message) {
+    return this.getImplementation().getIntegerFromUser(message);
+  }
 
-	@Override
-	public String toString() {
-		String name = this.getName();
-		if( name != null ) {
-			return name;
-		} else {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "unnamed " );
-			sb.append( this.getClass().getSimpleName() );
-			return sb.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    String name = this.getName();
+    if (name != null) {
+      return name;
+    } else {
+      StringBuilder sb = new StringBuilder();
+      sb.append("unnamed ");
+      sb.append(this.getClass().getSimpleName());
+      return sb.toString();
+    }
+  }
 }

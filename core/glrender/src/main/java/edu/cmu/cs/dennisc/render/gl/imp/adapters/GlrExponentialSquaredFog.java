@@ -55,21 +55,21 @@ import edu.cmu.cs.dennisc.scenegraph.ExponentialSquaredFog;
  * @author Dennis Cosgrove
  */
 public class GlrExponentialSquaredFog extends GlrFog<ExponentialSquaredFog> {
-	@Override
-	public void setupAffectors( RenderContext rc ) {
-		super.setupAffectors( rc );
-		rc.gl.glFogi( GL_FOG_MODE, GL_EXP2 );
-		rc.gl.glFogf( GL_FOG_DENSITY, this.density );
-	}
+  @Override
+  public void setupAffectors(RenderContext rc) {
+    super.setupAffectors(rc);
+    rc.gl.glFogi(GL_FOG_MODE, GL_EXP2);
+    rc.gl.glFogf(GL_FOG_DENSITY, this.density);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.density ) {
-			this.density = owner.density.getValue().floatValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.density) {
+      this.density = owner.density.getValue().floatValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float density;
+  private float density;
 }

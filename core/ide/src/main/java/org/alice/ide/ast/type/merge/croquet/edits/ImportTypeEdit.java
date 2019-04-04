@@ -65,113 +65,113 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ImportTypeEdit extends AbstractEdit {
-	private final URI uriForDescriptionPurposesOnly;
-	private final NamedUserType existingType;
-	private final List<UserMethod> methodsToAdd;
-	private final List<UserMethod> methodsToRemove;
-	private final List<UserField> fieldsToAdd;
-	private final List<UserField> fieldsToRemove;
-	private final List<RenameMemberData> renames;
+  private final URI uriForDescriptionPurposesOnly;
+  private final NamedUserType existingType;
+  private final List<UserMethod> methodsToAdd;
+  private final List<UserMethod> methodsToRemove;
+  private final List<UserField> fieldsToAdd;
+  private final List<UserField> fieldsToRemove;
+  private final List<RenameMemberData> renames;
 
-	public ImportTypeEdit( UserActivity userActivity, URI uriForDescriptionPurposesOnly, NamedUserType existingType, List<UserMethod> methodsToAdd, List<UserMethod> methodsToRemove, List<UserField> fieldsToAdd, List<UserField> fieldsToRemove, List<RenameMemberData> renames ) {
-		super( userActivity );
-		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
-		this.existingType = existingType;
-		this.methodsToAdd = methodsToAdd;
-		this.methodsToRemove = methodsToRemove;
-		this.fieldsToAdd = fieldsToAdd;
-		this.fieldsToRemove = fieldsToRemove;
-		this.renames = renames;
-	}
+  public ImportTypeEdit(UserActivity userActivity, URI uriForDescriptionPurposesOnly, NamedUserType existingType, List<UserMethod> methodsToAdd, List<UserMethod> methodsToRemove, List<UserField> fieldsToAdd, List<UserField> fieldsToRemove, List<RenameMemberData> renames) {
+    super(userActivity);
+    this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
+    this.existingType = existingType;
+    this.methodsToAdd = methodsToAdd;
+    this.methodsToRemove = methodsToRemove;
+    this.fieldsToAdd = fieldsToAdd;
+    this.fieldsToRemove = fieldsToRemove;
+    this.renames = renames;
+  }
 
-	public ImportTypeEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		Logger.todo( "decode", this );
-		this.uriForDescriptionPurposesOnly = null;
-		this.existingType = null;
-		this.methodsToAdd = null;
-		this.methodsToRemove = null;
-		this.fieldsToAdd = null;
-		this.fieldsToRemove = null;
-		this.renames = null;
-	}
+  public ImportTypeEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    Logger.todo("decode", this);
+    this.uriForDescriptionPurposesOnly = null;
+    this.existingType = null;
+    this.methodsToAdd = null;
+    this.methodsToRemove = null;
+    this.fieldsToAdd = null;
+    this.fieldsToRemove = null;
+    this.renames = null;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		Logger.todo( "encode", this );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    Logger.todo("encode", this);
+  }
 
-	private static <M extends Member> void add( NodeListProperty<M> property, M member ) {
-		property.add( member );
-	}
+  private static <M extends Member> void add(NodeListProperty<M> property, M member) {
+    property.add(member);
+  }
 
-	private static <M extends Member> void remove( NodeListProperty<M> property, M member ) {
-		property.remove( property.indexOf( member ) );
-	}
+  private static <M extends Member> void remove(NodeListProperty<M> property, M member) {
+    property.remove(property.indexOf(member));
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		for( UserMethod method : this.methodsToAdd ) {
-			add( this.existingType.methods, method );
-		}
-		for( UserField field : this.fieldsToAdd ) {
-			add( this.existingType.fields, field );
-		}
-		for( UserMethod method : this.methodsToRemove ) {
-			remove( this.existingType.methods, method );
-		}
-		for( UserField field : this.fieldsToRemove ) {
-			remove( this.existingType.fields, field );
-		}
-		for( RenameMemberData renameData : this.renames ) {
-			renameData.setPrevName( renameData.getMember().getName() );
-			renameData.getMember().setName( renameData.getNextName() );
-		}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    for (UserMethod method : this.methodsToAdd) {
+      add(this.existingType.methods, method);
+    }
+    for (UserField field : this.fieldsToAdd) {
+      add(this.existingType.fields, field);
+    }
+    for (UserMethod method : this.methodsToRemove) {
+      remove(this.existingType.methods, method);
+    }
+    for (UserField field : this.fieldsToRemove) {
+      remove(this.existingType.fields, field);
+    }
+    for (RenameMemberData renameData : this.renames) {
+      renameData.setPrevName(renameData.getMember().getName());
+      renameData.getMember().setName(renameData.getNextName());
+    }
 
-		NamedUserType programType = ProjectStack.peekProject().getProgramType();
-		if( programType != null ) {
-			MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
-		}
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		declarationTabState.removeAllOrphans();
-	}
+    NamedUserType programType = ProjectStack.peekProject().getProgramType();
+    if (programType != null) {
+      MergeUtilities.mendMethodInvocationsAndFieldAccesses(programType);
+    }
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    declarationTabState.removeAllOrphans();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		for( UserMethod method : this.methodsToAdd ) {
-			remove( this.existingType.methods, method );
-		}
-		for( UserField field : this.fieldsToAdd ) {
-			remove( this.existingType.fields, field );
-		}
-		for( UserMethod method : this.methodsToRemove ) {
-			add( this.existingType.methods, method );
-		}
-		for( UserField field : this.fieldsToRemove ) {
-			add( this.existingType.fields, field );
-		}
+  @Override
+  protected final void undoInternal() {
+    for (UserMethod method : this.methodsToAdd) {
+      remove(this.existingType.methods, method);
+    }
+    for (UserField field : this.fieldsToAdd) {
+      remove(this.existingType.fields, field);
+    }
+    for (UserMethod method : this.methodsToRemove) {
+      add(this.existingType.methods, method);
+    }
+    for (UserField field : this.fieldsToRemove) {
+      add(this.existingType.fields, field);
+    }
 
-		for( RenameMemberData renameData : this.renames ) {
-			renameData.getMember().setName( renameData.getPrevName() );
-		}
+    for (RenameMemberData renameData : this.renames) {
+      renameData.getMember().setName(renameData.getPrevName());
+    }
 
-		NamedUserType programType = ProjectStack.peekProject().getProgramType();
-		if( programType != null ) {
-			MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
-		}
+    NamedUserType programType = ProjectStack.peekProject().getProgramType();
+    if (programType != null) {
+      MergeUtilities.mendMethodInvocationsAndFieldAccesses(programType);
+    }
 
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		declarationTabState.removeAllOrphans();
-	}
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    declarationTabState.removeAllOrphans();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "import " );
-		rv.append( this.uriForDescriptionPurposesOnly );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("import ");
+    rv.append(this.uriForDescriptionPurposesOnly);
+  }
 }

@@ -50,5 +50,5 @@ import org.lgna.croquet.views.CompositeView;
  * @author Dennis Cosgrove
  */
 public interface ValueCreatorOwningComposite<V extends CompositeView<?, ?>, T> extends Composite<V> {
-	T createValue( UserActivity userActivity );
+  T createValue(UserActivity userActivity);
 }

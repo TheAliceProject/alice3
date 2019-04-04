@@ -51,12 +51,12 @@ import javax.swing.JRadioButton;
  * @author Dennis Cosgrove
  */
 public class RadioButton extends BooleanStateButton<JRadioButton> {
-	public RadioButton( BooleanState model ) {
-		super( model, "RadioButton" );
-	}
+  public RadioButton(BooleanState model) {
+    super(model, "RadioButton");
+  }
 
-	@Override
-	protected JRadioButton createAwtComponent() {
-		return new JRadioButton();
-	}
+  @Override
+  protected JRadioButton createAwtComponent() {
+    return new JRadioButton();
+  }
 }

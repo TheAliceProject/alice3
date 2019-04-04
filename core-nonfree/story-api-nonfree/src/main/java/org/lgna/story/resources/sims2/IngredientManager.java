@@ -49,53 +49,53 @@ import edu.cmu.cs.dennisc.random.RandomUtilities;
 import java.util.Map;
 
 public abstract class IngredientManager<E> {
-	private Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = Maps.newHashMap();
+  private Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = Maps.newHashMap();
 
-	protected void add( Class<? extends E> interfaceCls, Class<? extends E>... implementingClses ) {
-		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );
-	}
+  protected void add(Class<? extends E> interfaceCls, Class<? extends E>... implementingClses) {
+    this.mapInterfaceClsToImplementingClses.put(interfaceCls, implementingClses);
+  }
 
-	protected abstract Class<Class<? extends E>> getImplementingClassesComponentType();
+  protected abstract Class<Class<? extends E>> getImplementingClassesComponentType();
 
-	protected abstract Class<? extends E> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender );
+  protected abstract Class<? extends E> getGenderedInterfaceClass(LifeStage lifeStage, Gender gender);
 
-	public Class<? extends E>[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
-		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
+  public Class<? extends E>[] getImplementingClasses(LifeStage lifeStage, Gender gender) {
+    Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass(lifeStage, gender);
 
-		Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
+    Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get(interfaceClsGendered);
 
-		return SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered );
-	}
+    return SystemUtilities.createArray(this.getImplementingClassesComponentType(), enumClsesGendered);
+  }
 
-	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
-		assert lifeStage != null;
-		assert gender != null;
-		Class<? extends E>[] clses = getImplementingClasses( lifeStage, gender );
-		assert clses.length > 0 : lifeStage.toString() + gender.toString();
-		return RandomUtilities.getRandomValueFrom( clses );
-	}
+  public Class<? extends E> getRandomClass(LifeStage lifeStage, Gender gender) {
+    assert lifeStage != null;
+    assert gender != null;
+    Class<? extends E>[] clses = getImplementingClasses(lifeStage, gender);
+    assert clses.length > 0 : lifeStage.toString() + gender.toString();
+    return RandomUtilities.getRandomValueFrom(clses);
+  }
 
-	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
-		while( true ) {
-			Class enumCls = getRandomClass( lifeStage, gender );
-			if( enumCls.isEnum() ) {
-				E rv = (E)RandomUtilities.getRandomEnumConstant( enumCls );
-				if( rv != null ) {
-					return rv;
-				}
-			}
-		}
-	}
+  public E getRandomEnumConstant(LifeStage lifeStage, Gender gender) {
+    while (true) {
+      Class enumCls = getRandomClass(lifeStage, gender);
+      if (enumCls.isEnum()) {
+        E rv = (E) RandomUtilities.getRandomEnumConstant(enumCls);
+        if (rv != null) {
+          return rv;
+        }
+      }
+    }
+  }
 
-	public boolean isApplicable( E e, LifeStage lifeStage, Gender gender ) {
-		assert e != null;
-		assert lifeStage != null;
-		assert gender != null;
-		Class<?> eCls = e.getClass();
-		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
-		boolean rv = interfaceClsGendered.isAssignableFrom( eCls );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( rv, lifeStage, gender, eCls, interfaceClsGendered, interfaceClsUnisex );
-		return rv;
-	}
+  public boolean isApplicable(E e, LifeStage lifeStage, Gender gender) {
+    assert e != null;
+    assert lifeStage != null;
+    assert gender != null;
+    Class<?> eCls = e.getClass();
+    Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass(lifeStage, gender);
+    boolean rv = interfaceClsGendered.isAssignableFrom(eCls);
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( rv, lifeStage, gender, eCls, interfaceClsGendered, interfaceClsUnisex );
+    return rv;
+  }
 
 }

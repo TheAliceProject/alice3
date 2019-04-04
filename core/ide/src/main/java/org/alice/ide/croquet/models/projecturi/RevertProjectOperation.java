@@ -54,40 +54,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RevertProjectOperation extends UriActionOperation {
-	private static class SingletonHolder {
-		private static RevertProjectOperation instance = new RevertProjectOperation();
-	}
+  private static class SingletonHolder {
+    private static RevertProjectOperation instance = new RevertProjectOperation();
+  }
 
-	public static RevertProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RevertProjectOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RevertProjectOperation() {
-		super( UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
-	}
+  private RevertProjectOperation() {
+    super(UUID.fromString("e1c3b3d7-dc4b-491c-8958-9a98710d5d1a"));
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		ProjectApplication application = ProjectApplication.getActiveInstance();
-		boolean confirmed = Dialogs.confirmWithWarning(
-			"Revert?", "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?" );
-		if( confirmed ) {
-			URI uri = application.getUri();
-			if( uri != null ) {
-				UriProjectLoader loader = UriProjectLoader.createInstance( uri );
-				if( loader != null ) {
-					application.loadProject(activity, loader );
-					activity.finish();
-				} else {
-					Dialogs.showInfo( "todo: revert loader == null " + uri );
-					activity.cancel();
-				}
-			} else {
-				Dialogs.showInfo( "todo: revert uri == null" );
-				activity.cancel();
-			}
-		} else {
-			activity.cancel();
-		}
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    ProjectApplication application = ProjectApplication.getActiveInstance();
+    boolean confirmed = Dialogs.confirmWithWarning("Revert?", "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?");
+    if (confirmed) {
+      URI uri = application.getUri();
+      if (uri != null) {
+        UriProjectLoader loader = UriProjectLoader.createInstance(uri);
+        if (loader != null) {
+          application.loadProject(activity, loader);
+          activity.finish();
+        } else {
+          Dialogs.showInfo("todo: revert loader == null " + uri);
+          activity.cancel();
+        }
+      } else {
+        Dialogs.showInfo("todo: revert uri == null");
+        activity.cancel();
+      }
+    } else {
+      activity.cancel();
+    }
+  }
 }

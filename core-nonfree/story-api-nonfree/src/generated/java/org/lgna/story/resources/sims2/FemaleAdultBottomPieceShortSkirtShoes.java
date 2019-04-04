@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultBottomPieceShortSkirtShoes implements FemaleAdultBottomPiece {
-	BLACK,
-	QUILTED,
-	STRIP,
-	BEIGE,
-	DENIM,
-	DARK_BROWN;
+  BLACK, QUILTED, STRIP, BEIGE, DENIM, DARK_BROWN
 
 }

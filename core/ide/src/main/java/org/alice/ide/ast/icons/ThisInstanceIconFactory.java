@@ -57,44 +57,44 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class ThisInstanceIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
-	}
+  private static class SingletonHolder {
+    private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
+  }
 
-	public static ThisInstanceIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThisInstanceIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThisInstanceIconFactory() {
-		super( IsCachingDesired.TRUE );
-	}
+  private ThisInstanceIconFactory() {
+    super(IsCachingDesired.TRUE);
+  }
 
-	@Override
-	protected Icon createIcon( final Dimension size ) {
-		return new Icon() {
-			@Override
-			public int getIconWidth() {
-				return size.width;
-			}
+  @Override
+  protected Icon createIcon(final Dimension size) {
+    return new Icon() {
+      @Override
+      public int getIconWidth() {
+        return size.width;
+      }
 
-			@Override
-			public int getIconHeight() {
-				return size.height;
-			}
+      @Override
+      public int getIconHeight() {
+        return size.height;
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				AbstractType<?, ?, ?> type = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-				if( type != null ) {
-					IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( type );
-					if( iconFactory != null ) {
-						Icon typeIcon = iconFactory.getIcon( size );
-						if( typeIcon != null ) {
-							typeIcon.paintIcon( c, g, x, y );
-						}
-					}
-				}
-			}
-		};
-	}
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        AbstractType<?, ?, ?> type = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+        if (type != null) {
+          IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(type);
+          if (iconFactory != null) {
+            Icon typeIcon = iconFactory.getIcon(size);
+            if (typeIcon != null) {
+              typeIcon.paintIcon(c, g, x, y);
+            }
+          }
+        }
+      }
+    };
+  }
 }

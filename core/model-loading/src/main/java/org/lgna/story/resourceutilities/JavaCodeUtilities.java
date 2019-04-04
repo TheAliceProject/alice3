@@ -51,29 +51,29 @@ import org.lgna.project.License;
  */
 public class JavaCodeUtilities {
 
-	private static String COPYRIGHT_COMMENT = null;
+  private static String COPYRIGHT_COMMENT = null;
 
-	public static final String LINE_RETURN = "\r\n";
+  public static final String LINE_RETURN = "\r\n";
 
-	public static String getCopyrightComment( String lineEnding ) {
-		if( COPYRIGHT_COMMENT == null ) {
-			String copyright = License.TEXT.replace( "\r\n", lineEnding + " * " );
-			COPYRIGHT_COMMENT = "/*" + lineEnding + "* " + copyright + lineEnding + " */" + lineEnding;
-		}
-		return COPYRIGHT_COMMENT;
-	}
+  public static String getCopyrightComment(String lineEnding) {
+    if (COPYRIGHT_COMMENT == null) {
+      String copyright = License.TEXT.replace("\r\n", lineEnding + " * ");
+      COPYRIGHT_COMMENT = "/*" + lineEnding + "* " + copyright + lineEnding + " */" + lineEnding;
+    }
+    return COPYRIGHT_COMMENT;
+  }
 
-	public static String getCopyrightComment() {
-		return getCopyrightComment( LINE_RETURN );
-	}
+  public static String getCopyrightComment() {
+    return getCopyrightComment(LINE_RETURN);
+  }
 
-	public static String getDirectoryStringForPackage( String packageString ) {
-		StringBuilder sb = new StringBuilder();
-		String[] splitString = packageString.split( "\\." );
-		for( String s : splitString ) {
-			sb.append( s );
-			sb.append( File.separator );
-		}
-		return sb.toString();
-	}
+  public static String getDirectoryStringForPackage(String packageString) {
+    StringBuilder sb = new StringBuilder();
+    String[] splitString = packageString.split("\\.");
+    for (String s : splitString) {
+      sb.append(s);
+      sb.append(File.separator);
+    }
+    return sb.toString();
+  }
 }

@@ -57,35 +57,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAccessCascade extends ArrayAccessCascade {
-	private static MapToMap<AbstractField, ExpressionProperty, FieldArrayAccessCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractField, ExpressionProperty, FieldArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static FieldArrayAccessCascade getInstance( AbstractField field, ExpressionProperty expressionProperty ) {
-		assert field != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayAccessCascade>() {
-			@Override
-			public FieldArrayAccessCascade initialize( AbstractField field, ExpressionProperty expressionProperty ) {
-				return new FieldArrayAccessCascade( field, expressionProperty );
-			}
-		} );
-	}
+  public static FieldArrayAccessCascade getInstance(AbstractField field, ExpressionProperty expressionProperty) {
+    assert field != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayAccessCascade>() {
+      @Override
+      public FieldArrayAccessCascade initialize(AbstractField field, ExpressionProperty expressionProperty) {
+        return new FieldArrayAccessCascade(field, expressionProperty);
+      }
+    });
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldArrayAccessCascade( AbstractField field, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
-		this.field = field;
-	}
+  private FieldArrayAccessCascade(AbstractField field, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("1aa9aa94-fd7f-47e9-99a6-2556d7871f28"), expressionProperty);
+    this.field = field;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new FieldAccess(
-			IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
-			field);
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new FieldAccess(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), field);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getArrayType() {
-		return this.field.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getArrayType() {
+    return this.field.getValueType();
+  }
 }

@@ -50,26 +50,26 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class BadScale implements Problem {
-	private final Visual sgVisual;
+  private final Visual sgVisual;
 
-	public BadScale( Visual sgVisual ) {
-		this.sgVisual = sgVisual;
-	}
+  public BadScale(Visual sgVisual) {
+    this.sgVisual = sgVisual;
+  }
 
-	@Override
-	public void mend( Mender mender ) {
-		sgVisual.scale.setValue( Matrix3x3.createIdentity() );
-	}
+  @Override
+  public void mend(Mender mender) {
+    sgVisual.scale.setValue(Matrix3x3.createIdentity());
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.sgVisual );
-		sb.append( ";" );
-		sb.append( PrintUtilities.append( sb, this.sgVisual.scale.getValue() ) );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.sgVisual);
+    sb.append(";");
+    sb.append(PrintUtilities.append(sb, this.sgVisual.scale.getValue()));
+    sb.append("]");
+    return sb.toString();
+  }
 }

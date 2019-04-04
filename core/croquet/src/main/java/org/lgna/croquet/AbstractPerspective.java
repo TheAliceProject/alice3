@@ -51,43 +51,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPerspective extends AbstractElement implements Perspective {
-	private final class SetPerspectiveOperation extends ActionOperation {
-		public SetPerspectiveOperation() {
-			super( Application.APPLICATION_UI_GROUP, UUID.fromString( "6906f6c6-fa04-4527-b37c-20adc4793733" ) );
-		}
+  private final class SetPerspectiveOperation extends ActionOperation {
+    public SetPerspectiveOperation() {
+      super(Application.APPLICATION_UI_GROUP, UUID.fromString("6906f6c6-fa04-4527-b37c-20adc4793733"));
+    }
 
-		@Override
-		protected void perform( UserActivity activity ) {
-			PerspectiveApplication.getActiveInstance().setPerspective( AbstractPerspective.this );
-			activity.finish();
-		}
-	}
+    @Override
+    protected void perform(UserActivity activity) {
+      PerspectiveApplication.getActiveInstance().setPerspective(AbstractPerspective.this);
+      activity.finish();
+    }
+  }
 
-	private final SetPerspectiveOperation setPerspectiveOperation = new SetPerspectiveOperation();
-	private String name;
+  private final SetPerspectiveOperation setPerspectiveOperation = new SetPerspectiveOperation();
+  private String name;
 
-	public AbstractPerspective( UUID id ) {
-		super( id );
-	}
+  public AbstractPerspective(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected void localize() {
-		this.name = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    this.name = this.findDefaultLocalizedText();
+  }
 
-	@Override
-	public String getName() {
-		this.initializeIfNecessary();
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    this.initializeIfNecessary();
+    return this.name;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getName() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(this.getName());
+  }
 
-	public SetPerspectiveOperation getSetPerspectiveOperation() {
-		return this.setPerspectiveOperation;
-	}
+  public SetPerspectiveOperation getSetPerspectiveOperation() {
+    return this.setPerspectiveOperation;
+  }
 }

@@ -54,21 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalMenuModel extends PredeterminedMenuModel {
-	private static Map<UserLocal, LocalMenuModel> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalMenuModel> map = Maps.newHashMap();
 
-	public static synchronized LocalMenuModel getInstance( UserLocal local ) {
-		LocalMenuModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalMenuModel( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalMenuModel getInstance(UserLocal local) {
+    LocalMenuModel rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalMenuModel(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private LocalMenuModel( UserLocal local ) {
-		super( UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				RenameLocalComposite.getInstance( local ).getLaunchOperation().getMenuItemPrepModel() );
-	}
+  private LocalMenuModel(UserLocal local) {
+    super(UUID.fromString("b225cc92-f2c6-4a47-9818-1bbd0319091b"), RenameLocalComposite.getInstance(local).getLaunchOperation().getMenuItemPrepModel());
+  }
 }

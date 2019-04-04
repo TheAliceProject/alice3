@@ -46,8 +46,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class FauxExpression extends Expression {
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		throw new RuntimeException();
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    throw new RuntimeException();
+  }
 }

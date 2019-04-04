@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = Maps.newHashMap();
-	private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized CountLoopInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		Map<BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
-		assert blockStatementIndexPair != null;
-		CountLoopInsertCascade rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CountLoopInsertCascade( blockStatementIndexPair, isEnveloping );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized CountLoopInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    Map<BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+    assert blockStatementIndexPair != null;
+    CountLoopInsertCascade rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new CountLoopInsertCascade(blockStatementIndexPair, isEnveloping);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private CountLoopInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, isEnveloping, CountBlank.getInstance() );
-	}
+  private CountLoopInsertCascade(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("6c314e4c-fec7-4c33-803c-a7efb17249aa"), blockStatementIndexPair, isEnveloping, CountBlank.getInstance());
+  }
 
-	@Override
-	protected final Statement createStatement( Expression... expressions ) {
-		return AstUtilities.createCountLoop( expressions[ 0 ] );
-	}
+  @Override
+  protected final Statement createStatement(Expression... expressions) {
+    return AstUtilities.createCountLoop(expressions[0]);
+  }
 }

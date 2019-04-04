@@ -67,87 +67,87 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AddParameterView extends DeclarationView<UserParameter> {
-	private final Label label = new Label();
-	private final BorderPanel warningPanel;
+  private final Label label = new Label();
+  private final BorderPanel warningPanel;
 
-	public AddParameterView( AddParameterComposite composite ) {
-		super( composite );
-		PageAxisPanel pane = new PageAxisPanel();
-		pane.addComponent( this.label );
-		pane.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
-		//TODO: Localize
-		pane.addComponent( new LineAxisPanel( new Label( "Tip: look for " ), PreviewAstI18nFactory.getInstance().createExpressionPane( new NullLiteral() ) ) );
-		pane.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
-		pane.addComponent( composite.getIsRequirementToUpdateInvocationsUnderstoodState().createCheckBox() );
+  public AddParameterView(AddParameterComposite composite) {
+    super(composite);
+    PageAxisPanel pane = new PageAxisPanel();
+    pane.addComponent(this.label);
+    pane.addComponent(BoxUtilities.createVerticalSliver(8));
+    //TODO: Localize
+    pane.addComponent(new LineAxisPanel(new Label("Tip: look for "), PreviewAstI18nFactory.getInstance().createExpressionPane(new NullLiteral())));
+    pane.addComponent(BoxUtilities.createVerticalSliver(8));
+    pane.addComponent(composite.getIsRequirementToUpdateInvocationsUnderstoodState().createCheckBox());
 
-		Label warningLabel = new Label();
-		warningLabel.setIcon( UIManager.getIcon( "OptionPane.warningIcon" ) );
-		this.warningPanel = new BorderPanel.Builder().hgap( 32 ).lineStart( warningLabel ).center( pane ).build();
+    Label warningLabel = new Label();
+    warningLabel.setIcon(UIManager.getIcon("OptionPane.warningIcon"));
+    this.warningPanel = new BorderPanel.Builder().hgap(32).lineStart(warningLabel).center(pane).build();
 
-		this.warningPanel.setBorder( BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getParameterColor() );
-	}
+    this.warningPanel.setBorder(BorderFactory.createEmptyBorder(32, 8, 32, 8));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getParameterColor());
+  }
 
-	@Override
-	public SwingComponentView<?> createPreviewSubComponent() {
-		AddParameterComposite composite = (AddParameterComposite)this.getComposite();
-		UserParameter parameter = composite.getPreviewValue();
-		return new TypedParameterPane( null, parameter );
-	}
+  @Override
+  public SwingComponentView<?> createPreviewSubComponent() {
+    AddParameterComposite composite = (AddParameterComposite) this.getComposite();
+    UserParameter parameter = composite.getPreviewValue();
+    return new TypedParameterPane(null, parameter);
+  }
 
-	@Override
-	protected BorderPanel createMainComponent() {
-		BorderPanel rv = super.createMainComponent();
-		rv.addPageEndComponent( this.warningPanel );
-		return rv;
-	}
+  @Override
+  protected BorderPanel createMainComponent() {
+    BorderPanel rv = super.createMainComponent();
+    rv.addPageEndComponent(this.warningPanel);
+    return rv;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		AddParameterComposite composite = (AddParameterComposite)this.getComposite();
-		UserCode code = composite.getCode();
-		List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists( code );
-		final int N = argumentLists.size();
-		this.warningPanel.setVisible( N > 0 );
-		if( this.warningPanel.isVisible() ) {
-			String codeText;
-			if( code instanceof AbstractMethod ) {
-				AbstractMethod method = (AbstractMethod)code;
-				if( method.isProcedure() ) {
-					codeText = "procedure";
-				} else {
-					codeText = "function";
-				}
-			} else {
-				codeText = "constructor";
-			}
+  @Override
+  protected void handleDisplayable() {
+    AddParameterComposite composite = (AddParameterComposite) this.getComposite();
+    UserCode code = composite.getCode();
+    List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists(code);
+    final int N = argumentLists.size();
+    this.warningPanel.setVisible(N > 0);
+    if (this.warningPanel.isVisible()) {
+      String codeText;
+      if (code instanceof AbstractMethod) {
+        AbstractMethod method = (AbstractMethod) code;
+        if (method.isProcedure()) {
+          codeText = "procedure";
+        } else {
+          codeText = "function";
+        }
+      } else {
+        codeText = "constructor";
+      }
 
-			StringBuffer sb = new StringBuffer();
-			sb.append( "<html><body>There " );
-			if( N == 1 ) {
-				sb.append( "is 1 invocation" );
-			} else {
-				sb.append( "are " );
-				sb.append( N );
-				sb.append( " invocations" );
-			}
-			sb.append( " to this " );
-			sb.append( codeText );
-			sb.append( " in your program.<br>You will need to fill in " );
-			if( N == 1 ) {
-				sb.append( "a value" );
-			} else {
-				sb.append( "values" );
-			}
-			sb.append( " for the new " );
-			if( N == 1 ) {
-				sb.append( "argument at the" );
-			} else {
-				sb.append( "arguments at each" );
-			}
-			sb.append( " invocation.</body></html>" );
-			this.label.setText( sb.toString() );
-		}
-		super.handleDisplayable();
-	}
+      StringBuffer sb = new StringBuffer();
+      sb.append("<html><body>There ");
+      if (N == 1) {
+        sb.append("is 1 invocation");
+      } else {
+        sb.append("are ");
+        sb.append(N);
+        sb.append(" invocations");
+      }
+      sb.append(" to this ");
+      sb.append(codeText);
+      sb.append(" in your program.<br>You will need to fill in ");
+      if (N == 1) {
+        sb.append("a value");
+      } else {
+        sb.append("values");
+      }
+      sb.append(" for the new ");
+      if (N == 1) {
+        sb.append("argument at the");
+      } else {
+        sb.append("arguments at each");
+      }
+      sb.append(" invocation.</body></html>");
+      this.label.setText(sb.toString());
+    }
+    super.handleDisplayable();
+  }
 }

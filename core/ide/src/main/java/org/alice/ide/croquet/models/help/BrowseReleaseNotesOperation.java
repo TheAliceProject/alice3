@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BrowseReleaseNotesOperation extends ImmutableBrowserOperation {
-	public BrowseReleaseNotesOperation() {
-		super( UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://www.alice.org/get-alice/alice-3" );
-	}
+  public BrowseReleaseNotesOperation() {
+    super(UUID.fromString("79d29dd0-278b-4c8a-8f1b-816257f0a621"), "http://www.alice.org/get-alice/alice-3");
+  }
 }

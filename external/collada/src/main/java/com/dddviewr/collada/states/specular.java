@@ -1,6 +1,7 @@
 package com.dddviewr.collada.states;
 
 import java.lang.reflect.Method;
+
 import org.xml.sax.Attributes;
 
 import com.dddviewr.collada.State;
@@ -9,25 +10,23 @@ import com.dddviewr.collada.effects.EffectAttribute;
 import com.dddviewr.collada.effects.EffectMaterial;
 
 public class specular extends State {
-	protected EffectAttribute attrib;
+  protected EffectAttribute attrib;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
 
-		this.attrib = new EffectAttribute("Specular");
+    this.attrib = new EffectAttribute("Specular");
 
-		State parent = getParent();
-		try {
-			Method method = parent.getClass().getMethod("getMaterial",
-					new Class[0]);
-			EffectMaterial mat = (EffectMaterial) method.invoke(parent,
-					new Object[0]);
-			mat.setSpecular(this.attrib);
-		} catch (Exception localException) {
-		}
-	}
+    State parent = getParent();
+    try {
+      Method method = parent.getClass().getMethod("getMaterial", new Class[0]);
+      EffectMaterial mat = (EffectMaterial) method.invoke(parent, new Object[0]);
+      mat.setSpecular(this.attrib);
+    } catch (Exception localException) {
+    }
+  }
 
-	public EffectAttribute getAttrib() {
-		return this.attrib;
-	}
+  public EffectAttribute getAttrib() {
+    return this.attrib;
+  }
 }

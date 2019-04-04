@@ -49,18 +49,15 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public enum TurnDirection {
-	LEFT( Vector3.createPositiveYAxis() ),
-	RIGHT( Vector3.createNegativeYAxis() ),
-	FORWARD( Vector3.createNegativeXAxis() ),
-	BACKWARD( Vector3.createPositiveXAxis() );
+  LEFT(Vector3.createPositiveYAxis()), RIGHT(Vector3.createNegativeYAxis()), FORWARD(Vector3.createNegativeXAxis()), BACKWARD(Vector3.createPositiveXAxis());
 
-	private final Vector3 axis;
+  private final Vector3 axis;
 
-	private TurnDirection( Vector3 axis ) {
-		this.axis = axis;
-	}
+  private TurnDirection(Vector3 axis) {
+    this.axis = axis;
+  }
 
-	/* package-private */Vector3 getAxis() {
-		return this.axis;
-	}
+  /* package-private */Vector3 getAxis() {
+    return this.axis;
+  }
 }

@@ -44,27 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultHairMohawk implements MaleAdultHair, MaleElderHair {
-	BLACK,
-	BLOND,
-	RED,
-	GREY,
-	BROWN,
-	RAINBOW,
-	FLAME,
-	PINK,
-	GREEN,
-	PURPLE,
-	PLATINUM;
+  BLACK, BLOND, RED, GREY, BROWN, RAINBOW, FLAME, PINK, GREEN, PURPLE, PLATINUM;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

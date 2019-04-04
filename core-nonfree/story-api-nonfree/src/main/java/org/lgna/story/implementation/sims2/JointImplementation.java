@@ -52,57 +52,57 @@ import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
 public class JointImplementation extends JointImp {
-	private NebulousJoint sgJoint;
+  private NebulousJoint sgJoint;
 
-	public JointImplementation( JointedModelImp<?, ?> jointedModelImplementation, NebulousJoint sgJoint ) {
-		super( jointedModelImplementation );
-		this.sgJoint = sgJoint;
-		putInstance( this.sgJoint );
-	}
+  public JointImplementation(JointedModelImp<?, ?> jointedModelImplementation, NebulousJoint sgJoint) {
+    super(jointedModelImplementation);
+    this.sgJoint = sgJoint;
+    putInstance(this.sgJoint);
+  }
 
-	@Override
-	public JointId getJointId() {
-		return this.sgJoint.getJointId();
-	}
+  @Override
+  public JointId getJointId() {
+    return this.sgJoint.getJointId();
+  }
 
-	@Override
-	public NebulousJoint getSgComposite() {
-		return this.sgJoint;
-	}
+  @Override
+  public NebulousJoint getSgComposite() {
+    return this.sgJoint;
+  }
 
-	@Override
-	public boolean isFreeInX() {
-		//todo
-		return true;
-	}
+  @Override
+  public boolean isFreeInX() {
+    //todo
+    return true;
+  }
 
-	@Override
-	public boolean isFreeInY() {
-		//todo
-		return true;
-	}
+  @Override
+  public boolean isFreeInY() {
+    //todo
+    return true;
+  }
 
-	@Override
-	public boolean isFreeInZ() {
-		//todo
-		return true;
-	}
+  @Override
+  public boolean isFreeInZ() {
+    //todo
+    return true;
+  }
 
-	@Override
-	public UnitQuaternion getOriginalOrientation() {
-		return this.sgJoint.getOriginalLocalTransformation().orientation.createUnitQuaternion();
-	}
+  @Override
+  public UnitQuaternion getOriginalOrientation() {
+    return this.sgJoint.getOriginalLocalTransformation().orientation.createUnitQuaternion();
+  }
 
-	@Override
-	public AffineMatrix4x4 getOriginalTransformation() {
-		return this.sgJoint.getOriginalLocalTransformation();
-	}
+  @Override
+  public AffineMatrix4x4 getOriginalTransformation() {
+    return this.sgJoint.getOriginalLocalTransformation();
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
-		rv.addBoundingBox( jointBBox, trans );
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
+    rv.addBoundingBox(jointBBox, trans);
+    return rv;
+  }
 
 }

@@ -49,37 +49,37 @@ import java.awt.GridLayout;
  * @author Dennis Cosgrove
  */
 public abstract class JGridPane extends JPane {
-	protected JGridPane( boolean isRowMajor, int hgap, int vgap, Component[][] componentArrays ) {
-		int rows;
-		int cols;
-		if( isRowMajor ) {
-			rows = componentArrays.length;
-			if( rows > 0 ) {
-				cols = componentArrays[ 0 ].length;
-			} else {
-				cols = 0;
-			}
-		} else {
-			cols = componentArrays.length;
-			if( cols > 0 ) {
-				rows = componentArrays[ 0 ].length;
-			} else {
-				rows = 0;
-			}
-		}
-		setLayout( new GridLayout( rows, cols, hgap, vgap ) );
-		if( isRowMajor ) {
-			for( Component[] componentArray : componentArrays ) {
-				for( Component component : componentArray ) {
-					this.add( component );
-				}
-			}
-		} else {
-			for( int r = 0; r < rows; r++ ) {
-				for( int c = 0; c < cols; c++ ) {
-					this.add( componentArrays[ c ][ r ] );
-				}
-			}
-		}
-	}
+  protected JGridPane(boolean isRowMajor, int hgap, int vgap, Component[][] componentArrays) {
+    int rows;
+    int cols;
+    if (isRowMajor) {
+      rows = componentArrays.length;
+      if (rows > 0) {
+        cols = componentArrays[0].length;
+      } else {
+        cols = 0;
+      }
+    } else {
+      cols = componentArrays.length;
+      if (cols > 0) {
+        rows = componentArrays[0].length;
+      } else {
+        rows = 0;
+      }
+    }
+    setLayout(new GridLayout(rows, cols, hgap, vgap));
+    if (isRowMajor) {
+      for (Component[] componentArray : componentArrays) {
+        for (Component component : componentArray) {
+          this.add(component);
+        }
+      }
+    } else {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+          this.add(componentArrays[c][r]);
+        }
+      }
+    }
+  }
 }

@@ -44,21 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultHairPeak implements MaleAdultHair, MaleElderHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	RED,
-	GREY;
+  BLACK, BLOND, BROWN, RED, GREY;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

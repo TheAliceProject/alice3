@@ -55,35 +55,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IntegerLiteralFillIn extends ExpressionFillInWithoutBlanks<IntegerLiteral> {
-	private static Map<Integer, IntegerLiteralFillIn> map = Maps.newHashMap();
+  private static Map<Integer, IntegerLiteralFillIn> map = Maps.newHashMap();
 
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static IntegerLiteralFillIn getInstance(int value) {
+    synchronized (map) {
+      IntegerLiteralFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new IntegerLiteralFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final IntegerLiteral transientValue;
+  private final IntegerLiteral transientValue;
 
-	private IntegerLiteralFillIn( int value ) {
-		super( UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new IntegerLiteral( value );
-	}
+  private IntegerLiteralFillIn(int value) {
+    super(UUID.fromString("edc6ae8d-6fb9-4678-b144-71b3e5c65300"));
+    this.transientValue = new IntegerLiteral(value);
+  }
 
-	@Override
-	public IntegerLiteral getTransientValue( ItemNode<? super IntegerLiteral, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public IntegerLiteral getTransientValue(ItemNode<? super IntegerLiteral, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public IntegerLiteral createValue( ItemNode<? super IntegerLiteral, Void> node ) {
-		return new IntegerLiteral( this.transientValue.value.getValue() );
-	}
+  @Override
+  public IntegerLiteral createValue(ItemNode<? super IntegerLiteral, Void> node) {
+    return new IntegerLiteral(this.transientValue.value.getValue());
+  }
 }

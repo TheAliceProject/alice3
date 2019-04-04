@@ -48,21 +48,21 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author Dennis Cosgrove
  */
 public interface ReferenceFrame {
-	public boolean isSceneOf( Component other );
+  public boolean isSceneOf(Component other);
 
-	public boolean isVehicleOf( Component other );
+  public boolean isVehicleOf(Component other);
 
-	public boolean isLocalOf( Component other );
+  public boolean isLocalOf(Component other);
 
-	public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv );
+  public AffineMatrix4x4 getInverseAbsoluteTransformation(AffineMatrix4x4 rv);
 
-	public AffineMatrix4x4 getInverseAbsoluteTransformation();
+  public AffineMatrix4x4 getInverseAbsoluteTransformation();
 
-	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv );
+  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv);
 
-	public AffineMatrix4x4 getAbsoluteTransformation();
+  public AffineMatrix4x4 getAbsoluteTransformation();
 
-	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame other );
+  public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other);
 
-	public AffineMatrix4x4 getTransformation( ReferenceFrame other );
+  public AffineMatrix4x4 getTransformation(ReferenceFrame other);
 }

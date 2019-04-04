@@ -53,29 +53,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MethodNameSeparator extends CascadeLabelSeparator {
-	private static Map<AbstractMethod, MethodNameSeparator> map = Maps.newHashMap();
+  private static Map<AbstractMethod, MethodNameSeparator> map = Maps.newHashMap();
 
-	public static synchronized MethodNameSeparator getInstance( AbstractMethod method ) {
-		assert method != null;
-		MethodNameSeparator rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodNameSeparator( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized MethodNameSeparator getInstance(AbstractMethod method) {
+    assert method != null;
+    MethodNameSeparator rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new MethodNameSeparator(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private MethodNameSeparator( AbstractMethod method ) {
-		super( UUID.fromString( "97ee9eae-c68a-48ef-bf68-2292383f3c91" ) );
-		this.method = method;
-	}
+  private MethodNameSeparator(AbstractMethod method) {
+    super(UUID.fromString("97ee9eae-c68a-48ef-bf68-2292383f3c91"));
+    this.method = method;
+  }
 
-	@Override
-	protected String getMenuItemIconProxyText() {
-		return this.method.getName();
-	}
+  @Override
+  protected String getMenuItemIconProxyText() {
+    return this.method.getName();
+  }
 
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 }

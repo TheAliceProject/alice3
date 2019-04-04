@@ -62,117 +62,119 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class HairUtilities {
-	private static Set<HairColorName> COMMON_HAIR_COLOR_NAMES = Sets.newHashSet( HairColorName.BLACK, HairColorName.BROWN, HairColorName.BLOND, HairColorName.RED, HairColorName.GREY );
+  private static Set<HairColorName> COMMON_HAIR_COLOR_NAMES = Sets.newHashSet(HairColorName.BLACK, HairColorName.BROWN, HairColorName.BLOND, HairColorName.RED, HairColorName.GREY);
 
-	public static boolean isCommonHairColorName( HairColorName hairColorName ) {
-		return COMMON_HAIR_COLOR_NAMES.contains( hairColorName );
-	}
+  public static boolean isCommonHairColorName(HairColorName hairColorName) {
+    return COMMON_HAIR_COLOR_NAMES.contains(hairColorName);
+  }
 
-	private static final MapToMap<LifeStage, Gender, List<HairHatStyle>> mapToMap;
-	static {
-		mapToMap = MapToMap.newInstance();
-		for( LifeStage lifeStage : LifeStage.values() ) {
-			for( Gender gender : Gender.values() ) {
-				mapToMap.put( lifeStage, gender, createHairInfos( lifeStage, gender ) );
-			}
-		}
-	}
+  private static final MapToMap<LifeStage, Gender, List<HairHatStyle>> mapToMap;
 
-	/* package-private */static String[] getHairColorNameAndHatName( Hair enumConstant ) {
-		String s = enumConstant.toString();
-		if( enumConstant.hasHat() ) {
-			if( enumConstant.hasHair() ) {
-				return s.split( "_", 2 );
-			} else {
-				return new String[] { null, s };
-			}
-		} else {
-			if( enumConstant.hasHair() ) {
-				return new String[] { s, null };
-			} else {
-				return new String[] { null, null }; //todo?
-			}
-		}
-	}
+  static {
+    mapToMap = MapToMap.newInstance();
+    for (LifeStage lifeStage : LifeStage.values()) {
+      for (Gender gender : Gender.values()) {
+        mapToMap.put(lifeStage, gender, createHairInfos(lifeStage, gender));
+      }
+    }
+  }
 
-	private static List<HairHatStyle> createHairInfos( LifeStage lifeStage, Gender gender ) {
-		InitializingIfAbsentListHashMap<HairClsHatNameCombo, HairColorNameHairCombo> map = Maps.newInitializingIfAbsentListHashMap();
-		Class<? extends Hair>[] clses = HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
-		for( Class<? extends Hair> cls : clses ) {
-			if( cls.isEnum() ) {
-				for( Hair enumConstant : cls.getEnumConstants() ) {
-					String[] hairColorNameAndHatName = getHairColorNameAndHatName( enumConstant );
-					assert hairColorNameAndHatName.length == 2 : enumConstant;
-					String hairColorNameText = hairColorNameAndHatName[ 0 ];
-					String hatName = hairColorNameAndHatName[ 1 ];
-					HairClsHatNameCombo hairClsHatNameCombo = new HairClsHatNameCombo( cls, hatName );
-					List<HairColorNameHairCombo> list = map.getInitializingIfAbsentToLinkedList( hairClsHatNameCombo );
-					HairColorName hairColorName = hairColorNameText != null ? HairColorName.valueOf( hairColorNameText ) : HairColorName.NULL;
-					list.add( new HairColorNameHairCombo( hairColorName, enumConstant ) );
-				}
-			} else {
-				Logger.severe( cls.getName(), "is not enum" );
-			}
-		}
-		List<HairHatStyle> hairHatStyles = Lists.newLinkedList();
-		for( HairClsHatNameCombo hairClsHatNameCombo : map.keySet() ) {
-			List<HairColorNameHairCombo> list = map.get( hairClsHatNameCombo );
-			Collections.sort( list );
-			hairHatStyles.add( new HairHatStyle( hairClsHatNameCombo, list ) );
-		}
-		Collections.sort( hairHatStyles );
-		return Collections.unmodifiableList( hairHatStyles );
-	}
+  /* package-private */
+  static String[] getHairColorNameAndHatName(Hair enumConstant) {
+    String s = enumConstant.toString();
+    if (enumConstant.hasHat()) {
+      if (enumConstant.hasHair()) {
+        return s.split("_", 2);
+      } else {
+        return new String[] {null, s};
+      }
+    } else {
+      if (enumConstant.hasHair()) {
+        return new String[] {s, null};
+      } else {
+        return new String[] {null, null}; //todo?
+      }
+    }
+  }
 
-	public static List<HairHatStyle> getHairHatStyles( LifeStage lifeStage, Gender gender ) {
-		if( ( lifeStage != null ) && ( gender != null ) ) {
-			return mapToMap.get( lifeStage, gender );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  private static List<HairHatStyle> createHairInfos(LifeStage lifeStage, Gender gender) {
+    InitializingIfAbsentListHashMap<HairClsHatNameCombo, HairColorNameHairCombo> map = Maps.newInitializingIfAbsentListHashMap();
+    Class<? extends Hair>[] clses = HairManager.getSingleton().getImplementingClasses(lifeStage, gender);
+    for (Class<? extends Hair> cls : clses) {
+      if (cls.isEnum()) {
+        for (Hair enumConstant : cls.getEnumConstants()) {
+          String[] hairColorNameAndHatName = getHairColorNameAndHatName(enumConstant);
+          assert hairColorNameAndHatName.length == 2 : enumConstant;
+          String hairColorNameText = hairColorNameAndHatName[0];
+          String hatName = hairColorNameAndHatName[1];
+          HairClsHatNameCombo hairClsHatNameCombo = new HairClsHatNameCombo(cls, hatName);
+          List<HairColorNameHairCombo> list = map.getInitializingIfAbsentToLinkedList(hairClsHatNameCombo);
+          HairColorName hairColorName = hairColorNameText != null ? HairColorName.valueOf(hairColorNameText) : HairColorName.NULL;
+          list.add(new HairColorNameHairCombo(hairColorName, enumConstant));
+        }
+      } else {
+        Logger.severe(cls.getName(), "is not enum");
+      }
+    }
+    List<HairHatStyle> hairHatStyles = Lists.newLinkedList();
+    for (HairClsHatNameCombo hairClsHatNameCombo : map.keySet()) {
+      List<HairColorNameHairCombo> list = map.get(hairClsHatNameCombo);
+      Collections.sort(list);
+      hairHatStyles.add(new HairHatStyle(hairClsHatNameCombo, list));
+    }
+    Collections.sort(hairHatStyles);
+    return Collections.unmodifiableList(hairHatStyles);
+  }
 
-	public static HairHatStyleHairColorName getHairHatStyleColorNameFromHair( LifeStage lifeStage, Gender gender, Hair hair ) {
-		if( hair != null ) {
-			List<HairHatStyle> hairHatStyles = getHairHatStyles( lifeStage, gender );
-			for( HairHatStyle hairHatStyle : hairHatStyles ) {
-				if( hairHatStyle.getHairCls().equals( hair.getClass() ) ) {
-					String[] hairColorNameAndHatName = getHairColorNameAndHatName( hair );
-					assert hairColorNameAndHatName.length == 2 : hair;
-					String hatName = hairColorNameAndHatName[ 1 ];
-					if( Objects.equals( hatName, hairHatStyle.getHatName() ) ) {
-						String hairColorNameText = hairColorNameAndHatName[ 0 ];
-						HairColorName hairColorName = hairColorNameText != null ? HairColorName.valueOf( hairColorNameText ) : HairColorName.NULL;
-						return new HairHatStyleHairColorName( hairHatStyle, hairColorName );
-					}
-				}
-			}
-		}
-		return null;
-	}
+  public static List<HairHatStyle> getHairHatStyles(LifeStage lifeStage, Gender gender) {
+    if ((lifeStage != null) && (gender != null)) {
+      return mapToMap.get(lifeStage, gender);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public static void main( String[] args ) {
-		Set<HairColorName> hairColorNameSet = Sets.newHashSet();
-		for( LifeStage lifeStage : LifeStage.values() ) {
-			for( Gender gender : Gender.values() ) {
-				Logger.outln();
-				for( HairHatStyle hairHatStyle : getHairHatStyles( lifeStage, gender ) ) {
-					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
-					for( HairColorNameHairCombo hairColorNameHairCombo : hairHatStyle.getHairColorNameHairCombos() ) {
-						hairColorNameSet.add( hairColorNameHairCombo.getHairColorName() );
-					}
-				}
-				Logger.outln();
-			}
-		}
-		hairColorNameSet.remove( null );
-		List<HairColorName> list = Lists.newArrayList( hairColorNameSet );
+  public static HairHatStyleHairColorName getHairHatStyleColorNameFromHair(LifeStage lifeStage, Gender gender, Hair hair) {
+    if (hair != null) {
+      List<HairHatStyle> hairHatStyles = getHairHatStyles(lifeStage, gender);
+      for (HairHatStyle hairHatStyle : hairHatStyles) {
+        if (hairHatStyle.getHairCls().equals(hair.getClass())) {
+          String[] hairColorNameAndHatName = getHairColorNameAndHatName(hair);
+          assert hairColorNameAndHatName.length == 2 : hair;
+          String hatName = hairColorNameAndHatName[1];
+          if (Objects.equals(hatName, hairHatStyle.getHatName())) {
+            String hairColorNameText = hairColorNameAndHatName[0];
+            HairColorName hairColorName = hairColorNameText != null ? HairColorName.valueOf(hairColorNameText) : HairColorName.NULL;
+            return new HairHatStyleHairColorName(hairHatStyle, hairColorName);
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-		for( HairColorName hairColorName : list ) {
-			Logger.outln( hairColorName );
-		}
-		Collections.sort( list );
-		list.add( 0, null );
-		Logger.outln( list );
-	}
+  public static void main(String[] args) {
+    Set<HairColorName> hairColorNameSet = Sets.newHashSet();
+    for (LifeStage lifeStage : LifeStage.values()) {
+      for (Gender gender : Gender.values()) {
+        Logger.outln();
+        for (HairHatStyle hairHatStyle : getHairHatStyles(lifeStage, gender)) {
+          //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
+          for (HairColorNameHairCombo hairColorNameHairCombo : hairHatStyle.getHairColorNameHairCombos()) {
+            hairColorNameSet.add(hairColorNameHairCombo.getHairColorName());
+          }
+        }
+        Logger.outln();
+      }
+    }
+    hairColorNameSet.remove(null);
+    List<HairColorName> list = Lists.newArrayList(hairColorNameSet);
+
+    for (HairColorName hairColorName : list) {
+      Logger.outln(hairColorName);
+    }
+    Collections.sort(list);
+    list.add(0, null);
+    Logger.outln(list);
+  }
 }

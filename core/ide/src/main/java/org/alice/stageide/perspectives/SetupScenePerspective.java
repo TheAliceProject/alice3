@@ -64,42 +64,42 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetupScenePerspective extends ProjectPerspective {
-	public SetupScenePerspective( ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
-		super( UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), projectDocumentFrame, menuBar );
-	}
+  public SetupScenePerspective(ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar) {
+    super(UUID.fromString("50d334d1-ccf9-421e-bce9-0134db6d6bc7"), projectDocumentFrame, menuBar);
+  }
 
-	@Override
-	public SetupScenePerspectiveComposite getMainComposite() {
-		return SetupScenePerspectiveComposite.getInstance();
-	}
+  @Override
+  public SetupScenePerspectiveComposite getMainComposite() {
+    return SetupScenePerspectiveComposite.getInstance();
+  }
 
-	@Override
-	public ToolBarComposite getToolBarComposite() {
-		if( IsToolBarShowing.getValue() ) {
-			return this.toolBarLazy.get();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public ToolBarComposite getToolBarComposite() {
+    if (IsToolBarShowing.getValue()) {
+      return this.toolBarLazy.get();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public TrackableShape getRenderWindow() {
-		return StorytellingSceneEditor.getInstance();
-	}
+  @Override
+  public TrackableShape getRenderWindow() {
+    return StorytellingSceneEditor.getInstance();
+  }
 
-	@Override
-	public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
-	}
+  @Override
+  public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
+    return null;
+  }
 
-	@Override
-	protected void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
-	}
+  @Override
+  protected void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
+  }
 
-	private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
-		@Override
-		protected ToolBarComposite create() {
-			return new SetupSceneToolBarComposite( getProjectDocumentFrame() );
-		}
-	};
+  private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
+    @Override
+    protected ToolBarComposite create() {
+      return new SetupSceneToolBarComposite(getProjectDocumentFrame());
+    }
+  };
 }

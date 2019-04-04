@@ -49,33 +49,33 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class ForEachLoopIterationEvent extends VirtualMachineEvent {
-	public ForEachLoopIterationEvent( VirtualMachine vm, AbstractForEachLoop forEachLoop, Object value, Object[] array, int index ) {
-		super( vm );
-		this.forEachLoop = forEachLoop;
-		this.value = value;
-		this.array = array;
-		this.index = index;
-	}
+  public ForEachLoopIterationEvent(VirtualMachine vm, AbstractForEachLoop forEachLoop, Object value, Object[] array, int index) {
+    super(vm);
+    this.forEachLoop = forEachLoop;
+    this.value = value;
+    this.array = array;
+    this.index = index;
+  }
 
-	public AbstractForEachLoop getForEachLoop() {
-		return this.forEachLoop;
-	}
+  public AbstractForEachLoop getForEachLoop() {
+    return this.forEachLoop;
+  }
 
-	public Object getValue() {
-		return this.value;
-	}
+  public Object getValue() {
+    return this.value;
+  }
 
-	public Object[] getArray() {
-		return this.array;
-	}
+  public Object[] getArray() {
+    return this.array;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	private final AbstractForEachLoop forEachLoop;
-	private final Object value;
-	private final Object[] array;
-	private final int index;
+  private final AbstractForEachLoop forEachLoop;
+  private final Object value;
+  private final Object[] array;
+  private final int index;
 
 }

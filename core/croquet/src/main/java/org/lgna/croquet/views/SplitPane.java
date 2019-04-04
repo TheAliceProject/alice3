@@ -53,17 +53,17 @@ import javax.swing.JSplitPane;
  * @author Dennis Cosgrove
  */
 public abstract class SplitPane extends AbstractSplitPane<ImmutableSplitComposite> {
-	protected SplitPane( ImmutableSplitComposite splitComposite, int orientation ) {
-		super( splitComposite, orientation );
-	}
+  protected SplitPane(ImmutableSplitComposite splitComposite, int orientation) {
+    super(splitComposite, orientation);
+  }
 
-	@Override
-	protected JSplitPane createJSplitPane( int orientation ) {
-		ImmutableSplitComposite composite = this.getComposite();
-		Composite<?> leadingComposite = composite.getLeadingComposite();
-		Composite<?> trailingComposite = composite.getTrailingComposite();
-		JSplitPane rv = new JSplitPane( orientation, leadingComposite != null ? leadingComposite.getRootComponent().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getRootComponent().getAwtComponent() : null );
-		rv.setBorder( BorderFactory.createEmptyBorder() );
-		return rv;
-	}
+  @Override
+  protected JSplitPane createJSplitPane(int orientation) {
+    ImmutableSplitComposite composite = this.getComposite();
+    Composite<?> leadingComposite = composite.getLeadingComposite();
+    Composite<?> trailingComposite = composite.getTrailingComposite();
+    JSplitPane rv = new JSplitPane(orientation, leadingComposite != null ? leadingComposite.getRootComponent().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getRootComponent().getAwtComponent() : null);
+    rv.setBorder(BorderFactory.createEmptyBorder());
+    return rv;
+  }
 }

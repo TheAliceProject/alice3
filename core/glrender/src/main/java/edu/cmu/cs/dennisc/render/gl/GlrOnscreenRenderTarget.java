@@ -52,12 +52,12 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class GlrOnscreenRenderTarget<C extends Component> extends GlrRenderTarget implements OnscreenRenderTarget<C> {
-	protected GlrOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
-		super( lookingGlassFactory, requestedCapabilities );
-	}
+  protected GlrOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
+    super(lookingGlassFactory, requestedCapabilities);
+  }
 
-	@Override
-	protected void repaintIfAppropriate() {
-		this.repaint();
-	}
+  @Override
+  protected void repaintIfAppropriate() {
+    this.repaint();
+  }
 }

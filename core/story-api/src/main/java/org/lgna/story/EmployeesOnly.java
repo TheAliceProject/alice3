@@ -67,163 +67,163 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class EmployeesOnly {
-	private EmployeesOnly() {
-		throw new AssertionError();
-	}
+  private EmployeesOnly() {
+    throw new AssertionError();
+  }
 
-	public static void invokeHandleActiveChanged( SScene scene, boolean isActive, int activationCount ) {
-		scene.handleActiveChanged( isActive, activationCount );
-	}
+  public static void invokeHandleActiveChanged(SScene scene, boolean isActive, int activationCount) {
+    scene.handleActiveChanged(isActive, activationCount);
+  }
 
-	public static void invokeSetJointedModelResource( SJointedModel jointedModel, JointedModelResource resource ) {
-		jointedModel.setJointedModelResource( resource );
-	}
+  public static void invokeSetJointedModelResource(SJointedModel jointedModel, JointedModelResource resource) {
+    jointedModel.setJointedModelResource(resource);
+  }
 
-	public static <T extends EntityImp> T getImplementation( SThing entity ) {
-		return (T)entity.getImplementation();
-	}
+  public static <T extends EntityImp> T getImplementation(SThing entity) {
+    return (T) entity.getImplementation();
+  }
 
-	public static ProgramImp getImplementation( SProgram program ) {
-		return program.getImplementation();
-	}
+  public static ProgramImp getImplementation(SProgram program) {
+    return program.getImplementation();
+  }
 
-	public static Point3 getPoint3( Position position ) {
-		return position.getInternal();
-	}
+  public static Point3 getPoint3(Position position) {
+    return position.getInternal();
+  }
 
-	public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3( Orientation orientation ) {
-		return orientation.getInternal();
-	}
+  public static OrthogonalMatrix3x3 getOrthogonalMatrix3x3(Orientation orientation) {
+    return orientation.getInternal();
+  }
 
-	public static AffineMatrix4x4 getAffineMatrix4x4( VantagePoint vantagePoint ) {
-		return vantagePoint.getInternal();
-	}
+  public static AffineMatrix4x4 getAffineMatrix4x4(VantagePoint vantagePoint) {
+    return vantagePoint.getInternal();
+  }
 
-	public static Color createInterpolation( Color a, Color b, float portion ) {
-		return Color.createInstance( Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion ) );
-	}
+  public static Color createInterpolation(Color a, Color b, float portion) {
+    return Color.createInstance(Color4f.createInterpolation(a.getInternal(), b.getInternal(), portion));
+  }
 
-	public static Position createPosition( Point3 xyz ) {
-		return Position.createInstance( xyz );
-	}
+  public static Position createPosition(Point3 xyz) {
+    return Position.createInstance(xyz);
+  }
 
-	public static Orientation createOrientation( OrthogonalMatrix3x3 m ) {
-		return Orientation.createInstance( m );
-	}
+  public static Orientation createOrientation(OrthogonalMatrix3x3 m) {
+    return Orientation.createInstance(m);
+  }
 
-	public static VantagePoint createVantagePoint( AffineMatrix4x4 m ) {
-		return VantagePoint.createInstance( m );
-	}
+  public static VantagePoint createVantagePoint(AffineMatrix4x4 m) {
+    return VantagePoint.createInstance(m);
+  }
 
-	public static Key getKeyFromKeyCode( int keyCode ) {
-		return Key.getInstanceFromKeyCode( keyCode );
-	}
+  public static Key getKeyFromKeyCode(int keyCode) {
+    return Key.getInstanceFromKeyCode(keyCode);
+  }
 
-	public static int getKeyCodeFromKey( Key key ) {
-		if( key != null ) {
-			return key.getInternal();
-		} else {
-			return -1;
-		}
-	}
+  public static int getKeyCodeFromKey(Key key) {
+    if (key != null) {
+      return key.getInternal();
+    } else {
+      return -1;
+    }
+  }
 
-	public static Color createColor( Color4f color ) {
-		return color != null ? Color.createInstance( color ) : null;
-	}
+  public static Color createColor(Color4f color) {
+    return color != null ? Color.createInstance(color) : null;
+  }
 
-	public static Color createColor( java.awt.Color awtColor ) {
-		return createColor( awtColor != null ? createColor4f( awtColor ) : null );
-	}
+  public static Color createColor(java.awt.Color awtColor) {
+    return createColor(awtColor != null ? createColor4f(awtColor) : null);
+  }
 
-	public static Color4f createColor4f( java.awt.Color awtColor ) {
-		return Color4f.createFromRgbaInts( awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha() );
-	}
+  public static Color4f createColor4f(java.awt.Color awtColor) {
+    return Color4f.createFromRgbaInts(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha());
+  }
 
-	public static Color4f getColor4f( Color color ) {
-		return color != null ? color.getInternal() : null;
-	}
+  public static Color4f getColor4f(Color color) {
+    return color != null ? color.getInternal() : null;
+  }
 
-	public static java.awt.Color getAwtColor( Color color ) {
-		return ColorUtilities.toAwtColor( getColor4f( color ) );
-	}
+  public static java.awt.Color getAwtColor(Color color) {
+    return ColorUtilities.toAwtColor(getColor4f(color));
+  }
 
-	public static Color4f getColor4f( Paint paint, Color4f defaultValue ) {
-		if( paint instanceof Color ) {
-			return getColor4f( (Color)paint );
-		} else {
-			return defaultValue;
-		}
-	}
+  public static Color4f getColor4f(Paint paint, Color4f defaultValue) {
+    if (paint instanceof Color) {
+      return getColor4f((Color) paint);
+    } else {
+      return defaultValue;
+    }
+  }
 
-	public static edu.cmu.cs.dennisc.animation.Style getInternal( AnimationStyle animationStyle ) {
-		return animationStyle.getInternal();
-	}
+  public static edu.cmu.cs.dennisc.animation.Style getInternal(AnimationStyle animationStyle) {
+    return animationStyle.getInternal();
+  }
 
-	private static final Map<ImagePaint, BufferedImageTexture> mapImagePaintToTexture = Maps.newHashMap();
+  private static final Map<ImagePaint, BufferedImageTexture> mapImagePaintToTexture = Maps.newHashMap();
 
-	public static Texture getTexture( Paint paint, Texture defaultValue ) {
-		if( paint instanceof ImageSource ) {
-			ImageSource imageSource = (ImageSource)paint;
-			ImageResource imageResource = imageSource.getImageResource();
-			if( imageResource != null ) {
-				return TextureFactory.getTexture( imageResource, true );
-			} else {
-				return null;
-			}
-		} else if( paint instanceof ImagePaint ) {
-			ImagePaint imagePaint = (ImagePaint)paint;
-			BufferedImageTexture rv = mapImagePaintToTexture.get( imagePaint );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new BufferedImageTexture();
-				try {
-					rv.setBufferedImage( ImageIO.read( imagePaint.getResource() ) );
-				} catch( IOException ioe ) {
-					throw new RuntimeException( ioe );
-				}
-				rv.setMipMappingDesired( true );
-				mapImagePaintToTexture.put( imagePaint, rv );
-			}
-			return rv;
-		} else if( paint instanceof NonfreeTexturePaint ) {
-			NonfreeTexturePaint nonfreeTexturePaint = (NonfreeTexturePaint)paint;
-			if( nonfreeTexturePaint.isTextureValid() ) {
-				Texture texture = nonfreeTexturePaint.getTexture();
+  public static Texture getTexture(Paint paint, Texture defaultValue) {
+    if (paint instanceof ImageSource) {
+      ImageSource imageSource = (ImageSource) paint;
+      ImageResource imageResource = imageSource.getImageResource();
+      if (imageResource != null) {
+        return TextureFactory.getTexture(imageResource, true);
+      } else {
+        return null;
+      }
+    } else if (paint instanceof ImagePaint) {
+      ImagePaint imagePaint = (ImagePaint) paint;
+      BufferedImageTexture rv = mapImagePaintToTexture.get(imagePaint);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new BufferedImageTexture();
+        try {
+          rv.setBufferedImage(ImageIO.read(imagePaint.getResource()));
+        } catch (IOException ioe) {
+          throw new RuntimeException(ioe);
+        }
+        rv.setMipMappingDesired(true);
+        mapImagePaintToTexture.put(imagePaint, rv);
+      }
+      return rv;
+    } else if (paint instanceof NonfreeTexturePaint) {
+      NonfreeTexturePaint nonfreeTexturePaint = (NonfreeTexturePaint) paint;
+      if (nonfreeTexturePaint.isTextureValid()) {
+        Texture texture = nonfreeTexturePaint.getTexture();
 
-				NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture( texture );
-				return texture;
-			} else {
-				//todo?
-				return defaultValue;
-			}
-		} else {
-			return defaultValue;
-		}
-	}
+        NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture(texture);
+        return texture;
+      } else {
+        //todo?
+        return defaultValue;
+      }
+    } else {
+      return defaultValue;
+    }
+  }
 
-	public static Object getKeyedArgumentValue( Object argumentValue ) {
-		try {
-			if( argumentValue != null ) {
-				Class<?> cls = argumentValue.getClass();
-				Method mthd = cls.getDeclaredMethod( "getValue", Object[].class );
-				Object array = new Object[] { argumentValue };
-				return mthd.invoke( null, array );
-			} else {
-				return null;
-			}
-		} catch( Throwable t ) {
-			//t.printStackTrace();
-			return argumentValue;
-		}
-	}
+  public static Object getKeyedArgumentValue(Object argumentValue) {
+    try {
+      if (argumentValue != null) {
+        Class<?> cls = argumentValue.getClass();
+        Method mthd = cls.getDeclaredMethod("getValue", Object[].class);
+        Object array = new Object[] {argumentValue};
+        return mthd.invoke(null, array);
+      } else {
+        return null;
+      }
+    } catch (Throwable t) {
+      //t.printStackTrace();
+      return argumentValue;
+    }
+  }
 
-	public static void addJointIdTransformationPair( PoseBuilder<?, ?> poseBuilder, JointIdTransformationPair jointIdQuaternionPair ) {
-		poseBuilder.addJointIdQuaternionPair( jointIdQuaternionPair );
-	}
+  public static void addJointIdTransformationPair(PoseBuilder<?, ?> poseBuilder, JointIdTransformationPair jointIdQuaternionPair) {
+    poseBuilder.addJointIdQuaternionPair(jointIdQuaternionPair);
+  }
 
-	public static JointIdTransformationPair[] getJointIdTransformationPairs( Pose<?> pose ) {
-		return pose.getJointIdTransformationPairs();
-	}
+  public static JointIdTransformationPair[] getJointIdTransformationPairs(Pose<?> pose) {
+    return pose.getJointIdTransformationPairs();
+  }
 
 }

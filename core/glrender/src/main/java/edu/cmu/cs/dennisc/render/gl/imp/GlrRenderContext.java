@@ -50,19 +50,19 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class GlrRenderContext {
-	public GlrRenderContext( Rectangle viewport, GLAutoDrawable drawable ) {
-		this.viewport = viewport;
-		this.drawable = drawable;
-	}
+  public GlrRenderContext(Rectangle viewport, GLAutoDrawable drawable) {
+    this.viewport = viewport;
+    this.drawable = drawable;
+  }
 
-	public Rectangle getViewport() {
-		return this.viewport;
-	}
+  public Rectangle getViewport() {
+    return this.viewport;
+  }
 
-	public GLAutoDrawable getDrawable() {
-		return this.drawable;
-	}
+  public GLAutoDrawable getDrawable() {
+    return this.drawable;
+  }
 
-	private final Rectangle viewport;
-	private final GLAutoDrawable drawable;
+  private final Rectangle viewport;
+  private final GLAutoDrawable drawable;
 }

@@ -46,20 +46,20 @@ package org.alice.ide.i18n;
  * @author Dennis Cosgrove
  */
 public class TextChunk extends Chunk {
-	private String text;
+  private String text;
 
-	public TextChunk( String text ) {
-		this.text = text;
-	}
+  public TextChunk(String text) {
+    this.text = text;
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	@Override
-	protected StringBuilder updateRepr( StringBuilder rv ) {
-		rv.append( "text=" );
-		rv.append( this.text );
-		return rv;
-	}
+  @Override
+  protected StringBuilder updateRepr(StringBuilder rv) {
+    rv.append("text=");
+    rv.append(this.text);
+    return rv;
+  }
 }

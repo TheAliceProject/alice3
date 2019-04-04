@@ -56,56 +56,55 @@ import org.lgna.story.implementation.JointedModelImp;
  * @author Dennis Cosgrove
  */
 public class NebulousVisualData<M extends Model> implements JointedModelImp.VisualData {
-	private final M nebModel;
-	private final Visual[] sgVisuals = new Visual[] { new Visual() };
-	private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] { new SimpleAppearance() };
+  private final M nebModel;
+  private final Visual[] sgVisuals = new Visual[] {new Visual()};
+  private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
 
-	public NebulousVisualData( M nebModel ) {
-		this.nebModel = nebModel;
-		this.nebModel.setVisual( sgVisuals[ 0 ] );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.nebModel } );
-		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
-	}
+  public NebulousVisualData(M nebModel) {
+    this.nebModel = nebModel;
+    this.nebModel.setVisual(sgVisuals[0]);
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.nebModel});
+    this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
+  }
 
-	@Override
-	public SimpleAppearance[] getSgAppearances() {
-		return this.sgAppearances;
-	}
+  @Override
+  public SimpleAppearance[] getSgAppearances() {
+    return this.sgAppearances;
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	public M getNebModel() {
-		return this.nebModel;
-	}
+  public M getNebModel() {
+    return this.nebModel;
+  }
 
-	@Override
-	public double getBoundingSphereRadius() {
-		return 1.0;
-	}
+  @Override
+  public double getBoundingSphereRadius() {
+    return 1.0;
+  }
 
-	@Override
-	public void setSGParent( Composite parent ) {
-		nebModel.setSGParent( parent );
-		for( Visual sgVisual : this.getSgVisuals() ) {
-			sgVisual.setParent( parent );
-		}
-	}
+  @Override
+  public void setSGParent(Composite parent) {
+    nebModel.setSGParent(parent);
+    for (Visual sgVisual : this.getSgVisuals()) {
+      sgVisual.setParent(parent);
+    }
+  }
 
-	@Override
-	public Composite getSGParent() {
-		return nebModel.getSGParent();
-	}
+  @Override
+  public Composite getSGParent() {
+    return nebModel.getSGParent();
+  }
 
-	public void unload() {
-		if( this.nebModel instanceof Person ) {
-			( (Person)this.nebModel ).synchronizedUnload();
-		}
-		else if( this.nebModel instanceof Thing ) {
-			( (Thing)this.nebModel ).synchronizedUnload();
-		}
-	}
+  public void unload() {
+    if (this.nebModel instanceof Person) {
+      ((Person) this.nebModel).synchronizedUnload();
+    } else if (this.nebModel instanceof Thing) {
+      ((Thing) this.nebModel).synchronizedUnload();
+    }
+  }
 
 }

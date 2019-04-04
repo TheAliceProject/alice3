@@ -52,17 +52,17 @@ import javax.swing.JList;
  * @author Dennis Cosgrove
  */
 public class ItemCodecListCellRenderer<T> extends ListCellRenderer<T> {
-	private final ItemCodec<T> itemCodec;
+  private final ItemCodec<T> itemCodec;
 
-	public ItemCodecListCellRenderer( ItemCodec<T> itemCodec ) {
-		this.itemCodec = itemCodec;
-	}
+  public ItemCodecListCellRenderer(ItemCodec<T> itemCodec) {
+    this.itemCodec = itemCodec;
+  }
 
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, T value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		this.itemCodec.appendRepresentation( sb, value );
-		rv.setText( sb.toString() );
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, T value, int index, boolean isSelected, boolean cellHasFocus) {
+    StringBuilder sb = new StringBuilder();
+    this.itemCodec.appendRepresentation(sb, value);
+    rv.setText(sb.toString());
+    return rv;
+  }
 }

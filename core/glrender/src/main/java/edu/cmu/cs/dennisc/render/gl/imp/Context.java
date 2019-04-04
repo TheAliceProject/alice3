@@ -53,77 +53,77 @@ import edu.cmu.cs.dennisc.java.util.Stacks;
  * @author Dennis Cosgrove
  */
 public abstract class Context {
-	public GL2 gl;
-	public GLU glu;
+  public GL2 gl;
+  public GLU glu;
 
-	private GLUquadric m_quadric;
+  private GLUquadric m_quadric;
 
-	public Context() {
-		glu = new GLU();
-	}
+  public Context() {
+    glu = new GLU();
+  }
 
-	private int scaledCount = 0;
-	private DStack<Integer> scaledCountStack = Stacks.newStack();
+  private int scaledCount = 0;
+  private DStack<Integer> scaledCountStack = Stacks.newStack();
 
-	public void initialize() {
-		this.scaledCount = 0;
-		this.disableNormalize();
-	}
+  public void initialize() {
+    this.scaledCount = 0;
+    this.disableNormalize();
+  }
 
-	public boolean isScaled() {
-		return this.scaledCount > 0;
-	}
+  public boolean isScaled() {
+    return this.scaledCount > 0;
+  }
 
-	protected abstract void enableNormalize();
+  protected abstract void enableNormalize();
 
-	protected abstract void disableNormalize();
+  protected abstract void disableNormalize();
 
-	public void incrementScaledCount() {
-		this.scaledCount++;
-		if( this.scaledCount == 1 ) {
-			this.enableNormalize();
-		}
+  public void incrementScaledCount() {
+    this.scaledCount++;
+    if (this.scaledCount == 1) {
+      this.enableNormalize();
+    }
 
-	}
+  }
 
-	public void decrementScaledCount() {
-		if( this.scaledCount == 1 ) {
-			this.disableNormalize();
-		}
-		this.scaledCount--;
-	}
+  public void decrementScaledCount() {
+    if (this.scaledCount == 1) {
+      this.disableNormalize();
+    }
+    this.scaledCount--;
+  }
 
-	public void pushScaledCountAndSetToZero() {
-		this.scaledCountStack.push( this.scaledCount );
-		this.scaledCount = 0;
-	}
+  public void pushScaledCountAndSetToZero() {
+    this.scaledCountStack.push(this.scaledCount);
+    this.scaledCount = 0;
+  }
 
-	public void popAndRestoreScaledCount() {
-		this.scaledCount = this.scaledCountStack.pop();
-	}
+  public void popAndRestoreScaledCount() {
+    this.scaledCount = this.scaledCountStack.pop();
+  }
 
-	//todo: synchronize?
-	public GLUquadric getQuadric() {
-		if( m_quadric == null ) {
-			m_quadric = glu.gluNewQuadric();
-		}
-		return m_quadric;
-	}
+  //todo: synchronize?
+  public GLUquadric getQuadric() {
+    if (m_quadric == null) {
+      m_quadric = glu.gluNewQuadric();
+    }
+    return m_quadric;
+  }
 
-	protected abstract void handleGLChange();
+  protected abstract void handleGLChange();
 
-	//	private boolean isGLChanged = true;
-	//	public boolean isGLChanged() {
-	//		return this.isGLChanged;
-	//	}
-	public void setGL( GL2 gl ) {
-		//		this.isGLChanged = this.gl != gl;
-		//		if( this.isGLChanged ) {
-		if( this.gl != gl ) {
-			this.gl = gl;
-			handleGLChange();
-		}
-	}
+  //  private boolean isGLChanged = true;
+  //  public boolean isGLChanged() {
+  //    return this.isGLChanged;
+  //  }
+  public void setGL(GL2 gl) {
+    //    this.isGLChanged = this.gl != gl;
+    //    if( this.isGLChanged ) {
+    if (this.gl != gl) {
+      this.gl = gl;
+      handleGLChange();
+    }
+  }
 
-	public abstract void setAppearanceIndex( int index );
+  public abstract void setAppearanceIndex(int index);
 }

@@ -55,22 +55,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationPropertyState extends PropertyState {
-	private static InitializingIfAbsentMap<JavaMethod, FieldDeclarationPropertyState> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<JavaMethod, FieldDeclarationPropertyState> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldDeclarationPropertyState getInstanceForSetter( JavaMethod setter ) {
-		return map.getInitializingIfAbsent( setter, new InitializingIfAbsentMap.Initializer<JavaMethod, FieldDeclarationPropertyState>() {
-			@Override
-			public FieldDeclarationPropertyState initialize( JavaMethod setter ) {
-				return new FieldDeclarationPropertyState( setter );
-			}
-		} );
-	}
+  public static FieldDeclarationPropertyState getInstanceForSetter(JavaMethod setter) {
+    return map.getInitializingIfAbsent(setter, new InitializingIfAbsentMap.Initializer<JavaMethod, FieldDeclarationPropertyState>() {
+      @Override
+      public FieldDeclarationPropertyState initialize(JavaMethod setter) {
+        return new FieldDeclarationPropertyState(setter);
+      }
+    });
+  }
 
-	public static synchronized FieldDeclarationPropertyState getInstanceForGetter( JavaMethod getter ) {
-		return getInstanceForSetter( AstUtilities.getSetterForGetter( getter ) );
-	}
+  public static synchronized FieldDeclarationPropertyState getInstanceForGetter(JavaMethod getter) {
+    return getInstanceForSetter(AstUtilities.getSetterForGetter(getter));
+  }
 
-	private FieldDeclarationPropertyState( JavaMethod setter ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "e4cd9f74-3815-46d1-ae68-b5b964f68ebd" ), setter );
-	}
+  private FieldDeclarationPropertyState(JavaMethod setter) {
+    super(Application.INHERIT_GROUP, UUID.fromString("e4cd9f74-3815-46d1-ae68-b5b964f68ebd"), setter);
+  }
 }

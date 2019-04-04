@@ -69,94 +69,94 @@ import java.awt.geom.Rectangle2D;
  */
 public class SimpleScrollRenderer implements ScrollRenderer {
 
-	private Area drawScrollFeedback( Graphics2D g2, Rectangle rect ) {
-		g2.setColor( Color.BLACK );
-		g2.drawRect( rect.x, rect.y, rect.width, rect.height );
-		g2.setColor( Color.YELLOW );
-		g2.drawRect( rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2 );
-		g2.setColor( Color.BLACK );
-		g2.drawRect( rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4 );
-		return new Area( new Rectangle( rect.x - 2, rect.y - 2, rect.width + 4 + 1, rect.height + 4 + 1 ) );
-	}
+  private Area drawScrollFeedback(Graphics2D g2, Rectangle rect) {
+    g2.setColor(Color.BLACK);
+    g2.drawRect(rect.x, rect.y, rect.width, rect.height);
+    g2.setColor(Color.YELLOW);
+    g2.drawRect(rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2);
+    g2.setColor(Color.BLACK);
+    g2.drawRect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);
+    return new Area(new Rectangle(rect.x - 2, rect.y - 2, rect.width + 4 + 1, rect.height + 4 + 1));
+  }
 
-	@Override
-	public Shape renderScrollIndicators( Graphics2D g2, ScreenElement root, TrackableShape trackableShape ) {
-		ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
-		if( scrollPane != null ) {
-			AwtComponentView<?> view = scrollPane.getViewportView();
+  @Override
+  public Shape renderScrollIndicators(Graphics2D g2, ScreenElement root, TrackableShape trackableShape) {
+    ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
+    if (scrollPane != null) {
+      AwtComponentView<?> view = scrollPane.getViewportView();
 
-			Shape shape = trackableShape.getShape( view, null );
-			if( shape != null ) {
-				Area repaintShape = new Area();
+      Shape shape = trackableShape.getShape(view, null);
+      if (shape != null) {
+        Area repaintShape = new Area();
 
-				Rectangle2D bounds = shape.getBounds2D();
-				double portion = bounds.getCenterY() / view.getHeight();
+        Rectangle2D bounds = shape.getBounds2D();
+        double portion = bounds.getCenterY() / view.getHeight();
 
-				JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-				Rectangle rect = SwingUtilities.convertRectangle( scrollBar.getParent(), scrollBar.getBounds(), root.getAwtComponent() );
+        JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
+        Rectangle rect = SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), root.getAwtComponent());
 
-				StringBuilder sb = new StringBuilder();
-				sb.append( "You must scroll " );
+        StringBuilder sb = new StringBuilder();
+        sb.append("You must scroll ");
 
-				JViewport viewport = scrollPane.getAwtComponent().getViewport();
-				Rectangle viewBounds = viewport.getViewRect();
-				if( bounds.getY() < viewBounds.y ) {
-					sb.append( "up" );
-				} else if( bounds.getY() > ( viewBounds.y + viewBounds.height ) ) {
-					sb.append( "down" );
-				} else {
-					//pass
-				}
-				sb.append( " first." );
+        JViewport viewport = scrollPane.getAwtComponent().getViewport();
+        Rectangle viewBounds = viewport.getViewRect();
+        if (bounds.getY() < viewBounds.y) {
+          sb.append("up");
+        } else if (bounds.getY() > (viewBounds.y + viewBounds.height)) {
+          sb.append("down");
+        } else {
+          //pass
+        }
+        sb.append(" first.");
 
-				String s = sb.toString();
+        String s = sb.toString();
 
-				FontMetrics fm = g2.getFontMetrics();
-				Rectangle textBounds = fm.getStringBounds( s, g2 ).getBounds();
+        FontMetrics fm = g2.getFontMetrics();
+        Rectangle textBounds = fm.getStringBounds(s, g2).getBounds();
 
-				textBounds.x += rect.x + rect.width + 12;
-				textBounds.y += rect.y + ( rect.height / 2 );
+        textBounds.x += rect.x + rect.width + 12;
+        textBounds.y += rect.y + (rect.height / 2);
 
-				RectangleUtilities.inset( textBounds, new Insets( 4, 4, 4, 4 ) );
-				g2.setColor( Color.WHITE );
-				g2.fill( textBounds );
+        RectangleUtilities.inset(textBounds, new Insets(4, 4, 4, 4));
+        g2.setColor(Color.WHITE);
+        g2.fill(textBounds);
 
-				repaintShape.add( drawScrollFeedback( g2, textBounds ) );
+        repaintShape.add(drawScrollFeedback(g2, textBounds));
 
-				GraphicsUtilities.drawCenteredText( g2, s, textBounds );
+        GraphicsUtilities.drawCenteredText(g2, s, textBounds);
 
-				repaintShape.add( drawScrollFeedback( g2, rect ) );
+        repaintShape.add(drawScrollFeedback(g2, rect));
 
-				int y = rect.y + (int)( rect.height * portion );
+        int y = rect.y + (int) (rect.height * portion);
 
-				float xSize = 24.0f;
-				float yHalfSize = xSize * 0.5f;
-				GeneralPath path = new GeneralPath();
-				path.moveTo( 0, 0 );
-				path.lineTo( -xSize, yHalfSize );
-				path.lineTo( -xSize, -yHalfSize );
-				path.closePath();
+        float xSize = 24.0f;
+        float yHalfSize = xSize * 0.5f;
+        GeneralPath path = new GeneralPath();
+        path.moveTo(0, 0);
+        path.lineTo(-xSize, yHalfSize);
+        path.lineTo(-xSize, -yHalfSize);
+        path.closePath();
 
-				repaintShape.add( new Area( new Rectangle2D.Float( rect.x - 2 - xSize, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1 ) ) );
-				repaintShape.add( new Area( new Rectangle2D.Float( rect.x + rect.width + 2, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1 ) ) );
+        repaintShape.add(new Area(new Rectangle2D.Float(rect.x - 2 - xSize, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1)));
+        repaintShape.add(new Area(new Rectangle2D.Float(rect.x + rect.width + 2, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1)));
 
-				AffineTransform m = g2.getTransform();
-				g2.translate( rect.x - 2, y );
-				g2.setColor( Color.YELLOW );
-				g2.fill( path );
-				g2.setColor( Color.BLACK );
-				g2.draw( path );
-				g2.translate( rect.width + 4, 0 );
-				g2.rotate( Math.PI );
-				g2.setColor( Color.YELLOW );
-				g2.fill( path );
-				g2.setColor( Color.BLACK );
-				g2.draw( path );
-				g2.setTransform( m );
+        AffineTransform m = g2.getTransform();
+        g2.translate(rect.x - 2, y);
+        g2.setColor(Color.YELLOW);
+        g2.fill(path);
+        g2.setColor(Color.BLACK);
+        g2.draw(path);
+        g2.translate(rect.width + 4, 0);
+        g2.rotate(Math.PI);
+        g2.setColor(Color.YELLOW);
+        g2.fill(path);
+        g2.setColor(Color.BLACK);
+        g2.draw(path);
+        g2.setTransform(m);
 
-				return repaintShape;
-			}
-		}
-		return null;
-	}
+        return repaintShape;
+      }
+    }
+    return null;
+  }
 }

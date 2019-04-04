@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SizeFunctionsComposite extends NameFilteredJavaFunctionsComposite {
-	private static class SingletonHolder {
-		private static SizeFunctionsComposite instance = new SizeFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static SizeFunctionsComposite instance = new SizeFunctionsComposite();
+  }
 
-	public static SizeFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SizeFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SizeFunctionsComposite() {
-		super( UUID.fromString( "6a50e742-692c-4727-899d-2b3379b0c713" ), "getRadius", "getInnerRadius", "getOuterRadius", "getBaseRadius", "getLength", "getWidth", "getHeight", "getDepth" );
-	}
+  private SizeFunctionsComposite() {
+    super(UUID.fromString("6a50e742-692c-4727-899d-2b3379b0c713"), "getRadius", "getInnerRadius", "getOuterRadius", "getBaseRadius", "getLength", "getWidth", "getHeight", "getDepth");
+  }
 }

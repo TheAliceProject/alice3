@@ -53,66 +53,66 @@ import java.awt.Insets;
  * @author Dennis Cosgrove
  */
 public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
-	private static final Color INNER_SHADOW = ColorUtilities.createGray( 63 );
-	private static final Color INNER_HIGHLIGHT = ColorUtilities.createGray( 191 );
-	private static final Color OUTER_SHADOW = INNER_SHADOW.darker();
-	private static final Color OUTER_HIGHLIGHT = INNER_HIGHLIGHT.brighter();
-	private boolean isRaised;
+  private static final Color INNER_SHADOW = ColorUtilities.createGray(63);
+  private static final Color INNER_HIGHLIGHT = ColorUtilities.createGray(191);
+  private static final Color OUTER_SHADOW = INNER_SHADOW.darker();
+  private static final Color OUTER_HIGHLIGHT = INNER_HIGHLIGHT.brighter();
+  private boolean isRaised;
 
-	public BevelBorder( Insets insets, boolean isRaised ) {
-		super( insets );
-		this.isRaised = isRaised;
-	}
+  public BevelBorder(Insets insets, boolean isRaised) {
+    super(insets);
+    this.isRaised = isRaised;
+  }
 
-	public BevelBorder( int top, int left, int bottom, int right, boolean isRaised ) {
-		super( top, left, bottom, right );
-		this.isRaised = isRaised;
-	}
+  public BevelBorder(int top, int left, int bottom, int right, boolean isRaised) {
+    super(top, left, bottom, right);
+    this.isRaised = isRaised;
+  }
 
-	@Override
-	public final void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
-		Color prevColor = g.getColor();
+  @Override
+  public final void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    Color prevColor = g.getColor();
 
-		int x0 = x;
-		int x1 = ( x0 + width ) - 1;
-		int y0 = y;
-		int y1 = ( y0 + height ) - 1;
+    int x0 = x;
+    int x1 = (x0 + width) - 1;
+    int y0 = y;
+    int y1 = (y0 + height) - 1;
 
-		Color outerA;
-		Color outerB;
-		Color innerA;
-		Color innerB;
-		if( this.isRaised ) {
-			outerA = OUTER_SHADOW;
-			innerA = INNER_SHADOW;
-			innerB = INNER_HIGHLIGHT;
-			outerB = OUTER_HIGHLIGHT;
-		} else {
-			outerB = OUTER_SHADOW;
-			innerB = INNER_SHADOW;
-			innerA = INNER_HIGHLIGHT;
-			outerA = OUTER_HIGHLIGHT;
-		}
+    Color outerA;
+    Color outerB;
+    Color innerA;
+    Color innerB;
+    if (this.isRaised) {
+      outerA = OUTER_SHADOW;
+      innerA = INNER_SHADOW;
+      innerB = INNER_HIGHLIGHT;
+      outerB = OUTER_HIGHLIGHT;
+    } else {
+      outerB = OUTER_SHADOW;
+      innerB = INNER_SHADOW;
+      innerA = INNER_HIGHLIGHT;
+      outerA = OUTER_HIGHLIGHT;
+    }
 
-		g.setColor( outerA );
-		g.drawLine( x0, y1, x1, y1 );
-		g.drawLine( x1, y1, x1, y0 );
-		g.setColor( outerB );
-		g.drawLine( x0, y1, x0, y0 );
-		g.drawLine( x0, y0, x1, y0 );
+    g.setColor(outerA);
+    g.drawLine(x0, y1, x1, y1);
+    g.drawLine(x1, y1, x1, y0);
+    g.setColor(outerB);
+    g.drawLine(x0, y1, x0, y0);
+    g.drawLine(x0, y0, x1, y0);
 
-		x0 += 1;
-		y0 += 1;
-		x1 -= 1;
-		y1 -= 1;
+    x0 += 1;
+    y0 += 1;
+    x1 -= 1;
+    y1 -= 1;
 
-		g.setColor( innerA );
-		g.drawLine( x0, y1, x1, y1 );
-		g.drawLine( x1, y1, x1, y0 );
-		g.setColor( innerB );
-		g.drawLine( x0, y1, x0, y0 );
-		g.drawLine( x0, y0, x1, y0 );
+    g.setColor(innerA);
+    g.drawLine(x0, y1, x1, y1);
+    g.drawLine(x1, y1, x1, y0);
+    g.setColor(innerB);
+    g.drawLine(x0, y1, x0, y0);
+    g.drawLine(x0, y0, x1, y0);
 
-		g.setColor( prevColor );
-	}
+    g.setColor(prevColor);
+  }
 }

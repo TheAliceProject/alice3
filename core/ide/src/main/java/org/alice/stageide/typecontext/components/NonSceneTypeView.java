@@ -77,107 +77,105 @@ import java.awt.Dimension;
 import java.awt.event.HierarchyEvent;
 
 class SelectedTypeView extends BorderPanel {
-	private final Label typeLabel = new Label();
-	private final Label snapshotLabel = new Label();
-	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
-		}
-	};
+  private final Label typeLabel = new Label();
+  private final Label snapshotLabel = new Label();
+  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      SelectedTypeView.this.handleTypeStateChanged(e.getNextValue());
+    }
+  };
 
-	public SelectedTypeView() {
-		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		this.snapshotLabel.setHorizontalAlignment( HorizontalAlignment.CENTER );
-		Label label = new Label( ResourceBundleUtilities.getStringForKey( "selectedType", getClass() ) );
-		this.addPageStartComponent( new LineAxisPanel( label, this.typeLabel ) );
-		this.addCenterComponent( this.snapshotLabel );
-	}
+  public SelectedTypeView() {
+    //this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
+    this.snapshotLabel.setHorizontalAlignment(HorizontalAlignment.CENTER);
+    Label label = new Label(ResourceBundleUtilities.getStringForKey("selectedType", getClass()));
+    this.addPageStartComponent(new LineAxisPanel(label, this.typeLabel));
+    this.addCenterComponent(this.snapshotLabel);
+  }
 
-	private void handleTypeStateChanged( NamedUserType nextValue ) {
-		this.typeLabel.setIcon( TypeIcon.getInstance( nextValue ) );
-		String snapshotText = null;
-		Icon snapshotIcon = null;
-		if( nextValue != null ) {
-			IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( nextValue );
-			if( iconFactory != null ) {
-				snapshotIcon = iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) );
-			}
-		}
-		this.snapshotLabel.setText( snapshotText );
-		this.snapshotLabel.setIcon( snapshotIcon );
-		this.revalidateAndRepaint();
-	}
+  private void handleTypeStateChanged(NamedUserType nextValue) {
+    this.typeLabel.setIcon(TypeIcon.getInstance(nextValue));
+    String snapshotText = null;
+    Icon snapshotIcon = null;
+    if (nextValue != null) {
+      IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(nextValue);
+      if (iconFactory != null) {
+        snapshotIcon = iconFactory.getIcon(iconFactory.getDefaultSize(Theme.DEFAULT_LARGE_ICON_SIZE));
+      }
+    }
+    this.snapshotLabel.setText(snapshotText);
+    this.snapshotLabel.setIcon(snapshotIcon);
+    this.revalidateAndRepaint();
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		super.handleAddedTo( parent );
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    super.handleAddedTo(parent);
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener(this.typeListener);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
-		super.handleRemovedFrom( parent );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener(this.typeListener);
+    super.handleRemovedFrom(parent);
+  }
 }
 
 class ReturnToSceneTypeButton extends Button {
-	private static Icon BACK_ICON = IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
-	private final Label thumbnailLabel = new Label(
-			new AlphaIcon( SceneIconFactory.getInstance().getIcon( Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
-			);
-	private final Label typeIconLabel = new Label();
+  private static Icon BACK_ICON = IconUtilities.createImageIcon(NonSceneTypeView.class.getResource("images/24/back.png"));
+  private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIcon(Theme.DEFAULT_SMALL_ICON_SIZE), 0.5f));
+  private final Label typeIconLabel = new Label();
 
-	public ReturnToSceneTypeButton( Operation operation ) {
-		super( operation );
-		JButton jButton = this.getAwtComponent();
-		jButton.setLayout( new BoxLayout( jButton, BoxLayout.LINE_AXIS ) );
-		this.internalAddComponent( new Label( BACK_ICON ) );
-		String backToText = ResourceBundleUtilities.getStringForKey( "backTo", getClass());
-		this.internalAddComponent( new Label( backToText ) );
-		this.internalAddComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		this.internalAddComponent( this.thumbnailLabel );
-		this.internalAddComponent( this.typeIconLabel );
-	}
+  public ReturnToSceneTypeButton(Operation operation) {
+    super(operation);
+    JButton jButton = this.getAwtComponent();
+    jButton.setLayout(new BoxLayout(jButton, BoxLayout.LINE_AXIS));
+    this.internalAddComponent(new Label(BACK_ICON));
+    String backToText = ResourceBundleUtilities.getStringForKey("backTo", getClass());
+    this.internalAddComponent(new Label(backToText));
+    this.internalAddComponent(BoxUtilities.createHorizontalSliver(8));
+    this.internalAddComponent(this.thumbnailLabel);
+    this.internalAddComponent(this.typeIconLabel);
+  }
 
-	@Override
-	protected void handleHierarchyChanged( HierarchyEvent e ) {
-		super.handleHierarchyChanged( e );
-		SceneIconFactory.getInstance().markAllIconsDirty();
+  @Override
+  protected void handleHierarchyChanged(HierarchyEvent e) {
+    super.handleHierarchyChanged(e);
+    SceneIconFactory.getInstance().markAllIconsDirty();
 
-		//todo:
-		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
-		this.typeIconLabel.setIcon( TypeIcon.getInstance( sceneType ) );
-		this.revalidateAndRepaint();
-	}
+    //todo:
+    NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+    this.typeIconLabel.setIcon(TypeIcon.getInstance(sceneType));
+    this.revalidateAndRepaint();
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class NonSceneTypeView extends CornerSpringPanel {
-	private final ReturnToSceneTypeButton returnToSceneTypeButton;
+  private final ReturnToSceneTypeButton returnToSceneTypeButton;
 
-	public NonSceneTypeView( NonSceneTypeComposite composite ) {
-		super( composite );
-		this.setNorthWestComponent( new SelectedTypeView() );
-		this.setNorthEastComponent( RunComposite.getInstance().getLaunchOperation().createButton() );
+  public NonSceneTypeView(NonSceneTypeComposite composite) {
+    super(composite);
+    this.setNorthWestComponent(new SelectedTypeView());
+    this.setNorthEastComponent(RunComposite.getInstance().getLaunchOperation().createButton());
 
-		Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
-		returnToSceneTypeOperation.initializeIfNecessary();
-		returnToSceneTypeOperation.setName( "" );
-		this.returnToSceneTypeButton = new ReturnToSceneTypeButton( returnToSceneTypeOperation );
-		this.setSouthWestComponent( IsEmphasizingClassesState.getInstance().getValue() ? returnToSceneTypeButton : null );
-	}
+    Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
+    returnToSceneTypeOperation.initializeIfNecessary();
+    returnToSceneTypeOperation.setName("");
+    this.returnToSceneTypeButton = new ReturnToSceneTypeButton(returnToSceneTypeOperation);
+    this.setSouthWestComponent(IsEmphasizingClassesState.getInstance().getValue() ? returnToSceneTypeButton : null);
+  }
 
-	@Override
-	protected JPanel createJPanel() {
-		return new DefaultJPanel() {
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension( 320, 240 );
-			}
-		};
-	}
+  @Override
+  protected JPanel createJPanel() {
+    return new DefaultJPanel() {
+      @Override
+      public Dimension getPreferredSize() {
+        return new Dimension(320, 240);
+      }
+    };
+  }
 }

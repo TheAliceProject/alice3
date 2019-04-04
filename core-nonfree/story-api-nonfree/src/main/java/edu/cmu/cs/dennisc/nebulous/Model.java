@@ -64,163 +64,163 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
  */
 public abstract class Model extends Geometry {
 
-	static {
-		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) ) {
-			//Don't load nebulous resources if the default loading is disabled
-			//Disabling should only happen under controlled circumstances like running the model batch process
-		} else {
-			NebulousStorytellingResources.INSTANCE.loadSimsBundles();
-		}
-		//		Manager.setDebugDraw( true );
-	}
+  static {
+    if (SystemUtilities.getBooleanProperty("org.alice.ide.disableDefaultNebulousLoading", false)) {
+      //Don't load nebulous resources if the default loading is disabled
+      //Disabling should only happen under controlled circumstances like running the model batch process
+    } else {
+      NebulousStorytellingResources.INSTANCE.loadSimsBundles();
+    }
+    //    Manager.setDebugDraw( true );
+  }
 
-	public Model() throws LicenseRejectedException {
-		Manager.initializeIfNecessary();
-	}
+  public Model() throws LicenseRejectedException {
+    Manager.initializeIfNecessary();
+  }
 
-	private native void render( GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
+  private native void render(GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque);
 
-	public void synchronizedRender( GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
-		synchronized( renderLock ) {
-			try {
-				this.render( gl, globalBrightness, renderAlpha, renderOpaque );
-			} catch( RuntimeException re ) {
-				System.err.println( this );
-				throw re;
-			}
-		}
-	}
+  public void synchronizedRender(GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque) {
+    synchronized (renderLock) {
+      try {
+        this.render(gl, globalBrightness, renderAlpha, renderOpaque);
+      } catch (RuntimeException re) {
+        System.err.println(this);
+        throw re;
+      }
+    }
+  }
 
-	private native void pick();
+  private native void pick();
 
-	public void synchronizedPick() {
-		synchronized( renderLock ) {
-			pick();
-		}
-	}
+  public void synchronizedPick() {
+    synchronized (renderLock) {
+      pick();
+    }
+  }
 
-	private native boolean isAlphaBlended();
+  private native boolean isAlphaBlended();
 
-	public boolean synchronizedIsAlphaBlended() {
-		synchronized( renderLock ) {
-			return isAlphaBlended();
-		}
-	}
+  public boolean synchronizedIsAlphaBlended() {
+    synchronized (renderLock) {
+      return isAlphaBlended();
+    }
+  }
 
-	private native boolean hasOpaque();
+  private native boolean hasOpaque();
 
-	public boolean synchronizedHasOpaque() {
-		synchronized( renderLock ) {
-			return hasOpaque();
-		}
-	}
+  public boolean synchronizedHasOpaque() {
+    synchronized (renderLock) {
+      return hasOpaque();
+    }
+  }
 
-	private native void getAxisAlignedBoundingBoxForJoint( JointId name, JointId parent, double[] bboxData );
+  private native void getAxisAlignedBoundingBoxForJoint(JointId name, JointId parent, double[] bboxData);
 
-	private native void updateAxisAlignedBoundingBox( double[] bboxData );
+  private native void updateAxisAlignedBoundingBox(double[] bboxData);
 
-	private native void getOriginalTransformationForPartNamed( double[] transformOut, JointId name, JointId parent );
+  private native void getOriginalTransformationForPartNamed(double[] transformOut, JointId name, JointId parent);
 
-	private native void getLocalTransformationForPartNamed( double[] transformOut, JointId name, JointId parent );
+  private native void getLocalTransformationForPartNamed(double[] transformOut, JointId name, JointId parent);
 
-	private native void setLocalTransformationForPartNamed( JointId name, JointId parent, double[] transformIn );
+  private native void setLocalTransformationForPartNamed(JointId name, JointId parent, double[] transformIn);
 
-	private native void getAbsoluteTransformationForPartNamed( double[] transformOut, JointId name );
+  private native void getAbsoluteTransformationForPartNamed(double[] transformOut, JointId name);
 
-	public void setVisual( Visual visual ) {
-		this.sgAssociatedVisual = visual;
-	}
+  public void setVisual(Visual visual) {
+    this.sgAssociatedVisual = visual;
+  }
 
-	public void setSGParent( Composite parent ) {
-		this.sgParent = parent;
-	}
+  public void setSGParent(Composite parent) {
+    this.sgParent = parent;
+  }
 
-	public Composite getSGParent() {
-		return this.sgParent;
-	}
+  public Composite getSGParent() {
+    return this.sgParent;
+  }
 
-	public AffineMatrix4x4 getOriginalTransformationForJoint( JointId joint ) {
-		double[] buffer = new double[ 12 ];
-		try {
-			getOriginalTransformationForPartNamed( buffer, joint, joint.getParent() );
-		} catch( RuntimeException re ) {
-			Logger.severe( joint );
-			throw re;
-		}
-		AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12( buffer );
-		return affineMatrix;
-	}
+  public AffineMatrix4x4 getOriginalTransformationForJoint(JointId joint) {
+    double[] buffer = new double[12];
+    try {
+      getOriginalTransformationForPartNamed(buffer, joint, joint.getParent());
+    } catch (RuntimeException re) {
+      Logger.severe(joint);
+      throw re;
+    }
+    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
+    return affineMatrix;
+  }
 
-	public AffineMatrix4x4 getLocalTransformationForJoint( JointId joint ) {
-		double[] buffer = new double[ 12 ];
-		try {
-			getLocalTransformationForPartNamed( buffer, joint, joint.getParent() );
-		} catch( RuntimeException re ) {
-			Logger.severe( joint );
-			throw re;
-		}
-		AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12( buffer );
-		return affineMatrix;
-	}
+  public AffineMatrix4x4 getLocalTransformationForJoint(JointId joint) {
+    double[] buffer = new double[12];
+    try {
+      getLocalTransformationForPartNamed(buffer, joint, joint.getParent());
+    } catch (RuntimeException re) {
+      Logger.severe(joint);
+      throw re;
+    }
+    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
+    return affineMatrix;
+  }
 
-	public void setLocalTransformationForJoint( JointId joint, AffineMatrix4x4 localTrans ) {
-		synchronized( renderLock ) {
-			setLocalTransformationForPartNamed( joint, joint.getParent(), localTrans.getAsColumnMajorArray12() );
-		}
-	}
+  public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
+    synchronized (renderLock) {
+      setLocalTransformationForPartNamed(joint, joint.getParent(), localTrans.getAsColumnMajorArray12());
+    }
+  }
 
-	public boolean hasJoint( JointId joint ) {
-		//There's no specific "hasJoint" native call, so this uses the getLocalTransformationForPartNamed and catches the error if the joint isn't found
-		//TODO: implement a simpler "hasJoint" in the native code
-		double[] buffer = new double[ 12 ];
-		try {
-			getLocalTransformationForPartNamed( buffer, joint, joint.getParent() );
-		} catch( RuntimeException re ) {
-			return false;
-		}
-		return true;
-	}
+  public boolean hasJoint(JointId joint) {
+    //There's no specific "hasJoint" native call, so this uses the getLocalTransformationForPartNamed and catches the error if the joint isn't found
+    //TODO: implement a simpler "hasJoint" in the native code
+    double[] buffer = new double[12];
+    try {
+      getLocalTransformationForPartNamed(buffer, joint, joint.getParent());
+    } catch (RuntimeException re) {
+      return false;
+    }
+    return true;
+  }
 
-	public AffineMatrix4x4 getAbsoluteTransformationForJoint( JointId joint ) {
-		double[] buffer = new double[ 12 ];
-		getAbsoluteTransformationForPartNamed( buffer, joint );
-		return AffineMatrix4x4.createFromColumnMajorArray12( buffer );
-	}
+  public AffineMatrix4x4 getAbsoluteTransformationForJoint(JointId joint) {
+    double[] buffer = new double[12];
+    getAbsoluteTransformationForPartNamed(buffer, joint);
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    throw new RuntimeException("todo");
+  }
 
-	public AxisAlignedBox getAxisAlignedBoundingBoxForJoint( JointId joint ) {
-		double[] bboxData = new double[ 6 ];
-		getAxisAlignedBoundingBoxForJoint( joint, joint.getParent(), bboxData );
-		AxisAlignedBox bbox = new AxisAlignedBox( bboxData[ 0 ], bboxData[ 1 ], bboxData[ 2 ], bboxData[ 3 ], bboxData[ 4 ], bboxData[ 5 ] );
-		bbox.scale( this.sgAssociatedVisual.scale.getValue() );
-		return bbox;
-	}
+  public AxisAlignedBox getAxisAlignedBoundingBoxForJoint(JointId joint) {
+    double[] bboxData = new double[6];
+    getAxisAlignedBoundingBoxForJoint(joint, joint.getParent(), bboxData);
+    AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
+    bbox.scale(this.sgAssociatedVisual.scale.getValue());
+    return bbox;
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		//the bounding boxes come in the form (double[6])
-		double[] bboxData = new double[ 6 ];
-		updateAxisAlignedBoundingBox( bboxData );
-		boundingBox.setMinimum( bboxData[ 0 ], bboxData[ 1 ], bboxData[ 2 ] );
-		boundingBox.setMaximum( bboxData[ 3 ], bboxData[ 4 ], bboxData[ 5 ] );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    //the bounding boxes come in the form (double[6])
+    double[] bboxData = new double[6];
+    updateAxisAlignedBoundingBox(bboxData);
+    boundingBox.setMinimum(bboxData[0], bboxData[1], bboxData[2]);
+    boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
+  }
 
-	@Override
-	protected void updateBoundingSphere( Sphere boundingSphere ) {
-		boundingSphere.setNaN();
-	}
+  @Override
+  protected void updateBoundingSphere(Sphere boundingSphere) {
+    boundingSphere.setNaN();
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    throw new RuntimeException("todo");
+  }
 
-	protected Composite sgParent;
-	protected Visual sgAssociatedVisual;
+  protected Composite sgParent;
+  protected Visual sgAssociatedVisual;
 
-	protected final Object renderLock = new Object();
+  protected final Object renderLock = new Object();
 }

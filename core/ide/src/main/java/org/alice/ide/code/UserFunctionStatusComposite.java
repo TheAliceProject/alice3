@@ -53,76 +53,76 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UserFunctionStatusComposite extends AbstractSeverityStatusComposite<UserFunctionStatusView> {
-	private static final String UNVIEWED_TEXT = "This message should never be visible";
+  private static final String UNVIEWED_TEXT = "This message should never be visible";
 
-	private static final class UnlocalizedPlainStringValue extends PlainStringValue {
-		public UnlocalizedPlainStringValue( String text ) {
-			super( UUID.randomUUID() );
-			this.setText( text );
-		}
+  private static final class UnlocalizedPlainStringValue extends PlainStringValue {
+    public UnlocalizedPlainStringValue(String text) {
+      super(UUID.randomUUID());
+      this.setText(text);
+    }
 
-		@Override
-		protected void localize() {
-		}
-	}
+    @Override
+    protected void localize() {
+    }
+  }
 
-	private final PlainStringValue metaStringValue = new UnlocalizedPlainStringValue( UNVIEWED_TEXT );
-	private final ErrorStatus noReturnStatementError = this.createErrorStatus( "noReturnStatementError" );
-	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( "notAllPathsEndInReturnStatementError" );
-	private final ErrorStatus unreachableCodeError = this.createErrorStatus( "unreachableCodeError" );
+  private final PlainStringValue metaStringValue = new UnlocalizedPlainStringValue(UNVIEWED_TEXT);
+  private final ErrorStatus noReturnStatementError = this.createErrorStatus("noReturnStatementError");
+  private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus("notAllPathsEndInReturnStatementError");
+  private final ErrorStatus unreachableCodeError = this.createErrorStatus("unreachableCodeError");
 
-	private final UserMethod method;
-	private ErrorStatus errorStatus;
+  private final UserMethod method;
+  private ErrorStatus errorStatus;
 
-	public UserFunctionStatusComposite( UserMethod method ) {
-		super( UUID.fromString( "5247e4d2-1de0-45b0-88f4-5a8667cfb60d" ) );
-		this.method = method;
-		this.getView().setVisible( false );
-	}
+  public UserFunctionStatusComposite(UserMethod method) {
+    super(UUID.fromString("5247e4d2-1de0-45b0-88f4-5a8667cfb60d"));
+    this.method = method;
+    this.getView().setVisible(false);
+  }
 
-	public PlainStringValue getMetaStringValue() {
-		return this.metaStringValue;
-	}
+  public PlainStringValue getMetaStringValue() {
+    return this.metaStringValue;
+  }
 
-	public ErrorStatus getNoReturnStatementError() {
-		return this.noReturnStatementError;
-	}
+  public ErrorStatus getNoReturnStatementError() {
+    return this.noReturnStatementError;
+  }
 
-	public ErrorStatus getNotAllPathsEndInReturnStatementError() {
-		return this.notAllPathsEndInReturnStatementError;
-	}
+  public ErrorStatus getNotAllPathsEndInReturnStatementError() {
+    return this.notAllPathsEndInReturnStatementError;
+  }
 
-	public ErrorStatus getUnreachableCodeError() {
-		return this.unreachableCodeError;
-	}
+  public ErrorStatus getUnreachableCodeError() {
+    return this.unreachableCodeError;
+  }
 
-	public UserMethod getMethod() {
-		return this.method;
-	}
+  public UserMethod getMethod() {
+    return this.method;
+  }
 
-	public ErrorStatus getErrorStatus() {
-		return this.errorStatus;
-	}
+  public ErrorStatus getErrorStatus() {
+    return this.errorStatus;
+  }
 
-	public void setErrorStatus( ErrorStatus errorStatus ) {
-		this.initializeIfNecessary();
-		if( this.errorStatus != errorStatus ) {
-			this.errorStatus = errorStatus;
-			String text;
-			if( errorStatus != null ) {
-				text = errorStatus.getText();
-			} else {
-				text = UNVIEWED_TEXT;
-			}
-			synchronized( this.getView().getTreeLock() ) {
-				this.getView().setVisible( errorStatus != null );
-			}
-			this.metaStringValue.setText( text );
-		}
-	}
+  public void setErrorStatus(ErrorStatus errorStatus) {
+    this.initializeIfNecessary();
+    if (this.errorStatus != errorStatus) {
+      this.errorStatus = errorStatus;
+      String text;
+      if (errorStatus != null) {
+        text = errorStatus.getText();
+      } else {
+        text = UNVIEWED_TEXT;
+      }
+      synchronized (this.getView().getTreeLock()) {
+        this.getView().setVisible(errorStatus != null);
+      }
+      this.metaStringValue.setText(text);
+    }
+  }
 
-	@Override
-	protected UserFunctionStatusView createView() {
-		return new UserFunctionStatusView( this );
-	}
+  @Override
+  protected UserFunctionStatusView createView() {
+    return new UserFunctionStatusView(this);
+  }
 }

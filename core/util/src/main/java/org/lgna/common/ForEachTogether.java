@@ -50,57 +50,56 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 class ForEachRunnableAdapter<E> implements Runnable {
-	private ForEachRunnable<E> forEachRunnable;
-	private E value;
+  private ForEachRunnable<E> forEachRunnable;
+  private E value;
 
-	public ForEachRunnableAdapter( ForEachRunnable<E> forEachRunnable, E value ) {
-		this.forEachRunnable = forEachRunnable;
-		this.value = value;
-	}
+  public ForEachRunnableAdapter(ForEachRunnable<E> forEachRunnable, E value) {
+    this.forEachRunnable = forEachRunnable;
+    this.value = value;
+  }
 
-	@Override
-	public void run() {
-		this.forEachRunnable.run( this.value );
-	}
+  @Override
+  public void run() {
+    this.forEachRunnable.run(this.value);
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class ForEachTogether {
-	public static <E> void invokeAndWait( E[] array, ForEachRunnable<E> forEachRunnable ) {
-		switch( array.length ) {
-		case 0:
-			break;
-		case 1:
-			forEachRunnable.run( array[ 0 ] );
-			break;
-		default:
-			Runnable[] runnables = new Runnable[ array.length ];
-			for( int i = 0; i < runnables.length; i++ ) {
-				runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, array[ i ] );
-			}
-			DoTogether.invokeAndWait( runnables );
-		}
-	}
+@Deprecated public class ForEachTogether {
+  public static <E> void invokeAndWait(E[] array, ForEachRunnable<E> forEachRunnable) {
+    switch (array.length) {
+    case 0:
+      break;
+    case 1:
+      forEachRunnable.run(array[0]);
+      break;
+    default:
+      Runnable[] runnables = new Runnable[array.length];
+      for (int i = 0; i < runnables.length; i++) {
+        runnables[i] = new ForEachRunnableAdapter(forEachRunnable, array[i]);
+      }
+      DoTogether.invokeAndWait(runnables);
+    }
+  }
 
-	public static <E> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable ) {
-		Collection<E> collection;
-		if( iterable instanceof Collection<?> ) {
-			collection = (Collection<E>)iterable;
-		} else {
-			collection = Lists.newLinkedList();
-			for( E item : iterable ) {
-				collection.add( item );
-			}
-		}
-		Runnable[] runnables = new Runnable[ collection.size() ];
-		int i = 0;
-		for( E value : collection ) {
-			runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, value );
-			i++;
-		}
-		DoTogether.invokeAndWait( runnables );
-	}
+  public static <E> void invokeAndWait(Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable) {
+    Collection<E> collection;
+    if (iterable instanceof Collection<?>) {
+      collection = (Collection<E>) iterable;
+    } else {
+      collection = Lists.newLinkedList();
+      for (E item : iterable) {
+        collection.add(item);
+      }
+    }
+    Runnable[] runnables = new Runnable[collection.size()];
+    int i = 0;
+    for (E value : collection) {
+      runnables[i] = new ForEachRunnableAdapter(forEachRunnable, value);
+      i++;
+    }
+    DoTogether.invokeAndWait(runnables);
+  }
 }

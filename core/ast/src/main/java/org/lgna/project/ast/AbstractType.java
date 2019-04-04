@@ -54,242 +54,242 @@ import java.util.function.BinaryOperator;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractType<C extends AbstractConstructor, M extends AbstractMethod, F extends AbstractField> extends AbstractAccessibleDeclaration {
-	public JavaType getFirstEncounteredJavaType() {
-		AbstractType<?, ?, ?> type = this;
-		while( ( type instanceof JavaType ) == false ) {
-			type = type.getSuperType();
-		}
-		return (JavaType)type;
-	}
+  public JavaType getFirstEncounteredJavaType() {
+    AbstractType<?, ?, ?> type = this;
+    while ((type instanceof JavaType) == false) {
+      type = type.getSuperType();
+    }
+    return (JavaType) type;
+  }
 
-	protected abstract boolean isAssignableFromType( AbstractType<?, ?, ?> other );
+  protected abstract boolean isAssignableFromType(AbstractType<?, ?, ?> other);
 
-	public final boolean isAssignableFrom( AbstractType<?, ?, ?> other ) {
-		if( other != null ) {
-			return JavaType.getWrapperTypeIfNecessary( this ).isAssignableFromType( JavaType.getWrapperTypeIfNecessary( other ) );
-		} else {
-			return false;
-		}
-	}
+  public final boolean isAssignableFrom(AbstractType<?, ?, ?> other) {
+    if (other != null) {
+      return JavaType.getWrapperTypeIfNecessary(this).isAssignableFromType(JavaType.getWrapperTypeIfNecessary(other));
+    } else {
+      return false;
+    }
+  }
 
-	public final boolean isAssignableFrom( Class<?> other ) {
-		return isAssignableFrom( JavaType.getInstance( other ) );
-	}
+  public final boolean isAssignableFrom(Class<?> other) {
+    return isAssignableFrom(JavaType.getInstance(other));
+  }
 
-	public final boolean isAssignableTo( AbstractType<?, ?, ?> other ) {
-		if( other != null ) {
-			return other.isAssignableFrom( this );
-		} else {
-			return false;
-		}
-	}
+  public final boolean isAssignableTo(AbstractType<?, ?, ?> other) {
+    if (other != null) {
+      return other.isAssignableFrom(this);
+    } else {
+      return false;
+    }
+  }
 
-	public final boolean isAssignableTo( Class<?> other ) {
-		return isAssignableTo( JavaType.getInstance( other ) );
-	}
+  public final boolean isAssignableTo(Class<?> other) {
+    return isAssignableTo(JavaType.getInstance(other));
+  }
 
-	public abstract boolean isFollowToSuperClassDesired();
+  public abstract boolean isFollowToSuperClassDesired();
 
-	public abstract boolean isConsumptionBySubClassDesired();
+  public abstract boolean isConsumptionBySubClassDesired();
 
-	public abstract AbstractType<?, ?, ?> getKeywordFactoryType();
+  public abstract AbstractType<?, ?, ?> getKeywordFactoryType();
 
-	public abstract AbstractPackage getPackage();
+  public abstract AbstractPackage getPackage();
 
-	public abstract AbstractType<?, ?, ?> getSuperType();
+  public abstract AbstractType<?, ?, ?> getSuperType();
 
-	public abstract AbstractType<?, ?, ?>[] getInterfaces();
+  public abstract AbstractType<?, ?, ?>[] getInterfaces();
 
-	public abstract List<C> getDeclaredConstructors();
+  public abstract List<C> getDeclaredConstructors();
 
-	public abstract List<M> getDeclaredMethods();
+  public abstract List<M> getDeclaredMethods();
 
-	public abstract List<F> getDeclaredFields();
+  public abstract List<F> getDeclaredFields();
 
-	public abstract boolean isPrimitive();
+  public abstract boolean isPrimitive();
 
-	public abstract boolean isInterface();
+  public abstract boolean isInterface();
 
-	public abstract boolean isStatic();
+  public abstract boolean isStatic();
 
-	//cannot be final and abstract
-	public abstract boolean isAbstract();
+  //cannot be final and abstract
+  public abstract boolean isAbstract();
 
-	public abstract boolean isFinal();
+  public abstract boolean isFinal();
 
-	public abstract boolean isStrictFloatingPoint();
+  public abstract boolean isStrictFloatingPoint();
 
-	public abstract boolean isArray();
+  public abstract boolean isArray();
 
-	public abstract boolean isEnum();
+  public abstract boolean isEnum();
 
-	public abstract AbstractType<?, ?, ?> getComponentType();
+  public abstract AbstractType<?, ?, ?> getComponentType();
 
-	@Override
-	public void addModifiers( Collection<Modifier> modifiers ) {
-		super.addModifiers( modifiers );
-		if( this.isFinal() ) {
-			modifiers.add( Modifier.FINAL );
-		} else if( this.isAbstract() ) {
-			modifiers.add( Modifier.ABSTRACT );
-		}
-		if( this.isStatic() ) {
-			modifiers.add( Modifier.STATIC );
-		}
-		if( this.isStrictFloatingPoint() ) {
-			modifiers.add( Modifier.STRICTFP );
-		}
-	}
+  @Override
+  public void addModifiers(Collection<Modifier> modifiers) {
+    super.addModifiers(modifiers);
+    if (this.isFinal()) {
+      modifiers.add(Modifier.FINAL);
+    } else if (this.isAbstract()) {
+      modifiers.add(Modifier.ABSTRACT);
+    }
+    if (this.isStatic()) {
+      modifiers.add(Modifier.STATIC);
+    }
+    if (this.isStrictFloatingPoint()) {
+      modifiers.add(Modifier.STRICTFP);
+    }
+  }
 
-	public C getDeclaredConstructor( AbstractType<?, ?, ?>... parameterTypes ) {
-		C rv = null;
-		for( C constructor : getDeclaredConstructors() ) {
-			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
-			if( parameters.size() == parameterTypes.length ) {
-				rv = constructor;
-				for( int i = 0; i < parameterTypes.length; i++ ) {
-					AbstractType<?, ?, ?> parameterType = parameterTypes[ i ];
-					assert parameterType != null;
-					if( parameterType.equals( parameters.get( i ).getValueType() ) ) {
-						//pass
-					} else {
-						rv = null;
-						break;
-					}
-				}
-			}
-			if( rv != null ) {
-				break;
-			}
-		}
-		return rv;
-	}
+  public C getDeclaredConstructor(AbstractType<?, ?, ?>... parameterTypes) {
+    C rv = null;
+    for (C constructor : getDeclaredConstructors()) {
+      List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
+      if (parameters.size() == parameterTypes.length) {
+        rv = constructor;
+        for (int i = 0; i < parameterTypes.length; i++) {
+          AbstractType<?, ?, ?> parameterType = parameterTypes[i];
+          assert parameterType != null;
+          if (parameterType.equals(parameters.get(i).getValueType())) {
+            //pass
+          } else {
+            rv = null;
+            break;
+          }
+        }
+      }
+      if (rv != null) {
+        break;
+      }
+    }
+    return rv;
+  }
 
-	public C getDeclaredConstructor( Class<?>... parameterClses ) {
-		return getDeclaredConstructor( JavaType.getInstances( parameterClses ) );
-	}
+  public C getDeclaredConstructor(Class<?>... parameterClses) {
+    return getDeclaredConstructor(JavaType.getInstances(parameterClses));
+  }
 
-	public C getDeclaredConstructor() {
-		return getDeclaredConstructor( new AbstractType[] {} );
-	}
+  public C getDeclaredConstructor() {
+    return getDeclaredConstructor(new AbstractType[] {});
+  }
 
-	public AbstractConstructor getFirstDeclaredConstructor() {
-		List<? extends AbstractConstructor> constructors = getDeclaredConstructors();
-		if( constructors.size() > 0 ) {
-			return constructors.get( 0 );
-		}
-		return null;
-	}
+  public AbstractConstructor getFirstDeclaredConstructor() {
+    List<? extends AbstractConstructor> constructors = getDeclaredConstructors();
+    if (constructors.size() > 0) {
+      return constructors.get(0);
+    }
+    return null;
+  }
 
-	public M getDeclaredMethod( String name, AbstractType<?, ?, ?>... parameterTypes ) {
-		M rv = null;
-		for( M method : getDeclaredMethods() ) {
-			if( method.getName().equals( name ) ) {
-				List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
-				AbstractParameter variableLengthParameter = method.getVariableLengthParameter();
-				AbstractParameter keyedParameter = method.getKeyedParameter();
-				//todo: check variableLengthParameter and keyedParameter
-				final int N = requiredParameters.size();
-				if( ( N == parameterTypes.length ) || ( ( ( N + 1 ) == parameterTypes.length ) && ( ( variableLengthParameter != null ) || ( keyedParameter != null ) ) ) ) {
-					rv = method;
-					for( int i = 0; i < requiredParameters.size(); i++ ) {
-						AbstractType<?, ?, ?> parameterType = parameterTypes[ i ];
-						if( parameterType.equals( requiredParameters.get( i ).getValueType() ) ) {
-							//pass
-						} else {
-							rv = null;
-							break;
-						}
-					}
-				}
-				if( rv != null ) {
-					break;
-				}
-			}
-		}
-		return rv;
-	}
+  public M getDeclaredMethod(String name, AbstractType<?, ?, ?>... parameterTypes) {
+    M rv = null;
+    for (M method : getDeclaredMethods()) {
+      if (method.getName().equals(name)) {
+        List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+        AbstractParameter variableLengthParameter = method.getVariableLengthParameter();
+        AbstractParameter keyedParameter = method.getKeyedParameter();
+        //todo: check variableLengthParameter and keyedParameter
+        final int N = requiredParameters.size();
+        if ((N == parameterTypes.length) || (((N + 1) == parameterTypes.length) && ((variableLengthParameter != null) || (keyedParameter != null)))) {
+          rv = method;
+          for (int i = 0; i < requiredParameters.size(); i++) {
+            AbstractType<?, ?, ?> parameterType = parameterTypes[i];
+            if (parameterType.equals(requiredParameters.get(i).getValueType())) {
+              //pass
+            } else {
+              rv = null;
+              break;
+            }
+          }
+        }
+        if (rv != null) {
+          break;
+        }
+      }
+    }
+    return rv;
+  }
 
-	public M getDeclaredMethod( String name, Class<?>... parameterClses ) {
-		return getDeclaredMethod( name, JavaType.getInstances( parameterClses ) );
-	}
+  public M getDeclaredMethod(String name, Class<?>... parameterClses) {
+    return getDeclaredMethod(name, JavaType.getInstances(parameterClses));
+  }
 
-	public M getDeclaredMethod( String name ) {
-		return getDeclaredMethod( name, new AbstractType[] {} );
-	}
+  public M getDeclaredMethod(String name) {
+    return getDeclaredMethod(name, new AbstractType[] {});
+  }
 
-	public F getDeclaredField( AbstractType<?, ?, ?> valueType, String name ) {
-		F rv = null;
-		for( F field : getDeclaredFields() ) {
-			if( field.getName().equals( name ) && ( ( valueType == null ) || field.getValueType().equals( valueType ) ) ) {
-				rv = field;
-				break;
-			}
-		}
-		return rv;
-	}
+  public F getDeclaredField(AbstractType<?, ?, ?> valueType, String name) {
+    F rv = null;
+    for (F field : getDeclaredFields()) {
+      if (field.getName().equals(name) && ((valueType == null) || field.getValueType().equals(valueType))) {
+        rv = field;
+        break;
+      }
+    }
+    return rv;
+  }
 
-	public F getDeclaredField( Class<?> valueCls, String name ) {
-		return getDeclaredField( JavaType.getInstance( valueCls ), name );
-	}
+  public F getDeclaredField(Class<?> valueCls, String name) {
+    return getDeclaredField(JavaType.getInstance(valueCls), name);
+  }
 
-	public F getDeclaredField( String name ) {
-		return getDeclaredField( (AbstractType<?, ?, ?>)null, name );
-	}
+  public F getDeclaredField(String name) {
+    return getDeclaredField((AbstractType<?, ?, ?>) null, name);
+  }
 
-	public abstract AbstractType<?, ?, ?> getArrayType();
+  public abstract AbstractType<?, ?, ?> getArrayType();
 
-	public AbstractField findField( AbstractType<?, ?, ?> valueType, String name ) {
-		AbstractField rv = null;
-		AbstractType<?, ?, ?> type = this;
-		while( type != null ) {
-			AbstractField field = type.getDeclaredField( valueType, name );
-			if( field != null ) {
-				rv = field;
-				break;
-			}
-			type = type.getSuperType();
-		}
-		return rv;
-	}
+  public AbstractField findField(AbstractType<?, ?, ?> valueType, String name) {
+    AbstractField rv = null;
+    AbstractType<?, ?, ?> type = this;
+    while (type != null) {
+      AbstractField field = type.getDeclaredField(valueType, name);
+      if (field != null) {
+        rv = field;
+        break;
+      }
+      type = type.getSuperType();
+    }
+    return rv;
+  }
 
-	public AbstractField findField( Class<?> valueCls, String name ) {
-		return findField( JavaType.getInstance( valueCls ), name );
+  public AbstractField findField(Class<?> valueCls, String name) {
+    return findField(JavaType.getInstance(valueCls), name);
 
-	}
+  }
 
-	public AbstractField findField( String name ) {
-		return findField( (AbstractType<?, ?, ?>)null, name );
-	}
+  public AbstractField findField(String name) {
+    return findField((AbstractType<?, ?, ?>) null, name);
+  }
 
-	public AbstractMethod findMethod( String name, AbstractType<?, ?, ?>... parameterTypes ) {
-		AbstractMethod rv = null;
-		AbstractType<?, ?, ?> type = this;
-		while( type != null ) {
-			AbstractMethod method = type.getDeclaredMethod( name, parameterTypes );
-			if( method != null ) {
-				rv = method;
-				break;
-			}
-			type = type.getSuperType();
-		}
-		return rv;
-	}
+  public AbstractMethod findMethod(String name, AbstractType<?, ?, ?>... parameterTypes) {
+    AbstractMethod rv = null;
+    AbstractType<?, ?, ?> type = this;
+    while (type != null) {
+      AbstractMethod method = type.getDeclaredMethod(name, parameterTypes);
+      if (method != null) {
+        rv = method;
+        break;
+      }
+      type = type.getSuperType();
+    }
+    return rv;
+  }
 
-	public AbstractMethod findMethod( String name, Class<?>... parameterClses ) {
-		return findMethod( name, JavaType.getInstances( parameterClses ) );
-	}
+  public AbstractMethod findMethod(String name, Class<?>... parameterClses) {
+    return findMethod(name, JavaType.getInstances(parameterClses));
+  }
 
-	public AbstractMethod findMethod( String name ) {
-		return findMethod( name, new AbstractType<?, ?, ?>[] {} );
-	}
+  public AbstractMethod findMethod(String name) {
+    return findMethod(name, new AbstractType<?, ?, ?>[] {});
+  }
 
-	@Override
-	public String formatName(BinaryOperator<String> localizer) {
-		return isArray() ? getComponentType().formatName(localizer) + "[]" : formatTypeName(localizer);
-	}
+  @Override
+  public String formatName(BinaryOperator<String> localizer) {
+    return isArray() ? getComponentType().formatName(localizer) + "[]" : formatTypeName(localizer);
+  }
 
-	protected String formatTypeName(BinaryOperator<String> localizer) {
-		return localizer.apply(getName(), getName());
-	}
+  protected String formatTypeName(BinaryOperator<String> localizer) {
+    return localizer.apply(getName(), getName());
+  }
 }

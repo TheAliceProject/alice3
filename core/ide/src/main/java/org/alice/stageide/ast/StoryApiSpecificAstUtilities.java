@@ -74,125 +74,125 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class StoryApiSpecificAstUtilities {
-	public static UserField getSceneFieldFromProgramType( NamedUserType programType ) {
-		if( programType != null ) {
-			if( programType.fields.size() > 0 ) {
-				return programType.fields.get( 0 );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static UserField getSceneFieldFromProgramType(NamedUserType programType) {
+    if (programType != null) {
+      if (programType.fields.size() > 0) {
+        return programType.fields.get(0);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static NamedUserType getSceneTypeFromProgramType( NamedUserType programType ) {
-		UserField sceneField = getSceneFieldFromProgramType( programType );
-		if( sceneField != null ) {
-			return (NamedUserType)sceneField.getValueType();
-		} else {
-			return null;
-		}
-	}
+  public static NamedUserType getSceneTypeFromProgramType(NamedUserType programType) {
+    UserField sceneField = getSceneFieldFromProgramType(programType);
+    if (sceneField != null) {
+      return (NamedUserType) sceneField.getValueType();
+    } else {
+      return null;
+    }
+  }
 
-	public static NamedUserType getSceneTypeFromProject( Project project ) {
-		if( project != null ) {
-			return getSceneTypeFromProgramType( project.getProgramType() );
-		} else {
-			return null;
-		}
-	}
+  public static NamedUserType getSceneTypeFromProject(Project project) {
+    if (project != null) {
+      return getSceneTypeFromProgramType(project.getProgramType());
+    } else {
+      return null;
+    }
+  }
 
-	public static NamedUserType getSceneTypeFromDocument( ProjectDocument document ) {
-		if( document != null ) {
-			return getSceneTypeFromProject( document.getProject() );
-		} else {
-			return null;
-		}
-	}
+  public static NamedUserType getSceneTypeFromDocument(ProjectDocument document) {
+    if (document != null) {
+      return getSceneTypeFromProject(document.getProject());
+    } else {
+      return null;
+    }
+  }
 
-	public static List<UserMethod> getUserMethodsInvokedSceneActivationListeners( NamedUserType sceneType ) {
-		if( sceneType != null ) {
-			List<UserMethod> methods = Lists.newLinkedList();
-			UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-			if( initializeEventListenersMethod != null ) {
-				for( Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
-					if( statement instanceof ExpressionStatement ) {
-						ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-						Expression expression = expressionStatement.expression.getValue();
-						if( expression instanceof MethodInvocation ) {
-							MethodInvocation methodInvocation = (MethodInvocation)expression;
-							if( methodInvocation.method.getValue() == EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
-								SimpleArgument arg0 = methodInvocation.requiredArguments.get( 0 );
-								Expression arg0Expression = arg0.expression.getValue();
-								if( arg0Expression instanceof LambdaExpression ) {
-									LambdaExpression lambdaExpression = (LambdaExpression)arg0Expression;
-									Lambda lambda = lambdaExpression.value.getValue();
-									if( lambda instanceof UserLambda ) {
-										UserLambda userLambda = (UserLambda)lambda;
-										IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>( MethodInvocation.class ) {
-											@Override
-											protected boolean isAcceptable( MethodInvocation methodInvocation ) {
-												return methodInvocation.method.getValue().isUserAuthored();
-											}
-										};
-										userLambda.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-										for( MethodInvocation mi : crawler.getList() ) {
-											AbstractMethod m = mi.method.getValue();
-											if( m instanceof UserMethod ) {
-												UserMethod um = (UserMethod)m;
-												if( methods.contains( um ) ) {
-													//pass
-												} else {
-													methods.add( um );
-												}
-											}
-										}
-									}
-								}
-							}
-						}
+  public static List<UserMethod> getUserMethodsInvokedSceneActivationListeners(NamedUserType sceneType) {
+    if (sceneType != null) {
+      List<UserMethod> methods = Lists.newLinkedList();
+      UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
+      if (initializeEventListenersMethod != null) {
+        for (Statement statement : initializeEventListenersMethod.body.getValue().statements) {
+          if (statement instanceof ExpressionStatement) {
+            ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+            Expression expression = expressionStatement.expression.getValue();
+            if (expression instanceof MethodInvocation) {
+              MethodInvocation methodInvocation = (MethodInvocation) expression;
+              if (methodInvocation.method.getValue() == EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD) {
+                SimpleArgument arg0 = methodInvocation.requiredArguments.get(0);
+                Expression arg0Expression = arg0.expression.getValue();
+                if (arg0Expression instanceof LambdaExpression) {
+                  LambdaExpression lambdaExpression = (LambdaExpression) arg0Expression;
+                  Lambda lambda = lambdaExpression.value.getValue();
+                  if (lambda instanceof UserLambda) {
+                    UserLambda userLambda = (UserLambda) lambda;
+                    IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>(MethodInvocation.class) {
+                      @Override
+                      protected boolean isAcceptable(MethodInvocation methodInvocation) {
+                        return methodInvocation.method.getValue().isUserAuthored();
+                      }
+                    };
+                    userLambda.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+                    for (MethodInvocation mi : crawler.getList()) {
+                      AbstractMethod m = mi.method.getValue();
+                      if (m instanceof UserMethod) {
+                        UserMethod um = (UserMethod) m;
+                        if (methods.contains(um)) {
+                          //pass
+                        } else {
+                          methods.add(um);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
 
-					}
-				}
-			}
-			return methods;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+          }
+        }
+      }
+      return methods;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public static UserMethod getPerformEditorGeneratedSetUpMethod( NamedUserType sceneType ) {
-		if( sceneType != null ) {
-			return sceneType.getDeclaredMethod( StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
-		} else {
-			return null;
-		}
-	}
+  public static UserMethod getPerformEditorGeneratedSetUpMethod(NamedUserType sceneType) {
+    if (sceneType != null) {
+      return sceneType.getDeclaredMethod(StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME);
+    } else {
+      return null;
+    }
+  }
 
-	public static UserMethod getInitializeEventListenersMethod( NamedUserType sceneType ) {
-		if( sceneType != null ) {
-			return sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-		} else {
-			return null;
-		}
-	}
+  public static UserMethod getInitializeEventListenersMethod(NamedUserType sceneType) {
+    if (sceneType != null) {
+      return sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
+    } else {
+      return null;
+    }
+  }
 
-	public static boolean isSceneType( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			return type.isAssignableTo( SScene.class );
-		} else {
-			return false;
-		}
-	}
+  public static boolean isSceneType(AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      return type.isAssignableTo(SScene.class);
+    } else {
+      return false;
+    }
+  }
 
-	private static JavaCodeGenerator s_javaCodeGenerator;
+  private static JavaCodeGenerator s_javaCodeGenerator;
 
-	public static String getInnerCommentForMethodName( AbstractType<?, ?, ?> type, String methodName ) {
-		if( s_javaCodeGenerator == null ) {
-			s_javaCodeGenerator = JavaCodeUtilities.createJavaCodeGenerator();
-		}
-		return s_javaCodeGenerator.getLocalizedComment( type, methodName + ".inner", Application.getLocale() );
-	}
+  public static String getInnerCommentForMethodName(AbstractType<?, ?, ?> type, String methodName) {
+    if (s_javaCodeGenerator == null) {
+      s_javaCodeGenerator = JavaCodeUtilities.createJavaCodeGenerator();
+    }
+    return s_javaCodeGenerator.getLocalizedComment(type, methodName + ".inner", Application.getLocale());
+  }
 
 }

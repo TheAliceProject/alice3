@@ -46,11 +46,11 @@ package org.lgna.ik.poser.anchors.events;
  * @author Dennis Cosgrove
  */
 public interface AnchorListener {
-	public void leftArmChanged( AnchorEvent e );
+  public void leftArmChanged(AnchorEvent e);
 
-	public void rightArmChanged( AnchorEvent e );
+  public void rightArmChanged(AnchorEvent e);
 
-	public void leftLegChanged( AnchorEvent e );
+  public void leftLegChanged(AnchorEvent e);
 
-	public void rightLegChanged( AnchorEvent e );
+  public void rightLegChanged(AnchorEvent e);
 }

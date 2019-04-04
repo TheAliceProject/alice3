@@ -57,87 +57,58 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class SGround extends SThing implements MutableRider, VisualWithPaint {
-	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS( "grass" ),
-		DARK_GRASS( "dark_grass" ),
-		DRY_GRASS( "dry_grass" ),
-		DIRT( "dirt" ),
-		SAND( "sand" ),
-		MARS( "mars" ),
-		DESERT( "desert" ),
-		SANDY_DESERT( "desert_brown" ),
-		SNOW( "snow" ),
-		ICE( "ice" ),
-		SWAMP( "swamp" ),
-		SWAMP_WATER( "swamp_water" ),
-		POISON_SWAMP( "swamp_poison" ),
-		JUNGLE( "jungle" ),
-		OCEAN( "ocean" ),
-		OCEAN_NIGHT( "ocean_night" ),
-		WATER( "water" ),
-		OCEAN_FLOOR( "underwater" ),
-		MOON( "moon" ),
-		BROWN_SAVANA_GRASS( "brown_savana_grass" ),
-		GREEN_SAVANA_GRASS( "green_savana_grass" ),
-		FOREST_FLOOR( "forest_floor_brown" ),
-		RED_FOREST_FLOOR( "forest_floor_red" ),
-		DARK_FOREST_FLOOR( "forest_floor_dark" ),
-		GOLD_COINS( "gold_coins" ),
-		ROCKY_SAND( "rocky_sand" ),
-		ROCKY_BROWN( "rocky_brown" ),
-		ROCKY_RED( "rocky_red" ),
-		WOOD( "wood" ),
-		BRICK( "brick" );
-		private String resourceName;
+  public static enum SurfaceAppearance implements ImagePaint {
+    GRASS("grass"), DARK_GRASS("dark_grass"), DRY_GRASS("dry_grass"), DIRT("dirt"), SAND("sand"), MARS("mars"), DESERT("desert"), SANDY_DESERT("desert_brown"), SNOW("snow"), ICE("ice"), SWAMP("swamp"), SWAMP_WATER("swamp_water"), POISON_SWAMP("swamp_poison"), JUNGLE("jungle"), OCEAN("ocean"), OCEAN_NIGHT("ocean_night"), WATER("water"), OCEAN_FLOOR("underwater"), MOON("moon"), BROWN_SAVANA_GRASS("brown_savana_grass"), GREEN_SAVANA_GRASS("green_savana_grass"), FOREST_FLOOR("forest_floor_brown"), RED_FOREST_FLOOR("forest_floor_red"), DARK_FOREST_FLOOR("forest_floor_dark"), GOLD_COINS("gold_coins"), ROCKY_SAND("rocky_sand"), ROCKY_BROWN("rocky_brown"), ROCKY_RED("rocky_red"), WOOD("wood"), BRICK("brick");
+    private String resourceName;
 
-		SurfaceAppearance( String resourceName ) {
-			this.resourceName = resourceName;
-		}
+    SurfaceAppearance(String resourceName) {
+      this.resourceName = resourceName;
+    }
 
-		@Override
-		public URL getResource() {
-			return SGround.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
-		}
-	}
+    @Override
+    public URL getResource() {
+      return SGround.class.getResource("resources/grounds/" + this.resourceName + ".png");
+    }
+  }
 
-	private final GroundImp implementation = new GroundImp( this );
+  private final GroundImp implementation = new GroundImp(this);
 
-	@Override
-			/* package-private */GroundImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */GroundImp getImplementation() {
+    return this.implementation;
+  }
 
-	@Override
-	public void setVehicle( SThing vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
+  @Override
+  public void setVehicle(SThing vehicle) {
+    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
+  }
 
-	@Override
-	@MethodTemplate( )
-	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = GroundSurfaceAppearanceDetails.class )
-	public Paint getPaint() {
-		return this.getImplementation().paint.getValue();
-	}
+  @Override
+  @MethodTemplate()
+  @GetterTemplate(isPersistent = true)
+  @ValueTemplate(detailsEnumCls = GroundSurfaceAppearanceDetails.class)
+  public Paint getPaint() {
+    return this.getImplementation().paint.getValue();
+  }
 
-	@Override
-	@MethodTemplate( )
-	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @Override
+  @MethodTemplate()
+  public void setPaint(Paint paint, SetPaint.Detail... details) {
+    this.getImplementation().paint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@Override
-	@MethodTemplate( )
-	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = PortionDetails.class )
-	public Double getOpacity() {
-		return (double)this.getImplementation().opacity.getValue();
-	}
+  @Override
+  @MethodTemplate()
+  @GetterTemplate(isPersistent = true)
+  @ValueTemplate(detailsEnumCls = PortionDetails.class)
+  public Double getOpacity() {
+    return (double) this.getImplementation().opacity.getValue();
+  }
 
-	@Override
-	@MethodTemplate( )
-	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @Override
+  @MethodTemplate()
+  public void setOpacity(Number opacity, SetOpacity.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsBetween0and1(opacity, 0);
+    this.getImplementation().opacity.animateValue(opacity.floatValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

@@ -54,21 +54,21 @@ import org.lgna.project.migration.AstMigration;
  * All migrations are applied to a given node before moving on to the next node.
  */
 public class CompoundMigration extends AstMigration {
-	private final NodeMigration[] migrations;
+  private final NodeMigration[] migrations;
 
-	public CompoundMigration(Version minimumVersion, Version resultVersion, NodeMigration... migrations) {
-		super( minimumVersion, resultVersion );
-		this.migrations = migrations;
-	}
+  public CompoundMigration(Version minimumVersion, Version resultVersion, NodeMigration... migrations) {
+    super(minimumVersion, resultVersion);
+    this.migrations = migrations;
+  }
 
-	private void migrateNode(Crawlable node, Project projectIfApplicable) {
-		for (NodeMigration migration : migrations) {
-			migration.migrateNode(node, projectIfApplicable);
-		}
-	}
+  private void migrateNode(Crawlable node, Project projectIfApplicable) {
+    for (NodeMigration migration : migrations) {
+      migration.migrateNode(node, projectIfApplicable);
+    }
+  }
 
-	@Override
-	public final void migrate( Node node, final Project projectIfApplicable ) {
-		node.crawl(crawlable -> migrateNode(crawlable, projectIfApplicable), CrawlPolicy.COMPLETE, null );
-	}
+  @Override
+  public final void migrate(Node node, final Project projectIfApplicable) {
+    node.crawl(crawlable -> migrateNode(crawlable, projectIfApplicable), CrawlPolicy.COMPLETE, null);
+  }
 }

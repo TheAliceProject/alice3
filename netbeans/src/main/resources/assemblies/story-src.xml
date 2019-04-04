@@ -1,19 +1,19 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
-	<id>plugin-story-src</id>
-	<formats>
-		<format>jar</format>
-	</formats>
-	<includeBaseDirectory>false</includeBaseDirectory>
+  <id>plugin-story-src</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
 
-	<fileSets>
-		<fileSet>
-			<directory>${project.basedir}/../core/story-api/src/main/java/org/lgna/story</directory>
-			<includes>
-				<include>*.java</include>
-			</includes>
-			<outputDirectory>.</outputDirectory>
-		</fileSet>
-	</fileSets>
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}/../core/story-api/src/main/java/org/lgna/story</directory>
+      <includes>
+        <include>*.java</include>
+      </includes>
+      <outputDirectory>.</outputDirectory>
+    </fileSet>
+  </fileSets>
 
 </assembly>

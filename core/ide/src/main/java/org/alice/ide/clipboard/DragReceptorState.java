@@ -48,22 +48,20 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public enum DragReceptorState {
-	IDLE( new Color( 226, 179, 105 ), Color.WHITE ),
-	STARTED( Color.YELLOW, Color.YELLOW ),
-	ENTERED( new Color( 0xCCFF99 ), new Color( 0x44FF44 ) );
-	private final Color boardColor;
-	private final Color paperColor;
+  IDLE(new Color(226, 179, 105), Color.WHITE), STARTED(Color.YELLOW, Color.YELLOW), ENTERED(new Color(0xCCFF99), new Color(0x44FF44));
+  private final Color boardColor;
+  private final Color paperColor;
 
-	private DragReceptorState( Color boardColor, Color paperColor ) {
-		this.boardColor = boardColor;
-		this.paperColor = paperColor;
-	}
+  private DragReceptorState(Color boardColor, Color paperColor) {
+    this.boardColor = boardColor;
+    this.paperColor = paperColor;
+  }
 
-	public Color getBoardColor() {
-		return this.boardColor;
-	}
+  public Color getBoardColor() {
+    return this.boardColor;
+  }
 
-	public Color getPaperColor() {
-		return this.paperColor;
-	}
-};
+  public Color getPaperColor() {
+    return this.paperColor;
+  }
+}

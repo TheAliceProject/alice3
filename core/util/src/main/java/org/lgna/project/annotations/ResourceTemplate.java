@@ -48,12 +48,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * @author dculyba
- * 
+ *
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ResourceTemplate {
-	boolean isTopLevelResource() default true;
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ResourceTemplate {
+  boolean isTopLevelResource() default true;
 
-	Class<?> modelClass();
+  Class<?> modelClass();
 }

@@ -49,15 +49,14 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public enum RollDirection {
-	LEFT( Vector3.createPositiveZAxis() ),
-	RIGHT( Vector3.createNegativeZAxis() );
-	private final Vector3 axis;
+  LEFT(Vector3.createPositiveZAxis()), RIGHT(Vector3.createNegativeZAxis());
+  private final Vector3 axis;
 
-	private RollDirection( Vector3 axis ) {
-		this.axis = axis;
-	}
+  private RollDirection(Vector3 axis) {
+    this.axis = axis;
+  }
 
-	/* package protected */Vector3 getAxis() {
-		return this.axis;
-	}
+  /* package protected */Vector3 getAxis() {
+    return this.axis;
+  }
 }

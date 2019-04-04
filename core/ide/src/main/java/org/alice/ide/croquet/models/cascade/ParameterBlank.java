@@ -60,42 +60,42 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ParameterBlank extends ExpressionBlank {
-	private static Map<AbstractParameter, ParameterBlank> map = Maps.newHashMap();
+  private static Map<AbstractParameter, ParameterBlank> map = Maps.newHashMap();
 
-	public static synchronized ParameterBlank getInstance( AbstractParameter parameter ) {
-		assert parameter != null;
-		ParameterBlank rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterBlank( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
-	}
+  public static synchronized ParameterBlank getInstance(AbstractParameter parameter) {
+    assert parameter != null;
+    ParameterBlank rv = map.get(parameter);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ParameterBlank(parameter);
+      map.put(parameter, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractParameter parameter;
+  private final AbstractParameter parameter;
 
-	private ParameterBlank( AbstractParameter parameter ) {
-		super( parameter.getValueType(), parameter.getDetails() );
-		this.parameter = parameter;
-	}
+  private ParameterBlank(AbstractParameter parameter) {
+    super(parameter.getValueType(), parameter.getDetails());
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
-		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
-		if( keywordFactoryType != null ) {
-			Class<?> cls = ( (JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
-			for( Method mthd : cls.getMethods() ) {
-				JavaType returnType = JavaType.getInstance( mthd.getReturnType() );
-				if( returnType == valueType ) {
-					children.add( KeywordMenuModel.getInstance( JavaMethod.getInstance( mthd ) ) );
-				}
-			}
-		} else {
-			children.add( ParameterNameSeparator.getInstance( this.parameter ) );
-			super.updateChildren( children, blankNode );
-		}
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
+    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
+    if (keywordFactoryType != null) {
+      Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
+      for (Method mthd : cls.getMethods()) {
+        JavaType returnType = JavaType.getInstance(mthd.getReturnType());
+        if (returnType == valueType) {
+          children.add(KeywordMenuModel.getInstance(JavaMethod.getInstance(mthd)));
+        }
+      }
+    } else {
+      children.add(ParameterNameSeparator.getInstance(this.parameter));
+      super.updateChildren(children, blankNode);
+    }
+  }
 }

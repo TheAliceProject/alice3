@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class NoVariablesOrFieldsAccessibleCancelFillIn extends CancelFillIn {
-	private static class SingletonHolder {
-		private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
-	}
+  private static class SingletonHolder {
+    private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
+  }
 
-	public static NoVariablesOrFieldsAccessibleCancelFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static NoVariablesOrFieldsAccessibleCancelFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private NoVariablesOrFieldsAccessibleCancelFillIn() {
-		super( UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
-	}
+  private NoVariablesOrFieldsAccessibleCancelFillIn() {
+    super(UUID.fromString("570e6d50-d6d0-4936-a80a-00748967d084"));
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode step ) {
-		return null;
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode step) {
+    return null;
+  }
 }

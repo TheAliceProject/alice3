@@ -58,35 +58,35 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 class AbstractCodeHeaderPane extends Panel {
-	static final float NAME_SCALE = 1.8f;
-	private final boolean isPreview;
+  static final float NAME_SCALE = 1.8f;
+  private final boolean isPreview;
 
-	AbstractCodeHeaderPane( boolean isPreview ) {
-		this.isPreview = isPreview;
-	}
+  AbstractCodeHeaderPane(boolean isPreview) {
+    this.isPreview = isPreview;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		if( this.isPreview ) {
-			return new BoxLayout( jPanel, BoxLayout.LINE_AXIS );
-		} else {
-			return new WrappedFlowLayout( FlowLayout.LEADING, 0, 0 );
-		}
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    if (this.isPreview) {
+      return new BoxLayout(jPanel, BoxLayout.LINE_AXIS);
+    } else {
+      return new WrappedFlowLayout(FlowLayout.LEADING, 0, 0);
+    }
+  }
 
-	public boolean isPreview() {
-		return this.isPreview;
-	}
+  public boolean isPreview() {
+    return this.isPreview;
+  }
 
-	protected void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  protected void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 
-	Label getDeclareLabel() {
-		return new Label( localize("declare") + " ", TextPosture.OBLIQUE );
-	}
+  Label getDeclareLabel() {
+    return new Label(localize("declare") + " ", TextPosture.OBLIQUE);
+  }
 
-	String localize(String key) {
-		return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
-	}
+  String localize(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
+  }
 }

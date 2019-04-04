@@ -54,39 +54,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<ParameterAccess> {
-	private static Map<UserParameter, ParameterAccessFillIn> map = Maps.newHashMap();
+  private static Map<UserParameter, ParameterAccessFillIn> map = Maps.newHashMap();
 
-	public static ParameterAccessFillIn getInstance( UserParameter value ) {
-		synchronized( map ) {
-			ParameterAccessFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ParameterAccessFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static ParameterAccessFillIn getInstance(UserParameter value) {
+    synchronized (map) {
+      ParameterAccessFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ParameterAccessFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final ParameterAccess transientValue;
+  private final ParameterAccess transientValue;
 
-	private ParameterAccessFillIn( UserParameter parameter ) {
-		super( UUID.fromString( "cdc84629-4448-428f-9f4f-0285778b6d13" ) );
-		this.transientValue = this.createValue( parameter );
-	}
+  private ParameterAccessFillIn(UserParameter parameter) {
+    super(UUID.fromString("cdc84629-4448-428f-9f4f-0285778b6d13"));
+    this.transientValue = this.createValue(parameter);
+  }
 
-	private ParameterAccess createValue( UserParameter parameter ) {
-		return new ParameterAccess( parameter );
-	}
+  private ParameterAccess createValue(UserParameter parameter) {
+    return new ParameterAccess(parameter);
+  }
 
-	@Override
-	public ParameterAccess createValue( ItemNode<? super ParameterAccess, Void> node ) {
-		return this.createValue( this.transientValue.parameter.getValue() );
-	}
+  @Override
+  public ParameterAccess createValue(ItemNode<? super ParameterAccess, Void> node) {
+    return this.createValue(this.transientValue.parameter.getValue());
+  }
 
-	@Override
-	public ParameterAccess getTransientValue( ItemNode<? super ParameterAccess, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public ParameterAccess getTransientValue(ItemNode<? super ParameterAccess, Void> node) {
+    return this.transientValue;
+  }
 }

@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitMayor implements MaleAdultFullBodyOutfit {
-	RED_TIE_MAYOR,
-	BLUE_TIE_MAYOR;
+  RED_TIE_MAYOR, BLUE_TIE_MAYOR
 
 }

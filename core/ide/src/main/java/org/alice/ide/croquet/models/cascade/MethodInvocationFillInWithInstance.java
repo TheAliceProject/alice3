@@ -62,43 +62,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
-	private static InitializingIfAbsentMap<JavaMethod, MethodInvocationFillInWithInstance> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<JavaMethod, MethodInvocationFillInWithInstance> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MethodInvocationFillInWithInstance getInstance( JavaMethod code ) {
-		return map.getInitializingIfAbsent( code, new InitializingIfAbsentMap.Initializer<JavaMethod, MethodInvocationFillInWithInstance>() {
-			@Override
-			public MethodInvocationFillInWithInstance initialize( JavaMethod key ) {
-				AbstractType<?, ?, ?> type = key.getDeclaringType();
-				List<? extends AbstractParameter> parameters = key.getRequiredParameters();
-				CascadeBlank<Expression>[] blanks = new CascadeBlank[ 1 + parameters.size() ];
-				blanks[ 0 ] = ExpressionBlank.getBlankForType( type );
-				int i = 1;
-				for( AbstractParameter parameter : parameters ) {
-					blanks[ i ] = ParameterBlank.getInstance( parameter );
-					i++;
-				}
-				return new MethodInvocationFillInWithInstance( key, blanks );
-			}
-		} );
-	}
+  public static MethodInvocationFillInWithInstance getInstance(JavaMethod code) {
+    return map.getInitializingIfAbsent(code, new InitializingIfAbsentMap.Initializer<JavaMethod, MethodInvocationFillInWithInstance>() {
+      @Override
+      public MethodInvocationFillInWithInstance initialize(JavaMethod key) {
+        AbstractType<?, ?, ?> type = key.getDeclaringType();
+        List<? extends AbstractParameter> parameters = key.getRequiredParameters();
+        CascadeBlank<Expression>[] blanks = new CascadeBlank[1 + parameters.size()];
+        blanks[0] = ExpressionBlank.getBlankForType(type);
+        int i = 1;
+        for (AbstractParameter parameter : parameters) {
+          blanks[i] = ParameterBlank.getInstance(parameter);
+          i++;
+        }
+        return new MethodInvocationFillInWithInstance(key, blanks);
+      }
+    });
+  }
 
-	private final MethodInvocation transientValue;
+  private final MethodInvocation transientValue;
 
-	private MethodInvocationFillInWithInstance( JavaMethod method, CascadeBlank<Expression>... blanks ) {
-		super( UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ), blanks );
-		AbstractType<?, ?, ?> type = method.getDeclaringType();
-		this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation( new EmptyExpression( type ), method );
-	}
+  private MethodInvocationFillInWithInstance(JavaMethod method, CascadeBlank<Expression>... blanks) {
+    super(UUID.fromString("8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb"), blanks);
+    AbstractType<?, ?, ?> type = method.getDeclaringType();
+    this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation(new EmptyExpression(type), method);
+  }
 
-	@Override
-	protected MethodInvocation createValue( Expression[] expressions ) {
-		Expression[] argumentExpressions = new Expression[ expressions.length - 1 ];
-		System.arraycopy( expressions, 1, argumentExpressions, 0, argumentExpressions.length );
-		return AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
-	}
+  @Override
+  protected MethodInvocation createValue(Expression[] expressions) {
+    Expression[] argumentExpressions = new Expression[expressions.length - 1];
+    System.arraycopy(expressions, 1, argumentExpressions, 0, argumentExpressions.length);
+    return AstUtilities.createMethodInvocation(expressions[0], this.transientValue.method.getValue(), argumentExpressions);
+  }
 
-	@Override
-	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public MethodInvocation getTransientValue(ItemNode<? super MethodInvocation, Expression> step) {
+    return this.transientValue;
+  }
 }

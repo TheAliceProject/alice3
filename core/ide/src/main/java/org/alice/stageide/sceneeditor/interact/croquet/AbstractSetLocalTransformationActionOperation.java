@@ -65,99 +65,99 @@ import java.util.UUID;
  */
 public abstract class AbstractSetLocalTransformationActionOperation extends AbstractFieldBasedManipulationActionOperation {
 
-	public AbstractSetLocalTransformationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String editPresentationKey ) {
-		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
-	}
+  public AbstractSetLocalTransformationActionOperation(Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String editPresentationKey) {
+    super(group, individualId, isDoRequired, animator, field, editPresentationKey);
+  }
 
-	protected abstract AbstractTransformable getSGTransformable();
+  protected abstract AbstractTransformable getSGTransformable();
 
-	protected abstract AffineMatrix4x4 getPrevLocalTransformation();
+  protected abstract AffineMatrix4x4 getPrevLocalTransformation();
 
-	protected abstract AffineMatrix4x4 getNextLocalTransformation();
+  protected abstract AffineMatrix4x4 getNextLocalTransformation();
 
-	private void setLocalTransformation( AbstractTransformable sgTransformable, AffineMatrix4x4 lt ) {
-		if( this.getAnimator() != null ) {
-			PointOfViewAnimation povAnimation = new PointOfViewAnimation( sgTransformable, AsSeenBy.PARENT, null, lt );
-			povAnimation.setDuration( 0.5 );
-			//this.animator.complete( null );
-			this.getAnimator().invokeLater( povAnimation, null );
-		} else {
-			sgTransformable.setLocalTransformation( lt );
-		}
-	}
+  private void setLocalTransformation(AbstractTransformable sgTransformable, AffineMatrix4x4 lt) {
+    if (this.getAnimator() != null) {
+      PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt);
+      povAnimation.setDuration(0.5);
+      //this.animator.complete( null );
+      this.getAnimator().invokeLater(povAnimation, null);
+    } else {
+      sgTransformable.setLocalTransformation(lt);
+    }
+  }
 
-	private static final NumberFormat MILLI_FORMAT = new DecimalFormat( "0.000" );
+  private static final NumberFormat MILLI_FORMAT = new DecimalFormat("0.000");
 
-	private static void appendPosition( StringBuilder sb, AffineMatrix4x4 m ) {
-		sb.append( "(" );
-		sb.append( DoubleUtilities.format( m.translation.x, MILLI_FORMAT ) );
-		sb.append( "," );
-		sb.append( DoubleUtilities.format( m.translation.y, MILLI_FORMAT ) );
-		sb.append( "," );
-		sb.append( DoubleUtilities.format( m.translation.z, MILLI_FORMAT ) );
-		sb.append( ")" );
-	}
+  private static void appendPosition(StringBuilder sb, AffineMatrix4x4 m) {
+    sb.append("(");
+    sb.append(DoubleUtilities.format(m.translation.x, MILLI_FORMAT));
+    sb.append(",");
+    sb.append(DoubleUtilities.format(m.translation.y, MILLI_FORMAT));
+    sb.append(",");
+    sb.append(DoubleUtilities.format(m.translation.z, MILLI_FORMAT));
+    sb.append(")");
+  }
 
-	private static void appendOrientation( StringBuilder sb, AffineMatrix4x4 m ) {
-		UnitQuaternion q = m.orientation.createUnitQuaternion();
-		sb.append( "(" );
-		sb.append( DoubleUtilities.format( q.x, MILLI_FORMAT ) );
-		sb.append( "," );
-		sb.append( DoubleUtilities.format( q.y, MILLI_FORMAT ) );
-		sb.append( "," );
-		sb.append( DoubleUtilities.format( q.z, MILLI_FORMAT ) );
-		sb.append( "," );
-		sb.append( DoubleUtilities.format( q.w, MILLI_FORMAT ) );
-		sb.append( ")" );
-	}
+  private static void appendOrientation(StringBuilder sb, AffineMatrix4x4 m) {
+    UnitQuaternion q = m.orientation.createUnitQuaternion();
+    sb.append("(");
+    sb.append(DoubleUtilities.format(q.x, MILLI_FORMAT));
+    sb.append(",");
+    sb.append(DoubleUtilities.format(q.y, MILLI_FORMAT));
+    sb.append(",");
+    sb.append(DoubleUtilities.format(q.z, MILLI_FORMAT));
+    sb.append(",");
+    sb.append(DoubleUtilities.format(q.w, MILLI_FORMAT));
+    sb.append(")");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		//		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
-		final AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
-		final AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
+  @Override
+  protected void perform(UserActivity activity) {
+    //    final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
+    final AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
+    final AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 
-		assert prevLT != null;
-		assert nextLT != null;
-		assert prevLT.isNaN() == false;
-		assert nextLT.isNaN() == false;
-		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
-			@Override
-			protected final void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired() == false ) ) {
-					//pass
-				} else {
-					setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), nextLT );
-				}
-			}
+    assert prevLT != null;
+    assert nextLT != null;
+    assert prevLT.isNaN() == false;
+    assert nextLT.isNaN() == false;
+    activity.commitAndInvokeDo(new AbstractEdit(activity) {
+      @Override
+      protected final void doOrRedoInternal(boolean isDo) {
+        if (isDo && (isDoRequired() == false)) {
+          //pass
+        } else {
+          setLocalTransformation(AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), nextLT);
+        }
+      }
 
-			@Override
-			protected final void undoInternal() {
-				setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), prevLT );
-			}
+      @Override
+      protected final void undoInternal() {
+        setLocalTransformation(AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), prevLT);
+      }
 
-			@Override
-			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-				String name = getEditPresentationKey();
-				rv.append( name );
-				if( descriptionStyle.isDetailed() ) {
-					SThing thing = EntityImp.getAbstractionFromSgElement( AbstractSetLocalTransformationActionOperation.this.getSGTransformable() );
-					rv.append( " " );
-					rv.append( thing );
-					if( name.contains( "Move" ) ) {
-						rv.append( " " );
-						appendPosition( rv, prevLT );
-						rv.append( " -> " );
-						appendPosition( rv, nextLT );
-					}
-					if( name.contains( "Rotate" ) ) {
-						rv.append( " " );
-						appendOrientation( rv, prevLT );
-						rv.append( " -> " );
-						appendOrientation( rv, nextLT );
-					}
-				}
-			}
-		} );
-	}
+      @Override
+      protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+        String name = getEditPresentationKey();
+        rv.append(name);
+        if (descriptionStyle.isDetailed()) {
+          SThing thing = EntityImp.getAbstractionFromSgElement(AbstractSetLocalTransformationActionOperation.this.getSGTransformable());
+          rv.append(" ");
+          rv.append(thing);
+          if (name.contains("Move")) {
+            rv.append(" ");
+            appendPosition(rv, prevLT);
+            rv.append(" -> ");
+            appendPosition(rv, nextLT);
+          }
+          if (name.contains("Rotate")) {
+            rv.append(" ");
+            appendOrientation(rv, prevLT);
+            rv.append(" -> ");
+            appendOrientation(rv, nextLT);
+          }
+        }
+      }
+    });
+  }
 }

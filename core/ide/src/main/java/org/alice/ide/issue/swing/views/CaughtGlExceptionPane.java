@@ -56,51 +56,51 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 public class CaughtGlExceptionPane extends AbstractCaughtExceptionPane {
-	public CaughtGlExceptionPane() {
-	}
+  public CaughtGlExceptionPane() {
+  }
 
-	@Override
-	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		if( throwable instanceof GLException ) {
-			GLException glException = (GLException)throwable;
-			this.add( new GlExceptionComposite( glException ).getView().getAwtComponent(), BorderLayout.NORTH );
-		}
-		super.setThreadAndThrowable( thread, throwable );
-	}
+  @Override
+  public void setThreadAndThrowable(Thread thread, Throwable throwable) {
+    if (throwable instanceof GLException) {
+      GLException glException = (GLException) throwable;
+      this.add(new GlExceptionComposite(glException).getView().getAwtComponent(), BorderLayout.NORTH);
+    }
+    super.setThreadAndThrowable(thread, throwable);
+  }
 
-	@Override
-	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-		return new ReportSubmissionConfiguration();
-	}
+  @Override
+  protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+    return new ReportSubmissionConfiguration();
+  }
 
-	@Override
-	protected String getEnvironmentText() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( super.getEnvironmentText() );
-		sb.append( ";" );
-		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
-		if( sharedDetails != null ) {
-			sb.append( sharedDetails.getRenderer() );
-		} else {
-			sb.append( "<unknown>" );
-		}
-		return sb.toString();
-	}
+  @Override
+  protected String getEnvironmentText() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(super.getEnvironmentText());
+    sb.append(";");
+    ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+    if (sharedDetails != null) {
+      sb.append(sharedDetails.getRenderer());
+    } else {
+      sb.append("<unknown>");
+    }
+    return sb.toString();
+  }
 
-	@Override
-	protected String getJIRAProjectKey() {
-		return "AIIIP";
-	}
+  @Override
+  protected String getJIRAProjectKey() {
+    return "AIIIP";
+  }
 
-	@Override
-	protected String[] getAffectsVersions() {
-		return new String[] { ProjectVersion.getCurrentVersionText() };
-	}
+  @Override
+  protected String[] getAffectsVersions() {
+    return new String[] {ProjectVersion.getCurrentVersionText()};
+  }
 
-	@Override
-	protected AbstractReport addAttachments( AbstractReport rv ) {
-		rv = super.addAttachments( rv );
-		rv.addAttachment( new GraphicsPropertiesAttachment() );
-		return rv;
-	}
+  @Override
+  protected AbstractReport addAttachments(AbstractReport rv) {
+    rv = super.addAttachments(rv);
+    rv.addAttachment(new GraphicsPropertiesAttachment());
+    return rv;
+  }
 }

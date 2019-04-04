@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitExterminator implements MaleAdultFullBodyOutfit {
-	BLACK_COVERALLS,
-	BEIGE_COVERALLS,
-	BEIGE_REPOMAN,
-	BLACK_REPOMAN;
+  BLACK_COVERALLS, BEIGE_COVERALLS, BEIGE_REPOMAN, BLACK_REPOMAN
 
 }

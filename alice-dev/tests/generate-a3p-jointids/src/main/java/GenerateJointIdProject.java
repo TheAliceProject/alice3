@@ -48,49 +48,48 @@ import org.alice.stageide.modelresource.ResourceKey;
  * @author Dennis Cosgrove
  */
 public class GenerateJointIdProject {
-	private static void addAllJointIdFields( java.util.List<java.lang.reflect.Field> fields, org.alice.stageide.modelresource.ResourceNode node ) {
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			ResourceKey key = child.getResourceKey();
-			if( key instanceof ClassResourceKey ) {
-				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = classKey.getModelResourceCls();
-				for( java.lang.reflect.Field jField : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalDeclaredFields( modelResourceCls, org.lgna.story.resources.JointId.class ) ) {
-					String name = jField.getName();
-					for( char c : name.toCharArray() ) {
-						if( Character.isLowerCase( c ) ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( modelResourceCls.getName(), name );
-							break;
-						}
-					}
-					fields.add( jField );
-				}
-			}
-			addAllJointIdFields( fields, child );
-		}
-	}
+  private static void addAllJointIdFields(java.util.List<java.lang.reflect.Field> fields, org.alice.stageide.modelresource.ResourceNode node) {
+    for (org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren()) {
+      ResourceKey key = child.getResourceKey();
+      if (key instanceof ClassResourceKey) {
+        ClassResourceKey classKey = (ClassResourceKey) key;
+        Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = classKey.getModelResourceCls();
+        for (java.lang.reflect.Field jField : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalDeclaredFields(modelResourceCls, org.lgna.story.resources.JointId.class)) {
+          String name = jField.getName();
+          for (char c : name.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+              edu.cmu.cs.dennisc.java.util.logging.Logger.errln(modelResourceCls.getName(), name);
+              break;
+            }
+          }
+          fields.add(jField);
+        }
+      }
+      addAllJointIdFields(fields, child);
+    }
+  }
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
-		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+  public static void main(String[] args) throws Exception {
+    edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel(java.util.logging.Level.INFO);
+    org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde(null);
+    org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 
-		java.util.List<java.lang.reflect.Field> jFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		addAllJointIdFields( jFields, rootGalleryNode );
+    java.util.List<java.lang.reflect.Field> jFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+    addAllJointIdFields(jFields, rootGalleryNode);
 
-		org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+    org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+    org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor());
 
-		org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod( "main", String[].class );
+    org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod("main", String[].class);
 
-		org.lgna.project.ast.BlockStatement body = mainMethod.body.getValue();
-		for( java.lang.reflect.Field jField : jFields ) {
-			body.statements.add( new org.lgna.project.ast.ExpressionStatement(
-					org.lgna.project.ast.AstUtilities.createStaticFieldAccess( jField ) ) );
-		}
+    org.lgna.project.ast.BlockStatement body = mainMethod.body.getValue();
+    for (java.lang.reflect.Field jField : jFields) {
+      body.statements.add(new org.lgna.project.ast.ExpressionStatement(org.lgna.project.ast.AstUtilities.createStaticFieldAccess(jField)));
+    }
 
-		org.lgna.project.Project project = new org.lgna.project.Project( programType );
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/JointIdTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".a3p";
+    org.lgna.project.Project project = new org.lgna.project.Project(programType);
+    String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/JointIdTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".a3p";
 
-		org.lgna.project.io.IoUtilities.writeProject( path, project );
-	}
+    org.lgna.project.io.IoUtilities.writeProject(path, project);
+  }
 }

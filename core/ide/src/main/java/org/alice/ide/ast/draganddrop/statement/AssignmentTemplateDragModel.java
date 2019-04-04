@@ -56,21 +56,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AssignmentTemplateDragModel extends ExpressionStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static AssignmentTemplateDragModel instance = new AssignmentTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static AssignmentTemplateDragModel instance = new AssignmentTemplateDragModel();
+  }
 
-	public static AssignmentTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AssignmentTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AssignmentTemplateDragModel() {
-		super( UUID.fromString( "c3695947-71f1-46b8-9fbc-cd1b5e7993b1" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement(), AssignmentExpression.class );
-	}
+  private AssignmentTemplateDragModel() {
+    super(UUID.fromString("c3695947-71f1-46b8-9fbc-cd1b5e7993b1"), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement(), AssignmentExpression.class);
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
-		//return org.alice.ide.croquet.models.ast.cascade.statement.AssignmentInsertMenuModel.createInstance( blockStatementIndexPair ).getPopupPrepModel();
-		return TemplateAssignmentInsertCascade.createInstance( blockStatementIndexPair );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
+    //return org.alice.ide.croquet.models.ast.cascade.statement.AssignmentInsertMenuModel.createInstance( blockStatementIndexPair ).getPopupPrepModel();
+    return TemplateAssignmentInsertCascade.createInstance(blockStatementIndexPair);
+  }
 }

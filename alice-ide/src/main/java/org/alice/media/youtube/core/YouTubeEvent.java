@@ -47,59 +47,43 @@ package org.alice.media.youtube.core;
  */
 public class YouTubeEvent {
 
-	public enum EventType
-	{
-		UPLOAD_SUCCESS( "Upload Succeeded" ),
-		UPLOAD_FAILED( "Upload Failed" ),
-		UPLOAD_STARTED( "Upload Started" ),
-		UPLOAD_CANCELLED_SUCCESS( "Upload Successfully Cancelled" ),
-		UPLOAD_CANCELLED_FAILED( "Failed to Cancel Upload" ),
-		LOGIN_STARTED( "Login Started" ),
-		LOGIN_FAILED( "Login Failed" ),
-		LOGIN_SUCCESS( "Login Succeeded" ),
-		LINK_RETRIEVED( "Link Retrieved" );
+  public enum EventType {
+    UPLOAD_SUCCESS("Upload Succeeded"), UPLOAD_FAILED("Upload Failed"), UPLOAD_STARTED("Upload Started"), UPLOAD_CANCELLED_SUCCESS("Upload Successfully Cancelled"), UPLOAD_CANCELLED_FAILED("Failed to Cancel Upload"), LOGIN_STARTED("Login Started"), LOGIN_FAILED("Login Failed"), LOGIN_SUCCESS("Login Succeeded"), LINK_RETRIEVED("Link Retrieved");
 
-		private String description;
+    private String description;
 
-		private EventType( String description )
-		{
-			this.description = description;
-		}
+    private EventType(String description) {
+      this.description = description;
+    }
 
-		@Override
-		public String toString()
-		{
-			return this.description;
-		}
-	}
+    @Override
+    public String toString() {
+      return this.description;
+    }
+  }
 
-	private EventType type;
-	private Object moreInfo;
+  private EventType type;
+  private Object moreInfo;
 
-	public YouTubeEvent( EventType type )
-	{
-		this( type, null );
-	}
+  public YouTubeEvent(EventType type) {
+    this(type, null);
+  }
 
-	public YouTubeEvent( EventType type, Object moreInfo )
-	{
-		this.type = type;
-		this.moreInfo = moreInfo;
-	}
+  public YouTubeEvent(EventType type, Object moreInfo) {
+    this.type = type;
+    this.moreInfo = moreInfo;
+  }
 
-	public EventType getType()
-	{
-		return this.type;
-	}
+  public EventType getType() {
+    return this.type;
+  }
 
-	public Object getMoreInfo()
-	{
-		return this.moreInfo;
-	}
+  public Object getMoreInfo() {
+    return this.moreInfo;
+  }
 
-	public boolean hasMoreInfo()
-	{
-		return this.moreInfo != null;
-	}
+  public boolean hasMoreInfo() {
+    return this.moreInfo != null;
+  }
 
 }

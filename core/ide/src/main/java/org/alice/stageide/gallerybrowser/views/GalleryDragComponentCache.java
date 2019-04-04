@@ -54,17 +54,17 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponentCache {
-	private final Map<ResourceKey, GalleryDragComponent> map = Maps.newHashMap();
+  private final Map<ResourceKey, GalleryDragComponent> map = Maps.newHashMap();
 
-	public synchronized GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller ) {
-		ResourceKey resourceKey = resourceNode.getResourceKey();
-		GalleryDragComponent rv = this.map.get( resourceKey );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new GalleryDragComponent( resourceNode, controller );
-			this.map.put( resourceKey, rv );
-		}
-		return rv;
-	}
+  public synchronized GalleryDragComponent getGalleryDragComponent(ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller) {
+    ResourceKey resourceKey = resourceNode.getResourceKey();
+    GalleryDragComponent rv = this.map.get(resourceKey);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new GalleryDragComponent(resourceNode, controller);
+      this.map.put(resourceKey, rv);
+    }
+    return rv;
+  }
 }

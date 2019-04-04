@@ -54,27 +54,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class DoubleCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
+  }
 
-	public static DoubleCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DoubleCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DoubleCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), DoubleModel.getInstance() );
-	}
+  private DoubleCustomExpressionCreatorComposite() {
+    super(UUID.fromString("5e7703fe-6a51-4be0-b828-9eae3d8d8999"), DoubleModel.getInstance());
+  }
 
-	@Override
-	protected String getTextForPreviousExpression( Expression expression ) {
-		String text;
-		if( expression instanceof DoubleLiteral ) {
-			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
-			text = DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
-		} else {
-			text = "";
-		}
-		return text;
-	}
+  @Override
+  protected String getTextForPreviousExpression(Expression expression) {
+    String text;
+    if (expression instanceof DoubleLiteral) {
+      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+      text = DoubleUtilities.formatInCurrentDefaultLocale(doubleLiteral.value.getValue());
+    } else {
+      text = "";
+    }
+    return text;
+  }
 }

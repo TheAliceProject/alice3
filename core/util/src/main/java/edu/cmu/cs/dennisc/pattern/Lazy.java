@@ -46,22 +46,22 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public abstract class Lazy<T> {
-	public synchronized T get() {
-		if( this.isCreated ) {
-			//pass
-		} else {
-			this.value = this.create();
-			this.isCreated = true;
-		}
-		return this.value;
-	}
+  public synchronized T get() {
+    if (this.isCreated) {
+      //pass
+    } else {
+      this.value = this.create();
+      this.isCreated = true;
+    }
+    return this.value;
+  }
 
-	public T peek() {
-		return this.value;
-	}
+  public T peek() {
+    return this.value;
+  }
 
-	protected abstract T create();
+  protected abstract T create();
 
-	private boolean isCreated;
-	private T value;
+  private boolean isCreated;
+  private T value;
 }

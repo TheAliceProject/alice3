@@ -75,186 +75,188 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ChangeHandler {
-	public static void pushRenderingMode() {
-		synchronized( renderingModeLock ) {
-			renderingModeCount--;
-		}
-	}
+  public static void pushRenderingMode() {
+    synchronized (renderingModeLock) {
+      renderingModeCount--;
+    }
+  }
 
-	public static void popRenderingMode() {
-		synchronized( renderingModeLock ) {
-			if( renderingModeCount == -1 ) {
-				handleBufferedChanges();
-			}
-			renderingModeCount++;
-		}
-	}
+  public static void popRenderingMode() {
+    synchronized (renderingModeLock) {
+      if (renderingModeCount == -1) {
+        handleBufferedChanges();
+      }
+      renderingModeCount++;
+    }
+  }
 
-	private static boolean isInRenderingMode() {
-		synchronized( renderingModeLock ) {
-			return renderingModeCount < 0;
-		}
-	}
+  private static boolean isInRenderingMode() {
+    synchronized (renderingModeLock) {
+      return renderingModeCount < 0;
+    }
+  }
 
-	public static int getEventCountSinceLastReset() {
-		return eventCount;
-	}
+  public static int getEventCountSinceLastReset() {
+    return eventCount;
+  }
 
-	public static void resetEventCount() {
-		eventCount = 0;
-	}
+  public static void resetEventCount() {
+    eventCount = 0;
+  }
 
-	private static void handleEvent( Event<?> event ) {
-		if( event instanceof PropertyEvent ) {
-			PropertyEvent propertyEvent = (PropertyEvent)event;
-			GlrElement.handlePropertyChanged( propertyEvent.getTypedSource() );
-		} else if( event instanceof ReleaseEvent ) {
-			GlrObject.handleReleased( (ReleaseEvent)event );
-		} else if( event instanceof AbsoluteTransformationEvent ) {
-			AbsoluteTransformationEvent absoluteTransformationEvent = (AbsoluteTransformationEvent)event;
-			GlrComponent.handleAbsoluteTransformationChanged( absoluteTransformationEvent.getTypedSource() );
-		} else if( event instanceof HierarchyEvent ) {
-			GlrComponent.handleHierarchyChanged( (HierarchyEvent)event );
-		} else if( event instanceof ComponentAddedEvent ) {
-			GlrComposite.handleComponentAdded( (ComponentAddedEvent)event );
-		} else if( event instanceof ComponentRemovedEvent ) {
-			GlrComposite.handleComponentRemoved( (ComponentRemovedEvent)event );
-		} else if( event instanceof GraphicAddedEvent ) {
-			GlrLayer.handleGraphicAdded( (GraphicAddedEvent)event );
-		} else if( event instanceof GraphicRemovedEvent ) {
-			GlrLayer.handleGraphicRemoved( (GraphicRemovedEvent)event );
-		} else if( event instanceof TextureEvent ) {
-			GlrTexture.handleTextureChanged( (TextureEvent)event );
-		} else {
-			Logger.warning( "UNHANDLED EVENT:", event );
-		}
-	}
+  private static void handleEvent(Event<?> event) {
+    if (event instanceof PropertyEvent) {
+      PropertyEvent propertyEvent = (PropertyEvent) event;
+      GlrElement.handlePropertyChanged(propertyEvent.getTypedSource());
+    } else if (event instanceof ReleaseEvent) {
+      GlrObject.handleReleased((ReleaseEvent) event);
+    } else if (event instanceof AbsoluteTransformationEvent) {
+      AbsoluteTransformationEvent absoluteTransformationEvent = (AbsoluteTransformationEvent) event;
+      GlrComponent.handleAbsoluteTransformationChanged(absoluteTransformationEvent.getTypedSource());
+    } else if (event instanceof HierarchyEvent) {
+      GlrComponent.handleHierarchyChanged((HierarchyEvent) event);
+    } else if (event instanceof ComponentAddedEvent) {
+      GlrComposite.handleComponentAdded((ComponentAddedEvent) event);
+    } else if (event instanceof ComponentRemovedEvent) {
+      GlrComposite.handleComponentRemoved((ComponentRemovedEvent) event);
+    } else if (event instanceof GraphicAddedEvent) {
+      GlrLayer.handleGraphicAdded((GraphicAddedEvent) event);
+    } else if (event instanceof GraphicRemovedEvent) {
+      GlrLayer.handleGraphicRemoved((GraphicRemovedEvent) event);
+    } else if (event instanceof TextureEvent) {
+      GlrTexture.handleTextureChanged((TextureEvent) event);
+    } else {
+      Logger.warning("UNHANDLED EVENT:", event);
+    }
+  }
 
-	private static void handleOrBufferEvent( Event<?> event ) {
-		if( isInRenderingMode() ) {
-			synchronized( bufferedEvents ) {
-				bufferedEvents.add( event );
-			}
-		} else {
-			synchronized( renderingModeLock ) {
-				handleEvent( event );
-			}
-			//			fireRepaint();			
-		}
-		ChangeHandler.eventCount++;
-	}
+  private static void handleOrBufferEvent(Event<?> event) {
+    if (isInRenderingMode()) {
+      synchronized (bufferedEvents) {
+        bufferedEvents.add(event);
+      }
+    } else {
+      synchronized (renderingModeLock) {
+        handleEvent(event);
+      }
+      //      fireRepaint();
+    }
+    ChangeHandler.eventCount++;
+  }
 
-	public static void handleBufferedChanges() {
-		synchronized( bufferedEvents ) {
-			for( Event<?> event : bufferedEvents ) {
-				handleEvent( event );
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handling buffered event", event );
-			}
-			bufferedEvents.clear();
-		}
-	}
+  public static void handleBufferedChanges() {
+    synchronized (bufferedEvents) {
+      for (Event<?> event : bufferedEvents) {
+        handleEvent(event);
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handling buffered event", event );
+      }
+      bufferedEvents.clear();
+    }
+  }
 
-	/*package-private*/static void addListeners( Releasable element ) {
-		element.addReleaseListener( releaseListener );
-		if( element instanceof Element ) {
-			( (Element)element ).addPropertyListener( propertyListener );
-			if( element instanceof Component ) {
-				( (Component)element ).addAbsoluteTransformationListener( absoluteTransformationListener );
-				( (Component)element ).addHierarchyListener( hierarchyListener );
-				if( element instanceof Composite ) {
-					( (Composite)element ).addChildrenListener( componentsListener );
-				}
-			} else if( element instanceof Layer ) {
-				( (Layer)element ).addGraphicsListener( graphicsListener );
-			}
-		} else if( element instanceof Texture ) {
-			( (Texture)element ).addTextureListener( textureListener );
-		}
-	}
+  /*package-private*/
+  static void addListeners(Releasable element) {
+    element.addReleaseListener(releaseListener);
+    if (element instanceof Element) {
+      ((Element) element).addPropertyListener(propertyListener);
+      if (element instanceof Component) {
+        ((Component) element).addAbsoluteTransformationListener(absoluteTransformationListener);
+        ((Component) element).addHierarchyListener(hierarchyListener);
+        if (element instanceof Composite) {
+          ((Composite) element).addChildrenListener(componentsListener);
+        }
+      } else if (element instanceof Layer) {
+        ((Layer) element).addGraphicsListener(graphicsListener);
+      }
+    } else if (element instanceof Texture) {
+      ((Texture) element).addTextureListener(textureListener);
+    }
+  }
 
-	/*package-private*/static void removeListeners( Releasable element ) {
-		element.removeReleaseListener( releaseListener );
-		if( element instanceof Element ) {
-			( (Element)element ).removePropertyListener( propertyListener );
-			if( element instanceof Component ) {
-				( (Component)element ).removeAbsoluteTransformationListener( absoluteTransformationListener );
-				( (Component)element ).removeHierarchyListener( hierarchyListener );
-				if( element instanceof Composite ) {
-					( (Composite)element ).removeChildrenListener( componentsListener );
-				}
-			} else if( element instanceof Layer ) {
-				( (Layer)element ).removeGraphicsListener( graphicsListener );
-			}
-		} else if( element instanceof Texture ) {
-			( (Texture)element ).removeTextureListener( textureListener );
-		}
-	}
+  /*package-private*/
+  static void removeListeners(Releasable element) {
+    element.removeReleaseListener(releaseListener);
+    if (element instanceof Element) {
+      ((Element) element).removePropertyListener(propertyListener);
+      if (element instanceof Component) {
+        ((Component) element).removeAbsoluteTransformationListener(absoluteTransformationListener);
+        ((Component) element).removeHierarchyListener(hierarchyListener);
+        if (element instanceof Composite) {
+          ((Composite) element).removeChildrenListener(componentsListener);
+        }
+      } else if (element instanceof Layer) {
+        ((Layer) element).removeGraphicsListener(graphicsListener);
+      }
+    } else if (element instanceof Texture) {
+      ((Texture) element).removeTextureListener(textureListener);
+    }
+  }
 
-	private static List<Event<?>> bufferedEvents = Lists.newLinkedList();
+  private static List<Event<?>> bufferedEvents = Lists.newLinkedList();
 
-	private static int eventCount = 0;
-	private static Object renderingModeLock = new Object();
-	private static int renderingModeCount;
+  private static int eventCount = 0;
+  private static Object renderingModeLock = new Object();
+  private static int renderingModeCount;
 
-	private static final ReleaseListener releaseListener = new ReleaseListener() {
-		@Override
-		public void releasing( ReleaseEvent e ) {
-		}
+  private static final ReleaseListener releaseListener = new ReleaseListener() {
+    @Override
+    public void releasing(ReleaseEvent e) {
+    }
 
-		@Override
-		public void released( ReleaseEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
-	private static final PropertyListener propertyListener = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+    @Override
+    public void released(ReleaseEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
+  private static final PropertyListener propertyListener = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
 
-	private static final ComponentsListener componentsListener = new ComponentsListener() {
-		@Override
-		public void componentAdded( ComponentAddedEvent e ) {
-			handleOrBufferEvent( e );
-		}
+  private static final ComponentsListener componentsListener = new ComponentsListener() {
+    @Override
+    public void componentAdded(ComponentAddedEvent e) {
+      handleOrBufferEvent(e);
+    }
 
-		@Override
-		public void componentRemoved( ComponentRemovedEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
-	private static final GraphicsListener graphicsListener = new GraphicsListener() {
-		@Override
-		public void graphicAdded( GraphicAddedEvent e ) {
-			handleOrBufferEvent( e );
-		}
+    @Override
+    public void componentRemoved(ComponentRemovedEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
+  private static final GraphicsListener graphicsListener = new GraphicsListener() {
+    @Override
+    public void graphicAdded(GraphicAddedEvent e) {
+      handleOrBufferEvent(e);
+    }
 
-		@Override
-		public void graphicRemoved( GraphicRemovedEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
-	private static final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
-		@Override
-		public void absoluteTransformationChanged( AbsoluteTransformationEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
-	private static final HierarchyListener hierarchyListener = new HierarchyListener() {
-		@Override
-		public void hierarchyChanged( HierarchyEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
-	private static final TextureListener textureListener = new TextureListener() {
-		@Override
-		public void textureChanged( TextureEvent e ) {
-			handleOrBufferEvent( e );
-		}
-	};
+    @Override
+    public void graphicRemoved(GraphicRemovedEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
+  private static final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
+    @Override
+    public void absoluteTransformationChanged(AbsoluteTransformationEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
+  private static final HierarchyListener hierarchyListener = new HierarchyListener() {
+    @Override
+    public void hierarchyChanged(HierarchyEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
+  private static final TextureListener textureListener = new TextureListener() {
+    @Override
+    public void textureChanged(TextureEvent e) {
+      handleOrBufferEvent(e);
+    }
+  };
 }

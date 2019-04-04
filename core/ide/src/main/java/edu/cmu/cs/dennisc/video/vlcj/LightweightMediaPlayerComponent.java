@@ -68,123 +68,123 @@ import java.nio.IntBuffer;
  */
 /* package-private */class LightweightMediaPlayerComponent extends DirectMediaPlayerComponent implements VlcjMediaPlayerComponent {
 
-	private final JPanel panel;
+  private final JPanel panel;
 
-	private Object lock = "LightweightMediaPlayerComponent lock";
+  private Object lock = "LightweightMediaPlayerComponent lock";
 
-	private BufferedImage image;
-	private int[] rgbs;
-	private Painter<VideoPlayer> painter;
+  private BufferedImage image;
+  private int[] rgbs;
+  private Painter<VideoPlayer> painter;
 
-	public LightweightMediaPlayerComponent( final VlcjVideoPlayer videoPlayer ) {
-		super( new BufferFormatCallback() {
-			@Override
-			public BufferFormat getBufferFormat( int sourceWidth, int sourceHeight ) {
-				return new RV32BufferFormat( sourceWidth, sourceHeight );
-			}
-		} );
+  public LightweightMediaPlayerComponent(final VlcjVideoPlayer videoPlayer) {
+    super(new BufferFormatCallback() {
+      @Override
+      public BufferFormat getBufferFormat(int sourceWidth, int sourceHeight) {
+        return new RV32BufferFormat(sourceWidth, sourceHeight);
+      }
+    });
 
-		this.panel = new JPanel() {
-			@Override
-			public void paint( Graphics g ) {
-				synchronized( lock ) {
-					if( image != null ) {
-						int imageWidth = image.getWidth();
-						int imageHeight = image.getHeight();
+    this.panel = new JPanel() {
+      @Override
+      public void paint(Graphics g) {
+        synchronized (lock) {
+          if (image != null) {
+            int imageWidth = image.getWidth();
+            int imageHeight = image.getHeight();
 
-						Dimension componentSize = this.getSize();
+            Dimension componentSize = this.getSize();
 
-						if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
-							g.drawImage( image, 0, 0, this );
-						} else {
-							Dimension imageSize = new Dimension( imageWidth, imageHeight );
-							Dimension size = DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+            if ((imageWidth == componentSize.width) || (imageHeight == componentSize.height)) {
+              g.drawImage(image, 0, 0, this);
+            } else {
+              Dimension imageSize = new Dimension(imageWidth, imageHeight);
+              Dimension size = DimensionUtilities.calculateBestFittingSize(componentSize, imageSize.width / (double) imageSize.height);
 
-							int x0 = ( componentSize.width - size.width ) / 2;
-							int x1 = x0 + size.width;
-							int y0 = ( componentSize.height - size.height ) / 2;
-							int y1 = y0 + size.height;
+              int x0 = (componentSize.width - size.width) / 2;
+              int x1 = x0 + size.width;
+              int y0 = (componentSize.height - size.height) / 2;
+              int y1 = y0 + size.height;
 
-							super.paint( g ); //todo: only paint outer bars
+              super.paint(g); //todo: only paint outer bars
 
-							g.drawImage( image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this );
-						}
-					} else {
-						super.paint( g );
-					}
-				}
-				if( painter != null ) {
-					painter.paint( (Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
-				}
-			}
-		};
-		this.panel.setBackground( Color.BLACK );
-		this.panel.setOpaque( true );
-	}
+              g.drawImage(image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this);
+            }
+          } else {
+            super.paint(g);
+          }
+        }
+        if (painter != null) {
+          painter.paint((Graphics2D) g, videoPlayer, this.getWidth(), this.getHeight());
+        }
+      }
+    };
+    this.panel.setBackground(Color.BLACK);
+    this.panel.setOpaque(true);
+  }
 
-	@Override
-	public void display( DirectMediaPlayer mediaPlayer, Memory[] nativeBuffers, BufferFormat bufferFormat ) {
-		//super.display( mediaPlayer, nativeBuffers, bufferFormat );
-		synchronized( this.lock ) {
-			int width = bufferFormat.getWidth();
-			int height = bufferFormat.getHeight();
+  @Override
+  public void display(DirectMediaPlayer mediaPlayer, Memory[] nativeBuffers, BufferFormat bufferFormat) {
+    //super.display( mediaPlayer, nativeBuffers, bufferFormat );
+    synchronized (this.lock) {
+      int width = bufferFormat.getWidth();
+      int height = bufferFormat.getHeight();
 
-			//todo: bufferFormat pitches and lines?
+      //todo: bufferFormat pitches and lines?
 
-			if( this.image != null ) {
-				if( ( this.image.getWidth() != width ) || ( this.image.getHeight() != height ) ) {
-					this.image = null;
-				}
-			}
-			if( this.rgbs != null ) {
-				if( this.rgbs.length != ( width * height ) ) {
-					this.rgbs = null;
-				}
-			}
-			if( this.image != null ) {
-				//pass
-			} else {
-				this.image = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage( width, height );
-			}
-			if( this.rgbs != null ) {
-				//pass
-			} else {
-				this.rgbs = new int[ width * height ];
-			}
+      if (this.image != null) {
+        if ((this.image.getWidth() != width) || (this.image.getHeight() != height)) {
+          this.image = null;
+        }
+      }
+      if (this.rgbs != null) {
+        if (this.rgbs.length != (width * height)) {
+          this.rgbs = null;
+        }
+      }
+      if (this.image != null) {
+        //pass
+      } else {
+        this.image = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(width, height);
+      }
+      if (this.rgbs != null) {
+        //pass
+      } else {
+        this.rgbs = new int[width * height];
+      }
 
-			ByteBuffer byteBuffer = nativeBuffers[ 0 ].getByteBuffer( 0L, nativeBuffers[ 0 ].size() );
-			IntBuffer intBuffer = byteBuffer.asIntBuffer();
-			intBuffer.get( this.rgbs, 0, bufferFormat.getHeight() * bufferFormat.getWidth() );
+      ByteBuffer byteBuffer = nativeBuffers[0].getByteBuffer(0L, nativeBuffers[0].size());
+      IntBuffer intBuffer = byteBuffer.asIntBuffer();
+      intBuffer.get(this.rgbs, 0, bufferFormat.getHeight() * bufferFormat.getWidth());
 
-			this.image.setRGB( 0, 0, width, height, this.rgbs, 0, width );
-		}
-		this.panel.repaint();
-	}
+      this.image.setRGB(0, 0, width, height, this.rgbs, 0, width);
+    }
+    this.panel.repaint();
+  }
 
-	//	@Override
-	//	protected RenderCallback onGetRenderCallback() {
-	//		return new RenderCallbackAdapter( new int[ width * height ] ) {
-	//			@Override
-	//			protected void onDisplay( DirectMediaPlayer mediaPlayer, int[] rgbBuffer ) {
-	//				// Simply copy buffer to the image and repaint
-	//				LightweightMediaPlayerComponent.this.image.setRGB( 0, 0, width, height, rgbBuffer, 0, width );
-	//				LightweightMediaPlayerComponent.this.panel.repaint();
-	//			}
-	//		};
-	//	}
+  //  @Override
+  //  protected RenderCallback onGetRenderCallback() {
+  //    return new RenderCallbackAdapter( new int[ width * height ] ) {
+  //      @Override
+  //      protected void onDisplay( DirectMediaPlayer mediaPlayer, int[] rgbBuffer ) {
+  //        // Simply copy buffer to the image and repaint
+  //        LightweightMediaPlayerComponent.this.image.setRGB( 0, 0, width, height, rgbBuffer, 0, width );
+  //        LightweightMediaPlayerComponent.this.panel.repaint();
+  //      }
+  //    };
+  //  }
 
-	@Override
-	public Component getVideoSurface() {
-		return this.panel;
-	}
+  @Override
+  public Component getVideoSurface() {
+    return this.panel;
+  }
 
-	@Override
-	public Painter<VideoPlayer> getPainter() {
-		return this.painter;
-	}
+  @Override
+  public Painter<VideoPlayer> getPainter() {
+    return this.painter;
+  }
 
-	@Override
-	public void setPainter( Painter<VideoPlayer> painter ) {
-		this.painter = painter;
-	}
+  @Override
+  public void setPainter(Painter<VideoPlayer> painter) {
+    this.painter = painter;
+  }
 }

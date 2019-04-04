@@ -49,21 +49,21 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
-	public static <T> DefaultItemCodec<T> createInstance( Class<T> valueClass ) {
-		return new DefaultItemCodec<T>( valueClass );
-	}
+  public static <T> DefaultItemCodec<T> createInstance(Class<T> valueClass) {
+    return new DefaultItemCodec<T>(valueClass);
+  }
 
-	private DefaultItemCodec( Class<T> valueClass ) {
-		super( valueClass );
-	}
+  private DefaultItemCodec(Class<T> valueClass) {
+    super(valueClass);
+  }
 
-	@Override
-	public T decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public T decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    throw new RuntimeException("todo");
+  }
 }

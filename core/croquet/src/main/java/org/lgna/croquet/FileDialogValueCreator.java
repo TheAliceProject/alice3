@@ -51,19 +51,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FileDialogValueCreator extends ValueCreator<File> {
-	private final String title;
-	private final File directory;
-	private final String extension;
+  private final String title;
+  private final File directory;
+  private final String extension;
 
-	public FileDialogValueCreator( String title, File directory, String extension ) {
-		super( UUID.randomUUID() );
-		this.title = title;
-		this.directory = directory;
-		this.extension = extension;
-	}
+  public FileDialogValueCreator(String title, File directory, String extension) {
+    super(UUID.randomUUID());
+    this.title = title;
+    this.directory = directory;
+    this.extension = extension;
+  }
 
-	@Override
-	protected File createValue( UserActivity userActivity ) {
-		return Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( title, directory, extension );
-	}
+  @Override
+  protected File createValue(UserActivity userActivity) {
+    return Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(title, directory, extension);
+  }
 }

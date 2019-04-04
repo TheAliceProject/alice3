@@ -48,20 +48,20 @@ import org.lgna.story.resources.sims2.BottomPiece;
  * @author Dennis Cosgrove
  */
 public class BottomPieceListCellRenderer extends IngredientListCellRenderer<BottomPiece> {
-	private static class SingletonHolder {
-		private static BottomPieceListCellRenderer instance = new BottomPieceListCellRenderer();
-	}
+  private static class SingletonHolder {
+    private static BottomPieceListCellRenderer instance = new BottomPieceListCellRenderer();
+  }
 
-	public static BottomPieceListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BottomPieceListCellRenderer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BottomPieceListCellRenderer() {
-		super( 60, 100 );
-	}
+  private BottomPieceListCellRenderer() {
+    super(60, 100);
+  }
 
-	@Override
-	protected String getSubPath() {
-		return "bottompiece_pictures";
-	}
+  @Override
+  protected String getSubPath() {
+    return "bottompiece_pictures";
+  }
 }

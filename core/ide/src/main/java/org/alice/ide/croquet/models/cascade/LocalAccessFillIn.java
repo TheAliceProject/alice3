@@ -54,39 +54,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<LocalAccess> {
-	private static Map<UserLocal, LocalAccessFillIn> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalAccessFillIn> map = Maps.newHashMap();
 
-	public static LocalAccessFillIn getInstance( UserLocal value ) {
-		synchronized( map ) {
-			LocalAccessFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new LocalAccessFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static LocalAccessFillIn getInstance(UserLocal value) {
+    synchronized (map) {
+      LocalAccessFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new LocalAccessFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final LocalAccess transientValue;
+  private final LocalAccess transientValue;
 
-	private LocalAccessFillIn( UserLocal local ) {
-		super( UUID.fromString( "a1e1b9a6-cd25-4e61-af59-955492c0d885" ) );
-		this.transientValue = this.createValue( local );
-	}
+  private LocalAccessFillIn(UserLocal local) {
+    super(UUID.fromString("a1e1b9a6-cd25-4e61-af59-955492c0d885"));
+    this.transientValue = this.createValue(local);
+  }
 
-	private LocalAccess createValue( UserLocal local ) {
-		return new LocalAccess( local );
-	}
+  private LocalAccess createValue(UserLocal local) {
+    return new LocalAccess(local);
+  }
 
-	@Override
-	public LocalAccess createValue( ItemNode<? super LocalAccess, Void> node ) {
-		return this.createValue( this.transientValue.local.getValue() );
-	}
+  @Override
+  public LocalAccess createValue(ItemNode<? super LocalAccess, Void> node) {
+    return this.createValue(this.transientValue.local.getValue());
+  }
 
-	@Override
-	public LocalAccess getTransientValue( ItemNode<? super LocalAccess, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public LocalAccess getTransientValue(ItemNode<? super LocalAccess, Void> node) {
+    return this.transientValue;
+  }
 }

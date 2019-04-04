@@ -57,105 +57,107 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public abstract class GlrComponent<T extends Component> extends GlrElement<T> implements Visitable {
-	private static AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
+  private static AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
 
-	/*package-private*/static void handleAbsoluteTransformationChanged( Component component ) {
-		GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor( component );
-		componentAdapter.handleAbsoluteTransformationChanged();
-	}
+  /*package-private*/
+  static void handleAbsoluteTransformationChanged(Component component) {
+    GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor(component);
+    componentAdapter.handleAbsoluteTransformationChanged();
+  }
 
-	/*package-private*/static void handleHierarchyChanged( HierarchyEvent e ) {
-		GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		componentAdapter.handleHierarchyChanged();
-	}
+  /*package-private*/
+  static void handleHierarchyChanged(HierarchyEvent e) {
+    GlrComponent<? extends Component> componentAdapter = AdapterFactory.getAdapterFor(e.getTypedSource());
+    componentAdapter.handleHierarchyChanged();
+  }
 
-	public GlrComponent() {
-		this.handleAbsoluteTransformationChanged();
-	}
+  public GlrComponent() {
+    this.handleAbsoluteTransformationChanged();
+  }
 
-	@Override
-	public void accept( Visitor visitor ) {
-		visitor.visit( this );
-	}
+  @Override
+  public void accept(Visitor visitor) {
+    visitor.visit(this);
+  }
 
-	private void handleAbsoluteTransformationChanged() {
-		synchronized( this.absolute ) {
-			this.absolute[ 0 ] = Double.NaN;
-		}
-		synchronized( this.inverseAbsolute ) {
-			this.inverseAbsolute[ 0 ] = Double.NaN;
-		}
-	}
+  private void handleAbsoluteTransformationChanged() {
+    synchronized (this.absolute) {
+      this.absolute[0] = Double.NaN;
+    }
+    synchronized (this.inverseAbsolute) {
+      this.inverseAbsolute[0] = Double.NaN;
+    }
+  }
 
-	private void handleHierarchyChanged() {
-		GlrScene glrScene;
-		Composite sgRoot = owner.getRoot();
-		if( sgRoot instanceof Scene ) {
-			//edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
-			glrScene = AdapterFactory.getAdapterFor( (Scene)sgRoot );
-		} else {
-			glrScene = null;
-		}
+  private void handleHierarchyChanged() {
+    GlrScene glrScene;
+    Composite sgRoot = owner.getRoot();
+    if (sgRoot instanceof Scene) {
+      //edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
+      glrScene = AdapterFactory.getAdapterFor((Scene) sgRoot);
+    } else {
+      glrScene = null;
+    }
 
-		if( this.glrScene != glrScene ) {
-			if( this.glrScene != null ) {
-				this.glrScene.removeDescendant( this );
-			}
-			this.glrScene = glrScene;
-			if( this.glrScene != null ) {
-				this.glrScene.addDescendant( this );
-			}
-		}
+    if (this.glrScene != glrScene) {
+      if (this.glrScene != null) {
+        this.glrScene.removeDescendant(this);
+      }
+      this.glrScene = glrScene;
+      if (this.glrScene != null) {
+        this.glrScene.addDescendant(this);
+      }
+    }
 
-	}
+  }
 
-	public GlrScene getGlrScene() {
-		Composite sgRoot = owner.getRoot();
-		if( sgRoot instanceof Scene ) {
-			return AdapterFactory.getAdapterFor( (Scene)sgRoot );
-		} else {
-			return null;
-		}
-	}
+  public GlrScene getGlrScene() {
+    Composite sgRoot = owner.getRoot();
+    if (sgRoot instanceof Scene) {
+      return AdapterFactory.getAdapterFor((Scene) sgRoot);
+    } else {
+      return null;
+    }
+  }
 
-	private void updateAbsoluteTransformationIfNecessary() {
-		synchronized( this.absolute ) {
-			if( Double.isNaN( this.absolute[ 0 ] ) ) {
-				synchronized( s_buffer ) {
-					owner.getAbsoluteTransformation( s_buffer );
-					assert s_buffer.isNaN() == false;
-					s_buffer.getAsColumnMajorArray16( this.absolute );
-				}
-			}
-		}
-	}
+  private void updateAbsoluteTransformationIfNecessary() {
+    synchronized (this.absolute) {
+      if (Double.isNaN(this.absolute[0])) {
+        synchronized (s_buffer) {
+          owner.getAbsoluteTransformation(s_buffer);
+          assert s_buffer.isNaN() == false;
+          s_buffer.getAsColumnMajorArray16(this.absolute);
+        }
+      }
+    }
+  }
 
-	private void updateInverseAbsoluteTransformationIfNecessary() {
-		synchronized( this.inverseAbsolute ) {
-			if( Double.isNaN( this.inverseAbsolute[ 0 ] ) ) {
-				synchronized( s_buffer ) {
-					owner.getInverseAbsoluteTransformation( s_buffer );
-					assert s_buffer.isNaN() == false;
-					s_buffer.getAsColumnMajorArray16( this.inverseAbsolute );
-				}
-			}
-		}
-	}
+  private void updateInverseAbsoluteTransformationIfNecessary() {
+    synchronized (this.inverseAbsolute) {
+      if (Double.isNaN(this.inverseAbsolute[0])) {
+        synchronized (s_buffer) {
+          owner.getInverseAbsoluteTransformation(s_buffer);
+          assert s_buffer.isNaN() == false;
+          s_buffer.getAsColumnMajorArray16(this.inverseAbsolute);
+        }
+      }
+    }
+  }
 
-	public DoubleBuffer accessAbsoluteTransformationAsBuffer() {
-		this.updateAbsoluteTransformationIfNecessary();
-		return this.absoluteBuffer;
-	}
+  public DoubleBuffer accessAbsoluteTransformationAsBuffer() {
+    this.updateAbsoluteTransformationIfNecessary();
+    return this.absoluteBuffer;
+  }
 
-	public DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
-		this.updateInverseAbsoluteTransformationIfNecessary();
-		return this.inverseAbsoluteBuffer;
-	}
+  public DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
+    this.updateInverseAbsoluteTransformationIfNecessary();
+    return this.inverseAbsoluteBuffer;
+  }
 
-	private final double[] absolute = new double[ 16 ];
-	private final double[] inverseAbsolute = new double[ 16 ];
-	private final DoubleBuffer absoluteBuffer = DoubleBuffer.wrap( this.absolute );
-	private final DoubleBuffer inverseAbsoluteBuffer = DoubleBuffer.wrap( this.inverseAbsolute );
+  private final double[] absolute = new double[16];
+  private final double[] inverseAbsolute = new double[16];
+  private final DoubleBuffer absoluteBuffer = DoubleBuffer.wrap(this.absolute);
+  private final DoubleBuffer inverseAbsoluteBuffer = DoubleBuffer.wrap(this.inverseAbsolute);
 
-	private GlrScene glrScene;
+  private GlrScene glrScene;
 }

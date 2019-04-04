@@ -61,104 +61,104 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface RenderTarget {
-	RenderFactory getRenderFactory();
+  RenderFactory getRenderFactory();
 
-	RenderCapabilities getRequestedCapabilities();
+  RenderCapabilities getRequestedCapabilities();
 
-	RenderCapabilities getActualCapabilities();
+  RenderCapabilities getActualCapabilities();
 
-	int getSurfaceWidth();
+  int getSurfaceWidth();
 
-	int getSurfaceHeight();
+  int getSurfaceHeight();
 
-	Dimension getSurfaceSize();
+  Dimension getSurfaceSize();
 
-	int getDrawableWidth();
+  int getDrawableWidth();
 
-	int getDrawableHeight();
+  int getDrawableHeight();
 
-	Dimension getDrawableSize();
+  Dimension getDrawableSize();
 
-	String getDescription();
+  String getDescription();
 
-	void setDescription( String description );
+  void setDescription(String description);
 
-	void addSgCamera( AbstractCamera sgCamera );
+  void addSgCamera(AbstractCamera sgCamera);
 
-	void removeSgCamera( AbstractCamera sgCamera );
+  void removeSgCamera(AbstractCamera sgCamera);
 
-	void clearSgCameras();
+  void clearSgCameras();
 
-	List<AbstractCamera> getSgCameras();
+  List<AbstractCamera> getSgCameras();
 
-	AbstractCamera getSgCameraAt( int index );
+  AbstractCamera getSgCameraAt(int index);
 
-	int getSgCameraCount();
+  int getSgCameraCount();
 
-	void addRenderTargetListener( RenderTargetListener listener );
+  void addRenderTargetListener(RenderTargetListener listener);
 
-	void removeRenderTargetListener( RenderTargetListener listener );
+  void removeRenderTargetListener(RenderTargetListener listener);
 
-	List<RenderTargetListener> getRenderTargetListeners();
+  List<RenderTargetListener> getRenderTargetListeners();
 
-	Matrix4x4 getActualProjectionMatrix( AbstractCamera sgCamera );
+  Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera);
 
-	ClippedZPlane getActualPicturePlane( OrthographicCamera sgOrthographicCamera );
+  ClippedZPlane getActualPicturePlane(OrthographicCamera sgOrthographicCamera);
 
-	ClippedZPlane getActualPicturePlane( FrustumPerspectiveCamera sgFrustumPerspectiveCamera );
+  ClippedZPlane getActualPicturePlane(FrustumPerspectiveCamera sgFrustumPerspectiveCamera);
 
-	Angle getActualHorizontalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
+  Angle getActualHorizontalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
 
-	Angle getActualVerticalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera );
+  Angle getActualVerticalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera);
 
-	AbstractCamera getCameraAtPixel( int xPixel, int yPixel );
+  AbstractCamera getCameraAtPixel(int xPixel, int yPixel);
 
-	Ray getRayAtPixel( int xPixel, int yPixel, AbstractCamera sgCamera );
+  Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera);
 
-	Ray getRayAtPixel( int xPixel, int yPixel );
+  Ray getRayAtPixel(int xPixel, int yPixel);
 
-	boolean isLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera );
+  boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera);
 
-	void setLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted );
+  void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted);
 
-	boolean isRenderingEnabled();
+  boolean isRenderingEnabled();
 
-	void setRenderingEnabled( boolean isRenderingEnabled );
+  void setRenderingEnabled(boolean isRenderingEnabled);
 
-	SynchronousPicker getSynchronousPicker();
+  SynchronousPicker getSynchronousPicker();
 
-	AsynchronousPicker getAsynchronousPicker();
+  AsynchronousPicker getAsynchronousPicker();
 
-	SynchronousImageCapturer getSynchronousImageCapturer();
+  SynchronousImageCapturer getSynchronousImageCapturer();
 
-	AsynchronousImageCapturer getAsynchronousImageCapturer();
+  AsynchronousImageCapturer getAsynchronousImageCapturer();
 
-	void forgetAllCachedItems();
+  void forgetAllCachedItems();
 
-	void clearUnusedTextures();
+  void clearUnusedTextures();
 
-	//todo: remove?
-	Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, AbstractCamera sgCamera );
+  //todo: remove?
+  Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera sgCamera);
 
-	//todo: remove?
-	void release();
+  //todo: remove?
+  void release();
 
-	MRectangleI getActualViewport( AbstractCamera sgCamera );
+  MRectangleI getActualViewport(AbstractCamera sgCamera);
 
-	MRectangleI getSpecifiedViewport( AbstractCamera sgCamera );
+  MRectangleI getSpecifiedViewport(AbstractCamera sgCamera);
 
-	void setSpecifiedViewport( AbstractCamera sgCamera, MRectangleI viewport );
+  void setSpecifiedViewport(AbstractCamera sgCamera, MRectangleI viewport);
 
-	@Deprecated
-	Rectangle getActualViewportAsAwtRectangle( AbstractCamera sgCamera );
+  @Deprecated
+  Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera);
 
-	@Deprecated
-	Rectangle getSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera );
+  @Deprecated
+  Rectangle getSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera);
 
-	@Deprecated
-	void setSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera, Rectangle viewport );
+  @Deprecated
+  void setSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera, Rectangle viewport);
 
-	//todo: remove?
-	@Deprecated
-	Rectangle getActualViewportAsAwtRectangle( Rectangle rv, AbstractCamera sgCamera );
+  //todo: remove?
+  @Deprecated
+  Rectangle getActualViewportAsAwtRectangle(Rectangle rv, AbstractCamera sgCamera);
 }

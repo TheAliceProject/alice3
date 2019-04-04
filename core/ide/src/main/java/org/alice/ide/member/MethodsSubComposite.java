@@ -57,37 +57,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodsSubComposite extends ToolPaletteCoreComposite<MethodsSubView<?>> {
-	public MethodsSubComposite( UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, Application.DOCUMENT_UI_GROUP, MemberTabComposite.getExpandedAccountingForInert( isExpandedInitialValue ) );
-	}
+  public MethodsSubComposite(UUID migrationId, boolean isExpandedInitialValue) {
+    super(migrationId, Application.DOCUMENT_UI_GROUP, MemberTabComposite.getExpandedAccountingForInert(isExpandedInitialValue));
+  }
 
-	public abstract List<? extends AbstractMethod> getMethods();
+  public abstract List<? extends AbstractMethod> getMethods();
 
-	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
-		return isExpanded == false;
-	}
+  protected boolean isMethodCountDesired(boolean isExpanded, int methodCount) {
+    return isExpanded == false;
+  }
 
-	@Override
-	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
-		text = super.modifyTextIfNecessary( text, isExpanded );
-		List<? extends AbstractMethod> methods = this.getMethods();
-		if( this.isMethodCountDesired( isExpanded, methods.size() ) ) {
-			text += " (" + methods.size() + ")";
-		}
-		return text;
-	}
+  @Override
+  protected String modifyTextIfNecessary(String text, boolean isExpanded) {
+    text = super.modifyTextIfNecessary(text, isExpanded);
+    List<? extends AbstractMethod> methods = this.getMethods();
+    if (this.isMethodCountDesired(isExpanded, methods.size())) {
+      text += " (" + methods.size() + ")";
+    }
+    return text;
+  }
 
-	public void updateTabTitle() {
-		BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
-		isExpandedState.updateNameAndIcon();
-	}
+  public void updateTabTitle() {
+    BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
+    isExpandedState.updateNameAndIcon();
+  }
 
-	public boolean isShowingDesired() {
-		return true;
-	}
+  public boolean isShowingDesired() {
+    return true;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

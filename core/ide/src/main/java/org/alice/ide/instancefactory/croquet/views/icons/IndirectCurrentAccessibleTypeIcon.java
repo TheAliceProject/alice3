@@ -58,56 +58,56 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public enum IndirectCurrentAccessibleTypeIcon implements Icon {
-	SINGLTON;
+  SINGLTON;
 
-	private static final Dimension SIZE = new Dimension( 32, 24 );
+  private static final Dimension SIZE = new Dimension(32, 24);
 
-	private IconFactory getCurrentAccessibleTypeIconFactory() {
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		if( instanceFactory != null ) {
-			IconFactory rv = null;
-			if( instanceFactory instanceof ThisFieldAccessFactory ) {
-				ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
-				UserField field = thisFieldAccessFactory.getField();
-				org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
-				rv = iconFactoryManager.getIconFactory( field, IconFactoryManager.getIconFactoryForField( field ) );
-			}
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  private IconFactory getCurrentAccessibleTypeIconFactory() {
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    if (instanceFactory != null) {
+      IconFactory rv = null;
+      if (instanceFactory instanceof ThisFieldAccessFactory) {
+        ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory) instanceFactory;
+        UserField field = thisFieldAccessFactory.getField();
+        org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
+        rv = iconFactoryManager.getIconFactory(field, IconFactoryManager.getIconFactoryForField(field));
+      }
+      if (rv != null) {
+        //pass
+      } else {
+        rv = IconFactoryManager.getIconFactoryForType(instanceFactory.getValueType());
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public int getIconWidth() {
-		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-		if( iconFactory != null ) {
-			return SIZE.width;
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public int getIconWidth() {
+    IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+    if (iconFactory != null) {
+      return SIZE.width;
+    } else {
+      return 0;
+    }
+  }
 
-	@Override
-	public int getIconHeight() {
-		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-		if( iconFactory != null ) {
-			return SIZE.height;
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public int getIconHeight() {
+    IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+    if (iconFactory != null) {
+      return SIZE.height;
+    } else {
+      return 0;
+    }
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-		if( iconFactory != null ) {
-			iconFactory.getIcon( SIZE ).paintIcon( c, g, x, y );
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+    if (iconFactory != null) {
+      iconFactory.getIcon(SIZE).paintIcon(c, g, x, y);
+    }
+  }
 }

@@ -60,37 +60,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
-	private static AbstractType<?, ?, ?> getReturnType( BlockStatementIndexPair blockStatementIndexPair ) {
-		AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( AbstractCode.class );
-		if( code instanceof UserMethod ) {
-			UserMethod method = (UserMethod)code;
-			if( method.isFunction() ) {
-				return method.returnType.getValue();
-			}
-		}
-		return null;
-	}
+  private static AbstractType<?, ?, ?> getReturnType(BlockStatementIndexPair blockStatementIndexPair) {
+    AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo(AbstractCode.class);
+    if (code instanceof UserMethod) {
+      UserMethod method = (UserMethod) code;
+      if (method.isFunction()) {
+        return method.returnType.getValue();
+      }
+    }
+    return null;
+  }
 
-	private static Map<BlockStatementIndexPair, ReturnStatementInsertCascade> map = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, ReturnStatementInsertCascade> map = Maps.newHashMap();
 
-	public static synchronized ReturnStatementInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ReturnStatementInsertCascade rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ReturnStatementInsertCascade( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized ReturnStatementInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    assert blockStatementIndexPair != null;
+    ReturnStatementInsertCascade rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ReturnStatementInsertCascade(blockStatementIndexPair);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private ReturnStatementInsertCascade( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, false, ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
-	}
+  private ReturnStatementInsertCascade(BlockStatementIndexPair blockStatementIndexPair) {
+    super(UUID.fromString("6b1dae07-066f-4250-92e8-db1eacd32801"), blockStatementIndexPair, false, ExpressionBlank.createBlanks(getReturnType(blockStatementIndexPair)));
+  }
 
-	@Override
-	protected Statement createStatement( Expression... expressions ) {
-		return AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
-	}
+  @Override
+  protected Statement createStatement(Expression... expressions) {
+    return AstUtilities.createReturnStatement(getReturnType(this.getBlockStatementIndexPair()), expressions[0]);
+  }
 }

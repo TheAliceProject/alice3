@@ -49,44 +49,45 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public class CountLoop extends AbstractLoop {
-	public CountLoop() {
-	}
+  public CountLoop() {
+  }
 
-	public CountLoop( UserLocal variable, UserLocal constant, Expression count, BlockStatement body ) {
-		super( body );
-		this.variable.setValue( variable );
-		this.constant.setValue( constant );
-		this.count.setValue( count );
-	}
+  public CountLoop(UserLocal variable, UserLocal constant, Expression count, BlockStatement body) {
+    super(body);
+    this.variable.setValue(variable);
+    this.constant.setValue(constant);
+    this.count.setValue(count);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendLocalizedText( CountLoop.class, "count" );
-		localizer.appendSpace();
-		safeAppendRepr( localizer, this.count.getValue() );
-		super.appendRepr( localizer );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendLocalizedText(CountLoop.class, "count");
+    localizer.appendSpace();
+    safeAppendRepr(localizer, this.count.getValue());
+    super.appendRepr(localizer);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendCountLoop(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendCountLoop(this);
+  }
 
-	public final DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-	public final DeclarationProperty<UserLocal> constant = new DeclarationProperty<UserLocal>( this ) {
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-	public final ExpressionProperty count = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
+  public final DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>(this) {
+    @Override
+    public boolean isReference() {
+      return false;
+    }
+  };
+  public final DeclarationProperty<UserLocal> constant = new DeclarationProperty<UserLocal>(this) {
+    @Override
+    public boolean isReference() {
+      return false;
+    }
+  };
+  public final ExpressionProperty count = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.getInstance(Integer.class);
+    }
+  };
 }

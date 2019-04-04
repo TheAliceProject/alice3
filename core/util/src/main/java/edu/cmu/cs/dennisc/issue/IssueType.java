@@ -46,7 +46,5 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public enum IssueType {
-	BUG,
-	IMPROVEMENT,
-	NEW_FEATURE
+  BUG, IMPROVEMENT, NEW_FEATURE
 }

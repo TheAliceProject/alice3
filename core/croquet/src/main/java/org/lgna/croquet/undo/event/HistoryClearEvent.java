@@ -48,10 +48,10 @@ import org.lgna.croquet.undo.UndoHistory;
  * @author Dennis Cosgrove
  */
 public class HistoryClearEvent extends HistoryEvent {
-	private int prevIndex;
-	private int nextIndex;
+  private int prevIndex;
+  private int nextIndex;
 
-	public HistoryClearEvent( UndoHistory source ) {
-		super( source );
-	}
+  public HistoryClearEvent(UndoHistory source) {
+    super(source);
+  }
 }

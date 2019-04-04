@@ -57,61 +57,61 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CodePerspectiveComposite extends LazyImmutableSplitComposite<CodeContextSplitComposite, Composite<?>> {
-	public CodePerspectiveComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public CodePerspectiveComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("55b694a1-da0e-4820-b138-6cf285be4ed3"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	@Override
-	protected CodeContextSplitComposite createLeadingComposite() {
-		return new CodeContextSplitComposite( this );
-	}
+  @Override
+  protected CodeContextSplitComposite createLeadingComposite() {
+    return new CodeContextSplitComposite(this);
+  }
 
-	@Override
-	protected Composite<?> createTrailingComposite() {
-		return this.projectDocumentFrame.getDeclarationsEditorComposite();
-	}
+  @Override
+  protected Composite<?> createTrailingComposite() {
+    return this.projectDocumentFrame.getDeclarationsEditorComposite();
+  }
 
-	public void incrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount++;
-	}
+  public void incrementIgnoreDividerLocationChangeCount() {
+    this.ignoreDividerChangeCount++;
+  }
 
-	public void decrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount--;
-	}
+  public void decrementIgnoreDividerLocationChangeCount() {
+    this.ignoreDividerChangeCount--;
+  }
 
-	@Override
-	protected SplitPane createView() {
-		SplitPane rv = this.createHorizontalSplitPane();
-		rv.addDividerLocationChangeListener( this.dividerLocationListener );
-		rv.setResizeWeight( 0.0 );
-		//todo
-		rv.setDividerLocation( 400 );
-		return rv;
-	}
+  @Override
+  protected SplitPane createView() {
+    SplitPane rv = this.createHorizontalSplitPane();
+    rv.addDividerLocationChangeListener(this.dividerLocationListener);
+    rv.setResizeWeight(0.0);
+    //todo
+    rv.setDividerLocation(400);
+    return rv;
+  }
 
-	private int ignoreDividerChangeCount = 0;
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
-		@Override
-		public void propertyChange( PropertyChangeEvent e ) {
-			if( ignoreDividerChangeCount > 0 ) {
-				//pass
-			} else {
-				CodeContextSplitComposite otherComposite = getLeadingComposite();
-				SplitPane otherSplitPane = otherComposite.getView();
-				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() / RunComposite.WIDTH_TO_HEIGHT_RATIO );
-				if( prevValue != nextValue ) {
-					otherComposite.incrementIgnoreDividerLocationChangeCount();
-					try {
-						otherSplitPane.setDividerLocation( nextValue );
-					} finally {
-						otherComposite.decrementIgnoreDividerLocationChangeCount();
-					}
-				}
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "outer:", e.getOldValue(), e.getNewValue() );
-			}
-		}
-	};
+  private int ignoreDividerChangeCount = 0;
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+      if (ignoreDividerChangeCount > 0) {
+        //pass
+      } else {
+        CodeContextSplitComposite otherComposite = getLeadingComposite();
+        SplitPane otherSplitPane = otherComposite.getView();
+        int prevValue = otherSplitPane.getDividerLocation();
+        int nextValue = (int) ((Integer) e.getNewValue() / RunComposite.WIDTH_TO_HEIGHT_RATIO);
+        if (prevValue != nextValue) {
+          otherComposite.incrementIgnoreDividerLocationChangeCount();
+          try {
+            otherSplitPane.setDividerLocation(nextValue);
+          } finally {
+            otherComposite.decrementIgnoreDividerLocationChangeCount();
+          }
+        }
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "outer:", e.getOldValue(), e.getNewValue() );
+      }
+    }
+  };
 }

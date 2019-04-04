@@ -58,100 +58,100 @@ import org.lgna.story.resources.JointId;
  */
 public class PoserControllerAdapter {
 
-	private final AbstractPoserControlComposite controlComposite;
-	private JointId rightLegAnchorJointID;
-	private JointId rightArmAnchorJointID;
-	private JointId leftLegAnchorJointID;
-	private JointId leftArmAnchorJointID;
+  private final AbstractPoserControlComposite controlComposite;
+  private JointId rightLegAnchorJointID;
+  private JointId rightArmAnchorJointID;
+  private JointId leftLegAnchorJointID;
+  private JointId leftArmAnchorJointID;
 
-	public PoserControllerAdapter( AbstractPoserControlComposite controlComposite ) {
-		this.controlComposite = controlComposite;
-		this.controlComposite.addRightArmAnchorListener( rightArmAnchorJointListener );
-		rightLegAnchorJointID = controlComposite.getRightLegAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addRightLegAnchorListener( rightLegAnchorJointListener );
-		rightArmAnchorJointID = controlComposite.getRightArmAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addLeftArmAnchorListener( leftArmAnchorJointListener );
-		leftLegAnchorJointID = controlComposite.getLeftLegAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addLeftLegAnchorListener( leftLegAnchorJointListener );
-		leftArmAnchorJointID = controlComposite.getLeftArmAnchor().getValue().getJoint().getJointId();
-	}
+  public PoserControllerAdapter(AbstractPoserControlComposite controlComposite) {
+    this.controlComposite = controlComposite;
+    this.controlComposite.addRightArmAnchorListener(rightArmAnchorJointListener);
+    rightLegAnchorJointID = controlComposite.getRightLegAnchor().getValue().getJoint().getJointId();
+    this.controlComposite.addRightLegAnchorListener(rightLegAnchorJointListener);
+    rightArmAnchorJointID = controlComposite.getRightArmAnchor().getValue().getJoint().getJointId();
+    this.controlComposite.addLeftArmAnchorListener(leftArmAnchorJointListener);
+    leftLegAnchorJointID = controlComposite.getLeftLegAnchor().getValue().getJoint().getJointId();
+    this.controlComposite.addLeftLegAnchorListener(leftLegAnchorJointListener);
+    leftArmAnchorJointID = controlComposite.getLeftArmAnchor().getValue().getJoint().getJointId();
+  }
 
-	private final ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+  private final ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
-		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-		}
+    @Override
+    public void changing(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+    }
 
-		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
-			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
-			PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
-		}
-	};
-	private final ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+    @Override
+    public void changed(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+      prevValue.setPaint(Color.WHITE, SetPaint.duration(0));
+      nextValue.setPaint(Color.GREEN, SetPaint.duration(0));
+      PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
+    }
+  };
+  private final ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
-		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-		}
+    @Override
+    public void changing(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+    }
 
-		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
-			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
-			PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
-		}
-	};
-	private final ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+    @Override
+    public void changed(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+      prevValue.setPaint(Color.WHITE, SetPaint.duration(0));
+      nextValue.setPaint(Color.GREEN, SetPaint.duration(0));
+      PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
+    }
+  };
+  private final ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
-		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-		}
+    @Override
+    public void changing(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+    }
 
-		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
-			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
-			PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
-		}
-	};
-	private final ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+    @Override
+    public void changed(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+      prevValue.setPaint(Color.WHITE, SetPaint.duration(0));
+      nextValue.setPaint(Color.GREEN, SetPaint.duration(0));
+      PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
+    }
+  };
+  private final ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
-		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-		}
+    @Override
+    public void changing(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+    }
 
-		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
-			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
-			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
-			PoserControllerAdapter.this.leftLegAnchorJointID = nextValue.getJoint().getJointId();
-		}
-	};
+    @Override
+    public void changed(State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue) {
+      prevValue.setPaint(Color.WHITE, SetPaint.duration(0));
+      nextValue.setPaint(Color.GREEN, SetPaint.duration(0));
+      PoserControllerAdapter.this.leftLegAnchorJointID = nextValue.getJoint().getJointId();
+    }
+  };
 
-	public JointId getAnchorJointID( Limb limb, JointImp joint ) {
-		switch( limb ) {
-		case LEFT_ARM:
-			return leftArmAnchorJointID;
-		case LEFT_LEG:
-			return leftLegAnchorJointID;
-		case RIGHT_ARM:
-			return rightArmAnchorJointID;
-		case RIGHT_LEG:
-			return rightLegAnchorJointID;
-		}
-		return null;
-	}
+  public JointId getAnchorJointID(Limb limb, JointImp joint) {
+    switch (limb) {
+    case LEFT_ARM:
+      return leftArmAnchorJointID;
+    case LEFT_LEG:
+      return leftLegAnchorJointID;
+    case RIGHT_ARM:
+      return rightArmAnchorJointID;
+    case RIGHT_LEG:
+      return rightLegAnchorJointID;
+    }
+    return null;
+  }
 
-	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
-		controlComposite.updateSphere( limb, sphere );
-	}
+  public void updateSphere(Limb limb, JointSelectionSphere sphere) {
+    controlComposite.updateSphere(limb, sphere);
+  }
 
-	public BooleanState getJointRotationHandleVisibilityState() {
-		return controlComposite.getJointRotationHandleVisibilityState();
-	}
+  public BooleanState getJointRotationHandleVisibilityState() {
+    return controlComposite.getJointRotationHandleVisibilityState();
+  }
 
-	public AbstractPoserControlComposite getControlComposite() {
-		return this.controlComposite;
-	}
+  public AbstractPoserControlComposite getControlComposite() {
+    return this.controlComposite;
+  }
 }

@@ -57,108 +57,108 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class TextureBinding implements ForgettableBinding {
-	//todo: investigate shared drawables
-	private static class Data {
-		private Texture texture;
-		private TextureData textureData;
-		private GL gl;
+  //todo: investigate shared drawables
+  private static class Data {
+    private Texture texture;
+    private TextureData textureData;
+    private GL gl;
 
-		private void disposeTextureIdIfAppropriate( GL gl ) {
-			if( this.texture != null ) {
-				if( this.gl != gl ) {
-					//pass
-				} else {
-					Logger.info( "disposing texture id", this.texture.getTextureObject( this.gl ) );
-					this.texture.destroy( this.gl );
-				}
-			}
-		}
+    private void disposeTextureIdIfAppropriate(GL gl) {
+      if (this.texture != null) {
+        if (this.gl != gl) {
+          //pass
+        } else {
+          Logger.info("disposing texture id", this.texture.getTextureObject(this.gl));
+          this.texture.destroy(this.gl);
+        }
+      }
+    }
 
-		private boolean isUpdateNecessary( GL gl, TextureData textureData ) {
-			if( this.texture != null ) {
-				if( this.textureData != textureData ) {
-					Logger.info( "textureData changed", this.textureData, textureData );
-					return true;
-				} else {
-					if( this.gl != gl ) {
-						Logger.info( "gl changed", this.gl, gl );
-						return true;
-					} else {
-						int textureObject = this.texture.getTextureObject( this.gl );
-						if( gl.glIsTexture( textureObject ) ) {
-							return false;
-						} else {
-							Logger.info( "glIsTexture is false" );
-							return true;
-						}
-					}
-				}
-			} else {
-				return true;
-			}
-		}
+    private boolean isUpdateNecessary(GL gl, TextureData textureData) {
+      if (this.texture != null) {
+        if (this.textureData != textureData) {
+          Logger.info("textureData changed", this.textureData, textureData);
+          return true;
+        } else {
+          if (this.gl != gl) {
+            Logger.info("gl changed", this.gl, gl);
+            return true;
+          } else {
+            int textureObject = this.texture.getTextureObject(this.gl);
+            if (gl.glIsTexture(textureObject)) {
+              return false;
+            } else {
+              Logger.info("glIsTexture is false");
+              return true;
+            }
+          }
+        }
+      } else {
+        return true;
+      }
+    }
 
-		public void updateIfNecessary( GL gl, TextureData textureData ) {
-			if( this.isUpdateNecessary( gl, textureData ) ) {
-				this.disposeTextureIdIfAppropriate( gl );
-				this.textureData = textureData;
-				this.gl = gl;
-				this.texture = TextureIO.newTexture( this.textureData );
-				Logger.info( "allocated texture id", this.texture.getTextureObject( this.gl ), "gl", gl.hashCode() );
-				//				for( RenderContextData value : map.values() ) {
-				//					System.err.print( value.gl.hashCode() + " " );
-				//				}
-				//				System.err.println();
-			}
-		}
+    public void updateIfNecessary(GL gl, TextureData textureData) {
+      if (this.isUpdateNecessary(gl, textureData)) {
+        this.disposeTextureIdIfAppropriate(gl);
+        this.textureData = textureData;
+        this.gl = gl;
+        this.texture = TextureIO.newTexture(this.textureData);
+        Logger.info("allocated texture id", this.texture.getTextureObject(this.gl), "gl", gl.hashCode());
+        //        for( RenderContextData value : map.values() ) {
+        //          System.err.print( value.gl.hashCode() + " " );
+        //        }
+        //        System.err.println();
+      }
+    }
 
-		public void bind() {
-			this.texture.bind( this.gl );
-		}
+    public void bind() {
+      this.texture.bind(this.gl);
+    }
 
-		public void enable() {
-			this.texture.enable( this.gl );
-		}
+    public void enable() {
+      this.texture.enable(this.gl);
+    }
 
-		public void forget( GL gl ) {
-			if( this.texture != null ) {
-				this.disposeTextureIdIfAppropriate( gl );
-				this.texture = null;
-				this.textureData = null;
-				this.gl = null;
-				Logger.info( "dispose", this.texture );
-			}
-		}
-	}
+    public void forget(GL gl) {
+      if (this.texture != null) {
+        this.disposeTextureIdIfAppropriate(gl);
+        this.texture = null;
+        this.textureData = null;
+        this.gl = null;
+        Logger.info("dispose", this.texture);
+      }
+    }
+  }
 
-	private final Map<RenderContext, Data> map = Maps.newHashMap();
+  private final Map<RenderContext, Data> map = Maps.newHashMap();
 
-	private Data getData( RenderContext rc ) {
-		Data rv = this.map.get( rc );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Data();
-			this.map.put( rc, rv );
-		}
-		return rv;
-	}
+  private Data getData(RenderContext rc) {
+    Data rv = this.map.get(rc);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new Data();
+      this.map.put(rc, rv);
+    }
+    return rv;
+  }
 
-	public void ensureUpToDate( RenderContext rc, TextureData textureData ) {
-		Data data = this.getData( rc );
-		data.updateIfNecessary( rc.gl, textureData );
-		data.bind();
-		data.enable();
-	}
+  public void ensureUpToDate(RenderContext rc, TextureData textureData) {
+    Data data = this.getData(rc);
+    data.updateIfNecessary(rc.gl, textureData);
+    data.bind();
+    data.enable();
+  }
 
-	@Override
-	public void forget( RenderContext rc ) {
-		synchronized( this.map ) {
-			Data data = this.map.get( rc );
-			if( data != null ) {
-				data.forget( rc.gl );
-				this.map.remove( rc );
-			}
-		}
-	}
+  @Override
+  public void forget(RenderContext rc) {
+    synchronized (this.map) {
+      Data data = this.map.get(rc);
+      if (data != null) {
+        data.forget(rc.gl);
+        this.map.remove(rc);
+      }
+    }
+  }
 }

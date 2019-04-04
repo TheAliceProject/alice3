@@ -49,52 +49,54 @@ import edu.cmu.cs.dennisc.math.Dimension3;
  * @author Dennis Cosgrove
  */
 public final class Size {
-	private final Dimension3 internal;
+  private final Dimension3 internal;
 
-	private Size( Dimension3 internal ) {
-		this.internal = internal;
-	}
+  private Size(Dimension3 internal) {
+    this.internal = internal;
+  }
 
-	public Size( Number leftToRight, Number bottomToTop, Number frontToBack ) {
-		this( new Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
-	}
+  public Size(Number leftToRight, Number bottomToTop, Number frontToBack) {
+    this(new Dimension3(leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue()));
+  }
 
-	/* package-private */static Size createInstance( Dimension3 internal ) {
-		return internal != null ? new Size( internal ) : null;
-	}
+  /* package-private */
+  static Size createInstance(Dimension3 internal) {
+    return internal != null ? new Size(internal) : null;
+  }
 
-	/* package-private */Dimension3 getInternal() {
-		return this.internal;
-	}
+  /* package-private */Dimension3 getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static Dimension3 getInternal( Size size ) {
-		return size != null ? size.internal : null;
-	}
+  /* package-private */
+  static Dimension3 getInternal(Size size) {
+    return size != null ? size.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Size ) {
-			Size other = (Size)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Size) {
+      Size other = (Size) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 
-	public Double getLeftToRight() {
-		return this.internal.x;
-	}
+  public Double getLeftToRight() {
+    return this.internal.x;
+  }
 
-	public Double getBottomToTop() {
-		return this.internal.y;
-	}
+  public Double getBottomToTop() {
+    return this.internal.y;
+  }
 
-	public Double getFrontToBack() {
-		return this.internal.z;
-	}
+  public Double getFrontToBack() {
+    return this.internal.z;
+  }
 }

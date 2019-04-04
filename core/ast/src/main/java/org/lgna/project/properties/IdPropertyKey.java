@@ -52,17 +52,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IdPropertyKey extends PropertyKey<UUID> {
-	public IdPropertyKey( UUID id, String repr ) {
-		super( id, repr );
-	}
+  public IdPropertyKey(UUID id, String repr) {
+    super(id, repr);
+  }
 
-	@Override
-	protected UUID decodeValue( BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeId();
-	}
+  @Override
+  protected UUID decodeValue(BinaryDecoder binaryDecoder) {
+    return binaryDecoder.decodeId();
+  }
 
-	@Override
-	protected void encodeValue( BinaryEncoder binaryEncoder, UUID value ) {
-		binaryEncoder.encode( value );
-	}
+  @Override
+  protected void encodeValue(BinaryEncoder binaryEncoder, UUID value) {
+    binaryEncoder.encode(value);
+  }
 }

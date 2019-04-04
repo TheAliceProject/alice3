@@ -49,19 +49,19 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public class PostureValue implements PostureAttribute {
-	private Float m_value;
+  private Float m_value;
 
-	public PostureValue( Float value ) {
-		m_value = value;
-	}
+  public PostureValue(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.POSTURE;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.POSTURE;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

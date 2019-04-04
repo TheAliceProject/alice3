@@ -51,153 +51,153 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public class Sphere implements BinaryEncodableAndDecodable {
-	public final Point3 center = Point3.createNaN();
-	public double radius = Double.NaN;
+  public final Point3 center = Point3.createNaN();
+  public double radius = Double.NaN;
 
-	public Sphere() {
-		setNaN();
-	}
+  public Sphere() {
+    setNaN();
+  }
 
-	public Sphere( Point3 center, double radius ) {
-		this.center.set( center );
-		this.radius = radius;
-	}
+  public Sphere(Point3 center, double radius) {
+    this.center.set(center);
+    this.radius = radius;
+  }
 
-	public Sphere( Sphere other ) {
-		set( other );
-	}
+  public Sphere(Sphere other) {
+    set(other);
+  }
 
-	public Sphere( BinaryDecoder binaryDecoder ) {
-		decode( binaryDecoder );
-	}
+  public Sphere(BinaryDecoder binaryDecoder) {
+    decode(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.center );
-		binaryEncoder.encode( this.radius );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.center);
+    binaryEncoder.encode(this.radius);
+  }
 
-	public void decode( BinaryDecoder binaryDecoder ) {
-		Point3 p = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.center.set( p );
-		this.radius = binaryDecoder.decodeDouble();
-	}
+  public void decode(BinaryDecoder binaryDecoder) {
+    Point3 p = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    this.center.set(p);
+    this.radius = binaryDecoder.decodeDouble();
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( ( o != null ) && ( o instanceof Sphere ) ) {
-			Sphere s = (Sphere)o;
-			if( this.isNaN() ) {
-				return s.isNaN();
-			} else {
-				return this.center.equals( s.center ) && ( this.radius == s.radius );
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if ((o != null) && (o instanceof Sphere)) {
+      Sphere s = (Sphere) o;
+      if (this.isNaN()) {
+        return s.isNaN();
+      } else {
+        return this.center.equals(s.center) && (this.radius == s.radius);
+      }
+    } else {
+      return false;
+    }
+  }
 
-	public void setNaN() {
-		center.setNaN();
-		radius = Double.NaN;
-	}
+  public void setNaN() {
+    center.setNaN();
+    radius = Double.NaN;
+  }
 
-	public void set( Sphere other ) {
-		if( other != null ) {
-			this.center.set( other.center );
-			this.radius = other.radius;
-		} else {
-			setNaN();
-		}
-	}
+  public void set(Sphere other) {
+    if (other != null) {
+      this.center.set(other.center);
+      this.radius = other.radius;
+    } else {
+      setNaN();
+    }
+  }
 
-	public boolean isNaN() {
-		return this.center.isNaN() || Double.isNaN( radius );
-	}
+  public boolean isNaN() {
+    return this.center.isNaN() || Double.isNaN(radius);
+  }
 
-	public double getVolume() {
-		return ( 4.0 / 3.0 ) * Math.PI * radius * radius * radius;
-	}
+  public double getVolume() {
+    return (4.0 / 3.0) * Math.PI * radius * radius * radius;
+  }
 
-	/*
-	 * public void union( Sphere s ) {
-	 * if( s!=null && s.m_center!=null ) {
-	 * if( m_center!=null ) {
-	 * edu.cmu.cs.dennisc.math.Point3d diagonal = new edu.cmu.cs.dennisc.math.Point3d( m_center );
-	 * diagonal.sub( s.m_center );
-	 * diagonal.normalize();
-	 * edu.cmu.cs.dennisc.math.Point3d[] points = new edu.cmu.cs.dennisc.math.Point3d[4];
-	 * points[0] = MathUtilities.add( m_center, MathUtilities.multiply( diagonal, m_radius ) );
-	 * points[1] = MathUtilities.subtract( m_center, MathUtilities.multiply( diagonal, m_radius ) );
-	 * points[2] = MathUtilities.add( s.m_center, MathUtilities.multiply( diagonal, s.m_radius ) );
-	 * points[3] = MathUtilities.subtract( s.m_center, MathUtilities.multiply( diagonal, s.m_radius ) );
-	 * double maxDistanceSquared = 0;
-	 * int maxDistanceI = 0;
-	 * int maxDistanceJ = 1;
-	 * for( int i=0; i<4; i++ ) {
-	 * for( int j=i+1; j<4; j++ ) {
-	 * double d2 = MathUtilities.subtract( points[i], points[j] ).lengthSquared();
-	 * if( d2>maxDistanceSquared ) {
-	 * maxDistanceSquared = d2;
-	 * maxDistanceI = i;
-	 * maxDistanceJ = j;
-	 * }
-	 * }
-	 * }
-	 * m_center = MathUtilities.divide( MathUtilities.add( points[maxDistanceI], points[maxDistanceJ] ), 2 );
-	 * m_radius = Math.sqrt( maxDistanceSquared )/2.0;
-	 * } else {
-	 * m_center = s.getCenter();
-	 * m_radius = s.getRadius();
-	 * }
-	 * }
-	 * }
-	 * public void transform( edu.cmu.cs.dennisc.math.Matrix4d m ) {
-	 * if( m_center!=null && !Double.isNaN( m_radius ) ) {
-	 * //todo... account for scale
-	 * m_center.add( new edu.cmu.cs.dennisc.math.Point3d( m.right.w, m.up.w, m.backward.w ) );
-	 * }
-	 * }
-	 * 
-	 * public void scale( edu.cmu.cs.dennisc.math.Matrix3d s ) {
-	 * if( s!=null ) {
-	 * if( m_center!=null ) {
-	 * m_center = MathUtilities.multiply( s, m_center );
-	 * }
-	 * //Vector3 v = s.getScaledSpace();
-	 * //double scale = Math.max( Math.max( v.x, v.y ), v.z );
-	 * //m_radius *= scale;
-	 * m_radius *= s.getScale();
-	 * }
-	 * }
-	 */
-	//	public void transform( edu.cmu.cs.dennisc.math.Matrix4d m ) {
-	//		//todo?
-	//		m_center.x += m.translation.x;
-	//		m_center.y += m.translation.y;
-	//		m_center.z += m.translation.z;
-	//	}
+  /*
+   * public void union( Sphere s ) {
+   * if( s!=null && s.m_center!=null ) {
+   * if( m_center!=null ) {
+   * edu.cmu.cs.dennisc.math.Point3d diagonal = new edu.cmu.cs.dennisc.math.Point3d( m_center );
+   * diagonal.sub( s.m_center );
+   * diagonal.normalize();
+   * edu.cmu.cs.dennisc.math.Point3d[] points = new edu.cmu.cs.dennisc.math.Point3d[4];
+   * points[0] = MathUtilities.add( m_center, MathUtilities.multiply( diagonal, m_radius ) );
+   * points[1] = MathUtilities.subtract( m_center, MathUtilities.multiply( diagonal, m_radius ) );
+   * points[2] = MathUtilities.add( s.m_center, MathUtilities.multiply( diagonal, s.m_radius ) );
+   * points[3] = MathUtilities.subtract( s.m_center, MathUtilities.multiply( diagonal, s.m_radius ) );
+   * double maxDistanceSquared = 0;
+   * int maxDistanceI = 0;
+   * int maxDistanceJ = 1;
+   * for( int i=0; i<4; i++ ) {
+   * for( int j=i+1; j<4; j++ ) {
+   * double d2 = MathUtilities.subtract( points[i], points[j] ).lengthSquared();
+   * if( d2>maxDistanceSquared ) {
+   * maxDistanceSquared = d2;
+   * maxDistanceI = i;
+   * maxDistanceJ = j;
+   * }
+   * }
+   * }
+   * m_center = MathUtilities.divide( MathUtilities.add( points[maxDistanceI], points[maxDistanceJ] ), 2 );
+   * m_radius = Math.sqrt( maxDistanceSquared )/2.0;
+   * } else {
+   * m_center = s.getCenter();
+   * m_radius = s.getRadius();
+   * }
+   * }
+   * }
+   * public void transform( edu.cmu.cs.dennisc.math.Matrix4d m ) {
+   * if( m_center!=null && !Double.isNaN( m_radius ) ) {
+   * //todo... account for scale
+   * m_center.add( new edu.cmu.cs.dennisc.math.Point3d( m.right.w, m.up.w, m.backward.w ) );
+   * }
+   * }
+   *
+   * public void scale( edu.cmu.cs.dennisc.math.Matrix3d s ) {
+   * if( s!=null ) {
+   * if( m_center!=null ) {
+   * m_center = MathUtilities.multiply( s, m_center );
+   * }
+   * //Vector3 v = s.getScaledSpace();
+   * //double scale = Math.max( Math.max( v.x, v.y ), v.z );
+   * //m_radius *= scale;
+   * m_radius *= s.getScale();
+   * }
+   * }
+   */
+  //  public void transform( edu.cmu.cs.dennisc.math.Matrix4d m ) {
+  //    //todo?
+  //    m_center.x += m.translation.x;
+  //    m_center.y += m.translation.y;
+  //    m_center.z += m.translation.z;
+  //  }
 
-	public void scale( Matrix3x3 m ) {
-		//todo?
+  public void scale(Matrix3x3 m) {
+    //todo?
 
-		//todo: test
-		m.transform( this.center );
+    //todo: test
+    m.transform(this.center);
 
-		double xScaleSquared = Tuple3.calculateMagnitudeSquared( m.right.x, m.right.y, m.right.z );
-		double yScaleSquared = Tuple3.calculateMagnitudeSquared( m.up.x, m.up.y, m.up.z );
-		double zScaleSquared = Tuple3.calculateMagnitudeSquared( m.backward.x, m.backward.y, m.backward.z );
+    double xScaleSquared = Tuple3.calculateMagnitudeSquared(m.right.x, m.right.y, m.right.z);
+    double yScaleSquared = Tuple3.calculateMagnitudeSquared(m.up.x, m.up.y, m.up.z);
+    double zScaleSquared = Tuple3.calculateMagnitudeSquared(m.backward.x, m.backward.y, m.backward.z);
 
-		double scaleSquared = Math.max( xScaleSquared, Math.max( yScaleSquared, zScaleSquared ) );
+    double scaleSquared = Math.max(xScaleSquared, Math.max(yScaleSquared, zScaleSquared));
 
-		this.radius *= Math.sqrt( scaleSquared );
-	}
+    this.radius *= Math.sqrt(scaleSquared);
+  }
 
-	@Override
-	public String toString() {
-		return "edu.cmu.cs.dennisc.math.Sphere[radius=" + this.radius + ",center=" + this.center + "]";
-	}
+  @Override
+  public String toString() {
+    return "edu.cmu.cs.dennisc.math.Sphere[radius=" + this.radius + ",center=" + this.center + "]";
+  }
 }

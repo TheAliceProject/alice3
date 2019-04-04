@@ -46,11 +46,11 @@ package org.lgna.story;
  * @author dculyba
  */
 public class AsSeenByArgumentFactory {
-	protected AsSeenByArgumentFactory() {
-		throw new AssertionError();
-	}
+  protected AsSeenByArgumentFactory() {
+    throw new AssertionError();
+  }
 
-	public static AsSeenBy asSeenBy( SThing entity ) {
-		return new AsSeenBy( entity );
-	}
+  public static AsSeenBy asSeenBy(SThing entity) {
+    return new AsSeenBy(entity);
+  }
 }

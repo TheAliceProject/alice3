@@ -61,92 +61,92 @@ import java.text.NumberFormat;
  * @author Dennis Cosgrove
  */
 public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty, Resource> {
-	private static final NumberFormat DURATION_FORMAT = new DecimalFormat( "0.00" );
-	private final Label label = new Label();
-	private Resource prevResource;
-	private NameListener nameListener;
+  private static final NumberFormat DURATION_FORMAT = new DecimalFormat("0.00");
+  private final Label label = new Label();
+  private Resource prevResource;
+  private NameListener nameListener;
 
-	public ResourcePropertyView( AstI18nFactory factory, ResourceProperty property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-		this.addComponent( this.label );
-		this.refreshLater();
-	}
+  public ResourcePropertyView(AstI18nFactory factory, ResourceProperty property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+    this.addComponent(this.label);
+    this.refreshLater();
+  }
 
-	private NameListener getNameListener() {
-		if( this.nameListener != null ) {
-			//pass
-		} else {
-			this.nameListener = new NameListener() {
-				@Override
-				public void nameChanging( NameEvent nameEvent ) {
-				}
+  private NameListener getNameListener() {
+    if (this.nameListener != null) {
+      //pass
+    } else {
+      this.nameListener = new NameListener() {
+        @Override
+        public void nameChanging(NameEvent nameEvent) {
+        }
 
-				@Override
-				public void nameChanged( NameEvent nameEvent ) {
-					ResourcePropertyView.this.refreshLater();
-				}
-			};
-		}
-		return this.nameListener;
-	}
+        @Override
+        public void nameChanged(NameEvent nameEvent) {
+          ResourcePropertyView.this.refreshLater();
+        }
+      };
+    }
+    return this.nameListener;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		//refresh takes care of name listener
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    //refresh takes care of name listener
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.prevResource != null ) {
-			this.prevResource.removeNameListener( this.getNameListener() );
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.prevResource != null) {
+      this.prevResource.removeNameListener(this.getNameListener());
+    }
+    super.handleUndisplayable();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		if( this.prevResource != null ) {
-			this.prevResource.removeNameListener( this.getNameListener() );
-		}
-		Resource nextResource = getProperty().getValue();
-		StringBuffer sb = new StringBuffer();
-		if( nextResource != null ) {
-			sb.append( "<html>" );
-			sb.append( nextResource.getName() );
-			if( nextResource instanceof AudioResource ) {
-				AudioResource audioResource = (AudioResource)nextResource;
-				double duration = audioResource.getDuration();
-				if( Double.isNaN( duration ) ) {
-					//pass
-				} else {
-					sb.append( "<font color=\"gray\">" );
-					sb.append( "<i>" );
-					sb.append( " (" + DURATION_FORMAT.format( duration ) + "s) " );
-					sb.append( "</i>" );
-					sb.append( "</font>" );
-				}
-			} else if( nextResource instanceof ImageResource ) {
-				ImageResource imageResource = (ImageResource)nextResource;
-				int width = imageResource.getWidth();
-				int height = imageResource.getHeight();
-				if( ( width >= 0 ) && ( height >= 0 ) ) {
-					sb.append( "<font color=\"gray\">" );
-					sb.append( "<i>" );
-					sb.append( " (" + width + "x" + height + ") " );
-					sb.append( "</i>" );
-					sb.append( "</font>" );
-				}
-			}
-			sb.append( "</html>" );
-		} else {
-			sb.append( FormatterState.getInstance().getValue().getTextForNull() );
-		}
-		this.label.setText( sb.toString() );
-		if( nextResource != null ) {
-			nextResource.addNameListener( this.getNameListener() );
-		}
-		this.prevResource = nextResource;
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    if (this.prevResource != null) {
+      this.prevResource.removeNameListener(this.getNameListener());
+    }
+    Resource nextResource = getProperty().getValue();
+    StringBuffer sb = new StringBuffer();
+    if (nextResource != null) {
+      sb.append("<html>");
+      sb.append(nextResource.getName());
+      if (nextResource instanceof AudioResource) {
+        AudioResource audioResource = (AudioResource) nextResource;
+        double duration = audioResource.getDuration();
+        if (Double.isNaN(duration)) {
+          //pass
+        } else {
+          sb.append("<font color=\"gray\">");
+          sb.append("<i>");
+          sb.append(" (" + DURATION_FORMAT.format(duration) + "s) ");
+          sb.append("</i>");
+          sb.append("</font>");
+        }
+      } else if (nextResource instanceof ImageResource) {
+        ImageResource imageResource = (ImageResource) nextResource;
+        int width = imageResource.getWidth();
+        int height = imageResource.getHeight();
+        if ((width >= 0) && (height >= 0)) {
+          sb.append("<font color=\"gray\">");
+          sb.append("<i>");
+          sb.append(" (" + width + "x" + height + ") ");
+          sb.append("</i>");
+          sb.append("</font>");
+        }
+      }
+      sb.append("</html>");
+    } else {
+      sb.append(FormatterState.getInstance().getValue().getTextForNull());
+    }
+    this.label.setText(sb.toString());
+    if (nextResource != null) {
+      nextResource.addNameListener(this.getNameListener());
+    }
+    this.prevResource = nextResource;
+  }
 }

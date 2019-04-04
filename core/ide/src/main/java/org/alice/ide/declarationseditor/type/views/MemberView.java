@@ -53,10 +53,10 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class MemberView extends LineAxisPanel {
-	public MemberView( MenuModel menuModel ) {
-		PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
-		popupButton.setBorder( BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
-		this.addComponent( popupButton );
-		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-	}
+  public MemberView(MenuModel menuModel) {
+    PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
+    popupButton.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+    this.addComponent(popupButton);
+    this.addComponent(BoxUtilities.createHorizontalSliver(8));
+  }
 }

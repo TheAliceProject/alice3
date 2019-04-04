@@ -49,59 +49,59 @@ import java.nio.FloatBuffer;
  * @author Dennis Cosgrove
  */
 public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.render.SynchronousImageCapturer {
-	public SynchronousImageCapturer( RenderTargetImp rtImp ) {
-		this.rtImp = rtImp;
-	}
+  public SynchronousImageCapturer(RenderTargetImp rtImp) {
+    this.rtImp = rtImp;
+  }
 
-	@Override
-	public BufferedImage createBufferedImageForUseAsColorBuffer() {
-		return this.rtImp.createBufferedImageForUseAsColorBuffer();
-	}
+  @Override
+  public BufferedImage createBufferedImageForUseAsColorBuffer() {
+    return this.rtImp.createBufferedImageForUseAsColorBuffer();
+  }
 
-	@Override
-	public BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown ) {
-		return this.rtImp.getColorBuffer( rv, atIsUpsideDown );
-	}
+  @Override
+  public BufferedImage getColorBufferNotBotheringToFlipVertically(BufferedImage rv, boolean[] atIsUpsideDown) {
+    return this.rtImp.getColorBuffer(rv, atIsUpsideDown);
+  }
 
-	@Override
-	public BufferedImage getColorBuffer( BufferedImage rv ) {
-		return this.rtImp.getColorBuffer( rv, null );
-	}
+  @Override
+  public BufferedImage getColorBuffer(BufferedImage rv) {
+    return this.rtImp.getColorBuffer(rv, null);
+  }
 
-	@Override
-	public final BufferedImage getColorBuffer() {
-		return this.getColorBuffer( createBufferedImageForUseAsColorBuffer() );
-	}
+  @Override
+  public final BufferedImage getColorBuffer() {
+    return this.getColorBuffer(createBufferedImageForUseAsColorBuffer());
+  }
 
-	@Override
-	public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return this.rtImp.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-	}
+  @Override
+  public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+    return this.rtImp.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+  }
 
-	@Override
-	public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return this.rtImp.createFloatBufferForUseAsDepthBuffer();
-	}
+  @Override
+  public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+    return this.rtImp.createFloatBufferForUseAsDepthBuffer();
+  }
 
-	@Override
-	public FloatBuffer getDepthBuffer( FloatBuffer rv ) {
-		return this.rtImp.getDepthBuffer( rv );
-	}
+  @Override
+  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
+    return this.rtImp.getDepthBuffer(rv);
+  }
 
-	@Override
-	public final FloatBuffer getDepthBuffer() {
-		return this.getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
-	}
+  @Override
+  public final FloatBuffer getDepthBuffer() {
+    return this.getDepthBuffer(createFloatBufferForUseAsDepthBuffer());
+  }
 
-	@Override
-	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer ) {
-		return this.rtImp.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
-	}
+  @Override
+  public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer) {
+    return this.rtImp.getColorBufferWithTransparencyBasedOnDepthBuffer(rv, depthBuffer, null);
+  }
 
-	@Override
-	public final BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
-	}
+  @Override
+  public final BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
+    return getColorBufferWithTransparencyBasedOnDepthBuffer(createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer());
+  }
 
-	private final RenderTargetImp rtImp;
+  private final RenderTargetImp rtImp;
 }

@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class IntPreference extends Preference<Integer> {
-	public IntPreference( Integer defaultValue ) {
-		super( defaultValue );
-	}
+  public IntPreference(Integer defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected Integer getValue( Preferences utilPrefs, String key, Integer defaultValue ) {
-		return utilPrefs.getInt( key, defaultValue );
-	}
+  @Override
+  protected Integer getValue(Preferences utilPrefs, String key, Integer defaultValue) {
+    return utilPrefs.getInt(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, Integer nextValue ) {
-		utilPrefs.putInt( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, Integer nextValue) {
+    utilPrefs.putInt(key, nextValue);
+  }
 }

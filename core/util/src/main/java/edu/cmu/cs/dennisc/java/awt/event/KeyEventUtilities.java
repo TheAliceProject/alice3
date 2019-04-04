@@ -50,54 +50,54 @@ import java.awt.event.KeyEvent;
  * @author Dennis Cosgrove
  */
 public class KeyEventUtilities {
-	public static int getQuoteControlUnquoteKey() {
-		if( SystemUtilities.isMac() ) {
-			return KeyEvent.VK_ALT;
-		} else {
-			return KeyEvent.VK_CONTROL;
-		}
-	}
+  public static int getQuoteControlUnquoteKey() {
+    if (SystemUtilities.isMac()) {
+      return KeyEvent.VK_ALT;
+    } else {
+      return KeyEvent.VK_CONTROL;
+    }
+  }
 
-	public static int getQuoteAltUnquoteKey() {
-		if( SystemUtilities.isMac() ) {
-			return KeyEvent.VK_CONTROL;
-		} else {
-			return KeyEvent.VK_ALT;
-		}
-	}
+  public static int getQuoteAltUnquoteKey() {
+    if (SystemUtilities.isMac()) {
+      return KeyEvent.VK_CONTROL;
+    } else {
+      return KeyEvent.VK_ALT;
+    }
+  }
 
-	public static KeyEvent performPlatformFilter( KeyEvent original ) {
-		KeyEvent rv;
-		if( SystemUtilities.isMac() ) {
-			int keyCode = original.getKeyCode();
-			switch( keyCode ) {
-			case KeyEvent.VK_CONTROL:
-			case KeyEvent.VK_ALT:
-			case KeyEvent.VK_META:
-				rv = null;
-				break;
-			default:
-				rv = original;
-			}
-			if( rv != null ) {
-				//pass
-			} else {
-				switch( keyCode ) {
-				case KeyEvent.VK_CONTROL:
-					keyCode = KeyEvent.VK_ALT;
-					break;
-				case KeyEvent.VK_ALT:
-				case KeyEvent.VK_META:
-					keyCode = KeyEvent.VK_CONTROL;
-					break;
-				}
-				int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
-				int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
-				rv = new KeyEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
-			}
-		} else {
-			rv = original;
-		}
-		return rv;
-	}
+  public static KeyEvent performPlatformFilter(KeyEvent original) {
+    KeyEvent rv;
+    if (SystemUtilities.isMac()) {
+      int keyCode = original.getKeyCode();
+      switch (keyCode) {
+      case KeyEvent.VK_CONTROL:
+      case KeyEvent.VK_ALT:
+      case KeyEvent.VK_META:
+        rv = null;
+        break;
+      default:
+        rv = original;
+      }
+      if (rv != null) {
+        //pass
+      } else {
+        switch (keyCode) {
+        case KeyEvent.VK_CONTROL:
+          keyCode = KeyEvent.VK_ALT;
+          break;
+        case KeyEvent.VK_ALT:
+        case KeyEvent.VK_META:
+          keyCode = KeyEvent.VK_CONTROL;
+          break;
+        }
+        int completeModifiers = InputEventUtilities.getCompleteModifiers(original);
+        int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter(completeModifiers);
+        rv = new KeyEvent(original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar());
+      }
+    } else {
+      rv = original;
+    }
+    return rv;
+  }
 }

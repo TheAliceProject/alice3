@@ -58,72 +58,72 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class AbstractExpressionView<E extends Expression> extends ExpressionLikeSubstance {
-	private final AstI18nFactory factory;
-	private final E expression;
+  private final AstI18nFactory factory;
+  private final E expression;
 
-	public AbstractExpressionView( AstI18nFactory factory, E expression ) {
-		super( null, expression != null ? expression.getType() == JavaType.VOID_TYPE : false );
-		this.factory = factory;
-		this.expression = expression;
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( expression ) );
-	}
+  public AbstractExpressionView(AstI18nFactory factory, E expression) {
+    super(null, expression != null ? expression.getType() == JavaType.VOID_TYPE : false);
+    this.factory = factory;
+    this.expression = expression;
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(expression));
+  }
 
-	public E getExpression() {
-		return this.expression;
-	}
+  public E getExpression() {
+    return this.expression;
+  }
 
-	@Override
-	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		Paint validPaint = super.getBackgroundPaint( x, y, width, height );
-		if( ( this.expression != null ) && this.expression.isValid() ) {
-			return validPaint;
-		} else {
-			return this.factory.getInvalidExpressionPaint( validPaint, x, y, width, height );
-		}
-	}
+  @Override
+  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
+    Paint validPaint = super.getBackgroundPaint(x, y, width, height);
+    if ((this.expression != null) && this.expression.isValid()) {
+      return validPaint;
+    } else {
+      return this.factory.getInvalidExpressionPaint(validPaint, x, y, width, height);
+    }
+  }
 
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression != null ) {
-			if( AstUtilities.isKeywordExpression( expression ) ) {
-				return false;
-			} else {
-				if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
-					return false;
-				} else {
-					return super.isExpressionTypeFeedbackDesired();
-				}
-			}
-		} else {
-			return true;
-		}
-	}
+  @Override
+  protected boolean isExpressionTypeFeedbackDesired() {
+    if (this.expression != null) {
+      if (AstUtilities.isKeywordExpression(expression)) {
+        return false;
+      } else {
+        if (isExpressionTypeFeedbackSurpressedBasedOnParentClass(this.expression)) {
+          return false;
+        } else {
+          return super.isExpressionTypeFeedbackDesired();
+        }
+      }
+    } else {
+      return true;
+    }
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getExpressionType() {
-		if( this.expression != null ) {
-			AbstractType<?, ?, ?> rv = this.expression.getType();
-			return rv;
-		} else {
-			return JavaType.OBJECT_TYPE;
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getExpressionType() {
+    if (this.expression != null) {
+      AbstractType<?, ?, ?> rv = this.expression.getType();
+      return rv;
+    } else {
+      return JavaType.OBJECT_TYPE;
+    }
+  }
 
-	@Override
-	protected int getInsetTop() {
-		if( ( this.expression instanceof InfixExpression ) || ( this.expression instanceof LogicalComplement ) ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
+  @Override
+  protected int getInsetTop() {
+    if ((this.expression instanceof InfixExpression) || (this.expression instanceof LogicalComplement)) {
+      return 0;
+    } else {
+      return super.getInsetTop();
+    }
+  }
 
-	@Override
-	protected int getInsetBottom() {
-		if( ( this.expression instanceof InfixExpression ) || ( this.expression instanceof LogicalComplement ) ) {
-			return 0;
-		} else {
-			return super.getInsetTop();
-		}
-	}
+  @Override
+  protected int getInsetBottom() {
+    if ((this.expression instanceof InfixExpression) || (this.expression instanceof LogicalComplement)) {
+      return 0;
+    } else {
+      return super.getInsetTop();
+    }
+  }
 }

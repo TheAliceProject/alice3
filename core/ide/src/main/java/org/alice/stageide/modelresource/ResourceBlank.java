@@ -52,16 +52,16 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ResourceBlank extends CascadeBlank<ResourceNode> {
-	private final ResourceGalleryDragModel dragModel;
+  private final ResourceGalleryDragModel dragModel;
 
-	ResourceBlank( ResourceGalleryDragModel dragModel ) {
-		this.dragModel = dragModel;
-	}
+  ResourceBlank(ResourceGalleryDragModel dragModel) {
+    this.dragModel = dragModel;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<ResourceNode> blankNode ) {
-		for( ResourceNode child : dragModel.getNodeChildren() ) {
-			children.add( child.getAddFieldBlankChild() );
-		}
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<ResourceNode> blankNode) {
+    for (ResourceNode child : dragModel.getNodeChildren()) {
+      children.add(child.getAddFieldBlankChild());
+    }
+  }
 }

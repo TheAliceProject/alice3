@@ -6,16 +6,16 @@ import org.lgna.story.implementation.TransportImp;
 
 public class DynamicAircraftResource extends DynamicResource<TransportImp, STransport> implements AircraftResource {
 
-	public DynamicAircraftResource(String modelName, String resourceName) {
-		super(modelName, resourceName);
-	}
+  public DynamicAircraftResource(String modelName, String resourceName) {
+    super(modelName, resourceName);
+  }
 
-	public DynamicAircraftResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
-		super(modelManifest, modelVariant);
-	}
+  public DynamicAircraftResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
+    super(modelManifest, modelVariant);
+  }
 
-	@Override
-	public TransportImp createImplementation(STransport abstraction) {
-		return new TransportImp(abstraction, this.getImplementationAndVisualFactory());
-	}
+  @Override
+  public TransportImp createImplementation(STransport abstraction) {
+    return new TransportImp(abstraction, this.getImplementationAndVisualFactory());
+  }
 }

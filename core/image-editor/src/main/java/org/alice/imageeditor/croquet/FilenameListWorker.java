@@ -57,68 +57,68 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 /* package-private */class FilenameListWorker extends WorkerWithProgress<File[], File> {
-	private static final FileFilter PNG_FILE_FILTER = FileUtilities.createFileWithExtensionFilter( ".png" );
-	private static final FileFilter DIRECTORY_FILTER = FileUtilities.createDirectoryFilter();
+  private static final FileFilter PNG_FILE_FILTER = FileUtilities.createFileWithExtensionFilter(".png");
+  private static final FileFilter DIRECTORY_FILTER = FileUtilities.createDirectoryFilter();
 
-	private final FilenameComboBoxModel filenameComboBoxModel;
-	private final File rootDirectory;
+  private final FilenameComboBoxModel filenameComboBoxModel;
+  private final File rootDirectory;
 
-	public FilenameListWorker( FilenameComboBoxModel filenameComboBoxModel, File rootDirectory ) {
-		this.filenameComboBoxModel = filenameComboBoxModel;
-		this.rootDirectory = rootDirectory;
-	}
+  public FilenameListWorker(FilenameComboBoxModel filenameComboBoxModel, File rootDirectory) {
+    this.filenameComboBoxModel = filenameComboBoxModel;
+    this.rootDirectory = rootDirectory;
+  }
 
-	public File getRootDirectory() {
-		return this.rootDirectory;
-	}
+  public File getRootDirectory() {
+    return this.rootDirectory;
+  }
 
-	private void appendDescendants( List<File> descendants, File dir ) {
-		if( this.isCancelled() ) {
-			//pass
-		} else {
-			File[] files = dir.listFiles( PNG_FILE_FILTER );
-			if( ( files != null ) && ( files.length > 0 ) ) {
-				Collections.addAll( descendants, files );
-				this.publish( files );
-				boolean IS_YIELD_BEHAVING_THE_WAY_I_EXPECT = false;
-				if( IS_YIELD_BEHAVING_THE_WAY_I_EXPECT ) {
-					Thread.yield();
-				} else {
-					ThreadUtilities.sleep( 10 );
-				}
-			}
-			File[] dirs = dir.listFiles( DIRECTORY_FILTER );
-			if( dirs != null ) {
-				for( File childDir : dirs ) {
-					this.appendDescendants( descendants, childDir );
-				}
-			}
-		}
-	}
+  private void appendDescendants(List<File> descendants, File dir) {
+    if (this.isCancelled()) {
+      //pass
+    } else {
+      File[] files = dir.listFiles(PNG_FILE_FILTER);
+      if ((files != null) && (files.length > 0)) {
+        Collections.addAll(descendants, files);
+        this.publish(files);
+        boolean IS_YIELD_BEHAVING_THE_WAY_I_EXPECT = false;
+        if (IS_YIELD_BEHAVING_THE_WAY_I_EXPECT) {
+          Thread.yield();
+        } else {
+          ThreadUtilities.sleep(10);
+        }
+      }
+      File[] dirs = dir.listFiles(DIRECTORY_FILTER);
+      if (dirs != null) {
+        for (File childDir : dirs) {
+          this.appendDescendants(descendants, childDir);
+        }
+      }
+    }
+  }
 
-	@Override
-	protected File[] do_onBackgroundThread() throws Exception {
-		//Thread.currentThread().setPriority( Thread.MIN_PRIORITY );
-		if( this.rootDirectory.isDirectory() ) {
-			List<File> descendants = Lists.newLinkedList();
-			this.appendDescendants( descendants, this.rootDirectory );
-			return ArrayUtilities.createArray( descendants, File.class );
-		} else {
-			return new File[ 0 ];
-		}
-	}
+  @Override
+  protected File[] do_onBackgroundThread() throws Exception {
+    //Thread.currentThread().setPriority( Thread.MIN_PRIORITY );
+    if (this.rootDirectory.isDirectory()) {
+      List<File> descendants = Lists.newLinkedList();
+      this.appendDescendants(descendants, this.rootDirectory);
+      return ArrayUtilities.createArray(descendants, File.class);
+    } else {
+      return new File[0];
+    }
+  }
 
-	@Override
-	protected void handleProcess_onEventDispatchThread( List<File> files ) {
-		synchronized( this.filenameComboBoxModel ) {
-			this.filenameComboBoxModel.addAll( files );
-		}
-	}
+  @Override
+  protected void handleProcess_onEventDispatchThread(List<File> files) {
+    synchronized (this.filenameComboBoxModel) {
+      this.filenameComboBoxModel.addAll(files);
+    }
+  }
 
-	@Override
-	protected void handleDone_onEventDispatchThread( File[] value ) {
-		synchronized( this.filenameComboBoxModel ) {
-			this.filenameComboBoxModel.done( value );
-		}
-	}
+  @Override
+  protected void handleDone_onEventDispatchThread(File[] value) {
+    synchronized (this.filenameComboBoxModel) {
+      this.filenameComboBoxModel.done(value);
+    }
+  }
 }

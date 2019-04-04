@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.animation.Animator;
 
 public interface AnimatorDependentManipulator {
 
-	public void setAnimator( Animator animator );
+  public void setAnimator(Animator animator);
 
-	public Animator getAnimator();
+  public Animator getAnimator();
 
 }

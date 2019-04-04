@@ -57,57 +57,57 @@ import java.util.zip.ZipInputStream;
  * @author Dennis Cosgrove
  */
 public class ZipTreeUtilities {
-	public static DirectoryZipTreeNode createTreeNode( ZipInputStream zis, boolean isDataExtractionDesired ) throws IOException {
-		Map<String, DirectoryZipTreeNode> map = Maps.newHashMap();
-		DirectoryZipTreeNode rv = new DirectoryZipTreeNode( null );
-		map.put( "", rv );
-		ZipEntry zipEntry;
-		while( ( zipEntry = zis.getNextEntry() ) != null ) {
-			String name = zipEntry.getName();
-			ZipTreeNode zipTreeNode;
-			if( zipEntry.isDirectory() ) {
-				DirectoryZipTreeNode directoryZipTreeNode = new DirectoryZipTreeNode( name );
-				map.put( name, directoryZipTreeNode );
-				zipTreeNode = directoryZipTreeNode;
-			} else {
-				byte[] data;
-				if( isDataExtractionDesired ) {
-					data = ZipUtilities.extractBytes( zis, zipEntry );
-				} else {
-					data = null;
-				}
+  public static DirectoryZipTreeNode createTreeNode(ZipInputStream zis, boolean isDataExtractionDesired) throws IOException {
+    Map<String, DirectoryZipTreeNode> map = Maps.newHashMap();
+    DirectoryZipTreeNode rv = new DirectoryZipTreeNode(null);
+    map.put("", rv);
+    ZipEntry zipEntry;
+    while ((zipEntry = zis.getNextEntry()) != null) {
+      String name = zipEntry.getName();
+      ZipTreeNode zipTreeNode;
+      if (zipEntry.isDirectory()) {
+        DirectoryZipTreeNode directoryZipTreeNode = new DirectoryZipTreeNode(name);
+        map.put(name, directoryZipTreeNode);
+        zipTreeNode = directoryZipTreeNode;
+      } else {
+        byte[] data;
+        if (isDataExtractionDesired) {
+          data = ZipUtilities.extractBytes(zis, zipEntry);
+        } else {
+          data = null;
+        }
 
-				zipTreeNode = new FileZipTreeNode( name, data );
-			}
-			String parentName;
-			int index = name.lastIndexOf( '/', name.length() - 2 );
-			if( index != -1 ) {
-				parentName = name.substring( 0, index + 1 );
-			} else {
-				parentName = "";
-			}
-			DirectoryZipTreeNode parent = map.get( parentName );
-			assert parent != null : parentName;
-			zipTreeNode.setParent( parent );
-		}
-		return rv;
-	}
+        zipTreeNode = new FileZipTreeNode(name, data);
+      }
+      String parentName;
+      int index = name.lastIndexOf('/', name.length() - 2);
+      if (index != -1) {
+        parentName = name.substring(0, index + 1);
+      } else {
+        parentName = "";
+      }
+      DirectoryZipTreeNode parent = map.get(parentName);
+      assert parent != null : parentName;
+      zipTreeNode.setParent(parent);
+    }
+    return rv;
+  }
 
-	public static DirectoryZipTreeNode createTreeNode( InputStream is, boolean isDataExtractionDesired ) throws IOException {
-		ZipInputStream zis;
-		if( is instanceof ZipInputStream ) {
-			zis = (ZipInputStream)is;
-		} else {
-			zis = new ZipInputStream( is );
-		}
-		return createTreeNode( zis, isDataExtractionDesired );
-	}
+  public static DirectoryZipTreeNode createTreeNode(InputStream is, boolean isDataExtractionDesired) throws IOException {
+    ZipInputStream zis;
+    if (is instanceof ZipInputStream) {
+      zis = (ZipInputStream) is;
+    } else {
+      zis = new ZipInputStream(is);
+    }
+    return createTreeNode(zis, isDataExtractionDesired);
+  }
 
-	public static DirectoryZipTreeNode createTreeNode( File file, boolean isDataExtractionDesired ) throws IOException {
-		return createTreeNode( new FileInputStream( file ), isDataExtractionDesired );
-	}
+  public static DirectoryZipTreeNode createTreeNode(File file, boolean isDataExtractionDesired) throws IOException {
+    return createTreeNode(new FileInputStream(file), isDataExtractionDesired);
+  }
 
-	public static DirectoryZipTreeNode createTreeNode( String path, boolean isDataExtractionDesired ) throws IOException {
-		return createTreeNode( new File( path ), isDataExtractionDesired );
-	}
+  public static DirectoryZipTreeNode createTreeNode(String path, boolean isDataExtractionDesired) throws IOException {
+    return createTreeNode(new File(path), isDataExtractionDesired);
+  }
 }

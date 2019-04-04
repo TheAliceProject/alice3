@@ -50,11 +50,11 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class FFmpegProcessBuilderUtilities {
-	public static ProcessBuilder createFFmpegProcessBuilder( String... args ) {
-		return new ProcessBuilder( ArrayUtilities.concat( String.class, FFmpegProcess.getArchitectureSpecificCommand(), args ) );
-	}
+  public static ProcessBuilder createFFmpegProcessBuilder(String... args) {
+    return new ProcessBuilder(ArrayUtilities.concat(String.class, FFmpegProcess.getArchitectureSpecificCommand(), args));
+  }
 
-	public static ProcessBuilder createFFmpegProcessBuilder( List<String> args ) {
-		return createFFmpegProcessBuilder( ArrayUtilities.createArray( args, String.class ) );
-	}
+  public static ProcessBuilder createFFmpegProcessBuilder(List<String> args) {
+    return createFFmpegProcessBuilder(ArrayUtilities.createArray(args, String.class));
+  }
 }

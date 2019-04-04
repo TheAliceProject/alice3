@@ -61,58 +61,58 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OtherTypesMenuModel extends CascadeMenuModel<AbstractType> {
-	private static final boolean IS_SCENE_TYPE_DESIRED = false;
+  private static final boolean IS_SCENE_TYPE_DESIRED = false;
 
-	private static class SingletonHolder {
-		private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
-	}
+  private static class SingletonHolder {
+    private static OtherTypesMenuModel instance = new OtherTypesMenuModel();
+  }
 
-	public static OtherTypesMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static OtherTypesMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private OtherTypesMenuModel() {
-		super( UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
-	}
+  private OtherTypesMenuModel() {
+    super(UUID.fromString("909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0"));
+  }
 
-	private NamedUserType getSceneType() {
-		Project project = ProjectStack.peekProject();
-		if( project != null ) {
-			return StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
-		} else {
-			return null;
-		}
-	}
+  private NamedUserType getSceneType() {
+    Project project = ProjectStack.peekProject();
+    if (project != null) {
+      return StoryApiSpecificAstUtilities.getSceneTypeFromProject(project);
+    } else {
+      return null;
+    }
+  }
 
-	public boolean isEmpty() {
-		if( IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0 ) {
-			return false;
-		} else {
-			if( IS_SCENE_TYPE_DESIRED ) {
-				return this.getSceneType() == null;
-			} else {
-				return true;
-			}
-		}
-	}
+  public boolean isEmpty() {
+    if (IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0) {
+      return false;
+    } else {
+      if (IS_SCENE_TYPE_DESIRED) {
+        return this.getSceneType() == null;
+      } else {
+        return true;
+      }
+    }
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<AbstractType> blankNode ) {
-		if( IS_SCENE_TYPE_DESIRED ) {
-			NamedUserType sceneType = this.getSceneType();
-			if( sceneType != null ) {
-				blankChildren.add( TypeFillIn.getInstance( sceneType ) );
-				blankChildren.add( CascadeLineSeparator.getInstance() );
-			}
-		}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<AbstractType> blankNode) {
+    if (IS_SCENE_TYPE_DESIRED) {
+      NamedUserType sceneType = this.getSceneType();
+      if (sceneType != null) {
+        blankChildren.add(TypeFillIn.getInstance(sceneType));
+        blankChildren.add(CascadeLineSeparator.getInstance());
+      }
+    }
 
-		List<JavaType> otherTypes = IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
-		for( JavaType otherType : otherTypes ) {
-			if( otherType != null ) {
-				blankChildren.add( TypeFillIn.getInstance( otherType ) );
-			} else {
-				blankChildren.add( CascadeLineSeparator.getInstance() );
-			}
-		}
-	}
+    List<JavaType> otherTypes = IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
+    for (JavaType otherType : otherTypes) {
+      if (otherType != null) {
+        blankChildren.add(TypeFillIn.getInstance(otherType));
+      } else {
+        blankChildren.add(CascadeLineSeparator.getInstance());
+      }
+    }
+  }
 }

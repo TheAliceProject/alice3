@@ -51,45 +51,45 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppender {
-	public UserLambda() {
-	}
+  public UserLambda() {
+  }
 
-	public UserLambda( AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-	}
+  public UserLambda(AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body) {
+    super(returnType, requiredParameters, body);
+  }
 
-	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
+  public UserLambda(Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body) {
+    this(JavaType.getInstance(returnCls), requiredParameters, body);
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
+  @Override
+  public boolean isAbstract() {
+    return false;
+  }
 
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
+  @Override
+  public boolean isFinal() {
+    return false;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendLambda( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendLambda(this);
+  }
 
-	@Override
-	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		// The VM evaluates lambda invoaction in a different way then other methods.
-		throw new RuntimeException();
-	}
+  @Override
+  public Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments) {
+    // The VM evaluates lambda invoaction in a different way then other methods.
+    throw new RuntimeException();
+  }
 }

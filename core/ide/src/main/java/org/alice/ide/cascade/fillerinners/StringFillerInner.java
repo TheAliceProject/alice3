@@ -55,21 +55,21 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class StringFillerInner extends ExpressionFillerInner {
-	public static String[] getLiterals() {
-		return new String[] { "hello" };
-	}
+  public static String[] getLiterals() {
+    return new String[] {"hello"};
+  }
 
-	public StringFillerInner() {
-		super( String.class );
-	}
+  public StringFillerInner() {
+    super(String.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		String[] literals = getLiterals();
-		for( String s : literals ) {
-			items.add( StringLiteralFillIn.getInstance( s ) );
-		}
-		items.add( CascadeLineSeparator.getInstance() );
-		items.add( StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    String[] literals = getLiterals();
+    for (String s : literals) {
+      items.add(StringLiteralFillIn.getInstance(s));
+    }
+    items.add(CascadeLineSeparator.getInstance());
+    items.add(StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+  }
 }

@@ -53,30 +53,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclarationsEditorComposite extends SimpleComposite<TypeEditor> {
-	public DeclarationsEditorComposite() {
-		super( UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
-		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
-		this.registerTabState( this.tabState );
-	}
+  public DeclarationsEditorComposite() {
+    super(UUID.fromString("bdf8f46f-1c77-4e01-83d1-952cbf63504e"));
+    this.backwardForwardComposite = this.registerSubComposite(new BackwardForwardComposite());
+    this.registerTabState(this.tabState);
+  }
 
-	public DeclarationMenu getDeclarationMenu() {
-		return this.declarationMenu;
-	}
+  public DeclarationMenu getDeclarationMenu() {
+    return this.declarationMenu;
+  }
 
-	public DeclarationTabState getTabState() {
-		return this.tabState;
-	}
+  public DeclarationTabState getTabState() {
+    return this.tabState;
+  }
 
-	public Composite<?> getControlsComposite() {
-		return this.backwardForwardComposite;
-	}
+  public Composite<?> getControlsComposite() {
+    return this.backwardForwardComposite;
+  }
 
-	@Override
-	protected TypeEditor createView() {
-		return new TypeEditor( this );
-	}
+  @Override
+  protected TypeEditor createView() {
+    return new TypeEditor(this);
+  }
 
-	private final DeclarationMenu declarationMenu = new DeclarationMenu();
-	private final DeclarationTabState tabState = new DeclarationTabState();
-	private final BackwardForwardComposite backwardForwardComposite;
+  private final DeclarationMenu declarationMenu = new DeclarationMenu();
+  private final DeclarationTabState tabState = new DeclarationTabState();
+  private final BackwardForwardComposite backwardForwardComposite;
 }

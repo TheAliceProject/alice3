@@ -44,24 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenHairHatClassicStrawUp implements FemaleTeenHair {
-	RED_PINK_RIBBON,
-	RED_BLACK_RIBBON,
-	BLACK_PINK_RIBBON,
-	BLACK_BLACK_RIBBON,
-	BROWN_PINK_RIBBON,
-	BROWN_BLACK_RIBBON,
-	BLOND_PINK_RIBBON,
-	BLOND_BLACK_RIBBON;
+  RED_PINK_RIBBON, RED_BLACK_RIBBON, BLACK_PINK_RIBBON, BLACK_BLACK_RIBBON, BROWN_PINK_RIBBON, BROWN_BLACK_RIBBON, BLOND_PINK_RIBBON, BLOND_BLACK_RIBBON;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHat() {
+    return true;
+  }
 }

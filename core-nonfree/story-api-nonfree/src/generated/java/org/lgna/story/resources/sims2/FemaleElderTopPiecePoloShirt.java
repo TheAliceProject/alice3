@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderTopPiecePoloShirt implements FemaleElderTopPiece {
-	BABYBLUE,
-	BLACK,
-	BLUE,
-	GREEN,
-	PINK,
-	PURPLE,
-	RED;
+  BABYBLUE, BLACK, BLUE, GREEN, PINK, PURPLE, RED
 
 }

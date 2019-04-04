@@ -62,57 +62,57 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
-	private static Map<ArgumentListProperty<JavaKeyedArgument>, KeyedBlank> map = Maps.newHashMap();
+  private static Map<ArgumentListProperty<JavaKeyedArgument>, KeyedBlank> map = Maps.newHashMap();
 
-	public static synchronized KeyedBlank getInstance( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
-		KeyedBlank rv = map.get( argumentListProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new KeyedBlank( argumentListProperty );
-			map.put( argumentListProperty, rv );
-		}
-		return rv;
-	}
+  public static synchronized KeyedBlank getInstance(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
+    KeyedBlank rv = map.get(argumentListProperty);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new KeyedBlank(argumentListProperty);
+      map.put(argumentListProperty, rv);
+    }
+    return rv;
+  }
 
-	private static boolean isValidMethod( Method mthd, AbstractType<?, ?, ?> valueType ) {
-		int modifiers = mthd.getModifiers();
-		if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
-			return valueType.isAssignableFrom( mthd.getReturnType() );
-		} else {
-			return false;
-		}
-	}
+  private static boolean isValidMethod(Method mthd, AbstractType<?, ?, ?> valueType) {
+    int modifiers = mthd.getModifiers();
+    if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
+      return valueType.isAssignableFrom(mthd.getReturnType());
+    } else {
+      return false;
+    }
+  }
 
-	private final ArgumentListProperty<JavaKeyedArgument> argumentListProperty;
+  private final ArgumentListProperty<JavaKeyedArgument> argumentListProperty;
 
-	private KeyedBlank( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
-		this.argumentListProperty = argumentListProperty;
-	}
+  private KeyedBlank(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
+    this.argumentListProperty = argumentListProperty;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<JavaKeyedArgument> blankNode ) {
-		AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
-		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
-		if( keywordFactoryType != null ) {
-			Class<?> cls = ( (JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
-			for( Method mthd : cls.getMethods() ) {
-				if( isValidMethod( mthd, valueType ) ) {
-					JavaMethod keyMethod = JavaMethod.getInstance( mthd );
-					boolean isAlreadyFilledIn = false;
-					for( JavaKeyedArgument keyedArgument : this.argumentListProperty ) {
-						if( keyedArgument.getKeyMethod() == keyMethod ) {
-							isAlreadyFilledIn = true;
-							break;
-						}
-					}
-					if( isAlreadyFilledIn ) {
-						//pass
-					} else {
-						children.add( JavaKeyedArgumentFillIn.getInstance( JavaMethod.getInstance( mthd ) ) );
-					}
-				}
-			}
-		}
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<JavaKeyedArgument> blankNode) {
+    AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
+    AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
+    if (keywordFactoryType != null) {
+      Class<?> cls = ((JavaType) keywordFactoryType).getClassReflectionProxy().getReification();
+      for (Method mthd : cls.getMethods()) {
+        if (isValidMethod(mthd, valueType)) {
+          JavaMethod keyMethod = JavaMethod.getInstance(mthd);
+          boolean isAlreadyFilledIn = false;
+          for (JavaKeyedArgument keyedArgument : this.argumentListProperty) {
+            if (keyedArgument.getKeyMethod() == keyMethod) {
+              isAlreadyFilledIn = true;
+              break;
+            }
+          }
+          if (isAlreadyFilledIn) {
+            //pass
+          } else {
+            children.add(JavaKeyedArgumentFillIn.getInstance(JavaMethod.getInstance(mthd)));
+          }
+        }
+      }
+    }
+  }
 }

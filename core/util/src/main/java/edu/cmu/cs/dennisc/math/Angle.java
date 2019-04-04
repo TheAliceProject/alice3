@@ -49,28 +49,28 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
  * @author Dennis Cosgrove
  */
 public interface Angle extends BinaryEncodableAndDecodable {
-	@Deprecated
-	public void decode( BinaryDecoder binaryDecoder );
+  @Deprecated
+  public void decode(BinaryDecoder binaryDecoder);
 
-	public boolean isNaN();
+  public boolean isNaN();
 
-	public void setNaN();
+  public void setNaN();
 
-	public double getAsRadians();
+  public double getAsRadians();
 
-	public double getAsDegrees();
+  public double getAsDegrees();
 
-	public double getAsRevolutions();
+  public double getAsRevolutions();
 
-	public void setAsRadians( double radians );
+  public void setAsRadians(double radians);
 
-	public void setAsDegrees( double degrees );
+  public void setAsDegrees(double degrees);
 
-	public void setAsRevolutions( double revolutions );
+  public void setAsRevolutions(double revolutions);
 
-	public Angle createCopy();
+  public Angle createCopy();
 
-	public void set( Angle other );
+  public void set(Angle other);
 
-	public void setToInterpolation( Angle v0, Angle v1, double portion );
+  public void setToInterpolation(Angle v0, Angle v1, double portion);
 }

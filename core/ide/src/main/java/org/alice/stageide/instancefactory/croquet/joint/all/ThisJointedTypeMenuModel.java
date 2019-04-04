@@ -60,48 +60,48 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static MapToMap<AbstractType<?, ?, ?>, Integer, ThisJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractType<?, ?, ?>, Integer, ThisJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
 
-	public static ThisJointedTypeMenuModel getInstance( AbstractType<?, ?, ?> value ) {
-		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( value );
-		return getInstance( value, jointedTypeInfos, 0 );
-	}
+  public static ThisJointedTypeMenuModel getInstance(AbstractType<?, ?, ?> value) {
+    List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(value);
+    return getInstance(value, jointedTypeInfos, 0);
+  }
 
-	private static ThisJointedTypeMenuModel getInstance( AbstractType<?, ?, ?> value, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		//todo
-		synchronized( mapToMap ) {
-			ThisJointedTypeMenuModel rv = mapToMap.get( value, index );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisJointedTypeMenuModel( value, jointedTypeInfos, index );
-				mapToMap.put( value, index, rv );
-			}
-			return rv;
-		}
-	}
+  private static ThisJointedTypeMenuModel getInstance(AbstractType<?, ?, ?> value, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    //todo
+    synchronized (mapToMap) {
+      ThisJointedTypeMenuModel rv = mapToMap.get(value, index);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ThisJointedTypeMenuModel(value, jointedTypeInfos, index);
+        mapToMap.put(value, index, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private ThisJointedTypeMenuModel( AbstractType<?, ?, ?> type, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), jointedTypeInfos, index );
-		this.type = type;
-	}
+  private ThisJointedTypeMenuModel(AbstractType<?, ?, ?> type, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    super(UUID.fromString("f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c"), jointedTypeInfos, index);
+    this.type = type;
+  }
 
-	@Override
-	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		return getInstance( this.type, jointedTypeInfos, index );
-	}
+  @Override
+  protected JointedTypeMenuModel getInstance(List<JointedTypeInfo> jointedTypeInfos, int index) {
+    return getInstance(this.type, jointedTypeInfos, index);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
-		//todo: use this.type?
-		InstanceFactory instanceFactory = ThisMethodInvocationFactory.getInstance( method );
-		if( instanceFactory != null ) {
-			return InstanceFactoryFillIn.getInstance( instanceFactory );
-		} else {
-			Logger.info( "no instance factory for", method );
-			return null;
-		}
-	}
+  @Override
+  protected CascadeFillIn<InstanceFactory, ?> getFillIn(AbstractMethod method) {
+    //todo: use this.type?
+    InstanceFactory instanceFactory = ThisMethodInvocationFactory.getInstance(method);
+    if (instanceFactory != null) {
+      return InstanceFactoryFillIn.getInstance(instanceFactory);
+    } else {
+      Logger.info("no instance factory for", method);
+      return null;
+    }
+  }
 }

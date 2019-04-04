@@ -54,28 +54,28 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class ListContentPanel extends TabContentPanel {
-	private final List<URI> list;
+  private final List<URI> list;
 
-	public ListContentPanel( ListUriTab tab ) {
-		super( tab );
-		this.list = tab.getListSelectionState().createList();
-		this.list.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
-		this.list.setCellRenderer( this.createListCellRenderer() );
-		this.list.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.list.setVisibleRowCount( -1 );
-		this.list.enableClickingDefaultButtonOnDoubleClick();
-		this.list.setMaximumSizeClampedToPreferredSize( true );
-		ScrollPane scrollPane = new ScrollPane( this.list );
-		scrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		scrollPane.setVerticalScrollbarPolicy( ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		this.addCenterComponent( scrollPane );
-	}
+  public ListContentPanel(ListUriTab tab) {
+    super(tab);
+    this.list = tab.getListSelectionState().createList();
+    this.list.setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+    this.list.setCellRenderer(this.createListCellRenderer());
+    this.list.setLayoutOrientation(List.LayoutOrientation.HORIZONTAL_WRAP);
+    this.list.setVisibleRowCount(-1);
+    this.list.enableClickingDefaultButtonOnDoubleClick();
+    this.list.setMaximumSizeClampedToPreferredSize(true);
+    ScrollPane scrollPane = new ScrollPane(this.list);
+    scrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
+    scrollPane.setVerticalScrollbarPolicy(ScrollPane.VerticalScrollbarPolicy.AS_NEEDED);
+    this.addCenterComponent(scrollPane);
+  }
 
-	public List<URI> getList() {
-		return this.list;
-	}
+  public List<URI> getList() {
+    return this.list;
+  }
 
-	protected ListCellRenderer createListCellRenderer() {
-		return new ProjectSnapshotListCellRenderer();
-	}
+  protected ListCellRenderer createListCellRenderer() {
+    return new ProjectSnapshotListCellRenderer();
+  }
 }

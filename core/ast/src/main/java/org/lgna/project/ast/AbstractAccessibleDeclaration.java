@@ -50,25 +50,25 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAccessibleDeclaration extends AbstractDeclaration {
-	public abstract AccessLevel getAccessLevel();
+  public abstract AccessLevel getAccessLevel();
 
-	public boolean isPublicAccess() {
-		return getAccessLevel() == AccessLevel.PUBLIC;
-	}
+  public boolean isPublicAccess() {
+    return getAccessLevel() == AccessLevel.PUBLIC;
+  }
 
-	public boolean isProtectedAccess() {
-		return getAccessLevel() == AccessLevel.PROTECTED;
-	}
+  public boolean isProtectedAccess() {
+    return getAccessLevel() == AccessLevel.PROTECTED;
+  }
 
-	public boolean isPrivateAccess() {
-		return getAccessLevel() == AccessLevel.PRIVATE;
-	}
+  public boolean isPrivateAccess() {
+    return getAccessLevel() == AccessLevel.PRIVATE;
+  }
 
-	public boolean isPackageAccess() {
-		return getAccessLevel() == AccessLevel.PACKAGE;
-	}
+  public boolean isPackageAccess() {
+    return getAccessLevel() == AccessLevel.PACKAGE;
+  }
 
-	public void addModifiers( Collection<Modifier> modifiers ) {
-		this.getAccessLevel().addModifiers( modifiers );
-	}
+  public void addModifiers(Collection<Modifier> modifiers) {
+    this.getAccessLevel().addModifiers(modifiers);
+  }
 }

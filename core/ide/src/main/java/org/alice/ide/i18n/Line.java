@@ -51,65 +51,65 @@ import java.util.regex.Pattern;
  * @author Dennis Cosgrove
  */
 public class Line {
-	private static final String PREFIX = "</";
-	private static final String POSTFIX = "/>";
-	private static final Pattern TAG_PATTERN = Pattern.compile( PREFIX + "[A-Za-z_0-9()]*" + POSTFIX );
+  private static final String PREFIX = "</";
+  private static final String POSTFIX = "/>";
+  private static final Pattern TAG_PATTERN = Pattern.compile(PREFIX + "[A-Za-z_0-9()]*" + POSTFIX);
 
-	private int indentCount;
-	private Chunk[] array;
-	private boolean isLoop;
+  private int indentCount;
+  private Chunk[] array;
+  private boolean isLoop;
 
-	public Line( String s ) {
-		this.isLoop = "\t loop".equals( s );
-		List<Chunk> chunks = new LinkedList<Chunk>();
-		this.indentCount = 0;
-		for( byte b : s.getBytes() ) {
-			if( b == '\t' ) {
-				this.indentCount++;
-			} else {
-				break;
-			}
-		}
-		Matcher matcher = TAG_PATTERN.matcher( s );
-		int iEnd = this.indentCount;
-		while( matcher.find() ) {
-			int iStart = matcher.start();
-			if( iStart != iEnd ) {
-				chunks.add( new TextChunk( s.substring( iEnd, iStart ) ) );
-			}
-			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( s );
-			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iStart );
-			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iEnd );
-			iEnd = matcher.end();
-			String sub = s.substring( iStart + PREFIX.length(), iEnd - POSTFIX.length() );
-			if( sub.startsWith( "_gets_toward_" ) ) {
-				boolean isTowardLeading = sub.equals( "_gets_toward_leading_" );
-				chunks.add( new GetsChunk( isTowardLeading ) );
-			} else {
-				if( sub.endsWith( "()" ) ) {
-					chunks.add( new MethodInvocationChunk( sub ) );
-				} else {
-					chunks.add( new PropertyChunk( sub ) );
-				}
-			}
-		}
-		if( iEnd < s.length() ) {
-			chunks.add( new TextChunk( s.substring( iEnd ) ) );
-		}
-		this.array = new Chunk[ chunks.size() ];
-		chunks.toArray( this.array );
-	}
+  public Line(String s) {
+    this.isLoop = "\t loop".equals(s);
+    List<Chunk> chunks = new LinkedList<Chunk>();
+    this.indentCount = 0;
+    for (byte b : s.getBytes()) {
+      if (b == '\t') {
+        this.indentCount++;
+      } else {
+        break;
+      }
+    }
+    Matcher matcher = TAG_PATTERN.matcher(s);
+    int iEnd = this.indentCount;
+    while (matcher.find()) {
+      int iStart = matcher.start();
+      if (iStart != iEnd) {
+        chunks.add(new TextChunk(s.substring(iEnd, iStart)));
+      }
+      //      edu.cmu.cs.dennisc.print.PrintUtilities.println( s );
+      //      edu.cmu.cs.dennisc.print.PrintUtilities.println( iStart );
+      //      edu.cmu.cs.dennisc.print.PrintUtilities.println( iEnd );
+      iEnd = matcher.end();
+      String sub = s.substring(iStart + PREFIX.length(), iEnd - POSTFIX.length());
+      if (sub.startsWith("_gets_toward_")) {
+        boolean isTowardLeading = sub.equals("_gets_toward_leading_");
+        chunks.add(new GetsChunk(isTowardLeading));
+      } else {
+        if (sub.endsWith("()")) {
+          chunks.add(new MethodInvocationChunk(sub));
+        } else {
+          chunks.add(new PropertyChunk(sub));
+        }
+      }
+    }
+    if (iEnd < s.length()) {
+      chunks.add(new TextChunk(s.substring(iEnd)));
+    }
+    this.array = new Chunk[chunks.size()];
+    chunks.toArray(this.array);
+  }
 
-	public int getIndentCount() {
-		return this.indentCount;
-	}
+  public int getIndentCount() {
+    return this.indentCount;
+  }
 
-	public Chunk[] getChunks() {
-		return this.array;
-	}
+  public Chunk[] getChunks() {
+    return this.array;
+  }
 
-	@Deprecated
-	public boolean isLoop() {
-		return this.isLoop;
-	}
+  @Deprecated
+  public boolean isLoop() {
+    return this.isLoop;
+  }
 }

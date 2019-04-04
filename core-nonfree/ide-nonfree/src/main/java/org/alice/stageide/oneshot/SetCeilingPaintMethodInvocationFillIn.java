@@ -54,33 +54,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetCeilingPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static MapToMap<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn>() {
-			@Override
-			public SetCeilingPaintMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
-				return new SetCeilingPaintMethodInvocationFillIn( instanceFactory, method );
-			}
-		} );
-	}
+  public static SetCeilingPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method) {
+    return mapToMap.getInitializingIfAbsent(instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetCeilingPaintMethodInvocationFillIn>() {
+      @Override
+      public SetCeilingPaintMethodInvocationFillIn initialize(InstanceFactory instanceFactory, JavaMethod method) {
+        return new SetCeilingPaintMethodInvocationFillIn(instanceFactory, method);
+      }
+    });
+  }
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
-		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( instanceFactory, method );
-	}
+  public static SetCeilingPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses) {
+    JavaMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(instanceFactory, method);
+  }
 
-	public static SetCeilingPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static SetCeilingPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(instanceFactory, JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private SetCeilingPaintMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
-		super( UUID.fromString( "ca742ea8-e430-443c-b8e1-37394f211736" ), instanceFactory, method );
-	}
+  private SetCeilingPaintMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method) {
+    super(UUID.fromString("ca742ea8-e430-443c-b8e1-37394f211736"), instanceFactory, method);
+  }
 
-	@Override
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new SetCeilingPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  @Override
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new SetCeilingPaintMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 }

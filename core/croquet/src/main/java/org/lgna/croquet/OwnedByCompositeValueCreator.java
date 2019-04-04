@@ -51,55 +51,55 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
-	public static interface Initializer {
-		public void initialize();
-	}
+  public static interface Initializer {
+    public void initialize();
+  }
 
-	private final ValueCreatorOwningComposite<?, T> composite;
-	private final Initializer initializer;
-	private final String subKeyForLocalization;
+  private final ValueCreatorOwningComposite<?, T> composite;
+  private final Initializer initializer;
+  private final String subKeyForLocalization;
 
-	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer, String subKeyForLocalization ) {
-		super( UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
-		this.composite = composite;
-		this.initializer = initializer;
-		this.subKeyForLocalization = subKeyForLocalization;
-	}
+  public OwnedByCompositeValueCreator(ValueCreatorOwningComposite<?, T> composite, Initializer initializer, String subKeyForLocalization) {
+    super(UUID.fromString("d8315541-a441-4e09-b102-3e7730fbc960"));
+    this.composite = composite;
+    this.initializer = initializer;
+    this.subKeyForLocalization = subKeyForLocalization;
+  }
 
-	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer ) {
-		this( composite, initializer, null );
-	}
+  public OwnedByCompositeValueCreator(ValueCreatorOwningComposite<?, T> composite, Initializer initializer) {
+    this(composite, initializer, null);
+  }
 
-	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite ) {
-		this( composite, null );
-	}
+  public OwnedByCompositeValueCreator(ValueCreatorOwningComposite<?, T> composite) {
+    this(composite, null);
+  }
 
-	public ValueCreatorOwningComposite<?, T> getComposite() {
-		return this.composite;
-	}
+  public ValueCreatorOwningComposite<?, T> getComposite() {
+    return this.composite;
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.subKeyForLocalization;
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return this.subKeyForLocalization;
+  }
 
-	@Override
-	protected void initialize() {
-		this.composite.initializeIfNecessary();
-		super.initialize();
-	}
+  @Override
+  protected void initialize() {
+    this.composite.initializeIfNecessary();
+    super.initialize();
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		//todo
-		return ( (AbstractComposite)this.composite ).getClassUsedForLocalization();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    //todo
+    return ((AbstractComposite) this.composite).getClassUsedForLocalization();
+  }
 
-	@Override
-	protected T createValue( UserActivity userActivity ) {
-		if( this.initializer != null ) {
-			this.initializer.initialize();
-		}
-		return composite.createValue( userActivity );
-	}
+  @Override
+  protected T createValue(UserActivity userActivity) {
+    if (this.initializer != null) {
+      this.initializer.initialize();
+    }
+    return composite.createValue(userActivity);
+  }
 }

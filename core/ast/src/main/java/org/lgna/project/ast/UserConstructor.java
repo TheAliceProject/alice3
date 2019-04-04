@@ -43,30 +43,29 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UserConstructor extends AbstractConstructor implements CodeGenerator {
-	@Override
-	public UserType<?> getDeclaringType() {
-		return (UserType<?>)super.getDeclaringType();
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return (UserType<?>) super.getDeclaringType();
+  }
 
-	@Override
-	public AbstractParameter getVariableLengthParameter() {
-		return null;
-	}
+  @Override
+  public AbstractParameter getVariableLengthParameter() {
+    return null;
+  }
 
-	@Override
-	public AbstractParameter getKeyedParameter() {
-		return null;
-	}
+  @Override
+  public AbstractParameter getKeyedParameter() {
+    return null;
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 }

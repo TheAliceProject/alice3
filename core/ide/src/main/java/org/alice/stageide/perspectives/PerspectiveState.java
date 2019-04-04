@@ -54,12 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PerspectiveState extends ImmutableDataSingleSelectListState<ProjectPerspective> {
-	public PerspectiveState( ProjectPerspective... perspectives ) {
-		super(
-				Application.DOCUMENT_UI_GROUP,
-				UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
-				0,
-				IdePerspectiveCodec.SINGLETON,
-				perspectives );
-	}
+  public PerspectiveState(ProjectPerspective... perspectives) {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("9daef1a1-fd63-4069-8431-25126032ec1f"), 0, IdePerspectiveCodec.SINGLETON, perspectives);
+  }
 }

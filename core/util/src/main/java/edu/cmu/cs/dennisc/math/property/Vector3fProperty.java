@@ -48,29 +48,29 @@ import edu.cmu.cs.dennisc.property.CopyableInstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 
 public class Vector3fProperty extends CopyableInstanceProperty<Vector3f> {
-	public Vector3fProperty( InstancePropertyOwner owner, Vector3f value ) {
-		super( owner, value );
-	}
+  public Vector3fProperty(InstancePropertyOwner owner, Vector3f value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( Vector3f value ) {
-		assert value != null : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(Vector3f value) {
+    assert value != null : this;
+    super.setValue(value);
+  }
 
-	@Override
-	public Vector3f getCopy( Vector3f rv ) {
-		rv.set( this.getValue() );
-		return rv;
-	}
+  @Override
+  public Vector3f getCopy(Vector3f rv) {
+    rv.set(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final Vector3f getCopy() {
-		return this.getCopy( Vector3f.createNaN() );
-	}
+  @Override
+  public final Vector3f getCopy() {
+    return this.getCopy(Vector3f.createNaN());
+  }
 
-	@Override
-	public void setCopy( Vector3f value ) {
-		this.setValue( new Vector3f( value ) );
-	}
+  @Override
+  public void setCopy(Vector3f value) {
+    this.setValue(new Vector3f(value));
+  }
 }

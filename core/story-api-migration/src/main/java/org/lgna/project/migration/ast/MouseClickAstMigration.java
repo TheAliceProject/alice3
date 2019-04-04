@@ -57,31 +57,31 @@ import org.lgna.story.ast.EventListenerMethodUtilities;
  * @author Dennis Cosgrove
  */
 public class MouseClickAstMigration extends MethodInvocationAstMigration {
-	public MouseClickAstMigration( Version minimumVersion, Version maximumVersion ) {
-		super( minimumVersion, maximumVersion );
-	}
+  public MouseClickAstMigration(Version minimumVersion, Version maximumVersion) {
+    super(minimumVersion, maximumVersion);
+  }
 
-	@Override
-	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
-		AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof JavaMethod ) {
-			JavaMethod javaMethod = (JavaMethod)method;
-			if( javaMethod.getDeclaringType() == JavaType.getInstance( SScene.class ) ) {
-				String methodName = javaMethod.getName();
-				if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
-					for( AbstractArgument argument : methodInvocation.keyedArguments ) {
-						Logger.errln( "ALERT: migration removing", argument );
-					}
-					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
-				} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
-					for( AbstractArgument argument : methodInvocation.keyedArguments ) {
-						Logger.errln( "ALERT: migration removing", argument );
-					}
-					methodInvocation.keyedArguments.clear();
-					methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
-				}
-			}
-		}
-	}
+  @Override
+  protected void migrate(MethodInvocation methodInvocation, Project projectIfApplicable) {
+    AbstractMethod method = methodInvocation.method.getValue();
+    if (method instanceof JavaMethod) {
+      JavaMethod javaMethod = (JavaMethod) method;
+      if (javaMethod.getDeclaringType() == JavaType.getInstance(SScene.class)) {
+        String methodName = javaMethod.getName();
+        if (methodName.equals("addMouseClickOnScreenListener")) {
+          for (AbstractArgument argument : methodInvocation.keyedArguments) {
+            Logger.errln("ALERT: migration removing", argument);
+          }
+          methodInvocation.keyedArguments.clear();
+          methodInvocation.method.setValue(EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD);
+        } else if (methodName.equals("addMouseClickOnObjectListener")) {
+          for (AbstractArgument argument : methodInvocation.keyedArguments) {
+            Logger.errln("ALERT: migration removing", argument);
+          }
+          methodInvocation.keyedArguments.clear();
+          methodInvocation.method.setValue(EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD);
+        }
+      }
+    }
+  }
 }

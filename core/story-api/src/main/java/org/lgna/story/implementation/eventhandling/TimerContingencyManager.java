@@ -75,122 +75,122 @@ import org.lgna.story.implementation.SceneImp;
  */
 public class TimerContingencyManager {
 
-	private TimerEventHandler timer;
-	private SScene scene;
+  private TimerEventHandler timer;
+  private SScene scene;
 
-	public TimerContingencyManager( TimerEventHandler timer ) {
-		this.timer = timer;
-	}
+  public TimerContingencyManager(TimerEventHandler timer) {
+    this.timer = timer;
+  }
 
-	public void register( WhileCollisionListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
-		timer.addListener( listener, frequency, policy );
-		timer.deactivate( listener );
-		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
-		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
-	}
+  public void register(WhileCollisionListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double frequency, MultipleEventPolicy policy) {
+    timer.addListener(listener, frequency, policy);
+    timer.deactivate(listener);
+    scene.addCollisionStartListener(newStartCollisionAdapter(listener), toArray(groupOne), toArray(groupTwo));
+    scene.addCollisionEndListener(newEndCollisionAdapter(listener), toArray(groupOne), toArray(groupTwo));
+  }
 
-	public void register( WhileProximityListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
-		timer.addListener( listener, frequency, policy );
-		timer.deactivate( listener );
-		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
-		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
-	}
+  public void register(WhileProximityListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy) {
+    timer.addListener(listener, frequency, policy);
+    timer.deactivate(listener);
+    scene.addProximityEnterListener(newEnterProximityAdapter(listener), toArray(groupOne), toArray(groupTwo), dist);
+    scene.addProximityExitListener(newExitProximityAdapter(listener), toArray(groupOne), toArray(groupTwo), dist);
+  }
 
-	public void register( WhileOcclusionListener listener, List<SModel> groupOne, List<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
-		timer.addListener( listener, frequency, policy );
-		timer.deactivate( listener );
-		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
-		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
-	}
+  public void register(WhileOcclusionListener listener, List<SModel> groupOne, List<SModel> groupTwo, Double frequency, MultipleEventPolicy policy) {
+    timer.addListener(listener, frequency, policy);
+    timer.deactivate(listener);
+    scene.addOcclusionStartListener(newEnterOcclusionAdapter(listener), (SModel[]) toArray(groupOne), (SModel[]) toArray(groupTwo));
+    scene.addOcclusionEndListener(newExitOcclusionAdapter(listener), (SModel[]) toArray(groupOne), (SModel[]) toArray(groupTwo));
+  }
 
-	public void register( WhileInViewListener listener, List<SModel> group, Double frequency, MultipleEventPolicy policy ) {
-		timer.addListener( listener, frequency, policy );
-		timer.deactivate( listener );
-		scene.addViewEnterListener( newEnterViewAdapter( listener ), (SModel[])toArray( group ) );
-		scene.addViewExitListener( newExitViewAdapter( listener ), (SModel[])toArray( group ) );
-	}
+  public void register(WhileInViewListener listener, List<SModel> group, Double frequency, MultipleEventPolicy policy) {
+    timer.addListener(listener, frequency, policy);
+    timer.deactivate(listener);
+    scene.addViewEnterListener(newEnterViewAdapter(listener), (SModel[]) toArray(group));
+    scene.addViewExitListener(newExitViewAdapter(listener), (SModel[]) toArray(group));
+  }
 
-	private ViewExitListener newExitViewAdapter( final WhileInViewListener listener ) {
-		return new ViewExitListener() {
-			@Override
-			public void viewExited( ExitViewEvent e ) {
-				timer.deactivate( listener );
-			}
-		};
-	}
+  private ViewExitListener newExitViewAdapter(final WhileInViewListener listener) {
+    return new ViewExitListener() {
+      @Override
+      public void viewExited(ExitViewEvent e) {
+        timer.deactivate(listener);
+      }
+    };
+  }
 
-	private ViewEnterListener newEnterViewAdapter( final WhileInViewListener listener ) {
-		return new ViewEnterListener() {
-			@Override
-			public void viewEntered( EnterViewEvent e ) {
-				timer.activate( listener );
-			}
-		};
-	}
+  private ViewEnterListener newEnterViewAdapter(final WhileInViewListener listener) {
+    return new ViewEnterListener() {
+      @Override
+      public void viewEntered(EnterViewEvent e) {
+        timer.activate(listener);
+      }
+    };
+  }
 
-	private OcclusionStartListener newEnterOcclusionAdapter( final WhileOcclusionListener listener ) {
-		return new OcclusionStartListener() {
-			@Override
-			public void occlusionStarted( StartOcclusionEvent e ) {
-				timer.activate( listener );
-			}
-		};
-	}
+  private OcclusionStartListener newEnterOcclusionAdapter(final WhileOcclusionListener listener) {
+    return new OcclusionStartListener() {
+      @Override
+      public void occlusionStarted(StartOcclusionEvent e) {
+        timer.activate(listener);
+      }
+    };
+  }
 
-	private OcclusionEndListener newExitOcclusionAdapter( final WhileOcclusionListener listener ) {
-		return new OcclusionEndListener() {
-			@Override
-			public void occlusionEnded( EndOcclusionEvent e ) {
-				timer.deactivate( listener );
-			}
-		};
-	}
+  private OcclusionEndListener newExitOcclusionAdapter(final WhileOcclusionListener listener) {
+    return new OcclusionEndListener() {
+      @Override
+      public void occlusionEnded(EndOcclusionEvent e) {
+        timer.deactivate(listener);
+      }
+    };
+  }
 
-	private ProximityEnterListener newEnterProximityAdapter( final WhileProximityListener listener ) {
-		return new ProximityEnterListener() {
-			@Override
-			public void proximityEntered( EnterProximityEvent e ) {
-				timer.activate( listener );
-			}
-		};
-	}
+  private ProximityEnterListener newEnterProximityAdapter(final WhileProximityListener listener) {
+    return new ProximityEnterListener() {
+      @Override
+      public void proximityEntered(EnterProximityEvent e) {
+        timer.activate(listener);
+      }
+    };
+  }
 
-	private ProximityExitListener newExitProximityAdapter( final WhileProximityListener listener ) {
-		return new ProximityExitListener() {
-			@Override
-			public void proximityExited( ExitProximityEvent e ) {
-				timer.deactivate( listener );
-			}
-		};
-	}
+  private ProximityExitListener newExitProximityAdapter(final WhileProximityListener listener) {
+    return new ProximityExitListener() {
+      @Override
+      public void proximityExited(ExitProximityEvent e) {
+        timer.deactivate(listener);
+      }
+    };
+  }
 
-	private CollisionEndListener newEndCollisionAdapter( final WhileCollisionListener listener ) {
-		return new CollisionEndListener() {
-			@Override
-			public void collisionEnded( EndCollisionEvent e ) {
-				timer.deactivate( listener );
-			}
-		};
-	}
+  private CollisionEndListener newEndCollisionAdapter(final WhileCollisionListener listener) {
+    return new CollisionEndListener() {
+      @Override
+      public void collisionEnded(EndCollisionEvent e) {
+        timer.deactivate(listener);
+      }
+    };
+  }
 
-	private CollisionStartListener newStartCollisionAdapter( final WhileCollisionListener listener ) {
-		return new CollisionStartListener() {
-			@Override
-			public void collisionStarted( StartCollisionEvent e ) {
-				timer.activate( listener );
-			}
-		};
-	}
+  private CollisionStartListener newStartCollisionAdapter(final WhileCollisionListener listener) {
+    return new CollisionStartListener() {
+      @Override
+      public void collisionStarted(StartCollisionEvent e) {
+        timer.activate(listener);
+      }
+    };
+  }
 
-	private SThing[] toArray( List<? extends SThing> arr ) {
-		SThing[] rv = new SThing[ arr.size() ];
-		for( int i = 0; i != arr.size(); ++i ) {
-			rv[ i ] = arr.get( i );
-		}
-		return rv;
-	}
+  private SThing[] toArray(List<? extends SThing> arr) {
+    SThing[] rv = new SThing[arr.size()];
+    for (int i = 0; i != arr.size(); ++i) {
+      rv[i] = arr.get(i);
+    }
+    return rv;
+  }
 
-	public void setScene( SceneImp scene ) {
-		this.scene = scene.getAbstraction();
-	}
+  public void setScene(SceneImp scene) {
+    this.scene = scene.getAbstraction();
+  }
 }

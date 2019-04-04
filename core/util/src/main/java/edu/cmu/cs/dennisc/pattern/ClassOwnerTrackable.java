@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public interface ClassOwnerTrackable {
-	public Class<?> getClassOwner();
+  public Class<?> getClassOwner();
 
-	public void setClassOwner( Class<?> clsOwner );
+  public void setClassOwner(Class<?> clsOwner);
 }

@@ -54,33 +54,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static MapToMap<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn>() {
-			@Override
-			public SetPaintMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
-				return new SetPaintMethodInvocationFillIn( instanceFactory, method );
-			}
-		} );
-	}
+  public static SetPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method) {
+    return mapToMap.getInitializingIfAbsent(instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetPaintMethodInvocationFillIn>() {
+      @Override
+      public SetPaintMethodInvocationFillIn initialize(InstanceFactory instanceFactory, JavaMethod method) {
+        return new SetPaintMethodInvocationFillIn(instanceFactory, method);
+      }
+    });
+  }
 
-	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
-		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( instanceFactory, method );
-	}
+  public static SetPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses) {
+    JavaMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(instanceFactory, method);
+  }
 
-	public static SetPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static SetPaintMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(instanceFactory, JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private SetPaintMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
-		super( UUID.fromString( "7fb8b1c7-242f-4662-8bea-b58ed0318003" ), instanceFactory, method );
-	}
+  private SetPaintMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method) {
+    super(UUID.fromString("7fb8b1c7-242f-4662-8bea-b58ed0318003"), instanceFactory, method);
+  }
 
-	@Override
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new SetPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  @Override
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new SetPaintMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 }

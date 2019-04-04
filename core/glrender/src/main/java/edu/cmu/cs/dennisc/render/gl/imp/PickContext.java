@@ -60,64 +60,64 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+  public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
-	public PickContext( boolean isSynchronous ) {
-		this.isSynchronous = isSynchronous;
-	}
+  public PickContext(boolean isSynchronous) {
+    this.isSynchronous = isSynchronous;
+  }
 
-	public int getPickNameForVisualAdapter( GlrVisual<? extends Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
-	}
+  public int getPickNameForVisualAdapter(GlrVisual<? extends Visual> visualAdapter) {
+    synchronized (m_pickNameMap) {
+      int name = m_pickNameMap.size();
+      m_pickNameMap.put(new Integer(name), visualAdapter);
+      return name;
+    }
+  }
 
-	public ConformanceTestResults.PickDetails getConformanceTestResultsPickDetails() {
-		if( this.isSynchronous ) {
-			return ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-		} else {
-			return ConformanceTestResults.SINGLETON.getAsynchronousPickDetails();
-		}
-	}
+  public ConformanceTestResults.PickDetails getConformanceTestResultsPickDetails() {
+    if (this.isSynchronous) {
+      return ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+    } else {
+      return ConformanceTestResults.SINGLETON.getAsynchronousPickDetails();
+    }
+  }
 
-	public GlrVisual<? extends Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
+  public GlrVisual<? extends Visual> getPickVisualAdapterForName(int name) {
+    synchronized (m_pickNameMap) {
+      return m_pickNameMap.get(name);
+    }
+  }
 
-	@Override
-	protected void enableNormalize() {
-	}
+  @Override
+  protected void enableNormalize() {
+  }
 
-	@Override
-	protected void disableNormalize() {
-	}
+  @Override
+  protected void disableNormalize() {
+  }
 
-	public void pickVertex( Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
+  public void pickVertex(Vertex vertex) {
+    gl.glVertex3d(vertex.position.x, vertex.position.y, vertex.position.z);
+  }
 
-	public void pickScene( GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters );
-	}
+  public void pickScene(GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters) {
+    gl.glMatrixMode(GL_MODELVIEW);
+    synchronized (cameraAdapter) {
+      gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
+    }
+    m_pickNameMap.clear();
+    sceneAdapter.pick(this, pickParameters);
+  }
 
-	@Override
-	protected void handleGLChange() {
-	}
+  @Override
+  protected void handleGLChange() {
+  }
 
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
-	}
+  //todo: remove?
+  @Override
+  public void setAppearanceIndex(int index) {
+  }
 
-	private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();
-	private final boolean isSynchronous;
+  private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();
+  private final boolean isSynchronous;
 }

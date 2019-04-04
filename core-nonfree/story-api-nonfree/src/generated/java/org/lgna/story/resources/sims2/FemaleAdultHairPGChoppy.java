@@ -44,26 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultHairPGChoppy implements FemaleAdultHair, FemaleElderHair {
-	RED,
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY,
-	PINK_ON_BLACK,
-	BLOND_STREAK,
-	RED_STREAK,
-	VIOLET,
-	GREEN;
+  RED, BLACK, BLOND, BROWN, GREY, PINK_ON_BLACK, BLOND_STREAK, RED_STREAK, VIOLET, GREEN;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

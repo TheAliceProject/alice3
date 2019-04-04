@@ -53,40 +53,40 @@ import org.lgna.croquet.views.CompositeView;
  * @author Dennis Cosgrove
  */
 public abstract class DialogContentPane extends BorderPanel {
-	public DialogContentPane( DialogContentComposite composite ) {
-		super( composite );
-		AdornedDialogCoreComposite coreComposite = composite.getCoreComposite();
-		this.commitButton = coreComposite.getCommitOperation().createButton();
-		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		CompositeView<?, ?> coreView = coreComposite.getView();
-		this.setBackgroundColor( coreView.getBackgroundColor() );
-		this.addCenterComponent( coreView );
-	}
+  public DialogContentPane(DialogContentComposite composite) {
+    super(composite);
+    AdornedDialogCoreComposite coreComposite = composite.getCoreComposite();
+    this.commitButton = coreComposite.getCommitOperation().createButton();
+    this.cancelButton = coreComposite.getCancelOperation().createButton();
+    CompositeView<?, ?> coreView = coreComposite.getView();
+    this.setBackgroundColor(coreView.getBackgroundColor());
+    this.addCenterComponent(coreView);
+  }
 
-	public Button getCommitButton() {
-		return this.commitButton;
-	}
+  public Button getCommitButton() {
+    return this.commitButton;
+  }
 
-	public Button getCancelButton() {
-		return this.cancelButton;
-	}
+  public Button getCancelButton() {
+    return this.cancelButton;
+  }
 
-	protected Button getLeadingCommitCancelButton() {
-		if( SystemUtilities.isWindows() ) {
-			return this.commitButton;
-		} else {
-			return this.cancelButton;
-		}
-	}
+  protected Button getLeadingCommitCancelButton() {
+    if (SystemUtilities.isWindows()) {
+      return this.commitButton;
+    } else {
+      return this.cancelButton;
+    }
+  }
 
-	protected Button getTrailingCommitCancelButton() {
-		if( SystemUtilities.isWindows() ) {
-			return this.cancelButton;
-		} else {
-			return this.commitButton;
-		}
-	}
+  protected Button getTrailingCommitCancelButton() {
+    if (SystemUtilities.isWindows()) {
+      return this.cancelButton;
+    } else {
+      return this.commitButton;
+    }
+  }
 
-	private final Button commitButton;
-	private final Button cancelButton;
+  private final Button commitButton;
+  private final Button cancelButton;
 }

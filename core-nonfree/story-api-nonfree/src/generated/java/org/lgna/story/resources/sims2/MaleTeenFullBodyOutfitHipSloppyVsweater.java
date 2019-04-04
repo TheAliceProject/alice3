@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitHipSloppyVsweater implements MaleTeenFullBodyOutfit {
-	BUFF_BLUE_JEANS,
-	GREEN_BLACK_JEANS,
-	RED_KHAKIS;
+  BUFF_BLUE_JEANS, GREEN_BLACK_JEANS, RED_KHAKIS
 
 }

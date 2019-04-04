@@ -53,279 +53,255 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 public class SkeletonVisual extends Visual {
 
-	public SkeletonVisualBoundingBoxTracker getTracker() {
-		return this.tracker;
-	}
+  public SkeletonVisualBoundingBoxTracker getTracker() {
+    return this.tracker;
+  }
 
-	public void setTracker( SkeletonVisualBoundingBoxTracker tracker ) {
-		this.tracker = tracker;
-	}
+  public void setTracker(SkeletonVisualBoundingBoxTracker tracker) {
+    this.tracker = tracker;
+  }
 
-	@Override
-	public void setParent( Composite parent ) {
-		super.setParent( parent );
-		if( this.skeleton.getValue() != null ) {
-			this.skeleton.getValue().setParent( parent );
-		}
-	};
+  @Override
+  public void setParent(Composite parent) {
+    super.setParent(parent);
+    if (this.skeleton.getValue() != null) {
+      this.skeleton.getValue().setParent(parent);
+    }
+  }
 
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if( skeleton.getValue() != null )
-		{
-			skeleton.getValue().release();
-		}
-		for( WeightedMesh mesh : weightedMeshes.getValue() ) {
-			mesh.release();
-		}
-		for( WeightedMesh mesh : defaultPoseWeightedMeshes.getValue() ) {
-			mesh.release();
-		}
-		for( TexturedAppearance texture : textures.getValue() ) {
-			texture.release();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    if (skeleton.getValue() != null) {
+      skeleton.getValue().release();
+    }
+    for (WeightedMesh mesh : weightedMeshes.getValue()) {
+      mesh.release();
+    }
+    for (WeightedMesh mesh : defaultPoseWeightedMeshes.getValue()) {
+      mesh.release();
+    }
+    for (TexturedAppearance texture : textures.getValue()) {
+      texture.release();
+    }
+  }
 
-	@Override
-	public int getGeometryCount()
-	{
-		return super.getGeometryCount() + this.weightedMeshes.getLength();
-	}
+  @Override
+  public int getGeometryCount() {
+    return super.getGeometryCount() + this.weightedMeshes.getLength();
+  }
 
-	@Override
-	public Geometry getGeometryAt( int index )
-	{
-		if( index < super.getGeometryCount() )
-		{
-			return super.getGeometryAt( index );
-		}
-		else
-		{
-			return this.weightedMeshes.getValue()[ index - super.getGeometryCount() ];
-		}
-	};
+  @Override
+  public Geometry getGeometryAt(int index) {
+    if (index < super.getGeometryCount()) {
+      return super.getGeometryAt(index);
+    } else {
+      return this.weightedMeshes.getValue()[index - super.getGeometryCount()];
+    }
+  }
 
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv, boolean ignoreJointOrientations ) {
-		if( !ignoreJointOrientations && ( this.tracker != null ) ) {
-			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
-		}
-		else {
-			//There's a problem here.
-			//This code is used to return a bounding box for a Skeleton Visual in 2 cases:
-			//	1) When there's no bounding box tracker (the utility class which lets us access the skeleton visual adapter and get bounding box data from the actual transformed weighted mesh
-			//  2) When we want a bounding box that ignores the positions of the joints
-			//This all works with the assumption that the raw weighted mesh data is a valid representation of these things.
-			//Unfortunately, this assumption no longer holds true. We now have models which have a bind pose (the configuration of the raw mesh) and a default pose (the pose the model wants to come into alice in)
-			//The logic of this function wants to use the default pose data, but for this to work we need to process the weighted mesh with this skeleton pose.
-			//This means we can't rely on the data in the raw weighted mesh to give us what we want.
-			//Options:
-			//  1) Preprocess the weighted mesh based on the default pose such that the data in this.weightedMeshes gives us the desired values
-			//		This may have repercussions. Is this data used elsewhere? The skin weight algortithm needs this mesh data to be in the bind pose for the skinning to work.
-			//  2) Eliminate this second logic path and make everything use the tracker. This would mean adding ignoreJointOrientations to the tracker class
-			//		This is probably the way to go, but we'll need to look into how often we want to ignoreJointOrientations and how often we don't have a tracker
-			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
-				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
-					{
-						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-						rv.union( b );
-					}
-				}
-			}
-			else {
-				if( this.weightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.weightedMeshes.getValue() )
-					{
-						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-						rv.union( b );
-					}
-				}
-			}
-			if( this.geometries.getValue() != null ) {
-				for( Geometry g : this.geometries.getValue() )
-				{
-					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-					rv.union( b );
-				}
-			}
-		}
-		if( !rv.isNaN() )
-		{
-			rv.scale( this.scale.getValue() );
-		}
-		return rv;
-	}
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv, boolean ignoreJointOrientations) {
+    if (!ignoreJointOrientations && (this.tracker != null)) {
+      this.tracker.getAxisAlignedMinimumBoundingBox(rv);
+    } else {
+      //There's a problem here.
+      //This code is used to return a bounding box for a Skeleton Visual in 2 cases:
+      //  1) When there's no bounding box tracker (the utility class which lets us access the skeleton visual adapter and get bounding box data from the actual transformed weighted mesh
+      //  2) When we want a bounding box that ignores the positions of the joints
+      //This all works with the assumption that the raw weighted mesh data is a valid representation of these things.
+      //Unfortunately, this assumption no longer holds true. We now have models which have a bind pose (the configuration of the raw mesh) and a default pose (the pose the model wants to come into alice in)
+      //The logic of this function wants to use the default pose data, but for this to work we need to process the weighted mesh with this skeleton pose.
+      //This means we can't rely on the data in the raw weighted mesh to give us what we want.
+      //Options:
+      //  1) Preprocess the weighted mesh based on the default pose such that the data in this.weightedMeshes gives us the desired values
+      //    This may have repercussions. Is this data used elsewhere? The skin weight algortithm needs this mesh data to be in the bind pose for the skinning to work.
+      //  2) Eliminate this second logic path and make everything use the tracker. This would mean adding ignoreJointOrientations to the tracker class
+      //    This is probably the way to go, but we'll need to look into how often we want to ignoreJointOrientations and how often we don't have a tracker
+      if (this.hasDefaultPoseWeightedMeshes.getValue()) {
+        if (this.defaultPoseWeightedMeshes.getValue() != null) {
+          for (WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue()) {
+            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+            rv.union(b);
+          }
+        }
+      } else {
+        if (this.weightedMeshes.getValue() != null) {
+          for (WeightedMesh wm : this.weightedMeshes.getValue()) {
+            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+            rv.union(b);
+          }
+        }
+      }
+      if (this.geometries.getValue() != null) {
+        for (Geometry g : this.geometries.getValue()) {
+          AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+          rv.union(b);
+        }
+      }
+    }
+    if (!rv.isNaN()) {
+      rv.scale(this.scale.getValue());
+    }
+    return rv;
+  }
 
-	@Override
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
-		if( this.tracker != null ) {
-			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
-		}
-		else {
-			//See comment above
-			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
-				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
-					{
-						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-						rv.union( b );
-					}
-				}
-			}
-			else {
-				if( this.weightedMeshes.getValue() != null ) {
-					for( WeightedMesh wm : this.weightedMeshes.getValue() )
-					{
-						AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-						rv.union( b );
-					}
-				}
-			}
-			if( this.geometries.getValue() != null ) {
-				for( Geometry g : this.geometries.getValue() )
-				{
-					AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-					rv.union( b );
-				}
-			}
-		}
-		if( !rv.isNaN() )
-		{
-			rv.scale( this.scale.getValue() );
-		}
-		return rv;
-	}
+  @Override
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+    if (this.tracker != null) {
+      this.tracker.getAxisAlignedMinimumBoundingBox(rv);
+    } else {
+      //See comment above
+      if (this.hasDefaultPoseWeightedMeshes.getValue()) {
+        if (this.defaultPoseWeightedMeshes.getValue() != null) {
+          for (WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue()) {
+            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+            rv.union(b);
+          }
+        }
+      } else {
+        if (this.weightedMeshes.getValue() != null) {
+          for (WeightedMesh wm : this.weightedMeshes.getValue()) {
+            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+            rv.union(b);
+          }
+        }
+      }
+      if (this.geometries.getValue() != null) {
+        for (Geometry g : this.geometries.getValue()) {
+          AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+          rv.union(b);
+        }
+      }
+    }
+    if (!rv.isNaN()) {
+      rv.scale(this.scale.getValue());
+    }
+    return rv;
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-		AxisAlignedBox box = new AxisAlignedBox();
-		getAxisAlignedMinimumBoundingBox( box );
-		if( !box.isNaN() ) {
-			double diameter = Point3.calculateDistanceBetween( box.getMinimum(), box.getMaximum() );
-			rv.center.set( box.getCenter() );
-			rv.radius = diameter / 2;
-		} else {
-			rv.setNaN();
-		}
-		return rv;
-	}
+  @Override
+  public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere(edu.cmu.cs.dennisc.math.Sphere rv) {
+    AxisAlignedBox box = new AxisAlignedBox();
+    getAxisAlignedMinimumBoundingBox(box);
+    if (!box.isNaN()) {
+      double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
+      rv.center.set(box.getCenter());
+      rv.radius = diameter / 2;
+    } else {
+      rv.setNaN();
+    }
+    return rv;
+  }
 
-	public boolean renderBackfaces() {
-		if( this.weightedMeshes.getValue() != null ) {
-			for( WeightedMesh wm : this.weightedMeshes.getValue() )
-			{
-				if( !wm.cullBackfaces.getValue() ) {
-					return true;
-				}
-			}
-		}
-		if( this.geometries.getValue() != null ) {
-			for( Geometry g : this.geometries.getValue() )
-			{
-				if( ( g instanceof Mesh ) && !( (Mesh)g ).cullBackfaces.getValue() ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  public boolean renderBackfaces() {
+    if (this.weightedMeshes.getValue() != null) {
+      for (WeightedMesh wm : this.weightedMeshes.getValue()) {
+        if (!wm.cullBackfaces.getValue()) {
+          return true;
+        }
+      }
+    }
+    if (this.geometries.getValue() != null) {
+      for (Geometry g : this.geometries.getValue()) {
+        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	//Used to normalize all the weights in the weighted meshes
-	//Weights for a given vertex should add up to 1
-	public void normalizeWeightedMeshes() {
-		for (WeightedMesh wm : weightedMeshes.getValue()) {
-			wm.normalizeWeights();
-		}
-		if (hasDefaultPoseWeightedMeshes.getValue()) {
-			for (WeightedMesh wm : defaultPoseWeightedMeshes.getValue()) {
-				wm.normalizeWeights();
-			}
-		}
-	}
+  //Used to normalize all the weights in the weighted meshes
+  //Weights for a given vertex should add up to 1
+  public void normalizeWeightedMeshes() {
+    for (WeightedMesh wm : weightedMeshes.getValue()) {
+      wm.normalizeWeights();
+    }
+    if (hasDefaultPoseWeightedMeshes.getValue()) {
+      for (WeightedMesh wm : defaultPoseWeightedMeshes.getValue()) {
+        wm.normalizeWeights();
+      }
+    }
+  }
 
-	public void scale(Vector3 scale) {
-		if (skeleton.getValue() != null) {
-			skeleton.getValue().scale(scale);
-		}
-		scaleMeshes( scale );
-	}
+  public void scale(Vector3 scale) {
+    if (skeleton.getValue() != null) {
+      skeleton.getValue().scale(scale);
+    }
+    scaleMeshes(scale);
+  }
 
-	private void scaleMeshes(Vector3 scale) {
-		for ( Geometry g : geometries.getValue()) {
-			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
-			//If we start to support things like cylinders and boxes, then this would need to be updated
-			if (g instanceof Mesh) {
-				((Mesh)g).scale(scale);
-			}
-		}
-		for (WeightedMesh wm : weightedMeshes.getValue()) {
-			wm.scale(scale);
-		}
-	}
+  private void scaleMeshes(Vector3 scale) {
+    for (Geometry g : geometries.getValue()) {
+      //The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
+      //If we start to support things like cylinders and boxes, then this would need to be updated
+      if (g instanceof Mesh) {
+        ((Mesh) g).scale(scale);
+      }
+    }
+    for (WeightedMesh wm : weightedMeshes.getValue()) {
+      wm.scale(scale);
+    }
+  }
 
-	private void scaleJoints( Joint j, Vector3 scale) {
-		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
-		newTransform.translation.multiply( scale );
-		j.localTransformation.setValue( newTransform );
-		for( int i = 0; i < j.getComponentCount(); i++ )
-		{
-			Component comp = j.getComponentAt( i );
-			if (comp instanceof Joint) {
-				scaleJoints((Joint)comp, scale);
-			}
-		}
-	}
+  private void scaleJoints(Joint j, Vector3 scale) {
+    AffineMatrix4x4 newTransform = new AffineMatrix4x4(j.localTransformation.getValue());
+    newTransform.translation.multiply(scale);
+    j.localTransformation.setValue(newTransform);
+    for (int i = 0; i < j.getComponentCount(); i++) {
+      Component comp = j.getComponentAt(i);
+      if (comp instanceof Joint) {
+        scaleJoints((Joint) comp, scale);
+      }
+    }
+  }
 
-	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
-	public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+  public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
+  public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
 
-	private SkeletonVisualBoundingBoxTracker tracker = null;
+  private SkeletonVisualBoundingBoxTracker tracker = null;
 
-	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
-	{
-		@Override
-		protected WeightedMesh[] createArray( int length ) {
-			return new WeightedMesh[ length ];
-		}
+  public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>(this) {
+    @Override
+    protected WeightedMesh[] createArray(int length) {
+      return new WeightedMesh[length];
+    }
 
-		@Override
-		protected WeightedMesh createCopy( WeightedMesh src ) {
-			//todo?
-			return src;
-		}
-	};
+    @Override
+    protected WeightedMesh createCopy(WeightedMesh src) {
+      //todo?
+      return src;
+    }
+  };
 
-	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this)
-	{
-		@Override
-		protected TexturedAppearance[] createArray( int length ) {
-			return new TexturedAppearance[ length ];
-		}
+  public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>(this) {
+    @Override
+    protected TexturedAppearance[] createArray(int length) {
+      return new TexturedAppearance[length];
+    }
 
-		@Override
-		protected TexturedAppearance createCopy( TexturedAppearance src ) {
-			//todo?
-			return src;
-		}
-	};
+    @Override
+    protected TexturedAppearance createCopy(TexturedAppearance src) {
+      //todo?
+      return src;
+    }
+  };
 
-	//This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
-	//This is use to handle models which have different bind poses and default poses
-	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
-	public final BooleanProperty hasDefaultPoseWeightedMeshes = new BooleanProperty( this, false );
+  //This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
+  //This is use to handle models which have different bind poses and default poses
+  //By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
+  public final BooleanProperty hasDefaultPoseWeightedMeshes = new BooleanProperty(this, false);
 
-	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
-	{
-		@Override
-		protected WeightedMesh[] createArray( int length ) {
-			return new WeightedMesh[ length ];
-		}
+  public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>(this) {
+    @Override
+    protected WeightedMesh[] createArray(int length) {
+      return new WeightedMesh[length];
+    }
 
-		@Override
-		protected WeightedMesh createCopy( WeightedMesh src ) {
-			//todo?
-			return src;
-		}
-	};
+    @Override
+    protected WeightedMesh createCopy(WeightedMesh src) {
+      //todo?
+      return src;
+    }
+  };
 }

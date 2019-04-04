@@ -56,29 +56,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LogicalComplementOperandFillIn extends ExpressionFillInWithExpressionBlanks<LogicalComplement> {
-	private static class SingletonHolder {
-		private static LogicalComplementOperandFillIn instance = new LogicalComplementOperandFillIn();
-	}
+  private static class SingletonHolder {
+    private static LogicalComplementOperandFillIn instance = new LogicalComplementOperandFillIn();
+  }
 
-	public static LogicalComplementOperandFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static LogicalComplementOperandFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final LogicalComplement transientValue;
+  private final LogicalComplement transientValue;
 
-	private LogicalComplementOperandFillIn() {
-		super( UUID.fromString( "f70996fb-fd4e-4114-962b-ca14c33e134b" ), ExpressionBlank.createBlanks( Boolean.class ) );
-		this.transientValue = IncompleteAstUtilities.createIncompleteLogicalComplement();
-	}
+  private LogicalComplementOperandFillIn() {
+    super(UUID.fromString("f70996fb-fd4e-4114-962b-ca14c33e134b"), ExpressionBlank.createBlanks(Boolean.class));
+    this.transientValue = IncompleteAstUtilities.createIncompleteLogicalComplement();
+  }
 
-	@Override
-	protected LogicalComplement createValue( Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new LogicalComplement( expressions[ 0 ] );
-	}
+  @Override
+  protected LogicalComplement createValue(Expression[] expressions) {
+    assert expressions.length == 1;
+    return new LogicalComplement(expressions[0]);
+  }
 
-	@Override
-	public LogicalComplement getTransientValue( ItemNode<? super LogicalComplement, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public LogicalComplement getTransientValue(ItemNode<? super LogicalComplement, Expression> step) {
+    return this.transientValue;
+  }
 }

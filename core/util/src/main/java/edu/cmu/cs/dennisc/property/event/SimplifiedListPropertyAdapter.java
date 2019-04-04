@@ -47,48 +47,48 @@ package edu.cmu.cs.dennisc.property.event;
  */
 public abstract class SimplifiedListPropertyAdapter<E> implements ListPropertyListener<E> {
 
-	protected abstract void changing( ListPropertyEvent<E> e );
+  protected abstract void changing(ListPropertyEvent<E> e);
 
-	protected abstract void changed( ListPropertyEvent<E> e );
+  protected abstract void changed(ListPropertyEvent<E> e);
 
-	@Override
-	public final void adding( AddListPropertyEvent<E> e ) {
-		this.changing( e );
-	}
+  @Override
+  public final void adding(AddListPropertyEvent<E> e) {
+    this.changing(e);
+  }
 
-	@Override
-	public final void added( AddListPropertyEvent<E> e ) {
-		this.changed( e );
-	}
+  @Override
+  public final void added(AddListPropertyEvent<E> e) {
+    this.changed(e);
+  }
 
-	@Override
-	public final void clearing( ClearListPropertyEvent<E> e ) {
-		this.changing( e );
-	}
+  @Override
+  public final void clearing(ClearListPropertyEvent<E> e) {
+    this.changing(e);
+  }
 
-	@Override
-	public final void cleared( ClearListPropertyEvent<E> e ) {
-		this.changed( e );
-	}
+  @Override
+  public final void cleared(ClearListPropertyEvent<E> e) {
+    this.changed(e);
+  }
 
-	@Override
-	public final void removing( RemoveListPropertyEvent<E> e ) {
-		this.changing( e );
-	}
+  @Override
+  public final void removing(RemoveListPropertyEvent<E> e) {
+    this.changing(e);
+  }
 
-	@Override
-	public final void removed( RemoveListPropertyEvent<E> e ) {
-		this.changed( e );
-	}
+  @Override
+  public final void removed(RemoveListPropertyEvent<E> e) {
+    this.changed(e);
+  }
 
-	@Override
-	public final void setting( SetListPropertyEvent<E> e ) {
-		this.changing( e );
-	}
+  @Override
+  public final void setting(SetListPropertyEvent<E> e) {
+    this.changing(e);
+  }
 
-	@Override
-	public final void set( SetListPropertyEvent<E> e ) {
-		this.changed( e );
-	}
+  @Override
+  public final void set(SetListPropertyEvent<E> e) {
+    this.changed(e);
+  }
 
 }

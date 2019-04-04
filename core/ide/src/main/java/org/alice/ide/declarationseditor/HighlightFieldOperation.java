@@ -56,37 +56,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class HighlightFieldOperation extends Operation {
-	private static InitializingIfAbsentMap<UserField, HighlightFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserField, HighlightFieldOperation> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized HighlightFieldOperation getInstance( UserField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, HighlightFieldOperation>() {
-			@Override
-			public HighlightFieldOperation initialize( UserField field ) {
-				return new HighlightFieldOperation( field );
-			}
-		} );
-	}
+  public static synchronized HighlightFieldOperation getInstance(UserField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, HighlightFieldOperation>() {
+      @Override
+      public HighlightFieldOperation initialize(UserField field) {
+        return new HighlightFieldOperation(field);
+      }
+    });
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	public HighlightFieldOperation( UserField field ) {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
-	}
+  public HighlightFieldOperation(UserField field) {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("00efc2dd-dab5-4116-9fa2-207d8bfc4025"));
+    this.field = field;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName(this.field.getName());
+    this.setSmallIcon(DeclarationTabState.getFieldIcon());
+  }
 
-	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
-		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField( this.field, null );
-		userActivity.finish();
-	}
+  @Override
+  protected void performInActivity(UserActivity userActivity) {
+    userActivity.setCompletionModel(this);
+    DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    tabState.setValueTransactionlessly(TypeComposite.getInstance(this.field.getDeclaringType()));
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField(this.field, null);
+    userActivity.finish();
+  }
 }

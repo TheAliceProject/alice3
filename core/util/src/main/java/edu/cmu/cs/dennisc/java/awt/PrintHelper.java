@@ -62,153 +62,153 @@ import java.awt.print.PrinterException;
  * @author Dennis Cosgrove
  */
 public class PrintHelper implements Printable {
-	public static class Builder {
-		private final Insets insets;
-		private final Paint clearPaint;
-		private Component lineStart;
-		private Component lineEnd;
-		private Component pageStart;
-		private Component pageEnd;
-		private Component center;
+  public static class Builder {
+    private final Insets insets;
+    private final Paint clearPaint;
+    private Component lineStart;
+    private Component lineEnd;
+    private Component pageStart;
+    private Component pageEnd;
+    private Component center;
 
-		public Builder( Insets insets, Paint clearPaint ) {
-			this.insets = insets;
-			this.clearPaint = clearPaint;
-		}
+    public Builder(Insets insets, Paint clearPaint) {
+      this.insets = insets;
+      this.clearPaint = clearPaint;
+    }
 
-		public Builder lineStart( Component lineStart ) {
-			this.lineStart = lineStart;
-			return this;
-		}
+    public Builder lineStart(Component lineStart) {
+      this.lineStart = lineStart;
+      return this;
+    }
 
-		public Builder lineEnd( Component lineEnd ) {
-			this.lineEnd = lineEnd;
-			return this;
-		}
+    public Builder lineEnd(Component lineEnd) {
+      this.lineEnd = lineEnd;
+      return this;
+    }
 
-		public Builder pageStart( Component pageStart ) {
-			this.pageStart = pageStart;
-			return this;
-		}
+    public Builder pageStart(Component pageStart) {
+      this.pageStart = pageStart;
+      return this;
+    }
 
-		public Builder pageEnd( Component pageEnd ) {
-			this.pageEnd = pageEnd;
-			return this;
-		}
+    public Builder pageEnd(Component pageEnd) {
+      this.pageEnd = pageEnd;
+      return this;
+    }
 
-		public Builder center( Component center ) {
-			this.center = center;
-			return this;
-		}
+    public Builder center(Component center) {
+      this.center = center;
+      return this;
+    }
 
-		public PrintHelper build() {
-			return new PrintHelper( this );
-		}
-	}
+    public PrintHelper build() {
+      return new PrintHelper(this);
+    }
+  }
 
-	private final Insets insets;
-	private final Paint clearPaint;
-	private final Component lineStart;
-	private final Component lineEnd;
-	private final Component pageStart;
-	private final Component pageEnd;
-	private final Component center;
+  private final Insets insets;
+  private final Paint clearPaint;
+  private final Component lineStart;
+  private final Component lineEnd;
+  private final Component pageStart;
+  private final Component pageEnd;
+  private final Component center;
 
-	private static Component getViewportViewIfNecessary( Component component ) {
-		if( component instanceof JScrollPane ) {
-			JScrollPane jScrollPane = (JScrollPane)component;
-			return jScrollPane.getViewport().getView();
-		} else {
-			return component;
-		}
-	}
+  private static Component getViewportViewIfNecessary(Component component) {
+    if (component instanceof JScrollPane) {
+      JScrollPane jScrollPane = (JScrollPane) component;
+      return jScrollPane.getViewport().getView();
+    } else {
+      return component;
+    }
+  }
 
-	private static void printAll( Graphics2D g2, Component component ) {
-		if( component != null ) {
-			int x = component.getX();
-			int y = component.getY();
-			g2.translate( x, y );
-			try {
-				Shape prevClip = g2.getClip();
-				try {
-					Component c = getViewportViewIfNecessary( component );
-					Dimension size = c.getPreferredSize();
-					g2.setClip( 0, 0, size.width, size.height );
-					getViewportViewIfNecessary( component ).printAll( g2 );
-				} finally {
-					g2.setClip( prevClip );
-				}
-			} finally {
-				g2.translate( -x, -y );
-			}
-		}
-	}
+  private static void printAll(Graphics2D g2, Component component) {
+    if (component != null) {
+      int x = component.getX();
+      int y = component.getY();
+      g2.translate(x, y);
+      try {
+        Shape prevClip = g2.getClip();
+        try {
+          Component c = getViewportViewIfNecessary(component);
+          Dimension size = c.getPreferredSize();
+          g2.setClip(0, 0, size.width, size.height);
+          getViewportViewIfNecessary(component).printAll(g2);
+        } finally {
+          g2.setClip(prevClip);
+        }
+      } finally {
+        g2.translate(-x, -y);
+      }
+    }
+  }
 
-	private PrintHelper( Builder builder ) {
-		this.insets = builder.insets;
-		this.clearPaint = builder.clearPaint;
-		this.lineStart = builder.lineStart;
-		this.lineEnd = builder.lineEnd;
-		this.pageStart = builder.pageStart;
-		this.pageEnd = builder.pageEnd;
-		this.center = builder.center;
-	}
+  private PrintHelper(Builder builder) {
+    this.insets = builder.insets;
+    this.clearPaint = builder.clearPaint;
+    this.lineStart = builder.lineStart;
+    this.lineEnd = builder.lineEnd;
+    this.pageStart = builder.pageStart;
+    this.pageEnd = builder.pageEnd;
+    this.center = builder.center;
+  }
 
-	@Override
-	public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
-		if( pageIndex > 0 ) {
-			return Printable.NO_SUCH_PAGE;
-		} else {
-			Dimension size = getViewportViewIfNecessary( this.center ).getPreferredSize();
-			int width = size.width;
-			int height = size.height;
-			for( Component component : new Component[] { lineStart, lineEnd } ) {
-				if( component != null ) {
-					Dimension componentSize = component.getPreferredSize();
-					width += componentSize.width;
-					height = Math.max( height, componentSize.height );
-				}
-			}
-			for( Component component : new Component[] { pageStart, pageEnd } ) {
-				if( component != null ) {
-					Dimension componentSize = component.getPreferredSize();
-					width = Math.max( width, componentSize.width );
-					height += componentSize.height;
-				}
-			}
+  @Override
+  public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+    if (pageIndex > 0) {
+      return Printable.NO_SUCH_PAGE;
+    } else {
+      Dimension size = getViewportViewIfNecessary(this.center).getPreferredSize();
+      int width = size.width;
+      int height = size.height;
+      for (Component component : new Component[] {lineStart, lineEnd}) {
+        if (component != null) {
+          Dimension componentSize = component.getPreferredSize();
+          width += componentSize.width;
+          height = Math.max(height, componentSize.height);
+        }
+      }
+      for (Component component : new Component[] {pageStart, pageEnd}) {
+        if (component != null) {
+          Dimension componentSize = component.getPreferredSize();
+          width = Math.max(width, componentSize.width);
+          height += componentSize.height;
+        }
+      }
 
-			width += insets.left + insets.right;
-			height += insets.top + insets.bottom;
+      width += insets.left + insets.right;
+      height += insets.top + insets.bottom;
 
-			Graphics2D g2 = (Graphics2D)g;
-			AffineTransform prevTransform = g2.getTransform();
-			try {
-				double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				if( scale > 1.0 ) {
-					g2.scale( 1.0 / scale, 1.0 / scale );
-				}
+      Graphics2D g2 = (Graphics2D) g;
+      AffineTransform prevTransform = g2.getTransform();
+      try {
+        double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
+        g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+        if (scale > 1.0) {
+          g2.scale(1.0 / scale, 1.0 / scale);
+        }
 
-				g2.setPaint( this.clearPaint );
-				g2.fillRect( 0, 0, width, height );
+        g2.setPaint(this.clearPaint);
+        g2.fillRect(0, 0, width, height);
 
-				printAll( g2, this.center );
-				printAll( g2, this.pageStart );
-				printAll( g2, this.lineStart );
+        printAll(g2, this.center);
+        printAll(g2, this.pageStart);
+        printAll(g2, this.lineStart);
 
-				if( lineEnd != null ) {
-					Logger.todo( lineEnd );
-				}
+        if (lineEnd != null) {
+          Logger.todo(lineEnd);
+        }
 
-				if( pageEnd != null ) {
-					Logger.todo( pageEnd );
-				}
+        if (pageEnd != null) {
+          Logger.todo(pageEnd);
+        }
 
-			} finally {
-				g2.setTransform( prevTransform );
-			}
-			return Printable.PAGE_EXISTS;
-		}
-	}
+      } finally {
+        g2.setTransform(prevTransform);
+      }
+      return Printable.PAGE_EXISTS;
+    }
+  }
 
 }

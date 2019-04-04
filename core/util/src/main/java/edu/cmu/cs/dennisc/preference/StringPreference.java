@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class StringPreference extends Preference<String> {
-	public StringPreference( String defaultValue ) {
-		super( defaultValue );
-	}
+  public StringPreference(String defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected String getValue( Preferences utilPrefs, String key, String defaultValue ) {
-		return utilPrefs.get( key, defaultValue );
-	}
+  @Override
+  protected String getValue(Preferences utilPrefs, String key, String defaultValue) {
+    return utilPrefs.get(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, String nextValue ) {
-		utilPrefs.put( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, String nextValue) {
+    utilPrefs.put(key, nextValue);
+  }
 }

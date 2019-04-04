@@ -47,90 +47,85 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class ClippedPlane {
-	private final Point3[] points = {
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3()
-	};
-	private final Vector3 normal = new Vector3();
+  private final Point3[] points = {new Point3(), new Point3(), new Point3(), new Point3()};
+  private final Vector3 normal = new Vector3();
 
-	public ClippedPlane( Point3[] points, Vector3 normal ) {
-		set( points, normal );
-	}
+  public ClippedPlane(Point3[] points, Vector3 normal) {
+    set(points, normal);
+  }
 
-	private boolean isEqual( ClippedPlane other ) {
-		for( int i = 0; i < this.points.length; i++ ) {
-			if( this.points[ i ].equals( other.points[ i ] ) ) {
-				// pass
-			} else {
-				return false;
-			}
-		}
-		if( this.normal.equals( other.normal ) ) {
-			// pass
-		} else {
-			return false;
-		}
-		return true;
-	}
+  private boolean isEqual(ClippedPlane other) {
+    for (int i = 0; i < this.points.length; i++) {
+      if (this.points[i].equals(other.points[i])) {
+        // pass
+      } else {
+        return false;
+      }
+    }
+    if (this.normal.equals(other.normal)) {
+      // pass
+    } else {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	public final int hashCode() {
-		int rv = 17;
-		for( Point3 point : this.points ) {
-			rv = ( 37 * rv ) + point.hashCode();
-		}
-		rv = ( 37 * rv ) + this.normal.hashCode();
-		return rv;
-	}
+  @Override
+  public final int hashCode() {
+    int rv = 17;
+    for (Point3 point : this.points) {
+      rv = (37 * rv) + point.hashCode();
+    }
+    rv = (37 * rv) + this.normal.hashCode();
+    return rv;
+  }
 
-	@Override
-	public boolean equals( Object other ) {
-		if( other == this ) {
-			return true;
-		}
-		if( other instanceof ClippedPlane ) {
-			return isEqual( (ClippedPlane)other );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (other instanceof ClippedPlane) {
+      return isEqual((ClippedPlane) other);
+    } else {
+      return false;
+    }
+  }
 
-	public void set( Point3[] points, Vector3 normal ) {
-		for( int i = 0; i < this.points.length; i++ ) {
-			this.points[ i ].set( points[ i ] );
-		}
-		this.normal.set( normal );
-	}
+  public void set(Point3[] points, Vector3 normal) {
+    for (int i = 0; i < this.points.length; i++) {
+      this.points[i].set(points[i]);
+    }
+    this.normal.set(normal);
+  }
 
-	public void setNaN() {
-		for( Point3 point : this.points ) {
-			point.setNaN();
-		}
-		this.normal.setNaN();
-	}
+  public void setNaN() {
+    for (Point3 point : this.points) {
+      point.setNaN();
+    }
+    this.normal.setNaN();
+  }
 
-	public boolean isNaN() {
-		for( Point3 point : this.points ) {
-			if( point.isNaN() ) {
-				return true;
-			}
-		}
-		if( this.normal.isNaN() ) {
-			return true;
-		}
-		return false;
-	}
+  public boolean isNaN() {
+    for (Point3 point : this.points) {
+      if (point.isNaN()) {
+        return true;
+      }
+    }
+    if (this.normal.isNaN()) {
+      return true;
+    }
+    return false;
+  }
 
-	public void transform( AbstractMatrix4x4 m ) {
-		for( Point3 point : this.points ) {
-			m.transform( point );
-		}
-		m.transform( this.normal );
-	}
+  public void transform(AbstractMatrix4x4 m) {
+    for (Point3 point : this.points) {
+      m.transform(point);
+    }
+    m.transform(this.normal);
+  }
 
-	public Plane getPlane() {
-		return Plane.createInstance( this.points[ 0 ], this.normal );
-	}
+  public Plane getPlane() {
+    return Plane.createInstance(this.points[0], this.normal);
+  }
 }

@@ -52,49 +52,49 @@ import edu.cmu.cs.dennisc.texture.Texture;
  * @author Dennis Cosgrove
  */
 public class TexturedAppearance extends SimpleAppearance {
-	public final InstanceProperty<Texture> diffuseColorTexture = new InstanceProperty<Texture>( this, null );
-	public final BooleanProperty isDiffuseColorTextureAlphaBlended = new BooleanProperty( this, false );
-	public final BooleanProperty isDiffuseColorTextureClamped = new BooleanProperty( this, false );
-	public final InstanceProperty<Texture> bumpTexture = new InstanceProperty<Texture>( this, null );
-	public final IntegerProperty textureId = new IntegerProperty( this, -1 );
+  public final InstanceProperty<Texture> diffuseColorTexture = new InstanceProperty<Texture>(this, null);
+  public final BooleanProperty isDiffuseColorTextureAlphaBlended = new BooleanProperty(this, false);
+  public final BooleanProperty isDiffuseColorTextureClamped = new BooleanProperty(this, false);
+  public final InstanceProperty<Texture> bumpTexture = new InstanceProperty<Texture>(this, null);
+  public final IntegerProperty textureId = new IntegerProperty(this, -1);
 
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		//todo: remove? referenceCount?
-		if( diffuseColorTexture.getValue() != null ) {
-			diffuseColorTexture.getValue().release();
-		}
-		//todo: remove? referenceCount?
-		if( bumpTexture.getValue() != null ) {
-			bumpTexture.getValue().release();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    //todo: remove? referenceCount?
+    if (diffuseColorTexture.getValue() != null) {
+      diffuseColorTexture.getValue().release();
+    }
+    //todo: remove? referenceCount?
+    if (bumpTexture.getValue() != null) {
+      bumpTexture.getValue().release();
+    }
+  }
 
-	public void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended ) {
-		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
-	}
+  public void setDiffuseColorTextureAlphaBlended(boolean isDiffuseColorTextureAlphaBlended) {
+    this.isDiffuseColorTextureAlphaBlended.setValue(isDiffuseColorTextureAlphaBlended);
+  }
 
-	public void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped ) {
-		this.isDiffuseColorTextureClamped.setValue( isDiffuseColorTextureClamped );
-	}
+  public void setDiffuseColorTextureClamped(boolean isDiffuseColorTextureClamped) {
+    this.isDiffuseColorTextureClamped.setValue(isDiffuseColorTextureClamped);
+  }
 
-	public void setDiffuseColorTexture( Texture diffuseColorTexture ) {
-		this.diffuseColorTexture.setValue( diffuseColorTexture );
-	}
+  public void setDiffuseColorTexture(Texture diffuseColorTexture) {
+    this.diffuseColorTexture.setValue(diffuseColorTexture);
+  }
 
-	public void setDiffuseColorTextureAndInferAlphaBlend( Texture diffuseColorTexture ) {
-		boolean isDiffuseColorTextureAlphaBlended;
-		if( diffuseColorTexture != null ) {
-			isDiffuseColorTextureAlphaBlended = diffuseColorTexture.isPotentiallyAlphaBlended();
-		} else {
-			isDiffuseColorTextureAlphaBlended = false;
-		}
-		this.diffuseColorTexture.setValue( diffuseColorTexture );
-		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
-	}
+  public void setDiffuseColorTextureAndInferAlphaBlend(Texture diffuseColorTexture) {
+    boolean isDiffuseColorTextureAlphaBlended;
+    if (diffuseColorTexture != null) {
+      isDiffuseColorTextureAlphaBlended = diffuseColorTexture.isPotentiallyAlphaBlended();
+    } else {
+      isDiffuseColorTextureAlphaBlended = false;
+    }
+    this.diffuseColorTexture.setValue(diffuseColorTexture);
+    this.isDiffuseColorTextureAlphaBlended.setValue(isDiffuseColorTextureAlphaBlended);
+  }
 
-	public void setBumpTexture( Texture bumpTexture ) {
-		this.bumpTexture.setValue( bumpTexture );
-	}
+  public void setBumpTexture(Texture bumpTexture) {
+    this.bumpTexture.setValue(bumpTexture);
+  }
 }

@@ -50,28 +50,28 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class ExportProjectOperation extends AbstractSaveProjectOperation {
-	public ExportProjectOperation() {
-		super( UUID.fromString( "44ffba8a-ff13-4cb5-9736-55cd93c48e9d" ) );
-	}
+  public ExportProjectOperation() {
+    super(UUID.fromString("44ffba8a-ff13-4cb5-9736-55cd93c48e9d"));
+  }
 
-	@Override
-	protected boolean isPromptNecessary( File file ) {
-		return true;
-	}
+  @Override
+  protected boolean isPromptNecessary(File file) {
+    return true;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setButtonIcon( Icons.SAVE_DOCUMENT_SMALL );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setButtonIcon(Icons.SAVE_DOCUMENT_SMALL);
+  }
 
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
-	}
+  @Override
+  public boolean isToolBarTextClobbered() {
+    return true;
+  }
 
-	@Override
-	protected void save( ProjectApplication application, File file ) throws IOException {
-		application.exportProjectTo( file );
-	}
+  @Override
+  protected void save(ProjectApplication application, File file) throws IOException {
+    application.exportProjectTo(file);
+  }
 }

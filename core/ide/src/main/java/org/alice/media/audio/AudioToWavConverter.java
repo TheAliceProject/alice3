@@ -57,28 +57,28 @@ import java.io.IOException;
  */
 public class AudioToWavConverter {
 
-	private static final float RATE_44 = 44100f;
-	public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
+  private static final float RATE_44 = 44100f;
+  public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false);
 
-	public static AudioResource convertAudioIfNecessary( AudioResource resource ) {
-		if( !AudioResourceConverter.needsConverting( resource, QUICKTIME_AUDIO_FORMAT_PCM ) ) {
-			return resource;
-		}
-		try {
-			File outputFile = File.createTempFile( "project-sample", ".wav" );
-			outputFile.deleteOnExit();
-			FFmpegProcess ffmpegProcess = new FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
-			ffmpegProcess.start();
-			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
-			ffmpegProcess.getProcessOutputStream().flush();
-			int status = ffmpegProcess.stop();
-			if( status != 0 ) {
-				Logger.severe( "encoding failed; status != 0", status );
-				throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
-			}
-			return new AudioResource( outputFile );
-		} catch( IOException e ) {
-			throw new RuntimeException( "unable to create Temp File", e );
-		}
-	}
+  public static AudioResource convertAudioIfNecessary(AudioResource resource) {
+    if (!AudioResourceConverter.needsConverting(resource, QUICKTIME_AUDIO_FORMAT_PCM)) {
+      return resource;
+    }
+    try {
+      File outputFile = File.createTempFile("project-sample", ".wav");
+      outputFile.deleteOnExit();
+      FFmpegProcess ffmpegProcess = new FFmpegProcess("-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf(RATE_44), outputFile.getAbsolutePath());
+      ffmpegProcess.start();
+      ffmpegProcess.getProcessOutputStream().write(resource.getData());
+      ffmpegProcess.getProcessOutputStream().flush();
+      int status = ffmpegProcess.stop();
+      if (status != 0) {
+        Logger.severe("encoding failed; status != 0", status);
+        throw new FFmpegProcessException(ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError());
+      }
+      return new AudioResource(outputFile);
+    } catch (IOException e) {
+      throw new RuntimeException("unable to create Temp File", e);
+    }
+  }
 }

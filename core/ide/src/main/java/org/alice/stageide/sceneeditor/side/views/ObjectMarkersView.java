@@ -48,7 +48,7 @@ import org.alice.stageide.sceneeditor.side.ObjectMarkersToolPalette;
  * @author Dennis Cosgrove
  */
 public class ObjectMarkersView extends MarkersView {
-	public ObjectMarkersView( ObjectMarkersToolPalette composite ) {
-		super( composite );
-	}
+  public ObjectMarkersView(ObjectMarkersToolPalette composite) {
+    super(composite);
+  }
 }

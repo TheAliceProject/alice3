@@ -47,111 +47,96 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
-public class Indices implements BinaryEncodableAndDecodable
-{
-	private int[] indices;
-	private boolean isInNeedOfIndexAdjustment;
+public class Indices implements BinaryEncodableAndDecodable {
+  private int[] indices;
+  private boolean isInNeedOfIndexAdjustment;
 
-	public Indices()
-	{
-		this.indices = new int[ 0 ];
-		this.isInNeedOfIndexAdjustment = true;
-	}
+  public Indices() {
+    this.indices = new int[0];
+    this.isInNeedOfIndexAdjustment = true;
+  }
 
-	public int[] getIndices()
-	{
-		return this.indices;
-	}
+  public int[] getIndices() {
+    return this.indices;
+  }
 
-	public int getIndexCount()
-	{
-		return this.indices.length;
-	}
+  public int getIndexCount() {
+    return this.indices.length;
+  }
 
-	public void setIndices( int[] indices, boolean needsAdjustment )
-	{
-		this.indices = indices;
-		this.isInNeedOfIndexAdjustment = needsAdjustment;
-		adjustIndicesIfNecessary();
-	}
+  public void setIndices(int[] indices, boolean needsAdjustment) {
+    this.indices = indices;
+    this.isInNeedOfIndexAdjustment = needsAdjustment;
+    adjustIndicesIfNecessary();
+  }
 
-	public void setIndices( short[] indices, boolean needsAdjustment )
-	{
-		this.indices = new int[ indices.length ];
-		for( int i = 0; i < indices.length; i++ )
-		{
-			this.indices[ i ] = indices[ i ];
-		}
-		this.isInNeedOfIndexAdjustment = needsAdjustment;
-		adjustIndicesIfNecessary();
-	}
+  public void setIndices(short[] indices, boolean needsAdjustment) {
+    this.indices = new int[indices.length];
+    for (int i = 0; i < indices.length; i++) {
+      this.indices[i] = indices[i];
+    }
+    this.isInNeedOfIndexAdjustment = needsAdjustment;
+    adjustIndicesIfNecessary();
+  }
 
-	public int getTriangleCount()
-	{
-		return this.indices.length / 9;
-	}
+  public int getTriangleCount() {
+    return this.indices.length / 9;
+  }
 
-	public void adjustIndicesIfNecessary()
-	{
-		if( this.isInNeedOfIndexAdjustment )
-		{
-			//Adjust the indices to account for the fact that vertices are 3 floats, normals are 3 floats and UVs are 2 floats
-			for( int i = 0; i < this.indices.length; ) {
-				this.indices[ i ] = this.indices[ i ] * 2;
-				i++;
-				this.indices[ i ] = this.indices[ i ] * 3;
-				i++;
-				this.indices[ i ] = this.indices[ i ] * 3;
-				i++;
-			}
-			this.isInNeedOfIndexAdjustment = false;
-		}
-	}
+  public void adjustIndicesIfNecessary() {
+    if (this.isInNeedOfIndexAdjustment) {
+      //Adjust the indices to account for the fact that vertices are 3 floats, normals are 3 floats and UVs are 2 floats
+      for (int i = 0; i < this.indices.length; ) {
+        this.indices[i] = this.indices[i] * 2;
+        i++;
+        this.indices[i] = this.indices[i] * 3;
+        i++;
+        this.indices[i] = this.indices[i] * 3;
+        i++;
+      }
+      this.isInNeedOfIndexAdjustment = false;
+    }
+  }
 
-	public int getTextureCoordinateIndex( int triangleIndex, int vertexIndex )
-	{
-		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) ];
-		if( this.isInNeedOfIndexAdjustment ) {
-			//pass
-		} else {
-			nRV /= 2;
-		}
-		return nRV;
-	}
+  public int getTextureCoordinateIndex(int triangleIndex, int vertexIndex) {
+    int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3)];
+    if (this.isInNeedOfIndexAdjustment) {
+      //pass
+    } else {
+      nRV /= 2;
+    }
+    return nRV;
+  }
 
-	public int getNormalIndex( int triangleIndex, int vertexIndex )
-	{
-		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) + 1 ];
-		if( this.isInNeedOfIndexAdjustment ) {
-			//pass
-		} else {
-			nRV /= 3;
-		}
-		return nRV;
-	}
+  public int getNormalIndex(int triangleIndex, int vertexIndex) {
+    int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3) + 1];
+    if (this.isInNeedOfIndexAdjustment) {
+      //pass
+    } else {
+      nRV /= 3;
+    }
+    return nRV;
+  }
 
-	public int getVertexIndex( int triangleIndex, int vertexIndex )
-	{
-		int nRV = this.indices[ ( triangleIndex * 9 ) + ( vertexIndex * 3 ) + 2 ];
-		if( this.isInNeedOfIndexAdjustment ) {
-			//pass
-		} else {
-			nRV /= 3;
-		}
-		return nRV;
-	}
+  public int getVertexIndex(int triangleIndex, int vertexIndex) {
+    int nRV = this.indices[(triangleIndex * 9) + (vertexIndex * 3) + 2];
+    if (this.isInNeedOfIndexAdjustment) {
+      //pass
+    } else {
+      nRV /= 3;
+    }
+    return nRV;
+  }
 
-	public void decode( BinaryDecoder binaryDecoder )
-	{
-		this.indices = binaryDecoder.decodeIntArray();
-		this.isInNeedOfIndexAdjustment = false;
-	}
+  public void decode(BinaryDecoder binaryDecoder) {
+    this.indices = binaryDecoder.decodeIntArray();
+    this.isInNeedOfIndexAdjustment = false;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder )
-	{
-		this.adjustIndicesIfNecessary();
-		binaryEncoder.encode( this.indices );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    this.adjustIndicesIfNecessary();
+    binaryEncoder.encode(this.indices);
+  }
 
 }

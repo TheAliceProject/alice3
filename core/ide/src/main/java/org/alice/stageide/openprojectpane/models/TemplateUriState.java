@@ -63,215 +63,201 @@ import org.lgna.story.SGround;
  * @author Dennis Cosgrove
  */
 public class TemplateUriState extends ImmutableDataSingleSelectListState<URI> {
-	public static final String SCHEME = "gen";
+  public static final String SCHEME = "gen";
 
-	public static enum Template {
-		GRASS( SGround.SurfaceAppearance.GRASS, new Color( 150 / 255.0, 226 / 255.0, 252 / 255.0 ) ),
-		SEA_FLOOR( SGround.SurfaceAppearance.OCEAN_FLOOR, new Color( 0.0, .431, .859 ), 0.3, Color.WHITE, new Color( 0, .549, .565 ) ),
-		MOON( SGround.SurfaceAppearance.MOON, new Color( .11, .133, .178 ), 0, Color.WHITE, new Color( .0, .118, .396 ) ),
-		MARS( SGround.SurfaceAppearance.MARS, new Color( .847, .69, .588 ), 0.25, Color.WHITE, new Color( .541, .2, .0 ) ),
+  public static enum Template {
+    GRASS(SGround.SurfaceAppearance.GRASS, new Color(150 / 255.0, 226 / 255.0, 252 / 255.0)), SEA_FLOOR(SGround.SurfaceAppearance.OCEAN_FLOOR, new Color(0.0, .431, .859), 0.3, Color.WHITE, new Color(0, .549, .565)), MOON(SGround.SurfaceAppearance.MOON, new Color(.11, .133, .178), 0, Color.WHITE, new Color(.0, .118, .396)), MARS(SGround.SurfaceAppearance.MARS, new Color(.847, .69, .588), 0.25, Color.WHITE, new Color(.541, .2, .0)),
 
-		SNOW( SGround.SurfaceAppearance.SNOW, new Color( .82, .941, 1.0 ), 0.22, Color.WHITE, Color.WHITE ),
-		ROOM( NebulousIde.nonfree.getFloorApperanceRedwood(), NebulousIde.nonfree.getWallApperanceYellow(), Color.WHITE ),
-		WONDERLAND( SGround.SurfaceAppearance.DARK_GRASS, new Color( 0.0, .0941, .294 ), .1, Color.WHITE, new Color( .541, 0.0, .125 ) ),
-		SEA_SURFACE( SGround.SurfaceAppearance.OCEAN, new Color( .659, .902, .922 ), .16, Color.WHITE, new Color( .0, .424, .761 ), .7 ),
+    SNOW(SGround.SurfaceAppearance.SNOW, new Color(.82, .941, 1.0), 0.22, Color.WHITE, Color.WHITE), ROOM(NebulousIde.nonfree.getFloorApperanceRedwood(), NebulousIde.nonfree.getWallApperanceYellow(), Color.WHITE), WONDERLAND(SGround.SurfaceAppearance.DARK_GRASS, new Color(0.0, .0941, .294), .1, Color.WHITE, new Color(.541, 0.0, .125)), SEA_SURFACE(SGround.SurfaceAppearance.OCEAN, new Color(.659, .902, .922), .16, Color.WHITE, new Color(.0, .424, .761), .7),
 
-		LAGOON_FLOOR( SGround.SurfaceAppearance.DESERT, new Color( .294, .863, 1.0 ), 0.16, Color.WHITE, new Color( 1.0, .851, 0.0 ) ),
-		SWAMP( SGround.SurfaceAppearance.SWAMP, new Color( .0667, .118, .122 ), 0.27, Color.WHITE, new Color( .0, 1.0, .741 ), .7 ),
-		DESERT( SGround.SurfaceAppearance.SANDY_DESERT, new Color( .886, .831, .51 ), 0.2, Color.WHITE, new Color( .322, .0745, .0 ) ),
-		DIRT( SGround.SurfaceAppearance.ROCKY_BROWN, new Color( .514, .376, .278 ), 0, Color.WHITE, new Color( .384, .0, .22 ) ),
+    LAGOON_FLOOR(SGround.SurfaceAppearance.DESERT, new Color(.294, .863, 1.0), 0.16, Color.WHITE, new Color(1.0, .851, 0.0)), SWAMP(SGround.SurfaceAppearance.SWAMP, new Color(.0667, .118, .122), 0.27, Color.WHITE, new Color(.0, 1.0, .741), .7), DESERT(SGround.SurfaceAppearance.SANDY_DESERT, new Color(.886, .831, .51), 0.2, Color.WHITE, new Color(.322, .0745, .0)), DIRT(SGround.SurfaceAppearance.ROCKY_BROWN, new Color(.514, .376, .278), 0, Color.WHITE, new Color(.384, .0, .22)),
 
-		SEA_SURFACE_NIGHT( SGround.SurfaceAppearance.OCEAN_NIGHT, new Color( .0, .11, .149 ), .2, Color.WHITE, new Color( .529, 1.0, .0 ), .5 ),
-		ICE( SGround.SurfaceAppearance.ICE, new Color( .0, .278, .392 ), .15, Color.WHITE, new Color( .0, .859, 1.0 ), .7 ),
-		AMAZON( SGround.SurfaceAppearance.JUNGLE, new Color( .918, 1.0, .471 ), .25, new Color( .341, .576, 1.0 ), new Color( .0, .00784, .38 ) ),
-		NORTHWEST_ISLAND( SGround.SurfaceAppearance.OCEAN, new Color( .663, .718, .843 ), .15, Color.WHITE, new Color( 0, .235, .153 ), .5 ),
+    SEA_SURFACE_NIGHT(SGround.SurfaceAppearance.OCEAN_NIGHT, new Color(.0, .11, .149), .2, Color.WHITE, new Color(.529, 1.0, .0), .5), ICE(SGround.SurfaceAppearance.ICE, new Color(.0, .278, .392), .15, Color.WHITE, new Color(.0, .859, 1.0), .7), AMAZON(SGround.SurfaceAppearance.JUNGLE, new Color(.918, 1.0, .471), .25, new Color(.341, .576, 1.0), new Color(.0, .00784, .38)), NORTHWEST_ISLAND(SGround.SurfaceAppearance.OCEAN, new Color(.663, .718, .843), .15, Color.WHITE, new Color(0, .235, .153), .5),
 
-		NORTHWEST_FOREST( SGround.SurfaceAppearance.FOREST_FLOOR, new Color( .427, .533, .51 ), .2 ),
-		MAGIC( SGround.SurfaceAppearance.SWAMP, new Color( .0667, .118, .125 ), .27, Color.WHITE, new Color( .169, .231, .29 ), .7 ),
-		GRASSY_DESERT( SGround.SurfaceAppearance.DRY_GRASS, new Color( .835, .769, .518 ), .13 ),
-		MARS_NIGHT( SGround.SurfaceAppearance.MARS, new Color( .11, .0824, .255 ), 0.25, Color.WHITE, new Color( .541, .2, .0 ) );
-		public static Template getSurfaceAppearance( URI uri ) {
-			if( isValidUri( uri ) ) {
-				String fragment = uri.getFragment();
-				if( fragment != null ) {
-					return Template.valueOf( fragment );
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
+    NORTHWEST_FOREST(SGround.SurfaceAppearance.FOREST_FLOOR, new Color(.427, .533, .51), .2), MAGIC(SGround.SurfaceAppearance.SWAMP, new Color(.0667, .118, .125), .27, Color.WHITE, new Color(.169, .231, .29), .7), GRASSY_DESERT(SGround.SurfaceAppearance.DRY_GRASS, new Color(.835, .769, .518), .13), MARS_NIGHT(SGround.SurfaceAppearance.MARS, new Color(.11, .0824, .255), 0.25, Color.WHITE, new Color(.541, .2, .0));
 
-		public static boolean isValidUri( URI uri ) {
-			if( uri != null ) {
-				return SCHEME.equals( uri.getScheme() );
-			} else {
-				return false;
-			}
-		}
+    public static Template getSurfaceAppearance(URI uri) {
+      if (isValidUri(uri)) {
+        String fragment = uri.getFragment();
+        if (fragment != null) {
+          return Template.valueOf(fragment);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
 
-		private final SGround.SurfaceAppearance surfaceAppearance;
-		private final Paint floorAppearance;
-		private final Paint wallAppearance;
-		private final Paint ceilingAppearance;
-		//private final org.lgna.story.Color atmosphereColor;
-		private final Color atmosphereColor;
-		private final double fogDensity;
-		private final double groundOpacity;
-		private final Color aboveLightColor;
-		private final Color belowLightColor;
-		private final boolean isRoom;
+    public static boolean isValidUri(URI uri) {
+      if (uri != null) {
+        return SCHEME.equals(uri.getScheme());
+      } else {
+        return false;
+      }
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity ) {
-			this.surfaceAppearance = surfaceAppearance;
-			//this.atmosphereColor = atmosphereColor;
-			this.atmosphereColor = atmosphereColor;
-			this.fogDensity = fogDensity;
-			this.groundOpacity = groundOpacity;
-			this.aboveLightColor = aboveLightColor;
-			this.belowLightColor = belowLightColor;
-			this.isRoom = false;
-			this.floorAppearance = null;
-			this.wallAppearance = null;
-			this.ceilingAppearance = null;
-		}
+    private final SGround.SurfaceAppearance surfaceAppearance;
+    private final Paint floorAppearance;
+    private final Paint wallAppearance;
+    private final Paint ceilingAppearance;
+    //private final org.lgna.story.Color atmosphereColor;
+    private final Color atmosphereColor;
+    private final double fogDensity;
+    private final double groundOpacity;
+    private final Color aboveLightColor;
+    private final Color belowLightColor;
+    private final boolean isRoom;
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor ) {
-			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, belowLightColor, 1.0 );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
+      this.surfaceAppearance = surfaceAppearance;
+      //this.atmosphereColor = atmosphereColor;
+      this.atmosphereColor = atmosphereColor;
+      this.fogDensity = fogDensity;
+      this.groundOpacity = groundOpacity;
+      this.aboveLightColor = aboveLightColor;
+      this.belowLightColor = belowLightColor;
+      this.isRoom = false;
+      this.floorAppearance = null;
+      this.wallAppearance = null;
+      this.ceilingAppearance = null;
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor ) {
-			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
+      this(surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, belowLightColor, 1.0);
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity ) {
-			this( surfaceAppearance, atmosphereColor, fogDensity, null );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor) {
+      this(surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null);
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor ) {
-			this( surfaceAppearance, atmosphereColor, Double.NaN );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor, double fogDensity) {
+      this(surfaceAppearance, atmosphereColor, fogDensity, null);
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance ) {
-			this( surfaceAppearance, null );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Color atmosphereColor) {
+      this(surfaceAppearance, atmosphereColor, Double.NaN);
+    }
 
-		private Template( SGround.SurfaceAppearance surfaceAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance ) {
-			this.surfaceAppearance = surfaceAppearance;
-			//this.atmosphereColor = atmosphereColor;
-			this.atmosphereColor = null;
-			this.fogDensity = Double.NaN;
-			this.groundOpacity = 1.0;
-			this.aboveLightColor = null;
-			this.belowLightColor = null;
-			this.isRoom = true;
-			this.floorAppearance = floorAppearance;
-			this.wallAppearance = wallAppearance;
-			this.ceilingAppearance = ceilingAppearance;
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance) {
+      this(surfaceAppearance, null);
+    }
 
-		private Template( Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance ) {
-			this( null, floorAppearance, wallAppearance, ceilingAppearance );
-		}
+    private Template(SGround.SurfaceAppearance surfaceAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance) {
+      this.surfaceAppearance = surfaceAppearance;
+      //this.atmosphereColor = atmosphereColor;
+      this.atmosphereColor = null;
+      this.fogDensity = Double.NaN;
+      this.groundOpacity = 1.0;
+      this.aboveLightColor = null;
+      this.belowLightColor = null;
+      this.isRoom = true;
+      this.floorAppearance = floorAppearance;
+      this.wallAppearance = wallAppearance;
+      this.ceilingAppearance = ceilingAppearance;
+    }
 
-		public SGround.SurfaceAppearance getSurfaceAppearance() {
-			return this.surfaceAppearance;
-		}
+    private Template(Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance) {
+      this(null, floorAppearance, wallAppearance, ceilingAppearance);
+    }
 
-		public Paint getFloorAppearance() {
-			return this.floorAppearance;
-		}
+    public SGround.SurfaceAppearance getSurfaceAppearance() {
+      return this.surfaceAppearance;
+    }
 
-		public Paint getWallAppearance() {
-			return this.wallAppearance;
-		}
+    public Paint getFloorAppearance() {
+      return this.floorAppearance;
+    }
 
-		public Paint getCeilingAppearance() {
-			return this.ceilingAppearance;
-		}
+    public Paint getWallAppearance() {
+      return this.wallAppearance;
+    }
 
-		public boolean isRoom() {
-			return this.isRoom;
-		}
+    public Paint getCeilingAppearance() {
+      return this.ceilingAppearance;
+    }
 
-		//		public org.lgna.story.Color getAtmosphereColor() {
-		//			return this.atmosphereColor;
-		//		}
-		public Color getAtmospherColor() {
-			return this.atmosphereColor;
-		}
+    public boolean isRoom() {
+      return this.isRoom;
+    }
 
-		public Color getAboveLightColor() {
-			return this.aboveLightColor;
-		}
+    //    public org.lgna.story.Color getAtmosphereColor() {
+    //      return this.atmosphereColor;
+    //    }
+    public Color getAtmospherColor() {
+      return this.atmosphereColor;
+    }
 
-		public Color getBelowLightColor() {
-			return this.belowLightColor;
-		}
+    public Color getAboveLightColor() {
+      return this.aboveLightColor;
+    }
 
-		public double getFogDensity() {
-			return this.fogDensity;
-		}
+    public Color getBelowLightColor() {
+      return this.belowLightColor;
+    }
 
-		public double getGroundOpacity() {
-			return this.groundOpacity;
-		}
+    public double getFogDensity() {
+      return this.fogDensity;
+    }
 
-		public URI getUri() {
-			try {
-				//todo: investigate
-				String schemeSpecificPart = null;//org.lgna.story.Ground.SurfaceAppearance.class.getName();
-				String path = "/" + SGround.SurfaceAppearance.class.getName();
-				String fragment = this.name();
-				return new URI( SCHEME, schemeSpecificPart, path, fragment );
-			} catch( URISyntaxException urise ) {
-				throw new RuntimeException( urise );
-			}
-		}
-	};
+    public double getGroundOpacity() {
+      return this.groundOpacity;
+    }
 
-	private static URI[] createArray() {
-		List<URI> uris = new LinkedList<URI>();
+    public URI getUri() {
+      try {
+        //todo: investigate
+        String schemeSpecificPart = null; //org.lgna.story.Ground.SurfaceAppearance.class.getName();
+        String path = "/" + SGround.SurfaceAppearance.class.getName();
+        String fragment = this.name();
+        return new URI(SCHEME, schemeSpecificPart, path, fragment);
+      } catch (URISyntaxException urise) {
+        throw new RuntimeException(urise);
+      }
+    }
+  }
 
-		for( Template template : Template.values() ) {
-			if( !NebulousIde.nonfree.isNonFreeEnabled() && ( template == Template.ROOM ) ) {
-				// pass
-			} else {
-				uris.add( template.getUri() );
-			}
-		}
+  private static URI[] createArray() {
+    List<URI> uris = new LinkedList<URI>();
 
-		URI[] array = new URI[ uris.size() ];
-		uris.toArray( array );
-		return array;
-	}
+    for (Template template : Template.values()) {
+      if (!NebulousIde.nonfree.isNonFreeEnabled() && (template == Template.ROOM)) {
+        // pass
+      } else {
+        uris.add(template.getUri());
+      }
+    }
 
-	private static class SingletonHolder {
-		private static TemplateUriState instance = new TemplateUriState();
-	}
+    URI[] array = new URI[uris.size()];
+    uris.toArray(array);
+    return array;
+  }
 
-	public static TemplateUriState getInstance() {
-		return SingletonHolder.instance;
-	}
+  private static class SingletonHolder {
+    private static TemplateUriState instance = new TemplateUriState();
+  }
 
-	public static String getLocalizedName( Template templateValue ) {
-		return getLocalizedName( templateValue.toString() );
-	}
+  public static TemplateUriState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public static String getLocalizedName( String stateName ) {
-		ResourceBundle resourceBundle = ResourceBundle.getBundle( TemplateUriState.class.getPackage().getName() + ".templateNames" );
-		if( stateName != null ) {
-			try {
-				stateName = resourceBundle.getString( stateName );
-			} catch( MissingResourceException e ) {
-				e.printStackTrace();
-			}
-		}
-		return stateName;
-	}
+  public static String getLocalizedName(Template templateValue) {
+    return getLocalizedName(templateValue.toString());
+  }
 
-	private TemplateUriState() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), -1, UriCodec.SINGLETON, createArray() );
-	}
+  public static String getLocalizedName(String stateName) {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(TemplateUriState.class.getPackage().getName() + ".templateNames");
+    if (stateName != null) {
+      try {
+        stateName = resourceBundle.getString(stateName);
+      } catch (MissingResourceException e) {
+        e.printStackTrace();
+      }
+    }
+    return stateName;
+  }
+
+  private TemplateUriState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("53c45c6f-e14f-4a88-ae90-1942ed3f3483"), -1, UriCodec.SINGLETON, createArray());
+  }
 }

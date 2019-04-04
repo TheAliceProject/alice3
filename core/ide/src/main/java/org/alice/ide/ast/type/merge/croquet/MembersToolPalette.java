@@ -59,121 +59,121 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MembersToolPalette<V extends MembersView<?>, M extends Member> extends ToolPaletteCoreComposite<V> {
-	private final URI uriForDescriptionPurposesOnly;
-	private final List<M> unusedProjectMembers;
-	private final List<ImportOnly<M>> importOnlys = Lists.newLinkedList();
-	private final List<DifferentSignature<M>> differentSignatures = Lists.newLinkedList();
-	private final List<DifferentImplementation<M>> differentImplementations = Lists.newLinkedList();
-	private final List<Identical<M>> identicals = Lists.newLinkedList();
-	private List<ProjectOnly<M>> projectOnlys;
+  private final URI uriForDescriptionPurposesOnly;
+  private final List<M> unusedProjectMembers;
+  private final List<ImportOnly<M>> importOnlys = Lists.newLinkedList();
+  private final List<DifferentSignature<M>> differentSignatures = Lists.newLinkedList();
+  private final List<DifferentImplementation<M>> differentImplementations = Lists.newLinkedList();
+  private final List<Identical<M>> identicals = Lists.newLinkedList();
+  private List<ProjectOnly<M>> projectOnlys;
 
-	private final PlainStringValue fromImportHeader = this.createStringValue( "fromImportHeader" );
-	private final PlainStringValue alreadyInProjectHeader = this.createStringValue( "alreadyInProjectHeader" );
-	private final PlainStringValue resultHeader = this.createStringValue( "resultHeader" );
+  private final PlainStringValue fromImportHeader = this.createStringValue("fromImportHeader");
+  private final PlainStringValue alreadyInProjectHeader = this.createStringValue("alreadyInProjectHeader");
+  private final PlainStringValue resultHeader = this.createStringValue("resultHeader");
 
-	public MembersToolPalette( UUID migrationId, URI uriForDescriptionPurposesOnly, List<M> projectMembers ) {
-		super( migrationId, Application.INHERIT_GROUP, true );
-		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
-		this.unusedProjectMembers = projectMembers;
-	}
+  public MembersToolPalette(UUID migrationId, URI uriForDescriptionPurposesOnly, List<M> projectMembers) {
+    super(migrationId, Application.INHERIT_GROUP, true);
+    this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
+    this.unusedProjectMembers = projectMembers;
+  }
 
-	@Override
-	protected String modifyLocalizedText( Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.fromImportHeader ) {
-				rv = AddMembersPage.modifyFilenameLocalizedText( rv, this.uriForDescriptionPurposesOnly );
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected String modifyLocalizedText(Element element, String localizedText) {
+    String rv = super.modifyLocalizedText(element, localizedText);
+    if (rv != null) {
+      if (element == this.fromImportHeader) {
+        rv = AddMembersPage.modifyFilenameLocalizedText(rv, this.uriForDescriptionPurposesOnly);
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return new ScrollPane();
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return new ScrollPane();
+  }
 
-	public void addImportOnlyMember( M method ) {
-		this.importOnlys.add( new ImportOnly<M>( method ) );
-	}
+  public void addImportOnlyMember(M method) {
+    this.importOnlys.add(new ImportOnly<M>(method));
+  }
 
-	public void addDifferentSignatureMembers( M importMember, M projectMember ) {
-		this.differentSignatures.add( new DifferentSignature<M>( this.uriForDescriptionPurposesOnly, importMember, projectMember ) );
-		this.unusedProjectMembers.remove( projectMember );
-	}
+  public void addDifferentSignatureMembers(M importMember, M projectMember) {
+    this.differentSignatures.add(new DifferentSignature<M>(this.uriForDescriptionPurposesOnly, importMember, projectMember));
+    this.unusedProjectMembers.remove(projectMember);
+  }
 
-	public void addDifferentImplementationMembers( M importMember, M projectMember ) {
-		this.differentImplementations.add( new DifferentImplementation<M>( this.uriForDescriptionPurposesOnly, importMember, projectMember ) );
-		this.unusedProjectMembers.remove( projectMember );
-	}
+  public void addDifferentImplementationMembers(M importMember, M projectMember) {
+    this.differentImplementations.add(new DifferentImplementation<M>(this.uriForDescriptionPurposesOnly, importMember, projectMember));
+    this.unusedProjectMembers.remove(projectMember);
+  }
 
-	public void addIdenticalMembers( M importMember, M projectMember ) {
-		this.identicals.add( new Identical<M>( importMember, projectMember ) );
-		this.unusedProjectMembers.remove( projectMember );
-	}
+  public void addIdenticalMembers(M importMember, M projectMember) {
+    this.identicals.add(new Identical<M>(importMember, projectMember));
+    this.unusedProjectMembers.remove(projectMember);
+  }
 
-	public void reifyProjectOnly() {
-		this.projectOnlys = Lists.newLinkedList();
-		for( M method : this.unusedProjectMembers ) {
-			this.projectOnlys.add( new ProjectOnly<M>( method ) );
-		}
-	}
+  public void reifyProjectOnly() {
+    this.projectOnlys = Lists.newLinkedList();
+    for (M method : this.unusedProjectMembers) {
+      this.projectOnlys.add(new ProjectOnly<M>(method));
+    }
+  }
 
-	public List<ImportOnly<M>> getImportOnlys() {
-		return this.importOnlys;
-	}
+  public List<ImportOnly<M>> getImportOnlys() {
+    return this.importOnlys;
+  }
 
-	public List<DifferentSignature<M>> getDifferentSignatures() {
-		return this.differentSignatures;
-	}
+  public List<DifferentSignature<M>> getDifferentSignatures() {
+    return this.differentSignatures;
+  }
 
-	public List<DifferentImplementation<M>> getDifferentImplementations() {
-		return this.differentImplementations;
-	}
+  public List<DifferentImplementation<M>> getDifferentImplementations() {
+    return this.differentImplementations;
+  }
 
-	public List<Identical<M>> getIdenticals() {
-		return this.identicals;
-	}
+  public List<Identical<M>> getIdenticals() {
+    return this.identicals;
+  }
 
-	public List<ProjectOnly<M>> getProjectOnlys() {
-		return this.projectOnlys;
-	}
+  public List<ProjectOnly<M>> getProjectOnlys() {
+    return this.projectOnlys;
+  }
 
-	public PlainStringValue getFromImportHeader() {
-		return this.fromImportHeader;
-	}
+  public PlainStringValue getFromImportHeader() {
+    return this.fromImportHeader;
+  }
 
-	public PlainStringValue getAlreadyInProjectHeader() {
-		return this.alreadyInProjectHeader;
-	}
+  public PlainStringValue getAlreadyInProjectHeader() {
+    return this.alreadyInProjectHeader;
+  }
 
-	public PlainStringValue getResultHeader() {
-		return this.resultHeader;
-	}
+  public PlainStringValue getResultHeader() {
+    return this.resultHeader;
+  }
 
-	//	public int getActionItemCount() {
-	//		return this.differentSignatures.size() + this.differentImplementations.size();
-	//	}
-	//
-	//	public int getAddCount() {
-	//		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size();
-	//	}
-	//
-	//	public int getKeepCount() {
-	//		return this.differentImplementations.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
-	//	}
+  //  public int getActionItemCount() {
+  //    return this.differentSignatures.size() + this.differentImplementations.size();
+  //  }
+  //
+  //  public int getAddCount() {
+  //    return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size();
+  //  }
+  //
+  //  public int getKeepCount() {
+  //    return this.differentImplementations.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
+  //  }
 
-	public int getTotalCount() {
-		assert this.projectOnlys != null : this;
-		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
-	}
+  public int getTotalCount() {
+    assert this.projectOnlys != null : this;
+    return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
+  }
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
-		for( DifferentSignature<M> differentSignatureMember : this.differentSignatures ) {
-			differentSignatureMember.appendStatusPreRejectorCheck( sb );
-		}
-		for( DifferentImplementation<M> differentImplementationMember : this.differentImplementations ) {
-			differentImplementationMember.appendStatusPreRejectorCheck( sb );
-		}
-	}
+  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+    for (DifferentSignature<M> differentSignatureMember : this.differentSignatures) {
+      differentSignatureMember.appendStatusPreRejectorCheck(sb);
+    }
+    for (DifferentImplementation<M> differentImplementationMember : this.differentImplementations) {
+      differentImplementationMember.appendStatusPreRejectorCheck(sb);
+    }
+  }
 }

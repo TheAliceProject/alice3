@@ -112,438 +112,438 @@ import java.util.ListIterator;
  * @author Dennis Cosgrove
  */
 public abstract class CodePanelWithDropReceptor extends BorderPanel {
-	protected class InternalDropReceptor extends AbstractDropReceptor {
-		private ExpressionCascadeContext pushedContext;
+  protected class InternalDropReceptor extends AbstractDropReceptor {
+    private ExpressionCascadeContext pushedContext;
 
-		@Override
-		public final boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
-			IDE ide = IDE.getActiveInstance();
-			if( DeclarationMeta.getDeclaration() == getCode() ) {
-				if( dragModel instanceof AbstractStatementDragModel ) {
-					return true;
-				} else if( dragModel instanceof AbstractExpressionDragModel ) {
-					AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel)dragModel;
-					return expressionDragModel.isPotentialStatementCreator();
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
+    @Override
+    public final boolean isPotentiallyAcceptingOf(DragModel dragModel) {
+      IDE ide = IDE.getActiveInstance();
+      if (DeclarationMeta.getDeclaration() == getCode()) {
+        if (dragModel instanceof AbstractStatementDragModel) {
+          return true;
+        } else if (dragModel instanceof AbstractExpressionDragModel) {
+          AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel) dragModel;
+          return expressionDragModel.isPotentialStatementCreator();
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
 
-		public StatementListPropertyView currentUnder;
+    public StatementListPropertyView currentUnder;
 
-		private void setCurrentUnder( StatementListPropertyView nextUnder, Dimension dropSize ) {
-			if( this.currentUnder != nextUnder ) {
-				if( this.currentUnder != null ) {
-					this.currentUnder.setIsCurrentUnder( false );
-				}
-				this.currentUnder = nextUnder;
-				if( this.currentUnder != null ) {
-					this.currentUnder.setIsCurrentUnder( true );
-					this.currentUnder.setDropSize( dropSize );
-				}
-			}
-		}
+    private void setCurrentUnder(StatementListPropertyView nextUnder, Dimension dropSize) {
+      if (this.currentUnder != nextUnder) {
+        if (this.currentUnder != null) {
+          this.currentUnder.setIsCurrentUnder(false);
+        }
+        this.currentUnder = nextUnder;
+        if (this.currentUnder != null) {
+          this.currentUnder.setIsCurrentUnder(true);
+          this.currentUnder.setDropSize(dropSize);
+        }
+      }
+    }
 
-		@Override
-		public final void dragStarted( DragStep step ) {
-		}
+    @Override
+    public final void dragStarted(DragStep step) {
+    }
 
-		@Override
-		public final void dragEntered( DragStep step ) {
-			DragComponent source = step.getDragSource();
-			statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( step.getModel(), source );
-			repaint();
-		}
+    @Override
+    public final void dragEntered(DragStep step) {
+      DragComponent source = step.getDragSource();
+      statementListPropertyPaneInfos = createStatementListPropertyPaneInfos(step.getModel(), source);
+      repaint();
+    }
 
-		public StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( DragModel dragModel, AwtContainerView<?> source ) {
-			List<StatementListPropertyView> statementListPropertyPanes = HierarchyUtilities.findAllMatches( CodePanelWithDropReceptor.this, StatementListPropertyView.class );
+    public StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos(DragModel dragModel, AwtContainerView<?> source) {
+      List<StatementListPropertyView> statementListPropertyPanes = HierarchyUtilities.findAllMatches(CodePanelWithDropReceptor.this, StatementListPropertyView.class);
 
-			boolean isAddEvent;
-			if( dragModel instanceof AbstractStatementDragModel ) {
-				AbstractStatementDragModel statementDragModel = (AbstractStatementDragModel)dragModel;
-				isAddEvent = statementDragModel.isAddEventListenerLikeSubstance();
-			} else {
-				isAddEvent = false;
-			}
+      boolean isAddEvent;
+      if (dragModel instanceof AbstractStatementDragModel) {
+        AbstractStatementDragModel statementDragModel = (AbstractStatementDragModel) dragModel;
+        isAddEvent = statementDragModel.isAddEventListenerLikeSubstance();
+      } else {
+        isAddEvent = false;
+      }
 
-			ListIterator<StatementListPropertyView> listIterator = statementListPropertyPanes.listIterator();
-			while( listIterator.hasNext() ) {
-				StatementListPropertyView view = listIterator.next();
-				if( view.isAcceptingOfAddEventListenerMethodInvocationStatements() == isAddEvent ) {
-					//pass
-				} else {
-					listIterator.remove();
-				}
-			}
+      ListIterator<StatementListPropertyView> listIterator = statementListPropertyPanes.listIterator();
+      while (listIterator.hasNext()) {
+        StatementListPropertyView view = listIterator.next();
+        if (view.isAcceptingOfAddEventListenerMethodInvocationStatements() == isAddEvent) {
+          //pass
+        } else {
+          listIterator.remove();
+        }
+      }
 
-			StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
-			int i = 0;
-			for( StatementListPropertyView statementListPropertyPane : statementListPropertyPanes ) {
-				if( ( source != null ) && source.isAncestorOf( statementListPropertyPane ) ) {
-					continue;
-				}
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
-				DefaultStatementPane statementAncestor = statementListPropertyPane.getFirstAncestorAssignableTo( DefaultStatementPane.class );
-				Rectangle bounds;
-				if( statementAncestor != null ) {
-					bounds = statementAncestor.convertRectangle( statementListPropertyPane.getDropBounds( statementAncestor ), getAsSeenBy() );
-				} else {
-					bounds = statementListPropertyPane.getParent().getBounds( getAsSeenBy() );
-				}
-				bounds.x = 0;
-				bounds.width = getAsSeenBy().getWidth() - bounds.x;
-				rv[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );
+      StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[statementListPropertyPanes.size()];
+      int i = 0;
+      for (StatementListPropertyView statementListPropertyPane : statementListPropertyPanes) {
+        if ((source != null) && source.isAncestorOf(statementListPropertyPane)) {
+          continue;
+        }
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
+        DefaultStatementPane statementAncestor = statementListPropertyPane.getFirstAncestorAssignableTo(DefaultStatementPane.class);
+        Rectangle bounds;
+        if (statementAncestor != null) {
+          bounds = statementAncestor.convertRectangle(statementListPropertyPane.getDropBounds(statementAncestor), getAsSeenBy());
+        } else {
+          bounds = statementListPropertyPane.getParent().getBounds(getAsSeenBy());
+        }
+        bounds.x = 0;
+        bounds.width = getAsSeenBy().getWidth() - bounds.x;
+        rv[i] = new StatementListPropertyPaneInfo(statementListPropertyPane, bounds);
 
-				i++;
-			}
-			return rv;
+        i++;
+      }
+      return rv;
 
-		}
+    }
 
-		private StatementListPropertyView getStatementListPropertyPaneUnder( MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
-			StatementListPropertyView rv = null;
-			for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
-				if( statementListPropertyPaneInfo != null ) {
-					if( statementListPropertyPaneInfo.contains( e ) ) {
-						StatementListPropertyView slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
-						if( rv != null ) {
-							if( rv.getHeight() > slpp.getHeight() ) {
-								rv = slpp;
-							} else {
-								//pass
-							}
-						} else {
-							rv = slpp;
-						}
-					}
-				}
-			}
-			return rv;
-		}
+    private StatementListPropertyView getStatementListPropertyPaneUnder(MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos) {
+      StatementListPropertyView rv = null;
+      for (StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos) {
+        if (statementListPropertyPaneInfo != null) {
+          if (statementListPropertyPaneInfo.contains(e)) {
+            StatementListPropertyView slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
+            if (rv != null) {
+              if (rv.getHeight() > slpp.getHeight()) {
+                rv = slpp;
+              } else {
+                //pass
+              }
+            } else {
+              rv = slpp;
+            }
+          }
+        }
+      }
+      return rv;
+    }
 
-		@Override
-		public final BlockStatementIndexPair dragUpdated( DragStep step ) {
-			ComponentOrientation componentOrientation = getComponentOrientation();
-			DragComponent source = step.getDragSource();
-			if( source != null ) {
-				MouseEvent eSource = step.getLatestMouseEvent();
-				MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, getAsSeenBy() );
-				StatementListPropertyView nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, statementListPropertyPaneInfos );
-				this.setCurrentUnder( nextUnder, source.getDropProxySize() );
-				if( this.currentUnder != null ) {
-					boolean isDropProxyAlreadyUpdated = false;
-					if( InputEventUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						//pass
-					} else {
-						AwtComponentView<?> subject = source.getSubject();
-						if( subject instanceof AbstractStatementPane ) {
-							AbstractStatementPane abstractStatementPane = (AbstractStatementPane)subject;
-							if( source instanceof StatementTemplate ) {
-								//pass
-							} else {
-								Statement statement = abstractStatementPane.getStatement();
-								StatementListProperty prevOwner = abstractStatementPane.getOwner();
-								StatementListProperty nextOwner = this.currentUnder.getProperty();
+    @Override
+    public final BlockStatementIndexPair dragUpdated(DragStep step) {
+      ComponentOrientation componentOrientation = getComponentOrientation();
+      DragComponent source = step.getDragSource();
+      if (source != null) {
+        MouseEvent eSource = step.getLatestMouseEvent();
+        MouseEvent eAsSeenBy = source.convertMouseEvent(eSource, getAsSeenBy());
+        StatementListPropertyView nextUnder = getStatementListPropertyPaneUnder(eAsSeenBy, statementListPropertyPaneInfos);
+        this.setCurrentUnder(nextUnder, source.getDropProxySize());
+        if (this.currentUnder != null) {
+          boolean isDropProxyAlreadyUpdated = false;
+          if (InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
+            //pass
+          } else {
+            AwtComponentView<?> subject = source.getSubject();
+            if (subject instanceof AbstractStatementPane) {
+              AbstractStatementPane abstractStatementPane = (AbstractStatementPane) subject;
+              if (source instanceof StatementTemplate) {
+                //pass
+              } else {
+                Statement statement = abstractStatementPane.getStatement();
+                StatementListProperty prevOwner = abstractStatementPane.getOwner();
+                StatementListProperty nextOwner = this.currentUnder.getProperty();
 
-								int prevIndex = prevOwner.indexOf( statement );
-								int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
-								int currentPotentialDropIndex = nextIndex;
-								if( prevOwner == nextOwner ) {
-									if( ( prevIndex == nextIndex ) || ( prevIndex == ( nextIndex - 1 ) ) ) {
-										Point p = new Point( 0, 0 );
-										source.setDropProxyLocationAndShowIfNecessary( p, source, null, -1 );
-										isDropProxyAlreadyUpdated = true;
-										currentPotentialDropIndex = -1;
-									}
-								}
-								this.currentUnder.setCurrentPotentialDropIndexAndDragStep( currentPotentialDropIndex, step );
-							}
-						}
-					}
-					if( isDropProxyAlreadyUpdated ) {
-						//pass
-					} else {
-						MouseEvent eUnder = getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
-						Integer height = 0;
-						Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getAwtComponent() );
-						Point p = new Point( 0, 0 );
+                int prevIndex = prevOwner.indexOf(statement);
+                int nextIndex = this.currentUnder.calculateIndex(source.convertPoint(eSource.getPoint(), this.currentUnder));
+                int currentPotentialDropIndex = nextIndex;
+                if (prevOwner == nextOwner) {
+                  if ((prevIndex == nextIndex) || (prevIndex == (nextIndex - 1))) {
+                    Point p = new Point(0, 0);
+                    source.setDropProxyLocationAndShowIfNecessary(p, source, null, -1);
+                    isDropProxyAlreadyUpdated = true;
+                    currentPotentialDropIndex = -1;
+                  }
+                }
+                this.currentUnder.setCurrentPotentialDropIndexAndDragStep(currentPotentialDropIndex, step);
+              }
+            }
+          }
+          if (isDropProxyAlreadyUpdated) {
+            //pass
+          } else {
+            MouseEvent eUnder = getAsSeenBy().convertMouseEvent(eAsSeenBy, this.currentUnder);
+            Integer height = 0;
+            Insets insets = this.currentUnder.getBorder().getBorderInsets(this.currentUnder.getAwtComponent());
+            Point p = new Point(0, 0);
 
-						int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
+            int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
 
-						StatementListBorder statementListBorder = this.currentUnder.getStatementListBorder();
-						int N = this.currentUnder.getComponentCount();
-						if( N == 0 ) {
-							p.y = insets.top;
-							height = null;
-						} else {
-							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-							this.currentUnder.setCurrentPotentialDropIndexAndDragStep( index, step );
-							final boolean IS_SQUISHING_DESIRED = false;
-							if( index == 0 ) {
-								p.y = 0;
-								if( IS_SQUISHING_DESIRED ) {
-									height = null;
-								}
-							} else if( ( index == statementListBorder.getMinimum() ) && ( N == 1 ) ) {
-								p.y = this.currentUnder.getHeight() - insets.bottom;
-								height = null;
-							} else if( index < N ) {
-								p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
-							} else {
-								Component lastComponent = this.currentUnder.getAwtComponent().getComponent( N - 1 );
-								p.y = lastComponent.getY() + lastComponent.getHeight();
-								if( IS_SQUISHING_DESIRED ) {
-									p.y -= availableHeight;
-									height = null;
-								} else {
-									p.y += StatementListPropertyView.INTRASTICIAL_PAD;
-									if( this.currentUnder.getProperty() == ( (UserCode)getCode() ).getBodyProperty().getValue().statements ) {
-										height = null;
-									}
-								}
-							}
-						}
-						if( componentOrientation.isLeftToRight() ) {
-							p.x = insets.left;
-						} else {
-							p.x = this.currentUnder.getWidth() - insets.right - step.getDragSource().getDropProxy().getWidth();
+            StatementListBorder statementListBorder = this.currentUnder.getStatementListBorder();
+            int N = this.currentUnder.getComponentCount();
+            if (N == 0) {
+              p.y = insets.top;
+              height = null;
+            } else {
+              int index = this.currentUnder.calculateIndex(eUnder.getPoint());
+              this.currentUnder.setCurrentPotentialDropIndexAndDragStep(index, step);
+              final boolean IS_SQUISHING_DESIRED = false;
+              if (index == 0) {
+                p.y = 0;
+                if (IS_SQUISHING_DESIRED) {
+                  height = null;
+                }
+              } else if ((index == statementListBorder.getMinimum()) && (N == 1)) {
+                p.y = this.currentUnder.getHeight() - insets.bottom;
+                height = null;
+              } else if (index < N) {
+                p.y = this.currentUnder.getAwtComponent().getComponent(index).getY();
+              } else {
+                Component lastComponent = this.currentUnder.getAwtComponent().getComponent(N - 1);
+                p.y = lastComponent.getY() + lastComponent.getHeight();
+                if (IS_SQUISHING_DESIRED) {
+                  p.y -= availableHeight;
+                  height = null;
+                } else {
+                  p.y += StatementListPropertyView.INTRASTICIAL_PAD;
+                  if (this.currentUnder.getProperty() == ((UserCode) getCode()).getBodyProperty().getValue().statements) {
+                    height = null;
+                  }
+                }
+              }
+            }
+            if (componentOrientation.isLeftToRight()) {
+              p.x = insets.left;
+            } else {
+              p.x = this.currentUnder.getWidth() - insets.right - step.getDragSource().getDropProxy().getWidth();
 
-						}
-						source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height, availableHeight );
-					}
-				} else {
-					//					source.hideDropProxyIfNecessary();
-				}
-			}
-			repaint();
+            }
+            source.setDropProxyLocationAndShowIfNecessary(p, this.currentUnder, height, availableHeight);
+          }
+        } else {
+          //          source.hideDropProxyIfNecessary();
+        }
+      }
+      repaint();
 
-			if( this.currentUnder != null ) {
-				BlockStatement blockStatement = (BlockStatement)this.currentUnder.getProperty().getOwner();
-				MouseEvent eSource = step.getLatestMouseEvent();
-				MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, getAsSeenBy() );
-				MouseEvent eUnder = getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
-				int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-				BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( blockStatement, index );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "blockStatementIndexPair", blockStatementIndexPair );
-				return blockStatementIndexPair;
-			} else {
-				return null;
-			}
-		}
+      if (this.currentUnder != null) {
+        BlockStatement blockStatement = (BlockStatement) this.currentUnder.getProperty().getOwner();
+        MouseEvent eSource = step.getLatestMouseEvent();
+        MouseEvent eAsSeenBy = source.convertMouseEvent(eSource, getAsSeenBy());
+        MouseEvent eUnder = getAsSeenBy().convertMouseEvent(eAsSeenBy, this.currentUnder);
+        int index = this.currentUnder.calculateIndex(eUnder.getPoint());
+        BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair(blockStatement, index);
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "blockStatementIndexPair", blockStatementIndexPair );
+        return blockStatementIndexPair;
+      } else {
+        return null;
+      }
+    }
 
-		@Override
-		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
-			Triggerable rv = null;
-			final DragModel dragModel = step.getModel();
-			DragComponent dragSource = step.getDragSource();
-			final MouseEvent eSource = step.getLatestMouseEvent();
-			final StatementListPropertyView statementListPropertyPane = this.currentUnder;
-			if( statementListPropertyPane != null ) {
-				final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
-				if( dragModel instanceof StatementTemplateDragModel ) {
-					if( IsRecursionAllowedState.getInstance().getValue() ) {
-						//pass
-					} else {
-						if( dragModel instanceof ProcedureInvocationTemplateDragModel ) {
-							ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (ProcedureInvocationTemplateDragModel)dragModel;
-							AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
-							if( method == getCode() ) {
-								StringBuilder sb = new StringBuilder();
-								sb.append( "<html>" );
-								sb.append( "The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls." );
-								final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
-								if( IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED ) {
-									sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
-								}
-								sb.append( "</html>" );
-								Dialogs.showInfo( "Recursion is disabled.", sb.toString() );
-								return null;
-							}
-						}
-					}
-					if( this.currentUnder != null ) {
-						InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-						BlockStatementIndexPair blockStatementIndexPair;
-						if( propertyOwner instanceof BlockStatement ) {
-							blockStatementIndexPair = new BlockStatementIndexPair( (BlockStatement)propertyOwner, index );
-						} else {
-							blockStatementIndexPair = null;
-						}
-						rv = dragModel.getDropOperation( step, blockStatementIndexPair );
+    @Override
+    protected Triggerable dragDroppedPostRejectorCheck(DragStep step) {
+      Triggerable rv = null;
+      final DragModel dragModel = step.getModel();
+      DragComponent dragSource = step.getDragSource();
+      final MouseEvent eSource = step.getLatestMouseEvent();
+      final StatementListPropertyView statementListPropertyPane = this.currentUnder;
+      if (statementListPropertyPane != null) {
+        final int index = statementListPropertyPane.calculateIndex(dragSource.convertPoint(eSource.getPoint(), statementListPropertyPane));
+        if (dragModel instanceof StatementTemplateDragModel) {
+          if (IsRecursionAllowedState.getInstance().getValue()) {
+            //pass
+          } else {
+            if (dragModel instanceof ProcedureInvocationTemplateDragModel) {
+              ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (ProcedureInvocationTemplateDragModel) dragModel;
+              AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
+              if (method == getCode()) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("<html>");
+                sb.append("The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.");
+                final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
+                if (IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED) {
+                  sb.append("<p><p>For more information on recursion see the Window -> Preferences menu.");
+                }
+                sb.append("</html>");
+                Dialogs.showInfo("Recursion is disabled.", sb.toString());
+                return null;
+              }
+            }
+          }
+          if (this.currentUnder != null) {
+            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+            BlockStatementIndexPair blockStatementIndexPair;
+            if (propertyOwner instanceof BlockStatement) {
+              blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
+            } else {
+              blockStatementIndexPair = null;
+            }
+            rv = dragModel.getDropOperation(step, blockStatementIndexPair);
 
-						this.pushedContext = new BlockStatementIndexPairContext( blockStatementIndexPair );
-						IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-					}
-				} else if( dragModel == Clipboard.SINGLETON.getDragModel() ) {
-					if( this.currentUnder != null ) {
-						InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-						if( propertyOwner instanceof BlockStatement ) {
-							BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (BlockStatement)propertyOwner, index );
-							boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown( eSource );
-							if( isCopy ) {
-								rv = CopyFromClipboardOperation.getInstance( blockStatementIndexPair );
-							} else {
-								rv = PasteFromClipboardOperation.getInstance( blockStatementIndexPair );
-							}
-						}
-					}
-				} else if( dragModel instanceof StatementDragModel ) {
-					if( this.currentUnder != null ) {
-						StatementDragModel statementDragModel = (StatementDragModel)dragModel;
-						final Statement statement = statementDragModel.getStatement();
+            this.pushedContext = new BlockStatementIndexPairContext(blockStatementIndexPair);
+            IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+          }
+        } else if (dragModel == Clipboard.SINGLETON.getDragModel()) {
+          if (this.currentUnder != null) {
+            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+            if (propertyOwner instanceof BlockStatement) {
+              BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
+              boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown(eSource);
+              if (isCopy) {
+                rv = CopyFromClipboardOperation.getInstance(blockStatementIndexPair);
+              } else {
+                rv = PasteFromClipboardOperation.getInstance(blockStatementIndexPair);
+              }
+            }
+          }
+        } else if (dragModel instanceof StatementDragModel) {
+          if (this.currentUnder != null) {
+            StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+            final Statement statement = statementDragModel.getStatement();
 
-						Node parent = statement.getParent();
-						if( parent instanceof BlockStatement ) {
-							BlockStatement blockStatement = (BlockStatement)parent;
-							final StatementListProperty prevOwner = blockStatement.statements;
-							final StatementListProperty nextOwner = this.currentUnder.getProperty();
-							final int prevIndex = prevOwner.indexOf( statement );
-							final int nextIndex = this.currentUnder.calculateIndex( dragSource.convertPoint( eSource.getPoint(), this.currentUnder ) );
+            Node parent = statement.getParent();
+            if (parent instanceof BlockStatement) {
+              BlockStatement blockStatement = (BlockStatement) parent;
+              final StatementListProperty prevOwner = blockStatement.statements;
+              final StatementListProperty nextOwner = this.currentUnder.getProperty();
+              final int prevIndex = prevOwner.indexOf(statement);
+              final int nextIndex = this.currentUnder.calculateIndex(dragSource.convertPoint(eSource.getPoint(), this.currentUnder));
 
-							BlockStatement prevBlockStatement = (BlockStatement)prevOwner.getOwner();
-							BlockStatement nextBlockStatement = (BlockStatement)nextOwner.getOwner();
-							if( InputEventUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-								IDE ide = IDE.getActiveInstance();
-								Statement copy = ide.createCopy( statement );
-								rv = new InsertCopiedStatementOperation( nextBlockStatement, nextIndex, copy );
-							} else {
-								if( ( prevOwner == nextOwner ) && ( ( prevIndex == nextIndex ) || ( prevIndex == ( nextIndex - 1 ) ) ) ) {
-									rv = null;
-								} else {
-									boolean isMultiple = eSource.isShiftDown();
-									BlockStatementIndexPair fromLocation = new BlockStatementIndexPair( prevBlockStatement, prevIndex );
-									BlockStatementIndexPair toLocation = new BlockStatementIndexPair( nextBlockStatement, nextIndex );
-									if( isMultiple && ShiftDragStatementUtilities.isCandidateForEnvelop( statementDragModel ) ) {
-										rv = EnvelopStatementsOperation.getInstance( fromLocation, toLocation );
-									} else {
-										int count;
-										if( isMultiple ) {
-											count = ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
-										} else {
-											count = 1;
-										}
-										if( count > 0 ) {
-											rv = new MoveStatementOperation( fromLocation, statement, toLocation, isMultiple );
-										} else {
-											rv = null;
-										}
-									}
-								}
-							}
-						}
-					}
-				} else if( dragModel instanceof AbstractExpressionDragModel ) {
-					if( this.currentUnder != null ) {
-						InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-						BlockStatementIndexPair blockStatementIndexPair;
-						if( propertyOwner instanceof BlockStatement ) {
-							blockStatementIndexPair = new BlockStatementIndexPair( (BlockStatement)propertyOwner, index );
-						} else {
-							blockStatementIndexPair = null;
-						}
-						rv = dragModel.getDropOperation( step, blockStatementIndexPair );
-					}
-				}
-			}
-			return rv;
-		}
+              BlockStatement prevBlockStatement = (BlockStatement) prevOwner.getOwner();
+              BlockStatement nextBlockStatement = (BlockStatement) nextOwner.getOwner();
+              if (InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
+                IDE ide = IDE.getActiveInstance();
+                Statement copy = ide.createCopy(statement);
+                rv = new InsertCopiedStatementOperation(nextBlockStatement, nextIndex, copy);
+              } else {
+                if ((prevOwner == nextOwner) && ((prevIndex == nextIndex) || (prevIndex == (nextIndex - 1)))) {
+                  rv = null;
+                } else {
+                  boolean isMultiple = eSource.isShiftDown();
+                  BlockStatementIndexPair fromLocation = new BlockStatementIndexPair(prevBlockStatement, prevIndex);
+                  BlockStatementIndexPair toLocation = new BlockStatementIndexPair(nextBlockStatement, nextIndex);
+                  if (isMultiple && ShiftDragStatementUtilities.isCandidateForEnvelop(statementDragModel)) {
+                    rv = EnvelopStatementsOperation.getInstance(fromLocation, toLocation);
+                  } else {
+                    int count;
+                    if (isMultiple) {
+                      count = ShiftDragStatementUtilities.calculateShiftMoveCount(fromLocation, toLocation);
+                    } else {
+                      count = 1;
+                    }
+                    if (count > 0) {
+                      rv = new MoveStatementOperation(fromLocation, statement, toLocation, isMultiple);
+                    } else {
+                      rv = null;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else if (dragModel instanceof AbstractExpressionDragModel) {
+          if (this.currentUnder != null) {
+            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+            BlockStatementIndexPair blockStatementIndexPair;
+            if (propertyOwner instanceof BlockStatement) {
+              blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
+            } else {
+              blockStatementIndexPair = null;
+            }
+            rv = dragModel.getDropOperation(step, blockStatementIndexPair);
+          }
+        }
+      }
+      return rv;
+    }
 
-		@Override
-		public final void dragExited( DragStep step, boolean isDropRecipient ) {
-			statementListPropertyPaneInfos = null;
-			//todo: listen to step
-			this.setCurrentUnder( null, null );
-			repaint();
-		}
+    @Override
+    public final void dragExited(DragStep step, boolean isDropRecipient) {
+      statementListPropertyPaneInfos = null;
+      //todo: listen to step
+      this.setCurrentUnder(null, null);
+      repaint();
+    }
 
-		@Override
-		public final void dragStopped( DragStep step ) {
-			if( this.pushedContext != null ) {
-				IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
-				this.pushedContext = null;
-			}
-		}
+    @Override
+    public final void dragStopped(DragStep step) {
+      if (this.pushedContext != null) {
+        IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(this.pushedContext);
+        this.pushedContext = null;
+      }
+    }
 
-		@Override
-		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
-			return CodePanelWithDropReceptor.this.getTrackableShape( potentialDropSite );
-		}
+    @Override
+    public TrackableShape getTrackableShape(DropSite potentialDropSite) {
+      return CodePanelWithDropReceptor.this.getTrackableShape(potentialDropSite);
+    }
 
-		@Override
-		public SwingComponentView<?> getViewController() {
-			return CodePanelWithDropReceptor.this;
-		}
-	}
+    @Override
+    public SwingComponentView<?> getViewController() {
+      return CodePanelWithDropReceptor.this;
+    }
+  }
 
-	public CodePanelWithDropReceptor( Composite<?> composite ) {
-		super( composite );
-	}
+  public CodePanelWithDropReceptor(Composite<?> composite) {
+    super(composite);
+  }
 
-	public CodePanelWithDropReceptor() {
-		this( null );
-	}
+  public CodePanelWithDropReceptor() {
+    this(null);
+  }
 
-	public InternalDropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
+  public InternalDropReceptor getDropReceptor() {
+    return this.dropReceptor;
+  }
 
-	@Override
-	protected final JPanel createJPanel() {
-		final boolean IS_FEEDBACK_DESIRED = false;
-		JPanel rv;
-		if( IS_FEEDBACK_DESIRED ) {
-			rv = new JPanel() {
-				@Override
-				public void paint( Graphics g ) {
-					super.paint( g );
-					if( CodePanelWithDropReceptor.this.statementListPropertyPaneInfos != null ) {
-						Graphics2D g2 = (Graphics2D)g;
-						int i = 0;
-						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodePanelWithDropReceptor.this.statementListPropertyPaneInfos ) {
-							if( statementListPropertyPaneInfo != null ) {
-								Color color;
-								if( CodePanelWithDropReceptor.this.dropReceptor.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
-									color = new Color( 0, 0, 0, 127 );
-								} else {
-									color = null;
-									//color = new java.awt.Color( 255, 0, 0, 31 );
-								}
-								Rectangle bounds = statementListPropertyPaneInfo.getBounds();
-								bounds = SwingUtilities.convertRectangle( CodePanelWithDropReceptor.this.getAsSeenBy().getAwtComponent(), bounds, this );
-								if( color != null ) {
-									g2.setColor( color );
-									g2.fill( bounds );
-									g2.setColor( new Color( 255, 255, 0, 255 ) );
-									g2.draw( bounds );
-								}
-								g2.setColor( Color.BLACK );
-								GraphicsUtilities.drawCenteredText( g2, Integer.toString( i ), bounds.x, bounds.y, 32, bounds.height );
-							}
-							i++;
-						}
-					}
-				}
-			};
-		} else {
-			//todo: super.createJPanel() ?
-			rv = new JPanel();
-		}
-		return rv;
-	}
+  @Override
+  protected final JPanel createJPanel() {
+    final boolean IS_FEEDBACK_DESIRED = false;
+    JPanel rv;
+    if (IS_FEEDBACK_DESIRED) {
+      rv = new JPanel() {
+        @Override
+        public void paint(Graphics g) {
+          super.paint(g);
+          if (CodePanelWithDropReceptor.this.statementListPropertyPaneInfos != null) {
+            Graphics2D g2 = (Graphics2D) g;
+            int i = 0;
+            for (StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodePanelWithDropReceptor.this.statementListPropertyPaneInfos) {
+              if (statementListPropertyPaneInfo != null) {
+                Color color;
+                if (CodePanelWithDropReceptor.this.dropReceptor.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane()) {
+                  color = new Color(0, 0, 0, 127);
+                } else {
+                  color = null;
+                  //color = new java.awt.Color( 255, 0, 0, 31 );
+                }
+                Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+                bounds = SwingUtilities.convertRectangle(CodePanelWithDropReceptor.this.getAsSeenBy().getAwtComponent(), bounds, this);
+                if (color != null) {
+                  g2.setColor(color);
+                  g2.fill(bounds);
+                  g2.setColor(new Color(255, 255, 0, 255));
+                  g2.draw(bounds);
+                }
+                g2.setColor(Color.BLACK);
+                GraphicsUtilities.drawCenteredText(g2, Integer.toString(i), bounds.x, bounds.y, 32, bounds.height);
+              }
+              i++;
+            }
+          }
+        }
+      };
+    } else {
+      //todo: super.createJPanel() ?
+      rv = new JPanel();
+    }
+    return rv;
+  }
 
-	public abstract void setJavaCodeOnTheSide( boolean value, boolean isFirstTime );
+  public abstract void setJavaCodeOnTheSide(boolean value, boolean isFirstTime);
 
-	protected abstract AwtComponentView<?> getAsSeenBy();
+  protected abstract AwtComponentView<?> getAsSeenBy();
 
-	public abstract AbstractCode getCode();
+  public abstract AbstractCode getCode();
 
-	public abstract TrackableShape getTrackableShape( DropSite potentialDropSite );
+  public abstract TrackableShape getTrackableShape(DropSite potentialDropSite);
 
-	public abstract Printable getPrintable();
+  public abstract Printable getPrintable();
 
-	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
-	private final InternalDropReceptor dropReceptor = new InternalDropReceptor();
+  private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
+  private final InternalDropReceptor dropReceptor = new InternalDropReceptor();
 }

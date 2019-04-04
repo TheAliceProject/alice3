@@ -60,58 +60,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddUnmanagedFieldComposite extends AddFieldComposite {
-	private static InitializingIfAbsentMap<UserType<?>, AddUnmanagedFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserType<?>, AddUnmanagedFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddUnmanagedFieldComposite getInstance( UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddUnmanagedFieldComposite>() {
-			@Override
-			public AddUnmanagedFieldComposite initialize( UserType<?> declaringType ) {
-				return new AddUnmanagedFieldComposite( declaringType );
-			}
-		} );
-	}
+  public static AddUnmanagedFieldComposite getInstance(UserType<?> declaringType) {
+    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddUnmanagedFieldComposite>() {
+      @Override
+      public AddUnmanagedFieldComposite initialize(UserType<?> declaringType) {
+        return new AddUnmanagedFieldComposite(declaringType);
+      }
+    });
+  }
 
-	private final UserType<?> declaringType;
+  private final UserType<?> declaringType;
 
-	private AddUnmanagedFieldComposite( UserType<?> declaringType ) {
-		super(
-				UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ),
-				new FieldDetailsBuilder()
-						.isFinal( ApplicabilityStatus.EDITABLE, false )
-						.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-						.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-						.initializer( ApplicabilityStatus.EDITABLE, null )
-						.build() );
-		this.declaringType = declaringType;
-	}
+  private AddUnmanagedFieldComposite(UserType<?> declaringType) {
+    super(UUID.fromString("2fad5034-db17-48b2-9e47-4415deb1cbd8"), new FieldDetailsBuilder().isFinal(ApplicabilityStatus.EDITABLE, false).valueComponentType(ApplicabilityStatus.EDITABLE, null).valueIsArrayType(ApplicabilityStatus.EDITABLE, false).initializer(ApplicabilityStatus.EDITABLE, null).build());
+    this.declaringType = declaringType;
+  }
 
-	@Override
-	protected boolean isNullAllowedForInitializer() {
-		return IsNullAllowedForFieldInitializers.getInstance().getValue();
-	}
+  @Override
+  protected boolean isNullAllowedForInitializer() {
+    return IsNullAllowedForFieldInitializers.getInstance().getValue();
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return this.declaringType;
+  }
 
-	@Override
-	protected boolean isFieldFinal() {
-		return this.getIsFinalState().getValue();
-	}
+  @Override
+  protected boolean isFieldFinal() {
+    return this.getIsFinalState().getValue();
+  }
 
-	@Override
-	protected ManagementLevel getManagementLevel() {
-		return ManagementLevel.NONE;
-	}
+  @Override
+  protected ManagementLevel getManagementLevel() {
+    return ManagementLevel.NONE;
+  }
 
-	@Override
-	protected DeclareFieldEdit createEdit( UserActivity step, UserType<?> declaringType, UserField field ) {
-		return new DeclareNonGalleryFieldEdit( step, declaringType, field );
-	}
+  @Override
+  protected DeclareFieldEdit createEdit(UserActivity step, UserType<?> declaringType, UserField field) {
+    return new DeclareNonGalleryFieldEdit(step, declaringType, field);
+  }
 
-	@Override
-	protected AddFieldView createView() {
-		return new AddFieldView( this );
-	}
+  @Override
+  protected AddFieldView createView() {
+    return new AddFieldView(this);
+  }
 }

@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.liststate;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;
@@ -54,43 +52,43 @@ import javax.swing.event.ListSelectionListener;
  * @author Dennis Cosgrove
  */
 public class SingleSelectListStateSwingModel {
-	public SingleSelectListStateSwingModel( ComboBoxModel comboBoxModel ) {
-		this.comboBoxModel = comboBoxModel;
-		this.listSelectionModel = new DefaultListSelectionModel();
-		this.listSelectionModel.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
-	}
+  public SingleSelectListStateSwingModel(ComboBoxModel comboBoxModel) {
+    this.comboBoxModel = comboBoxModel;
+    this.listSelectionModel = new DefaultListSelectionModel();
+    this.listSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+  }
 
-	public ComboBoxModel getComboBoxModel() {
-		return this.comboBoxModel;
-	}
+  public ComboBoxModel getComboBoxModel() {
+    return this.comboBoxModel;
+  }
 
-	public ListSelectionModel getListSelectionModel() {
-		return this.listSelectionModel;
-	}
+  public ListSelectionModel getListSelectionModel() {
+    return this.listSelectionModel;
+  }
 
-	public int getSelectionIndex() {
-		if( this.listSelectionModel.isSelectionEmpty() ) {
-			return -1;
-		} else {
-			return this.listSelectionModel.getLeadSelectionIndex();
-		}
-	}
+  public int getSelectionIndex() {
+    if (this.listSelectionModel.isSelectionEmpty()) {
+      return -1;
+    } else {
+      return this.listSelectionModel.getLeadSelectionIndex();
+    }
+  }
 
-	public void setSelectionIndex( int index ) {
-		if( index != -1 ) {
-			this.listSelectionModel.setSelectionInterval( index, index );
-		} else {
-			this.listSelectionModel.clearSelection();
-		}
-	}
+  public void setSelectionIndex(int index) {
+    if (index != -1) {
+      this.listSelectionModel.setSelectionInterval(index, index);
+    } else {
+      this.listSelectionModel.clearSelection();
+    }
+  }
 
-	public void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-		ListSelectionEvent e = new ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-		for( ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
-			listener.valueChanged( e );
-		}
-	}
+  public void fireListSelectionChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
+    ListSelectionEvent e = new ListSelectionEvent(this, firstIndex, lastIndex, isAdjusting);
+    for (ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners()) {
+      listener.valueChanged(e);
+    }
+  }
 
-	private final ComboBoxModel comboBoxModel;
-	private final DefaultListSelectionModel listSelectionModel;
+  private final ComboBoxModel comboBoxModel;
+  private final DefaultListSelectionModel listSelectionModel;
 }

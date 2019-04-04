@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Layer;
  * @author Dennis Cosgrove
  */
 public class GraphicAddedEvent extends GraphicEvent {
-	public GraphicAddedEvent( Layer source, Graphic child ) {
-		super( source, child );
-	}
+  public GraphicAddedEvent(Layer source, Graphic child) {
+    super(source, child);
+  }
 }

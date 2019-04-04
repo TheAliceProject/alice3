@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsNullAllowedForLocalInitializers extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsNullAllowedForLocalInitializers instance = new IsNullAllowedForLocalInitializers();
-	}
+  private static class SingletonHolder {
+    private static IsNullAllowedForLocalInitializers instance = new IsNullAllowedForLocalInitializers();
+  }
 
-	public static IsNullAllowedForLocalInitializers getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsNullAllowedForLocalInitializers getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsNullAllowedForLocalInitializers() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "3e2789c0-202f-4272-a5e0-267ec0a6d33a" ), false );
-	}
+  private IsNullAllowedForLocalInitializers() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("3e2789c0-202f-4272-a5e0-267ec0a6d33a"), false);
+  }
 }

@@ -65,64 +65,64 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SwapParametersEdit extends AbstractEdit<SwapParametersOperation> {
-	private final UserMethod method;
-	private final int aIndex;
+  private final UserMethod method;
+  private final int aIndex;
 
-	public SwapParametersEdit( UserActivity userActivity, UserCode code, int aIndex ) {
-		super( userActivity );
-		//todo: handle constructors
-		this.method = (UserMethod)code;
-		this.aIndex = aIndex;
-	}
+  public SwapParametersEdit(UserActivity userActivity, UserCode code, int aIndex) {
+    super(userActivity);
+    //todo: handle constructors
+    this.method = (UserMethod) code;
+    this.aIndex = aIndex;
+  }
 
-	public SwapParametersEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		UUID methodId = binaryDecoder.decodeId();
-		this.method = ProgramTypeUtilities.lookupNode( project, methodId );
-		this.aIndex = binaryDecoder.decodeInt();
-	}
+  public SwapParametersEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    UUID methodId = binaryDecoder.decodeId();
+    this.method = ProgramTypeUtilities.lookupNode(project, methodId);
+    this.aIndex = binaryDecoder.decodeInt();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.method.getId() );
-		binaryEncoder.encode( this.aIndex );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.method.getId());
+    binaryEncoder.encode(this.aIndex);
+  }
 
-	private void swap() {
-		List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations( method );
-		UserParameter aParam = method.requiredParameters.get( aIndex );
-		UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
-		method.requiredParameters.set( aIndex, bParam, aParam );
-		for( MethodInvocation methodInvocation : methodInvocations ) {
-			SimpleArgument aArg = methodInvocation.requiredArguments.get( aIndex );
-			SimpleArgument bArg = methodInvocation.requiredArguments.get( aIndex + 1 );
-			assert aArg.parameter.getValue() == aParam;
-			assert bArg.parameter.getValue() == bParam;
-			methodInvocation.requiredArguments.set( aIndex, bArg, aArg );
-		}
-	}
+  private void swap() {
+    List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations(method);
+    UserParameter aParam = method.requiredParameters.get(aIndex);
+    UserParameter bParam = method.requiredParameters.get(aIndex + 1);
+    method.requiredParameters.set(aIndex, bParam, aParam);
+    for (MethodInvocation methodInvocation : methodInvocations) {
+      SimpleArgument aArg = methodInvocation.requiredArguments.get(aIndex);
+      SimpleArgument bArg = methodInvocation.requiredArguments.get(aIndex + 1);
+      assert aArg.parameter.getValue() == aParam;
+      assert bArg.parameter.getValue() == bParam;
+      methodInvocation.requiredArguments.set(aIndex, bArg, aArg);
+    }
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.swap();
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.swap();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.swap();
-	}
+  @Override
+  protected final void undoInternal() {
+    this.swap();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		UserParameter aParam = method.requiredParameters.get( aIndex );
-		UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
-		Locale locale = null;
-		rv.append( "Swap Parameters " );
-		NodeUtilities.safeAppendRepr( rv, aParam, locale );
-		rv.append( " " );
-		NodeUtilities.safeAppendRepr( rv, bParam, locale );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    UserParameter aParam = method.requiredParameters.get(aIndex);
+    UserParameter bParam = method.requiredParameters.get(aIndex + 1);
+    Locale locale = null;
+    rv.append("Swap Parameters ");
+    NodeUtilities.safeAppendRepr(rv, aParam, locale);
+    rv.append(" ");
+    NodeUtilities.safeAppendRepr(rv, bParam, locale);
+  }
 }

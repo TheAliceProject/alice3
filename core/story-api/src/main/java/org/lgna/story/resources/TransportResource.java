@@ -46,11 +46,10 @@ import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.story.STransport;
 import org.lgna.story.implementation.TransportImp;
 
-@ResourceTemplate( modelClass = STransport.class )
-public interface TransportResource extends JointedModelResource {
+@ResourceTemplate(modelClass = STransport.class) public interface TransportResource extends JointedModelResource {
 
-	public JointId[] getRootJointIds();
+  public JointId[] getRootJointIds();
 
-	public TransportImp createImplementation( STransport abstraction );
+  public TransportImp createImplementation(STransport abstraction);
 
 }

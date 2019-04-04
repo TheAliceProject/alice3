@@ -47,6 +47,5 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public enum PickSubElementPolicy {
-	REQUIRED,
-	NOT_REQUIRED
+  REQUIRED, NOT_REQUIRED
 }

@@ -55,39 +55,39 @@ import java.net.URLConnection;
  * @author Dennis Cosgrove
  */
 public abstract class TextUrlWorker extends Worker<String> {
-	private final URL url;
+  private final URL url;
 
-	public TextUrlWorker( URL url ) {
-		this.url = url;
-	}
+  public TextUrlWorker(URL url) {
+    this.url = url;
+  }
 
-	@Override
-	protected String do_onBackgroundThread() throws Exception {
-		StringBuilder sb = new StringBuilder();
-		URLConnection urlConnection = url.openConnection();
-		try {
-			InputStream inputStream = urlConnection.getInputStream();
-			try {
-				InputStreamReader reader = new InputStreamReader( inputStream );
-				BufferedReader bufferedReader = new BufferedReader( reader );
-				while( true ) {
-					String inputLine = bufferedReader.readLine();
-					if( inputLine != null ) {
-						sb.append( inputLine );
-					} else {
-						break;
-					}
-				}
-				return sb.toString();
-			} finally {
-				inputStream.close();
-			}
-		} finally {
-			if( urlConnection instanceof HttpURLConnection ) {
-				//todo?
-				( (HttpURLConnection)urlConnection ).disconnect();
-			}
-		}
-	}
+  @Override
+  protected String do_onBackgroundThread() throws Exception {
+    StringBuilder sb = new StringBuilder();
+    URLConnection urlConnection = url.openConnection();
+    try {
+      InputStream inputStream = urlConnection.getInputStream();
+      try {
+        InputStreamReader reader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        while (true) {
+          String inputLine = bufferedReader.readLine();
+          if (inputLine != null) {
+            sb.append(inputLine);
+          } else {
+            break;
+          }
+        }
+        return sb.toString();
+      } finally {
+        inputStream.close();
+      }
+    } finally {
+      if (urlConnection instanceof HttpURLConnection) {
+        //todo?
+        ((HttpURLConnection) urlConnection).disconnect();
+      }
+    }
+  }
 
 }

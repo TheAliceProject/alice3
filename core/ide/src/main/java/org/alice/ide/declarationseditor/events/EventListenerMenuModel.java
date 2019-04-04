@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class EventListenerMenuModel extends CascadeMenuModel<MethodInvocation> {
-	public EventListenerMenuModel( UUID id ) {
-		super( id );
-	}
+  public EventListenerMenuModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected boolean isBackedByIconProxy() {
-		return false;
-	}
+  @Override
+  protected boolean isBackedByIconProxy() {
+    return false;
+  }
 }

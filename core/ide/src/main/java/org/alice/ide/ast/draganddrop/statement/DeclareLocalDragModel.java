@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclareLocalDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
-	}
+  private static class SingletonHolder {
+    private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
+  }
 
-	public static DeclareLocalDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DeclareLocalDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DeclareLocalDragModel() {
-		super( UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), LocalDeclarationStatement.class, IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
-	}
+  private DeclareLocalDragModel() {
+    super(UUID.fromString("8a72ad5f-8273-4de9-a1c4-60bedda45b9e"), LocalDeclarationStatement.class, IncompleteAstUtilities.createIncompleteLocalDeclarationStatement());
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep context, BlockStatementIndexPair blockStatementIndexPair ) {
-		return InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getLaunchOperation();
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep context, BlockStatementIndexPair blockStatementIndexPair) {
+    return InsertLocalDeclarationStatementComposite.getInstance(blockStatementIndexPair).getLaunchOperation();
+  }
 }

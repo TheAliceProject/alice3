@@ -54,31 +54,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FileDialogOperation extends Operation {
-	public FileDialogOperation( Group group, UUID migrationId ) {
-		super( group, migrationId );
-	}
+  public FileDialogOperation(Group group, UUID migrationId) {
+    super(group, migrationId);
+  }
 
-	protected abstract File showFileDialog( Component awtComponent );
+  protected abstract File showFileDialog(Component awtComponent);
 
-	protected abstract void handleFile( File file ) throws CancelException, IOException;
+  protected abstract void handleFile(File file) throws CancelException, IOException;
 
-	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
-		Component awtComponent = null; //todo
-		File file = this.showFileDialog( awtComponent );
-		if( file != null ) {
-			try {
-				this.handleFile( file );
-				userActivity.finish();
-			} catch( IOException ioe ) {
-				Dialogs.showError( getImp().getName(), ioe.getMessage() );
-				userActivity.cancel( new CancelException( ioe ) );
-			} catch( CancelException ce ) {
-				userActivity.cancel( ce );
-			}
-		} else {
-			userActivity.cancel();
-		}
-	}
+  @Override
+  protected void performInActivity(UserActivity userActivity) {
+    userActivity.setCompletionModel(this);
+    Component awtComponent = null; //todo
+    File file = this.showFileDialog(awtComponent);
+    if (file != null) {
+      try {
+        this.handleFile(file);
+        userActivity.finish();
+      } catch (IOException ioe) {
+        Dialogs.showError(getImp().getName(), ioe.getMessage());
+        userActivity.cancel(new CancelException(ioe));
+      } catch (CancelException ce) {
+        userActivity.cancel(ce);
+      }
+    } else {
+      userActivity.cancel();
+    }
+  }
 }

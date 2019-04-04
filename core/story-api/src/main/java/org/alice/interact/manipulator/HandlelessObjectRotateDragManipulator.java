@@ -70,156 +70,155 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
-	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
+  protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
 
-	public HandlelessObjectRotateDragManipulator() {
-		super();
-		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( DebugInteractUtilities.isDebugEnabled() ) {
-			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
-		}
-	}
+  public HandlelessObjectRotateDragManipulator() {
+    super();
+    this.standUpReference.setName("Rotation StandUp Reference");
+    if (DebugInteractUtilities.isDebugEnabled()) {
+      this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+    }
+  }
 
-	public HandlelessObjectRotateDragManipulator( MovementDirection rotateAxisDirection ) {
-		this.rotateAxisDirection = rotateAxisDirection;
-		this.rotateAxis = this.rotateAxisDirection.getVector();
-	}
+  public HandlelessObjectRotateDragManipulator(MovementDirection rotateAxisDirection) {
+    this.rotateAxisDirection = rotateAxisDirection;
+    this.rotateAxis = this.rotateAxisDirection.getVector();
+  }
 
-	@Override
-	public AbstractCamera getCamera() {
-		return this.camera;
-	}
+  @Override
+  public AbstractCamera getCamera() {
+    return this.camera;
+  }
 
-	@Override
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
-		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
-			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
-		}
-	}
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    this.camera = camera;
+    if ((this.camera != null) && (this.camera.getParent() instanceof AbstractTransformable)) {
+      this.setManipulatedTransformable((AbstractTransformable) this.camera.getParent());
+    }
+  }
 
-	@Override
-	public void setDesiredCameraView( CameraView cameraView ) {
-		//this can only be ACTIVE_VIEW
-	}
+  @Override
+  public void setDesiredCameraView(CameraView cameraView) {
+    //this can only be ACTIVE_VIEW
+  }
 
-	@Override
-	public CameraView getDesiredCameraView() {
-		return CameraView.ACTIVE_VIEW;
-	}
+  @Override
+  public CameraView getDesiredCameraView() {
+    return CameraView.ACTIVE_VIEW;
+  }
 
-	@Override
-	public OnscreenRenderTarget getOnscreenRenderTarget() {
-		return this.onscreenRenderTarget;
-	}
+  @Override
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
+    return this.onscreenRenderTarget;
+  }
 
-	@Override
-	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
-		this.onscreenRenderTarget = onscreenRenderTarget;
-	}
+  @Override
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
+    this.onscreenRenderTarget = onscreenRenderTarget;
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Rotate";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Rotate";
+  }
 
-	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
-		if( pickRay != null )
-		{
-			int xDif = mouseLocation.x - this.initialPoint.x;
-			return new AngleInRadians( xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER );
-		}
-		return null;
-	}
+  protected Angle getRotationBasedOnMouse(Point mouseLocation) {
+    Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
+    if (pickRay != null) {
+      int xDif = mouseLocation.x - this.initialPoint.x;
+      return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);
+    }
+    return null;
+  }
 
-	protected void initManipulator( InputState startInput ) {
-		this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed( this.rotateAxis );
-		this.initialPoint = new Point( startInput.getMouseLocation() );
-	}
+  protected void initManipulator(InputState startInput) {
+    this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed(this.rotateAxis);
+    this.initialPoint = new Point(startInput.getMouseLocation());
+  }
 
-	@Override
-	protected void initializeEventMessages() {
-		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable ) );
-		this.clearManipulationEvents();
-		if( this.rotateAxisDirection != null ) {
-			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
-		}
-	}
+  @Override
+  protected void initializeEventMessages() {
+    this.setMainManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable));
+    this.clearManipulationEvents();
+    if (this.rotateAxisDirection != null) {
+      this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Rotate, new MovementDescription(this.rotateAxisDirection, MovementType.STOOD_UP), this.manipulatedTransformable));
+    }
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
-		if( this.manipulatedTransformable != null ) {
-			this.initManipulator( startInput );
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    this.setManipulatedTransformable(startInput.getClickPickTransformable());
+    if (this.manipulatedTransformable != null) {
+      this.initManipulator(startInput);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) ) {
-			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
-			Angle previousAngle = getRotationBasedOnMouse( previousInput.getMouseLocation() );
-			if( ( currentAngle != null ) && ( previousAngle != null ) ) {
-				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
-				//The angleDif is the amount the object as rotated relative to the start of the manipulation
-				//By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
-				Angle snappedAngle = SnapUtilities.doRotationSnapping( angleDif, this.dragAdapter );
-				boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
-				if( didSnap ) {
-					angleDif = snappedAngle;
-				}
-				this.standUpReference.setParent( this.manipulatedTransformable );
-				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
-				this.standUpReference.setAxesOnlyToStandUp();
-				this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotateAxis, angleDif, this.standUpReference );
-			}
-		}
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    if (!currentInput.getMouseLocation().equals(previousInput.getMouseLocation())) {
+      Angle currentAngle = getRotationBasedOnMouse(currentInput.getMouseLocation());
+      Angle previousAngle = getRotationBasedOnMouse(previousInput.getMouseLocation());
+      if ((currentAngle != null) && (previousAngle != null)) {
+        Angle angleDif = AngleUtilities.createSubtraction(currentAngle, previousAngle);
+        //The angleDif is the amount the object as rotated relative to the start of the manipulation
+        //By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+        Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
+        boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
+        if (didSnap) {
+          angleDif = snappedAngle;
+        }
+        this.standUpReference.setParent(this.manipulatedTransformable);
+        this.standUpReference.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+        this.standUpReference.setAxesOnlyToStandUp();
+        this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotateAxis, angleDif, this.standUpReference);
+      }
+    }
 
-	}
+  }
 
-	@Override
-	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
-		//Do nothing
-	}
+  @Override
+  public void doClickManipulator(InputState clickInput, InputState previousInput) {
+    //Do nothing
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-	}
+  @Override
+  public void doTimeUpdateManipulator(double time, InputState currentInput) {
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		//		HandleSet.HandleGroup axisGroup;
-		//		switch( STOOD_UP_TRANSLATION ) {
-		//		case Y_AXIS:
-		//			axisGroup = HandleSet.HandleGroup.STOOD_UP_Y_AXIS;
-		//			break;
-		//		case X_AXIS:
-		//			axisGroup = HandleSet.HandleGroup.STOOD_UP_X_AXIS;
-		//			break;
-		//		case Z_AXIS:
-		//			axisGroup = HandleSet.HandleGroup.STOOD_UP_Z_AXIS;
-		//			break;
-		//		default:
-		//			axisGroup = HandleSet.HandleGroup.STOOD_UP_Y_AXIS;
-		//		}
-		return new HandleSet( this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.STOOD_UP_ROTATION );
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    //    HandleSet.HandleGroup axisGroup;
+    //    switch( STOOD_UP_TRANSLATION ) {
+    //    case Y_AXIS:
+    //      axisGroup = HandleSet.HandleGroup.STOOD_UP_Y_AXIS;
+    //      break;
+    //    case X_AXIS:
+    //      axisGroup = HandleSet.HandleGroup.STOOD_UP_X_AXIS;
+    //      break;
+    //    case Z_AXIS:
+    //      axisGroup = HandleSet.HandleGroup.STOOD_UP_Z_AXIS;
+    //      break;
+    //    default:
+    //      axisGroup = HandleSet.HandleGroup.STOOD_UP_Y_AXIS;
+    //    }
+    return new HandleSet(this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.STOOD_UP_ROTATION);
+  }
 
-	private Vector3 rotateAxis;
-	private MovementDirection rotateAxisDirection;
-	private OnscreenRenderTarget onscreenRenderTarget;
+  private Vector3 rotateAxis;
+  private MovementDirection rotateAxisDirection;
+  private OnscreenRenderTarget onscreenRenderTarget;
 
-	private Point initialPoint;
-	private Vector3 absoluteRotationAxis;
-	private Transformable standUpReference = new Transformable();
+  private Point initialPoint;
+  private Vector3 absoluteRotationAxis;
+  private Transformable standUpReference = new Transformable();
 
-	private AbstractCamera camera = null;
+  private AbstractCamera camera = null;
 }

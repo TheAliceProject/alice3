@@ -50,36 +50,30 @@ import edu.cmu.cs.dennisc.math.Vector4;
  * @author Dennis Cosgrove
  */
 public abstract class BasisMatrixCubic implements Cubic {
-	private Matrix4x4 m_h;
-	private Vector4 m_g;
+  private Matrix4x4 m_h;
+  private Vector4 m_g;
 
-	protected BasisMatrixCubic( Matrix4x4 h, Vector4 g ) {
-		m_h = h;
-		m_g = g;
-	}
+  protected BasisMatrixCubic(Matrix4x4 h, Vector4 g) {
+    m_h = h;
+    m_g = g;
+  }
 
-	@Override
-	public boolean isNaN() {
-		return ( m_h == null ) || m_h.isNaN() || ( m_g == null ) || m_g.isNaN();
-	}
+  @Override
+  public boolean isNaN() {
+    return (m_h == null) || m_h.isNaN() || (m_g == null) || m_g.isNaN();
+  }
 
-	@Override
-	public double evaluate( double t ) {
-		double ttt = t * t * t;
-		double tt = t * t;
-		return ( ( ( ttt * m_h.right.x ) + ( tt * m_h.right.y ) + ( t * m_h.right.z ) + m_h.right.w ) * m_g.x ) +
-				( ( ( ttt * m_h.up.x ) + ( tt * m_h.up.y ) + ( t * m_h.up.z ) + m_h.up.w ) * m_g.y ) +
-				( ( ( ttt * m_h.backward.x ) + ( tt * m_h.backward.y ) + ( t * m_h.backward.z ) + m_h.backward.w ) * m_g.z ) +
-				( ( ( ttt * m_h.translation.x ) + ( tt * m_h.translation.y ) + ( t * m_h.translation.z ) + m_h.translation.w ) * m_g.w );
-	}
+  @Override
+  public double evaluate(double t) {
+    double ttt = t * t * t;
+    double tt = t * t;
+    return (((ttt * m_h.right.x) + (tt * m_h.right.y) + (t * m_h.right.z) + m_h.right.w) * m_g.x) + (((ttt * m_h.up.x) + (tt * m_h.up.y) + (t * m_h.up.z) + m_h.up.w) * m_g.y) + (((ttt * m_h.backward.x) + (tt * m_h.backward.y) + (t * m_h.backward.z) + m_h.backward.w) * m_g.z) + (((ttt * m_h.translation.x) + (tt * m_h.translation.y) + (t * m_h.translation.z) + m_h.translation.w) * m_g.w);
+  }
 
-	@Override
-	public double evaluateDerivative( double t ) {
-		double tt3 = t * t * 3;
-		double t2 = t * 2;
-		return ( ( ( tt3 * m_h.right.x ) + ( t2 * m_h.right.y ) + m_h.right.z ) * m_g.x ) +
-				( ( ( tt3 * m_h.up.x ) + ( t2 * m_h.up.y ) + m_h.up.z ) * m_g.y ) +
-				( ( ( tt3 * m_h.backward.x ) + ( t2 * m_h.backward.y ) + m_h.backward.z ) * m_g.z ) +
-				( ( ( tt3 * m_h.translation.x ) + ( t2 * m_h.translation.y ) + m_h.translation.z ) * m_g.w );
-	}
+  @Override
+  public double evaluateDerivative(double t) {
+    double tt3 = t * t * 3;
+    double t2 = t * 2;
+    return (((tt3 * m_h.right.x) + (t2 * m_h.right.y) + m_h.right.z) * m_g.x) + (((tt3 * m_h.up.x) + (t2 * m_h.up.y) + m_h.up.z) * m_g.y) + (((tt3 * m_h.backward.x) + (t2 * m_h.backward.y) + m_h.backward.z) * m_g.z) + (((tt3 * m_h.translation.x) + (t2 * m_h.translation.y) + m_h.translation.z) * m_g.w);
+  }
 }

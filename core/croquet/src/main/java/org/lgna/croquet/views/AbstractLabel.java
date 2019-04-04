@@ -49,41 +49,41 @@ import javax.swing.JLabel;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractLabel extends SwingComponentView<JLabel> {
-	public String getText() {
-		return this.getAwtComponent().getText();
-	}
+  public String getText() {
+    return this.getAwtComponent().getText();
+  }
 
-	public void setText( String text ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setText( text );
-	}
+  public void setText(String text) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setText(text);
+  }
 
-	public Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
+  public Icon getIcon() {
+    return this.getAwtComponent().getIcon();
+  }
 
-	public void setIcon( Icon icon ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setIcon( icon );
-	}
+  public void setIcon(Icon icon) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setIcon(icon);
+  }
 
-	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
-	}
+  public void setHorizontalTextPosition(HorizontalTextPosition horizontalTextPosition) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalTextPosition(horizontalTextPosition.getInternal());
+  }
 
-	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
-	}
+  public void setVerticalTextPosition(VerticalTextPosition verticalTextPosition) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVerticalTextPosition(verticalTextPosition.getInternal());
+  }
 
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
+  public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalAlignment(horizontalAlignment.getInternal());
+  }
 
-	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
-	}
+  public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVerticalAlignment(verticalAlignment.getInternal());
+  }
 }

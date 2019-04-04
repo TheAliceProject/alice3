@@ -47,5 +47,5 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public interface Rider {
-	public SThing getVehicle();
+  public SThing getVehicle();
 }

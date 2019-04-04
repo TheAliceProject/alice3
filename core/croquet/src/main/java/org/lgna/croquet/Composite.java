@@ -53,19 +53,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface Composite<V extends CompositeView<?, ?>> extends Element {
-	public UUID getCardId();
+  public UUID getCardId();
 
-	public V getView();
+  public V getView();
 
-	public ScrollPane getScrollPaneIfItExists();
+  public ScrollPane getScrollPaneIfItExists();
 
-	public SwingComponentView<?> getRootComponent();
+  public SwingComponentView<?> getRootComponent();
 
-	public void releaseView();
+  public void releaseView();
 
-	public void handlePreActivation();
+  public void handlePreActivation();
 
-	public void handlePostDeactivation();
+  public void handlePostDeactivation();
 
-	public boolean contains( Model model );
+  public boolean contains(Model model);
 }

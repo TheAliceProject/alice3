@@ -48,18 +48,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationWizardDialogCoreComposite extends LaunchOperationWizardDialogCoreComposite {
-	public SimpleOperationWizardDialogCoreComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId, operationGroup );
-		this.getImp().createAndRegisterNullKeyLaunchOperation();
-	}
+  public SimpleOperationWizardDialogCoreComposite(UUID migrationId, Group operationGroup) {
+    super(migrationId, operationGroup);
+    this.getImp().createAndRegisterNullKeyLaunchOperation();
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getImp().getName() : null;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    Operation launchOperation = this.getLaunchOperation();
+    return launchOperation != null ? launchOperation.getImp().getName() : null;
+  }
 
-	public Operation getLaunchOperation() {
-		return this.getImp().getLaunchOperation( null );
-	}
+  public Operation getLaunchOperation() {
+    return this.getImp().getLaunchOperation(null);
+  }
 }

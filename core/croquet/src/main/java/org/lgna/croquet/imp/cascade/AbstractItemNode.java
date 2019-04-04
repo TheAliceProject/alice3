@@ -49,20 +49,20 @@ import org.lgna.croquet.CascadeItem;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemNode<F, B, M extends CascadeItem<F, B>> extends CascadeNode<M> implements ItemNode<F, B> {
-	public AbstractItemNode( M model ) {
-		super( model );
-	}
+  public AbstractItemNode(M model) {
+    super(model);
+  }
 
-	@Override
-	public abstract BlankNode<B> getBlankStepAt( int index );
+  @Override
+  public abstract BlankNode<B> getBlankStepAt(int index);
 
-	@Override
-	public F createValue() {
-		return this.getElement().createValue( this );
-	}
+  @Override
+  public F createValue() {
+    return this.getElement().createValue(this);
+  }
 
-	@Override
-	public F getTransientValue() {
-		return this.getElement().getTransientValue( this );
-	}
+  @Override
+  public F getTransientValue() {
+    return this.getElement().getTransientValue(this);
+  }
 }

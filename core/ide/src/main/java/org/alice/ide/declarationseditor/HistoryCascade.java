@@ -56,23 +56,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryCascade extends CascadeWithInternalBlank<DeclarationComposite> {
-	public HistoryCascade( UUID id ) {
-		super( Application.DOCUMENT_UI_GROUP, id, DeclarationComposite.class );
-	}
+  public HistoryCascade(UUID id) {
+    super(Application.DOCUMENT_UI_GROUP, id, DeclarationComposite.class);
+  }
 
-	protected abstract List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory );
+  protected abstract List<DeclarationComposite<?, ?>> getList(DeclarationCompositeHistory declarationCompositeHistory);
 
-	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<DeclarationComposite> blankNode ) {
-		for( DeclarationComposite declarationComposite : this.getList( DeclarationCompositeHistory.getInstance() ) ) {
-			rv.add( DeclarationCompositeFillIn.getInstance( declarationComposite ) );
-		}
-		return rv;
-	}
+  @Override
+  protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<DeclarationComposite> blankNode) {
+    for (DeclarationComposite declarationComposite : this.getList(DeclarationCompositeHistory.getInstance())) {
+      rv.add(DeclarationCompositeFillIn.getInstance(declarationComposite));
+    }
+    return rv;
+  }
 
-	@Override
-	protected final Edit createEdit( UserActivity userActivity, DeclarationComposite[] values ) {
-		DeclarationCompositeHistory.getInstance().setDeclarationComposite( values[ 0 ] );
-		return null;
-	}
+  @Override
+  protected final Edit createEdit(UserActivity userActivity, DeclarationComposite[] values) {
+    DeclarationCompositeHistory.getInstance().setDeclarationComposite(values[0]);
+    return null;
+  }
 }

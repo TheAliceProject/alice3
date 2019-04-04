@@ -58,125 +58,125 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author David Culyba
  */
 public class LinearScaleHandle extends LinearDragHandle {
-	public static LinearScaleHandle createFromResizer( Resizer resizer ) {
-		LinearScaleHandle toReturn;
-		switch( resizer ) {
-		case UNIFORM:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RESIZE, MovementType.STOOD_UP ), Color4f.PINK, false, resizer );
-			break;
-		case X_AXIS:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), Color4f.MAGENTA, true, resizer );
-			break;
-		case Y_AXIS:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), Color4f.YELLOW, true, resizer );
-			break;
-		case Z_AXIS:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), Color4f.CYAN, true, resizer );
-			break;
-		case XY_PLANE:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_RIGHT, MovementType.LOCAL ), Color4f.PINK, false, resizer );
-			break;
-		case XZ_PLANE:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT_FORWARD, MovementType.LOCAL ), Color4f.PINK, false, resizer );
-			break;
-		case YZ_PLANE:
-			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_FORWARD, MovementType.LOCAL ), Color4f.PINK, false, resizer );
-			break;
-		default:
-			toReturn = null;
-		}
-		return toReturn;
-	}
+  public static LinearScaleHandle createFromResizer(Resizer resizer) {
+    LinearScaleHandle toReturn;
+    switch (resizer) {
+    case UNIFORM:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK, false, resizer);
+      break;
+    case X_AXIS:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true, resizer);
+      break;
+    case Y_AXIS:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true, resizer);
+      break;
+    case Z_AXIS:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true, resizer);
+      break;
+    case XY_PLANE:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK, false, resizer);
+      break;
+    case XZ_PLANE:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
+      break;
+    case YZ_PLANE:
+      toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK, false, resizer);
+      break;
+    default:
+      toReturn = null;
+    }
+    return toReturn;
+  }
 
-	public LinearScaleHandle( MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, Resizer resizer ) {
-		super( dragDescription, baseColor );
-		this.applyAlongAxis = applyAlongAxis;
-		this.resizer = resizer;
-		this.initializeAppearance();
-	}
+  public LinearScaleHandle(MovementDescription dragDescription, Color4f baseColor, boolean applyAlongAxis, Resizer resizer) {
+    super(dragDescription, baseColor);
+    this.applyAlongAxis = applyAlongAxis;
+    this.resizer = resizer;
+    this.initializeAppearance();
+  }
 
-	public LinearScaleHandle( LinearScaleHandle handle ) {
-		super( handle );
-		this.applyAlongAxis = handle.applyAlongAxis;
-		this.resizer = handle.resizer;
-		this.initializeAppearance();
-	}
+  public LinearScaleHandle(LinearScaleHandle handle) {
+    super(handle);
+    this.applyAlongAxis = handle.applyAlongAxis;
+    this.resizer = handle.resizer;
+    this.initializeAppearance();
+  }
 
-	@Override
-	public LinearScaleHandle clone() {
-		return new LinearScaleHandle( this );
-	}
+  @Override
+  public LinearScaleHandle clone() {
+    return new LinearScaleHandle(this);
+  }
 
-	public boolean applyAlongAxis() {
-		return this.applyAlongAxis;
-	}
+  public boolean applyAlongAxis() {
+    return this.applyAlongAxis;
+  }
 
-	@Override
-	protected void createShape() {
-		createShape( 1.0d );
-	}
+  @Override
+  protected void createShape() {
+    createShape(1.0d);
+  }
 
-	private void createShape( double scale ) {
-		this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
-		this.arrow.setParent( this );
-	}
+  private void createShape(double scale) {
+    this.arrow = new Arrow(.05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+    this.arrow.setParent(this);
+  }
 
-	public Resizer getResizer() {
-		return this.resizer;
-	}
+  public Resizer getResizer() {
+    return this.resizer;
+  }
 
-	protected Vector3 getUniformResizeOffset() {
-		AxisAlignedBox bbox = getManipulatedObjectBox();
-		Vector3 handleOffset;
-		if( bbox != null ) {
-			handleOffset = new Vector3( bbox.getMaximum() );
-			handleOffset.z = 0;
-			handleOffset.x *= -1;
-		} else {
-			handleOffset = new Vector3( 1, 1, 0 );
-		}
-		if( handleOffset.isZero() ) {
-			handleOffset = new Vector3( 1, 1, 0 );
-		}
-		return handleOffset;
-	}
+  protected Vector3 getUniformResizeOffset() {
+    AxisAlignedBox bbox = getManipulatedObjectBox();
+    Vector3 handleOffset;
+    if (bbox != null) {
+      handleOffset = new Vector3(bbox.getMaximum());
+      handleOffset.z = 0;
+      handleOffset.x *= -1;
+    } else {
+      handleOffset = new Vector3(1, 1, 0);
+    }
+    if (handleOffset.isZero()) {
+      handleOffset = new Vector3(1, 1, 0);
+    }
+    return handleOffset;
+  }
 
-	protected Vector3 getUniformResizeDirection() {
-		Vector3 direction = getUniformResizeOffset();
-		direction.normalize();
-		return direction;
-	}
+  protected Vector3 getUniformResizeDirection() {
+    Vector3 direction = getUniformResizeOffset();
+    direction.normalize();
+    return direction;
+  }
 
-	@Override
-	public void positionRelativeToObject() {
-		if( this.dragDescription.direction == MovementDirection.RESIZE ) {
-			this.dragAxis = this.getUniformResizeDirection();
-		}
-		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
-		if( objectTransformation.isNaN() ) {
-			objectTransformation = new AffineMatrix4x4();
-		}
-		this.setTransformation( objectTransformation, this.getReferenceFrame() );
-		Vector3 handleOffset = new Vector3( this.dragAxis );
-		handleOffset.multiply( this.getHandleLength() );
-		this.setTranslationOnly( handleOffset, this.getReferenceFrame() );
-	}
+  @Override
+  public void positionRelativeToObject() {
+    if (this.dragDescription.direction == MovementDirection.RESIZE) {
+      this.dragAxis = this.getUniformResizeDirection();
+    }
+    AffineMatrix4x4 objectTransformation = this.getTransformationForAxis(this.dragAxis);
+    if (objectTransformation.isNaN()) {
+      objectTransformation = new AffineMatrix4x4();
+    }
+    this.setTransformation(objectTransformation, this.getReferenceFrame());
+    Vector3 handleOffset = new Vector3(this.dragAxis);
+    handleOffset.multiply(this.getHandleLength());
+    this.setTranslationOnly(handleOffset, this.getReferenceFrame());
+  }
 
-	@Override
-	protected void setScale( double scale ) {
-		if( this.arrow != null ) {
-			this.arrow.setParent( null );
-		}
-		this.createShape( scale );
-	}
+  @Override
+  protected void setScale(double scale) {
+    if (this.arrow != null) {
+      this.arrow.setParent(null);
+    }
+    this.createShape(scale);
+  }
 
-	@Override
-	public void setVisualsShowing( boolean showing ) {
-		super.setVisualsShowing( showing );
-		this.arrow.setVisualShowing( showing );
-	}
+  @Override
+  public void setVisualsShowing(boolean showing) {
+    super.setVisualsShowing(showing);
+    this.arrow.setVisualShowing(showing);
+  }
 
-	private final Resizer resizer;
-	private final boolean applyAlongAxis;
-	private Arrow arrow;
+  private final Resizer resizer;
+  private final boolean applyAlongAxis;
+  private Arrow arrow;
 }

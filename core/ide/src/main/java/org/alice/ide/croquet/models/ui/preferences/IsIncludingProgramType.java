@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingProgramType extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingProgramType instance = new IsIncludingProgramType();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingProgramType instance = new IsIncludingProgramType();
+  }
 
-	public static IsIncludingProgramType getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingProgramType getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingProgramType() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
-	}
+  private IsIncludingProgramType() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("052fef4d-cac4-431f-b8d9-8c50ff1823d1"), false);
+  }
 }

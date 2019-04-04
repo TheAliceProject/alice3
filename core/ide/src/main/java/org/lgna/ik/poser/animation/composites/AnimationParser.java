@@ -66,64 +66,63 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  */
 public class AnimationParser implements Crawler {
 
-	ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
-	double currentTime = 0;
-	ArrayList<KeyFrameData> dataList = Lists.newArrayList();
-	ArrayList<AnimationStyle> styleList = Lists.newArrayList();
+  ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
+  double currentTime = 0;
+  ArrayList<KeyFrameData> dataList = Lists.newArrayList();
+  ArrayList<AnimationStyle> styleList = Lists.newArrayList();
 
-	public static ArrayList<KeyFrameData> initializeAndParse( UserMethod animation ) {
-		AnimationParser parser = new AnimationParser();
-		animation.crawl( parser, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-		return parser.getKeyFrames();
-	}
+  public static ArrayList<KeyFrameData> initializeAndParse(UserMethod animation) {
+    AnimationParser parser = new AnimationParser();
+    animation.crawl(parser, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+    return parser.getKeyFrames();
+  }
 
-	private ArrayList<KeyFrameData> getKeyFrames() {
-		for( int i = 0; i != dataList.size(); ++i ) {
-			AnimationStyle second = AnimationStyle.BEGIN_AND_END_GENTLY;
-			if( i < ( dataList.size() - 1 ) ) {
-				second = styleList.get( i + 1 );
-			}
-			dataList.get( 0 ).setStyle( KeyFrameStyles.getKeyFrameStyleFromTwoAnimationStyles(
-					styleList.get( i ), second ) );
-		}
-		return dataList;
-	}
+  private ArrayList<KeyFrameData> getKeyFrames() {
+    for (int i = 0; i != dataList.size(); ++i) {
+      AnimationStyle second = AnimationStyle.BEGIN_AND_END_GENTLY;
+      if (i < (dataList.size() - 1)) {
+        second = styleList.get(i + 1);
+      }
+      dataList.get(0).setStyle(KeyFrameStyles.getKeyFrameStyleFromTwoAnimationStyles(styleList.get(i), second));
+    }
+    return dataList;
+  }
 
-	@Override
-	public void visit( Crawlable crawlable ) {
-		if( crawlable instanceof MethodInvocation ) {
+  @Override
+  public void visit(Crawlable crawlable) {
+    if (crawlable instanceof MethodInvocation) {
 
-			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( PoseAstUtilities.isStrikePoseMethod( methodInv.method.getValue() ) ) {
-				Pose pose = null;
-				double duration = 0;
-				AnimationStyle style = null;
-				ArrayList<Expression> list = Lists.newArrayList();
-				list.add( methodInv.requiredArguments.get( 0 ).expression.getValue() );
-				for( JavaKeyedArgument kArg : methodInv.keyedArguments ) {
-					Expression value = ( (MethodInvocation)kArg.expression.getValue() ).requiredArguments.get( 0 ).expression.getValue();
-					if( value instanceof DoubleLiteral ) {
-						duration = ( (DoubleLiteral)value ).value.getValue();
-					} else {
-						list.add( kArg.expression.getValue() );
-					}
-				}
-				Object[] argArr = vm.ENTRY_POINT_evaluate( null, list.toArray( new Expression[ 0 ] ) );
-				for( Object o : argArr ) {
-					if( o instanceof Pose ) {
-						pose = (Pose)o;
-					} else if( o instanceof AnimationStyle ) {
-						style = (AnimationStyle)o;
-					} else {
-						System.out.println( "asfd: " + o.getClass() );
-					}
-				}
-				//				assert duration > 0;
-				assert pose != null;
-				assert style != null;
-				dataList.add( new KeyFrameData( currentTime + duration, pose ) );
-				styleList.add( style );
-			}
-		}
-	}
+      MethodInvocation methodInv = (MethodInvocation) crawlable;
+      if (PoseAstUtilities.isStrikePoseMethod(methodInv.method.getValue())) {
+        Pose pose = null;
+        double duration = 0;
+        AnimationStyle style = null;
+        ArrayList<Expression> list = Lists.newArrayList();
+        list.add(methodInv.requiredArguments.get(0).expression.getValue());
+        for (JavaKeyedArgument kArg : methodInv.keyedArguments) {
+          Expression value = ((MethodInvocation) kArg.expression.getValue()).requiredArguments.get(0).expression.getValue();
+          if (value instanceof DoubleLiteral) {
+            duration = ((DoubleLiteral) value).value.getValue();
+          } else {
+            list.add(kArg.expression.getValue());
+          }
+        }
+        Object[] argArr = vm.ENTRY_POINT_evaluate(null, list.toArray(new Expression[0]));
+        for (Object o : argArr) {
+          if (o instanceof Pose) {
+            pose = (Pose) o;
+          } else if (o instanceof AnimationStyle) {
+            style = (AnimationStyle) o;
+          } else {
+            System.out.println("asfd: " + o.getClass());
+          }
+        }
+        //        assert duration > 0;
+        assert pose != null;
+        assert style != null;
+        dataList.add(new KeyFrameData(currentTime + duration, pose));
+        styleList.add(style);
+      }
+    }
+  }
 }

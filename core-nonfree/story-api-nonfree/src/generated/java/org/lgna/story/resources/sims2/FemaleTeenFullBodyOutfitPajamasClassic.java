@@ -44,14 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitPajamasClassic implements FemaleTeenFullBodyOutfit {
-	AQUA_SATIN,
-	BLACK_SATIN,
-	BLUE_SATIN,
-	DK_GREEN_SATIN,
-	MAGENTA_SATIN,
-	ORANGE_SATIN,
-	PINK_SATIN,
-	WHITE_SATIN,
-	RED_SATIN;
+  AQUA_SATIN, BLACK_SATIN, BLUE_SATIN, DK_GREEN_SATIN, MAGENTA_SATIN, ORANGE_SATIN, PINK_SATIN, WHITE_SATIN, RED_SATIN
 
 }

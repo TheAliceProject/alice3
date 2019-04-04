@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Layer;
  * @author Dennis Cosgrove
  */
 public class GraphicRemovedEvent extends GraphicEvent {
-	public GraphicRemovedEvent( Layer source, Graphic child ) {
-		super( source, child );
-	}
+  public GraphicRemovedEvent(Layer source, Graphic child) {
+    super(source, child);
+  }
 }

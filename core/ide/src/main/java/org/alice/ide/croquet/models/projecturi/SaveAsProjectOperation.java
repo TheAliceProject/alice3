@@ -49,20 +49,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
-	private static class SingletonHolder {
-		private static SaveAsProjectOperation instance = new SaveAsProjectOperation();
-	}
+  private static class SingletonHolder {
+    private static SaveAsProjectOperation instance = new SaveAsProjectOperation();
+  }
 
-	public static SaveAsProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SaveAsProjectOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SaveAsProjectOperation() {
-		super( UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
-	}
+  private SaveAsProjectOperation() {
+    super(UUID.fromString("14986f74-fb95-40f1-a39e-7cf89f5cd720"));
+  }
 
-	@Override
-	protected boolean isPromptNecessary( File file ) {
-		return true;
-	}
+  @Override
+  protected boolean isPromptNecessary(File file) {
+    return true;
+  }
 }

@@ -58,31 +58,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InitialPropertyValuesToolPaletteCoreComposite extends ToolPaletteCoreComposite<InitialPropertyValuesToolPaletteCoreView> {
-	private final List<CustomItemState<Expression>> initialPropertyValueExpressionStates = Lists.newLinkedList();
+  private final List<CustomItemState<Expression>> initialPropertyValueExpressionStates = Lists.newLinkedList();
 
-	public InitialPropertyValuesToolPaletteCoreComposite() {
-		super( UUID.fromString( "527409db-68e6-4169-b59c-6fb53bdc5a24" ), Application.DOCUMENT_UI_GROUP, true );
-	}
+  public InitialPropertyValuesToolPaletteCoreComposite() {
+    super(UUID.fromString("527409db-68e6-4169-b59c-6fb53bdc5a24"), Application.DOCUMENT_UI_GROUP, true);
+  }
 
-	public Iterable<CustomItemState<Expression>> getInitialPropertyValueExpressionStates() {
-		return Collections.unmodifiableList( this.initialPropertyValueExpressionStates );
-	}
+  public Iterable<CustomItemState<Expression>> getInitialPropertyValueExpressionStates() {
+    return Collections.unmodifiableList(this.initialPropertyValueExpressionStates);
+  }
 
-	public void addInitialPropertyValueExpressionState( CustomItemState<Expression> state ) {
-		this.initialPropertyValueExpressionStates.add( state );
-	}
+  public void addInitialPropertyValueExpressionState(CustomItemState<Expression> state) {
+    this.initialPropertyValueExpressionStates.add(state);
+  }
 
-	public int getInitialPropertyValueExpressionStateCount() {
-		return this.initialPropertyValueExpressionStates.size();
-	}
+  public int getInitialPropertyValueExpressionStateCount() {
+    return this.initialPropertyValueExpressionStates.size();
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected InitialPropertyValuesToolPaletteCoreView createView() {
-		return new InitialPropertyValuesToolPaletteCoreView( this );
-	}
+  @Override
+  protected InitialPropertyValuesToolPaletteCoreView createView() {
+    return new InitialPropertyValuesToolPaletteCoreView(this);
+  }
 }

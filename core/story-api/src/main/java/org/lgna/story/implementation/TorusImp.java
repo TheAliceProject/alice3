@@ -55,93 +55,93 @@ import org.lgna.story.STorus;
  */
 public class TorusImp extends ShapeImp {
 
-	private static final double MINIMUM_VALUE = 0.01; //todo
+  private static final double MINIMUM_VALUE = 0.01; //todo
 
-	public TorusImp( STorus abstraction ) {
-		this.abstraction = abstraction;
-		this.sgTorus.majorRadius.setValue( 0.375 );
-		this.sgTorus.minorRadius.setValue( 0.125 );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgTorus } );
-	}
+  public TorusImp(STorus abstraction) {
+    this.abstraction = abstraction;
+    this.sgTorus.majorRadius.setValue(0.375);
+    this.sgTorus.minorRadius.setValue(0.125);
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgTorus});
+  }
 
-	@Override
-	public STorus getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public STorus getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected InstanceProperty[] getScaleProperties() {
-		return new InstanceProperty[] { this.sgTorus.majorRadius, this.sgTorus.minorRadius };
-	}
+  @Override
+  protected InstanceProperty[] getScaleProperties() {
+    return new InstanceProperty[] {this.sgTorus.majorRadius, this.sgTorus.minorRadius};
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XZ_PLANE, Resizer.Y_AXIS };
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {Resizer.XZ_PLANE, Resizer.Y_AXIS};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			return this.outerRadius.getValue();
-		} else if( resizer == Resizer.Y_AXIS ) {
-			return this.sgTorus.minorRadius.getValue();
-		} else {
-			assert false : resizer;
-			return Double.NaN;
-		}
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    if (resizer == Resizer.XZ_PLANE) {
+      return this.outerRadius.getValue();
+    } else if (resizer == Resizer.Y_AXIS) {
+      return this.sgTorus.minorRadius.getValue();
+    } else {
+      assert false : resizer;
+      return Double.NaN;
+    }
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			this.outerRadius.setValue( value );
-		} else if( resizer == Resizer.Y_AXIS ) {
-			this.sgTorus.minorRadius.setValue( value );
-		} else {
-			assert false : resizer;
-		}
-	}
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    if (resizer == Resizer.XZ_PLANE) {
+      this.outerRadius.setValue(value);
+    } else if (resizer == Resizer.Y_AXIS) {
+      this.sgTorus.minorRadius.setValue(value);
+    } else {
+      assert false : resizer;
+    }
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		Logger.outln( "setSize", size, this );
-		this.outerRadius.setValue( size.x * .5 );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    Logger.outln("setSize", size, this);
+    this.outerRadius.setValue(size.x * .5);
+  }
 
-	private final STorus abstraction;
-	private final Torus sgTorus = new Torus();
-	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.25;
+  private final STorus abstraction;
+  private final Torus sgTorus = new Torus();
+  public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this) {
+    private double value = 0.25;
 
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
+    @Override
+    public Double getValue() {
+      return this.value;
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double outerRadius = TorusImp.this.outerRadius.getValue();
-			double minorDiameter = Math.max( outerRadius - value, MINIMUM_VALUE );
-			double minorRadius = minorDiameter * 0.5;
-			double majorRadius = Math.max( outerRadius - minorRadius, MINIMUM_VALUE );
-			sgTorus.minorRadius.setValue( minorRadius );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
-	public final DoubleProperty outerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.5;
+    @Override
+    protected void handleSetValue(Double value) {
+      this.value = value;
+      double outerRadius = TorusImp.this.outerRadius.getValue();
+      double minorDiameter = Math.max(outerRadius - value, MINIMUM_VALUE);
+      double minorRadius = minorDiameter * 0.5;
+      double majorRadius = Math.max(outerRadius - minorRadius, MINIMUM_VALUE);
+      sgTorus.minorRadius.setValue(minorRadius);
+      sgTorus.majorRadius.setValue(majorRadius);
+    }
+  };
+  public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this) {
+    private double value = 0.5;
 
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
+    @Override
+    public Double getValue() {
+      return this.value;
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double majorRadius = Math.max( value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      this.value = value;
+      double majorRadius = Math.max(value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE);
+      sgTorus.majorRadius.setValue(majorRadius);
+    }
+  };
 }

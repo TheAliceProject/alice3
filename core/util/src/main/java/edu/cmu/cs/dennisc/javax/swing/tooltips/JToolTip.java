@@ -52,70 +52,70 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 class ToolTipUI extends BasicToolTipUI {
-	private static ToolTipUI singleton = new ToolTipUI();
+  private static ToolTipUI singleton = new ToolTipUI();
 
-	public static ComponentUI createUI( JComponent c ) {
-		return ToolTipUI.singleton;
-	}
+  public static ComponentUI createUI(JComponent c) {
+    return ToolTipUI.singleton;
+  }
 
-	@Override
-	public Dimension getPreferredSize( JComponent c ) {
-		JToolTip toolTip = (JToolTip)c;
-		Component subject = toolTip.getSubject();
-		if( subject != null ) {
-			ComponentUtilities.invalidateTree( subject );
-			ComponentUtilities.doLayoutTree( subject );
-			ComponentUtilities.setSizeToPreferredSizeTree( subject );
-			return subject.getPreferredSize();
-		} else {
-			return super.getPreferredSize( c );
-		}
-	}
-	//	@Override
-	//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
-	//		ZToolTip toolTip = (ZToolTip)c;
-	//		java.awt.Component subject = toolTip.getSubject();
-	//		if( subject != null ) {
-	//			subject.print( g );
-	//		} else {
-	//			super.paint( g, c );
-	//		}
-	//	}
+  @Override
+  public Dimension getPreferredSize(JComponent c) {
+    JToolTip toolTip = (JToolTip) c;
+    Component subject = toolTip.getSubject();
+    if (subject != null) {
+      ComponentUtilities.invalidateTree(subject);
+      ComponentUtilities.doLayoutTree(subject);
+      ComponentUtilities.setSizeToPreferredSizeTree(subject);
+      return subject.getPreferredSize();
+    } else {
+      return super.getPreferredSize(c);
+    }
+  }
+  //  @Override
+  //  public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+  //    ZToolTip toolTip = (ZToolTip)c;
+  //    java.awt.Component subject = toolTip.getSubject();
+  //    if( subject != null ) {
+  //      subject.print( g );
+  //    } else {
+  //      super.paint( g, c );
+  //    }
+  //  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class JToolTip extends javax.swing.JToolTip {
-	private Component subject;
+  private Component subject;
 
-	public JToolTip( Component subject ) {
-		this.setLayout( new GridLayout( 1, 1 ) );
-		this.setSubject( subject );
-		this.setOpaque( false );
-	}
+  public JToolTip(Component subject) {
+    this.setLayout(new GridLayout(1, 1));
+    this.setSubject(subject);
+    this.setOpaque(false);
+  }
 
-	public Component getSubject() {
-		return this.subject;
-	}
+  public Component getSubject() {
+    return this.subject;
+  }
 
-	public void setSubject( Component subject ) {
-		if( this.subject != null ) {
-			this.remove( this.subject );
-		}
-		this.subject = subject;
-		if( this.subject != null ) {
-			this.add( this.subject );
-		}
-	}
+  public void setSubject(Component subject) {
+    if (this.subject != null) {
+      this.remove(this.subject);
+    }
+    this.subject = subject;
+    if (this.subject != null) {
+      this.add(this.subject);
+    }
+  }
 
-	@Override
-	public boolean contains( int x, int y ) {
-		return false;
-	}
+  @Override
+  public boolean contains(int x, int y) {
+    return false;
+  }
 
-	@Override
-	public void updateUI() {
-		setUI( ToolTipUI.createUI( this ) );
-	}
+  @Override
+  public void updateUI() {
+    setUI(ToolTipUI.createUI(this));
+  }
 }

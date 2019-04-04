@@ -53,25 +53,25 @@ import java.util.UUID;
 
 //todo: consolidate w/ similar class
 public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static Map<AbstractMethod, AddEventListenerMethodInvocationFillIn> map = Maps.newHashMap();
+  private static Map<AbstractMethod, AddEventListenerMethodInvocationFillIn> map = Maps.newHashMap();
 
-	public static synchronized AddEventListenerMethodInvocationFillIn getInstance( AbstractMethod method ) {
-		AddEventListenerMethodInvocationFillIn rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new AddEventListenerMethodInvocationFillIn( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized AddEventListenerMethodInvocationFillIn getInstance(AbstractMethod method) {
+    AddEventListenerMethodInvocationFillIn rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new AddEventListenerMethodInvocationFillIn(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private AddEventListenerMethodInvocationFillIn( AbstractMethod method ) {
-		super( UUID.fromString( "bcc0b92b-2154-4b59-aafc-5243d2d3422e" ), new ThisExpression(), method );
-	}
+  private AddEventListenerMethodInvocationFillIn(AbstractMethod method) {
+    super(UUID.fromString("bcc0b92b-2154-4b59-aafc-5243d2d3422e"), new ThisExpression(), method);
+  }
 
-	@Override
-	protected Expression createExpression( Expression transientValueExpression ) {
-		return new ThisExpression();
-	}
+  @Override
+  protected Expression createExpression(Expression transientValueExpression) {
+    return new ThisExpression();
+  }
 }

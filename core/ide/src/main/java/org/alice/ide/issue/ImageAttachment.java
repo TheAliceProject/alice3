@@ -52,26 +52,26 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class ImageAttachment implements Attachment {
-	private final byte[] bytes;
-	private final String fileName;
+  private final byte[] bytes;
+  private final String fileName;
 
-	public ImageAttachment( Image image, String baseName ) throws IOException {
-		this.bytes = ImageUtilities.writeToByteArray( ImageUtilities.PNG_CODEC_NAME, image );
-		this.fileName = baseName + ".png";
-	}
+  public ImageAttachment(Image image, String baseName) throws IOException {
+    this.bytes = ImageUtilities.writeToByteArray(ImageUtilities.PNG_CODEC_NAME, image);
+    this.fileName = baseName + ".png";
+  }
 
-	@Override
-	public byte[] getBytes() {
-		return this.bytes;
-	}
+  @Override
+  public byte[] getBytes() {
+    return this.bytes;
+  }
 
-	@Override
-	public String getMIMEType() {
-		return "image/png";
-	}
+  @Override
+  public String getMIMEType() {
+    return "image/png";
+  }
 
-	@Override
-	public String getFileName() {
-		return this.fileName;
-	}
+  @Override
+  public String getFileName() {
+    return this.fileName;
+  }
 }

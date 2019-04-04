@@ -53,15 +53,15 @@ import org.lgna.croquet.views.Separator;
  * @author Dennis Cosgrove
  */
 public class EventScriptPane extends MigPanel {
-	public EventScriptPane( SingleSelectListState<EventScriptEvent, ?> state ) {
-		super( null, "fill, insets 0", "[grow,shrink]", "[grow 0][grow 0][grow100]" );
-		List<EventScriptEvent> list = state.createListWithItemCodecListCellRenderer();
-		list.setMinimumPreferredWidth( 240 );
-		list.getAwtComponent().setEnabled( false );
-		list.setBackgroundColor( this.getBackgroundColor() );
+  public EventScriptPane(SingleSelectListState<EventScriptEvent, ?> state) {
+    super(null, "fill, insets 0", "[grow,shrink]", "[grow 0][grow 0][grow100]");
+    List<EventScriptEvent> list = state.createListWithItemCodecListCellRenderer();
+    list.setMinimumPreferredWidth(240);
+    list.getAwtComponent().setEnabled(false);
+    list.setBackgroundColor(this.getBackgroundColor());
 
-		this.addComponent( state.getSidekickLabel().createLabel(), "grow, wrap" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "grow, wrap" );
-		this.addComponent( list, "grow" );
-	}
+    this.addComponent(state.getSidekickLabel().createLabel(), "grow, wrap");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "grow, wrap");
+    this.addComponent(list, "grow");
+  }
 }

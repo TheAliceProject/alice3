@@ -55,32 +55,32 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ShowPathPropertyView extends FormPanel {
-	public ShowPathPropertyView( ShowPathPropertyComposite composite ) {
-		super( composite );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+  public ShowPathPropertyView(ShowPathPropertyComposite composite) {
+    super(composite);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 
-	private LabeledFormRow[] createComponentRowsForSystemProperty( String name, String separator ) {
-		String value = System.getProperty( name );
-		assert value != null;
-		String[] array = value.split( separator );
-		LabeledFormRow[] rv = new LabeledFormRow[ array.length ];
-		for( int i = 0; i < array.length; i++ ) {
-			String prefix;
-			if( i == 0 ) {
-				prefix = name;
-			} else {
-				prefix = "";
-			}
-			rv[ i ] = LabeledFormRow.createFromLabel( new Label( prefix + "[" + i + "]:" ), new Label( array[ i ] ) );
-		}
-		return rv;
-	}
+  private LabeledFormRow[] createComponentRowsForSystemProperty(String name, String separator) {
+    String value = System.getProperty(name);
+    assert value != null;
+    String[] array = value.split(separator);
+    LabeledFormRow[] rv = new LabeledFormRow[array.length];
+    for (int i = 0; i < array.length; i++) {
+      String prefix;
+      if (i == 0) {
+        prefix = name;
+      } else {
+        prefix = "";
+      }
+      rv[i] = LabeledFormRow.createFromLabel(new Label(prefix + "[" + i + "]:"), new Label(array[i]));
+    }
+    return rv;
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		ShowPathPropertyComposite composite = (ShowPathPropertyComposite)this.getComposite();
-		String pathSepartor = System.getProperty( "path.separator" );
-		Collections.addAll( rows, createComponentRowsForSystemProperty( composite.getPropertyName(), pathSepartor ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    ShowPathPropertyComposite composite = (ShowPathPropertyComposite) this.getComposite();
+    String pathSepartor = System.getProperty("path.separator");
+    Collections.addAll(rows, createComponentRowsForSystemProperty(composite.getPropertyName(), pathSepartor));
+  }
 }

@@ -57,21 +57,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RandomCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
-	private static class SingletonHolder {
-		private static RandomCascadeMenu instance = new RandomCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static RandomCascadeMenu instance = new RandomCascadeMenu();
+  }
 
-	public static RandomCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RandomCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RandomCascadeMenu() {
-		super( UUID.fromString( "1cea7986-9a06-4796-a41b-52aacedf3e06" ) );
-	}
+  private RandomCascadeMenu() {
+    super(UUID.fromString("1cea7986-9a06-4796-a41b-52aacedf3e06"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
-		blankChildren.add( NextDouble01FillIn.getInstance() );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextDoubleInRange", Number.class, Number.class ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context) {
+    blankChildren.add(NextDouble01FillIn.getInstance());
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(RandomUtilities.class, "nextDoubleInRange", Number.class, Number.class));
+  }
 }

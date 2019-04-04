@@ -47,50 +47,50 @@ import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
 public class DoubleClickedObjectCondition extends ClickedObjectCondition {
-	public DoubleClickedObjectCondition( int mouseButton, PickCondition pickCondition ) {
-		super( mouseButton, pickCondition );
-	}
+  public DoubleClickedObjectCondition(int mouseButton, PickCondition pickCondition) {
+    super(mouseButton, pickCondition);
+  }
 
-	public DoubleClickedObjectCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
-		super( mouseButton, pickCondition, modifierMask );
-	}
+  public DoubleClickedObjectCondition(int mouseButton, PickCondition pickCondition, ModifierMask modifierMask) {
+    super(mouseButton, pickCondition, modifierMask);
+  }
 
-	@Override
-	protected void update( InputState currentState, InputState previousState ) {
-		super.update( currentState, previousState );
-		if( wasValidClick( currentState, previousState ) ) {
-			clickArray[ 1 ] = clickArray[ 0 ];
-			clickArray[ 0 ] = new InputState( currentState );
-		}
-	}
+  @Override
+  protected void update(InputState currentState, InputState previousState) {
+    super.update(currentState, previousState);
+    if (wasValidClick(currentState, previousState)) {
+      clickArray[1] = clickArray[0];
+      clickArray[0] = new InputState(currentState);
+    }
+  }
 
-	private static boolean doStatesMatch( InputState a, InputState b ) {
-		if( a == b ) {
-			return true;
-		}
-		if( ( a == null ) || ( b == null ) ) {
-			return false;
-		}
-		return a.getTimeCaptured() == b.getTimeCaptured();
-	}
+  private static boolean doStatesMatch(InputState a, InputState b) {
+    if (a == b) {
+      return true;
+    }
+    if ((a == null) || (b == null)) {
+      return false;
+    }
+    return a.getTimeCaptured() == b.getTimeCaptured();
+  }
 
-	@Override
-	public boolean clicked( InputState currentState, InputState previousState ) {
-		boolean validDoubleClick = false;
-		if( doStatesMatch( currentState, clickArray[ 0 ] ) ) {
-			//Clicked is called after update, so if we have a double click, it will look like this:
-			// clickArray[0] = this click
-			// clickArray[1] = previous click
-			if( ( clickArray[ 0 ] != null ) && ( clickArray[ 1 ] != null ) ) {
-				long elapseTime = clickArray[ 0 ].getTimeCaptured() - clickArray[ 1 ].getTimeCaptured();
-				double mouseDistance = clickArray[ 0 ].getMouseLocation().distance( clickArray[ 1 ].getMouseLocation() );
-				if( ( elapseTime <= MAX_CLICK_TIME ) && ( mouseDistance <= MAX_MOUSE_MOVE ) ) {
-					validDoubleClick = true;
-				}
-			}
-		}
-		return validDoubleClick;
-	}
+  @Override
+  public boolean clicked(InputState currentState, InputState previousState) {
+    boolean validDoubleClick = false;
+    if (doStatesMatch(currentState, clickArray[0])) {
+      //Clicked is called after update, so if we have a double click, it will look like this:
+      // clickArray[0] = this click
+      // clickArray[1] = previous click
+      if ((clickArray[0] != null) && (clickArray[1] != null)) {
+        long elapseTime = clickArray[0].getTimeCaptured() - clickArray[1].getTimeCaptured();
+        double mouseDistance = clickArray[0].getMouseLocation().distance(clickArray[1].getMouseLocation());
+        if ((elapseTime <= MAX_CLICK_TIME) && (mouseDistance <= MAX_MOUSE_MOVE)) {
+          validDoubleClick = true;
+        }
+      }
+    }
+    return validDoubleClick;
+  }
 
-	private InputState[] clickArray = new InputState[ 2 ];
+  private InputState[] clickArray = new InputState[2];
 }

@@ -54,80 +54,80 @@ import java.awt.Cursor;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuItem extends ViewController<JMenuItem, CascadeItem<?, ?>> {
-	private final RtRoot<?, ?> rtRoot;
-	private boolean isIconSet;
-	private Icon setIcon;
+  private final RtRoot<?, ?> rtRoot;
+  private boolean isIconSet;
+  private Icon setIcon;
 
-	public CascadeMenuItem( CascadeItem<?, ?> model, RtRoot<?, ?> rtRoot ) {
-		super( model );
-		this.rtRoot = rtRoot;
-	}
+  public CascadeMenuItem(CascadeItem<?, ?> model, RtRoot<?, ?> rtRoot) {
+    super(model);
+    this.rtRoot = rtRoot;
+  }
 
-	protected Icon getSetIcon() {
-		return this.setIcon;
-	}
+  protected Icon getSetIcon() {
+    return this.setIcon;
+  }
 
-	public boolean isIconSet() {
-		return this.isIconSet;
-	}
+  public boolean isIconSet() {
+    return this.isIconSet;
+  }
 
-	public void setIconSet( boolean isIconSet ) {
-		this.isIconSet = isIconSet;
-	}
+  public void setIconSet(boolean isIconSet) {
+    this.isIconSet = isIconSet;
+  }
 
-	public Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
+  public Icon getIcon() {
+    return this.getAwtComponent().getIcon();
+  }
 
-	public void setIcon( Icon icon ) {
-		this.setIconSet( true );
-		this.setIcon = icon;
-	}
+  public void setIcon(Icon icon) {
+    this.setIconSet(true);
+    this.setIcon = icon;
+  }
 
-	@Override
-	protected JMenuItem createAwtComponent() {
-		return new JMenuItem() {
-			private Cursor pushedCursor;
+  @Override
+  protected JMenuItem createAwtComponent() {
+    return new JMenuItem() {
+      private Cursor pushedCursor;
 
-			@Override
-			public Icon getIcon() {
-				//note: much of the cascading menu system leverages icons
-				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
-				if( CascadeMenuItem.this.isIconSet() ) {
-					return CascadeMenuItem.this.getSetIcon();
-				} else {
-					return super.getIcon();
-				}
-				//				} else {
-				//					return null;
-				//				}
-			}
-			//			@Override
-			//			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-			//				int id = e.getID();
-			//				boolean isSuperRequired = true;
-			//				if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-			//					if( rtRoot != null ) {
-			//						if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
-			//							this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
-			//							edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
-			//							isSuperRequired = false;
-			//						}
-			//					}
-			//				} else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
-			//					if( this.pushedCursor != null ) {
-			//						java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
-			//						if( this.pushedCursor != poppedCursor ) {
-			//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
-			//						}
-			//						this.pushedCursor = null;
-			//						isSuperRequired = false;
-			//					}
-			//				}
-			//				if( isSuperRequired ) {
-			//					super.processMouseEvent( e );
-			//				}
-			//			}
-		};
-	}
+      @Override
+      public Icon getIcon() {
+        //note: much of the cascading menu system leverages icons
+        //      if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+        if (CascadeMenuItem.this.isIconSet()) {
+          return CascadeMenuItem.this.getSetIcon();
+        } else {
+          return super.getIcon();
+        }
+        //      } else {
+        //        return null;
+        //      }
+      }
+      //    @Override
+      //    protected void processMouseEvent( java.awt.event.MouseEvent e ) {
+      //      int id = e.getID();
+      //      boolean isSuperRequired = true;
+      //      if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
+      //        if( rtRoot != null ) {
+      //          if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
+      //            this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
+      //            edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
+      //            isSuperRequired = false;
+      //          }
+      //        }
+      //      } else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
+      //        if( this.pushedCursor != null ) {
+      //          java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+      //          if( this.pushedCursor != poppedCursor ) {
+      //            edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
+      //          }
+      //          this.pushedCursor = null;
+      //          isSuperRequired = false;
+      //        }
+      //      }
+      //      if( isSuperRequired ) {
+      //        super.processMouseEvent( e );
+      //      }
+      //    }
+    };
+  }
 }

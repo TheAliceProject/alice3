@@ -53,27 +53,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AddFunctionComposite extends AddMethodComposite {
-	private static InitializingIfAbsentMap<UserType<?>, AddFunctionComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserType<?>, AddFunctionComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddFunctionComposite getInstance( UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddFunctionComposite>() {
-			@Override
-			public AddFunctionComposite initialize( UserType<?> declaringType ) {
-				return new AddFunctionComposite( declaringType );
-			}
-		} );
-	}
+  public static AddFunctionComposite getInstance(UserType<?> declaringType) {
+    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddFunctionComposite>() {
+      @Override
+      public AddFunctionComposite initialize(UserType<?> declaringType) {
+        return new AddFunctionComposite(declaringType);
+      }
+    });
+  }
 
-	private AddFunctionComposite( UserType<?> declaringType ) {
-		super( UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
-				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-				.name( ApplicabilityStatus.EDITABLE )
-				, declaringType );
-	}
+  private AddFunctionComposite(UserType<?> declaringType) {
+    super(UUID.fromString("a035d3f7-1858-497b-9af7-c1c84ce79801"), new Details().valueComponentType(ApplicabilityStatus.EDITABLE, null).valueIsArrayType(ApplicabilityStatus.EDITABLE, false).name(ApplicabilityStatus.EDITABLE), declaringType);
+  }
 
-	@Override
-	protected AddFunctionView createView() {
-		return new AddFunctionView( this );
-	}
+  @Override
+  protected AddFunctionView createView() {
+    return new AddFunctionView(this);
+  }
 }

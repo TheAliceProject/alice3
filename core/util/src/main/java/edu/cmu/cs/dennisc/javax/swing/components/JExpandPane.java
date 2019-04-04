@@ -70,107 +70,107 @@ import java.awt.geom.Rectangle2D;
  */
 
 public abstract class JExpandPane extends AbstractButton {
-	class ToggleButton extends JToggleButton {
-		@Override
-		public Dimension getPreferredSize() {
-			Dimension rv = super.getPreferredSize();
-			Font font = this.getFont();
-			if( font != null ) {
-				Graphics g = GraphicsUtilities.getGraphics();
-				FontMetrics fm = g.getFontMetrics( font );
-				for( String s : new String[] { JExpandPane.this.getExpandedButtonText(), JExpandPane.this.getCollapsedButtonText() } ) {
-					Rectangle2D bounds = fm.getStringBounds( s, g );
-					rv.width = Math.max( rv.width, (int)bounds.getWidth() + 16 );
-					rv.height = Math.max( rv.height, (int)bounds.getHeight() + 4 );
-				}
-			}
-			return rv;
-		}
+  class ToggleButton extends JToggleButton {
+    @Override
+    public Dimension getPreferredSize() {
+      Dimension rv = super.getPreferredSize();
+      Font font = this.getFont();
+      if (font != null) {
+        Graphics g = GraphicsUtilities.getGraphics();
+        FontMetrics fm = g.getFontMetrics(font);
+        for (String s : new String[] {JExpandPane.this.getExpandedButtonText(), JExpandPane.this.getCollapsedButtonText()}) {
+          Rectangle2D bounds = fm.getStringBounds(s, g);
+          rv.width = Math.max(rv.width, (int) bounds.getWidth() + 16);
+          rv.height = Math.max(rv.height, (int) bounds.getHeight() + 4);
+        }
+      }
+      return rv;
+    }
 
-		@Override
-		protected void paintComponent( Graphics g ) {
-			super.paintComponent( g );
-			String text;
-			if( this.isSelected() ) {
-				text = JExpandPane.this.getExpandedButtonText();
-			} else {
-				text = JExpandPane.this.getCollapsedButtonText();
-			}
-			GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
-		}
-	}
+    @Override
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      String text;
+      if (this.isSelected()) {
+        text = JExpandPane.this.getExpandedButtonText();
+      } else {
+        text = JExpandPane.this.getCollapsedButtonText();
+      }
+      GraphicsUtilities.drawCenteredText(g, text, this.getSize());
+    }
+  }
 
-	private JLabel label = this.createLabel();
-	private ToggleButton toggle = new ToggleButton();
-	private JComponent center;
+  private JLabel label = this.createLabel();
+  private ToggleButton toggle = new ToggleButton();
+  private JComponent center;
 
-	public JExpandPane() {
-		this.setModel( new DefaultButtonModel() );
-		this.toggle.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				JExpandPane.this.setSelected( toggle.isSelected() );
-			}
-		} );
-		this.addItemListener( new ItemListener() {
-			@Override
-			public void itemStateChanged( ItemEvent e ) {
-				JExpandPane.this.handleToggled( e );
-			}
-		} );
-		this.label.setText( this.getCollapsedLabelText() );
-		//this.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
-		this.setLayout( new BorderLayout() );
-		this.add( this.createTopPane(), BorderLayout.NORTH );
-		this.center = this.createCenterPane();
-	}
+  public JExpandPane() {
+    this.setModel(new DefaultButtonModel());
+    this.toggle.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JExpandPane.this.setSelected(toggle.isSelected());
+      }
+    });
+    this.addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        JExpandPane.this.handleToggled(e);
+      }
+    });
+    this.label.setText(this.getCollapsedLabelText());
+    //this.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+    this.setLayout(new BorderLayout());
+    this.add(this.createTopPane(), BorderLayout.NORTH);
+    this.center = this.createCenterPane();
+  }
 
-	//todo: rename
-	public JComponent getCenterComponent() {
-		return this.center;
-	}
+  //todo: rename
+  public JComponent getCenterComponent() {
+    return this.center;
+  }
 
-	protected JLabel createLabel() {
-		return new JLabel();
-	}
+  protected JLabel createLabel() {
+    return new JLabel();
+  }
 
-	protected abstract String getExpandedLabelText();
+  protected abstract String getExpandedLabelText();
 
-	protected abstract String getCollapsedLabelText();
+  protected abstract String getCollapsedLabelText();
 
-	protected String getExpandedButtonText() {
-		return "V";
-	}
+  protected String getExpandedButtonText() {
+    return "V";
+  }
 
-	protected String getCollapsedButtonText() {
-		return ">>>";
-	}
+  protected String getCollapsedButtonText() {
+    return ">>>";
+  }
 
-	private void handleToggled( ItemEvent e ) {
-		if( e.getStateChange() == ItemEvent.SELECTED ) {
-			this.add( this.center, BorderLayout.CENTER );
-			this.label.setText( this.getExpandedLabelText() );
-		} else {
-			this.remove( this.center );
-			this.label.setText( this.getCollapsedLabelText() );
-		}
-		//this.center.revalidate();
-		this.revalidate();
-		this.repaint();
-		Component root = SwingUtilities.getRoot( this );
-		if( root instanceof Window ) {
-			Window window = (Window)root;
-			window.pack();
-		}
-	}
+  private void handleToggled(ItemEvent e) {
+    if (e.getStateChange() == ItemEvent.SELECTED) {
+      this.add(this.center, BorderLayout.CENTER);
+      this.label.setText(this.getExpandedLabelText());
+    } else {
+      this.remove(this.center);
+      this.label.setText(this.getCollapsedLabelText());
+    }
+    //this.center.revalidate();
+    this.revalidate();
+    this.repaint();
+    Component root = SwingUtilities.getRoot(this);
+    if (root instanceof Window) {
+      Window window = (Window) root;
+      window.pack();
+    }
+  }
 
-	protected JComponent createTopPane() {
-		JPanel rv = new JPanel();
-		rv.setLayout( new BorderLayout() );
-		rv.add( this.label, BorderLayout.CENTER );
-		rv.add( this.toggle, BorderLayout.EAST );
-		return rv;
-	}
+  protected JComponent createTopPane() {
+    JPanel rv = new JPanel();
+    rv.setLayout(new BorderLayout());
+    rv.add(this.label, BorderLayout.CENTER);
+    rv.add(this.toggle, BorderLayout.EAST);
+    return rv;
+  }
 
-	protected abstract JComponent createCenterPane();
+  protected abstract JComponent createCenterPane();
 }

@@ -47,28 +47,28 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class LgnaVmArrayIndexOutOfBoundsException extends LgnaVmException {
-	private final int index;
-	private final int length;
+  private final int index;
+  private final int length;
 
-	public LgnaVmArrayIndexOutOfBoundsException( VirtualMachine vm, int index, int length ) {
-		super( vm );
-		this.index = index;
-		this.length = length;
-	}
+  public LgnaVmArrayIndexOutOfBoundsException(VirtualMachine vm, int index, int length) {
+    super(vm);
+    this.index = index;
+    this.length = length;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	public int getLength() {
-		return this.length;
-	}
+  public int getLength() {
+    return this.length;
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		sb.append( this.index );
-		sb.append( " is not in range [0," );
-		sb.append( this.length );
-		sb.append( ")" );
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    sb.append(this.index);
+    sb.append(" is not in range [0,");
+    sb.append(this.length);
+    sb.append(")");
+  }
 }

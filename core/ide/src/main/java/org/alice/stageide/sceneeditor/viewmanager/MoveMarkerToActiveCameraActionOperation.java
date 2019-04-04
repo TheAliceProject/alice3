@@ -54,32 +54,32 @@ import java.util.UUID;
 
 public class MoveMarkerToActiveCameraActionOperation extends CameraMoveActionOperation {
 
-	private static class SingletonHolder {
-		private static MoveMarkerToActiveCameraActionOperation instance = new MoveMarkerToActiveCameraActionOperation();
-	}
+  private static class SingletonHolder {
+    private static MoveMarkerToActiveCameraActionOperation instance = new MoveMarkerToActiveCameraActionOperation();
+  }
 
-	public static MoveMarkerToActiveCameraActionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MoveMarkerToActiveCameraActionOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MoveMarkerToActiveCameraActionOperation() {
-		super( UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ) );
-	}
+  private MoveMarkerToActiveCameraActionOperation() {
+    super(UUID.fromString("a95908d8-0161-4a03-8a38-61eebea0c58c"));
+  }
 
-	@Override
-	protected void updateMoveFields( UserField markerField, CameraMarkerImp cameraMarkerImp ) {
-		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation( markerField );
-		String markerName = markerField != null ? markerField.getName() : "";
+  @Override
+  protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
+    TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
+    String markerName = markerField != null ? markerField.getName() : "";
 
-		IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarker( markerField );
-		Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+    IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarker(markerField);
+    Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
 
-		IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp( cameraMarkerImp );
-		Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+    IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
+    Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
 
-		this.setToMoveImp( markerImp, toMoveIcon, markerName );
-		this.setToMoveToImp( this.getCamera(), moveToIcon, MarkerUtilities.getNameForCameraImp( cameraMarkerImp ) );
+    this.setToMoveImp(markerImp, toMoveIcon, markerName);
+    this.setToMoveToImp(this.getCamera(), moveToIcon, MarkerUtilities.getNameForCameraImp(cameraMarkerImp));
 
-	}
+  }
 
 }

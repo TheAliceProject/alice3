@@ -58,137 +58,137 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ImageResource extends Resource {
-	private static Map<String, String> extensionToContentTypeMap;
+  private static Map<String, String> extensionToContentTypeMap;
 
-	private static final String PNG_MIME_TYPE = "image/png";
-	private static final String JPEG_MIME_TYPE = "image/jpeg";
-	private static final String BMP_MIME_TYPE = "image/bmp";
-	private static final String GIF_MIME_TYPE = "image/gif";
+  private static final String PNG_MIME_TYPE = "image/png";
+  private static final String JPEG_MIME_TYPE = "image/jpeg";
+  private static final String BMP_MIME_TYPE = "image/bmp";
+  private static final String GIF_MIME_TYPE = "image/gif";
 
-	static {
-		ImageResource.extensionToContentTypeMap = new HashMap<String, String>();
-		ImageResource.extensionToContentTypeMap.put( "png", PNG_MIME_TYPE );
-		ImageResource.extensionToContentTypeMap.put( "jpg", JPEG_MIME_TYPE );
-		ImageResource.extensionToContentTypeMap.put( "jpeg", JPEG_MIME_TYPE );
-		ImageResource.extensionToContentTypeMap.put( "bmp", BMP_MIME_TYPE );
-		ImageResource.extensionToContentTypeMap.put( "gif", GIF_MIME_TYPE );
-	}
+  static {
+    ImageResource.extensionToContentTypeMap = new HashMap<String, String>();
+    ImageResource.extensionToContentTypeMap.put("png", PNG_MIME_TYPE);
+    ImageResource.extensionToContentTypeMap.put("jpg", JPEG_MIME_TYPE);
+    ImageResource.extensionToContentTypeMap.put("jpeg", JPEG_MIME_TYPE);
+    ImageResource.extensionToContentTypeMap.put("bmp", BMP_MIME_TYPE);
+    ImageResource.extensionToContentTypeMap.put("gif", GIF_MIME_TYPE);
+  }
 
-	public static String getContentType( String path ) {
-		String extension = FileUtilities.getExtension( path );
-		return extension != null ? ImageResource.extensionToContentTypeMap.get( extension.toLowerCase( Locale.ENGLISH ) ) : null;
-	}
+  public static String getContentType(String path) {
+    String extension = FileUtilities.getExtension(path);
+    return extension != null ? ImageResource.extensionToContentTypeMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
+  }
 
-	public static String getContentType( File file ) {
-		return getContentType( file.getName() );
-	}
+  public static String getContentType(File file) {
+    return getContentType(file.getName());
+  }
 
-	public static boolean isAcceptableContentType( String contentType ) {
-		return ImageResource.extensionToContentTypeMap.containsValue( contentType );
-	}
+  public static boolean isAcceptableContentType(String contentType) {
+    return ImageResource.extensionToContentTypeMap.containsValue(contentType);
+  }
 
-	public static FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
-		return new FilenameFilter() {
-			@Override
-			public boolean accept( File dir, String name ) {
-				File file = new File( dir, name );
-				if( file.isDirectory() ) {
-					return areDirectoriesAccepted;
-				} else {
-					return getContentType( name ) != null;
-				}
-			}
-		};
-	}
+  public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
+    return new FilenameFilter() {
+      @Override
+      public boolean accept(File dir, String name) {
+        File file = new File(dir, name);
+        if (file.isDirectory()) {
+          return areDirectoriesAccepted;
+        } else {
+          return getContentType(name) != null;
+        }
+      }
+    };
+  }
 
-	private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
+  private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
 
-	private static ImageResource get( UUID uuid ) {
-		ImageResource rv = uuidToResourceMap.get( uuid );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ImageResource( uuid );
-			uuidToResourceMap.put( uuid, rv );
-		}
-		return rv;
-	}
+  private static ImageResource get(UUID uuid) {
+    ImageResource rv = uuidToResourceMap.get(uuid);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ImageResource(uuid);
+      uuidToResourceMap.put(uuid, rv);
+    }
+    return rv;
+  }
 
-	public static ImageResource valueOf( String s ) {
-		return get( UUID.fromString( s ) );
-	}
+  public static ImageResource valueOf(String s) {
+    return get(UUID.fromString(s));
+  }
 
-	private int width = -1;
-	private int height = -1;
+  private int width = -1;
+  private int height = -1;
 
-	public ImageResource( UUID uuid ) {
-		super( uuid );
-	}
+  public ImageResource(UUID uuid) {
+    super(uuid);
+  }
 
-	public ImageResource( Class<?> cls, String resourceName, String contentType ) {
-		super( cls, resourceName, contentType );
-		uuidToResourceMap.put( this.getId(), this );
-	}
+  public ImageResource(Class<?> cls, String resourceName, String contentType) {
+    super(cls, resourceName, contentType);
+    uuidToResourceMap.put(this.getId(), this);
+  }
 
-	public ImageResource( Class<?> cls, String resourceName ) {
-		this( cls, resourceName, getContentType( resourceName ) );
-	}
+  public ImageResource(Class<?> cls, String resourceName) {
+    this(cls, resourceName, getContentType(resourceName));
+  }
 
-	public ImageResource( File file, String contentType ) throws IOException {
-		super( file, contentType );
-		uuidToResourceMap.put( this.getId(), this );
-	}
+  public ImageResource(File file, String contentType) throws IOException {
+    super(file, contentType);
+    uuidToResourceMap.put(this.getId(), this);
+  }
 
-	public ImageResource( File file ) throws IOException {
-		this( file, getContentType( file ) );
-	}
+  public ImageResource(File file) throws IOException {
+    this(file, getContentType(file));
+  }
 
-	public ImageResource( BufferedImage image, String fileName, String contentType ) throws IOException{
-		super( fileName, contentType, null);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write( image, contentType, baos );
-		baos.flush();
-		byte[] imageBytes = baos.toByteArray();
-		baos.close();
-		setContent(contentType, imageBytes);
-		setWidth(image.getWidth());
-		setHeight(image.getHeight());
-	}
+  public ImageResource(BufferedImage image, String fileName, String contentType) throws IOException {
+    super(fileName, contentType, null);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ImageIO.write(image, contentType, baos);
+    baos.flush();
+    byte[] imageBytes = baos.toByteArray();
+    baos.close();
+    setContent(contentType, imageBytes);
+    setWidth(image.getWidth());
+    setHeight(image.getHeight());
+  }
 
-	public ImageResource( BufferedImage image, String fileName ) throws IOException {
-		this( image, fileName, getContentType( fileName ));
-	}
+  public ImageResource(BufferedImage image, String fileName) throws IOException {
+    this(image, fileName, getContentType(fileName));
+  }
 
-	public int getWidth() {
-		return this.width;
-	}
+  public int getWidth() {
+    return this.width;
+  }
 
-	public void setWidth( int width ) {
-		this.width = width;
-	}
+  public void setWidth(int width) {
+    this.width = width;
+  }
 
-	public int getHeight() {
-		return this.height;
-	}
+  public int getHeight() {
+    return this.height;
+  }
 
-	public void setHeight( int height ) {
-		this.height = height;
-	}
+  public void setHeight(int height) {
+    this.height = height;
+  }
 
-	private static String XML_WIDTH_ATTRIBUTE = "width";
-	private static String XML_HEIGHT_ATTRIBUTE = "height";
+  private static String XML_WIDTH_ATTRIBUTE = "width";
+  private static String XML_HEIGHT_ATTRIBUTE = "height";
 
-	@Override
-	public void encodeAttributes( Element xmlElement ) {
-		super.encodeAttributes( xmlElement );
-		xmlElement.setAttribute( XML_WIDTH_ATTRIBUTE, Integer.toString( this.width ) );
-		xmlElement.setAttribute( XML_HEIGHT_ATTRIBUTE, Integer.toString( this.height ) );
-	}
+  @Override
+  public void encodeAttributes(Element xmlElement) {
+    super.encodeAttributes(xmlElement);
+    xmlElement.setAttribute(XML_WIDTH_ATTRIBUTE, Integer.toString(this.width));
+    xmlElement.setAttribute(XML_HEIGHT_ATTRIBUTE, Integer.toString(this.height));
+  }
 
-	@Override
-	public void decodeAttributes( Element xmlElement, byte[] data ) {
-		super.decodeAttributes( xmlElement, data );
-		this.width = Integer.parseInt( xmlElement.getAttribute( XML_WIDTH_ATTRIBUTE ) );
-		this.height = Integer.parseInt( xmlElement.getAttribute( XML_HEIGHT_ATTRIBUTE ) );
-	}
+  @Override
+  public void decodeAttributes(Element xmlElement, byte[] data) {
+    super.decodeAttributes(xmlElement, data);
+    this.width = Integer.parseInt(xmlElement.getAttribute(XML_WIDTH_ATTRIBUTE));
+    this.height = Integer.parseInt(xmlElement.getAttribute(XML_HEIGHT_ATTRIBUTE));
+  }
 }

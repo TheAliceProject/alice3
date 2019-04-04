@@ -57,22 +57,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RealToIntegerCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
-	private static class SingletonHolder {
-		private static RealToIntegerCascadeMenu instance = new RealToIntegerCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static RealToIntegerCascadeMenu instance = new RealToIntegerCascadeMenu();
+  }
 
-	public static RealToIntegerCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RealToIntegerCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RealToIntegerCascadeMenu() {
-		super( UUID.fromString( "235cc7aa-0e9c-4f8c-9548-10aff3c095af" ) );
-	}
+  private RealToIntegerCascadeMenu() {
+    super(UUID.fromString("235cc7aa-0e9c-4f8c-9548-10aff3c095af"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toFlooredInteger", Double.class ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toRoundedInteger", Double.class ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(IntegerUtilities.class, "toFlooredInteger", Double.class));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(IntegerUtilities.class, "toRoundedInteger", Double.class));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(IntegerUtilities.class, "toCeilingedInteger", Double.class));
+  }
 }

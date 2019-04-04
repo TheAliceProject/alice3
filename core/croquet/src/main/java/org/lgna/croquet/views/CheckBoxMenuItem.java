@@ -51,12 +51,12 @@ import javax.swing.JCheckBoxMenuItem;
  * @author Dennis Cosgrove
  */
 public class CheckBoxMenuItem extends BooleanStateButton<JCheckBoxMenuItem> {
-	public CheckBoxMenuItem( BooleanState model ) {
-		super( model, "CheckBoxMenuItem" );
-	}
+  public CheckBoxMenuItem(BooleanState model) {
+    super(model, "CheckBoxMenuItem");
+  }
 
-	@Override
-	protected JCheckBoxMenuItem createAwtComponent() {
-		return new JCheckBoxMenuItem();
-	}
+  @Override
+  protected JCheckBoxMenuItem createAwtComponent() {
+    return new JCheckBoxMenuItem();
+  }
 }

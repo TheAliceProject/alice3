@@ -55,97 +55,98 @@ import java.util.Queue;
  * @author Dennis Cosgrove
  */
 public class ComponentManager {
-	private ComponentManager() {
-		throw new AssertionError();
-	}
+  private ComponentManager() {
+    throw new AssertionError();
+  }
 
-	public static final Map<Model, Queue<SwingComponentView<?>>> map = Maps.newHashMap();
+  public static final Map<Model, Queue<SwingComponentView<?>>> map = Maps.newHashMap();
 
-	public static Queue<SwingComponentView<?>> getComponents( Model model ) {
-		synchronized( map ) {
-			Queue<SwingComponentView<?>> rv = map.get( model );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = Queues.newConcurrentLinkedQueue();
-				map.put( model, rv );
-			}
-			return rv;
-		}
-	}
+  public static Queue<SwingComponentView<?>> getComponents(Model model) {
+    synchronized (map) {
+      Queue<SwingComponentView<?>> rv = map.get(model);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = Queues.newConcurrentLinkedQueue();
+        map.put(model, rv);
+      }
+      return rv;
+    }
+  }
 
-	public static void addComponent( Model model, SwingComponentView<?> component ) {
-		synchronized( map ) {
-			Queue<SwingComponentView<?>> components = getComponents( model );
-			if( components.size() == 0 ) {
-				Manager.registerModel( model );
-			}
-			components.add( component );
-			//		component.getAwtComponent().setEnabled( this.isEnabled );
-			//component.setToolTipText( model.getToolTipText() );
-		}
-	}
+  public static void addComponent(Model model, SwingComponentView<?> component) {
+    synchronized (map) {
+      Queue<SwingComponentView<?>> components = getComponents(model);
+      if (components.size() == 0) {
+        Manager.registerModel(model);
+      }
+      components.add(component);
+      //  component.getAwtComponent().setEnabled( this.isEnabled );
+      //component.setToolTipText( model.getToolTipText() );
+    }
+  }
 
-	public static void removeComponent( Model model, SwingComponentView<?> component ) {
-		synchronized( map ) {
-			Queue<SwingComponentView<?>> components = getComponents( model );
-			components.remove( component );
-			if( components.size() == 0 ) {
-				Manager.unregisterModel( model );
-			}
-		}
-	}
+  public static void removeComponent(Model model, SwingComponentView<?> component) {
+    synchronized (map) {
+      Queue<SwingComponentView<?>> components = getComponents(model);
+      components.remove(component);
+      if (components.size() == 0) {
+        Manager.unregisterModel(model);
+      }
+    }
+  }
 
-	/* package-private */static void repaintAllComponents( Model model ) {
-		synchronized( map ) {
-			for( SwingComponentView<?> component : getComponents( model ) ) {
-				component.repaint();
-			}
-		}
-	}
+  /* package-private */
+  static void repaintAllComponents(Model model) {
+    synchronized (map) {
+      for (SwingComponentView<?> component : getComponents(model)) {
+        component.repaint();
+      }
+    }
+  }
 
-	public static void revalidateAndRepaintAllComponents( Model model ) {
-		synchronized( map ) {
-			for( SwingComponentView<?> component : getComponents( model ) ) {
-				component.revalidateAndRepaint();
-			}
-		}
-	}
+  public static void revalidateAndRepaintAllComponents(Model model) {
+    synchronized (map) {
+      for (SwingComponentView<?> component : getComponents(model)) {
+        component.revalidateAndRepaint();
+      }
+    }
+  }
 
-	@Deprecated
-	public static <J extends SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls, boolean isVisibleAcceptable ) {
-		Iterable<SwingComponentView<?>> components = getComponents( model );
+  @Deprecated
+  public static <J extends SwingComponentView<?>> J getFirstComponent(Model model, Class<J> cls, boolean isVisibleAcceptable) {
+    Iterable<SwingComponentView<?>> components = getComponents(model);
 
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
-		for( SwingComponentView<?> component : components ) {
-			if( cls.isAssignableFrom( component.getClass() ) ) {
-				if( component.getAwtComponent().isShowing() ) {
-					//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
-					return cls.cast( component );
-				}
-			}
-		}
-		if( isVisibleAcceptable ) {
-			for( SwingComponentView<?> component : components ) {
-				if( cls.isAssignableFrom( component.getClass() ) ) {
-					if( component.getAwtComponent().isVisible() ) {
-						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
-						return cls.cast( component );
-					}
-				}
-			}
-		}
-		return null;
-	}
+    //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
+    //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
+    for (SwingComponentView<?> component : components) {
+      if (cls.isAssignableFrom(component.getClass())) {
+        if (component.getAwtComponent().isShowing()) {
+          //          edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+          return cls.cast(component);
+        }
+      }
+    }
+    if (isVisibleAcceptable) {
+      for (SwingComponentView<?> component : components) {
+        if (cls.isAssignableFrom(component.getClass())) {
+          if (component.getAwtComponent().isVisible()) {
+            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+            return cls.cast(component);
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	@Deprecated
-	public static SwingComponentView<?> getFirstComponent( Model model, boolean isVisibleAcceptable ) {
-		return getFirstComponent( model, SwingComponentView.class, isVisibleAcceptable );
-	}
+  @Deprecated
+  public static SwingComponentView<?> getFirstComponent(Model model, boolean isVisibleAcceptable) {
+    return getFirstComponent(model, SwingComponentView.class, isVisibleAcceptable);
+  }
 
-	@Deprecated
-	public static SwingComponentView<?> getFirstComponent( Model model ) {
-		return getFirstComponent( model, false );
-	}
+  @Deprecated
+  public static SwingComponentView<?> getFirstComponent(Model model) {
+    return getFirstComponent(model, false);
+  }
 }

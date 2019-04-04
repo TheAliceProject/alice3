@@ -78,219 +78,219 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class ImageCaptureRectangleStencilView extends LayerStencil {
-	private static final Color STENCIL_BASE_COLOR = new Color( 63, 63, 63, 63 );
-	private static final Color STENCIL_LINE_COLOR = new Color( 31, 31, 31, 63 );
+  private static final Color STENCIL_BASE_COLOR = new Color(63, 63, 63, 63);
+  private static final Color STENCIL_LINE_COLOR = new Color(31, 31, 31, 63);
 
-	private static Paint createStencilPaint() {
-		int width = 8;
-		int height = 8;
-		BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
-		Graphics2D g2 = (Graphics2D)image.getGraphics();
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF );
-		g2.setColor( STENCIL_BASE_COLOR );
-		g2.fillRect( 0, 0, width, height );
-		g2.setColor( STENCIL_LINE_COLOR );
-		g2.drawLine( 0, height, width, 0 );
-		g2.fillRect( 0, 0, 1, 1 );
-		g2.dispose();
-		return new TexturePaint( image, new Rectangle( 0, 0, width, height ) );
-	}
+  private static Paint createStencilPaint() {
+    int width = 8;
+    int height = 8;
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = (Graphics2D) image.getGraphics();
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+    g2.setColor(STENCIL_BASE_COLOR);
+    g2.fillRect(0, 0, width, height);
+    g2.setColor(STENCIL_LINE_COLOR);
+    g2.drawLine(0, height, width, 0);
+    g2.fillRect(0, 0, 1, 1);
+    g2.dispose();
+    return new TexturePaint(image, new Rectangle(0, 0, width, height));
+  }
 
-	private static final Paint STENCIL_PAINT = createStencilPaint();
+  private static final Paint STENCIL_PAINT = createStencilPaint();
 
-	private final JZoomView jZoomView = new JZoomView();
-	private final Window window = new Window();
+  private final JZoomView jZoomView = new JZoomView();
+  private final Window window = new Window();
 
-	private final class MouseAdapter implements MouseListener, MouseMotionListener {
-		private int xPressed = -1;
-		private int yPressed = -1;
+  private final class MouseAdapter implements MouseListener, MouseMotionListener {
+    private int xPressed = -1;
+    private int yPressed = -1;
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			synchronized( hole ) {
-				this.xPressed = e.getX();
-				this.yPressed = e.getY();
-				hole.setBounds( this.xPressed, this.yPressed, 0, 0 );
-				repaint();
-			}
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      synchronized (hole) {
+        this.xPressed = e.getX();
+        this.yPressed = e.getY();
+        hole.setBounds(this.xPressed, this.yPressed, 0, 0);
+        repaint();
+      }
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			synchronized( hole ) {
-				if( isHoleValid() ) {
-					setStencilShowing( false );
-					captureImageAndShowFrame();
-				}
-				jZoomView.handleMouseMovedOrDragged( null );
-				invalidateHole();
-				repaint();
-			}
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      synchronized (hole) {
+        if (isHoleValid()) {
+          setStencilShowing(false);
+          captureImageAndShowFrame();
+        }
+        jZoomView.handleMouseMovedOrDragged(null);
+        invalidateHole();
+        repaint();
+      }
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-		private void handleMouseMovedOrDragged( MouseEvent e ) {
-			jZoomView.handleMouseMovedOrDragged( e );
-			updateWindowLocation( e.getXOnScreen(), e.getYOnScreen() );
-		}
+    private void handleMouseMovedOrDragged(MouseEvent e) {
+      jZoomView.handleMouseMovedOrDragged(e);
+      updateWindowLocation(e.getXOnScreen(), e.getYOnScreen());
+    }
 
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-			this.handleMouseMovedOrDragged( e );
-		}
+    @Override
+    public void mouseMoved(MouseEvent e) {
+      this.handleMouseMovedOrDragged(e);
+    }
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			synchronized( hole ) {
-				if( isHoleValid() ) {
-					RectangleUtilities.setBounds( hole, this.xPressed, this.yPressed, e.getX(), e.getY() );
-					this.handleMouseMovedOrDragged( e );
-				}
-				repaint();
-			}
-		}
-	}
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      synchronized (hole) {
+        if (isHoleValid()) {
+          RectangleUtilities.setBounds(hole, this.xPressed, this.yPressed, e.getX(), e.getY());
+          this.handleMouseMovedOrDragged(e);
+        }
+        repaint();
+      }
+    }
+  }
 
-	private final MouseAdapter mouseAdapter = new MouseAdapter();
-	private final ImageEditorFrame imageComposite = new ImageEditorFrame();
+  private final MouseAdapter mouseAdapter = new MouseAdapter();
+  private final ImageEditorFrame imageComposite = new ImageEditorFrame();
 
-	private static final KeyStroke ESCAPE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 );
-	private final ActionListener escapeKeyListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			if( isHoleValid() ) {
-				invalidateHole();
-				repaint();
-			} else {
-				setStencilShowing( false );
-			}
-		}
-	};
+  private static final KeyStroke ESCAPE_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+  private final ActionListener escapeKeyListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if (isHoleValid()) {
+        invalidateHole();
+        repaint();
+      } else {
+        setStencilShowing(false);
+      }
+    }
+  };
 
-	private final Rectangle hole = new Rectangle();
-	private final ImageCaptureComposite imageCaptureComposite;
+  private final Rectangle hole = new Rectangle();
+  private final ImageCaptureComposite imageCaptureComposite;
 
-	public ImageCaptureRectangleStencilView( AbstractWindow<?> window, Integer layerId, ImageCaptureComposite imageCaptureComposite ) {
-		super( window, layerId );
-		this.imageCaptureComposite = imageCaptureComposite;
-		this.window.getAwtComponent().setContentPane( this.jZoomView );
-	}
+  public ImageCaptureRectangleStencilView(AbstractWindow<?> window, Integer layerId, ImageCaptureComposite imageCaptureComposite) {
+    super(window, layerId);
+    this.imageCaptureComposite = imageCaptureComposite;
+    this.window.getAwtComponent().setContentPane(this.jZoomView);
+  }
 
-	private void captureImageAndShowFrame() {
-		synchronized( this.hole ) {
-			if( this.isHoleValid() ) {
-				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
-					Image image = ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi() );
-					image = imageCaptureComposite.convertToRgbaIfNecessary( image );
-					imageComposite.setImageClearShapesAndShowFrame( image );
-				}
-			}
-		}
-	}
+  private void captureImageAndShowFrame() {
+    synchronized (this.hole) {
+      if (this.isHoleValid()) {
+        if ((this.hole.width > 0) && (this.hole.height > 0)) {
+          Image image = ImageCaptureUtilities.captureRectangle(this.getWindow().getRootPane().getAwtComponent(), this.hole, imageCaptureComposite.getDpi());
+          image = imageCaptureComposite.convertToRgbaIfNecessary(image);
+          imageComposite.setImageClearShapesAndShowFrame(image);
+        }
+      }
+    }
+  }
 
-	public ImageEditorFrame getImageComposite() {
-		return this.imageComposite;
-	}
+  public ImageEditorFrame getImageComposite() {
+    return this.imageComposite;
+  }
 
-	private void updateWindowLocation( int xScreen, int yScreen ) {
-		final int OFFSET = 32;
-		window.setLocation( xScreen + OFFSET, yScreen + OFFSET );
-	}
+  private void updateWindowLocation(int xScreen, int yScreen) {
+    final int OFFSET = 32;
+    window.setLocation(xScreen + OFFSET, yScreen + OFFSET);
+  }
 
-	private void invalidateHole() {
-		this.hole.setBounds( -1, -1, -1, -1 );
-		//this.window.setVisible( false );
-	}
+  private void invalidateHole() {
+    this.hole.setBounds(-1, -1, -1, -1);
+    //this.window.setVisible( false );
+  }
 
-	private boolean isHoleValid() {
-		return this.hole.width > -1;
-	}
+  private boolean isHoleValid() {
+    return this.hole.width > -1;
+  }
 
-	@Override
-	protected boolean contains( int x, int y, boolean superContains ) {
-		return superContains;
-	}
+  @Override
+  protected boolean contains(int x, int y, boolean superContains) {
+    return superContains;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return null;
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return null;
+  }
 
-	@Override
-	public void setStencilShowing( boolean isShowing ) {
-		boolean prevIsStencilShowing = this.isStencilShowing();
-		if( prevIsStencilShowing != isShowing ) {
-			if( prevIsStencilShowing ) {
-				this.unregisterKeyboardAction( ESCAPE_KEY_STROKE );
-				this.removeMouseMotionListener( this.mouseAdapter );
-				this.removeMouseListener( this.mouseAdapter );
-			}
-			super.setStencilShowing( isShowing );
-			if( isShowing ) {
-				PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-				Point p = pointerInfo.getLocation();
-				this.updateWindowLocation( p.x, p.y );
-				this.window.pack();
-				this.window.getAwtComponent().toFront();
-			}
-			this.window.setVisible( isShowing );
-			if( isShowing ) {
-				this.addMouseListener( this.mouseAdapter );
-				this.addMouseMotionListener( this.mouseAdapter );
-				this.registerKeyboardAction( this.escapeKeyListener, ESCAPE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
-				this.requestFocusLater();
-			}
-		}
-	}
+  @Override
+  public void setStencilShowing(boolean isShowing) {
+    boolean prevIsStencilShowing = this.isStencilShowing();
+    if (prevIsStencilShowing != isShowing) {
+      if (prevIsStencilShowing) {
+        this.unregisterKeyboardAction(ESCAPE_KEY_STROKE);
+        this.removeMouseMotionListener(this.mouseAdapter);
+        this.removeMouseListener(this.mouseAdapter);
+      }
+      super.setStencilShowing(isShowing);
+      if (isShowing) {
+        PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+        Point p = pointerInfo.getLocation();
+        this.updateWindowLocation(p.x, p.y);
+        this.window.pack();
+        this.window.getAwtComponent().toFront();
+      }
+      this.window.setVisible(isShowing);
+      if (isShowing) {
+        this.addMouseListener(this.mouseAdapter);
+        this.addMouseMotionListener(this.mouseAdapter);
+        this.registerKeyboardAction(this.escapeKeyListener, ESCAPE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW);
+        this.requestFocusLater();
+      }
+    }
+  }
 
-	//
-	@Override
-	protected void paintComponentPrologue( Graphics2D g2 ) {
-	}
+  //
+  @Override
+  protected void paintComponentPrologue(Graphics2D g2) {
+  }
 
-	@Override
-	protected void paintComponentEpilogue( Graphics2D g2 ) {
-	}
+  @Override
+  protected void paintComponentEpilogue(Graphics2D g2) {
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2 ) {
-		Shape prevClip = g2.getClip();
-		Paint prevPaint = g2.getPaint();
-		Stroke prevStroke = g2.getStroke();
+  @Override
+  protected void paintEpilogue(Graphics2D g2) {
+    Shape prevClip = g2.getClip();
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
 
-		Shape shape = prevClip;
+    Shape shape = prevClip;
 
-		synchronized( this.hole ) {
-			if( this.hole.width > 0 ) {
-				Area area = new Area( shape );
-				area.subtract( new Area( this.hole ) );
-				shape = area;
-			}
-		}
-		g2.setPaint( STENCIL_PAINT );
-		g2.fill( shape );
+    synchronized (this.hole) {
+      if (this.hole.width > 0) {
+        Area area = new Area(shape);
+        area.subtract(new Area(this.hole));
+        shape = area;
+      }
+    }
+    g2.setPaint(STENCIL_PAINT);
+    g2.fill(shape);
 
-		synchronized( this.hole ) {
-			g2.setPaint( Color.WHITE );
-			g2.drawRect( this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1 );
-		}
+    synchronized (this.hole) {
+      g2.setPaint(Color.WHITE);
+      g2.drawRect(this.hole.x - 1, this.hole.y - 1, this.hole.width + 1, this.hole.height + 1);
+    }
 
-		MouseEvent e = this.jZoomView.getMouseEvent();
-		if( e != null ) {
+    MouseEvent e = this.jZoomView.getMouseEvent();
+    if (e != null) {
 
-		}
-		g2.setStroke( prevStroke );
-		g2.setPaint( prevPaint );
-	}
+    }
+    g2.setStroke(prevStroke);
+    g2.setPaint(prevPaint);
+  }
 }

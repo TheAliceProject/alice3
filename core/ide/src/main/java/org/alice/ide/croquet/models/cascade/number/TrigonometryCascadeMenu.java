@@ -57,27 +57,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TrigonometryCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static class SingletonHolder {
-		private static TrigonometryCascadeMenu instance = new TrigonometryCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static TrigonometryCascadeMenu instance = new TrigonometryCascadeMenu();
+  }
 
-	public static TrigonometryCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TrigonometryCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TrigonometryCascadeMenu() {
-		super( UUID.fromString( "fb160569-ac57-4fbc-a665-2239411e3f74" ) );
-	}
+  private TrigonometryCascadeMenu() {
+    super(UUID.fromString("fb160569-ac57-4fbc-a665-2239411e3f74"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "sin", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "cos", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "tan", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "asin", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "acos", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "atan", Double.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "atan2", Double.TYPE, Double.TYPE ) );
-		blankChildren.add( StaticFieldAccessFillIn.getInstance( Math.class, "PI" ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> context) {
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "sin", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "cos", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "tan", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "asin", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "acos", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "atan", Double.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "atan2", Double.TYPE, Double.TYPE));
+    blankChildren.add(StaticFieldAccessFillIn.getInstance(Math.class, "PI"));
+  }
 }

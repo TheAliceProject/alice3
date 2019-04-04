@@ -53,7 +53,7 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public class ThoughtBubbleImp extends BubbleImp {
-	public ThoughtBubbleImp( EntityImp imp, Bubble.Originator originator, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
-		super( imp, new ThoughtBubble( originator, positionPreference ), text, font, textColor, fillColor, outlineColor );
-	}
+  public ThoughtBubbleImp(EntityImp imp, Bubble.Originator originator, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference) {
+    super(imp, new ThoughtBubble(originator, positionPreference), text, font, textColor, fillColor, outlineColor);
+  }
 }

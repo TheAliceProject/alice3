@@ -53,12 +53,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class TransactionHistoryComposite extends FrameCompositeWithInternalIsShowingState<TransactionHistoryView> {
-	public TransactionHistoryComposite( UUID id, Group booleanStateGroup ) {
-		super( id, booleanStateGroup );
-	}
+  public TransactionHistoryComposite(UUID id, Group booleanStateGroup) {
+    super(id, booleanStateGroup);
+  }
 
-	@Override
-	protected TransactionHistoryView createView() {
-		return new TransactionHistoryView( this );
-	}
+  @Override
+  protected TransactionHistoryView createView() {
+    return new TransactionHistoryView(this);
+  }
 }

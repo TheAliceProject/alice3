@@ -50,32 +50,32 @@ import org.lgna.project.virtualmachine.UserInstance;
 import java.lang.reflect.Method;
 
 public abstract class AbstractAdapter {
-	private final LambdaContext context;
-	private final UserInstance userInstance;
-	private final Lambda lambda;
-	private final JavaMethod singleAbstractMethod;
+  private final LambdaContext context;
+  private final UserInstance userInstance;
+  private final Lambda lambda;
+  private final JavaMethod singleAbstractMethod;
 
-	public AbstractAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		this.context = context;
-		this.lambda = lambda;
-		this.userInstance = userInstance;
-		assert this.userInstance != null;
+  public AbstractAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    this.context = context;
+    this.lambda = lambda;
+    this.userInstance = userInstance;
+    assert this.userInstance != null;
 
-		Class<?>[] interfaces = this.getClass().getInterfaces();
-		if( interfaces.length == 1 ) {
-			Method[] mthds = interfaces[ 0 ].getDeclaredMethods();
-			if( mthds.length == 1 ) {
-				this.singleAbstractMethod = JavaMethod.getInstance( mthds[ 0 ] );
-			} else {
-				this.singleAbstractMethod = null;
-			}
-		} else {
-			this.singleAbstractMethod = null;
-		}
-	}
+    Class<?>[] interfaces = this.getClass().getInterfaces();
+    if (interfaces.length == 1) {
+      Method[] mthds = interfaces[0].getDeclaredMethods();
+      if (mthds.length == 1) {
+        this.singleAbstractMethod = JavaMethod.getInstance(mthds[0]);
+      } else {
+        this.singleAbstractMethod = null;
+      }
+    } else {
+      this.singleAbstractMethod = null;
+    }
+  }
 
-	protected void invokeEntryPoint( Object... arguments ) {
-		this.context.invokeEntryPoint( this.lambda, this.singleAbstractMethod, this.userInstance, arguments );
-	}
+  protected void invokeEntryPoint(Object... arguments) {
+    this.context.invokeEntryPoint(this.lambda, this.singleAbstractMethod, this.userInstance, arguments);
+  }
 
 }

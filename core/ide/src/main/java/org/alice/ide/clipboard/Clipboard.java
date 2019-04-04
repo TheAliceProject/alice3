@@ -67,117 +67,118 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public enum Clipboard {
-	SINGLETON;
-	//todo
-	private static class ClipboardDropSite implements DropSite {
-		public ClipboardDropSite() {
-		}
+  SINGLETON;
 
-		public ClipboardDropSite( BinaryDecoder binaryDecoder ) {
-			//todo
-		}
+  //todo
+  private static class ClipboardDropSite implements DropSite {
+    public ClipboardDropSite() {
+    }
 
-		@Override
-		public void encode( BinaryEncoder binaryEncoder ) {
-			//todo
-		}
+    public ClipboardDropSite(BinaryDecoder binaryDecoder) {
+      //todo
+    }
 
-		@Override
-		public int hashCode() {
-			return 0;
-		}
+    @Override
+    public void encode(BinaryEncoder binaryEncoder) {
+      //todo
+    }
 
-		@Override
-		public boolean equals( Object obj ) {
-			return obj instanceof ClipboardDropSite;
-		}
+    @Override
+    public int hashCode() {
+      return 0;
+    }
 
-		@Override
-		public DropReceptor getOwningDropReceptor() {
-			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
-		}
-	}
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof ClipboardDropSite;
+    }
 
-	private static class ClipboardDragModel extends AbstractStatementDragModel {
-		public ClipboardDragModel() {
-			super( UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
-		}
+    @Override
+    public DropReceptor getOwningDropReceptor() {
+      return Clipboard.SINGLETON.dragComponent.getDropReceptor();
+    }
+  }
 
-		@Override
-		public boolean isAddEventListenerLikeSubstance() {
-			Node node = Clipboard.SINGLETON.peek();
-			if( node instanceof Statement ) {
-				Statement statement = (Statement)node;
-				return AstUtilities.isAddEventListenerMethodInvocationStatement( statement );
-			} else {
-				return false;
-			}
-		}
+  private static class ClipboardDragModel extends AbstractStatementDragModel {
+    public ClipboardDragModel() {
+      super(UUID.fromString("d6c25f14-7ed2-4cb8-90dd-f621af830060"));
+    }
 
-		@Override
-		public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-			DragModel dragModel = step.getModel();
-			if( dragModel instanceof StatementDragModel ) {
-				StatementDragModel statementDragModel = (StatementDragModel)dragModel;
-				Statement statement = statementDragModel.getStatement();
-				boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
-				if( isCopy ) {
-					return CopyToClipboardOperation.getInstance( statement );
-				} else {
-					return CutToClipboardOperation.getInstance( statement );
-				}
-			} else {
-				//todo?
-				return null;
-			}
-		}
-	}
+    @Override
+    public boolean isAddEventListenerLikeSubstance() {
+      Node node = Clipboard.SINGLETON.peek();
+      if (node instanceof Statement) {
+        Statement statement = (Statement) node;
+        return AstUtilities.isAddEventListenerMethodInvocationStatement(statement);
+      } else {
+        return false;
+      }
+    }
 
-	private final DStack<Node> stack = Stacks.newStack();
-	private final ClipboardDropSite dropSite = new ClipboardDropSite();
-	private final ClipboardDragModel dragModel = new ClipboardDragModel();
-	private final ClipboardDragComponent dragComponent = new ClipboardDragComponent( dragModel );
+    @Override
+    public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+      DragModel dragModel = step.getModel();
+      if (dragModel instanceof StatementDragModel) {
+        StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+        Statement statement = statementDragModel.getStatement();
+        boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown(step.getLatestMouseEvent());
+        if (isCopy) {
+          return CopyToClipboardOperation.getInstance(statement);
+        } else {
+          return CutToClipboardOperation.getInstance(statement);
+        }
+      } else {
+        //todo?
+        return null;
+      }
+    }
+  }
 
-	public DragComponent getDragComponent() {
-		return this.dragComponent;
-	}
+  private final DStack<Node> stack = Stacks.newStack();
+  private final ClipboardDropSite dropSite = new ClipboardDropSite();
+  private final ClipboardDragModel dragModel = new ClipboardDragModel();
+  private final ClipboardDragComponent dragComponent = new ClipboardDragComponent(dragModel);
 
-	public DropReceptor getDropReceptor() {
-		return this.dragComponent.getDropReceptor();
-	}
+  public DragComponent getDragComponent() {
+    return this.dragComponent;
+  }
 
-	public DropSite getDropSite() {
-		return this.dropSite;
-	}
+  public DropReceptor getDropReceptor() {
+    return this.dragComponent.getDropReceptor();
+  }
 
-	public DragModel getDragModel() {
-		return this.dragModel;
-	}
+  public DropSite getDropSite() {
+    return this.dropSite;
+  }
 
-	public boolean isStackEmpty() {
-		return ( ( this.stack != null ) && ( this.stack.size() > 0 ) ) == false;
-	}
+  public DragModel getDragModel() {
+    return this.dragModel;
+  }
 
-	public int getStackSize() {
-		return this.stack.size();
-	}
+  public boolean isStackEmpty() {
+    return ((this.stack != null) && (this.stack.size() > 0)) == false;
+  }
 
-	public Node peek() {
-		if( this.stack.size() > 0 ) {
-			return this.stack.peek();
-		} else {
-			return null;
-		}
-	}
+  public int getStackSize() {
+    return this.stack.size();
+  }
 
-	public void push( Node node ) {
-		this.stack.push( node );
-		this.dragComponent.refresh();
-	}
+  public Node peek() {
+    if (this.stack.size() > 0) {
+      return this.stack.peek();
+    } else {
+      return null;
+    }
+  }
 
-	public Node pop() {
-		Node rv = this.stack.pop();
-		this.dragComponent.refresh();
-		return rv;
-	}
+  public void push(Node node) {
+    this.stack.push(node);
+    this.dragComponent.refresh();
+  }
+
+  public Node pop() {
+    Node rv = this.stack.pop();
+    this.dragComponent.refresh();
+    return rv;
+  }
 }

@@ -50,32 +50,32 @@ import org.lgna.story.implementation.TorusImp;
  * @author Dennis Cosgrove
  */
 public class STorus extends SShape {
-	private final TorusImp implementation = new TorusImp( this );
+  private final TorusImp implementation = new TorusImp(this);
 
-	@Override
-	/* package-private */TorusImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */TorusImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getInnerRadius() {
-		return this.implementation.innerRadius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getInnerRadius() {
+    return this.implementation.innerRadius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
-		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setInnerRadius(Number innerRadius, SetInnerRadius.Detail... details) {
+    this.implementation.innerRadius.animateValue(innerRadius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getOuterRadius() {
-		return this.implementation.outerRadius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getOuterRadius() {
+    return this.implementation.outerRadius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
-		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setOuterRadius(Number outerRadius, SetOuterRadius.Detail... details) {
+    this.implementation.outerRadius.animateValue(outerRadius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

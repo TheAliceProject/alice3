@@ -48,5 +48,5 @@ import org.lgna.project.ast.SourceCodeGenerator;
  * @author dculyba
  */
 public interface CodeAppender {
-	public void appendCode( SourceCodeGenerator generator );
+  public void appendCode(SourceCodeGenerator generator);
 }

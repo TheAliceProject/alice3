@@ -54,33 +54,33 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public class AlphaIcon implements Icon {
-	private final Icon icon;
-	private final float alpha;
+  private final Icon icon;
+  private final float alpha;
 
-	public AlphaIcon( Icon icon, float alpha ) {
-		this.icon = icon;
-		this.alpha = alpha;
-	}
+  public AlphaIcon(Icon icon, float alpha) {
+    this.icon = icon;
+    this.alpha = alpha;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.icon.getIconWidth();
-	}
+  @Override
+  public int getIconWidth() {
+    return this.icon.getIconWidth();
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.icon.getIconHeight();
-	}
+  @Override
+  public int getIconHeight() {
+    return this.icon.getIconHeight();
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		Composite prevComposite = g2.getComposite();
-		g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, this.alpha ) );
-		try {
-			this.icon.paintIcon( c, g2, x, y );
-		} finally {
-			g2.setComposite( prevComposite );
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    Composite prevComposite = g2.getComposite();
+    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, this.alpha));
+    try {
+      this.icon.paintIcon(c, g2, x, y);
+    } finally {
+      g2.setComposite(prevComposite);
+    }
+  }
 }

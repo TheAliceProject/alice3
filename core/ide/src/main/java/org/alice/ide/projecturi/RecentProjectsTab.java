@@ -52,23 +52,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RecentProjectsTab extends ListUriTab {
-	private final RecentProjectsUriSingleSelectListState recentProjectsUriSelectionState = new RecentProjectsUriSingleSelectListState();
+  private final RecentProjectsUriSingleSelectListState recentProjectsUriSelectionState = new RecentProjectsUriSingleSelectListState();
 
-	public RecentProjectsTab() {
-		super( UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
-	}
+  public RecentProjectsTab() {
+    super(UUID.fromString("b490bb6c-f74f-422b-b9a6-5ef643b02b58"));
+  }
 
-	@Override
-	public RecentProjectsUriSingleSelectListState getListSelectionState() {
-		return this.recentProjectsUriSelectionState;
-	}
+  @Override
+  public RecentProjectsUriSingleSelectListState getListSelectionState() {
+    return this.recentProjectsUriSelectionState;
+  }
 
-	@Override
-	protected void refresh() {
-	}
+  @Override
+  protected void refresh() {
+  }
 
-	@Override
-	protected TabContentPanel createView() {
-		return new ListContentPanel( this );
-	}
+  @Override
+  protected TabContentPanel createView() {
+    return new ListContentPanel(this);
+  }
 }

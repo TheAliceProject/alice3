@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultTopPieceVNeckShortSleeve implements MaleAdultTopPiece {
-	LAKE,
-	TANGELO,
-	DARK_BASIL,
-	RADISH;
+  LAKE, TANGELO, DARK_BASIL, RADISH
 
 }

@@ -49,15 +49,15 @@ import edu.cmu.cs.dennisc.scenegraph.Element;
  * @author Dennis Cosgrove
  */
 public interface Scalable {
-	public static final Element.Key<Scalable> KEY = Element.Key.createInstance( "Scalable.KEY" );
+  public static final Element.Key<Scalable> KEY = Element.Key.createInstance("Scalable.KEY");
 
-	public Resizer[] getResizers();
+  public Resizer[] getResizers();
 
-	public double getValueForResizer( Resizer resizer );
+  public double getValueForResizer(Resizer resizer);
 
-	public void setValueForResizer( Resizer resizer, double value );
+  public void setValueForResizer(Resizer resizer, double value);
 
-	public void addScaleListener( PropertyListener listener );
+  public void addScaleListener(PropertyListener listener);
 
-	public void removeScaleListener( PropertyListener listener );
+  public void removeScaleListener(PropertyListener listener);
 }

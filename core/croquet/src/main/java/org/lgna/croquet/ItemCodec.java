@@ -50,39 +50,39 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public interface ItemCodec<T> {
-	public static class Arrays {
-		public static <T> T[] decodeArray( BinaryDecoder binaryDecoder, ItemCodec<T> itemCodec ) {
-			boolean isNotNull = binaryDecoder.decodeBoolean();
-			if( isNotNull ) {
-				final int N = binaryDecoder.decodeInt();
-				T[] rv = ReflectionUtilities.newTypedArrayInstance( itemCodec.getValueClass(), N );
-				for( int i = 0; i < rv.length; i++ ) {
-					rv[ i ] = itemCodec.decodeValue( binaryDecoder );
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		}
+  public static class Arrays {
+    public static <T> T[] decodeArray(BinaryDecoder binaryDecoder, ItemCodec<T> itemCodec) {
+      boolean isNotNull = binaryDecoder.decodeBoolean();
+      if (isNotNull) {
+        final int N = binaryDecoder.decodeInt();
+        T[] rv = ReflectionUtilities.newTypedArrayInstance(itemCodec.getValueClass(), N);
+        for (int i = 0; i < rv.length; i++) {
+          rv[i] = itemCodec.decodeValue(binaryDecoder);
+        }
+        return rv;
+      } else {
+        return null;
+      }
+    }
 
-		public static <T> void encodeArray( BinaryEncoder binaryEncoder, ItemCodec<T> itemCodec, T[] array ) {
-			if( array != null ) {
-				binaryEncoder.encode( true );
-				binaryEncoder.encode( array.length );
-				for( T element : array ) {
-					itemCodec.encodeValue( binaryEncoder, element );
-				}
-			} else {
-				binaryEncoder.encode( false );
-			}
-		}
-	}
+    public static <T> void encodeArray(BinaryEncoder binaryEncoder, ItemCodec<T> itemCodec, T[] array) {
+      if (array != null) {
+        binaryEncoder.encode(true);
+        binaryEncoder.encode(array.length);
+        for (T element : array) {
+          itemCodec.encodeValue(binaryEncoder, element);
+        }
+      } else {
+        binaryEncoder.encode(false);
+      }
+    }
+  }
 
-	public Class<T> getValueClass();
+  public Class<T> getValueClass();
 
-	public T decodeValue( BinaryDecoder binaryDecoder );
+  public T decodeValue(BinaryDecoder binaryDecoder);
 
-	public void encodeValue( BinaryEncoder binaryEncoder, T value );
+  public void encodeValue(BinaryEncoder binaryEncoder, T value);
 
-	public void appendRepresentation( StringBuilder sb, T value );
+  public void appendRepresentation(StringBuilder sb, T value);
 }

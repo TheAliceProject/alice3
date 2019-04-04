@@ -54,45 +54,45 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class ExtensionFileFilter extends FileFilter {
-	private final String description;
-	private final boolean areDirectoriesAccepted;
-	private final Collection<String> extensions;
+  private final String description;
+  private final boolean areDirectoriesAccepted;
+  private final Collection<String> extensions;
 
-	public ExtensionFileFilter( String name, boolean areDirectoriesAccepted, String... extensions ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( name );
-		if( extensions.length > 0 ) {
-			sb.append( " (" );
-			String prefix = "";
-			for( String extenstion : extensions ) {
-				sb.append( prefix );
-				sb.append( "*." );
-				sb.append( extenstion );
-				prefix = ", ";
-			}
-			sb.append( ")" );
-		}
-		this.description = sb.toString();
-		this.areDirectoriesAccepted = areDirectoriesAccepted;
-		this.extensions = Lists.newArrayList( extensions );
-	}
+  public ExtensionFileFilter(String name, boolean areDirectoriesAccepted, String... extensions) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(name);
+    if (extensions.length > 0) {
+      sb.append(" (");
+      String prefix = "";
+      for (String extenstion : extensions) {
+        sb.append(prefix);
+        sb.append("*.");
+        sb.append(extenstion);
+        prefix = ", ";
+      }
+      sb.append(")");
+    }
+    this.description = sb.toString();
+    this.areDirectoriesAccepted = areDirectoriesAccepted;
+    this.extensions = Lists.newArrayList(extensions);
+  }
 
-	@Override
-	public boolean accept( File file ) {
-		if( file.isDirectory() ) {
-			return this.areDirectoriesAccepted;
-		} else {
-			String extension = FileUtilities.getExtension( file );
-			if( extension != null ) {
-				return this.extensions.contains( extension.toLowerCase( Locale.ENGLISH ) );
-			} else {
-				return false;
-			}
-		}
-	}
+  @Override
+  public boolean accept(File file) {
+    if (file.isDirectory()) {
+      return this.areDirectoriesAccepted;
+    } else {
+      String extension = FileUtilities.getExtension(file);
+      if (extension != null) {
+        return this.extensions.contains(extension.toLowerCase(Locale.ENGLISH));
+      } else {
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
+  @Override
+  public String getDescription() {
+    return this.description;
+  }
 }

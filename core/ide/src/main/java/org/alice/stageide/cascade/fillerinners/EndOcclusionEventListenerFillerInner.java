@@ -52,12 +52,12 @@ import org.lgna.story.event.OcclusionEndListener;
 import java.util.List;
 
 public class EndOcclusionEventListenerFillerInner extends ExpressionFillerInner {
-	public EndOcclusionEventListenerFillerInner() {
-		super( OcclusionEndListener.class );
-	}
+  public EndOcclusionEventListenerFillerInner() {
+    super(OcclusionEndListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( EndOcclusionEventListenerFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(EndOcclusionEventListenerFillIn.getInstance());
+  }
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.xml.parsers.SAXParserFactory;
 
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -35,281 +34,307 @@ import com.dddviewr.collada.scene.Scene;
 import com.dddviewr.collada.visualscene.LibraryVisualScenes;
 import com.dddviewr.log.Log;
 
-
 public class Collada extends Base {
-	protected LibraryGeometries libraryGeometries;
-	protected LibraryVisualScenes libraryVisualScenes;
-	protected LibraryControllers libraryControllers;
-	protected LibraryAnimations libraryAnimations;
-	protected LibraryImages libraryImages;
-	protected LibraryMaterials libraryMaterials;
-	protected LibraryEffects libraryEffects;
-	protected LibraryNodes libraryNodes;
-	protected Scene scene;
-	
-	protected String authoringTool = "";
-	protected String upAxis = "Z_UP";
-	protected Unit unit;
-	
-	public static XMLReader reader;
+  protected LibraryGeometries libraryGeometries;
+  protected LibraryVisualScenes libraryVisualScenes;
+  protected LibraryControllers libraryControllers;
+  protected LibraryAnimations libraryAnimations;
+  protected LibraryImages libraryImages;
+  protected LibraryMaterials libraryMaterials;
+  protected LibraryEffects libraryEffects;
+  protected LibraryNodes libraryNodes;
+  protected Scene scene;
 
-	public LibraryGeometries getLibraryGeometries() {
-		return libraryGeometries;
-	}
+  protected String authoringTool = "";
+  protected String upAxis = "Z_UP";
+  protected Unit unit;
 
-	public void setLibraryGeometries(LibraryGeometries libraryGeometries) {
-		this.libraryGeometries = libraryGeometries;
-	}
+  public static XMLReader reader;
 
-	public LibraryVisualScenes getLibraryVisualScenes() {
-		return libraryVisualScenes;
-	}
+  public LibraryGeometries getLibraryGeometries() {
+    return libraryGeometries;
+  }
 
-	public void setLibraryVisualScenes(LibraryVisualScenes libraryVisualScenes) {
-		this.libraryVisualScenes = libraryVisualScenes;
-	}
+  public void setLibraryGeometries(LibraryGeometries libraryGeometries) {
+    this.libraryGeometries = libraryGeometries;
+  }
 
-	public LibraryControllers getLibraryControllers() {
-		return libraryControllers;
-	}
+  public LibraryVisualScenes getLibraryVisualScenes() {
+    return libraryVisualScenes;
+  }
 
-	public void setLibraryControllers(LibraryControllers libraryControllers) {
-		this.libraryControllers = libraryControllers;
-	}
+  public void setLibraryVisualScenes(LibraryVisualScenes libraryVisualScenes) {
+    this.libraryVisualScenes = libraryVisualScenes;
+  }
 
-	public LibraryAnimations getLibraryAnimations() {
-		return libraryAnimations;
-	}
+  public LibraryControllers getLibraryControllers() {
+    return libraryControllers;
+  }
 
-	public void setLibraryAnimations(LibraryAnimations libraryAnimations) {
-		this.libraryAnimations = libraryAnimations;
-	}
+  public void setLibraryControllers(LibraryControllers libraryControllers) {
+    this.libraryControllers = libraryControllers;
+  }
 
-	public LibraryImages getLibraryImages() {
-		return libraryImages;
-	}
+  public LibraryAnimations getLibraryAnimations() {
+    return libraryAnimations;
+  }
 
-	public void setLibraryImages(LibraryImages library) {
-		this.libraryImages = library;
-	}
+  public void setLibraryAnimations(LibraryAnimations libraryAnimations) {
+    this.libraryAnimations = libraryAnimations;
+  }
 
-	public LibraryMaterials getLibraryMaterials() {
-		return libraryMaterials;
-	}
+  public LibraryImages getLibraryImages() {
+    return libraryImages;
+  }
 
-	public void setLibraryMaterials(LibraryMaterials libraryMaterials) {
-		this.libraryMaterials = libraryMaterials;
-	}
+  public void setLibraryImages(LibraryImages library) {
+    this.libraryImages = library;
+  }
 
-	public LibraryEffects getLibraryEffects() {
-		return libraryEffects;
-	}
+  public LibraryMaterials getLibraryMaterials() {
+    return libraryMaterials;
+  }
 
-	public void setLibraryEffects(LibraryEffects libraryEffects) {
-		this.libraryEffects = libraryEffects;
-	}
+  public void setLibraryMaterials(LibraryMaterials libraryMaterials) {
+    this.libraryMaterials = libraryMaterials;
+  }
 
-	public LibraryNodes getLibraryNodes() {
-		return libraryNodes;
-	}
+  public LibraryEffects getLibraryEffects() {
+    return libraryEffects;
+  }
 
-	public void setLibraryNodes(LibraryNodes libraryNodes) {
-		this.libraryNodes = libraryNodes;
-	}
+  public void setLibraryEffects(LibraryEffects libraryEffects) {
+    this.libraryEffects = libraryEffects;
+  }
 
-	public Scene getScene() {
-		return scene;
-	}
+  public LibraryNodes getLibraryNodes() {
+    return libraryNodes;
+  }
 
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
-	
-	public String getUpAxis() {
-		return upAxis;
-	}
+  public void setLibraryNodes(LibraryNodes libraryNodes) {
+    this.libraryNodes = libraryNodes;
+  }
 
-	public void setUpAxis(String upAxis) {
-		this.upAxis = upAxis;
-	}
-	
-	public Unit getUnit() {
-		return unit;
-	}
+  public Scene getScene() {
+    return scene;
+  }
 
-	public void setUnit(Unit unit) {
-		this.unit = unit;
-	}
+  public void setScene(Scene scene) {
+    this.scene = scene;
+  }
 
-	public String getAuthoringTool() {
-		return authoringTool;
-	}
+  public String getUpAxis() {
+    return upAxis;
+  }
 
-	public void setAuthoringTool(String authoringTool) {
-		this.authoringTool = authoringTool;
-	}
+  public void setUpAxis(String upAxis) {
+    this.upAxis = upAxis;
+  }
 
-	public void dump(PrintStream out, int indent) {
-		String prefix = createIndent(indent);
-		out.println(prefix + "COLLADA");
-		out.println(prefix + " (" + upAxis + ")");
-		if (this.unit != null)
-			this.unit.dump(out, indent + 1);
-		if (this.libraryImages != null)
-			this.libraryImages.dump(out, indent + 1);
-		if (this.libraryMaterials != null)
-			this.libraryMaterials.dump(out, indent + 1);
-		if (this.libraryEffects != null)
-			this.libraryEffects.dump(out, indent + 1);
-		if (this.libraryGeometries != null)
-			this.libraryGeometries.dump(out, indent + 1);
-		if (this.libraryNodes != null)
-			this.libraryNodes.dump(out, indent + 1);
-		if (this.libraryControllers != null)
-			this.libraryControllers.dump(out, indent + 1);
-		if (this.libraryAnimations != null)
-			this.libraryAnimations.dump(out, indent + 1);
-		if (this.libraryVisualScenes != null)
-			this.libraryVisualScenes.dump(out, indent + 1);
-		if (this.scene != null)
-			this.scene.dump(out, indent + 1);
-	}
+  public Unit getUnit() {
+    return unit;
+  }
 
-	public void deindexMeshes() {
-		if(libraryGeometries == null) {
-			return;
-		}
-		List<Geometry> geos = libraryGeometries.getGeometries();
-		for (Geometry geo : geos) {
-			Mesh mesh = geo.getMesh();
-			if (mesh != null)
-				mesh.deindex(this);
-		}
-	}
+  public void setUnit(Unit unit) {
+    this.unit = unit;
+  }
 
-	public static Collada readFile(String fname) throws SAXException,
-			FileNotFoundException, IOException {
-		StateManager stateManager = new StateManager();
-		XMLReader reader = XMLReaderFactory.createXMLReader();
-		reader.setContentHandler(stateManager);
-		reader.parse(new InputSource(new FileReader(fname)));
-		Collada collada = stateManager.getCollada();
-		return collada;
-	}
+  public String getAuthoringTool() {
+    return authoringTool;
+  }
 
-	public static Collada readFile(URL file) throws SAXException,
-			FileNotFoundException, IOException {
-		StateManager stateManager = new StateManager();
-		if(reader == null) {
-			try {
-				SAXParserFactory factory;
-				factory = (SAXParserFactory) Class.forName(
-						"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").newInstance();
-				//factory = SAXParserFactory.newInstance();
-				Log.log("SAXParserFactory: " + factory);
-				//factory.setNamespaceAware(true);
-				//factory.setValidating(false);
-				//factory.setXIncludeAware(false);
-				reader = factory.newSAXParser().getXMLReader();
-				
-			} catch (Throwable t) {
-				Log.exception(t);
-			}
-		}			
-		Log.log("XMLReader: " + reader);
-		reader.setContentHandler(stateManager);
-		try {
-			Log.log("Start parsing");
-			reader.parse(new InputSource(file.openStream()));
-			Log.log("Parsing done");
-		} catch ( Throwable t) {
-			Log.exception(t);
-		}
-		Collada collada = stateManager.getCollada();
-		return collada;
-	}
-	
-	public List<Skin> findSkins(String source) {
-		if (this.libraryControllers == null)
-			return new ArrayList<Skin>();
-		return this.libraryControllers.findSkins(source);
-	}
+  public void setAuthoringTool(String authoringTool) {
+    this.authoringTool = authoringTool;
+  }
 
-	public Controller findController(String id) {
-		if (this.libraryControllers == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Controller ctrl : this.libraryControllers.getControllers()) {
-			if (search.equals(ctrl.getId()))
-				return ctrl;
-		}
-		return null;
-	}
+  public void dump(PrintStream out, int indent) {
+    String prefix = createIndent(indent);
+    out.println(prefix + "COLLADA");
+    out.println(prefix + " (" + upAxis + ")");
+    if (this.unit != null) {
+      this.unit.dump(out, indent + 1);
+    }
+    if (this.libraryImages != null) {
+      this.libraryImages.dump(out, indent + 1);
+    }
+    if (this.libraryMaterials != null) {
+      this.libraryMaterials.dump(out, indent + 1);
+    }
+    if (this.libraryEffects != null) {
+      this.libraryEffects.dump(out, indent + 1);
+    }
+    if (this.libraryGeometries != null) {
+      this.libraryGeometries.dump(out, indent + 1);
+    }
+    if (this.libraryNodes != null) {
+      this.libraryNodes.dump(out, indent + 1);
+    }
+    if (this.libraryControllers != null) {
+      this.libraryControllers.dump(out, indent + 1);
+    }
+    if (this.libraryAnimations != null) {
+      this.libraryAnimations.dump(out, indent + 1);
+    }
+    if (this.libraryVisualScenes != null) {
+      this.libraryVisualScenes.dump(out, indent + 1);
+    }
+    if (this.scene != null) {
+      this.scene.dump(out, indent + 1);
+    }
+  }
 
-	public Effect findEffect(String id) {
-		if (this.libraryEffects == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Effect effect : this.libraryEffects.getEffects()) {
-			if (search.equals(effect.getId()))
-				return effect;
-		}
-		return null;
-	}
+  public void deindexMeshes() {
+    if (libraryGeometries == null) {
+      return;
+    }
+    List<Geometry> geos = libraryGeometries.getGeometries();
+    for (Geometry geo : geos) {
+      Mesh mesh = geo.getMesh();
+    if (mesh != null) {
+      mesh.deindex(this);
+    }
+    }
+  }
 
-	public Image findImage(String id) {
-		if (this.libraryImages == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Image img : this.libraryImages.getImages()) {
-			if (search.equals(img.getId()))
-				return img;
-		}
-		return null;
-	}
+  public static Collada readFile(String fname) throws SAXException, FileNotFoundException, IOException {
+    StateManager stateManager = new StateManager();
+    XMLReader reader = XMLReaderFactory.createXMLReader();
+    reader.setContentHandler(stateManager);
+    reader.parse(new InputSource(new FileReader(fname)));
+    Collada collada = stateManager.getCollada();
+    return collada;
+  }
 
-	public Material findMaterial(String id) {
-		if (this.libraryMaterials == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Material mat : this.libraryMaterials.getMaterials()) {
-			if (search.equals(mat.getId()))
-				return mat;
-		}
-		return null;
-	}
+  public static Collada readFile(URL file) throws SAXException, FileNotFoundException, IOException {
+    StateManager stateManager = new StateManager();
+    if (reader == null) {
+      try {
+        SAXParserFactory factory;
+        factory = (SAXParserFactory) Class.forName("com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl").newInstance();
+        //factory = SAXParserFactory.newInstance();
+        Log.log("SAXParserFactory: " + factory);
+        //factory.setNamespaceAware(true);
+        //factory.setValidating(false);
+        //factory.setXIncludeAware(false);
+        reader = factory.newSAXParser().getXMLReader();
 
-	public Geometry findGeometry(String id) {
-		if (this.libraryGeometries == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Geometry geo : this.libraryGeometries.getGeometries()) {
-			if (search.equals(geo.getId()))
-				return geo;
-		}
-		return null;
-	}
+      } catch (Throwable t) {
+        Log.exception(t);
+      }
+    }
+    Log.log("XMLReader: " + reader);
+    reader.setContentHandler(stateManager);
+    try {
+      Log.log("Start parsing");
+      reader.parse(new InputSource(file.openStream()));
+      Log.log("Parsing done");
+    } catch (Throwable t) {
+      Log.exception(t);
+    }
+    Collada collada = stateManager.getCollada();
+    return collada;
+  }
 
-	public Node findNode(String id) {
-		if (this.libraryNodes == null)
-			return null;
-		String search = id;
-		if (id.indexOf(35) == 0)
-			search = id.substring(1);
-		for (Node n : this.libraryNodes.getNodes()) {
-			if (search.equals(n.getId()))
-				return n;
-		}
-		return null;
-	}
+  public List<Skin> findSkins(String source) {
+    if (this.libraryControllers == null) {
+      return new ArrayList<Skin>();
+    }
+    return this.libraryControllers.findSkins(source);
+  }
+
+  public Controller findController(String id) {
+    if (this.libraryControllers == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Controller ctrl : this.libraryControllers.getControllers()) {
+    if (search.equals(ctrl.getId())) {
+      return ctrl;
+    }
+    }
+    return null;
+  }
+
+  public Effect findEffect(String id) {
+    if (this.libraryEffects == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Effect effect : this.libraryEffects.getEffects()) {
+    if (search.equals(effect.getId())) {
+      return effect;
+    }
+    }
+    return null;
+  }
+
+  public Image findImage(String id) {
+    if (this.libraryImages == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Image img : this.libraryImages.getImages()) {
+    if (search.equals(img.getId())) {
+      return img;
+    }
+    }
+    return null;
+  }
+
+  public Material findMaterial(String id) {
+    if (this.libraryMaterials == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Material mat : this.libraryMaterials.getMaterials()) {
+    if (search.equals(mat.getId())) {
+      return mat;
+    }
+    }
+    return null;
+  }
+
+  public Geometry findGeometry(String id) {
+    if (this.libraryGeometries == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Geometry geo : this.libraryGeometries.getGeometries()) {
+    if (search.equals(geo.getId())) {
+      return geo;
+    }
+    }
+    return null;
+  }
+
+  public Node findNode(String id) {
+    if (this.libraryNodes == null) {
+      return null;
+    }
+    String search = id;
+    if (id.indexOf(35) == 0) {
+      search = id.substring(1);
+    }
+    for (Node n : this.libraryNodes.getNodes()) {
+    if (search.equals(n.getId())) {
+      return n;
+    }
+    }
+    return null;
+  }
 }

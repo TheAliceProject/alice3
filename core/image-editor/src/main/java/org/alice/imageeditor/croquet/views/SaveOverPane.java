@@ -62,66 +62,66 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class SaveOverPane extends MigPanel {
-	private final ImageView toBeReplacedImageView = new ImageView();
-	private final ImageView nextImageView = new ImageView();
-	private final Label toBeReplacedHeaderLabel = new Label();
-	private final Label toBeReplacedDetailsLabel = new Label();
-	private final Label nextDetailsLabel = new Label();
+  private final ImageView toBeReplacedImageView = new ImageView();
+  private final ImageView nextImageView = new ImageView();
+  private final Label toBeReplacedHeaderLabel = new Label();
+  private final Label toBeReplacedDetailsLabel = new Label();
+  private final Label nextDetailsLabel = new Label();
 
-	public SaveOverPane( SaveOverComposite composite ) {
-		super( composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]" );
-		this.addComponent( this.toBeReplacedHeaderLabel );
-		this.addComponent( Separator.createInstanceSeparatingLeftFromRight(), "spany 3, growy" );
-		this.addComponent( composite.getNextHeader().createLabel(), "wrap" );
-		this.addComponent( this.toBeReplacedImageView, "grow, shrink" );
-		this.addComponent( this.nextImageView, "skip 1, grow, shrink, wrap" );
-		this.addComponent( this.toBeReplacedDetailsLabel );
-		this.addComponent( this.nextDetailsLabel, "skip 1" );
-		this.setMinimumPreferredHeight( 300 );
-		this.setMinimumPreferredWidth( 800 );
-	}
+  public SaveOverPane(SaveOverComposite composite) {
+    super(composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]");
+    this.addComponent(this.toBeReplacedHeaderLabel);
+    this.addComponent(Separator.createInstanceSeparatingLeftFromRight(), "spany 3, growy");
+    this.addComponent(composite.getNextHeader().createLabel(), "wrap");
+    this.addComponent(this.toBeReplacedImageView, "grow, shrink");
+    this.addComponent(this.nextImageView, "skip 1, grow, shrink, wrap");
+    this.addComponent(this.toBeReplacedDetailsLabel);
+    this.addComponent(this.nextDetailsLabel, "skip 1");
+    this.setMinimumPreferredHeight(300);
+    this.setMinimumPreferredWidth(800);
+  }
 
-	@Override
-	public SaveOverComposite getComposite() {
-		return (SaveOverComposite)super.getComposite();
-	}
+  @Override
+  public SaveOverComposite getComposite() {
+    return (SaveOverComposite) super.getComposite();
+  }
 
-	private static String getResolutionText( Image image ) {
-		StringBuilder sb = new StringBuilder();
-		//sb.append( "(" );
-		sb.append( "resolution: " );
-		sb.append( image.getWidth( null ) );
-		sb.append( " x " );
-		sb.append( image.getHeight( null ) );
-		//sb.append( ")" );
-		return sb.toString();
-	}
+  private static String getResolutionText(Image image) {
+    StringBuilder sb = new StringBuilder();
+    //sb.append( "(" );
+    sb.append("resolution: ");
+    sb.append(image.getWidth(null));
+    sb.append(" x ");
+    sb.append(image.getHeight(null));
+    //sb.append( ")" );
+    return sb.toString();
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
-		File file = frame.getFile();
-		try {
-			Image toBeReplacedImage = ImageUtilities.read( file );
-			Image nextImage = frame.getView().render();
-			this.toBeReplacedImageView.setImage( toBeReplacedImage );
-			this.nextImageView.setImage( nextImage );
+  @Override
+  public void handleCompositePreActivation() {
+    ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
+    File file = frame.getFile();
+    try {
+      Image toBeReplacedImage = ImageUtilities.read(file);
+      Image nextImage = frame.getView().render();
+      this.toBeReplacedImageView.setImage(toBeReplacedImage);
+      this.nextImageView.setImage(nextImage);
 
-			DateFormat dateFormat = DateFormat.getDateInstance( DateFormat.SHORT, Locale.getDefault() );
-			DateFormat timeFormat = DateFormat.getTimeInstance( DateFormat.SHORT, Locale.getDefault() );
-			Date date = new Date( file.lastModified() );
-			this.toBeReplacedHeaderLabel.setText( this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format( date ) + " " + timeFormat.format( date ) + ")" );
-			this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
-			this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
-			super.handleCompositePreActivation();
-			AbstractWindow<?> window = this.getRoot();
-			if( window instanceof Dialog ) {
-				Dialog dialog = (Dialog)window;
-				dialog.setTitle( "Save Over " + file );
-				dialog.pack();
-			}
-		} catch( IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
-		}
-	}
+      DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+      DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+      Date date = new Date(file.lastModified());
+      this.toBeReplacedHeaderLabel.setText(this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format(date) + " " + timeFormat.format(date) + ")");
+      this.toBeReplacedDetailsLabel.setText(getResolutionText(toBeReplacedImage));
+      this.nextDetailsLabel.setText(getResolutionText(nextImage));
+      super.handleCompositePreActivation();
+      AbstractWindow<?> window = this.getRoot();
+      if (window instanceof Dialog) {
+        Dialog dialog = (Dialog) window;
+        dialog.setTitle("Save Over " + file);
+        dialog.pack();
+      }
+    } catch (IOException ioe) {
+      throw new RuntimeException(file.getAbsolutePath(), ioe);
+    }
+  }
 }

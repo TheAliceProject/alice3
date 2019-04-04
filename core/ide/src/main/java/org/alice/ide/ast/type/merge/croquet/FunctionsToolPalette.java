@@ -53,12 +53,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FunctionsToolPalette extends MethodsToolPalette<FunctionsView> {
-	public FunctionsToolPalette( URI uriForDescriptionPurposesOnly, List<UserMethod> projectFunctions ) {
-		super( UUID.fromString( "ba4a37f1-c3e9-48f8-9e39-790db4ca5775" ), uriForDescriptionPurposesOnly, projectFunctions );
-	}
+  public FunctionsToolPalette(URI uriForDescriptionPurposesOnly, List<UserMethod> projectFunctions) {
+    super(UUID.fromString("ba4a37f1-c3e9-48f8-9e39-790db4ca5775"), uriForDescriptionPurposesOnly, projectFunctions);
+  }
 
-	@Override
-	protected FunctionsView createView() {
-		return new FunctionsView( this );
-	}
+  @Override
+  protected FunctionsView createView() {
+    return new FunctionsView(this);
+  }
 }

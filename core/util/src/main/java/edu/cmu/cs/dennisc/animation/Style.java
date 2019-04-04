@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public interface Style {
-	public double calculatePortion( double timeElapsed, double timeTotal );
+  public double calculatePortion(double timeElapsed, double timeTotal);
 }

@@ -48,14 +48,14 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachineEvent {
-	public VirtualMachineEvent( VirtualMachine vm ) {
-		this.vm = vm;
-	}
+  public VirtualMachineEvent(VirtualMachine vm) {
+    this.vm = vm;
+  }
 
-	public VirtualMachine getVirtualMachine() {
-		return this.vm;
-	}
+  public VirtualMachine getVirtualMachine() {
+    return this.vm;
+  }
 
-	private final VirtualMachine vm;
+  private final VirtualMachine vm;
 
 }

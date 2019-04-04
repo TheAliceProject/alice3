@@ -52,7 +52,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ImportImageResourceOperation extends ImportResourceOperation<ImageResource> {
-	public ImportImageResourceOperation() {
-		super( UUID.fromString( "4896b154-99e1-4664-9258-86501510a6e0" ), ImageResourceImporter.getInstance() );
-	}
+  public ImportImageResourceOperation() {
+    super(UUID.fromString("4896b154-99e1-4664-9258-86501510a6e0"), ImageResourceImporter.getInstance());
+  }
 }

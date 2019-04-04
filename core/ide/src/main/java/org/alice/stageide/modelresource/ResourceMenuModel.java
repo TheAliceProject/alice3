@@ -58,34 +58,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ResourceMenuModel extends CascadeMenuModel<ResourceNode> {
-	private final ResourceNode resourceNode;
+  private final ResourceNode resourceNode;
 
-	public ResourceMenuModel( ResourceNode resourceNode ) {
-		super( UUID.fromString( "5f0b30f5-6b05-4914-9281-c116ce6efbec" ) );
-		this.resourceNode = resourceNode;
-	}
+  public ResourceMenuModel(ResourceNode resourceNode) {
+    super(UUID.fromString("5f0b30f5-6b05-4914-9281-c116ce6efbec"));
+    this.resourceNode = resourceNode;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode ) {
-		for( ResourceNode child : resourceNode.getNodeChildren() ) {
-			blankChildren.add( child.getAddFieldBlankChild() );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode) {
+    for (ResourceNode child : resourceNode.getNodeChildren()) {
+      blankChildren.add(child.getAddFieldBlankChild());
+    }
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super ResourceNode, ResourceNode> itemNode ) {
-		throw new Error();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super ResourceNode, ResourceNode> itemNode) {
+    throw new Error();
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return this.resourceNode.getText();
-	}
+  @Override
+  public String getMenuItemText() {
+    return this.resourceNode.getText();
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super ResourceNode, ResourceNode> node ) {
-		IconFactory iconFactory = this.resourceNode.getIconFactory();
-		return iconFactory != null ? iconFactory.getIcon( Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super ResourceNode, ResourceNode> node) {
+    IconFactory iconFactory = this.resourceNode.getIconFactory();
+    return iconFactory != null ? iconFactory.getIcon(Theme.DEFAULT_SMALL_ICON_SIZE) : null;
+  }
 
 }

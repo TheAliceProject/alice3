@@ -58,45 +58,45 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class EnvelopStatementsEdit extends AbstractEdit<EnvelopStatementsOperation> {
-	private BlockStatementIndexPair fromLocation;
-	private BlockStatementIndexPair toLocation;
-	private transient int count;
+  private BlockStatementIndexPair fromLocation;
+  private BlockStatementIndexPair toLocation;
+  private transient int count;
 
-	public EnvelopStatementsEdit( UserActivity userActivity, BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
-		super( userActivity );
-		this.fromLocation = fromLocation;
-		this.toLocation = toLocation;
-	}
+  public EnvelopStatementsEdit(UserActivity userActivity, BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation) {
+    super(userActivity);
+    this.fromLocation = fromLocation;
+    this.toLocation = toLocation;
+  }
 
-	public EnvelopStatementsEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
+  public EnvelopStatementsEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.fromLocation );
-		binaryEncoder.encode( this.toLocation );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.fromLocation);
+    binaryEncoder.encode(this.toLocation);
+  }
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		Logger.outln( "todo: do", this );
-	}
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    Logger.outln("todo: do", this);
+  }
 
-	@Override
-	public void undoInternal() {
-		Logger.outln( "todo: undo", this );
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  @Override
+  public void undoInternal() {
+    Logger.outln("todo: undo", this);
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "envelop: " );
-		Statement statement = this.fromLocation.getBlockStatement().statements.get( this.fromLocation.getIndex() );
-		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("envelop: ");
+    Statement statement = this.fromLocation.getBlockStatement().statements.get(this.fromLocation.getIndex());
+    NodeUtilities.safeAppendRepr(rv, statement, Application.getLocale());
+  }
 }

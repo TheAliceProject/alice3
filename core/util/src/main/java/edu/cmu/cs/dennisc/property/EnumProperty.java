@@ -48,15 +48,15 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class EnumProperty<E extends Enum<E>> extends InstanceProperty<E> {
-	public EnumProperty( InstancePropertyOwner owner, E value ) {
-		super( owner, value );
-	}
+  public EnumProperty(InstancePropertyOwner owner, E value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( E value ) {
-		assert value != null : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(E value) {
+    assert value != null : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 }

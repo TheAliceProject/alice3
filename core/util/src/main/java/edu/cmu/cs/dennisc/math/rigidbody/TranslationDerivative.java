@@ -49,6 +49,6 @@ import edu.cmu.cs.dennisc.math.rungekutta.Derivative;
  * @author Dennis Cosgrove
  */
 public class TranslationDerivative extends Derivative {
-	public Vector3 velocity = new Vector3();
-	public Vector3 force = new Vector3();
+  public Vector3 velocity = new Vector3();
+  public Vector3 force = new Vector3();
 }

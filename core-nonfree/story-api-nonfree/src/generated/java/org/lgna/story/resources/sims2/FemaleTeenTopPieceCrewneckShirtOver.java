@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceCrewneckShirtOver implements FemaleTeenTopPiece {
-	BLUE,
-	GREY_BLUE,
-	MAROON,
-	ORANGE,
-	PURPLE;
+  BLUE, GREY_BLUE, MAROON, ORANGE, PURPLE
 
 }

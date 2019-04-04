@@ -54,32 +54,32 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterEdit extends ParameterEdit {
-	private transient int index;
+  private transient int index;
 
-	public DeleteParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
-		super( userActivity, code, parameter );
-	}
+  public DeleteParameterEdit(UserActivity userActivity, UserCode code, UserParameter parameter) {
+    super(userActivity, code, parameter);
+  }
 
-	public DeleteParameterEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public DeleteParameterEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = this.getParametersProperty().indexOf( this.getParameter() );
-		}
-		this.removeParameter( this.index );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      this.index = this.getParametersProperty().indexOf(this.getParameter());
+    }
+    this.removeParameter(this.index);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.addParameter( this.index );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.addParameter(this.index);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "delete:" );
-		NodeUtilities.safeAppendRepr( rv, getParameter(), Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("delete:");
+    NodeUtilities.safeAppendRepr(rv, getParameter(), Application.getLocale());
+  }
 }

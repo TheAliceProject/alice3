@@ -5,14 +5,15 @@ import org.alice.tweedle.run.Frame;
 
 public class ThisExpression extends TweedleExpression {
 
-	public ThisExpression() {
-		super();
-	}
+  public ThisExpression() {
+    super();
+  }
 
-	@Override public TweedleValue evaluate( Frame frame ) {
-		return null;
+  @Override
+  public TweedleValue evaluate(Frame frame) {
+    return null;
 
-		// TODO track on execution frame and read from there
-		// return frame.getThis();
-	}
+    // TODO track on execution frame and read from there
+    // return frame.getThis();
+  }
 }

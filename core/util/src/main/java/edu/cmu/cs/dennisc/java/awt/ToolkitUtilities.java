@@ -50,23 +50,23 @@ import java.awt.Toolkit;
  * @author Dennis Cosgrove
  */
 public class ToolkitUtilities {
-	private ToolkitUtilities() {
-		throw new AssertionError();
-	}
+  private ToolkitUtilities() {
+    throw new AssertionError();
+  }
 
-	public static boolean isDynamicLayoutSupported() {
-		return "true".equals( Toolkit.getDefaultToolkit().getDesktopProperty( "awt.dynamicLayoutSupported" ) );
-	}
+  public static boolean isDynamicLayoutSupported() {
+    return "true".equals(Toolkit.getDefaultToolkit().getDesktopProperty("awt.dynamicLayoutSupported"));
+  }
 
-	private static int getScreenResolution( Toolkit toolkit ) {
-		return toolkit.getScreenResolution();
-	}
+  private static int getScreenResolution(Toolkit toolkit) {
+    return toolkit.getScreenResolution();
+  }
 
-	public static int getScreenResolution( Component awtComponent ) {
-		return getScreenResolution( awtComponent.getToolkit() );
-	}
+  public static int getScreenResolution(Component awtComponent) {
+    return getScreenResolution(awtComponent.getToolkit());
+  }
 
-	public static int getScreenResolution() {
-		return getScreenResolution( Toolkit.getDefaultToolkit() );
-	}
+  public static int getScreenResolution() {
+    return getScreenResolution(Toolkit.getDefaultToolkit());
+  }
 }

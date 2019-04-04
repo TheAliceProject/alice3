@@ -49,15 +49,15 @@ import org.lgna.project.ast.AbstractDeclaration;
  */
 public class DeclarationSeachTreeNode extends SearchTreeNode {
 
-	private AbstractDeclaration declaration;
+  private AbstractDeclaration declaration;
 
-	public DeclarationSeachTreeNode( SearchTreeNode parent, AbstractDeclaration expression ) {
-		super( parent );
-		this.declaration = expression;
-	}
+  public DeclarationSeachTreeNode(SearchTreeNode parent, AbstractDeclaration expression) {
+    super(parent);
+    this.declaration = expression;
+  }
 
-	@Override
-	public Object getValue() {
-		return declaration;
-	}
+  @Override
+  public Object getValue() {
+    return declaration;
+  }
 }

@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleToddlerFullBodyOutfitShortSleevesLongPants implements FemaleToddlerFullBodyOutfit {
-	PINK_FLOWER,
-	CREAMPLAIN,
-	BLUE_POCKET;
+  PINK_FLOWER, CREAMPLAIN, BLUE_POCKET
 
 }

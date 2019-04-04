@@ -50,17 +50,17 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public interface ImageGenerator {
-	public int getWidth();
+  public int getWidth();
 
-	public int getHeight();
+  public int getHeight();
 
-	public boolean isPotentiallyAlphaBlended();
+  public boolean isPotentiallyAlphaBlended();
 
-	public boolean isMipMappingDesired();
+  public boolean isMipMappingDesired();
 
-	public boolean isAnimated();
+  public boolean isAnimated();
 
-	public MipMapGenerationPolicy getMipMapGenerationPolicy();
+  public MipMapGenerationPolicy getMipMapGenerationPolicy();
 
-	public void paint( Graphics2D g, int width, int height );
+  public void paint(Graphics2D g, int width, int height);
 }

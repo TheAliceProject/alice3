@@ -51,7 +51,8 @@ import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.ButtonWithRightClickCascade;
 import org.lgna.croquet.views.Hyperlink;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,209 +60,209 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class Operation implements Triggerable, Element, CompletionModel {
-	private final UUID migrationId;
-	private final Group group;
-	private Icon buttonIcon;
-	private AbstractCompletionModel.SidekickLabel sidekickLabel;
+  private final UUID migrationId;
+  private final Group group;
+  private Icon buttonIcon;
+  private AbstractCompletionModel.SidekickLabel sidekickLabel;
 
-	private final OperationImp imp = new OperationImp( this );
+  private final OperationImp imp = new OperationImp(this);
 
-	private boolean isInTheMidstOfInitialization = false;
-	private boolean isInitialized = false;
+  private boolean isInTheMidstOfInitialization = false;
+  private boolean isInitialized = false;
 
-	public Operation( Group group, UUID id ) {
-		this.group = group;
-		migrationId = id;
-	}
+  public Operation(Group group, UUID id) {
+    this.group = group;
+    migrationId = id;
+  }
 
-	public OperationImp getImp() {
-		return this.imp;
-	}
+  public OperationImp getImp() {
+    return this.imp;
+  }
 
-	@Override
-	public UUID getMigrationId() {
-		return this.migrationId;
-	}
+  @Override
+  public UUID getMigrationId() {
+    return this.migrationId;
+  }
 
-	@Override
-	public Group getGroup() {
-		return this.group;
-	}
+  @Override
+  public Group getGroup() {
+    return this.group;
+  }
 
-	protected void initialize() {
-		this.localize();
-	}
+  protected void initialize() {
+    this.localize();
+  }
 
-	@Override
-	public final void initializeIfNecessary() {
-		if ( !this.isInitialized && !this.isInTheMidstOfInitialization ) {
-			isInTheMidstOfInitialization = true;
-			try {
-				initialize();
-				isInitialized = true;
-			} finally {
-				isInTheMidstOfInitialization = false;
-			}
-		}
-	}
+  @Override
+  public final void initializeIfNecessary() {
+    if (!this.isInitialized && !this.isInTheMidstOfInitialization) {
+      isInTheMidstOfInitialization = true;
+      try {
+        initialize();
+        isInitialized = true;
+      } finally {
+        isInTheMidstOfInitialization = false;
+      }
+    }
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return this.imp.getPotentialPrepModelPaths( edit );
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return this.imp.getPotentialPrepModelPaths(edit);
+  }
 
-	protected String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  protected String modifyNameIfNecessary(String text) {
+    return text;
+  }
 
-	protected void localize() {
-		String name = this.findDefaultLocalizedText();
-		if( name != null ) {
-			name = modifyNameIfNecessary( name );
-			int mnemonicKey = this.getLocalizedMnemonicKey();
-			AbstractModel.safeSetNameAndMnemonic( this.imp.getSwingModel().getAction(), name, mnemonicKey );
-			this.imp.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-		}
-	}
+  protected void localize() {
+    String name = this.findDefaultLocalizedText();
+    if (name != null) {
+      name = modifyNameIfNecessary(name);
+      int mnemonicKey = this.getLocalizedMnemonicKey();
+      AbstractModel.safeSetNameAndMnemonic(this.imp.getSwingModel().getAction(), name, mnemonicKey);
+      this.imp.setAcceleratorKey(this.getLocalizedAcceleratorKeyStroke());
+    }
+  }
 
-	public boolean isToolBarTextClobbered() {
-		return false;
-	}
+  public boolean isToolBarTextClobbered() {
+    return false;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.imp.getSwingModel().getAction().isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.imp.getSwingModel().getAction().isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.imp.getSwingModel().getAction().setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.imp.getSwingModel().getAction().setEnabled(isEnabled);
+  }
 
-	public void setName( String name ) {
-		this.imp.setName( name );
-	}
+  public void setName(String name) {
+    this.imp.setName(name);
+  }
 
-	public void setSmallIcon( Icon icon ) {
-		this.imp.setSmallIcon( icon );
-	}
+  public void setSmallIcon(Icon icon) {
+    this.imp.setSmallIcon(icon);
+  }
 
-	public void setToolTipText( String toolTipText ) {
-		this.imp.setShortDescription( toolTipText );
-	}
+  public void setToolTipText(String toolTipText) {
+    this.imp.setShortDescription(toolTipText);
+  }
 
-	public Icon getButtonIcon() {
-		return this.buttonIcon;
-	}
+  public Icon getButtonIcon() {
+    return this.buttonIcon;
+  }
 
-	public void setButtonIcon( Icon icon ) {
-		this.buttonIcon = icon;
-	}
+  public void setButtonIcon(Icon icon) {
+    this.buttonIcon = icon;
+  }
 
-	public StandardMenuItemPrepModel getMenuItemPrepModel() {
-		return this.imp.getMenuItemPrepModel();
-	}
+  public StandardMenuItemPrepModel getMenuItemPrepModel() {
+    return this.imp.getMenuItemPrepModel();
+  }
 
-	public Button createButton( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new Button( this, fontScalar, textAttributes );
-	}
+  public Button createButton(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new Button(this, fontScalar, textAttributes);
+  }
 
-	public Button createButton( TextAttribute<?>... textAttributes ) {
-		return this.createButton( 1.0f, textAttributes );
-	}
+  public Button createButton(TextAttribute<?>... textAttributes) {
+    return this.createButton(1.0f, textAttributes);
+  }
 
-	public Hyperlink createHyperlink( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new Hyperlink( this, fontScalar, textAttributes );
-	}
+  public Hyperlink createHyperlink(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new Hyperlink(this, fontScalar, textAttributes);
+  }
 
-	public Hyperlink createHyperlink( TextAttribute<?>... textAttributes ) {
-		return this.createHyperlink( 1.0f, textAttributes );
-	}
+  public Hyperlink createHyperlink(TextAttribute<?>... textAttributes) {
+    return this.createHyperlink(1.0f, textAttributes);
+  }
 
-	public ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
-		return new ButtonWithRightClickCascade( this, cascade );
-	}
+  public ButtonWithRightClickCascade createButtonWithRightClickCascade(Cascade<?> cascade) {
+    return new ButtonWithRightClickCascade(this, cascade);
+  }
 
-	@Override
-	public synchronized PlainStringValue getSidekickLabel() {
-		if ( this.sidekickLabel == null ) {
-			this.sidekickLabel = new AbstractCompletionModel.SidekickLabel( getClassUsedForLocalization() );
-		}
-		return this.sidekickLabel;
-	}
+  @Override
+  public synchronized PlainStringValue getSidekickLabel() {
+    if (this.sidekickLabel == null) {
+      this.sidekickLabel = new AbstractCompletionModel.SidekickLabel(getClassUsedForLocalization());
+    }
+    return this.sidekickLabel;
+  }
 
-	@Override
-	public boolean hasSidekickLabel() {
-		return sidekickLabel != null;
-	}
+  @Override
+  public boolean hasSidekickLabel() {
+    return sidekickLabel != null;
+  }
 
-	protected abstract void performInActivity( UserActivity userActivity );
+  protected abstract void performInActivity(UserActivity userActivity);
 
-	@Override
-	public void fire( UserActivity activity ) {
-		if ( this.isEnabled() ) {
-			this.initializeIfNecessary();
-			this.performInActivity( activity );
-		}
-	}
+  @Override
+  public void fire(UserActivity activity) {
+    if (this.isEnabled()) {
+      this.initializeIfNecessary();
+      this.performInActivity(activity);
+    }
+  }
 
-	@Deprecated
-	public final void fire() {
-		fire( NullTrigger.createUserActivity() );
-	}
+  @Deprecated
+  public final void fire() {
+    fire(NullTrigger.createUserActivity());
+  }
 
-	@Override
-	public final void relocalize() {
-		this.localize();
-	}
+  @Override
+  public final void relocalize() {
+    this.localize();
+  }
 
-	private KeyStroke getLocalizedAcceleratorKeyStroke() {
-		return AbstractModel.getKeyStroke( this.findLocalizedText( AbstractModel.ACCELERATOR_SUB_KEY ) );
-	}
+  private KeyStroke getLocalizedAcceleratorKeyStroke() {
+    return AbstractModel.getKeyStroke(this.findLocalizedText(AbstractModel.ACCELERATOR_SUB_KEY));
+  }
 
-	protected final String findLocalizedText( String subKey ) {
-		String inherantSubKey = getSubKeyForLocalization();
-		String actualSubKey;
-		if( inherantSubKey != null ) {
-			if( subKey != null ) {
-				actualSubKey = inherantSubKey + "." + subKey;
-			} else {
-				actualSubKey = inherantSubKey;
-			}
-		} else {
-			actualSubKey = subKey;
-		}
-		Class<? extends Element> clsUsedForLocalization = this.getClassUsedForLocalization();
-		return AbstractModel.findLocalizedText( clsUsedForLocalization, actualSubKey );
-	}
+  protected final String findLocalizedText(String subKey) {
+    String inherantSubKey = getSubKeyForLocalization();
+    String actualSubKey;
+    if (inherantSubKey != null) {
+      if (subKey != null) {
+        actualSubKey = inherantSubKey + "." + subKey;
+      } else {
+        actualSubKey = inherantSubKey;
+      }
+    } else {
+      actualSubKey = subKey;
+    }
+    Class<? extends Element> clsUsedForLocalization = this.getClassUsedForLocalization();
+    return AbstractModel.findLocalizedText(clsUsedForLocalization, actualSubKey);
+  }
 
-	protected String findDefaultLocalizedText() {
-		return this.findLocalizedText( null );
-	}
+  protected String findDefaultLocalizedText() {
+    return this.findLocalizedText(null);
+  }
 
-	protected String getSubKeyForLocalization() {
-		return null;
-	}
+  protected String getSubKeyForLocalization() {
+    return null;
+  }
 
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.getClass();
-	}
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.getClass();
+  }
 
-	private int getLocalizedMnemonicKey() {
-		return AbstractModel.getKeyCode( this.findLocalizedText( AbstractModel.MNEMONIC_SUB_KEY ) );
-	}
+  private int getLocalizedMnemonicKey() {
+    return AbstractModel.getKeyCode(this.findLocalizedText(AbstractModel.MNEMONIC_SUB_KEY));
+  }
 
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "group=" );
-		sb.append( this.getGroup() );
-	}
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("group=");
+    sb.append(this.getGroup());
+  }
 
-	@Override
-	public void appendUserRepr( StringBuilder sb ) {
-		sb.append( "todo: override appendUserString\n" );
-		sb.append( this );
-		sb.append( "\n" );
-		sb.append( this.getClass().getName() );
-		sb.append( "\n" );
-	}
+  @Override
+  public void appendUserRepr(StringBuilder sb) {
+    sb.append("todo: override appendUserString\n");
+    sb.append(this);
+    sb.append("\n");
+    sb.append(this.getClass().getName());
+    sb.append("\n");
+  }
 }

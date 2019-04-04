@@ -53,17 +53,17 @@ import java.awt.event.ComponentEvent;
  * @author Dennis Cosgrove
  */
 public abstract class ComponentEventTrigger<E extends ComponentEvent> extends EventObjectTrigger<E> {
-	ComponentEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, E event ) {
-		super( userActivity, viewController, event );
-	}
+  ComponentEventTrigger(UserActivity userActivity, ViewController<?, ?> viewController, E event) {
+    super(userActivity, viewController, event);
+  }
 
-	ComponentEventTrigger( ViewController<?, ?> viewController, E event ) {
-		super( viewController, event );
-	}
+  ComponentEventTrigger(ViewController<?, ?> viewController, E event) {
+    super(viewController, event);
+  }
 
-	@Override
-	protected final Component getComponent() {
-		Component rv = super.getComponent();
-		return rv != null ? rv : this.getEvent().getComponent();
-	}
+  @Override
+  protected final Component getComponent() {
+    Component rv = super.getComponent();
+    return rv != null ? rv : this.getEvent().getComponent();
+  }
 }

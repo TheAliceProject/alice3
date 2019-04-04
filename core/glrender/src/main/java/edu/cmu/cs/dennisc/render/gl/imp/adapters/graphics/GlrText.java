@@ -56,59 +56,59 @@ import java.awt.Font;
 import java.awt.Rectangle;
 
 public abstract class GlrText<T extends Text> extends GlrGraphic<T> {
-	private MultilineText multilineText;
-	private Font rememberedFont = null;
-	private Color textColor = null;
+  private MultilineText multilineText;
+  private Font rememberedFont = null;
+  private Color textColor = null;
 
-	protected abstract float getWrapWidth( Rectangle actualViewport );
+  protected abstract float getWrapWidth(Rectangle actualViewport);
 
-	protected abstract void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth );
+  protected abstract void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth);
 
-	private void forgetFontIfNecessary( Graphics2D g2 ) {
-		if( this.rememberedFont != null ) {
-			g2.forget( this.rememberedFont );
-			this.rememberedFont = null;
-		}
-	}
+  private void forgetFontIfNecessary(Graphics2D g2) {
+    if (this.rememberedFont != null) {
+      g2.forget(this.rememberedFont);
+      this.rememberedFont = null;
+    }
+  }
 
-	@Override
-	protected void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera ) {
-		String text = this.owner.text.getValue();
-		Font font = this.owner.font.getValue();
-		if( font == this.rememberedFont ) {
-			//pass
-		} else {
-			this.forgetFontIfNecessary( g2 );
-			g2.remember( font );
-			this.rememberedFont = font;
-		}
-		if( this.multilineText != null ) {
-			//pass
-		} else {
-			this.multilineText = new MultilineText( text );
-		}
-		this.render( g2, renderTarget, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth( actualViewport ) );
-	}
+  @Override
+  protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera) {
+    String text = this.owner.text.getValue();
+    Font font = this.owner.font.getValue();
+    if (font == this.rememberedFont) {
+      //pass
+    } else {
+      this.forgetFontIfNecessary(g2);
+      g2.remember(font);
+      this.rememberedFont = font;
+    }
+    if (this.multilineText != null) {
+      //pass
+    } else {
+      this.multilineText = new MultilineText(text);
+    }
+    this.render(g2, renderTarget, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth(actualViewport));
+  }
 
-	@Override
-	protected void forget( Graphics2D g2 ) {
-		this.forgetFontIfNecessary( g2 );
-	}
+  @Override
+  protected void forget(Graphics2D g2) {
+    this.forgetFontIfNecessary(g2);
+  }
 
-	private void markMultilineTextInvalid() {
-		this.multilineText = null;
-	}
+  private void markMultilineTextInvalid() {
+    this.multilineText = null;
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.text ) {
-			this.markMultilineTextInvalid();
-		} else if( property == owner.font ) {
-			this.markMultilineTextInvalid();
-		} else if( property == owner.textColor ) {
-			this.textColor = ColorUtilities.toAwtColor( this.owner.textColor.getValue() );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.text) {
+      this.markMultilineTextInvalid();
+    } else if (property == owner.font) {
+      this.markMultilineTextInvalid();
+    } else if (property == owner.textColor) {
+      this.textColor = ColorUtilities.toAwtColor(this.owner.textColor.getValue());
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

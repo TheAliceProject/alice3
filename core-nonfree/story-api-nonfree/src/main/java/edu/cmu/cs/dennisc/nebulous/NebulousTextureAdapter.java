@@ -50,36 +50,36 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 
 /**
  * @author alice
- * 
+ *
  */
 public class NebulousTextureAdapter extends GlrTexture<NebulousTexture> {
 
-	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
+  private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
 
-	@Override
-	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
+  @Override
+  protected TextureData newTextureData(GL gl, TextureData currentTextureData) {
+    throw new RuntimeException("NOT SUPPORTED");
+  }
 
-	@Override
-	public ForgettableBinding bindTexture( RenderContext rc ) {
-		this.nebulousBinding.bind( rc, this.owner );
-		return this.nebulousBinding;
-	}
+  @Override
+  public ForgettableBinding bindTexture(RenderContext rc) {
+    this.nebulousBinding.bind(rc, this.owner);
+    return this.nebulousBinding;
+  }
 
-	//	@Override
-	//	public void initialize( NebulousTexture element ) {
-	//		super.initialize( element );
-	//		if( m_element != null ) {
-	//			m_element.addReference();
-	//		}
-	//	}
-	//
-	//	@Override
-	//	public void handleReleased() {
-	//		super.handleReleased();
-	//		if( m_element != null ) {
-	//			m_element.removeReference();
-	//		}
-	//	}
+  //  @Override
+  //  public void initialize( NebulousTexture element ) {
+  //    super.initialize( element );
+  //    if( m_element != null ) {
+  //      m_element.addReference();
+  //    }
+  //  }
+  //
+  //  @Override
+  //  public void handleReleased() {
+  //    super.handleReleased();
+  //    if( m_element != null ) {
+  //      m_element.removeReference();
+  //    }
+  //  }
 }

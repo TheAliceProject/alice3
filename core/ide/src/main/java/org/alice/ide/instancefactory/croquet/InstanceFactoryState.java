@@ -114,324 +114,292 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends CustomItemStateWithInternalBlank<InstanceFactory> {
-	public InstanceFactoryState( ProjectDocumentFrame projectDocumentFrame ) {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, InstanceFactoryCodec.SINGLETON );
-		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );
-		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-	}
+  public InstanceFactoryState(ProjectDocumentFrame projectDocumentFrame) {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("f4e26c9c-0c3d-4221-95b3-c25df0744a97"), null, InstanceFactoryCodec.SINGLETON);
+    projectDocumentFrame.getMetaDeclarationFauxState().addValueListener(declarationListener);
+    ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+  }
 
-	private void fallBackToDefaultFactory() {
-		this.setValueTransactionlessly( ThisInstanceFactory.getInstance() );
-	}
+  private void fallBackToDefaultFactory() {
+    this.setValueTransactionlessly(ThisInstanceFactory.getInstance());
+  }
 
-	private void handleDeclarationChanged( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
-		if( this.ignoreCount == 0 ) {
-			if( nextValue instanceof AbstractMethod ) {
-				AbstractMethod method = (AbstractMethod)nextValue;
-				if( method.isStatic() ) {
-					this.setValueTransactionlessly( null );
-					return;
-				}
-			}
-			InstanceFactory instanceFactory = this.getValue();
-			if( instanceFactory != null ) {
-				if( instanceFactory.isValid() ) {
-					//pass
-				} else {
-					this.fallBackToDefaultFactory();
-				}
-			} else {
-				this.fallBackToDefaultFactory();
-			}
-			//			org.lgna.project.ast.AbstractType< ?,?,? > prevType = getDeclaringType( prevValue );
-			//			org.lgna.project.ast.AbstractType< ?,?,? > nextType = getDeclaringType( nextValue );
-			//			if( prevType != nextType ) {
-			//				InstanceFactory prevValue = this.getValue();
-			//				if( prevType != null ) {
-			//					if( prevValue != null ) {
-			//						map.put( prevType, prevValue );
-			//					} else {
-			//						map.remove( prevType );
-			//					}
-			//				}
-			//				InstanceFactory nextValue;
-			//				if( nextType != null ) {
-			//					nextValue = map.get( nextType );
-			//					if( nextValue != null ) {
-			//						//pass
-			//					} else {
-			//						nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
-			//					}
-			//				} else {
-			//					nextValue = null;
-			//				}
-			//				this.setValueTransactionlessly( nextValue );
-			//			}
-		}
-	}
+  private void handleDeclarationChanged(AbstractDeclaration prevValue, AbstractDeclaration nextValue) {
+    if (this.ignoreCount == 0) {
+      if (nextValue instanceof AbstractMethod) {
+        AbstractMethod method = (AbstractMethod) nextValue;
+        if (method.isStatic()) {
+          this.setValueTransactionlessly(null);
+          return;
+        }
+      }
+      InstanceFactory instanceFactory = this.getValue();
+      if (instanceFactory != null) {
+        if (instanceFactory.isValid()) {
+          //pass
+        } else {
+          this.fallBackToDefaultFactory();
+        }
+      } else {
+        this.fallBackToDefaultFactory();
+      }
+      //      org.lgna.project.ast.AbstractType< ?,?,? > prevType = getDeclaringType( prevValue );
+      //      org.lgna.project.ast.AbstractType< ?,?,? > nextType = getDeclaringType( nextValue );
+      //      if( prevType != nextType ) {
+      //        InstanceFactory prevValue = this.getValue();
+      //        if( prevType != null ) {
+      //          if( prevValue != null ) {
+      //            map.put( prevType, prevValue );
+      //          } else {
+      //            map.remove( prevType );
+      //          }
+      //        }
+      //        InstanceFactory nextValue;
+      //        if( nextType != null ) {
+      //          nextValue = map.get( nextType );
+      //          if( nextValue != null ) {
+      //            //pass
+      //          } else {
+      //            nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+      //          }
+      //        } else {
+      //          nextValue = null;
+      //        }
+      //        this.setValueTransactionlessly( nextValue );
+      //      }
+    }
+  }
 
-	private void handleAstChangeThatCouldBeOfInterest() {
-		InstanceFactory instanceFactory = this.getValue();
-		if( instanceFactory != null ) {
-			if( instanceFactory.isValid() ) {
-				//pass
-			} else {
-				this.fallBackToDefaultFactory();
-			}
-		} else {
-			this.fallBackToDefaultFactory();
-		}
-	}
+  private void handleAstChangeThatCouldBeOfInterest() {
+    InstanceFactory instanceFactory = this.getValue();
+    if (instanceFactory != null) {
+      if (instanceFactory.isValid()) {
+        //pass
+      } else {
+        this.fallBackToDefaultFactory();
+      }
+    } else {
+      this.fallBackToDefaultFactory();
+    }
+  }
 
-	private static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessary( CascadeFillIn<InstanceFactory, Void> item, CascadeMenuModel<InstanceFactory> subMenu ) {
-		if( subMenu != null ) {
-			return new CascadeItemMenuCombo<InstanceFactory>( item, subMenu );
-		} else {
-			return item;
-		}
-	}
+  private static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessary(CascadeFillIn<InstanceFactory, Void> item, CascadeMenuModel<InstanceFactory> subMenu) {
+    if (subMenu != null) {
+      return new CascadeItemMenuCombo<InstanceFactory>(item, subMenu);
+    } else {
+      return item;
+    }
+  }
 
-	/* package-private */static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessaryForField( ApiConfigurationManager apiConfigurationManager, UserField field ) {
-		return createFillInMenuComboIfNecessary(
-				InstanceFactoryFillIn.getInstance( ThisFieldAccessFactory.getInstance( field ) ),
-				apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
-	}
+  /* package-private */
+  static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessaryForField(ApiConfigurationManager apiConfigurationManager, UserField field) {
+    return createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ThisFieldAccessFactory.getInstance(field)), apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess(field));
+  }
 
-	@Override
-	protected void appendPrepModelsToCascadeRootPath( List<PrepModel> cascadeRootPath, Edit edit ) {
-		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
-		if( edit instanceof StateEdit ) {
-			StateEdit<InstanceFactory> stateEdit = (StateEdit<InstanceFactory>)edit;
-			InstanceFactory nextValue = stateEdit.getNextValue();
-			if( nextValue instanceof ThisFieldAccessMethodInvocationFactory ) {
-				ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (ThisFieldAccessMethodInvocationFactory)nextValue;
-				UserField field = thisFieldAccessMethodInvocationFactory.getField();
-				IDE ide = IDE.getActiveInstance();
-				ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-				cascadeRootPath.add( apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
-			}
-		} else {
-			throw new RuntimeException( edit != null ? edit.toString() : null );
-		}
-	}
+  @Override
+  protected void appendPrepModelsToCascadeRootPath(List<PrepModel> cascadeRootPath, Edit edit) {
+    super.appendPrepModelsToCascadeRootPath(cascadeRootPath, edit);
+    if (edit instanceof StateEdit) {
+      StateEdit<InstanceFactory> stateEdit = (StateEdit<InstanceFactory>) edit;
+      InstanceFactory nextValue = stateEdit.getNextValue();
+      if (nextValue instanceof ThisFieldAccessMethodInvocationFactory) {
+        ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (ThisFieldAccessMethodInvocationFactory) nextValue;
+        UserField field = thisFieldAccessMethodInvocationFactory.getField();
+        IDE ide = IDE.getActiveInstance();
+        ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+        cascadeRootPath.add(apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess(field));
+      }
+    } else {
+      throw new RuntimeException(edit != null ? edit.toString() : null);
+    }
+  }
 
-	//todo
-	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
+  //todo
+  private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode ) {
-		IDE ide = IDE.getActiveInstance();
-		ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		AbstractDeclaration declaration = DeclarationMeta.getDeclaration();
-		boolean isStaticMethod;
-		if( declaration instanceof AbstractMethod ) {
-			AbstractMethod method = (AbstractMethod)declaration;
-			isStaticMethod = method.isStatic();
-		} else {
-			isStaticMethod = false;
-		}
-		AbstractType<?, ?, ?> type = DeclarationMeta.getType();
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+    IDE ide = IDE.getActiveInstance();
+    ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+    AbstractDeclaration declaration = DeclarationMeta.getDeclaration();
+    boolean isStaticMethod;
+    if (declaration instanceof AbstractMethod) {
+      AbstractMethod method = (AbstractMethod) declaration;
+      isStaticMethod = method.isStatic();
+    } else {
+      isStaticMethod = false;
+    }
+    AbstractType<?, ?, ?> type = DeclarationMeta.getType();
 
-		if( isStaticMethod ) {
-			//pass
-		} else {
-			blankChildren.add(
-					createFillInMenuComboIfNecessary(
-							InstanceFactoryFillIn.getInstance( ThisInstanceFactory.getInstance() ),
-							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-							)
-					);
-		}
-		if( type instanceof NamedUserType ) {
-			NamedUserType namedUserType = (NamedUserType)type;
-			if( isStaticMethod ) {
-				//pass
-			} else {
-				List<UserField> fields = namedUserType.getDeclaredFields();
-				List<UserField> filteredFields = Lists.newLinkedList();
-				for( UserField field : fields ) {
-					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-						filteredFields.add( field );
-					}
-				}
-				final boolean IS_COLLAPSE_DESIRED = true;
-				if( IS_COLLAPSE_DESIRED && ( filteredFields.size() > 16 ) ) {
-					RootNode root = FieldTree.createTreeFor(
-							filteredFields,
-							FieldTree.createFirstClassThreshold( SBiped.class ),
-							FieldTree.createFirstClassThreshold( SQuadruped.class ),
-							FieldTree.createFirstClassThreshold( SSwimmer.class ),
-							FieldTree.createFirstClassThreshold( SFlyer.class ),
-							FieldTree.createFirstClassThreshold( SSlitherer.class ),
+    if (isStaticMethod) {
+      //pass
+    } else {
+      blankChildren.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ThisInstanceFactory.getInstance()), apiConfigurationManager.getInstanceFactorySubMenuForThis(type)));
+    }
+    if (type instanceof NamedUserType) {
+      NamedUserType namedUserType = (NamedUserType) type;
+      if (isStaticMethod) {
+        //pass
+      } else {
+        List<UserField> fields = namedUserType.getDeclaredFields();
+        List<UserField> filteredFields = Lists.newLinkedList();
+        for (UserField field : fields) {
+          if (apiConfigurationManager.isInstanceFactoryDesiredForType(field.getValueType())) {
+            filteredFields.add(field);
+          }
+        }
+        final boolean IS_COLLAPSE_DESIRED = true;
+        if (IS_COLLAPSE_DESIRED && (filteredFields.size() > 16)) {
+          RootNode root = FieldTree.createTreeFor(filteredFields, FieldTree.createFirstClassThreshold(SBiped.class), FieldTree.createFirstClassThreshold(SQuadruped.class), FieldTree.createFirstClassThreshold(SSwimmer.class), FieldTree.createFirstClassThreshold(SFlyer.class), FieldTree.createFirstClassThreshold(SSlitherer.class),
 
-							FieldTree.createSecondClassThreshold( SProp.class ),
-							FieldTree.createSecondClassThreshold( STransport.class ),
-							FieldTree.createSecondClassThreshold( SShape.class ),
-							FieldTree.createSecondClassThreshold( SThing.class ),
-							FieldTree.createSecondClassThreshold( Object.class )
-							);
-					for( FieldNode fieldNode : root.getFieldNodes() ) {
-						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
-					}
-					for( TypeNode typeNode : root.getTypeNodes() ) {
-						blankChildren.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
-					}
-				} else {
-					for( UserField field : filteredFields ) {
-						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
-					}
-				}
-			}
+                                                  FieldTree.createSecondClassThreshold(SProp.class), FieldTree.createSecondClassThreshold(STransport.class), FieldTree.createSecondClassThreshold(SShape.class), FieldTree.createSecondClassThreshold(SThing.class), FieldTree.createSecondClassThreshold(Object.class));
+          for (FieldNode fieldNode : root.getFieldNodes()) {
+            blankChildren.add(createFillInMenuComboIfNecessaryForField(apiConfigurationManager, fieldNode.getDeclaration()));
+          }
+          for (TypeNode typeNode : root.getTypeNodes()) {
+            blankChildren.add(new TypeCascadeMenuModel(typeNode, apiConfigurationManager));
+          }
+        } else {
+          for (UserField field : filteredFields) {
+            blankChildren.add(createFillInMenuComboIfNecessaryForField(apiConfigurationManager, field));
+          }
+        }
+      }
 
-			AbstractCode code = ide.getDocumentFrame().getFocusedCode();
-			if( code instanceof UserCode ) {
+      AbstractCode code = ide.getDocumentFrame().getFocusedCode();
+      if (code instanceof UserCode) {
 
-				List<CascadeBlankChild> parameters = Lists.newLinkedList();
-				List<CascadeBlankChild> locals = Lists.newLinkedList();
-				boolean containsVariable = false;
-				boolean containsConstant = false;
-				UserCode userCode = (UserCode)code;
-				for( UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
-					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
-						parameters.add(
-								createFillInMenuComboIfNecessary(
-										InstanceFactoryFillIn.getInstance( ParameterAccessFactory.getInstance( parameter ) ),
-										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
-										)
-								);
-					}
-				}
+        List<CascadeBlankChild> parameters = Lists.newLinkedList();
+        List<CascadeBlankChild> locals = Lists.newLinkedList();
+        boolean containsVariable = false;
+        boolean containsConstant = false;
+        UserCode userCode = (UserCode) code;
+        for (UserParameter parameter : userCode.getRequiredParamtersProperty()) {
+          if (apiConfigurationManager.isInstanceFactoryDesiredForType(parameter.getValueType())) {
+            parameters.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ParameterAccessFactory.getInstance(parameter)), apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess(parameter)));
+          }
+        }
 
-				for( UserLocal local : ProgramTypeUtilities.getLocals( userCode ) ) {
-					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
-						if( local.isFinal.getValue() ) {
-							containsConstant = true;
-						} else {
-							containsVariable = true;
-						}
-						locals.add(
-								createFillInMenuComboIfNecessary(
-										InstanceFactoryFillIn.getInstance( LocalAccessFactory.getInstance( local ) ),
-										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
-										)
-								);
-					}
-				}
-				if( ( parameters.size() > 0 ) || ( locals.size() > 0 ) ) {
-					blankChildren.add( CascadeLineSeparator.getInstance() );
-					blankChildren.add( this.parametersVariablesConstantsSeparator );
-					StringBuilder sb = new StringBuilder();
-					NodeUtilities.safeAppendRepr( sb, code );
-					sb.append( " " );
-					String prefix = "";
-					if( parameters.size() > 0 ) {
-						sb.append( "parameters" );
-						blankChildren.addAll( parameters );
-						prefix = ", ";
-					}
-					if( locals.size() > 0 ) {
-						if( containsVariable ) {
-							sb.append( prefix );
-							sb.append( "variables" );
-							prefix = ", ";
-						}
-						if( containsConstant ) {
-							sb.append( prefix );
-							sb.append( "constants" );
-							prefix = ", ";
-						}
-						blankChildren.addAll( locals );
-					}
-					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
-				}
+        for (UserLocal local : ProgramTypeUtilities.getLocals(userCode)) {
+          if (apiConfigurationManager.isInstanceFactoryDesiredForType(local.getValueType())) {
+            if (local.isFinal.getValue()) {
+              containsConstant = true;
+            } else {
+              containsVariable = true;
+            }
+            locals.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(LocalAccessFactory.getInstance(local)), apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess(local)));
+          }
+        }
+        if ((parameters.size() > 0) || (locals.size() > 0)) {
+          blankChildren.add(CascadeLineSeparator.getInstance());
+          blankChildren.add(this.parametersVariablesConstantsSeparator);
+          StringBuilder sb = new StringBuilder();
+          NodeUtilities.safeAppendRepr(sb, code);
+          sb.append(" ");
+          String prefix = "";
+          if (parameters.size() > 0) {
+            sb.append("parameters");
+            blankChildren.addAll(parameters);
+            prefix = ", ";
+          }
+          if (locals.size() > 0) {
+            if (containsVariable) {
+              sb.append(prefix);
+              sb.append("variables");
+              prefix = ", ";
+            }
+            if (containsConstant) {
+              sb.append(prefix);
+              sb.append("constants");
+              prefix = ", ";
+            }
+            blankChildren.addAll(locals);
+          }
+          this.parametersVariablesConstantsSeparator.setMenuItemText(sb.toString());
+        }
 
-				if( userCode instanceof UserMethod ) {
-					UserMethod userMethod = (UserMethod)userCode;
-					if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( userMethod.getName() ) ) {
-						for( Statement statement : userMethod.body.getValue().statements ) {
-							if( statement instanceof ExpressionStatement ) {
-								ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-								Expression expression = expressionStatement.expression.getValue();
-								if( expression instanceof MethodInvocation ) {
-									MethodInvocation methodInvocation = (MethodInvocation)expression;
-									List<CascadeBlankChild> methodInvocationBlankChildren = Lists.newLinkedList();
+        if (userCode instanceof UserMethod) {
+          UserMethod userMethod = (UserMethod) userCode;
+          if (StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals(userMethod.getName())) {
+            for (Statement statement : userMethod.body.getValue().statements) {
+              if (statement instanceof ExpressionStatement) {
+                ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+                Expression expression = expressionStatement.expression.getValue();
+                if (expression instanceof MethodInvocation) {
+                  MethodInvocation methodInvocation = (MethodInvocation) expression;
+                  List<CascadeBlankChild> methodInvocationBlankChildren = Lists.newLinkedList();
 
-									for( SimpleArgument argument : methodInvocation.requiredArguments ) {
-										Expression argumentExpression = argument.expression.getValue();
-										if( argumentExpression instanceof LambdaExpression ) {
-											LambdaExpression lambdaExpression = (LambdaExpression)argumentExpression;
-											Lambda lambda = lambdaExpression.value.getValue();
-											if( lambda instanceof UserLambda ) {
-												UserLambda userLambda = (UserLambda)lambda;
-												for( UserParameter parameter : userLambda.getRequiredParameters() ) {
-													AbstractType<?, ?, ?> parameterType = parameter.getValueType();
-													for( AbstractMethod parameterMethod : AstUtilities.getAllMethods( parameterType ) ) {
-														AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
-														if( parameterMethodReturnType.isAssignableTo( SThing.class ) ) {
-															methodInvocationBlankChildren.add(
-																	createFillInMenuComboIfNecessary(
-																			InstanceFactoryFillIn.getInstance( ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
-																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
-																			)
-																	);
-														}
-													}
-												}
-											}
-										}
-									}
+                  for (SimpleArgument argument : methodInvocation.requiredArguments) {
+                    Expression argumentExpression = argument.expression.getValue();
+                    if (argumentExpression instanceof LambdaExpression) {
+                      LambdaExpression lambdaExpression = (LambdaExpression) argumentExpression;
+                      Lambda lambda = lambdaExpression.value.getValue();
+                      if (lambda instanceof UserLambda) {
+                        UserLambda userLambda = (UserLambda) lambda;
+                        for (UserParameter parameter : userLambda.getRequiredParameters()) {
+                          AbstractType<?, ?, ?> parameterType = parameter.getValueType();
+                          for (AbstractMethod parameterMethod : AstUtilities.getAllMethods(parameterType)) {
+                            AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
+                            if (parameterMethodReturnType.isAssignableTo(SThing.class)) {
+                              methodInvocationBlankChildren.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ParameterAccessMethodInvocationFactory.getInstance(parameter, parameterMethod)), apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation(parameter, parameterMethod)));
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
 
-									if( methodInvocationBlankChildren.size() > 0 ) {
-										AbstractMethod method = methodInvocation.method.getValue();
-										blankChildren.add( MethodNameSeparator.getInstance( method ) );
-										blankChildren.addAll( methodInvocationBlankChildren );
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+                  if (methodInvocationBlankChildren.size() > 0) {
+                    AbstractMethod method = methodInvocation.method.getValue();
+                    blankChildren.add(MethodNameSeparator.getInstance(method));
+                    blankChildren.addAll(methodInvocationBlankChildren);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
-	@Override
-	protected InstanceFactory getSwingValue() {
-		return this.value;
-	}
+  @Override
+  protected InstanceFactory getSwingValue() {
+    return this.value;
+  }
 
-	@Override
-	protected void setSwingValue( InstanceFactory value ) {
-		this.value = value;
-	}
+  @Override
+  protected void setSwingValue(InstanceFactory value) {
+    this.value = value;
+  }
 
-	private int ignoreCount = 0;
+  private int ignoreCount = 0;
 
-	public void pushIgnoreAstChanges() {
-		ignoreCount++;
-	}
+  public void pushIgnoreAstChanges() {
+    ignoreCount++;
+  }
 
-	public void popIgnoreAstChanges() {
-		ignoreCount--;
-		if( ignoreCount == 0 ) {
-			this.handleAstChangeThatCouldBeOfInterest();
-		}
-	}
+  public void popIgnoreAstChanges() {
+    ignoreCount--;
+    if (ignoreCount == 0) {
+      this.handleAstChangeThatCouldBeOfInterest();
+    }
+  }
 
-	private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
-		@Override
-		public void changed( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
-			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
-		}
-	};
-	//todo: map AbstractCode to Stack< InstanceFactory >
-	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private InstanceFactory value;
+  private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
+    @Override
+    public void changed(AbstractDeclaration prevValue, AbstractDeclaration nextValue) {
+      InstanceFactoryState.this.handleDeclarationChanged(prevValue, nextValue);
+    }
+  };
+  //todo: map AbstractCode to Stack< InstanceFactory >
+  //private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+  private InstanceFactory value;
 
-	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			handleAstChangeThatCouldBeOfInterest();
-		}
-	};
+  private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
+    @Override
+    public void projectChanged() {
+      handleAstChangeThatCouldBeOfInterest();
+    }
+  };
 }

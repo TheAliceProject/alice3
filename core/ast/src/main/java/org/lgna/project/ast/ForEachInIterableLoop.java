@@ -47,28 +47,28 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ForEachInIterableLoop extends AbstractForEachLoop implements EachInIterableStatement {
-	public ForEachInIterableLoop() {
-	}
+  public ForEachInIterableLoop() {
+  }
 
-	public ForEachInIterableLoop( UserLocal item, Expression iterable, BlockStatement body ) {
-		super( item, body );
-		this.iterable.setValue( iterable );
-	}
+  public ForEachInIterableLoop(UserLocal item, Expression iterable, BlockStatement body) {
+    super(item, body);
+    this.iterable.setValue(iterable);
+  }
 
-	@Override
-	public ExpressionProperty getIterableProperty() {
-		return this.iterable;
-	}
+  @Override
+  public ExpressionProperty getIterableProperty() {
+    return this.iterable;
+  }
 
-	@Override
-	protected ExpressionProperty getArrayOrIterableProperty() {
-		return this.getIterableProperty();
-	}
+  @Override
+  protected ExpressionProperty getArrayOrIterableProperty() {
+    return this.getIterableProperty();
+  }
 
-	public final ExpressionProperty iterable = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
+  public final ExpressionProperty iterable = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      throw new RuntimeException("todo");
+    }
+  };
 }

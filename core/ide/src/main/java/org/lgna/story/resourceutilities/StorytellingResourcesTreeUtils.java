@@ -57,89 +57,88 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public enum StorytellingResourcesTreeUtils {
-	INSTANCE;
+  INSTANCE;
 
-	private ModelResourceTree getGalleryTreeInternal() {
-		if( this.galleryTree == null ) {
-			List<Class<? extends ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
-			this.galleryTree = new ModelResourceTree( classes );
+  private ModelResourceTree getGalleryTreeInternal() {
+    if (this.galleryTree == null) {
+      List<Class<? extends ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
+      this.galleryTree = new ModelResourceTree(classes);
 
-			List<ModelManifest> userModelResources = StorytellingResources.INSTANCE.findAndLoadUserGalleryResourcesIfNecessary();
-			this.galleryTree.addUserModels(userModelResources);
-		}
-		return this.galleryTree;
-	}
+      List<ModelManifest> userModelResources = StorytellingResources.INSTANCE.findAndLoadUserGalleryResourcesIfNecessary();
+      this.galleryTree.addUserModels(userModelResources);
+    }
+    return this.galleryTree;
+  }
 
-	private TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
-		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
-	}
+  private TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType(AbstractType<?, ?, ?> type) {
+    return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType(type);
+  }
 
-	public GalleryResourceTreeNode getGalleryTree() {
-		return getGalleryTreeInternal().getTree();
-	}
+  public GalleryResourceTreeNode getGalleryTree() {
+    return getGalleryTreeInternal().getTree();
+  }
 
-	public List<ManifestDefinedGalleryTreeNode> updateGalleryTree() {
-		List<ModelManifest> newUserModelResources = StorytellingResources.INSTANCE.findNewUserGalleryResources();
-		return galleryTree.addUserModels(newUserModelResources);
-	}
+  public List<ManifestDefinedGalleryTreeNode> updateGalleryTree() {
+    List<ModelManifest> newUserModelResources = StorytellingResources.INSTANCE.findNewUserGalleryResources();
+    return galleryTree.addUserModels(newUserModelResources);
+  }
 
-	public Collection<JavaType> getTopLevelGalleryTypes() {
-		if( this.rootTypes == null ) {
-			this.rootTypes = new HashSet<>();
-			for( TypeDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes() ) {
-				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
-			}
-		}
-		return this.rootTypes;
-	}
+  public Collection<JavaType> getTopLevelGalleryTypes() {
+    if (this.rootTypes == null) {
+      this.rootTypes = new HashSet<>();
+      for (TypeDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes()) {
+        this.rootTypes.add(node.getUserType().getFirstEncounteredJavaType());
+      }
+    }
+    return this.rootTypes;
+  }
 
-	public JavaType getGalleryResourceParentFor( AbstractType<?, ?, ?> type ) {
-		GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType( type );
-		if( child != null ) {
-			TypeDefinedGalleryTreeNode parent = child.getParent();
-			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getGalleryResourceChildrenFor)
-			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
-				parent = parent.getParent();
-			}
-			if ( parent != null ) {
-				return parent.getResourceJavaType();
-			}
-			else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public JavaType getGalleryResourceParentFor(AbstractType<?, ?, ?> type) {
+    GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType(type);
+    if (child != null) {
+      TypeDefinedGalleryTreeNode parent = child.getParent();
+      //Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getGalleryResourceChildrenFor)
+      if ((parent != null) && hasSingleLeafChild(parent)) {
+        parent = parent.getParent();
+      }
+      if (parent != null) {
+        return parent.getResourceJavaType();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	private boolean hasSingleLeafChild( GalleryResourceTreeNode node ) {
-		return ( ( node.getChildCount() == 1 ) && ( node.getChildAt( 0 ).getChildCount() == 0 ) );
-	}
+  private boolean hasSingleLeafChild(GalleryResourceTreeNode node) {
+    return ((node.getChildCount() == 1) && (node.getChildAt(0).getChildCount() == 0));
+  }
 
-	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
-		//System.out.println( "Getting children for type: " + type );
-		List<AbstractDeclaration> toReturn = Lists.newArrayList();
-		GalleryResourceTreeNode typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
-		if( typeNode != null ) {
-			for( int i = 0; i < typeNode.getChildCount(); i++ ) {
-				GalleryResourceTreeNode child = typeNode.getChildAt( i );
-				//If the child has a single leaf child, go down a level and return that
-				if( hasSingleLeafChild( child ) ) {
-					child = child.getChildAt( 0 );
-				}
-				TypeDefinedGalleryTreeNode node = (TypeDefinedGalleryTreeNode)child;
-				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
-					//System.out.println( "  Returning field: " + node.getJavaField() );
-					toReturn.add( node.getJavaField() );
-				} else {
-					//System.out.println( "  Returning type: " + node.getResourceJavaType() );
-					toReturn.add( node.getResourceJavaType() );
-				}
-			}
-		}
-		return toReturn;
-	}
+  public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
+    //System.out.println( "Getting children for type: " + type );
+    List<AbstractDeclaration> toReturn = Lists.newArrayList();
+    GalleryResourceTreeNode typeNode = this.getGalleryResourceTreeNodeForJavaType(type);
+    if (typeNode != null) {
+      for (int i = 0; i < typeNode.getChildCount(); i++) {
+        GalleryResourceTreeNode child = typeNode.getChildAt(i);
+        //If the child has a single leaf child, go down a level and return that
+        if (hasSingleLeafChild(child)) {
+          child = child.getChildAt(0);
+        }
+        TypeDefinedGalleryTreeNode node = (TypeDefinedGalleryTreeNode) child;
+        if (node.isLeaf() && (node.getJavaField() != null)) {
+          //System.out.println( "  Returning field: " + node.getJavaField() );
+          toReturn.add(node.getJavaField());
+        } else {
+          //System.out.println( "  Returning type: " + node.getResourceJavaType() );
+          toReturn.add(node.getResourceJavaType());
+        }
+      }
+    }
+    return toReturn;
+  }
 
-	private Collection<JavaType> rootTypes = null;
-	private ModelResourceTree galleryTree;
+  private Collection<JavaType> rootTypes = null;
+  private ModelResourceTree galleryTree;
 }

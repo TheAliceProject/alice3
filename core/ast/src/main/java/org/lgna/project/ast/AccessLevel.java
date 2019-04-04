@@ -52,39 +52,36 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public enum AccessLevel implements CodeAppender {
-	PUBLIC( Modifier.PUBLIC, "public " ),
-	PROTECTED( Modifier.PROTECTED, "protected " ),
-	PRIVATE( Modifier.PRIVATE, "private " ),
-	PACKAGE( null, "/*package-private*/ " );
+  PUBLIC(Modifier.PUBLIC, "public "), PROTECTED(Modifier.PROTECTED, "protected "), PRIVATE(Modifier.PRIVATE, "private "), PACKAGE(null, "/*package-private*/ ");
 
-	private final Modifier modifier;
-	private final String javaCodeText;
+  private final Modifier modifier;
+  private final String javaCodeText;
 
-	AccessLevel( Modifier modifier, String javaCodeText ) {
-		this.modifier = modifier;
-		this.javaCodeText = javaCodeText;
-	}
+  AccessLevel(Modifier modifier, String javaCodeText) {
+    this.modifier = modifier;
+    this.javaCodeText = javaCodeText;
+  }
 
-	public void addModifiers( Collection<Modifier> modifiers ) {
-		if( this.modifier != null ) {
-			modifiers.add( modifier );
-		}
-	}
+  public void addModifiers(Collection<Modifier> modifiers) {
+    if (this.modifier != null) {
+      modifiers.add(modifier);
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendString( this.javaCodeText );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendString(this.javaCodeText);
+  }
 
-	public static AccessLevel getValueFromModifiers( int modifiers ) {
-		if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-			return AccessLevel.PUBLIC;
-		} else if( java.lang.reflect.Modifier.isProtected( modifiers ) ) {
-			return AccessLevel.PROTECTED;
-		} else if( java.lang.reflect.Modifier.isPrivate( modifiers ) ) {
-			return AccessLevel.PRIVATE;
-		} else {
-			return AccessLevel.PACKAGE;
-		}
-	}
+  public static AccessLevel getValueFromModifiers(int modifiers) {
+    if (java.lang.reflect.Modifier.isPublic(modifiers)) {
+      return AccessLevel.PUBLIC;
+    } else if (java.lang.reflect.Modifier.isProtected(modifiers)) {
+      return AccessLevel.PROTECTED;
+    } else if (java.lang.reflect.Modifier.isPrivate(modifiers)) {
+      return AccessLevel.PRIVATE;
+    } else {
+      return AccessLevel.PACKAGE;
+    }
+  }
 }

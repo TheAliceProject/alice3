@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Dave Culyba
  */
 public class SwimmerPose extends Pose<SSwimmer> {
-	/*package-private*/ SwimmerPose( JointIdTransformationPair... pairs ) {
-		super( SSwimmer.class, pairs );
-	}
+  /*package-private*/ SwimmerPose(JointIdTransformationPair... pairs) {
+    super(SSwimmer.class, pairs);
+  }
 }

@@ -52,12 +52,12 @@ import org.lgna.story.event.KeyPressListener;
  * @author Dennis Cosgrove
  */
 public class KeyAdapter extends AbstractAdapter implements KeyPressListener {
-	public KeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public KeyAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void keyPressed( KeyEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void keyPressed(KeyEvent e) {
+    invokeEntryPoint(e);
+  }
 }

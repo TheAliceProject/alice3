@@ -58,52 +58,52 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ResourceCodec<R extends Resource> implements ItemCodec<R> {
-	private static Map<Class<Resource>, ResourceCodec<Resource>> map = Maps.newHashMap();
+  private static Map<Class<Resource>, ResourceCodec<Resource>> map = Maps.newHashMap();
 
-	public static synchronized <R extends Resource> ResourceCodec<R> getInstance( Class<R> cls ) {
-		ResourceCodec<?> rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ResourceCodec<R>( cls );
-		}
-		return (ResourceCodec<R>)rv;
-	}
+  public static synchronized <R extends Resource> ResourceCodec<R> getInstance(Class<R> cls) {
+    ResourceCodec<?> rv = map.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ResourceCodec<R>(cls);
+    }
+    return (ResourceCodec<R>) rv;
+  }
 
-	private Class<R> valueCls;
+  private Class<R> valueCls;
 
-	private ResourceCodec( Class<R> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  private ResourceCodec(Class<R> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<R> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<R> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public R decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			UUID id = binaryDecoder.decodeId();
-			IDE ide = IDE.getActiveInstance();
-			return ProgramTypeUtilities.lookupResource( ide.getProject(), id );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public R decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      UUID id = binaryDecoder.decodeId();
+      IDE ide = IDE.getActiveInstance();
+      return ProgramTypeUtilities.lookupResource(ide.getProject(), id);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, R value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getId() );
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, R value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      binaryEncoder.encode(value.getId());
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, R value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, R value) {
+    sb.append(value);
+  }
 }

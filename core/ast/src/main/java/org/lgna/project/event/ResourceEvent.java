@@ -52,14 +52,14 @@ import java.util.EventObject;
  * @author Dennis Cosgrove
  */
 public class ResourceEvent extends EventObject {
-	private final Resource resource;
+  private final Resource resource;
 
-	public ResourceEvent( Project project, Resource resource ) {
-		super( project );
-		this.resource = resource;
-	}
+  public ResourceEvent(Project project, Resource resource) {
+    super(project);
+    this.resource = resource;
+  }
 
-	public Resource getResource() {
-		return this.resource;
-	}
+  public Resource getResource() {
+    return this.resource;
+  }
 }

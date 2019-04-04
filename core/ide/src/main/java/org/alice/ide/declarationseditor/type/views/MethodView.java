@@ -55,17 +55,17 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class MethodView extends MemberView {
-	public MethodView( UserMethod method ) {
-		super( MethodMenuModel.getInstance( method ) );
-		if( method.isFunction() ) {
-			this.addComponent( TypeComponent.createInstance( method.getReturnType() ) );
-			this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		}
-		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		Operation operation = tabState.getItemSelectionOperationForMethod( method );
-		Hyperlink hyperlink = operation.createHyperlink();
-		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
-		//hyperlink.setClobberText( method.getName() );
-		this.addComponent( hyperlink );
-	}
+  public MethodView(UserMethod method) {
+    super(MethodMenuModel.getInstance(method));
+    if (method.isFunction()) {
+      this.addComponent(TypeComponent.createInstance(method.getReturnType()));
+      this.addComponent(BoxUtilities.createHorizontalSliver(8));
+    }
+    DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    Operation operation = tabState.getItemSelectionOperationForMethod(method);
+    Hyperlink hyperlink = operation.createHyperlink();
+    hyperlink.scaleFont(MembersView.NAME_FONT_SCALE);
+    //hyperlink.setClobberText( method.getName() );
+    this.addComponent(hyperlink);
+  }
 }

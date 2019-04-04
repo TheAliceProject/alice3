@@ -66,87 +66,87 @@ import java.awt.event.KeyEvent;
  * @author Dennis Cosgrove
  */
 public class ContainsTabPane extends MigPanel {
-	private final TextField filterTextField;
-	private final List<Member> listView;
+  private final TextField filterTextField;
+  private final List<Member> listView;
 
-	private final FocusListener focusListener = new FocusListener() {
-		@Override
-		public void focusGained( FocusEvent e ) {
-		}
+  private final FocusListener focusListener = new FocusListener() {
+    @Override
+    public void focusGained(FocusEvent e) {
+    }
 
-		@Override
-		public void focusLost( FocusEvent e ) {
-			getComposite().getMemberListState().clearSelection();
-		}
-	};
+    @Override
+    public void focusLost(FocusEvent e) {
+      getComposite().getMemberListState().clearSelection();
+    }
+  };
 
-	private final ActionListener downAction = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
-			if( state.getItemCount() > 0 ) {
-				state.setSelectedIndex( 0 );
-			}
-			listView.requestFocusLater();
-		}
-	};
+  private final ActionListener downAction = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
+      if (state.getItemCount() > 0) {
+        state.setSelectedIndex(0);
+      }
+      listView.requestFocusLater();
+    }
+  };
 
-	private final ActionListener prevUpAction;
-	private final ActionListener upAction = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
-			if( state.getSelectedIndex() == 0 ) {
-				state.clearSelection();
-				filterTextField.requestFocusLater();
-			} else {
-				if( prevUpAction != null ) {
-					prevUpAction.actionPerformed( e );
-				}
-			}
-		}
-	};
+  private final ActionListener prevUpAction;
+  private final ActionListener upAction = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
+      if (state.getSelectedIndex() == 0) {
+        state.clearSelection();
+        filterTextField.requestFocusLater();
+      } else {
+        if (prevUpAction != null) {
+          prevUpAction.actionPerformed(e);
+        }
+      }
+    }
+  };
 
-	public ContainsTabPane( ContainsTab tab ) {
-		super( tab, "fill", "[grow,shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
-		Color color = new Color( 221, 221, 255 );
-		this.setBackgroundColor( color );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+  public ContainsTabPane(ContainsTab tab) {
+    super(tab, "fill", "[grow,shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]");
+    Color color = new Color(221, 221, 255);
+    this.setBackgroundColor(color);
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		this.filterTextField = tab.getFilterState().createTextField();
-		this.filterTextField.enableSelectAllWhenFocusGained();
+    this.filterTextField = tab.getFilterState().createTextField();
+    this.filterTextField.enableSelectAllWhenFocusGained();
 
-		this.listView = tab.getMemberListState().createList();
-		this.listView.setCellRenderer( new MemberCellRenderer() );
-		ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
+    this.listView = tab.getMemberListState().createList();
+    this.listView.setCellRenderer(new MemberCellRenderer());
+    ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(this.listView);
 
-		this.addComponent( new Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
-		this.addComponent( this.filterTextField, "growx, wrap" );
-		this.addComponent( listScrollPane, "grow" );
+    this.addComponent(new Label("<html>Search for a procedure or function<br>whose class you would like to select.</html>"), "wrap");
+    this.addComponent(this.filterTextField, "growx, wrap");
+    this.addComponent(listScrollPane, "grow");
 
-		this.filterTextField.registerKeyboardAction( this.downAction, KeyStroke.getKeyStroke( KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
+    this.filterTextField.registerKeyboardAction(this.downAction, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), Condition.WHEN_FOCUSED);
 
-		KeyStroke upKeyStroke = KeyStroke.getKeyStroke( KeyEvent.VK_UP, 0 );
-		this.prevUpAction = this.listView.getAwtComponent().getActionForKeyStroke( upKeyStroke );
-		this.listView.registerKeyboardAction( this.upAction, upKeyStroke, Condition.WHEN_FOCUSED );
-	}
+    KeyStroke upKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+    this.prevUpAction = this.listView.getAwtComponent().getActionForKeyStroke(upKeyStroke);
+    this.listView.registerKeyboardAction(this.upAction, upKeyStroke, Condition.WHEN_FOCUSED);
+  }
 
-	@Override
-	public ContainsTab getComposite() {
-		return (ContainsTab)super.getComposite();
-	}
+  @Override
+  public ContainsTab getComposite() {
+    return (ContainsTab) super.getComposite();
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		this.filterTextField.requestFocusLater();
-		this.listView.getAwtComponent().addFocusListener( this.focusListener );
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    this.filterTextField.requestFocusLater();
+    this.listView.getAwtComponent().addFocusListener(this.focusListener);
 
-	}
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		this.listView.getAwtComponent().removeFocusListener( this.focusListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    this.listView.getAwtComponent().removeFocusListener(this.focusListener);
+    super.handleCompositePostDeactivation();
+  }
 }

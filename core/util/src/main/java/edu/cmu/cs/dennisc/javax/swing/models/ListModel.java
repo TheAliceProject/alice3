@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public interface ListModel<E> extends javax.swing.ListModel {
-	public E get( int index );
+  public E get(int index);
 
-	public int indexOf( E element );
+  public int indexOf(E element);
 
-	public int lastIndexOf( E element );
+  public int lastIndexOf(E element);
 
-	public boolean contains( E element );
+  public boolean contains(E element);
 }

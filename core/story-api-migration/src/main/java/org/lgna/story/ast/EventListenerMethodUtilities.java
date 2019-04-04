@@ -83,81 +83,28 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class EventListenerMethodUtilities {
-	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addKeyPressListener",
-			KeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance(
-			SScene.class,
-			"addObjectMoverFor",
-			SMovableTurnable.class );
-	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance(
-			SScene.class,
-			"addArrowKeyPressListener",
-			ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addNumberKeyPressListener",
-			NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Lists.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
+  public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class);
+  public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance(SScene.class, "addObjectMoverFor", SMovableTurnable.class);
+  public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance(SScene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class);
+  public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class);
+  public static final List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Lists.newArrayList(ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS);
 
-	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addMouseClickOnScreenListener",
-			MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class );
-	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addMouseClickOnObjectListener",
-			MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class );
-	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(
-			SScene.class,
-			"addDefaultModelManipulation" );
-	public static final List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Lists.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
+  public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class);
+  public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addMouseClickOnObjectListener", MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class);
+  public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(SScene.class, "addDefaultModelManipulation");
+  public static final List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Lists.newArrayList(ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR);
 
-	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addSceneActivationListener",
-			SceneActivationListener.class );
-	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addTimeListener",
-			TimeListener.class, Number.class, AddTimeListener.Detail[].class );
+  public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addSceneActivationListener", SceneActivationListener.class);
+  public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addTimeListener", TimeListener.class, Number.class, AddTimeListener.Detail[].class);
 
-	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addPointOfViewChangeListener",
-			PointOfViewChangeListener.class, SThing[].class );
-	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addCollisionStartListener",
-			CollisionStartListener.class, SThing[].class, SThing[].class, AddCollisionStartListener.Detail[].class );
-	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addCollisionEndListener",
-			CollisionEndListener.class, SThing[].class, SThing[].class, AddCollisionEndListener.Detail[].class );
-	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addProximityEnterListener",
-			ProximityEnterListener.class, SThing[].class, SThing[].class, Number.class, AddProximityEnterListener.Detail[].class );
-	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addProximityExitListener",
-			ProximityExitListener.class, SThing[].class, SThing[].class, Number.class, AddProximityExitListener.Detail[].class );
-	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addViewEnterListener",
-			ViewEnterListener.class, SModel[].class, AddViewEnterListener.Detail[].class );
-	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addViewExitListener",
-			ViewExitListener.class, SModel[].class, AddViewExitListener.Detail[].class );
-	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addOcclusionStartListener",
-			OcclusionStartListener.class, SModel[].class, SModel[].class, AddOcclusionStartListener.Detail[].class );
-	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
-			SScene.class,
-			"addOcclusionEndListener",
-			OcclusionEndListener.class, SModel[].class, SModel[].class, AddOcclusionEndListener.Detail[].class );
+  public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, SThing[].class);
+  public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addCollisionStartListener", CollisionStartListener.class, SThing[].class, SThing[].class, AddCollisionStartListener.Detail[].class);
+  public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addCollisionEndListener", CollisionEndListener.class, SThing[].class, SThing[].class, AddCollisionEndListener.Detail[].class);
+  public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addProximityEnterListener", ProximityEnterListener.class, SThing[].class, SThing[].class, Number.class, AddProximityEnterListener.Detail[].class);
+  public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addProximityExitListener", ProximityExitListener.class, SThing[].class, SThing[].class, Number.class, AddProximityExitListener.Detail[].class);
+  public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addViewEnterListener", ViewEnterListener.class, SModel[].class, AddViewEnterListener.Detail[].class);
+  public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addViewExitListener", ViewExitListener.class, SModel[].class, AddViewExitListener.Detail[].class);
+  public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addOcclusionStartListener", OcclusionStartListener.class, SModel[].class, SModel[].class, AddOcclusionStartListener.Detail[].class);
+  public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addOcclusionEndListener", OcclusionEndListener.class, SModel[].class, SModel[].class, AddOcclusionEndListener.Detail[].class);
 
 }

@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitHipMandarinTop implements FemaleTeenFullBodyOutfit {
-	BLACK,
-	ORANGE,
-	PINK,
-	RED,
-	WHITE,
-	GREEN,
-	PURPLE;
+  BLACK, ORANGE, PINK, RED, WHITE, GREEN, PURPLE
 
 }

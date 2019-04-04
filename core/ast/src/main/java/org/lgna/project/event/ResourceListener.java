@@ -47,7 +47,7 @@ package org.lgna.project.event;
  * @author Dennis Cosgrove
  */
 public interface ResourceListener {
-	public void resourceAdded( ResourceEvent e );
+  public void resourceAdded(ResourceEvent e);
 
-	public void resourceRemoved( ResourceEvent e );
+  public void resourceRemoved(ResourceEvent e);
 }

@@ -50,24 +50,25 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum ResourceNodeCodec implements ItemCodec<ResourceNode> {
-	SINGLETON;
-	@Override
-	public Class<ResourceNode> getValueClass() {
-		return ResourceNode.class;
-	}
+  SINGLETON;
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, ResourceNode value ) {
-		throw new AssertionError();
-	}
+  @Override
+  public Class<ResourceNode> getValueClass() {
+    return ResourceNode.class;
+  }
 
-	@Override
-	public ResourceNode decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new AssertionError();
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, ResourceNode value) {
+    throw new AssertionError();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
-		sb.append( value != null ? value.getResourceKey().getLocalizedDisplayText() : null );
-	}
+  @Override
+  public ResourceNode decodeValue(BinaryDecoder binaryDecoder) {
+    throw new AssertionError();
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, ResourceNode value) {
+    sb.append(value != null ? value.getResourceKey().getLocalizedDisplayText() : null);
+  }
 }

@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceTankTop implements FemaleTeenTopPiece {
-	PURPLE,
-	DK_BLUE,
-	DK_RED,
-	GREY;
+  PURPLE, DK_BLUE, DK_RED, GREY
 
 }

@@ -1,26 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.alice.external</groupId>
-		<artifactId>external</artifactId>
-		<version>1.0</version>
-	</parent>
+  <parent>
+    <groupId>org.alice.external</groupId>
+    <artifactId>external</artifactId>
+    <version>1.0</version>
+  </parent>
 
-	<artifactId>wrapped-flow-layout</artifactId>
-	<version>1.0</version>
-	<packaging>jar</packaging>
+  <artifactId>wrapped-flow-layout</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
 
-	<name>Wrapped Flow Layout</name>
-	<url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/</url>
+  <name>Wrapped Flow Layout</name>
+  <url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/</url>
 
-	<licenses>
-		<license>
-			<name>You can use/modify the code however you wish.</name>
-			<url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/#comment-1284</url>
-			<distribution>repo</distribution>
-			<!-- You can use/modify the code however you wish. -->
-		</license>
-	</licenses>
+  <licenses>
+    <license>
+      <name>You can use/modify the code however you wish.</name>
+      <url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/#comment-1284</url>
+      <distribution>repo</distribution>
+      <!-- You can use/modify the code however you wish. -->
+    </license>
+  </licenses>
 </project>

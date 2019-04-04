@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AudioResourceImportValueCreator extends ResourceImportValueCreator<AudioResource> {
-	private static class SingletonHolder {
-		private static AudioResourceImportValueCreator instance = new AudioResourceImportValueCreator();
-	}
+  private static class SingletonHolder {
+    private static AudioResourceImportValueCreator instance = new AudioResourceImportValueCreator();
+  }
 
-	public static AudioResourceImportValueCreator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AudioResourceImportValueCreator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AudioResourceImportValueCreator() {
-		super( UUID.fromString( "218690dc-9792-43ff-857c-1d51cd29d2ea" ), AudioResourceImporter.getInstance(), AudioResource.class );
-	}
+  private AudioResourceImportValueCreator() {
+    super(UUID.fromString("218690dc-9792-43ff-857c-1d51cd29d2ea"), AudioResourceImporter.getInstance(), AudioResource.class);
+  }
 }

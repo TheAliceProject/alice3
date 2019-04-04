@@ -50,15 +50,15 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class ComponentArray extends VertexGeometry {
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		//todo
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    //todo
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		//todo
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    //todo
+  }
 
-	public final InstanceProperty<Component> component = new InstanceProperty<Component>( this, null );
+  public final InstanceProperty<Component> component = new InstanceProperty<Component>(this, null);
 }

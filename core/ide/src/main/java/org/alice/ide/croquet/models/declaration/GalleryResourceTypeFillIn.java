@@ -67,68 +67,66 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBlanks<InstanceCreation> {
-	private static Map<JavaType, GalleryResourceTypeFillIn> map = Maps.newHashMap();
+  private static Map<JavaType, GalleryResourceTypeFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceTypeFillIn getInstance( JavaType type ) {
-		GalleryResourceTypeFillIn rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new GalleryResourceTypeFillIn( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized GalleryResourceTypeFillIn getInstance(JavaType type) {
+    GalleryResourceTypeFillIn rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new GalleryResourceTypeFillIn(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private final JavaType ancestorType;
+  private final JavaType ancestorType;
 
-	private GalleryResourceTypeFillIn( JavaType ancestorType ) {
-		super( UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ), GalleryResourceBlank.getInstance( ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) );
-		this.ancestorType = ancestorType;
-	}
+  private GalleryResourceTypeFillIn(JavaType ancestorType) {
+    super(UUID.fromString("281ad60a-090e-4fd8-bb47-da03a2508a4a"), GalleryResourceBlank.getInstance(ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)));
+    this.ancestorType = ancestorType;
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
-	}
+  @Override
+  public String getMenuItemText() {
+    return ConstructorArgumentUtilities.getContructor0Parameter0Type(this.ancestorType).getName();
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super InstanceCreation, Expression> step ) {
-		return null;
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super InstanceCreation, Expression> step) {
+    return null;
+  }
 
-	@Override
-	public InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Expression> step ) {
-		return null;
-	}
+  @Override
+  public InstanceCreation getTransientValue(ItemNode<? super InstanceCreation, Expression> step) {
+    return null;
+  }
 
-	@Override
-	protected InstanceCreation createValue( Expression[] expressions ) {
-		if( expressions.length == 1 ) {
-			Expression expression = expressions[ 0 ];
-			if( expression instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)expression;
-				AbstractField field = fieldAccess.field.getValue();
-				if( field.isStatic() ) {
-					if( field instanceof JavaField ) {
-						JavaField argumentField = (JavaField)field;
-						NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField( this.ancestorType, argumentField );
-						NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-						Expression[] argumentExpressions;
-						if( constructor.getRequiredParameters().size() == 1 ) {
-							argumentExpressions = new Expression[] {
-									AstUtilities.createStaticFieldAccess( argumentField )
-							};
-						} else {
-							argumentExpressions = new Expression[] {};
-						}
-						return AstUtilities.createInstanceCreation( constructor, argumentExpressions );
-					}
-				}
-			} else {
-				Logger.severe( expression );
-			}
-		}
-		return null;
-	}
+  @Override
+  protected InstanceCreation createValue(Expression[] expressions) {
+    if (expressions.length == 1) {
+      Expression expression = expressions[0];
+      if (expression instanceof FieldAccess) {
+        FieldAccess fieldAccess = (FieldAccess) expression;
+        AbstractField field = fieldAccess.field.getValue();
+        if (field.isStatic()) {
+          if (field instanceof JavaField) {
+            JavaField argumentField = (JavaField) field;
+            NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(this.ancestorType, argumentField);
+            NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+            Expression[] argumentExpressions;
+            if (constructor.getRequiredParameters().size() == 1) {
+              argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};
+            } else {
+              argumentExpressions = new Expression[] {};
+            }
+            return AstUtilities.createInstanceCreation(constructor, argumentExpressions);
+          }
+        }
+      } else {
+        Logger.severe(expression);
+      }
+    }
+    return null;
+  }
 }

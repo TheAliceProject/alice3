@@ -52,118 +52,119 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ClassUtilities {
-	private static final Map<String, Class<?>> s_primativeTypeMap;
-	static {
-		Map<String, Class<?>> map = Maps.newHashMap();
-		map.put( Void.TYPE.getName(), Void.TYPE );
-		map.put( Boolean.TYPE.getName(), Boolean.TYPE );
-		map.put( Byte.TYPE.getName(), Byte.TYPE );
-		map.put( Character.TYPE.getName(), Character.TYPE );
-		map.put( Short.TYPE.getName(), Short.TYPE );
-		map.put( Integer.TYPE.getName(), Integer.TYPE );
-		map.put( Long.TYPE.getName(), Long.TYPE );
-		map.put( Double.TYPE.getName(), Double.TYPE );
-		map.put( Float.TYPE.getName(), Float.TYPE );
-		s_primativeTypeMap = Collections.unmodifiableMap( map );
-	}
+  private static final Map<String, Class<?>> s_primativeTypeMap;
 
-	public static <E> E getInstance( Object o, Class<E> cls ) {
-		E rv = null;
-		if( o != null ) {
-			if( cls.isAssignableFrom( o.getClass() ) ) {
-				rv = cls.cast( o );
-			}
-		}
-		return rv;
-	}
+  static {
+    Map<String, Class<?>> map = Maps.newHashMap();
+    map.put(Void.TYPE.getName(), Void.TYPE);
+    map.put(Boolean.TYPE.getName(), Boolean.TYPE);
+    map.put(Byte.TYPE.getName(), Byte.TYPE);
+    map.put(Character.TYPE.getName(), Character.TYPE);
+    map.put(Short.TYPE.getName(), Short.TYPE);
+    map.put(Integer.TYPE.getName(), Integer.TYPE);
+    map.put(Long.TYPE.getName(), Long.TYPE);
+    map.put(Double.TYPE.getName(), Double.TYPE);
+    map.put(Float.TYPE.getName(), Float.TYPE);
+    s_primativeTypeMap = Collections.unmodifiableMap(map);
+  }
 
-	public static Class<?> forName( String className ) throws ClassNotFoundException {
-		assert className != null;
-		assert className.length() > 0;
-		try {
-			return Class.forName( className );
-		} catch( ClassNotFoundException cnfe ) {
-			if( s_primativeTypeMap.containsKey( className ) ) {
-				return s_primativeTypeMap.get( className );
-			} else {
-				throw cnfe;
-			}
-		}
-	}
+  public static <E> E getInstance(Object o, Class<E> cls) {
+    E rv = null;
+    if (o != null) {
+      if (cls.isAssignableFrom(o.getClass())) {
+        rv = cls.cast(o);
+      }
+    }
+    return rv;
+  }
 
-	public static boolean isAssignableToAtLeastOne( Class<?> right, Class<?>... lefts ) {
-		for( Class<?> left : lefts ) {
-			if( left.isAssignableFrom( right ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  public static Class<?> forName(String className) throws ClassNotFoundException {
+    assert className != null;
+    assert className.length() > 0;
+    try {
+      return Class.forName(className);
+    } catch (ClassNotFoundException cnfe) {
+      if (s_primativeTypeMap.containsKey(className)) {
+        return s_primativeTypeMap.get(className);
+      } else {
+        throw cnfe;
+      }
+    }
+  }
 
-	public static int getArrayDimensionCount( String packageNameAndSimpleClassNames ) {
-		final int N = packageNameAndSimpleClassNames.length();
-		int i;
-		for( i = 0; i < N; i++ ) {
-			char c = packageNameAndSimpleClassNames.charAt( i );
-			if( c == '[' ) {
-				//pass
-			} else {
-				break;
-			}
-		}
-		return i;
-	}
+  public static boolean isAssignableToAtLeastOne(Class<?> right, Class<?>... lefts) {
+    for (Class<?> left : lefts) {
+      if (left.isAssignableFrom(right)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public static String getPackageName( String packageNameAndSimpleClassNames ) {
-		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
-		if( index != -1 ) {
-			int beginIndex = getArrayDimensionCount( packageNameAndSimpleClassNames );
-			if( beginIndex > 0 ) {
-				assert packageNameAndSimpleClassNames.charAt( beginIndex ) == 'L';
-				beginIndex += 1;
-			}
-			return packageNameAndSimpleClassNames.substring( beginIndex, index );
-		} else {
-			return null;
-		}
-	}
+  public static int getArrayDimensionCount(String packageNameAndSimpleClassNames) {
+    final int N = packageNameAndSimpleClassNames.length();
+    int i;
+    for (i = 0; i < N; i++) {
+      char c = packageNameAndSimpleClassNames.charAt(i);
+      if (c == '[') {
+        //pass
+      } else {
+        break;
+      }
+    }
+    return i;
+  }
 
-	public static String[] getSimpleClassNames( String packageNameAndSimpleClassNames ) {
-		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
-		int n = packageNameAndSimpleClassNames.length();
-		if( packageNameAndSimpleClassNames.charAt( n - 1 ) == ';' ) {
-			n -= 1;
-		}
-		String simpleClassNames = packageNameAndSimpleClassNames.substring( index + 1, n );
-		return simpleClassNames.split( "\\$" );
-	}
+  public static String getPackageName(String packageNameAndSimpleClassNames) {
+    int index = packageNameAndSimpleClassNames.lastIndexOf('.');
+    if (index != -1) {
+      int beginIndex = getArrayDimensionCount(packageNameAndSimpleClassNames);
+      if (beginIndex > 0) {
+        assert packageNameAndSimpleClassNames.charAt(beginIndex) == 'L';
+        beginIndex += 1;
+      }
+      return packageNameAndSimpleClassNames.substring(beginIndex, index);
+    } else {
+      return null;
+    }
+  }
 
-	public static Package getPackage( Class<?> cls ) {
-		if( cls.isArray() ) {
-			return getPackage( cls.getComponentType() );
-		} else {
-			return cls.getPackage();
-		}
-	}
+  public static String[] getSimpleClassNames(String packageNameAndSimpleClassNames) {
+    int index = packageNameAndSimpleClassNames.lastIndexOf('.');
+    int n = packageNameAndSimpleClassNames.length();
+    if (packageNameAndSimpleClassNames.charAt(n - 1) == ';') {
+      n -= 1;
+    }
+    String simpleClassNames = packageNameAndSimpleClassNames.substring(index + 1, n);
+    return simpleClassNames.split("\\$");
+  }
 
-	public static String getTrimmedClassName( Class<?> cls ) {
-		if( cls != null ) {
-			if( cls.isMemberClass() ) {
-				Package pckg = getPackage( cls );
-				return cls.getName().substring( pckg.getName().length() + 1 );
-			} else {
-				return cls.getSimpleName();
-			}
-		} else {
-			return null;
-		}
-	}
+  public static Package getPackage(Class<?> cls) {
+    if (cls.isArray()) {
+      return getPackage(cls.getComponentType());
+    } else {
+      return cls.getPackage();
+    }
+  }
 
-	public static String getTrimmedClassNameForInstance( Object instance ) {
-		if( instance != null ) {
-			return getTrimmedClassName( instance.getClass() );
-		} else {
-			return null;
-		}
-	}
+  public static String getTrimmedClassName(Class<?> cls) {
+    if (cls != null) {
+      if (cls.isMemberClass()) {
+        Package pckg = getPackage(cls);
+        return cls.getName().substring(pckg.getName().length() + 1);
+      } else {
+        return cls.getSimpleName();
+      }
+    } else {
+      return null;
+    }
+  }
+
+  public static String getTrimmedClassNameForInstance(Object instance) {
+    if (instance != null) {
+      return getTrimmedClassName(instance.getClass());
+    } else {
+      return null;
+    }
+  }
 }

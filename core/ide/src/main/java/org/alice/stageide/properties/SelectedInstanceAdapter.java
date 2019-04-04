@@ -49,26 +49,25 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
 public class SelectedInstanceAdapter extends AbstractPropertyAdapter<InstanceFactory, InstanceFactory> {
 
-	public SelectedInstanceAdapter( InstanceFactory instance, StandardExpressionState expressionState )
-	{
-		super( "Selected", instance, expressionState );
-	}
+  public SelectedInstanceAdapter(InstanceFactory instance, StandardExpressionState expressionState) {
+    super("Selected", instance, expressionState);
+  }
 
-	@Override
-	public InstanceFactory getValue() {
-		// TODO Auto-generated method stub
-		return this.instance;
-	}
+  @Override
+  public InstanceFactory getValue() {
+    // TODO Auto-generated method stub
+    return this.instance;
+  }
 
-	@Override
-	public Class<InstanceFactory> getPropertyType() {
-		// TODO Auto-generated method stub
-		return InstanceFactory.class;
-	}
+  @Override
+  public Class<InstanceFactory> getPropertyType() {
+    // TODO Auto-generated method stub
+    return InstanceFactory.class;
+  }
 
-	@Override
-	public InstanceFactory getValueCopyIfMutable() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public InstanceFactory getValueCopyIfMutable() {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

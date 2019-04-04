@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class GlExceptionComposite extends SimpleOperationUnadornedDialogCoreComposite<GlExceptionView> {
-	private final GLException glException;
+  private final GLException glException;
 
-	public GlExceptionComposite( GLException glException ) {
-		super( UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), Application.INFORMATION_GROUP );
-		this.glException = glException;
-	}
+  public GlExceptionComposite(GLException glException) {
+    super(UUID.fromString("430294d2-f4e4-4a69-93af-93fc2f7a89ba"), Application.INFORMATION_GROUP);
+    this.glException = glException;
+  }
 
-	public GLException getGlException() {
-		return this.glException;
-	}
+  public GLException getGlException() {
+    return this.glException;
+  }
 
-	@Override
-	protected GlExceptionView createView() {
-		return new GlExceptionView( this );
-	}
+  @Override
+  protected GlExceptionView createView() {
+    return new GlExceptionView(this);
+  }
 
-	public Operation getDisplayDriverHelpOperation() {
-		return GraphicsDriverHelpOperation.getInstance();
-	}
+  public Operation getDisplayDriverHelpOperation() {
+    return GraphicsDriverHelpOperation.getInstance();
+  }
 }

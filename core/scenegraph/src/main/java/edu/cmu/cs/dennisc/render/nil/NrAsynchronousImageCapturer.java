@@ -54,12 +54,12 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrAsynchronousImageCapturer implements AsynchronousImageCapturer {
-	@Override
-	public void captureImageBuffer( RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
-	}
+  @Override
+  public void captureImageBuffer(RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer) {
+  }
 
-	@Override
-	public final void captureImageBuffer( ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
-		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
-	}
+  @Override
+  public final void captureImageBuffer(ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer) {
+    this.captureImageBuffer(null, null, imageBuffer, imageOrientationRequirement, observer);
+  }
 }

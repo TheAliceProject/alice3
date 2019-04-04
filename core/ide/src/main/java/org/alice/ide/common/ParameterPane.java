@@ -66,36 +66,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterPane extends TransientPane {
-	private NodeListProperty<UserParameter> parametersProperty;
+  private NodeListProperty<UserParameter> parametersProperty;
 
-	public ParameterPane( NodeListProperty<UserParameter> parametersProperty, final UserParameter parameter ) {
-		super( ParameterAccessDragModel.getInstance( parameter ) );
-		this.parametersProperty = parametersProperty;
-		this.addComponent( new DeclarationNameLabel( parameter ) );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( ParameterAccess.class ) );
-		if( this.parametersProperty != null ) {
-			final DeleteParameterOperation deleteParameterOperation = new DeleteParameterOperation( this.parametersProperty, parameter );
-			final ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new ForwardShiftParameterOperation( this.parametersProperty, parameter );
-			final BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new BackwardShiftParameterOperation( this.parametersProperty, parameter );
-			this.setPopupPrepModel( new MenuModel( UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
-				@Override
-				public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-					super.handlePopupMenuPrologue( popupMenu );
-					List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-					models.add( RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
-					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );
-					}
-					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						models.add( backwardShiftCodeParameterOperation.getMenuItemPrepModel() );
-					}
-					models.add( MenuModel.SEPARATOR );
-					models.add( deleteParameterOperation.getMenuItemPrepModel() );
-					MenuItemContainerUtilities.setMenuElements( popupMenu, models );
-				}
-			}.getPopupPrepModel() );
-		} else {
-			this.setPopupPrepModel( ParameterAccessMenuModel.getInstance( parameter ).getPopupPrepModel() );
-		}
-	}
+  public ParameterPane(NodeListProperty<UserParameter> parametersProperty, final UserParameter parameter) {
+    super(ParameterAccessDragModel.getInstance(parameter));
+    this.parametersProperty = parametersProperty;
+    this.addComponent(new DeclarationNameLabel(parameter));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(ParameterAccess.class));
+    if (this.parametersProperty != null) {
+      final DeleteParameterOperation deleteParameterOperation = new DeleteParameterOperation(this.parametersProperty, parameter);
+      final ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new ForwardShiftParameterOperation(this.parametersProperty, parameter);
+      final BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new BackwardShiftParameterOperation(this.parametersProperty, parameter);
+      this.setPopupPrepModel(new MenuModel(UUID.fromString("5b9b75d7-ce04-4f3d-8915-b825f357cef2")) {
+        @Override
+        public void handlePopupMenuPrologue(PopupMenu popupMenu) {
+          super.handlePopupMenuPrologue(popupMenu);
+          List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+          models.add(RenameParameterComposite.getInstance(parameter).getLaunchOperation().getMenuItemPrepModel());
+          if (forwardShiftCodeParameterOperation.isIndexAppropriate()) {
+            models.add(forwardShiftCodeParameterOperation.getMenuItemPrepModel());
+          }
+          if (backwardShiftCodeParameterOperation.isIndexAppropriate()) {
+            models.add(backwardShiftCodeParameterOperation.getMenuItemPrepModel());
+          }
+          models.add(MenuModel.SEPARATOR);
+          models.add(deleteParameterOperation.getMenuItemPrepModel());
+          MenuItemContainerUtilities.setMenuElements(popupMenu, models);
+        }
+      }.getPopupPrepModel());
+    } else {
+      this.setPopupPrepModel(ParameterAccessMenuModel.getInstance(parameter).getPopupPrepModel());
+    }
+  }
 }

@@ -45,7 +45,6 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
@@ -53,80 +52,80 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class UserMethod extends AbstractUserMethod implements CodeGenerator {
-	public UserMethod() {
-	}
+  public UserMethod() {
+  }
 
-	public UserMethod( String name, AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		super( returnType, requiredParameters, body );
-		this.name.setValue( name );
-	}
+  public UserMethod(String name, AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body) {
+    super(returnType, requiredParameters, body);
+    this.name.setValue(name);
+  }
 
-	public UserMethod( String name, Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
-		this( name, JavaType.getInstance( returnCls ), requiredParameters, body );
-	}
+  public UserMethod(String name, Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body) {
+    this(name, JavaType.getInstance(returnCls), requiredParameters, body);
+  }
 
-	@Override
-	public String getName() {
-		return this.name.getValue();
-	}
+  @Override
+  public String getName() {
+    return this.name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	@Override
-	public boolean isStatic() {
-		return this.isStatic.getValue();
-	}
+  @Override
+  public boolean isStatic() {
+    return this.isStatic.getValue();
+  }
 
-	@Override
-	public boolean isAbstract() {
-		return this.isAbstract.getValue();
-	}
+  @Override
+  public boolean isAbstract() {
+    return this.isAbstract.getValue();
+  }
 
-	@Override
-	public boolean isFinal() {
-		return this.isFinal.getValue();
-	}
+  @Override
+  public boolean isFinal() {
+    return this.isFinal.getValue();
+  }
 
-	@Override
-	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		return virtualMachine.invokeUserMethod( target, this, arguments );
-	}
+  @Override
+  public Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments) {
+    return virtualMachine.invokeUserMethod(target, this, arguments);
+  }
 
-	//	@Override
-	//	public boolean isOverride() {
-	//		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
-	//		TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-	//		Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
-	//		Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];
-	//		int i = 0;
-	//		for( AbstractParameter parameter : this.parameters ) {
-	//			if( parameter instanceof ParameterDeclaredInJava ) {
-	//				ParameterDeclaredInJava parameterDeclaredInJava = (ParameterDeclaredInJava)parameter;
-	//				parameterClses[ i ] = parameterDeclaredInJava.getValueTypeDeclaredInJava().getCls();
-	//			} else {
-	//				return false;
-	//			}
-	//			i++;
-	//		}
-	//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
-	//		return mthd != null;
-	//	}
+  //  @Override
+  //  public boolean isOverride() {
+  //    //todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
+  //    TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
+  //    Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
+  //    Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];
+  //    int i = 0;
+  //    for( AbstractParameter parameter : this.parameters ) {
+  //      if( parameter instanceof ParameterDeclaredInJava ) {
+  //        ParameterDeclaredInJava parameterDeclaredInJava = (ParameterDeclaredInJava)parameter;
+  //        parameterClses[ i ] = parameterDeclaredInJava.getValueTypeDeclaredInJava().getCls();
+  //      } else {
+  //        return false;
+  //      }
+  //      i++;
+  //    }
+  //    java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
+  //    return mthd != null;
+  //  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendMethod(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendMethod(this);
+  }
 
-	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
-		generator.appendMethodHeader( this );
-		return generator.getText();
-	}
+  public String generateHeaderJavaCode(JavaCodeGenerator generator) {
+    generator.appendMethodHeader(this);
+    return generator.getText();
+  }
 
-	public final BooleanProperty isStatic = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isAbstract = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isFinal = new BooleanProperty( this, Boolean.FALSE );
-	public final StringProperty name = new StringProperty( this, null );
+  public final BooleanProperty isStatic = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isAbstract = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isFinal = new BooleanProperty(this, Boolean.FALSE);
+  public final StringProperty name = new StringProperty(this, null);
 }

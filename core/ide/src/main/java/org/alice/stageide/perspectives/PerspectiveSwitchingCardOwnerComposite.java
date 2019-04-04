@@ -57,59 +57,59 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PerspectiveSwitchingCardOwnerComposite extends CardOwnerComposite {
-	private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
-			PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectPerspective> e) {
+      PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged(e.getNextValue());
+    }
+  };
 
-	public static class MapBuilder {
-		private Composite<?> codePerspecitiveCard;
-		private Composite<?> setupScenePerspecitiveCard;
+  public static class MapBuilder {
+    private Composite<?> codePerspecitiveCard;
+    private Composite<?> setupScenePerspecitiveCard;
 
-		public void codePerspecitive( Composite<?> codePerspecitiveCard ) {
-			this.codePerspecitiveCard = codePerspecitiveCard;
-		}
+    public void codePerspecitive(Composite<?> codePerspecitiveCard) {
+      this.codePerspecitiveCard = codePerspecitiveCard;
+    }
 
-		public void setupScenePerspective( Composite<?> setupScenePerspecitiveCard ) {
-			this.setupScenePerspecitiveCard = setupScenePerspecitiveCard;
-		}
+    public void setupScenePerspective(Composite<?> setupScenePerspecitiveCard) {
+      this.setupScenePerspecitiveCard = setupScenePerspecitiveCard;
+    }
 
-		public Map<ProjectPerspective, Composite<?>> build() {
-			Map<ProjectPerspective, Composite<?>> rv = Maps.newHashMap();
-			rv.put( IDE.getActiveInstance().getDocumentFrame().getCodePerspective(), this.codePerspecitiveCard );
-			rv.put( IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective(), this.setupScenePerspecitiveCard );
-			return rv;
-		}
-	}
+    public Map<ProjectPerspective, Composite<?>> build() {
+      Map<ProjectPerspective, Composite<?>> rv = Maps.newHashMap();
+      rv.put(IDE.getActiveInstance().getDocumentFrame().getCodePerspective(), this.codePerspecitiveCard);
+      rv.put(IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective(), this.setupScenePerspecitiveCard);
+      return rv;
+    }
+  }
 
-	private final Map<ProjectPerspective, Composite<?>> map;
+  private final Map<ProjectPerspective, Composite<?>> map;
 
-	private PerspectiveSwitchingCardOwnerComposite( UUID migrationId, Map<ProjectPerspective, Composite<?>> map ) {
-		super( migrationId );
-		this.map = map;
-	}
+  private PerspectiveSwitchingCardOwnerComposite(UUID migrationId, Map<ProjectPerspective, Composite<?>> map) {
+    super(migrationId);
+    this.map = map;
+  }
 
-	public PerspectiveSwitchingCardOwnerComposite( UUID migrationId, MapBuilder mapBuilder ) {
-		this( migrationId, mapBuilder.build() );
-	}
+  public PerspectiveSwitchingCardOwnerComposite(UUID migrationId, MapBuilder mapBuilder) {
+    this(migrationId, mapBuilder.build());
+  }
 
-	private void handlePerspectiveChanged( ProjectPerspective nextValue ) {
-		Composite<?> nextCard = this.map.get( nextValue );
-		this.showCard( nextCard );
-	}
+  private void handlePerspectiveChanged(ProjectPerspective nextValue) {
+    Composite<?> nextCard = this.map.get(nextValue);
+    this.showCard(nextCard);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener(this.perspectiveListener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().removeNewSchoolValueListener( this.perspectiveListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().removeNewSchoolValueListener(this.perspectiveListener);
+    super.handlePostDeactivation();
+  }
 
 }

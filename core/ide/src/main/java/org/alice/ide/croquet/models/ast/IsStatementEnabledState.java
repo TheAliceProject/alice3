@@ -57,32 +57,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsStatementEnabledState extends BooleanState {
-	private static Map<Statement, IsStatementEnabledState> map = Maps.newHashMap();
+  private static Map<Statement, IsStatementEnabledState> map = Maps.newHashMap();
 
-	public static synchronized IsStatementEnabledState getInstance( Statement statement ) {
-		IsStatementEnabledState rv = map.get( statement );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new IsStatementEnabledState( statement );
-			map.put( statement, rv );
-		}
-		return rv;
-	}
+  public static synchronized IsStatementEnabledState getInstance(Statement statement) {
+    IsStatementEnabledState rv = map.get(statement);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new IsStatementEnabledState(statement);
+      map.put(statement, rv);
+    }
+    return rv;
+  }
 
-	private final Statement statement;
+  private final Statement statement;
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			IsStatementEnabledState.this.statement.isEnabled.setValue( e.getNextValue() );
-			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		}
-	};
+  private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      IsStatementEnabledState.this.statement.isEnabled.setValue(e.getNextValue());
+      ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    }
+  };
 
-	private IsStatementEnabledState( Statement statement ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
-		this.statement = statement;
-		this.addNewSchoolValueListener( this.valueListener );
-	}
+  private IsStatementEnabledState(Statement statement) {
+    super(Application.PROJECT_GROUP, UUID.fromString("d0199421-49e6-49eb-9307-83db77dfa28b"), statement.isEnabled.getValue());
+    this.statement = statement;
+    this.addNewSchoolValueListener(this.valueListener);
+  }
 }

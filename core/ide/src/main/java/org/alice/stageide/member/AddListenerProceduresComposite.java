@@ -62,58 +62,58 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddListenerProceduresComposite extends FilteredJavaMethodsSubComposite {
-	private static class SingletonHolder {
-		private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
+  }
 
-	public static AddListenerProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddListenerProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final Collection<String> names = Lists.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" );
-	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-		@Override
-		public int compare( JavaMethod methodA, JavaMethod methodB ) {
-			return compareMethodNames( methodA, methodB );
-		}
-	};
+  private final Collection<String> names = Lists.newArrayList("addDefaultModelManipulation", "addObjectMoverFor");
+  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
+    @Override
+    public int compare(JavaMethod methodA, JavaMethod methodB) {
+      return compareMethodNames(methodA, methodB);
+    }
+  };
 
-	private AddListenerProceduresComposite() {
-		super( UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ), true );
-	}
+  private AddListenerProceduresComposite() {
+    super(UUID.fromString("cfb5bd39-c07b-4436-a4e9-031dd25ca3b5"), true);
+  }
 
-	@Override
-	public Comparator<JavaMethod> getComparator() {
-		return this.comparator;
-	}
+  @Override
+  public Comparator<JavaMethod> getComparator() {
+    return this.comparator;
+  }
 
-	@Override
-	public boolean isShowingDesired() {
-		DeclarationsEditorComposite composite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
-		if( composite != null ) {
-			DeclarationTabState tabState = composite.getTabState();
-			if( tabState != null ) {
-				DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
-				if( declarationComposite instanceof CodeComposite ) {
-					CodeComposite codeComposite = (CodeComposite)declarationComposite;
-					AbstractCode code = codeComposite.getDeclaration();
-					if( code != null ) {
-						String name = code.getName();
-						if( name != null ) {
-							if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( name ) ) {
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean isShowingDesired() {
+    DeclarationsEditorComposite composite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
+    if (composite != null) {
+      DeclarationTabState tabState = composite.getTabState();
+      if (tabState != null) {
+        DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
+        if (declarationComposite instanceof CodeComposite) {
+          CodeComposite codeComposite = (CodeComposite) declarationComposite;
+          AbstractCode code = codeComposite.getDeclaration();
+          if (code != null) {
+            String name = code.getName();
+            if (name != null) {
+              if (StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals(name)) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	@Override
-	protected boolean isAcceptingOf( JavaMethod method ) {
-		String name = method.getName();
-		return method.isProcedure() && ( names.contains( name ) || ( name.startsWith( "add" ) && name.endsWith( "Listener" ) ) );
-	}
+  @Override
+  protected boolean isAcceptingOf(JavaMethod method) {
+    String name = method.getName();
+    return method.isProcedure() && (names.contains(name) || (name.startsWith("add") && name.endsWith("Listener")));
+  }
 }

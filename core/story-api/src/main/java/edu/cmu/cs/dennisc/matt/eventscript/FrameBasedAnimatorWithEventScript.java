@@ -53,31 +53,31 @@ import javax.swing.SwingUtilities;
  */
 public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 
-	private final EventManager manager;
-	private final EventScriptIterator iterator;
+  private final EventManager manager;
+  private final EventScriptIterator iterator;
 
-	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		if( script != null ) {
-			iterator = script.createEventScriptIterator();
-		} else {
-			iterator = null;
-		}
-		this.manager = manager;
-	}
+  public FrameBasedAnimatorWithEventScript(EventScript script, EventManager manager) {
+    if (script != null) {
+      iterator = script.createEventScriptIterator();
+    } else {
+      iterator = null;
+    }
+    this.manager = manager;
+  }
 
-	@Override
-	public void update() {
-		super.update();
-		SwingUtilities.invokeLater( new Runnable() {
+  @Override
+  public void update() {
+    super.update();
+    SwingUtilities.invokeLater(new Runnable() {
 
-			@Override
-			public void run() {
-				if( iterator != null ) {
-					for( Object event : iterator.getEventsSinceLastQuery( getCurrentTime() ) ) {
-						manager.recieveEvent( event );
-					}
-				}
-			}
-		} );
-	}
+      @Override
+      public void run() {
+        if (iterator != null) {
+          for (Object event : iterator.getEventsSinceLastQuery(getCurrentTime())) {
+            manager.recieveEvent(event);
+          }
+        }
+      }
+    });
+  }
 }

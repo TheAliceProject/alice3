@@ -50,37 +50,37 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class FloatLiteral extends AbstractValueLiteral<Float> {
-	public FloatLiteral() {
-	}
+  public FloatLiteral() {
+  }
 
-	public FloatLiteral( Float value ) {
-		this.value.setValue( value );
-	}
+  public FloatLiteral(Float value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Float.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.getInstance(Float.class);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		Float value = this.value.getValue();
-		if( value != null ) {
-			localizer.appendFloat( value );
-		} else {
-			localizer.appendNull();
-		}
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    Float value = this.value.getValue();
+    if (value != null) {
+      localizer.appendFloat(value);
+    } else {
+      localizer.appendNull();
+    }
+  }
 
-	@Override
-	public InstanceProperty<Float> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<Float> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendFloat( this.value.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendFloat(this.value.getValue());
+  }
 
-	public final FloatProperty value = new FloatProperty( this, 0.0f );
+  public final FloatProperty value = new FloatProperty(this, 0.0f);
 }

@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author dculyba
  */
 public class IsBelow extends AsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = IsBelow.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = IsBelow.class) public static interface Detail {
+  }
 
-	private IsBelow() {
-		super();
-	}
+  private IsBelow() {
+    super();
+  }
 }

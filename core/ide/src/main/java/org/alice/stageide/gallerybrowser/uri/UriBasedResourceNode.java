@@ -44,31 +44,28 @@ package org.alice.stageide.gallerybrowser.uri;
 
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
-import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class UriBasedResourceNode extends ResourceNode {
-	private final Class<?> thingCls;
-	private final URI uri;
+  private final Class<?> thingCls;
+  private final URI uri;
 
-	UriBasedResourceNode( EnumConstantResourceKey resourceKey, Class<?> thingCls, URI uri ) {
-		super( UUID.fromString( "f08a87ca-d0d7-4c39-8e99-d2cdb90dc481" ), resourceKey );
-		this.thingCls = thingCls;
-		this.uri = uri;
-	}
+  UriBasedResourceNode(EnumConstantResourceKey resourceKey, Class<?> thingCls, URI uri) {
+    super(UUID.fromString("f08a87ca-d0d7-4c39-8e99-d2cdb90dc481"), resourceKey);
+    this.thingCls = thingCls;
+    this.uri = uri;
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		return ResourceKeyUriIteratingOperation.getInstance( this.getResourceKey(), this.thingCls, this.uri );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    return ResourceKeyUriIteratingOperation.getInstance(this.getResourceKey(), this.thingCls, this.uri);
+  }
 }

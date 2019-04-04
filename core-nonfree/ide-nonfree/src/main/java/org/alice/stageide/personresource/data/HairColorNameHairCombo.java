@@ -48,38 +48,38 @@ import org.lgna.story.resources.sims2.Hair;
  * @author Dennis Cosgrove
  */
 public final class HairColorNameHairCombo implements Comparable<HairColorNameHairCombo> {
-	private final HairColorName hairColorName;
-	private final Hair hair;
+  private final HairColorName hairColorName;
+  private final Hair hair;
 
-	public HairColorNameHairCombo( HairColorName hairColorName, Hair hair ) {
-		this.hairColorName = hairColorName;
-		this.hair = hair;
-	}
+  public HairColorNameHairCombo(HairColorName hairColorName, Hair hair) {
+    this.hairColorName = hairColorName;
+    this.hair = hair;
+  }
 
-	public HairColorName getHairColorName() {
-		return this.hairColorName;
-	}
+  public HairColorName getHairColorName() {
+    return this.hairColorName;
+  }
 
-	public Hair getHair() {
-		return this.hair;
-	}
+  public Hair getHair() {
+    return this.hair;
+  }
 
-	@Override
-	public int compareTo( HairColorNameHairCombo other ) {
-		return this.hairColorName.compareTo( other.hairColorName );
-	}
+  @Override
+  public int compareTo(HairColorNameHairCombo other) {
+    return this.hairColorName.compareTo(other.hairColorName);
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.hairColorName );
-		sb.append( ";" );
-		sb.append( this.hair.getClass() );
-		sb.append( "." );
-		sb.append( this.hair );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.hairColorName);
+    sb.append(";");
+    sb.append(this.hair.getClass());
+    sb.append(".");
+    sb.append(this.hair);
+    sb.append("]");
+    return sb.toString();
+  }
 }

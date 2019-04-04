@@ -51,32 +51,32 @@ import org.lgna.story.implementation.ConeImp;
  * @author Dennis Cosgrove
  */
 public class SCone extends SShape {
-	private final ConeImp implementation = new ConeImp( this );
+  private final ConeImp implementation = new ConeImp(this);
 
-	@Override
-	/* package-private */ConeImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */ConeImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getBaseRadius() {
-		return this.implementation.baseRadius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getBaseRadius() {
+    return this.implementation.baseRadius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setBaseRadius( Number baseRadius, SetBaseRadius.Detail... details ) {
-		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setBaseRadius(Number baseRadius, SetBaseRadius.Detail... details) {
+    this.implementation.baseRadius.animateValue(baseRadius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getLength() {
-		return this.implementation.length.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getLength() {
+    return this.implementation.length.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setLength( Number length, SetLength.Detail... details ) {
-		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setLength(Number length, SetLength.Detail... details) {
+    this.implementation.length.animateValue(length.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

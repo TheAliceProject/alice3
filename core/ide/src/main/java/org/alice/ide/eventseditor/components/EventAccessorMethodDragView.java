@@ -53,15 +53,15 @@ import org.lgna.project.ast.ParameterAccess;
  * @author Dennis Cosgrove
  */
 public class EventAccessorMethodDragView extends ExpressionTemplate {
-	public EventAccessorMethodDragView( ParameterAccessorMethodDragModel dragModel ) {
-		super( dragModel );
-		this.addComponent( new Label( dragModel.getMethod().getName() ) );
-	}
+  public EventAccessorMethodDragView(ParameterAccessorMethodDragModel dragModel) {
+    super(dragModel);
+    this.addComponent(new Label(dragModel.getMethod().getName()));
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		ParameterAccessorMethodDragModel dragModel = (ParameterAccessorMethodDragModel)this.getModel();
-		ParameterAccess parameterAccess = new ParameterAccess( dragModel.getParameter() );
-		return IncompleteAstUtilities.createIncompleteMethodInvocation( parameterAccess, dragModel.getMethod() );
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    ParameterAccessorMethodDragModel dragModel = (ParameterAccessorMethodDragModel) this.getModel();
+    ParameterAccess parameterAccess = new ParameterAccess(dragModel.getParameter());
+    return IncompleteAstUtilities.createIncompleteMethodInvocation(parameterAccess, dragModel.getMethod());
+  }
 }

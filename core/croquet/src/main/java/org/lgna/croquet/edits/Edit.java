@@ -48,23 +48,23 @@ import org.lgna.croquet.Group;
  * @author Dennis Cosgrove
  */
 public interface Edit {
-	Group getGroup();
+  Group getGroup();
 
-	boolean canUndo();
+  boolean canUndo();
 
-	boolean canRedo();
+  boolean canRedo();
 
-	void doOrRedo( boolean isDo );
+  void doOrRedo(boolean isDo);
 
-	void undo();
+  void undo();
 
-	String getRedoPresentation();
+  String getRedoPresentation();
 
-	String getUndoPresentation();
+  String getUndoPresentation();
 
-	String getTerseDescription();
+  String getTerseDescription();
 
-	String getDetailedDescription();
+  String getDetailedDescription();
 
-	String getLogDescription();
+  String getLogDescription();
 }

@@ -50,44 +50,42 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public enum TypeModifierFinalAbstractOrNeither {
-	//1.6
-	//	FINAL( javax.lang.model.element.Modifier.FINAL ),
-	//	ABSTRACT( javax.lang.model.element.Modifier.ABSTRACT ),
-	//	NEITHER();
-	//	private javax.lang.model.element.Modifier[] m_modifiers;
-	//	TypeModifierFinalAbstractOrNeither( javax.lang.model.element.Modifier... modifiers ) {
-	//		m_modifiers = modifiers;
-	//	}
-	//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
-	//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
-	//			rv.add( modifier );
-	//		}
-	//		return rv;
-	//	}
-	FINAL( Modifier.FINAL ),
-	ABSTRACT( Modifier.ABSTRACT ),
-	NEITHER();
-	private int[] m_modifiers;
+  //1.6
+  //  FINAL( javax.lang.model.element.Modifier.FINAL ),
+  //  ABSTRACT( javax.lang.model.element.Modifier.ABSTRACT ),
+  //  NEITHER();
+  //  private javax.lang.model.element.Modifier[] m_modifiers;
+  //  TypeModifierFinalAbstractOrNeither( javax.lang.model.element.Modifier... modifiers ) {
+  //    m_modifiers = modifiers;
+  //  }
+  //  public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
+  //    for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
+  //      rv.add( modifier );
+  //    }
+  //    return rv;
+  //  }
+  FINAL(Modifier.FINAL), ABSTRACT(Modifier.ABSTRACT), NEITHER();
+  private int[] m_modifiers;
 
-	TypeModifierFinalAbstractOrNeither( int... modifiers ) {
-		m_modifiers = modifiers;
-	}
+  TypeModifierFinalAbstractOrNeither(int... modifiers) {
+    m_modifiers = modifiers;
+  }
 
-	public Set<Integer> updateModifiers( Set<Integer> rv ) {
-		for( int modifier : m_modifiers ) {
-			rv.add( modifier );
-		}
-		return rv;
-	}
+  public Set<Integer> updateModifiers(Set<Integer> rv) {
+    for (int modifier : m_modifiers) {
+      rv.add(modifier);
+    }
+    return rv;
+  }
 
-	//todo: rename
-	public static TypeModifierFinalAbstractOrNeither get( int modifiers ) {
-		if( Modifier.isFinal( modifiers ) ) {
-			return TypeModifierFinalAbstractOrNeither.FINAL;
-		} else if( Modifier.isAbstract( modifiers ) ) {
-			return TypeModifierFinalAbstractOrNeither.ABSTRACT;
-		} else {
-			return TypeModifierFinalAbstractOrNeither.NEITHER;
-		}
-	}
+  //todo: rename
+  public static TypeModifierFinalAbstractOrNeither get(int modifiers) {
+    if (Modifier.isFinal(modifiers)) {
+      return TypeModifierFinalAbstractOrNeither.FINAL;
+    } else if (Modifier.isAbstract(modifiers)) {
+      return TypeModifierFinalAbstractOrNeither.ABSTRACT;
+    } else {
+      return TypeModifierFinalAbstractOrNeither.NEITHER;
+    }
+  }
 }

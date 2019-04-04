@@ -51,39 +51,39 @@ import javax.swing.event.PopupMenuListener;
  * @author Dennis Cosgrove
  */
 public interface MenuItemContainer {
-	ViewController<?, ?> getViewController();
+  ViewController<?, ?> getViewController();
 
-	void addPopupMenuListener( PopupMenuListener listener );
+  void addPopupMenuListener(PopupMenuListener listener);
 
-	void removePopupMenuListener( PopupMenuListener listener );
+  void removePopupMenuListener(PopupMenuListener listener);
 
-	UserActivity getActivity();
+  UserActivity getActivity();
 
-	AwtContainerView<?> getParent();
+  AwtContainerView<?> getParent();
 
-	AwtComponentView<?>[] getMenuComponents();
+  AwtComponentView<?>[] getMenuComponents();
 
-	AwtComponentView<?> getMenuComponent( int i );
+  AwtComponentView<?> getMenuComponent(int i);
 
-	int getMenuComponentCount();
+  int getMenuComponentCount();
 
-	void addMenu( Menu menu );
+  void addMenu(Menu menu);
 
-	void addMenuItem( MenuItem menuItem );
+  void addMenuItem(MenuItem menuItem);
 
-	void addCascadeMenu( CascadeMenu cascadeMenu );
+  void addCascadeMenu(CascadeMenu cascadeMenu);
 
-	void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
+  void addCascadeMenuItem(CascadeMenuItem cascadeMenuItem);
 
-	void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
+  void addCheckBoxMenuItem(CheckBoxMenuItem checkBoxMenuItem);
 
-	void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu );
+  void addCascadeCombo(CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu);
 
-	void addSeparator();
+  void addSeparator();
 
-	void addSeparator( MenuTextSeparator menuTextSeparator );
+  void addSeparator(MenuTextSeparator menuTextSeparator);
 
-	void forgetAndRemoveAllMenuItems();
+  void forgetAndRemoveAllMenuItems();
 
-	void removeAllMenuItems();
+  void removeAllMenuItems();
 }

@@ -44,14 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ToddlerFullBodyOutfitJumpCollar implements MaleToddlerFullBodyOutfit, FemaleToddlerFullBodyOutfit {
-	BLUE,
-	BURGUNDY,
-	GOLDENROD,
-	HOTPINK,
-	PEA,
-	BLUE_CARS,
-	PASTEL_DREAMS,
-	PLAIN_PINK,
-	YELLOW_KIDDIES;
+  BLUE, BURGUNDY, GOLDENROD, HOTPINK, PEA, BLUE_CARS, PASTEL_DREAMS, PLAIN_PINK, YELLOW_KIDDIES
 
 }

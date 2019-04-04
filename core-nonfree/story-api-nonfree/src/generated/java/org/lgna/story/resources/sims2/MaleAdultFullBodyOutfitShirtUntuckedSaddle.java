@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitShirtUntuckedSaddle implements MaleAdultFullBodyOutfit {
-	CHANDLE,
-	BLACKNBLUE,
-	GREEN,
-	WHITE_STRIP,
-	BLUE,
-	ALMOND,
-	GREY;
+  CHANDLE, BLACKNBLUE, GREEN, WHITE_STRIP, BLUE, ALMOND, GREY
 
 }

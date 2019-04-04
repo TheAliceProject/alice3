@@ -48,7 +48,7 @@ import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
  * @author Dennis Cosgrove
  */
 public abstract class AccessiblePane extends ExpressionCreatorPane {
-	public AccessiblePane( AbstractExpressionDragModel model ) {
-		super( model );
-	}
+  public AccessiblePane(AbstractExpressionDragModel model) {
+    super(model);
+  }
 }

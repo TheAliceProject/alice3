@@ -51,12 +51,12 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldData extends FieldData {
-	public UnmanagedFieldData( NamedUserType type ) {
-		super( type );
-	}
+  public UnmanagedFieldData(NamedUserType type) {
+    super(type);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return value.managementLevel.getValue() != ManagementLevel.MANAGED;
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return value.managementLevel.getValue() != ManagementLevel.MANAGED;
+  }
 }

@@ -49,30 +49,31 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public class WhileLoop extends AbstractLoop {
-	public WhileLoop() {
-	}
+  public WhileLoop() {
+  }
 
-	public WhileLoop( Expression conditional, BlockStatement body ) {
-		super( body );
-		this.conditional.setValue( conditional );
-	}
+  public WhileLoop(Expression conditional, BlockStatement body) {
+    super(body);
+    this.conditional.setValue(conditional);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendLocalizedText( WhileLoop.class, "while" );
-		localizer.appendSpace();
-		safeAppendRepr( localizer, this.conditional.getValue() );
-		super.appendRepr( localizer );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendLocalizedText(WhileLoop.class, "while");
+    localizer.appendSpace();
+    safeAppendRepr(localizer, this.conditional.getValue());
+    super.appendRepr(localizer);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendWhileLoop(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendWhileLoop(this);
+  }
 
-	public final ExpressionProperty conditional = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.getInstance( Boolean.class );
-		}
-	};
+  public final ExpressionProperty conditional = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.getInstance(Boolean.class);
+    }
+  };
 }

@@ -42,15 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.ProjectDocumentFrame;
-
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	public NewProjectOperation() {
-		super( UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), true );
-	}
+  public NewProjectOperation() {
+    super(UUID.fromString("281eb394-1da5-4527-98a1-92ce5c604715"), true);
+  }
 }

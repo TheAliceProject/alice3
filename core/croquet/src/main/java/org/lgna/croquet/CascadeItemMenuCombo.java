@@ -47,28 +47,28 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class CascadeItemMenuCombo<F> implements CascadeBlankChild<F> {
-	private final CascadeItem<F, ?> item;
-	private final CascadeItem<F, ?> menu;
+  private final CascadeItem<F, ?> item;
+  private final CascadeItem<F, ?> menu;
 
-	public CascadeItemMenuCombo( CascadeItem<F, ?> item, CascadeItem<F, ?> menu ) {
-		this.item = item;
-		this.menu = menu;
-	}
+  public CascadeItemMenuCombo(CascadeItem<F, ?> item, CascadeItem<F, ?> menu) {
+    this.item = item;
+    this.menu = menu;
+  }
 
-	@Override
-	public int getItemCount() {
-		return 2;
-	}
+  @Override
+  public int getItemCount() {
+    return 2;
+  }
 
-	@Override
-	public CascadeItem<F, ?> getItemAt( int index ) {
-		switch( index ) {
-		case 0:
-			return this.item;
-		case 1:
-			return this.menu;
-		default:
-			throw new AssertionError();
-		}
-	}
+  @Override
+  public CascadeItem<F, ?> getItemAt(int index) {
+    switch (index) {
+    case 0:
+      return this.item;
+    case 1:
+      return this.menu;
+    default:
+      throw new AssertionError();
+    }
+  }
 }

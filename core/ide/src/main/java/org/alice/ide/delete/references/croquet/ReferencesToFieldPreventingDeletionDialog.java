@@ -60,56 +60,56 @@ import java.util.UUID;
  */
 public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationInputDialogCoreComposite<ReferencesToFieldPreventingDeletionPane> {
 
-	private final UserField field;
-	private final List<FieldAccess> references;
+  private final UserField field;
+  private final List<FieldAccess> references;
 
-	private final StringValue singlularDescriptionText = this.createStringValue( "singlularDescriptionText" );
-	private final StringValue pluralDescriptionText = this.createStringValue( "pluralDescriptionText" );
+  private final StringValue singlularDescriptionText = this.createStringValue("singlularDescriptionText");
+  private final StringValue pluralDescriptionText = this.createStringValue("pluralDescriptionText");
 
-	public ReferencesToFieldPreventingDeletionDialog( UserField field, List<FieldAccess> references ) {
-		super( UUID.fromString( "e6ba357c-6490-4e88-a406-ba6567a4cc71" ), null );
-		this.field = field;
-		this.references = references;
-	}
+  public ReferencesToFieldPreventingDeletionDialog(UserField field, List<FieldAccess> references) {
+    super(UUID.fromString("e6ba357c-6490-4e88-a406-ba6567a4cc71"), null);
+    this.field = field;
+    this.references = references;
+  }
 
-	@Override
-	protected String modifyLocalizedText( Element element, String localizedText ) {
-		localizedText = super.modifyLocalizedText( element, localizedText );
-		if( element == this.pluralDescriptionText ) {
-			localizedText = localizedText.replaceAll( "</referenceCount/>", Integer.toString( this.references.size() ) );
-		}
-		if( ( element == this.singlularDescriptionText ) || ( element == this.pluralDescriptionText ) ) {
-			localizedText = localizedText.replaceAll( "</fieldName/>", this.field.getName() );
-			localizedText = localizedText.replaceAll( "\\n", "<br>" );
-			localizedText = "<html>" + localizedText + "</html>";
-		}
-		return localizedText;
-	}
+  @Override
+  protected String modifyLocalizedText(Element element, String localizedText) {
+    localizedText = super.modifyLocalizedText(element, localizedText);
+    if (element == this.pluralDescriptionText) {
+      localizedText = localizedText.replaceAll("</referenceCount/>", Integer.toString(this.references.size()));
+    }
+    if ((element == this.singlularDescriptionText) || (element == this.pluralDescriptionText)) {
+      localizedText = localizedText.replaceAll("</fieldName/>", this.field.getName());
+      localizedText = localizedText.replaceAll("\\n", "<br>");
+      localizedText = "<html>" + localizedText + "</html>";
+    }
+    return localizedText;
+  }
 
-	@Override
-	protected ReferencesToFieldPreventingDeletionPane createView() {
-		return new ReferencesToFieldPreventingDeletionPane( this );
-	}
+  @Override
+  protected ReferencesToFieldPreventingDeletionPane createView() {
+    return new ReferencesToFieldPreventingDeletionPane(this);
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	public StringValue getAppropriateDescriptionText() {
-		if( this.references.size() == 1 ) {
-			return this.singlularDescriptionText;
-		} else {
-			return this.pluralDescriptionText;
-		}
-	}
+  public StringValue getAppropriateDescriptionText() {
+    if (this.references.size() == 1) {
+      return this.singlularDescriptionText;
+    } else {
+      return this.pluralDescriptionText;
+    }
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
-		return null;
-	}
+  @Override
+  protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
+    return null;
+  }
 }

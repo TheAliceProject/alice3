@@ -53,35 +53,36 @@ import org.lgna.story.Key;
  * @author Dennis Cosgrove
  */
 public enum KeyCodec implements ItemCodec<Key> {
-	SINGLETON;
-	@Override
-	public Class<Key> getValueClass() {
-		return Key.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Key decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			int keyCode = binaryDecoder.decodeInt();
-			return EmployeesOnly.getKeyFromKeyCode( keyCode );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Class<Key> getValueClass() {
+    return Key.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Key value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( EmployeesOnly.getKeyCodeFromKey( value ) );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
+  @Override
+  public Key decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      int keyCode = binaryDecoder.decodeInt();
+      return EmployeesOnly.getKeyFromKeyCode(keyCode);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, Key value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Key value) {
+    if (value != null) {
+      binaryEncoder.encode(true);
+      binaryEncoder.encode(EmployeesOnly.getKeyCodeFromKey(value));
+    } else {
+      binaryEncoder.encode(false);
+    }
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, Key value) {
+    sb.append(value);
+  }
 }

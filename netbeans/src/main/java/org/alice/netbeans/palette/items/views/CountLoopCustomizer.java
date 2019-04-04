@@ -48,170 +48,151 @@ import java.awt.Dialog;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
+
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 
 public class CountLoopCustomizer extends javax.swing.JPanel {
 
-    private Dialog dialog = null;
-    private DialogDescriptor descriptor = null;
-    private boolean dialogOK = false;
+  private Dialog dialog = null;
+  private DialogDescriptor descriptor = null;
+  private boolean dialogOK = false;
 
+  JTextComponent target;
 
-    JTextComponent target;
+  /** Creates new form CountLoopCustomizer */
+  public CountLoopCustomizer(JTextComponent target) {
+    this.target = target;
 
-    /** Creates new form CountLoopCustomizer */
-    public CountLoopCustomizer(JTextComponent target) {
-        this.target = target;
+    initComponents();
 
-        initComponents();
+    this.variableNameTextField.getDocument().addDocumentListener(new DocumentListener() {
 
-        this.variableNameTextField.getDocument().addDocumentListener( new DocumentListener() {
+      @Override
+      public void insertUpdate(DocumentEvent arg0) {
+        evaluateInput();
+      }
 
-            @Override
-			public void insertUpdate(DocumentEvent arg0) {
-                evaluateInput();
-            }
+      @Override
+      public void removeUpdate(DocumentEvent arg0) {
+        evaluateInput();
+      }
 
-            @Override
-			public void removeUpdate(DocumentEvent arg0) {
-                evaluateInput();
-            }
+      @Override
+      public void changedUpdate(DocumentEvent arg0) {
+        evaluateInput();
+      }
+    });
+  }
 
-            @Override
-			public void changedUpdate(DocumentEvent arg0) {
-                evaluateInput();
-            }
-        });
+  public boolean showDialog() {
+
+    this.variableNameTextField.selectAll();
+      this.variableNameTextField.requestFocusInWindow();
+
+    dialogOK = false;
+
+    String displayName = "Counted For Loop";
+    Object[] options = {okButton, cancelButton};
+    descriptor = new DialogDescriptor(this, displayName, true, options, okButton, DialogDescriptor.DEFAULT_ALIGN, null, null);
+    dialog = DialogDisplayer.getDefault().createDialog(descriptor);
+    dialog.setVisible(true);
+    repaint();
+    return dialogOK;
+  }
+
+  private void evaluateInput() {
+    if (isInputValid()) {
+      this.variableNameTextField.setForeground(Color.black);
+      this.okButton.setEnabled(true);
+    } else {
+      this.variableNameTextField.setForeground(Color.red);
+      this.okButton.setEnabled(false);
     }
+  }
 
-    public boolean showDialog() {
-
-		this.variableNameTextField.selectAll();;
-		this.variableNameTextField.requestFocusInWindow();
-		
-        dialogOK = false;
-
-        String displayName = "Counted For Loop";
-        Object[] options = {okButton, cancelButton};
-        descriptor = new DialogDescriptor
-                (this, 
-                displayName,
-                true,
-                options,
-                okButton,
-                DialogDescriptor.DEFAULT_ALIGN,
-                null,
-                null);
-        dialog = DialogDisplayer.getDefault().createDialog(descriptor);
-        dialog.setVisible(true);
-        repaint();
-        return dialogOK;
-    }
-
-    private void evaluateInput()
-    {
-        if (isInputValid())
-        {
-            this.variableNameTextField.setForeground(Color.black);
-            this.okButton.setEnabled(true);
+  private boolean isInputValid() {
+    String variableName = variableNameTextField.getText();
+    if (variableName != null && variableName.length() > 0) {
+      if (Character.isJavaIdentifierStart(variableName.charAt(0))) {
+        boolean isValid = true;
+        for (int i = 1; i < variableName.length(); i++) {
+          if (!Character.isJavaIdentifierPart(variableName.charAt(i))) {
+            isValid = false;
+            break;
+          }
         }
-        else
-        {
-            this.variableNameTextField.setForeground(Color.red);
-            this.okButton.setEnabled(false);
-        }
+        return isValid;
+      }
     }
+    return false;
+  }
 
-    private boolean isInputValid()
-    {
-        String variableName = variableNameTextField.getText();
-        if (variableName != null && variableName.length() > 0)
-        {
-            if (Character.isJavaIdentifierStart(variableName.charAt(0)))
-            {
-                boolean isValid = true;
-                for (int i=1; i<variableName.length(); i++)
-                {
-                    if (!Character.isJavaIdentifierPart(variableName.charAt(i)))
-                    {
-                        isValid = false;
-                        break;
-                    }
-                }
-                return isValid;
-            }
-        }
-        return false;
-    }
+  public String getVariableName() {
+    return this.variableNameTextField.getText();
+  }
 
+  /** This method is called from within the constructor to
+   * initialize the form.
+   * WARNING: Do NOT modify this code. The content of this method is
+   * always regenerated by the Form Editor.
+   */
+  @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
+    java.awt.GridBagConstraints gridBagConstraints;
 
-	public String getVariableName() {
-		return this.variableNameTextField.getText();
-	}
-	
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+    cancelButton = new javax.swing.JButton();
+    okButton = new javax.swing.JButton();
+    jLabel1 = new javax.swing.JLabel();
+    variableNameTextField = new javax.swing.JTextField();
 
-        cancelButton = new javax.swing.JButton();
-        okButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        variableNameTextField = new javax.swing.JTextField();
+    cancelButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.cancelButton.text")); // NOI18N
+    cancelButton.addActionListener(new java.awt.event.ActionListener() {
+      @Override
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cancelButtonActionPerformed(evt);
+      }
+    });
 
-        cancelButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.cancelButton.text")); // NOI18N
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
+    okButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.okButton.text")); // NOI18N
+    okButton.addActionListener(new java.awt.event.ActionListener() {
+      @Override
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        okButtonActionPerformed(evt);
+      }
+    });
 
-        okButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.okButton.text")); // NOI18N
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
+    setLayout(new java.awt.GridBagLayout());
 
-        setLayout(new java.awt.GridBagLayout());
+    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+    jLabel1.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.jLabel1.text")); // NOI18N
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 6);
+    add(jLabel1, gridBagConstraints);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.jLabel1.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 6);
-        add(jLabel1, gridBagConstraints);
+    variableNameTextField.setColumns(8);
+    variableNameTextField.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.variableNameTextField.text")); // NOI18N
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
+    add(variableNameTextField, gridBagConstraints);
+  } // </editor-fold>//GEN-END:initComponents
 
-        variableNameTextField.setColumns(8);
-        variableNameTextField.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.variableNameTextField.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        add(variableNameTextField, gridBagConstraints);
-    }// </editor-fold>//GEN-END:initComponents
+  private void okButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_okButtonActionPerformed
+    dialogOK = true;
+    dialog.dispose();
+  } //GEN-LAST:event_okButtonActionPerformed
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        dialogOK = true;
-        dialog.dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
+  private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_cancelButtonActionPerformed
+    dialogOK = false;
+    dialog.dispose();
+  } //GEN-LAST:event_cancelButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        dialogOK = false;
-        dialog.dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton okButton;
-    private javax.swing.JTextField variableNameTextField;
-    // End of variables declaration//GEN-END:variables
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton cancelButton;
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JButton okButton;
+  private javax.swing.JTextField variableNameTextField;
+  // End of variables declaration//GEN-END:variables
 
 }

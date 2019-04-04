@@ -48,65 +48,65 @@ import java.awt.geom.Area;
  * @author Dennis Cosgrove
  */
 public class AreaUtilities {
-	private AreaUtilities() {
-		throw new AssertionError();
-	}
+  private AreaUtilities() {
+    throw new AssertionError();
+  }
 
-	public static Area createArea( java.awt.Shape shape ) {
-		if( shape != null ) {
-			return new Area( shape );
-		} else {
-			//todo: return null?
-			return new Area();
-		}
-	}
+  public static Area createArea(java.awt.Shape shape) {
+    if (shape != null) {
+      return new Area(shape);
+    } else {
+      //todo: return null?
+      return new Area();
+    }
+  }
 
-	public static Area createIntersection( java.awt.Shape a, java.awt.Shape b ) {
-		if( a != null ) {
-			Area rv = new Area( a );
-			if( b != null ) {
-				rv.intersect( new Area( b ) );
-			} else {
-				//pass
-			}
-			return rv;
-		} else {
-			if( b != null ) {
-				return new Area( b );
-			} else {
-				//todo: return null?
-				return new Area();
-			}
-		}
-	}
+  public static Area createIntersection(java.awt.Shape a, java.awt.Shape b) {
+    if (a != null) {
+      Area rv = new Area(a);
+      if (b != null) {
+        rv.intersect(new Area(b));
+      } else {
+        //pass
+      }
+      return rv;
+    } else {
+      if (b != null) {
+        return new Area(b);
+      } else {
+        //todo: return null?
+        return new Area();
+      }
+    }
+  }
 
-	public static Area createUnion( java.awt.Shape a, java.awt.Shape b ) {
-		if( a != null ) {
-			Area rv = new Area( a );
-			if( b != null ) {
-				rv.add( new Area( b ) );
-			} else {
-				//pass
-			}
-			return rv;
-		} else {
-			if( b != null ) {
-				return new Area( b );
-			} else {
-				//todo: return null?
-				return new Area();
-			}
-		}
-	}
+  public static Area createUnion(java.awt.Shape a, java.awt.Shape b) {
+    if (a != null) {
+      Area rv = new Area(a);
+      if (b != null) {
+        rv.add(new Area(b));
+      } else {
+        //pass
+      }
+      return rv;
+    } else {
+      if (b != null) {
+        return new Area(b);
+      } else {
+        //todo: return null?
+        return new Area();
+      }
+    }
+  }
 
-	public static Area createSubtraction( java.awt.Shape a, java.awt.Shape b ) {
-		assert a != null;
-		Area rv = new Area( a );
-		if( b != null ) {
-			rv.subtract( new Area( b ) );
-		} else {
-			//pass
-		}
-		return rv;
-	}
+  public static Area createSubtraction(java.awt.Shape a, java.awt.Shape b) {
+    assert a != null;
+    Area rv = new Area(a);
+    if (b != null) {
+      rv.subtract(new Area(b));
+    } else {
+      //pass
+    }
+    return rv;
+  }
 }

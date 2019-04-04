@@ -46,12 +46,12 @@ package edu.cmu.cs.dennisc.math.rungekutta;
  * @author Dennis Cosgrove
  */
 public class RungeKuttaUtilities {
-	public static <E extends Derivative> void rk4( Function<E> f, double t, double dt ) {
-		E a = f.evaluate( t );
-		E b = f.evaluate( t, dt * 0.5, a );
-		E c = f.evaluate( t, dt * 0.5, b );
-		E d = f.evaluate( t, dt, c );
-		f.update( a, b, c, d, dt );
-		f.update();
-	}
+  public static <E extends Derivative> void rk4(Function<E> f, double t, double dt) {
+    E a = f.evaluate(t);
+    E b = f.evaluate(t, dt * 0.5, a);
+    E c = f.evaluate(t, dt * 0.5, b);
+    E d = f.evaluate(t, dt, c);
+    f.update(a, b, c, d, dt);
+    f.update();
+  }
 }

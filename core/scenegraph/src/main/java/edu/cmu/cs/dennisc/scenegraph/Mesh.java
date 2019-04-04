@@ -60,64 +60,64 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class Mesh extends Geometry {
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    BoundUtilities.getBoundingBox(boundingBox, vertexBuffer.getValue());
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    BoundUtilities.getBoundingSphere(boundingSphere, vertexBuffer.getValue().array());
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
 
-		double[] xyzs = vertexBuffer.getValue().array();
-		float[] ijks = normalBuffer.getValue().array();
+    double[] xyzs = vertexBuffer.getValue().array();
+    float[] ijks = normalBuffer.getValue().array();
 
-		assert xyzs.length >= 6;
-		assert ijks.length >= 3;
+    assert xyzs.length >= 6;
+    assert ijks.length >= 3;
 
-		forward.set( ijks[ 0 ], ijks[ 1 ], ijks[ 2 ] );
-		forward.normalize();
-		forward.negate();
+    forward.set(ijks[0], ijks[1], ijks[2]);
+    forward.normalize();
+    forward.negate();
 
-		translation.set( xyzs[ 0 ], xyzs[ 1 ], xyzs[ 2 ] );
-		upGuide.set( translation.x - xyzs[ 3 ], translation.y - xyzs[ 4 ], translation.z - xyzs[ 5 ] );
-		upGuide.normalize();
+    translation.set(xyzs[0], xyzs[1], xyzs[2]);
+    upGuide.set(translation.x - xyzs[3], translation.y - xyzs[4], translation.z - xyzs[5]);
+    upGuide.normalize();
 
-	}
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		//todo
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    //todo
+  }
 
-	public void scale(Vector3 scale) {
-		double[] vertices = BufferUtilities.convertDoubleBufferToArray( vertexBuffer.getValue() );
-		double[] newVertices = new double[vertices.length];
-		for (int i=0; i<vertices.length; i+=3) {
-			newVertices[i] = vertices[i] * scale.x;
-			newVertices[i+1] = vertices[i+1] * scale.y;
-			newVertices[i+2] = vertices[i+2] * scale.z;
-		}
-		vertexBuffer.setValue( BufferUtilities.createDirectDoubleBuffer(newVertices) );
-	}
+  public void scale(Vector3 scale) {
+    double[] vertices = BufferUtilities.convertDoubleBufferToArray(vertexBuffer.getValue());
+    double[] newVertices = new double[vertices.length];
+    for (int i = 0; i < vertices.length; i += 3) {
+      newVertices[i] = vertices[i] * scale.x;
+      newVertices[i + 1] = vertices[i + 1] * scale.y;
+      newVertices[i + 2] = vertices[i + 2] * scale.z;
+    }
+    vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
+  }
 
-	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (DoubleBuffer)null ) {
-		@Override
-		public void setValue( DoubleBuffer value ) {
-			Mesh.this.markBoundsDirty();
-			super.setValue( value );
-			Mesh.this.fireBoundChanged();
-		}
-	};
+  public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (DoubleBuffer) null) {
+    @Override
+    public void setValue(DoubleBuffer value) {
+      Mesh.this.markBoundsDirty();
+      super.setValue(value);
+      Mesh.this.fireBoundChanged();
+    }
+  };
 
-	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (FloatBuffer)null );
-	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (FloatBuffer)null );
-	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (IntBuffer)null );
-	public final IntegerProperty textureId = new IntegerProperty( this, -1 );
-	public final BooleanProperty cullBackfaces = new BooleanProperty( this, Boolean.TRUE );
-	public final BooleanProperty useAlphaTest = new BooleanProperty( this, Boolean.FALSE );
+  public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
+  public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
+  public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (IntBuffer) null);
+  public final IntegerProperty textureId = new IntegerProperty(this, -1);
+  public final BooleanProperty cullBackfaces = new BooleanProperty(this, Boolean.TRUE);
+  public final BooleanProperty useAlphaTest = new BooleanProperty(this, Boolean.FALSE);
 }

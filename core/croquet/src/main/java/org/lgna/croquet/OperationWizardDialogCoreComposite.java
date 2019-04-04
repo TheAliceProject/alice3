@@ -54,65 +54,65 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<Panel> {
-	public OperationWizardDialogCoreComposite( UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
-	}
+  public OperationWizardDialogCoreComposite(UUID migrationId, WizardPageComposite<?, ?>... wizardPages) {
+    super(migrationId, wizardPages);
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    return text;
+  }
 
-	protected boolean isAutoCommitWorthAttempting() {
-		return false;
-	}
+  protected boolean isAutoCommitWorthAttempting() {
+    return false;
+  }
 
-	protected abstract Edit createEdit();
+  protected abstract Edit createEdit();
 
-	private void createAndCommitEdit() {
-		try {
-			Edit edit = this.createEdit();
-			if( edit != null ) {
-				openingActivity.commitAndInvokeDo( edit );
-			} else {
-				openingActivity.finish();
-			}
-		} catch( CancelException ce ) {
-			cancel(ce);
-		}
-	}
+  private void createAndCommitEdit() {
+    try {
+      Edit edit = this.createEdit();
+      if (edit != null) {
+        openingActivity.commitAndInvokeDo(edit);
+      } else {
+        openingActivity.finish();
+      }
+    } catch (CancelException ce) {
+      cancel(ce);
+    }
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		if( isCommitted ) { // close button condition
-			createAndCommitEdit();
-		} else {
-			cancel( null );
-		}
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    if (isCommitted) { // close button condition
+      createAndCommitEdit();
+    } else {
+      cancel(null);
+    }
+  }
 
-	@Override
-	public void perform( UserActivity userActivity ) {
-		boolean isAutoCommitDesired;
-		if( this.isAutoCommitWorthAttempting() ) {
-			Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
-			isAutoCommitDesired = true;
-			while( iterator.hasNext() ) {
-				WizardPageComposite<?, ?> page = iterator.next();
-				if( page.isAutoAdvanceDesired() ) {
-					//pass
-				} else {
-					isAutoCommitDesired = false;
-				}
-			}
-		} else {
-			isAutoCommitDesired = false;
-		}
-		if( isAutoCommitDesired ) {
-			this.createAndCommitEdit();
-		} else {
-			this.showDialog( userActivity );
-		}
-	}
+  @Override
+  public void perform(UserActivity userActivity) {
+    boolean isAutoCommitDesired;
+    if (this.isAutoCommitWorthAttempting()) {
+      Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
+      isAutoCommitDesired = true;
+      while (iterator.hasNext()) {
+        WizardPageComposite<?, ?> page = iterator.next();
+        if (page.isAutoAdvanceDesired()) {
+          //pass
+        } else {
+          isAutoCommitDesired = false;
+        }
+      }
+    } else {
+      isAutoCommitDesired = false;
+    }
+    if (isAutoCommitDesired) {
+      this.createAndCommitEdit();
+    } else {
+      this.showDialog(userActivity);
+    }
+  }
 }

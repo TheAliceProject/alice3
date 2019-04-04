@@ -55,40 +55,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IntegerModel extends NumberModel<Expression> {
-	private static class SingletonHolder {
-		private static IntegerModel instance = new IntegerModel();
-	}
+  private static class SingletonHolder {
+    private static IntegerModel instance = new IntegerModel();
+  }
 
-	public static IntegerModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IntegerModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IntegerModel() {
-		super( NUMBER_PAD_GROUP, UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
-	}
+  private IntegerModel() {
+    super(NUMBER_PAD_GROUP, UUID.fromString("fceee598-ccd1-46f9-8539-5f2a42b021b2"));
+  }
 
-	@Override
-	public boolean isDecimalPointSupported() {
-		return false;
-	}
+  @Override
+  public boolean isDecimalPointSupported() {
+    return false;
+  }
 
-	@Override
-	protected Expression valueOf( String s ) {
-		long l = Long.parseLong( s );
-		if( l > Integer.MAX_VALUE ) {
-			return new FieldAccess(
-					new TypeExpression(
-							JavaType.INTEGER_OBJECT_TYPE
-					),
-					JavaField.getInstance( Integer.class, "MAX_VALUE" ) );
-		} else if( l < Integer.MIN_VALUE ) {
-			return new FieldAccess(
-					new TypeExpression(
-							JavaType.INTEGER_OBJECT_TYPE
-					),
-					JavaField.getInstance( Integer.class, "MIN_VALUE" ) );
-		} else {
-			return new IntegerLiteral( (int)l );
-		}
-	}
+  @Override
+  protected Expression valueOf(String s) {
+    long l = Long.parseLong(s);
+    if (l > Integer.MAX_VALUE) {
+      return new FieldAccess(new TypeExpression(JavaType.INTEGER_OBJECT_TYPE), JavaField.getInstance(Integer.class, "MAX_VALUE"));
+    } else if (l < Integer.MIN_VALUE) {
+      return new FieldAccess(new TypeExpression(JavaType.INTEGER_OBJECT_TYPE), JavaField.getInstance(Integer.class, "MIN_VALUE"));
+    } else {
+      return new IntegerLiteral((int) l);
+    }
+  }
 }

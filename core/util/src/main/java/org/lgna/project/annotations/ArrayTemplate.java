@@ -49,8 +49,6 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author dculyba
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ArrayTemplate {
-	int length() default -1;
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ArrayTemplate {
+  int length() default -1;
 }

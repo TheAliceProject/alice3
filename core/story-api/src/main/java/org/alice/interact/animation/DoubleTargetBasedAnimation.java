@@ -42,52 +42,51 @@
  *******************************************************************************/
 package org.alice.interact.animation;
 
-
 /**
  * @author David Culyba
  */
 public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserver<Double> {
-	public DoubleTargetBasedAnimation( Double currentValue ) {
-		super( currentValue );
-	}
+  public DoubleTargetBasedAnimation(Double currentValue) {
+    super(currentValue);
+  }
 
-	public DoubleTargetBasedAnimation( Double currentValue, double speed ) {
-		super( currentValue, speed );
-	}
+  public DoubleTargetBasedAnimation(Double currentValue, double speed) {
+    super(currentValue, speed);
+  }
 
-	public DoubleTargetBasedAnimation( Double currentValue, Double targetValue ) {
-		super( currentValue, targetValue );
-	}
+  public DoubleTargetBasedAnimation(Double currentValue, Double targetValue) {
+    super(currentValue, targetValue);
+  }
 
-	public DoubleTargetBasedAnimation( Double currentValue, Double targetValue, double speed ) {
-		super( currentValue, targetValue, speed );
-		if( this.currentValue.isNaN() ) {
-			this.currentValue = new Double( 0.0d );
-		}
-		if( this.targetValue.isNaN() ) {
-			this.targetValue = new Double( 0.0d );
-		}
-	}
+  public DoubleTargetBasedAnimation(Double currentValue, Double targetValue, double speed) {
+    super(currentValue, targetValue, speed);
+    if (this.currentValue.isNaN()) {
+      this.currentValue = new Double(0.0d);
+    }
+    if (this.targetValue.isNaN()) {
+      this.targetValue = new Double(0.0d);
+    }
+  }
 
-	@Override
-	protected boolean isCloseEnoughToBeDone() {
-		return ( Math.abs( this.currentValue - this.targetValue ) < MIN_DISTANCE_TO_DONE );
-	}
+  @Override
+  protected boolean isCloseEnoughToBeDone() {
+    return (Math.abs(this.currentValue - this.targetValue) < MIN_DISTANCE_TO_DONE);
+  }
 
-	@Override
-	public boolean isDone() {
-		return this.currentValue.equals( this.targetValue );
-	}
+  @Override
+  public boolean isDone() {
+    return this.currentValue.equals(this.targetValue);
+  }
 
-	@Override
-	protected Double interpolate( Double v0, Double v1, double deltaSinceLastUpdate ) {
-		double newValue = v0 + ( ( v1 - v0 ) * this.speed * deltaSinceLastUpdate );
-		return new Double( newValue );
-	}
+  @Override
+  protected Double interpolate(Double v0, Double v1, double deltaSinceLastUpdate) {
+    double newValue = v0 + ((v1 - v0) * this.speed * deltaSinceLastUpdate);
+    return new Double(newValue);
+  }
 
-	@Override
-	protected Double newE( Double other ) {
-		return new Double( other );
-	}
+  @Override
+  protected Double newE(Double other) {
+    return new Double(other);
+  }
 
 }

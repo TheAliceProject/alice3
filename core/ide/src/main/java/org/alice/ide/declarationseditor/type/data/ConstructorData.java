@@ -50,12 +50,12 @@ import org.lgna.project.ast.NamedUserType;
  * @author Dennis Cosgrove
  */
 public class ConstructorData extends FilteredMemberData<NamedUserConstructor> {
-	public ConstructorData( NamedUserType type ) {
-		super( NamedUserConstructor.class, type, type.constructors );
-	}
+  public ConstructorData(NamedUserType type) {
+    super(NamedUserConstructor.class, type, type.constructors);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( NamedUserConstructor item ) {
-		return true;
-	}
+  @Override
+  protected boolean isAcceptableItem(NamedUserConstructor item) {
+    return true;
+  }
 }

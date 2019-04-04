@@ -55,26 +55,24 @@ import org.lgna.project.ast.NullLiteral;
  * @author Dennis Cosgrove
  */
 public abstract class CustomExpressionCreatorView extends PanelWithPreview {
-	public CustomExpressionCreatorView( CustomExpressionCreatorComposite<?> composite ) {
-		super( composite );
-	}
+  public CustomExpressionCreatorView(CustomExpressionCreatorComposite<?> composite) {
+    super(composite);
+  }
 
-	private Expression createValue() {
-		CustomExpressionCreatorComposite<?> composite = (CustomExpressionCreatorComposite<?>)this.getComposite();
-		return composite.getPreviewValue();
-	}
+  private Expression createValue() {
+    CustomExpressionCreatorComposite<?> composite = (CustomExpressionCreatorComposite<?>) this.getComposite();
+    return composite.getPreviewValue();
+  }
 
-	@Override
-	public SwingComponentView<?> createPreviewSubComponent() {
-		Expression expression;
-		try {
-			expression = this.createValue();
-		} catch( RuntimeException re ) {
-			re.printStackTrace();
-			expression = new NullLiteral();
-		}
-		return new BorderPanel.Builder()
-				.lineStart( PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
-				.build();
-	}
+  @Override
+  public SwingComponentView<?> createPreviewSubComponent() {
+    Expression expression;
+    try {
+      expression = this.createValue();
+    } catch (RuntimeException re) {
+      re.printStackTrace();
+      expression = new NullLiteral();
+    }
+    return new BorderPanel.Builder().lineStart(PreviewAstI18nFactory.getInstance().createExpressionPane(expression)).build();
+  }
 }

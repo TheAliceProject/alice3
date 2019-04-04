@@ -53,27 +53,27 @@ import java.util.UUID;
  */
 public class PlusMinusOperation extends NumberPadOperation {
 
-	private static Map<NumberModel<?>, PlusMinusOperation> map = Maps.newHashMap();
+  private static Map<NumberModel<?>, PlusMinusOperation> map = Maps.newHashMap();
 
-	public static synchronized PlusMinusOperation getInstance( NumberModel<?> model ) {
-		PlusMinusOperation rv = map.get( model );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PlusMinusOperation( model );
-			map.put( model, rv );
-		}
-		return rv;
-	}
+  public static synchronized PlusMinusOperation getInstance(NumberModel<?> model) {
+    PlusMinusOperation rv = map.get(model);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new PlusMinusOperation(model);
+      map.put(model, rv);
+    }
+    return rv;
+  }
 
-	private PlusMinusOperation( NumberModel<?> model ) {
-		super( UUID.fromString( "6845e168-dfce-4f9e-b94f-d5674613f38c" ), model );
-		this.setName( "\u00B1" );
-	}
+  private PlusMinusOperation(NumberModel<?> model) {
+    super(UUID.fromString("6845e168-dfce-4f9e-b94f-d5674613f38c"), model);
+    this.setName("±");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.numberModel.negate();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.numberModel.negate();
+    activity.finish();
+  }
 }

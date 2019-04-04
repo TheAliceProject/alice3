@@ -54,46 +54,46 @@ import java.awt.event.MouseWheelListener;
  * @author Dennis Cosgrove
  */
 public class FontMouseWheelAdapter implements MouseWheelListener {
-	private float scaleFactor = 1.0f;
-	private AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme;
-	private boolean isLookAndFeelUpdated = false;
+  private float scaleFactor = 1.0f;
+  private AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme;
+  private boolean isLookAndFeelUpdated = false;
 
-	public FontMouseWheelAdapter() {
-		this( new AdjustableFontSizeOceanTheme() );
-	}
+  public FontMouseWheelAdapter() {
+    this(new AdjustableFontSizeOceanTheme());
+  }
 
-	public FontMouseWheelAdapter( AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme ) {
-		this.adjustableFontSizeOceanTheme = adjustableFontSizeOceanTheme;
-	}
+  public FontMouseWheelAdapter(AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme) {
+    this.adjustableFontSizeOceanTheme = adjustableFontSizeOceanTheme;
+  }
 
-	public float getScaleFactor() {
-		return this.scaleFactor;
-	}
+  public float getScaleFactor() {
+    return this.scaleFactor;
+  }
 
-	public void setScaleFactor( float scaleFactor ) {
-		this.scaleFactor = scaleFactor;
-	}
+  public void setScaleFactor(float scaleFactor) {
+    this.scaleFactor = scaleFactor;
+  }
 
-	public void updateLookAndFeel() {
-		MetalLookAndFeel.setCurrentTheme( this.adjustableFontSizeOceanTheme );
-		try {
-			UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel" );
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
-		this.isLookAndFeelUpdated = true;
-	}
+  public void updateLookAndFeel() {
+    MetalLookAndFeel.setCurrentTheme(this.adjustableFontSizeOceanTheme);
+    try {
+      UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    this.isLookAndFeelUpdated = true;
+  }
 
-	@Override
-	public void mouseWheelMoved( final MouseWheelEvent e ) {
-		if( InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
-			this.adjustableFontSizeOceanTheme.adjustSizeDelta( e.getWheelRotation() * scaleFactor );
-			if( this.isLookAndFeelUpdated ) {
-				//pass
-			} else {
-				this.updateLookAndFeel();
-			}
-			SwingUtilities.updateComponentTreeUI( SwingUtilities.getRoot( e.getComponent() ) );
-		}
-	}
+  @Override
+  public void mouseWheelMoved(final MouseWheelEvent e) {
+    if (InputEventUtilities.isQuoteControlUnquoteDown(e)) {
+      this.adjustableFontSizeOceanTheme.adjustSizeDelta(e.getWheelRotation() * scaleFactor);
+      if (this.isLookAndFeelUpdated) {
+        //pass
+      } else {
+        this.updateLookAndFeel();
+      }
+      SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(e.getComponent()));
+    }
+  }
 }

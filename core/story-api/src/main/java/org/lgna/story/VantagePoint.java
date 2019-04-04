@@ -48,49 +48,51 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author Dennis Cosgrove
  */
 public final class VantagePoint {
-	public static final VantagePoint IDENTITY = new VantagePoint( AffineMatrix4x4.createIdentity() );
-	private final AffineMatrix4x4 internal;
+  public static final VantagePoint IDENTITY = new VantagePoint(AffineMatrix4x4.createIdentity());
+  private final AffineMatrix4x4 internal;
 
-	private VantagePoint( AffineMatrix4x4 internal ) {
-		this.internal = internal;
-	}
+  private VantagePoint(AffineMatrix4x4 internal) {
+    this.internal = internal;
+  }
 
-	public VantagePoint( Orientation orientation, Position position ) {
-		this( new AffineMatrix4x4( orientation.getInternal(), position.getInternal() ) );
-	}
+  public VantagePoint(Orientation orientation, Position position) {
+    this(new AffineMatrix4x4(orientation.getInternal(), position.getInternal()));
+  }
 
-	/* package-private */static VantagePoint createInstance( AffineMatrix4x4 internal ) {
-		return internal != null ? new VantagePoint( internal ) : null;
-	}
+  /* package-private */
+  static VantagePoint createInstance(AffineMatrix4x4 internal) {
+    return internal != null ? new VantagePoint(internal) : null;
+  }
 
-	/* package-private */AffineMatrix4x4 getInternal() {
-		return this.internal;
-	}
+  /* package-private */AffineMatrix4x4 getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static AffineMatrix4x4 getInternal( VantagePoint vantagePoint ) {
-		return vantagePoint != null ? vantagePoint.internal : null;
-	}
+  /* package-private */
+  static AffineMatrix4x4 getInternal(VantagePoint vantagePoint) {
+    return vantagePoint != null ? vantagePoint.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof VantagePoint ) {
-			VantagePoint other = (VantagePoint)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof VantagePoint) {
+      VantagePoint other = (VantagePoint) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 
-	public Orientation getOrientation() {
-		return Orientation.createInstance( this.internal.orientation );
-	}
+  public Orientation getOrientation() {
+    return Orientation.createInstance(this.internal.orientation);
+  }
 
-	public Position getPosition() {
-		return Position.createInstance( this.internal.translation );
-	}
+  public Position getPosition() {
+    return Position.createInstance(this.internal.translation);
+  }
 }

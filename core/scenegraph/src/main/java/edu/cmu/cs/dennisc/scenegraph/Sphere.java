@@ -50,26 +50,27 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double d = radius.getValue();
-		boundingBox.setMinimum( -d, -d, -d );
-		boundingBox.setMaximum( d, d, d );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double d = radius.getValue();
+    boundingBox.setMinimum(-d, -d, -d);
+    boundingBox.setMaximum(d, d, d);
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = radius.getValue();
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    boundingSphere.center.set(0, 0, 0);
+    boundingSphere.radius = radius.getValue();
+  }
 
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
-		@Override
-		public void setValue( Double value ) {
-			if (value >= 0.0)
-				super.setValue( value );
-			else
-				Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
-		}
-	};
+  public final BoundDoubleProperty radius = new BoundDoubleProperty(this, 0.5) {
+    @Override
+    public void setValue(Double value) {
+      if (value >= 0.0) {
+        super.setValue(value);
+      } else {
+        Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
+      }
+    }
+  };
 }

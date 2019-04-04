@@ -49,43 +49,44 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> extends Expression implements PrecedentedAppender {
-	public InfixExpression() {
-	}
+  public InfixExpression() {
+  }
 
-	public InfixExpression( Expression leftOperand, E operator, Expression rightOperand ) {
-		this.leftOperand.setValue( leftOperand );
-		this.operator.setValue( operator );
-		this.rightOperand.setValue( rightOperand );
-	}
+  public InfixExpression(Expression leftOperand, E operator, Expression rightOperand) {
+    this.leftOperand.setValue(leftOperand);
+    this.operator.setValue(operator);
+    this.rightOperand.setValue(rightOperand);
+  }
 
-	protected abstract AbstractType<?, ?, ?> getLeftOperandType();
+  protected abstract AbstractType<?, ?, ?> getLeftOperandType();
 
-	protected abstract AbstractType<?, ?, ?> getRightOperandType();
+  protected abstract AbstractType<?, ?, ?> getRightOperandType();
 
-	PrecedentedAppender getOperatorValue() {
-		return operator.getValue();
-	}
+  PrecedentedAppender getOperatorValue() {
+    return operator.getValue();
+  }
 
-	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return InfixExpression.this.getLeftOperandType();
-		}
-	};
-	public final EnumProperty<E> operator = new EnumProperty<>(this,null );
-	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return InfixExpression.this.getRightOperandType();
-		}
-	};
+  public final ExpressionProperty leftOperand = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return InfixExpression.this.getLeftOperandType();
+    }
+  };
+  public final EnumProperty<E> operator = new EnumProperty<>(this, null);
+  public final ExpressionProperty rightOperand = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return InfixExpression.this.getRightOperandType();
+    }
+  };
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendInfixExpression(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendInfixExpression(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return getOperatorValue().getLevelOfPrecedence();
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return getOperatorValue().getLevelOfPrecedence();
+  }
 }

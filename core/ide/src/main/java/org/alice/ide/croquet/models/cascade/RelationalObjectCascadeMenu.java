@@ -57,22 +57,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<RelationalInfixExpression> {
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	public RelationalObjectCascadeMenu( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "056d67c7-2cea-41d9-b6f0-750b2ab6a51e" ) );
-		this.type = type;
-	}
+  public RelationalObjectCascadeMenu(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("056d67c7-2cea-41d9-b6f0-750b2ab6a51e"));
+    this.type = type;
+  }
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return String.format( super.findDefaultLocalizedText(), formatter.getNameForDeclaration(type) );
-	}
+  @Override
+  protected String findDefaultLocalizedText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return String.format(super.findDefaultLocalizedText(), formatter.getNameForDeclaration(type));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step ) {
-		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, RelationalInfixExpression.Operator.EQUALS ) );
-		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, RelationalInfixExpression.Operator.NOT_EQUALS ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step) {
+    blankChildren.add(RelationalExpressionLeftAndRightOperandsFillIn.getInstance(this.type, RelationalInfixExpression.Operator.EQUALS));
+    blankChildren.add(RelationalExpressionLeftAndRightOperandsFillIn.getInstance(this.type, RelationalInfixExpression.Operator.NOT_EQUALS));
+  }
 }

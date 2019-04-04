@@ -60,46 +60,46 @@ import java.util.UUID;
  */
 public abstract class StatementInsertCascade extends ExpressionsCascade implements InsertStatementCompletionModel {
 
-	private static boolean EPIC_HACK_isActive;
+  private static boolean EPIC_HACK_isActive;
 
-	public static boolean EPIC_HACK_isActive() {
-		return EPIC_HACK_isActive;
-	}
+  public static boolean EPIC_HACK_isActive() {
+    return EPIC_HACK_isActive;
+  }
 
-	private final BlockStatementIndexPair blockStatementIndexPair;
-	private final boolean isEnveloping;
+  private final BlockStatementIndexPair blockStatementIndexPair;
+  private final boolean isEnveloping;
 
-	public StatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks ) {
-		super( Application.PROJECT_GROUP, id, blanks );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.isEnveloping = isEnveloping;
-	}
+  public StatementInsertCascade(UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks) {
+    super(Application.PROJECT_GROUP, id, blanks);
+    this.blockStatementIndexPair = blockStatementIndexPair;
+    this.isEnveloping = isEnveloping;
+  }
 
-	public BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
+  public BlockStatementIndexPair getBlockStatementIndexPair() {
+    return this.blockStatementIndexPair;
+  }
 
-	public boolean isEnveloping() {
-		return this.isEnveloping;
-	}
+  public boolean isEnveloping() {
+    return this.isEnveloping;
+  }
 
-	protected abstract Statement createStatement( Expression... expressions );
+  protected abstract Statement createStatement(Expression... expressions);
 
-	@Override
-	protected void prologue() {
-		EPIC_HACK_isActive = true;
-		super.prologue();
-	}
+  @Override
+  protected void prologue() {
+    EPIC_HACK_isActive = true;
+    super.prologue();
+  }
 
-	@Override
-	protected void epilogue() {
-		super.epilogue();
-		EPIC_HACK_isActive = false;
-	}
+  @Override
+  protected void epilogue() {
+    super.epilogue();
+    EPIC_HACK_isActive = false;
+  }
 
-	@Override
-	protected InsertStatementEdit createEdit( UserActivity userActivity, Expression[] values ) {
-		Statement statement = this.createStatement( values );
-		return new InsertStatementEdit( userActivity, this.blockStatementIndexPair, statement, values, this.isEnveloping );
-	}
+  @Override
+  protected InsertStatementEdit createEdit(UserActivity userActivity, Expression[] values) {
+    Statement statement = this.createStatement(values);
+    return new InsertStatementEdit(userActivity, this.blockStatementIndexPair, statement, values, this.isEnveloping);
+  }
 }

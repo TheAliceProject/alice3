@@ -45,7 +45,6 @@ package org.alice.ide.ast.draganddrop.expression;
 
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractField;
@@ -59,36 +58,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
-	private static InitializingIfAbsentMap<AbstractField, FieldArrayLengthDragModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractField, FieldArrayLengthDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldArrayLengthDragModel getInstance( AbstractField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayLengthDragModel>() {
-			@Override
-			public FieldArrayLengthDragModel initialize( AbstractField field ) {
-				return new FieldArrayLengthDragModel( field );
-			}
-		} );
-	}
+  public static FieldArrayLengthDragModel getInstance(AbstractField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayLengthDragModel>() {
+      @Override
+      public FieldArrayLengthDragModel initialize(AbstractField field) {
+        return new FieldArrayLengthDragModel(field);
+      }
+    });
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldArrayLengthDragModel( AbstractField field ) {
-		super( UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
-		this.field = field;
-	}
+  private FieldArrayLengthDragModel(AbstractField field) {
+    super(UUID.fromString("eecd3065-72bf-489a-8338-6c9aad3582ea"));
+    this.field = field;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.INTEGER_OBJECT_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.INTEGER_OBJECT_TYPE;
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return FieldArrayLengthOperation.getInstance(this.field, expressionProperty);
+  }
 }

@@ -51,21 +51,21 @@ import org.lgna.story.implementation.DiscImp;
  * @author Dennis Cosgrove
  */
 public class SDisc extends SShape {
-	private final DiscImp implementation = new DiscImp( this );
+  private final DiscImp implementation = new DiscImp(this);
 
-	@Override
-	/* package-private */DiscImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */DiscImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getRadius() {
-		return this.implementation.outerRadius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getRadius() {
+    return this.implementation.outerRadius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setRadius( Number baseRadius, SetRadius.Detail... details ) {
-		this.implementation.outerRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setRadius(Number baseRadius, SetRadius.Detail... details) {
+    this.implementation.outerRadius.animateValue(baseRadius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

@@ -59,56 +59,58 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GlrLayer extends GlrElement<Layer> {
-	/*package-private*/static void handleGraphicAdded( GraphicAddedEvent e ) {
-		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
-		layerAdapter.handleGraphicAdded( graphicAdapter );
-	}
+  /*package-private*/
+  static void handleGraphicAdded(GraphicAddedEvent e) {
+    GlrLayer layerAdapter = AdapterFactory.getAdapterFor(e.getTypedSource());
+    GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor(e.getChild());
+    layerAdapter.handleGraphicAdded(graphicAdapter);
+  }
 
-	/*package-private*/static void handleGraphicRemoved( GraphicRemovedEvent e ) {
-		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
-		layerAdapter.handleGraphicRemoved( graphicAdapter );
-	}
+  /*package-private*/
+  static void handleGraphicRemoved(GraphicRemovedEvent e) {
+    GlrLayer layerAdapter = AdapterFactory.getAdapterFor(e.getTypedSource());
+    GlrGraphic<? extends Graphic> graphicAdapter = AdapterFactory.getAdapterFor(e.getChild());
+    layerAdapter.handleGraphicRemoved(graphicAdapter);
+  }
 
-	private void handleGraphicAdded( GlrGraphic<? extends Graphic> graphicAdapter ) {
-		synchronized( this.activeGlrGraphics ) {
-			this.activeGlrGraphics.add( graphicAdapter );
-		}
-	}
+  private void handleGraphicAdded(GlrGraphic<? extends Graphic> graphicAdapter) {
+    synchronized (this.activeGlrGraphics) {
+      this.activeGlrGraphics.add(graphicAdapter);
+    }
+  }
 
-	private void handleGraphicRemoved( GlrGraphic<? extends Graphic> graphicAdapter ) {
-		synchronized( this.forgetGlrGraphics ) {
-			this.forgetGlrGraphics.add( graphicAdapter );
-		}
-	}
+  private void handleGraphicRemoved(GlrGraphic<? extends Graphic> graphicAdapter) {
+    synchronized (this.forgetGlrGraphics) {
+      this.forgetGlrGraphics.add(graphicAdapter);
+    }
+  }
 
-	@Override
-	public void initialize( Layer sgLayer ) {
-		super.initialize( sgLayer );
-		for( Graphic sgGraphic : sgLayer.getGraphics() ) {
-			GlrGraphic<?> glrGraphic = AdapterFactory.getAdapterFor( sgGraphic );
-			handleGraphicAdded( glrGraphic );
-		}
-	}
+  @Override
+  public void initialize(Layer sgLayer) {
+    super.initialize(sgLayer);
+    for (Graphic sgGraphic : sgLayer.getGraphics()) {
+      GlrGraphic<?> glrGraphic = AdapterFactory.getAdapterFor(sgGraphic);
+      handleGraphicAdded(glrGraphic);
+    }
+  }
 
-	/* package-private */void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera ) {
-		synchronized( this.forgetGlrGraphics ) {
-			for( GlrGraphic<? extends Graphic> graphicAdapter : this.forgetGlrGraphics ) {
-				graphicAdapter.forget( g2 );
-				synchronized( this.activeGlrGraphics ) {
-					this.activeGlrGraphics.remove( graphicAdapter );
-				}
-			}
-			this.forgetGlrGraphics.clear();
-		}
-		synchronized( this.activeGlrGraphics ) {
-			for( GlrGraphic<? extends Graphic> graphicAdapter : this.activeGlrGraphics ) {
-				graphicAdapter.render( g2, renderTarget, actualViewport, camera );
-			}
-		}
-	}
+  /* package-private */void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera) {
+    synchronized (this.forgetGlrGraphics) {
+      for (GlrGraphic<? extends Graphic> graphicAdapter : this.forgetGlrGraphics) {
+        graphicAdapter.forget(g2);
+        synchronized (this.activeGlrGraphics) {
+          this.activeGlrGraphics.remove(graphicAdapter);
+        }
+      }
+      this.forgetGlrGraphics.clear();
+    }
+    synchronized (this.activeGlrGraphics) {
+      for (GlrGraphic<? extends Graphic> graphicAdapter : this.activeGlrGraphics) {
+        graphicAdapter.render(g2, renderTarget, actualViewport, camera);
+      }
+    }
+  }
 
-	private final List<GlrGraphic<?>> activeGlrGraphics = Lists.newLinkedList();
-	private final List<GlrGraphic<?>> forgetGlrGraphics = Lists.newLinkedList();
+  private final List<GlrGraphic<?>> activeGlrGraphics = Lists.newLinkedList();
+  private final List<GlrGraphic<?>> forgetGlrGraphics = Lists.newLinkedList();
 }

@@ -61,211 +61,206 @@ import org.lgna.story.SBillboard;
  * @author Dennis Cosgrove
  */
 public class BillboardImp extends VisualScaleModelImp {
-	private static final float MIN_U = 0.0f;
-	private static final float MAX_U = 1.0f;
-	private static final float MIN_V = 1.0f;
-	private static final float MAX_V = 0.0f;
+  private static final float MIN_U = 0.0f;
+  private static final float MAX_U = 1.0f;
+  private static final float MIN_V = 1.0f;
+  private static final float MAX_V = 0.0f;
 
-	private class Face extends TexturedVisual {
-		public Face( boolean isFront ) {
-			putInstance( this );
-			putInstance( this.getAppearance() );
-			putInstance( this.sgGeometry );
-			this.isFront = isFront;
-			float k = this.getK();
-			for( Vertex vertex : sgVertices ) {
-				vertex.normal.set( 0, 0, k );
-			}
-			this.updateAspectRatio( 1.0 );
-			this.sgGeometry.vertices.setValue( this.sgVertices );
-			this.geometries.setValue( new Geometry[] { this.sgGeometry } );
-		}
+  private class Face extends TexturedVisual {
+    public Face(boolean isFront) {
+      putInstance(this);
+      putInstance(this.getAppearance());
+      putInstance(this.sgGeometry);
+      this.isFront = isFront;
+      float k = this.getK();
+      for (Vertex vertex : sgVertices) {
+        vertex.normal.set(0, 0, k);
+      }
+      this.updateAspectRatio(1.0);
+      this.sgGeometry.vertices.setValue(this.sgVertices);
+      this.geometries.setValue(new Geometry[] {this.sgGeometry});
+    }
 
-		public void updateAspectRatio( double widthToHeightAspectRatio ) {
-			double x = widthToHeightAspectRatio * 0.5;
+    public void updateAspectRatio(double widthToHeightAspectRatio) {
+      double x = widthToHeightAspectRatio * 0.5;
 
-			Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
-			v0.position.x = -x;
-			v0.position.y = 1;
-			v0.position.z = 0;
+      Vertex v0 = sgVertices[this.getIndex(0)];
+      v0.position.x = -x;
+      v0.position.y = 1;
+      v0.position.z = 0;
 
-			Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
-			v1.position.x = -x;
-			v1.position.y = 0;
-			v1.position.z = 0;
+      Vertex v1 = sgVertices[this.getIndex(1)];
+      v1.position.x = -x;
+      v1.position.y = 0;
+      v1.position.z = 0;
 
-			Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
-			v2.position.x = +x;
-			v2.position.y = 0;
-			v2.position.z = 0;
+      Vertex v2 = sgVertices[this.getIndex(2)];
+      v2.position.x = +x;
+      v2.position.y = 0;
+      v2.position.z = 0;
 
-			Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
-			v3.position.x = +x;
-			v3.position.y = 1;
-			v3.position.z = 0;
+      Vertex v3 = sgVertices[this.getIndex(3)];
+      v3.position.x = +x;
+      v3.position.y = 1;
+      v3.position.z = 0;
 
-			//Set the vertices property to trigger the property change
-			this.sgGeometry.vertices.setValue( this.sgVertices );
-		}
+      //Set the vertices property to trigger the property change
+      this.sgGeometry.vertices.setValue(this.sgVertices);
+    }
 
-		private int getIndex( int i ) {
-			if( this.isFront ) {
-				return sgVertices.length - 1 - i;
-			} else {
-				return i;
-			}
-		}
+    private int getIndex(int i) {
+      if (this.isFront) {
+        return sgVertices.length - 1 - i;
+      } else {
+        return i;
+      }
+    }
 
-		private float getK() {
-			if( this.isFront ) {
-				return -1.0f;
-			} else {
-				return +1.0f;
-			}
-		}
+    private float getK() {
+      if (this.isFront) {
+        return -1.0f;
+      } else {
+        return +1.0f;
+      }
+    }
 
-		private final QuadArray sgGeometry = new QuadArray();
-		private final Vertex[] sgVertices = new Vertex[] {
-				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
-				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
-				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
-				Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
-		};
-		private final boolean isFront;
-	}
+    private final QuadArray sgGeometry = new QuadArray();
+    private final Vertex[] sgVertices = new Vertex[] {Vertex.createXYZIJKUV(Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V), Vertex.createXYZIJKUV(Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V), Vertex.createXYZIJKUV(Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V), Vertex.createXYZIJKUV(Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V)};
+    private final boolean isFront;
+  }
 
-	public BillboardImp( SBillboard abstraction ) {
-		this.abstraction = abstraction;
-		for( Visual sgVisual : this.sgVisuals ) {
-			sgVisual.setParent( this.getSgComposite() );
-		}
-	}
+  public BillboardImp(SBillboard abstraction) {
+    this.abstraction = abstraction;
+    for (Visual sgVisual : this.sgVisuals) {
+      sgVisual.setParent(this.getSgComposite());
+    }
+  }
 
-	@Override
-	public SBillboard getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SBillboard getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		this.setScale( getScaleForSize( size ) );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    this.setScale(getScaleForSize(size));
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS };
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {Resizer.XY_PLANE, Resizer.X_AXIS, Resizer.Y_AXIS};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XY_PLANE ) {
-			return this.getScale().x;
-		} else if( resizer == Resizer.X_AXIS ) {
-			return this.getScale().x;
-		} else if( resizer == Resizer.Y_AXIS ) {
-			return this.getScale().y;
-		} else {
-			assert false : resizer;
-			return Double.NaN;
-		}
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    if (resizer == Resizer.XY_PLANE) {
+      return this.getScale().x;
+    } else if (resizer == Resizer.X_AXIS) {
+      return this.getScale().x;
+    } else if (resizer == Resizer.Y_AXIS) {
+      return this.getScale().y;
+    } else {
+      assert false : resizer;
+      return Double.NaN;
+    }
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( value > 0.0 ) {
-			double zScale = this.getScale().z;
-			if( resizer == Resizer.XY_PLANE ) {
-				double scaleChange = value / this.getScale().x;
-				this.setScale( new Dimension3( value, this.getScale().y * scaleChange, zScale ) );
-			} else if( resizer == Resizer.X_AXIS ) {
-				this.setScale( new Dimension3( value, this.getScale().y, zScale ) );
-			} else if( resizer == Resizer.Y_AXIS ) {
-				this.setScale( new Dimension3( this.getScale().x, value, zScale ) );
-			} else {
-				assert false : resizer;
-			}
-		} else {
-			Logger.severe( this, value );
-		}
-	}
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    if (value > 0.0) {
+      double zScale = this.getScale().z;
+      if (resizer == Resizer.XY_PLANE) {
+        double scaleChange = value / this.getScale().x;
+        this.setScale(new Dimension3(value, this.getScale().y * scaleChange, zScale));
+      } else if (resizer == Resizer.X_AXIS) {
+        this.setScale(new Dimension3(value, this.getScale().y, zScale));
+      } else if (resizer == Resizer.Y_AXIS) {
+        this.setScale(new Dimension3(this.getScale().x, value, zScale));
+      } else {
+        assert false : resizer;
+      }
+    } else {
+      Logger.severe(this, value);
+    }
+  }
 
-	public void updateAspectRatio() {
-		Texture frontTexture = this.sgFrontFace.getTexture();
-		Texture backTexture = this.sgBackFace.getTexture();
+  public void updateAspectRatio() {
+    Texture frontTexture = this.sgFrontFace.getTexture();
+    Texture backTexture = this.sgBackFace.getTexture();
 
-		int width;
-		int height;
-		if( frontTexture != null ) {
-			width = frontTexture.getWidth();
-			height = frontTexture.getHeight();
-		} else {
-			width = -1;
-			height = -1;
-		}
-		if( ( width > 0 ) && ( height > 0 ) ) {
-			//pass
-		} else {
-			if( backTexture != null ) {
-				width = backTexture.getWidth();
-				height = backTexture.getHeight();
-			}
-		}
+    int width;
+    int height;
+    if (frontTexture != null) {
+      width = frontTexture.getWidth();
+      height = frontTexture.getHeight();
+    } else {
+      width = -1;
+      height = -1;
+    }
+    if ((width > 0) && (height > 0)) {
+      //pass
+    } else {
+      if (backTexture != null) {
+        width = backTexture.getWidth();
+        height = backTexture.getHeight();
+      }
+    }
 
-		double widthToHeightAspectRatio;
-		if( ( width > 0 ) && ( height > 0 ) ) {
-			widthToHeightAspectRatio = width / (double)height;
-		} else {
-			widthToHeightAspectRatio = 1.0;
-		}
-		this.sgFrontFace.updateAspectRatio( widthToHeightAspectRatio );
-		this.sgBackFace.updateAspectRatio( widthToHeightAspectRatio );
-	}
+    double widthToHeightAspectRatio;
+    if ((width > 0) && (height > 0)) {
+      widthToHeightAspectRatio = width / (double) height;
+    } else {
+      widthToHeightAspectRatio = 1.0;
+    }
+    this.sgFrontFace.updateAspectRatio(widthToHeightAspectRatio);
+    this.sgBackFace.updateAspectRatio(widthToHeightAspectRatio);
+  }
 
-	//	public org.lgna.story.Paint getFrontPaint() {
-	//		return this.sgFrontFace.getPaint();
-	//	}
-	//
-	public void setFrontPaint( Paint frontPaint ) {
-		TexturedPaintUtilities.setPaint( this.sgFrontFace, frontPaint );
-		this.updateAspectRatio();
-	}
+  //  public org.lgna.story.Paint getFrontPaint() {
+  //    return this.sgFrontFace.getPaint();
+  //  }
+  //
+  public void setFrontPaint(Paint frontPaint) {
+    TexturedPaintUtilities.setPaint(this.sgFrontFace, frontPaint);
+    this.updateAspectRatio();
+  }
 
-	//	public org.lgna.story.Paint getBackPaint() {
-	//		return this.sgBackFace.getPaint();
-	//	}
-	//
-	public void setBackPaint( Paint backPaint ) {
-		TexturedPaintUtilities.setPaint( this.sgBackFace, backPaint );
-		this.updateAspectRatio();
-	}
+  //  public org.lgna.story.Paint getBackPaint() {
+  //    return this.sgBackFace.getPaint();
+  //  }
+  //
+  public void setBackPaint(Paint backPaint) {
+    TexturedPaintUtilities.setPaint(this.sgBackFace, backPaint);
+    this.updateAspectRatio();
+  }
 
-	@Override
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  @Override
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	@Override
-	protected TexturedAppearance[] getSgPaintAppearances() {
-		return this.sgPaintAppearances;
-	}
+  @Override
+  protected TexturedAppearance[] getSgPaintAppearances() {
+    return this.sgPaintAppearances;
+  }
 
-	@Override
-	protected SimpleAppearance[] getSgOpacityAppearances() {
-		return this.sgOpacityAppearances;
-	}
+  @Override
+  protected SimpleAppearance[] getSgOpacityAppearances() {
+    return this.sgOpacityAppearances;
+  }
 
-	private final SBillboard abstraction;
+  private final SBillboard abstraction;
 
-	private final Face sgFrontFace = new Face( true );
-	private final Face sgBackFace = new Face( false );
-	private final Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
-	private final TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
+  private final Face sgFrontFace = new Face(true);
+  private final Face sgBackFace = new Face(false);
+  private final Visual[] sgVisuals = {this.sgFrontFace, this.sgBackFace};
+  private final TexturedAppearance[] sgPaintAppearances = {this.sgFrontFace.getAppearance()};
+  private final TexturedAppearance[] sgOpacityAppearances = {this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance()};
 
-	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
-		@Override
-		protected void internalSetValue( Paint value ) {
-			TexturedPaintUtilities.setPaint( BillboardImp.this.sgBackFace, value );
-		}
-	};
+  public final PaintProperty backPaint = new PaintProperty(BillboardImp.this) {
+    @Override
+    protected void internalSetValue(Paint value) {
+      TexturedPaintUtilities.setPaint(BillboardImp.this.sgBackFace, value);
+    }
+  };
 }

@@ -63,53 +63,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FileSystemTab extends SelectUriTab {
-	private final StringState pathState = this.createStringState( "pathState" );
-	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			final StageIDE ide = StageIDE.getActiveInstance();
-			File file = ide.getDocumentFrame().showOpenFileDialog( null, ide.getProjectsDirectory(), IoUtilities.PROJECT_EXTENSION);
-			if( file != null ) {
-				FileSystemTab.this.pathState.setValueTransactionlessly( FileUtilities.getCanonicalPathIfPossible( file ) );
-			}
-			return null;
-		}
-	} );
+  private final StringState pathState = this.createStringState("pathState");
+  private final Operation browseOperation = this.createActionOperation("browseOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      final StageIDE ide = StageIDE.getActiveInstance();
+      File file = ide.getDocumentFrame().showOpenFileDialog(null, ide.getProjectsDirectory(), IoUtilities.PROJECT_EXTENSION);
+      if (file != null) {
+        FileSystemTab.this.pathState.setValueTransactionlessly(FileUtilities.getCanonicalPathIfPossible(file));
+      }
+      return null;
+    }
+  });
 
-	public FileSystemTab() {
-		super( UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
-	}
+  public FileSystemTab() {
+    super(UUID.fromString("b1698424-1f0e-4499-852a-da627fa9e789"));
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	public StringState getPathState() {
-		return this.pathState;
-	}
+  public StringState getPathState() {
+    return this.pathState;
+  }
 
-	public Operation getBrowseOperation() {
-		return this.browseOperation;
-	}
+  public Operation getBrowseOperation() {
+    return this.browseOperation;
+  }
 
-	@Override
-	public UriProjectLoader getSelectedUri() {
-		String path = this.pathState.getValue();
-		File file = new File( path );
-		if( file.exists() ) {
-			return new FileProjectLoader( file );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public UriProjectLoader getSelectedUri() {
+    String path = this.pathState.getValue();
+    File file = new File(path);
+    if (file.exists()) {
+      return new FileProjectLoader(file);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void refresh() {
-	}
+  @Override
+  protected void refresh() {
+  }
 
-	@Override
-	protected FileSystemPane createView() {
-		return new FileSystemPane( this );
-	}
+  @Override
+  protected FileSystemPane createView() {
+    return new FileSystemPane(this);
+  }
 }

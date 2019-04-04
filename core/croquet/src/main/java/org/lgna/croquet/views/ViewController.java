@@ -57,71 +57,68 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class ViewController<J extends JComponent, M extends Model> extends SwingComponentView<J> {
-	private final M model;
+  private final M model;
 
-	public ViewController( M model ) {
-		this.model = model;
-		if( this.model != null ) {
-			this.model.initializeIfNecessary();
-		}
-	}
+  public ViewController(M model) {
+    this.model = model;
+    if (this.model != null) {
+      this.model.initializeIfNecessary();
+    }
+  }
 
-	public M getModel() {
-		return model;
-	}
+  public M getModel() {
+    return model;
+  }
 
-	private PopupPrepModel popupPrepModel;
+  private PopupPrepModel popupPrepModel;
 
-	public final PopupPrepModel getPopupPrepModel() {
-		return this.popupPrepModel;
-	}
+  public final PopupPrepModel getPopupPrepModel() {
+    return this.popupPrepModel;
+  }
 
-	public final void setPopupPrepModel( PopupPrepModel popupMenuPrepModel ) {
-		if( this.getAwtComponent().getParent() == null ) {
-			//pass
-		} else {
-			PrintUtilities.println( "warning: setPopupMenuOperation" );
-		}
-		if( this.popupPrepModel != null ) {
-			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
-			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-			ComponentManager.removeComponent( this.popupPrepModel, this );
-		}
-		this.popupPrepModel = popupMenuPrepModel;
-		if( this.popupPrepModel != null ) {
-			ComponentManager.addComponent( this.popupPrepModel, this );
-			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
-			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
-		}
-	}
+  public final void setPopupPrepModel(PopupPrepModel popupMenuPrepModel) {
+    if (this.getAwtComponent().getParent() == null) {
+      //pass
+    } else {
+      PrintUtilities.println("warning: setPopupMenuOperation");
+    }
+    if (this.popupPrepModel != null) {
+      this.getAwtComponent().removeMouseListener(this.lenientMouseClickAdapter);
+      this.getAwtComponent().removeMouseMotionListener(this.lenientMouseClickAdapter);
+      ComponentManager.removeComponent(this.popupPrepModel, this);
+    }
+    this.popupPrepModel = popupMenuPrepModel;
+    if (this.popupPrepModel != null) {
+      ComponentManager.addComponent(this.popupPrepModel, this);
+      this.getAwtComponent().addMouseListener(this.lenientMouseClickAdapter);
+      this.getAwtComponent().addMouseMotionListener(this.lenientMouseClickAdapter);
+    }
+  }
 
-	private LenientMouseClickAdapter lenientMouseClickAdapter = new LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
-			if ( quoteClickCountUnquote == 1 &&
-				ViewController.this.popupPrepModel != null
-				&& MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-				ViewController.this.popupPrepModel
-					.fire( MouseEventTrigger.createUserActivity( ViewController.this, e ) );
-			}
-		}
-	};
+  private LenientMouseClickAdapter lenientMouseClickAdapter = new LenientMouseClickAdapter() {
+    @Override
+    protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickCountUnquote) {
+      if (quoteClickCountUnquote == 1 && ViewController.this.popupPrepModel != null && MouseEventUtilities.isQuoteRightUnquoteMouseButton(e)) {
+        ViewController.this.popupPrepModel.fire(MouseEventTrigger.createUserActivity(ViewController.this, e));
+      }
+    }
+  };
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		super.handleAddedTo( parent );
-		M model = this.getModel();
-		if( model != null ) {
-			ComponentManager.addComponent( model, this );
-		}
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    super.handleAddedTo(parent);
+    M model = this.getModel();
+    if (model != null) {
+      ComponentManager.addComponent(model, this);
+    }
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		M model = this.getModel();
-		if( model != null ) {
-			ComponentManager.removeComponent( model, this );
-		}
-		super.handleRemovedFrom( parent );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    M model = this.getModel();
+    if (model != null) {
+      ComponentManager.removeComponent(model, this);
+    }
+    super.handleRemovedFrom(parent);
+  }
 }

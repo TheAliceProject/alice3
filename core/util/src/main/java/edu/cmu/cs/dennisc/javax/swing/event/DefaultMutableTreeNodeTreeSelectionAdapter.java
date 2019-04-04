@@ -46,22 +46,22 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public abstract class DefaultMutableTreeNodeTreeSelectionAdapter<E> extends TreeSelectionAdapter<DefaultMutableTreeNode> {
-	protected abstract void valueChangedUserObject( TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+  protected abstract void valueChangedUserObject(TreeSelectionEvent e, E oldLeadValue, E newLeadValue);
 
-	@Override
-	protected final void valueChanged( TreeSelectionEvent e, DefaultMutableTreeNode oldLeadValue, DefaultMutableTreeNode newLeadValue ) {
-		E oldUserObject;
-		if( oldLeadValue != null ) {
-			oldUserObject = (E)oldLeadValue.getUserObject();
-		} else {
-			oldUserObject = null;
-		}
-		E newUserObject;
-		if( newLeadValue != null ) {
-			newUserObject = (E)newLeadValue.getUserObject();
-		} else {
-			newUserObject = null;
-		}
-		this.valueChangedUserObject( e, oldUserObject, newUserObject );
-	}
+  @Override
+  protected final void valueChanged(TreeSelectionEvent e, DefaultMutableTreeNode oldLeadValue, DefaultMutableTreeNode newLeadValue) {
+    E oldUserObject;
+    if (oldLeadValue != null) {
+      oldUserObject = (E) oldLeadValue.getUserObject();
+    } else {
+      oldUserObject = null;
+    }
+    E newUserObject;
+    if (newLeadValue != null) {
+      newUserObject = (E) newLeadValue.getUserObject();
+    } else {
+      newUserObject = null;
+    }
+    this.valueChangedUserObject(e, oldUserObject, newUserObject);
+  }
 }

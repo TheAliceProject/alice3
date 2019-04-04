@@ -51,13 +51,13 @@ import java.nio.IntBuffer;
  * @author Dennis Cosgrove
  */
 public abstract class IndexedPolygonArray extends VertexGeometry {
-	public abstract int getIndicesPerPolygon();
+  public abstract int getIndicesPerPolygon();
 
-	public final IntBufferProperty polygonData = new IntBufferProperty( this, new int[ 0 ] ) {
-		@Override
-		public void setValue( IntBuffer value ) {
-			assert value != null;
-			super.setValue( value );
-		}
-	};
+  public final IntBufferProperty polygonData = new IntBufferProperty(this, new int[0]) {
+    @Override
+    public void setValue(IntBuffer value) {
+      assert value != null;
+      super.setValue(value);
+    }
+  };
 }

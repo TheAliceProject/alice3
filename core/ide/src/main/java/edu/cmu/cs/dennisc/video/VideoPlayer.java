@@ -55,55 +55,55 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public interface VideoPlayer {
-	public Component getVideoSurface();
+  public Component getVideoSurface();
 
-	public Painter<VideoPlayer> getPainter();
+  public Painter<VideoPlayer> getPainter();
 
-	public void setPainter( Painter<VideoPlayer> painter );
+  public void setPainter(Painter<VideoPlayer> painter);
 
-	public boolean prepareMedia( URI uri );
+  public boolean prepareMedia(URI uri);
 
-	public void parse();
+  public void parse();
 
-	public boolean isPrepared();
+  public boolean isPrepared();
 
-	public boolean isPlayable();
+  public boolean isPlayable();
 
-	public boolean isPlaying();
+  public boolean isPlaying();
 
-	public void playResume();
+  public void playResume();
 
-	public void pause();
+  public void pause();
 
-	public void stop();
+  public void stop();
 
-	public long getTimeInMilliseconds();
+  public long getTimeInMilliseconds();
 
-	public void setTimeInMilliseconds( long timeInMilliseconds );
+  public void setTimeInMilliseconds(long timeInMilliseconds);
 
-	public float getPosition();
+  public float getPosition();
 
-	public void setPosition( float position );
+  public void setPosition(float position);
 
-	public long getLengthInMilliseconds();
+  public long getLengthInMilliseconds();
 
-	public boolean isMuted();
+  public boolean isMuted();
 
-	public void setMuted( boolean isMuted );
+  public void setMuted(boolean isMuted);
 
-	public float getVolume();
+  public float getVolume();
 
-	public void setVolume( float volume );
+  public void setVolume(float volume);
 
-	public boolean writeSnapshot( File file );
+  public boolean writeSnapshot(File file);
 
-	public Image getSnapshot();
+  public Image getSnapshot();
 
-	public void addMediaListener( MediaListener listener );
+  public void addMediaListener(MediaListener listener);
 
-	public void removeMediaListener( MediaListener listener );
+  public void removeMediaListener(MediaListener listener);
 
-	public void release();
+  public void release();
 
-	public Dimension getVideoSize();
+  public Dimension getVideoSize();
 }

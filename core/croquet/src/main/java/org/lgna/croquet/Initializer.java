@@ -46,5 +46,5 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface Initializer<T> {
-	void initialize( T value );
+  void initialize(T value);
 }

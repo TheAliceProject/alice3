@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderFullBodyOutfitSloppySuit implements MaleElderFullBodyOutfit {
-	BROWN,
-	BLUE,
-	BLUE_BROWN,
-	BROWN_WHITE;
+  BROWN, BLUE, BLUE_BROWN, BROWN_WHITE
 
 }

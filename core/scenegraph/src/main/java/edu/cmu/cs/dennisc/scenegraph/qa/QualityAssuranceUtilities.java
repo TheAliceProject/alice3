@@ -58,59 +58,59 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class QualityAssuranceUtilities {
-	private QualityAssuranceUtilities() {
-		throw new RuntimeException();
-	}
+  private QualityAssuranceUtilities() {
+    throw new RuntimeException();
+  }
 
-	private static boolean isOrientationMendingRequired( AffineMatrix4x4 lt ) {
-		return lt.orientation.isNaN() || lt.orientation.right.isWithinReasonableEpsilonOfZero() || lt.orientation.up.isWithinReasonableEpsilonOfZero() || lt.orientation.backward.isWithinReasonableEpsilonOfZero();
-	}
+  private static boolean isOrientationMendingRequired(AffineMatrix4x4 lt) {
+    return lt.orientation.isNaN() || lt.orientation.right.isWithinReasonableEpsilonOfZero() || lt.orientation.up.isWithinReasonableEpsilonOfZero() || lt.orientation.backward.isWithinReasonableEpsilonOfZero();
+  }
 
-	private static boolean isTranslationMendingRequired( AffineMatrix4x4 lt ) {
-		return lt.translation.isNaN();
-	}
+  private static boolean isTranslationMendingRequired(AffineMatrix4x4 lt) {
+    return lt.translation.isNaN();
+  }
 
-	private static void appendProblems( List<Problem> problems, Component sgComponent ) {
-		if( sgComponent != null ) {
-			if( sgComponent instanceof Composite ) {
-				Composite sgComposite = (Composite)sgComponent;
-				if( sgComponent instanceof AbstractTransformable ) {
-					AbstractTransformable sgTransformable = (AbstractTransformable)sgComponent;
-					AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
-					boolean isOrientationMendingRequired = isOrientationMendingRequired( lt );
-					boolean isTranslationMendingRequired = isTranslationMendingRequired( lt );
-					if( isOrientationMendingRequired || isTranslationMendingRequired ) {
-						problems.add( new BadLocalTransformation( sgTransformable, isOrientationMendingRequired, isTranslationMendingRequired ) );
-					}
-				}
-				for( Component sgChild : sgComposite.getComponents() ) {
-					appendProblems( problems, sgChild );
-				}
-			} else if( sgComponent instanceof Visual ) {
-				Visual sgVisual = (Visual)sgComponent;
-				Matrix3x3 scale = sgVisual.scale.getValue();
-				if( scale.isNaN() ) { //todo: check isZero()?
-					problems.add( new BadScale( sgVisual ) );
-				}
-				if( sgVisual instanceof SkeletonVisual ) {
-					SkeletonVisual sgSkeletonVisual = (SkeletonVisual)sgVisual;
-					appendProblems( problems, sgSkeletonVisual.skeleton.getValue() );
-				}
-			}
-		}
-	}
+  private static void appendProblems(List<Problem> problems, Component sgComponent) {
+    if (sgComponent != null) {
+      if (sgComponent instanceof Composite) {
+        Composite sgComposite = (Composite) sgComponent;
+        if (sgComponent instanceof AbstractTransformable) {
+          AbstractTransformable sgTransformable = (AbstractTransformable) sgComponent;
+          AffineMatrix4x4 lt = sgTransformable.getLocalTransformation();
+          boolean isOrientationMendingRequired = isOrientationMendingRequired(lt);
+          boolean isTranslationMendingRequired = isTranslationMendingRequired(lt);
+          if (isOrientationMendingRequired || isTranslationMendingRequired) {
+            problems.add(new BadLocalTransformation(sgTransformable, isOrientationMendingRequired, isTranslationMendingRequired));
+          }
+        }
+        for (Component sgChild : sgComposite.getComponents()) {
+          appendProblems(problems, sgChild);
+        }
+      } else if (sgComponent instanceof Visual) {
+        Visual sgVisual = (Visual) sgComponent;
+        Matrix3x3 scale = sgVisual.scale.getValue();
+        if (scale.isNaN()) { //todo: check isZero()?
+          problems.add(new BadScale(sgVisual));
+        }
+        if (sgVisual instanceof SkeletonVisual) {
+          SkeletonVisual sgSkeletonVisual = (SkeletonVisual) sgVisual;
+          appendProblems(problems, sgSkeletonVisual.skeleton.getValue());
+        }
+      }
+    }
+  }
 
-	public static List<Problem> inspect( Component sgComponent ) {
-		List<Problem> rv = Lists.newLinkedList();
-		appendProblems( rv, sgComponent );
-		return rv;
-	}
+  public static List<Problem> inspect(Component sgComponent) {
+    List<Problem> rv = Lists.newLinkedList();
+    appendProblems(rv, sgComponent);
+    return rv;
+  }
 
-	public static void inspectAndMendIfNecessary( Component sgComponent, Mender mender ) {
-		List<Problem> problems = inspect( sgComponent );
-		for( Problem problem : problems ) {
-			Logger.errln( problem );
-			problem.mend( mender );
-		}
-	}
+  public static void inspectAndMendIfNecessary(Component sgComponent, Mender mender) {
+    List<Problem> problems = inspect(sgComponent);
+    for (Problem problem : problems) {
+      Logger.errln(problem);
+      problem.mend(mender);
+    }
+  }
 }

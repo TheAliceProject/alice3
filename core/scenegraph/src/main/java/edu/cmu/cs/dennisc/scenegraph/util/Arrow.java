@@ -57,83 +57,83 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class Arrow extends Transformable {
-	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance cylinderFrontFacingAppearance, SimpleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired ) {
-		this.bottomToTopAxis = bottomToTopAxis;
+  public Arrow(double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance cylinderFrontFacingAppearance, SimpleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired) {
+    this.bottomToTopAxis = bottomToTopAxis;
 
-		this.sgVisualCylinder = new Visual();
-		this.sgVisualCylinder.setName( "Arrow Shaft" );
-		sgVisualCylinder.frontFacingAppearance.setValue( cylinderFrontFacingAppearance );
+    this.sgVisualCylinder = new Visual();
+    this.sgVisualCylinder.setName("Arrow Shaft");
+    sgVisualCylinder.frontFacingAppearance.setValue(cylinderFrontFacingAppearance);
 
-		this.sgCylinder = new Cylinder();
+    this.sgCylinder = new Cylinder();
 
-		sgCylinder.topRadius.setValue( radiusCylinder );
-		sgCylinder.bottomRadius.setValue( radiusCylinder );
-		sgCylinder.length.setValue( lengthCylinder );
-		sgCylinder.bottomToTopAxis.setValue( this.bottomToTopAxis );
-		sgCylinder.hasTopCap.setValue( false );
-		//todo?
-		sgCylinder.hasBottomCap.setValue( isBottomCapDesired );
+    sgCylinder.topRadius.setValue(radiusCylinder);
+    sgCylinder.bottomRadius.setValue(radiusCylinder);
+    sgCylinder.length.setValue(lengthCylinder);
+    sgCylinder.bottomToTopAxis.setValue(this.bottomToTopAxis);
+    sgCylinder.hasTopCap.setValue(false);
+    //todo?
+    sgCylinder.hasBottomCap.setValue(isBottomCapDesired);
 
-		this.sgVisualCone = new TransformableVisual();
-		setConeTranslation( lengthCylinder );
-		this.sgVisualCone.setName( "Arrow Tip" );
-		sgVisualCone.frontFacingAppearance.setValue( coneFrontFacingAppearance );
+    this.sgVisualCone = new TransformableVisual();
+    setConeTranslation(lengthCylinder);
+    this.sgVisualCone.setName("Arrow Tip");
+    sgVisualCone.frontFacingAppearance.setValue(coneFrontFacingAppearance);
 
-		this.sgCone = new Cylinder();
+    this.sgCone = new Cylinder();
 
-		sgCone.topRadius.setValue( 0.0 );
-		sgCone.bottomRadius.setValue( radiusCone );
-		sgCone.length.setValue( lengthCone );
-		sgCone.bottomToTopAxis.setValue( this.bottomToTopAxis );
-		sgCone.hasTopCap.setValue( false ); //redundant
-		sgCone.hasBottomCap.setValue( true );
+    sgCone.topRadius.setValue(0.0);
+    sgCone.bottomRadius.setValue(radiusCone);
+    sgCone.length.setValue(lengthCone);
+    sgCone.bottomToTopAxis.setValue(this.bottomToTopAxis);
+    sgCone.hasTopCap.setValue(false); //redundant
+    sgCone.hasBottomCap.setValue(true);
 
-		sgVisualCylinder.geometries.setValue( new Geometry[] { sgCylinder } );
-		sgVisualCone.geometries.setValue( new Geometry[] { sgCone } );
+    sgVisualCylinder.geometries.setValue(new Geometry[] {sgCylinder});
+    sgVisualCone.geometries.setValue(new Geometry[] {sgCone});
 
-		sgVisualCylinder.setParent( this );
-		sgVisualCone.setParent( this );
-	}
+    sgVisualCylinder.setParent(this);
+    sgVisualCone.setParent(this);
+  }
 
-	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
-		this( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, frontFacingAppearance, frontFacingAppearance, isBottomCapDesired );
-	}
+  public Arrow(double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance frontFacingAppearance, boolean isBottomCapDesired) {
+    this(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, frontFacingAppearance, frontFacingAppearance, isBottomCapDesired);
+  }
 
-	private void setConeTranslation( double lengthCylinder ) {
-		Vector3 translation = Vector3.createMultiplication( new Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), this.bottomToTopAxis.accessVector() );
-		AffineMatrix4x4 currentTransform = this.sgVisualCone.getTransformable().localTransformation.getValue();
-		currentTransform.translation.set( translation );
-		this.sgVisualCone.getTransformable().localTransformation.setValue( currentTransform );
-	}
+  private void setConeTranslation(double lengthCylinder) {
+    Vector3 translation = Vector3.createMultiplication(new Vector3(lengthCylinder, lengthCylinder, lengthCylinder), this.bottomToTopAxis.accessVector());
+    AffineMatrix4x4 currentTransform = this.sgVisualCone.getTransformable().localTransformation.getValue();
+    currentTransform.translation.set(translation);
+    this.sgVisualCone.getTransformable().localTransformation.setValue(currentTransform);
+  }
 
-	public void resize( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone ) {
-		this.sgCylinder.topRadius.setValue( radiusCylinder );
-		this.sgCylinder.bottomRadius.setValue( radiusCylinder );
-		this.sgCylinder.length.setValue( lengthCylinder );
-		this.sgCone.topRadius.setValue( 0.0 );
-		this.sgCone.bottomRadius.setValue( radiusCone );
-		this.sgCone.length.setValue( lengthCone );
-		setConeTranslation( lengthCylinder );
+  public void resize(double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone) {
+    this.sgCylinder.topRadius.setValue(radiusCylinder);
+    this.sgCylinder.bottomRadius.setValue(radiusCylinder);
+    this.sgCylinder.length.setValue(lengthCylinder);
+    this.sgCone.topRadius.setValue(0.0);
+    this.sgCone.bottomRadius.setValue(radiusCone);
+    this.sgCone.length.setValue(lengthCone);
+    setConeTranslation(lengthCylinder);
 
-	}
+  }
 
-	public Visual[] getVisuals() {
-		return new Visual[] { this.sgVisualCone, this.sgVisualCylinder };
-	}
+  public Visual[] getVisuals() {
+    return new Visual[] {this.sgVisualCone, this.sgVisualCylinder};
+  }
 
-	public void setFrontFacingAppearance( TexturedAppearance frontFacingAppearance ) {
-		this.sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
-		this.sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
-	}
+  public void setFrontFacingAppearance(TexturedAppearance frontFacingAppearance) {
+    this.sgVisualCone.frontFacingAppearance.setValue(frontFacingAppearance);
+    this.sgVisualCylinder.frontFacingAppearance.setValue(frontFacingAppearance);
+  }
 
-	public void setVisualShowing( boolean isShowing ) {
-		this.sgVisualCone.isShowing.setValue( isShowing );
-		this.sgVisualCylinder.isShowing.setValue( isShowing );
-	}
+  public void setVisualShowing(boolean isShowing) {
+    this.sgVisualCone.isShowing.setValue(isShowing);
+    this.sgVisualCylinder.isShowing.setValue(isShowing);
+  }
 
-	private final Visual sgVisualCylinder;
-	private final TransformableVisual sgVisualCone;
-	private final Cylinder sgCone;
-	private final Cylinder sgCylinder;
-	private final BottomToTopAxis bottomToTopAxis;
+  private final Visual sgVisualCylinder;
+  private final TransformableVisual sgVisualCone;
+  private final Cylinder sgCone;
+  private final Cylinder sgCylinder;
+  private final BottomToTopAxis bottomToTopAxis;
 }

@@ -54,56 +54,56 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class MouseFocusEventQueue extends EventQueue {
-	private static MouseFocusEventQueue singleton;
+  private static MouseFocusEventQueue singleton;
 
-	public static MouseFocusEventQueue getSingleton() {
-		if( singleton != null ) {
-			//pass
-		} else {
-			singleton = new MouseFocusEventQueue();
-		}
-		return singleton;
-	}
+  public static MouseFocusEventQueue getSingleton() {
+    if (singleton != null) {
+      //pass
+    } else {
+      singleton = new MouseFocusEventQueue();
+    }
+    return singleton;
+  }
 
-	private Component componentWithMouseFocus = null;
+  private Component componentWithMouseFocus = null;
 
-	public void pushComponentWithMouseFocus( Component componentWithMouseFocus ) {
-		assert this.componentWithMouseFocus == null;
-		this.componentWithMouseFocus = componentWithMouseFocus;
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+  public void pushComponentWithMouseFocus(Component componentWithMouseFocus) {
+    assert this.componentWithMouseFocus == null;
+    this.componentWithMouseFocus = componentWithMouseFocus;
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 
-		//sadly, this breaks opengl on for some video card drivers
-		toolkit.getSystemEventQueue().push( this );
+    //sadly, this breaks opengl on for some video card drivers
+    toolkit.getSystemEventQueue().push(this);
 
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
-	}
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+  }
 
-	public Component popComponentWithMouseFocus() {
-		assert this.componentWithMouseFocus != null;
-		Component rv = this.componentWithMouseFocus;
-		this.componentWithMouseFocus = null;
-		//java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
-		this.pop();
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
-		return rv;
-	}
+  public Component popComponentWithMouseFocus() {
+    assert this.componentWithMouseFocus != null;
+    Component rv = this.componentWithMouseFocus;
+    this.componentWithMouseFocus = null;
+    //java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+    this.pop();
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+    return rv;
+  }
 
-	@Override
-	protected void dispatchEvent( AWTEvent e ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "dispatchEvent", e );
-		if( this.componentWithMouseFocus != null ) {
-			if( e instanceof MouseEvent ) {
-				MouseEvent me = (MouseEvent)e;
-				Component curr = me.getComponent();
-				if( curr == this.componentWithMouseFocus ) {
-					//pass
-				} else {
-					e = MouseEventUtilities.convertMouseEvent( curr, me, this.componentWithMouseFocus );
-				}
-			}
-		}
-		super.dispatchEvent( e );
-	}
+  @Override
+  protected void dispatchEvent(AWTEvent e) {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "dispatchEvent", e );
+    if (this.componentWithMouseFocus != null) {
+      if (e instanceof MouseEvent) {
+        MouseEvent me = (MouseEvent) e;
+        Component curr = me.getComponent();
+        if (curr == this.componentWithMouseFocus) {
+          //pass
+        } else {
+          e = MouseEventUtilities.convertMouseEvent(curr, me, this.componentWithMouseFocus);
+        }
+      }
+    }
+    super.dispatchEvent(e);
+  }
 }

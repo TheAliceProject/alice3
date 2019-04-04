@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitDressKorean implements MaleAdultFullBodyOutfit {
-	BLUE_CREAM,
-	RED_BLUE,
-	RED_GREEN;
+  BLUE_CREAM, RED_BLUE, RED_GREEN
 
 }

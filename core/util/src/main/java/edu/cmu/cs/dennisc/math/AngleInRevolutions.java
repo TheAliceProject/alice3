@@ -49,98 +49,98 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public class AngleInRevolutions implements Angle {
-	private double m_revolutions;
+  private double m_revolutions;
 
-	public AngleInRevolutions( double revolutions ) {
-		setAsRevolutions( revolutions );
-	}
+  public AngleInRevolutions(double revolutions) {
+    setAsRevolutions(revolutions);
+  }
 
-	public AngleInRevolutions( Angle other ) {
-		set( other );
-	}
+  public AngleInRevolutions(Angle other) {
+    set(other);
+  }
 
-	@Override
-	public void decode( BinaryDecoder binaryDecoder ) {
-		m_revolutions = binaryDecoder.decodeDouble();
-	}
+  @Override
+  public void decode(BinaryDecoder binaryDecoder) {
+    m_revolutions = binaryDecoder.decodeDouble();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_revolutions );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(m_revolutions);
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Angle ) {
-			Angle a = (Angle)obj;
-			return m_revolutions == a.getAsRevolutions();
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Angle) {
+      Angle a = (Angle) obj;
+      return m_revolutions == a.getAsRevolutions();
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isNaN() {
-		return Double.isNaN( m_revolutions );
-	}
+  @Override
+  public boolean isNaN() {
+    return Double.isNaN(m_revolutions);
+  }
 
-	@Override
-	public void setNaN() {
-		m_revolutions = Double.NaN;
-	}
+  @Override
+  public void setNaN() {
+    m_revolutions = Double.NaN;
+  }
 
-	@Override
-	public double getAsRadians() {
-		return AngleUtilities.revolutionsToRadians( m_revolutions );
-	}
+  @Override
+  public double getAsRadians() {
+    return AngleUtilities.revolutionsToRadians(m_revolutions);
+  }
 
-	@Override
-	public double getAsDegrees() {
-		return AngleUtilities.revolutionsToDegrees( m_revolutions );
-	}
+  @Override
+  public double getAsDegrees() {
+    return AngleUtilities.revolutionsToDegrees(m_revolutions);
+  }
 
-	@Override
-	public double getAsRevolutions() {
-		return m_revolutions;
-	}
+  @Override
+  public double getAsRevolutions() {
+    return m_revolutions;
+  }
 
-	@Override
-	public void setAsRadians( double radians ) {
-		m_revolutions = AngleUtilities.radiansToRevolutions( radians );
-	}
+  @Override
+  public void setAsRadians(double radians) {
+    m_revolutions = AngleUtilities.radiansToRevolutions(radians);
+  }
 
-	@Override
-	public void setAsDegrees( double degrees ) {
-		m_revolutions = AngleUtilities.degreesToRevolutions( degrees );
-	}
+  @Override
+  public void setAsDegrees(double degrees) {
+    m_revolutions = AngleUtilities.degreesToRevolutions(degrees);
+  }
 
-	@Override
-	public void setAsRevolutions( double revolutions ) {
-		m_revolutions = revolutions;
-	}
+  @Override
+  public void setAsRevolutions(double revolutions) {
+    m_revolutions = revolutions;
+  }
 
-	@Override
-	public Angle createCopy() {
-		return new AngleInDegrees( this );
-	}
+  @Override
+  public Angle createCopy() {
+    return new AngleInDegrees(this);
+  }
 
-	@Override
-	public void set( Angle other ) {
-		setAsRevolutions( other.getAsRevolutions() );
-	}
+  @Override
+  public void set(Angle other) {
+    setAsRevolutions(other.getAsRevolutions());
+  }
 
-	@Override
-	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
-		setAsRevolutions( InterpolationUtilities.interpolate( a0.getAsRevolutions(), a1.getAsRevolutions(), portion ) );
-	}
+  @Override
+  public void setToInterpolation(Angle a0, Angle a1, double portion) {
+    setAsRevolutions(InterpolationUtilities.interpolate(a0.getAsRevolutions(), a1.getAsRevolutions(), portion));
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( getClass().getName() );
-		sb.append( "[" );
-		sb.append( m_revolutions );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(getClass().getName());
+    sb.append("[");
+    sb.append(m_revolutions);
+    sb.append("]");
+    return sb.toString();
+  }
 }

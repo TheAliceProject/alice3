@@ -53,33 +53,33 @@ import org.lgna.story.resources.sims2.PersonResource;
  * @author Dennis Cosgrove
  */
 public class SetPersonResourceEdit extends AbstractEdit {
-	private final PersonResource prevResource;
-	private final PersonResource nextResource;
+  private final PersonResource prevResource;
+  private final PersonResource nextResource;
 
-	public SetPersonResourceEdit( UserActivity userActivity, PersonResource nextResource ) {
-		super( userActivity );
-		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		this.prevResource = ingredientsComposite.createResourceFromStates();
-		this.nextResource = nextResource;
-	}
+  public SetPersonResourceEdit(UserActivity userActivity, PersonResource nextResource) {
+    super(userActivity);
+    IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
+    this.prevResource = ingredientsComposite.createResourceFromStates();
+    this.nextResource = nextResource;
+  }
 
-	private void setResource( PersonResource resource ) {
-		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
-		ingredientsComposite.setStates( resource );
-	}
+  private void setResource(PersonResource resource) {
+    IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
+    ingredientsComposite.setStates(resource);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.setResource( this.nextResource );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.setResource(this.nextResource);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.setResource( this.prevResource );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.setResource(this.prevResource);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "randomize" );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("randomize");
+  }
 }

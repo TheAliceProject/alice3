@@ -53,47 +53,47 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
-	@Override
-	public AbstractCamera getCamera() {
-		return this.camera;
-	}
+  @Override
+  public AbstractCamera getCamera() {
+    return this.camera;
+  }
 
-	@Override
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
-		this.setManipulatedTransformable( this.getManipulatedTransformableFromCamera() );
-	}
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    this.camera = camera;
+    this.setManipulatedTransformable(this.getManipulatedTransformableFromCamera());
+  }
 
-	@Override
-	public CameraView getDesiredCameraView() {
-		return this.desiredCameraView;
-	}
+  @Override
+  public CameraView getDesiredCameraView() {
+    return this.desiredCameraView;
+  }
 
-	@Override
-	public void setDesiredCameraView( CameraView cameraView ) {
-		this.desiredCameraView = cameraView;
-	}
+  @Override
+  public void setDesiredCameraView(CameraView cameraView) {
+    this.desiredCameraView = cameraView;
+  }
 
-	public Transformable getManipulatedTransformableFromCamera() {
-		AbstractCamera camera = this.getCamera();
-		if( ( camera != null ) && ( camera.getParent() instanceof Transformable ) ) {
-			return (Transformable)camera.getParent();
-		} else {
-			return null;
-		}
-	}
+  public Transformable getManipulatedTransformableFromCamera() {
+    AbstractCamera camera = this.getCamera();
+    if ((camera != null) && (camera.getParent() instanceof Transformable)) {
+      return (Transformable) camera.getParent();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		return this.manipulatedTransformable != null;
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    return this.manipulatedTransformable != null;
+  }
 
-	@Override
-	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable() {
-		return null;
-	}
+  @Override
+  //We don't want to change the handle set when moving the camera
+  protected HandleSet getHandleSetToEnable() {
+    return null;
+  }
 
-	protected AbstractCamera camera = null;
-	private CameraView desiredCameraView;
+  protected AbstractCamera camera = null;
+  private CameraView desiredCameraView;
 }

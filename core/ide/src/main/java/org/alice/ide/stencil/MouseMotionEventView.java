@@ -53,26 +53,26 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class MouseMotionEventView extends CustomView {
-	private final AWTEventListener awtEventListener = new AWTEventListener() {
-		@Override
-		public void eventDispatched( AWTEvent event ) {
-			MouseEvent e = (MouseEvent)event;
-			e = MouseEventUtilities.convertMouseEvent( e.getComponent(), e, MouseMotionEventView.this.getAwtComponent() );
-			MouseMotionEventView.this.handleMouseMotionEvent( e );
-		}
-	};
+  private final AWTEventListener awtEventListener = new AWTEventListener() {
+    @Override
+    public void eventDispatched(AWTEvent event) {
+      MouseEvent e = (MouseEvent) event;
+      e = MouseEventUtilities.convertMouseEvent(e.getComponent(), e, MouseMotionEventView.this.getAwtComponent());
+      MouseMotionEventView.this.handleMouseMotionEvent(e);
+    }
+  };
 
-	protected abstract void handleMouseMotionEvent( MouseEvent e );
+  protected abstract void handleMouseMotionEvent(MouseEvent e);
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, AWTEvent.MOUSE_MOTION_EVENT_MASK );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    Toolkit.getDefaultToolkit().addAWTEventListener(this.awtEventListener, AWTEvent.MOUSE_MOTION_EVENT_MASK);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    Toolkit.getDefaultToolkit().removeAWTEventListener(this.awtEventListener);
+    super.handleUndisplayable();
+  }
 }

@@ -56,113 +56,110 @@ import java.awt.Graphics2D;
 
 /**
  * @author alice
- * 
+ *
  */
 public class NebulousTexture extends Texture {
 
-	static {
-		AdapterFactory.register( NebulousTexture.class, NebulousTextureAdapter.class );
-		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
-		{
-			//Don't load nebulous resources if the default loading is disabled
-			//Disabling should only happen under controlled circumstances like running the model batch process
-		}
-		else
-		{
-			NebulousStorytellingResources.INSTANCE.loadSimsBundles();
-		}
-	}
+  static {
+    AdapterFactory.register(NebulousTexture.class, NebulousTextureAdapter.class);
+    if (SystemUtilities.getBooleanProperty("org.alice.ide.disableDefaultNebulousLoading", false)) {
+      //Don't load nebulous resources if the default loading is disabled
+      //Disabling should only happen under controlled circumstances like running the model batch process
+    } else {
+      NebulousStorytellingResources.INSTANCE.loadSimsBundles();
+    }
+  }
 
-	private final String m_textureKey;
-	private boolean m_isMipMappingDesired = true;
-	private boolean m_isPotentiallyAlphaBlended = false;
+  private final String m_textureKey;
+  private boolean m_isMipMappingDesired = true;
+  private boolean m_isPotentiallyAlphaBlended = false;
 
-	public native void initializeIfNecessary( Object textureKey );
+  public native void initializeIfNecessary(Object textureKey);
 
-	public native void setup( GL gl );
+  public native void setup(GL gl);
 
-	public native void addReference();
+  public native void addReference();
 
-	public native void removeReference();
+  public native void removeReference();
 
-	public NebulousTexture( String textureKey ) {
-		m_textureKey = textureKey;
-		this.initializeIfNecessary( m_textureKey );
-	}
+  public NebulousTexture(String textureKey) {
+    m_textureKey = textureKey;
+    this.initializeIfNecessary(m_textureKey);
+  }
 
-	public NebulousTexture( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		m_textureKey = binaryDecoder.decodeString();
-		this.initializeIfNecessary( m_textureKey );
-	}
+  public NebulousTexture(BinaryDecoder binaryDecoder) {
+    super(binaryDecoder);
+    m_textureKey = binaryDecoder.decodeString();
+    this.initializeIfNecessary(m_textureKey);
+  }
 
-	public void doSetup( GL gl ) {
-		assert m_textureKey != null;
-		this.initializeIfNecessary( m_textureKey );
-		this.setup( gl );
-	}
+  public void doSetup(GL gl) {
+    assert m_textureKey != null;
+    this.initializeIfNecessary(m_textureKey);
+    this.setup(gl);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		assert m_textureKey != null;
-		binaryEncoder.encode( m_textureKey );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    assert m_textureKey != null;
+    binaryEncoder.encode(m_textureKey);
+  }
 
-	public String getTextureKey() {
-		return m_textureKey;
-	}
+  public String getTextureKey() {
+    return m_textureKey;
+  }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 
-	@Override
-	public boolean isMipMappingDesired() {
-		return m_isMipMappingDesired;
-	}
+  @Override
+  public boolean isMipMappingDesired() {
+    return m_isMipMappingDesired;
+  }
 
-	public void setMipMappingDesired( boolean isMipMappingDesired ) {
-		if( m_isMipMappingDesired != isMipMappingDesired ) {
-			m_isMipMappingDesired = isMipMappingDesired;
-			fireTextureChanged();
-		}
-	}
+  public void setMipMappingDesired(boolean isMipMappingDesired) {
+    if (m_isMipMappingDesired != isMipMappingDesired) {
+      m_isMipMappingDesired = isMipMappingDesired;
+      fireTextureChanged();
+    }
+  }
 
-	@Override
-	public boolean isPotentiallyAlphaBlended() {
-		return m_isPotentiallyAlphaBlended;
-	}
+  @Override
+  public boolean isPotentiallyAlphaBlended() {
+    return m_isPotentiallyAlphaBlended;
+  }
 
-	public void setPotentiallyAlphaBlended( boolean isPotentiallyAlphaBlended ) {
-		if( m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended ) {
-			m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
-			fireTextureChanged();
-		}
-	}
+  public void setPotentiallyAlphaBlended(boolean isPotentiallyAlphaBlended) {
+    if (m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended) {
+      m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
+      fireTextureChanged();
+    }
+  }
 
-	@Override
-	public int getWidth() {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
+  @Override
+  public int getWidth() {
+    throw new RuntimeException("NOT SUPPORTED");
+  }
 
-	@Override
-	public int getHeight() {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
+  @Override
+  public int getHeight() {
+    throw new RuntimeException("NOT SUPPORTED");
+  }
 
-	@Override
-	public boolean isAnimated() {
-		return false;
-	}
+  @Override
+  public boolean isAnimated() {
+    return false;
+  }
 
-	@Override
-	public MipMapGenerationPolicy getMipMapGenerationPolicy() {
-		return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
-	}
+  @Override
+  public MipMapGenerationPolicy getMipMapGenerationPolicy() {
+    return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
+  }
 
-	@Override
-	public void paint( Graphics2D g, int width, int height ) {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
+  @Override
+  public void paint(Graphics2D g, int width, int height) {
+    throw new RuntimeException("NOT SUPPORTED");
+  }
 }

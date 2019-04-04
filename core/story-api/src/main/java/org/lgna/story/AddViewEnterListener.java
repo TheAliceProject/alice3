@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  */
 public class AddViewEnterListener {
 
-	@ClassTemplate( keywordFactoryCls = AddViewEnterListener.class )
-	public interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = AddViewEnterListener.class) public interface Detail {
+  }
 
-	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
-		return multipleEventPolicy;
-	}
+  public static MultipleEventPolicy multipleEventPolicy(MultipleEventPolicy multipleEventPolicy) {
+    return multipleEventPolicy;
+  }
 }

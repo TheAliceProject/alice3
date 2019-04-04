@@ -82,261 +82,252 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class IssueReportPane extends JPanel implements ReportGenerator {
-	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
+  protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
 
-	private static final List<String> systemPropertiesForEnnvironmentField = Collections.unmodifiableList( Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
+  private static final List<String> systemPropertiesForEnnvironmentField = Collections.unmodifiableList(Lists.newArrayList("java.version", "os.name", "os.arch"));
 
-	public static List<String> getSystemPropertiesForEnvironmentField() {
-		return systemPropertiesForEnnvironmentField;
-	}
+  public static List<String> getSystemPropertiesForEnvironmentField() {
+    return systemPropertiesForEnnvironmentField;
+  }
 
-	public static final String getEnvironmentLongDescription() {
-		StringBuilder sb = new StringBuilder();
-		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnnvironmentField ) {
-			sb.append( intersticial );
-			sb.append( propertyName );
-			sb.append( ": " );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = "\n";
-		}
-		return sb.toString();
-	}
+  public static final String getEnvironmentLongDescription() {
+    StringBuilder sb = new StringBuilder();
+    String intersticial = "";
+    for (String propertyName : systemPropertiesForEnnvironmentField) {
+      sb.append(intersticial);
+      sb.append(propertyName);
+      sb.append(": ");
+      sb.append(System.getProperty(propertyName));
+      intersticial = "\n";
+    }
+    return sb.toString();
+  }
 
-	public static final String getEnvironmentShortDescription() {
-		StringBuilder sb = new StringBuilder();
-		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnnvironmentField ) {
-			sb.append( intersticial );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = ";";
-		}
-		if( SystemUtilities.isMac() ) {
-			sb.append( ";" );
-			sb.append( System.getProperty( "os.version" ) );
-		}
-		return sb.toString();
-	}
+  public static final String getEnvironmentShortDescription() {
+    StringBuilder sb = new StringBuilder();
+    String intersticial = "";
+    for (String propertyName : systemPropertiesForEnnvironmentField) {
+      sb.append(intersticial);
+      sb.append(System.getProperty(propertyName));
+      intersticial = ";";
+    }
+    if (SystemUtilities.isMac()) {
+      sb.append(";");
+      sb.append(System.getProperty("os.version"));
+    }
+    return sb.toString();
+  }
 
-	private class SubmitAction extends SubmitReportAction {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			IssueReportPane.this.submit();
-		}
-	}
+  private class SubmitAction extends SubmitReportAction {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      IssueReportPane.this.submit();
+    }
+  }
 
-	private final Action submitAction = new SubmitAction();
+  private final Action submitAction = new SubmitAction();
 
-	private JButton submitButton = new JButton( submitAction );
+  private JButton submitButton = new JButton(submitAction);
 
-	protected abstract int getPreferredDescriptionHeight();
+  protected abstract int getPreferredDescriptionHeight();
 
-	protected abstract int getPreferredStepsHeight();
+  protected abstract int getPreferredStepsHeight();
 
-	private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
-	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
-	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
+  private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
+  private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
+  private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
 
-	protected Action getSubmitAction() {
-		return this.submitAction;
-	}
+  protected Action getSubmitAction() {
+    return this.submitAction;
+  }
 
-	protected abstract boolean isSummaryRequired();
+  protected abstract boolean isSummaryRequired();
 
-	private String getSummarySuggestiveText() {
-		String rv = SUMMARY_SUGGESTIVE_TEXT;
-		if( this.isSummaryRequired() ) {
-			rv = rv + " (Required)";
-		}
-		return rv;
-	}
+  private String getSummarySuggestiveText() {
+    String rv = SUMMARY_SUGGESTIVE_TEXT;
+    if (this.isSummaryRequired()) {
+      rv = rv + " (Required)";
+    }
+    return rv;
+  }
 
-	protected static JLabel createLabelForSingleLine( String text ) {
-		return new JLabel( text, SwingConstants.TRAILING );
-	}
+  protected static JLabel createLabelForSingleLine(String text) {
+    return new JLabel(text, SwingConstants.TRAILING);
+  }
 
-	protected static JLabel createLabelForMultiLine( String text ) {
-		JLabel rv = createLabelForSingleLine( text );
-		rv.setVerticalAlignment( SwingConstants.TOP );
-		return rv;
-	}
+  protected static JLabel createLabelForMultiLine(String text) {
+    JLabel rv = createLabelForSingleLine(text);
+    rv.setVerticalAlignment(SwingConstants.TOP);
+    return rv;
+  }
 
-	private JLabel labelSummary = createLabelForSingleLine( "summary:" );
-	private JSuggestiveTextField textSummary = new JSuggestiveTextField( "", this.getSummarySuggestiveText() );
-	protected Component[] rowSummary = SpringUtilities.createRow( labelSummary, textSummary );
+  private JLabel labelSummary = createLabelForSingleLine("summary:");
+  private JSuggestiveTextField textSummary = new JSuggestiveTextField("", this.getSummarySuggestiveText());
+  protected Component[] rowSummary = SpringUtilities.createRow(labelSummary, textSummary);
 
-	private JLabel labelDescription = createLabelForMultiLine( "description:" );
-	private JSuggestiveTextArea textDescription = new JSuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
-	private JScrollPane scrollDescription = new JScrollPane( this.textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
-		@Override
-		public Dimension getPreferredSize() {
-			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
-		}
-	};
-	protected Component[] rowDescription = SpringUtilities.createRow( labelDescription, scrollDescription );
+  private JLabel labelDescription = createLabelForMultiLine("description:");
+  private JSuggestiveTextArea textDescription = new JSuggestiveTextArea("", DESCRIPTION_SUGGESTIVE_TEXT);
+  private JScrollPane scrollDescription = new JScrollPane(this.textDescription, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+    @Override
+    public Dimension getPreferredSize() {
+      return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight());
+    }
+  };
+  protected Component[] rowDescription = SpringUtilities.createRow(labelDescription, scrollDescription);
 
-	private JLabel labelSteps = createLabelForMultiLine( "steps:" );
-	private JSuggestiveTextArea textSteps = new JSuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
-	private JScrollPane scrollSteps = new JScrollPane( this.textSteps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
-		@Override
-		public Dimension getPreferredSize() {
-			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
-		}
-	};
-	protected Component[] rowSteps = SpringUtilities.createRow( labelSteps, scrollSteps );
+  private JLabel labelSteps = createLabelForMultiLine("steps:");
+  private JSuggestiveTextArea textSteps = new JSuggestiveTextArea("", STEPS_SUGGESTIVE_TEXT);
+  private JScrollPane scrollSteps = new JScrollPane(this.textSteps, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
+    @Override
+    public Dimension getPreferredSize() {
+      return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight());
+    }
+  };
+  protected Component[] rowSteps = SpringUtilities.createRow(labelSteps, scrollSteps);
 
-	public IssueReportPane() {
-		Font font = this.submitButton.getFont();
-		this.submitButton.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
-		this.submitButton.setAlignmentX( Component.CENTER_ALIGNMENT );
+  public IssueReportPane() {
+    Font font = this.submitButton.getFont();
+    this.submitButton.setFont(font.deriveFont(font.getSize2D() * 1.5f));
+    this.submitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		this.labelSummary.setToolTipText( textSummary.getTextForBlankCondition() );
-		this.labelDescription.setToolTipText( textDescription.getTextForBlankCondition() );
-		this.labelSteps.setToolTipText( textSteps.getTextForBlankCondition() );
+    this.labelSummary.setToolTipText(textSummary.getTextForBlankCondition());
+    this.labelDescription.setToolTipText(textDescription.getTextForBlankCondition());
+    this.labelSteps.setToolTipText(textSteps.getTextForBlankCondition());
 
-		this.scrollDescription.setBorder( BorderFactory.createEmptyBorder() );
-		this.scrollSteps.setBorder( BorderFactory.createEmptyBorder() );
+    this.scrollDescription.setBorder(BorderFactory.createEmptyBorder());
+    this.scrollSteps.setBorder(BorderFactory.createEmptyBorder());
 
-		this.textDescription.setLineWrap( true );
-		this.textDescription.setWrapStyleWord( true );
-		this.textSteps.setLineWrap( true );
-		this.textSteps.setWrapStyleWord( true );
+    this.textDescription.setLineWrap(true);
+    this.textDescription.setWrapStyleWord(true);
+    this.textSteps.setLineWrap(true);
+    this.textSteps.setWrapStyleWord(true);
 
-		this.setLayout( new BorderLayout() );
-		JPanel southPane = new JPanel();
-		southPane.add( this.getSubmitButton() );
-		this.add( southPane, BorderLayout.SOUTH );
-	}
+    this.setLayout(new BorderLayout());
+    JPanel southPane = new JPanel();
+    southPane.add(this.getSubmitButton());
+    this.add(southPane, BorderLayout.SOUTH);
+  }
 
-	protected abstract String getJIRAProjectKey();
+  protected abstract String getJIRAProjectKey();
 
-	protected abstract IssueType getIssueType();
+  protected abstract IssueType getIssueType();
 
-	protected String getSummaryText() {
-		return this.textSummary.getText();
-	}
+  protected String getSummaryText() {
+    return this.textSummary.getText();
+  }
 
-	protected String getDescriptionText() {
-		return this.textDescription.getText();
-	}
+  protected String getDescriptionText() {
+    return this.textDescription.getText();
+  }
 
-	protected abstract String getEnvironmentText();
+  protected abstract String getEnvironmentText();
 
-	protected String getStepsText() {
-		return this.textSteps.getText();
-	}
+  protected String getStepsText() {
+    return this.textSteps.getText();
+  }
 
-	protected abstract Thread getThread();
+  protected abstract Thread getThread();
 
-	protected abstract Throwable getThrowable();
+  protected abstract Throwable getThrowable();
 
-	protected abstract String[] getAffectsVersions();
+  protected abstract String[] getAffectsVersions();
 
-	private String getExceptionText() {
-		Throwable throwable = this.getThrowable();
-		if( throwable != null ) {
-			return ThrowableUtilities.getStackTraceAsString( throwable );
-		} else {
-			return "";
-		}
-	}
+  private String getExceptionText() {
+    Throwable throwable = this.getThrowable();
+    if (throwable != null) {
+      return ThrowableUtilities.getStackTraceAsString(throwable);
+    } else {
+      return "";
+    }
+  }
 
-	protected abstract String getSMTPReplyTo();
+  protected abstract String getSMTPReplyTo();
 
-	protected abstract String getSMTPReplyToPersonal();
+  protected abstract String getSMTPReplyToPersonal();
 
-	protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
+  protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
 
-	protected AbstractReport addAttachments( AbstractReport rv ) {
-		Throwable throwable = this.getThrowable();
-		if( throwable != null ) {
-			rv.addAttachment( new StackTraceAttachment( throwable ) );
-		}
-		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
-			rv.addAttachment( new SystemPropertiesAttachment() );
-		}
-		return rv;
-	}
+  protected AbstractReport addAttachments(AbstractReport rv) {
+    Throwable throwable = this.getThrowable();
+    if (throwable != null) {
+      rv.addAttachment(new StackTraceAttachment(throwable));
+    }
+    if (this.isInclusionOfCompleteSystemPropertiesDesired()) {
+      rv.addAttachment(new SystemPropertiesAttachment());
+    }
+    return rv;
+  }
 
-	private Issue.Builder createIssueBuilder() {
-		return new Issue.Builder()
-				.type( this.getIssueType() )
-				.summary( this.getSummaryText() )
-				.description( this.getDescriptionText() )
-				.environment( this.getEnvironmentText() )
-				.steps( this.getStepsText() )
-				.threadAndThrowable( this.getThread(), this.getThrowable() )
-				.version( ProjectVersion.getCurrentVersionText() )
-				.reportedBy( this.getSMTPReplyToPersonal() )
-				.emailAddress( this.getSMTPReplyTo() );
-	}
+  private Issue.Builder createIssueBuilder() {
+    return new Issue.Builder().type(this.getIssueType()).summary(this.getSummaryText()).description(this.getDescriptionText()).environment(this.getEnvironmentText()).steps(this.getStepsText()).threadAndThrowable(this.getThread(), this.getThrowable()).version(ProjectVersion.getCurrentVersionText()).reportedBy(this.getSMTPReplyToPersonal()).emailAddress(this.getSMTPReplyTo());
+  }
 
-	private JIRAReport createJiraReport() {
-		Issue.Builder builder = this.createIssueBuilder();
-		JIRAReport rv = new JIRAReport( builder.build(), this.getJIRAProjectKey() );
-		return rv;
-	}
+  private JIRAReport createJiraReport() {
+    Issue.Builder builder = this.createIssueBuilder();
+    JIRAReport rv = new JIRAReport(builder.build(), this.getJIRAProjectKey());
+    return rv;
+  }
 
-	@Override
-	public JIRAReport generateIssueForRPC() {
-		JIRAReport rv = this.createJiraReport();
-		return rv;
-	}
+  @Override
+  public JIRAReport generateIssueForRPC() {
+    JIRAReport rv = this.createJiraReport();
+    return rv;
+  }
 
-	@Override
-	public JIRAReport generateIssueForSOAP() {
-		JIRAReport rv = this.createJiraReport();
-		this.addAttachments( rv );
-		return rv;
-	}
+  @Override
+  public JIRAReport generateIssueForSOAP() {
+    JIRAReport rv = this.createJiraReport();
+    this.addAttachments(rv);
+    return rv;
+  }
 
-	//	public edu.cmu.cs.dennisc.mail.MailReport generateIssueForSMTP() {
-	//		edu.cmu.cs.dennisc.mail.MailReport rv = new edu.cmu.cs.dennisc.mail.MailReport();
-	//		rv.setSubject( this.getSMTPSubject() );
-	//		rv.setBody( this.getSMTPBody() );
-	//		rv.setReplyTo( this.getSMTPReplyTo() );
-	//		rv.setReplyToPersonal( this.getSMTPReplyToPersonal() );
-	//		this.addAttachments( rv );
-	//		return rv;
-	//	}
+  //  public edu.cmu.cs.dennisc.mail.MailReport generateIssueForSMTP() {
+  //    edu.cmu.cs.dennisc.mail.MailReport rv = new edu.cmu.cs.dennisc.mail.MailReport();
+  //    rv.setSubject( this.getSMTPSubject() );
+  //    rv.setBody( this.getSMTPBody() );
+  //    rv.setReplyTo( this.getSMTPReplyTo() );
+  //    rv.setReplyToPersonal( this.getSMTPReplyToPersonal() );
+  //    this.addAttachments( rv );
+  //    return rv;
+  //  }
 
-	public JButton getSubmitButton() {
-		return this.submitButton;
-	}
+  public JButton getSubmitButton() {
+    return this.submitButton;
+  }
 
-	private boolean isSubmitAttempted = false;
-	private boolean isSubmitSuccessful = false;
-	private boolean isSubmitDone = false;
-	private URL urlResult = null;
+  private boolean isSubmitAttempted = false;
+  private boolean isSubmitSuccessful = false;
+  private boolean isSubmitDone = false;
+  private URL urlResult = null;
 
-	public boolean isSubmitAttempted() {
-		return this.isSubmitAttempted;
-	}
+  public boolean isSubmitAttempted() {
+    return this.isSubmitAttempted;
+  }
 
-	public boolean isSubmitDone() {
-		return this.isSubmitDone;
-	}
+  public boolean isSubmitDone() {
+    return this.isSubmitDone;
+  }
 
-	public boolean isSubmitSuccessful() {
-		return this.isSubmitSuccessful;
-	}
+  public boolean isSubmitSuccessful() {
+    return this.isSubmitSuccessful;
+  }
 
-	public URL getURLResult() {
-		return this.urlResult;
-	}
+  public URL getURLResult() {
+    return this.urlResult;
+  }
 
-	protected void submit() {
-		this.isSubmitSuccessful = false;
-		this.isSubmitDone = false;
-		this.urlResult = null;
-		this.isSubmitAttempted = true;
-		ProgressPane progressPane = SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
-		this.urlResult = progressPane.getURLResult();
-		this.isSubmitSuccessful = progressPane.isSuccessful();
-		this.isSubmitDone = progressPane.isDone();
-		Component root = SwingUtilities.getRoot( this );
-		if( root != null ) {
-			root.setVisible( false );
-		}
-	}
+  protected void submit() {
+    this.isSubmitSuccessful = false;
+    this.isSubmitDone = false;
+    this.urlResult = null;
+    this.isSubmitAttempted = true;
+    ProgressPane progressPane = SubmitReportUtilities.submitReport(this, this.getReportSubmissionConfiguration());
+    this.urlResult = progressPane.getURLResult();
+    this.isSubmitSuccessful = progressPane.isSuccessful();
+    this.isSubmitDone = progressPane.isDone();
+    Component root = SwingUtilities.getRoot(this);
+    if (root != null) {
+      root.setVisible(false);
+    }
+  }
 }

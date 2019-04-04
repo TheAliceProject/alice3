@@ -73,242 +73,242 @@ import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
  * @author Matt May
  */
 public class JTimeLineView extends JPanel {
-	private static final NumberFormat CENTI_FORMAT = new DecimalFormat( "0.00" );
-	private static final Shape ARROW = createArrow();
-	//	private static final java.awt.Shape D_ARROW = createEndOfTimeLineArrows();
+  private static final NumberFormat CENTI_FORMAT = new DecimalFormat("0.00");
+  private static final Shape ARROW = createArrow();
+  //  private static final java.awt.Shape D_ARROW = createEndOfTimeLineArrows();
 
-	private static Paint PRESSED_PAINT = new Color( 191, 191, 255 );
+  private static Paint PRESSED_PAINT = new Color(191, 191, 255);
 
-	public JTimeLineView( TimeLineView timeLineView ) {
-		this.addMouseListener( mlAdapter );
-		this.addMouseMotionListener( mmlAdapter );
-		this.composite = (TimeLineComposite)timeLineView.getComposite();
-		this.component = timeLineView;
-		this.setBackground( new Color( 221, 221, 221 ) );
-		this.setForeground( Color.DARK_GRAY );
-	}
+  public JTimeLineView(TimeLineView timeLineView) {
+    this.addMouseListener(mlAdapter);
+    this.addMouseMotionListener(mmlAdapter);
+    this.composite = (TimeLineComposite) timeLineView.getComposite();
+    this.component = timeLineView;
+    this.setBackground(new Color(221, 221, 221));
+    this.setForeground(Color.DARK_GRAY);
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), ( JTimeLinePoseMarker.SIZE.height - 0 ) * 2 );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), (JTimeLinePoseMarker.SIZE.height - 0) * 2);
+  }
 
-	private int calculateTimeMarkerOffset() {
-		return TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, getComposite().getTimeLine().getCurrentTime() / getComposite().getTimeLine().getEndTime() );
-	}
+  private int calculateTimeMarkerOffset() {
+    return TimeLineLayout.calculateCenterXForJTimeLinePoseMarker(this, getComposite().getTimeLine().getCurrentTime() / getComposite().getTimeLine().getEndTime());
+  }
 
-	@Override
-	public void paintComponent( Graphics g ) {
-		super.paintComponent( g );
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
 
-		Graphics2D g2 = (Graphics2D)g;
-		GraphicsContext gc = new GraphicsContext();
-		gc.pushAll( g2 );
-		try {
-			gc.pushAndSetAntialiasing( true );
-			gc.pushAndSetTextAntialiasing( true );
-			gc.pushPaint();
+    Graphics2D g2 = (Graphics2D) g;
+    GraphicsContext gc = new GraphicsContext();
+    gc.pushAll(g2);
+    try {
+      gc.pushAndSetAntialiasing(true);
+      gc.pushAndSetTextAntialiasing(true);
+      gc.pushPaint();
 
-			int height = this.getHeight();
-			int minY = ( height * 2 ) / 5;
-			int maxY = height - minY;
-			int centerY = ( minY + maxY ) / 2;
+      int height = this.getHeight();
+      int minY = (height * 2) / 5;
+      int maxY = height - minY;
+      int centerY = (minY + maxY) / 2;
 
-			int minX = TimeLineLayout.calculateMinX( this );
-			int maxX = TimeLineLayout.calculateMaxX( this );
+      int minX = TimeLineLayout.calculateMinX(this);
+      int maxX = TimeLineLayout.calculateMaxX(this);
 
-			g.setColor( Color.DARK_GRAY );
-			g.drawLine( minX, minY, minX, maxY );
-			g.drawLine( maxX, minY, maxX, maxY );
-			g.drawLine( minX, centerY, maxX, centerY );
+      g.setColor(Color.DARK_GRAY);
+      g.drawLine(minX, minY, minX, maxY);
+      g.drawLine(maxX, minY, maxX, maxY);
+      g.drawLine(minX, centerY, maxX, centerY);
 
-			AffineTransform prevTransform = g2.getTransform();
+      AffineTransform prevTransform = g2.getTransform();
 
-			Paint timePaint;
-			if( this.isTimeSliding || ( this.isWithinTimeMarker && this.isMousePressed ) ) {
-				timePaint = PRESSED_PAINT;
-			} else {
-				if( this.isWithinTimeMarker ) {
-					timePaint = Color.LIGHT_GRAY;
-				} else {
-					timePaint = Color.WHITE;
-				}
-			}
-			int xTimeMarker = this.calculateTimeMarkerOffset();
-			g2.translate( xTimeMarker, centerY );
-			g2.setPaint( timePaint );
-			g2.fill( ARROW );
-			g2.setPaint( Color.BLACK );
-			g2.draw( ARROW );
-			g2.setTransform( prevTransform );
+      Paint timePaint;
+      if (this.isTimeSliding || (this.isWithinTimeMarker && this.isMousePressed)) {
+        timePaint = PRESSED_PAINT;
+      } else {
+        if (this.isWithinTimeMarker) {
+          timePaint = Color.LIGHT_GRAY;
+        } else {
+          timePaint = Color.WHITE;
+        }
+      }
+      int xTimeMarker = this.calculateTimeMarkerOffset();
+      g2.translate(xTimeMarker, centerY);
+      g2.setPaint(timePaint);
+      g2.fill(ARROW);
+      g2.setPaint(Color.BLACK);
+      g2.draw(ARROW);
+      g2.setTransform(prevTransform);
 
-			int yText = centerY + ARROW.getBounds().height;
+      int yText = centerY + ARROW.getBounds().height;
 
-			double currentTime = this.composite.getTimeLine().getCurrentTime();
-			String currentTimeText = DoubleUtilities.format( currentTime, CENTI_FORMAT );
+      double currentTime = this.composite.getTimeLine().getCurrentTime();
+      String currentTimeText = DoubleUtilities.format(currentTime, CENTI_FORMAT);
 
-			FontMetrics fm = g.getFontMetrics();
-			int messageWidth = fm.stringWidth( currentTimeText );
-			int ascent = fm.getMaxAscent();
-			g.drawString( currentTimeText, xTimeMarker - ( messageWidth / 2 ), yText + ascent );
-			//			g.setColor( Color.WHITE );
-			//			g2.translate( TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, 1 ), centerY );
-			//			g2.fill( D_ARROW );
-			//			g2.setTransform( prevTransform );
-		} finally {
-			gc.popAll();
-		}
+      FontMetrics fm = g.getFontMetrics();
+      int messageWidth = fm.stringWidth(currentTimeText);
+      int ascent = fm.getMaxAscent();
+      g.drawString(currentTimeText, xTimeMarker - (messageWidth / 2), yText + ascent);
+      //      g.setColor( Color.WHITE );
+      //      g2.translate( TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, 1 ), centerY );
+      //      g2.fill( D_ARROW );
+      //      g2.setTransform( prevTransform );
+    } finally {
+      gc.popAll();
+    }
 
-	}
+  }
 
-	//	private static java.awt.Shape createEndOfTimeLineArrows() {
-	//		final int HEIGHT = 10;
-	//		final int WIDTH = 16;
-	//		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-	//		rv.moveTo( 1, 1 );
-	//		rv.lineTo( 1, HEIGHT );
-	//		rv.lineTo( WIDTH, 0 );
-	//		rv.lineTo( 1, -HEIGHT );
-	//		rv.lineTo( 1, -1 );
-	//		rv.lineTo( -1, -1 );
-	//		rv.lineTo( -1, -HEIGHT );
-	//		rv.lineTo( -WIDTH, 0 );
-	//		rv.lineTo( -1, HEIGHT );
-	//		rv.lineTo( -1, 1 );
-	//		rv.closePath();
-	//		//		rv.lineTo( 1, 1 );
-	//		return rv;
-	//	}
+  //  private static java.awt.Shape createEndOfTimeLineArrows() {
+  //    final int HEIGHT = 10;
+  //    final int WIDTH = 16;
+  //    java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+  //    rv.moveTo( 1, 1 );
+  //    rv.lineTo( 1, HEIGHT );
+  //    rv.lineTo( WIDTH, 0 );
+  //    rv.lineTo( 1, -HEIGHT );
+  //    rv.lineTo( 1, -1 );
+  //    rv.lineTo( -1, -1 );
+  //    rv.lineTo( -1, -HEIGHT );
+  //    rv.lineTo( -WIDTH, 0 );
+  //    rv.lineTo( -1, HEIGHT );
+  //    rv.lineTo( -1, 1 );
+  //    rv.closePath();
+  //    //    rv.lineTo( 1, 1 );
+  //    return rv;
+  //  }
 
-	private static Shape createArrow() {
-		final int HALF_ARROW = 8;
-		final int ARROW_HEIGHT = 24;
-		GeneralPath rv = new GeneralPath();
-		rv.moveTo( 0, 0 );
-		rv.lineTo( HALF_ARROW, ARROW_HEIGHT );
-		rv.lineTo( -HALF_ARROW, ARROW_HEIGHT );
-		rv.closePath();
-		return rv;
-	}
+  private static Shape createArrow() {
+    final int HALF_ARROW = 8;
+    final int ARROW_HEIGHT = 24;
+    GeneralPath rv = new GeneralPath();
+    rv.moveTo(0, 0);
+    rv.lineTo(HALF_ARROW, ARROW_HEIGHT);
+    rv.lineTo(-HALF_ARROW, ARROW_HEIGHT);
+    rv.closePath();
+    return rv;
+  }
 
-	public TimeLineComposite getComposite() {
-		return composite;
-	}
+  public TimeLineComposite getComposite() {
+    return composite;
+  }
 
-	public double getTime( MouseEvent e ) {
-		int x = e.getLocationOnScreen().x - this.getLocationOnScreen().x;
-		return ( (TimeLineLayout)getLayout() ).calculateTimeForX( x, component.getAwtComponent() );
-	}
+  public double getTime(MouseEvent e) {
+    int x = e.getLocationOnScreen().x - this.getLocationOnScreen().x;
+    return ((TimeLineLayout) getLayout()).calculateTimeForX(x, component.getAwtComponent());
+  }
 
-	private void setWithinTimeMarker( boolean isWithinTimeMarker ) {
-		if( this.isWithinTimeMarker != isWithinTimeMarker ) {
-			this.isWithinTimeMarker = isWithinTimeMarker;
-			this.repaint();
-		}
-	}
+  private void setWithinTimeMarker(boolean isWithinTimeMarker) {
+    if (this.isWithinTimeMarker != isWithinTimeMarker) {
+      this.isWithinTimeMarker = isWithinTimeMarker;
+      this.repaint();
+    }
+  }
 
-	private void setMousePressed( boolean isMousePressed ) {
-		if( this.isMousePressed != isMousePressed ) {
-			this.isMousePressed = isMousePressed;
-			this.repaint();
-		}
-	}
+  private void setMousePressed(boolean isMousePressed) {
+    if (this.isMousePressed != isMousePressed) {
+      this.isMousePressed = isMousePressed;
+      this.repaint();
+    }
+  }
 
-	private final TimeLineComposite composite;
-	private final TimeLineView component;
-	private boolean isTimeSliding = false;
-	//private boolean isEndSliding = false;
-	private boolean isWithinTimeMarker = false;
-	private boolean isMousePressed = false;
-	private final MouseMotionListener mmlAdapter = new MouseMotionListener() {
+  private final TimeLineComposite composite;
+  private final TimeLineView component;
+  private boolean isTimeSliding = false;
+  //private boolean isEndSliding = false;
+  private boolean isWithinTimeMarker = false;
+  private boolean isMousePressed = false;
+  private final MouseMotionListener mmlAdapter = new MouseMotionListener() {
 
-		private void handleTimeMarker( MouseEvent e ) {
-			int height = e.getComponent().getHeight();
-			int minY = ( height * 2 ) / 5;
-			int maxY = height - minY;
-			int centerY = ( minY + maxY ) / 2;
+    private void handleTimeMarker(MouseEvent e) {
+      int height = e.getComponent().getHeight();
+      int minY = (height * 2) / 5;
+      int maxY = height - minY;
+      int centerY = (minY + maxY) / 2;
 
-			int xTimeMarker = calculateTimeMarkerOffset();
+      int xTimeMarker = calculateTimeMarkerOffset();
 
-			int x = e.getX() - xTimeMarker;
-			int y = e.getY() - centerY;
+      int x = e.getX() - xTimeMarker;
+      int y = e.getY() - centerY;
 
-			setWithinTimeMarker( ARROW.contains( x, y ) );
-		}
+      setWithinTimeMarker(ARROW.contains(x, y));
+    }
 
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-			this.handleTimeMarker( e );
-		}
+    @Override
+    public void mouseMoved(MouseEvent e) {
+      this.handleTimeMarker(e);
+    }
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			this.handleTimeMarker( e );
-			if( isTimeSliding ) { //|| isEndSliding ) {
-				double calculateTimeForX = ( (TimeLineLayout)getLayout() ).calculateTimeForX( e.getPoint().x, component.getAwtComponent() );
-				if( isTimeSliding ) {
-					if( isTimeSliding ) {
-						getComposite().getTimeLine().setCurrentTime( calculateTimeForX );
-					}
-					//				} else if( isEndSliding ) {
-					//					getComposite().getTimeLine().setEndTime( calculateTimeForX );
-				}
-			}
-		}
-	};
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      this.handleTimeMarker(e);
+      if (isTimeSliding) { //|| isEndSliding ) {
+        double calculateTimeForX = ((TimeLineLayout) getLayout()).calculateTimeForX(e.getPoint().x, component.getAwtComponent());
+        if (isTimeSliding) {
+          if (isTimeSliding) {
+            getComposite().getTimeLine().setCurrentTime(calculateTimeForX);
+          }
+          //        } else if( isEndSliding ) {
+          //          getComposite().getTimeLine().setEndTime( calculateTimeForX );
+        }
+      }
+    }
+  };
 
-	private final MouseListener mlAdapter = new MouseListener() {
+  private final MouseListener mlAdapter = new MouseListener() {
 
-		private double prevCurrTime = 0;
-		private double prevEndTime = 10;//getComposite().getTimeLine().getEndTime();
+    private double prevCurrTime = 0;
+    private double prevEndTime = 10; //getComposite().getTimeLine().getEndTime();
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			prevCurrTime = getComposite().getTimeLine().getCurrentTime();
-			prevEndTime = getComposite().getTimeLine().getEndTime();
-			Point locationOnScreen = e.getPoint();
-			double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / getComposite().getTimeLine().getEndTime();
-			locationOnScreen.x = (int)( deltax );
-			locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
+    @Override
+    public void mousePressed(MouseEvent e) {
+      prevCurrTime = getComposite().getTimeLine().getCurrentTime();
+      prevEndTime = getComposite().getTimeLine().getEndTime();
+      Point locationOnScreen = e.getPoint();
+      double deltax = ((TimeLineLayout) getLayout()).calculateTimeForX(locationOnScreen.x, JTimeLineView.this) / getComposite().getTimeLine().getEndTime();
+      locationOnScreen.x = (int) (deltax);
+      locationOnScreen.y = locationOnScreen.y - (getHeight() / 2);
 
-			isTimeSliding = ( ARROW.contains( locationOnScreen ) && getComposite().getIsTimeMutable() );
-			//			isEndSliding = ( D_ARROW.contains( locationOnScreen ) );
-			//			if( isEndSliding ) {
-			//				System.out.println( "the end is nigh" );
-			//			}
-			setMousePressed( true );
-		}
+      isTimeSliding = (ARROW.contains(locationOnScreen) && getComposite().getIsTimeMutable());
+      //      isEndSliding = ( D_ARROW.contains( locationOnScreen ) );
+      //      if( isEndSliding ) {
+      //        System.out.println( "the end is nigh" );
+      //      }
+      setMousePressed(true);
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			setMousePressed( false );
-			if( isTimeSliding ) {
-				if( isTimeSliding ) {
-					// TODO not use Application.getActiveInstance().acquireOpenActivity()
-					UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
-					userActivity.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( userActivity, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
-					isTimeSliding = false;
-				}
-				if( isTimeSliding ) {
-					composite.selectKeyFrame( null );
-				}
-				//				if( isEndSliding ) {
-				//					step.commitAndInvokeDo( new EndTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getEndTime(), prevEndTime ) );
-				//				}
-			}
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      setMousePressed(false);
+      if (isTimeSliding) {
+        if (isTimeSliding) {
+          // TODO not use Application.getActiveInstance().acquireOpenActivity()
+          UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+          userActivity.commitAndInvokeDo(new CurrentTimeLineTimeChangeEdit(userActivity, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime));
+          isTimeSliding = false;
+        }
+        if (isTimeSliding) {
+          composite.selectKeyFrame(null);
+        }
+        //        if( isEndSliding ) {
+        //          step.commitAndInvokeDo( new EndTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getEndTime(), prevEndTime ) );
+        //        }
+      }
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-			setWithinTimeMarker( false );
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+      setWithinTimeMarker(false);
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 }

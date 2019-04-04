@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class LongPreference extends Preference<Long> {
-	public LongPreference( Long defaultValue ) {
-		super( defaultValue );
-	}
+  public LongPreference(Long defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected Long getValue( Preferences utilPrefs, String key, Long defaultValue ) {
-		return utilPrefs.getLong( key, defaultValue );
-	}
+  @Override
+  protected Long getValue(Preferences utilPrefs, String key, Long defaultValue) {
+    return utilPrefs.getLong(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, Long nextValue ) {
-		utilPrefs.putLong( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, Long nextValue) {
+    utilPrefs.putLong(key, nextValue);
+  }
 }

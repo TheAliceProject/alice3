@@ -55,12 +55,12 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public abstract class Text extends Graphic {
-	public Text( Color4f textColor, Font font ) {
-		this.textColor = new Color4fProperty( this, textColor, false );
-		this.font = new InstanceProperty<Font>( this, font );
-	}
+  public Text(Color4f textColor, Font font) {
+    this.textColor = new Color4fProperty(this, textColor, false);
+    this.font = new InstanceProperty<Font>(this, font);
+  }
 
-	public final StringProperty text = new StringProperty( this, "" );
-	public final Color4fProperty textColor;
-	public final InstanceProperty<Font> font;
+  public final StringProperty text = new StringProperty(this, "");
+  public final Color4fProperty textColor;
+  public final InstanceProperty<Font> font;
 }

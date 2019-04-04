@@ -62,92 +62,92 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class StatusLabel extends SwingComponentView<JLabel> {
-	private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
+  private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
 
-	public StatusLabel() {
-	}
+  public StatusLabel() {
+  }
 
-	public void setStatus( AbstractSeverityStatusComposite.Status status ) {
-		this.checkEventDispatchThread();
-		String text;
-		if( AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
-			text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;
-		} else {
-			text = status.getText();
-		}
-		this.getAwtComponent().setText( text );
-	}
+  public void setStatus(AbstractSeverityStatusComposite.Status status) {
+    this.checkEventDispatchThread();
+    String text;
+    if (AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status) {
+      text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;
+    } else {
+      text = status.getText();
+    }
+    this.getAwtComponent().setText(text);
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		JLabel rv = new JLabel( TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
-			@Override
-			protected void paintComponent( Graphics g ) {
-				if( this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
-					//pass
-				} else {
-					super.paintComponent( g );
-				}
-			}
-		};
+  @Override
+  protected JLabel createAwtComponent() {
+    JLabel rv = new JLabel(TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
+      @Override
+      protected void paintComponent(Graphics g) {
+        if (this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS) {
+          //pass
+        } else {
+          super.paintComponent(g);
+        }
+      }
+    };
 
-		float f0 = 0.0f;
-		float fA = 0.333f;
-		float fB = 0.667f;
-		float f1 = 1.0f;
+    float f0 = 0.0f;
+    float fA = 0.333f;
+    float fB = 0.667f;
+    float f1 = 1.0f;
 
-		final int SCALE = 20;
-		final int OFFSET = 0;
+    final int SCALE = 20;
+    final int OFFSET = 0;
 
-		f0 *= SCALE;
-		fA *= SCALE;
-		fB *= SCALE;
-		f1 *= SCALE;
+    f0 *= SCALE;
+    fA *= SCALE;
+    fB *= SCALE;
+    f1 *= SCALE;
 
-		final GeneralPath path = new GeneralPath();
-		path.moveTo( fA, f0 );
-		path.lineTo( fB, f0 );
-		path.lineTo( f1, fA );
-		path.lineTo( f1, fB );
-		path.lineTo( fB, f1 );
-		path.lineTo( fA, f1 );
-		path.lineTo( f0, fB );
-		path.lineTo( f0, fA );
-		path.closePath();
-		rv.setIcon( new Icon() {
-			@Override
-			public int getIconWidth() {
-				return SCALE + OFFSET + OFFSET;
-			}
+    final GeneralPath path = new GeneralPath();
+    path.moveTo(fA, f0);
+    path.lineTo(fB, f0);
+    path.lineTo(f1, fA);
+    path.lineTo(f1, fB);
+    path.lineTo(fB, f1);
+    path.lineTo(fA, f1);
+    path.lineTo(f0, fB);
+    path.lineTo(f0, fA);
+    path.closePath();
+    rv.setIcon(new Icon() {
+      @Override
+      public int getIconWidth() {
+        return SCALE + OFFSET + OFFSET;
+      }
 
-			@Override
-			public int getIconHeight() {
-				return SCALE + OFFSET + OFFSET;
-			}
+      @Override
+      public int getIconHeight() {
+        return SCALE + OFFSET + OFFSET;
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				Graphics2D g2 = (Graphics2D)g;
-				AffineTransform m = g2.getTransform();
-				Font font = g2.getFont();
-				Paint paint = g2.getPaint();
-				try {
-					g2.translate( OFFSET + x, OFFSET + y );
-					g2.fill( path );
-					g2.setPaint( Color.WHITE );
-					g2.draw( path );
-					g2.setPaint( Color.WHITE );
-					g2.setFont( new Font( null, Font.BOLD, 12 ) );
-					g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-					final int FUDGE_X = 1;
-					GraphicsUtilities.drawCenteredText( g2, "X", FUDGE_X, 0, SCALE, SCALE );
-				} finally {
-					g2.setTransform( m );
-					g2.setPaint( paint );
-					g2.setFont( font );
-				}
-			}
-		} );
-		return rv;
-	}
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2 = (Graphics2D) g;
+        AffineTransform m = g2.getTransform();
+        Font font = g2.getFont();
+        Paint paint = g2.getPaint();
+        try {
+          g2.translate(OFFSET + x, OFFSET + y);
+          g2.fill(path);
+          g2.setPaint(Color.WHITE);
+          g2.draw(path);
+          g2.setPaint(Color.WHITE);
+          g2.setFont(new Font(null, Font.BOLD, 12));
+          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+          final int FUDGE_X = 1;
+          GraphicsUtilities.drawCenteredText(g2, "X", FUDGE_X, 0, SCALE, SCALE);
+        } finally {
+          g2.setTransform(m);
+          g2.setPaint(paint);
+          g2.setFont(font);
+        }
+      }
+    });
+    return rv;
+  }
 }

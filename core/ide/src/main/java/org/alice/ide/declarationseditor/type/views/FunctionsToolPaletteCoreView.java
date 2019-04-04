@@ -48,7 +48,7 @@ import org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite;
  * @author Dennis Cosgrove
  */
 public class FunctionsToolPaletteCoreView extends MethodsToolPaletteCoreView {
-	public FunctionsToolPaletteCoreView( FunctionsToolPaletteCoreComposite composite ) {
-		super( composite );
-	}
+  public FunctionsToolPaletteCoreView(FunctionsToolPaletteCoreComposite composite) {
+    super(composite);
+  }
 }

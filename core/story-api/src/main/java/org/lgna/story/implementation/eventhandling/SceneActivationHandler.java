@@ -55,27 +55,27 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
 
-	private final List<SceneActivationListener> listeners = Lists.newCopyOnWriteArrayList();
+  private final List<SceneActivationListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public void handleEventFire( SceneActivationEvent event ) {
-		for( SceneActivationListener listener : listeners ) {
-			fireEvent( listener, event );
-		}
-	}
+  public void handleEventFire(SceneActivationEvent event) {
+    for (SceneActivationListener listener : listeners) {
+      fireEvent(listener, event);
+    }
+  }
 
-	@Override
-	protected void fire( SceneActivationListener listener, SceneActivationEvent event ) {
-		listener.sceneActivated( event );
-	}
+  @Override
+  protected void fire(SceneActivationListener listener, SceneActivationEvent event) {
+    listener.sceneActivated(event);
+  }
 
-	public void addListener( SceneActivationListener listener ) {
-		registerIsFiringMap( listener );
-		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		listeners.add( listener );
-	}
+  public void addListener(SceneActivationListener listener) {
+    registerIsFiringMap(listener);
+    registerPolicyMap(listener, MultipleEventPolicy.IGNORE);
+    listeners.add(listener);
+  }
 
-	public void removeListener( SceneActivationListener listener ) {
-		listeners.remove( listener );
-	}
+  public void removeListener(SceneActivationListener listener) {
+    listeners.remove(listener);
+  }
 
 }

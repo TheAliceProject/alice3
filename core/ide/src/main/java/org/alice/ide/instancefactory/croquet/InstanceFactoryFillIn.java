@@ -74,106 +74,106 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactory, Void> {
-	private class PropertyAdapter implements PropertyListener {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private class PropertyAdapter implements PropertyListener {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			InstanceFactoryFillIn.this.markDirty();
-		}
-	}
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      InstanceFactoryFillIn.this.markDirty();
+    }
+  }
 
-	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			InstanceFactoryFillIn.this.markDirty();
-		}
-	};
-	private static Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
+  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      InstanceFactoryFillIn.this.markDirty();
+    }
+  };
+  private static Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
 
-	public static InstanceFactoryFillIn getInstance( InstanceFactory value ) {
-		synchronized( map ) {
-			InstanceFactoryFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InstanceFactoryFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static InstanceFactoryFillIn getInstance(InstanceFactory value) {
+    synchronized (map) {
+      InstanceFactoryFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new InstanceFactoryFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final InstanceFactory value;
-	private final PropertyAdapter propertyAdapter;
+  private final InstanceFactory value;
+  private final PropertyAdapter propertyAdapter;
 
-	private InstanceFactoryFillIn( InstanceFactory value ) {
-		super( UUID.fromString( "2fce347e-f10e-4eec-8ac4-291225a5da4f" ) );
-		this.value = value;
+  private InstanceFactoryFillIn(InstanceFactory value) {
+    super(UUID.fromString("2fce347e-f10e-4eec-8ac4-291225a5da4f"));
+    this.value = value;
 
-		if( this.value == ThisInstanceFactory.getInstance() ) {
-			IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
-		}
+    if (this.value == ThisInstanceFactory.getInstance()) {
+      IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener(this.typeListener);
+    }
 
-		InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
-		if( ( mutablePropertiesOfInterest != null ) && ( mutablePropertiesOfInterest.length > 0 ) ) {
-			this.propertyAdapter = new PropertyAdapter();
-		} else {
-			this.propertyAdapter = null;
-		}
-		if( ( mutablePropertiesOfInterest != null ) && ( this.propertyAdapter != null ) ) {
-			for( InstanceProperty<?> property : mutablePropertiesOfInterest ) {
-				property.addPropertyListener( this.propertyAdapter );
-			}
-		}
-	}
+    InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
+    if ((mutablePropertiesOfInterest != null) && (mutablePropertiesOfInterest.length > 0)) {
+      this.propertyAdapter = new PropertyAdapter();
+    } else {
+      this.propertyAdapter = null;
+    }
+    if ((mutablePropertiesOfInterest != null) && (this.propertyAdapter != null)) {
+      for (InstanceProperty<?> property : mutablePropertiesOfInterest) {
+        property.addPropertyListener(this.propertyAdapter);
+      }
+    }
+  }
 
-	@Override
-	protected final JComponent createMenuItemIconProxy( ItemNode<? super InstanceFactory, Void> step ) {
-		Expression expression = this.value.createTransientExpression();
-		JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+  @Override
+  protected final JComponent createMenuItemIconProxy(ItemNode<? super InstanceFactory, Void> step) {
+    Expression expression = this.value.createTransientExpression();
+    JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
 
-		Dimension iconSize;
-		if( ( this.value instanceof ThisMethodInvocationFactory ) || ( this.value instanceof ThisFieldAccessMethodInvocationFactory ) ) {
-			iconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
-		} else {
-			iconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
-		}
+    Dimension iconSize;
+    if ((this.value instanceof ThisMethodInvocationFactory) || (this.value instanceof ThisFieldAccessMethodInvocationFactory)) {
+      iconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
+    } else {
+      iconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
+    }
 
-		Icon icon = this.value.getIconFactory().getIcon( iconSize );
-		JLabel label = new JLabel( icon );
+    Icon icon = this.value.getIconFactory().getIcon(iconSize);
+    JLabel label = new JLabel(icon);
 
-		expressionPane.setAlignmentY( 0.5f );
-		label.setAlignmentY( 0.5f );
+    expressionPane.setAlignmentY(0.5f);
+    label.setAlignmentY(0.5f);
 
-		JPanel rv = new JPanel();
-		//		rv.setLayout( new java.awt.BorderLayout() );
-		//		rv.add( label, java.awt.BorderLayout.LINE_START );
-		//		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
-		rv.setLayout( new BoxLayout( rv, BoxLayout.LINE_AXIS ) );
-		rv.add( label );
-		rv.add( expressionPane );
-		rv.setOpaque( false );
-		return rv;
+    JPanel rv = new JPanel();
+    //    rv.setLayout( new java.awt.BorderLayout() );
+    //    rv.add( label, java.awt.BorderLayout.LINE_START );
+    //    rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+    rv.setLayout(new BoxLayout(rv, BoxLayout.LINE_AXIS));
+    rv.add(label);
+    rv.add(expressionPane);
+    rv.setOpaque(false);
+    return rv;
 
-	}
+  }
 
-	@Override
-	public final InstanceFactory getTransientValue( ItemNode<? super InstanceFactory, Void> node ) {
-		return this.value;
-	}
+  @Override
+  public final InstanceFactory getTransientValue(ItemNode<? super InstanceFactory, Void> node) {
+    return this.value;
+  }
 
-	@Override
-	public InstanceFactory createValue( ItemNode<? super InstanceFactory, Void> node ) {
-		return this.value;
-	}
+  @Override
+  public InstanceFactory createValue(ItemNode<? super InstanceFactory, Void> node) {
+    return this.value;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( "value=" );
-		sb.append( this.value );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append("value=");
+    sb.append(this.value);
+  }
 }

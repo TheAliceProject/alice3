@@ -58,31 +58,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclarationMenu extends MenuModel {
-	public DeclarationMenu() {
-		super( UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
-	}
+  public DeclarationMenu() {
+    super(UUID.fromString("dabfd4e0-d835-4d7c-b3b0-922fb67bada1"));
+  }
 
-	private void addTypeFillIns( List<StandardMenuItemPrepModel> models, Node<NamedUserType> node ) {
-		NamedUserType type = node.getValue();
-		if( type != null ) {
-			models.add( TypeMenu.getInstance( type ) );
-		}
-		for( Node<NamedUserType> child : node.getChildren() ) {
-			addTypeFillIns( models, child );
-		}
-	}
+  private void addTypeFillIns(List<StandardMenuItemPrepModel> models, Node<NamedUserType> node) {
+    NamedUserType type = node.getValue();
+    if (type != null) {
+      models.add(TypeMenu.getInstance(type));
+    }
+    for (Node<NamedUserType> child : node.getChildren()) {
+      addTypeFillIns(models, child);
+    }
+  }
 
-	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
-		super.handlePopupMenuPrologue( popupMenu );
+  @Override
+  public void handlePopupMenuPrologue(PopupMenu popupMenu) {
+    super.handlePopupMenuPrologue(popupMenu);
 
-		IDE ide = IDE.getActiveInstance();
-		Node<NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+    IDE ide = IDE.getActiveInstance();
+    Node<NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
 
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-		models.add( ClassesSeparator.getInstance() );
-		addTypeFillIns( models, root );
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    models.add(ClassesSeparator.getInstance());
+    addTypeFillIns(models, root);
 
-		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
-	}
+    MenuItemContainerUtilities.setMenuElements(popupMenu, models);
+  }
 }

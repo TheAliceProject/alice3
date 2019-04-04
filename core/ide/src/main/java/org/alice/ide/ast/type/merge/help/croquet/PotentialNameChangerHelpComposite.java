@@ -65,112 +65,112 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<?, ?>, M extends Member, N extends PotentialNameChanger<M>> extends SimpleOperationInputDialogCoreComposite<V> {
-	//private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
-	private final HtmlStringValue header = new HtmlStringValue( UUID.fromString( "77e35d67-a35a-4a89-875d-7fab232445d5" ) ) {
-	};
+  //private final org.lgna.croquet.PlainStringValue header = this.createStringValue( this.createKey( "header" ) );
+  private final HtmlStringValue header = new HtmlStringValue(UUID.fromString("77e35d67-a35a-4a89-875d-7fab232445d5")) {
+  };
 
-	private final PlainStringValue importNameText = this.createStringValue( "importNameText" );
-	private final PlainStringValue projectNameText = this.createStringValue( "projectNameText" );
-	private final ErrorStatus nameChangeRequiredError = this.createErrorStatus( "nameChangeRequiredError" );
-	private final N potentialNameChanger;
+  private final PlainStringValue importNameText = this.createStringValue("importNameText");
+  private final PlainStringValue projectNameText = this.createStringValue("projectNameText");
+  private final ErrorStatus nameChangeRequiredError = this.createErrorStatus("nameChangeRequiredError");
+  private final N potentialNameChanger;
 
-	private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
-		@Override
-		public Color changeColorIfAppropriate( Color defaultColor ) {
-			if( isRetainBothSelected() ) {
-				return areNamesIdentical() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
-			} else {
-				return defaultColor;
-			}
-		}
-	};
+  private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
+    @Override
+    public Color changeColorIfAppropriate(Color defaultColor) {
+      if (isRetainBothSelected()) {
+        return areNamesIdentical() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+      } else {
+        return defaultColor;
+      }
+    }
+  };
 
-	private boolean isImportDesiredPre;
-	private boolean isProjectDesiredPre;
-	private String importNamePre;
-	private String projectNamePre;
+  private boolean isImportDesiredPre;
+  private boolean isProjectDesiredPre;
+  private String importNamePre;
+  private String projectNamePre;
 
-	public PotentialNameChangerHelpComposite( UUID migrationId, N potentialNameChanger ) {
-		super( migrationId, Application.INHERIT_GROUP );
-		this.potentialNameChanger = potentialNameChanger;
-	}
+  public PotentialNameChangerHelpComposite(UUID migrationId, N potentialNameChanger) {
+    super(migrationId, Application.INHERIT_GROUP);
+    this.potentialNameChanger = potentialNameChanger;
+  }
 
-	protected abstract boolean isRetainBothSelected();
+  protected abstract boolean isRetainBothSelected();
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		//todo
-		this.getView().repaint();
-		Status rv = IS_GOOD_TO_GO_STATUS;
-		if( this.isRetainBothSelected() ) {
-			if( this.areNamesIdentical() ) {
-				rv = this.nameChangeRequiredError;
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    //todo
+    this.getView().repaint();
+    Status rv = IS_GOOD_TO_GO_STATUS;
+    if (this.isRetainBothSelected()) {
+      if (this.areNamesIdentical()) {
+        rv = this.nameChangeRequiredError;
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	protected String modifyLocalizedText( Element element, String localizedText ) {
-		String rv = super.modifyLocalizedText( element, localizedText );
-		if( rv != null ) {
-			if( element == this.importNameText ) {
-				rv = AddMembersPage.modifyFilenameLocalizedText( rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly() );
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected String modifyLocalizedText(Element element, String localizedText) {
+    String rv = super.modifyLocalizedText(element, localizedText);
+    if (rv != null) {
+      if (element == this.importNameText) {
+        rv = AddMembersPage.modifyFilenameLocalizedText(rv, this.potentialNameChanger.getUriForDescriptionPurposesOnly());
+      }
+    }
+    return rv;
+  }
 
-	public N getPotentialNameChanger() {
-		return this.potentialNameChanger;
-	}
+  public N getPotentialNameChanger() {
+    return this.potentialNameChanger;
+  }
 
-	public ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
+  public ColorCustomizer getForegroundCustomizer() {
+    return this.foregroundCustomizer;
+  }
 
-	public ErrorStatus getNameChangeRequiredError() {
-		return this.nameChangeRequiredError;
-	}
+  public ErrorStatus getNameChangeRequiredError() {
+    return this.nameChangeRequiredError;
+  }
 
-	public StringValue getHeader() {
-		return this.header;
-	}
+  public StringValue getHeader() {
+    return this.header;
+  }
 
-	public PlainStringValue getImportNameText() {
-		return this.importNameText;
-	}
+  public PlainStringValue getImportNameText() {
+    return this.importNameText;
+  }
 
-	public PlainStringValue getProjectNameText() {
-		return this.projectNameText;
-	}
+  public PlainStringValue getProjectNameText() {
+    return this.projectNameText;
+  }
 
-	private boolean areNamesIdentical() {
-		//todo
-		return this.potentialNameChanger.getImportHub().getNameState().getValue().contentEquals( this.potentialNameChanger.getProjectHub().getNameState().getValue() );
-	}
+  private boolean areNamesIdentical() {
+    //todo
+    return this.potentialNameChanger.getImportHub().getNameState().getValue().contentEquals(this.potentialNameChanger.getProjectHub().getNameState().getValue());
+  }
 
-	@Override
-	public void handlePreActivation() {
-		this.isImportDesiredPre = this.potentialNameChanger.getImportHub().getIsDesiredState().getValue();
-		this.isProjectDesiredPre = this.potentialNameChanger.getProjectHub().getIsDesiredState().getValue();
-		this.importNamePre = this.potentialNameChanger.getImportHub().getNameState().getValue();
-		this.projectNamePre = this.potentialNameChanger.getProjectHub().getNameState().getValue();
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    this.isImportDesiredPre = this.potentialNameChanger.getImportHub().getIsDesiredState().getValue();
+    this.isProjectDesiredPre = this.potentialNameChanger.getProjectHub().getIsDesiredState().getValue();
+    this.importNamePre = this.potentialNameChanger.getImportHub().getNameState().getValue();
+    this.projectNamePre = this.potentialNameChanger.getProjectHub().getNameState().getValue();
+    super.handlePreActivation();
+  }
 
-	@Override
-	protected void cancel( CancelException ce ) {
-		this.potentialNameChanger.getImportHub().getIsDesiredState().setValueTransactionlessly( this.isImportDesiredPre );
-		this.potentialNameChanger.getProjectHub().getIsDesiredState().setValueTransactionlessly( this.isProjectDesiredPre );
-		this.potentialNameChanger.getImportHub().getNameState().setValueTransactionlessly( this.importNamePre );
-		this.potentialNameChanger.getProjectHub().getNameState().setValueTransactionlessly( this.projectNamePre );
-		super.cancel( ce );
-	}
+  @Override
+  protected void cancel(CancelException ce) {
+    this.potentialNameChanger.getImportHub().getIsDesiredState().setValueTransactionlessly(this.isImportDesiredPre);
+    this.potentialNameChanger.getProjectHub().getIsDesiredState().setValueTransactionlessly(this.isProjectDesiredPre);
+    this.potentialNameChanger.getImportHub().getNameState().setValueTransactionlessly(this.importNamePre);
+    this.potentialNameChanger.getProjectHub().getNameState().setValueTransactionlessly(this.projectNamePre);
+    super.cancel(ce);
+  }
 
-	@Override
-	protected final Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected final Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
 }

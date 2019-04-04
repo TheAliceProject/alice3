@@ -56,76 +56,76 @@ import java.util.Vector;
  * @author Dennis Cosgrove
  */
 public class RPCUtilities {
-	private static XmlRpcStruct createCustomField( int id, String value ) {
-		XmlRpcStruct rv = new XmlRpcStruct();
-		Vector<String> values = new Vector<String>();
-		values.add( value );
-		rv.put( "customfieldId", "customfield_" + id );
-		rv.put( "values", values );
-		return rv;
-	}
+  private static XmlRpcStruct createCustomField(int id, String value) {
+    XmlRpcStruct rv = new XmlRpcStruct();
+    Vector<String> values = new Vector<String>();
+    values.add(value);
+    rv.put("customfieldId", "customfield_" + id);
+    rv.put("values", values);
+    return rv;
+  }
 
-	//	private static redstone.xmlrpc.XmlRpcStruct createCustomField( int id, byte[]... binaries ) {
-	//	    redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
-	//	    java.util.Vector< byte[] > values = new java.util.Vector< byte[] >();
-	//	    for( byte[] binary : binaries ) {
-	//		    values.add( binary );
-	//	    }
-	//	    rv.put( "customfieldId", "customfield_" + id );
-	//	    rv.put( "values", values );
-	//	    return rv;
-	//	}
-	public static Object logIn( XmlRpcClient client, String id, String password ) throws XmlRpcFault {
-		return client.invoke( "jira1.login", new Object[] { id, password } );
-	}
+  //  private static redstone.xmlrpc.XmlRpcStruct createCustomField( int id, byte[]... binaries ) {
+  //      redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
+  //      java.util.Vector< byte[] > values = new java.util.Vector< byte[] >();
+  //      for( byte[] binary : binaries ) {
+  //        values.add( binary );
+  //      }
+  //      rv.put( "customfieldId", "customfield_" + id );
+  //      rv.put( "values", values );
+  //      return rv;
+  //  }
+  public static Object logIn(XmlRpcClient client, String id, String password) throws XmlRpcFault {
+    return client.invoke("jira1.login", new Object[] {id, password});
+  }
 
-	public static XmlRpcStruct createIssue( JIRAReport jiraReport, XmlRpcClient client, Object token ) throws XmlRpcFault {
-		String project = jiraReport.getProjectKey();
-		XmlRpcStruct rv = new XmlRpcStruct();
-		rv.put( "project", project );
-		rv.put( "type", jiraReport.getTypeID() );
-		rv.put( "summary", jiraReport.getTruncatedSummary() );
+  public static XmlRpcStruct createIssue(JIRAReport jiraReport, XmlRpcClient client, Object token) throws XmlRpcFault {
+    String project = jiraReport.getProjectKey();
+    XmlRpcStruct rv = new XmlRpcStruct();
+    rv.put("project", project);
+    rv.put("type", jiraReport.getTypeID());
+    rv.put("summary", jiraReport.getTruncatedSummary());
 
-		StringBuilder sb = new StringBuilder();
-		sb.append( jiraReport.getDescription() );
-		sb.append( "\n\nsystem properties:\n" );
-		List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
-		for( SystemProperty property : propertyList ) {
-			sb.append( property.getKey() );
-			sb.append( ": " );
-			sb.append( property.getValue() );
-			sb.append( "\n" );
-		}
+    StringBuilder sb = new StringBuilder();
+    sb.append(jiraReport.getDescription());
+    sb.append("\n\nsystem properties:\n");
+    List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
+    for (SystemProperty property : propertyList) {
+      sb.append(property.getKey());
+      sb.append(": ");
+      sb.append(property.getValue());
+      sb.append("\n");
+    }
 
-		rv.put( "description", sb.toString() );
+    rv.put("description", sb.toString());
 
-		String[] affectsVersions = jiraReport.getAffectsVersions();
-		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
-			String affectsVersion = affectsVersions[ 0 ];
+    String[] affectsVersions = jiraReport.getAffectsVersions();
+    if ((affectsVersions != null) && (affectsVersions.length > 0)) {
+      String affectsVersion = affectsVersions[0];
 
-			List<XmlRpcStruct> versions = (List<XmlRpcStruct>)client.invoke( "jira1.getVersions", new Object[] { token, project } );
-			//System.out.println( "versions: " );
-			for( XmlRpcStruct version : versions ) {
-				//System.out.println( "\t" + version );
-				if( affectsVersion.equals( version.get( "name" ) ) ) {
-					Vector<XmlRpcStruct> remoteAffectsVersions = new Vector<XmlRpcStruct>();
-					XmlRpcStruct remoteAffectsVersion = new XmlRpcStruct();
-					remoteAffectsVersion.put( "id", version.get( "id" ) );
-					remoteAffectsVersions.add( remoteAffectsVersion );
-					rv.put( "affectsVersions", remoteAffectsVersions );
-					break;
-				}
-			}
-		}
-		rv.put( "environment", jiraReport.getEnvironment() );
-		Vector<XmlRpcStruct> customFields = new Vector<XmlRpcStruct>();
-		customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
-		customFields.add( createCustomField( 10001, jiraReport.getException() ) );
-		rv.put( "customFieldValues", customFields );
-		return (XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
-	}
+      List<XmlRpcStruct> versions = (List<XmlRpcStruct>) client.invoke("jira1.getVersions", new Object[] {token, project});
+      //System.out.println( "versions: " );
+      for (XmlRpcStruct version : versions) {
+        //System.out.println( "\t" + version );
+        if (affectsVersion.equals(version.get("name"))) {
+          Vector<XmlRpcStruct> remoteAffectsVersions = new Vector<XmlRpcStruct>();
+          XmlRpcStruct remoteAffectsVersion = new XmlRpcStruct();
+          remoteAffectsVersion.put("id", version.get("id"));
+          remoteAffectsVersions.add(remoteAffectsVersion);
+          rv.put("affectsVersions", remoteAffectsVersions);
+          break;
+        }
+      }
+    }
+    rv.put("environment", jiraReport.getEnvironment());
+    Vector<XmlRpcStruct> customFields = new Vector<XmlRpcStruct>();
+    customFields.add(createCustomField(10000, jiraReport.getSteps()));
+    customFields.add(createCustomField(10001, jiraReport.getException()));
+    rv.put("customFieldValues", customFields);
+    return (XmlRpcStruct) client.invoke("jira1.createIssue", new Object[] {token, rv});
+  }
 
-	public static String getKey( XmlRpcStruct issue ) {
-		return issue.getString( "key" );
-	}
+  public static String getKey(XmlRpcStruct issue) {
+    return issue.getString("key");
+  }
 }

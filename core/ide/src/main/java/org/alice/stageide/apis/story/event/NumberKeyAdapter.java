@@ -49,12 +49,12 @@ import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 
 public class NumberKeyAdapter extends AbstractAdapter implements NumberKeyPressListener {
-	public NumberKeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public NumberKeyAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void numberKeyPressed( NumberKeyEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void numberKeyPressed(NumberKeyEvent e) {
+    invokeEntryPoint(e);
+  }
 }

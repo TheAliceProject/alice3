@@ -50,17 +50,17 @@ import edu.cmu.cs.dennisc.animation.Style;
  * @author Dennis Cosgrove
  */
 public abstract class DoubleAnimation extends InterpolationAnimation<Double> {
-	public DoubleAnimation( Number duration, Style style, Double d0, Double d1 ) {
-		super( duration, style, d0, d1 );
-	}
+  public DoubleAnimation(Number duration, Style style, Double d0, Double d1) {
+    super(duration, style, d0, d1);
+  }
 
-	@Override
-	protected Double newE( Double other ) {
-		return other;
-	}
+  @Override
+  protected Double newE(Double other) {
+    return other;
+  }
 
-	@Override
-	protected Double interpolate( Double rv, Double v0, Double v1, double portion ) {
-		return v0 + ( ( v1 - v0 ) * portion );
-	}
+  @Override
+  protected Double interpolate(Double rv, Double v0, Double v1, double portion) {
+    return v0 + ((v1 - v0) * portion);
+  }
 }

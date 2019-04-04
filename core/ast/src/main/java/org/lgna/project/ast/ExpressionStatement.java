@@ -49,26 +49,27 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class ExpressionStatement extends Statement {
-	public ExpressionStatement() {
-	}
+  public ExpressionStatement() {
+  }
 
-	public ExpressionStatement( Expression expression ) {
-		this.expression.setValue( expression );
-	}
+  public ExpressionStatement(Expression expression) {
+    this.expression.setValue(expression);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.expression.getValue());
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpressionStatement( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendExpressionStatement(this);
+  }
 
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
+  public final ExpressionProperty expression = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      throw new RuntimeException("todo");
+    }
+  };
 }

@@ -55,23 +55,23 @@ import java.util.Date;
  * @author Dennis Cosgrove
  */
 public class TimeLabel extends Label {
-	private static final SimpleDateFormat MINUTE_SECOND_FORMAT = new SimpleDateFormat( "mm:ss." );
-	private static final NumberFormat CENTISECOND_FORMAT = new DecimalFormat( "00" );
+  private static final SimpleDateFormat MINUTE_SECOND_FORMAT = new SimpleDateFormat("mm:ss.");
+  private static final NumberFormat CENTISECOND_FORMAT = new DecimalFormat("00");
 
-	public TimeLabel() {
-		this.changeFont( TextFamily.MONOSPACED );
-		this.setHorizontalAlignment( HorizontalAlignment.TRAILING );
-	}
+  public TimeLabel() {
+    this.changeFont(TextFamily.MONOSPACED);
+    this.setHorizontalAlignment(HorizontalAlignment.TRAILING);
+  }
 
-	public void setTimeInMilliseconds( long timeInMilliseconds ) {
-		Date date = new Date( timeInMilliseconds );
-		StringBuilder sb = new StringBuilder();
-		sb.append( MINUTE_SECOND_FORMAT.format( date ) );
-		sb.append( CENTISECOND_FORMAT.format( ( timeInMilliseconds % 1000 ) / 10 ) );
-		this.setText( sb.toString() );
-	}
+  public void setTimeInMilliseconds(long timeInMilliseconds) {
+    Date date = new Date(timeInMilliseconds);
+    StringBuilder sb = new StringBuilder();
+    sb.append(MINUTE_SECOND_FORMAT.format(date));
+    sb.append(CENTISECOND_FORMAT.format((timeInMilliseconds % 1000) / 10));
+    this.setText(sb.toString());
+  }
 
-	public void setTimeInSeconds( double timeInSeconds ) {
-		this.setTimeInMilliseconds( (long)( timeInSeconds * 1000 ) );
-	}
+  public void setTimeInSeconds(double timeInSeconds) {
+    this.setTimeInMilliseconds((long) (timeInSeconds * 1000));
+  }
 }

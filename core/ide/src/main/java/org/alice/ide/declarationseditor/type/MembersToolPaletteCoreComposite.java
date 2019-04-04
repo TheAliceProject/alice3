@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MembersToolPaletteCoreComposite<MC extends MembersComposite<?>> extends ToolPaletteCoreComposite<MembersToolPaletteCoreView> {
-	private final MC membersComposite;
+  private final MC membersComposite;
 
-	public MembersToolPaletteCoreComposite( UUID migrationId, boolean initialValue, MC membersComposite ) {
-		super( migrationId, Application.DOCUMENT_UI_GROUP, initialValue );
-		this.membersComposite = membersComposite;
-	}
+  public MembersToolPaletteCoreComposite(UUID migrationId, boolean initialValue, MC membersComposite) {
+    super(migrationId, Application.DOCUMENT_UI_GROUP, initialValue);
+    this.membersComposite = membersComposite;
+  }
 
-	public MC getMembersComposite() {
-		return this.membersComposite;
-	}
+  public MC getMembersComposite() {
+    return this.membersComposite;
+  }
 
-	public NamedUserType getType() {
-		return this.membersComposite.getType();
-	}
+  public NamedUserType getType() {
+    return this.membersComposite.getType();
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

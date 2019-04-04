@@ -60,35 +60,35 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SceneFieldListData extends RefreshableListData<UserField> {
-	public SceneFieldListData() {
-		super( NodeCodec.getInstance( UserField.class ) );
-	}
+  public SceneFieldListData() {
+    super(NodeCodec.getInstance(UserField.class));
+  }
 
-	@Override
-	protected List<UserField> createValues() {
-		Project project = ProjectStack.peekProject();
-		NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
-		if( sceneType != null ) {
-			List<UserField> rv = Lists.newLinkedList();
+  @Override
+  protected List<UserField> createValues() {
+    Project project = ProjectStack.peekProject();
+    NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject(project);
+    if (sceneType != null) {
+      List<UserField> rv = Lists.newLinkedList();
 
-			final boolean IS_SCENE_FIELD_DESIRED = true;
-			if( IS_SCENE_FIELD_DESIRED ) {
-				NamedUserType programType = project.getProgramType();
-				UserField sceneField = StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( programType );
-				rv.add( sceneField );
-			}
+      final boolean IS_SCENE_FIELD_DESIRED = true;
+      if (IS_SCENE_FIELD_DESIRED) {
+        NamedUserType programType = project.getProgramType();
+        UserField sceneField = StoryApiSpecificAstUtilities.getSceneFieldFromProgramType(programType);
+        rv.add(sceneField);
+      }
 
-			for( UserField field : sceneType.getDeclaredFields() ) {
-				if( field.isPrivateAccess() && field.isFinal() && ( field.getManagementLevel() == ManagementLevel.MANAGED ) ) {
-					if( field.getValueType().isAssignableTo( SThing.class ) ) {
-						rv.add( field );
-					}
-				}
-			}
+      for (UserField field : sceneType.getDeclaredFields()) {
+        if (field.isPrivateAccess() && field.isFinal() && (field.getManagementLevel() == ManagementLevel.MANAGED)) {
+          if (field.getValueType().isAssignableTo(SThing.class)) {
+            rv.add(field);
+          }
+        }
+      }
 
-			return rv;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+      return rv;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 }

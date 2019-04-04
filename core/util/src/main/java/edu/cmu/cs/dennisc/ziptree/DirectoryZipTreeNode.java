@@ -54,91 +54,91 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class DirectoryZipTreeNode extends ZipTreeNode {
-	private List<ZipTreeNode> children = Lists.newLinkedList();
-	private boolean isSorted = false;
+  private List<ZipTreeNode> children = Lists.newLinkedList();
+  private boolean isSorted = false;
 
-	public DirectoryZipTreeNode( String path ) {
-		super( path );
-	}
+  public DirectoryZipTreeNode(String path) {
+    super(path);
+  }
 
-	@Override
-	public boolean getAllowsChildren() {
-		return true;
-	}
+  @Override
+  public boolean getAllowsChildren() {
+    return true;
+  }
 
-	private List<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> getSortedChildren() {
-		if( this.isSorted ) {
-			//pass
-		} else {
-			Collections.sort( this.children );
-			this.isSorted = true;
-		}
-		return this.children;
-	}
+  private List<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> getSortedChildren() {
+    if (this.isSorted) {
+      //pass
+    } else {
+      Collections.sort(this.children);
+      this.isSorted = true;
+    }
+    return this.children;
+  }
 
-	@Override
-	public Enumeration<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> children() {
-		return Collections.enumeration( this.getSortedChildren() );
-	}
+  @Override
+  public Enumeration<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> children() {
+    return Collections.enumeration(this.getSortedChildren());
+  }
 
-	@Override
-	public Iterator iterator() {
-		return this.children.iterator();
-	}
+  @Override
+  public Iterator iterator() {
+    return this.children.iterator();
+  }
 
-	//	public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > iterator() {
-	//		return this.children.iterator();
-	//	}
-	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt( int childIndex ) {
-		return this.getSortedChildren().get( childIndex );
-	}
+  //  public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > iterator() {
+  //    return this.children.iterator();
+  //  }
+  @Override
+  public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
+    return this.getSortedChildren().get(childIndex);
+  }
 
-	@Override
-	public int getChildCount() {
-		return this.children.size();
-	}
+  @Override
+  public int getChildCount() {
+    return this.children.size();
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
+  @Override
+  public boolean isLeaf() {
+    return false;
+  }
 
-	@Override
-	public int getIndex( TreeNode node ) {
-		return this.getSortedChildren().indexOf( node );
-	}
+  @Override
+  public int getIndex(TreeNode node) {
+    return this.getSortedChildren().indexOf(node);
+  }
 
-	/* package-private */void addChild( ZipTreeNode zipTreeNode ) {
-		this.children.add( zipTreeNode );
-		this.isSorted = false;
-	}
+  /* package-private */void addChild(ZipTreeNode zipTreeNode) {
+    this.children.add(zipTreeNode);
+    this.isSorted = false;
+  }
 
-	/* package-private */void removeChild( ZipTreeNode zipTreeNode ) {
-		this.children.remove( zipTreeNode );
-	}
+  /* package-private */void removeChild(ZipTreeNode zipTreeNode) {
+    this.children.remove(zipTreeNode);
+  }
 
-	public ZipTreeNode getChildNamed( String name ) {
-		for( ZipTreeNode zipTreeNode : this.children ) {
-			if( name.equals( zipTreeNode.getName() ) ) {
-				return zipTreeNode;
-			}
-		}
-		return null;
-	}
+  public ZipTreeNode getChildNamed(String name) {
+    for (ZipTreeNode zipTreeNode : this.children) {
+      if (name.equals(zipTreeNode.getName())) {
+        return zipTreeNode;
+      }
+    }
+    return null;
+  }
 
-	public ZipTreeNode getDescendant( String path ) {
-		ZipTreeNode rv = this;
-		String[] names = path.split( "/" );
-		for( String name : names ) {
-			if( rv instanceof DirectoryZipTreeNode ) {
-				DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)rv;
-				rv = directoryZipTreeNode.getChildNamed( name );
-			} else {
-				rv = null;
-				break;
-			}
-		}
-		return rv;
-	}
+  public ZipTreeNode getDescendant(String path) {
+    ZipTreeNode rv = this;
+    String[] names = path.split("/");
+    for (String name : names) {
+      if (rv instanceof DirectoryZipTreeNode) {
+        DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode) rv;
+        rv = directoryZipTreeNode.getChildNamed(name);
+      } else {
+        rv = null;
+        break;
+      }
+    }
+    return rv;
+  }
 }

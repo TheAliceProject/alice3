@@ -52,37 +52,37 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class FaceListCellRenderer extends IngredientListCellRenderer<Face> {
-	private static class SingletonHolder {
-		private static FaceListCellRenderer instance = new FaceListCellRenderer();
-	}
+  private static class SingletonHolder {
+    private static FaceListCellRenderer instance = new FaceListCellRenderer();
+  }
 
-	public static FaceListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FaceListCellRenderer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FaceListCellRenderer() {
-		super( 90, 120 );
-	}
+  private FaceListCellRenderer() {
+    super(90, 120);
+  }
 
-	@Override
-	protected String modifyClsNameIfNecessary( String clsName, LifeStage lifeStage, Gender gender ) {
-		StringBuilder sb = new StringBuilder();
-		if( gender != null ) {
-			String genderName = gender.name();
-			sb.append( genderName.charAt( 0 ) );
-			sb.append( genderName.substring( 1 ).toLowerCase( Locale.ENGLISH ) );
-		}
-		if( lifeStage != null ) {
-			String lifeStageName = lifeStage.name();
-			sb.append( lifeStageName.charAt( 0 ) );
-			sb.append( lifeStageName.substring( 1 ).toLowerCase( Locale.ENGLISH ) );
-		}
-		sb.append( clsName );
-		return sb.toString();
-	}
+  @Override
+  protected String modifyClsNameIfNecessary(String clsName, LifeStage lifeStage, Gender gender) {
+    StringBuilder sb = new StringBuilder();
+    if (gender != null) {
+      String genderName = gender.name();
+      sb.append(genderName.charAt(0));
+      sb.append(genderName.substring(1).toLowerCase(Locale.ENGLISH));
+    }
+    if (lifeStage != null) {
+      String lifeStageName = lifeStage.name();
+      sb.append(lifeStageName.charAt(0));
+      sb.append(lifeStageName.substring(1).toLowerCase(Locale.ENGLISH));
+    }
+    sb.append(clsName);
+    return sb.toString();
+  }
 
-	@Override
-	protected String getSubPath() {
-		return "face_pictures";
-	}
+  @Override
+  protected String getSubPath() {
+    return "face_pictures";
+  }
 }

@@ -59,53 +59,53 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class OperationImp {
-	public OperationImp( Operation operation ) {
-		this.operation = operation;
-		this.swingModel = new OperationSwingModel( operation );
-	}
+  public OperationImp(Operation operation) {
+    this.operation = operation;
+    this.swingModel = new OperationSwingModel(operation);
+  }
 
-	public OperationSwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public OperationSwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	public String getName() {
-		return String.class.cast( this.swingModel.action.getValue( Action.NAME ) );
-	}
+  public String getName() {
+    return String.class.cast(this.swingModel.action.getValue(Action.NAME));
+  }
 
-	public void setName( String name ) {
-		this.swingModel.action.putValue( Action.NAME, name );
-	}
+  public void setName(String name) {
+    this.swingModel.action.putValue(Action.NAME, name);
+  }
 
-	public void setShortDescription( String shortDescription ) {
-		this.swingModel.action.putValue( Action.SHORT_DESCRIPTION, shortDescription );
-	}
+  public void setShortDescription(String shortDescription) {
+    this.swingModel.action.putValue(Action.SHORT_DESCRIPTION, shortDescription);
+  }
 
-	public void setSmallIcon( Icon icon ) {
-		this.swingModel.action.putValue( Action.SMALL_ICON, icon );
-	}
+  public void setSmallIcon(Icon icon) {
+    this.swingModel.action.putValue(Action.SMALL_ICON, icon);
+  }
 
-	public void setAcceleratorKey( KeyStroke acceleratorKey ) {
-		this.swingModel.action.putValue( Action.ACCELERATOR_KEY, acceleratorKey );
-	}
+  public void setAcceleratorKey(KeyStroke acceleratorKey) {
+    this.swingModel.action.putValue(Action.ACCELERATOR_KEY, acceleratorKey);
+  }
 
-	public StandardMenuItemPrepModel getMenuItemPrepModel() {
-		return this.menuItemPrepModel.get();
-	}
+  public StandardMenuItemPrepModel getMenuItemPrepModel() {
+    return this.menuItemPrepModel.get();
+  }
 
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		if( this.menuItemPrepModel.peek() != null ) {
-			return Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    if (this.menuItemPrepModel.peek() != null) {
+      return Lists.newArrayListOfSingleArrayList(this.menuItemPrepModel.get());
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	private final Operation operation;
-	private final OperationSwingModel swingModel;
-	private final Lazy<StandardMenuItemPrepModel> menuItemPrepModel = new Lazy<StandardMenuItemPrepModel>() {
-		@Override
-		protected StandardMenuItemPrepModel create() {
-			return new OperationMenuItemPrepModel( operation );
-		}
-	};
+  private final Operation operation;
+  private final OperationSwingModel swingModel;
+  private final Lazy<StandardMenuItemPrepModel> menuItemPrepModel = new Lazy<StandardMenuItemPrepModel>() {
+    @Override
+    protected StandardMenuItemPrepModel create() {
+      return new OperationMenuItemPrepModel(operation);
+    }
+  };
 }

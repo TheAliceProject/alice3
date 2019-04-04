@@ -50,37 +50,37 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
-	public IntegerLiteral() {
-	}
+  public IntegerLiteral() {
+  }
 
-	public IntegerLiteral( Integer value ) {
-		this.value.setValue( value );
-	}
+  public IntegerLiteral(Integer value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Integer.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.getInstance(Integer.class);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		Integer value = this.value.getValue();
-		if( value != null ) {
-			localizer.appendInt( value );
-		} else {
-			localizer.appendNull();
-		}
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    Integer value = this.value.getValue();
+    if (value != null) {
+      localizer.appendInt(value);
+    } else {
+      localizer.appendNull();
+    }
+  }
 
-	@Override
-	public InstanceProperty<Integer> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<Integer> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendInt( value.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendInt(value.getValue());
+  }
 
-	public final IntegerProperty value = new IntegerProperty( this, 0 );
+  public final IntegerProperty value = new IntegerProperty(this, 0);
 }

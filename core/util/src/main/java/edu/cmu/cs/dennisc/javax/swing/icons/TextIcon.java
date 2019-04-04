@@ -58,49 +58,49 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class TextIcon implements Icon {
-	private final String text;
-	private final Paint paint;
-	private final Font font;
+  private final String text;
+  private final Paint paint;
+  private final Font font;
 
-	public TextIcon( String text, Paint paint, Font font ) {
-		this.text = text;
-		this.paint = paint;
-		this.font = font;
-	}
+  public TextIcon(String text, Paint paint, Font font) {
+    this.text = text;
+    this.paint = paint;
+    this.font = font;
+  }
 
-	private Rectangle2D getTextBounds( Graphics g ) {
-		FontMetrics fm = g.getFontMetrics();
-		return fm.getStringBounds( this.text, g );
-	}
+  private Rectangle2D getTextBounds(Graphics g) {
+    FontMetrics fm = g.getFontMetrics();
+    return fm.getStringBounds(this.text, g);
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.getTextBounds( GraphicsUtilities.getGraphics() ).getBounds().width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.getTextBounds(GraphicsUtilities.getGraphics()).getBounds().width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.getTextBounds( GraphicsUtilities.getGraphics() ).getBounds().height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.getTextBounds(GraphicsUtilities.getGraphics()).getBounds().height;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
 
-		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		Paint prevPaint = g2.getPaint();
-		g2.setPaint( this.paint );
+    Paint prevPaint = g2.getPaint();
+    g2.setPaint(this.paint);
 
-		Font prevFont = g2.getFont();
-		g2.setFont( this.font );
+    Font prevFont = g2.getFont();
+    g2.setFont(this.font);
 
-		FontMetrics fm = g.getFontMetrics();
-		g.drawString( this.text, x, y + fm.getMaxAscent() );
+    FontMetrics fm = g.getFontMetrics();
+    g.drawString(this.text, x, y + fm.getMaxAscent());
 
-		g2.setFont( prevFont );
-		g2.setPaint( prevPaint );
-		g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing );
-	}
+    g2.setFont(prevFont);
+    g2.setPaint(prevPaint);
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing);
+  }
 }

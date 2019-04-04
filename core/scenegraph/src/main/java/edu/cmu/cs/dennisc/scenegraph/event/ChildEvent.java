@@ -49,19 +49,19 @@ import edu.cmu.cs.dennisc.pattern.event.Event;
  * @author Dennis Cosgrove
  */
 public abstract class ChildEvent<P, C> extends Event<P> {
-	private C m_child;
+  private C m_child;
 
-	public ChildEvent( P source, C child ) {
-		super( source );
-		m_child = child;
-	}
+  public ChildEvent(P source, C child) {
+    super(source);
+    m_child = child;
+  }
 
-	public C getChild() {
-		return m_child;
-	}
+  public C getChild() {
+    return m_child;
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + "[source=" + source + ",child=" + m_child + "]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + "[source=" + source + ",child=" + m_child + "]";
+  }
 }

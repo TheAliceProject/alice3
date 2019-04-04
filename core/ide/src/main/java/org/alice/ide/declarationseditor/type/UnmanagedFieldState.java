@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldState extends FieldState {
-	private static Map<NamedUserType, UnmanagedFieldState> map = Maps.newHashMap();
+  private static Map<NamedUserType, UnmanagedFieldState> map = Maps.newHashMap();
 
-	public static synchronized UnmanagedFieldState getInstance( NamedUserType type ) {
-		UnmanagedFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UnmanagedFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized UnmanagedFieldState getInstance(NamedUserType type) {
+    UnmanagedFieldState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new UnmanagedFieldState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private UnmanagedFieldState( NamedUserType type ) {
-		super( UUID.fromString( "97e016de-d944-4305-8fd5-acf5507778e3" ), new UnmanagedFieldData( type ) );
-	}
+  private UnmanagedFieldState(NamedUserType type) {
+    super(UUID.fromString("97e016de-d944-4305-8fd5-acf5507778e3"), new UnmanagedFieldData(type));
+  }
 }

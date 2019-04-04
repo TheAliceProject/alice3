@@ -57,25 +57,25 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class ShowMeIcon extends ShapeIcon {
-	public ShowMeIcon( Dimension size ) {
-		super( size );
-	}
+  public ShowMeIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		Paint paint;
-		if( c instanceof AbstractButton ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel buttonModel = button.getModel();
-			paint = buttonModel.isArmed() ? Color.WHITE : Color.BLACK;
-		} else {
-			paint = Color.BLACK;
-		}
-		g2.setPaint( paint );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Paint paint;
+    if (c instanceof AbstractButton) {
+      AbstractButton button = (AbstractButton) c;
+      ButtonModel buttonModel = button.getModel();
+      paint = buttonModel.isArmed() ? Color.WHITE : Color.BLACK;
+    } else {
+      paint = Color.BLACK;
+    }
+    g2.setPaint(paint);
 
-		Font prevFont = g2.getFont();
-		g2.setFont( prevFont.deriveFont( height * 0.95f ).deriveFont( Font.BOLD ) );
-		GraphicsUtilities.drawCenteredText( g2, "?", 0, 0, width, height );
-		g2.setFont( prevFont );
-	}
+    Font prevFont = g2.getFont();
+    g2.setFont(prevFont.deriveFont(height * 0.95f).deriveFont(Font.BOLD));
+    GraphicsUtilities.drawCenteredText(g2, "?", 0, 0, width, height);
+    g2.setFont(prevFont);
+  }
 }

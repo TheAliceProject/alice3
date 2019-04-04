@@ -52,13 +52,13 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public StringCustomExpressionCreatorView( StringCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public StringCustomExpressionCreatorView(StringCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		StringCustomExpressionCreatorComposite composite = (StringCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new LabeledFormRow( composite.getValueLabel(), composite.getValueState().createTextField() ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    StringCustomExpressionCreatorComposite composite = (StringCustomExpressionCreatorComposite) this.getComposite();
+    rows.add(new LabeledFormRow(composite.getValueLabel(), composite.getValueState().createTextField()));
+  }
 }

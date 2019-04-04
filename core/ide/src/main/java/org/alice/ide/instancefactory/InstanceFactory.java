@@ -52,17 +52,17 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
-	public boolean isValid();
+  public boolean isValid();
 
-	public AbstractType<?, ?, ?> getValueType();
+  public AbstractType<?, ?, ?> getValueType();
 
-	public Expression createTransientExpression();
+  public Expression createTransientExpression();
 
-	public Expression createExpression();
+  public Expression createExpression();
 
-	public String getRepr();
+  public String getRepr();
 
-	public IconFactory getIconFactory();
+  public IconFactory getIconFactory();
 
-	public InstanceProperty<?>[] getMutablePropertiesOfInterest();
+  public InstanceProperty<?>[] getMutablePropertiesOfInterest();
 }

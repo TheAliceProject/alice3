@@ -46,18 +46,17 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SayOutLoud extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SayOutLoud.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SayOutLoud.class) public static interface Detail {
+  }
 
-	public static ShowSpeechBubble showSpeechBubble( boolean shouldShow ) {
-		return new ShowSpeechBubble( shouldShow );
-	}
+  public static ShowSpeechBubble showSpeechBubble(boolean shouldShow) {
+    return new ShowSpeechBubble(shouldShow);
+  }
 
-	private SayOutLoud() {
-		super();
-	}
+  private SayOutLoud() {
+    super();
+  }
 }

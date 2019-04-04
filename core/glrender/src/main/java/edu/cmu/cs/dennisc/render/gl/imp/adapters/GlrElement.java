@@ -51,30 +51,31 @@ import edu.cmu.cs.dennisc.scenegraph.Element;
  * @author Dennis Cosgrove
  */
 public abstract class GlrElement<T extends Element> extends GlrObject<T> {
-	/*package-private*/static void handlePropertyChanged( InstanceProperty<?> instanceProperty ) {
-		Element sgElement = (Element)instanceProperty.getOwner();
-		GlrElement<?> glrElement = AdapterFactory.getAdapterFor( sgElement );
-		glrElement.propertyChanged( instanceProperty );
-	}
+  /*package-private*/
+  static void handlePropertyChanged(InstanceProperty<?> instanceProperty) {
+    Element sgElement = (Element) instanceProperty.getOwner();
+    GlrElement<?> glrElement = AdapterFactory.getAdapterFor(sgElement);
+    glrElement.propertyChanged(instanceProperty);
+  }
 
-	@Override
-	public void initialize( T element ) {
-		super.initialize( element );
-		for( InstanceProperty<?> property : owner.getProperties() ) {
-			propertyChanged( property );
-		}
-	}
+  @Override
+  public void initialize(T element) {
+    super.initialize(element);
+    for (InstanceProperty<?> property : owner.getProperties()) {
+      propertyChanged(property);
+    }
+  }
 
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		Logger.info( "unhandled property:", property );
-	}
+  protected void propertyChanged(InstanceProperty<?> property) {
+    Logger.info("unhandled property:", property);
+  }
 
-	@Override
-	public String toString() {
-		if( owner != null ) {
-			return getClass().getName() + " " + owner.toString();
-		} else {
-			return super.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    if (owner != null) {
+      return getClass().getName() + " " + owner.toString();
+    } else {
+      return super.toString();
+    }
+  }
 }

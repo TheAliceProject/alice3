@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public interface AsynchronousPicker {
-	void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer );
+  void pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer);
 
-	void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer );
+  void pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer);
 }

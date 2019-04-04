@@ -59,67 +59,67 @@ import javax.swing.Icon;
  * @author David Culyba
  */
 public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2D {
-	protected static interface ImageState {
-		public Icon getIcon();
-	}
+  protected static interface ImageState {
+    public Icon getIcon();
+  }
 
-	public ImageBasedManipulationHandle2D( String maskResourceName ) {
-		BufferedImage image;
-		try {
-			image = ImageUtilities.read( this.getClass().getResource( maskResourceName ) );
-		} catch( Throwable t ) {
-			Logger.errln( maskResourceName, this );
-			image = null;
-		}
-		this.imageMask = image;
+  public ImageBasedManipulationHandle2D(String maskResourceName) {
+    BufferedImage image;
+    try {
+      image = ImageUtilities.read(this.getClass().getResource(maskResourceName));
+    } catch (Throwable t) {
+      Logger.errln(maskResourceName, this);
+      image = null;
+    }
+    this.imageMask = image;
 
-		this.setStateBasedOnManipulationStatus();
-		Icon icon = this.getIcon();
-		Dimension size = IconUtilities.newDimension( icon );
-		this.setSize( size );
-		this.setMinimumSize( size );
-		this.setPreferredSize( size );
-	}
+    this.setStateBasedOnManipulationStatus();
+    Icon icon = this.getIcon();
+    Dimension size = IconUtilities.newDimension(icon);
+    this.setSize(size);
+    this.setMinimumSize(size);
+    this.setPreferredSize(size);
+  }
 
-	public Color getColor( int x, int y ) {
-		if( this.contains( x, y ) ) {
-			if( this.imageMask != null ) {
-				int colorInt = this.imageMask.getRGB( x, y );
-				return new Color( colorInt, true );
-			}
-		}
-		return null;
-	}
+  public Color getColor(int x, int y) {
+    if (this.contains(x, y)) {
+      if (this.imageMask != null) {
+        int colorInt = this.imageMask.getRGB(x, y);
+        return new Color(colorInt, true);
+      }
+    }
+    return null;
+  }
 
-	@Override
-	protected void updateVisibleState( HandleRenderState renderState ) {
-		this.setStateBasedOnManipulationStatus();
-	}
+  @Override
+  protected void updateVisibleState(HandleRenderState renderState) {
+    this.setStateBasedOnManipulationStatus();
+  }
 
-	private void setStateBasedOnManipulationStatus() {
-		ImageState newState = this.getStateForManipulationStatus();
-		if( newState != this.currentState ) {
-			this.currentState = newState;
-			this.setIcon( this.currentState.getIcon() );
-		}
-	}
+  private void setStateBasedOnManipulationStatus() {
+    ImageState newState = this.getStateForManipulationStatus();
+    if (newState != this.currentState) {
+      this.currentState = newState;
+      this.setIcon(this.currentState.getIcon());
+    }
+  }
 
-	@Override
-	public void activate( ManipulationEvent event ) {
-		this.setManipulationState( event, true );
-		this.setStateBasedOnManipulationStatus();
-	}
+  @Override
+  public void activate(ManipulationEvent event) {
+    this.setManipulationState(event, true);
+    this.setStateBasedOnManipulationStatus();
+  }
 
-	@Override
-	public void deactivate( ManipulationEvent event ) {
-		this.setManipulationState( event, false );
-		this.setStateBasedOnManipulationStatus();
-	}
+  @Override
+  public void deactivate(ManipulationEvent event) {
+    this.setManipulationState(event, false);
+    this.setStateBasedOnManipulationStatus();
+  }
 
-	protected abstract ImageState getStateForManipulationStatus();
+  protected abstract ImageState getStateForManipulationStatus();
 
-	protected abstract void setManipulationState( ManipulationEvent event, boolean isActive );
+  protected abstract void setManipulationState(ManipulationEvent event, boolean isActive);
 
-	private ImageState currentState;
-	private final BufferedImage imageMask;
+  private ImageState currentState;
+  private final BufferedImage imageMask;
 }

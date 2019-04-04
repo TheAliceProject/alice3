@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class ExpressionListProperty extends NodeListProperty<Expression> {
-	public ExpressionListProperty( InstancePropertyOwner owner ) {
-		super( owner );
-	}
+  public ExpressionListProperty(InstancePropertyOwner owner) {
+    super(owner);
+  }
 }

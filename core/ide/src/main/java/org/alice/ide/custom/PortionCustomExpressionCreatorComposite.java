@@ -56,51 +56,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<PortionCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
+  }
 
-	public static PortionCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PortionCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+  private final BoundedIntegerState valueState = this.createBoundedIntegerState("valueState", new BoundedIntegerDetails().minimum(0).maximum(100));
 
-	private PortionCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );
-	}
+  private PortionCustomExpressionCreatorComposite() {
+    super(UUID.fromString("f1d64eb4-38fd-4c43-856f-e8aa2b1708d1"));
+  }
 
-	@Override
-	protected PortionCustomExpressionCreatorView createView() {
-		return new PortionCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected PortionCustomExpressionCreatorView createView() {
+    return new PortionCustomExpressionCreatorView(this);
+  }
 
-	public BoundedIntegerState getValueState() {
-		return this.valueState;
-	}
+  public BoundedIntegerState getValueState() {
+    return this.valueState;
+  }
 
-	@Override
-	protected Expression createValue() {
-		BigDecimal decimal = new BigDecimal( this.valueState.getValue() );
-		decimal = decimal.movePointLeft( 2 );
-		return new DoubleLiteral( decimal.doubleValue() );
-	}
+  @Override
+  protected Expression createValue() {
+    BigDecimal decimal = new BigDecimal(this.valueState.getValue());
+    decimal = decimal.movePointLeft(2);
+    return new DoubleLiteral(decimal.doubleValue());
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		if( expression instanceof DoubleLiteral ) {
-			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
-			double value = doubleLiteral.value.getValue();
-			if( Double.isFinite( value ) ) {
-				BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
-				decimal = decimal.movePointRight( 2 );
-				this.valueState.setValueTransactionlessly( decimal.intValue() );
-			}
-		}
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    if (expression instanceof DoubleLiteral) {
+      DoubleLiteral doubleLiteral = (DoubleLiteral) expression;
+      double value = doubleLiteral.value.getValue();
+      if (Double.isFinite(value)) {
+        BigDecimal decimal = new BigDecimal(value, new MathContext(BigDecimal.ROUND_HALF_DOWN));
+        decimal = decimal.movePointRight(2);
+        this.valueState.setValueTransactionlessly(decimal.intValue());
+      }
+    }
+  }
 }

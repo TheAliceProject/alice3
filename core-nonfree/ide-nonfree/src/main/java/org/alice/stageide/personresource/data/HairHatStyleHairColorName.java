@@ -46,19 +46,19 @@ package org.alice.stageide.personresource.data;
  * @author Dennis Cosgrove
  */
 public final class HairHatStyleHairColorName {
-	private final HairHatStyle hairHatStyle;
-	private final HairColorName hairColorName;
+  private final HairHatStyle hairHatStyle;
+  private final HairColorName hairColorName;
 
-	public HairHatStyleHairColorName( HairHatStyle hairHatStyle, HairColorName hairColorName ) {
-		this.hairHatStyle = hairHatStyle;
-		this.hairColorName = hairColorName;
-	}
+  public HairHatStyleHairColorName(HairHatStyle hairHatStyle, HairColorName hairColorName) {
+    this.hairHatStyle = hairHatStyle;
+    this.hairColorName = hairColorName;
+  }
 
-	public HairHatStyle getHairHatStyle() {
-		return this.hairHatStyle;
-	}
+  public HairHatStyle getHairHatStyle() {
+    return this.hairHatStyle;
+  }
 
-	public HairColorName getHairColorName() {
-		return this.hairColorName;
-	}
+  public HairColorName getHairColorName() {
+    return this.hairColorName;
+  }
 }

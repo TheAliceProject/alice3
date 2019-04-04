@@ -60,107 +60,107 @@ import java.awt.GridBagConstraints;
  * @author Matt May
  */
 public class UploadView extends BorderPanel {
-	private final Panel youtubeDetailsPanel;
+  private final Panel youtubeDetailsPanel;
 
-	public UploadView( UploadComposite composite ) {
-		super( composite, 24, 0 );
+  public UploadView(UploadComposite composite) {
+    super(composite, 24, 0);
 
-		MigPanel loginPanel = new MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
-		loginPanel.addComponent( composite.getLoginComposite().getView(), "wrap" );
+    MigPanel loginPanel = new MigPanel(null, "fill, inset 0", "", "[]0[]4[]0[]4[]");
+    loginPanel.addComponent(composite.getLoginComposite().getView(), "wrap");
 
-		SwingComponentView<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
-		TextField titleTextField = composite.getTitleState().createTextField();
+    SwingComponentView<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
+    TextField titleTextField = composite.getTitleState().createTextField();
 
-		SwingComponentView<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
-		TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
-		descriptionTextArea.getAwtComponent().setRows( 4 );
-		//description.getAwtComponent().setLineWrap( true );
-		ScrollPane descriptionScrollPane = new ScrollPane( descriptionTextArea );
+    SwingComponentView<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
+    TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
+    descriptionTextArea.getAwtComponent().setRows(4);
+    //description.getAwtComponent().setLineWrap( true );
+    ScrollPane descriptionScrollPane = new ScrollPane(descriptionTextArea);
 
-		SwingComponentView<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
-		TextArea tagsTextArea = composite.getTagsState().createTextArea();
-		tagsTextArea.getAwtComponent().setRows( 2 );
-		//tags.getAwtComponent().setLineWrap( true );
-		ScrollPane tagsScrollPane = new ScrollPane( tagsTextArea );
+    SwingComponentView<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
+    TextArea tagsTextArea = composite.getTagsState().createTextArea();
+    tagsTextArea.getAwtComponent().setRows(2);
+    //tags.getAwtComponent().setLineWrap( true );
+    ScrollPane tagsScrollPane = new ScrollPane(tagsTextArea);
 
-		//		org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
-		//		org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
+    //    org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
+    //    org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
 
-		CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
+    CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
 
-		final boolean IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS = true;
-		if( IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS ) {
-			MigPanel migPanel = new MigPanel( null, "insets 0, fill" );
-			migPanel.addComponent( titleSidekickLabel, "wrap" );
-			migPanel.addComponent( titleTextField, "wrap, growx" );
-			migPanel.addComponent( descriptionSidekickLabel, "wrap" );
-			migPanel.addComponent( descriptionScrollPane, "wrap, grow" );
-			migPanel.addComponent( tagsSidekickLabel, "wrap" );
-			migPanel.addComponent( tagsScrollPane, "wrap, grow" );
-			//			migPanel.addComponent( categoryLabel, "wrap" );
-			//			migPanel.addComponent( categoryComboBox, "wrap, growx" );
-			migPanel.addComponent( isPrivateCheckBox, "wrap" );
-			this.youtubeDetailsPanel = migPanel;
-		} else {
-			GridBagPanel gridBagPanel = new GridBagPanel();
+    final boolean IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS = true;
+    if (IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS) {
+      MigPanel migPanel = new MigPanel(null, "insets 0, fill");
+      migPanel.addComponent(titleSidekickLabel, "wrap");
+      migPanel.addComponent(titleTextField, "wrap, growx");
+      migPanel.addComponent(descriptionSidekickLabel, "wrap");
+      migPanel.addComponent(descriptionScrollPane, "wrap, grow");
+      migPanel.addComponent(tagsSidekickLabel, "wrap");
+      migPanel.addComponent(tagsScrollPane, "wrap, grow");
+      //      migPanel.addComponent( categoryLabel, "wrap" );
+      //      migPanel.addComponent( categoryComboBox, "wrap, growx" );
+      migPanel.addComponent(isPrivateCheckBox, "wrap");
+      this.youtubeDetailsPanel = migPanel;
+    } else {
+      GridBagPanel gridBagPanel = new GridBagPanel();
 
-			final int TOP_INSET = 2;
-			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.gridwidth = GridBagConstraints.REMAINDER;
-			gbc.anchor = GridBagConstraints.NORTHWEST;
-			gbc.fill = GridBagConstraints.BOTH;
-			gbc.weightx = 1.0;
-			gbc.weighty = 0.0;
+      final int TOP_INSET = 2;
+      GridBagConstraints gbc = new GridBagConstraints();
+      gbc.gridwidth = GridBagConstraints.REMAINDER;
+      gbc.anchor = GridBagConstraints.NORTHWEST;
+      gbc.fill = GridBagConstraints.BOTH;
+      gbc.weightx = 1.0;
+      gbc.weighty = 0.0;
 
-			gbc.insets.top = TOP_INSET;
-			gridBagPanel.addComponent( titleSidekickLabel, gbc );
-			gbc.insets.top = 0;
+      gbc.insets.top = TOP_INSET;
+      gridBagPanel.addComponent(titleSidekickLabel, gbc);
+      gbc.insets.top = 0;
 
-			gridBagPanel.addComponent( titleTextField, gbc );
+      gridBagPanel.addComponent(titleTextField, gbc);
 
-			gbc.insets.top = TOP_INSET;
-			gridBagPanel.addComponent( descriptionSidekickLabel, gbc );
-			gbc.insets.top = 0;
+      gbc.insets.top = TOP_INSET;
+      gridBagPanel.addComponent(descriptionSidekickLabel, gbc);
+      gbc.insets.top = 0;
 
-			gbc.weighty = 1.0;
-			descriptionTextArea.setMaximumSizeClampedToPreferredSize( false );
+      gbc.weighty = 1.0;
+      descriptionTextArea.setMaximumSizeClampedToPreferredSize(false);
 
-			gridBagPanel.addComponent( descriptionScrollPane, gbc );
-			gbc.weighty = 0.0;
+      gridBagPanel.addComponent(descriptionScrollPane, gbc);
+      gbc.weighty = 0.0;
 
-			gbc.insets.top = TOP_INSET;
-			gridBagPanel.addComponent( tagsSidekickLabel, gbc );
-			gbc.insets.top = 0;
+      gbc.insets.top = TOP_INSET;
+      gridBagPanel.addComponent(tagsSidekickLabel, gbc);
+      gbc.insets.top = 0;
 
-			gbc.weighty = 1.0;
-			gridBagPanel.addComponent( tagsScrollPane, gbc );
+      gbc.weighty = 1.0;
+      gridBagPanel.addComponent(tagsScrollPane, gbc);
 
-			gbc.weighty = 0.0;
+      gbc.weighty = 0.0;
 
-			gbc.insets.top = TOP_INSET;
-			//			gridBagPanel.addComponent( categoryLabel, gbc );
-			//			gbc.insets.top = 0;
-			//
-			//			gridBagPanel.addComponent( categoryComboBox, gbc );
+      gbc.insets.top = TOP_INSET;
+      //      gridBagPanel.addComponent( categoryLabel, gbc );
+      //      gbc.insets.top = 0;
+      //
+      //      gridBagPanel.addComponent( categoryComboBox, gbc );
 
-			gbc.insets.top = TOP_INSET;
-			gridBagPanel.addComponent( isPrivateCheckBox, gbc );
-			gbc.insets.top = 0;
-			this.youtubeDetailsPanel = gridBagPanel;
-		}
+      gbc.insets.top = TOP_INSET;
+      gridBagPanel.addComponent(isPrivateCheckBox, gbc);
+      gbc.insets.top = 0;
+      this.youtubeDetailsPanel = gridBagPanel;
+    }
 
-		this.addCenterComponent( new BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
+    this.addCenterComponent(new BorderPanel.Builder().pageStart(loginPanel).center(this.youtubeDetailsPanel).build());
 
-		MigPanel lineStartPanel = new MigPanel( null, "insets 0, fill", "", "" );
-		lineStartPanel.addComponent( new Label( "Preview:" ), "wrap" );
-		lineStartPanel.addComponent( composite.getVideoComposite().getView(), "wrap" );
-		lineStartPanel.addComponent( composite.getExportToFileOperation().createButton(), "wrap" );
-		lineStartPanel.addComponent( new Label(), "push" );
+    MigPanel lineStartPanel = new MigPanel(null, "insets 0, fill", "", "");
+    lineStartPanel.addComponent(new Label("Preview:"), "wrap");
+    lineStartPanel.addComponent(composite.getVideoComposite().getView(), "wrap");
+    lineStartPanel.addComponent(composite.getExportToFileOperation().createButton(), "wrap");
+    lineStartPanel.addComponent(new Label(), "push");
 
-		this.addLineStartComponent( lineStartPanel );
-	}
+    this.addLineStartComponent(lineStartPanel);
+  }
 
-	public Panel getYoutubeDetailsPanel() {
-		return this.youtubeDetailsPanel;
-	}
+  public Panel getYoutubeDetailsPanel() {
+    return this.youtubeDetailsPanel;
+  }
 }

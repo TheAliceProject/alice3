@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public interface Action extends Runnable {
-	public void undo();
+  public void undo();
 
-	public void redo();
+  public void redo();
 }

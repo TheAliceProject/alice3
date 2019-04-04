@@ -52,45 +52,45 @@ import java.awt.Insets;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPopupButton<M extends PopupPrepModel> extends AbstractButton<javax.swing.AbstractButton, M> {
-	public AbstractPopupButton( M model, String uiDefaultsName ) {
-		super( model, uiDefaultsName );
-	}
+  public AbstractPopupButton(M model, String uiDefaultsName) {
+    super(model, uiDefaultsName);
+  }
 
-	public AbstractPopupButton( M model ) {
-		this( model, null );
-	}
+  public AbstractPopupButton(M model) {
+    this(model, null);
+  }
 
-	protected static final int TRAILING_PAD = -2;
+  protected static final int TRAILING_PAD = -2;
 
-	protected class JPopupButton extends JToggleButton {
-		@Override
-		public Insets getMargin() {
-			Insets rv = super.getMargin();
-			if( rv != null ) {
-				rv.right += TRAILING_PAD;
-			}
-			return rv;
-		}
+  protected class JPopupButton extends JToggleButton {
+    @Override
+    public Insets getMargin() {
+      Insets rv = super.getMargin();
+      if (rv != null) {
+        rv.right += TRAILING_PAD;
+      }
+      return rv;
+    }
 
-		@Override
-		public Icon getIcon() {
-			if( AbstractPopupButton.this.isIconClobbered() ) {
-				return AbstractPopupButton.this.getClobberIcon();
-			} else {
-				return super.getIcon();
-			}
-		}
-	}
+    @Override
+    public Icon getIcon() {
+      if (AbstractPopupButton.this.isIconClobbered()) {
+        return AbstractPopupButton.this.getClobberIcon();
+      } else {
+        return super.getIcon();
+      }
+    }
+  }
 
-	protected javax.swing.AbstractButton createSwingButton() {
-		return new JPopupButton();
-	}
+  protected javax.swing.AbstractButton createSwingButton() {
+    return new JPopupButton();
+  }
 
-	@Override
-	protected final javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = this.createSwingButton();
-		PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
-		rv.setAction( swingModel.getAction() );
-		return rv;
-	}
+  @Override
+  protected final javax.swing.AbstractButton createAwtComponent() {
+    javax.swing.AbstractButton rv = this.createSwingButton();
+    PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+    rv.setAction(swingModel.getAction());
+    return rv;
+  }
 }

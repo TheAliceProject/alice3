@@ -61,38 +61,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<AssignmentExpression> {
-	private static Map<UserField, FieldAssignmentFillIn> map = Maps.newHashMap();
+  private static Map<UserField, FieldAssignmentFillIn> map = Maps.newHashMap();
 
-	public static synchronized FieldAssignmentFillIn getInstance( UserField field ) {
-		FieldAssignmentFillIn rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldAssignmentFillIn( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized FieldAssignmentFillIn getInstance(UserField field) {
+    FieldAssignmentFillIn rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FieldAssignmentFillIn(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final AssignmentExpression transientValue;
+  private final AssignmentExpression transientValue;
 
-	private FieldAssignmentFillIn( UserField field ) {
-		super( UUID.fromString( "12140acf-ec33-4ec7-b07d-27a20f111a91" ), ExpressionBlank.createBlanks( field.valueType.getValue() ) );
-		this.transientValue = IncompleteAstUtilities.createIncompleteAssignmentExpression( new ThisExpression(), field );
-	}
+  private FieldAssignmentFillIn(UserField field) {
+    super(UUID.fromString("12140acf-ec33-4ec7-b07d-27a20f111a91"), ExpressionBlank.createBlanks(field.valueType.getValue()));
+    this.transientValue = IncompleteAstUtilities.createIncompleteAssignmentExpression(new ThisExpression(), field);
+  }
 
-	private UserField getField() {
-		FieldAccess fieldAccess = (FieldAccess)this.transientValue.leftHandSide.getValue();
-		return (UserField)fieldAccess.field.getValue();
-	}
+  private UserField getField() {
+    FieldAccess fieldAccess = (FieldAccess) this.transientValue.leftHandSide.getValue();
+    return (UserField) fieldAccess.field.getValue();
+  }
 
-	@Override
-	protected AssignmentExpression createValue( Expression[] expressions ) {
-		return AstUtilities.createFieldAssignment( this.getField(), expressions[ 0 ] );
-	}
+  @Override
+  protected AssignmentExpression createValue(Expression[] expressions) {
+    return AstUtilities.createFieldAssignment(this.getField(), expressions[0]);
+  }
 
-	@Override
-	public AssignmentExpression getTransientValue( ItemNode<? super AssignmentExpression, Expression> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public AssignmentExpression getTransientValue(ItemNode<? super AssignmentExpression, Expression> node) {
+    return this.transientValue;
+  }
 }

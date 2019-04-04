@@ -59,40 +59,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AudioResourceExpressionState extends StandardExpressionState {
-	private static class SingletonHolder {
-		private static AudioResourceExpressionState instance = new AudioResourceExpressionState();
-	}
+  private static class SingletonHolder {
+    private static AudioResourceExpressionState instance = new AudioResourceExpressionState();
+  }
 
-	public static AudioResourceExpressionState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AudioResourceExpressionState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AudioResourceExpressionState() {
-		super( Application.INHERIT_GROUP, UUID.fromString( "cb9c681f-3486-4be2-bdf3-f3ba8d663e3b" ), null );
-	}
+  private AudioResourceExpressionState() {
+    super(Application.INHERIT_GROUP, UUID.fromString("cb9c681f-3486-4be2-bdf3-f3ba8d663e3b"), null);
+  }
 
-	@Override
-	protected ValueDetails<?> getValueDetails() {
-		return null;
-	}
+  @Override
+  protected ValueDetails<?> getValueDetails() {
+    return null;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( AudioResource.class );
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getType() {
+    return JavaType.getInstance(AudioResource.class);
+  }
 
-	public AudioResource getAudioResource() {
-		Expression expression = this.getValue();
-		if( expression instanceof ResourceExpression ) {
-			ResourceExpression resourceExpression = (ResourceExpression)expression;
-			Resource resource = resourceExpression.resource.getValue();
-			if( resource instanceof AudioResource ) {
-				return (AudioResource)resource;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public AudioResource getAudioResource() {
+    Expression expression = this.getValue();
+    if (expression instanceof ResourceExpression) {
+      ResourceExpression resourceExpression = (ResourceExpression) expression;
+      Resource resource = resourceExpression.resource.getValue();
+      if (resource instanceof AudioResource) {
+        return (AudioResource) resource;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

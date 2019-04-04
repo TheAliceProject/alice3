@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FrameComposite<V extends Panel> extends AbstractWindowComposite<V> {
-	public FrameComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public FrameComposite(UUID migrationId) {
+    super(migrationId);
+  }
 }

@@ -49,15 +49,15 @@ import java.util.EventObject;
  * @author Dennis Cosgrove
  */
 public abstract class Event<E> extends EventObject {
-	public Event( E source ) {
-		super( source );
-	}
+  public Event(E source) {
+    super(source);
+  }
 
-	public E getTypedSource() {
-		return (E)super.getSource();
-	}
+  public E getTypedSource() {
+    return (E) super.getSource();
+  }
 
-	public boolean isReservedForReuse() {
-		return false;
-	}
+  public boolean isReservedForReuse() {
+    return false;
+  }
 }

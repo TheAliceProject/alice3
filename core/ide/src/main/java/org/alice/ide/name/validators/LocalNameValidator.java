@@ -50,27 +50,27 @@ import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserLocal;
 
 public class LocalNameValidator extends TransientNameValidator {
-	private static UserCode getCode( UserLocal local ) {
-		return getCode( getBlock( local ) );
-	}
+  private static UserCode getCode(UserLocal local) {
+    return getCode(getBlock(local));
+  }
 
-	private static UserCode getCode( BlockStatement block ) {
-		if( block != null ) {
-			return (UserCode)block.getFirstAncestorAssignableTo( AbstractCode.class );
-		} else {
-			return null;
-		}
-	}
+  private static UserCode getCode(BlockStatement block) {
+    if (block != null) {
+      return (UserCode) block.getFirstAncestorAssignableTo(AbstractCode.class);
+    } else {
+      return null;
+    }
+  }
 
-	private static BlockStatement getBlock( UserLocal local ) {
-		return local.getFirstAncestorAssignableTo( BlockStatement.class );
-	}
+  private static BlockStatement getBlock(UserLocal local) {
+    return local.getFirstAncestorAssignableTo(BlockStatement.class);
+  }
 
-	public LocalNameValidator( UserLocal local ) {
-		super( local, getCode( local ), getBlock( local ) );
-	}
+  public LocalNameValidator(UserLocal local) {
+    super(local, getCode(local), getBlock(local));
+  }
 
-	public LocalNameValidator( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( null, getCode( blockStatementIndexPair.getBlockStatement() ), blockStatementIndexPair.getBlockStatement() );
-	}
+  public LocalNameValidator(BlockStatementIndexPair blockStatementIndexPair) {
+    super(null, getCode(blockStatementIndexPair.getBlockStatement()), blockStatementIndexPair.getBlockStatement());
+  }
 }

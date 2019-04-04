@@ -55,24 +55,23 @@ import org.lgna.project.migration.AstMigration;
  * @author Dennis Cosgrove
  * @deprecated Use CompoundMigration with NodeMigrations going forward
  */
-@Deprecated
-public abstract class FieldAccessAstMigration extends AstMigration {
-	FieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
-		super( minimumVersion, resultVersion );
-	}
+@Deprecated public abstract class FieldAccessAstMigration extends AstMigration {
+  FieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	protected abstract void migrate( FieldAccess fieldAccess );
+  protected abstract void migrate(FieldAccess fieldAccess);
 
-	@Override
-	public final void migrate( Node root, Project projectIfApplicable ) {
-		root.crawl( new Crawler() {
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof FieldAccess ) {
-					FieldAccess fieldAccess = (FieldAccess)crawlable;
-					FieldAccessAstMigration.this.migrate( fieldAccess );
-				}
-			}
-		}, CrawlPolicy.COMPLETE, null );
-	}
+  @Override
+  public final void migrate(Node root, Project projectIfApplicable) {
+    root.crawl(new Crawler() {
+      @Override
+      public void visit(Crawlable crawlable) {
+        if (crawlable instanceof FieldAccess) {
+          FieldAccess fieldAccess = (FieldAccess) crawlable;
+          FieldAccessAstMigration.this.migrate(fieldAccess);
+        }
+      }
+    }, CrawlPolicy.COMPLETE, null);
+  }
 }

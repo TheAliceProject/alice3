@@ -47,26 +47,27 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class UpAsSeenBy implements
-		//Turnable
-		OrientToUpright.Detail, PointAt.Detail {
-	private final SThing value;
+                        //Turnable
+                            OrientToUpright.Detail, PointAt.Detail {
+  private final SThing value;
 
-	public UpAsSeenBy( SThing value ) {
-		this.value = value;
-	}
+  public UpAsSeenBy(SThing value) {
+    this.value = value;
+  }
 
-	/* package-private */static SThing getValue( Object[] details, SThing defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof UpAsSeenBy ) {
-				UpAsSeenBy upAsSeenBy = (UpAsSeenBy)detail;
-				return upAsSeenBy.value;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static SThing getValue(Object[] details, SThing defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof UpAsSeenBy) {
+        UpAsSeenBy upAsSeenBy = (UpAsSeenBy) detail;
+        return upAsSeenBy.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static UpAsSeenBy make( SThing value ) {
-		return new UpAsSeenBy( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static UpAsSeenBy make(SThing value) {
+    return new UpAsSeenBy(value);
+  }
 }

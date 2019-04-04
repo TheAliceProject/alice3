@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends PanelWithPreview, T> extends SimpleOperationInputDialogCoreComposite<V> {
-	public PreviewContainingOperationInputDialogCoreComposite( UUID id, Group operationMigrationId ) {
-		super( id, operationMigrationId );
-	}
+  public PreviewContainingOperationInputDialogCoreComposite(UUID id, Group operationMigrationId) {
+    super(id, operationMigrationId);
+  }
 
-	public abstract T getPreviewValue();
+  public abstract T getPreviewValue();
 
-	@Override
-	protected void handleFiredEvent( ActivityEvent event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
+  @Override
+  protected void handleFiredEvent(ActivityEvent event) {
+    super.handleFiredEvent(event);
+    this.getView().updatePreview();
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.getView().updatePreview();
+    super.handlePreShowDialog(dialog);
+  }
 }

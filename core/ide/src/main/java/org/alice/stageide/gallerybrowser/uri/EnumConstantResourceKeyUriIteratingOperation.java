@@ -53,33 +53,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUriIteratingOperation {
-	private static class SingletonHolder {
-		private static EnumConstantResourceKeyUriIteratingOperation instance = new EnumConstantResourceKeyUriIteratingOperation();
-	}
+  private static class SingletonHolder {
+    private static EnumConstantResourceKeyUriIteratingOperation instance = new EnumConstantResourceKeyUriIteratingOperation();
+  }
 
-	/*package-private*/static EnumConstantResourceKeyUriIteratingOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  /*package-private*/
+  static EnumConstantResourceKeyUriIteratingOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private EnumConstantResourceKeyUriIteratingOperation() {
-		super( UUID.fromString( "bb91fc40-48a8-4452-b9b5-bb09ce439a67" ) );
-	}
+  private EnumConstantResourceKeyUriIteratingOperation() {
+    super(UUID.fromString("bb91fc40-48a8-4452-b9b5-bb09ce439a67"));
+  }
 
-	@Override
-	protected int getStepCount() {
-		return 2;
-	}
+  @Override
+  protected int getStepCount() {
+    return 2;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
-		switch( finishedSteps.size() ) {
-		case 0:
-			return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
-		case 1:
-			return this.getMergeTypeOperation();
-		default:
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey) this.resourceKey;
+    switch (finishedSteps.size()) {
+    case 0:
+      return this.getAddResourceKeyManagedFieldCompositeOperation(enumConstantResourceKey);
+    case 1:
+      return this.getMergeTypeOperation();
+    default:
+      return null;
+    }
+  }
 }

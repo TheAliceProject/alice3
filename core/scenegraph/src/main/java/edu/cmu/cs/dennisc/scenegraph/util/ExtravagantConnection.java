@@ -57,116 +57,116 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  * @author Dennis Cosgrove
  */
 public class ExtravagantConnection extends Connection {
-	private static final int DISC_COUNT = 12;
-	private static final int CUBIC_COUNT = 24;
+  private static final int DISC_COUNT = 12;
+  private static final int CUBIC_COUNT = 24;
 
-	public ExtravagantConnection() {
-		Vertex[] vertices = new Vertex[ DISC_COUNT * CUBIC_COUNT ];
-		for( int i = 0; i < vertices.length; i++ ) {
-			vertices[ i ] = Vertex.createXYZIJK( 0, 0, 0, 0, 1, 0 );
-		}
-		int[] quadData = new int[ DISC_COUNT * ( CUBIC_COUNT - 1 ) * 4 ];
+  public ExtravagantConnection() {
+    Vertex[] vertices = new Vertex[DISC_COUNT * CUBIC_COUNT];
+    for (int i = 0; i < vertices.length; i++) {
+      vertices[i] = Vertex.createXYZIJK(0, 0, 0, 0, 1, 0);
+    }
+    int[] quadData = new int[DISC_COUNT * (CUBIC_COUNT - 1) * 4];
 
-		int lcv = 0;
-		for( int c = 0; c < ( CUBIC_COUNT - 1 ); c++ ) {
-			int c0 = c * DISC_COUNT;
-			int c1 = ( c + 1 ) * DISC_COUNT;
-			for( int d = 0; d < DISC_COUNT; d++ ) {
-				quadData[ lcv++ ] = c1 + d;
-				if( d == ( DISC_COUNT - 1 ) ) {
-					quadData[ lcv++ ] = c1;
-					quadData[ lcv++ ] = c0;
-				} else {
-					quadData[ lcv++ ] = c1 + d + 1;
-					quadData[ lcv++ ] = c0 + d + 1;
-				}
-				quadData[ lcv++ ] = c0 + d;
-			}
-		}
+    int lcv = 0;
+    for (int c = 0; c < (CUBIC_COUNT - 1); c++) {
+      int c0 = c * DISC_COUNT;
+      int c1 = (c + 1) * DISC_COUNT;
+      for (int d = 0; d < DISC_COUNT; d++) {
+        quadData[lcv++] = c1 + d;
+        if (d == (DISC_COUNT - 1)) {
+          quadData[lcv++] = c1;
+          quadData[lcv++] = c0;
+        } else {
+          quadData[lcv++] = c1 + d + 1;
+          quadData[lcv++] = c0 + d + 1;
+        }
+        quadData[lcv++] = c0 + d;
+      }
+    }
 
-		this.sgIQA.vertices.setValue( vertices );
-		this.sgIQA.polygonData.setValue( quadData );
+    this.sgIQA.vertices.setValue(vertices);
+    this.sgIQA.polygonData.setValue(quadData);
 
-		for( int d = 0; d < DISC_COUNT; d++ ) {
-			this.points[ d ] = new Point3();
-			this.normals[ d ] = new Vector3f();
-		}
-		setRadius( 1.0 );
-		geometries.setValue( new Geometry[] { this.sgIQA } );
-	}
+    for (int d = 0; d < DISC_COUNT; d++) {
+      this.points[d] = new Point3();
+      this.normals[d] = new Vector3f();
+    }
+    setRadius(1.0);
+    geometries.setValue(new Geometry[] {this.sgIQA});
+  }
 
-	public void update() {
-		AffineMatrix4x4 m = getTarget().getTransformation( this );
-		double s = m.translation.calculateMagnitude();
-		s *= 5;
-		HermiteCubic xHermiteCubic = new HermiteCubic( 0, m.translation.x, 0, -s * m.orientation.backward.x );
-		HermiteCubic yHermiteCubic = new HermiteCubic( 0, m.translation.y, 0, -s * m.orientation.backward.y );
-		HermiteCubic zHermiteCubic = new HermiteCubic( 0, m.translation.z, -1, -s * m.orientation.backward.z );
+  public void update() {
+    AffineMatrix4x4 m = getTarget().getTransformation(this);
+    double s = m.translation.calculateMagnitude();
+    s *= 5;
+    HermiteCubic xHermiteCubic = new HermiteCubic(0, m.translation.x, 0, -s * m.orientation.backward.x);
+    HermiteCubic yHermiteCubic = new HermiteCubic(0, m.translation.y, 0, -s * m.orientation.backward.y);
+    HermiteCubic zHermiteCubic = new HermiteCubic(0, m.translation.z, -1, -s * m.orientation.backward.z);
 
-		Vertex[] vertices = this.sgIQA.vertices.getValue();
-		synchronized( vertices ) {
-			double tDelta = 1.0 / CUBIC_COUNT;
-			double t = tDelta;
-			int lcv = 0;
-			for( int c = 0; c < CUBIC_COUNT; c++ ) {
-				double x = xHermiteCubic.evaluate( t );
-				double y = yHermiteCubic.evaluate( t );
-				double z = zHermiteCubic.evaluate( t );
+    Vertex[] vertices = this.sgIQA.vertices.getValue();
+    synchronized (vertices) {
+      double tDelta = 1.0 / CUBIC_COUNT;
+      double t = tDelta;
+      int lcv = 0;
+      for (int c = 0; c < CUBIC_COUNT; c++) {
+        double x = xHermiteCubic.evaluate(t);
+        double y = yHermiteCubic.evaluate(t);
+        double z = zHermiteCubic.evaluate(t);
 
-				this.vBuffer.set( zHermiteCubic.evaluateDerivative( t ), yHermiteCubic.evaluateDerivative( t ), zHermiteCubic.evaluateDerivative( t ) );
-				this.vBuffer.normalize();
-				//this.vBuffer.negate();
+        this.vBuffer.set(zHermiteCubic.evaluateDerivative(t), yHermiteCubic.evaluateDerivative(t), zHermiteCubic.evaluateDerivative(t));
+        this.vBuffer.normalize();
+        //this.vBuffer.negate();
 
-				Vector3 upGuide;
-				if( Vector3.isWithinEpsilonOfPositiveOrNegativeYAxis( this.vBuffer, 0.01 ) ) {
-					upGuide = Vector3.accessPositiveZAxis();
-				} else {
-					upGuide = Vector3.accessPositiveYAxis();
-				}
+        Vector3 upGuide;
+        if (Vector3.isWithinEpsilonOfPositiveOrNegativeYAxis(this.vBuffer, 0.01)) {
+          upGuide = Vector3.accessPositiveZAxis();
+        } else {
+          upGuide = Vector3.accessPositiveYAxis();
+        }
 
-				//todo
-				this.mBuffer.setValue( new ForwardAndUpGuide( this.vBuffer, upGuide ) );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( this.mBuffer );        
+        //todo
+        this.mBuffer.setValue(new ForwardAndUpGuide(this.vBuffer, upGuide));
+        //edu.cmu.cs.dennisc.print.PrintUtilities.printlns( this.mBuffer );
 
-				for( int d = 0; d < DISC_COUNT; d++ ) {
-					vertices[ lcv ].position.set( this.points[ d ] );
-					this.mBuffer.transform( vertices[ lcv ].position );
-					vertices[ lcv ].position.add( new Point3( x, y, z ) );
-					vertices[ lcv ].normal.set( this.normals[ d ] );
-					this.mBuffer.transform( vertices[ lcv ].normal );
-					lcv++;
-				}
-				t += tDelta;
-			}
-			this.sgIQA.vertices.touch();
-		}
-	}
+        for (int d = 0; d < DISC_COUNT; d++) {
+          vertices[lcv].position.set(this.points[d]);
+          this.mBuffer.transform(vertices[lcv].position);
+          vertices[lcv].position.add(new Point3(x, y, z));
+          vertices[lcv].normal.set(this.normals[d]);
+          this.mBuffer.transform(vertices[lcv].normal);
+          lcv++;
+        }
+        t += tDelta;
+      }
+      this.sgIQA.vertices.touch();
+    }
+  }
 
-	public double getRadius() {
-		return this.radius;
-	}
+  public double getRadius() {
+    return this.radius;
+  }
 
-	public void setRadius( double baseRadius ) {
-		if( this.radius != baseRadius ) {
-			this.radius = baseRadius;
-			double theta = 0.0;
-			double thetaDelta = ( 2.0 * Math.PI ) / DISC_COUNT;
-			for( int d = 0; d < DISC_COUNT; d++ ) {
-				double c = Math.cos( theta );
-				double s = Math.sin( theta );
-				this.points[ d ].set( this.radius * c, this.radius * s, 0 );
-				this.normals[ d ].set( (float)s, (float)c, 0 );
-				theta += thetaDelta;
-			}
-		}
-	}
+  public void setRadius(double baseRadius) {
+    if (this.radius != baseRadius) {
+      this.radius = baseRadius;
+      double theta = 0.0;
+      double thetaDelta = (2.0 * Math.PI) / DISC_COUNT;
+      for (int d = 0; d < DISC_COUNT; d++) {
+        double c = Math.cos(theta);
+        double s = Math.sin(theta);
+        this.points[d].set(this.radius * c, this.radius * s, 0);
+        this.normals[d].set((float) s, (float) c, 0);
+        theta += thetaDelta;
+      }
+    }
+  }
 
-	private final IndexedQuadrilateralArray sgIQA = new IndexedQuadrilateralArray();
+  private final IndexedQuadrilateralArray sgIQA = new IndexedQuadrilateralArray();
 
-	private final Point3[] points = new Point3[ DISC_COUNT ];
-	private final Vector3f[] normals = new Vector3f[ DISC_COUNT ];
+  private final Point3[] points = new Point3[DISC_COUNT];
+  private final Vector3f[] normals = new Vector3f[DISC_COUNT];
 
-	private final OrthogonalMatrix3x3 mBuffer = OrthogonalMatrix3x3.createNaN();
-	private final Vector3 vBuffer = Vector3.createNaN();
-	private double radius = Double.NaN;
+  private final OrthogonalMatrix3x3 mBuffer = OrthogonalMatrix3x3.createNaN();
+  private final Vector3 vBuffer = Vector3.createNaN();
+  private double radius = Double.NaN;
 }

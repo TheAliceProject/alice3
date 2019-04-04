@@ -49,11 +49,11 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface Node<T> {
-	public T getValue();
+  public T getValue();
 
-	public List<? extends Node<T>> getChildren();
+  public List<? extends Node<T>> getChildren();
 
-	public boolean contains( T value );
+  public boolean contains(T value);
 
-	public Node<T> get( T value );
+  public Node<T> get(T value);
 }

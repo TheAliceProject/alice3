@@ -53,30 +53,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DefaultSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
-	private final TreeModel<T> treeModel;
+  private final TreeModel<T> treeModel;
 
-	public DefaultSingleSelectTreeState( Group group, UUID id, ItemCodec<T> itemCodec, T initialSelection, TreeModel<T> treeModel ) {
-		super( group, id, initialSelection, itemCodec );
-		this.treeModel = treeModel;
-	}
+  public DefaultSingleSelectTreeState(Group group, UUID id, ItemCodec<T> itemCodec, T initialSelection, TreeModel<T> treeModel) {
+    super(group, id, initialSelection, itemCodec);
+    this.treeModel = treeModel;
+  }
 
-	@Override
-	public TreeModel<T> getTreeModel() {
-		return this.treeModel;
-	}
+  @Override
+  public TreeModel<T> getTreeModel() {
+    return this.treeModel;
+  }
 
-	@Override
-	protected String getTextForNode( T node ) {
-		return node.toString();
-	}
+  @Override
+  protected String getTextForNode(T node) {
+    return node.toString();
+  }
 
-	@Override
-	protected Icon getIconForNode( T node ) {
-		return null;
-	}
+  @Override
+  protected Icon getIconForNode(T node) {
+    return null;
+  }
 
-	@Override
-	public void refresh( T node ) {
-		Logger.todo( this );
-	}
+  @Override
+  public void refresh(T node) {
+    Logger.todo(this);
+  }
 }

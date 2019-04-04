@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddAxesManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddAxesManagedFieldComposite instance = new AddAxesManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddAxesManagedFieldComposite instance = new AddAxesManagedFieldComposite();
+  }
 
-	public static AddAxesManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddAxesManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AddAxesManagedFieldComposite() {
-		super( UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ), SAxes.class );
-	}
+  private AddAxesManagedFieldComposite() {
+    super(UUID.fromString("576234e8-8b33-4b18-b184-37de28603579"), SAxes.class);
+  }
 
-	@Override
-	protected String generateName() {
-		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(AxesDragModel.getInstance().getLocalizedClassName());
-	}
+  @Override
+  protected String generateName() {
+    return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(AxesDragModel.getInstance().getLocalizedClassName());
+  }
 }

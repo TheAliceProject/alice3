@@ -44,20 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildHairFormal implements FemaleChildHair {
-	RED,
-	BLACK,
-	BROWN,
-	BLOND;
+  RED, BLACK, BROWN, BLOND;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

@@ -44,20 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenHairShortSpikey implements MaleTeenHair {
-	BROWN,
-	BLACK,
-	RED,
-	BLOND;
+  BROWN, BLACK, RED, BLOND;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

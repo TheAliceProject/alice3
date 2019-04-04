@@ -56,77 +56,77 @@ import java.util.concurrent.CyclicBarrier;
  * @author Dennis Cosgrove
  */
 /*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
-	}
+  static interface LineAppender {
+    void appendLine(String line);
+  }
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final PrintWriter pw;
+  static class PrintStreamLineAppender implements LineAppender {
+    private final PrintWriter pw;
 
-		public PrintStreamLineAppender( PrintStream ps ) {
-			this.pw = ps != null ? new PrintWriter( ps ) : null;
-		}
+    public PrintStreamLineAppender(PrintStream ps) {
+      this.pw = ps != null ? new PrintWriter(ps) : null;
+    }
 
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
-	}
+    @Override
+    public void appendLine(String line) {
+      if (this.pw != null) {
+        this.pw.append(line);
+        this.pw.append('\n');
+        this.pw.flush();
+      }
+    }
+  }
 
-	static class StringListLineAppender implements LineAppender {
-		private final List<String> list;
+  static class StringListLineAppender implements LineAppender {
+    private final List<String> list;
 
-		public StringListLineAppender( List<String> list ) {
-			this.list = list;
-		}
+    public StringListLineAppender(List<String> list) {
+      this.list = list;
+    }
 
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
-	}
+    @Override
+    public void appendLine(String line) {
+      this.list.add(line);
+    }
+  }
 
-	private final InputStream is;
-	private final LineAppender lineAppender;
-	private final CyclicBarrier barrier;
+  private final InputStream is;
+  private final LineAppender lineAppender;
+  private final CyclicBarrier barrier;
 
-	public DrainInputStreamThread( InputStream is, LineAppender lineAppender, CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
-	}
+  public DrainInputStreamThread(InputStream is, LineAppender lineAppender, CyclicBarrier barrier) {
+    this.is = is;
+    this.lineAppender = lineAppender;
+    this.barrier = barrier;
+  }
 
-	@Override
-	public void run() {
-		InputStreamReader isr = new InputStreamReader( this.is );
-		BufferedReader br = new BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
-	}
+  @Override
+  public void run() {
+    InputStreamReader isr = new InputStreamReader(this.is);
+    BufferedReader br = new BufferedReader(isr);
+    //java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
+    while (true) {
+      try {
+        String line = br.readLine();
+        if (line != null) {
+          if (this.lineAppender != null) {
+            this.lineAppender.appendLine(line);
+          }
+        } else {
+          break;
+        }
+      } catch (IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+    }
+    if (barrier != null) {
+      try {
+        barrier.await();
+      } catch (BrokenBarrierException bbe) {
+        throw new RuntimeException(bbe);
+      } catch (InterruptedException ie) {
+        throw new RuntimeException(ie);
+      }
+    }
+  }
 }

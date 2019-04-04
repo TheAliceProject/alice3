@@ -57,37 +57,36 @@ import java.util.UUID;
  */
 public abstract class AbstractFieldBasedManipulationActionOperation extends ActionOperation {
 
-	private final boolean isDoRequired;
-	private final Animator animator;
-	private final UserField field;
-	private final String editPresentationKey;
+  private final boolean isDoRequired;
+  private final Animator animator;
+  private final UserField field;
+  private final String editPresentationKey;
 
-	public AbstractFieldBasedManipulationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String presentationKey ) {
-		super( group, individualId );
-		this.isDoRequired = isDoRequired;
-		this.animator = animator;
-		this.field = field;
-		this.editPresentationKey = presentationKey;
-	}
+  public AbstractFieldBasedManipulationActionOperation(Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, String presentationKey) {
+    super(group, individualId);
+    this.isDoRequired = isDoRequired;
+    this.animator = animator;
+    this.field = field;
+    this.editPresentationKey = presentationKey;
+  }
 
-	protected Animator getAnimator() {
-		return this.animator;
-	}
+  protected Animator getAnimator() {
+    return this.animator;
+  }
 
-	protected boolean isDoRequired() {
-		return this.isDoRequired;
-	}
+  protected boolean isDoRequired() {
+    return this.isDoRequired;
+  }
 
-	protected String getEditPresentationKey() {
-		return this.editPresentationKey;
-	}
+  protected String getEditPresentationKey() {
+    return this.editPresentationKey;
+  }
 
-	protected EntityImp getEntityImp() {
-		EntityImp entityImp = StorytellingSceneEditor.getInstance().getImplementation( this.field );
-		if( ( this.field == null ) || ( entityImp == null ) )
-		{
-			Logger.severe( "NULL EnityImp" );
-		}
-		return entityImp;
-	}
+  protected EntityImp getEntityImp() {
+    EntityImp entityImp = StorytellingSceneEditor.getInstance().getImplementation(this.field);
+    if ((this.field == null) || (entityImp == null)) {
+      Logger.severe("NULL EnityImp");
+    }
+    return entityImp;
+  }
 }

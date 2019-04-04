@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceJeansJacket implements FemaleTeenTopPiece {
-	BLUE_DENIM_WHITE,
-	BAD_BLACK,
-	DKBLUE_PURPLE,
-	PALE_BLUE_PINK,
-	PINK_WHITE;
+  BLUE_DENIM_WHITE, BAD_BLACK, DKBLUE_PURPLE, PALE_BLUE_PINK, PINK_WHITE
 
 }

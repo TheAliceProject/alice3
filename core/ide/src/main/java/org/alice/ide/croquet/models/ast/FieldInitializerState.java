@@ -61,38 +61,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldInitializerState extends CustomItemStateWithInternalBlank<Expression> {
-	private static Map<UserField, FieldInitializerState> map = Maps.newHashMap();
+  private static Map<UserField, FieldInitializerState> map = Maps.newHashMap();
 
-	public static synchronized FieldInitializerState getInstance( UserField field ) {
-		FieldInitializerState rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldInitializerState( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized FieldInitializerState getInstance(UserField field) {
+    FieldInitializerState rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new FieldInitializerState(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private FieldInitializerState( UserField field ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue(), NodeCodec.getInstance( Expression.class ) );
-		this.field = field;
-	}
+  private FieldInitializerState(UserField field) {
+    super(Application.PROJECT_GROUP, UUID.fromString("7df7024e-5eef-4ed0-b463-da3719955e7a"), field.initializer.getValue(), NodeCodec.getInstance(Expression.class));
+    this.field = field;
+  }
 
-	@Override
-	protected Expression getSwingValue() {
-		return this.field.initializer.getValue();
-	}
+  @Override
+  protected Expression getSwingValue() {
+    return this.field.initializer.getValue();
+  }
 
-	@Override
-	protected void setSwingValue( Expression nextValue ) {
-		this.field.initializer.setValue( nextValue );
-	}
+  @Override
+  protected void setSwingValue(Expression nextValue) {
+    this.field.initializer.setValue(nextValue);
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.field.getValueType(), null );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, this.field.getValueType(), null);
+  }
 }

@@ -48,20 +48,20 @@ import javax.swing.UIManager;
  * @author Dennis Cosgrove
  */
 public class PlafUtilities {
-	private PlafUtilities() {
-		throw new AssertionError();
-	}
+  private PlafUtilities() {
+    throw new AssertionError();
+  }
 
-	public static UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed( String plafName ) {
-		for( UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
-			if( plafName.equals( info.getName() ) ) {
-				return info;
-			}
-		}
-		return null;
-	}
+  public static UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed(String plafName) {
+    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+      if (plafName.equals(info.getName())) {
+        return info;
+      }
+    }
+    return null;
+  }
 
-	public static boolean isInstalledLookAndFeelNamed( String plafName ) {
-		return getInstalledLookAndFeelInfoNamed( plafName ) != null;
-	}
+  public static boolean isInstalledLookAndFeelNamed(String plafName) {
+    return getInstalledLookAndFeelInfoNamed(plafName) != null;
+  }
 }

@@ -47,20 +47,20 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public abstract class NameCriterion implements Criterion {
-	public static final boolean IS_SENSITIVE_TO_CASE = true;
-	public static final boolean IS_NOT_SENSITIVE_TO_CASE = false;
+  public static final boolean IS_SENSITIVE_TO_CASE = true;
+  public static final boolean IS_NOT_SENSITIVE_TO_CASE = false;
 
-	protected abstract boolean acceptName( String name );
+  protected abstract boolean acceptName(String name);
 
-	@Override
-	public boolean accept( Object o ) {
-		boolean isAccepted;
-		if( o instanceof Nameable ) {
-			Nameable nameable = (Nameable)o;
-			isAccepted = acceptName( nameable.getName() );
-		} else {
-			isAccepted = false;
-		}
-		return isAccepted;
-	}
+  @Override
+  public boolean accept(Object o) {
+    boolean isAccepted;
+    if (o instanceof Nameable) {
+      Nameable nameable = (Nameable) o;
+      isAccepted = acceptName(nameable.getName());
+    } else {
+      isAccepted = false;
+    }
+    return isAccepted;
+  }
 }

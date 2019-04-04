@@ -54,45 +54,45 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SearchForGraphicsDriversOperation extends BrowserOperation {
-	private static class SingletonHolder {
-		private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
-	}
+  private static class SingletonHolder {
+    private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
+  }
 
-	public static SearchForGraphicsDriversOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SearchForGraphicsDriversOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SearchForGraphicsDriversOperation() {
-		super( UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea" ) );
-	}
+  private SearchForGraphicsDriversOperation() {
+    super(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea"));
+  }
 
-	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase( Locale.ENGLISH ).contains( "geforce" ) ) {
-			return "GeForce";
-		} else {
-			return renderer;
-		}
-	}
+  private static String getRendererSearchTerm(String renderer) {
+    if (renderer.toLowerCase(Locale.ENGLISH).contains("geforce")) {
+      return "GeForce";
+    } else {
+      return renderer;
+    }
+  }
 
-	@Override
-	protected URL getUrl() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "http://www.google.com/search?q=+graphics+driver" );
-		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
-		if( sharedDetails != null ) {
-			String renderer = sharedDetails.getRenderer();
-			if( renderer != null ) {
-				renderer = getRendererSearchTerm( renderer );
-				sb.append( "+" );
-				sb.append( renderer.replaceAll( " ", "+" ) );
-			}
-		}
-		String spec = sb.toString();
-		this.setToolTipText( spec );
-		try {
-			return new URL( spec );
-		} catch( MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
-	}
+  @Override
+  protected URL getUrl() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("http://www.google.com/search?q=+graphics+driver");
+    ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+    if (sharedDetails != null) {
+      String renderer = sharedDetails.getRenderer();
+      if (renderer != null) {
+        renderer = getRendererSearchTerm(renderer);
+        sb.append("+");
+        sb.append(renderer.replaceAll(" ", "+"));
+      }
+    }
+    String spec = sb.toString();
+    this.setToolTipText(spec);
+    try {
+      return new URL(spec);
+    } catch (MalformedURLException murle) {
+      throw new RuntimeException(spec, murle);
+    }
+  }
 }

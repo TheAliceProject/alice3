@@ -58,63 +58,63 @@ import org.lgna.project.ast.NodeUtilities;
  * @author Dennis Cosgrove
  */
 public class AddKeyedArgumentEdit extends AbstractEdit {
-	private ArgumentOwner argumentOwner;
-	private JavaKeyedArgument keyedArgument;
+  private ArgumentOwner argumentOwner;
+  private JavaKeyedArgument keyedArgument;
 
-	public AddKeyedArgumentEdit( UserActivity userActivity, ArgumentOwner argumentOwner, JavaKeyedArgument keyedArgument ) {
-		super( userActivity );
-		this.argumentOwner = argumentOwner;
-		this.keyedArgument = keyedArgument;
-	}
+  public AddKeyedArgumentEdit(UserActivity userActivity, ArgumentOwner argumentOwner, JavaKeyedArgument keyedArgument) {
+    super(userActivity);
+    this.argumentOwner = argumentOwner;
+    this.keyedArgument = keyedArgument;
+  }
 
-	public AddKeyedArgumentEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.argumentOwner = NodeCodec.getInstance( ArgumentOwner.class ).decodeValue( binaryDecoder );
-		this.keyedArgument = NodeCodec.getInstance( JavaKeyedArgument.class ).decodeValue( binaryDecoder );
-	}
+  public AddKeyedArgumentEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.argumentOwner = NodeCodec.getInstance(ArgumentOwner.class).decodeValue(binaryDecoder);
+    this.keyedArgument = NodeCodec.getInstance(JavaKeyedArgument.class).decodeValue(binaryDecoder);
+  }
 
-	public ArgumentOwner getArgumentOwner() {
-		return this.argumentOwner;
-	}
+  public ArgumentOwner getArgumentOwner() {
+    return this.argumentOwner;
+  }
 
-	public JavaKeyedArgument getKeyedArgument() {
-		return this.keyedArgument;
-	}
+  public JavaKeyedArgument getKeyedArgument() {
+    return this.keyedArgument;
+  }
 
-	@Override
-	protected void preCopy() {
-		super.preCopy();
-		NodeCodec.addNodeToGlobalMap( this.keyedArgument );
-	}
+  @Override
+  protected void preCopy() {
+    super.preCopy();
+    NodeCodec.addNodeToGlobalMap(this.keyedArgument);
+  }
 
-	@Override
-	protected void postCopy( AbstractEdit result ) {
-		NodeCodec.removeNodeFromGlobalMap( this.keyedArgument );
-		super.postCopy( result );
-	}
+  @Override
+  protected void postCopy(AbstractEdit result) {
+    NodeCodec.removeNodeFromGlobalMap(this.keyedArgument);
+    super.postCopy(result);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( ArgumentOwner.class ).encodeValue( binaryEncoder, this.argumentOwner );
-		NodeCodec.getInstance( JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(ArgumentOwner.class).encodeValue(binaryEncoder, this.argumentOwner);
+    NodeCodec.getInstance(JavaKeyedArgument.class).encodeValue(binaryEncoder, this.keyedArgument);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.argumentOwner.getKeyedArgumentsProperty().add( this.keyedArgument );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.argumentOwner.getKeyedArgumentsProperty().add(this.keyedArgument);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		KeyedArgumentListProperty argumentListProperty = this.argumentOwner.getKeyedArgumentsProperty();
-		int index = argumentListProperty.indexOf( this.keyedArgument );
-		argumentListProperty.remove( index );
-	}
+  @Override
+  protected final void undoInternal() {
+    KeyedArgumentListProperty argumentListProperty = this.argumentOwner.getKeyedArgumentsProperty();
+    int index = argumentListProperty.indexOf(this.keyedArgument);
+    argumentListProperty.remove(index);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "add detail " );
-		NodeUtilities.safeAppendRepr( rv, this.keyedArgument, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("add detail ");
+    NodeUtilities.safeAppendRepr(rv, this.keyedArgument, Application.getLocale());
+  }
 }

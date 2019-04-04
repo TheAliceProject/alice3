@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OtherSFlyerJointsSubMenu<FB> extends JointsSubMenu<FB> {
-	public OtherSFlyerJointsSubMenu() {
-		super( UUID.fromString( "f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44" ), SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot" );
-	}
+  public OtherSFlyerJointsSubMenu() {
+    super(UUID.fromString("f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44"), SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot");
+  }
 }

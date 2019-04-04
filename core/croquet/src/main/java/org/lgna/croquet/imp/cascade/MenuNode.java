@@ -49,11 +49,11 @@ import org.lgna.croquet.AbstractCascadeMenuModel;
  * @author Dennis Cosgrove
  */
 public class MenuNode<F, B> extends BlankOwnerNode<F, B, AbstractCascadeMenuModel<F, B>> {
-	public static <F, B> MenuNode<F, B> createInstance( AbstractCascadeMenuModel<F, B> model ) {
-		return new MenuNode<F, B>( model );
-	}
+  public static <F, B> MenuNode<F, B> createInstance(AbstractCascadeMenuModel<F, B> model) {
+    return new MenuNode<F, B>(model);
+  }
 
-	private MenuNode( AbstractCascadeMenuModel<F, B> model ) {
-		super( model );
-	}
+  private MenuNode(AbstractCascadeMenuModel<F, B> model) {
+    super(model);
+  }
 }

@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  * @author Dennis Cosgrove
  */
 public class ComponentRemovedEvent extends ComponentEvent {
-	public ComponentRemovedEvent( Composite source, Component child ) {
-		super( source, child );
-	}
+  public ComponentRemovedEvent(Composite source, Component child) {
+    super(source, child);
+  }
 }

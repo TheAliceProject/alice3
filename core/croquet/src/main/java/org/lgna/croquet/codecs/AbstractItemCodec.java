@@ -48,19 +48,19 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemCodec<T> implements ItemCodec<T> {
-	private final Class<T> valueCls;
+  private final Class<T> valueCls;
 
-	public AbstractItemCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  public AbstractItemCodec(Class<T> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<T> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<T> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, T value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, T value) {
+    sb.append(value);
+  }
 }

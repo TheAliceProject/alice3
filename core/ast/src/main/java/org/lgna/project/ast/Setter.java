@@ -52,43 +52,43 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Setter extends AbstractMethodContainedByUserField {
-	Setter( UserField field ) {
-		super( field );
-	}
+  Setter(UserField field) {
+    super(field);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getReturnType() {
-		return JavaType.VOID_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getReturnType() {
+    return JavaType.VOID_TYPE;
+  }
 
-	@Override
-	public List<AbstractParameter> getRequiredParameters() {
-		return this.requiredParameters;
-	}
+  @Override
+  public List<AbstractParameter> getRequiredParameters() {
+    return this.requiredParameters;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendSetter( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendSetter(this);
+  }
 
-	@Override
-	public String getName() {
-		//todo: handle boolean and is
-		String fieldName = this.getField().getName();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "set" );
-		if( fieldName.length() > 0 ) {
-			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
-			sb.append( fieldName.substring( 1 ) );
-		}
-		return sb.toString();
-	}
+  @Override
+  public String getName() {
+    //todo: handle boolean and is
+    String fieldName = this.getField().getName();
+    StringBuilder sb = new StringBuilder();
+    sb.append("set");
+    if (fieldName.length() > 0) {
+      sb.append(Character.toUpperCase(fieldName.charAt(0)));
+      sb.append(fieldName.substring(1));
+    }
+    return sb.toString();
+  }
 
-	@Override
-	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		virtualMachine.set( getField(), target, arguments[ 0 ] );
-		return null;
-	}
+  @Override
+  public Object invoke(VirtualMachine virtualMachine, Object target, Object[] arguments) {
+    virtualMachine.set(getField(), target, arguments[0]);
+    return null;
+  }
 
-	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
+  private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList(Lists.newArrayList(new SetterParameter(this)));
 }

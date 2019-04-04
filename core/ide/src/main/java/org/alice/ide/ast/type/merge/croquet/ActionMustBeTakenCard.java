@@ -54,18 +54,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ActionMustBeTakenCard extends SimpleComposite<Panel> {
-	private final DifferentImplementation<?> differentImplementation;
+  private final DifferentImplementation<?> differentImplementation;
 
-	public ActionMustBeTakenCard( DifferentImplementation<?> differentImplementation ) {
-		super( UUID.fromString( "2fb6aba3-2df6-4731-ab8a-81ed77e0ec4a" ) );
-		this.differentImplementation = differentImplementation;
-	}
+  public ActionMustBeTakenCard(DifferentImplementation<?> differentImplementation) {
+    super(UUID.fromString("2fb6aba3-2df6-4731-ab8a-81ed77e0ec4a"));
+    this.differentImplementation = differentImplementation;
+  }
 
-	@Override
-	protected Panel createView() {
-		Member member = this.differentImplementation.getProjectHub().getMember();
-		MigPanel rv = new MigPanel( this, "insets 0, fill" );
-		rv.addComponent( MemberViewUtilities.createActionMustBeTakeMemberLabel( member ) );
-		return rv;
-	}
+  @Override
+  protected Panel createView() {
+    Member member = this.differentImplementation.getProjectHub().getMember();
+    MigPanel rv = new MigPanel(this, "insets 0, fill");
+    rv.addComponent(MemberViewUtilities.createActionMustBeTakeMemberLabel(member));
+    return rv;
+  }
 }

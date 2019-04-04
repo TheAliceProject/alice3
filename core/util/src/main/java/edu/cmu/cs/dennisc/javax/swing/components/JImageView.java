@@ -50,40 +50,40 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 public class JImageView extends JComponent {
-	private Image image;
+  private Image image;
 
-	public Image getImage() {
-		return this.image;
-	}
+  public Image getImage() {
+    return this.image;
+  }
 
-	public void setImage( Image image ) {
-		this.image = image;
-		this.repaint();
-	}
+  public void setImage(Image image) {
+    this.image = image;
+    this.repaint();
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		if( this.image != null ) {
-			int imageWidth = this.image.getWidth( this );
-			int imageHeight = this.image.getHeight( this );
-			double widthToHeightImageAspectRatio = imageWidth / (double)imageHeight;
+  @Override
+  protected void paintComponent(Graphics g) {
+    if (this.image != null) {
+      int imageWidth = this.image.getWidth(this);
+      int imageHeight = this.image.getHeight(this);
+      double widthToHeightImageAspectRatio = imageWidth / (double) imageHeight;
 
-			Dimension componentSize = this.getSize();
-			Dimension drawSize = DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
+      Dimension componentSize = this.getSize();
+      Dimension drawSize = DimensionUtilities.calculateBestFittingSize(componentSize, widthToHeightImageAspectRatio);
 
-			if( ( drawSize.width == componentSize.width ) && ( drawSize.height == componentSize.height ) ) {
-				g.drawImage( this.image, 0, 0, this );
-			} else {
-				super.paintComponent( g );
-				if( ( drawSize.width > 0 ) && ( drawSize.height > 0 ) ) {
-					g.drawImage( this.image.getScaledInstance( drawSize.width, drawSize.height, Image.SCALE_SMOOTH ), 0, 0, this );
-				}
-				//int x = ( componentSize.width - drawSize.width ) / 2;
-				//int y = ( componentSize.height - drawSize.height ) / 2;
-				//g.drawImage( this.image, x, y, x + drawSize.width, y + drawSize.height, 0, 0, imageWidth, imageHeight, this );
-			}
-		} else {
-			super.paintComponent( g );
-		}
-	}
+      if ((drawSize.width == componentSize.width) && (drawSize.height == componentSize.height)) {
+        g.drawImage(this.image, 0, 0, this);
+      } else {
+        super.paintComponent(g);
+        if ((drawSize.width > 0) && (drawSize.height > 0)) {
+          g.drawImage(this.image.getScaledInstance(drawSize.width, drawSize.height, Image.SCALE_SMOOTH), 0, 0, this);
+        }
+        //int x = ( componentSize.width - drawSize.width ) / 2;
+        //int y = ( componentSize.height - drawSize.height ) / 2;
+        //g.drawImage( this.image, x, y, x + drawSize.width, y + drawSize.height, 0, 0, imageWidth, imageHeight, this );
+      }
+    } else {
+      super.paintComponent(g);
+    }
+  }
 }

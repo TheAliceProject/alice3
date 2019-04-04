@@ -51,41 +51,41 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author Dennis Cosgrove
  */
 public class Sets {
-	private Sets() {
-		throw new Error();
-	}
+  private Sets() {
+    throw new Error();
+  }
 
-	public static <E> HashSet<E> newHashSet() {
-		return new HashSet<>();
-	}
+  public static <E> HashSet<E> newHashSet() {
+    return new HashSet<>();
+  }
 
-	public static <E, X extends E> HashSet<E> newHashSet( X... values ) {
-		HashSet<E> rv = new HashSet<>();
-		if( values != null ) {
-			Collections.addAll(rv, values);
-		}
-		return rv;
-	}
+  public static <E, X extends E> HashSet<E> newHashSet(X... values) {
+    HashSet<E> rv = new HashSet<>();
+    if (values != null) {
+      Collections.addAll(rv, values);
+    }
+    return rv;
+  }
 
-	public static <E> HashSet<E> newHashSet( Collection<E> other ) {
-		HashSet<E> rv = new HashSet<>();
-		rv.addAll( other );
-		return rv;
-	}
+  public static <E> HashSet<E> newHashSet(Collection<E> other) {
+    HashSet<E> rv = new HashSet<>();
+    rv.addAll(other);
+    return rv;
+  }
 
-	public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet() {
-		return new CopyOnWriteArraySet<>();
-	}
+  public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet() {
+    return new CopyOnWriteArraySet<>();
+  }
 
-	public static <E, X extends E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet( X... array ) {
-		CopyOnWriteArraySet<E> rv = new CopyOnWriteArraySet<>();
-		Collections.addAll( rv, array );
-		return rv;
-	}
+  public static <E, X extends E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(X... array) {
+    CopyOnWriteArraySet<E> rv = new CopyOnWriteArraySet<>();
+    Collections.addAll(rv, array);
+    return rv;
+  }
 
-	public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet( Collection<E> other ) {
-		CopyOnWriteArraySet<E> rv = new CopyOnWriteArraySet<>();
-		rv.addAll( other );
-		return rv;
-	}
+  public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(Collection<E> other) {
+    CopyOnWriteArraySet<E> rv = new CopyOnWriteArraySet<>();
+    rv.addAll(other);
+    return rv;
+  }
 }

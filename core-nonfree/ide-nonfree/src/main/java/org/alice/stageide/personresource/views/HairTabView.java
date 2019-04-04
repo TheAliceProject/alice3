@@ -57,22 +57,22 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class HairTabView extends MigPanel {
-	public HairTabView( HairTabComposite composite ) {
-		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "[grow 0][grow]" );
-		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
-		this.setBackgroundColor( backgroundColor );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+  public HairTabView(HairTabComposite composite) {
+    super(composite, "insets 2, fill", "[right][left, grow, shrink]", "[grow 0][grow]");
+    Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
+    this.setBackgroundColor(backgroundColor);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel() );
-		//this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
-		this.addComponent( new HairColorNameRadioButtons( composite.getHairColorNameState() ), "align left, wrap, grow, shrink" );
+    this.addComponent(composite.getHairColorNameState().getSidekickLabel().createLabel());
+    //this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
+    this.addComponent(new HairColorNameRadioButtons(composite.getHairColorNameState()), "align left, wrap, grow, shrink");
 
-		List<HairHatStyle> hairList = new HorizontalWrapList<HairHatStyle>( composite.getHairHatStyleState(), -1, HairListCellRenderer.getInstance() );
-		hairList.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
-		ScrollPane hairScrollPane = new ScrollPane( hairList );
-		hairScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
+    List<HairHatStyle> hairList = new HorizontalWrapList<HairHatStyle>(composite.getHairHatStyleState(), -1, HairListCellRenderer.getInstance());
+    hairList.setBackgroundColor(IngredientsView.BACKGROUND_COLOR);
+    ScrollPane hairScrollPane = new ScrollPane(hairList);
+    hairScrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
+    hairScrollPane.setBothScrollBarIncrements(66, 66);
 
-		this.addComponent( hairScrollPane, "span 2, wrap, grow, shrink" );
-	}
+    this.addComponent(hairScrollPane, "span 2, wrap, grow, shrink");
+  }
 }

@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.help;
  */
 public interface LogInOutListener {
 
-	public void fireLoggedIn( AbstractLoginComposite<?> login );
+  public void fireLoggedIn(AbstractLoginComposite<?> login);
 
-	public void fireLoggedOut( AbstractLoginComposite<?> login );
+  public void fireLoggedOut(AbstractLoginComposite<?> login);
 
 }

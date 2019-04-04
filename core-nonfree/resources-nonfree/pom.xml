@@ -41,167 +41,167 @@
     POSSIBILITY OF SUCH DAMAGE.
  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.alice.nonfree</groupId>
-		<artifactId>core-nonfree</artifactId>
-		<version>5.0.1-SNAPSHOT</version>
-	</parent>
+  <parent>
+    <groupId>org.alice.nonfree</groupId>
+    <artifactId>core-nonfree</artifactId>
+    <version>5.0.1-SNAPSHOT</version>
+  </parent>
 
-	<name>Alice Resources nonfree</name>
-	<artifactId>resources-nonfree</artifactId>
-	<!-- Note: The packaging should really be pom; jar is wrong. -->
-	<!-- m2eclipse won't build the platform directory needed without this hack. -->
-	<packaging>jar</packaging>
+  <name>Alice Resources nonfree</name>
+  <artifactId>resources-nonfree</artifactId>
+  <!-- Note: The packaging should really be pom; jar is wrong. -->
+  <!-- m2eclipse won't build the platform directory needed without this hack. -->
+  <packaging>jar</packaging>
 
-	<properties>
-		<!-- We need to put all this stuff in the official resources directory. -->
-		<project.resources.directory>${project.basedir}/../../core/resources/target/distribution/</project.resources.directory>
+  <properties>
+    <!-- We need to put all this stuff in the official resources directory. -->
+    <project.resources.directory>${project.basedir}/../../core/resources/target/distribution/</project.resources.directory>
 
-		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
-		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
-	</properties>
+    <project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
+    <project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
+  </properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>distribution-application</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.resources.application.directory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.basedir}/src/application/resources</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>distribution-application</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.resources.application.directory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/application/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>distribution-platform</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<!-- linux-amd64 -->
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-amd64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>distribution-platform</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <!-- linux-amd64 -->
+                <artifactItem>
+                  <groupId>org.alice.nonfree</groupId>
+                  <artifactId>nebulous-natives</artifactId>
+                  <version>${nebulous.lib.version}</version>
+                  <classifier>linux-amd64</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
+                </artifactItem>
 
-								<!-- linux-i586 -->
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-i586</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
+                <!-- linux-i586 -->
+                <artifactItem>
+                  <groupId>org.alice.nonfree</groupId>
+                  <artifactId>nebulous-natives</artifactId>
+                  <version>${nebulous.lib.version}</version>
+                  <classifier>linux-i586</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
+                </artifactItem>
 
-								<!-- macosx -->
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>macosx</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
+                <!-- macosx -->
+                <artifactItem>
+                  <groupId>org.alice.nonfree</groupId>
+                  <artifactId>nebulous-natives</artifactId>
+                  <version>${nebulous.lib.version}</version>
+                  <classifier>macosx</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
+                </artifactItem>
 
-								<!-- win32 -->
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win32</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
+                <!-- win32 -->
+                <artifactItem>
+                  <groupId>org.alice.nonfree</groupId>
+                  <artifactId>nebulous-natives</artifactId>
+                  <version>${nebulous.lib.version}</version>
+                  <classifier>win32</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
+                </artifactItem>
 
-								<!-- win64 -->
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+                <!-- win64 -->
+                <artifactItem>
+                  <groupId>org.alice.nonfree</groupId>
+                  <artifactId>nebulous-natives</artifactId>
+                  <version>${nebulous.lib.version}</version>
+                  <classifier>win64</classifier>
+                  <type>zip</type>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
 
-		<pluginManagement>
-			<plugins>
-				<!-- Tell Eclipse to generate the resources in this pom -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[2.8,)</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute>
-											<runOnIncremental>true</runOnIncremental>
-											<runOnConfiguration>false</runOnConfiguration>
-										</execute>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-clean-plugin</artifactId>
-										<versionRange>[2.0,)</versionRange>
-										<goals>
-											<goal>clean</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+    <pluginManagement>
+      <plugins>
+        <!-- Tell Eclipse to generate the resources in this pom -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.8,)</versionRange>
+                    <goals>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute>
+                      <runOnIncremental>true</runOnIncremental>
+                      <runOnConfiguration>false</runOnConfiguration>
+                    </execute>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <versionRange>[2.0,)</versionRange>
+                    <goals>
+                      <goal>clean</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>
 

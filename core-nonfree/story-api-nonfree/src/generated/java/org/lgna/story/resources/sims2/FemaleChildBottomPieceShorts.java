@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildBottomPieceShorts implements FemaleChildBottomPiece {
-	BEARS,
-	DOGS;
+  BEARS, DOGS
 
 }

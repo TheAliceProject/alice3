@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitMayor implements FemaleElderFullBodyOutfit {
-	BLUE_MAYOR;
+  BLUE_MAYOR
 
 }

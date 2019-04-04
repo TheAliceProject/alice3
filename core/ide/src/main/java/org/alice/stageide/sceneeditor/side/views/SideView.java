@@ -77,88 +77,75 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class SideView extends BorderPanel {
-	private static Border createSeparatorBorder( int top, int bottom, Color color ) {
-		return BorderFactory.createMatteBorder( top, 0, bottom, 0, color );
-	}
+  private static Border createSeparatorBorder(int top, int bottom, Color color) {
+    return BorderFactory.createMatteBorder(top, 0, bottom, 0, color);
+  }
 
-	public SideView( SideComposite composite ) {
-		super( composite );
+  public SideView(SideComposite composite) {
+    super(composite);
 
-		final Theme theme = ThemeUtilities.getActiveTheme();
-		final Color color = theme.getPrimaryBackgroundColor();
+    final Theme theme = ThemeUtilities.getActiveTheme();
+    final Color color = theme.getPrimaryBackgroundColor();
 
-		if( IsToolBarShowing.getValue() ) {
-			//pass
-		} else {
-			ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-			FlowPanel undoRedoPanel = new FlowPanel(
-					FlowPanel.Alignment.CENTER,
-					projectDocumentFrame.getUndoOperation().createButton(),
-					projectDocumentFrame.getRedoOperation().createButton()
-					);
+    if (IsToolBarShowing.getValue()) {
+      //pass
+    } else {
+      ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+      FlowPanel undoRedoPanel = new FlowPanel(FlowPanel.Alignment.CENTER, projectDocumentFrame.getUndoOperation().createButton(), projectDocumentFrame.getRedoOperation().createButton());
 
-			undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );
-			this.addPageStartComponent( undoRedoPanel );
-		}
+      undoRedoPanel.setBorder(createSeparatorBorder(0, 1, theme.getSecondaryBackgroundColor()));
+      this.addPageStartComponent(undoRedoPanel);
+    }
 
-		MigPanel migPanel = new MigPanel( null, "fill, insets 0, aligny top", "", "" );
+    MigPanel migPanel = new MigPanel(null, "fill, insets 0, aligny top", "", "");
 
-		AbstractRadioButtons<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>( composite.getHandleStyleState(), false ) {
-			@Override
-			protected BooleanStateButton<?> createButtonForItemSelectedState( HandleStyle item, BooleanState itemSelectedState ) {
-				PushButton b = itemSelectedState.createPushButton();
-				b.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
-				b.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
-				b.setSelectedColor( theme.getSelectedColor() );
-				b.setBackgroundColor( color );
-				return b;
-			}
-		};
-		migPanel.addComponent( new LineAxisPanel(
-				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.2f ),
-				radioButtons
-				), "wrap" );
+    AbstractRadioButtons<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>(composite.getHandleStyleState(), false) {
+      @Override
+      protected BooleanStateButton<?> createButtonForItemSelectedState(HandleStyle item, BooleanState itemSelectedState) {
+        PushButton b = itemSelectedState.createPushButton();
+        b.setVerticalTextPosition(VerticalTextPosition.BOTTOM);
+        b.setHorizontalTextPosition(HorizontalTextPosition.CENTER);
+        b.setSelectedColor(theme.getSelectedColor());
+        b.setBackgroundColor(color);
+        return b;
+      }
+    };
+    migPanel.addComponent(new LineAxisPanel(composite.getHandleStyleState().getSidekickLabel().createLabel(1.2f), radioButtons), "wrap");
 
-		ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
-		ToolPaletteTitle title = toolPaletteView.getTitle();
-		title.setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+    ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
+    ToolPaletteTitle title = toolPaletteView.getTitle();
+    title.setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
 
-		migPanel.addComponent( new FlowPanel(
-				composite.getIsSnapEnabledState().createCheckBox(),
-				title ), "wrap, gapleft 4" );
-		migPanel.addComponent( toolPaletteView, "wrap" );
+    migPanel.addComponent(new FlowPanel(composite.getIsSnapEnabledState().createCheckBox(), title), "wrap, gapleft 4");
+    migPanel.addComponent(toolPaletteView, "wrap");
 
-		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
-		migPanel.addComponent( new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() ), "wrap" );
+    //this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
+    migPanel.addComponent(new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState()), "wrap");
 
-		//todo
-		//migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
+    //todo
+    //migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
 
-		migPanel.addComponent( DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
+    migPanel.addComponent(DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap");
 
-		ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
-				composite.getObjectPropertiesTab(),
-				composite.getObjectMarkersTab(),
-				composite.getCameraMarkersTab()
-		};
+    ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {composite.getObjectPropertiesTab(), composite.getObjectMarkersTab(), composite.getCameraMarkersTab()};
 
-		title.setBackgroundColor( color );
-		for( ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
-			ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
-			toolPaletteTitle.setBackgroundColor( color );
-			toolPaletteTitle.scaleFont( 1.4f );
-			toolPaletteTitle.changeFont( TextWeight.BOLD );
-			migPanel.addComponent( toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx" );
-		}
-		migPanel.addComponent( new Label(), "wrap, grow, push" );
+    title.setBackgroundColor(color);
+    for (ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites) {
+      ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
+      toolPaletteTitle.setBackgroundColor(color);
+      toolPaletteTitle.scaleFont(1.4f);
+      toolPaletteTitle.changeFont(TextWeight.BOLD);
+      migPanel.addComponent(toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx");
+    }
+    migPanel.addComponent(new Label(), "wrap, grow, push");
 
-		ScrollPane scrollPane = new ScrollPane( migPanel );
-		this.addCenterComponent( scrollPane );
+    ScrollPane scrollPane = new ScrollPane(migPanel);
+    this.addCenterComponent(scrollPane);
 
-		migPanel.setBackgroundColor( color );
-		scrollPane.setBackgroundColor( color );
-		this.setBackgroundColor( color );
+    migPanel.setBackgroundColor(color);
+    scrollPane.setBackgroundColor(color);
+    this.setBackgroundColor(color);
 
-		this.setMaximumPreferredWidth( 400 );
-	}
+    this.setMaximumPreferredWidth(400);
+  }
 }

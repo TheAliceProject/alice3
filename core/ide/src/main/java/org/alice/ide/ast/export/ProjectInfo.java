@@ -62,74 +62,74 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class ProjectInfo {
-	private final Map<UserType<?>, TypeInfo> typeInfoMap;
-	private final DefaultNode<TypeInfo> root = DefaultNode.createUnsafeInstance( null, TypeInfo.class );
-	private boolean isInTheMidstOfChange;
+  private final Map<UserType<?>, TypeInfo> typeInfoMap;
+  private final DefaultNode<TypeInfo> root = DefaultNode.createUnsafeInstance(null, TypeInfo.class);
+  private boolean isInTheMidstOfChange;
 
-	public ProjectInfo( Project project ) {
-		Set<NamedUserType> types = project.getNamedUserTypes();
-		Map<UserType<?>, TypeInfo> map = Maps.newHashMap();
-		for( NamedUserType type : types ) {
-			map.put( type, new TypeInfo( this, type ) );
-		}
-		this.typeInfoMap = Collections.unmodifiableMap( map );
+  public ProjectInfo(Project project) {
+    Set<NamedUserType> types = project.getNamedUserTypes();
+    Map<UserType<?>, TypeInfo> map = Maps.newHashMap();
+    for (NamedUserType type : types) {
+      map.put(type, new TypeInfo(this, type));
+    }
+    this.typeInfoMap = Collections.unmodifiableMap(map);
 
-		Map<TypeInfo, DefaultNode<TypeInfo>> mapInfoToNode = Maps.newHashMap();
-		Collection<TypeInfo> typeInfos = this.getTypeInfos();
-		for( TypeInfo typeInfo : typeInfos ) {
-			typeInfo.updateDependencies();
-			mapInfoToNode.put( typeInfo, DefaultNode.createUnsafeInstance( typeInfo, TypeInfo.class ) );
-		}
-		mapInfoToNode.put( null, this.root );
-		for( TypeInfo typeInfo : typeInfos ) {
-			DefaultNode<TypeInfo> node = mapInfoToNode.get( typeInfo );
-			DefaultNode<TypeInfo> parent = mapInfoToNode.get( typeInfo.getSuperTypeInfo() );
-			parent.addChild( node );
-		}
+    Map<TypeInfo, DefaultNode<TypeInfo>> mapInfoToNode = Maps.newHashMap();
+    Collection<TypeInfo> typeInfos = this.getTypeInfos();
+    for (TypeInfo typeInfo : typeInfos) {
+      typeInfo.updateDependencies();
+      mapInfoToNode.put(typeInfo, DefaultNode.createUnsafeInstance(typeInfo, TypeInfo.class));
+    }
+    mapInfoToNode.put(null, this.root);
+    for (TypeInfo typeInfo : typeInfos) {
+      DefaultNode<TypeInfo> node = mapInfoToNode.get(typeInfo);
+      DefaultNode<TypeInfo> parent = mapInfoToNode.get(typeInfo.getSuperTypeInfo());
+      parent.addChild(node);
+    }
 
-		Collections.sort( this.root.getChildren(), new Comparator<DefaultNode<TypeInfo>>() {
-			@Override
-			public int compare( DefaultNode<TypeInfo> o1, DefaultNode<TypeInfo> o2 ) {
-				return o1.getValue().getDeclaration().getName().compareTo( o2.getValue().getDeclaration().getName() );
-			}
-		} );
-	}
+    Collections.sort(this.root.getChildren(), new Comparator<DefaultNode<TypeInfo>>() {
+      @Override
+      public int compare(DefaultNode<TypeInfo> o1, DefaultNode<TypeInfo> o2) {
+        return o1.getValue().getDeclaration().getName().compareTo(o2.getValue().getDeclaration().getName());
+      }
+    });
+  }
 
-	public Node<TypeInfo> getTypeInfosAsTree() {
-		return this.root;
-	}
+  public Node<TypeInfo> getTypeInfosAsTree() {
+    return this.root;
+  }
 
-	public Collection<TypeInfo> getTypeInfos() {
-		return this.typeInfoMap.values();
-	}
+  public Collection<TypeInfo> getTypeInfos() {
+    return this.typeInfoMap.values();
+  }
 
-	public TypeInfo getInfoForType( UserType<?> type ) {
-		return this.typeInfoMap.get( type );
-	}
+  public TypeInfo getInfoForType(UserType<?> type) {
+    return this.typeInfoMap.get(type);
+  }
 
-	public boolean isInTheMidstOfChange() {
-		return this.isInTheMidstOfChange;
-	}
+  public boolean isInTheMidstOfChange() {
+    return this.isInTheMidstOfChange;
+  }
 
-	public void update() {
-		this.isInTheMidstOfChange = true;
-		try {
-			for( TypeInfo typeInfo : this.getTypeInfos() ) {
-				typeInfo.resetRequired();
-			}
-			List<DeclarationInfo<?>> desired = Lists.newLinkedList();
-			for( TypeInfo typeInfo : this.getTypeInfos() ) {
-				typeInfo.appendDesired( desired );
-			}
-			Set<DeclarationInfo<?>> set = Sets.newHashSet();
-			for( DeclarationInfo<?> declarationInfo : desired ) {
-				declarationInfo.updateRequired( set );
-			}
-			for( TypeInfo typeInfo : this.getTypeInfos() ) {
-				typeInfo.updateSwing();
-			}
-		} finally {
-			this.isInTheMidstOfChange = false;
-		}
-	}
+  public void update() {
+    this.isInTheMidstOfChange = true;
+    try {
+      for (TypeInfo typeInfo : this.getTypeInfos()) {
+        typeInfo.resetRequired();
+      }
+      List<DeclarationInfo<?>> desired = Lists.newLinkedList();
+      for (TypeInfo typeInfo : this.getTypeInfos()) {
+        typeInfo.appendDesired(desired);
+      }
+      Set<DeclarationInfo<?>> set = Sets.newHashSet();
+      for (DeclarationInfo<?> declarationInfo : desired) {
+        declarationInfo.updateRequired(set);
+      }
+      for (TypeInfo typeInfo : this.getTypeInfos()) {
+        typeInfo.updateSwing();
+      }
+    } finally {
+      this.isInTheMidstOfChange = false;
+    }
+  }
 }

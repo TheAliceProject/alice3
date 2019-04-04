@@ -52,12 +52,12 @@ import org.lgna.story.resources.sims2.Outfit;
  * @author Dennis Cosgrove
  */
 public class OutfitFillerInner extends IngredientFillerInner {
-	public OutfitFillerInner() {
-		super( JavaType.getInstance( Outfit.class ) );
-	}
+  public OutfitFillerInner() {
+    super(JavaType.getInstance(Outfit.class));
+  }
 
-	@Override
-	protected Class<?>[] getClses( LifeStage lifeStage, Gender gender ) {
-		return FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender );
-	}
+  @Override
+  protected Class<?>[] getClses(LifeStage lifeStage, Gender gender) {
+    return FullBodyOutfitManager.getSingleton().getImplementingClasses(lifeStage, gender);
+  }
 }

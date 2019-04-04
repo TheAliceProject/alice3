@@ -53,34 +53,34 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  * @author Dennis Cosgrove
  */
 public class ModestConnection extends Connection {
-	public ModestConnection() {
-		Vertex[] vertices = new Vertex[ 32 ];
-		for( int i = 0; i < vertices.length; i++ ) {
-			vertices[ i ] = Vertex.createXYZ( 0, 0, 0 );
-		}
-		this.sgLineStrip.vertices.setValue( vertices );
-		geometries.setValue( new Geometry[] { this.sgLineStrip } );
-		getSGFrontFacingAppearance().setShadingStyle( ShadingStyle.NONE );
-	}
+  public ModestConnection() {
+    Vertex[] vertices = new Vertex[32];
+    for (int i = 0; i < vertices.length; i++) {
+      vertices[i] = Vertex.createXYZ(0, 0, 0);
+    }
+    this.sgLineStrip.vertices.setValue(vertices);
+    geometries.setValue(new Geometry[] {this.sgLineStrip});
+    getSGFrontFacingAppearance().setShadingStyle(ShadingStyle.NONE);
+  }
 
-	public void update() {
-		AffineMatrix4x4 m = getTarget().getTransformation( this );
-		double s = m.translation.calculateMagnitude();
-		s *= 2;
-		HermiteCubic x = new HermiteCubic( 0, m.translation.x, 0, s * m.orientation.backward.x );
-		HermiteCubic y = new HermiteCubic( 0, m.translation.y, 0, s * m.orientation.backward.y );
-		HermiteCubic z = new HermiteCubic( 0, m.translation.z, -s, -s * m.orientation.backward.z );
-		Vertex[] vertices = this.sgLineStrip.vertices.getValue();
-		synchronized( vertices ) {
-			double tDelta = 1.0 / ( vertices.length - 1 );
-			double t = tDelta;
-			for( int i = 1; i < vertices.length; i++ ) {
-				vertices[ i ].position.set( x.evaluate( t ), y.evaluate( t ), z.evaluate( t ) );
-				t += tDelta;
-			}
-			this.sgLineStrip.vertices.touch();
-		}
-	}
+  public void update() {
+    AffineMatrix4x4 m = getTarget().getTransformation(this);
+    double s = m.translation.calculateMagnitude();
+    s *= 2;
+    HermiteCubic x = new HermiteCubic(0, m.translation.x, 0, s * m.orientation.backward.x);
+    HermiteCubic y = new HermiteCubic(0, m.translation.y, 0, s * m.orientation.backward.y);
+    HermiteCubic z = new HermiteCubic(0, m.translation.z, -s, -s * m.orientation.backward.z);
+    Vertex[] vertices = this.sgLineStrip.vertices.getValue();
+    synchronized (vertices) {
+      double tDelta = 1.0 / (vertices.length - 1);
+      double t = tDelta;
+      for (int i = 1; i < vertices.length; i++) {
+        vertices[i].position.set(x.evaluate(t), y.evaluate(t), z.evaluate(t));
+        t += tDelta;
+      }
+      this.sgLineStrip.vertices.touch();
+    }
+  }
 
-	private final LineStrip sgLineStrip = new LineStrip();
+  private final LineStrip sgLineStrip = new LineStrip();
 }

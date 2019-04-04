@@ -51,174 +51,174 @@ import java.lang.annotation.Annotation;
  * @author Dennis Cosgrove
  */
 public final class MethodReflectionProxy extends InvocableReflectionProxy<java.lang.reflect.Method> {
-	private static java.lang.reflect.Method findVarArgsVersion( Class<?> cls, String name, Class<?>[] desiredParameterTypes ) {
-		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-			if( mthd.isVarArgs() ) {
-				if( mthd.getName().equals( name ) ) {
-					Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
-					if( candidateParameterTypes.length == ( desiredParameterTypes.length + 1 ) ) {
-						java.lang.reflect.Method rv = mthd;
-						for( int i = 0; i < desiredParameterTypes.length; i++ ) {
-							if( candidateParameterTypes[ i ].equals( desiredParameterTypes[ i ] ) ) {
-								//pass
-							} else {
-								rv = null;
-							}
-						}
-						if( rv != null ) {
-							Logger.info( "MIGRATION: varArgs version used", rv );
-							return rv;
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
+  private static java.lang.reflect.Method findVarArgsVersion(Class<?> cls, String name, Class<?>[] desiredParameterTypes) {
+    for (java.lang.reflect.Method mthd : cls.getDeclaredMethods()) {
+      if (mthd.isVarArgs()) {
+        if (mthd.getName().equals(name)) {
+          Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
+          if (candidateParameterTypes.length == (desiredParameterTypes.length + 1)) {
+            java.lang.reflect.Method rv = mthd;
+            for (int i = 0; i < desiredParameterTypes.length; i++) {
+              if (candidateParameterTypes[i].equals(desiredParameterTypes[i])) {
+                //pass
+              } else {
+                rv = null;
+              }
+            }
+            if (rv != null) {
+              Logger.info("MIGRATION: varArgs version used", rv);
+              return rv;
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	private static Class<?>[] getTrimmedParameterTypes( Class<?>[] parameterTypes ) {
-		Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
-		System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
-		return trimmedParameterTypes;
-	}
+  private static Class<?>[] getTrimmedParameterTypes(Class<?>[] parameterTypes) {
+    Class<?>[] trimmedParameterTypes = new Class[parameterTypes.length - 1];
+    System.arraycopy(parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length);
+    return trimmedParameterTypes;
+  }
 
-	private static java.lang.reflect.Method getNonVarArgsVersion( Class<?> cls, String name, Class<?>[] parameterTypes ) {
-		Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes( parameterTypes );
-		try {
-			return cls.getDeclaredMethod( name, trimmedParameterTypes );
-		} catch( NoSuchMethodException nsme ) {
-			return null;
-		}
-	}
+  private static java.lang.reflect.Method getNonVarArgsVersion(Class<?> cls, String name, Class<?>[] parameterTypes) {
+    Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes(parameterTypes);
+    try {
+      return cls.getDeclaredMethod(name, trimmedParameterTypes);
+    } catch (NoSuchMethodException nsme) {
+      return null;
+    }
+  }
 
-	public static MethodReflectionProxy getReplacementIfNecessary( MethodReflectionProxy original ) {
-		Class<?> cls = original.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			Class<?>[] parameterTypes = ClassReflectionProxy.getReifications( original.parameterClassReflectionProxies );
-			try {
-				cls.getDeclaredMethod( original.name, parameterTypes );
-			} catch( NoSuchMethodException nsme ) {
-				java.lang.reflect.Method varArgsMthd;
-				if( original.isVarArgs ) {
-					//varArgsMthd = getNonVarArgsVersion( cls, original.name, parameterTypes );
-					varArgsMthd = null;
-				} else {
-					varArgsMthd = findVarArgsVersion( cls, original.name, parameterTypes );
-					if( varArgsMthd != null ) {
-						//pass
-					} else {
-						if( parameterTypes.length > 0 ) {
-							Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
-							if( lastParameterType != null ) {
-								if( lastParameterType.isArray() ) {
-									Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes( parameterTypes );
-									varArgsMthd = findVarArgsVersion( cls, original.name, trimmedParameterTypes );
-								}
-							}
-						}
-					}
-				}
-				if( varArgsMthd != null ) {
-					return new MethodReflectionProxy( varArgsMthd );
-				} else {
-					Logger.severe( original );
-				}
-			}
-		}
-		return null;
-	}
+  public static MethodReflectionProxy getReplacementIfNecessary(MethodReflectionProxy original) {
+    Class<?> cls = original.getDeclaringClassReflectionProxy().getReification();
+    if (cls != null) {
+      Class<?>[] parameterTypes = ClassReflectionProxy.getReifications(original.parameterClassReflectionProxies);
+      try {
+        cls.getDeclaredMethod(original.name, parameterTypes);
+      } catch (NoSuchMethodException nsme) {
+        java.lang.reflect.Method varArgsMthd;
+        if (original.isVarArgs) {
+          //varArgsMthd = getNonVarArgsVersion( cls, original.name, parameterTypes );
+          varArgsMthd = null;
+        } else {
+          varArgsMthd = findVarArgsVersion(cls, original.name, parameterTypes);
+          if (varArgsMthd != null) {
+            //pass
+          } else {
+            if (parameterTypes.length > 0) {
+              Class<?> lastParameterType = parameterTypes[parameterTypes.length - 1];
+              if (lastParameterType != null) {
+                if (lastParameterType.isArray()) {
+                  Class<?>[] trimmedParameterTypes = getTrimmedParameterTypes(parameterTypes);
+                  varArgsMthd = findVarArgsVersion(cls, original.name, trimmedParameterTypes);
+                }
+              }
+            }
+          }
+        }
+        if (varArgsMthd != null) {
+          return new MethodReflectionProxy(varArgsMthd);
+        } else {
+          Logger.severe(original);
+        }
+      }
+    }
+    return null;
+  }
 
-	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
-		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
-		this.name = name;
-		this.isVarArgs = isVarArgs;
-	}
+  public MethodReflectionProxy(ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs) {
+    super(declaringClassReflectionProxy, parameterClassReflectionProxies);
+    this.name = name;
+    this.isVarArgs = isVarArgs;
+  }
 
-	public MethodReflectionProxy( java.lang.reflect.Method mthd ) {
-		super( mthd, mthd.getDeclaringClass(), mthd.getParameterTypes() );
-		this.name = mthd.getName();
-		this.isVarArgs = mthd.isVarArgs();
-	}
+  public MethodReflectionProxy(java.lang.reflect.Method mthd) {
+    super(mthd, mthd.getDeclaringClass(), mthd.getParameterTypes());
+    this.name = mthd.getName();
+    this.isVarArgs = mthd.isVarArgs();
+  }
 
-	public boolean isVarArgs() {
-		return this.isVarArgs;
-	}
+  public boolean isVarArgs() {
+    return this.isVarArgs;
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = super.hashCodeNonReifiable();
-		rv = ( 37 * rv ) + this.name.hashCode();
-		return rv;
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    int rv = super.hashCodeNonReifiable();
+    rv = (37 * rv) + this.name.hashCode();
+    return rv;
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
-			MethodReflectionProxy other = (MethodReflectionProxy)o;
-			return this.name != null ? this.name.equals( other.name ) : other.name == null;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    if (super.equalsInstanceOfSameClassButNonReifiable(o)) {
+      MethodReflectionProxy other = (MethodReflectionProxy) o;
+      return this.name != null ? this.name.equals(other.name) : other.name == null;
+    } else {
+      return false;
+    }
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	protected java.lang.reflect.Method reify() {
-		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			Class<?>[] parameterTypes = ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies );
-			try {
-				return cls.getDeclaredMethod( name, parameterTypes );
-			} catch( NoSuchMethodException nsme ) {
-				return null;
-				//				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( nsme, this );
-				//				java.lang.reflect.Method rv = findVarArgsVersion( cls, name, parameterTypes );
-				//				if( rv != null ) {
-				//					//pass
-				//				} else {
-				//					if( parameterTypes.length > 0 ) {
-				//						Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
-				//						if( lastParameterType != null ) {
-				//							if( lastParameterType.isArray() ) {
-				//								Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
-				//								System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
-				//								rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
-				//								if( rv != null ) {
-				//									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
-				//								}
-				//							}
-				//						} else {
-				//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				//						}
-				//					}
-				//				}
-				//				return rv;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected java.lang.reflect.Method reify() {
+    Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
+    if (cls != null) {
+      Class<?>[] parameterTypes = ClassReflectionProxy.getReifications(this.parameterClassReflectionProxies);
+      try {
+        return cls.getDeclaredMethod(name, parameterTypes);
+      } catch (NoSuchMethodException nsme) {
+        return null;
+        //        edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( nsme, this );
+        //        java.lang.reflect.Method rv = findVarArgsVersion( cls, name, parameterTypes );
+        //        if( rv != null ) {
+        //          //pass
+        //        } else {
+        //          if( parameterTypes.length > 0 ) {
+        //            Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
+        //            if( lastParameterType != null ) {
+        //              if( lastParameterType.isArray() ) {
+        //                Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
+        //                System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
+        //                rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
+        //                if( rv != null ) {
+        //                  edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+        //                }
+        //              }
+        //            } else {
+        //              edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+        //            }
+        //          }
+        //        }
+        //        return rv;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Annotation[][] getReifiedParameterAnnotations() {
-		java.lang.reflect.Method mthd = this.getReification();
-		if( mthd != null ) {
-			return mthd.getParameterAnnotations();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Annotation[][] getReifiedParameterAnnotations() {
+    java.lang.reflect.Method mthd = this.getReification();
+    if (mthd != null) {
+      return mthd.getParameterAnnotations();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( ";name=" );
-		sb.append( this.name );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(";name=");
+    sb.append(this.name);
+  }
 
-	private final String name;
-	private final boolean isVarArgs;
+  private final String name;
+  private final boolean isVarArgs;
 }

@@ -59,137 +59,137 @@ import java.util.Enumeration;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends Model> extends ViewController<J, M> {
-	private static final ButtonModel MODEL_FOR_NULL = new DefaultButtonModel();
+  private static final ButtonModel MODEL_FOR_NULL = new DefaultButtonModel();
 
-	private final String uiDefaultsName;
-	private boolean isIconClobbered;
-	private Icon clobberIcon;
+  private final String uiDefaultsName;
+  private boolean isIconClobbered;
+  private Icon clobberIcon;
 
-	public AbstractButton( M model, String uiDefaultsName ) {
-		super( model );
-		this.uiDefaultsName = uiDefaultsName;
-	}
+  public AbstractButton(M model, String uiDefaultsName) {
+    super(model);
+    this.uiDefaultsName = uiDefaultsName;
+  }
 
-	public boolean isIconClobbered() {
-		return this.isIconClobbered;
-	}
+  public boolean isIconClobbered() {
+    return this.isIconClobbered;
+  }
 
-	public void setIconClobbered( boolean isIconClobbered ) {
-		this.isIconClobbered = isIconClobbered;
-	}
+  public void setIconClobbered(boolean isIconClobbered) {
+    this.isIconClobbered = isIconClobbered;
+  }
 
-	public Icon getClobberIcon() {
-		return this.clobberIcon;
-	}
+  public Icon getClobberIcon() {
+    return this.clobberIcon;
+  }
 
-	public void setClobberIcon( Icon clobberIcon ) {
-		this.clobberIcon = clobberIcon;
-		this.isIconClobbered = true;
-	}
+  public void setClobberIcon(Icon clobberIcon) {
+    this.clobberIcon = clobberIcon;
+    this.isIconClobbered = true;
+  }
 
-	public int getIconTextGap() {
-		return this.getAwtComponent().getIconTextGap();
-	}
+  public int getIconTextGap() {
+    return this.getAwtComponent().getIconTextGap();
+  }
 
-	public void setIconTextGap( int iconTextGap ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setIconTextGap( iconTextGap );
-	}
+  public void setIconTextGap(int iconTextGap) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setIconTextGap(iconTextGap);
+  }
 
-	private static final Insets ZERO_MARGIN = new Insets( 0, 0, 0, 0 );
+  private static final Insets ZERO_MARGIN = new Insets(0, 0, 0, 0);
 
-	public void tightenUpMargin( Insets margin ) {
-		this.checkEventDispatchThread();
-		javax.swing.AbstractButton jButton = this.getAwtComponent();
-		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
-			if( this.uiDefaultsName != null ) {
-				if( margin != null ) {
-					//pass
-				} else {
-					int right;
-					String text = jButton.getText();
-					final int PAD = 4;
-					if( ( text != null ) && ( text.length() > 0 ) ) {
-						right = PAD + 4;
-					} else {
-						right = PAD;
-					}
-					margin = new Insets( PAD, PAD, PAD, right );
-				}
-				UIDefaults uiDefaults = new UIDefaults();
-				uiDefaults.put( this.uiDefaultsName + ".contentMargins", margin );
-				this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
-			} else {
-				Enumeration<Object> enm = UIManager.getDefaults().keys();
-				while( enm.hasMoreElements() ) {
-					Object key = enm.nextElement();
-					if( key != null ) {
-						if( key.toString().endsWith( ".contentMargins" ) ) {
-							Logger.errln( key, UIManager.get( key ) );
-						}
-					}
-				}
-				Logger.severe( "uiDefaultsName is null:", this );
-			}
-		} else {
-			this.setMargin( margin != null ? margin : ZERO_MARGIN );
-		}
-	}
+  public void tightenUpMargin(Insets margin) {
+    this.checkEventDispatchThread();
+    javax.swing.AbstractButton jButton = this.getAwtComponent();
+    if ("javax.swing.plaf.synth.SynthButtonUI".equals(jButton.getUI().getClass().getName())) {
+      if (this.uiDefaultsName != null) {
+        if (margin != null) {
+          //pass
+        } else {
+          int right;
+          String text = jButton.getText();
+          final int PAD = 4;
+          if ((text != null) && (text.length() > 0)) {
+            right = PAD + 4;
+          } else {
+            right = PAD;
+          }
+          margin = new Insets(PAD, PAD, PAD, right);
+        }
+        UIDefaults uiDefaults = new UIDefaults();
+        uiDefaults.put(this.uiDefaultsName + ".contentMargins", margin);
+        this.getAwtComponent().putClientProperty("Nimbus.Overrides", uiDefaults);
+      } else {
+        Enumeration<Object> enm = UIManager.getDefaults().keys();
+        while (enm.hasMoreElements()) {
+          Object key = enm.nextElement();
+          if (key != null) {
+            if (key.toString().endsWith(".contentMargins")) {
+              Logger.errln(key, UIManager.get(key));
+            }
+          }
+        }
+        Logger.severe("uiDefaultsName is null:", this);
+      }
+    } else {
+      this.setMargin(margin != null ? margin : ZERO_MARGIN);
+    }
+  }
 
-	public final void tightenUpMargin() {
-		this.tightenUpMargin( null );
-	}
+  public final void tightenUpMargin() {
+    this.tightenUpMargin(null);
+  }
 
-	/* package-private */void setSwingButtonModel( ButtonModel model ) {
-		if( model != null ) {
-			//pass
-		} else {
-			model = MODEL_FOR_NULL;
-		}
-		if( model != this.getAwtComponent().getModel() ) {
-			this.checkEventDispatchThread();
-			this.getAwtComponent().setModel( model );
-		}
-	}
+  /* package-private */void setSwingButtonModel(ButtonModel model) {
+    if (model != null) {
+      //pass
+    } else {
+      model = MODEL_FOR_NULL;
+    }
+    if (model != this.getAwtComponent().getModel()) {
+      this.checkEventDispatchThread();
+      this.getAwtComponent().setModel(model);
+    }
+  }
 
-	/* package-private */void setAction( Action action ) {
-		if( action != this.getAwtComponent().getAction() ) {
-			this.checkEventDispatchThread();
-			this.getAwtComponent().setAction( action );
-		}
-	}
+  /* package-private */void setAction(Action action) {
+    if (action != this.getAwtComponent().getAction()) {
+      this.checkEventDispatchThread();
+      this.getAwtComponent().setAction(action);
+    }
+  }
 
-	public void doClick() {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().doClick();
-	}
+  public void doClick() {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().doClick();
+  }
 
-	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
-	}
+  public void setHorizontalTextPosition(HorizontalTextPosition horizontalTextPosition) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalTextPosition(horizontalTextPosition.getInternal());
+  }
 
-	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
-	}
+  public void setVerticalTextPosition(VerticalTextPosition verticalTextPosition) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVerticalTextPosition(verticalTextPosition.getInternal());
+  }
 
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
+  public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalAlignment(horizontalAlignment.getInternal());
+  }
 
-	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
-	}
+  public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVerticalAlignment(verticalAlignment.getInternal());
+  }
 
-	public Insets getMargin() {
-		return this.getAwtComponent().getMargin();
-	}
+  public Insets getMargin() {
+    return this.getAwtComponent().getMargin();
+  }
 
-	public void setMargin( Insets margin ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setMargin( margin );
-	}
+  public void setMargin(Insets margin) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setMargin(margin);
+  }
 }

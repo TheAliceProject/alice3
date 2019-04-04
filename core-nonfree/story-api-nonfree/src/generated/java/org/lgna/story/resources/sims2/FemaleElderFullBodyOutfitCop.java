@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitCop implements FemaleElderFullBodyOutfit {
-	POLICE,
-	SECURITY;
+  POLICE, SECURITY
 
 }

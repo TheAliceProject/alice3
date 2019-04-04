@@ -57,49 +57,49 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Texture extends AbstractNameable implements BinaryEncodableAndDecodable, ImageGenerator {
-	public Texture() {
-	}
+  public Texture() {
+  }
 
-	public Texture( BinaryDecoder binaryDecoder ) {
-	}
+  public Texture(BinaryDecoder binaryDecoder) {
+  }
 
-	public boolean isValid() {
-		return ( getWidth() > 0 ) && ( getHeight() > 0 );
-	}
+  public boolean isValid() {
+    return (getWidth() > 0) && (getHeight() > 0);
+  }
 
-	@Override
-	public abstract int getWidth();
+  @Override
+  public abstract int getWidth();
 
-	@Override
-	public abstract int getHeight();
+  @Override
+  public abstract int getHeight();
 
-	@Override
-	public abstract boolean isPotentiallyAlphaBlended();
+  @Override
+  public abstract boolean isPotentiallyAlphaBlended();
 
-	@Override
-	public abstract boolean isMipMappingDesired();
+  @Override
+  public abstract boolean isMipMappingDesired();
 
-	public void addTextureListener( TextureListener textureListener ) {
-		m_textureListeners.add( textureListener );
-	}
+  public void addTextureListener(TextureListener textureListener) {
+    m_textureListeners.add(textureListener);
+  }
 
-	public void removeTextureListener( TextureListener textureListener ) {
-		m_textureListeners.remove( textureListener );
-	}
+  public void removeTextureListener(TextureListener textureListener) {
+    m_textureListeners.remove(textureListener);
+  }
 
-	public Iterable<TextureListener> accessTextureListeners() {
-		return m_textureListeners;
-	}
+  public Iterable<TextureListener> accessTextureListeners() {
+    return m_textureListeners;
+  }
 
-	public void fireTextureChanged( TextureEvent textureEvent ) {
-		for( TextureListener hl : m_textureListeners ) {
-			hl.textureChanged( textureEvent );
-		}
-	}
+  public void fireTextureChanged(TextureEvent textureEvent) {
+    for (TextureListener hl : m_textureListeners) {
+      hl.textureChanged(textureEvent);
+    }
+  }
 
-	public void fireTextureChanged() {
-		fireTextureChanged( new TextureEvent( this ) );
-	}
+  public void fireTextureChanged() {
+    fireTextureChanged(new TextureEvent(this));
+  }
 
-	private final List<TextureListener> m_textureListeners = Lists.newCopyOnWriteArrayList();
+  private final List<TextureListener> m_textureListeners = Lists.newCopyOnWriteArrayList();
 }

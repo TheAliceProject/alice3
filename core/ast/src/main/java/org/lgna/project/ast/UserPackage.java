@@ -49,27 +49,27 @@ import edu.cmu.cs.dennisc.property.StringProperty;
  * @author Dennis Cosgrove
  */
 public class UserPackage extends AbstractPackage {
-	public UserPackage() {
-	}
+  public UserPackage() {
+  }
 
-	public UserPackage( String name ) {
-		this.name.setValue( name );
-	}
+  public UserPackage(String name) {
+    this.name.setValue(name);
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
+  @Override
+  public String getName() {
+    return name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	public final StringProperty name = new StringProperty( this, null );
+  public final StringProperty name = new StringProperty(this, null);
 }

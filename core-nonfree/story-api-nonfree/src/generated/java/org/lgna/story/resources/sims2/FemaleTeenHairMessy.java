@@ -44,21 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenHairMessy implements FemaleTeenHair {
-	BROWN,
-	BLOND,
-	GREY,
-	BLACK,
-	RED;
+  BROWN, BLOND, GREY, BLACK, RED;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

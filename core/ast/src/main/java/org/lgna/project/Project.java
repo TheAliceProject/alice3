@@ -61,107 +61,107 @@ import java.util.Set;
  */
 public class Project {
 
-	private final NamedUserType programType;
-	private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
-	private final Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = Maps.newHashMap();
-	private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
+  private final NamedUserType programType;
+  private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
+  private final Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = Maps.newHashMap();
+  private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
-	private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
 
-	private final Object lock = new Object();
+  private final Object lock = new Object();
 
-	public Project( NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources ) {
-		this( programType );
-		this.namedUserTypes.addAll( namedUserTypes );
-		this.resources.addAll( resources );
-	}
+  public Project(NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
+    this(programType);
+    this.namedUserTypes.addAll(namedUserTypes);
+    this.resources.addAll(resources);
+  }
 
-	public Project( NamedUserType programType ) {
-		this.programType = programType;
-	}
+  public Project(NamedUserType programType) {
+    this.programType = programType;
+  }
 
-	public Object getLock() {
-		return this.lock;
-	}
+  public Object getLock() {
+    return this.lock;
+  }
 
-	public NamedUserType getProgramType() {
-		return this.programType;
-	}
+  public NamedUserType getProgramType() {
+    return this.programType;
+  }
 
-	public void addResourceListener( ResourceListener resourceListener ) {
-		this.resourceListeners.add( resourceListener );
-	}
+  public void addResourceListener(ResourceListener resourceListener) {
+    this.resourceListeners.add(resourceListener);
+  }
 
-	public void removeResourceListener( ResourceListener resourceListener ) {
-		this.resourceListeners.remove( resourceListener );
-	}
+  public void removeResourceListener(ResourceListener resourceListener) {
+    this.resourceListeners.remove(resourceListener);
+  }
 
-	public void addResource( Resource resource ) {
-		if( this.resources.contains( resource ) ) {
-			//todo
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
-		} else {
-			this.resources.add( resource );
-			if( this.resourceListeners.size() > 0 ) {
-				ResourceEvent e = new ResourceEvent( this, resource );
-				for( ResourceListener resourceListener : this.resourceListeners ) {
-					resourceListener.resourceAdded( e );
-				}
-			}
-		}
-	}
+  public void addResource(Resource resource) {
+    if (this.resources.contains(resource)) {
+      //todo
+      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
+    } else {
+      this.resources.add(resource);
+      if (this.resourceListeners.size() > 0) {
+        ResourceEvent e = new ResourceEvent(this, resource);
+        for (ResourceListener resourceListener : this.resourceListeners) {
+          resourceListener.resourceAdded(e);
+        }
+      }
+    }
+  }
 
-	public void removeResource( Resource resource ) {
-		this.resources.remove( resource );
-		if( this.resourceListeners.size() > 0 ) {
-			ResourceEvent e = new ResourceEvent( this, resource );
-			for( ResourceListener resourceListener : this.resourceListeners ) {
-				resourceListener.resourceRemoved( e );
-			}
-		}
-	}
+  public void removeResource(Resource resource) {
+    this.resources.remove(resource);
+    if (this.resourceListeners.size() > 0) {
+      ResourceEvent e = new ResourceEvent(this, resource);
+      for (ResourceListener resourceListener : this.resourceListeners) {
+        resourceListener.resourceRemoved(e);
+      }
+    }
+  }
 
-	public Set<Resource> getResources() {
-		return this.resources;
-	}
+  public Set<Resource> getResources() {
+    return this.resources;
+  }
 
-	public Set<PropertyKey<Object>> getPropertyKeys() {
-		return this.propertyMap.keySet();
-	}
+  public Set<PropertyKey<Object>> getPropertyKeys() {
+    return this.propertyMap.keySet();
+  }
 
-	public <T> boolean containsValueFor( PropertyKey<T> key ) {
-		return this.propertyMap.containsKey( key );
-	}
+  public <T> boolean containsValueFor(PropertyKey<T> key) {
+    return this.propertyMap.containsKey(key);
+  }
 
-	public <T> T getValueFor( PropertyKey<T> key ) {
-		return (T)this.propertyMap.get( key );
-	}
+  public <T> T getValueFor(PropertyKey<T> key) {
+    return (T) this.propertyMap.get(key);
+  }
 
-	public <T> void putValueFor( PropertyKey<T> key, T value ) {
-		this.propertyMap.put( key, value );
-	}
+  public <T> void putValueFor(PropertyKey<T> key, T value) {
+    this.propertyMap.put(key, value);
+  }
 
-	public <T> void removeValueFor( PropertyKey<T> key ) {
-		this.propertyMap.remove( key );
-	}
+  public <T> void removeValueFor(PropertyKey<T> key) {
+    this.propertyMap.remove(key);
+  }
 
-	public void addNamedUserType( NamedUserType namedUserType ) {
-		if( this.namedUserTypes.contains( namedUserType ) ) {
-			//todo
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
-		} else {
-			this.namedUserTypes.add( namedUserType );
-		}
-	}
+  public void addNamedUserType(NamedUserType namedUserType) {
+    if (this.namedUserTypes.contains(namedUserType)) {
+      //todo
+      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
+    } else {
+      this.namedUserTypes.add(namedUserType);
+    }
+  }
 
-	public void removeNamedUserType( NamedUserType namedUserType ) {
-		this.namedUserTypes.remove( namedUserType );
-	}
+  public void removeNamedUserType(NamedUserType namedUserType) {
+    this.namedUserTypes.remove(namedUserType);
+  }
 
-	public Set<NamedUserType> getNamedUserTypes() {
-		synchronized( this.getLock() ) {
-			this.namedUserTypes.addAll( AstUtilities.getNamedUserTypes( this.programType ) );
-			return this.namedUserTypes;
-		}
-	}
+  public Set<NamedUserType> getNamedUserTypes() {
+    synchronized (this.getLock()) {
+      this.namedUserTypes.addAll(AstUtilities.getNamedUserTypes(this.programType));
+      return this.namedUserTypes;
+    }
+  }
 }

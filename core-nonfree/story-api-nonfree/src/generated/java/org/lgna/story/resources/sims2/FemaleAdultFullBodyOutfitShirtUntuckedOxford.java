@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultFullBodyOutfitShirtUntuckedOxford implements FemaleAdultFullBodyOutfit {
-	IVORY,
-	RED,
-	BLUE,
-	DARK_GREY,
-	PINK,
-	LIME;
+  IVORY, RED, BLUE, DARK_GREY, PINK, LIME
 
 }

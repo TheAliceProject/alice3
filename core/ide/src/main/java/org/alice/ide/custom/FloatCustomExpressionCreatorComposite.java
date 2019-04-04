@@ -54,27 +54,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
+  }
 
-	public static FloatCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FloatCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FloatCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), FloatModel.getInstance() );
-	}
+  private FloatCustomExpressionCreatorComposite() {
+    super(UUID.fromString("9fe48aa9-d9cc-4110-9ada-696406bfd727"), FloatModel.getInstance());
+  }
 
-	@Override
-	protected String getTextForPreviousExpression( Expression expression ) {
-		String text;
-		if( expression instanceof FloatLiteral ) {
-			FloatLiteral floatLiteral = (FloatLiteral)expression;
-			text = DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
-		} else {
-			text = "";
-		}
-		return text;
-	}
+  @Override
+  protected String getTextForPreviousExpression(Expression expression) {
+    String text;
+    if (expression instanceof FloatLiteral) {
+      FloatLiteral floatLiteral = (FloatLiteral) expression;
+      text = DoubleUtilities.formatInCurrentDefaultLocale(floatLiteral.value.getValue());
+    } else {
+      text = "";
+    }
+    return text;
+  }
 }

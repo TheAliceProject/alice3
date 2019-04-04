@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultBottomPieceWillPants implements MaleAdultBottomPiece {
-	BLACK_JEANS_SNEAKS;
+  BLACK_JEANS_SNEAKS
 
 }

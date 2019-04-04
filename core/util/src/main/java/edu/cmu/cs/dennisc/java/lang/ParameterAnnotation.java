@@ -49,8 +49,6 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ParameterAnnotation {
-	boolean isVariable();
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ParameterAnnotation {
+  boolean isVariable();
 }

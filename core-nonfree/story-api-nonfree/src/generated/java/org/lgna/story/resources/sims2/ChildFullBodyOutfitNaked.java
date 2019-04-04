@@ -44,12 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ChildFullBodyOutfitNaked implements MaleChildFullBodyOutfit, FemaleChildFullBodyOutfit {
-	TROPIC_BERRY_SWIM,
-	TROPIC_FIRE_SWIM,
-	TROPIC_SEA_SWIM,
-	BLUE_CAMISOLE,
-	CREAM_CAMISOLE,
-	PINK_CAMISOLE,
-	WHITE_CAMISOLE;
+  TROPIC_BERRY_SWIM, TROPIC_FIRE_SWIM, TROPIC_SEA_SWIM, BLUE_CAMISOLE, CREAM_CAMISOLE, PINK_CAMISOLE, WHITE_CAMISOLE
 
 }

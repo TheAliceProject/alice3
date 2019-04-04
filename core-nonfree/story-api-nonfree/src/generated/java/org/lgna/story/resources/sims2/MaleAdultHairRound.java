@@ -44,21 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultHairRound implements MaleAdultHair, MaleElderHair {
-	BROWN,
-	BLACK,
-	BLOND,
-	GREY,
-	RED;
+  BROWN, BLACK, BLOND, GREY, RED;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

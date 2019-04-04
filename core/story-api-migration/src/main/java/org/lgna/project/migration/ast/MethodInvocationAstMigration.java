@@ -55,24 +55,23 @@ import org.lgna.project.migration.AstMigration;
  * @author Dennis Cosgrove
  * @deprecated Use CompoundMigration with NodeMigrations going forward
  */
-@Deprecated
-public abstract class MethodInvocationAstMigration extends AstMigration {
-	MethodInvocationAstMigration(Version minimumVersion, Version resultVersion) {
-		super( minimumVersion, resultVersion );
-	}
+@Deprecated public abstract class MethodInvocationAstMigration extends AstMigration {
+  MethodInvocationAstMigration(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	protected abstract void migrate( MethodInvocation methodInvocation, Project projectIfApplicable );
+  protected abstract void migrate(MethodInvocation methodInvocation, Project projectIfApplicable);
 
-	@Override
-	public final void migrate( Node node, final Project projectIfApplicable ) {
-		node.crawl( new Crawler() {
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-					MethodInvocationAstMigration.this.migrate( methodInvocation, projectIfApplicable );
-				}
-			}
-		}, CrawlPolicy.COMPLETE, null );
-	}
+  @Override
+  public final void migrate(Node node, final Project projectIfApplicable) {
+    node.crawl(new Crawler() {
+      @Override
+      public void visit(Crawlable crawlable) {
+        if (crawlable instanceof MethodInvocation) {
+          MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+          MethodInvocationAstMigration.this.migrate(methodInvocation, projectIfApplicable);
+        }
+      }
+    }, CrawlPolicy.COMPLETE, null);
+  }
 }

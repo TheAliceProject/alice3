@@ -52,14 +52,14 @@ import org.lgna.story.SProgram;
  * @author Dennis Cosgrove
  */
 public class DefaultProgramImp extends ProgramImp {
-	private final ClockBasedAnimator animator = new ClockBasedAnimator();
+  private final ClockBasedAnimator animator = new ClockBasedAnimator();
 
-	public DefaultProgramImp( SProgram abstraction ) {
-		super( abstraction, RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new RenderCapabilities.Builder().build() ) );
-	}
+  public DefaultProgramImp(SProgram abstraction) {
+    super(abstraction, RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget(new RenderCapabilities.Builder().build()));
+  }
 
-	@Override
-	public ClockBasedAnimator getAnimator() {
-		return this.animator;
-	}
+  @Override
+  public ClockBasedAnimator getAnimator() {
+    return this.animator;
+  }
 }

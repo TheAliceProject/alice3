@@ -60,167 +60,167 @@ import java.util.function.BinaryOperator;
  * @author Dennis Cosgrove
  */
 public class JavaField extends AbstractField {
-	private static final InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
+  private static final InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
-	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
-		if( fieldReflectionProxy != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( fieldReflectionProxy, new InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
-				@Override
-				public JavaField initialize( FieldReflectionProxy key ) {
-					return new JavaField( key );
-				}
-			} );
-		} else {
-			return null;
-		}
-	}
+  public static JavaField getInstance(FieldReflectionProxy fieldReflectionProxy) {
+    if (fieldReflectionProxy != null) {
+      return mapReflectionProxyToInstance.getInitializingIfAbsent(fieldReflectionProxy, new InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
+        @Override
+        public JavaField initialize(FieldReflectionProxy key) {
+          return new JavaField(key);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
 
-	public static JavaField getInstance( Field fld ) {
-		return getInstance( new FieldReflectionProxy( fld ) );
-	}
+  public static JavaField getInstance(Field fld) {
+    return getInstance(new FieldReflectionProxy(fld));
+  }
 
-	public static JavaField getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( ReflectionUtilities.getField( declaringCls, name ) );
-	}
+  public static JavaField getInstance(Class<?> declaringCls, String name) {
+    return getInstance(ReflectionUtilities.getField(declaringCls, name));
+  }
 
-	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
-		this.fieldReflectionProxy = fieldReflectionProxy;
-		final boolean IS_CHECK_REIFICATION_DESIRED = false;
-		if( IS_CHECK_REIFICATION_DESIRED ) {
-			if( this.fieldReflectionProxy.getReification() != null ) {
-				//pass
-			} else {
-				Logger.severe( this.fieldReflectionProxy );
-			}
-		}
-	}
+  private JavaField(FieldReflectionProxy fieldReflectionProxy) {
+    this.fieldReflectionProxy = fieldReflectionProxy;
+    final boolean IS_CHECK_REIFICATION_DESIRED = false;
+    if (IS_CHECK_REIFICATION_DESIRED) {
+      if (this.fieldReflectionProxy.getReification() != null) {
+        //pass
+      } else {
+        Logger.severe(this.fieldReflectionProxy);
+      }
+    }
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	public FieldReflectionProxy getFieldReflectionProxy() {
-		return this.fieldReflectionProxy;
-	}
+  public FieldReflectionProxy getFieldReflectionProxy() {
+    return this.fieldReflectionProxy;
+  }
 
-	@Override
-	public JavaType getDeclaringType() {
-		return JavaType.getInstance( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
-	}
+  @Override
+  public JavaType getDeclaringType() {
+    return JavaType.getInstance(this.fieldReflectionProxy.getDeclaringClassReflectionProxy());
+  }
 
-	@Override
-	public Visibility getVisibility() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			if( fld.isAnnotationPresent( FieldTemplate.class ) ) {
-				FieldTemplate propertyFieldTemplate = fld.getAnnotation( FieldTemplate.class );
-				return propertyFieldTemplate.visibility();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Visibility getVisibility() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      if (fld.isAnnotationPresent(FieldTemplate.class)) {
+        FieldTemplate propertyFieldTemplate = fld.getAnnotation(FieldTemplate.class);
+        return propertyFieldTemplate.visibility();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public String getName() {
-		return this.fieldReflectionProxy.getName();
-	}
+  @Override
+  public String getName() {
+    return this.fieldReflectionProxy.getName();
+  }
 
-	@Override
-	public boolean isValid() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		return fld != null;
-	}
+  @Override
+  public boolean isValid() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    return fld != null;
+  }
 
-	@Override
-	public JavaType getValueType() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return JavaType.getInstance( fld.getType() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return JavaType.OBJECT_TYPE;
-		}
-	}
+  @Override
+  public JavaType getValueType() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return JavaType.getInstance(fld.getType());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return JavaType.OBJECT_TYPE;
+    }
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return AccessLevel.getValueFromModifiers( fld.getModifiers() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return AccessLevel.PRIVATE;
-		}
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return AccessLevel.getValueFromModifiers(fld.getModifiers());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return AccessLevel.PRIVATE;
+    }
+  }
 
-	@Override
-	public boolean isStatic() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return Modifier.isStatic( fld.getModifiers() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return false;
-		}
-	}
+  @Override
+  public boolean isStatic() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return Modifier.isStatic(fld.getModifiers());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isFinal() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return Modifier.isFinal( fld.getModifiers() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return false;
-		}
-	}
+  @Override
+  public boolean isFinal() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return Modifier.isFinal(fld.getModifiers());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isVolatile() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return Modifier.isVolatile( fld.getModifiers() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return false;
-		}
-	}
+  @Override
+  public boolean isVolatile() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return Modifier.isVolatile(fld.getModifiers());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isTransient() {
-		Field fld = this.fieldReflectionProxy.getReification();
-		if( fld != null ) {
-			return Modifier.isTransient( fld.getModifiers() );
-		} else {
-			Logger.severe( this.fieldReflectionProxy );
-			return false;
-		}
-	}
+  @Override
+  public boolean isTransient() {
+    Field fld = this.fieldReflectionProxy.getReification();
+    if (fld != null) {
+      return Modifier.isTransient(fld.getModifiers());
+    } else {
+      Logger.severe(this.fieldReflectionProxy);
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isEquivalentTo( Object o ) {
-		JavaField other = ClassUtilities.getInstance( o, JavaField.class );
-		if( other != null ) {
-			return this.fieldReflectionProxy.equals( other.fieldReflectionProxy );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquivalentTo(Object o) {
+    JavaField other = ClassUtilities.getInstance(o, JavaField.class);
+    if (other != null) {
+      return this.fieldReflectionProxy.equals(other.fieldReflectionProxy);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return false;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return false;
+  }
 
-	@Override
-	public String formatName(BinaryOperator<String> localizer) {
-		String name = isStatic() ? getFieldReflectionProxy().getReification().getName() : getName();
-		return localizer.apply(name, name);
-	}
+  @Override
+  public String formatName(BinaryOperator<String> localizer) {
+    String name = isStatic() ? getFieldReflectionProxy().getReification().getName() : getName();
+    return localizer.apply(name, name);
+  }
 
-	private final FieldReflectionProxy fieldReflectionProxy;
+  private final FieldReflectionProxy fieldReflectionProxy;
 }

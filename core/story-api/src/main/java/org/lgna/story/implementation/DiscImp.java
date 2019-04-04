@@ -56,66 +56,66 @@ import org.lgna.story.SDisc;
  * @author Dennis Cosgrove
  */
 public class DiscImp extends ShapeImp {
-	public DiscImp( SDisc abstraction ) {
-		this.abstraction = abstraction;
-		this.sgDisc.outerRadius.setValue( 0.5 );
-		Visual sgVisual = this.getSgVisuals()[ 0 ];
-		sgVisual.geometries.setValue( new Geometry[] { this.sgDisc } );
-	}
+  public DiscImp(SDisc abstraction) {
+    this.abstraction = abstraction;
+    this.sgDisc.outerRadius.setValue(0.5);
+    Visual sgVisual = this.getSgVisuals()[0];
+    sgVisual.geometries.setValue(new Geometry[] {this.sgDisc});
+  }
 
-	@Override
-	public SDisc getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SDisc getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected InstanceProperty[] getScaleProperties() {
-		return new InstanceProperty[] { this.sgDisc.outerRadius };
-	}
+  @Override
+  protected InstanceProperty[] getScaleProperties() {
+    return new InstanceProperty[] {this.sgDisc.outerRadius};
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XZ_PLANE };
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {Resizer.XZ_PLANE};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			return this.outerRadius.getValue();
-		} else {
-			assert false : resizer;
-			return Double.NaN;
-		}
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    if (resizer == Resizer.XZ_PLANE) {
+      return this.outerRadius.getValue();
+    } else {
+      assert false : resizer;
+      return Double.NaN;
+    }
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			this.outerRadius.setValue( value );
-		} else {
-			assert false : resizer;
-		}
-	}
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    if (resizer == Resizer.XZ_PLANE) {
+      this.outerRadius.setValue(value);
+    } else {
+      assert false : resizer;
+    }
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		if( size.x != size.z ) {
-			Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
-		}
-		this.outerRadius.setValue( size.x * .5 );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    if (size.x != size.z) {
+      Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
+    }
+    this.outerRadius.setValue(size.x * .5);
+  }
 
-	private final SDisc abstraction;
-	private final Disc sgDisc = new Disc();
-	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
-		@Override
-		public Double getValue() {
-			return DiscImp.this.sgDisc.outerRadius.getValue();
-		}
+  private final SDisc abstraction;
+  private final Disc sgDisc = new Disc();
+  public final DoubleProperty outerRadius = new DoubleProperty(DiscImp.this) {
+    @Override
+    public Double getValue() {
+      return DiscImp.this.sgDisc.outerRadius.getValue();
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			DiscImp.this.sgDisc.outerRadius.setValue( value );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      DiscImp.this.sgDisc.outerRadius.setValue(value);
+    }
+  };
 }

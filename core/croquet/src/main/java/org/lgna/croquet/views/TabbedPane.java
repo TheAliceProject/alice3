@@ -56,102 +56,102 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectablePanel<E> {
-	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
-		@Override
-		public void valueChanged( ListSelectionEvent e ) {
-			if( e.getValueIsAdjusting() ) {
-				//pass
-			} else {
-				SingleSelectListState<E, ?> model = getModel();
-				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
-				int indexFromCroquet = model.getSelectedIndex();
-				final boolean USE_CROQUET_OVER_SWING;
-				if( indexFromSwingModel != indexFromCroquet ) {
-					if( ( -1 <= indexFromSwingModel ) && ( indexFromSwingModel < model.getItemCount() ) ) {
-						USE_CROQUET_OVER_SWING = false;
-					} else {
-						USE_CROQUET_OVER_SWING = true;
-					}
-				} else {
-					USE_CROQUET_OVER_SWING = false;
-				}
-				E card;
-				if( USE_CROQUET_OVER_SWING ) {
-					Logger.severe( indexFromSwingModel, indexFromCroquet, this );
-					card = model.getItemAt( indexFromCroquet );
-				} else {
-					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
-				}
-				TabbedPane.this.handleValueChanged( card );
-			}
-		}
-	};
+  private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      if (e.getValueIsAdjusting()) {
+        //pass
+      } else {
+        SingleSelectListState<E, ?> model = getModel();
+        int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
+        int indexFromCroquet = model.getSelectedIndex();
+        final boolean USE_CROQUET_OVER_SWING;
+        if (indexFromSwingModel != indexFromCroquet) {
+          if ((-1 <= indexFromSwingModel) && (indexFromSwingModel < model.getItemCount())) {
+            USE_CROQUET_OVER_SWING = false;
+          } else {
+            USE_CROQUET_OVER_SWING = true;
+          }
+        } else {
+          USE_CROQUET_OVER_SWING = false;
+        }
+        E card;
+        if (USE_CROQUET_OVER_SWING) {
+          Logger.severe(indexFromSwingModel, indexFromCroquet, this);
+          card = model.getItemAt(indexFromCroquet);
+        } else {
+          card = (E) model.getSwingModel().getComboBoxModel().getElementAt(indexFromSwingModel);
+        }
+        TabbedPane.this.handleValueChanged(card);
+      }
+    }
+  };
 
-	public TabbedPane( SingleSelectListState<E, ?> model ) {
-		super( model );
-	}
+  public TabbedPane(SingleSelectListState<E, ?> model) {
+    super(model);
+  }
 
-	@Override
-	public void setFont( Font font ) {
-		super.setFont( font );
-		for( BooleanStateButton<?> button : this.getAllButtons() ) {
-			button.setFont( font );
-		}
-	}
+  @Override
+  public void setFont(Font font) {
+    super.setFont(font);
+    for (BooleanStateButton<?> button : this.getAllButtons()) {
+      button.setFont(font);
+    }
+  }
 
-	protected void customizeTitleComponent( BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.customizeTitleComponentAppearance( button );
-	}
+  protected void customizeTitleComponent(BooleanState booleanState, BooleanStateButton<?> button, E item) {
+    item.customizeTitleComponentAppearance(button);
+  }
 
-	protected void releaseTitleComponent( BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-	}
+  protected void releaseTitleComponent(BooleanState booleanState, BooleanStateButton<?> button, E item) {
+  }
 
-	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState );
+  protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton(E item, BooleanState itemSelectedState);
 
-	@Override
-	protected void handleDisplayable() {
-		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
-		this.handleValueChanged( this.getModel().getValue() );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener(this.listSelectionListener);
+    this.handleValueChanged(this.getModel().getValue());
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener(this.listSelectionListener);
+  }
 
-	protected abstract void handleValueChanged( E card );
+  protected abstract void handleValueChanged(E card);
 
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( final E item, BooleanState itemSelectedState ) {
-		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState );
-		this.customizeTitleComponent( itemSelectedState, rv, item );
-		return rv;
+  @Override
+  protected BooleanStateButton<?> createButtonForItemSelectedState(final E item, BooleanState itemSelectedState) {
+    BooleanStateButton<?> rv = this.createTitleButton(item, itemSelectedState);
+    this.customizeTitleComponent(itemSelectedState, rv, item);
+    return rv;
 
-	}
+  }
 
-	public SwingComponentView<?> getMainComponentFor( E item ) {
-		if( item != null ) {
-			return item.getView();
-		} else {
-			return null;
-		}
-	}
+  public SwingComponentView<?> getMainComponentFor(E item) {
+    if (item != null) {
+      return item.getView();
+    } else {
+      return null;
+    }
+  }
 
-	public ScrollPane getScrollPaneFor( E item ) {
-		if( item != null ) {
-			return item.getScrollPaneIfItExists();
-		} else {
-			return null;
-		}
-	}
+  public ScrollPane getScrollPaneFor(E item) {
+    if (item != null) {
+      return item.getScrollPaneIfItExists();
+    } else {
+      return null;
+    }
+  }
 
-	public SwingComponentView<?> getRootComponentFor( E item ) {
-		if( item != null ) {
-			return item.getRootComponent();
-		} else {
-			return null;
-		}
-	}
+  public SwingComponentView<?> getRootComponentFor(E item) {
+    if (item != null) {
+      return item.getRootComponent();
+    } else {
+      return null;
+    }
+  }
 }

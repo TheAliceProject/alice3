@@ -60,51 +60,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class Importer<T> {
-	private final UUID sharingId;
-	private final File initialDirectory;
-	private final String initialFileText;
-	private final FilenameFilter filenameFilter;
-	private final Set<String> lowerCaseExtensions;
+  private final UUID sharingId;
+  private final File initialDirectory;
+  private final String initialFileText;
+  private final FilenameFilter filenameFilter;
+  private final Set<String> lowerCaseExtensions;
 
-	public Importer( UUID sharingId, File initialDirectory, String initialFileText, FilenameFilter filenameFilter, String... lowerCaseExtensions ) {
-		this.sharingId = sharingId;
-		this.initialDirectory = initialDirectory;
-		this.initialFileText = initialFileText;
-		this.filenameFilter = filenameFilter;
-		this.lowerCaseExtensions = Collections.unmodifiableSet( Sets.newHashSet( lowerCaseExtensions ) );
-	}
+  public Importer(UUID sharingId, File initialDirectory, String initialFileText, FilenameFilter filenameFilter, String... lowerCaseExtensions) {
+    this.sharingId = sharingId;
+    this.initialDirectory = initialDirectory;
+    this.initialFileText = initialFileText;
+    this.filenameFilter = filenameFilter;
+    this.lowerCaseExtensions = Collections.unmodifiableSet(Sets.newHashSet(lowerCaseExtensions));
+  }
 
-	protected abstract T createFromFile( File file ) throws IOException;
+  protected abstract T createFromFile(File file) throws IOException;
 
-	public T createValue( String dialogTitle ) {
-		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
-		if( file != null ) {
-			String extension = FileUtilities.getExtension( file );
-			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase( Locale.ENGLISH ) ) ) {
-				try {
-					return this.createFromFile( file );
-				} catch( IOException ioe ) {
-					ioe.printStackTrace();
-					Dialogs.showError( "Exception Thrown", "Unable to import: " + file.getAbsolutePath() );
-					return null;
-				}
-			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "File extension for \"" );
-				sb.append( file.getName() );
-				sb.append( "\" is not in the supported set: { " );
-				String prefix = "";
-				for( String s : this.lowerCaseExtensions ) {
-					sb.append( prefix );
-					sb.append( s );
-					prefix = ", ";
-				}
-				sb.append( " }." );
-				Dialogs.showError( "Content Type Not Supported", sb.toString() );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public T createValue(String dialogTitle) {
+    File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter);
+    if (file != null) {
+      String extension = FileUtilities.getExtension(file);
+      if ((extension != null) && this.lowerCaseExtensions.contains(extension.toLowerCase(Locale.ENGLISH))) {
+        try {
+          return this.createFromFile(file);
+        } catch (IOException ioe) {
+          ioe.printStackTrace();
+          Dialogs.showError("Exception Thrown", "Unable to import: " + file.getAbsolutePath());
+          return null;
+        }
+      } else {
+        StringBuilder sb = new StringBuilder();
+        sb.append("File extension for \"");
+        sb.append(file.getName());
+        sb.append("\" is not in the supported set: { ");
+        String prefix = "";
+        for (String s : this.lowerCaseExtensions) {
+          sb.append(prefix);
+          sb.append(s);
+          prefix = ", ";
+        }
+        sb.append(" }.");
+        Dialogs.showError("Content Type Not Supported", sb.toString());
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

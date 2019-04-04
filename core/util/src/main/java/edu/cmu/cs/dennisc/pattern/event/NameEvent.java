@@ -49,20 +49,20 @@ import edu.cmu.cs.dennisc.pattern.Nameable;
  * @author Dennis Cosgrove
  */
 public class NameEvent extends Event<Nameable> {
-	public NameEvent( Nameable source, String prevName, String nextName ) {
-		super( source );
-		this.prevName = prevName;
-		this.nextName = nextName;
-	}
+  public NameEvent(Nameable source, String prevName, String nextName) {
+    super(source);
+    this.prevName = prevName;
+    this.nextName = nextName;
+  }
 
-	public String getPreviousName() {
-		return this.prevName;
-	}
+  public String getPreviousName() {
+    return this.prevName;
+  }
 
-	public String getNextName() {
-		return this.nextName;
-	}
+  public String getNextName() {
+    return this.nextName;
+  }
 
-	private final String prevName;
-	private final String nextName;
+  private final String prevName;
+  private final String nextName;
 }

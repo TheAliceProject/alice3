@@ -57,25 +57,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ImageResourceImporter extends Importer<ImageResource> {
-	private static class SingletonHolder {
-		private static ImageResourceImporter instance = new ImageResourceImporter();
-	}
+  private static class SingletonHolder {
+    private static ImageResourceImporter instance = new ImageResourceImporter();
+  }
 
-	public static ImageResourceImporter getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ImageResourceImporter getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ImageResourceImporter() {
-		super(
-				UUID.randomUUID(),
-				FileUtilities.getDefaultDirectory(),
-				SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null,
-				ImageResource.createFilenameFilter( true ),
-				"png", "jpg", "gif", "bmp" );
-	}
+  private ImageResourceImporter() {
+    super(UUID.randomUUID(), FileUtilities.getDefaultDirectory(), SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null, ImageResource.createFilenameFilter(true), "png", "jpg", "gif", "bmp");
+  }
 
-	@Override
-	protected ImageResource createFromFile( File file ) throws IOException {
-		return ImageFactory.createImageResource( file );
-	}
+  @Override
+  protected ImageResource createFromFile(File file) throws IOException {
+    return ImageFactory.createImageResource(file);
+  }
 }

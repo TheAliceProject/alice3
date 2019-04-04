@@ -63,28 +63,28 @@ import org.lgna.story.resources.sims2.SkinTone;
  */
 public class SimsExpressionCascadeManager extends ExpressionCascadeManager {
 
-	@Override
-	protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType( AbstractType<?, ?, ?> interfaceType ) {
-		if( interfaceType == JavaType.getInstance( EyeColor.class ) ) {
-			return JavaType.getInstance( BaseEyeColor.class );
-		} else if( interfaceType == JavaType.getInstance( SkinTone.class ) ) {
-			return JavaType.getInstance( BaseSkinTone.class );
-		} else if( interfaceType == JavaType.getInstance( Face.class ) ) {
-			return JavaType.getInstance( BaseFace.class );
-		} else {
-			return super.getEnumTypeForInterfaceType( interfaceType );
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType(AbstractType<?, ?, ?> interfaceType) {
+    if (interfaceType == JavaType.getInstance(EyeColor.class)) {
+      return JavaType.getInstance(BaseEyeColor.class);
+    } else if (interfaceType == JavaType.getInstance(SkinTone.class)) {
+      return JavaType.getInstance(BaseSkinTone.class);
+    } else if (interfaceType == JavaType.getInstance(Face.class)) {
+      return JavaType.getInstance(BaseFace.class);
+    } else {
+      return super.getEnumTypeForInterfaceType(interfaceType);
+    }
+  }
 
-	@Override
-	protected void addSimsExpressionFillerInners() {
-		this.addExpressionFillerInner( new OutfitFillerInner() );
-		this.addExpressionFillerInner( new HairFillerInner() );
+  @Override
+  protected void addSimsExpressionFillerInners() {
+    this.addExpressionFillerInner(new OutfitFillerInner());
+    this.addExpressionFillerInner(new HairFillerInner());
 
-		this.addExpressionFillerInner( new AdultPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new ChildPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new ElderPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new TeenPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new ToddlerPersonResourceFillerInner() );
-	}
+    this.addExpressionFillerInner(new AdultPersonResourceFillerInner());
+    this.addExpressionFillerInner(new ChildPersonResourceFillerInner());
+    this.addExpressionFillerInner(new ElderPersonResourceFillerInner());
+    this.addExpressionFillerInner(new TeenPersonResourceFillerInner());
+    this.addExpressionFillerInner(new ToddlerPersonResourceFillerInner());
+  }
 }

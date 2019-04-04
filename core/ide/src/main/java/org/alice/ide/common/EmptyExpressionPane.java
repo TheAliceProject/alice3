@@ -55,40 +55,40 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class EmptyExpressionPane extends ExpressionLikeSubstance {
-	private static final Color BACKGROUND_COLOR = new Color( 180, 180, 220 );
-	private static final Color TOP_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
-	private static final Color BOTTOM_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
-	private final EmptyExpression emptyExpression;
+  private static final Color BACKGROUND_COLOR = new Color(180, 180, 220);
+  private static final Color TOP_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f);
+  private static final Color BOTTOM_COLOR = ColorUtilities.scaleHSB(BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f);
+  private final EmptyExpression emptyExpression;
 
-	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
-		super( null );
-		this.emptyExpression = emptyExpression;
-		Label label = new Label( " ??? " );
-		this.addComponent( label );
-	}
+  public EmptyExpressionPane(EmptyExpression emptyExpression) {
+    super(null);
+    this.emptyExpression = emptyExpression;
+    Label label = new Label(" ??? ");
+    this.addComponent(label);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getExpressionType() {
-		return this.emptyExpression.getType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getExpressionType() {
+    return this.emptyExpression.getType();
+  }
 
-	@Override
-	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return new GradientPaint( 0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR );
-	}
+  @Override
+  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
+    return new GradientPaint(0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR);
+  }
 
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		return true;
-	}
+  @Override
+  protected boolean isExpressionTypeFeedbackDesired() {
+    return true;
+  }
 
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
+  @Override
+  protected int getInsetTop() {
+    return 0;
+  }
 
-	@Override
-	protected int getInsetBottom() {
-		return 1;
-	}
+  @Override
+  protected int getInsetBottom() {
+    return 1;
+  }
 }

@@ -51,12 +51,12 @@ import org.lgna.project.ast.ExpressionProperty;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyView extends NodePropertyView<ExpressionProperty, Expression> {
-	public ExpressionPropertyView( AstI18nFactory factory, ExpressionProperty property ) {
-		super( factory, property );
-	}
+  public ExpressionPropertyView(AstI18nFactory factory, ExpressionProperty property) {
+    super(factory, property);
+  }
 
-	@Override
-	protected SwingComponentView<?> createComponent( Expression expression ) {
-		return this.getFactory().createExpressionPane( expression );
-	}
+  @Override
+  protected SwingComponentView<?> createComponent(Expression expression) {
+    return this.getFactory().createExpressionPane(expression);
+  }
 }

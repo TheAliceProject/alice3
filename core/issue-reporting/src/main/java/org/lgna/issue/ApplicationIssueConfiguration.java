@@ -50,15 +50,15 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 public interface ApplicationIssueConfiguration {
-	public String getApplicationName();
+  public String getApplicationName();
 
-	public String getDownloadUrlSpec();
+  public String getDownloadUrlSpec();
 
-	public String getDownloadUrlText();
+  public String getDownloadUrlText();
 
-	public String getSubmitActionName();
+  public String getSubmitActionName();
 
-	public JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget );
+  public JPanel createHeaderPane(Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget);
 
-	public void submit( JSubmitPane jSubmitPane );
+  public void submit(JSubmitPane jSubmitPane);
 }

@@ -49,17 +49,17 @@ import org.lgna.croquet.StringState;
  * @author Dennis Cosgrove
  */
 public class SubduedTextField extends AbstractTextField<JSubdudeTextField> {
-	public SubduedTextField( StringState model ) {
-		super( model, null );
-	}
+  public SubduedTextField(StringState model) {
+    super(model, null);
+  }
 
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
-	}
+  @Override
+  public void updateTextForBlankCondition(String textForBlankCondition) {
+    this.getAwtComponent().setTextForBlankCondition(textForBlankCondition);
+  }
 
-	@Override
-	protected JSubdudeTextField createAwtComponent() {
-		return new JSubdudeTextField();
-	}
+  @Override
+  protected JSubdudeTextField createAwtComponent() {
+    return new JSubdudeTextField();
+  }
 }

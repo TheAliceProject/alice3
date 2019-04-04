@@ -64,51 +64,51 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public class PreviewVideoView extends SwingComponentView<AbstractButton> {
-	private static class PlayIcon extends ShapeIcon {
-		private final Stroke stroke;
+  private static class PlayIcon extends ShapeIcon {
+    private final Stroke stroke;
 
-		public PlayIcon( Dimension size ) {
-			super( size );
-			stroke = new BasicStroke( size.width / 25.0f );
-		}
+    public PlayIcon(Dimension size) {
+      super(size);
+      stroke = new BasicStroke(size.width / 25.0f);
+    }
 
-		@Override
-		protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-			Stroke prevStroke = g2.getStroke();
-			g2.setStroke( stroke );
-			RoundRectangle2D.Float rr = new RoundRectangle2D.Float( 0, 0, width, height, width * 0.45f, height * 0.45f );
-			g2.setColor( ColorUtilities.createGray( 70 ) );
-			g2.fill( rr );
-			g2.setColor( ColorUtilities.createGray( 220 ) );
-			g2.draw( rr );
+    @Override
+    protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+      Stroke prevStroke = g2.getStroke();
+      g2.setStroke(stroke);
+      RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width, height, width * 0.45f, height * 0.45f);
+      g2.setColor(ColorUtilities.createGray(70));
+      g2.fill(rr);
+      g2.setColor(ColorUtilities.createGray(220));
+      g2.draw(rr);
 
-			int w = (int)( width * 0.4 );
-			int h = (int)( height * 0.45 );
-			int xFudge = width / 20;
-			GraphicsUtilities.fillTriangle( g2, GraphicsUtilities.Heading.EAST, ( ( width - w ) / 2 ) + xFudge, ( height - h ) / 2, w, h );
-			g2.setStroke( prevStroke );
-		}
-	}
+      int w = (int) (width * 0.4);
+      int h = (int) (height * 0.45);
+      int xFudge = width / 20;
+      GraphicsUtilities.fillTriangle(g2, GraphicsUtilities.Heading.EAST, ((width - w) / 2) + xFudge, (height - h) / 2, w, h);
+      g2.setStroke(prevStroke);
+    }
+  }
 
-	public PreviewVideoView() {
-	}
+  public PreviewVideoView() {
+  }
 
-	@Override
-	protected AbstractButton createAwtComponent() {
-		AbstractButton rv = new JToggleButton() {
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicButtonUI() {
-					@Override
-					public Dimension getPreferredSize( JComponent c ) {
-						return new Dimension( 320, 180 );
-					}
-				} );
-			}
-		};
-		rv.setIcon( new PlayIcon( new Dimension( 60, 60 ) ) );
-		rv.setBackground( Color.BLACK );
-		rv.setRolloverEnabled( true );
-		return rv;
-	}
+  @Override
+  protected AbstractButton createAwtComponent() {
+    AbstractButton rv = new JToggleButton() {
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicButtonUI() {
+          @Override
+          public Dimension getPreferredSize(JComponent c) {
+            return new Dimension(320, 180);
+          }
+        });
+      }
+    };
+    rv.setIcon(new PlayIcon(new Dimension(60, 60)));
+    rv.setBackground(Color.BLACK);
+    rv.setRolloverEnabled(true);
+    return rv;
+  }
 }

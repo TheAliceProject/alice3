@@ -55,33 +55,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<TopAndBottomOutiftTabView> {
-	private final TopPieceData topPieceData = new TopPieceData();
-	private final RefreshableDataSingleSelectListState<TopPiece> topPieceState = this.createRefreshableListState( "topPieceState", this.topPieceData, -1 );
-	private final BottomPieceData bottomPieceData = new BottomPieceData();
-	private final RefreshableDataSingleSelectListState<BottomPiece> bottomPieceState = this.createRefreshableListState( "bottomPieceState", this.bottomPieceData, -1 );
+  private final TopPieceData topPieceData = new TopPieceData();
+  private final RefreshableDataSingleSelectListState<TopPiece> topPieceState = this.createRefreshableListState("topPieceState", this.topPieceData, -1);
+  private final BottomPieceData bottomPieceData = new BottomPieceData();
+  private final RefreshableDataSingleSelectListState<BottomPiece> bottomPieceState = this.createRefreshableListState("bottomPieceState", this.bottomPieceData, -1);
 
-	public TopAndBottomOutfitTabComposite() {
-		super( UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ) );
-	}
+  public TopAndBottomOutfitTabComposite() {
+    super(UUID.fromString("ef64b1eb-0731-43ae-ae17-143d8e05df02"));
+  }
 
-	public TopPieceData getTopPieceData() {
-		return this.topPieceData;
-	}
+  public TopPieceData getTopPieceData() {
+    return this.topPieceData;
+  }
 
-	public RefreshableDataSingleSelectListState<TopPiece> getTopPieceState() {
-		return this.topPieceState;
-	}
+  public RefreshableDataSingleSelectListState<TopPiece> getTopPieceState() {
+    return this.topPieceState;
+  }
 
-	public BottomPieceData getBottomPieceData() {
-		return this.bottomPieceData;
-	}
+  public BottomPieceData getBottomPieceData() {
+    return this.bottomPieceData;
+  }
 
-	public RefreshableDataSingleSelectListState<BottomPiece> getBottomPieceState() {
-		return this.bottomPieceState;
-	}
+  public RefreshableDataSingleSelectListState<BottomPiece> getBottomPieceState() {
+    return this.bottomPieceState;
+  }
 
-	@Override
-	protected TopAndBottomOutiftTabView createView() {
-		return new TopAndBottomOutiftTabView( this );
-	}
+  @Override
+  protected TopAndBottomOutiftTabView createView() {
+    return new TopAndBottomOutiftTabView(this);
+  }
 }

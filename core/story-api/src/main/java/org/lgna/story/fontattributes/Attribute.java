@@ -49,7 +49,7 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public interface Attribute<E> {
-	public TextAttribute getKey();
+  public TextAttribute getKey();
 
-	public E getValue();
+  public E getValue();
 }

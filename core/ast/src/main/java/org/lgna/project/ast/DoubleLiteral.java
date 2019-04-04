@@ -50,37 +50,37 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class DoubleLiteral extends AbstractValueLiteral<Double> {
-	public DoubleLiteral() {
-	}
+  public DoubleLiteral() {
+  }
 
-	public DoubleLiteral( Double value ) {
-		this.value.setValue( value );
-	}
+  public DoubleLiteral(Double value) {
+    this.value.setValue(value);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Double.class );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.getInstance(Double.class);
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		Double value = this.value.getValue();
-		if( value != null ) {
-			localizer.appendDouble( value );
-		} else {
-			localizer.appendNull();
-		}
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    Double value = this.value.getValue();
+    if (value != null) {
+      localizer.appendDouble(value);
+    } else {
+      localizer.appendNull();
+    }
+  }
 
-	@Override
-	public InstanceProperty<Double> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<Double> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendDouble( this.value.getValue() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendDouble(this.value.getValue());
+  }
 
-	public final DoubleProperty value = new DoubleProperty( this, null, true );
+  public final DoubleProperty value = new DoubleProperty(this, null, true);
 }

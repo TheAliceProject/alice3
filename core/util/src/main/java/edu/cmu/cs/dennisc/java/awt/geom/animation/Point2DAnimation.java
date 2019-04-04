@@ -49,34 +49,32 @@ import java.awt.geom.Point2D;
 
 //todo: rename?
 //todo: support float
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Point2DAnimation extends InterpolationAnimation<Point2D> {
-	public Point2DAnimation( Number duration, Style style, Point2D p0, Point2D p1 ) {
-		super( duration, style, p0, p1 );
-	}
+  public Point2DAnimation(Number duration, Style style, Point2D p0, Point2D p1) {
+    super(duration, style, p0, p1);
+  }
 
-	@Override
-	protected Point2D newE( Point2D other ) {
-		double x;
-		double y;
-		if( other != null ) {
-			x = other.getX();
-			y = other.getY();
-		} else {
-			x = Double.NaN;
-			y = Double.NaN;
-		}
-		return new Point2D.Double( x, y );
-	}
+  @Override
+  protected Point2D newE(Point2D other) {
+    double x;
+    double y;
+    if (other != null) {
+      x = other.getX();
+      y = other.getY();
+    } else {
+      x = Double.NaN;
+      y = Double.NaN;
+    }
+    return new Point2D.Double(x, y);
+  }
 
-	@Override
-	protected Point2D interpolate( Point2D rv, Point2D v0, Point2D v1, double portion ) {
-		rv.setLocation(
-				v0.getX() + ( ( v1.getX() - v0.getX() ) * portion ),
-				v0.getY() + ( ( v1.getY() - v0.getY() ) * portion )
-				);
-		return rv;
-	}
+  @Override
+  protected Point2D interpolate(Point2D rv, Point2D v0, Point2D v1, double portion) {
+    rv.setLocation(v0.getX() + ((v1.getX() - v0.getX()) * portion), v0.getY() + ((v1.getY() - v0.getY()) * portion));
+    return rv;
+  }
 }

@@ -55,49 +55,49 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class BoundingBoxDecorator extends Visual {
-	public BoundingBoxDecorator( boolean isPickable ) {
-		this.sgFrontAppearance.setDiffuseColor( Color4f.YELLOW );
-		this.sgFrontAppearance.setShadingStyle( ShadingStyle.NONE );
-		this.sgFrontAppearance.setFillingStyle( FillingStyle.WIREFRAME );
-		this.sgBackAppearance.setDiffuseColor( Color4f.DARK_GRAY );
-		this.sgBackAppearance.setShadingStyle( ShadingStyle.NONE );
-		this.sgBackAppearance.setFillingStyle( FillingStyle.WIREFRAME );
-		this.frontFacingAppearance.setValue( this.sgFrontAppearance );
-		this.backFacingAppearance.setValue( this.sgBackAppearance );
-		this.geometries.setValue( new Geometry[] { this.sgBox } );
-		this.isPickable.setValue( isPickable );
-	}
+  public BoundingBoxDecorator(boolean isPickable) {
+    this.sgFrontAppearance.setDiffuseColor(Color4f.YELLOW);
+    this.sgFrontAppearance.setShadingStyle(ShadingStyle.NONE);
+    this.sgFrontAppearance.setFillingStyle(FillingStyle.WIREFRAME);
+    this.sgBackAppearance.setDiffuseColor(Color4f.DARK_GRAY);
+    this.sgBackAppearance.setShadingStyle(ShadingStyle.NONE);
+    this.sgBackAppearance.setFillingStyle(FillingStyle.WIREFRAME);
+    this.frontFacingAppearance.setValue(this.sgFrontAppearance);
+    this.backFacingAppearance.setValue(this.sgBackAppearance);
+    this.geometries.setValue(new Geometry[] {this.sgBox});
+    this.isPickable.setValue(isPickable);
+  }
 
-	public BoundingBoxDecorator() {
-		this( true );
-	}
+  public BoundingBoxDecorator() {
+    this(true);
+  }
 
-	public void setBox( AxisAlignedBox box ) {
-		this.sgBox.set( box );
-	}
+  public void setBox(AxisAlignedBox box) {
+    this.sgBox.set(box);
+  }
 
-	public SimpleAppearance getSgFrontAppearance() {
-		return this.sgFrontAppearance;
-	}
+  public SimpleAppearance getSgFrontAppearance() {
+    return this.sgFrontAppearance;
+  }
 
-	public SimpleAppearance getSgBackAppearance() {
-		return this.sgBackAppearance;
-	}
+  public SimpleAppearance getSgBackAppearance() {
+    return this.sgBackAppearance;
+  }
 
-	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		if( name != null ) {
-			//pass
-		} else {
-			name = "null";
-		}
-		this.sgFrontAppearance.setName( name + ".sgFrontAppearance" );
-		this.sgBackAppearance.setName( name + ".sgBackAppearance" );
-		this.sgBox.setName( name + ".sgBox" );
-	}
+  @Override
+  public void setName(String name) {
+    super.setName(name);
+    if (name != null) {
+      //pass
+    } else {
+      name = "null";
+    }
+    this.sgFrontAppearance.setName(name + ".sgFrontAppearance");
+    this.sgBackAppearance.setName(name + ".sgBackAppearance");
+    this.sgBox.setName(name + ".sgBox");
+  }
 
-	private final SimpleAppearance sgFrontAppearance = new SimpleAppearance();
-	private final SimpleAppearance sgBackAppearance = new SimpleAppearance();
-	private final Box sgBox = new Box();
+  private final SimpleAppearance sgFrontAppearance = new SimpleAppearance();
+  private final SimpleAppearance sgBackAppearance = new SimpleAppearance();
+  private final Box sgBox = new Box();
 }

@@ -52,38 +52,38 @@ import javax.crypto.spec.PBEParameterSpec;
  * @author Dennis Cosgrove
  */
 public class CryptographyUtilities {
-	private static final byte[] SALT = { (byte)0xc7, (byte)0x73, (byte)0x21, (byte)0x8c, (byte)0x7e, (byte)0xc8, (byte)0xee, (byte)0x99 };
-	private static final int ITERATION_COUNT = 20;
+  private static final byte[] SALT = {(byte) 0xc7, (byte) 0x73, (byte) 0x21, (byte) 0x8c, (byte) 0x7e, (byte) 0xc8, (byte) 0xee, (byte) 0x99};
+  private static final int ITERATION_COUNT = 20;
 
-	private CryptographyUtilities() {
-		throw new AssertionError();
-	}
+  private CryptographyUtilities() {
+    throw new AssertionError();
+  }
 
-	public static byte[] encrypt( byte[] clear, char[] password ) {
-		try {
-			PBEParameterSpec pbeParamSpec = new PBEParameterSpec( SALT, ITERATION_COUNT );
-			PBEKeySpec pbeKeySpec = new PBEKeySpec( password );
-			SecretKeyFactory keyFac = SecretKeyFactory.getInstance( "PBEWithMD5AndDES" );
-			SecretKey pbeKey = keyFac.generateSecret( pbeKeySpec );
-			Cipher pbeCipher = Cipher.getInstance( "PBEWithMD5AndDES" );
-			pbeCipher.init( Cipher.ENCRYPT_MODE, pbeKey, pbeParamSpec );
-			return pbeCipher.doFinal( clear );
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
-	}
+  public static byte[] encrypt(byte[] clear, char[] password) {
+    try {
+      PBEParameterSpec pbeParamSpec = new PBEParameterSpec(SALT, ITERATION_COUNT);
+      PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
+      SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+      SecretKey pbeKey = keyFac.generateSecret(pbeKeySpec);
+      Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+      pbeCipher.init(Cipher.ENCRYPT_MODE, pbeKey, pbeParamSpec);
+      return pbeCipher.doFinal(clear);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
-	public static byte[] decrypt( byte[] crypt, char[] password ) {
-		try {
-			PBEParameterSpec pbeParamSpec = new PBEParameterSpec( SALT, ITERATION_COUNT );
-			PBEKeySpec pbeKeySpec = new PBEKeySpec( password );
-			SecretKeyFactory keyFac = SecretKeyFactory.getInstance( "PBEWithMD5AndDES" );
-			SecretKey pbeKey = keyFac.generateSecret( pbeKeySpec );
-			Cipher pbeCipher = Cipher.getInstance( "PBEWithMD5AndDES" );
-			pbeCipher.init( Cipher.DECRYPT_MODE, pbeKey, pbeParamSpec );
-			return pbeCipher.doFinal( crypt );
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
-	}
+  public static byte[] decrypt(byte[] crypt, char[] password) {
+    try {
+      PBEParameterSpec pbeParamSpec = new PBEParameterSpec(SALT, ITERATION_COUNT);
+      PBEKeySpec pbeKeySpec = new PBEKeySpec(password);
+      SecretKeyFactory keyFac = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+      SecretKey pbeKey = keyFac.generateSecret(pbeKeySpec);
+      Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
+      pbeCipher.init(Cipher.DECRYPT_MODE, pbeKey, pbeParamSpec);
+      return pbeCipher.doFinal(crypt);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

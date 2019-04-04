@@ -4,11 +4,11 @@
 
 <editor_palette_item version="1.0">
 
-    <class name="org.alice.netbeans.palette.items.AddTimeListener" />
+  <class name="org.alice.netbeans.palette.items.AddTimeListener" />
 
-    <icon16 urlvalue="org/alice/netbeans/palette/items/resources/AliceTileIcon16.png" />
-    <icon32 urlvalue="org/alice/netbeans/palette/items/resources/AliceTileIcon32.png" />
-	<description localizing-bundle="org/alice/netbeans/palette/items/resources/Bundle"
+  <icon16 urlvalue="org/alice/netbeans/palette/items/resources/AliceTileIcon16.png" />
+  <icon32 urlvalue="org/alice/netbeans/palette/items/resources/AliceTileIcon32.png" />
+  <description localizing-bundle="org/alice/netbeans/palette/items/resources/Bundle"
                display-name-key="NAME_html-ADDTIMELISTENER"
                tooltip-key="HINT_html-ADDTIMELISTENER" />
 

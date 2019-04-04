@@ -45,25 +45,24 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.math.Vector4;
 import org.lgna.story.SFlyer;
 import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public final class FlyerImp extends JointedModelImp<SFlyer, FlyerResource> {
-	public FlyerImp( SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory ) {
-		super( abstraction, factory );
-	}
+  public FlyerImp(SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory) {
+    super(abstraction, factory);
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( FlyerResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(FlyerResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( FlyerResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(FlyerResource.MOUTH));
+  }
 
 }

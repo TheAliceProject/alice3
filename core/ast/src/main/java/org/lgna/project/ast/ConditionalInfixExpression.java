@@ -48,62 +48,64 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-	public enum Operator implements PrecedentedAppender {
-		AND() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand && rightOperand;
-			}
+  public enum Operator implements PrecedentedAppender {
+    AND() {
+      @Override
+      public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
+        return leftOperand && rightOperand;
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "&&" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("&&");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 4;
-			}
-		},
-		OR() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand || rightOperand;
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 4;
+      }
+    }, OR() {
+      @Override
+      public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
+        return leftOperand || rightOperand;
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "||" );
-			}
-		};
-		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("||");
+      }
+    };
 
-		@Override
-		public abstract void appendCode( SourceCodeGenerator generator );
+    public abstract Boolean operate(Boolean leftOperand, Boolean rightOperand);
 
-		@Override public int getLevelOfPrecedence() {
-			return 3;
-		}
-	}
+    @Override
+    public abstract void appendCode(SourceCodeGenerator generator);
 
-	public ConditionalInfixExpression() {
-	}
+    @Override
+    public int getLevelOfPrecedence() {
+      return 3;
+    }
+  }
 
-	public ConditionalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand ) {
-		super( leftOperand, operator, rightOperand );
-	}
+  public ConditionalInfixExpression() {
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
+  public ConditionalInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand) {
+    super(leftOperand, operator, rightOperand);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getLeftOperandType() {
+    return JavaType.BOOLEAN_OBJECT_TYPE;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getRightOperandType() {
+    return JavaType.BOOLEAN_OBJECT_TYPE;
+  }
+
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.BOOLEAN_OBJECT_TYPE;
+  }
 }

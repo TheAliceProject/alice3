@@ -48,20 +48,20 @@ import org.lgna.croquet.undo.UndoHistory;
  * @author Dennis Cosgrove
  */
 public class HistoryInsertionIndexEvent extends HistoryEvent {
-	private int prevIndex;
-	private int nextIndex;
+  private int prevIndex;
+  private int nextIndex;
 
-	public HistoryInsertionIndexEvent( UndoHistory source, int prevIndex, int nextIndex ) {
-		super( source );
-		this.prevIndex = prevIndex;
-		this.nextIndex = nextIndex;
-	}
+  public HistoryInsertionIndexEvent(UndoHistory source, int prevIndex, int nextIndex) {
+    super(source);
+    this.prevIndex = prevIndex;
+    this.nextIndex = nextIndex;
+  }
 
-	public int getPrevIndex() {
-		return prevIndex;
-	}
+  public int getPrevIndex() {
+    return prevIndex;
+  }
 
-	public int getNextIndex() {
-		return nextIndex;
-	}
+  public int getNextIndex() {
+    return nextIndex;
+  }
 }

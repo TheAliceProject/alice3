@@ -54,23 +54,23 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
-	private AbstractType<?, ?, ?> type;
+  private AbstractType<?, ?, ?> type;
 
-	public ExpressionFillerInner( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  public ExpressionFillerInner(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	public ExpressionFillerInner( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public ExpressionFillerInner(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	protected AbstractType<?, ?, ?> getType() {
-		return this.type;
-	}
+  protected AbstractType<?, ?, ?> getType() {
+    return this.type;
+  }
 
-	public boolean isAssignableTo( AbstractType<?, ?, ?> type ) {
-		return this.type.isAssignableTo( type );
-	}
+  public boolean isAssignableTo(AbstractType<?, ?, ?> type) {
+    return this.type.isAssignableTo(type);
+  }
 
-	public abstract void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression );
+  public abstract void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression);
 }

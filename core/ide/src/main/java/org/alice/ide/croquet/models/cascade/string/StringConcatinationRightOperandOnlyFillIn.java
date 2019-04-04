@@ -57,31 +57,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StringConcatinationRightOperandOnlyFillIn extends PreviousExpressionBasedFillInWithExpressionBlanks<StringConcatenation> {
-	private static class SingletonHolder {
-		private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
-	}
+  private static class SingletonHolder {
+    private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
+  }
 
-	public static StringConcatinationRightOperandOnlyFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StringConcatinationRightOperandOnlyFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final StringConcatenation transientValue;
+  private final StringConcatenation transientValue;
 
-	private StringConcatinationRightOperandOnlyFillIn() {
-		super( UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ), ExpressionBlank.createBlanks( Object.class ) );
-		this.transientValue = new StringConcatenation(
-				new PreviousValueExpression( Object.class ),
-				new EmptyExpression( Object.class )
-				);
-	}
+  private StringConcatinationRightOperandOnlyFillIn() {
+    super(UUID.fromString("1470e7b1-4f71-4d1b-8f3d-bbd708d64282"), ExpressionBlank.createBlanks(Object.class));
+    this.transientValue = new StringConcatenation(new PreviousValueExpression(Object.class), new EmptyExpression(Object.class));
+  }
 
-	@Override
-	protected StringConcatenation createValue( Expression previousExpression, Expression[] expressions ) {
-		return new StringConcatenation( previousExpression, expressions[ 0 ] );
-	}
+  @Override
+  protected StringConcatenation createValue(Expression previousExpression, Expression[] expressions) {
+    return new StringConcatenation(previousExpression, expressions[0]);
+  }
 
-	@Override
-	public StringConcatenation getTransientValue( ItemNode<? super StringConcatenation, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public StringConcatenation getTransientValue(ItemNode<? super StringConcatenation, Expression> step) {
+    return this.transientValue;
+  }
 }

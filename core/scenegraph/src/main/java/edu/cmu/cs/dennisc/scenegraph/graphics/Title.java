@@ -51,12 +51,12 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public abstract class Title extends ShapeEnclosedText {
-	private static final Color4f DEFAULT_TEXT_COLOR = Color4f.WHITE;
-	private static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 24 );
-	private static final Color4f DEFAULT_FILL_COLOR = Color4f.BLACK;
-	private static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.createNaN();
+  private static final Color4f DEFAULT_TEXT_COLOR = Color4f.WHITE;
+  private static final Font DEFAULT_FONT = new Font(null, Font.PLAIN, 24);
+  private static final Color4f DEFAULT_FILL_COLOR = Color4f.BLACK;
+  private static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.createNaN();
 
-	public Title() {
-		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
-	}
+  public Title() {
+    super(DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR);
+  }
 }

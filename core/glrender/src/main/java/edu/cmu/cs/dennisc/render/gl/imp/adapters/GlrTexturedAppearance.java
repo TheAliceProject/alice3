@@ -53,86 +53,86 @@ import edu.cmu.cs.dennisc.texture.Texture;
  * @author Dennis Cosgrove
  */
 public class GlrTexturedAppearance extends GlrSimpleAppearance<TexturedAppearance> {
-	@Override
-	public boolean isAlphaBlended() {
-		return super.isAlphaBlended() || this.isDiffuseColorTextureAlphaBlended;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    return super.isAlphaBlended() || this.isDiffuseColorTextureAlphaBlended;
+  }
 
-	@Override
-	public void setPipelineState( RenderContext rc, int face ) {
-		super.setPipelineState( rc, face );
-		setTexturePipelineState( rc );
-	}
+  @Override
+  public void setPipelineState(RenderContext rc, int face) {
+    super.setPipelineState(rc, face);
+    setTexturePipelineState(rc);
+  }
 
-	public void setTexturePipelineState( RenderContext rc ) {
-		rc.setDiffuseColorTextureAdapter( this.diffuseColorTextureAdapter, this.isDiffuseColorTextureClamped );
-		rc.setBumpTextureAdapter( this.bumpTextureAdapter );
-	}
+  public void setTexturePipelineState(RenderContext rc) {
+    rc.setDiffuseColorTextureAdapter(this.diffuseColorTextureAdapter, this.isDiffuseColorTextureClamped);
+    rc.setBumpTextureAdapter(this.bumpTextureAdapter);
+  }
 
-	@Override
-	protected void handleReleased() {
-		super.handleReleased();
-		if( ( this.diffuseColorTextureAdapter != null ) && ( this.diffuseColorTextureAdapter.owner != null ) ) {
-			this.diffuseColorTextureAdapter.removeReference();
-			if( !this.diffuseColorTextureAdapter.isReferenced() ) {
-				this.diffuseColorTextureAdapter.handleReleased();
-			}
-		}
-		if( ( this.bumpTextureAdapter != null ) && ( this.bumpTextureAdapter.owner != null ) ) {
-			this.bumpTextureAdapter.removeReference();
-			this.bumpTextureAdapter.handleReleased();
-			if( !this.bumpTextureAdapter.isReferenced() ) {
-				this.bumpTextureAdapter.handleReleased();
-			}
-		}
-	}
+  @Override
+  protected void handleReleased() {
+    super.handleReleased();
+    if ((this.diffuseColorTextureAdapter != null) && (this.diffuseColorTextureAdapter.owner != null)) {
+      this.diffuseColorTextureAdapter.removeReference();
+      if (!this.diffuseColorTextureAdapter.isReferenced()) {
+        this.diffuseColorTextureAdapter.handleReleased();
+      }
+    }
+    if ((this.bumpTextureAdapter != null) && (this.bumpTextureAdapter.owner != null)) {
+      this.bumpTextureAdapter.removeReference();
+      this.bumpTextureAdapter.handleReleased();
+      if (!this.bumpTextureAdapter.isReferenced()) {
+        this.bumpTextureAdapter.handleReleased();
+      }
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.diffuseColorTexture ) {
-			GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.diffuseColorTexture.getValue() );
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.diffuseColorTexture) {
+      GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor(owner.diffuseColorTexture.getValue());
 
-			if( this.diffuseColorTextureAdapter != newAdapter ) {
-				if( this.diffuseColorTextureAdapter != null ) {
-					//It's possible to have multiple property owners reference the same diffuseColorTexture
-					//One test case is a world with two grounds--they both reference the same GRASS texture
-					this.diffuseColorTextureAdapter.removeReference();
-					if( !this.diffuseColorTextureAdapter.isReferenced() ) {
-						this.diffuseColorTextureAdapter.handleReleased();
-					}
-				}
-				this.diffuseColorTextureAdapter = newAdapter;
-				if( this.diffuseColorTextureAdapter != null ) {
-					this.diffuseColorTextureAdapter.addReference();
-				}
-			}
-		} else if( property == owner.isDiffuseColorTextureAlphaBlended ) {
-			this.isDiffuseColorTextureAlphaBlended = owner.isDiffuseColorTextureAlphaBlended.getValue();
-		} else if( property == owner.isDiffuseColorTextureClamped ) {
-			this.isDiffuseColorTextureClamped = owner.isDiffuseColorTextureClamped.getValue();
-		} else if( property == owner.bumpTexture ) {
-			GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.bumpTexture.getValue() );
-			if( this.bumpTextureAdapter != newAdapter ) {
-				if( this.bumpTextureAdapter != null ) {
-					this.bumpTextureAdapter.removeReference();
-					if( !this.bumpTextureAdapter.isReferenced() ) {
-						this.bumpTextureAdapter.handleReleased();
-					}
-				}
-				this.bumpTextureAdapter = newAdapter;
-				if( this.bumpTextureAdapter != null ) {
-					this.bumpTextureAdapter.addReference();
-				}
-			}
-		} else if( property == owner.textureId ) {
-			Logger.todo( "handle textureId?", property.getValue(), this.owner.hashCode(), this.owner );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+      if (this.diffuseColorTextureAdapter != newAdapter) {
+        if (this.diffuseColorTextureAdapter != null) {
+          //It's possible to have multiple property owners reference the same diffuseColorTexture
+          //One test case is a world with two grounds--they both reference the same GRASS texture
+          this.diffuseColorTextureAdapter.removeReference();
+          if (!this.diffuseColorTextureAdapter.isReferenced()) {
+            this.diffuseColorTextureAdapter.handleReleased();
+          }
+        }
+        this.diffuseColorTextureAdapter = newAdapter;
+        if (this.diffuseColorTextureAdapter != null) {
+          this.diffuseColorTextureAdapter.addReference();
+        }
+      }
+    } else if (property == owner.isDiffuseColorTextureAlphaBlended) {
+      this.isDiffuseColorTextureAlphaBlended = owner.isDiffuseColorTextureAlphaBlended.getValue();
+    } else if (property == owner.isDiffuseColorTextureClamped) {
+      this.isDiffuseColorTextureClamped = owner.isDiffuseColorTextureClamped.getValue();
+    } else if (property == owner.bumpTexture) {
+      GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor(owner.bumpTexture.getValue());
+      if (this.bumpTextureAdapter != newAdapter) {
+        if (this.bumpTextureAdapter != null) {
+          this.bumpTextureAdapter.removeReference();
+          if (!this.bumpTextureAdapter.isReferenced()) {
+            this.bumpTextureAdapter.handleReleased();
+          }
+        }
+        this.bumpTextureAdapter = newAdapter;
+        if (this.bumpTextureAdapter != null) {
+          this.bumpTextureAdapter.addReference();
+        }
+      }
+    } else if (property == owner.textureId) {
+      Logger.todo("handle textureId?", property.getValue(), this.owner.hashCode(), this.owner);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private GlrTexture<?> diffuseColorTextureAdapter;
-	private boolean isDiffuseColorTextureAlphaBlended;
-	private boolean isDiffuseColorTextureClamped;
-	private GlrTexture<?> bumpTextureAdapter;
+  private GlrTexture<?> diffuseColorTextureAdapter;
+  private boolean isDiffuseColorTextureAlphaBlended;
+  private boolean isDiffuseColorTextureClamped;
+  private GlrTexture<?> bumpTextureAdapter;
 }

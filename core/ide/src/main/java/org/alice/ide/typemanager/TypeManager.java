@@ -86,406 +86,395 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class TypeManager {
-	public TypeManager() {
-		throw new AssertionError();
-	}
+  public TypeManager() {
+    throw new AssertionError();
+  }
 
-	private static final Expression[] USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER = null;
+  private static final Expression[] USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER = null;
 
-	private static NamedUserType createTypeFor( AbstractType<?, ?, ?> superType, String typeName, AbstractType<?, ?, ?>[] parameterTypes,
-			Expression[] argumentExpressions ) {
-		NamedUserType rv = new NamedUserType();
-		rv.name.setValue( typeName );
-		rv.superType.setValue( superType );
+  private static NamedUserType createTypeFor(AbstractType<?, ?, ?> superType, String typeName, AbstractType<?, ?, ?>[] parameterTypes, Expression[] argumentExpressions) {
+    NamedUserType rv = new NamedUserType();
+    rv.name.setValue(typeName);
+    rv.superType.setValue(superType);
 
-		for( AbstractConstructor superConstructor : superType.getDeclaredConstructors() ) {
-			List<? extends AbstractParameter> javaParameters = superConstructor.getRequiredParameters();
+    for (AbstractConstructor superConstructor : superType.getDeclaredConstructors()) {
+      List<? extends AbstractParameter> javaParameters = superConstructor.getRequiredParameters();
 
-			NamedUserConstructor userConstructor = new NamedUserConstructor();
-			ConstructorBlockStatement body = new ConstructorBlockStatement();
-			SuperConstructorInvocationStatement superConstructorInvocationStatement = new SuperConstructorInvocationStatement();
+      NamedUserConstructor userConstructor = new NamedUserConstructor();
+      ConstructorBlockStatement body = new ConstructorBlockStatement();
+      SuperConstructorInvocationStatement superConstructorInvocationStatement = new SuperConstructorInvocationStatement();
 
-			superConstructorInvocationStatement.constructor.setValue( superConstructor );
+      superConstructorInvocationStatement.constructor.setValue(superConstructor);
 
-			final int N = javaParameters.size();
-			for( int i = 0; i < N; i++ ) {
-				AbstractParameter javaParameterI = javaParameters.get( i );
-				Expression argumentExpressionI;
-				if( argumentExpressions != USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER ) {
-					argumentExpressionI = argumentExpressions[ i ];
-				} else {
-					String parameterName = javaParameterI.getName(); //todo?
-					if( parameterName != null ) {
-						//pass
-					} else {
-						parameterName = "p" + i;
-					}
-					AbstractType<?, ?, ?> parameterTypeI;
-					if( parameterTypes != null ) {
-						parameterTypeI = parameterTypes[ i ];
-					} else {
-						parameterTypeI = javaParameterI.getValueType();
-					}
-					UserParameter userParameterI = new UserParameter( parameterName, parameterTypeI );
-					userConstructor.requiredParameters.add( userParameterI );
-					argumentExpressionI = new ParameterAccess( userParameterI );
-				}
-				superConstructorInvocationStatement.requiredArguments.add( new SimpleArgument( javaParameterI, argumentExpressionI ) );
-			}
+      final int N = javaParameters.size();
+      for (int i = 0; i < N; i++) {
+        AbstractParameter javaParameterI = javaParameters.get(i);
+        Expression argumentExpressionI;
+        if (argumentExpressions != USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER) {
+          argumentExpressionI = argumentExpressions[i];
+        } else {
+          String parameterName = javaParameterI.getName(); //todo?
+          if (parameterName != null) {
+            //pass
+          } else {
+            parameterName = "p" + i;
+          }
+          AbstractType<?, ?, ?> parameterTypeI;
+          if (parameterTypes != null) {
+            parameterTypeI = parameterTypes[i];
+          } else {
+            parameterTypeI = javaParameterI.getValueType();
+          }
+          UserParameter userParameterI = new UserParameter(parameterName, parameterTypeI);
+          userConstructor.requiredParameters.add(userParameterI);
+          argumentExpressionI = new ParameterAccess(userParameterI);
+        }
+        superConstructorInvocationStatement.requiredArguments.add(new SimpleArgument(javaParameterI, argumentExpressionI));
+      }
 
-			body.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
-			userConstructor.body.setValue( body );
+      body.constructorInvocationStatement.setValue(superConstructorInvocationStatement);
+      userConstructor.body.setValue(body);
 
-			rv.constructors.add( userConstructor );
-		}
+      rv.constructors.add(userConstructor);
+    }
 
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getApiConfigurationManager().augmentTypeIfNecessary( rv );
-		}
-		return rv;
-	}
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getApiConfigurationManager().augmentTypeIfNecessary(rv);
+    }
+    return rv;
+  }
 
-	private static class MatchesNameTypeCriterion implements Criterion<NamedUserType> {
-		private final String typeName;
+  private static class MatchesNameTypeCriterion implements Criterion<NamedUserType> {
+    private final String typeName;
 
-		public MatchesNameTypeCriterion( String typeName ) {
-			this.typeName = typeName;
-		}
+    public MatchesNameTypeCriterion(String typeName) {
+      this.typeName = typeName;
+    }
 
-		@Override
-		public boolean accept( NamedUserType userType ) {
-			String userTypeName = userType.getName();
-			return userTypeName.equals(this.typeName);
-		}
-	}
+    @Override
+    public boolean accept(NamedUserType userType) {
+      String userTypeName = userType.getName();
+      return userTypeName.equals(this.typeName);
+    }
+  }
 
-	private static abstract class ExtendsTypeCriterion implements Criterion<NamedUserType> {
-		private final AbstractType<?, ?, ?> superType;
+  private abstract static class ExtendsTypeCriterion implements Criterion<NamedUserType> {
+    private final AbstractType<?, ?, ?> superType;
 
-		public ExtendsTypeCriterion( AbstractType<?, ?, ?> superType ) {
-			assert superType != null;
-			this.superType = superType;
-		}
+    public ExtendsTypeCriterion(AbstractType<?, ?, ?> superType) {
+      assert superType != null;
+      this.superType = superType;
+    }
 
-		@Override
-		public boolean accept( NamedUserType userType ) {
-			return userType.superType.getValue() == this.superType;
-		}
-	}
+    @Override
+    public boolean accept(NamedUserType userType) {
+      return userType.superType.getValue() == this.superType;
+    }
+  }
 
-	private static final class DefaultConstructorExtendsTypeCriterion extends ExtendsTypeCriterion {
-		public DefaultConstructorExtendsTypeCriterion( AbstractType<?, ?, ?> superType ) {
-			super( superType );
-		}
-	}
+  private static final class DefaultConstructorExtendsTypeCriterion extends ExtendsTypeCriterion {
+    public DefaultConstructorExtendsTypeCriterion(AbstractType<?, ?, ?> superType) {
+      super(superType);
+    }
+  }
 
-	private static final class ExtendsTypeWithConstructorParameterTypeCriterion extends ExtendsTypeCriterion {
-		private final AbstractType<?, ?, ?> parameterType;
+  private static final class ExtendsTypeWithConstructorParameterTypeCriterion extends ExtendsTypeCriterion {
+    private final AbstractType<?, ?, ?> parameterType;
 
-		public ExtendsTypeWithConstructorParameterTypeCriterion( AbstractType<?, ?, ?> superType, AbstractType<?, ?, ?> parameterType ) {
-			super( superType );
-			assert parameterType != null;
-			this.parameterType = parameterType;
-		}
+    public ExtendsTypeWithConstructorParameterTypeCriterion(AbstractType<?, ?, ?> superType, AbstractType<?, ?, ?> parameterType) {
+      super(superType);
+      assert parameterType != null;
+      this.parameterType = parameterType;
+    }
 
-		@Override
-		public boolean accept( NamedUserType userType ) {
-			if( super.accept( userType ) ) {
-				AbstractConstructor constructor = userType.getDeclaredConstructor( this.parameterType );
-				if( constructor != null ) {
-					AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-					return parameter0.getValueType() == this.parameterType;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
+    @Override
+    public boolean accept(NamedUserType userType) {
+      if (super.accept(userType)) {
+        AbstractConstructor constructor = userType.getDeclaredConstructor(this.parameterType);
+        if (constructor != null) {
+          AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+          return parameter0.getValueType() == this.parameterType;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
 
-	private static final class ExtendsTypeWithSuperArgumentFieldCriterion extends ExtendsTypeCriterion {
-		private final AbstractField superArgumentField;
+  private static final class ExtendsTypeWithSuperArgumentFieldCriterion extends ExtendsTypeCriterion {
+    private final AbstractField superArgumentField;
 
-		public ExtendsTypeWithSuperArgumentFieldCriterion( AbstractType<?, ?, ?> superType, AbstractField superArgumentField ) {
-			super( superType );
-			assert superArgumentField != null;
-			this.superArgumentField = superArgumentField;
-		}
+    public ExtendsTypeWithSuperArgumentFieldCriterion(AbstractType<?, ?, ?> superType, AbstractField superArgumentField) {
+      super(superType);
+      assert superArgumentField != null;
+      this.superArgumentField = superArgumentField;
+    }
 
-		@Override
-		public boolean accept( NamedUserType userType ) {
-			if( super.accept( userType ) ) {
-				NamedUserConstructor constructor = userType.getDeclaredConstructor();
-				if( constructor != null ) {
-					ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
-					if( constructorInvocationStatement instanceof SuperConstructorInvocationStatement ) {
-						if( constructorInvocationStatement.requiredArguments.size() == 1 ) {
-							Expression argumentExpression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-							if( argumentExpression instanceof FieldAccess ) {
-								FieldAccess fieldAccess = (FieldAccess)argumentExpression;
-								return fieldAccess.field.getValue() == this.superArgumentField;
-							}
-						}
-					}
-				}
-			}
-			return false;
-		}
-	}
+    @Override
+    public boolean accept(NamedUserType userType) {
+      if (super.accept(userType)) {
+        NamedUserConstructor constructor = userType.getDeclaredConstructor();
+        if (constructor != null) {
+          ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+          if (constructorInvocationStatement instanceof SuperConstructorInvocationStatement) {
+            if (constructorInvocationStatement.requiredArguments.size() == 1) {
+              Expression argumentExpression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
+              if (argumentExpression instanceof FieldAccess) {
+                FieldAccess fieldAccess = (FieldAccess) argumentExpression;
+                return fieldAccess.field.getValue() == this.superArgumentField;
+              }
+            }
+          }
+        }
+      }
+      return false;
+    }
+  }
 
-	private static final class ExtendsTypeWithSuperArgumentExpressionsCriterion extends ExtendsTypeCriterion {
-		private final Expression[] superArgumentExpressions;
+  private static final class ExtendsTypeWithSuperArgumentExpressionsCriterion extends ExtendsTypeCriterion {
+    private final Expression[] superArgumentExpressions;
 
-		public ExtendsTypeWithSuperArgumentExpressionsCriterion( AbstractType<?, ?, ?> superType, Expression[] argumentExpressions ) {
-			super( superType );
-			assert argumentExpressions != null;
-			this.superArgumentExpressions = argumentExpressions;
-		}
+    public ExtendsTypeWithSuperArgumentExpressionsCriterion(AbstractType<?, ?, ?> superType, Expression[] argumentExpressions) {
+      super(superType);
+      assert argumentExpressions != null;
+      this.superArgumentExpressions = argumentExpressions;
+    }
 
-		@Override
-		public boolean accept( NamedUserType userType ) {
-			if( super.accept( userType ) ) {
-				NamedUserConstructor constructor = userType.getDeclaredConstructor();
-				if( constructor != null ) {
-					ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
-					if( constructorInvocationStatement instanceof SuperConstructorInvocationStatement ) {
-						if( constructorInvocationStatement.requiredArguments.size() == superArgumentExpressions.length ) {
-							for (int i=0; i<constructorInvocationStatement.requiredArguments.size(); i++) {
-								Expression requiredArgumentExpression = constructorInvocationStatement.requiredArguments.get( i ).expression.getValue();
-								Expression passedArgumentExpression = superArgumentExpressions[i];
-								if( !requiredArgumentExpression.isEquivalentTo(passedArgumentExpression)) {
-									return false;
-								}
-							}
-							return true;
-						}
-					}
-				}
-			}
-			return false;
-		}
-	}
+    @Override
+    public boolean accept(NamedUserType userType) {
+      if (super.accept(userType)) {
+        NamedUserConstructor constructor = userType.getDeclaredConstructor();
+        if (constructor != null) {
+          ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+          if (constructorInvocationStatement instanceof SuperConstructorInvocationStatement) {
+            if (constructorInvocationStatement.requiredArguments.size() == superArgumentExpressions.length) {
+              for (int i = 0; i < constructorInvocationStatement.requiredArguments.size(); i++) {
+                Expression requiredArgumentExpression = constructorInvocationStatement.requiredArguments.get(i).expression.getValue();
+                Expression passedArgumentExpression = superArgumentExpressions[i];
+                if (!requiredArgumentExpression.isEquivalentTo(passedArgumentExpression)) {
+                  return false;
+                }
+              }
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+  }
 
-	private static List<AbstractType<?, ?, ?>> updateArgumentTypes( List<AbstractType<?, ?, ?>> rv, AbstractType<?, ?, ?> rootArgumentType,
-			AbstractType<?, ?, ?> argumentType ) {
-		rv.add( argumentType );
-		if( argumentType == rootArgumentType ) {
-			//pass
-		} else {
-			AbstractType<?, ?, ?>[] interfaces = argumentType.getInterfaces();
-			AbstractType<?, ?, ?> nextType;
-			if( interfaces.length == 1 ) {
-				nextType = interfaces[ 0 ];
-			} else {
-				nextType = argumentType.getSuperType();
-			}
-			updateArgumentTypes( rv, rootArgumentType, nextType );
-		}
-		return rv;
-	}
+  private static List<AbstractType<?, ?, ?>> updateArgumentTypes(List<AbstractType<?, ?, ?>> rv, AbstractType<?, ?, ?> rootArgumentType, AbstractType<?, ?, ?> argumentType) {
+    rv.add(argumentType);
+    if (argumentType == rootArgumentType) {
+      //pass
+    } else {
+      AbstractType<?, ?, ?>[] interfaces = argumentType.getInterfaces();
+      AbstractType<?, ?, ?> nextType;
+      if (interfaces.length == 1) {
+        nextType = interfaces[0];
+      } else {
+        nextType = argumentType.getSuperType();
+      }
+      updateArgumentTypes(rv, rootArgumentType, nextType);
+    }
+    return rv;
+  }
 
-	private static AbstractType<?, ?, ?>[] getArgumentTypes( AbstractType<?, ?, ?> ancestorType, AbstractType<?, ?, ?> resourceType ) {
-		List<AbstractType<?, ?, ?>> types = Lists.newLinkedList();
-		updateArgumentTypes( types, ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ), resourceType );
-		AbstractType<?, ?, ?>[] rv = new AbstractType<?, ?, ?>[ types.size() ];
-		types.toArray( rv );
-		return rv;
-	}
+  private static AbstractType<?, ?, ?>[] getArgumentTypes(AbstractType<?, ?, ?> ancestorType, AbstractType<?, ?, ?> resourceType) {
+    List<AbstractType<?, ?, ?>> types = Lists.newLinkedList();
+    updateArgumentTypes(types, ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType), resourceType);
+    AbstractType<?, ?, ?>[] rv = new AbstractType<?, ?, ?>[types.size()];
+    types.toArray(rv);
+    return rv;
+  }
 
-	private static AbstractType<?, ?, ?>[] getArgumentTypes( AbstractType<?, ?, ?> ancestorType, AbstractField field ) {
-		return getArgumentTypes( ancestorType, field.getDeclaringType() );
-	}
+  private static AbstractType<?, ?, ?>[] getArgumentTypes(AbstractType<?, ?, ?> ancestorType, AbstractField field) {
+    return getArgumentTypes(ancestorType, field.getDeclaringType());
+  }
 
-	private static void appendTypeName( StringBuilder sb, String name ) {
-		sb.append( name );
-	}
+  private static void appendTypeName(StringBuilder sb, String name) {
+    sb.append(name);
+  }
 
-	private static String createClassNameFromResourceType( AbstractType<?, ?, ?> resourceType ) {
-		StringBuilder sb = new StringBuilder();
-		appendTypeName( sb, resourceType.getName().replace( "Resource", "" ) );
-		return sb.toString();
-	}
+  private static String createClassNameFromResourceType(AbstractType<?, ?, ?> resourceType) {
+    StringBuilder sb = new StringBuilder();
+    appendTypeName(sb, resourceType.getName().replace("Resource", ""));
+    return sb.toString();
+  }
 
-	public static String createClassNameFromArgumentField( AbstractType<?, ?, ?> ancestorType, AbstractField argumentField ) {
-		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( ancestorType, argumentField );
-		return createClassNameFromResourceType( argumentTypes[ 0 ] );
-	}
+  public static String createClassNameFromArgumentField(AbstractType<?, ?, ?> ancestorType, AbstractField argumentField) {
+    AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(ancestorType, argumentField);
+    return createClassNameFromResourceType(argumentTypes[0]);
+  }
 
-	public static String createClassNameFromSuperType( AbstractType<?, ?, ?> superType ) {
-		String superTypeName = superType.getName();
-		if( superTypeName.length() > 1 ) {
-			if( superTypeName.charAt( 0 ) == 'S' ) {
-				if( Character.isUpperCase( superTypeName.charAt( 1 ) ) ) {
-					return superTypeName.substring( 1 );
-				}
-			}
-		}
-		return superTypeName;
-	}
+  public static String createClassNameFromSuperType(AbstractType<?, ?, ?> superType) {
+    String superTypeName = superType.getName();
+    if (superTypeName.length() > 1) {
+      if (superTypeName.charAt(0) == 'S') {
+        if (Character.isUpperCase(superTypeName.charAt(1))) {
+          return superTypeName.substring(1);
+        }
+      }
+    }
+    return superTypeName;
+  }
 
-	private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance( SJointedModel.class, "setJointedModelResource", JointedModelResource.class );
+  private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance(SJointedModel.class, "setJointedModelResource", JointedModelResource.class);
 
-	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField ) {
-		return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null);
-	}
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField) {
+    return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null);
+  }
 
-	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className ) {
-		AbstractType<?, ?, ?> superType;
-		final int LAST_INDEX = argumentTypes.length - 1;
-		if( i < LAST_INDEX ) {
-			superType = getNamedUserTypeFor( ancestorType, argumentTypes, i + 1, null, null, null );
-		} else {
-			superType = ancestorType;
-		}
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className) {
+    AbstractType<?, ?, ?> superType;
+    final int LAST_INDEX = argumentTypes.length - 1;
+    if (i < LAST_INDEX) {
+      superType = getNamedUserTypeFor(ancestorType, argumentTypes, i + 1, null, null, null);
+    } else {
+      superType = ancestorType;
+    }
 
-		//Use the classname passed in to create a new named user type. If no class name is passed in, generate one
-		String name = className;
-		if (name == null) {
-			name = createClassNameFromResourceType(argumentTypes[i]);
-		}
+    //Use the classname passed in to create a new named user type. If no class name is passed in, generate one
+    String name = className;
+    if (name == null) {
+      name = createClassNameFromResourceType(argumentTypes[i]);
+    }
 
-		//Find a previously created matching type
-		//Dave: Why aren't we just checking names? All of our types need to be unique names, so this should be an easy check
-		//These criterions are checking type and referenced fields and at no point are names checked. Sigh.
-		//Let's try just checking names
-		Criterion<NamedUserType> criterion = new MatchesNameTypeCriterion(name);
-//		if( argumentField != null ) {
-//			criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
-//		} else if (argumentExpressions != null ) {
-//			criterion = new ExtendsTypeWithSuperArgumentExpressionsCriterion(superType, argumentExpressions);
-//		}
-//		else {
-//			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
-//		}
-		Project project = ProjectStack.peekProject();
-		if( project != null ) {
-			Set<NamedUserType> existingTypes = project.getNamedUserTypes();
-			for( NamedUserType existingType : existingTypes ) {
-				if( criterion.accept( existingType ) ) {
-					return existingType;
-				}
-			}
-		}
-		Expression[] expressions;
-		if (argumentExpressions != null) {
-			expressions = argumentExpressions;
-		}
-		else {
-			if (argumentField != null) {
-				expressions = new Expression[]{
-						new FieldAccess(
-								new TypeExpression(argumentField.getDeclaringType()),
-								argumentField)
-				};
-			} else {
-				expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
-			}
-		}
-		NamedUserType rv = createTypeFor( superType, name, new AbstractType[] { argumentTypes[ i ] }, expressions );
-		if( argumentTypes[ i ] instanceof JavaType ) {
-			JavaType javaArgumentTypeI = (JavaType)argumentTypes[ i ];
-			Class<?> cls = javaArgumentTypeI.getClassReflectionProxy().getReification();
-			if( ReflectionUtilities.isFinal( cls ) ) {
-				boolean isSetResourceMethodDesired;
-				if( cls.isEnum() ) {
-					isSetResourceMethodDesired = cls.getEnumConstants().length > 1;
-				} else {
-					isSetResourceMethodDesired = true;
-				}
-				if( isSetResourceMethodDesired ) {
-					String simpleClsName = cls.getSimpleName();
-					UserMethod setResourceMethod = new UserMethod();
-					setResourceMethod.managementLevel.setValue( ManagementLevel.GENERATED );
-					setResourceMethod.name.setValue( "set" + simpleClsName );
-					setResourceMethod.returnType.setValue( JavaType.VOID_TYPE );
-					BlockStatement body = new BlockStatement();
-					setResourceMethod.body.setValue( body );
+    //Find a previously created matching type
+    //Dave: Why aren't we just checking names? All of our types need to be unique names, so this should be an easy check
+    //These criterions are checking type and referenced fields and at no point are names checked. Sigh.
+    //Let's try just checking names
+    Criterion<NamedUserType> criterion = new MatchesNameTypeCriterion(name);
+    //    if( argumentField != null ) {
+    //      criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
+    //    } else if (argumentExpressions != null ) {
+    //      criterion = new ExtendsTypeWithSuperArgumentExpressionsCriterion(superType, argumentExpressions);
+    //    }
+    //    else {
+    //      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
+    //    }
+    Project project = ProjectStack.peekProject();
+    if (project != null) {
+      Set<NamedUserType> existingTypes = project.getNamedUserTypes();
+      for (NamedUserType existingType : existingTypes) {
+        if (criterion.accept(existingType)) {
+          return existingType;
+        }
+      }
+    }
+    Expression[] expressions;
+    if (argumentExpressions != null) {
+      expressions = argumentExpressions;
+    } else {
+      if (argumentField != null) {
+        expressions = new Expression[] {new FieldAccess(new TypeExpression(argumentField.getDeclaringType()), argumentField)};
+      } else {
+        expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
+      }
+    }
+    NamedUserType rv = createTypeFor(superType, name, new AbstractType[] {argumentTypes[i]}, expressions);
+    if (argumentTypes[i] instanceof JavaType) {
+      JavaType javaArgumentTypeI = (JavaType) argumentTypes[i];
+      Class<?> cls = javaArgumentTypeI.getClassReflectionProxy().getReification();
+      if (ReflectionUtilities.isFinal(cls)) {
+        boolean isSetResourceMethodDesired;
+        if (cls.isEnum()) {
+          isSetResourceMethodDesired = cls.getEnumConstants().length > 1;
+        } else {
+          isSetResourceMethodDesired = true;
+        }
+        if (isSetResourceMethodDesired) {
+          String simpleClsName = cls.getSimpleName();
+          UserMethod setResourceMethod = new UserMethod();
+          setResourceMethod.managementLevel.setValue(ManagementLevel.GENERATED);
+          setResourceMethod.name.setValue("set" + simpleClsName);
+          setResourceMethod.returnType.setValue(JavaType.VOID_TYPE);
+          BlockStatement body = new BlockStatement();
+          setResourceMethod.body.setValue(body);
 
-					StringBuilder parameterNameSB = new StringBuilder();
-					parameterNameSB.append( Character.toLowerCase( simpleClsName.charAt( 0 ) ) );
-					parameterNameSB.append( simpleClsName.substring( 1 ) );
-					UserParameter parameter = new UserParameter();
-					parameter.name.setValue( parameterNameSB.toString() );
-					parameter.valueType.setValue( javaArgumentTypeI );
+          StringBuilder parameterNameSB = new StringBuilder();
+          parameterNameSB.append(Character.toLowerCase(simpleClsName.charAt(0)));
+          parameterNameSB.append(simpleClsName.substring(1));
+          UserParameter parameter = new UserParameter();
+          parameter.name.setValue(parameterNameSB.toString());
+          parameter.valueType.setValue(javaArgumentTypeI);
 
-					setResourceMethod.requiredParameters.add( parameter );
+          setResourceMethod.requiredParameters.add(parameter);
 
-					body.statements.add(
-							AstUtilities.createMethodInvocationStatement(
-									new ThisExpression(),
-									SET_JOINTED_MODEL_RESOURCE_METHOD,
-									new ParameterAccess( parameter ) ) );
+          body.statements.add(AstUtilities.createMethodInvocationStatement(new ThisExpression(), SET_JOINTED_MODEL_RESOURCE_METHOD, new ParameterAccess(parameter)));
 
-					setResourceMethod.isSignatureLocked.setValue( true );
-					rv.methods.add( setResourceMethod );
-				}
-			}
-		}
-		return rv;
-	}
+          setResourceMethod.isSignatureLocked.setValue(true);
+          rv.methods.add(setResourceMethod);
+        }
+      }
+    }
+    return rv;
+  }
 
-	public static JavaField getEnumConstantFieldIfOneAndOnly( AbstractType<?, ?, ?> type ) {
-		JavaField rv = null;
-		if( type instanceof JavaType ) {
-			JavaType javaType = (JavaType)type;
-			if( type.isAssignableTo( Enum.class ) ) {
-				Class<Enum<?>> cls = (Class<Enum<?>>)javaType.getClassReflectionProxy().getReification();
-				Enum<?>[] constants = cls.getEnumConstants();
-				if( constants.length == 1 ) {
-					Enum<?> constant = constants[ 0 ];
-					rv = JavaField.getInstance( constant.getClass(), constant.name() );
-				}
-			}
-		}
-		return rv;
-	}
+  public static JavaField getEnumConstantFieldIfOneAndOnly(AbstractType<?, ?, ?> type) {
+    JavaField rv = null;
+    if (type instanceof JavaType) {
+      JavaType javaType = (JavaType) type;
+      if (type.isAssignableTo(Enum.class)) {
+        Class<Enum<?>> cls = (Class<Enum<?>>) javaType.getClassReflectionProxy().getReification();
+        Enum<?>[] constants = cls.getEnumConstants();
+        if (constants.length == 1) {
+          Enum<?> constant = constants[0];
+          rv = JavaField.getInstance(constant.getClass(), constant.name());
+        }
+      }
+    }
+    return rv;
+  }
 
-	public static NamedUserType getNamedUserTypeFromArgumentField( JavaType ancestorType, JavaField argumentField ) {
-		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( ancestorType, argumentField );
-		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
-	}
+  public static NamedUserType getNamedUserTypeFromArgumentField(JavaType ancestorType, JavaField argumentField) {
+    AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(ancestorType, argumentField);
+    return getNamedUserTypeFor(ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly(argumentTypes[0]));
+  }
 
-	public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation( JavaType resourceType, InstanceCreation instanceCreation, String className ) {
-		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( resourceType, instanceCreation.getType() );
-		return getNamedUserTypeFor( resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className );
-	}
+  public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation(JavaType resourceType, InstanceCreation instanceCreation, String className) {
+    AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(resourceType, instanceCreation.getType());
+    return getNamedUserTypeFor(resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className);
+  }
 
-	public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation( InstanceCreation instanceCreation ) {
-		JavaType bipedType = JavaType.getInstance( SBiped.class );
-		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, instanceCreation.getType() );
-		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
-	}
+  public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation(InstanceCreation instanceCreation) {
+    JavaType bipedType = JavaType.getInstance(SBiped.class);
+    AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(bipedType, instanceCreation.getType());
+    return getNamedUserTypeFor(bipedType, argumentTypes, 0, null);
+  }
 
-	public static NamedUserType getNamedUserTypeFromSuperType( JavaType superType ) {
-		AbstractType<?, ?, ?> parameter0Type = ConstructorArgumentUtilities.getContructor0Parameter0Type( superType );
-		ExtendsTypeCriterion criterion;
-		if( parameter0Type != null ) {
-			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructor0Parameter0Type( superType ) );
-		} else {
-			criterion = new DefaultConstructorExtendsTypeCriterion( superType );
-		}
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			Project project = ide.getProject();
-			if( project != null ) {
-				Set<NamedUserType> existingTypes = project.getNamedUserTypes();
-				for( NamedUserType existingType : existingTypes ) {
-					if( criterion.accept( existingType ) ) {
-						return existingType;
-					}
-				}
-			}
-		}
-		return createTypeFor( superType, createClassNameFromSuperType( superType ), null, null );
-	}
+  public static NamedUserType getNamedUserTypeFromSuperType(JavaType superType) {
+    AbstractType<?, ?, ?> parameter0Type = ConstructorArgumentUtilities.getContructor0Parameter0Type(superType);
+    ExtendsTypeCriterion criterion;
+    if (parameter0Type != null) {
+      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion(superType, ConstructorArgumentUtilities.getContructor0Parameter0Type(superType));
+    } else {
+      criterion = new DefaultConstructorExtendsTypeCriterion(superType);
+    }
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      Project project = ide.getProject();
+      if (project != null) {
+        Set<NamedUserType> existingTypes = project.getNamedUserTypes();
+        for (NamedUserType existingType : existingTypes) {
+          if (criterion.accept(existingType)) {
+            return existingType;
+          }
+        }
+      }
+    }
+    return createTypeFor(superType, createClassNameFromSuperType(superType), null, null);
+  }
 
-	public static List<NamedUserType> getNamedUserTypesFromSuperTypes( Collection<JavaType> superTypes ) {
-		ArrayList<NamedUserType> rv = Lists.newArrayListWithInitialCapacity( superTypes.size() );
-		for( JavaType superType : superTypes ) {
-			rv.add( getNamedUserTypeFromSuperType( superType ) );
-		}
-		return rv;
-	}
+  public static List<NamedUserType> getNamedUserTypesFromSuperTypes(Collection<JavaType> superTypes) {
+    ArrayList<NamedUserType> rv = Lists.newArrayListWithInitialCapacity(superTypes.size());
+    for (JavaType superType : superTypes) {
+      rv.add(getNamedUserTypeFromSuperType(superType));
+    }
+    return rv;
+  }
 }

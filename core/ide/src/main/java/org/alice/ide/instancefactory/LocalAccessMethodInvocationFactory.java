@@ -55,58 +55,58 @@ import org.lgna.project.ast.UserLocal;
  * @author Dennis Cosgrove
  */
 public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static MapToMap<UserLocal, AbstractMethod, LocalAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserLocal, AbstractMethod, LocalAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized LocalAccessMethodInvocationFactory getInstance( UserLocal local, AbstractMethod method ) {
-		assert local != null;
-		LocalAccessMethodInvocationFactory rv = mapToMap.get( local, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAccessMethodInvocationFactory( local, method );
-			mapToMap.put( local, method, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalAccessMethodInvocationFactory getInstance(UserLocal local, AbstractMethod method) {
+    assert local != null;
+    LocalAccessMethodInvocationFactory rv = mapToMap.get(local, method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalAccessMethodInvocationFactory(local, method);
+      mapToMap.put(local, method, rv);
+    }
+    return rv;
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalAccessMethodInvocationFactory( UserLocal local, AbstractMethod method ) {
-		super( method, local.name );
-		this.local = local;
-	}
+  private LocalAccessMethodInvocationFactory(UserLocal local, AbstractMethod method) {
+    super(method, local.name);
+    this.local = local;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		if( code != null ) {
-			if( this.local.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
-				return this.local.getValueType();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    if (code != null) {
+      if (this.local.getFirstAncestorAssignableTo(AbstractCode.class) == code) {
+        return this.local.getValueType();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public UserLocal getLocal() {
-		return this.local;
-	}
+  public UserLocal getLocal() {
+    return this.local;
+  }
 
-	@Override
-	protected Expression createTransientExpressionForMethodInvocation() {
-		//todo?
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createTransientExpressionForMethodInvocation() {
+    //todo?
+    return new LocalAccess(this.local);
+  }
 
-	@Override
-	protected Expression createExpressionForMethodInvocation() {
-		return new LocalAccess( this.local );
-	}
+  @Override
+  protected Expression createExpressionForMethodInvocation() {
+    return new LocalAccess(this.local);
+  }
 
-	@Override
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( this.local.getName() );
-		return rv;
-	}
+  @Override
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append(this.local.getName());
+    return rv;
+  }
 }

@@ -50,30 +50,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends Operation {
-	public AbstractOwnedByCompositeOperation( Group group, UUID migrationId, Initializer<C> initializer ) {
-		super( group, migrationId );
-		this.initializer = initializer;
-	}
+  public AbstractOwnedByCompositeOperation(Group group, UUID migrationId, Initializer<C> initializer) {
+    super(group, migrationId);
+    this.initializer = initializer;
+  }
 
-	protected abstract C getComposite();
+  protected abstract C getComposite();
 
-	@Override
-	protected abstract Class<? extends Element> getClassUsedForLocalization();
+  @Override
+  protected abstract Class<? extends Element> getClassUsedForLocalization();
 
-	@Override
-	protected abstract String getSubKeyForLocalization();
+  @Override
+  protected abstract String getSubKeyForLocalization();
 
-	@Override
-	protected final void performInActivity( UserActivity userActivity ) {
-		C composite = this.getComposite();
-		// TODO set indicator on how to handle additional steps, the former isSubTransactionHistoryRequired()
-		// which was true for all except ModalFrameComposite
-		userActivity.setCompletionModel( this );
-		if( this.initializer != null ) {
-			this.initializer.initialize( composite );
-		}
-		composite.perform( userActivity);
-	}
+  @Override
+  protected final void performInActivity(UserActivity userActivity) {
+    C composite = this.getComposite();
+    // TODO set indicator on how to handle additional steps, the former isSubTransactionHistoryRequired()
+    // which was true for all except ModalFrameComposite
+    userActivity.setCompletionModel(this);
+    if (this.initializer != null) {
+      this.initializer.initialize(composite);
+    }
+    composite.perform(userActivity);
+  }
 
-	private final Initializer<C> initializer;
+  private final Initializer<C> initializer;
 }

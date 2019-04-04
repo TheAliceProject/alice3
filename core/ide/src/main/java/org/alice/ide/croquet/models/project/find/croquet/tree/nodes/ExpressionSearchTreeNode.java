@@ -49,15 +49,15 @@ import org.lgna.project.ast.Expression;
  */
 public class ExpressionSearchTreeNode extends SearchTreeNode {
 
-	private Expression expression;
+  private Expression expression;
 
-	public ExpressionSearchTreeNode( SearchTreeNode parent, Expression expression ) {
-		super( parent );
-		this.expression = expression;
-	}
+  public ExpressionSearchTreeNode(SearchTreeNode parent, Expression expression) {
+    super(parent);
+    this.expression = expression;
+  }
 
-	@Override
-	public Object getValue() {
-		return expression;
-	}
+  @Override
+  public Object getValue() {
+    return expression;
+  }
 }

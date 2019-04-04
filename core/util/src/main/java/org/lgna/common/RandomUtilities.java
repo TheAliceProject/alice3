@@ -51,75 +51,75 @@ import java.util.Random;
  */
 
 public class RandomUtilities {
-	private static Random s_random = new Random();
+  private static Random s_random = new Random();
 
-	private static int getRandomIndex( int n ) {
-		return s_random.nextInt( n );
-	}
+  private static int getRandomIndex(int n) {
+    return s_random.nextInt(n);
+  }
 
-	public static void setSeed( long seed ) {
-		s_random.setSeed( seed );
-	}
+  public static void setSeed(long seed) {
+    s_random.setSeed(seed);
+  }
 
-	public static Integer nextIntegerFrom0ToNExclusive( Integer n ) {
-		if( n <= 0 ) {
-			throw new LgnaIllegalArgumentException( "Argument must be positive.  " + n + " is not greater than 0.", 0, n );
-		}
-		return s_random.nextInt( n );
-	}
+  public static Integer nextIntegerFrom0ToNExclusive(Integer n) {
+    if (n <= 0) {
+      throw new LgnaIllegalArgumentException("Argument must be positive.  " + n + " is not greater than 0.", 0, n);
+    }
+    return s_random.nextInt(n);
+  }
 
-	public static Integer nextIntegerFromAToBExclusive( Integer a, Integer b ) {
-		if( a >= b ) {
-			throw new LgnaIllegalArgumentException( "First argument must be less than the second argument." + a + " is not less than " + b + ".", 0, a );
-		}
-		int n = b - a;
-		return a + nextIntegerFrom0ToNExclusive( n );
-	}
+  public static Integer nextIntegerFromAToBExclusive(Integer a, Integer b) {
+    if (a >= b) {
+      throw new LgnaIllegalArgumentException("First argument must be less than the second argument." + a + " is not less than " + b + ".", 0, a);
+    }
+    int n = b - a;
+    return a + nextIntegerFrom0ToNExclusive(n);
+  }
 
-	public static Integer nextIntegerFromAToBInclusive( Integer a, Integer b ) {
-		if( a > b ) {
-			throw new LgnaIllegalArgumentException( "First argument must be less than or equal to the second argument.  " + a + " is not less than or equal to " + b + ".", 0, a );
-		}
-		return nextIntegerFromAToBExclusive( a, b + 1 );
-	}
+  public static Integer nextIntegerFromAToBInclusive(Integer a, Integer b) {
+    if (a > b) {
+      throw new LgnaIllegalArgumentException("First argument must be less than or equal to the second argument.  " + a + " is not less than or equal to " + b + ".", 0, a);
+    }
+    return nextIntegerFromAToBExclusive(a, b + 1);
+  }
 
-	public static boolean nextBoolean() {
-		return s_random.nextBoolean();
-	}
+  public static boolean nextBoolean() {
+    return s_random.nextBoolean();
+  }
 
-	public static Double nextDouble() {
-		return s_random.nextDouble();
-	}
+  public static Double nextDouble() {
+    return s_random.nextDouble();
+  }
 
-	public static Double nextDoubleInRange( Number min, Number max ) {
-		return min.doubleValue() + ( nextDouble() * ( max.doubleValue() - min.doubleValue() ) );
-	}
+  public static Double nextDoubleInRange(Number min, Number max) {
+    return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
+  }
 
-	public static <E> E getRandomValueFrom( E[] array ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( array, 0 );
-		if( array.length > 0 ) {
-			return array[ getRandomIndex( array.length ) ];
-		} else {
-			//todo: throw Exception?
-			return null;
-		}
-	}
+  public static <E> E getRandomValueFrom(E[] array) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(array, 0);
+    if (array.length > 0) {
+      return array[getRandomIndex(array.length)];
+    } else {
+      //todo: throw Exception?
+      return null;
+    }
+  }
 
-	public static <E> E getRandomValueFrom( List<E> list ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( list, 0 );
-		if( list.size() > 0 ) {
-			return list.get( getRandomIndex( list.size() ) );
-		} else {
-			//todo: throw Exception?
-			return null;
-		}
-	}
+  public static <E> E getRandomValueFrom(List<E> list) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(list, 0);
+    if (list.size() > 0) {
+      return list.get(getRandomIndex(list.size()));
+    } else {
+      //todo: throw Exception?
+      return null;
+    }
+  }
 
-	public static <E extends Enum<? extends E>> E getRandomEnumConstant( Class<E> cls ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( cls, 0 );
-		E[] enumConstants = cls.getEnumConstants();
-		assert enumConstants.length > 0 : cls;
-		int index = s_random.nextInt( enumConstants.length );
-		return enumConstants[ index ];
-	}
+  public static <E extends Enum<? extends E>> E getRandomEnumConstant(Class<E> cls) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(cls, 0);
+    E[] enumConstants = cls.getEnumConstants();
+    assert enumConstants.length > 0 : cls;
+    int index = s_random.nextInt(enumConstants.length);
+    return enumConstants[index];
+  }
 }

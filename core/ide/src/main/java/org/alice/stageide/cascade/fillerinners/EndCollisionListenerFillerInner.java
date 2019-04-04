@@ -52,12 +52,12 @@ import org.lgna.story.event.CollisionEndListener;
 import java.util.List;
 
 public class EndCollisionListenerFillerInner extends ExpressionFillerInner {
-	public EndCollisionListenerFillerInner() {
-		super( CollisionEndListener.class );
-	}
+  public EndCollisionListenerFillerInner() {
+    super(CollisionEndListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( EndCollisionEventAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(EndCollisionEventAdapterFillIn.getInstance());
+  }
 }

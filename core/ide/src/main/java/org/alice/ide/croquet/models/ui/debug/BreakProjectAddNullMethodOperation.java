@@ -54,28 +54,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BreakProjectAddNullMethodOperation extends ActionOperation {
-	private static class SingletonHolder {
-		private static BreakProjectAddNullMethodOperation instance = new BreakProjectAddNullMethodOperation();
-	}
+  private static class SingletonHolder {
+    private static BreakProjectAddNullMethodOperation instance = new BreakProjectAddNullMethodOperation();
+  }
 
-	public static BreakProjectAddNullMethodOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static BreakProjectAddNullMethodOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BreakProjectAddNullMethodOperation() {
-		super( Application.PROJECT_GROUP, UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
-	}
+  private BreakProjectAddNullMethodOperation() {
+    super(Application.PROJECT_GROUP, UUID.fromString("06927780-2f06-41ba-a32c-2bfefd2188e9"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Break Project Add Null Method" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Break Project Add Null Method");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		UserMethod method = null;
-		StageIDE.getActiveInstance().getSceneType().methods.add( method );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    UserMethod method = null;
+    StageIDE.getActiveInstance().getSceneType().methods.add(method);
+    activity.finish();
+  }
 }

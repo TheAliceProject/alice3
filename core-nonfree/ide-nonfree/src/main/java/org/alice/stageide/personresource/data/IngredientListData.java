@@ -55,59 +55,59 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientListData<T> extends RefreshableListData<T> {
-	protected static final BaseSkinTone SKIN_TONE_FOR_FILTERING = BaseSkinTone.LIGHTER;
-	private LifeStage lifeStage;
-	private Gender gender;
+  protected static final BaseSkinTone SKIN_TONE_FOR_FILTERING = BaseSkinTone.LIGHTER;
+  private LifeStage lifeStage;
+  private Gender gender;
 
-	public IngredientListData( ItemCodec<T> itemCodec ) {
-		super( itemCodec );
-	}
+  public IngredientListData(ItemCodec<T> itemCodec) {
+    super(itemCodec);
+  }
 
-	public LifeStage getLifeStage() {
-		return this.lifeStage;
-	}
+  public LifeStage getLifeStage() {
+    return this.lifeStage;
+  }
 
-	public void setLifeStage( LifeStage lifeStage ) {
-		if( this.lifeStage == lifeStage ) {
-			//pass
-		} else {
-			this.lifeStage = lifeStage;
-			this.refresh();
-		}
-	}
+  public void setLifeStage(LifeStage lifeStage) {
+    if (this.lifeStage == lifeStage) {
+      //pass
+    } else {
+      this.lifeStage = lifeStage;
+      this.refresh();
+    }
+  }
 
-	public Gender getGender() {
-		return this.gender;
-	}
+  public Gender getGender() {
+    return this.gender;
+  }
 
-	public void setGender( Gender gender ) {
-		if( this.gender == gender ) {
-			//pass
-		} else {
-			this.gender = gender;
-			this.refresh();
-		}
-	}
+  public void setGender(Gender gender) {
+    if (this.gender == gender) {
+      //pass
+    } else {
+      this.gender = gender;
+      this.refresh();
+    }
+  }
 
-	public void setLifeStageAndGender( LifeStage lifeStage, Gender gender ) {
-		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
-			//pass
-		} else {
-			this.lifeStage = lifeStage;
-			this.gender = gender;
-			this.refresh();
-		}
-	}
+  public void setLifeStageAndGender(LifeStage lifeStage, Gender gender) {
+    if ((this.lifeStage == lifeStage) && (this.gender == gender)) {
+      //pass
+    } else {
+      this.lifeStage = lifeStage;
+      this.gender = gender;
+      this.refresh();
+    }
+  }
 
-	protected abstract List<T> createValues( LifeStage lifeStage, Gender gender );
+  protected abstract List<T> createValues(LifeStage lifeStage, Gender gender);
 
-	@Override
-	protected final List<T> createValues() {
-		if( ( this.lifeStage != null ) && ( this.gender != null ) ) {
-			return this.createValues( this.lifeStage, this.gender );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  protected final List<T> createValues() {
+    if ((this.lifeStage != null) && (this.gender != null)) {
+      return this.createValues(this.lifeStage, this.gender);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
 }

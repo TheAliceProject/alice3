@@ -57,53 +57,53 @@ import java.awt.event.HierarchyBoundsListener;
  * @author Dennis Cosgrove
  */
 public abstract class ScreenElement implements TrackableShape, RuntimeResolver<ScreenElement> {
-	public abstract Component getAwtComponent();
+  public abstract Component getAwtComponent();
 
-	public final Point convertPoint( Point pt, ScreenElement destination ) {
-		return SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
-	}
+  public final Point convertPoint(Point pt, ScreenElement destination) {
+    return SwingUtilities.convertPoint(this.getAwtComponent(), pt, destination.getAwtComponent());
+  }
 
-	@Override
-	public final ScreenElement getResolved() {
-		return this;
-	}
+  @Override
+  public final ScreenElement getResolved() {
+    return this;
+  }
 
-	@Override
-	public final void addComponentListener( ComponentListener listener ) {
-		this.getAwtComponent().addComponentListener( listener );
-	}
+  @Override
+  public final void addComponentListener(ComponentListener listener) {
+    this.getAwtComponent().addComponentListener(listener);
+  }
 
-	@Override
-	public final void removeComponentListener( ComponentListener listener ) {
-		this.getAwtComponent().removeComponentListener( listener );
-	}
+  @Override
+  public final void removeComponentListener(ComponentListener listener) {
+    this.getAwtComponent().removeComponentListener(listener);
+  }
 
-	@Override
-	public final void addHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-		this.getAwtComponent().addHierarchyBoundsListener( listener );
-	}
+  @Override
+  public final void addHierarchyBoundsListener(HierarchyBoundsListener listener) {
+    this.getAwtComponent().addHierarchyBoundsListener(listener);
+  }
 
-	@Override
-	public final void removeHierarchyBoundsListener( HierarchyBoundsListener listener ) {
-		this.getAwtComponent().removeHierarchyBoundsListener( listener );
-	}
+  @Override
+  public final void removeHierarchyBoundsListener(HierarchyBoundsListener listener) {
+    this.getAwtComponent().removeHierarchyBoundsListener(listener);
+  }
 
-	public Rectangle getLocalBounds() {
-		return SwingUtilities.getLocalBounds( this.getAwtComponent() );
-	}
+  public Rectangle getLocalBounds() {
+    return SwingUtilities.getLocalBounds(this.getAwtComponent());
+  }
 
-	public Rectangle getBounds() {
-		return this.getAwtComponent().getBounds();
-	}
+  public Rectangle getBounds() {
+    return this.getAwtComponent().getBounds();
+  }
 
-	public Point getLocation() {
-		return this.getAwtComponent().getLocation();
-	}
+  public Point getLocation() {
+    return this.getAwtComponent().getLocation();
+  }
 
-	public Dimension getSize() {
-		return this.getAwtComponent().getSize();
-	}
+  public Dimension getSize() {
+    return this.getAwtComponent().getSize();
+  }
 
-	@Deprecated
-	public abstract AbstractWindow<?> getRoot();
+  @Deprecated
+  public abstract AbstractWindow<?> getRoot();
 }

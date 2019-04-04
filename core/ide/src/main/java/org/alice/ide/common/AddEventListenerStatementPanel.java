@@ -59,38 +59,35 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class AddEventListenerStatementPanel extends StatementLikeSubstance {
-	private final ExpressionStatement statement;
+  private final ExpressionStatement statement;
 
-	public AddEventListenerStatementPanel( ExpressionStatement statement ) {
-		super(
-				StatementDragModel.getInstance( statement ),
-				ExpressionStatement.class,
-				BoxLayout.PAGE_AXIS );
-		this.statement = statement;
-		this.setPopupPrepModel( StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
-	}
+  public AddEventListenerStatementPanel(ExpressionStatement statement) {
+    super(StatementDragModel.getInstance(statement), ExpressionStatement.class, BoxLayout.PAGE_AXIS);
+    this.statement = statement;
+    this.setPopupPrepModel(StatementContextMenu.getInstance(statement).getPopupPrepModel());
+  }
 
-	@Override
-	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		Color color = ThemeUtilities.getActiveTheme().getEventColor();
-		Color colorA = ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
-		Color colorB = ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-		return new GradientPaint( x, y, colorA, x, y + 150, colorB );
-	}
+  @Override
+  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
+    Color color = ThemeUtilities.getActiveTheme().getEventColor();
+    Color colorA = ColorUtilities.scaleHSB(color, 1.0, 1.0, 1.15);
+    Color colorB = ColorUtilities.scaleHSB(color, 1.0, 0.9, 0.85);
+    return new GradientPaint(x, y, colorA, x, y + 150, colorB);
+  }
 
-	@Override
-	public boolean isMaximumSizeClampedToPreferredSize() {
-		return false;
-	}
+  @Override
+  public boolean isMaximumSizeClampedToPreferredSize() {
+    return false;
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( this.statement.isEnabled.getValue() ) {
-			//pass
-		} else {
-			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
+    super.paintEpilogue(g2, x, y, width, height);
+    if (this.statement.isEnabled.getValue()) {
+      //pass
+    } else {
+      g2.setPaint(PaintUtilities.getDisabledTexturePaint());
+      this.fillBounds(g2);
+    }
+  }
 }

@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitCop implements MaleTeenFullBodyOutfit {
-	POLICE,
-	SECURITY;
+  POLICE, SECURITY
 
 }

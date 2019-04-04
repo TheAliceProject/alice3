@@ -68,174 +68,174 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author David Culyba
  */
 public class SnapGrid extends Transformable implements PropertyListener {
-	private static final double LINE_HALF_DISTANCE = 20.0d;
-	private static final double MIDPOINT = LINE_HALF_DISTANCE / 2;
-	private static final int SEGMENTS_PER_LINE = 3;
-	private static final int VERTICES_PER_LINE = SEGMENTS_PER_LINE * 2;
+  private static final double LINE_HALF_DISTANCE = 20.0d;
+  private static final double MIDPOINT = LINE_HALF_DISTANCE / 2;
+  private static final int SEGMENTS_PER_LINE = 3;
+  private static final int VERTICES_PER_LINE = SEGMENTS_PER_LINE * 2;
 
-	public SnapGrid() {
-		super();
-		this.setName( "Snap Grid" );
-		this.sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
-		this.sgGridVisual = new Visual();
-		this.sgGridVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+  public SnapGrid() {
+    super();
+    this.setName("Snap Grid");
+    this.sgFrontFacingAppearance.setShadingStyle(ShadingStyle.NONE);
+    this.sgGridVisual = new Visual();
+    this.sgGridVisual.frontFacingAppearance.setValue(this.sgFrontFacingAppearance);
 
-		this.sgXLines = new LineArray();
-		this.sgZLines = new LineArray();
-		this.sgGridVisual.geometries.setValue( new Geometry[] { this.sgXLines, this.sgZLines } );
-		this.sgGridVisual.setParent( this );
+    this.sgXLines = new LineArray();
+    this.sgZLines = new LineArray();
+    this.sgGridVisual.geometries.setValue(new Geometry[] {this.sgXLines, this.sgZLines});
+    this.sgGridVisual.setParent(this);
 
-		this.setOpacity( .3f );
-		this.setGridLines( .5 );
-		this.setColor( Color4f.PINK );
-	}
+    this.setOpacity(.3f);
+    this.setGridLines(.5);
+    this.setColor(Color4f.PINK);
+  }
 
-	public void stopTrackingCameras() {
-		for( AbstractCamera camera : this.camerasToTrack ) {
-			if( camera.getParent() instanceof Transformable ) {
-				Transformable cameraParent = (Transformable)camera.getParent();
-				cameraParent.localTransformation.removePropertyListener( this );
-			}
-		}
-		this.camerasToTrack.clear();
-	}
+  public void stopTrackingCameras() {
+    for (AbstractCamera camera : this.camerasToTrack) {
+      if (camera.getParent() instanceof Transformable) {
+        Transformable cameraParent = (Transformable) camera.getParent();
+        cameraParent.localTransformation.removePropertyListener(this);
+      }
+    }
+    this.camerasToTrack.clear();
+  }
 
-	public void setCurrentCamera( AbstractCamera camera ) {
-		this.currentCamera = camera;
-		setSnapGridBasedOnCameraPosition();
-	}
+  public void setCurrentCamera(AbstractCamera camera) {
+    this.currentCamera = camera;
+    setSnapGridBasedOnCameraPosition();
+  }
 
-	public void addCamera( AbstractCamera camera ) {
-		if( !this.camerasToTrack.contains( camera ) ) {
-			if( camera.getParent() instanceof Transformable ) {
-				this.camerasToTrack.add( camera );
-				Transformable cameraParent = (Transformable)camera.getParent();
-				cameraParent.localTransformation.addPropertyListener( this );
-			}
-		}
-	}
+  public void addCamera(AbstractCamera camera) {
+    if (!this.camerasToTrack.contains(camera)) {
+      if (camera.getParent() instanceof Transformable) {
+        this.camerasToTrack.add(camera);
+        Transformable cameraParent = (Transformable) camera.getParent();
+        cameraParent.localTransformation.addPropertyListener(this);
+      }
+    }
+  }
 
-	private int getLineCount( double spacing ) {
-		return (int)( ( LINE_HALF_DISTANCE * 2 ) / spacing );
-	}
+  private int getLineCount(double spacing) {
+    return (int) ((LINE_HALF_DISTANCE * 2) / spacing);
+  }
 
-	private Vertex[] buildLines( double spacing, int lineCount, boolean isXAxis ) {
-		Vertex[] lines = new Vertex[ ( lineCount + 1 ) * ( VERTICES_PER_LINE ) ];
+  private Vertex[] buildLines(double spacing, int lineCount, boolean isXAxis) {
+    Vertex[] lines = new Vertex[(lineCount + 1) * (VERTICES_PER_LINE)];
 
-		int trueLineCount = lines.length / ( VERTICES_PER_LINE ); //There are n vertices for each line
-		double lineStart = spacing * ( trueLineCount / 2 );
-		double y = SnapUtilities.SNAP_LINE_VISUAL_HEIGHT;
-		float r = 0;
-		float g = 0;
-		float b = 0;
+    int trueLineCount = lines.length / (VERTICES_PER_LINE); //There are n vertices for each line
+    double lineStart = spacing * (trueLineCount / 2);
+    double y = SnapUtilities.SNAP_LINE_VISUAL_HEIGHT;
+    float r = 0;
+    float g = 0;
+    float b = 0;
 
-		for( int index = 0; index < lines.length; index += VERTICES_PER_LINE ) {
-			if( Math.abs( lineStart ) <= .000001 ) {
-				lineStart = 0;
-			}
-			double currentPos = lineStart;
-			float alpha = this.opacity;
-			if( Math.abs( currentPos ) > MIDPOINT ) {
-				alpha = (float)( 1.0f - ( ( Math.abs( currentPos ) - MIDPOINT ) / MIDPOINT ) ) * this.opacity;
-			}
-			if( isXAxis ) {
-				lines[ index ] = Vertex.createXYZRGBA( currentPos, y, LINE_HALF_DISTANCE, r, g, b, 0 );
-				lines[ index + 1 ] = Vertex.createXYZRGBA( currentPos, y, MIDPOINT, r, g, b, alpha );
-				lines[ index + 2 ] = Vertex.createXYZRGBA( currentPos, y, MIDPOINT, r, g, b, alpha );
-				lines[ index + 3 ] = Vertex.createXYZRGBA( currentPos, y, -MIDPOINT, r, g, b, alpha );
-				lines[ index + 4 ] = Vertex.createXYZRGBA( currentPos, y, -MIDPOINT, r, g, b, alpha );
-				lines[ index + 5 ] = Vertex.createXYZRGBA( currentPos, y, -LINE_HALF_DISTANCE, r, g, b, 0 );
-			} else { //It's the Z axis
-				lines[ index ] = Vertex.createXYZRGBA( LINE_HALF_DISTANCE, y, currentPos, r, g, b, 0 );
-				lines[ index + 1 ] = Vertex.createXYZRGBA( MIDPOINT, y, currentPos, r, g, b, alpha );
-				lines[ index + 2 ] = Vertex.createXYZRGBA( MIDPOINT, y, currentPos, r, g, b, alpha );
-				lines[ index + 3 ] = Vertex.createXYZRGBA( -MIDPOINT, y, currentPos, r, g, b, alpha );
-				lines[ index + 4 ] = Vertex.createXYZRGBA( -MIDPOINT, y, currentPos, r, g, b, alpha );
-				lines[ index + 5 ] = Vertex.createXYZRGBA( -LINE_HALF_DISTANCE, y, currentPos, r, g, b, 0 );
-			}
-			lineStart -= spacing;
-		}
+    for (int index = 0; index < lines.length; index += VERTICES_PER_LINE) {
+      if (Math.abs(lineStart) <= .000001) {
+        lineStart = 0;
+      }
+      double currentPos = lineStart;
+      float alpha = this.opacity;
+      if (Math.abs(currentPos) > MIDPOINT) {
+        alpha = (float) (1.0f - ((Math.abs(currentPos) - MIDPOINT) / MIDPOINT)) * this.opacity;
+      }
+      if (isXAxis) {
+        lines[index] = Vertex.createXYZRGBA(currentPos, y, LINE_HALF_DISTANCE, r, g, b, 0);
+        lines[index + 1] = Vertex.createXYZRGBA(currentPos, y, MIDPOINT, r, g, b, alpha);
+        lines[index + 2] = Vertex.createXYZRGBA(currentPos, y, MIDPOINT, r, g, b, alpha);
+        lines[index + 3] = Vertex.createXYZRGBA(currentPos, y, -MIDPOINT, r, g, b, alpha);
+        lines[index + 4] = Vertex.createXYZRGBA(currentPos, y, -MIDPOINT, r, g, b, alpha);
+        lines[index + 5] = Vertex.createXYZRGBA(currentPos, y, -LINE_HALF_DISTANCE, r, g, b, 0);
+      } else { //It's the Z axis
+        lines[index] = Vertex.createXYZRGBA(LINE_HALF_DISTANCE, y, currentPos, r, g, b, 0);
+        lines[index + 1] = Vertex.createXYZRGBA(MIDPOINT, y, currentPos, r, g, b, alpha);
+        lines[index + 2] = Vertex.createXYZRGBA(MIDPOINT, y, currentPos, r, g, b, alpha);
+        lines[index + 3] = Vertex.createXYZRGBA(-MIDPOINT, y, currentPos, r, g, b, alpha);
+        lines[index + 4] = Vertex.createXYZRGBA(-MIDPOINT, y, currentPos, r, g, b, alpha);
+        lines[index + 5] = Vertex.createXYZRGBA(-LINE_HALF_DISTANCE, y, currentPos, r, g, b, 0);
+      }
+      lineStart -= spacing;
+    }
 
-		for( Vertex line : lines ) {
-			if( line == null ) {
-				Logger.errln( "line is null", this );
-			}
-		}
+    for (Vertex line : lines) {
+      if (line == null) {
+        Logger.errln("line is null", this);
+      }
+    }
 
-		return lines;
-	}
+    return lines;
+  }
 
-	private void setGridLines( double spacing ) {
-		this.gridSpacing = spacing;
-		int lineCount = getLineCount( this.gridSpacing );
+  private void setGridLines(double spacing) {
+    this.gridSpacing = spacing;
+    int lineCount = getLineCount(this.gridSpacing);
 
-		Vertex[] xLines = buildLines( spacing, lineCount, true );
-		Vertex[] zLines = buildLines( spacing, lineCount, false );
+    Vertex[] xLines = buildLines(spacing, lineCount, true);
+    Vertex[] zLines = buildLines(spacing, lineCount, false);
 
-		this.sgXLines.vertices.setValue( xLines );
-		this.sgZLines.vertices.setValue( zLines );
-	}
+    this.sgXLines.vertices.setValue(xLines);
+    this.sgZLines.vertices.setValue(zLines);
+  }
 
-	public void setColor( Color4f color ) {
-		this.sgFrontFacingAppearance.setDiffuseColor( color );
-	}
+  public void setColor(Color4f color) {
+    this.sgFrontFacingAppearance.setDiffuseColor(color);
+  }
 
-	public void setOpacity( float opacity ) {
-		this.opacity = opacity;
-		//		this.sgFrontFacingAppearance.setOpacity(opacity);
-	}
+  public void setOpacity(float opacity) {
+    this.opacity = opacity;
+    //    this.sgFrontFacingAppearance.setOpacity(opacity);
+  }
 
-	public void setShowing( boolean isShowing ) {
-		this.sgGridVisual.isShowing.setValue( isShowing );
-	}
+  public void setShowing(boolean isShowing) {
+    this.sgGridVisual.isShowing.setValue(isShowing);
+  }
 
-	public boolean getShowing() {
-		return this.sgGridVisual.isShowing.getValue();
-	}
+  public boolean getShowing() {
+    return this.sgGridVisual.isShowing.getValue();
+  }
 
-	private void setSnapGridBasedOnCameraPosition() {
-		if( this.currentCamera != null ) {
-			AffineMatrix4x4 currentCameraPosition = this.currentCamera.getAbsoluteTransformation();
-			this.setTranslationOnly( getClosestSnapLocation( currentCameraPosition.translation ), AsSeenBy.SCENE );
-		}
-	}
+  private void setSnapGridBasedOnCameraPosition() {
+    if (this.currentCamera != null) {
+      AffineMatrix4x4 currentCameraPosition = this.currentCamera.getAbsoluteTransformation();
+      this.setTranslationOnly(getClosestSnapLocation(currentCameraPosition.translation), AsSeenBy.SCENE);
+    }
+  }
 
-	public void setSpacing( double spacing ) {
-		if( spacing != this.gridSpacing ) {
-			setGridLines( spacing );
-			setSnapGridBasedOnCameraPosition();
-		}
-	}
+  public void setSpacing(double spacing) {
+    if (spacing != this.gridSpacing) {
+      setGridLines(spacing);
+      setSnapGridBasedOnCameraPosition();
+    }
+  }
 
-	private Point3 getClosestSnapLocation( Point3 point ) {
-		int xMultiplier = (int)( point.x / this.gridSpacing );
-		int zMultiplier = (int)( point.z / this.gridSpacing );
-		double x = xMultiplier * this.gridSpacing;
-		double z = zMultiplier * this.gridSpacing;
-		return new Point3( x, 0, z );
-	}
+  private Point3 getClosestSnapLocation(Point3 point) {
+    int xMultiplier = (int) (point.x / this.gridSpacing);
+    int zMultiplier = (int) (point.z / this.gridSpacing);
+    double x = xMultiplier * this.gridSpacing;
+    double z = zMultiplier * this.gridSpacing;
+    return new Point3(x, 0, z);
+  }
 
-	@Override
-	public void propertyChanged( PropertyEvent e ) {
-		if( e.getValue() instanceof AffineMatrix4x4 ) {
-			setSnapGridBasedOnCameraPosition();
-			//			AffineMatrix4x4 newCameraTransform = (AffineMatrix4x4)e.getValue();
-			//			this.setTranslationOnly(getClosestSnapLocation(newCameraTransform.translation), AsSeenBy.SCENE);
-		}
-	}
+  @Override
+  public void propertyChanged(PropertyEvent e) {
+    if (e.getValue() instanceof AffineMatrix4x4) {
+      setSnapGridBasedOnCameraPosition();
+      //      AffineMatrix4x4 newCameraTransform = (AffineMatrix4x4)e.getValue();
+      //      this.setTranslationOnly(getClosestSnapLocation(newCameraTransform.translation), AsSeenBy.SCENE);
+    }
+  }
 
-	@Override
-	public void propertyChanging( PropertyEvent e ) {
-	}
+  @Override
+  public void propertyChanging(PropertyEvent e) {
+  }
 
-	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-	private final LineArray sgXLines;
-	private final LineArray sgZLines;
-	private final Visual sgGridVisual;
-	private double gridSpacing = .5d;
+  private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
+  private final LineArray sgXLines;
+  private final LineArray sgZLines;
+  private final Visual sgGridVisual;
+  private double gridSpacing = .5d;
 
-	private float opacity = .5f;
+  private float opacity = .5f;
 
-	private final List<AbstractCamera> camerasToTrack = Lists.newCopyOnWriteArrayList();
-	private AbstractCamera currentCamera;
+  private final List<AbstractCamera> camerasToTrack = Lists.newCopyOnWriteArrayList();
+  private AbstractCamera currentCamera;
 }

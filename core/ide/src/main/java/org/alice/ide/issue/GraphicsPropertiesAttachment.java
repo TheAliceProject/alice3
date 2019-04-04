@@ -56,61 +56,61 @@ import java.util.Arrays;
  * @author Dennis Cosgrove
  */
 public class GraphicsPropertiesAttachment implements Attachment {
-	private static Element createXmlElement( Document xmlDocument, String name, String value ) {
-		Element rv = xmlDocument.createElement( name );
-		rv.appendChild( xmlDocument.createTextNode( value ) );
-		return rv;
-	}
+  private static Element createXmlElement(Document xmlDocument, String name, String value) {
+    Element rv = xmlDocument.createElement(name);
+    rv.appendChild(xmlDocument.createTextNode(value));
+    return rv;
+  }
 
-	private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Document xmlDocument = XMLUtilities.createDocument();
-		Element xmlRootElement = xmlDocument.createElement( "graphicsProperties" );
-		xmlDocument.appendChild( xmlRootElement );
-		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
-		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-		if( sharedDetails != null ) {
-			Element xmlSharedElement = xmlDocument.createElement( "sharedProperties" );
-			xmlRootElement.appendChild( xmlSharedElement );
+  private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Document xmlDocument = XMLUtilities.createDocument();
+    Element xmlRootElement = xmlDocument.createElement("graphicsProperties");
+    xmlDocument.appendChild(xmlRootElement);
+    ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+    ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+    if (sharedDetails != null) {
+      Element xmlSharedElement = xmlDocument.createElement("sharedProperties");
+      xmlRootElement.appendChild(xmlSharedElement);
 
-			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "renderer", sharedDetails.getRenderer() ) );
-			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "vendor", sharedDetails.getVendor() ) );
-			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "version", sharedDetails.getVersion() ) );
-			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "extensions", Arrays.toString( sharedDetails.getExtensions() ) ) );
-		}
-		if( synchronousPickDetails != null ) {
-			Element xmlPickElement = xmlDocument.createElement( "pickProperties" );
-			xmlRootElement.appendChild( xmlPickElement );
+      xmlSharedElement.appendChild(createXmlElement(xmlDocument, "renderer", sharedDetails.getRenderer()));
+      xmlSharedElement.appendChild(createXmlElement(xmlDocument, "vendor", sharedDetails.getVendor()));
+      xmlSharedElement.appendChild(createXmlElement(xmlDocument, "version", sharedDetails.getVersion()));
+      xmlSharedElement.appendChild(createXmlElement(xmlDocument, "extensions", Arrays.toString(sharedDetails.getExtensions())));
+    }
+    if (synchronousPickDetails != null) {
+      Element xmlPickElement = xmlDocument.createElement("pickProperties");
+      xmlRootElement.appendChild(xmlPickElement);
 
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickFunctioningCorrectly", Boolean.toString( synchronousPickDetails.isPickFunctioningCorrectly() ) ) );
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isReportingPickCanBeHardwareAccelerated", Boolean.toString( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) ) );
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickActuallyHardwareAccelerated", Boolean.toString( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) ) );
-		}
-		XMLUtilities.write( xmlDocument, baos );
-		try {
-			baos.flush();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-		return baos;
-	}
+      xmlPickElement.appendChild(createXmlElement(xmlDocument, "isPickFunctioningCorrectly", Boolean.toString(synchronousPickDetails.isPickFunctioningCorrectly())));
+      xmlPickElement.appendChild(createXmlElement(xmlDocument, "isReportingPickCanBeHardwareAccelerated", Boolean.toString(synchronousPickDetails.isReportingPickCanBeHardwareAccelerated())));
+      xmlPickElement.appendChild(createXmlElement(xmlDocument, "isPickActuallyHardwareAccelerated", Boolean.toString(synchronousPickDetails.isPickActuallyHardwareAccelerated())));
+    }
+    XMLUtilities.write(xmlDocument, baos);
+    try {
+      baos.flush();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    return baos;
+  }
 
-	@Override
-	public byte[] getBytes() {
-		return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
-	}
+  @Override
+  public byte[] getBytes() {
+    return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
+  }
 
-	@Override
-	public String getMIMEType() {
-		return "application/xml";
-	}
+  @Override
+  public String getMIMEType() {
+    return "application/xml";
+  }
 
-	@Override
-	public String getFileName() {
-		return "graphicsProperties.xml";
-	}
+  @Override
+  public String getFileName() {
+    return "graphicsProperties.xml";
+  }
 
-	public static void main( String[] args ) {
-		System.out.println( new String( new GraphicsPropertiesAttachment().getBytes() ) );
-	}
+  public static void main(String[] args) {
+    System.out.println(new String(new GraphicsPropertiesAttachment().getBytes()));
+  }
 }

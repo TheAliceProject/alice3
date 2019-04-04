@@ -48,5 +48,5 @@ import org.lgna.croquet.history.DragStep;
  * @author Dennis Cosgrove
  */
 public interface DropRejector {
-	public boolean isRejected( DragStep step );
+  public boolean isRejected(DragStep step);
 }

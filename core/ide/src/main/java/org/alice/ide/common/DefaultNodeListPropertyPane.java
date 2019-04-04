@@ -54,12 +54,12 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class DefaultNodeListPropertyPane extends AbstractListPropertyPane<NodeListProperty<AbstractNode>, AbstractNode> {
-	public DefaultNodeListPropertyPane( AstI18nFactory factory, NodeListProperty<AbstractNode> property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-	}
+  public DefaultNodeListPropertyPane(AstI18nFactory factory, NodeListProperty<AbstractNode> property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( AbstractNode node ) {
-		return this.getFactory().createComponent( node );
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(AbstractNode node) {
+    return this.getFactory().createComponent(node);
+  }
 }

@@ -48,11 +48,11 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface Model extends Element {
-	UUID getMigrationId();
+  UUID getMigrationId();
 
-	void relocalize();
+  void relocalize();
 
-	boolean isEnabled();
+  boolean isEnabled();
 
-	void setEnabled( boolean isEnabled );
+  void setEnabled(boolean isEnabled);
 }

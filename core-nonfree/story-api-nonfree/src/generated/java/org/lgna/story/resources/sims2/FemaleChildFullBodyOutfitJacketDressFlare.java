@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildFullBodyOutfitJacketDressFlare implements FemaleChildFullBodyOutfit {
-	GEOMETRIC_BEIGE,
-	HOUNDS_TOO_PINK,
-	ICE_BLUE;
+  GEOMETRIC_BEIGE, HOUNDS_TOO_PINK, ICE_BLUE
 
 }

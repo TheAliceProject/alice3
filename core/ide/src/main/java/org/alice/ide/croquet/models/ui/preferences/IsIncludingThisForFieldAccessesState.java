@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingThisForFieldAccessesState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingThisForFieldAccessesState instance = new IsIncludingThisForFieldAccessesState();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingThisForFieldAccessesState instance = new IsIncludingThisForFieldAccessesState();
+  }
 
-	public static IsIncludingThisForFieldAccessesState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingThisForFieldAccessesState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingThisForFieldAccessesState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
-	}
+  private IsIncludingThisForFieldAccessesState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("bcf1ce48-f54a-4e80-8b9e-42c2cc302b01"), true);
+  }
 }

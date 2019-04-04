@@ -51,30 +51,30 @@ import edu.cmu.cs.dennisc.scenegraph.Ghost;
  * @author Dennis Cosgrove
  */
 public class GlrGhost extends GlrTransformable<Ghost> {
-	@Override
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-		rc.pushGlobalOpacity();
-		rc.multiplyGlobalOpacity( this.opacity );
-		try {
-			super.renderGhost( rc, root );
-		} finally {
-			rc.popGlobalOpacity();
-		}
-	}
+  @Override
+  public void renderGhost(RenderContext rc, GlrGhost root) {
+    rc.pushGlobalOpacity();
+    rc.multiplyGlobalOpacity(this.opacity);
+    try {
+      super.renderGhost(rc, root);
+    } finally {
+      rc.popGlobalOpacity();
+    }
+  }
 
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-		//pass
-	}
+  @Override
+  public void renderOpaque(RenderContext rc) {
+    //pass
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.opacity ) {
-			this.opacity = owner.opacity.getValue();
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.opacity) {
+      this.opacity = owner.opacity.getValue();
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private float opacity = Float.NaN;
+  private float opacity = Float.NaN;
 }

@@ -65,130 +65,130 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 /* package-private */class JScrollMenuItem extends JMenuItem {
-	private static final Dimension ARROW_SIZE = new Dimension( 10, 10 );
+  private static final Dimension ARROW_SIZE = new Dimension(10, 10);
 
-	private final ChangeListener changeListener = new ChangeListener() {
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			ButtonModel buttonModel = getModel();
-			if( buttonModel.isArmed() ) {
-				if( timer.isRunning() ) {
-					//pass
-				} else {
-					timer.start();
-				}
-			} else {
-				if( timer.isRunning() ) {
-					timer.stop();
-				} else {
-					//pass
-				}
-			}
-		}
-	};
+  private final ChangeListener changeListener = new ChangeListener() {
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      ButtonModel buttonModel = getModel();
+      if (buttonModel.isArmed()) {
+        if (timer.isRunning()) {
+          //pass
+        } else {
+          timer.start();
+        }
+      } else {
+        if (timer.isRunning()) {
+          timer.stop();
+        } else {
+          //pass
+        }
+      }
+    }
+  };
 
-	private static class ScrollAction extends AbstractAction {
-		private final ScrollingPopupMenuLayout layout;
-		private final ScrollDirection scrollDirection;
+  private static class ScrollAction extends AbstractAction {
+    private final ScrollingPopupMenuLayout layout;
+    private final ScrollDirection scrollDirection;
 
-		public ScrollAction( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
-			this.layout = layout;
-			this.scrollDirection = scrollDirection;
-		}
+    public ScrollAction(ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection) {
+      this.layout = layout;
+      this.scrollDirection = scrollDirection;
+    }
 
-		public ScrollDirection getScrollDirection() {
-			return this.scrollDirection;
-		}
+    public ScrollDirection getScrollDirection() {
+      return this.scrollDirection;
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			this.layout.adjustIndex( this.scrollDirection.getDelta() );
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      this.layout.adjustIndex(this.scrollDirection.getDelta());
+    }
+  }
 
-	private final ScrollAction scrollAction;
-	private final Timer timer;
+  private final ScrollAction scrollAction;
+  private final Timer timer;
 
-	private int count;
+  private int count;
 
-	public JScrollMenuItem( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
-		this.scrollAction = new ScrollAction( layout, scrollDirection );
-		this.timer = new Timer( 100, this.scrollAction );
-	}
+  public JScrollMenuItem(ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection) {
+    this.scrollAction = new ScrollAction(layout, scrollDirection);
+    this.timer = new Timer(100, this.scrollAction);
+  }
 
-	public int getCount() {
-		return this.count;
-	}
+  public int getCount() {
+    return this.count;
+  }
 
-	public void setCount( int count ) {
-		if( this.count != count ) {
-			this.count = count;
-			this.repaint();
-		}
-	}
+  public void setCount(int count) {
+    if (this.count != count) {
+      this.count = count;
+      this.repaint();
+    }
+  }
 
-	@Override
-	protected void processMouseEvent( MouseEvent e ) {
-		int id = e.getID();
-		if( ( id == MouseEvent.MOUSE_PRESSED ) || ( id == MouseEvent.MOUSE_RELEASED ) ) {
-			//pass
-		} else {
-			super.processMouseEvent( e );
-		}
-	}
+  @Override
+  protected void processMouseEvent(MouseEvent e) {
+    int id = e.getID();
+    if ((id == MouseEvent.MOUSE_PRESSED) || (id == MouseEvent.MOUSE_RELEASED)) {
+      //pass
+    } else {
+      super.processMouseEvent(e);
+    }
+  }
 
-	@Override
-	public void addNotify() {
-		this.addChangeListener( this.changeListener );
-		super.addNotify();
-	}
+  @Override
+  public void addNotify() {
+    this.addChangeListener(this.changeListener);
+    super.addNotify();
+  }
 
-	@Override
-	public void removeNotify() {
-		super.removeNotify();
-		this.removeChangeListener( this.changeListener );
-	}
+  @Override
+  public void removeNotify() {
+    super.removeNotify();
+    this.removeChangeListener(this.changeListener);
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		Font font = this.getFont();
-		FontMetrics fontMetrics = this.getFontMetrics( font );
-		int height = Math.max( fontMetrics.getHeight(), ARROW_SIZE.height );
-		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), height + 8 );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    Font font = this.getFont();
+    FontMetrics fontMetrics = this.getFontMetrics(font);
+    int height = Math.max(fontMetrics.getHeight(), ARROW_SIZE.height);
+    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), height + 8);
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		Graphics2D g2 = (Graphics2D)g;
-		ButtonModel model = this.getModel();
-		//		if( model.isArmed() ) {
-		//			//g.setColor( javax.swing.UIManager.getColor( "textBackground" ) );
-		//		} else {
-		//			g.setColor( javax.swing.UIManager.getColor( "menu" ) );
-		//			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-		//		}
-		super.paintComponent( g );
-		if( model.isArmed() ) {
-			g.setColor( UIManager.getColor( "textHighlightText" ) );
-		} else {
-			g.setColor( UIManager.getColor( "textForeground" ) );
-		}
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
-		int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
-		int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
+  @Override
+  protected void paintComponent(Graphics g) {
+    Graphics2D g2 = (Graphics2D) g;
+    ButtonModel model = this.getModel();
+    //  if( model.isArmed() ) {
+    //    //g.setColor( javax.swing.UIManager.getColor( "textBackground" ) );
+    //  } else {
+    //    g.setColor( javax.swing.UIManager.getColor( "menu" ) );
+    //    g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+    //  }
+    super.paintComponent(g);
+    if (model.isArmed()) {
+      g.setColor(UIManager.getColor("textHighlightText"));
+    } else {
+      g.setColor(UIManager.getColor("textForeground"));
+    }
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
+    int x = (this.getWidth() - ARROW_SIZE.width) / 2;
+    int y = (this.getHeight() - ARROW_SIZE.height) / 2;
 
-		final int SPACE = 10;
-		for( int i = -2; i < 3; i++ ) {
-			GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + SPACE ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
-		}
-		if( count != 0 ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "(" );
-			sb.append( this.count );
-			sb.append( ")" );
-			g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-			g2.drawString( sb.toString(), x + ( 3 * ( ARROW_SIZE.width + SPACE ) ), ( y + ARROW_SIZE.height ) - 2 );
-		}
-	}
+    final int SPACE = 10;
+    for (int i = -2; i < 3; i++) {
+      GraphicsUtilities.fillTriangle(g2, heading, x + (i * (ARROW_SIZE.width + SPACE)), y, ARROW_SIZE.width, ARROW_SIZE.height);
+    }
+    if (count != 0) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("(");
+      sb.append(this.count);
+      sb.append(")");
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+      g2.drawString(sb.toString(), x + (3 * (ARROW_SIZE.width + SPACE)), (y + ARROW_SIZE.height) - 2);
+    }
+  }
 }

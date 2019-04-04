@@ -52,17 +52,17 @@ import org.lgna.croquet.history.UserActivity;
 import java.util.UUID;
 
 public abstract class PropertyValueOperation<P> extends ActionOperation {
-	private final AbstractPropertyAdapter<P, ?> propertyAdapter;
-	private final P nextValue;
+  private final AbstractPropertyAdapter<P, ?> propertyAdapter;
+  private final P nextValue;
 
-	public PropertyValueOperation( UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
-		super( Application.PROJECT_GROUP, migrationId );
-		this.propertyAdapter = propertyAdapter;
-		this.nextValue = nextValue;
-	}
+  public PropertyValueOperation(UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue) {
+    super(Application.PROJECT_GROUP, migrationId);
+    this.propertyAdapter = propertyAdapter;
+    this.nextValue = nextValue;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new PropertyValueEdit<P>( activity, this.propertyAdapter, this.nextValue ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new PropertyValueEdit<P>(activity, this.propertyAdapter, this.nextValue));
+  }
 }

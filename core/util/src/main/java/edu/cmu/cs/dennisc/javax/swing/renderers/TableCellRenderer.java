@@ -51,16 +51,16 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class TableCellRenderer<E> extends DefaultTableCellRenderer {
-	protected abstract JLabel getTableCellRendererComponent( JLabel rv, JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column );
+  protected abstract JLabel getTableCellRendererComponent(JLabel rv, JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column);
 
-	@Override
-	public final Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		Component rv = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );
-		if( rv instanceof JLabel ) {
-			getTableCellRendererComponent( (JLabel)rv, table, (E)value, isSelected, hasFocus, row, column );
-		} else {
-			//todo
-		}
-		return rv;
-	}
+  @Override
+  public final Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    Component rv = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    if (rv instanceof JLabel) {
+      getTableCellRendererComponent((JLabel) rv, table, (E) value, isSelected, hasFocus, row, column);
+    } else {
+      //todo
+    }
+    return rv;
+  }
 }

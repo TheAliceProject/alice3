@@ -50,17 +50,17 @@ import com.jogamp.opengl.GLRunnable;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class DisplayTask implements GLRunnable {
-	public void setRtImp( RenderTargetImp rtImp ) {
-		this.rtImp = rtImp;
-	}
+  public void setRtImp(RenderTargetImp rtImp) {
+    this.rtImp = rtImp;
+  }
 
-	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl );
+  abstract IsFrameBufferIntact handleDisplay(RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl);
 
-	@Override
-	public boolean run( GLAutoDrawable drawable ) {
-		IsFrameBufferIntact isFrameBufferIntact = this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
-		return isFrameBufferIntact == IsFrameBufferIntact.TRUE;
-	}
+  @Override
+  public boolean run(GLAutoDrawable drawable) {
+    IsFrameBufferIntact isFrameBufferIntact = this.handleDisplay(this.rtImp, drawable, drawable.getGL().getGL2());
+    return isFrameBufferIntact == IsFrameBufferIntact.TRUE;
+  }
 
-	private RenderTargetImp rtImp;
+  private RenderTargetImp rtImp;
 }

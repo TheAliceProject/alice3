@@ -51,17 +51,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ForwardShiftParameterOperation extends SwapParametersOperation {
-	public ForwardShiftParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( UUID.fromString( "75777bff-85f1-4816-b860-cebf04cc95ee" ), parametersProperty, parameter );
-	}
+  public ForwardShiftParameterOperation(NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(UUID.fromString("75777bff-85f1-4816-b860-cebf04cc95ee"), parametersProperty, parameter);
+  }
 
-	@Override
-	protected boolean isAppropriate( int index, int n ) {
-		return 0 < index;
-	}
+  @Override
+  protected boolean isAppropriate(int index, int n) {
+    return 0 < index;
+  }
 
-	@Override
-	protected int getIndexA() {
-		return this.getIndex() - 1;
-	}
+  @Override
+  protected int getIndexA() {
+    return this.getIndex() - 1;
+  }
 }

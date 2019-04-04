@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitScrubs implements FemaleElderFullBodyOutfit {
-	GREEN,
-	BLUE;
+  GREEN, BLUE
 
 }

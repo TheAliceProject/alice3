@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsRecursionAllowedState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
-	}
+  private static class SingletonHolder {
+    private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
+  }
 
-	public static IsRecursionAllowedState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsRecursionAllowedState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsRecursionAllowedState() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
-	}
+  private IsRecursionAllowedState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("d3bbfe60-166d-4fa0-a98b-5992998dfca9"), false);
+  }
 }

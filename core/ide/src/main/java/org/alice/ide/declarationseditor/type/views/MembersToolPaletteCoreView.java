@@ -49,7 +49,7 @@ import org.lgna.croquet.views.PageAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class MembersToolPaletteCoreView extends PageAxisPanel {
-	public MembersToolPaletteCoreView( MembersToolPaletteCoreComposite composite ) {
-		super( composite );
-	}
+  public MembersToolPaletteCoreView(MembersToolPaletteCoreComposite composite) {
+    super(composite);
+  }
 }

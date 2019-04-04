@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public interface Visitor {
-	public void visit( Visitable visitable );
+  public void visit(Visitable visitable);
 }

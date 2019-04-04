@@ -44,21 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultHairHalo implements FemaleAdultHair, FemaleElderHair {
-	BLOND,
-	BROWN,
-	BLACK,
-	RED,
-	GREY;
+  BLOND, BROWN, BLACK, RED, GREY;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

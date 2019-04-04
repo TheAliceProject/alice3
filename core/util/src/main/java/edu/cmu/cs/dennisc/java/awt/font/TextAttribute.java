@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.java.awt.font;
  * @author Dennis Cosgrove
  */
 public interface TextAttribute<E> {
-	public java.awt.font.TextAttribute getKey();
+  public java.awt.font.TextAttribute getKey();
 
-	public E getValue();
+  public E getValue();
 }

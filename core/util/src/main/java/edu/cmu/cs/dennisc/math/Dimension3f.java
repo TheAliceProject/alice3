@@ -47,58 +47,58 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class Dimension3f extends Tuple3f {
-	public Dimension3f() {
-	}
+  public Dimension3f() {
+  }
 
-	public Dimension3f( Tuple3f other ) {
-		super( other );
-	}
+  public Dimension3f(Tuple3f other) {
+    super(other);
+  }
 
-	public Dimension3f( float x, float y, float z ) {
-		super( x, y, z );
-	}
+  public Dimension3f(float x, float y, float z) {
+    super(x, y, z);
+  }
 
-	public static Dimension3f createZero() {
-		return (Dimension3f)setReturnValueToZero( new Dimension3f() );
-	}
+  public static Dimension3f createZero() {
+    return (Dimension3f) setReturnValueToZero(new Dimension3f());
+  }
 
-	public static Dimension3f createNaN() {
-		return (Dimension3f)setReturnValueToNaN( new Dimension3f() );
-	}
+  public static Dimension3f createNaN() {
+    return (Dimension3f) setReturnValueToNaN(new Dimension3f());
+  }
 
-	public static Dimension3f createAddition( Tuple3f a, Tuple3f b ) {
-		return (Dimension3f)setReturnValueToAddition( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createAddition(Tuple3f a, Tuple3f b) {
+    return (Dimension3f) setReturnValueToAddition(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createSubtraction( Tuple3f a, Tuple3f b ) {
-		return (Dimension3f)setReturnValueToSubtraction( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createSubtraction(Tuple3f a, Tuple3f b) {
+    return (Dimension3f) setReturnValueToSubtraction(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createNegation( Tuple3f a ) {
-		return (Dimension3f)setReturnValueToNegation( new Dimension3f(), a );
-	}
+  public static Dimension3f createNegation(Tuple3f a) {
+    return (Dimension3f) setReturnValueToNegation(new Dimension3f(), a);
+  }
 
-	public static Dimension3f createMultiplication( Tuple3f a, Tuple3f b ) {
-		return (Dimension3f)setReturnValueToMultiplication( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createMultiplication(Tuple3f a, Tuple3f b) {
+    return (Dimension3f) setReturnValueToMultiplication(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createMultiplication( Tuple3f a, float b ) {
-		return (Dimension3f)setReturnValueToMultiplication( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createMultiplication(Tuple3f a, float b) {
+    return (Dimension3f) setReturnValueToMultiplication(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createDivision( Tuple3f a, Tuple3f b ) {
-		return (Dimension3f)setReturnValueToDivision( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createDivision(Tuple3f a, Tuple3f b) {
+    return (Dimension3f) setReturnValueToDivision(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createDivision( Tuple3f a, float b ) {
-		return (Dimension3f)setReturnValueToDivision( new Dimension3f(), a, b );
-	}
+  public static Dimension3f createDivision(Tuple3f a, float b) {
+    return (Dimension3f) setReturnValueToDivision(new Dimension3f(), a, b);
+  }
 
-	public static Dimension3f createInterpolation( Tuple3f a, Tuple3f b, float portion ) {
-		return (Dimension3f)setReturnValueToInterpolation( new Dimension3f(), a, b, portion );
-	}
+  public static Dimension3f createInterpolation(Tuple3f a, Tuple3f b, float portion) {
+    return (Dimension3f) setReturnValueToInterpolation(new Dimension3f(), a, b, portion);
+  }
 
-	public static Dimension3f createNormalized( Tuple3f a ) {
-		return (Dimension3f)setReturnValueToNormalized( new Dimension3f(), a );
-	}
+  public static Dimension3f createNormalized(Tuple3f a) {
+    return (Dimension3f) setReturnValueToNormalized(new Dimension3f(), a);
+  }
 }

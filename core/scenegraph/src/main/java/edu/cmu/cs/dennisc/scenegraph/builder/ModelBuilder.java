@@ -74,226 +74,226 @@ import java.util.Set;
 import java.util.zip.ZipOutputStream;
 
 public class ModelBuilder {
-	private ModelPart root;
-	private Set<Geometry> geometries;
-	private Set<BufferedImageTexture> textures;
+  private ModelPart root;
+  private Set<Geometry> geometries;
+  private Set<BufferedImageTexture> textures;
 
-	private static final String MAIN_ENTRY_PATH = "main.bin";
-	private static final String INDEXED_TRIANGLE_ARRAY_PREFIX = "indexedTriangleArrays/";
-	private static final String MESH_PREFIX = "meshes/";
-	private static final String GEOMETRY_POSTFIX = ".bin";
-	private static final String BUFFERED_IMAGE_TEXTURE_PREFIX = "bufferedImageTextures/";
-	private static final String BUFFERED_IMAGE_TEXTURE_POSTFIX = ".png";
+  private static final String MAIN_ENTRY_PATH = "main.bin";
+  private static final String INDEXED_TRIANGLE_ARRAY_PREFIX = "indexedTriangleArrays/";
+  private static final String MESH_PREFIX = "meshes/";
+  private static final String GEOMETRY_POSTFIX = ".bin";
+  private static final String BUFFERED_IMAGE_TEXTURE_PREFIX = "bufferedImageTextures/";
+  private static final String BUFFERED_IMAGE_TEXTURE_POSTFIX = ".png";
 
-	private ModelBuilder() {
-	}
+  private ModelBuilder() {
+  }
 
-	private static void safeEncode( BinaryEncoder encoder, short[] array ) {
-		boolean isNotNull = array != null;
-		encoder.encode( isNotNull );
-		if( isNotNull ) {
-			encoder.encode( array );
-		}
-	}
+  private static void safeEncode(BinaryEncoder encoder, short[] array) {
+    boolean isNotNull = array != null;
+    encoder.encode(isNotNull);
+    if (isNotNull) {
+      encoder.encode(array);
+    }
+  }
 
-	private static short[] safeDecodeShortArray( BinaryDecoder decoder ) {
-		boolean isNotNull = decoder.decodeBoolean();
-		short[] rv;
-		if( isNotNull ) {
-			rv = decoder.decodeShortArray();
-		} else {
-			rv = null;
-		}
-		return rv;
-	}
+  private static short[] safeDecodeShortArray(BinaryDecoder decoder) {
+    boolean isNotNull = decoder.decodeBoolean();
+    short[] rv;
+    if (isNotNull) {
+      rv = decoder.decodeShortArray();
+    } else {
+      rv = null;
+    }
+    return rv;
+  }
 
-	private static Map<File, ModelBuilder> map = Maps.newHashMap();
+  private static Map<File, ModelBuilder> map = Maps.newHashMap();
 
-	public Set<Geometry> getGeometries() {
-		return this.geometries;
-	}
+  public Set<Geometry> getGeometries() {
+    return this.geometries;
+  }
 
-	public void replaceGeometries( Map<? extends Geometry, ? extends Geometry> map ) {
-		this.geometries.clear();
-		this.geometries.addAll( map.values() );
-		this.root.replaceGeometries( map );
-	}
+  public void replaceGeometries(Map<? extends Geometry, ? extends Geometry> map) {
+    this.geometries.clear();
+    this.geometries.addAll(map.values());
+    this.root.replaceGeometries(map);
+  }
 
-	public static void forget( File file ) {
-		map.remove( file );
-	}
+  public static void forget(File file) {
+    map.remove(file);
+  }
 
-	public static ModelBuilder getInstance( File file ) {
-		ModelBuilder rv = map.get( file );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ModelBuilder();
-			try {
-				Map<Integer, Geometry> mapIdToGeometry = Maps.newHashMap();
-				Map<Integer, BufferedImageTexture> mapIdToTexture = Maps.newHashMap();
-				FileInputStream fis = new FileInputStream( file );
-				Map<String, byte[]> map = ZipUtilities.extract( fis );
+  public static ModelBuilder getInstance(File file) {
+    ModelBuilder rv = map.get(file);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ModelBuilder();
+      try {
+        Map<Integer, Geometry> mapIdToGeometry = Maps.newHashMap();
+        Map<Integer, BufferedImageTexture> mapIdToTexture = Maps.newHashMap();
+        FileInputStream fis = new FileInputStream(file);
+        Map<String, byte[]> map = ZipUtilities.extract(fis);
 
-				InputStream isMainEntry = null;
-				for( String entryPath : map.keySet() ) {
-					InputStream is = new ByteArrayInputStream( map.get( entryPath ) );
-					if( entryPath.startsWith( INDEXED_TRIANGLE_ARRAY_PREFIX ) ) {
-						String s = entryPath.substring( INDEXED_TRIANGLE_ARRAY_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
-						int id = Integer.parseInt( s );
-						BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
-						IndexedTriangleArray ita = new IndexedTriangleArray();
-						ita.vertices.setValue( decoder.decodeBinaryEncodableAndDecodableArray( Vertex.class ) );
-						ita.polygonData.setValue( decoder.decodeIntArray() );
-						mapIdToGeometry.put( id, ita );
+        InputStream isMainEntry = null;
+        for (String entryPath : map.keySet()) {
+          InputStream is = new ByteArrayInputStream(map.get(entryPath));
+          if (entryPath.startsWith(INDEXED_TRIANGLE_ARRAY_PREFIX)) {
+            String s = entryPath.substring(INDEXED_TRIANGLE_ARRAY_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length());
+            int id = Integer.parseInt(s);
+            BinaryDecoder decoder = new InputStreamBinaryDecoder(is);
+            IndexedTriangleArray ita = new IndexedTriangleArray();
+            ita.vertices.setValue(decoder.decodeBinaryEncodableAndDecodableArray(Vertex.class));
+            ita.polygonData.setValue(decoder.decodeIntArray());
+            mapIdToGeometry.put(id, ita);
 
-					} else if( entryPath.startsWith( MESH_PREFIX ) ) {
-						String s = entryPath.substring( MESH_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
-						int id = Integer.parseInt( s );
-						BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
-						OldMesh mesh = new OldMesh();
-						mesh.xyzs.setValue( decoder.decodeDoubleArray() );
-						mesh.ijks.setValue( decoder.decodeFloatArray() );
-						mesh.uvs.setValue( decoder.decodeFloatArray() );
-						mesh.xyzTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mesh.ijkTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mesh.uvTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mesh.xyzQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mesh.ijkQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mesh.uvQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
-						mapIdToGeometry.put( id, mesh );
-					} else if( entryPath.startsWith( BUFFERED_IMAGE_TEXTURE_PREFIX ) ) {
-						String s = entryPath.substring( BUFFERED_IMAGE_TEXTURE_PREFIX.length(), entryPath.length() - BUFFERED_IMAGE_TEXTURE_POSTFIX.length() );
+          } else if (entryPath.startsWith(MESH_PREFIX)) {
+            String s = entryPath.substring(MESH_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length());
+            int id = Integer.parseInt(s);
+            BinaryDecoder decoder = new InputStreamBinaryDecoder(is);
+            OldMesh mesh = new OldMesh();
+            mesh.xyzs.setValue(decoder.decodeDoubleArray());
+            mesh.ijks.setValue(decoder.decodeFloatArray());
+            mesh.uvs.setValue(decoder.decodeFloatArray());
+            mesh.xyzTriangleIndices.setValue(safeDecodeShortArray(decoder));
+            mesh.ijkTriangleIndices.setValue(safeDecodeShortArray(decoder));
+            mesh.uvTriangleIndices.setValue(safeDecodeShortArray(decoder));
+            mesh.xyzQuadrangleIndices.setValue(safeDecodeShortArray(decoder));
+            mesh.ijkQuadrangleIndices.setValue(safeDecodeShortArray(decoder));
+            mesh.uvQuadrangleIndices.setValue(safeDecodeShortArray(decoder));
+            mapIdToGeometry.put(id, mesh);
+          } else if (entryPath.startsWith(BUFFERED_IMAGE_TEXTURE_PREFIX)) {
+            String s = entryPath.substring(BUFFERED_IMAGE_TEXTURE_PREFIX.length(), entryPath.length() - BUFFERED_IMAGE_TEXTURE_POSTFIX.length());
 
-						boolean isPotentiallyAlphaBlended = s.charAt( 0 ) == 't';
-						int id = Integer.parseInt( s.substring( 1 ) );
+            boolean isPotentiallyAlphaBlended = s.charAt(0) == 't';
+            int id = Integer.parseInt(s.substring(1));
 
-						BufferedImage bufferedImage = ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, is );
-						BufferedImageTexture texture = new BufferedImageTexture();
-						texture.setBufferedImage( bufferedImage );
-						texture.setPotentiallyAlphaBlended( isPotentiallyAlphaBlended );
-						mapIdToTexture.put( id, texture );
-					} else {
-						assert entryPath.equals( MAIN_ENTRY_PATH ) : entryPath;
-						isMainEntry = is;
-					}
-				}
-				BinaryDecoder decoder = new InputStreamBinaryDecoder( isMainEntry );
-				rv.root = decoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
-				rv.root.resolve( mapIdToGeometry, mapIdToTexture );
+            BufferedImage bufferedImage = ImageUtilities.read(ImageUtilities.PNG_CODEC_NAME, is);
+            BufferedImageTexture texture = new BufferedImageTexture();
+            texture.setBufferedImage(bufferedImage);
+            texture.setPotentiallyAlphaBlended(isPotentiallyAlphaBlended);
+            mapIdToTexture.put(id, texture);
+          } else {
+            assert entryPath.equals(MAIN_ENTRY_PATH) : entryPath;
+            isMainEntry = is;
+          }
+        }
+        BinaryDecoder decoder = new InputStreamBinaryDecoder(isMainEntry);
+        rv.root = decoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
+        rv.root.resolve(mapIdToGeometry, mapIdToTexture);
 
-				rv.geometries = Sets.newHashSet( mapIdToGeometry.values() );
-				rv.textures = Sets.newHashSet( mapIdToTexture.values() );
-			} catch( IOException ioe ) {
-				throw new RuntimeException( file.toString(), ioe );
-			}
-			map.put( file, rv );
-		}
-		return rv;
-	}
+        rv.geometries = Sets.newHashSet(mapIdToGeometry.values());
+        rv.textures = Sets.newHashSet(mapIdToTexture.values());
+      } catch (IOException ioe) {
+        throw new RuntimeException(file.toString(), ioe);
+      }
+      map.put(file, rv);
+    }
+    return rv;
+  }
 
-	public void encode( File file ) throws IOException {
-		FileUtilities.createParentDirectoriesIfNecessary( file );
+  public void encode(File file) throws IOException {
+    FileUtilities.createParentDirectoriesIfNecessary(file);
 
-		FileOutputStream fos = new FileOutputStream( file );
-		ZipOutputStream zos = new ZipOutputStream( fos );
-		for( final Geometry geometry : this.geometries ) {
-			ZipUtilities.write( zos, new DataSource() {
-				@Override
-				public String getName() {
-					return getEntryPath( geometry );
-				}
+    FileOutputStream fos = new FileOutputStream(file);
+    ZipOutputStream zos = new ZipOutputStream(fos);
+    for (final Geometry geometry : this.geometries) {
+      ZipUtilities.write(zos, new DataSource() {
+        @Override
+        public String getName() {
+          return getEntryPath(geometry);
+        }
 
-				@Override
-				public void write( OutputStream os ) throws IOException {
-					BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
-					if( geometry instanceof IndexedTriangleArray ) {
-						IndexedTriangleArray ita = (IndexedTriangleArray)geometry;
-						encoder.encode( ita.vertices.getValue() );
-						BufferUtilities.encode( encoder, ita.polygonData.getValue(), false );
-					} else if( geometry instanceof OldMesh ) {
-						OldMesh mesh = (OldMesh)geometry;
-						encoder.encode( mesh.xyzs.getValue() );
-						encoder.encode( mesh.ijks.getValue() );
-						encoder.encode( mesh.uvs.getValue() );
-						safeEncode( encoder, mesh.xyzTriangleIndices.getValue() );
-						safeEncode( encoder, mesh.ijkTriangleIndices.getValue() );
-						safeEncode( encoder, mesh.uvTriangleIndices.getValue() );
-						safeEncode( encoder, mesh.xyzQuadrangleIndices.getValue() );
-						safeEncode( encoder, mesh.ijkQuadrangleIndices.getValue() );
-						safeEncode( encoder, mesh.uvQuadrangleIndices.getValue() );
-					} else {
-						assert false;
-					}
-					encoder.flush();
-				}
-			} );
-		}
-		for( final BufferedImageTexture texture : this.textures ) {
-			ZipUtilities.write( zos, new DataSource() {
-				@Override
-				public String getName() {
-					return getEntryPath( texture );
-				}
+        @Override
+        public void write(OutputStream os) throws IOException {
+          BinaryEncoder encoder = new OutputStreamBinaryEncoder(os);
+          if (geometry instanceof IndexedTriangleArray) {
+            IndexedTriangleArray ita = (IndexedTriangleArray) geometry;
+            encoder.encode(ita.vertices.getValue());
+            BufferUtilities.encode(encoder, ita.polygonData.getValue(), false);
+          } else if (geometry instanceof OldMesh) {
+            OldMesh mesh = (OldMesh) geometry;
+            encoder.encode(mesh.xyzs.getValue());
+            encoder.encode(mesh.ijks.getValue());
+            encoder.encode(mesh.uvs.getValue());
+            safeEncode(encoder, mesh.xyzTriangleIndices.getValue());
+            safeEncode(encoder, mesh.ijkTriangleIndices.getValue());
+            safeEncode(encoder, mesh.uvTriangleIndices.getValue());
+            safeEncode(encoder, mesh.xyzQuadrangleIndices.getValue());
+            safeEncode(encoder, mesh.ijkQuadrangleIndices.getValue());
+            safeEncode(encoder, mesh.uvQuadrangleIndices.getValue());
+          } else {
+            assert false;
+          }
+          encoder.flush();
+        }
+      });
+    }
+    for (final BufferedImageTexture texture : this.textures) {
+      ZipUtilities.write(zos, new DataSource() {
+        @Override
+        public String getName() {
+          return getEntryPath(texture);
+        }
 
-				@Override
-				public void write( OutputStream os ) throws IOException {
-					ImageUtilities.write( ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage() );
-				}
-			} );
-		}
-		ZipUtilities.write( zos, new DataSource() {
-			@Override
-			public String getName() {
-				return MAIN_ENTRY_PATH;
-			}
+        @Override
+        public void write(OutputStream os) throws IOException {
+          ImageUtilities.write(ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage());
+        }
+      });
+    }
+    ZipUtilities.write(zos, new DataSource() {
+      @Override
+      public String getName() {
+        return MAIN_ENTRY_PATH;
+      }
 
-			@Override
-			public void write( OutputStream os ) throws IOException {
-				BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
-				encoder.encode( root );
-				encoder.flush();
-			}
-		} );
-		zos.flush();
-		zos.close();
-	}
+      @Override
+      public void write(OutputStream os) throws IOException {
+        BinaryEncoder encoder = new OutputStreamBinaryEncoder(os);
+        encoder.encode(root);
+        encoder.flush();
+      }
+    });
+    zos.flush();
+    zos.close();
+  }
 
-	public static ModelBuilder newInstance( Transformable transformable ) {
-		ModelBuilder rv = new ModelBuilder();
-		rv.geometries = Sets.newHashSet();
-		rv.textures = Sets.newHashSet();
-		rv.root = ModelPart.newInstance( transformable, rv.geometries, rv.textures );
-		return rv;
-	}
+  public static ModelBuilder newInstance(Transformable transformable) {
+    ModelBuilder rv = new ModelBuilder();
+    rv.geometries = Sets.newHashSet();
+    rv.textures = Sets.newHashSet();
+    rv.root = ModelPart.newInstance(transformable, rv.geometries, rv.textures);
+    return rv;
+  }
 
-	public Transformable buildTransformable() {
-		Transformable rv = this.root.build();
-		return rv;
-	}
+  public Transformable buildTransformable() {
+    Transformable rv = this.root.build();
+    return rv;
+  }
 
-	private static String getEntryPath( Geometry geometry ) {
-		if( geometry instanceof IndexedTriangleArray ) {
-			return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
-		} else if( geometry instanceof OldMesh ) {
-			return MESH_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
-		} else {
-			return null;
-		}
-	}
+  private static String getEntryPath(Geometry geometry) {
+    if (geometry instanceof IndexedTriangleArray) {
+      return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
+    } else if (geometry instanceof OldMesh) {
+      return MESH_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
+    } else {
+      return null;
+    }
+  }
 
-	private static String getEntryPath( Texture texture ) {
-		if( texture instanceof BufferedImageTexture ) {
-			BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
-			char c;
-			if( bufferedImageTexture.isPotentiallyAlphaBlended() ) {
-				c = 't';
-			} else {
-				c = 'f';
-			}
-			return BUFFERED_IMAGE_TEXTURE_PREFIX + c + texture.hashCode() + ".png";
-		} else {
-			return null;
-		}
-	}
+  private static String getEntryPath(Texture texture) {
+    if (texture instanceof BufferedImageTexture) {
+      BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+      char c;
+      if (bufferedImageTexture.isPotentiallyAlphaBlended()) {
+        c = 't';
+      } else {
+        c = 'f';
+      }
+      return BUFFERED_IMAGE_TEXTURE_PREFIX + c + texture.hashCode() + ".png";
+    } else {
+      return null;
+    }
+  }
 }

@@ -53,32 +53,32 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class AddParameterEdit extends ParameterEdit {
-	private transient int index;
+  private transient int index;
 
-	public AddParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
-		super( userActivity, code, parameter );
-	}
+  public AddParameterEdit(UserActivity userActivity, UserCode code, UserParameter parameter) {
+    super(userActivity, code, parameter);
+  }
 
-	public AddParameterEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public AddParameterEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = this.getParametersProperty().size();
-		}
-		this.addParameter( this.index );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      this.index = this.getParametersProperty().size();
+    }
+    this.addParameter(this.index);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.removeParameter( this.index );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.removeParameter(this.index);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "declare:" );
-		NodeUtilities.safeAppendRepr( rv, this.getParameter(), Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("declare:");
+    NodeUtilities.safeAppendRepr(rv, this.getParameter(), Application.getLocale());
+  }
 }

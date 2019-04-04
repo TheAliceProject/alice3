@@ -49,19 +49,19 @@ import org.lgna.project.ast.Comment;
  * @author Dennis Cosgrove
  */
 public class ProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
-	private static class SingletonHolder {
-		private static ProjectEditorAstI18nFactory instance = new ProjectEditorAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static ProjectEditorAstI18nFactory instance = new ProjectEditorAstI18nFactory();
+  }
 
-	public static ProjectEditorAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ProjectEditorAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ProjectEditorAstI18nFactory() {
-	}
+  private ProjectEditorAstI18nFactory() {
+  }
 
-	@Override
-	public boolean isCommentMutable( Comment comment ) {
-		return true;
-	}
+  @Override
+  public boolean isCommentMutable(Comment comment) {
+    return true;
+  }
 }

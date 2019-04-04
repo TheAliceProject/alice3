@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultTopPieceMidSleeveTshirt implements FemaleAdultTopPiece {
-	STRIPED,
-	PINK_T_LOGO,
-	BABY_BLUE_T_LOGO,
-	GREEN_T_LOGO;
+  STRIPED, PINK_T_LOGO, BABY_BLUE_T_LOGO, GREEN_T_LOGO
 
 }

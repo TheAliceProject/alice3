@@ -47,5 +47,5 @@ package org.lgna.story.event;
  * @author Dennis Cosgrove
  */
 public interface SceneActivationListener {
-	public void sceneActivated( SceneActivationEvent event );
+  public void sceneActivated(SceneActivationEvent event);
 }

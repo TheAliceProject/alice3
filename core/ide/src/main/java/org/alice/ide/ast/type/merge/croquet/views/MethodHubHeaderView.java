@@ -53,20 +53,20 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class MethodHubHeaderView extends MethodHeaderPane {
-	private final MemberHub<UserMethod> methodHub;
+  private final MemberHub<UserMethod> methodHub;
 
-	public MethodHubHeaderView( MemberHub<UserMethod> methodHub ) {
-		super( PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
-		this.methodHub = methodHub;
-	}
+  public MethodHubHeaderView(MemberHub<UserMethod> methodHub) {
+    super(PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true);
+    this.methodHub = methodHub;
+  }
 
-	@Override
-	protected SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof MemberHubWithNameState<?> ) {
-			MemberHubWithNameState<?> methodHubWithNameState = (MemberHubWithNameState<?>)methodHub;
-			return new MemberHubNameLabel( methodHubWithNameState );
-		} else {
-			return super.createNameLabel();
-		}
-	}
+  @Override
+  protected SwingComponentView<?> createNameLabel() {
+    if (this.methodHub instanceof MemberHubWithNameState<?>) {
+      MemberHubWithNameState<?> methodHubWithNameState = (MemberHubWithNameState<?>) methodHub;
+      return new MemberHubNameLabel(methodHubWithNameState);
+    } else {
+      return super.createNameLabel();
+    }
+  }
 }

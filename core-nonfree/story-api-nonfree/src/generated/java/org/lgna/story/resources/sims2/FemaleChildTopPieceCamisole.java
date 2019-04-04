@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildTopPieceCamisole implements FemaleChildTopPiece {
-	CREAM,
-	WHITE,
-	PINK,
-	BLUE;
+  CREAM, WHITE, PINK, BLUE
 
 }

@@ -54,12 +54,12 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class ListPropertyLabelsView extends AbstractListPropertyPane<ListProperty<Object>, Object> {
-	public ListPropertyLabelsView( AstI18nFactory factory, ListProperty<Object> property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-	}
+  public ListPropertyLabelsView(AstI18nFactory factory, ListProperty<Object> property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( Object instance ) {
-		return new Label( instance.toString() );
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(Object instance) {
+    return new Label(instance.toString());
+  }
 }

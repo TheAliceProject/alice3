@@ -49,5 +49,5 @@ import edu.cmu.cs.dennisc.scenegraph.Joint;
  * @author Dennis Cosgrove
  */
 public interface Mender {
-	public AffineMatrix4x4 getMendTransformationFor( Joint sgJoint );
+  public AffineMatrix4x4 getMendTransformationFor(Joint sgJoint);
 }

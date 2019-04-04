@@ -44,13 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultTopPieceHalter implements FemaleAdultTopPiece {
-	DOTS,
-	RED,
-	CRIMSON,
-	BLUE,
-	BLACK,
-	YELLOW,
-	PINK,
-	CREAM;
+  DOTS, RED, CRIMSON, BLUE, BLACK, YELLOW, PINK, CREAM
 
 }

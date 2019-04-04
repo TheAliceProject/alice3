@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ShowMeOperation extends InconsequentialActionOperation {
-	public ShowMeOperation() {
-		super( UUID.fromString( "68e88159-a879-4f2b-ae0b-93288732929e" ) );
-	}
+  public ShowMeOperation() {
+    super(UUID.fromString("68e88159-a879-4f2b-ae0b-93288732929e"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Show me" );
-		//this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 ) );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Show me");
+    //this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 ) );
+  }
 
-	@Override
-	protected void performInternal() {
-		//org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
-		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getDeclarationMenu().getPopupPrepModel() );
-	}
+  @Override
+  protected void performInternal() {
+    //org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow(IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getDeclarationMenu().getPopupPrepModel());
+  }
 }

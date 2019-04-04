@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleChildFullBodyOutfitPulloverShirtPants implements MaleChildFullBodyOutfit {
-	BLUE_SHIRT_BLUE_JEANS,
-	RED_SHIRT_GREEN_JEANS,
-	KOW;
+  BLUE_SHIRT_BLUE_JEANS, RED_SHIRT_GREEN_JEANS, KOW
 
 }

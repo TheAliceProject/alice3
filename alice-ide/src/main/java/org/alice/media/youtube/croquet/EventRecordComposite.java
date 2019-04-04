@@ -89,207 +89,207 @@ import java.util.UUID;
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView, ExportToYouTubeWizardDialogComposite> {
 
-	private static final List<JavaMethod> interactiveMethods = Collections.unmodifiableList( EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS );
-	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( "cannotAdvanceBecauseRecording" );
-	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
-	private RunProgramContext programContext;
-	private EventScript eventScript;
+  private static final List<JavaMethod> interactiveMethods = Collections.unmodifiableList(EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS);
+  private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus("cannotAdvanceBecauseRecording");
+  private final BooleanState isRecordingState = this.createBooleanState("isRecordingState", false);
+  private RunProgramContext programContext;
+  private EventScript eventScript;
 
-	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ), owner );
-		this.isRecordingState.setIconForBothTrueAndFalse( new IsPlayingIcon() );
-		isRecordingState.addNewSchoolValueListener( isRecordingListener );
-	}
+  public EventRecordComposite(ExportToYouTubeWizardDialogComposite owner) {
+    super(UUID.fromString("35d34417-8c0c-4f06-b919-5945b336b596"), owner);
+    this.isRecordingState.setIconForBothTrueAndFalse(new IsPlayingIcon());
+    isRecordingState.addNewSchoolValueListener(isRecordingListener);
+  }
 
-	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			if( isRecordingState.getValue() ) {
-				programContext.getProgramImp().startAnimator();
-				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
-				restartRecording.setEnabled( true );
-			} else {
-				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
-			}
-		}
-	};
+  private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      if (isRecordingState.getValue()) {
+        programContext.getProgramImp().startAnimator();
+        programContext.getProgramImp().getAnimator().setSpeedFactor(1);
+        restartRecording.setEnabled(true);
+      } else {
+        programContext.getProgramImp().getAnimator().setSpeedFactor(0);
+      }
+    }
+  };
 
-	private final EventScriptListener listener = new EventScriptListener() {
+  private final EventScriptListener listener = new EventScriptListener() {
 
-		@Override
-		public void eventAdded( EventScriptEvent event ) {
-			getEventList().addItem( event );
-		}
-	};
-	private final FrameObserver frameListener = new FrameObserver() {
+    @Override
+    public void eventAdded(EventScriptEvent event) {
+      getEventList().addItem(event);
+    }
+  };
+  private final FrameObserver frameListener = new FrameObserver() {
 
-		@Override
-		public void update( double tCurrent ) {
-			getView().updateTime( tCurrent );
-		}
+    @Override
+    public void update(double tCurrent) {
+      getView().updateTime(tCurrent);
+    }
 
-		@Override
-		public void complete() {
-		}
-	};
-	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
+    @Override
+    public void complete() {
+    }
+  };
+  private final ActionOperation restartRecording = this.createActionOperation("restart", new Action() {
 
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			isRecordingState.setValueTransactionlessly( false );
-			resetData();
-			return null;
-		}
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      isRecordingState.setValueTransactionlessly(false);
+      resetData();
+      return null;
+    }
 
-	} );
+  });
 
-	@Override
-	public void handlePostDeactivation() {
-		isRecordingState.setValueTransactionlessly( false );
-		this.getView().disableLookingGlassContainer();
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    isRecordingState.setValueTransactionlessly(false);
+    this.getView().disableLookingGlassContainer();
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( programContext == null ) {
-			restartProgramContext();
-		}
-		this.getView().enableLookingGlassContainer();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    if (programContext == null) {
+      restartProgramContext();
+    }
+    this.getView().enableLookingGlassContainer();
+  }
 
-	private void restartProgramContext() {
-		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
-		restartRecording.setEnabled( false );
-		if( ( programContext != null ) ) {
-			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
-		}
-		if( containsRandom() ) {
-			this.getOwner().setRandomSeed( System.currentTimeMillis() );
-		}
-		programContext = new RunProgramContext( owner.getProject().getProgramType() );
-		programContext.getProgramImp().setControlPanelDesired( false );
-		programContext.initializeInContainer( getView().getLookingGlassContainer().getAwtComponent(), 640, 360 );
-		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-		programContext.getProgramImp().stopAnimator();
-		programContext.setActiveScene();
-		eventScript = ( (SceneImp)EmployeesOnly.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
-		owner.setEventScript( eventScript );
-		getEventList().clear();
-		eventScript.addListener( this.listener );
-		getView().updateTime( 0 );
-	}
+  private void restartProgramContext() {
+    ExportToYouTubeWizardDialogComposite owner = this.getOwner();
+    restartRecording.setEnabled(false);
+    if ((programContext != null)) {
+      programContext.getProgramImp().getAnimator().removeFrameObserver(frameListener);
+    }
+    if (containsRandom()) {
+      this.getOwner().setRandomSeed(System.currentTimeMillis());
+    }
+    programContext = new RunProgramContext(owner.getProject().getProgramType());
+    programContext.getProgramImp().setControlPanelDesired(false);
+    programContext.initializeInContainer(getView().getLookingGlassContainer().getAwtComponent(), 640, 360);
+    programContext.getProgramImp().getAnimator().addFrameObserver(frameListener);
+    programContext.getProgramImp().stopAnimator();
+    programContext.setActiveScene();
+    eventScript = ((SceneImp) EmployeesOnly.getImplementation(programContext.getProgram().getActiveScene())).getTranscript();
+    owner.setEventScript(eventScript);
+    getEventList().clear();
+    eventScript.addListener(this.listener);
+    getView().updateTime(0);
+  }
 
-	public BooleanState getPlayRecordedOperation() {
-		return this.isRecordingState;
-	}
+  public BooleanState getPlayRecordedOperation() {
+    return this.isRecordingState;
+  }
 
-	public ActionOperation getRestartRecording() {
-		return this.restartRecording;
-	}
+  public ActionOperation getRestartRecording() {
+    return this.restartRecording;
+  }
 
-	public EventScript getScript() {
-		return this.eventScript;
-	}
+  public EventScript getScript() {
+    return this.eventScript;
+  }
 
-	@Override
-	protected EventRecordView createView() {
-		return new EventRecordView( this );
-	}
+  @Override
+  protected EventRecordView createView() {
+    return new EventRecordView(this);
+  }
 
-	@Override
-	public Status getPageStatus() {
-		return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  public Status getPageStatus() {
+    return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected boolean isOptional() {
-		return true;
-	}
+  @Override
+  protected boolean isOptional() {
+    return true;
+  }
 
-	@Override
-	protected boolean isAutoAdvanceWorthAttempting() {
-		return true;
-	}
+  @Override
+  protected boolean isAutoAdvanceWorthAttempting() {
+    return true;
+  }
 
-	@Override
-	protected boolean isClearedForAutoAdvance() {
-		return ( !this.containsInputEvents() && !this.containsRandom() );
-	}
+  @Override
+  protected boolean isClearedForAutoAdvance() {
+    return (!this.containsInputEvents() && !this.containsRandom());
+  }
 
-	private boolean containsRandom() {
-		StageIDE ide = StageIDE.getActiveInstance();
-		if( ide != null ) {
-			RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
-			ide.crawlFilteredProgramType( crawler );
-			return crawler.containsRandom;
-		} else {
-			Logger.errln( "containsRandom check skipped due to lack of ide" );
-			return false;
-		}
-	}
+  private boolean containsRandom() {
+    StageIDE ide = StageIDE.getActiveInstance();
+    if (ide != null) {
+      RandomUtilitiesMethodInvocationCrawler crawler = new RandomUtilitiesMethodInvocationCrawler();
+      ide.crawlFilteredProgramType(crawler);
+      return crawler.containsRandom;
+    } else {
+      Logger.errln("containsRandom check skipped due to lack of ide");
+      return false;
+    }
+  }
 
-	private static class RandomUtilitiesMethodInvocationCrawler implements Crawler {
-		private boolean containsRandom;
+  private static class RandomUtilitiesMethodInvocationCrawler implements Crawler {
+    private boolean containsRandom;
 
-		@Override
-		public void visit( Crawlable crawlable ) {
-			if( crawlable instanceof MethodInvocation ) {
-				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-				Statement statement = methodInvocation.getFirstAncestorAssignableTo( Statement.class );
-				if( ( statement != null ) && statement.isEnabled.getValue() ) {
-					AbstractMethod method = methodInvocation.method.getValue();
-					if( method.isFunction() ) {
-						if( method.getDeclaringType() instanceof JavaType ) {
-							JavaType jType = (JavaType)method.getDeclaringType();
-							this.containsRandom = jType.contentEquals( RandomUtilities.class );
-						}
-					}
-				}
-			}
-		}
-	}
+    @Override
+    public void visit(Crawlable crawlable) {
+      if (crawlable instanceof MethodInvocation) {
+        MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+        Statement statement = methodInvocation.getFirstAncestorAssignableTo(Statement.class);
+        if ((statement != null) && statement.isEnabled.getValue()) {
+          AbstractMethod method = methodInvocation.method.getValue();
+          if (method.isFunction()) {
+            if (method.getDeclaringType() instanceof JavaType) {
+              JavaType jType = (JavaType) method.getDeclaringType();
+              this.containsRandom = jType.contentEquals(RandomUtilities.class);
+            }
+          }
+        }
+      }
+    }
+  }
 
-	private boolean containsInputEvents() {
-		Project project = this.getOwner().getProject();
-		NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
-		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-		BlockStatement body = initializeEventListeners.body.getValue();
-		for( Statement statement : body.statements ) {
-			if( statement.isEnabled.getValue() ) {
-				if( statement instanceof ExpressionStatement ) {
-					ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-					if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
-						AbstractMethod method = ( (MethodInvocation)expressionStatement.expression.getValue() ).method.getValue();
-						if( interactiveMethods.contains( method ) ) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+  private boolean containsInputEvents() {
+    Project project = this.getOwner().getProject();
+    NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProject(project);
+    UserMethod initializeEventListeners = sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
+    BlockStatement body = initializeEventListeners.body.getValue();
+    for (Statement statement : body.statements) {
+      if (statement.isEnabled.getValue()) {
+        if (statement instanceof ExpressionStatement) {
+          ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+          if (expressionStatement.expression.getValue() instanceof MethodInvocation) {
+            AbstractMethod method = ((MethodInvocation) expressionStatement.expression.getValue()).method.getValue();
+            if (interactiveMethods.contains(method)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
-		return getOwner().getEventList();
-	}
+  public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+    return getOwner().getEventList();
+  }
 
-	@Override
-	public void resetData() {
-		BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
-		if( lookingGlassContainer != null ) {
-			synchronized( lookingGlassContainer.getTreeLock() ) {
-				lookingGlassContainer.removeAllComponents();
-			}
-		}
-		restartProgramContext();
-	}
+  @Override
+  public void resetData() {
+    BorderPanel lookingGlassContainer = getView().getLookingGlassContainer();
+    if (lookingGlassContainer != null) {
+      synchronized (lookingGlassContainer.getTreeLock()) {
+        lookingGlassContainer.removeAllComponents();
+      }
+    }
+    restartProgramContext();
+  }
 
-	@Override
-	public void handlePostHideDialog() {
-		programContext.cleanUpProgram();
-		super.handlePostHideDialog();
-	}
+  @Override
+  public void handlePostHideDialog() {
+    programContext.cleanUpProgram();
+    super.handlePostHideDialog();
+  }
 }

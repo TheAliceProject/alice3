@@ -55,57 +55,57 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class SceneIcon extends AbstractIcon {
-	public SceneIcon( Dimension size ) {
-		super( size );
-	}
+  public SceneIcon(Dimension size) {
+    super(size);
+  }
 
-	private ThumbnailGenerator thumbnailGenerator;
-	private boolean isDirty = true;
-	private BufferedImage image = null;
+  private ThumbnailGenerator thumbnailGenerator;
+  private boolean isDirty = true;
+  private BufferedImage image = null;
 
-	/* package-private */void markDirty() {
-		this.image = null;
-		this.isDirty = true;
-	}
+  /* package-private */void markDirty() {
+    this.image = null;
+    this.isDirty = true;
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		if( this.isDirty ) {
-			try {
-				if( this.thumbnailGenerator != null ) {
-					//pass
-				} else {
-					this.thumbnailGenerator = new ThumbnailGenerator( this.getIconWidth(), this.getIconHeight() );
-				}
-				this.image = this.thumbnailGenerator.createThumbnail();
-			} catch( Throwable t ) {
-				this.image = null;
-				t.printStackTrace();
-			}
-			//			if( this.image != null ) {
-			//				this.image = edu.cmu.cs.dennisc.image.ImageUtilities.createAlphaMaskedImage( this.image, new edu.cmu.cs.dennisc.java.awt.Painter() {
-			//					public void paint( java.awt.Graphics2D g2, int width, int height ) {
-			//						final int N = 15;
-			//						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			//						g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 1.0f/N ) );
-			//						g2.setColor( java.awt.Color.BLACK );
-			//						for( int i=0; i<N; i++ ) {
-			//							g2.fillRoundRect( N-i, N-i, width-(N-i)*2+1, height-(N-i)*2+1, N-i, N-i );
-			//						}
-			//					}
-			//				} );
-			//			}
-			this.isDirty = false;
-		}
-		if( this.image != null ) {
-			g2.drawImage( this.image, 0, 0, null );
-		} else {
-			int w = this.getIconWidth();
-			int h = this.getIconHeight() / 2;
-			g2.setColor( Color.BLUE );
-			g2.fillRect( 0, 0, w, h );
-			g2.setColor( Color.GREEN );
-			g2.fillRect( 0, 0 + h, w, h );
-		}
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    if (this.isDirty) {
+      try {
+        if (this.thumbnailGenerator != null) {
+          //pass
+        } else {
+          this.thumbnailGenerator = new ThumbnailGenerator(this.getIconWidth(), this.getIconHeight());
+        }
+        this.image = this.thumbnailGenerator.createThumbnail();
+      } catch (Throwable t) {
+        this.image = null;
+        t.printStackTrace();
+      }
+      //      if( this.image != null ) {
+      //        this.image = edu.cmu.cs.dennisc.image.ImageUtilities.createAlphaMaskedImage( this.image, new edu.cmu.cs.dennisc.java.awt.Painter() {
+      //          public void paint( java.awt.Graphics2D g2, int width, int height ) {
+      //            final int N = 15;
+      //            g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+      //            g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 1.0f/N ) );
+      //            g2.setColor( java.awt.Color.BLACK );
+      //            for( int i=0; i<N; i++ ) {
+      //              g2.fillRoundRect( N-i, N-i, width-(N-i)*2+1, height-(N-i)*2+1, N-i, N-i );
+      //            }
+      //          }
+      //        } );
+      //      }
+      this.isDirty = false;
+    }
+    if (this.image != null) {
+      g2.drawImage(this.image, 0, 0, null);
+    } else {
+      int w = this.getIconWidth();
+      int h = this.getIconHeight() / 2;
+      g2.setColor(Color.BLUE);
+      g2.fillRect(0, 0, w, h);
+      g2.setColor(Color.GREEN);
+      g2.fillRect(0, 0 + h, w, h);
+    }
+  }
 }

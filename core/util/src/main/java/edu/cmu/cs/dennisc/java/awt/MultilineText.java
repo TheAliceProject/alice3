@@ -61,125 +61,125 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MultilineText {
-	private class Line {
-		private String paragraph;
-		private TextLayout textLayout;
-		private int startIndex;
-		private int endIndex;
+  private class Line {
+    private String paragraph;
+    private TextLayout textLayout;
+    private int startIndex;
+    private int endIndex;
 
-		public Line( String paragraph, TextLayout textLayout, int startIndex, int endIndex ) {
-			this.paragraph = paragraph;
-			this.textLayout = textLayout;
-			this.startIndex = startIndex;
-			this.endIndex = endIndex;
-		}
+    public Line(String paragraph, TextLayout textLayout, int startIndex, int endIndex) {
+      this.paragraph = paragraph;
+      this.textLayout = textLayout;
+      this.startIndex = startIndex;
+      this.endIndex = endIndex;
+    }
 
-		public void draw( Graphics2D g2, float x, float y ) {
-			g2.drawString( this.paragraph.substring( this.startIndex, this.endIndex ), x, y );
-		}
-	}
+    public void draw(Graphics2D g2, float x, float y) {
+      g2.drawString(this.paragraph.substring(this.startIndex, this.endIndex), x, y);
+    }
+  }
 
-	private String text;
-	private String[] paragraphs;
-	private FontMetrics fm;
-	private float wrapWidth;
-	private List<Line> lines;
-	private Dimension2D aggregateSize;
+  private String text;
+  private String[] paragraphs;
+  private FontMetrics fm;
+  private float wrapWidth;
+  private List<Line> lines;
+  private Dimension2D aggregateSize;
 
-	public MultilineText( String text ) {
-		assert text != null;
-		this.text = text;
-		this.paragraphs = this.text.split( "\r\n|\r|\n" );
-	}
+  public MultilineText(String text) {
+    assert text != null;
+    this.text = text;
+    this.paragraphs = this.text.split("\r\n|\r|\n");
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	private void updateBoundsIfNecessary( Graphics g, float wrapWidth ) {
-		assert Float.isNaN( wrapWidth ) == false;
-		Graphics2D g2 = (Graphics2D)g;
-		FontRenderContext frc = g2.getFontRenderContext();
-		FontMetrics fm = g.getFontMetrics();
-		if( ( this.lines == null ) || ( this.aggregateSize == null ) || ( this.fm != fm ) || ( this.wrapWidth != wrapWidth ) ) {
-			this.lines = new LinkedList<Line>();
-			for( String paragraph : paragraphs ) {
-				if( paragraph.length() > 0 ) {
-					AttributedString as = new AttributedString( paragraph );
-					as.addAttribute( TextAttribute.FONT, g.getFont() );
-					AttributedCharacterIterator aci = as.getIterator();
+  private void updateBoundsIfNecessary(Graphics g, float wrapWidth) {
+    assert Float.isNaN(wrapWidth) == false;
+    Graphics2D g2 = (Graphics2D) g;
+    FontRenderContext frc = g2.getFontRenderContext();
+    FontMetrics fm = g.getFontMetrics();
+    if ((this.lines == null) || (this.aggregateSize == null) || (this.fm != fm) || (this.wrapWidth != wrapWidth)) {
+      this.lines = new LinkedList<Line>();
+      for (String paragraph : paragraphs) {
+        if (paragraph.length() > 0) {
+          AttributedString as = new AttributedString(paragraph);
+          as.addAttribute(TextAttribute.FONT, g.getFont());
+          AttributedCharacterIterator aci = as.getIterator();
 
-					LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer( aci, frc );
-					while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
-						int start = lineBreakMeasurer.getPosition();
-						TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
-						int end = lineBreakMeasurer.getPosition();
-						this.lines.add( new Line( paragraph, textLayout, start, end ) );
-					}
-				}
-			}
-			this.aggregateSize = new Dimension( 1, 1 );
-			if( this.lines.size() > 0 ) {
-				for( Line line : this.lines ) {
-					Rectangle2D rect = line.textLayout.getBounds();
-					double width = Math.max( aggregateSize.getWidth(), rect.getWidth() );
-					double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
-					aggregateSize.setSize( width, height );
-				}
-			}
-			this.fm = fm;
-			this.wrapWidth = wrapWidth;
-		}
-	}
+          LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(aci, frc);
+          while (lineBreakMeasurer.getPosition() < paragraph.length()) {
+            int start = lineBreakMeasurer.getPosition();
+            TextLayout textLayout = lineBreakMeasurer.nextLayout(wrapWidth);
+            int end = lineBreakMeasurer.getPosition();
+            this.lines.add(new Line(paragraph, textLayout, start, end));
+          }
+        }
+      }
+      this.aggregateSize = new Dimension(1, 1);
+      if (this.lines.size() > 0) {
+        for (Line line : this.lines) {
+          Rectangle2D rect = line.textLayout.getBounds();
+          double width = Math.max(aggregateSize.getWidth(), rect.getWidth());
+          double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
+          aggregateSize.setSize(width, height);
+        }
+      }
+      this.fm = fm;
+      this.wrapWidth = wrapWidth;
+    }
+  }
 
-	public Dimension2D getDimension( Graphics g, float wrapWidth ) {
-		this.updateBoundsIfNecessary( g, wrapWidth );
-		return this.aggregateSize;
-	}
+  public Dimension2D getDimension(Graphics g, float wrapWidth) {
+    this.updateBoundsIfNecessary(g, wrapWidth);
+    return this.aggregateSize;
+  }
 
-	public void paint( Graphics g, float wrapWidth, TextAlignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
-		this.updateBoundsIfNecessary( g, wrapWidth );
-		Dimension2D size = this.getDimension( g, wrapWidth );
-		Graphics2D g2 = (Graphics2D)g;
-		float x = (float)xBound;
-		float y = (float)( yBound + ( ( heightBound - size.getHeight() ) * 0.5 ) );
-		for( Line line : this.lines ) {
-			y += line.textLayout.getAscent();
+  public void paint(Graphics g, float wrapWidth, TextAlignment alignment, double xBound, double yBound, double widthBound, double heightBound) {
+    this.updateBoundsIfNecessary(g, wrapWidth);
+    Dimension2D size = this.getDimension(g, wrapWidth);
+    Graphics2D g2 = (Graphics2D) g;
+    float x = (float) xBound;
+    float y = (float) (yBound + ((heightBound - size.getHeight()) * 0.5));
+    for (Line line : this.lines) {
+      y += line.textLayout.getAscent();
 
-			Rectangle2D rect = line.textLayout.getBounds();
-			//			float xPixel = (float)(x - rect.getX());
-			//			float yPixel = (float)(y - rect.getY());
-			float xPixel = x;
-			float yPixel = y;
+      Rectangle2D rect = line.textLayout.getBounds();
+      //      float xPixel = (float)(x - rect.getX());
+      //      float yPixel = (float)(y - rect.getY());
+      float xPixel = x;
+      float yPixel = y;
 
-			if( alignment == TextAlignment.CENTER ) {
-				xPixel += ( widthBound * 0.5f ) - ( (float)rect.getWidth() * 0.5f );
-			} else if( alignment == TextAlignment.TRAILING ) {
-				xPixel += widthBound - (float)rect.getWidth();
-			}
-			line.draw( g2, xPixel, yPixel );
-			y += line.textLayout.getDescent() + line.textLayout.getLeading();
-		}
-		assert alignment != null;
-	}
+      if (alignment == TextAlignment.CENTER) {
+        xPixel += (widthBound * 0.5f) - ((float) rect.getWidth() * 0.5f);
+      } else if (alignment == TextAlignment.TRAILING) {
+        xPixel += widthBound - (float) rect.getWidth();
+      }
+      line.draw(g2, xPixel, yPixel);
+      y += line.textLayout.getDescent() + line.textLayout.getLeading();
+    }
+    assert alignment != null;
+  }
 
-	public void paint( Graphics g, float wrapWidth, TextAlignment alignment, Rectangle2D bounds ) {
-		double x;
-		double y;
-		double width;
-		double height;
-		if( bounds != null ) {
-			x = bounds.getX();
-			y = bounds.getY();
-			width = bounds.getWidth();
-			height = bounds.getHeight();
-		} else {
-			x = 0;
-			y = 0;
-			Dimension2D size = this.getDimension( g, wrapWidth );
-			width = size.getWidth();
-			height = size.getHeight();
-		}
-		this.paint( g, wrapWidth, alignment, x, y, width, height );
-	}
+  public void paint(Graphics g, float wrapWidth, TextAlignment alignment, Rectangle2D bounds) {
+    double x;
+    double y;
+    double width;
+    double height;
+    if (bounds != null) {
+      x = bounds.getX();
+      y = bounds.getY();
+      width = bounds.getWidth();
+      height = bounds.getHeight();
+    } else {
+      x = 0;
+      y = 0;
+      Dimension2D size = this.getDimension(g, wrapWidth);
+      width = size.getWidth();
+      height = size.getHeight();
+    }
+    this.paint(g, wrapWidth, alignment, x, y, width, height);
+  }
 }

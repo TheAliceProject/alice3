@@ -50,26 +50,26 @@ import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 public class StoryApiNonfree extends NebulousStoryApi {
 
-	@Override
-	public boolean isNonFreeEnabled() {
-		return true;
-	}
+  @Override
+  public boolean isNonFreeEnabled() {
+    return true;
+  }
 
-	@Override
-	public String getNebulousResourceInstallPath() {
-		return NebulousStorytellingResources.NEBULOUS_RESOURCE_INSTALL_PATH;
-	}
+  @Override
+  public String getNebulousResourceInstallPath() {
+    return NebulousStorytellingResources.NEBULOUS_RESOURCE_INSTALL_PATH;
+  }
 
-	@Override
-	public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory( R resource ) {
-		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-	}
+  @Override
+  public <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getFactory(R resource) {
+    return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance(resource);
+  }
 
-	@Override
-	public void setMipMappingDesiredOnNebulousTexture( Texture texture ) {
-		if( texture instanceof NebulousTexture ) {
-			NebulousTexture nebulousTexture = (NebulousTexture)texture;
-			nebulousTexture.setMipMappingDesired( true );
-		}
-	}
+  @Override
+  public void setMipMappingDesiredOnNebulousTexture(Texture texture) {
+    if (texture instanceof NebulousTexture) {
+      NebulousTexture nebulousTexture = (NebulousTexture) texture;
+      nebulousTexture.setMipMappingDesired(true);
+    }
+  }
 }

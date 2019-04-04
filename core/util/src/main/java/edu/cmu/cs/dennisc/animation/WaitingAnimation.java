@@ -46,48 +46,48 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public class WaitingAnimation {
-	private Animation m_animation;
-	private AnimationObserver m_animationObserver;
-	private Thread m_thread;
-	private Exception m_exception;
+  private Animation m_animation;
+  private AnimationObserver m_animationObserver;
+  private Thread m_thread;
+  private Exception m_exception;
 
-	public WaitingAnimation( Animation animation, AnimationObserver animationObserver, Thread thread ) {
-		m_animation = animation;
-		m_animationObserver = animationObserver;
-		m_thread = thread;
-	}
+  public WaitingAnimation(Animation animation, AnimationObserver animationObserver, Thread thread) {
+    m_animation = animation;
+    m_animationObserver = animationObserver;
+    m_thread = thread;
+  }
 
-	public Animation getAnimation() {
-		return m_animation;
-	}
+  public Animation getAnimation() {
+    return m_animation;
+  }
 
-	public AnimationObserver getAnimationObserver() {
-		return m_animationObserver;
-	}
+  public AnimationObserver getAnimationObserver() {
+    return m_animationObserver;
+  }
 
-	public Thread getThread() {
-		return m_thread;
-	}
+  public Thread getThread() {
+    return m_thread;
+  }
 
-	public Exception getException() {
-		return m_exception;
-	}
+  public Exception getException() {
+    return m_exception;
+  }
 
-	public void setException( Exception exception ) {
-		m_exception = exception;
-	}
+  public void setException(Exception exception) {
+    m_exception = exception;
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( this.getClass().getName() );
-		sb.append( "[animation=" );
-		sb.append( m_animation );
-		sb.append( ";observer=" );
-		sb.append( m_animationObserver );
-		sb.append( ";thread=" );
-		sb.append( m_thread );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(this.getClass().getName());
+    sb.append("[animation=");
+    sb.append(m_animation);
+    sb.append(";observer=");
+    sb.append(m_animationObserver);
+    sb.append(";thread=");
+    sb.append(m_thread);
+    sb.append("]");
+    return sb.toString();
+  }
 }

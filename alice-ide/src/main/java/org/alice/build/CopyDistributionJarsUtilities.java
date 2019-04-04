@@ -57,56 +57,56 @@ import java.util.List;
  */
 public class CopyDistributionJarsUtilities {
 
-	private static File getUserDirectory() {
-		File defaultDirectory = FileUtilities.getDefaultDirectory();
-		File rv;
-		if( SystemUtilities.isWindows() ) {
-			rv = defaultDirectory.getParentFile();
-		} else {
-			rv = defaultDirectory;
-		}
-		return rv;
-	}
+  private static File getUserDirectory() {
+    File defaultDirectory = FileUtilities.getDefaultDirectory();
+    File rv;
+    if (SystemUtilities.isWindows()) {
+      rv = defaultDirectory.getParentFile();
+    } else {
+      rv = defaultDirectory;
+    }
+    return rv;
+  }
 
-	public static void copyDistributionJars( File distributionRootDirectory ) throws IOException {
-		File userDirectory = getUserDirectory();
-		File mavenRepositoryRootDirectory = new File( userDirectory, ".m2/repository" );
-		List<File> jarFiles = Lists.newLinkedList();
-		for( String pathname : SystemUtilities.getClassPath() ) {
-			File file = new File( pathname );
-			if( file.isDirectory() ) {
-				Logger.errln( "skipping directory:", file );
-			} else {
-				if( FileUtilities.isExtensionAmoung( file, "jar" ) ) {
-					if( FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
-						Logger.outln( "++ adding: " + file );
-						jarFiles.add( file );
-					} else {
-						Logger.errln( "skipping non descendant:", file );
-					}
-				} else {
-					Logger.errln( "skipping non jar:", file );
-				}
-			}
-		}
-		System.err.flush();
-		FileUtilities.delete( distributionRootDirectory );
-		Collections.sort( jarFiles );
-		for( File jarFile : jarFiles ) {
-			File distibutionFile = FileUtilities.getAnalogousFile( jarFile, mavenRepositoryRootDirectory, distributionRootDirectory );
-			FileUtilities.copyFile( jarFile, distibutionFile );
-			Logger.outln( distibutionFile );
-		}
-	}
+  public static void copyDistributionJars(File distributionRootDirectory) throws IOException {
+    File userDirectory = getUserDirectory();
+    File mavenRepositoryRootDirectory = new File(userDirectory, ".m2/repository");
+    List<File> jarFiles = Lists.newLinkedList();
+    for (String pathname : SystemUtilities.getClassPath()) {
+      File file = new File(pathname);
+      if (file.isDirectory()) {
+        Logger.errln("skipping directory:", file);
+      } else {
+        if (FileUtilities.isExtensionAmoung(file, "jar")) {
+          if (FileUtilities.isDescendantOf(file, mavenRepositoryRootDirectory)) {
+            Logger.outln("++ adding: " + file);
+            jarFiles.add(file);
+          } else {
+            Logger.errln("skipping non descendant:", file);
+          }
+        } else {
+          Logger.errln("skipping non jar:", file);
+        }
+      }
+    }
+    System.err.flush();
+    FileUtilities.delete(distributionRootDirectory);
+    Collections.sort(jarFiles);
+    for (File jarFile : jarFiles) {
+      File distibutionFile = FileUtilities.getAnalogousFile(jarFile, mavenRepositoryRootDirectory, distributionRootDirectory);
+      FileUtilities.copyFile(jarFile, distibutionFile);
+      Logger.outln(distibutionFile);
+    }
+  }
 
-	public static void copyDistributionJars( String path ) throws IOException {
-		copyDistributionJars( new File( path ) );
-	}
+  public static void copyDistributionJars(String path) throws IOException {
+    copyDistributionJars(new File(path));
+  }
 
-	public static void main( String[] args ) throws Exception {
-		File userDirectory = FileUtilities.getUserDirectory();
-		//java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/aliceBuildProcess/jars/lib" );
-		File distributionRootDirectory = new File( userDirectory, "Documents/gits/alice/installer/aliceInstallData/Alice3/ext" );
-		copyDistributionJars( distributionRootDirectory );
-	}
+  public static void main(String[] args) throws Exception {
+    File userDirectory = FileUtilities.getUserDirectory();
+    //java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/aliceBuildProcess/jars/lib" );
+    File distributionRootDirectory = new File(userDirectory, "Documents/gits/alice/installer/aliceInstallData/Alice3/ext");
+    copyDistributionJars(distributionRootDirectory);
+  }
 }

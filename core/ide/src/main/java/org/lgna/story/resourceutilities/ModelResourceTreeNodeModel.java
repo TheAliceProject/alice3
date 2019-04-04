@@ -48,24 +48,24 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public class ModelResourceTreeNodeModel extends DefaultTreeModel implements TreeModel<TypeDefinedGalleryTreeNode> {
-	public ModelResourceTreeNodeModel( TypeDefinedGalleryTreeNode root ) {
-		super( root );
-	}
+  public ModelResourceTreeNodeModel(TypeDefinedGalleryTreeNode root) {
+    super(root);
+  }
 
-	@Override
-	public TypeDefinedGalleryTreeNode getChild( Object parent, int index ) {
-		return (TypeDefinedGalleryTreeNode)super.getChild( parent, index );
-	}
+  @Override
+  public TypeDefinedGalleryTreeNode getChild(Object parent, int index) {
+    return (TypeDefinedGalleryTreeNode) super.getChild(parent, index);
+  }
 
-	@Override
-	public TypeDefinedGalleryTreeNode getRoot() {
-		return (TypeDefinedGalleryTreeNode)super.getRoot();
-	}
+  @Override
+  public TypeDefinedGalleryTreeNode getRoot() {
+    return (TypeDefinedGalleryTreeNode) super.getRoot();
+  }
 
-	@Override
-	public TreePath getTreePath( TypeDefinedGalleryTreeNode e ) {
-		Object[] nodes = this.getPathToRoot( e );
-		TreePath path = new TreePath( nodes );
-		return path;
-	}
+  @Override
+  public TreePath getTreePath(TypeDefinedGalleryTreeNode e) {
+    Object[] nodes = this.getPathToRoot(e);
+    TreePath path = new TreePath(nodes);
+    return path;
+  }
 }

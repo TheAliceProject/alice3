@@ -46,5 +46,5 @@ package org.lgna.project.ast.localizer;
  * @author Dennis Cosgrove
  */
 public interface AstLocalizerFactory {
-	public AstLocalizer createInstance( StringBuilder sb );
+  public AstLocalizer createInstance(StringBuilder sb);
 }

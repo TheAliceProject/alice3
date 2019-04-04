@@ -71,92 +71,92 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceKeyUriIteratingOperation extends SingleThreadIteratingOperation {
-	public static ResourceKeyUriIteratingOperation getInstance( ResourceKey resourceKey, Class<?> thingCls, URI uri ) {
-		ResourceKeyUriIteratingOperation rv;
-		if( resourceKey != null ) {
-			if( resourceKey instanceof ClassResourceKey ) {
-				//				org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
-				rv = ClassResourceKeyUriIteratingOperation.getInstance();
-			} else if( resourceKey instanceof EnumConstantResourceKey ) {
-				rv = EnumConstantResourceKeyUriIteratingOperation.getInstance();
-			} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( resourceKey ) ) {
-				rv = NebulousIde.nonfree.getPersonResourceKeyUriIteratingOperation();
-			} else {
-				rv = null;
-			}
-		} else {
-			rv = ThingClsUriIteratingOperation.getInstance();
-		}
-		if( rv != null ) {
-			rv.setResourceKeyThingClsAndUri( resourceKey, thingCls, uri );
-		}
-		return rv;
-	}
+  public static ResourceKeyUriIteratingOperation getInstance(ResourceKey resourceKey, Class<?> thingCls, URI uri) {
+    ResourceKeyUriIteratingOperation rv;
+    if (resourceKey != null) {
+      if (resourceKey instanceof ClassResourceKey) {
+        //        org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+        rv = ClassResourceKeyUriIteratingOperation.getInstance();
+      } else if (resourceKey instanceof EnumConstantResourceKey) {
+        rv = EnumConstantResourceKeyUriIteratingOperation.getInstance();
+      } else if (NebulousIde.nonfree.isInstanceOfPersonResourceKey(resourceKey)) {
+        rv = NebulousIde.nonfree.getPersonResourceKeyUriIteratingOperation();
+      } else {
+        rv = null;
+      }
+    } else {
+      rv = ThingClsUriIteratingOperation.getInstance();
+    }
+    if (rv != null) {
+      rv.setResourceKeyThingClsAndUri(resourceKey, thingCls, uri);
+    }
+    return rv;
+  }
 
-	public ResourceKeyUriIteratingOperation( UUID migrationId ) {
-		super( Application.PROJECT_GROUP, migrationId );
-	}
+  public ResourceKeyUriIteratingOperation(UUID migrationId) {
+    super(Application.PROJECT_GROUP, migrationId);
+  }
 
-	public ResourceKey getResourceKey() {
-		return this.resourceKey;
-	}
+  public ResourceKey getResourceKey() {
+    return this.resourceKey;
+  }
 
-	public Class<?> getThingCls() {
-		return this.thingCls;
-	}
+  public Class<?> getThingCls() {
+    return this.thingCls;
+  }
 
-	public URI getUri() {
-		return this.uri;
-	}
+  public URI getUri() {
+    return this.uri;
+  }
 
-	private void setResourceKeyThingClsAndUri( ResourceKey resourceKey, Class<?> thingCls, URI uri ) {
-		this.resourceKey = resourceKey;
-		this.thingCls = thingCls;
-		this.uri = uri;
-	}
+  private void setResourceKeyThingClsAndUri(ResourceKey resourceKey, Class<?> thingCls, URI uri) {
+    this.resourceKey = resourceKey;
+    this.thingCls = thingCls;
+    this.uri = uri;
+  }
 
-	protected abstract int getStepCount();
+  protected abstract int getStepCount();
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		return finishedSteps.size() < this.getStepCount();
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    return finishedSteps.size() < this.getStepCount();
+  }
 
-	Operation getAddResourceKeyManagedFieldCompositeOperation( EnumConstantResourceKey enumConstantResourceKey ) {
-		return AddResourceKeyManagedFieldComposite.getInstance().
-			getLaunchOperationToCreateValue( enumConstantResourceKey, false );
-	}
+  Operation getAddResourceKeyManagedFieldCompositeOperation(EnumConstantResourceKey enumConstantResourceKey) {
+    return AddResourceKeyManagedFieldComposite.getInstance().
+        getLaunchOperationToCreateValue(enumConstantResourceKey, false);
+  }
 
-	protected Operation getMergeTypeOperation() {
-		TypeResourcesPair typeResourcesPair;
-		try {
-			typeResourcesPair = IoUtilities.readType( new File( this.uri ) );
-		} catch( IOException ioe ) {
-			typeResourcesPair = null;
-			Logger.throwable( ioe, this.uri );
-		} catch( VersionNotSupportedException vnse ) {
-			typeResourcesPair = null;
-			Logger.throwable( vnse, this.uri );
-		}
-		if( typeResourcesPair != null ) {
-			NamedUserType importedRootType = typeResourcesPair.getType();
-			Set<Resource> importedResources = typeResourcesPair.getResources();
-			NamedUserType srcType = importedRootType;
-			NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-			ImportTypeWizard wizard = new ImportTypeWizard( this.uri, importedRootType, importedResources, srcType, dstType );
-			return wizard.getLaunchOperation();
-		} else {
-			return null;
-		}
-	}
+  protected Operation getMergeTypeOperation() {
+    TypeResourcesPair typeResourcesPair;
+    try {
+      typeResourcesPair = IoUtilities.readType(new File(this.uri));
+    } catch (IOException ioe) {
+      typeResourcesPair = null;
+      Logger.throwable(ioe, this.uri);
+    } catch (VersionNotSupportedException vnse) {
+      typeResourcesPair = null;
+      Logger.throwable(vnse, this.uri);
+    }
+    if (typeResourcesPair != null) {
+      NamedUserType importedRootType = typeResourcesPair.getType();
+      Set<Resource> importedResources = typeResourcesPair.getResources();
+      NamedUserType srcType = importedRootType;
+      NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes(srcType);
+      ImportTypeWizard wizard = new ImportTypeWizard(this.uri, importedRootType, importedResources, srcType, dstType);
+      return wizard.getLaunchOperation();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
-		super.handleSuccessfulCompletionOfSubModels( activity );
-		this.resourceKey = null;
-	}
+  @Override
+  protected void handleSuccessfulCompletionOfSubModels(UserActivity activity) {
+    super.handleSuccessfulCompletionOfSubModels(activity);
+    this.resourceKey = null;
+  }
 
-	protected ResourceKey resourceKey;
-	protected Class<?> thingCls;
-	private URI uri;
+  protected ResourceKey resourceKey;
+  protected Class<?> thingCls;
+  private URI uri;
 }

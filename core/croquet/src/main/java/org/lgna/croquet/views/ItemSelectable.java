@@ -51,8 +51,8 @@ import javax.swing.JComponent;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectable<J extends JComponent, T, M extends ItemState<T>> extends ViewController<J, M> {
-	public ItemSelectable( M model ) {
-		super( model );
-	}
+  public ItemSelectable(M model) {
+    super(model);
+  }
 
 }

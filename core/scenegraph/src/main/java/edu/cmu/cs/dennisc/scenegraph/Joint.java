@@ -53,190 +53,165 @@ import edu.cmu.cs.dennisc.property.StringProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Joint extends Transformable implements ModelJoint
-{
-	//	private static final java.util.Comparator<Joint> JOINT_ARRAY_COMPARATOR = new java.util.Comparator<Joint>() {
-	//		@Override
-	//		public int compare( Joint o1, Joint o2 ) {
-	//			return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
-	//		}
-	//	};
+public class Joint extends Transformable implements ModelJoint {
+  //  private static final java.util.Comparator<Joint> JOINT_ARRAY_COMPARATOR = new java.util.Comparator<Joint>() {
+  //    @Override
+  //    public int compare( Joint o1, Joint o2 ) {
+  //      return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
+  //    }
+  //  };
 
-	private Joint getJoint( Composite c, String jointID )
-	{
-		if( c == null )
-		{
-			return null;
-		}
-		if( c instanceof Joint )
-		{
-			Joint j = (Joint)c;
-			if( j.jointID.getValue().equals( jointID ) )
-			{
-				return j;
-			}
-		}
-		for( int i = 0; i < c.getComponentCount(); i++ )
-		{
-			Component comp = c.getComponentAt( i );
-			if( comp instanceof Composite )
-			{
-				Joint foundJoint = getJoint( (Composite)comp, jointID );
-				if( foundJoint != null )
-				{
-					return foundJoint;
-				}
-			}
-		}
-		return null;
-	}
+  private Joint getJoint(Composite c, String jointID) {
+    if (c == null) {
+      return null;
+    }
+    if (c instanceof Joint) {
+      Joint j = (Joint) c;
+      if (j.jointID.getValue().equals(jointID)) {
+        return j;
+      }
+    }
+    for (int i = 0; i < c.getComponentCount(); i++) {
+      Component comp = c.getComponentAt(i);
+      if (comp instanceof Composite) {
+        Joint foundJoint = getJoint((Composite) comp, jointID);
+        if (foundJoint != null) {
+          return foundJoint;
+        }
+      }
+    }
+    return null;
+  }
 
-	public void scale( Vector3 scale) {
-		AffineMatrix4x4 newTransform = new AffineMatrix4x4( localTransformation.getValue() );
-		newTransform.translation.multiply( scale );
-		localTransformation.setValue( newTransform );
-		AxisAlignedBox bb = boundingBox.getValue();
-		if (bb != null) {
-			bb.scale(scale);
-		}
-		for( int i = 0; i < getComponentCount(); i++ )
-		{
-			Component comp = getComponentAt( i );
-			if (comp instanceof Joint) {
-				((Joint)comp).scale(scale);
-			}
-		}
-	}
+  public void scale(Vector3 scale) {
+    AffineMatrix4x4 newTransform = new AffineMatrix4x4(localTransformation.getValue());
+    newTransform.translation.multiply(scale);
+    localTransformation.setValue(newTransform);
+    AxisAlignedBox bb = boundingBox.getValue();
+    if (bb != null) {
+      bb.scale(scale);
+    }
+    for (int i = 0; i < getComponentCount(); i++) {
+      Component comp = getComponentAt(i);
+      if (comp instanceof Joint) {
+        ((Joint) comp).scale(scale);
+      }
+    }
+  }
 
-	public Joint getJoint( String jointID )
-	{
-		return getJoint( this, jointID );
-	}
+  public Joint getJoint(String jointID) {
+    return getJoint(this, jointID);
+  }
 
-	private void getJoints( Composite c, String nameKey, List<Joint> joints )
-	{
-		if( c == null )
-		{
-			return;
-		}
-		if( c instanceof Joint )
-		{
-			Joint j = (Joint)c;
-			if( j.jointID.getValue().startsWith( nameKey ) )
-			{
-				joints.add( j );
-			}
-		}
-		for( int i = 0; i < c.getComponentCount(); i++ )
-		{
-			Component comp = c.getComponentAt( i );
-			if( comp instanceof Composite )
-			{
-				getJoints( (Composite)comp, nameKey, joints );
-			}
-		}
-	}
+  private void getJoints(Composite c, String nameKey, List<Joint> joints) {
+    if (c == null) {
+      return;
+    }
+    if (c instanceof Joint) {
+      Joint j = (Joint) c;
+      if (j.jointID.getValue().startsWith(nameKey)) {
+        joints.add(j);
+      }
+    }
+    for (int i = 0; i < c.getComponentCount(); i++) {
+      Component comp = c.getComponentAt(i);
+      if (comp instanceof Composite) {
+        getJoints((Composite) comp, nameKey, joints);
+      }
+    }
+  }
 
-	public Joint[] getJoints( String nameKey )
-	{
-		List<Joint> joints = new ArrayList<Joint>();
-		getJoints( this, nameKey, joints );
-		return joints.toArray( new Joint[ joints.size() ] );
-	}
+  public Joint[] getJoints(String nameKey) {
+    List<Joint> joints = new ArrayList<Joint>();
+    getJoints(this, nameKey, joints);
+    return joints.toArray(new Joint[joints.size()]);
+  }
 
-	public void setParentVisual( SkeletonVisual parentVisual ) {
-		this.parentVisual = parentVisual;
-	}
+  public void setParentVisual(SkeletonVisual parentVisual) {
+    this.parentVisual = parentVisual;
+  }
 
-	private SkeletonVisual getParentVisual() {
-		if( ( this.parentVisual == null ) && ( this.getParent() instanceof Joint ) ) {
-			this.parentVisual = ( (Joint)this.getParent() ).getParentVisual();
-		}
-		return this.parentVisual;
-	}
+  private SkeletonVisual getParentVisual() {
+    if ((this.parentVisual == null) && (this.getParent() instanceof Joint)) {
+      this.parentVisual = ((Joint) this.getParent()).getParentVisual();
+    }
+    return this.parentVisual;
+  }
 
-	private AxisAlignedBox getBoundingBox( Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative )
-	{
-		if( c == null )
-		{
-			return null;
-		}
-		if( c instanceof Joint )
-		{
-			Joint j = (Joint)c;
+  private AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative) {
+    if (c == null) {
+      return null;
+    }
+    if (c instanceof Joint) {
+      Joint j = (Joint) c;
 
-			//We scale the local bounding box based on the scale of the SkeletonVisual base object
-			//We can do this here (in the local space of the joint) because we restrict the scale to be a uniform scale
-			AxisAlignedBox scaledBBox = new AxisAlignedBox( j.boundingBox.getValue() );
-			SkeletonVisual sv = this.getParentVisual();
-			if( sv != null ) {
-				scaledBBox.scale( sv.scale.getValue() );
-			}
+      //We scale the local bounding box based on the scale of the SkeletonVisual base object
+      //We can do this here (in the local space of the joint) because we restrict the scale to be a uniform scale
+      AxisAlignedBox scaledBBox = new AxisAlignedBox(j.boundingBox.getValue());
+      SkeletonVisual sv = this.getParentVisual();
+      if (sv != null) {
+        scaledBBox.scale(sv.scale.getValue());
+      }
 
-			Point3 localMin = scaledBBox.getMinimum();
-			Point3 localMax = scaledBBox.getMaximum();
+      Point3 localMin = scaledBBox.getMinimum();
+      Point3 localMax = scaledBBox.getMaximum();
 
-			Point3 transformedMin = transform.createTransformed( localMin );
-			Point3 transformedMax = transform.createTransformed( localMax );
-			if( !transformedMin.isNaN() ) {
-				rv.union( transformedMin );
-			}
-			if( !transformedMax.isNaN() ) {
-				rv.union( transformedMax );
-			}
-		}
-		if( cumulative ) {
-			for( int i = 0; i < c.getComponentCount(); i++ )
-			{
-				Component comp = c.getComponentAt( i );
-				if( comp instanceof Composite )
-				{
-					AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication( transform, ( (AbstractTransformable)comp ).accessLocalTransformation() );
-					getBoundingBox( (Composite)comp, rv, childTransform, cumulative );
-				}
-			}
-		}
-		return rv;
-	}
+      Point3 transformedMin = transform.createTransformed(localMin);
+      Point3 transformedMax = transform.createTransformed(localMax);
+      if (!transformedMin.isNaN()) {
+        rv.union(transformedMin);
+      }
+      if (!transformedMax.isNaN()) {
+        rv.union(transformedMax);
+      }
+    }
+    if (cumulative) {
+      for (int i = 0; i < c.getComponentCount(); i++) {
+        Component comp = c.getComponentAt(i);
+        if (comp instanceof Composite) {
+          AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable) comp).accessLocalTransformation());
+          getBoundingBox((Composite) comp, rv, childTransform, cumulative);
+        }
+      }
+    }
+    return rv;
+  }
 
-	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative )
-	{
-		if( rv == null )
-		{
-			rv = new AxisAlignedBox();
-		}
-		getBoundingBox( this, rv, transform, cumulative );
-		return rv;
-	}
+  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative) {
+    if (rv == null) {
+      rv = new AxisAlignedBox();
+    }
+    getBoundingBox(this, rv, transform, cumulative);
+    return rv;
+  }
 
-	public AxisAlignedBox getBoundingBox( AxisAlignedBox rv, boolean cumulative )
-	{
-		return getBoundingBox( rv, AffineMatrix4x4.createIdentity(), cumulative );
-	}
+  public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, boolean cumulative) {
+    return getBoundingBox(rv, AffineMatrix4x4.createIdentity(), cumulative);
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( " jointId=" + this.jointID.getValue() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(" jointId=" + this.jointID.getValue());
+  }
 
-	public final StringProperty jointID = new StringProperty( this, null );
-	public final BooleanProperty isFreeInX = new BooleanProperty( this, false );
-	public final BooleanProperty isFreeInY = new BooleanProperty( this, false );
-	public final BooleanProperty isFreeInZ = new BooleanProperty( this, false );
+  public final StringProperty jointID = new StringProperty(this, null);
+  public final BooleanProperty isFreeInX = new BooleanProperty(this, false);
+  public final BooleanProperty isFreeInY = new BooleanProperty(this, false);
+  public final BooleanProperty isFreeInZ = new BooleanProperty(this, false);
 
-	//    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
+  //    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
 
-	public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+  public final InstanceProperty<AxisAlignedBox> boundingBox = new InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
 
-	public final Vector3fProperty oStiffness = new Vector3fProperty( this, new Vector3f() );
-	public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final Vector3fProperty oMinimumDampRange = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMaximumDampRange = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty( this, new Vector3f() );
+  public final Vector3fProperty oStiffness = new Vector3fProperty(this, new Vector3f());
+  public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty(this, EulerAngles.createIdentity());
+  public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty(this, EulerAngles.createIdentity());
+  public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty(this, EulerAngles.createIdentity());
+  public final Vector3fProperty oMinimumDampRange = new Vector3fProperty(this, new Vector3f());
+  public final Vector3fProperty oMaximumDampRange = new Vector3fProperty(this, new Vector3f());
+  public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty(this, new Vector3f());
+  public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty(this, new Vector3f());
 
-	private SkeletonVisual parentVisual = null;
+  private SkeletonVisual parentVisual = null;
 }

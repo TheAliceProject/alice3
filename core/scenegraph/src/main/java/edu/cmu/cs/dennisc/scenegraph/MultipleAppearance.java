@@ -50,87 +50,87 @@ import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
  * @author Dennis Cosgrove
  */
 public class MultipleAppearance extends Appearance {
-	public final CopyableArrayProperty<SimpleAppearance> singleAppearances = new CopyableArrayProperty<SimpleAppearance>( this ) {
-		@Override
-		protected SimpleAppearance[] createArray( int length ) {
-			return new SimpleAppearance[ length ];
-		}
+  public final CopyableArrayProperty<SimpleAppearance> singleAppearances = new CopyableArrayProperty<SimpleAppearance>(this) {
+    @Override
+    protected SimpleAppearance[] createArray(int length) {
+      return new SimpleAppearance[length];
+    }
 
-		@Override
-		protected SimpleAppearance createCopy( SimpleAppearance src ) {
-			//todo?
-			return src;
-		}
-	};
+    @Override
+    protected SimpleAppearance createCopy(SimpleAppearance src) {
+      //todo?
+      return src;
+    }
+  };
 
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.release();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.release();
+    }
+  }
 
-	@Override
-	public void setAmbientColor( Color4f ambientColor ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setAmbientColor( ambientColor );
-		}
-	}
+  @Override
+  public void setAmbientColor(Color4f ambientColor) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setAmbientColor(ambientColor);
+    }
+  }
 
-	@Override
-	public void setDiffuseColor( Color4f diffuseColor ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setDiffuseColor( diffuseColor );
-		}
-	}
+  @Override
+  public void setDiffuseColor(Color4f diffuseColor) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setDiffuseColor(diffuseColor);
+    }
+  }
 
-	@Override
-	public void setOpacity( float opacity ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setOpacity( opacity );
-		}
-	}
+  @Override
+  public void setOpacity(float opacity) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setOpacity(opacity);
+    }
+  }
 
-	@Override
-	public void setSpecularHighlightExponent( float specularHighlightExponent ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setSpecularHighlightExponent( specularHighlightExponent );
-		}
-	}
+  @Override
+  public void setSpecularHighlightExponent(float specularHighlightExponent) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setSpecularHighlightExponent(specularHighlightExponent);
+    }
+  }
 
-	@Override
-	public void setSpecularHighlightColor( Color4f specularHighlightColor ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setSpecularHighlightColor( specularHighlightColor );
-		}
-	}
+  @Override
+  public void setSpecularHighlightColor(Color4f specularHighlightColor) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setSpecularHighlightColor(specularHighlightColor);
+    }
+  }
 
-	@Override
-	public void setEmissiveColor( Color4f emissiveColor ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setEmissiveColor( emissiveColor );
-		}
-	}
+  @Override
+  public void setEmissiveColor(Color4f emissiveColor) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setEmissiveColor(emissiveColor);
+    }
+  }
 
-	@Override
-	public void setShadingStyle( ShadingStyle shadingStyle ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setShadingStyle( shadingStyle );
-		}
-	}
+  @Override
+  public void setShadingStyle(ShadingStyle shadingStyle) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setShadingStyle(shadingStyle);
+    }
+  }
 
-	@Override
-	public void setFillingStyle( FillingStyle fillingStyle ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setFillingStyle( fillingStyle );
-		}
-	}
+  @Override
+  public void setFillingStyle(FillingStyle fillingStyle) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setFillingStyle(fillingStyle);
+    }
+  }
 
-	@Override
-	public void setEthereal( boolean isEthereal ) {
-		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
-			singleAppearance.setEthereal( isEthereal );
-		}
-	}
+  @Override
+  public void setEthereal(boolean isEthereal) {
+    for (SimpleAppearance singleAppearance : singleAppearances.getValue()) {
+      singleAppearance.setEthereal(isEthereal);
+    }
+  }
 }

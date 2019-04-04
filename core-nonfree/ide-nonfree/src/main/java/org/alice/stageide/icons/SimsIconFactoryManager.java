@@ -57,30 +57,30 @@ import java.awt.image.BufferedImage;
  */
 public class SimsIconFactoryManager {
 
-	public static IconFactory createIconFactory( ModelResource instance ) {
-		if( instance instanceof PersonResource ) {
-			PersonResource personResource = (PersonResource)instance;
-			try {
-				SimsThumbnailMaker thumbnailMaker = SimsThumbnailMaker.getInstance();
-				BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
-				int width = thumbnailMaker.getWidth();
-				int height = thumbnailMaker.getHeight();
+  public static IconFactory createIconFactory(ModelResource instance) {
+    if (instance instanceof PersonResource) {
+      PersonResource personResource = (PersonResource) instance;
+      try {
+        SimsThumbnailMaker thumbnailMaker = SimsThumbnailMaker.getInstance();
+        BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource(personResource);
+        int width = thumbnailMaker.getWidth();
+        int height = thumbnailMaker.getHeight();
 
-				//Used for saving out gallery thumbnails for the sims lifestages
-				//					java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
-				//					edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
+        //Used for saving out gallery thumbnails for the sims lifestages
+        //          java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
+        //          edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
 
-				if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
-					return new ImageIconFactory( image );
-				} else {
-					return new TrimmedImageIconFactory( image, width, height );
-				}
-			} catch( Throwable t ) {
-				t.printStackTrace();
-				return EmptyIconFactory.getInstance();
-			}
-		} else {
-			return null;
-		}
-	}
+        if ((width == image.getWidth()) && (height == image.getHeight())) {
+          return new ImageIconFactory(image);
+        } else {
+          return new TrimmedImageIconFactory(image, width, height);
+        }
+      } catch (Throwable t) {
+        t.printStackTrace();
+        return EmptyIconFactory.getInstance();
+      }
+    } else {
+      return null;
+    }
+  }
 }

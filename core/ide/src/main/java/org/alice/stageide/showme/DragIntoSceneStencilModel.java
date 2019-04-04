@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DragIntoSceneStencilModel extends IdeStencil {
-	public DragIntoSceneStencilModel() {
-		super( UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
-	}
+  public DragIntoSceneStencilModel() {
+    super(UUID.fromString("b891dc2f-2baf-4fb2-a328-d194e3e11f0a"));
+  }
 
-	@Override
-	protected void showStencil() {
-		GalleryComposite galleryComposite = SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
-		new Thread() {
-			@Override
-			public void run() {
-				ThreadUtilities.sleep( 4000 );
-				barrierAwait();
-			}
-		}.start();
-	}
+  @Override
+  protected void showStencil() {
+    GalleryComposite galleryComposite = SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController(galleryComposite.getTabState(), this.getText());
+    new Thread() {
+      @Override
+      public void run() {
+        ThreadUtilities.sleep(4000);
+        barrierAwait();
+      }
+    }.start();
+  }
 }

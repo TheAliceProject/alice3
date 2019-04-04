@@ -52,55 +52,55 @@ import org.lgna.croquet.DropSite;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public final class SceneDropSite implements DropSite {
 
-	private final AffineMatrix4x4 transform;
+  private final AffineMatrix4x4 transform;
 
-	public SceneDropSite( AffineMatrix4x4 transform ) {
-		this.transform = transform;
-	}
+  public SceneDropSite(AffineMatrix4x4 transform) {
+    this.transform = transform;
+  }
 
-	public SceneDropSite( BinaryDecoder binaryDecoder ) {
-		this.transform = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
+  public SceneDropSite(BinaryDecoder binaryDecoder) {
+    this.transform = binaryDecoder.decodeBinaryEncodableAndDecodable();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.transform );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.transform);
+  }
 
-	public AffineMatrix4x4 getTransform() {
-		return this.transform;
-	}
+  public AffineMatrix4x4 getTransform() {
+    return this.transform;
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( o instanceof SceneDropSite ) {
-			SceneDropSite sds = (SceneDropSite)o;
-			return Objects.equals( this.transform, sds.transform );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (o instanceof SceneDropSite) {
+      SceneDropSite sds = (SceneDropSite) o;
+      return Objects.equals(this.transform, sds.transform);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.transform != null ) {
-			rv = ( 37 * rv ) + this.transform.hashCode();
-		}
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.transform != null) {
+      rv = (37 * rv) + this.transform.hashCode();
+    }
+    return rv;
+  }
 
-	@Override
-	public DropReceptor getOwningDropReceptor() {
-		//todo
-		return (DropReceptor)IDE.getActiveInstance().getSceneEditor();
-	}
+  @Override
+  public DropReceptor getOwningDropReceptor() {
+    //todo
+    return (DropReceptor) IDE.getActiveInstance().getSceneEditor();
+  }
 
 }

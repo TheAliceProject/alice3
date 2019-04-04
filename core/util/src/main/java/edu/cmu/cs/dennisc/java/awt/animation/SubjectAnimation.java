@@ -50,21 +50,21 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class SubjectAnimation extends DurationBasedAnimation {
-	private Component m_awtSubject = null;
+  private Component m_awtSubject = null;
 
-	public SubjectAnimation() {
-	}
+  public SubjectAnimation() {
+  }
 
-	public SubjectAnimation( Component awtSubject ) {
-		setSubject( awtSubject );
-	}
+  public SubjectAnimation(Component awtSubject) {
+    setSubject(awtSubject);
+  }
 
-	public Component getSubject() {
-		return m_awtSubject;
-	}
+  public Component getSubject() {
+    return m_awtSubject;
+  }
 
-	public void setSubject( Component awtSubject ) {
-		assert awtSubject != null;
-		m_awtSubject = awtSubject;
-	}
+  public void setSubject(Component awtSubject) {
+    assert awtSubject != null;
+    m_awtSubject = awtSubject;
+  }
 }

@@ -63,62 +63,62 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public class ThisPane extends AccessiblePane {
-	private static final JavaType TYPE_FOR_NULL = JavaType.getInstance( Void.class );
-	private AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
-	private ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			DeclarationComposite<?, ?> nextValue = e.getNextValue();
-			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
-		}
-	};
+  private static final JavaType TYPE_FOR_NULL = JavaType.getInstance(Void.class);
+  private AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
+  private ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      DeclarationComposite<?, ?> nextValue = e.getNextValue();
+      ThisPane.this.updateBasedOnFocusedDeclaration(nextValue != null ? nextValue.getDeclaration() : null);
+    }
+  };
 
-	public ThisPane() {
-		super( ThisExpressionDragModel.getInstance() );
-		this.addComponent( new Label( FormatterState.getInstance().getValue().getTextForThis() ) );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( ThisExpression.class ) );
-	}
+  public ThisPane() {
+    super(ThisExpressionDragModel.getInstance());
+    this.addComponent(new Label(FormatterState.getInstance().getValue().getTextForThis()));
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(ThisExpression.class));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue() );
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.updateBasedOnFocusedDeclaration(IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue());
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener(this.declarationListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener(this.declarationListener);
+    super.handleUndisplayable();
+  }
 
-	private void updateBasedOnFocusedDeclaration( AbstractDeclaration declaration ) {
-		if( declaration != null ) {
-			if( declaration instanceof AbstractMember ) {
-				this.type = ( (AbstractMember)declaration ).getDeclaringType();
-			} else if( declaration instanceof AbstractType<?, ?, ?> ) {
-				this.type = (AbstractType<?, ?, ?>)declaration;
-			} else {
-				this.type = null;
-			}
-		} else {
-			this.type = null;
-		}
-		if( this.type != null ) {
-			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + FormatterState.getInstance().getValue().getTextForThis() );
-		} else {
-			this.type = TYPE_FOR_NULL;
-			this.setToolTipText( null );
-		}
-	}
+  private void updateBasedOnFocusedDeclaration(AbstractDeclaration declaration) {
+    if (declaration != null) {
+      if (declaration instanceof AbstractMember) {
+        this.type = ((AbstractMember) declaration).getDeclaringType();
+      } else if (declaration instanceof AbstractType<?, ?, ?>) {
+        this.type = (AbstractType<?, ?, ?>) declaration;
+      } else {
+        this.type = null;
+      }
+    } else {
+      this.type = null;
+    }
+    if (this.type != null) {
+      this.setToolTipText("the current instance of " + this.type.getName() + " is referred to as " + FormatterState.getInstance().getValue().getTextForThis());
+    } else {
+      this.type = TYPE_FOR_NULL;
+      this.setToolTipText(null);
+    }
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
+    super.paintEpilogue(g2, x, y, width, height);
+    if (this.type == TYPE_FOR_NULL) {
+      g2.setPaint(PaintUtilities.getDisabledTexturePaint());
+      this.fillBounds(g2);
+    }
+  }
 
 }

@@ -57,59 +57,59 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class RepaintManagerUtilities {
-	private static RepaintManager originalRepaintManager;
-	private static DStack<JComponent> stencils = Stacks.newStack();
+  private static RepaintManager originalRepaintManager;
+  private static DStack<JComponent> stencils = Stacks.newStack();
 
-	private static class StencilRepaintManager extends RepaintManager {
-		@Override
-		public void addDirtyRegion( JComponent c, int x, int y, int w, int h ) {
-			super.addDirtyRegion( c, x, y, w, h );
-			final JComponent jStencil = stencils.peek();
-			if( ( jStencil == c ) || jStencil.isAncestorOf( c ) ) {
-				//pass
-			} else {
-				Component srcRoot = SwingUtilities.getRoot( c );
-				Component dstRoot = SwingUtilities.getRoot( jStencil );
+  private static class StencilRepaintManager extends RepaintManager {
+    @Override
+    public void addDirtyRegion(JComponent c, int x, int y, int w, int h) {
+      super.addDirtyRegion(c, x, y, w, h);
+      final JComponent jStencil = stencils.peek();
+      if ((jStencil == c) || jStencil.isAncestorOf(c)) {
+        //pass
+      } else {
+        Component srcRoot = SwingUtilities.getRoot(c);
+        Component dstRoot = SwingUtilities.getRoot(jStencil);
 
-				if( ( srcRoot != null ) && ( srcRoot == dstRoot ) ) {
-					Rectangle rect = new Rectangle( x, y, w, h );
-					Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
-					if( ( visibleRect.width != 0 ) && ( visibleRect.height != 0 ) ) {
-						final Rectangle rectAsSeenByStencil = ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
-						SwingUtilities.invokeLater( new Runnable() {
-							@Override
-							public void run() {
-								StencilRepaintManager.super.addDirtyRegion( jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
-								//jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
-							}
-						} );
-					}
-				}
-			}
-		}
-	}
+        if ((srcRoot != null) && (srcRoot == dstRoot)) {
+          Rectangle rect = new Rectangle(x, y, w, h);
+          Rectangle visibleRect = rect.intersection(c.getVisibleRect());
+          if ((visibleRect.width != 0) && (visibleRect.height != 0)) {
+            final Rectangle rectAsSeenByStencil = ComponentUtilities.convertRectangle(c, visibleRect, jStencil);
+            SwingUtilities.invokeLater(new Runnable() {
+              @Override
+              public void run() {
+                StencilRepaintManager.super.addDirtyRegion(jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height);
+                //jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
+              }
+            });
+          }
+        }
+      }
+    }
+  }
 
-	private RepaintManagerUtilities() {
-		throw new AssertionError();
-	}
+  private RepaintManagerUtilities() {
+    throw new AssertionError();
+  }
 
-	public static void pushStencil( JComponent jStencil ) {
-		if( stencils.size() > 0 ) {
-			//pass
-		} else {
-			originalRepaintManager = RepaintManager.currentManager( jStencil );
-			RepaintManager.setCurrentManager( new StencilRepaintManager() );
-		}
-		stencils.push( jStencil );
-	}
+  public static void pushStencil(JComponent jStencil) {
+    if (stencils.size() > 0) {
+      //pass
+    } else {
+      originalRepaintManager = RepaintManager.currentManager(jStencil);
+      RepaintManager.setCurrentManager(new StencilRepaintManager());
+    }
+    stencils.push(jStencil);
+  }
 
-	public static JComponent popStencil() {
-		JComponent rv = stencils.pop();
-		if( stencils.size() > 0 ) {
-			//pass
-		} else {
-			RepaintManager.setCurrentManager( originalRepaintManager );
-		}
-		return rv;
-	}
+  public static JComponent popStencil() {
+    JComponent rv = stencils.pop();
+    if (stencils.size() > 0) {
+      //pass
+    } else {
+      RepaintManager.setCurrentManager(originalRepaintManager);
+    }
+    return rv;
+  }
 }

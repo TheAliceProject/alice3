@@ -54,37 +54,37 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextField extends ImmutableTextComponent<JTextField> {
-	public ImmutableTextField( PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
-		super( value, fontScalar, textAttributes );
-	}
+  public ImmutableTextField(PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes) {
+    super(value, fontScalar, textAttributes);
+  }
 
-	//	public HorizontalAlignment getHorizontalAlignment() {
-	//		return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
-	//	}
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
+  //  public HorizontalAlignment getHorizontalAlignment() {
+  //  return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
+  //  }
+  public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalAlignment(horizontalAlignment.getInternal());
+  }
 
-	@Override
-	protected JTextField createAwtComponent() {
-		JTextField rv = new JTextField( this.getValue().getDocument(), null, 0 ) {
-			@Override
-			public Color getBackground() {
-				return getDesiredBackgroundColor( this.getParent() );
-			}
+  @Override
+  protected JTextField createAwtComponent() {
+    JTextField rv = new JTextField(this.getValue().getDocument(), null, 0) {
+      @Override
+      public Color getBackground() {
+        return getDesiredBackgroundColor(this.getParent());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				return this.getPreferredSize();
-			}
+      @Override
+      public Dimension getMaximumSize() {
+        return this.getPreferredSize();
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicTextFieldUI() );
-			}
-		};
-		this.initializeJComponent( rv );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicTextFieldUI());
+      }
+    };
+    this.initializeJComponent(rv);
+    return rv;
+  }
 }

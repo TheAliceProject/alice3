@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConeDragModel extends ShapeDragModel {
-	private static final SCone sModel = new SCone();
+  private static final SCone sModel = new SCone();
 
-	private static class SingletonHolder {
-		private static ConeDragModel instance = new ConeDragModel();
-	}
+  private static class SingletonHolder {
+    private static ConeDragModel instance = new ConeDragModel();
+  }
 
-	public static ConeDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ConeDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ConeDragModel() {
-		super( UUID.fromString( "a3745200-6936-448c-b3c1-fa40c844482a" ) );
-	}
+  private ConeDragModel() {
+    super(UUID.fromString("a3745200-6936-448c-b3c1-fa40c844482a"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddConeManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddConeManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return ConeIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return ConeIconFactory.getInstance();
+  }
 }

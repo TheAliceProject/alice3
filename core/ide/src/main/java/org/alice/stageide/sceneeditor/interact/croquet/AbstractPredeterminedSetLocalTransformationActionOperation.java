@@ -55,29 +55,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPredeterminedSetLocalTransformationActionOperation extends AbstractSetLocalTransformationActionOperation {
-	private AffineMatrix4x4 prevLT;
-	private AffineMatrix4x4 nextLT;
+  private AffineMatrix4x4 prevLT;
+  private AffineMatrix4x4 nextLT;
 
-	public AbstractPredeterminedSetLocalTransformationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
-		this.prevLT = prevLT;
-		this.nextLT = nextLT;
-	}
+  public AbstractPredeterminedSetLocalTransformationActionOperation(Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey) {
+    super(group, individualId, isDoRequired, animator, field, editPresentationKey);
+    this.prevLT = prevLT;
+    this.nextLT = nextLT;
+  }
 
-	@Override
-	protected AffineMatrix4x4 getNextLocalTransformation() {
-		return this.nextLT;
-	}
+  @Override
+  protected AffineMatrix4x4 getNextLocalTransformation() {
+    return this.nextLT;
+  }
 
-	@Override
-	protected AffineMatrix4x4 getPrevLocalTransformation() {
-		return this.prevLT;
-	}
+  @Override
+  protected AffineMatrix4x4 getPrevLocalTransformation() {
+    return this.prevLT;
+  }
 
-	@Override
-	protected AbstractTransformable getSGTransformable() {
-		EntityImp entityImp = getEntityImp();
-		return entityImp == null ? null : (AbstractTransformable)entityImp.getSgComposite();
-	}
+  @Override
+  protected AbstractTransformable getSGTransformable() {
+    EntityImp entityImp = getEntityImp();
+    return entityImp == null ? null : (AbstractTransformable) entityImp.getSgComposite();
+  }
 
 }

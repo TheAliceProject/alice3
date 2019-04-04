@@ -60,119 +60,115 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements OnscreenRenderTarget<JPanel> {
-	public static interface Observer {
-		public void handleImage( BufferedImage image, boolean isUpSideDown );
-	}
+  public static interface Observer {
+    public void handleImage(BufferedImage image, boolean isUpSideDown);
+  }
 
-	private class JRecordPanel extends JPanel {
-		public JRecordPanel() {
-			this.setBackground( Color.BLACK );
-		}
+  private class JRecordPanel extends JPanel {
+    public JRecordPanel() {
+      this.setBackground(Color.BLACK);
+    }
 
-		@Override
-		public void paint( Graphics g ) {
-			if( image != null ) {
-				Graphics2D g2 = (Graphics2D)g;
-				AffineTransform m = g2.getTransform();
-				if( atIsUpSideDown[ 0 ] ) {
-					g2.translate( 0, this.getHeight() );
-					g2.scale( 1.0, -1.0 );
-				}
-				try {
-					int imageWidth = image.getWidth();
-					int imageHeight = image.getHeight();
+    @Override
+    public void paint(Graphics g) {
+      if (image != null) {
+        Graphics2D g2 = (Graphics2D) g;
+        AffineTransform m = g2.getTransform();
+        if (atIsUpSideDown[0]) {
+          g2.translate(0, this.getHeight());
+          g2.scale(1.0, -1.0);
+        }
+        try {
+          int imageWidth = image.getWidth();
+          int imageHeight = image.getHeight();
 
-					Dimension componentSize = this.getSize();
+          Dimension componentSize = this.getSize();
 
-					if( ( imageWidth == componentSize.width ) || ( imageHeight == componentSize.height ) ) {
-						g.drawImage( image, 0, 0, this );
-					} else {
-						Dimension imageSize = new Dimension( imageWidth, imageHeight );
-						Dimension size = DimensionUtilities.calculateBestFittingSize( componentSize, imageSize.width / (double)imageSize.height );
+          if ((imageWidth == componentSize.width) || (imageHeight == componentSize.height)) {
+            g.drawImage(image, 0, 0, this);
+          } else {
+            Dimension imageSize = new Dimension(imageWidth, imageHeight);
+            Dimension size = DimensionUtilities.calculateBestFittingSize(componentSize, imageSize.width / (double) imageSize.height);
 
-						int x0 = ( componentSize.width - size.width ) / 2;
-						int x1 = x0 + size.width;
-						int y0 = ( componentSize.height - size.height ) / 2;
-						int y1 = y0 + size.height;
+            int x0 = (componentSize.width - size.width) / 2;
+            int x1 = x0 + size.width;
+            int y0 = (componentSize.height - size.height) / 2;
+            int y1 = y0 + size.height;
 
-						super.paint( g );
-						g.drawImage( image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this );
-					}
-				} finally {
-					g2.setTransform( m );
-				}
-			} else {
-				super.paint( g );
-			}
-		}
-	}
+            super.paint(g);
+            g.drawImage(image, x0, y0, x1, y1, 0, 0, imageWidth, imageHeight, this);
+          }
+        } finally {
+          g2.setTransform(m);
+        }
+      } else {
+        super.paint(g);
+      }
+    }
+  }
 
-	private final Dimension size;
+  private final Dimension size;
 
-	private final JRecordPanel jPanel = new JRecordPanel();
+  private final JRecordPanel jPanel = new JRecordPanel();
 
-	private final GLOffscreenAutoDrawable glPixelBuffer;
+  private final GLOffscreenAutoDrawable glPixelBuffer;
 
-	private boolean[] atIsUpSideDown = { false };
-	private BufferedImage image;
+  private boolean[] atIsUpSideDown = {false};
+  private BufferedImage image;
 
-	public GlrCaptureFauxOnscreenRenderTarget( Dimension size, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		super( GlrRenderFactory.getInstance(), requestedCapabilities );
-		this.size = size;
-		this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(
-				GlDrawableUtils.createGlCapabilities( requestedCapabilities ),
-				GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(),
-				size.width, size.height,
-				GlDrawableUtils.getGlContextToShare( renderTargetToShareContextWith ) );
-	}
+  public GlrCaptureFauxOnscreenRenderTarget(Dimension size, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    super(GlrRenderFactory.getInstance(), requestedCapabilities);
+    this.size = size;
+    this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), size.width, size.height, GlDrawableUtils.getGlContextToShare(renderTargetToShareContextWith));
+  }
 
-	@Override
-	protected Dimension getSurfaceSize( Dimension rv ) {
-		rv.setSize( this.size );
-		return rv;
-	}
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    rv.setSize(this.size);
+    return rv;
+  }
 
-	@Override
-	protected Dimension getDrawableSize( Dimension rv ) {
-		//Drawable size and surface size are the same for this render target
-		rv.setSize( this.size );
-		return rv;
-	}
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    //Drawable size and surface size are the same for this render target
+    rv.setSize(this.size);
+    return rv;
+  }
 
-	@Override
-	public GLAutoDrawable getGLAutoDrawable() {
-		return this.glPixelBuffer;
-	}
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    return this.glPixelBuffer;
+  }
 
-	public JPanel getJPanel() {
-		return this.jPanel;
-	}
+  public JPanel getJPanel() {
+    return this.jPanel;
+  }
 
-	public BufferedImage getImage() {
-		return this.image;
-	}
+  public BufferedImage getImage() {
+    return this.image;
+  }
 
-	public void captureImage( Observer observer ) {
-		if( this.image != null ) {
-			//pass
-		} else {
-			this.image = this.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
-		}
-		this.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
-		observer.handleImage( this.image, this.atIsUpSideDown[ 0 ] );
-		this.jPanel.repaint();
-	}
+  public void captureImage(Observer observer) {
+    if (this.image != null) {
+      //pass
+    } else {
+      this.image = this.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
+    }
+    this.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically(this.image, this.atIsUpSideDown);
+    observer.handleImage(this.image, this.atIsUpSideDown[0]);
+    this.jPanel.repaint();
+  }
 
-	@Override
-	protected void repaintIfAppropriate() {
-	}
+  @Override
+  protected void repaintIfAppropriate() {
+  }
 
-	@Override
-	public JPanel getAwtComponent() {
-		return this.jPanel;
-	}
+  @Override
+  public JPanel getAwtComponent() {
+    return this.jPanel;
+  }
 
-	@Override
-	public void repaint() {
-	}
+  @Override
+  public void repaint() {
+  }
 }

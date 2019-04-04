@@ -55,43 +55,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SnapDetailsToolPaletteCoreComposite extends ToolPaletteCoreComposite<SnapDetailsToolPaletteCoreView> {
-	private final BooleanState isGridShowingState = this.createBooleanState( "isGridShowingState", true );
-	private final BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( "gridSpacingState", new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
-	private final BooleanState isRotationState = this.createBooleanState( "isRotationState", true );
-	private final BoundedDoubleState angleState = this.createBoundedDoubleState( "angleState", new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
-	private final BooleanState isSnapToGroundEnabledState = this.createBooleanState( "isSnapToGroundEnabledState", true );
+  private final BooleanState isGridShowingState = this.createBooleanState("isGridShowingState", true);
+  private final BoundedDoubleState gridSpacingState = this.createBoundedDoubleState("gridSpacingState", new BoundedDoubleDetails().initialValue(0.5).minimum(0.05).maximum(10.0).stepSize(0.05));
+  private final BooleanState isRotationState = this.createBooleanState("isRotationState", true);
+  private final BoundedDoubleState angleState = this.createBoundedDoubleState("angleState", new BoundedDoubleDetails().initialValue(30.0).minimum(15.0).maximum(360.0).stepSize(15.0));
+  private final BooleanState isSnapToGroundEnabledState = this.createBooleanState("isSnapToGroundEnabledState", true);
 
-	public SnapDetailsToolPaletteCoreComposite() {
-		super( UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), Application.DOCUMENT_UI_GROUP, false );
-	}
+  public SnapDetailsToolPaletteCoreComposite() {
+    super(UUID.fromString("ce1cebee-b951-4294-b4d6-e5979b7d13a5"), Application.DOCUMENT_UI_GROUP, false);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	public BooleanState getIsGridShowingState() {
-		return this.isGridShowingState;
-	}
+  public BooleanState getIsGridShowingState() {
+    return this.isGridShowingState;
+  }
 
-	public BoundedDoubleState getGridSpacingState() {
-		return this.gridSpacingState;
-	}
+  public BoundedDoubleState getGridSpacingState() {
+    return this.gridSpacingState;
+  }
 
-	public BooleanState getIsRotationState() {
-		return this.isRotationState;
-	}
+  public BooleanState getIsRotationState() {
+    return this.isRotationState;
+  }
 
-	public BoundedDoubleState getAngleState() {
-		return this.angleState;
-	}
+  public BoundedDoubleState getAngleState() {
+    return this.angleState;
+  }
 
-	public BooleanState getIsSnapToGroundEnabledState() {
-		return this.isSnapToGroundEnabledState;
-	}
+  public BooleanState getIsSnapToGroundEnabledState() {
+    return this.isSnapToGroundEnabledState;
+  }
 
-	@Override
-	protected SnapDetailsToolPaletteCoreView createView() {
-		return new SnapDetailsToolPaletteCoreView( this );
-	}
+  @Override
+  protected SnapDetailsToolPaletteCoreView createView() {
+    return new SnapDetailsToolPaletteCoreView(this);
+  }
 }

@@ -62,65 +62,65 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
-	private static class JointUndoRunnable implements Runnable {
-		private final JointImp joint;
-		private final OrthogonalMatrix3x3 orientation;
+  private static class JointUndoRunnable implements Runnable {
+    private final JointImp joint;
+    private final OrthogonalMatrix3x3 orientation;
 
-		public JointUndoRunnable( JointImp joint ) {
-			this.joint = joint;
-			this.orientation = this.joint.getLocalTransformation().orientation;
-		}
+    public JointUndoRunnable(JointImp joint) {
+      this.joint = joint;
+      this.orientation = this.joint.getLocalTransformation().orientation;
+    }
 
-		public boolean isUndoNecessary() {
-			return this.joint.getOriginalOrientation().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( this.orientation.createUnitQuaternion() ) == false;
-		}
+    public boolean isUndoNecessary() {
+      return this.joint.getOriginalOrientation().isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon(this.orientation.createUnitQuaternion()) == false;
+    }
 
-		@Override
-		public void run() {
-			this.joint.animateLocalOrientationOnly( this.orientation, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY );
-		}
-	}
+    @Override
+    public void run() {
+      this.joint.animateLocalOrientationOnly(this.orientation, 1.0, TraditionalStyle.BEGIN_AND_END_GENTLY);
+    }
+  }
 
-	private transient JointUndoRunnable[] jointUndoRunnables;
+  private transient JointUndoRunnable[] jointUndoRunnables;
 
-	public AllJointLocalTransformationsEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  public AllJointLocalTransformationsEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof SJointedModel ) {
-			SJointedModel jointedModel = (SJointedModel)instance;
-			JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation( jointedModel );
-			Iterable<JointImp> joints = jointedModelImp.getJoints();
-			List<JointUndoRunnable> list = Lists.newLinkedList();
-			for( JointImp joint : joints ) {
-				JointUndoRunnable jointUndoRunnable = new JointUndoRunnable( joint );
-				if( jointUndoRunnable.isUndoNecessary() ) {
-					list.add( jointUndoRunnable );
-				}
-			}
-			this.jointUndoRunnables = ArrayUtilities.createArray( list, JointUndoRunnable.class );
-		} else {
-			this.jointUndoRunnables = new JointUndoRunnable[] {};
-		}
-	}
+  @Override
+  protected void preserveUndoInfo(Object instance, boolean isDo) {
+    if (instance instanceof SJointedModel) {
+      SJointedModel jointedModel = (SJointedModel) instance;
+      JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation(jointedModel);
+      Iterable<JointImp> joints = jointedModelImp.getJoints();
+      List<JointUndoRunnable> list = Lists.newLinkedList();
+      for (JointImp joint : joints) {
+        JointUndoRunnable jointUndoRunnable = new JointUndoRunnable(joint);
+        if (jointUndoRunnable.isUndoNecessary()) {
+          list.add(jointUndoRunnable);
+        }
+      }
+      this.jointUndoRunnables = ArrayUtilities.createArray(list, JointUndoRunnable.class);
+    } else {
+      this.jointUndoRunnables = new JointUndoRunnable[] {};
+    }
+  }
 
-	@Override
-	protected void undoInternal() {
-		switch( this.jointUndoRunnables.length ) {
-		case 0:
-			break;
-		case 1:
-			this.jointUndoRunnables[ 0 ].run();
-			break;
-		default:
-			new Thread() {
-				@Override
-				public void run() {
-					ThreadUtilities.doTogether( jointUndoRunnables );
-				}
-			}.start();
-		}
-	}
+  @Override
+  protected void undoInternal() {
+    switch (this.jointUndoRunnables.length) {
+    case 0:
+      break;
+    case 1:
+      this.jointUndoRunnables[0].run();
+      break;
+    default:
+      new Thread() {
+        @Override
+        public void run() {
+          ThreadUtilities.doTogether(jointUndoRunnables);
+        }
+      }.start();
+    }
+  }
 }

@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameParameterComposite extends RenameDeclarationComposite<UserParameter> {
-	private static Map<UserParameter, RenameParameterComposite> map = Maps.newHashMap();
+  private static Map<UserParameter, RenameParameterComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameParameterComposite getInstance( UserParameter parameter ) {
-		assert parameter != null;
-		RenameParameterComposite rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameParameterComposite( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
-	}
+  public static synchronized RenameParameterComposite getInstance(UserParameter parameter) {
+    assert parameter != null;
+    RenameParameterComposite rv = map.get(parameter);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RenameParameterComposite(parameter);
+      map.put(parameter, rv);
+    }
+    return rv;
+  }
 
-	private RenameParameterComposite( UserParameter parameter ) {
-		super( UUID.fromString( "bab60447-570c-49ac-aadb-9cba8d01bb13" ), new ParameterNameValidator( parameter ), parameter );
-	}
+  private RenameParameterComposite(UserParameter parameter) {
+    super(UUID.fromString("bab60447-570c-49ac-aadb-9cba8d01bb13"), new ParameterNameValidator(parameter), parameter);
+  }
 }

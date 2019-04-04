@@ -47,26 +47,27 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class EachInIterableTogether extends AbstractEachInTogether implements EachInIterableStatement {
-	public EachInIterableTogether() {
-	}
+  public EachInIterableTogether() {
+  }
 
-	public EachInIterableTogether( UserLocal item, Expression iterable, BlockStatement body ) {
-		super( item, body );
-	}
+  public EachInIterableTogether(UserLocal item, Expression iterable, BlockStatement body) {
+    super(item, body);
+  }
 
-	@Override
-	public ExpressionProperty getIterableProperty() {
-		return this.iterable;
-	}
+  @Override
+  public ExpressionProperty getIterableProperty() {
+    return this.iterable;
+  }
 
-	@Override public ExpressionProperty getArrayOrIterableProperty() {
-		return this.getIterableProperty();
-	}
+  @Override
+  public ExpressionProperty getArrayOrIterableProperty() {
+    return this.getIterableProperty();
+  }
 
-	public final ExpressionProperty iterable = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
+  public final ExpressionProperty iterable = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      throw new RuntimeException("todo");
+    }
+  };
 }

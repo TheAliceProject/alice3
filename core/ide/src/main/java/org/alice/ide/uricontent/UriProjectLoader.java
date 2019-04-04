@@ -53,22 +53,22 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public abstract class UriProjectLoader extends UriContentLoader<Project> {
-	public static UriProjectLoader createInstance( URI uri ) {
-		if( uri != null ) {
-			String scheme = uri.getScheme();
-			if( "file".equalsIgnoreCase( scheme ) ) {
-				File file = UriUtilities.getFile( uri );
-				return new FileProjectLoader( file );
-			} else if( "starterfile".equalsIgnoreCase( scheme ) ) {
-				return new StarterProjectFileLoader( uri );
-			} else if( TemplateUriState.Template.isValidUri( uri ) ) {
-				TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance( uri );
-				return new BlankSlateProjectLoader( template );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static UriProjectLoader createInstance(URI uri) {
+    if (uri != null) {
+      String scheme = uri.getScheme();
+      if ("file".equalsIgnoreCase(scheme)) {
+        File file = UriUtilities.getFile(uri);
+        return new FileProjectLoader(file);
+      } else if ("starterfile".equalsIgnoreCase(scheme)) {
+        return new StarterProjectFileLoader(uri);
+      } else if (TemplateUriState.Template.isValidUri(uri)) {
+        TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance(uri);
+        return new BlankSlateProjectLoader(template);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

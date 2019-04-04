@@ -58,78 +58,78 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F, B> {
-	private class InternalBlank extends CascadeBlank<B> {
-		InternalBlank() {
-		}
+  private class InternalBlank extends CascadeBlank<B> {
+    InternalBlank() {
+    }
 
-		@Override
-		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode ) {
-			AbstractCascadeMenuModel.this.updateBlankChildren( children, blankNode );
-		}
-	}
+    @Override
+    protected void updateChildren(List<CascadeBlankChild> children, BlankNode<B> blankNode) {
+      AbstractCascadeMenuModel.this.updateBlankChildren(children, blankNode);
+    }
+  }
 
-	private String menuItemText;
+  private String menuItemText;
 
-	private final List<InternalBlank> blanks = Collections.unmodifiableList( Lists.newArrayList( new InternalBlank() ) );
+  private final List<InternalBlank> blanks = Collections.unmodifiableList(Lists.newArrayList(new InternalBlank()));
 
-	public AbstractCascadeMenuModel( UUID id ) {
-		super( id );
-	}
+  public AbstractCascadeMenuModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public List<? extends CascadeBlank<B>> getBlanks() {
-		return this.blanks;
-	}
+  @Override
+  public List<? extends CascadeBlank<B>> getBlanks() {
+    return this.blanks;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.menuItemText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.menuItemText = this.findDefaultLocalizedText();
+  }
 
-	protected abstract void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<B> blankNode );
+  protected abstract void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<B> blankNode);
 
-	private AbstractItemNode<B, ?, ?> getSelectedFillInContext( ItemNode<? super F, B> itemNode ) {
-		BlankNode<B> blankNode = itemNode.getBlankStepAt( 0 );
-		return blankNode.getSelectedFillInContext();
-	}
+  private AbstractItemNode<B, ?, ?> getSelectedFillInContext(ItemNode<? super F, B> itemNode) {
+    BlankNode<B> blankNode = itemNode.getBlankStepAt(0);
+    return blankNode.getSelectedFillInContext();
+  }
 
-	protected abstract F convertValue( B value );
+  protected abstract F convertValue(B value);
 
-	@Override
-	public F getTransientValue( ItemNode<? super F, B> itemNode ) {
-		return this.convertValue( this.getSelectedFillInContext( itemNode ).getTransientValue() );
-	}
+  @Override
+  public F getTransientValue(ItemNode<? super F, B> itemNode) {
+    return this.convertValue(this.getSelectedFillInContext(itemNode).getTransientValue());
+  }
 
-	@Override
-	public F createValue( ItemNode<? super F, B> itemNode ) {
-		return this.convertValue( this.getSelectedFillInContext( itemNode ).createValue() );
-	}
+  @Override
+  public F createValue(ItemNode<? super F, B> itemNode) {
+    return this.convertValue(this.getSelectedFillInContext(itemNode).createValue());
+  }
 
-	protected boolean isBackedByIconProxy() {
-		return true;
-	}
+  protected boolean isBackedByIconProxy() {
+    return true;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super F, B> itemNode ) {
-		return new JLabel( this.menuItemText );
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super F, B> itemNode) {
+    return new JLabel(this.menuItemText);
+  }
 
-	@Override
-	public String getMenuItemText() {
-		if( this.isBackedByIconProxy() ) {
-			return super.getMenuItemText();
-		} else {
-			return this.menuItemText;
-		}
-	}
+  @Override
+  public String getMenuItemText() {
+    if (this.isBackedByIconProxy()) {
+      return super.getMenuItemText();
+    } else {
+      return this.menuItemText;
+    }
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super F, B> node ) {
-		if( this.isBackedByIconProxy() ) {
-			return super.getMenuItemIcon( node );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super F, B> node) {
+    if (this.isBackedByIconProxy()) {
+      return super.getMenuItemIcon(node);
+    } else {
+      return null;
+    }
+  }
 }

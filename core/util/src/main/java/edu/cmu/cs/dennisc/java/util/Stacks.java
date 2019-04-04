@@ -48,63 +48,63 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public class Stacks {
-	private Stacks() {
-		throw new Error();
-	}
+  private Stacks() {
+    throw new Error();
+  }
 
-	private static class StackImp<E> implements DStack<E> {
-		@Override
-		public E peek() {
-			return this.imp.peek();
-		}
+  private static class StackImp<E> implements DStack<E> {
+    @Override
+    public E peek() {
+      return this.imp.peek();
+    }
 
-		@Override
-		public E pop() {
-			return this.imp.pop();
-		}
+    @Override
+    public E pop() {
+      return this.imp.pop();
+    }
 
-		@Override
-		public void push( E item ) {
-			this.imp.push( item );
-		}
+    @Override
+    public void push(E item) {
+      this.imp.push(item);
+    }
 
-		@Override
-		public boolean isEmpty() {
-			return this.imp.isEmpty();
-		}
+    @Override
+    public boolean isEmpty() {
+      return this.imp.isEmpty();
+    }
 
-		@Override
-		public int size() {
-			return this.imp.size();
-		}
+    @Override
+    public int size() {
+      return this.imp.size();
+    }
 
-		@Override
-		public E get( int index ) {
-			return this.imp.get( index );
-		}
+    @Override
+    public E get(int index) {
+      return this.imp.get(index);
+    }
 
-		@Override
-		public void clear() {
-			this.imp.clear();
-		}
+    @Override
+    public void clear() {
+      this.imp.clear();
+    }
 
-		@Override
-		public void setSize( int size ) {
-			this.imp.setSize( size );
-		}
+    @Override
+    public void setSize(int size) {
+      this.imp.setSize(size);
+    }
 
-		private final Stack<E> imp = new Stack<E>();
-	}
+    private final Stack<E> imp = new Stack<E>();
+  }
 
-	public static <E> DStack<E> newStack() {
-		return new StackImp<E>();
-	}
+  public static <E> DStack<E> newStack() {
+    return new StackImp<E>();
+  }
 
-	public static <E, X extends E> DStack<E> newStack( X... items ) {
-		DStack<E> rv = newStack();
-		for( X item : items ) {
-			rv.push( item );
-		}
-		return rv;
-	}
+  public static <E, X extends E> DStack<E> newStack(X... items) {
+    DStack<E> rv = newStack();
+    for (X item : items) {
+      rv.push(item);
+    }
+    return rv;
+  }
 }

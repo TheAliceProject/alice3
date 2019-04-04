@@ -61,136 +61,133 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class BoundedNumberState<N extends Number> extends State<N> {
-	public static class AtomicChange<N extends Number> {
-		private N minimum = null;
-		private N maximum = null;
-		private N stepSize = null;
-		private N extent = null;
-		private N value = null;
-		private boolean isAdjusting;
+  public static class AtomicChange<N extends Number> {
+    private N minimum = null;
+    private N maximum = null;
+    private N stepSize = null;
+    private N extent = null;
+    private N value = null;
+    private boolean isAdjusting;
 
-		public AtomicChange<N> minimum( N minimum ) {
-			this.minimum = minimum;
-			return this;
-		}
+    public AtomicChange<N> minimum(N minimum) {
+      this.minimum = minimum;
+      return this;
+    }
 
-		public AtomicChange<N> maximum( N maximum ) {
-			this.maximum = maximum;
-			return this;
-		}
+    public AtomicChange<N> maximum(N maximum) {
+      this.maximum = maximum;
+      return this;
+    }
 
-		public AtomicChange<N> stepSize( N stepSize ) {
-			this.stepSize = stepSize;
-			return this;
-		}
+    public AtomicChange<N> stepSize(N stepSize) {
+      this.stepSize = stepSize;
+      return this;
+    }
 
-		public AtomicChange<N> extent( N extent ) {
-			this.extent = extent;
-			return this;
-		}
+    public AtomicChange<N> extent(N extent) {
+      this.extent = extent;
+      return this;
+    }
 
-		public AtomicChange<N> value( N value ) {
-			this.value = value;
-			return this;
-		}
+    public AtomicChange<N> value(N value) {
+      this.value = value;
+      return this;
+    }
 
-		public AtomicChange<N> isAdjusting( boolean isAdjusting ) {
-			this.isAdjusting = isAdjusting;
-			return this;
-		}
+    public AtomicChange<N> isAdjusting(boolean isAdjusting) {
+      this.isAdjusting = isAdjusting;
+      return this;
+    }
 
-		private void updateSwingModel( SwingModel<N> swingModel ) {
-			swingModel.setAll( this.value, this.minimum, this.maximum, this.stepSize, this.extent, this.isAdjusting );
-		}
-	}
+    private void updateSwingModel(SwingModel<N> swingModel) {
+      swingModel.setAll(this.value, this.minimum, this.maximum, this.stepSize, this.extent, this.isAdjusting);
+    }
+  }
 
-	public static interface SwingModel<N extends Number> {
-		public BoundedRangeModel getBoundedRangeModel();
+  public static interface SwingModel<N extends Number> {
+    public BoundedRangeModel getBoundedRangeModel();
 
-		public SpinnerNumberModel getSpinnerModel();
+    public SpinnerNumberModel getSpinnerModel();
 
-		public void setValue( N value );
+    public void setValue(N value);
 
-		public void setAll( N value, N minimum, N maximum, N stepSize, N extent, boolean isAdjusting );
-	}
+    public void setAll(N value, N minimum, N maximum, N stepSize, N extent, boolean isAdjusting);
+  }
 
-	private final SwingModel<N> swingModel;
-	private final ChangeListener changeListener = new ChangeListener() {
-		//private boolean previousValueIsAdjusting = false;
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			BoundedNumberState.this.handleStateChanged( e );
-		}
-	};
+  private final SwingModel<N> swingModel;
+  private final ChangeListener changeListener = new ChangeListener() {
+    //private boolean previousValueIsAdjusting = false;
+    @Override
+    public void stateChanged(ChangeEvent e) {
+      BoundedNumberState.this.handleStateChanged(e);
+    }
+  };
 
-	public BoundedNumberState( Group group, UUID id, N initialValue, SwingModel<N> swingModel ) {
-		super( group, id, initialValue );
-		this.swingModel = swingModel;
-		this.swingModel.getSpinnerModel().addChangeListener( this.changeListener );
-	}
+  public BoundedNumberState(Group group, UUID id, N initialValue, SwingModel<N> swingModel) {
+    super(group, id, initialValue);
+    this.swingModel = swingModel;
+    this.swingModel.getSpinnerModel().addChangeListener(this.changeListener);
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, N value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, N value) {
+    sb.append(value);
+  }
 
-	public SwingModel<N> getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel<N> getSwingModel() {
+    return this.swingModel;
+  }
 
+  private void commitAdjustingValue(N prevValue, N nextValue, UserActivity activity) {
+    commitStateEdit(prevValue, nextValue, activity);
+    fireChanged(prevValue, nextValue, true);
+  }
 
-	private void commitAdjustingValue( N prevValue, N nextValue, UserActivity activity ) {
-		commitStateEdit( prevValue, nextValue, activity );
-		fireChanged( prevValue, nextValue, true );
-	}
+  @Override
+  protected void adjustModelValueFromSwing(N nextValue, UserActivity activity) {
+    changeModelValue(previousValue, nextValue, () -> commitAdjustingValue(previousValue, nextValue, activity));
+  }
 
-	@Override
-	protected void adjustModelValueFromSwing( N nextValue, UserActivity activity ) {
-		changeModelValue( previousValue, nextValue, () -> commitAdjustingValue( previousValue, nextValue, activity ) );
-	}
+  private void handleStateChanged(ChangeEvent e) {
+    final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().newChildActivity();
+    ChangeEventTrigger.createUserInstance(activity, e);
+    changingValueFromSwing(getSwingValue(), swingModel.getBoundedRangeModel().getValueIsAdjusting(), activity);
+  }
 
-	private void handleStateChanged( ChangeEvent e ) {
-		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().newChildActivity();
-		ChangeEventTrigger.createUserInstance( activity, e );
-		changingValueFromSwing( getSwingValue(),
-														swingModel.getBoundedRangeModel().getValueIsAdjusting(),
-														activity );
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected void localize() {
-	}
+  public abstract N getMinimum();
 
-	public abstract N getMinimum();
+  public abstract void setMinimum(N minimum);
 
-	public abstract void setMinimum( N minimum );
+  public abstract N getMaximum();
 
-	public abstract N getMaximum();
+  public abstract void setMaximum(N maximum);
 
-	public abstract void setMaximum( N maximum );
+  public void setAll(AtomicChange<N> atomicChange) {
+    atomicChange.updateSwingModel(this.swingModel);
+    if (atomicChange.value != null) {
+      this.setCurrentTruthAndBeautyValue(atomicChange.value);
+    }
+  }
 
-	public void setAll( AtomicChange<N> atomicChange ) {
-		atomicChange.updateSwingModel( this.swingModel );
-		if( atomicChange.value != null ) {
-			this.setCurrentTruthAndBeautyValue( atomicChange.value );
-		}
-	}
+  @Override
+  protected void setSwingValue(N nextValue) {
+    this.swingModel.setValue(nextValue);
+  }
 
-	@Override
-	protected void setSwingValue( N nextValue ) {
-		this.swingModel.setValue( nextValue );
-	}
+  public Slider createSlider() {
+    return new Slider(this);
+  }
 
-	public Slider createSlider() {
-		return new Slider( this );
-	}
-
-	public Spinner createSpinner() {
-		return new Spinner( this );
-	}
+  public Spinner createSpinner() {
+    return new Spinner(this);
+  }
 }

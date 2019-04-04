@@ -51,76 +51,76 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public final class StateEdit<T> extends AbstractEdit<State<T>> {
-	private T prevValue;
-	private T nextValue;
+  private T prevValue;
+  private T nextValue;
 
-	public StateEdit( UserActivity userActivity, T prevValue, T nextValue ) {
-		super( userActivity );
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
-	}
+  public StateEdit(UserActivity userActivity, T prevValue, T nextValue) {
+    super(userActivity);
+    this.prevValue = prevValue;
+    this.nextValue = nextValue;
+  }
 
-	public StateEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		State<T> state = this.getModel();
-		this.prevValue = state.decodeValue( binaryDecoder );
-		this.nextValue = state.decodeValue( binaryDecoder );
-	}
+  public StateEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    State<T> state = this.getModel();
+    this.prevValue = state.decodeValue(binaryDecoder);
+    this.nextValue = state.decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public final void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		State<T> state = this.getModel();
-		state.encodeValue( binaryEncoder, this.prevValue );
-		state.encodeValue( binaryEncoder, this.nextValue );
-	}
+  @Override
+  public final void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    State<T> state = this.getModel();
+    state.encodeValue(binaryEncoder, this.prevValue);
+    state.encodeValue(binaryEncoder, this.nextValue);
+  }
 
-	public final T getPreviousValue() {
-		return this.prevValue;
-	}
+  public final T getPreviousValue() {
+    return this.prevValue;
+  }
 
-	public final T getNextValue() {
-		return this.nextValue;
-	}
+  public final T getNextValue() {
+    return this.nextValue;
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "select " );
-		State<T> state = this.getModel();
-		if( state != null ) {
-			state.appendRepresentation( rv, this.prevValue );
-		} else {
-			rv.append( this.prevValue );
-		}
-		rv.append( " ===> " );
-		if( state != null ) {
-			state.appendRepresentation( rv, this.nextValue );
-		} else {
-			rv.append( this.nextValue );
-		}
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("select ");
+    State<T> state = this.getModel();
+    if (state != null) {
+      state.appendRepresentation(rv, this.prevValue);
+    } else {
+      rv.append(this.prevValue);
+    }
+    rv.append(" ===> ");
+    if (state != null) {
+      state.appendRepresentation(rv, this.nextValue);
+    } else {
+      rv.append(this.nextValue);
+    }
+  }
 
-	@Override
-	public final boolean canRedo() {
-		return this.getModel() != null;
-	}
+  @Override
+  public final boolean canRedo() {
+    return this.getModel() != null;
+  }
 
-	@Override
-	public final boolean canUndo() {
-		return this.getModel() != null;
-	}
+  @Override
+  public final boolean canUndo() {
+    return this.getModel() != null;
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			//pass
-		} else {
-			this.getModel().changeValueFromEdit( this.getNextValue() );
-		}
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      //pass
+    } else {
+      this.getModel().changeValueFromEdit(this.getNextValue());
+    }
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.getModel().changeValueFromEdit( this.getPreviousValue() );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.getModel().changeValueFromEdit(this.getPreviousValue());
+  }
 }

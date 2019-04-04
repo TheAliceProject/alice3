@@ -59,61 +59,61 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThreadIteratingOperation {
-	private static class SingletonHolder {
-		private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.ADULT );
-		private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.CHILD );
-		private static DeclareFieldFromPersonResourceIteratingOperation toddlerInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.TODDLER );
-		private static DeclareFieldFromPersonResourceIteratingOperation teenInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.TEEN );
-		private static DeclareFieldFromPersonResourceIteratingOperation elderInstance = new DeclareFieldFromPersonResourceIteratingOperation( LifeStage.ELDER );
-	}
+  private static class SingletonHolder {
+    private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation(LifeStage.ADULT);
+    private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation(LifeStage.CHILD);
+    private static DeclareFieldFromPersonResourceIteratingOperation toddlerInstance = new DeclareFieldFromPersonResourceIteratingOperation(LifeStage.TODDLER);
+    private static DeclareFieldFromPersonResourceIteratingOperation teenInstance = new DeclareFieldFromPersonResourceIteratingOperation(LifeStage.TEEN);
+    private static DeclareFieldFromPersonResourceIteratingOperation elderInstance = new DeclareFieldFromPersonResourceIteratingOperation(LifeStage.ELDER);
+  }
 
-	public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage( LifeStage lifeStage ) {
-		if( lifeStage == LifeStage.ELDER ) {
-			return SingletonHolder.elderInstance;
-		} else if( lifeStage == LifeStage.ADULT ) {
-			return SingletonHolder.adultInstance;
-		} else if( lifeStage == LifeStage.TEEN ) {
-			return SingletonHolder.teenInstance;
-		} else if( lifeStage == LifeStage.CHILD ) {
-			return SingletonHolder.childInstance;
-		} else {
-			return SingletonHolder.toddlerInstance;
-		}
-	}
+  public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage(LifeStage lifeStage) {
+    if (lifeStage == LifeStage.ELDER) {
+      return SingletonHolder.elderInstance;
+    } else if (lifeStage == LifeStage.ADULT) {
+      return SingletonHolder.adultInstance;
+    } else if (lifeStage == LifeStage.TEEN) {
+      return SingletonHolder.teenInstance;
+    } else if (lifeStage == LifeStage.CHILD) {
+      return SingletonHolder.childInstance;
+    } else {
+      return SingletonHolder.toddlerInstance;
+    }
+  }
 
-	private final LifeStage lifeStage;
+  private final LifeStage lifeStage;
 
-	private DeclareFieldFromPersonResourceIteratingOperation( LifeStage lifeStage ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
-		this.lifeStage = lifeStage;
-	}
+  private DeclareFieldFromPersonResourceIteratingOperation(LifeStage lifeStage) {
+    super(Application.PROJECT_GROUP, UUID.fromString("0ec73a7c-f272-4ff1-87eb-f5f25e480ace"));
+    this.lifeStage = lifeStage;
+  }
 
-	public LifeStage getLifeStage() {
-		return this.lifeStage;
-	}
+  public LifeStage getLifeStage() {
+    return this.lifeStage;
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		return finishedSteps.size() < 2;
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    return finishedSteps.size() < 2;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		switch( finishedSteps.size() ) {
-		case 0:
-			return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
-		case 1:
-			UserActivity prevSubStep = finishedSteps.get( 0 );
-			if( prevSubStep.getProducedValue() != null ) {
-				InstanceCreation instanceCreation = (InstanceCreation)prevSubStep.getProducedValue();
-				AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
-				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
-				return addPersonResourceManagedFieldComposite.getLaunchOperation();
-			} else {
-				return null;
-			}
-		default:
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    switch (finishedSteps.size()) {
+    case 0:
+      return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter(this.lifeStage);
+    case 1:
+      UserActivity prevSubStep = finishedSteps.get(0);
+      if (prevSubStep.getProducedValue() != null) {
+        InstanceCreation instanceCreation = (InstanceCreation) prevSubStep.getProducedValue();
+        AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
+        addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation(instanceCreation);
+        return addPersonResourceManagedFieldComposite.getLaunchOperation();
+      } else {
+        return null;
+      }
+    default:
+      return null;
+    }
+  }
 }

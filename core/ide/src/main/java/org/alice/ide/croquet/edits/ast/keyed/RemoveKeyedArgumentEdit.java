@@ -54,28 +54,28 @@ import org.lgna.project.ast.NodeUtilities;
  * @author Dennis Cosgrove
  */
 public class RemoveKeyedArgumentEdit extends AbstractEdit<RemoveKeyedArgumentOperation> {
-	public RemoveKeyedArgumentEdit( UserActivity userActivity) {
-		super( userActivity );
-	}
+  public RemoveKeyedArgumentEdit(UserActivity userActivity) {
+    super(userActivity);
+  }
 
-	public RemoveKeyedArgumentEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public RemoveKeyedArgumentEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		int index = this.getModel().getArgumentListProperty().indexOf( this.getModel().getArgument() );
-		this.getModel().getArgumentListProperty().remove( index );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    int index = this.getModel().getArgumentListProperty().indexOf(this.getModel().getArgument());
+    this.getModel().getArgumentListProperty().remove(index);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.getModel().getArgumentListProperty().add( this.getModel().getArgument() );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.getModel().getArgumentListProperty().add(this.getModel().getArgument());
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "add: " );
-		NodeUtilities.safeAppendRepr( rv, this.getModel().getArgument(), Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("add: ");
+    NodeUtilities.safeAppendRepr(rv, this.getModel().getArgument(), Application.getLocale());
+  }
 }

@@ -65,103 +65,103 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ImportTabView extends GalleryTabView {
-	private final Map<URI, GalleryDragComponent> mapUriToDragComponent = Maps.newHashMap();
+  private final Map<URI, GalleryDragComponent> mapUriToDragComponent = Maps.newHashMap();
 
-	public synchronized GalleryDragComponent getGalleryDragComponent( URI uri ) {
-		GalleryDragComponent rv = this.mapUriToDragComponent.get( uri );
-		if( rv != null ) {
-			//pass
-		} else {
-			UriGalleryDragModel dragModel = UriGalleryDragModel.getInstance( uri );
-			rv = new GalleryDragComponent( dragModel );
-			this.mapUriToDragComponent.put( uri, rv );
-		}
-		return rv;
-	}
+  public synchronized GalleryDragComponent getGalleryDragComponent(URI uri) {
+    GalleryDragComponent rv = this.mapUriToDragComponent.get(uri);
+    if (rv != null) {
+      //pass
+    } else {
+      UriGalleryDragModel dragModel = UriGalleryDragModel.getInstance(uri);
+      rv = new GalleryDragComponent(dragModel);
+      this.mapUriToDragComponent.put(uri, rv);
+    }
+    return rv;
+  }
 
-	private class DragComponentsView extends LineAxisPanel {
-		@Override
-		protected void internalRefresh() {
-			super.internalRefresh();
-			this.removeAllComponents();
-			File directory = getDirectory();
-			if( directory != null ) {
-				File[] files = FileUtilities.listFiles( directory, IoUtilities.TYPE_EXTENSION );
-				if( ( files != null ) && ( files.length > 0 ) ) {
-					for( File file : files ) {
-						this.addComponent( getGalleryDragComponent( file.toURI() ) );
-					}
-				} else {
-					this.addComponent( noFilesLabel );
-				}
-			} else {
-				this.addComponent( notDirectoryLabel );
-			}
-		}
-	}
+  private class DragComponentsView extends LineAxisPanel {
+    @Override
+    protected void internalRefresh() {
+      super.internalRefresh();
+      this.removeAllComponents();
+      File directory = getDirectory();
+      if (directory != null) {
+        File[] files = FileUtilities.listFiles(directory, IoUtilities.TYPE_EXTENSION);
+        if ((files != null) && (files.length > 0)) {
+          for (File file : files) {
+            this.addComponent(getGalleryDragComponent(file.toURI()));
+          }
+        } else {
+          this.addComponent(noFilesLabel);
+        }
+      } else {
+        this.addComponent(notDirectoryLabel);
+      }
+    }
+  }
 
-	private final ValueListener<String> directoryListener = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			handleDirectoryChanged();
-		}
-	};
-	private final AbstractLabel notDirectoryLabel = new Label( "", TextPosture.OBLIQUE );
-	private final AbstractLabel noFilesLabel = new Label( "", TextPosture.OBLIQUE );
-	private final DragComponentsView dragComponentsView = new DragComponentsView();
+  private final ValueListener<String> directoryListener = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      handleDirectoryChanged();
+    }
+  };
+  private final AbstractLabel notDirectoryLabel = new Label("", TextPosture.OBLIQUE);
+  private final AbstractLabel noFilesLabel = new Label("", TextPosture.OBLIQUE);
+  private final DragComponentsView dragComponentsView = new DragComponentsView();
 
-	public ImportTabView( ImportTab composite ) {
-		super( composite );
-		//this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		//this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+  public ImportTabView(ImportTab composite) {
+    super(composite);
+    //this.notDirectoryLabel = composite.getNotDirectoryText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+    //this.noFilesLabel = composite.getNoFilesText().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
-		MigPanel panel = new MigPanel( null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]" );
-		panel.addComponent( composite.getDirectoryState().getSidekickLabel().createLabel() );
-		panel.addComponent( composite.getDirectoryState().createTextField(), "growx 100" );
-		panel.addComponent( composite.getBrowseOperation().createButton() );
-		panel.addComponent( composite.getRestoreToDefaultOperation().createButton(), "wrap" );
-		ScrollPane scrollPane = createGalleryScrollPane( this.dragComponentsView );
-		panel.addComponent( scrollPane, "span 4, wrap" );
-		this.addCenterComponent( panel );
-		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.dragComponentsView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.notDirectoryLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.noFilesLabel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-	}
+    MigPanel panel = new MigPanel(null, "insets 0, fill", "[shrink]4[grow]4[shrink]16[shrink]");
+    panel.addComponent(composite.getDirectoryState().getSidekickLabel().createLabel());
+    panel.addComponent(composite.getDirectoryState().createTextField(), "growx 100");
+    panel.addComponent(composite.getBrowseOperation().createButton());
+    panel.addComponent(composite.getRestoreToDefaultOperation().createButton(), "wrap");
+    ScrollPane scrollPane = createGalleryScrollPane(this.dragComponentsView);
+    panel.addComponent(scrollPane, "span 4, wrap");
+    this.addCenterComponent(panel);
+    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    this.dragComponentsView.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    this.notDirectoryLabel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+    this.noFilesLabel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+  }
 
-	private void handleDirectoryChanged() {
-		this.dragComponentsView.refreshLater();
-		ImportTab importTab = (ImportTab)this.getComposite();
-		importTab.getRestoreToDefaultOperation().setEnabled( importTab.isDirectoryStateSetToDefault() == false );
+  private void handleDirectoryChanged() {
+    this.dragComponentsView.refreshLater();
+    ImportTab importTab = (ImportTab) this.getComposite();
+    importTab.getRestoreToDefaultOperation().setEnabled(importTab.isDirectoryStateSetToDefault() == false);
 
-		String path = importTab.getDirectoryState().getValue();
-		this.notDirectoryLabel.setText( importTab.getNotDirectoryText().getText().replace( "</directory/>", path ) );
-		this.noFilesLabel.setText( importTab.getNoFilesText().getText().replace( "</directory/>", path ) );
-	}
+    String path = importTab.getDirectoryState().getValue();
+    this.notDirectoryLabel.setText(importTab.getNotDirectoryText().getText().replace("</directory/>", path));
+    this.noFilesLabel.setText(importTab.getNoFilesText().getText().replace("</directory/>", path));
+  }
 
-	private File getDirectory() {
-		ImportTab importTab = (ImportTab)this.getComposite();
-		String path = importTab.getDirectoryState().getValue();
-		File file = new File( path );
-		if( file.isDirectory() ) {
-			return file;
-		} else {
-			return null;
-		}
-	}
+  private File getDirectory() {
+    ImportTab importTab = (ImportTab) this.getComposite();
+    String path = importTab.getDirectoryState().getValue();
+    File file = new File(path);
+    if (file.isDirectory()) {
+      return file;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		ImportTab importTab = (ImportTab)this.getComposite();
-		importTab.getDirectoryState().addAndInvokeNewSchoolValueListener( this.directoryListener );
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    ImportTab importTab = (ImportTab) this.getComposite();
+    importTab.getDirectoryState().addAndInvokeNewSchoolValueListener(this.directoryListener);
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		ImportTab importTab = (ImportTab)this.getComposite();
-		importTab.getDirectoryState().removeNewSchoolValueListener( this.directoryListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    ImportTab importTab = (ImportTab) this.getComposite();
+    importTab.getDirectoryState().removeNewSchoolValueListener(this.directoryListener);
+    super.handleCompositePostDeactivation();
+  }
 
 }

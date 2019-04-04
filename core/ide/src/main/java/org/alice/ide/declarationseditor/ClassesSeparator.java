@@ -53,27 +53,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ClassesSeparator extends LabelMenuSeparatorModel {
-	private static class SingletonHolder {
-		private static ClassesSeparator instance = new ClassesSeparator();
-	}
+  private static class SingletonHolder {
+    private static ClassesSeparator instance = new ClassesSeparator();
+  }
 
-	public static ClassesSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ClassesSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ClassesSeparator() {
-		super( UUID.fromString( "4fefc3e8-3440-4177-b644-48551de6bb33" ) );
-	}
+  private ClassesSeparator() {
+    super(UUID.fromString("4fefc3e8-3440-4177-b644-48551de6bb33"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		String text = super.getName();
-		this.setIcon( new TextIcon( text, Color.GRAY, new Font( null, Font.ITALIC, 12 ) ) );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    String text = super.getName();
+    this.setIcon(new TextIcon(text, Color.GRAY, new Font(null, Font.ITALIC, 12)));
+  }
 
-	@Override
-	public String getName() {
-		return null;
-	}
+  @Override
+  public String getName() {
+    return null;
+  }
 }

@@ -61,44 +61,44 @@ import java.util.List;
  */
 public class SimsExpressionCreator extends ExpressionCreator {
 
-	private Expression createOutfitExpression( Outfit outfit ) throws CannotCreateExpressionException {
-		if( outfit != null ) {
-			if( outfit instanceof TopAndBottomOutfit<?, ?> ) {
-				TopAndBottomOutfit<?, ?> topAndBottomOutfit = (TopAndBottomOutfit<?, ?>)outfit;
-				TopPiece topPiece = topAndBottomOutfit.getTopPiece();
-				BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
+  private Expression createOutfitExpression(Outfit outfit) throws CannotCreateExpressionException {
+    if (outfit != null) {
+      if (outfit instanceof TopAndBottomOutfit<?, ?>) {
+        TopAndBottomOutfit<?, ?> topAndBottomOutfit = (TopAndBottomOutfit<?, ?>) outfit;
+        TopPiece topPiece = topAndBottomOutfit.getTopPiece();
+        BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
 
-				JavaType type = JavaType.getInstance( outfit.getClass() );
-				JavaConstructor constructor = type.getDeclaredConstructors().get( 0 );
-				List<JavaConstructorParameter> parameters = constructor.getRequiredParameters();
-				if( parameters.size() == 2 ) {
-					if( parameters.get( 0 ).getValueType().isAssignableFrom( topPiece.getClass() ) ) {
-						if( parameters.get( 1 ).getValueType().isAssignableFrom( bottomPiece.getClass() ) ) {
-							Expression topExpression = this.createExpression( topPiece );
-							Expression bottomExpression = this.createExpression( bottomPiece );
-							return AstUtilities.createInstanceCreation( constructor, topExpression, bottomExpression );
-						}
-					}
-				}
-				throw new CannotCreateExpressionException( outfit );
-			} else {
-				if( outfit.getClass().isEnum() ) {
-					return this.createEnumExpression( (Enum<? extends Outfit>)outfit );
-				} else {
-					throw new CannotCreateExpressionException( outfit );
-				}
-			}
-		} else {
-			return new NullLiteral();
-		}
-	}
+        JavaType type = JavaType.getInstance(outfit.getClass());
+        JavaConstructor constructor = type.getDeclaredConstructors().get(0);
+        List<JavaConstructorParameter> parameters = constructor.getRequiredParameters();
+        if (parameters.size() == 2) {
+          if (parameters.get(0).getValueType().isAssignableFrom(topPiece.getClass())) {
+            if (parameters.get(1).getValueType().isAssignableFrom(bottomPiece.getClass())) {
+              Expression topExpression = this.createExpression(topPiece);
+              Expression bottomExpression = this.createExpression(bottomPiece);
+              return AstUtilities.createInstanceCreation(constructor, topExpression, bottomExpression);
+            }
+          }
+        }
+        throw new CannotCreateExpressionException(outfit);
+      } else {
+        if (outfit.getClass().isEnum()) {
+          return this.createEnumExpression((Enum<? extends Outfit>) outfit);
+        } else {
+          throw new CannotCreateExpressionException(outfit);
+        }
+      }
+    } else {
+      return new NullLiteral();
+    }
+  }
 
-	@Override
-	protected Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
-		if( value instanceof TopAndBottomOutfit<?, ?> ) {
-			return this.createOutfitExpression( (TopAndBottomOutfit<?, ?>)value );
-		} else {
-			return super.createCustomExpression( value );
-		}
-	}
+  @Override
+  protected Expression createCustomExpression(Object value) throws CannotCreateExpressionException {
+    if (value instanceof TopAndBottomOutfit<?, ?>) {
+      return this.createOutfitExpression((TopAndBottomOutfit<?, ?>) value);
+    } else {
+      return super.createCustomExpression(value);
+    }
+  }
 }

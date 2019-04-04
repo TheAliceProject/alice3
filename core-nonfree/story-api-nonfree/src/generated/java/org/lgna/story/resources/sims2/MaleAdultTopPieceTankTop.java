@@ -44,14 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultTopPieceTankTop implements MaleAdultTopPiece {
-	WHITE_BASIC,
-	WHITE_DIRTY,
-	ORANGE_GREY,
-	BLACK_HEART,
-	BLUE,
-	WHITE_BLACK,
-	GREEN,
-	RED_BASIC,
-	GREY_YELLOW;
+  WHITE_BASIC, WHITE_DIRTY, ORANGE_GREY, BLACK_HEART, BLUE, WHITE_BLACK, GREEN, RED_BASIC, GREY_YELLOW
 
 }

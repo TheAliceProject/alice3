@@ -55,49 +55,49 @@ import org.lgna.story.resources.JointedModelResource;
  * @author Dennis Cosgrove
  */
 public abstract class SJointedModel extends SModel {
-	@Override
-	/* package-private */abstract JointedModelImp getImplementation();
+  @Override
+  /* package-private */ abstract JointedModelImp getImplementation();
 
-	//todo: make protected
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public SJoint getJoint( JointId jointId ) {
-		return SJoint.getJoint( this, jointId );
-	}
+  //todo: make protected
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SJoint getJoint(JointId jointId) {
+    return SJoint.getJoint(this, jointId);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public SJoint getJoint( String jointName ) {
-		return SJoint.getJoint( this, jointName );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SJoint getJoint(String jointName) {
+    return SJoint.getJoint(this, jointName);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public SJoint[] getJointArray( JointId[] jointIdArray ) {
-		return SJoint.getJointArray( this, jointIdArray );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SJoint[] getJointArray(JointId[] jointIdArray) {
+    return SJoint.getJointArray(this, jointIdArray);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public SJoint[] getJointArray( JointArrayId jointArrayId ) {
-		return SJoint.getJointArray( this, jointArrayId );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SJoint[] getJointArray(JointArrayId jointArrayId) {
+    return SJoint.getJointArray(this, jointArrayId);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public void strikePose( Pose<? extends SJointedModel> pose, StrikePose.Detail... details ) {
-		double duration = Duration.getValue( details );
-		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
-		this.getImplementation().strikePose( pose, duration, style );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public void strikePose(Pose<? extends SJointedModel> pose, StrikePose.Detail... details) {
+    double duration = Duration.getValue(details);
+    edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue(details).getInternal();
+    this.getImplementation().strikePose(pose, duration, style);
+  }
 
-	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
-		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  public void straightenOutJoints(StraightenOutJoints.Detail... details) {
+    this.getImplementation().animateStraightenOutJoints(Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public JointedModelResource getJointedModelResource() {
-		return this.getImplementation().getResource();
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public JointedModelResource getJointedModelResource() {
+    return this.getImplementation().getResource();
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	protected void setJointedModelResource( JointedModelResource resource ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( resource, 0 );
-		this.getImplementation().setNewResource( resource );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  protected void setJointedModelResource(JointedModelResource resource) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(resource, 0);
+    this.getImplementation().setNewResource(resource);
+  }
 }

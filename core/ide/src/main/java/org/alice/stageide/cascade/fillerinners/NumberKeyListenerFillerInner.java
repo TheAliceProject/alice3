@@ -52,12 +52,12 @@ import org.lgna.story.event.NumberKeyPressListener;
 import java.util.List;
 
 public class NumberKeyListenerFillerInner extends ExpressionFillerInner {
-	public NumberKeyListenerFillerInner() {
-		super( NumberKeyPressListener.class );
-	}
+  public NumberKeyListenerFillerInner() {
+    super(NumberKeyPressListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( NumberKeyAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(NumberKeyAdapterFillIn.getInstance());
+  }
 }

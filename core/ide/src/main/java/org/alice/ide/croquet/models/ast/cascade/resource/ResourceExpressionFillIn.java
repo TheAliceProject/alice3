@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceExpressionFillIn<T extends Resource> extends ExpressionFillInWithoutBlanks<ResourceExpression> {
-	private final ResourceExpression transientValue;
+  private final ResourceExpression transientValue;
 
-	public ResourceExpressionFillIn( UUID id, Class<T> resourceCls, T resource ) {
-		super( UUID.fromString( "5e4bec2b-83f7-4702-832f-ec38f0b61828" ) );
-		this.transientValue = new ResourceExpression( resourceCls, resource );
-	}
+  public ResourceExpressionFillIn(UUID id, Class<T> resourceCls, T resource) {
+    super(UUID.fromString("5e4bec2b-83f7-4702-832f-ec38f0b61828"));
+    this.transientValue = new ResourceExpression(resourceCls, resource);
+  }
 
-	@Override
-	public final ResourceExpression createValue( ItemNode<? super ResourceExpression, Void> node ) {
-		return new ResourceExpression( this.transientValue.getType(), this.transientValue.resource.getValue() );
-	}
+  @Override
+  public final ResourceExpression createValue(ItemNode<? super ResourceExpression, Void> node) {
+    return new ResourceExpression(this.transientValue.getType(), this.transientValue.resource.getValue());
+  }
 
-	@Override
-	public final ResourceExpression getTransientValue( ItemNode<? super ResourceExpression, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public final ResourceExpression getTransientValue(ItemNode<? super ResourceExpression, Void> node) {
+    return this.transientValue;
+  }
 }

@@ -62,68 +62,68 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIteratingOperation {
-	private static class SingletonHolder {
-		private static PersonResourceKeyUriIteratingOperation instance = new PersonResourceKeyUriIteratingOperation();
-	}
+  private static class SingletonHolder {
+    private static PersonResourceKeyUriIteratingOperation instance = new PersonResourceKeyUriIteratingOperation();
+  }
 
-	public static PersonResourceKeyUriIteratingOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PersonResourceKeyUriIteratingOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PersonResourceKeyUriIteratingOperation() {
-		super( UUID.fromString( "587d7ef6-a811-43ff-9e73-7fd4bb198ce6" ) );
-	}
+  private PersonResourceKeyUriIteratingOperation() {
+    super(UUID.fromString("587d7ef6-a811-43ff-9e73-7fd4bb198ce6"));
+  }
 
-	@Override
-	protected int getStepCount() {
-		return 3;
-	}
+  @Override
+  protected int getStepCount() {
+    return 3;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-		switch( finishedSteps.size() ) {
-		case 0:
-			Class<?> resourceCls = personResourceKey.getModelResourceCls();
-			LifeStage lifeStage;
-			if( ToddlerPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = LifeStage.TODDLER;
-			} else if( ChildPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = LifeStage.CHILD;
-			} else if( TeenPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = LifeStage.TEEN;
-			} else if( AdultPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = LifeStage.ADULT;
-			} else if( ElderPersonResource.class.isAssignableFrom( resourceCls ) ) {
-				lifeStage = LifeStage.ELDER;
-			} else {
-				lifeStage = null;
-			}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    PersonResourceKey personResourceKey = (PersonResourceKey) this.resourceKey;
+    switch (finishedSteps.size()) {
+    case 0:
+      Class<?> resourceCls = personResourceKey.getModelResourceCls();
+      LifeStage lifeStage;
+      if (ToddlerPersonResource.class.isAssignableFrom(resourceCls)) {
+        lifeStage = LifeStage.TODDLER;
+      } else if (ChildPersonResource.class.isAssignableFrom(resourceCls)) {
+        lifeStage = LifeStage.CHILD;
+      } else if (TeenPersonResource.class.isAssignableFrom(resourceCls)) {
+        lifeStage = LifeStage.TEEN;
+      } else if (AdultPersonResource.class.isAssignableFrom(resourceCls)) {
+        lifeStage = LifeStage.ADULT;
+      } else if (ElderPersonResource.class.isAssignableFrom(resourceCls)) {
+        lifeStage = LifeStage.ELDER;
+      } else {
+        lifeStage = null;
+      }
 
-			PersonResourceComposite personResourceComposite = PersonResourceComposite.getInstance();
-			if( lifeStage != null ) {
-				personResourceComposite.EPIC_HACK_disableLifeStageStateOneTime();
-			}
-			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
-		case 1:
-			UserActivity prevSubStep = finishedSteps.get( 0 );
-			if( prevSubStep.getProducedValue() != null ) {
-				Object value = prevSubStep.getProducedValue();
-				if( value instanceof InstanceCreation ) {
-					InstanceCreation instanceCreation = (InstanceCreation)value;
-					AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
-					addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
-					return addPersonResourceManagedFieldComposite.getLaunchOperation();
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		case 2:
-			return this.getMergeTypeOperation();
-		default:
-			return null;
-		}
-	}
+      PersonResourceComposite personResourceComposite = PersonResourceComposite.getInstance();
+      if (lifeStage != null) {
+        personResourceComposite.EPIC_HACK_disableLifeStageStateOneTime();
+      }
+      return personResourceComposite.getRandomPersonExpressionValueConverter(lifeStage);
+    case 1:
+      UserActivity prevSubStep = finishedSteps.get(0);
+      if (prevSubStep.getProducedValue() != null) {
+        Object value = prevSubStep.getProducedValue();
+        if (value instanceof InstanceCreation) {
+          InstanceCreation instanceCreation = (InstanceCreation) value;
+          AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
+          addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation(instanceCreation);
+          return addPersonResourceManagedFieldComposite.getLaunchOperation();
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    case 2:
+      return this.getMergeTypeOperation();
+    default:
+      return null;
+    }
+  }
 }

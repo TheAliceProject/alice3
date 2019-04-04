@@ -49,24 +49,24 @@ import org.lgna.project.ast.JavaType;
  * @author Dennis Cosgrove
  */
 public class PreviousValueExpression extends IdeExpression {
-	public PreviousValueExpression( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  public PreviousValueExpression(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	public PreviousValueExpression( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public PreviousValueExpression(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//		org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
-		//		if( previousExpression != null ) {
-		//			return previousExpression.getType();
-		//		} else {
-		//			return null;
-		//		}
-		return this.type;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //    org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
+    //    if( previousExpression != null ) {
+    //      return previousExpression.getType();
+    //    } else {
+    //      return null;
+    //    }
+    return this.type;
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 }

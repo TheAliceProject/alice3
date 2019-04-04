@@ -58,36 +58,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConditionalExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<ConditionalInfixExpression> {
-	private static Map<ConditionalInfixExpression.Operator, ConditionalExpressionLeftAndRightOperandsFillIn> map = Maps.newHashMap();
+  private static Map<ConditionalInfixExpression.Operator, ConditionalExpressionLeftAndRightOperandsFillIn> map = Maps.newHashMap();
 
-	public static ConditionalExpressionLeftAndRightOperandsFillIn getInstance( ConditionalInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			ConditionalExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConditionalExpressionLeftAndRightOperandsFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static ConditionalExpressionLeftAndRightOperandsFillIn getInstance(ConditionalInfixExpression.Operator operator) {
+    synchronized (map) {
+      ConditionalExpressionLeftAndRightOperandsFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ConditionalExpressionLeftAndRightOperandsFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final ConditionalInfixExpression transientValue;
+  private final ConditionalInfixExpression transientValue;
 
-	private ConditionalExpressionLeftAndRightOperandsFillIn( ConditionalInfixExpression.Operator operator ) {
-		super( UUID.fromString( "f7faea38-4071-4918-bea0-98971ddbd7a7" ), ExpressionBlank.createBlanks( Boolean.class, Boolean.class ) );
-		this.transientValue = IncompleteAstUtilities.createIncompleteConditionalInfixExpression( operator );
-	}
+  private ConditionalExpressionLeftAndRightOperandsFillIn(ConditionalInfixExpression.Operator operator) {
+    super(UUID.fromString("f7faea38-4071-4918-bea0-98971ddbd7a7"), ExpressionBlank.createBlanks(Boolean.class, Boolean.class));
+    this.transientValue = IncompleteAstUtilities.createIncompleteConditionalInfixExpression(operator);
+  }
 
-	@Override
-	protected ConditionalInfixExpression createValue( Expression[] expressions ) {
-		assert expressions.length == 2;
-		return new ConditionalInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ] );
-	}
+  @Override
+  protected ConditionalInfixExpression createValue(Expression[] expressions) {
+    assert expressions.length == 2;
+    return new ConditionalInfixExpression(expressions[0], this.transientValue.operator.getValue(), expressions[1]);
+  }
 
-	@Override
-	public ConditionalInfixExpression getTransientValue( ItemNode<? super ConditionalInfixExpression, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public ConditionalInfixExpression getTransientValue(ItemNode<? super ConditionalInfixExpression, Expression> step) {
+    return this.transientValue;
+  }
 }

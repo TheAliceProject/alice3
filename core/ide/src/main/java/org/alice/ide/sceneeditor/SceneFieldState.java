@@ -51,10 +51,10 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SceneFieldState extends MutableDataSingleSelectListState<UserField> {
-	public SceneFieldState() {
-		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "7ae55863-9782-4cd5-9cb4-710327fb5a69" ), NodeCodec.getInstance( UserField.class ) );
-	}
+  public SceneFieldState() {
+    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("7ae55863-9782-4cd5-9cb4-710327fb5a69"), NodeCodec.getInstance(UserField.class));
+  }
 }

@@ -52,14 +52,14 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public final class NilVideoCanvas extends Canvas {
-	public NilVideoCanvas() {
-		this.setBackground( Color.BLACK );
-		this.setForeground( Color.WHITE );
-	}
+  public NilVideoCanvas() {
+    this.setBackground(Color.BLACK);
+    this.setForeground(Color.WHITE);
+  }
 
-	@Override
-	public void paint( Graphics g ) {
-		super.paint( g );
-		GraphicsUtilities.drawCenteredText( g, "unable to find vlc", this.getSize() );
-	}
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    GraphicsUtilities.drawCenteredText(g, "unable to find vlc", this.getSize());
+  }
 }

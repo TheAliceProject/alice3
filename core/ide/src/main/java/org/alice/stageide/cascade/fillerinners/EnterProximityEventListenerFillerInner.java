@@ -55,12 +55,12 @@ import java.util.List;
  * @author Matt May
  */
 public class EnterProximityEventListenerFillerInner extends ExpressionFillerInner {
-	public EnterProximityEventListenerFillerInner() {
-		super( ProximityEnterListener.class );
-	}
+  public EnterProximityEventListenerFillerInner() {
+    super(ProximityEnterListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( EnterProximityEventListenerAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(EnterProximityEventListenerAdapterFillIn.getInstance());
+  }
 }

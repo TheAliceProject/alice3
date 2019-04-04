@@ -61,27 +61,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MethodMenuModel extends MemberMenuModel<UserMethod> {
-	private static InitializingIfAbsentMap<UserMethod, MethodMenuModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserMethod, MethodMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MethodMenuModel getInstance( final UserMethod method ) {
-		return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<UserMethod, MethodMenuModel>() {
-			@Override
-			public MethodMenuModel initialize( UserMethod key ) {
-				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
-				prepModels.add( RenameMethodComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
-				prepModels.add( DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
-				ChangeAnimationProcedureDialog changeAnimationProcedureDialog = ChangeAnimationProcedureDialog.getInstance( method );
-				if( changeAnimationProcedureDialog != null ) {
-					prepModels.add( changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel() );
-				}
-				return new MethodMenuModel( key, prepModels );
-			}
-		} );
-	}
+  public static MethodMenuModel getInstance(final UserMethod method) {
+    return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<UserMethod, MethodMenuModel>() {
+      @Override
+      public MethodMenuModel initialize(UserMethod key) {
+        List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+        prepModels.add(RenameMethodComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
+        prepModels.add(DeleteMethodOperation.getInstance(key).getMenuItemPrepModel());
+        DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+        prepModels.add(tabState.getAlternateLocalizationItemSelectionOperation(CodeComposite.getInstance(key)).getMenuItemPrepModel());
+        ChangeAnimationProcedureDialog changeAnimationProcedureDialog = ChangeAnimationProcedureDialog.getInstance(method);
+        if (changeAnimationProcedureDialog != null) {
+          prepModels.add(changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel());
+        }
+        return new MethodMenuModel(key, prepModels);
+      }
+    });
+  }
 
-	private MethodMenuModel( UserMethod method, List<StandardMenuItemPrepModel> prepModels ) {
-		super( UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
-	}
+  private MethodMenuModel(UserMethod method, List<StandardMenuItemPrepModel> prepModels) {
+    super(UUID.fromString("bc472c3c-5851-4a32-a156-2eb89596db1d"), method, prepModels);
+  }
 }

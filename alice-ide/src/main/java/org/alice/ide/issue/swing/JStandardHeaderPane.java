@@ -61,64 +61,64 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class JStandardHeaderPane extends JPanel {
-	private static final ImageIcon LOGO_ICON = new ImageIcon( JStandardHeaderPane.class.getResource( "/org/alice/ide/issue/swing/views/images/meanQueen.png" ) );
+  private static final ImageIcon LOGO_ICON = new ImageIcon(JStandardHeaderPane.class.getResource("/org/alice/ide/issue/swing/views/images/meanQueen.png"));
 
-	public JStandardHeaderPane( ApplicationIssueConfiguration config ) {
-		StringBuilder sbHeader = new StringBuilder();
-		sbHeader.append( "<html>" );
-		sbHeader.append( "<h1>" );
-		if( UserProgramRunningStateUtilities.isUserProgramRunning() ) {
-			sbHeader.append( "An exception has been caught during the running of your program.<p>" );
-			sbHeader.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
-			sbHeader.append( config.getApplicationName() );
-		} else {
-			sbHeader.append( "A bug has been found" );
-		}
-		sbHeader.append( "</h1>" );
-		sbHeader.append( "<p>Please accept our apologies and press the <em>\"" );
-		sbHeader.append( config.getSubmitActionName() );
-		sbHeader.append( "\"</em> button.<p>" );
-		sbHeader.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
-		//sbHeader.append( "<p><p><p>Note:" );
-		sbHeader.append( "</html>" );
+  public JStandardHeaderPane(ApplicationIssueConfiguration config) {
+    StringBuilder sbHeader = new StringBuilder();
+    sbHeader.append("<html>");
+    sbHeader.append("<h1>");
+    if (UserProgramRunningStateUtilities.isUserProgramRunning()) {
+      sbHeader.append("An exception has been caught during the running of your program.<p>");
+      sbHeader.append("<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in ");
+      sbHeader.append(config.getApplicationName());
+    } else {
+      sbHeader.append("A bug has been found");
+    }
+    sbHeader.append("</h1>");
+    sbHeader.append("<p>Please accept our apologies and press the <em>\"");
+    sbHeader.append(config.getSubmitActionName());
+    sbHeader.append("\"</em> button.<p>");
+    sbHeader.append("<p>We will do our best to fix the problem and make a new release.<p>");
+    //sbHeader.append( "<p><p><p>Note:" );
+    sbHeader.append("</html>");
 
-		Color backgroundColor = Color.DARK_GRAY;
-		Color foregroundColor = Color.WHITE;
-		StringBuilder sbBottom = new StringBuilder();
-		sbBottom.append( "<html>" );
-		sbBottom.append( "<body bgcolor=\"" );
-		sbBottom.append( ColorUtilities.toHashText( backgroundColor ) );
-		sbBottom.append( "\" text=\"" );
-		sbBottom.append( ColorUtilities.toHashText( foregroundColor ) );
-		sbBottom.append( "\">" );
-		sbBottom.append( "Note: it is possible that this bug has already been fixed.<p>" );
-		sbBottom.append( "To download the latest release go to: <a href=\"" );
-		sbBottom.append( config.getDownloadUrlSpec() );
-		sbBottom.append( "\">" );
-		sbBottom.append( config.getDownloadUrlText() );
-		sbBottom.append( "</a> [web]." );
-		sbBottom.append( "</body>" );
-		sbBottom.append( "</html>" );
+    Color backgroundColor = Color.DARK_GRAY;
+    Color foregroundColor = Color.WHITE;
+    StringBuilder sbBottom = new StringBuilder();
+    sbBottom.append("<html>");
+    sbBottom.append("<body bgcolor=\"");
+    sbBottom.append(ColorUtilities.toHashText(backgroundColor));
+    sbBottom.append("\" text=\"");
+    sbBottom.append(ColorUtilities.toHashText(foregroundColor));
+    sbBottom.append("\">");
+    sbBottom.append("Note: it is possible that this bug has already been fixed.<p>");
+    sbBottom.append("To download the latest release go to: <a href=\"");
+    sbBottom.append(config.getDownloadUrlSpec());
+    sbBottom.append("\">");
+    sbBottom.append(config.getDownloadUrlText());
+    sbBottom.append("</a> [web].");
+    sbBottom.append("</body>");
+    sbBottom.append("</html>");
 
-		Logger.outln( sbBottom.toString() );
+    Logger.outln(sbBottom.toString());
 
-		JLabel logoLabel = new JLabel( LOGO_ICON );
+    JLabel logoLabel = new JLabel(LOGO_ICON);
 
-		JLabel headerLabel = new JLabel( sbHeader.toString() );
-		headerLabel.setForeground( foregroundColor );
-		headerLabel.setVerticalAlignment( SwingConstants.TOP );
+    JLabel headerLabel = new JLabel(sbHeader.toString());
+    headerLabel.setForeground(foregroundColor);
+    headerLabel.setVerticalAlignment(SwingConstants.TOP);
 
-		Color linkColor = new Color( 191, 191, 255 );
-		JBrowserHtmlView browserView = new JBrowserHtmlView();
-		browserView.setText( sbBottom.toString() );
-		browserView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + ColorUtilities.toHashText( linkColor ) + "}" );
-		browserView.setBorder( BorderFactory.createEmptyBorder() );
-		this.setLayout( new MigLayout( "fill, insets 16 8 0 8" ) );
-		this.add( new JLabel( IconUtilities.getErrorIcon() ), "aligny top, spany 2" );
-		this.add( headerLabel );
-		this.add( logoLabel, "spany 2, wrap" );
-		this.add( browserView, "aligny bottom, gap bottom 8" );
-		this.setBackground( Color.DARK_GRAY );
-		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
-	}
+    Color linkColor = new Color(191, 191, 255);
+    JBrowserHtmlView browserView = new JBrowserHtmlView();
+    browserView.setText(sbBottom.toString());
+    browserView.getHtmlDocument().getStyleSheet().addRule("A {color:" + ColorUtilities.toHashText(linkColor) + "}");
+    browserView.setBorder(BorderFactory.createEmptyBorder());
+    this.setLayout(new MigLayout("fill, insets 16 8 0 8"));
+    this.add(new JLabel(IconUtilities.getErrorIcon()), "aligny top, spany 2");
+    this.add(headerLabel);
+    this.add(logoLabel, "spany 2, wrap");
+    this.add(browserView, "aligny bottom, gap bottom 8");
+    this.setBackground(Color.DARK_GRAY);
+    //this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 8, 0, 8 ) );
+  }
 }

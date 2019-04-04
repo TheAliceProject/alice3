@@ -50,7 +50,7 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public abstract class FieldData extends FilteredMemberData<UserField> {
-	public FieldData( NamedUserType type ) {
-		super( UserField.class, type, type.fields );
-	}
+  public FieldData(NamedUserType type) {
+    super(UserField.class, type, type.fields);
+  }
 }

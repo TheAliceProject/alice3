@@ -51,33 +51,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NumeralOperation extends NumberPadOperation {
-	private static MapToMap<NumberModel<?>, Short, NumeralOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<NumberModel<?>, Short, NumeralOperation> mapToMap = MapToMap.newInstance();
 
-	public static synchronized NumeralOperation getInstance( NumberModel<?> numberModel, short numeral ) {
-		return mapToMap.getInitializingIfAbsent( numberModel, numeral, new MapToMap.Initializer<NumberModel<?>, Short, NumeralOperation>() {
-			@Override
-			public NumeralOperation initialize( NumberModel<?> numberModel, Short numeral ) {
-				return new NumeralOperation( numberModel, numeral );
-			}
-		} );
-	}
+  public static synchronized NumeralOperation getInstance(NumberModel<?> numberModel, short numeral) {
+    return mapToMap.getInitializingIfAbsent(numberModel, numeral, new MapToMap.Initializer<NumberModel<?>, Short, NumeralOperation>() {
+      @Override
+      public NumeralOperation initialize(NumberModel<?> numberModel, Short numeral) {
+        return new NumeralOperation(numberModel, numeral);
+      }
+    });
+  }
 
-	private NumeralOperation( NumberModel<?> numberModel, short numeral ) {
-		super( UUID.fromString( "a08d5953-dc32-49a8-bfd6-02cecb45ccf2" ), numberModel );
-		this.numeral = numeral;
-	}
+  private NumeralOperation(NumberModel<?> numberModel, short numeral) {
+    super(UUID.fromString("a08d5953-dc32-49a8-bfd6-02cecb45ccf2"), numberModel);
+    this.numeral = numeral;
+  }
 
-	private final short numeral;
+  private final short numeral;
 
-	@Override
-	protected void localize() {
-		//super.localize();
-		this.setName( Short.toString( this.numeral ) );
-	}
+  @Override
+  protected void localize() {
+    //super.localize();
+    this.setName(Short.toString(this.numeral));
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.numberModel.replaceSelection( this.numeral );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.numberModel.replaceSelection(this.numeral);
+    activity.finish();
+  }
 }

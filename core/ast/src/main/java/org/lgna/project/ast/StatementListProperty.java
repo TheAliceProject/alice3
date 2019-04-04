@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class StatementListProperty extends NodeListProperty<Statement> {
-	public StatementListProperty( InstancePropertyOwner owner ) {
-		super( owner );
-	}
+  public StatementListProperty(InstancePropertyOwner owner) {
+    super(owner);
+  }
 }

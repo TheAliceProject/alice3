@@ -44,20 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenHairHatBallcapNPC implements MaleTeenHair {
-	RED,
-	BLOND,
-	BLACK,
-	BROWN;
+  RED, BLOND, BLACK, BROWN;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

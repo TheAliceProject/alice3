@@ -53,46 +53,45 @@ import javax.swing.WindowConstants;
 /**
  * @author Dennis Cosgrove
  */
-@ClassTemplate( isFollowToSuperClassDesired = false )
-public/* abstract */class SProgram {
-	private final ProgramImp implementation = ProgramImp.createInstance( this );
-	private SScene activeScene;
+@ClassTemplate(isFollowToSuperClassDesired = false) public/* abstract */class SProgram {
+  private final ProgramImp implementation = ProgramImp.createInstance(this);
+  private SScene activeScene;
 
-	/* package-private */ProgramImp getImplementation() {
-		return this.implementation;
-	}
+  /* package-private */ProgramImp getImplementation() {
+    return this.implementation;
+  }
 
-	public SScene getActiveScene() {
-		return this.activeScene;
-	}
+  public SScene getActiveScene() {
+    return this.activeScene;
+  }
 
-	public void setActiveScene( SScene scene ) {
-		if( this.activeScene != null ) {
-			this.activeScene.getImplementation().deactivate( this.getImplementation() );
-		}
-		this.activeScene = scene;
-		if( this.activeScene != null ) {
-			this.activeScene.getImplementation().activate( this.getImplementation() );
-		}
-	}
+  public void setActiveScene(SScene scene) {
+    if (this.activeScene != null) {
+      this.activeScene.getImplementation().deactivate(this.getImplementation());
+    }
+    this.activeScene = scene;
+    if (this.activeScene != null) {
+      this.activeScene.getImplementation().activate(this.getImplementation());
+    }
+  }
 
-	public Double getSimulationSpeedFactor() {
-		return this.implementation.getSimulationSpeedFactor();
-	}
+  public Double getSimulationSpeedFactor() {
+    return this.implementation.getSimulationSpeedFactor();
+  }
 
-	public void setSimulationSpeedFactor( Number simulationSpeedFactor ) {
-		this.implementation.setSimulationSpeedFactor( simulationSpeedFactor.doubleValue() );
-	}
+  public void setSimulationSpeedFactor(Number simulationSpeedFactor) {
+    this.implementation.setSimulationSpeedFactor(simulationSpeedFactor.doubleValue());
+  }
 
-	public void initializeInFrame( String[] args ) {
-		final int DEFAULT_CLOSE_OPERATION = WindowConstants.EXIT_ON_CLOSE;
-		JFrame frame = new JFrame();
-		frame.setSize( 640, 480 );
-		frame.setDefaultCloseOperation( DEFAULT_CLOSE_OPERATION );
-		this.implementation.initializeInFrame( frame );
-	}
+  public void initializeInFrame(String[] args) {
+    final int DEFAULT_CLOSE_OPERATION = WindowConstants.EXIT_ON_CLOSE;
+    JFrame frame = new JFrame();
+    frame.setSize(640, 480);
+    frame.setDefaultCloseOperation(DEFAULT_CLOSE_OPERATION);
+    this.implementation.initializeInFrame(frame);
+  }
 
-	public void initializeInApplet( JApplet applet ) {
-		this.implementation.initializeInApplet( applet );
-	}
+  public void initializeInApplet(JApplet applet) {
+    this.implementation.initializeInApplet(applet);
+  }
 }

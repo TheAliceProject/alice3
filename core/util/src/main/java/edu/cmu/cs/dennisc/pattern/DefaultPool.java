@@ -48,14 +48,14 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public class DefaultPool<E extends Reusable> extends AbstractPool<E> {
-	private Class<E> cls;
+  private Class<E> cls;
 
-	public DefaultPool( Class<E> cls ) {
-		this.cls = cls;
-	}
+  public DefaultPool(Class<E> cls) {
+    this.cls = cls;
+  }
 
-	@Override
-	protected E createInstance() {
-		return ReflectionUtilities.newInstance( this.cls );
-	}
+  @Override
+  protected E createInstance() {
+    return ReflectionUtilities.newInstance(this.cls);
+  }
 }

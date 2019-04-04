@@ -50,5 +50,5 @@ import java.rmi.RemoteException;
  * @author Dennis Cosgrove
  */
 public interface Authenticator {
-	public String login( JiraSoapService service ) throws RemoteException;
+  public String login(JiraSoapService service) throws RemoteException;
 }

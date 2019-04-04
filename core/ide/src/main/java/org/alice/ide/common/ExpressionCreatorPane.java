@@ -50,35 +50,35 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreatorPane extends ExpressionLikeSubstance {
-	public ExpressionCreatorPane( AbstractExpressionDragModel model ) {
-		super( model );
-	}
+  public ExpressionCreatorPane(AbstractExpressionDragModel model) {
+    super(model);
+  }
 
-	@Override
-	protected boolean isClickAndClackAppropriate() {
-		return true;
-	}
+  @Override
+  protected boolean isClickAndClackAppropriate() {
+    return true;
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getExpressionType() {
-		return ( (AbstractExpressionDragModel)this.getModel() ).getType();
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getExpressionType() {
+    return ((AbstractExpressionDragModel) this.getModel()).getType();
+  }
 
-	@Override
-	protected void handleMouseQuoteEnteredUnquote() {
-		super.handleMouseQuoteEnteredUnquote();
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.showDropReceptorsStencilOver( this, getExpressionType() );
-		}
-	}
+  @Override
+  protected void handleMouseQuoteEnteredUnquote() {
+    super.handleMouseQuoteEnteredUnquote();
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.showDropReceptorsStencilOver(this, getExpressionType());
+    }
+  }
 
-	@Override
-	protected void handleMouseQuoteExitedUnquote() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.hideDropReceptorsStencil();
-		}
-		super.handleMouseQuoteExitedUnquote();
-	}
+  @Override
+  protected void handleMouseQuoteExitedUnquote() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.hideDropReceptorsStencil();
+    }
+    super.handleMouseQuoteExitedUnquote();
+  }
 }

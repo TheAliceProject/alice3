@@ -56,59 +56,59 @@ import java.util.concurrent.CyclicBarrier;
  * @author Dennis Cosgrove
  */
 public abstract class StencilModel extends AbstractCompletionModel implements Triggerable {
-	private final CyclicBarrier barrier = new CyclicBarrier( 2 );
-	private String text;
+  private final CyclicBarrier barrier = new CyclicBarrier(2);
+  private String text;
 
-	public StencilModel( UUID migrationId ) {
-		super( Application.INFORMATION_GROUP, migrationId );
-	}
+  public StencilModel(UUID migrationId) {
+    super(Application.INFORMATION_GROUP, migrationId);
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	@Override
-	protected void localize() {
-		this.text = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    this.text = this.findDefaultLocalizedText();
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	protected void barrierAwait() {
-		try {
-			this.barrier.await();
-		} catch( Throwable t ) {
-			throw new RuntimeException( t );
-		}
-	}
+  protected void barrierAwait() {
+    try {
+      this.barrier.await();
+    } catch (Throwable t) {
+      throw new RuntimeException(t);
+    }
+  }
 
-	protected abstract void showStencil();
+  protected abstract void showStencil();
 
-	protected abstract void hideStencil();
+  protected abstract void hideStencil();
 
-	protected final void performInActivity( UserActivity userActivity ) {
-		Logger.outln( this );
-		userActivity.setCompletionModel( this );
-		this.barrier.reset();
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				showStencil();
-			}
-		} );
-		this.barrierAwait();
-		this.hideStencil();
-		userActivity.finish();
-	}
+  protected final void performInActivity(UserActivity userActivity) {
+    Logger.outln(this);
+    userActivity.setCompletionModel(this);
+    this.barrier.reset();
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        showStencil();
+      }
+    });
+    this.barrierAwait();
+    this.hideStencil();
+    userActivity.finish();
+  }
 
-	@Override
-	public void fire( UserActivity activity ) {
-		if( this.isEnabled() ) {
-			this.initializeIfNecessary();
-			this.performInActivity( activity );
-		}
-	}
+  @Override
+  public void fire(UserActivity activity) {
+    if (this.isEnabled()) {
+      this.initializeIfNecessary();
+      this.performInActivity(activity);
+    }
+  }
 }

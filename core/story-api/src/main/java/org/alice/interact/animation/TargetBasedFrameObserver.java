@@ -49,117 +49,117 @@ import edu.cmu.cs.dennisc.animation.FrameObserver;
  */
 public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 
-	private static final double DEFAULT_SPEED = 12.0d;
-	protected static final double MIN_DISTANCE_TO_DONE = .001d;
-	private static final double MAX_FRAME_LENGTH = .1d;
+  private static final double DEFAULT_SPEED = 12.0d;
+  protected static final double MIN_DISTANCE_TO_DONE = .001d;
+  private static final double MAX_FRAME_LENGTH = .1d;
 
-	public TargetBasedFrameObserver() {
-		speed = DEFAULT_SPEED;
-	}
+  public TargetBasedFrameObserver() {
+    speed = DEFAULT_SPEED;
+  }
 
-	public TargetBasedFrameObserver( E currentValue ) {
-		this( currentValue, currentValue, DEFAULT_SPEED );
-	}
+  public TargetBasedFrameObserver(E currentValue) {
+    this(currentValue, currentValue, DEFAULT_SPEED);
+  }
 
-	public TargetBasedFrameObserver( E currentValue, double speed ) {
-		this( currentValue, currentValue, speed );
-	}
+  public TargetBasedFrameObserver(E currentValue, double speed) {
+    this(currentValue, currentValue, speed);
+  }
 
-	public TargetBasedFrameObserver( E currentValue, E targetValue ) {
-		this( currentValue, targetValue, DEFAULT_SPEED );
-	}
+  public TargetBasedFrameObserver(E currentValue, E targetValue) {
+    this(currentValue, targetValue, DEFAULT_SPEED);
+  }
 
-	public TargetBasedFrameObserver( E currentValue, E targetValue, double speed ) {
-		synchronized( syncLock ) {
-			this.currentValue = this.newE( currentValue );
-			this.targetValue = this.newE( targetValue );
-			this.speed = speed;
-		}
-	}
+  public TargetBasedFrameObserver(E currentValue, E targetValue, double speed) {
+    synchronized (syncLock) {
+      this.currentValue = this.newE(currentValue);
+      this.targetValue = this.newE(targetValue);
+      this.speed = speed;
+    }
+  }
 
-	public void setTarget( E target ) {
-		synchronized( syncLock ) {
-			this.targetValue = this.newE( target );
-			this.isDone = this.isDone();
-		}
-	}
+  public void setTarget(E target) {
+    synchronized (syncLock) {
+      this.targetValue = this.newE(target);
+      this.isDone = this.isDone();
+    }
+  }
 
-	public E getCurrentValue() {
-		return this.currentValue;
-	}
+  public E getCurrentValue() {
+    return this.currentValue;
+  }
 
-	public void setCurrentValue( E value ) {
-		synchronized( syncLock ) {
-			this.currentValue = this.newE( value );
-			this.isDone = this.isDone();
-		}
-	}
+  public void setCurrentValue(E value) {
+    synchronized (syncLock) {
+      this.currentValue = this.newE(value);
+      this.isDone = this.isDone();
+    }
+  }
 
-	public void setSpeed( double speed ) {
-		synchronized( syncLock ) {
-			this.speed = speed;
-		}
-	}
+  public void setSpeed(double speed) {
+    synchronized (syncLock) {
+      this.speed = speed;
+    }
+  }
 
-	public double getSpeed() {
-		return this.speed;
-	}
+  public double getSpeed() {
+    return this.speed;
+  }
 
-	protected abstract void updateValue( E value );
+  protected abstract void updateValue(E value);
 
-	protected abstract boolean isCloseEnoughToBeDone();
+  protected abstract boolean isCloseEnoughToBeDone();
 
-	public abstract boolean isDone();
+  public abstract boolean isDone();
 
-	protected abstract E interpolate( E v0, E v1, double deltaSinceLastUpdate );
+  protected abstract E interpolate(E v0, E v1, double deltaSinceLastUpdate);
 
-	protected abstract E newE( E other );
+  protected abstract E newE(E other);
 
-	public void forceValueUpdate() {
-		synchronized( syncLock ) {
-			this.updateValue( this.currentValue );
-		}
-	}
+  public void forceValueUpdate() {
+    synchronized (syncLock) {
+      this.updateValue(this.currentValue);
+    }
+  }
 
-	@Override
-	public void complete() {
-		synchronized( syncLock ) {
-			this.currentValue = newE( targetValue );
-			this.updateValue( this.currentValue );
-		}
-	}
+  @Override
+  public void complete() {
+    synchronized (syncLock) {
+      this.currentValue = newE(targetValue);
+      this.updateValue(this.currentValue);
+    }
+  }
 
-	@Override
-	public void update( double tCurrent ) {
-		if( Double.isNaN( timeOfLastFrame ) ) {
-			deltaSinceLastFrame = 0.0d;
-		} else {
-			deltaSinceLastFrame = tCurrent - timeOfLastFrame;
-		}
-		timeOfLastFrame = tCurrent;
-		if( !this.isDone ) {
-			synchronized( syncLock ) {
-				if( !Double.isNaN( deltaSinceLastFrame ) ) {
-					if( deltaSinceLastFrame > MAX_FRAME_LENGTH ) {
-						deltaSinceLastFrame = MAX_FRAME_LENGTH;
-					}
-					this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastFrame );
-				}
-				if( this.isCloseEnoughToBeDone() ) {
-					this.currentValue = newE( this.targetValue );
-				}
-				this.updateValue( this.currentValue );
-				this.isDone = this.isDone();
-			}
-		}
-	}
+  @Override
+  public void update(double tCurrent) {
+    if (Double.isNaN(timeOfLastFrame)) {
+      deltaSinceLastFrame = 0.0d;
+    } else {
+      deltaSinceLastFrame = tCurrent - timeOfLastFrame;
+    }
+    timeOfLastFrame = tCurrent;
+    if (!this.isDone) {
+      synchronized (syncLock) {
+        if (!Double.isNaN(deltaSinceLastFrame)) {
+          if (deltaSinceLastFrame > MAX_FRAME_LENGTH) {
+            deltaSinceLastFrame = MAX_FRAME_LENGTH;
+          }
+          this.currentValue = this.interpolate(this.currentValue, this.targetValue, deltaSinceLastFrame);
+        }
+        if (this.isCloseEnoughToBeDone()) {
+          this.currentValue = newE(this.targetValue);
+        }
+        this.updateValue(this.currentValue);
+        this.isDone = this.isDone();
+      }
+    }
+  }
 
-	protected E targetValue;
-	protected E currentValue;
-	protected double speed;
-	private double timeOfLastFrame = Double.NaN;
-	private double deltaSinceLastFrame = Double.NaN;
-	private boolean isDone = true;
+  protected E targetValue;
+  protected E currentValue;
+  protected double speed;
+  private double timeOfLastFrame = Double.NaN;
+  private double deltaSinceLastFrame = Double.NaN;
+  private boolean isDone = true;
 
-	private final Object syncLock = new Object();
+  private final Object syncLock = new Object();
 }

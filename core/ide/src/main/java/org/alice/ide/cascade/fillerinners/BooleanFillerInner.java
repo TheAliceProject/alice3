@@ -73,72 +73,72 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class BooleanFillerInner extends ExpressionFillerInner {
-	private final List<AbstractType<?, ?, ?>> relationalTypes = Lists.newCopyOnWriteArrayList();
+  private final List<AbstractType<?, ?, ?>> relationalTypes = Lists.newCopyOnWriteArrayList();
 
-	public BooleanFillerInner() {
-		super( JavaType.BOOLEAN_OBJECT_TYPE );
-	}
+  public BooleanFillerInner() {
+    super(JavaType.BOOLEAN_OBJECT_TYPE);
+  }
 
-	public void addRelationalType( AbstractType<?, ?, ?> type ) {
-		this.relationalTypes.add( type );
-	}
+  public void addRelationalType(AbstractType<?, ?, ?> type) {
+    this.relationalTypes.add(type);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		if( isTop && ( prevExpression instanceof ConditionalInfixExpression ) ) {
-			// previous conditional
-			ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression)prevExpression;
-			for( ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values() ) {
-				if( operator == conditionalInfixExpression.operator.getValue() ) {
-					//pass
-				} else {
-					items.add( ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance( operator ) );
-				}
-			}
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance() );
-			items.add( ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-		}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    if (isTop && (prevExpression instanceof ConditionalInfixExpression)) {
+      // previous conditional
+      ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression) prevExpression;
+      for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
+        if (operator == conditionalInfixExpression.operator.getValue()) {
+          //pass
+        } else {
+          items.add(ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance(operator));
+        }
+      }
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance());
+      items.add(ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+    }
 
-		if( isTop && ( prevExpression instanceof LogicalComplement ) ) {
-			// previous logical complement
-			items.add( ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-		}
+    if (isTop && (prevExpression instanceof LogicalComplement)) {
+      // previous logical complement
+      items.add(ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+    }
 
-		items.add( BooleanLiteralFillIn.getInstance( true ) );
-		items.add( BooleanLiteralFillIn.getInstance( false ) );
-		items.add( CascadeLineSeparator.getInstance() );
+    items.add(BooleanLiteralFillIn.getInstance(true));
+    items.add(BooleanLiteralFillIn.getInstance(false));
+    items.add(CascadeLineSeparator.getInstance());
 
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextBoolean" ) );
-			items.add( CascadeLineSeparator.getInstance() );
-		}
+    if (isTop && (prevExpression != null)) {
+      items.add(StaticMethodInvocationFillIn.getInstance(RandomUtilities.class, "nextBoolean"));
+      items.add(CascadeLineSeparator.getInstance());
+    }
 
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( LogicalComplementOfPreviousExpressionFillIn.getInstance() );
-			items.add( LogicalComplementOperandFillIn.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-		}
+    if (isTop && (prevExpression != null)) {
+      items.add(LogicalComplementOfPreviousExpressionFillIn.getInstance());
+      items.add(LogicalComplementOperandFillIn.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+    }
 
-		if( isTop && ( prevExpression != null ) ) {
-			for( ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values() ) {
-				items.add( ConditionalExpressionRightOperandOnlyFillIn.getInstance( operator ) );
-			}
-			for( ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values() ) {
-				items.add( ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
-			}
-			items.add( CascadeLineSeparator.getInstance() );
-		}
+    if (isTop && (prevExpression != null)) {
+      for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
+        items.add(ConditionalExpressionRightOperandOnlyFillIn.getInstance(operator));
+      }
+      for (ConditionalInfixExpression.Operator operator : ConditionalInfixExpression.Operator.values()) {
+        items.add(ConditionalExpressionLeftAndRightOperandsFillIn.getInstance(operator));
+      }
+      items.add(CascadeLineSeparator.getInstance());
+    }
 
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( RelationalNumberCascadeMenu.getInstance() );
-			items.add( RelationalIntegerCascadeMenu.getInstance() );
-			for( AbstractType<?, ?, ?> type : this.relationalTypes ) {
-				items.add( new RelationalObjectCascadeMenu( type ) );
-			}
-			items.add( StringComparisonCascadeMenu.getInstance() );
-		}
-	}
+    if (isTop && (prevExpression != null)) {
+      items.add(RelationalNumberCascadeMenu.getInstance());
+      items.add(RelationalIntegerCascadeMenu.getInstance());
+      for (AbstractType<?, ?, ?> type : this.relationalTypes) {
+        items.add(new RelationalObjectCascadeMenu(type));
+      }
+      items.add(StringComparisonCascadeMenu.getInstance());
+    }
+  }
 }

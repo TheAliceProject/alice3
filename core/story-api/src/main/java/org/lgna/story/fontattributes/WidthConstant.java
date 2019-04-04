@@ -49,24 +49,20 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public enum WidthConstant implements WidthAttribute {
-	CONDENSED( TextAttribute.WIDTH_CONDENSED ),
-	SEMI_CONDENSED( TextAttribute.WIDTH_SEMI_CONDENSED ),
-	REGULAR( TextAttribute.WIDTH_REGULAR ),
-	SEMI_EXTENDED( TextAttribute.WIDTH_SEMI_EXTENDED ),
-	EXTENDED( TextAttribute.WIDTH_EXTENDED );
-	private Float m_value;
+  CONDENSED(TextAttribute.WIDTH_CONDENSED), SEMI_CONDENSED(TextAttribute.WIDTH_SEMI_CONDENSED), REGULAR(TextAttribute.WIDTH_REGULAR), SEMI_EXTENDED(TextAttribute.WIDTH_SEMI_EXTENDED), EXTENDED(TextAttribute.WIDTH_EXTENDED);
+  private Float m_value;
 
-	private WidthConstant( Float value ) {
-		m_value = value;
-	}
+  private WidthConstant(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.WIDTH;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.WIDTH;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

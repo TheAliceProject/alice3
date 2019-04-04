@@ -50,18 +50,18 @@ import edu.cmu.cs.dennisc.math.EulerAngles;
  * @author Dennis Cosgrove
  */
 public abstract class EulerAnglesAnimation extends InterpolationAnimation<EulerAngles> {
-	public EulerAnglesAnimation( Number duration, Style style, EulerAngles ea0, EulerAngles ea1 ) {
-		super( duration, style, ea0, ea1 );
-	}
+  public EulerAnglesAnimation(Number duration, Style style, EulerAngles ea0, EulerAngles ea1) {
+    super(duration, style, ea0, ea1);
+  }
 
-	@Override
-	protected EulerAngles newE( EulerAngles other ) {
-		return new EulerAngles( other );
-	}
+  @Override
+  protected EulerAngles newE(EulerAngles other) {
+    return new EulerAngles(other);
+  }
 
-	@Override
-	protected EulerAngles interpolate( EulerAngles rv, EulerAngles v0, EulerAngles v1, double portion ) {
-		rv.interpolate( v0, v1, portion );
-		return rv;
-	}
+  @Override
+  protected EulerAngles interpolate(EulerAngles rv, EulerAngles v0, EulerAngles v1, double portion) {
+    rv.interpolate(v0, v1, portion);
+    return rv;
+  }
 }

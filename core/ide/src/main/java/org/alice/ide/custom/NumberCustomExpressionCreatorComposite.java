@@ -57,60 +57,60 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<NumberCustomExpressionCreatorView> {
-	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
-	private final NumberModel numberModel;
+  private final ErrorStatus errorStatus = this.createErrorStatus("errorStatus");
+  private final NumberModel numberModel;
 
-	public NumberCustomExpressionCreatorComposite( UUID id, NumberModel numberModel ) {
-		super( id );
-		this.numberModel = numberModel;
-	}
+  public NumberCustomExpressionCreatorComposite(UUID id, NumberModel numberModel) {
+    super(id);
+    this.numberModel = numberModel;
+  }
 
-	@Override
-	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
-		Dimension rv = super.calculateWindowSize( window );
-		//todo
-		rv.width = (int)( rv.height / GoldenRatio.PHI );
-		return rv;
-	}
+  @Override
+  protected Dimension calculateWindowSize(AbstractWindow<?> window) {
+    Dimension rv = super.calculateWindowSize(window);
+    //todo
+    rv.width = (int) (rv.height / GoldenRatio.PHI);
+    return rv;
+  }
 
-	@Override
-	protected NumberCustomExpressionCreatorView createView() {
-		return new NumberCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected NumberCustomExpressionCreatorView createView() {
+    return new NumberCustomExpressionCreatorView(this);
+  }
 
-	public NumberModel getNumberModel() {
-		return this.numberModel;
-	}
+  public NumberModel getNumberModel() {
+    return this.numberModel;
+  }
 
-	@Override
-	protected Expression createValue() {
-		return this.numberModel.getExpressionValue();
-	}
+  @Override
+  protected Expression createValue() {
+    return this.numberModel.getExpressionValue();
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
-		if( text != null ) {
-			String errorFormat = findLocalizedText( text );
-			this.errorStatus.setText( String.format(errorFormat, numberModel.getTextField().getText() ) );
-			return errorStatus;
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
+    if (text != null) {
+      String errorFormat = findLocalizedText(text);
+      this.errorStatus.setText(String.format(errorFormat, numberModel.getTextField().getText()));
+      return errorStatus;
+    } else {
+      return IS_GOOD_TO_GO_STATUS;
+    }
+  }
 
-	protected abstract String getTextForPreviousExpression( Expression expression );
+  protected abstract String getTextForPreviousExpression(Expression expression);
 
-	@Override
-	protected final void initializeToPreviousExpression( Expression expression ) {
-		String text = this.getTextForPreviousExpression( expression );
-		this.numberModel.setText( text );
-		this.numberModel.selectAll();
-	}
+  @Override
+  protected final void initializeToPreviousExpression(Expression expression) {
+    String text = this.getTextForPreviousExpression(expression);
+    this.numberModel.setText(text);
+    this.numberModel.selectAll();
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		super.handlePreShowDialog( dialog );
-		this.numberModel.getTextField().requestFocusInWindow();
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    super.handlePreShowDialog(dialog);
+    this.numberModel.getTextField().requestFocusInWindow();
+  }
 }

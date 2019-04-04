@@ -58,41 +58,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StatementDragModel extends AbstractStatementDragModel {
-	private static Map<Statement, StatementDragModel> map = Maps.newHashMap();
+  private static Map<Statement, StatementDragModel> map = Maps.newHashMap();
 
-	public static synchronized StatementDragModel getInstance( Statement statement ) {
-		if( statement instanceof ConstructorInvocationStatement ) {
-			return null;
-		} else {
-			StatementDragModel rv = map.get( statement );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new StatementDragModel( statement );
-				map.put( statement, rv );
-			}
-			return rv;
-		}
-	}
+  public static synchronized StatementDragModel getInstance(Statement statement) {
+    if (statement instanceof ConstructorInvocationStatement) {
+      return null;
+    } else {
+      StatementDragModel rv = map.get(statement);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new StatementDragModel(statement);
+        map.put(statement, rv);
+      }
+      return rv;
+    }
+  }
 
-	private Statement statement;
+  private Statement statement;
 
-	private StatementDragModel( Statement statement ) {
-		super( UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
-		this.statement = statement;
-	}
+  private StatementDragModel(Statement statement) {
+    super(UUID.fromString("e9c09a94-b2f0-440b-80ee-aff456b382e8"));
+    this.statement = statement;
+  }
 
-	@Override
-	public boolean isAddEventListenerLikeSubstance() {
-		return AstUtilities.isAddEventListenerMethodInvocationStatement( this.statement );
-	}
+  @Override
+  public boolean isAddEventListenerLikeSubstance() {
+    return AstUtilities.isAddEventListenerMethodInvocationStatement(this.statement);
+  }
 
-	public Statement getStatement() {
-		return this.statement;
-	}
+  public Statement getStatement() {
+    return this.statement;
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    throw new RuntimeException("todo");
+  }
 }

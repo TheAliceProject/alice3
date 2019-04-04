@@ -53,20 +53,20 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldHubDeclarationView extends FieldDeclarationPane {
-	private final MemberHub<UserField> fieldHub;
+  private final MemberHub<UserField> fieldHub;
 
-	public FieldHubDeclarationView( MemberHub<UserField> fieldHub ) {
-		super( PreviewAstI18nFactory.getInstance(), fieldHub.getMember() );
-		this.fieldHub = fieldHub;
-	}
+  public FieldHubDeclarationView(MemberHub<UserField> fieldHub) {
+    super(PreviewAstI18nFactory.getInstance(), fieldHub.getMember());
+    this.fieldHub = fieldHub;
+  }
 
-	@Override
-	protected AwtComponentView<?> createNameLabel() {
-		if( this.fieldHub instanceof MemberHubWithNameState<?> ) {
-			MemberHubWithNameState<?> fieldHubWithNameState = (MemberHubWithNameState<?>)fieldHub;
-			return new MemberHubNameLabel( fieldHubWithNameState );
-		} else {
-			return super.createNameLabel();
-		}
-	}
+  @Override
+  protected AwtComponentView<?> createNameLabel() {
+    if (this.fieldHub instanceof MemberHubWithNameState<?>) {
+      MemberHubWithNameState<?> fieldHubWithNameState = (MemberHubWithNameState<?>) fieldHub;
+      return new MemberHubNameLabel(fieldHubWithNameState);
+    } else {
+      return super.createNameLabel();
+    }
+  }
 }

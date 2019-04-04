@@ -48,8 +48,8 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class JBoxPane extends JPane {
-	public JBoxPane( int axis ) {
-		BoxLayout boxLayout = new BoxLayout( this, axis );
-		setLayout( boxLayout );
-	}
+  public JBoxPane(int axis) {
+    BoxLayout boxLayout = new BoxLayout(this, axis);
+    setLayout(boxLayout);
+  }
 }

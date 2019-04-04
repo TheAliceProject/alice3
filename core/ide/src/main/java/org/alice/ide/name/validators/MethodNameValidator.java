@@ -49,22 +49,22 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
 public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( UserMethod method ) {
-		super( method, method.getDeclaringType() );
-	}
+  public MethodNameValidator(UserMethod method) {
+    super(method, method.getDeclaringType());
+  }
 
-	public MethodNameValidator( UserType<?> type ) {
-		super( null, type );
-	}
+  public MethodNameValidator(UserType<?> type) {
+    super(null, type);
+  }
 
-	@Override
-	public boolean isNameAvailable( String name ) {
-		Node node = this.getNode();
-		if( node != null ) {
-			return StaticAnalysisUtilities.isAvailableMethodName( name, (UserMethod)node );
-		} else {
-			UserType<?> type = this.getType();
-			return StaticAnalysisUtilities.isAvailableMethodName( name, type );
-		}
-	}
+  @Override
+  public boolean isNameAvailable(String name) {
+    Node node = this.getNode();
+    if (node != null) {
+      return StaticAnalysisUtilities.isAvailableMethodName(name, (UserMethod) node);
+    } else {
+      UserType<?> type = this.getType();
+      return StaticAnalysisUtilities.isAvailableMethodName(name, type);
+    }
+  }
 }

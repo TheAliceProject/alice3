@@ -65,117 +65,117 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class PreferenceStringState extends StringState {
-	private static final String NULL_VALUE = "__null__";
+  private static final String NULL_VALUE = "__null__";
 
-	private static final String CHARSET_NAME = "UTF-8";
+  private static final String CHARSET_NAME = "UTF-8";
 
-	private static Cipher getCypher( byte[] encryptionKey, int mode ) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException {
-		final String ALGORITHM = "DES";
-		DESKeySpec keySpec = new DESKeySpec( encryptionKey );
-		SecretKey secretKey = SecretKeyFactory.getInstance( ALGORITHM ).generateSecret( keySpec );
-		Cipher cipher = Cipher.getInstance( ALGORITHM );
-		cipher.init( mode, secretKey );
-		return cipher;
-	}
+  private static Cipher getCypher(byte[] encryptionKey, int mode) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException {
+    final String ALGORITHM = "DES";
+    DESKeySpec keySpec = new DESKeySpec(encryptionKey);
+    SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM).generateSecret(keySpec);
+    Cipher cipher = Cipher.getInstance(ALGORITHM);
+    cipher.init(mode, secretKey);
+    return cipher;
+  }
 
-	private static String getInitialValue( String preferenceKey, String defaultInitialValue, byte[] encryptionKey ) {
-		Preferences userPreferences = PreferenceManager.getUserPreferences();
-		if( userPreferences != null ) {
-			if( defaultInitialValue != null ) {
-				//pass
-			} else {
-				defaultInitialValue = NULL_VALUE;
-			}
-			String rv = userPreferences.get( preferenceKey, defaultInitialValue );
-			if( encryptionKey != null ) {
-				try {
-					Cipher cipher = getCypher( encryptionKey, Cipher.DECRYPT_MODE );
-					byte[] base64 = Base64.decode( rv );
-					byte[] bytes = cipher.doFinal( base64 );
-					rv = new String( bytes, CHARSET_NAME );
-				} catch( Exception e ) {
-					e.printStackTrace();
-					rv = defaultInitialValue;
-				}
-			}
-			if( NULL_VALUE.equals( rv ) ) {
-				rv = null;
-			}
-			return rv;
-		} else {
-			return defaultInitialValue;
-		}
-	}
+  private static String getInitialValue(String preferenceKey, String defaultInitialValue, byte[] encryptionKey) {
+    Preferences userPreferences = PreferenceManager.getUserPreferences();
+    if (userPreferences != null) {
+      if (defaultInitialValue != null) {
+        //pass
+      } else {
+        defaultInitialValue = NULL_VALUE;
+      }
+      String rv = userPreferences.get(preferenceKey, defaultInitialValue);
+      if (encryptionKey != null) {
+        try {
+          Cipher cipher = getCypher(encryptionKey, Cipher.DECRYPT_MODE);
+          byte[] base64 = Base64.decode(rv);
+          byte[] bytes = cipher.doFinal(base64);
+          rv = new String(bytes, CHARSET_NAME);
+        } catch (Exception e) {
+          e.printStackTrace();
+          rv = defaultInitialValue;
+        }
+      }
+      if (NULL_VALUE.equals(rv)) {
+        rv = null;
+      }
+      return rv;
+    } else {
+      return defaultInitialValue;
+    }
+  }
 
-	private static List<PreferenceStringState> instances = Lists.newCopyOnWriteArrayList();
+  private static List<PreferenceStringState> instances = Lists.newCopyOnWriteArrayList();
 
-	public final static void preserveAll( Preferences userPreferences ) {
-		for( PreferenceStringState state : instances ) {
-			String key = state.getPreferenceKey();
-			String value = state.getValue();
-			if( value != null ) {
-				//pass
-			} else {
-				value = NULL_VALUE;
-			}
-			String possiblyEncryptedValue;
-			if( state.encryptionKey != null ) {
-				try {
-					Cipher cipher = getCypher( state.encryptionKey, Cipher.ENCRYPT_MODE );
-					byte[] bytes = cipher.doFinal( value.getBytes( CHARSET_NAME ) );
-					possiblyEncryptedValue = Base64.encode( bytes );
-				} catch( Exception e ) {
-					possiblyEncryptedValue = null;
-				}
-			} else {
-				possiblyEncryptedValue = value;
-			}
-			if( possiblyEncryptedValue != null ) {
-				if( state.isStoringPreferenceDesired() ) {
-					userPreferences.put( key, possiblyEncryptedValue );
-				} else {
-					userPreferences.remove( key );
-				}
-			}
-		}
-	}
+  public static final void preserveAll(Preferences userPreferences) {
+    for (PreferenceStringState state : instances) {
+      String key = state.getPreferenceKey();
+      String value = state.getValue();
+      if (value != null) {
+        //pass
+      } else {
+        value = NULL_VALUE;
+      }
+      String possiblyEncryptedValue;
+      if (state.encryptionKey != null) {
+        try {
+          Cipher cipher = getCypher(state.encryptionKey, Cipher.ENCRYPT_MODE);
+          byte[] bytes = cipher.doFinal(value.getBytes(CHARSET_NAME));
+          possiblyEncryptedValue = Base64.encode(bytes);
+        } catch (Exception e) {
+          possiblyEncryptedValue = null;
+        }
+      } else {
+        possiblyEncryptedValue = value;
+      }
+      if (possiblyEncryptedValue != null) {
+        if (state.isStoringPreferenceDesired()) {
+          userPreferences.put(key, possiblyEncryptedValue);
+        } else {
+          userPreferences.remove(key);
+        }
+      }
+    }
+  }
 
-	private final String preferenceKey;
-	private final byte[] encryptionKey;
+  private final String preferenceKey;
+  private final byte[] encryptionKey;
 
-	protected static byte[] getEncryptionKey( String s ) {
-		if( s != null ) {
-			try {
-				return s.getBytes( CHARSET_NAME );
-			} catch( UnsupportedEncodingException uee ) {
-				throw new RuntimeException( CHARSET_NAME, uee );
-			}
-		} else {
-			return null;
-		}
-	}
+  protected static byte[] getEncryptionKey(String s) {
+    if (s != null) {
+      try {
+        return s.getBytes(CHARSET_NAME);
+      } catch (UnsupportedEncodingException uee) {
+        throw new RuntimeException(CHARSET_NAME, uee);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public PreferenceStringState( Group group, UUID migrationId, String initialValue, String preferenceKey, byte[] encryptionKey ) {
-		super( group, migrationId, getInitialValue( preferenceKey, initialValue, encryptionKey ) );
-		this.preferenceKey = preferenceKey;
-		this.encryptionKey = encryptionKey;
-		assert instances.contains( this ) == false;
-		instances.add( this );
-	}
+  public PreferenceStringState(Group group, UUID migrationId, String initialValue, String preferenceKey, byte[] encryptionKey) {
+    super(group, migrationId, getInitialValue(preferenceKey, initialValue, encryptionKey));
+    this.preferenceKey = preferenceKey;
+    this.encryptionKey = encryptionKey;
+    assert instances.contains(this) == false;
+    instances.add(this);
+  }
 
-	public PreferenceStringState( Group group, UUID migrationId, String initialValue, byte[] encryptionKey ) {
-		this( group, migrationId, initialValue, migrationId.toString(), encryptionKey );
-	}
+  public PreferenceStringState(Group group, UUID migrationId, String initialValue, byte[] encryptionKey) {
+    this(group, migrationId, initialValue, migrationId.toString(), encryptionKey);
+  }
 
-	public PreferenceStringState( Group group, UUID migrationId, String initialValue ) {
-		this( group, migrationId, initialValue, migrationId.toString(), getEncryptionKey( null ) );
-	}
+  public PreferenceStringState(Group group, UUID migrationId, String initialValue) {
+    this(group, migrationId, initialValue, migrationId.toString(), getEncryptionKey(null));
+  }
 
-	public String getPreferenceKey() {
-		return this.preferenceKey;
-	}
+  public String getPreferenceKey() {
+    return this.preferenceKey;
+  }
 
-	protected boolean isStoringPreferenceDesired() {
-		return true;
-	}
+  protected boolean isStoringPreferenceDesired() {
+    return true;
+  }
 }

@@ -49,44 +49,44 @@ import org.lgna.project.annotations.ValueDetails;
  * @author Dennis Cosgrove
  */
 public class SetterParameter extends AbstractParameter {
-	/* package-private */SetterParameter( Setter setter ) {
-		this.setter = setter;
-	}
+  /* package-private */SetterParameter(Setter setter) {
+    this.setter = setter;
+  }
 
-	@Override
-	public Setter getCode() {
-		return this.setter;
-	}
+  @Override
+  public Setter getCode() {
+    return this.setter;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.setter.getField().getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.setter.getField().getValueType();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	@Override
-	public String getName() {
-		return this.setter.getField().getName();
-	}
+  @Override
+  public String getName() {
+    return this.setter.getField().getName();
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return false; //todo?
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return false; //todo?
+  }
 
-	@Override
-	public boolean isVariableLength() {
-		return false;
-	}
+  @Override
+  public boolean isVariableLength() {
+    return false;
+  }
 
-	@Override
-	public ValueDetails<?> getDetails() {
-		return null;
-	}
+  @Override
+  public ValueDetails<?> getDetails() {
+    return null;
+  }
 
-	private final Setter setter;
+  private final Setter setter;
 }

@@ -54,66 +54,66 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIconFactory {
-	private final List<ImageIcon> sortedByWithSourceImageIcons;
-	private final ImageIcon defaultImageIcon;
+  private final List<ImageIcon> sortedByWithSourceImageIcons;
+  private final ImageIcon defaultImageIcon;
 
-	private static int compareInts( int a, int b ) {
-		if( a < b ) {
-			return -1;
-		} else {
-			if( a == b ) {
-				return 0;
-			} else {
-				return 1;
-			}
-		}
-	}
+  private static int compareInts(int a, int b) {
+    if (a < b) {
+      return -1;
+    } else {
+      if (a == b) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+  }
 
-	public AbstractMultipleSourceImageIconFactory( int defaultIndex, ImageIcon... imageIcons ) {
-		super( IsCachingDesired.FALSE );
-		assert imageIcons.length > 0 : this;
-		assert defaultIndex >= 0 : defaultIndex;
-		assert defaultIndex < imageIcons.length : defaultIndex;
+  public AbstractMultipleSourceImageIconFactory(int defaultIndex, ImageIcon... imageIcons) {
+    super(IsCachingDesired.FALSE);
+    assert imageIcons.length > 0 : this;
+    assert defaultIndex >= 0 : defaultIndex;
+    assert defaultIndex < imageIcons.length : defaultIndex;
 
-		this.defaultImageIcon = imageIcons[ defaultIndex ];
+    this.defaultImageIcon = imageIcons[defaultIndex];
 
-		List<ImageIcon> list = Lists.newArrayList( imageIcons );
-		assert list.contains( null ) == false : this;
+    List<ImageIcon> list = Lists.newArrayList(imageIcons);
+    assert list.contains(null) == false : this;
 
-		Collections.sort( list, new Comparator<ImageIcon>() {
-			@Override
-			public int compare( ImageIcon o1, ImageIcon o2 ) {
-				return compareInts( o1.getIconWidth(), o2.getIconWidth() );
-			}
-		} );
+    Collections.sort(list, new Comparator<ImageIcon>() {
+      @Override
+      public int compare(ImageIcon o1, ImageIcon o2) {
+        return compareInts(o1.getIconWidth(), o2.getIconWidth());
+      }
+    });
 
-		this.sortedByWithSourceImageIcons = Collections.unmodifiableList( list );
-	}
+    this.sortedByWithSourceImageIcons = Collections.unmodifiableList(list);
+  }
 
-	public Iterable<ImageIcon> getSortedByWidthSourceImageIcons() {
-		return this.sortedByWithSourceImageIcons;
-	}
+  public Iterable<ImageIcon> getSortedByWidthSourceImageIcons() {
+    return this.sortedByWithSourceImageIcons;
+  }
 
-	protected ImageIcon getDefaultImageIcon() {
-		return this.defaultImageIcon;
-	}
+  protected ImageIcon getDefaultImageIcon() {
+    return this.defaultImageIcon;
+  }
 
-	protected ImageIcon getSourceImageIcon( Dimension size ) {
-		for( ImageIcon icon : this.sortedByWithSourceImageIcons ) {
-			if( icon.getIconWidth() >= size.width ) {
-				return icon;
-			}
-		}
-		return this.sortedByWithSourceImageIcons.get( this.sortedByWithSourceImageIcons.size() - 1 );
-	}
+  protected ImageIcon getSourceImageIcon(Dimension size) {
+    for (ImageIcon icon : this.sortedByWithSourceImageIcons) {
+      if (icon.getIconWidth() >= size.width) {
+        return icon;
+      }
+    }
+    return this.sortedByWithSourceImageIcons.get(this.sortedByWithSourceImageIcons.size() - 1);
+  }
 
-	@Override
-	protected double getTrimmedWidthToHeightAspectRatio() {
-		return this.defaultImageIcon.getIconWidth() / (double)this.defaultImageIcon.getIconHeight();
-	}
+  @Override
+  protected double getTrimmedWidthToHeightAspectRatio() {
+    return this.defaultImageIcon.getIconWidth() / (double) this.defaultImageIcon.getIconHeight();
+  }
 
-	@Override
-	public final Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		return new Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
-	}
+  @Override
+  public final Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    return new Dimension(this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight());
+  }
 }

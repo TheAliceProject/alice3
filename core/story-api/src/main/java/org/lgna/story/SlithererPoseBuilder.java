@@ -49,18 +49,18 @@ import org.lgna.story.resources.JointId;
  * @author user
  */
 public class SlithererPoseBuilder extends PoseBuilder<SSlitherer, SlithererPose> {
-	public SlithererPoseBuilder joint( JointId jointId, Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
-	}
+  public SlithererPoseBuilder joint(JointId jointId, Orientation orientation) {
+    this.addJointIdQuaternionPair(jointId, orientation);
+    return this;
+  }
 
-	public SlithererPoseBuilder joint( JointId jointId, Number x, Number y, Number z, Number w ) {
-		this.addJointIdQuaternionPair( jointId, new Orientation( x, y, z, w ) );
-		return this;
-	}
+  public SlithererPoseBuilder joint(JointId jointId, Number x, Number y, Number z, Number w) {
+    this.addJointIdQuaternionPair(jointId, new Orientation(x, y, z, w));
+    return this;
+  }
 
-	@Override
-	protected SlithererPose build( JointIdTransformationPair[] buffer ) {
-		return new SlithererPose( buffer );
-	}
+  @Override
+  protected SlithererPose build(JointIdTransformationPair[] buffer) {
+    return new SlithererPose(buffer);
+  }
 }

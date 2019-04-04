@@ -49,24 +49,24 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberHubWithNameState<M extends Member> extends MemberHub<M> {
-	private final MemberNameState<M> nameState;
+  private final MemberNameState<M> nameState;
 
-	private BooleanState otherIsDesiredState;
+  private BooleanState otherIsDesiredState;
 
-	public MemberHubWithNameState( M member, boolean initialValue ) {
-		super( member, initialValue );
-		this.nameState = new MemberNameState<M>( member );
-	}
+  public MemberHubWithNameState(M member, boolean initialValue) {
+    super(member, initialValue);
+    this.nameState = new MemberNameState<M>(member);
+  }
 
-	public BooleanState getOtherIsDesiredState() {
-		return this.otherIsDesiredState;
-	}
+  public BooleanState getOtherIsDesiredState() {
+    return this.otherIsDesiredState;
+  }
 
-	public void setOtherIsDesiredState( BooleanState otherBooleanState ) {
-		this.otherIsDesiredState = otherBooleanState;
-	}
+  public void setOtherIsDesiredState(BooleanState otherBooleanState) {
+    this.otherIsDesiredState = otherBooleanState;
+  }
 
-	public MemberNameState<M> getNameState() {
-		return this.nameState;
-	}
+  public MemberNameState<M> getNameState() {
+    return this.nameState;
+  }
 }

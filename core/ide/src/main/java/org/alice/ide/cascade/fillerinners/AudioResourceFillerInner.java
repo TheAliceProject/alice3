@@ -52,17 +52,17 @@ import org.lgna.project.ast.ResourceExpression;
  * @author Dennis Cosgrove
  */
 public class AudioResourceFillerInner extends ResourceFillerInner<AudioResource> {
-	public AudioResourceFillerInner() {
-		super( AudioResource.class );
-	}
+  public AudioResourceFillerInner() {
+    super(AudioResource.class);
+  }
 
-	@Override
-	protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( AudioResource resource ) {
-		return AudioResourceExpressionFillIn.getInstance( resource );
-	}
+  @Override
+  protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn(AudioResource resource) {
+    return AudioResourceExpressionFillIn.getInstance(resource);
+  }
 
-	@Override
-	protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
-		return AudioResourceImportValueCreator.getInstance().getFillIn();
-	}
+  @Override
+  protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
+    return AudioResourceImportValueCreator.getInstance().getFillIn();
+  }
 }

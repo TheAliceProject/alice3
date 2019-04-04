@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  * @author Dennis Cosgrove
  */
 public class ComponentAddedEvent extends ComponentEvent {
-	public ComponentAddedEvent( Composite source, Component child ) {
-		super( source, child );
-	}
+  public ComponentAddedEvent(Composite source, Component child) {
+    super(source, child);
+  }
 }

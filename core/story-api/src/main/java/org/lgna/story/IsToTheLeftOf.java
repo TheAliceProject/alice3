@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author dculyba
  */
 public class IsToTheLeftOf extends AsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = IsToTheLeftOf.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = IsToTheLeftOf.class) public static interface Detail {
+  }
 
-	private IsToTheLeftOf() {
-		super();
-	}
+  private IsToTheLeftOf() {
+    super();
+  }
 }

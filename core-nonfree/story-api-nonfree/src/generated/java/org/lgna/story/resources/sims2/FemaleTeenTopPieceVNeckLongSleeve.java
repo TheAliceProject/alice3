@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceVNeckLongSleeve implements FemaleTeenTopPiece {
-	BLUE,
-	BROWN,
-	GREY,
-	ORANGE,
-	RED;
+  BLUE, BROWN, GREY, ORANGE, RED
 
 }

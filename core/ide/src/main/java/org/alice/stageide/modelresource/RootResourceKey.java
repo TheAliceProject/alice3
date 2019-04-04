@@ -60,83 +60,83 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public class RootResourceKey extends ResourceKey {
-	private final String keyText;
-	private final String defaultDisplayText;
+  private final String keyText;
+  private final String defaultDisplayText;
 
-	RootResourceKey( String keyText, String defaultDisplayText ) {
-		this.keyText = keyText;
-		this.defaultDisplayText = defaultDisplayText;
-	}
+  RootResourceKey(String keyText, String defaultDisplayText) {
+    this.keyText = keyText;
+    this.defaultDisplayText = defaultDisplayText;
+  }
 
-	@Override
-	public String getSearchText() {
-		return null;
-	}
+  @Override
+  public String getSearchText() {
+    return null;
+  }
 
-	@Override
-	public String getInternalText() {
-		return this.defaultDisplayText;
-	}
+  @Override
+  public String getInternalText() {
+    return this.defaultDisplayText;
+  }
 
-	@Override
-	public String getLocalizedDisplayText() {
-		Class cls = GalleryComposite.class;
-		String bundleName = cls.getPackage().getName() + ".croquet";
-		try {
-			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-			return resourceBundle.getString( this.keyText );
-		} catch( MissingResourceException mre ) {
-			Logger.severe( cls, this.keyText );
-			return this.defaultDisplayText;
-		}
-	}
+  @Override
+  public String getLocalizedDisplayText() {
+    Class cls = GalleryComposite.class;
+    String bundleName = cls.getPackage().getName() + ".croquet";
+    try {
+      ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+      return resourceBundle.getString(this.keyText);
+    } catch (MissingResourceException mre) {
+      Logger.severe(cls, this.keyText);
+      return this.defaultDisplayText;
+    }
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return null;
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return null;
+  }
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		throw new Error();
-	}
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    throw new Error();
+  }
 
-	@Override
-	public String[] getTags() {
-		return null;
-	}
+  @Override
+  public String[] getTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
+  @Override
+  public String[] getGroupTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
+  @Override
+  public String[] getThemeTags() {
+    return null;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
+  @Override
+  public boolean isLeaf() {
+    return false;
+  }
 
-	@Override
-	public boolean isInstanceCreator() {
-		return false;
-	}
+  @Override
+  public boolean isInstanceCreator() {
+    return false;
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		return null;
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    return null;
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		return null;
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    return null;
+  }
 
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+  }
 }

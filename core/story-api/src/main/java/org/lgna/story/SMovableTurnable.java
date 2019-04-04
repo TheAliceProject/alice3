@@ -58,107 +58,79 @@ import org.lgna.story.implementation.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public abstract class SMovableTurnable extends STurnable {
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public Position getPositionRelativeToVehicle() {
-		return Position.createInstance( this.getImplementation().getLocalPosition() );
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public Position getPositionRelativeToVehicle() {
+    return Position.createInstance(this.getImplementation().getLocalPosition());
+  }
 
-	@MethodTemplate( )
-	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( direction, 0 );
-		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
-		this.getImplementation().animateApplyTranslation(
-				direction.createTranslation( amount.doubleValue() ),
-				AsSeenBy.getValue( details, this ).getImplementation(),
-				Duration.getValue( details ),
-				AnimationStyle.getValue( details ).getInternal()
-				);
-	}
+  @MethodTemplate()
+  public void move(MoveDirection direction, Number amount, Move.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(direction, 0);
+    LgnaIllegalArgumentException.checkArgumentIsNumber(amount, 1);
+    this.getImplementation().animateApplyTranslation(direction.createTranslation(amount.doubleValue()), AsSeenBy.getValue(details, this).getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	private void internalMoveToward( SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle ) {
-		Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
-		Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
-		Vector3 v = Vector3.createSubtraction( tTarget, tThis );
-		double length = v.calculateMagnitude();
-		if( length > 0 ) {
-			v.multiply( amount / length );
-		} else {
-			v.set( 0, 0, amount );
-		}
-		this.getImplementation().animateApplyTranslation(
-				v.x, v.y, v.z,
-				org.lgna.story.implementation.AsSeenBy.SCENE,
-				duration,
-				animationStyle
-				);
-	}
+  private void internalMoveToward(SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle) {
+    Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
+    Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
+    Vector3 v = Vector3.createSubtraction(tTarget, tThis);
+    double length = v.calculateMagnitude();
+    if (length > 0) {
+      v.multiply(amount / length);
+    } else {
+      v.set(0, 0, amount);
+    }
+    this.getImplementation().animateApplyTranslation(v.x, v.y, v.z, org.lgna.story.implementation.AsSeenBy.SCENE, duration, animationStyle);
+  }
 
-	@MethodTemplate( )
-	public void moveToward( SThing target, Number amount, MoveToward.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
-		this.internalMoveToward(
-				target,
-				amount.doubleValue(),
-				Duration.getValue( details ),
-				AnimationStyle.getValue( details ).getInternal()
-				);
-	}
+  @MethodTemplate()
+  public void moveToward(SThing target, Number amount, MoveToward.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 0);
+    LgnaIllegalArgumentException.checkArgumentIsNumber(amount, 1);
+    this.internalMoveToward(target, amount.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( )
-	public void moveAwayFrom( SThing target, Number amount, MoveAwayFrom.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		LgnaIllegalArgumentException.checkArgumentIsNumber( amount, 1 );
-		this.internalMoveToward(
-				target,
-				-amount.doubleValue(),
-				Duration.getValue( details ),
-				AnimationStyle.getValue( details ).getInternal()
-				);
-	}
+  @MethodTemplate()
+  public void moveAwayFrom(SThing target, Number amount, MoveAwayFrom.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 0);
+    LgnaIllegalArgumentException.checkArgumentIsNumber(amount, 1);
+    this.internalMoveToward(target, -amount.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( )
-	public void moveTo( SThing target, MoveTo.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		this.getImplementation().animatePositionOnly( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void moveTo(SThing target, MoveTo.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 0);
+    this.getImplementation().animatePositionOnly(target.getImplementation(), null, PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( )
-	public void moveAndOrientTo( SThing target, MoveAndOrientTo.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 0 );
-		this.getImplementation().animateTransformation( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void moveAndOrientTo(SThing target, MoveAndOrientTo.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 0);
+    this.getImplementation().animateTransformation(target.getImplementation(), null, PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( )
-	public void place( SpatialRelation spatialRelation, SThing target, Place.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( spatialRelation, 0 );
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( target, 1 );
-		EntityImp targetImp = target != null ? target.getImplementation() : null;
-		ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
+  @MethodTemplate()
+  public void place(SpatialRelation spatialRelation, SThing target, Place.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(spatialRelation, 0);
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 1);
+    EntityImp targetImp = target != null ? target.getImplementation() : null;
+    ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
 
-		this.getImplementation().animatePlace(
-				spatialRelation.getImp(),
-				targetImp,
-				AlongAxisOffset.getValue( details ),
-				AsSeenBy.getImplementation( details, defaultAsSeenByImp ),
-				PathStyle.getValue( details ).isSmooth(),
-				Duration.getValue( details ),
-				AnimationStyle.getValue( details ).getInternal()
-				);
-	}
+    this.getImplementation().animatePlace(spatialRelation.getImp(), targetImp, AlongAxisOffset.getValue(details), AsSeenBy.getImplementation(details, defaultAsSeenByImp), PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( position, 0 );
-		EntityImp vehicle = this.getImplementation().getVehicle();
-		if( vehicle != null ) {
-			this.getImplementation().animatePositionOnly( vehicle, position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-		} else {
-			AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
-			AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
-			m.translation.set( position.getInternal() );
-			sgTransformable.setLocalTransformation( m );
-			Logger.severe( this );
-		}
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public void setPositionRelativeToVehicle(Position position, SetPositionRelativeToVehicle.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(position, 0);
+    EntityImp vehicle = this.getImplementation().getVehicle();
+    if (vehicle != null) {
+      this.getImplementation().animatePositionOnly(vehicle, position.getInternal(), PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+    } else {
+      AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
+      AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+      m.translation.set(position.getInternal());
+      sgTransformable.setLocalTransformation(m);
+      Logger.severe(this);
+    }
+  }
 }

@@ -53,60 +53,59 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Disc extends Shape {
-	public static enum Axis {
-		X,
-		Y,
-		Z
-	}
+  public static enum Axis {
+    X, Y, Z
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		double d = outerRadius.getValue();
-		Axis axis = this.axis.getValue();
-		if( axis == Axis.X ) {
-			boundingBox.setMinimum( 0, -d, -d );
-			boundingBox.setMaximum( 0, d, d );
-		} else if( axis == Axis.Y ) {
-			boundingBox.setMinimum( -d, 0, -d );
-			boundingBox.setMaximum( d, 0, d );
-		} else if( axis == Axis.Z ) {
-			boundingBox.setMinimum( -d, -d, 0 );
-			boundingBox.setMaximum( d, d, 0 );
-		} else {
-			boundingBox.setNaN();
-		}
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    double d = outerRadius.getValue();
+    Axis axis = this.axis.getValue();
+    if (axis == Axis.X) {
+      boundingBox.setMinimum(0, -d, -d);
+      boundingBox.setMaximum(0, d, d);
+    } else if (axis == Axis.Y) {
+      boundingBox.setMinimum(-d, 0, -d);
+      boundingBox.setMaximum(d, 0, d);
+    } else if (axis == Axis.Z) {
+      boundingBox.setMinimum(-d, -d, 0);
+      boundingBox.setMaximum(d, d, 0);
+    } else {
+      boundingBox.setNaN();
+    }
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = outerRadius.getValue();
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    boundingSphere.center.set(0, 0, 0);
+    boundingSphere.radius = outerRadius.getValue();
+  }
 
-	public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>( this, Axis.Y ) {
-		@Override
-		public void setValue( Axis value ) {
-			if( Objects.notEquals( value, this.getValue() ) ) {
-				Disc.this.markBoundsDirty();
-				super.setValue( value );
-				Disc.this.fireBoundChanged();
-			}
-		};
-	};
-	public final DoubleProperty innerRadius = new DoubleProperty( this, 0.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	public final BoundDoubleProperty outerRadius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( value );
-		}
-	};
-	public final BooleanProperty isFrontFaceVisible = new BooleanProperty( this, true );
-	public final BooleanProperty isBackFaceVisible = new BooleanProperty( this, true );
+  public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>(this, Axis.Y) {
+    @Override
+    public void setValue(Axis value) {
+      if (Objects.notEquals(value, this.getValue())) {
+        Disc.this.markBoundsDirty();
+        super.setValue(value);
+        Disc.this.fireBoundChanged();
+      }
+    }
+
+  };
+  public final DoubleProperty innerRadius = new DoubleProperty(this, 0.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  public final BoundDoubleProperty outerRadius = new BoundDoubleProperty(this, 1.0) {
+    @Override
+    public void setValue(Double value) {
+      assert value >= 0.0 : value;
+      super.setValue(value);
+    }
+  };
+  public final BooleanProperty isFrontFaceVisible = new BooleanProperty(this, true);
+  public final BooleanProperty isBackFaceVisible = new BooleanProperty(this, true);
 }

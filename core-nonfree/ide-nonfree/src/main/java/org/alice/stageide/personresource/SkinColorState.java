@@ -52,14 +52,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SkinColorState extends ColorState {
-	private final MelaninChooserTabComposite melaninChooserTabComposite = new MelaninChooserTabComposite();
+  private final MelaninChooserTabComposite melaninChooserTabComposite = new MelaninChooserTabComposite();
 
-	public SkinColorState() {
-		super( Application.INHERIT_GROUP, UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), BaseSkinTone.getRandom().getColor() );
-		this.getChooserDialogCoreComposite().addSubComposite( this.melaninChooserTabComposite );
-	}
+  public SkinColorState() {
+    super(Application.INHERIT_GROUP, UUID.fromString("646ae40a-547a-4f52-962f-57a7dc4d970f"), BaseSkinTone.getRandom().getColor());
+    this.getChooserDialogCoreComposite().addSubComposite(this.melaninChooserTabComposite);
+  }
 
-	public MelaninChooserTabComposite getMelaninChooserTabComposite() {
-		return this.melaninChooserTabComposite;
-	}
+  public MelaninChooserTabComposite getMelaninChooserTabComposite() {
+    return this.melaninChooserTabComposite;
+  }
 }

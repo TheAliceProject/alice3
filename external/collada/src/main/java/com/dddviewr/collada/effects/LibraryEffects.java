@@ -7,25 +7,26 @@ import java.util.List;
 import com.dddviewr.collada.Base;
 
 public class LibraryEffects extends Base {
-	protected List<Effect> effects = new ArrayList<Effect>();
+  protected List<Effect> effects = new ArrayList<Effect>();
 
-	public void dump(PrintStream out, int indent) {
-		String prefix = createIndent(indent);
-		out.println(prefix + "LibraryEffects");
+  public void dump(PrintStream out, int indent) {
+    String prefix = createIndent(indent);
+    out.println(prefix + "LibraryEffects");
 
-		for (Effect e : this.effects)
-			e.dump(out, indent + 1);
-	}
+    for (Effect e : this.effects) {
+      e.dump(out, indent + 1);
+    }
+  }
 
-	public List<Effect> getEffects() {
-		return this.effects;
-	}
+  public List<Effect> getEffects() {
+    return this.effects;
+  }
 
-	public void setEffects(List<Effect> effects) {
-		this.effects = effects;
-	}
+  public void setEffects(List<Effect> effects) {
+    this.effects = effects;
+  }
 
-	public void addEffect(Effect effect) {
-		this.effects.add(effect);
-	}
+  public void addEffect(Effect effect) {
+    this.effects.add(effect);
+  }
 }

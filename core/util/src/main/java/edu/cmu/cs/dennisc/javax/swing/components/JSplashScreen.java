@@ -53,16 +53,16 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 public class JSplashScreen extends JWindow {
-	public JSplashScreen( JFrame owner, Icon icon ) {
-		super( owner );
-		initialize( icon );
-	}
+  public JSplashScreen(JFrame owner, Icon icon) {
+    super(owner);
+    initialize(icon);
+  }
 
-	private void initialize( Icon icon ) {
-		JLabel label = new JLabel();
-		label.setIcon( icon );
-		this.getContentPane().add( label, BorderLayout.CENTER );
-		this.pack();
-		this.setLocationRelativeTo( this.getOwner() );
-	}
+  private void initialize(Icon icon) {
+    JLabel label = new JLabel();
+    label.setIcon(icon);
+    this.getContentPane().add(label, BorderLayout.CENTER);
+    this.pack();
+    this.setLocationRelativeTo(this.getOwner());
+  }
 }

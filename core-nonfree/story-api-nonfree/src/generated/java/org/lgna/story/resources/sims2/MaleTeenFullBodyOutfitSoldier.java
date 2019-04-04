@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenFullBodyOutfitSoldier implements MaleTeenFullBodyOutfit {
-	GREEN_CAMO_PLAIN,
-	KHAKI_CAMO_PLAIN;
+  GREEN_CAMO_PLAIN, KHAKI_CAMO_PLAIN
 
 }

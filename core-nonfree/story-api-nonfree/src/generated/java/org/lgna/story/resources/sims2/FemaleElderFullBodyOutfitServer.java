@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitServer implements FemaleElderFullBodyOutfit {
-	UNIFORM;
+  UNIFORM
 
 }

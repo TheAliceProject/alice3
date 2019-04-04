@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class IdeStencil extends StencilModel {
-	public IdeStencil( UUID migrationId ) {
-		super( migrationId );
-	}
+  public IdeStencil(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void hideStencil() {
-		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
-	}
+  @Override
+  protected void hideStencil() {
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
+  }
 }

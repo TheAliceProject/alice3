@@ -50,11 +50,11 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public class AppleApplicationEventTrigger extends EventObjectTrigger<AppEvent> {
-	public static UserActivity setOnUserActivity( UserActivity activity, AppEvent event ) {
-		return new AppleApplicationEventTrigger( activity, event ).getUserActivity();
-	}
+  public static UserActivity setOnUserActivity(UserActivity activity, AppEvent event) {
+    return new AppleApplicationEventTrigger(activity, event).getUserActivity();
+  }
 
-	private AppleApplicationEventTrigger( UserActivity activity, AppEvent event ) {
-		super( activity, null, event );
-	}
+  private AppleApplicationEventTrigger(UserActivity activity, AppEvent event) {
+    super(activity, null, event);
+  }
 }

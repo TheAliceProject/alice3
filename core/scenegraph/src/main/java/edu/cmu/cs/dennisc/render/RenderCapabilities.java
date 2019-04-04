@@ -46,26 +46,26 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public final class RenderCapabilities {
-	public static class Builder {
-		public Builder stencilBits( int stencilBits ) {
-			this.stencilBits = stencilBits;
-			return this;
-		}
+  public static class Builder {
+    public Builder stencilBits(int stencilBits) {
+      this.stencilBits = stencilBits;
+      return this;
+    }
 
-		public RenderCapabilities build() {
-			return new RenderCapabilities( this );
-		}
+    public RenderCapabilities build() {
+      return new RenderCapabilities(this);
+    }
 
-		private int stencilBits;
-	}
+    private int stencilBits;
+  }
 
-	private RenderCapabilities( Builder builder ) {
-		this.stencilBits = builder.stencilBits;
-	}
+  private RenderCapabilities(Builder builder) {
+    this.stencilBits = builder.stencilBits;
+  }
 
-	public int getStencilBits() {
-		return this.stencilBits;
-	}
+  public int getStencilBits() {
+    return this.stencilBits;
+  }
 
-	private final int stencilBits;
+  private final int stencilBits;
 }

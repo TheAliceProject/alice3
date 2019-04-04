@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleToddlerFullBodyOutfitPantsCollar implements MaleToddlerFullBodyOutfit {
-	PLAID_BLUE_OVERALLS,
-	BROWN_BLUE,
-	EARTH_BABY_BLUE,
-	GREEN_WHITE,
-	MAROON_CUSTARD;
+  PLAID_BLUE_OVERALLS, BROWN_BLUE, EARTH_BABY_BLUE, GREEN_WHITE, MAROON_CUSTARD
 
 }

@@ -56,63 +56,63 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
-	private final GLOffscreenAutoDrawable glPbuffer;
+  private final GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */ GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		super( lookingGlassFactory, requestedCapabilities );
-		GLContext share;
-		if( renderTargetToShareContextWith != null ) {
-			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
-		} else {
-			share = null;
-		}
-		this.glPbuffer = GlDrawableUtils.createGlPixelBuffer( GlDrawableUtils.createGlCapabilities( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
-	}
+  /* package-private */ GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    super(lookingGlassFactory, requestedCapabilities);
+    GLContext share;
+    if (renderTargetToShareContextWith != null) {
+      share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
+    } else {
+      share = null;
+    }
+    this.glPbuffer = GlDrawableUtils.createGlPixelBuffer(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share);
+  }
 
-	@Override
-	protected Dimension getSurfaceSize( Dimension rv ) {
-		//TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
-		if( this.glPbuffer != null ) {
-			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
-		} else {
-			rv.setSize( 0, 0 );
-		}
-		return rv;
-	}
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    //TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
+    if (this.glPbuffer != null) {
+      rv.setSize(GlDrawableUtils.getGlDrawableWidth(this.glPbuffer), GlDrawableUtils.getGlDrawableHeight(this.glPbuffer));
+    } else {
+      rv.setSize(0, 0);
+    }
+    return rv;
+  }
 
-	@Override
-	protected Dimension getDrawableSize( Dimension rv ) {
-		if( this.glPbuffer != null ) {
-			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
-		} else {
-			rv.setSize( 0, 0 );
-		}
-		return rv;
-	}
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    if (this.glPbuffer != null) {
+      rv.setSize(GlDrawableUtils.getGlDrawableWidth(this.glPbuffer), GlDrawableUtils.getGlDrawableHeight(this.glPbuffer));
+    } else {
+      rv.setSize(0, 0);
+    }
+    return rv;
+  }
 
-	@Override
-	public void clearAndRenderOffscreen() {
-		getGLAutoDrawable().display();
-	}
+  @Override
+  public void clearAndRenderOffscreen() {
+    getGLAutoDrawable().display();
+  }
 
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		if( this.glPbuffer != null ) {
-			this.glPbuffer.destroy();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    if (this.glPbuffer != null) {
+      this.glPbuffer.destroy();
+    }
+  }
 
-	@Override
-	public GLAutoDrawable getGLAutoDrawable() {
-		if( this.glPbuffer != null ) {
-			return this.glPbuffer;
-		} else {
-			throw new GLException();
-		}
-	}
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    if (this.glPbuffer != null) {
+      return this.glPbuffer;
+    } else {
+      throw new GLException();
+    }
+  }
 
-	@Override
-	protected void repaintIfAppropriate() {
-	}
+  @Override
+  protected void repaintIfAppropriate() {
+  }
 }

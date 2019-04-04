@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultBottomPieceCargoPants implements MaleAdultBottomPiece {
-	GREY,
-	TAN,
-	BLACK,
-	OLIVE,
-	DESERTCAMO;
+  GREY, TAN, BLACK, OLIVE, DESERTCAMO
 
 }

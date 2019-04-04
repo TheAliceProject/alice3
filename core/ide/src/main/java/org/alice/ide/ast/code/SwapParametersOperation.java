@@ -55,22 +55,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SwapParametersOperation extends AbstractCodeParameterOperation {
-	public SwapParametersOperation( UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( individualId, parametersProperty, parameter );
-	}
+  public SwapParametersOperation(UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(individualId, parametersProperty, parameter);
+  }
 
-	protected abstract boolean isAppropriate( int index, int n );
+  protected abstract boolean isAppropriate(int index, int n);
 
-	protected abstract int getIndexA();
+  protected abstract int getIndexA();
 
-	public boolean isIndexAppropriate() {
-		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
-	}
+  public boolean isIndexAppropriate() {
+    return this.isAppropriate(this.getIndex(), this.getParameterCount());
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		final int aIndex = this.getIndexA();
-		Logger.errln( this, aIndex );
-		activity.commitAndInvokeDo( new SwapParametersEdit( activity, this.getCode(), aIndex ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    final int aIndex = this.getIndexA();
+    Logger.errln(this, aIndex);
+    activity.commitAndInvokeDo(new SwapParametersEdit(activity, this.getCode(), aIndex));
+  }
 }

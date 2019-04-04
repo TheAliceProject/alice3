@@ -43,5 +43,5 @@
 package org.lgna.story.event;
 
 public interface ArrowKeyPressListener {
-	public void arrowKeyPressed( ArrowKeyEvent event );
+  public void arrowKeyPressed(ArrowKeyEvent event);
 }

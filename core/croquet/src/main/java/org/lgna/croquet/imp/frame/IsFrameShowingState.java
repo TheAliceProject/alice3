@@ -52,21 +52,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class IsFrameShowingState extends AbstractIsFrameShowingState {
-	public IsFrameShowingState( Group group, FrameComposite<?> frameComposite ) {
-		super( group, UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ) );
-		this.frameComposite = frameComposite;
-	}
+  public IsFrameShowingState(Group group, FrameComposite<?> frameComposite) {
+    super(group, UUID.fromString("9afc0e33-5677-4e1f-a178-95d40f3e0b9c"));
+    this.frameComposite = frameComposite;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		//return this.frameComposite.getClassUsedForLocalization();
-		return this.frameComposite.getClass();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    //return this.frameComposite.getClassUsedForLocalization();
+    return this.frameComposite.getClass();
+  }
 
-	@Override
-	public FrameComposite<?> getFrameComposite() {
-		return this.frameComposite;
-	}
+  @Override
+  public FrameComposite<?> getFrameComposite() {
+    return this.frameComposite;
+  }
 
-	private final FrameComposite<?> frameComposite;
+  private final FrameComposite<?> frameComposite;
 }

@@ -46,78 +46,78 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 public class LgnaIllegalArgumentException extends LgnaRuntimeException {
-	//todo: remove return value?
-	public static <T> T checkArgumentIsNotNull( T value, int index ) {
-		if( value != null ) {
-			return value;
-		} else {
-			throw new LgnaIllegalArgumentException( "argument must not be null", index, value );
-		}
-	}
+  //todo: remove return value?
+  public static <T> T checkArgumentIsNotNull(T value, int index) {
+    if (value != null) {
+      return value;
+    } else {
+      throw new LgnaIllegalArgumentException("argument must not be null", index, value);
+    }
+  }
 
-	public static Number checkArgumentIsNumber( Number value, int index ) {
-		checkArgumentIsNotNull( value, index );
-		if( Double.isNaN( value.doubleValue() ) == false ) {
-			return value;
-		} else {
-			throw new LgnaIllegalArgumentException( "argument must be a number", index, value );
-		}
-	}
+  public static Number checkArgumentIsNumber(Number value, int index) {
+    checkArgumentIsNotNull(value, index);
+    if (Double.isNaN(value.doubleValue()) == false) {
+      return value;
+    } else {
+      throw new LgnaIllegalArgumentException("argument must be a number", index, value);
+    }
+  }
 
-	public static Number checkArgumentIsPositive( Number value, int index ) {
-		checkArgumentIsNumber( value, index );
-		if( value.doubleValue() > 0.0 ) {
-			return value;
-		} else {
-			throw new LgnaIllegalArgumentException( "argument must be positive", index, value );
-		}
-	}
+  public static Number checkArgumentIsPositive(Number value, int index) {
+    checkArgumentIsNumber(value, index);
+    if (value.doubleValue() > 0.0) {
+      return value;
+    } else {
+      throw new LgnaIllegalArgumentException("argument must be positive", index, value);
+    }
+  }
 
-	public static Number checkArgumentIsPositiveOrZero( Number value, int index ) {
-		checkArgumentIsNumber( value, index );
-		if( value.doubleValue() >= 0.0 ) {
-			return value;
-		} else {
-			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
-		}
-	}
+  public static Number checkArgumentIsPositiveOrZero(Number value, int index) {
+    checkArgumentIsNumber(value, index);
+    if (value.doubleValue() >= 0.0) {
+      return value;
+    } else {
+      throw new LgnaIllegalArgumentException("argument must be positive or zero", index, value);
+    }
+  }
 
-	public static Number checkArgumentIsBetween0and1( Number value, int index ) {
-		checkArgumentIsNumber( value, index );
-		double d = value.doubleValue();
-		if( ( 0.0 <= d ) && ( d <= 1.0 ) ) {
-			return value;
-		} else {
-			throw new LgnaIllegalArgumentException( "argument must be positive or zero", index, value );
-		}
-	}
+  public static Number checkArgumentIsBetween0and1(Number value, int index) {
+    checkArgumentIsNumber(value, index);
+    double d = value.doubleValue();
+    if ((0.0 <= d) && (d <= 1.0)) {
+      return value;
+    } else {
+      throw new LgnaIllegalArgumentException("argument must be positive or zero", index, value);
+    }
+  }
 
-	private final int index;
-	private final Object value;
+  private final int index;
+  private final Object value;
 
-	public LgnaIllegalArgumentException( String message, int index, Object value ) {
-		super( message );
-		this.index = index;
-		this.value = value;
-	}
+  public LgnaIllegalArgumentException(String message, int index, Object value) {
+    super(message);
+    this.index = index;
+    this.value = value;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	public Object getValue() {
-		return this.value;
-	}
+  public Object getValue() {
+    return this.value;
+  }
 
-	@Override
-	protected void appendFormattedString( StringBuilder sb ) {
-		sb.append( "<html>" );
-		sb.append( "<h1>" );
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "</h1>" );
-		sb.append( "<h2>" );
-		sb.append( this.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "</html>" );
-	}
+  @Override
+  protected void appendFormattedString(StringBuilder sb) {
+    sb.append("<html>");
+    sb.append("<h1>");
+    sb.append(this.getClass().getSimpleName());
+    sb.append("</h1>");
+    sb.append("<h2>");
+    sb.append(this.getMessage());
+    sb.append("</h2>");
+    sb.append("</html>");
+  }
 }

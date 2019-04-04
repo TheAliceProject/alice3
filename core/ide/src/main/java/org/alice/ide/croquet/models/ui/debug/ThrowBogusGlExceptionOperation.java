@@ -51,31 +51,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThrowBogusGlExceptionOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static ThrowBogusGlExceptionOperation instance = new ThrowBogusGlExceptionOperation();
-	}
+  private static class SingletonHolder {
+    private static ThrowBogusGlExceptionOperation instance = new ThrowBogusGlExceptionOperation();
+  }
 
-	public static ThrowBogusGlExceptionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThrowBogusGlExceptionOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThrowBogusGlExceptionOperation() {
-		super( UUID.fromString( "4520732f-cf8c-4249-bf23-e4be9f2269ac" ) );
-	}
+  private ThrowBogusGlExceptionOperation() {
+    super(UUID.fromString("4520732f-cf8c-4249-bf23-e4be9f2269ac"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Throw Bogus GL Exception..." );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Throw Bogus GL Exception...");
+  }
 
-	@Override
-	protected void performInternal() {
-		new Thread() {
-			@Override
-			public void run() {
-				throw new GLException( "DELETE THIS BOGUS GL EXCEPTION" );
-			}
-		}.start();
-	}
+  @Override
+  protected void performInternal() {
+    new Thread() {
+      @Override
+      public void run() {
+        throw new GLException("DELETE THIS BOGUS GL EXCEPTION");
+      }
+    }.start();
+  }
 }

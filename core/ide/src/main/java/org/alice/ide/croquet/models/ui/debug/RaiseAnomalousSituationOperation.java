@@ -54,32 +54,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RaiseAnomalousSituationOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static RaiseAnomalousSituationOperation instance = new RaiseAnomalousSituationOperation();
-	}
+  private static class SingletonHolder {
+    private static RaiseAnomalousSituationOperation instance = new RaiseAnomalousSituationOperation();
+  }
 
-	public static RaiseAnomalousSituationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RaiseAnomalousSituationOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RaiseAnomalousSituationOperation() {
-		super( UUID.fromString( "d7129c6f-b7e1-40cb-9036-401f034d982b" ) );
-	}
+  private RaiseAnomalousSituationOperation() {
+    super(UUID.fromString("d7129c6f-b7e1-40cb-9036-401f034d982b"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Raise Anomalous Situation..." );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Raise Anomalous Situation...");
+  }
 
-	@Override
-	protected void performInternal() {
-		new Thread() {
-			@Override
-			public void run() {
-				Statement statement = new Comment( "delete me" );
-				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserActivity() );
-			}
-		}.start();
-	}
+  @Override
+  protected void performInternal() {
+    new Thread() {
+      @Override
+      public void run() {
+        Statement statement = new Comment("delete me");
+        StatementContextMenu.getInstance(statement).getPopupPrepModel().fire(NullTrigger.createUserActivity());
+      }
+    }.start();
+  }
 }

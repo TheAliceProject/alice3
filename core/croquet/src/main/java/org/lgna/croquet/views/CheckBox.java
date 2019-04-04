@@ -51,12 +51,12 @@ import javax.swing.JCheckBox;
  * @author Dennis Cosgrove
  */
 public class CheckBox extends BooleanStateButton<JCheckBox> {
-	public CheckBox( BooleanState model ) {
-		super( model, "CheckBox" );
-	}
+  public CheckBox(BooleanState model) {
+    super(model, "CheckBox");
+  }
 
-	@Override
-	protected JCheckBox createAwtComponent() {
-		return new JCheckBox();
-	}
+  @Override
+  protected JCheckBox createAwtComponent() {
+    return new JCheckBox();
+  }
 }

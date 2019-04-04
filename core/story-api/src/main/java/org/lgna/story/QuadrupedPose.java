@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Matt May
  */
 public class QuadrupedPose extends Pose<SQuadruped> {
-	/*package-private*/ QuadrupedPose( JointIdTransformationPair... pairs ) {
-		super( SQuadruped.class, pairs );
-	}
+  /*package-private*/ QuadrupedPose(JointIdTransformationPair... pairs) {
+    super(SQuadruped.class, pairs);
+  }
 }

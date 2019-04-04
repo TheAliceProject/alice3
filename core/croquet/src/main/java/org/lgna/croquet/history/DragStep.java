@@ -67,252 +67,252 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class DragStep extends PrepStep<DragModel> {
-	private static class DropReceptorInfo {
-		private DropReceptor dropReceptor;
-		private Rectangle bounds;
+  private static class DropReceptorInfo {
+    private DropReceptor dropReceptor;
+    private Rectangle bounds;
 
-		public DropReceptorInfo( DropReceptor dropReceptor, Rectangle bounds ) {
-			this.dropReceptor = dropReceptor;
-			this.bounds = bounds;
-		}
+    public DropReceptorInfo(DropReceptor dropReceptor, Rectangle bounds) {
+      this.dropReceptor = dropReceptor;
+      this.bounds = bounds;
+    }
 
-		public boolean contains( int x, int y ) {
-			return this.bounds.contains( x, y );
-		}
+    public boolean contains(int x, int y) {
+      return this.bounds.contains(x, y);
+    }
 
-		public boolean intersects( Rectangle rectangle ) {
-			return this.bounds.intersects( rectangle );
-		}
+    public boolean intersects(Rectangle rectangle) {
+      return this.bounds.intersects(rectangle);
+    }
 
-		public DropReceptor getDropReceptor() {
-			return this.dropReceptor;
-		}
+    public DropReceptor getDropReceptor() {
+      return this.dropReceptor;
+    }
 
-		public void setDropReceptor( DropReceptor dropReceptor ) {
-			this.dropReceptor = dropReceptor;
-		}
+    public void setDropReceptor(DropReceptor dropReceptor) {
+      this.dropReceptor = dropReceptor;
+    }
 
-		public Rectangle getBounds() {
-			return this.bounds;
-		}
+    public Rectangle getBounds() {
+      return this.bounds;
+    }
 
-		public void setBounds( Rectangle bounds ) {
-			this.bounds = bounds;
-		}
-	}
+    public void setBounds(Rectangle bounds) {
+      this.bounds = bounds;
+    }
+  }
 
-	private DropReceptorInfo[] potentialDropReceptorInfos;
-	private DropReceptor currentDropReceptor;
-	private DropSite currentPotentialDropSite;
-	private MouseEvent latestMouseEvent;
+  private DropReceptorInfo[] potentialDropReceptorInfos;
+  private DropReceptor currentDropReceptor;
+  private DropSite currentPotentialDropSite;
+  private MouseEvent latestMouseEvent;
 
-	DragStep( UserActivity activity, DragModel model, DragTrigger trigger) {
-		super( activity, model, trigger );
-	}
+  DragStep(UserActivity activity, DragModel model, DragTrigger trigger) {
+    super(activity, model, trigger);
+  }
 
-	private DropReceptorInfo[] getPotentialDropReceptorInfos() {
-		if( this.potentialDropReceptorInfos != null ) {
-			//pass
-		} else {
-			DragModel dragModel = this.getModel();
-			List<? extends DropReceptor> potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
-			int i = 0;
-			for( DropReceptor dropReceptor : potentialDropReceptors ) {
-				AwtComponentView<?> dropComponent = dropReceptor.getViewController();
-				Rectangle bounds = dropComponent.getBounds();
-				bounds = SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
-				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
-				i++;
-			}
-		}
-		return this.potentialDropReceptorInfos;
-	}
+  private DropReceptorInfo[] getPotentialDropReceptorInfos() {
+    if (this.potentialDropReceptorInfos != null) {
+      //pass
+    } else {
+      DragModel dragModel = this.getModel();
+      List<? extends DropReceptor> potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
+      this.potentialDropReceptorInfos = new DropReceptorInfo[potentialDropReceptors.size()];
+      int i = 0;
+      for (DropReceptor dropReceptor : potentialDropReceptors) {
+        AwtComponentView<?> dropComponent = dropReceptor.getViewController();
+        Rectangle bounds = dropComponent.getBounds();
+        bounds = SwingUtilities.convertRectangle(dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent());
+        this.potentialDropReceptorInfos[i] = new DropReceptorInfo(dropReceptor, bounds);
+        i++;
+      }
+    }
+    return this.potentialDropReceptorInfos;
+  }
 
-	public DragComponent<?> getDragSource() {
-		return (DragComponent<?>)this.getViewController();
-	}
+  public DragComponent<?> getDragSource() {
+    return (DragComponent<?>) this.getViewController();
+  }
 
-	public MouseEvent getLatestMouseEvent() {
-		return this.latestMouseEvent;
-	}
+  public MouseEvent getLatestMouseEvent() {
+    return this.latestMouseEvent;
+  }
 
-	public void setLatestMouseEvent( MouseEvent e ) {
-		this.latestMouseEvent = e;
-	}
+  public void setLatestMouseEvent(MouseEvent e) {
+    this.latestMouseEvent = e;
+  }
 
-	public void fireDragStarted() {
-		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-			//todo: pass original mouse pressed event?
-			dropReceptorInfo.getDropReceptor().dragStarted( this );
-		}
-	}
+  public void fireDragStarted() {
+    for (DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos()) {
+      //todo: pass original mouse pressed event?
+      dropReceptorInfo.getDropReceptor().dragStarted(this);
+    }
+  }
 
-	public DropSite getCurrentPotentialDropSite() {
-		return this.currentPotentialDropSite;
-	}
+  public DropSite getCurrentPotentialDropSite() {
+    return this.currentPotentialDropSite;
+  }
 
-	private DropReceptor getDropReceptorUnder( int x, int y ) {
-		DropReceptor rv = null;
-		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-			assert dropReceptorInfo != null;
-			if( dropReceptorInfo.contains( x, y ) ) {
-				Rectangle bounds = dropReceptorInfo.getBounds();
-				assert bounds != null;
-				int nextHeight = bounds.height;
-				if( nextHeight < prevHeight ) {
-					rv = dropReceptorInfo.getDropReceptor();
-					prevHeight = nextHeight;
-				}
-			}
-		}
-		return rv;
-	}
+  private DropReceptor getDropReceptorUnder(int x, int y) {
+    DropReceptor rv = null;
+    int prevHeight = Integer.MAX_VALUE;
+    for (DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos()) {
+      assert dropReceptorInfo != null;
+      if (dropReceptorInfo.contains(x, y)) {
+        Rectangle bounds = dropReceptorInfo.getBounds();
+        assert bounds != null;
+        int nextHeight = bounds.height;
+        if (nextHeight < prevHeight) {
+          rv = dropReceptorInfo.getDropReceptor();
+          prevHeight = nextHeight;
+        }
+      }
+    }
+    return rv;
+  }
 
-	private DropReceptor getDropReceptorUnder( Rectangle bounds ) {
-		DropReceptor rv = null;
-		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-			if( dropReceptorInfo.intersects( bounds ) ) {
-				int nextHeight = dropReceptorInfo.getBounds().height;
-				if( nextHeight < prevHeight ) {
-					rv = dropReceptorInfo.getDropReceptor();
-					prevHeight = nextHeight;
-				}
-			}
-		}
-		return rv;
-	}
+  private DropReceptor getDropReceptorUnder(Rectangle bounds) {
+    DropReceptor rv = null;
+    int prevHeight = Integer.MAX_VALUE;
+    for (DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos()) {
+      if (dropReceptorInfo.intersects(bounds)) {
+        int nextHeight = dropReceptorInfo.getBounds().height;
+        if (nextHeight < prevHeight) {
+          rv = dropReceptorInfo.getDropReceptor();
+          prevHeight = nextHeight;
+        }
+      }
+    }
+    return rv;
+  }
 
-	private DropReceptor getDropReceptorUnder( MouseEvent e ) {
-		DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
-		if( rv != null ) {
-			//pass
-		} else {
-			if( this.getDragSource().getDragProxy() != null ) {
-				Rectangle dragBounds = this.getDragSource().getDragProxy().getBounds();
-				dragBounds = SwingUtilities.convertRectangle( this.getDragSource().getDragProxy().getParent(), dragBounds, this.getDragSource().getAwtComponent() );
-				int x = dragBounds.x;
-				int y = dragBounds.y + ( dragBounds.height / 2 );
-				rv = getDropReceptorUnder( x, y );
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = getDropReceptorUnder( dragBounds );
-				}
-			}
-		}
-		return rv;
-	}
+  private DropReceptor getDropReceptorUnder(MouseEvent e) {
+    DropReceptor rv = getDropReceptorUnder(e.getX(), e.getY());
+    if (rv != null) {
+      //pass
+    } else {
+      if (this.getDragSource().getDragProxy() != null) {
+        Rectangle dragBounds = this.getDragSource().getDragProxy().getBounds();
+        dragBounds = SwingUtilities.convertRectangle(this.getDragSource().getDragProxy().getParent(), dragBounds, this.getDragSource().getAwtComponent());
+        int x = dragBounds.x;
+        int y = dragBounds.y + (dragBounds.height / 2);
+        rv = getDropReceptorUnder(x, y);
+        if (rv != null) {
+          //pass
+        } else {
+          rv = getDropReceptorUnder(dragBounds);
+        }
+      }
+    }
+    return rv;
+  }
 
-	public void handleMouseDragged( MouseEvent e ) {
-		this.setLatestMouseEvent( e );
-		DropReceptor nextDropReceptor = getDropReceptorUnder( e );
-		if( this.currentDropReceptor != nextDropReceptor ) {
-			if( this.currentPotentialDropSite != null ) {
-				if( this.currentDropReceptor != null ) {
-					//this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-				}
-			}
-			if( this.currentDropReceptor != null ) {
-				this.getModel().handleDragExitedDropReceptor( this );
-				this.currentDropReceptor.dragExited( this, false );
-				//this.addChild( new ExitedDropReceptorEvent( e, this.currentDropReceptor ) );
-			}
-			this.currentDropReceptor = nextDropReceptor;
-			if( this.currentDropReceptor != null ) {
-				this.currentDropReceptor.dragEntered( this );
-				this.getModel().handleDragEnteredDropReceptor( this );
-				//this.addChild( new EnteredDropReceptorEvent( e, this.currentDropReceptor ) );
-			}
-		}
-		if( this.currentDropReceptor != null ) {
-			DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
-			if( Objects.equals( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
-				//pass
-			} else {
-				if( this.currentPotentialDropSite != null ) {
-					//this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-				}
-				this.currentPotentialDropSite = nextPotentialDropSite;
-				if( this.currentPotentialDropSite != null ) {
-					//this.addChild( new EnteredPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
-				}
-			}
-		}
+  public void handleMouseDragged(MouseEvent e) {
+    this.setLatestMouseEvent(e);
+    DropReceptor nextDropReceptor = getDropReceptorUnder(e);
+    if (this.currentDropReceptor != nextDropReceptor) {
+      if (this.currentPotentialDropSite != null) {
+        if (this.currentDropReceptor != null) {
+          //this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+        }
+      }
+      if (this.currentDropReceptor != null) {
+        this.getModel().handleDragExitedDropReceptor(this);
+        this.currentDropReceptor.dragExited(this, false);
+        //this.addChild( new ExitedDropReceptorEvent( e, this.currentDropReceptor ) );
+      }
+      this.currentDropReceptor = nextDropReceptor;
+      if (this.currentDropReceptor != null) {
+        this.currentDropReceptor.dragEntered(this);
+        this.getModel().handleDragEnteredDropReceptor(this);
+        //this.addChild( new EnteredDropReceptorEvent( e, this.currentDropReceptor ) );
+      }
+    }
+    if (this.currentDropReceptor != null) {
+      DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated(this);
+      if (Objects.equals(this.currentPotentialDropSite, nextPotentialDropSite)) {
+        //pass
+      } else {
+        if (this.currentPotentialDropSite != null) {
+          //this.addChild( new ExitedPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+        }
+        this.currentPotentialDropSite = nextPotentialDropSite;
+        if (this.currentPotentialDropSite != null) {
+          //this.addChild( new EnteredPotentialDropSiteEvent( e, this.currentDropReceptor, this.currentPotentialDropSite ) );
+        }
+      }
+    }
 
-		if( this.getDragSource().getDragProxy() != null ) {
-			this.getDragSource().getDragProxy().setOverDropAcceptor( this.currentDropReceptor != null );
-		}
-	}
+    if (this.getDragSource().getDragProxy() != null) {
+      this.getDragSource().getDragProxy().setOverDropAcceptor(this.currentDropReceptor != null);
+    }
+  }
 
-	public void handleMouseReleased( MouseEvent e ) {
-		if( getOwner().isCanceled() ) {
-			return;
-		}
-		JDropProxy.Hider dropProxyHider = null;
+  public void handleMouseReleased(MouseEvent e) {
+    if (getOwner().isCanceled()) {
+      return;
+    }
+    JDropProxy.Hider dropProxyHider = null;
 
-		this.setLatestMouseEvent( e );
-		if( this.currentDropReceptor != null ) {
-			Triggerable dropOperation = this.currentDropReceptor.dragDropped( this );
+    this.setLatestMouseEvent(e);
+    if (this.currentDropReceptor != null) {
+      Triggerable dropOperation = this.currentDropReceptor.dragDropped(this);
 
-			if( dropOperation != null ) {
-				SwingComponentView<?> component = this.currentDropReceptor.getViewController();
-				ViewController<?, ?> viewController;
-				if( component instanceof ViewController<?, ?> ) {
-					viewController = (ViewController<?, ?>)component;
-				} else {
-					viewController = null;
-				}
-				try {
-					if( dropOperation instanceof JDropProxy.Hider ) {
-						dropProxyHider = (JDropProxy.Hider)dropOperation;
-						dropProxyHider.setDragSource( this.getDragSource() );
-					} else {
-						Logger.outln( "drop proxy hider:", dropOperation.getClass() );
-					}
-					dropOperation.fire( DropTrigger.setOnUserActivity( getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite ) );
-				} catch( CancelException ce ) {
-					this.cancel();
-				}
-			} else {
-				this.cancel();
-			}
-			this.currentDropReceptor.dragExited( this, true );
-		} else {
-			this.cancel();
-		}
-		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-			dropReceptorInfo.getDropReceptor().dragStopped( this );
-		}
-		this.getModel().handleDragStopped( this );
-		this.potentialDropReceptorInfos = null;
-		this.hideProxies( dropProxyHider );
-	}
+      if (dropOperation != null) {
+        SwingComponentView<?> component = this.currentDropReceptor.getViewController();
+        ViewController<?, ?> viewController;
+        if (component instanceof ViewController<?, ?>) {
+          viewController = (ViewController<?, ?>) component;
+        } else {
+          viewController = null;
+        }
+        try {
+          if (dropOperation instanceof JDropProxy.Hider) {
+            dropProxyHider = (JDropProxy.Hider) dropOperation;
+            dropProxyHider.setDragSource(this.getDragSource());
+          } else {
+            Logger.outln("drop proxy hider:", dropOperation.getClass());
+          }
+          dropOperation.fire(DropTrigger.setOnUserActivity(getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite));
+        } catch (CancelException ce) {
+          this.cancel();
+        }
+      } else {
+        this.cancel();
+      }
+      this.currentDropReceptor.dragExited(this, true);
+    } else {
+      this.cancel();
+    }
+    for (DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos()) {
+      dropReceptorInfo.getDropReceptor().dragStopped(this);
+    }
+    this.getModel().handleDragStopped(this);
+    this.potentialDropReceptorInfos = null;
+    this.hideProxies(dropProxyHider);
+  }
 
-	public void handleCancel( EventObject e ) {
-		if( this.currentDropReceptor != null ) {
-			this.currentDropReceptor.dragExited( this, false );
-		}
-		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-			dropReceptorInfo.getDropReceptor().dragStopped( this );
-		}
-		this.getModel().handleDragStopped( this );
-		this.potentialDropReceptorInfos = null;
-		this.cancel();
-		this.hideProxies( null );
-	}
+  public void handleCancel(EventObject e) {
+    if (this.currentDropReceptor != null) {
+      this.currentDropReceptor.dragExited(this, false);
+    }
+    for (DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos()) {
+      dropReceptorInfo.getDropReceptor().dragStopped(this);
+    }
+    this.getModel().handleDragStopped(this);
+    this.potentialDropReceptorInfos = null;
+    this.cancel();
+    this.hideProxies(null);
+  }
 
-	private void hideProxies( JDropProxy.Hider dropProxyHider ) {
-		this.getDragSource().hideDragProxy();
-		if ( dropProxyHider == null ) {
-			this.getDragSource().hideDropProxyIfNecessary();
-		}
-	}
+  private void hideProxies(JDropProxy.Hider dropProxyHider) {
+    this.getDragSource().hideDragProxy();
+    if (dropProxyHider == null) {
+      this.getDragSource().hideDropProxyIfNecessary();
+    }
+  }
 
-	public void cancel() {
-		getOwner().setCompletionModel( null );
-		getOwner().cancel();
-	}
+  public void cancel() {
+    getOwner().setCompletionModel(null);
+    getOwner().cancel();
+  }
 }

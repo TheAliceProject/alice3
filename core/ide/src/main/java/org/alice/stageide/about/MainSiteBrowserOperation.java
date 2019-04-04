@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MainSiteBrowserOperation extends ImmutableBrowserOperation {
-	private static class SingletonHolder {
-		private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
-	}
+  private static class SingletonHolder {
+    private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
+  }
 
-	public static MainSiteBrowserOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MainSiteBrowserOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MainSiteBrowserOperation() {
-		super( UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ), "http://www.alice.org" );
-	}
+  private MainSiteBrowserOperation() {
+    super(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea"), "http://www.alice.org");
+  }
 }

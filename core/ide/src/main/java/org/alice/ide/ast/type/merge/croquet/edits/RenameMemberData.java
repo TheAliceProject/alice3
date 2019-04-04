@@ -48,28 +48,28 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public class RenameMemberData {
-	private final Member member;
-	private final String nextName;
-	private String prevName;
+  private final Member member;
+  private final String nextName;
+  private String prevName;
 
-	public RenameMemberData( Member member, String nextName ) {
-		this.member = member;
-		this.nextName = nextName;
-	}
+  public RenameMemberData(Member member, String nextName) {
+    this.member = member;
+    this.nextName = nextName;
+  }
 
-	public Member getMember() {
-		return this.member;
-	}
+  public Member getMember() {
+    return this.member;
+  }
 
-	public String getNextName() {
-		return this.nextName;
-	}
+  public String getNextName() {
+    return this.nextName;
+  }
 
-	public void setPrevName( String prevName ) {
-		this.prevName = prevName;
-	}
+  public void setPrevName(String prevName) {
+    this.prevName = prevName;
+  }
 
-	public String getPrevName() {
-		return this.prevName;
-	}
+  public String getPrevName() {
+    return this.prevName;
+  }
 }

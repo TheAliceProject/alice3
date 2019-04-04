@@ -49,20 +49,20 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class ExpressionEvaluationEvent extends VirtualMachineEvent {
-	public ExpressionEvaluationEvent( VirtualMachine vm, Expression expression, Object value ) {
-		super( vm );
-		this.expression = expression;
-		this.value = value;
-	}
+  public ExpressionEvaluationEvent(VirtualMachine vm, Expression expression, Object value) {
+    super(vm);
+    this.expression = expression;
+    this.value = value;
+  }
 
-	public Expression getExpression() {
-		return this.expression;
-	}
+  public Expression getExpression() {
+    return this.expression;
+  }
 
-	public Object getValue() {
-		return this.value;
-	}
+  public Object getValue() {
+    return this.value;
+  }
 
-	private final Expression expression;
-	private final Object value;
+  private final Expression expression;
+  private final Object value;
 }

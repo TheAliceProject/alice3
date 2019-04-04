@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitAthleticJersey implements FemaleTeenFullBodyOutfit {
-	RED,
-	BLUE,
-	GREEN,
-	YELLOW,
-	DARKRED;
+  RED, BLUE, GREEN, YELLOW, DARKRED
 
 }

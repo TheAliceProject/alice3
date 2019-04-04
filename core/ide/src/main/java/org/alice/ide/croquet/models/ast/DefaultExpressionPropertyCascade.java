@@ -58,45 +58,45 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DefaultExpressionPropertyCascade extends ExpressionPropertyCascade {
-	private static Map<ExpressionProperty, DefaultExpressionPropertyCascade> projectGroupMap = Maps.newHashMap();
-	private static Map<ExpressionProperty, DefaultExpressionPropertyCascade> inheritGroupMap = Maps.newHashMap();
+  private static Map<ExpressionProperty, DefaultExpressionPropertyCascade> projectGroupMap = Maps.newHashMap();
+  private static Map<ExpressionProperty, DefaultExpressionPropertyCascade> inheritGroupMap = Maps.newHashMap();
 
-	private static AbstractType<?, ?, ?> getDesiredType( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType ) {
-		if( desiredType != null ) {
-			//pass
-		} else {
-			desiredType = expressionProperty.getExpressionType();
-		}
-		return desiredType;
-	}
+  private static AbstractType<?, ?, ?> getDesiredType(ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType) {
+    if (desiredType != null) {
+      //pass
+    } else {
+      desiredType = expressionProperty.getExpressionType();
+    }
+    return desiredType;
+  }
 
-	public static synchronized DefaultExpressionPropertyCascade getInstance( Group group, ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType ) {
-		desiredType = getDesiredType( expressionProperty, desiredType );
-		Map<ExpressionProperty, DefaultExpressionPropertyCascade> map;
-		if( group == Application.PROJECT_GROUP ) {
-			map = projectGroupMap;
-		} else if( group == Application.INHERIT_GROUP ) {
-			map = inheritGroupMap;
-		} else {
-			throw new RuntimeException( group.toString() );
-		}
-		DefaultExpressionPropertyCascade rv = map.get( expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DefaultExpressionPropertyCascade( group, expressionProperty, desiredType );
-			map.put( expressionProperty, rv );
-		}
-		return rv;
-	}
+  public static synchronized DefaultExpressionPropertyCascade getInstance(Group group, ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType) {
+    desiredType = getDesiredType(expressionProperty, desiredType);
+    Map<ExpressionProperty, DefaultExpressionPropertyCascade> map;
+    if (group == Application.PROJECT_GROUP) {
+      map = projectGroupMap;
+    } else if (group == Application.INHERIT_GROUP) {
+      map = inheritGroupMap;
+    } else {
+      throw new RuntimeException(group.toString());
+    }
+    DefaultExpressionPropertyCascade rv = map.get(expressionProperty);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DefaultExpressionPropertyCascade(group, expressionProperty, desiredType);
+      map.put(expressionProperty, rv);
+    }
+    return rv;
+  }
 
-	private DefaultExpressionPropertyCascade( Group group, ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType ) {
-		super( group, UUID.fromString( "77532795-0674-4ba4-ad18-989ee9ca0507" ), expressionProperty, ExpressionBlank.createBlanks( desiredType ) );
-	}
+  private DefaultExpressionPropertyCascade(Group group, ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType) {
+    super(group, UUID.fromString("77532795-0674-4ba4-ad18-989ee9ca0507"), expressionProperty, ExpressionBlank.createBlanks(desiredType));
+  }
 
-	@Override
-	protected Expression createExpression( Expression[] expressions ) {
-		assert expressions.length == 1;
-		return expressions[ 0 ];
-	}
+  @Override
+  protected Expression createExpression(Expression[] expressions) {
+    assert expressions.length == 1;
+    return expressions[0];
+  }
 }

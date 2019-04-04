@@ -46,19 +46,19 @@ package org.alice.ide.localize.review.core;
  * @author Dennis Cosgrove
  */
 public final class ClassProjectNamePair {
-	public ClassProjectNamePair( Class<?> cls, String projectName ) {
-		this.cls = cls;
-		this.projectName = projectName;
-	}
+  public ClassProjectNamePair(Class<?> cls, String projectName) {
+    this.cls = cls;
+    this.projectName = projectName;
+  }
 
-	public Class<?> getCls() {
-		return this.cls;
-	}
+  public Class<?> getCls() {
+    return this.cls;
+  }
 
-	public String getProjectName() {
-		return this.projectName;
-	}
+  public String getProjectName() {
+    return this.projectName;
+  }
 
-	private final Class<?> cls;
-	private final String projectName;
+  private final Class<?> cls;
+  private final String projectName;
 }

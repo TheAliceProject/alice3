@@ -56,147 +56,147 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
-	protected class DefaultJPanel extends JPanel {
-		public DefaultJPanel() {
-			this.setOpaque( false );
-			this.setBackground( null );
-			this.setAlignmentX( Component.LEFT_ALIGNMENT );
-			this.setAlignmentY( Component.CENTER_ALIGNMENT );
-		}
+  protected class DefaultJPanel extends JPanel {
+    public DefaultJPanel() {
+      this.setOpaque(false);
+      this.setBackground(null);
+      this.setAlignmentX(Component.LEFT_ALIGNMENT);
+      this.setAlignmentY(Component.CENTER_ALIGNMENT);
+    }
 
-		@Override
-		public void invalidate() {
-			super.invalidate();
-			Panel.this.refreshIfNecessary();
-		}
+    @Override
+    public void invalidate() {
+      super.invalidate();
+      Panel.this.refreshIfNecessary();
+    }
 
-		@Override
-		public Dimension getPreferredSize() {
-			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-		}
+    @Override
+    public Dimension getPreferredSize() {
+      return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+    }
 
-		@Override
-		public Dimension getMaximumSize() {
-			Dimension rv = super.getMaximumSize();
-			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
-				rv.setSize( this.getPreferredSize() );
-			}
-			return rv;
-		}
-	}
+    @Override
+    public Dimension getMaximumSize() {
+      Dimension rv = super.getMaximumSize();
+      if (Panel.this.isMaximumSizeClampedToPreferredSize()) {
+        rv.setSize(this.getPreferredSize());
+      }
+      return rv;
+    }
+  }
 
-	public Panel() {
-		this( null );
-	}
+  public Panel() {
+    this(null);
+  }
 
-	public Panel( Composite<?> composite ) {
-		super( composite );
-	}
+  public Panel(Composite<?> composite) {
+    super(composite);
+  }
 
-	protected JPanel createJPanel() {
-		return new DefaultJPanel();
-	}
+  protected JPanel createJPanel() {
+    return new DefaultJPanel();
+  }
 
-	protected abstract LayoutManager createLayoutManager( JPanel jPanel );
+  protected abstract LayoutManager createLayoutManager(JPanel jPanel);
 
-	@Override
-	protected final JPanel createAwtComponent() {
-		JPanel rv = this.createJPanel();
-		LayoutManager prevLayoutManager = rv.getLayout();
-		LayoutManager nextLayoutManager = this.createLayoutManager( rv );
-		if( prevLayoutManager instanceof FlowLayout ) {
-			//pass
-		} else {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "\n********************************************************" );
-			sb.append( "\n********************************************************" );
-			sb.append( "\n********************************************************" );
-			sb.append( "\n\tIt appears that a layout manager was set on:\n\t\t" );
-			sb.append( this );
-			sb.append( "\n\tduring the creation of its JPanel.\n\n\t" );
-			sb.append( prevLayoutManager );
-			sb.append( ";hashCode=" );
-			sb.append( Integer.toHexString( prevLayoutManager.hashCode() ) );
-			sb.append( " will be replaced by " );
-			sb.append( nextLayoutManager );
-			sb.append( ";hashCode=" );
-			sb.append( Integer.toHexString( nextLayoutManager.hashCode() ) );
-			sb.append( "." );
-			if( rv.getComponentCount() > 0 ) {
-				sb.append( "\n\n\tOf great concern is the fact that you have already added " );
-				sb.append( rv.getComponentCount() );
-				sb.append( " components which may not get laid out." );
-			}
-			sb.append( "\n********************************************************" );
-			sb.append( "\n********************************************************" );
-			sb.append( "\n********************************************************" );
-			Logger.severe( sb.toString() );
-		}
-		rv.setLayout( nextLayoutManager );
-		return rv;
-	}
+  @Override
+  protected final JPanel createAwtComponent() {
+    JPanel rv = this.createJPanel();
+    LayoutManager prevLayoutManager = rv.getLayout();
+    LayoutManager nextLayoutManager = this.createLayoutManager(rv);
+    if (prevLayoutManager instanceof FlowLayout) {
+      //pass
+    } else {
+      StringBuilder sb = new StringBuilder();
+      sb.append("\n********************************************************");
+      sb.append("\n********************************************************");
+      sb.append("\n********************************************************");
+      sb.append("\n\tIt appears that a layout manager was set on:\n\t\t");
+      sb.append(this);
+      sb.append("\n\tduring the creation of its JPanel.\n\n\t");
+      sb.append(prevLayoutManager);
+      sb.append(";hashCode=");
+      sb.append(Integer.toHexString(prevLayoutManager.hashCode()));
+      sb.append(" will be replaced by ");
+      sb.append(nextLayoutManager);
+      sb.append(";hashCode=");
+      sb.append(Integer.toHexString(nextLayoutManager.hashCode()));
+      sb.append(".");
+      if (rv.getComponentCount() > 0) {
+        sb.append("\n\n\tOf great concern is the fact that you have already added ");
+        sb.append(rv.getComponentCount());
+        sb.append(" components which may not get laid out.");
+      }
+      sb.append("\n********************************************************");
+      sb.append("\n********************************************************");
+      sb.append("\n********************************************************");
+      Logger.severe(sb.toString());
+    }
+    rv.setLayout(nextLayoutManager);
+    return rv;
+  }
 
-	public void removeComponent( AwtComponentView<?> component ) {
-		this.internalRemoveComponent( component );
-	}
+  public void removeComponent(AwtComponentView<?> component) {
+    this.internalRemoveComponent(component);
+  }
 
-	public void forgetAndRemoveComponent( AwtComponentView<?> component ) {
-		this.internalForgetAndRemoveComponent( component );
-	}
+  public void forgetAndRemoveComponent(AwtComponentView<?> component) {
+    this.internalForgetAndRemoveComponent(component);
+  }
 
-	public void removeAllComponents() {
-		this.internalRemoveAllComponents();
-	}
+  public void removeAllComponents() {
+    this.internalRemoveAllComponents();
+  }
 
-	public void forgetAndRemoveAllComponents() {
-		this.internalForgetAndRemoveAllComponents();
-	}
+  public void forgetAndRemoveAllComponents() {
+    this.internalForgetAndRemoveAllComponents();
+  }
 
-	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = true;
+  private boolean isInTheMidstOfRefreshing = false;
+  private boolean isRefreshNecessary = true;
 
-	protected void internalRefresh() {
-	}
+  protected void internalRefresh() {
+  }
 
-	protected void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			if( this.isInTheMidstOfRefreshing ) {
-				//pass
-			} else {
-				this.isInTheMidstOfRefreshing = true;
-				try {
-					//this.forgetAndRemoveAllComponents();
-					synchronized( this.getTreeLock() ) {
-						this.internalRefresh();
-					}
-					this.isRefreshNecessary = false;
-				} finally {
-					this.isInTheMidstOfRefreshing = false;
-				}
-			}
-		}
-	}
+  protected void refreshIfNecessary() {
+    if (this.isRefreshNecessary) {
+      if (this.isInTheMidstOfRefreshing) {
+        //pass
+      } else {
+        this.isInTheMidstOfRefreshing = true;
+        try {
+          //this.forgetAndRemoveAllComponents();
+          synchronized (this.getTreeLock()) {
+            this.internalRefresh();
+          }
+          this.isRefreshNecessary = false;
+        } finally {
+          this.isInTheMidstOfRefreshing = false;
+        }
+      }
+    }
+  }
 
-	public final void refreshLater() {
-		this.isRefreshNecessary = true;
-		this.revalidateAndRepaint();
-	}
+  public final void refreshLater() {
+    this.isRefreshNecessary = true;
+    this.revalidateAndRepaint();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		this.refreshIfNecessary();
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    this.refreshIfNecessary();
+    super.handleDisplayable();
+  }
 
-	protected boolean isRefreshOnAddedToDesired() {
-		return false;
-	}
+  protected boolean isRefreshOnAddedToDesired() {
+    return false;
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		if( this.isRefreshOnAddedToDesired() ) {
-			this.refreshIfNecessary();
-		}
-		super.handleAddedTo( parent );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    if (this.isRefreshOnAddedToDesired()) {
+      this.refreshIfNecessary();
+    }
+    super.handleAddedTo(parent);
+  }
 }

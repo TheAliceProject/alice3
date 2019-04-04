@@ -49,41 +49,43 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  * @author Dennis Cosgrove
  */
 public final class Orientation {
-	public static final Orientation IDENTITY = new Orientation( OrthogonalMatrix3x3.createIdentity() );
-	private final OrthogonalMatrix3x3 internal;
+  public static final Orientation IDENTITY = new Orientation(OrthogonalMatrix3x3.createIdentity());
+  private final OrthogonalMatrix3x3 internal;
 
-	private Orientation( OrthogonalMatrix3x3 internal ) {
-		this.internal = internal;
-	}
+  private Orientation(OrthogonalMatrix3x3 internal) {
+    this.internal = internal;
+  }
 
-	public Orientation( Number x, Number y, Number z, Number w ) {
-		this( new OrthogonalMatrix3x3( new UnitQuaternion( x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue() ) ) );
-	}
+  public Orientation(Number x, Number y, Number z, Number w) {
+    this(new OrthogonalMatrix3x3(new UnitQuaternion(x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue())));
+  }
 
-	/* package-private */static Orientation createInstance( OrthogonalMatrix3x3 internal ) {
-		return internal != null ? new Orientation( internal ) : null;
-	}
+  /* package-private */
+  static Orientation createInstance(OrthogonalMatrix3x3 internal) {
+    return internal != null ? new Orientation(internal) : null;
+  }
 
-	/* package-private */OrthogonalMatrix3x3 getInternal() {
-		return this.internal;
-	}
+  /* package-private */OrthogonalMatrix3x3 getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static OrthogonalMatrix3x3 getInternal( Orientation orientation ) {
-		return orientation != null ? orientation.internal : null;
-	}
+  /* package-private */
+  static OrthogonalMatrix3x3 getInternal(Orientation orientation) {
+    return orientation != null ? orientation.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Orientation ) {
-			Orientation other = (Orientation)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Orientation) {
+      Orientation other = (Orientation) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 }

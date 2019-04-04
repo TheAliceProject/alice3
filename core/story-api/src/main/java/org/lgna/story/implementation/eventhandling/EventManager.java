@@ -76,268 +76,270 @@ import java.util.List;
  */
 public class EventManager {
 
-	private final SceneImp scene;
-	private final InputEventRecorder inputRecorder;
-	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
-	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
-	private final TransformationHandler transHandler = new TransformationHandler();
-	private final OcclusionHandler occlusionHandler = new OcclusionHandler();
-	private final ViewEventHandler viewHandler = new ViewEventHandler();
-	private final CollisionHandler collisionHandler = new CollisionHandler();
-	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
-	private final TimerEventHandler timer = new TimerEventHandler();
-	private final SceneActivationHandler sceneActivationHandler = new SceneActivationHandler();
-	private final AbstractEventHandler<?, ?>[] handlers = new AbstractEventHandler[] { keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler };
+  private final SceneImp scene;
+  private final InputEventRecorder inputRecorder;
+  private final KeyPressedHandler keyHandler = new KeyPressedHandler();
+  private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
+  private final TransformationHandler transHandler = new TransformationHandler();
+  private final OcclusionHandler occlusionHandler = new OcclusionHandler();
+  private final ViewEventHandler viewHandler = new ViewEventHandler();
+  private final CollisionHandler collisionHandler = new CollisionHandler();
+  private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
+  private final TimerEventHandler timer = new TimerEventHandler();
+  private final SceneActivationHandler sceneActivationHandler = new SceneActivationHandler();
+  private final AbstractEventHandler<?, ?>[] handlers = new AbstractEventHandler[] {keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler};
 
-	private final TimerContingencyManager contingent;
+  private final TimerContingencyManager contingent;
 
-	public void recieveEvent( Object event ) {
-		if( event instanceof MouseEventWrapper ) {
-			MouseEventWrapper mouseEvent = (MouseEventWrapper)event;
-			mouseAdapter.handleReplayedEvent( mouseEvent );
-		} else if( event instanceof KeyEvent ) {
-			KeyEvent keyEvent = (KeyEvent)event;
-			if( new Integer( keyEvent.getID() ).equals( KeyEvent.KEY_PRESSED ) ) {
-				keyAdapter.keyPressed( keyEvent );
-			} else if( new Integer( keyEvent.getID() ).equals( KeyEvent.KEY_RELEASED ) ) {
-				keyAdapter.keyReleased( keyEvent );
-			} else {
-				Logger.errln( "mishandled recieved keyboard event", keyEvent );
-			}
-		} else {
-			Logger.errln( "mishandled recieved event ", event );
-		}
-	}
+  public void recieveEvent(Object event) {
+    if (event instanceof MouseEventWrapper) {
+      MouseEventWrapper mouseEvent = (MouseEventWrapper) event;
+      mouseAdapter.handleReplayedEvent(mouseEvent);
+    } else if (event instanceof KeyEvent) {
+      KeyEvent keyEvent = (KeyEvent) event;
+      if (new Integer(keyEvent.getID()).equals(KeyEvent.KEY_PRESSED)) {
+        keyAdapter.keyPressed(keyEvent);
+      } else if (new Integer(keyEvent.getID()).equals(KeyEvent.KEY_RELEASED)) {
+        keyAdapter.keyReleased(keyEvent);
+      } else {
+        Logger.errln("mishandled recieved keyboard event", keyEvent);
+      }
+    } else {
+      Logger.errln("mishandled recieved event ", event);
+    }
+  }
 
-	public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
+  public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
 
-	private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
-		@Override
-		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
-			inputRecorder.record( createWrapper( e ) );
-			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction() );
-		}
+  private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
+    @Override
+    protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickCountUnquote) {
+      inputRecorder.record(createWrapper(e));
+      EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote(e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction());
+    }
 
-		public void handleReplayedEvent( MouseEventWrapper e ) {
-			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenRenderTarget().getAwtComponent() ), 0 );
-		}
-	};
+    public void handleReplayedEvent(MouseEventWrapper e) {
+      mouseQuoteClickedUnquote(e.getTranslatedPointIfNecessary(scene.getProgram().getOnscreenRenderTarget().getAwtComponent()), 0);
+    }
+  }
 
-	private KeyListener keyAdapter = new KeyListener() {
-		@Override
-		public void keyPressed( KeyEvent e ) {
-			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
-			inputRecorder.record( e );
-			keyHandler.handleKeyPress( event );
-		}
+  private KeyListener keyAdapter = new KeyListener() {
+    @Override
+    public void keyPressed(KeyEvent e) {
+      org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
+      inputRecorder.record(e);
+      keyHandler.handleKeyPress(event);
+    }
 
-		@Override
-		public void keyReleased( KeyEvent e ) {
-			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
-			inputRecorder.record( e );
-			keyHandler.handleKeyRelease( event );
-		}
+    @Override
+    public void keyReleased(KeyEvent e) {
+      org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent(e);
+      inputRecorder.record(e);
+      keyHandler.handleKeyRelease(event);
+    }
 
-		@Override
-		public void keyTyped( KeyEvent e ) {
-		}
-	};
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+  };
 
-	private FocusListener focusAdapter = new FocusListener() {
+  private FocusListener focusAdapter = new FocusListener() {
 
-		@Override public void focusGained( FocusEvent e ) {
-		}
+    @Override
+    public void focusGained(FocusEvent e) {
+    }
 
-		@Override public void focusLost( FocusEvent e ) {
-			keyHandler.releaseAllKeys();
-		}
-	};
+    @Override
+    public void focusLost(FocusEvent e) {
+      keyHandler.releaseAllKeys();
+    }
+  };
 
-	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
-	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
+  //  private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
+  //  private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private DragAdapter dragAdapter;
+  private DragAdapter dragAdapter;
 
-	public EventManager( SceneImp scene ) {
-		this.scene = scene;
-		for( AbstractEventHandler<?, ?> handler : handlers ) {
-			handler.setScene( scene );
-		}
-		inputRecorder = new InputEventRecorder( scene );
-		contingent = new TimerContingencyManager( timer );
-	}
+  public EventManager(SceneImp scene) {
+    this.scene = scene;
+    for (AbstractEventHandler<?, ?> handler : handlers) {
+      handler.setScene(scene);
+    }
+    inputRecorder = new InputEventRecorder(scene);
+    contingent = new TimerContingencyManager(timer);
+  }
 
-	public void initialize() {
-		scene.addSceneActivationListener( timer );
-	}
+  public void initialize() {
+    scene.addSceneActivationListener(timer);
+  }
 
-	public MouseEventWrapper createWrapper( MouseEvent e ) {
-		return new MouseEventWrapper( e );
-	}
+  public MouseEventWrapper createWrapper(MouseEvent e) {
+    return new MouseEventWrapper(e);
+  }
 
-	public void removeKeyListener( KeyPressListener keyListener ) {
-		throw new RuntimeException( "todo" );
-		//		this.mouse.removeListener(keyListener);
-		//		this.keyListeners.remove( keyListener );
-	}
+  public void removeKeyListener(KeyPressListener keyListener) {
+    throw new RuntimeException("todo");
+    //    this.mouse.removeListener(keyListener);
+    //    this.keyListeners.remove( keyListener );
+  }
 
-	public void addListenersTo( OnscreenRenderTarget onscreenRenderTarget ) {
-		Component component = onscreenRenderTarget.getAwtComponent();
-		component.addMouseListener( this.mouseAdapter );
-		component.addMouseMotionListener( this.mouseAdapter );
-		component.addKeyListener( this.keyAdapter );
-		component.addFocusListener( this.focusAdapter );
-	}
+  public void addListenersTo(OnscreenRenderTarget onscreenRenderTarget) {
+    Component component = onscreenRenderTarget.getAwtComponent();
+    component.addMouseListener(this.mouseAdapter);
+    component.addMouseMotionListener(this.mouseAdapter);
+    component.addKeyListener(this.keyAdapter);
+    component.addFocusListener(this.focusAdapter);
+  }
 
-	public void removeListenersFrom( OnscreenRenderTarget onscreenRenderTarget ) {
-		Component component = onscreenRenderTarget.getAwtComponent();
-		component.removeMouseListener( this.mouseAdapter );
-		component.removeMouseMotionListener( this.mouseAdapter );
-		component.removeKeyListener( this.keyAdapter );
-		component.removeFocusListener( this.focusAdapter );
-	}
+  public void removeListenersFrom(OnscreenRenderTarget onscreenRenderTarget) {
+    Component component = onscreenRenderTarget.getAwtComponent();
+    component.removeMouseListener(this.mouseAdapter);
+    component.removeMouseMotionListener(this.mouseAdapter);
+    component.removeKeyListener(this.keyAdapter);
+    component.removeFocusListener(this.focusAdapter);
+  }
 
-	//	public void mouseButtonClicked(MouseButtonEvent e) {
-	//		mouse.fireAllTargeted(e.getModelAtMouseLocation());
-	//	}
-	//
-	//	public void keyPressed(KeyEvent e) {
-	//		key.fireAllTargeted(e);
-	//	}
+  //  public void mouseButtonClicked(MouseButtonEvent e) {
+  //    mouse.fireAllTargeted(e.getModelAtMouseLocation());
+  //  }
+  //
+  //  public void keyPressed(KeyEvent e) {
+  //    key.fireAllTargeted(e);
+  //  }
 
-	private AbstractEventHandler<?, ?>[] getEventHandlers() {
-		return handlers;
-	}
+  private AbstractEventHandler<?, ?>[] getEventHandlers() {
+    return handlers;
+  }
 
-	public void silenceAllListeners() {
-		for( AbstractEventHandler<?, ?> handler : this.getEventHandlers() ) {
-			handler.silenceListeners();
-		}
-	}
+  public void silenceAllListeners() {
+    for (AbstractEventHandler<?, ?> handler : this.getEventHandlers()) {
+      handler.silenceListeners();
+    }
+  }
 
-	public void restoreAllListeners() {
-		for( AbstractEventHandler<?, ?> handler : this.getEventHandlers() ) {
-			handler.restoreListeners();
-		}
-	}
+  public void restoreAllListeners() {
+    for (AbstractEventHandler<?, ?> handler : this.getEventHandlers()) {
+      handler.restoreListeners();
+    }
+  }
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
-		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo, policy );
-	}
+  public void addCollisionListener(Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy) {
+    collisionHandler.addCollisionListener(collisionListener, groupOne, groupTwo, policy);
+  }
 
-	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist, MultipleEventPolicy policy ) {
-		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue(), policy );
-	}
+  public void addProximityEventListener(Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist, MultipleEventPolicy policy) {
+    proxyHandler.addProximityEventListener(proximityEventListener, groupOne, groupTwo, dist.doubleValue(), policy);
+  }
 
-	public void addTimerEventListener( TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy ) {
-		timer.addListener( timerEventListener, frequency.doubleValue(), policy );
-	}
+  public void addTimerEventListener(TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy) {
+    timer.addListener(timerEventListener, frequency.doubleValue(), policy);
+  }
 
-	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
-		keyHandler.addListener(keyListener, eventPolicy, heldKeyPolicy );
-	}
+  public void addKeyListener(KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy) {
+    keyHandler.addListener(keyListener, eventPolicy, heldKeyPolicy);
+  }
 
-	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
-		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS, heldKeyPolicy );
-	}
+  public void addNumberKeyListener(NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy) {
+    keyHandler.addListener(keyPressListener, policy, NumberKeyEvent.NUMBERS, heldKeyPolicy);
+  }
 
-	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
-		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
-	}
+  public void addArrowKeyListener(ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy) {
+    keyHandler.addListener(keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy);
+  }
 
-	public void moveWithArrows( SMovableTurnable entity, Double speed ) {
-		MoveWithArrows.createNewAndAddTo( entity, speed, this.keyHandler );
-	}
+  public void moveWithArrows(SMovableTurnable entity, Double speed) {
+    MoveWithArrows.createNewAndAddTo(entity, speed, this.keyHandler);
+  }
 
-	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
-		mouseHandler.addListener( listener, policy, null );
-	}
+  public void addMouseClickOnScreenListener(MouseClickOnScreenListener listener, MultipleEventPolicy policy) {
+    mouseHandler.addListener(listener, policy, null);
+  }
 
-	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets ) {
-		this.mouseHandler.addListener( listener, policy, targets );
-	}
+  public void addMouseClickOnObjectListener(MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets) {
+    this.mouseHandler.addListener(listener, policy, targets);
+  }
 
-	public void addMouseButtonListener( Object listener, MultipleEventPolicy policy, Visual[] targets ) {
-		this.mouseHandler.addListener( listener, policy, targets );
-	}
+  public void addMouseButtonListener(Object listener, MultipleEventPolicy policy, Visual[] targets) {
+    this.mouseHandler.addListener(listener, policy, targets);
+  }
 
-	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
-		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
-	}
+  public void addTransformationListener(PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo) {
+    this.transHandler.addTransformationListener(transformationlistener, shouldListenTo);
+  }
 
-	//	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
-	//	}
+  //  public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+  //    this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+  //  }
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy ) {
-		this.viewHandler.addViewEventListener( listener, entities, policy );
-	}
+  public void addComesIntoViewEventListener(ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy) {
+    this.viewHandler.addViewEventListener(listener, entities, policy);
+  }
 
-	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities, MultipleEventPolicy policy ) {
-		this.viewHandler.addViewEventListener( listener, entities, policy );
-	}
+  public void addLeavesViewEventListener(ViewExitListener listener, SModel[] entities, MultipleEventPolicy policy) {
+    this.viewHandler.addViewEventListener(listener, entities, policy);
+  }
 
-	public void sceneActivated() {
-		this.sceneActivationHandler.handleEventFire( new SceneActivationEvent() );
-	}
+  public void sceneActivated() {
+    this.sceneActivationHandler.handleEventFire(new SceneActivationEvent());
+  }
 
-	public void addDragAdapter() {
-		if( this.dragAdapter != null ) {
-			//pass
-		} else {
-			this.dragAdapter = new RuntimeDragAdapter();
-			OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
-			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
-			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
-			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
-			//				{
-			//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
-			//					break;
-			//				}
-			//			}
-			this.dragAdapter.setOnscreenRenderTarget( renderTarget );
-			this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
-			this.dragAdapter.makeCameraActive( camera );
-			this.dragAdapter.setAnimator( this.scene.getProgram().getAnimator() );
-			//			for( Transformable transformable : this.scene.getComponents() ) {
-			//				this.putBonusDataFor( transformable );
-			//			}
-		}
-	}
+  public void addDragAdapter() {
+    if (this.dragAdapter != null) {
+      //pass
+    } else {
+      this.dragAdapter = new RuntimeDragAdapter();
+      OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
+      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
+      //      for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
+      //        if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera )
+      //        {
+      //          camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
+      //          break;
+      //        }
+      //      }
+      this.dragAdapter.setOnscreenRenderTarget(renderTarget);
+      this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
+      this.dragAdapter.makeCameraActive(camera);
+      this.dragAdapter.setAnimator(this.scene.getProgram().getAnimator());
+      //      for( Transformable transformable : this.scene.getComponents() ) {
+      //        this.putBonusDataFor( transformable );
+      //      }
+    }
+  }
 
-	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
-		contingent.register( listener, groupOne, groupTwo, frequency, policy );
-	}
+  public void addWhileCollisionListener(WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double frequency, MultipleEventPolicy policy) {
+    contingent.register(listener, groupOne, groupTwo, frequency, policy);
+  }
 
-	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Number dist, Double frequency, MultipleEventPolicy policy ) {
-		contingent.register( listener, groupOne, groupTwo, dist.doubleValue(), frequency, policy );
-	}
+  public void addWhileProximityListener(WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Number dist, Double frequency, MultipleEventPolicy policy) {
+    contingent.register(listener, groupOne, groupTwo, dist.doubleValue(), frequency, policy);
+  }
 
-	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
-		contingent.register( listener, groupOne, groupTwo, frequency, policy );
-	}
+  public void addWhileOcclusionListener(WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy) {
+    contingent.register(listener, groupOne, groupTwo, frequency, policy);
+  }
 
-	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<SModel> group, Double frequency, MultipleEventPolicy policy ) {
-		contingent.register( listener, group, frequency, policy );
-	}
+  public void addWhileInViewListener(WhileInViewListener listener, ArrayList<SModel> group, Double frequency, MultipleEventPolicy policy) {
+    contingent.register(listener, group, frequency, policy);
+  }
 
-	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
-	}
+  public void addOcclusionEventListener(OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy) {
+    occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo, policy);
+  }
 
-	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
-	}
+  public void addOcclusionEventListener(OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy) {
+    occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo, policy);
+  }
 
-	public void addSceneActivationListener( SceneActivationListener listener ) {
-		sceneActivationHandler.addListener( listener );
-	}
+  public void addSceneActivationListener(SceneActivationListener listener) {
+    sceneActivationHandler.addListener(listener);
+  }
 
-	public void removeSceneActivationListener( SceneActivationListener listener ) {
-		sceneActivationHandler.removeListener( listener );
-	}
+  public void removeSceneActivationListener(SceneActivationListener listener) {
+    sceneActivationHandler.removeListener(listener);
+  }
 
-	public EventScript getScript() {
-		return inputRecorder.getScript();
-	}
+  public EventScript getScript() {
+    return inputRecorder.getScript();
+  }
 }

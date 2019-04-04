@@ -52,24 +52,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ShowPathPropertyComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowPathPropertyView> {
-	private final String propertyName;
+  private final String propertyName;
 
-	public ShowPathPropertyComposite( UUID migrationId, String propertyName ) {
-		super( migrationId, Application.INFORMATION_GROUP );
-		this.propertyName = propertyName;
-	}
+  public ShowPathPropertyComposite(UUID migrationId, String propertyName) {
+    super(migrationId, Application.INFORMATION_GROUP);
+    this.propertyName = propertyName;
+  }
 
-	public String getPropertyName() {
-		return this.propertyName;
-	}
+  public String getPropertyName() {
+    return this.propertyName;
+  }
 
-	@Override
-	protected String getDialogTitle() {
-		return "System Property: " + this.propertyName;
-	}
+  @Override
+  protected String getDialogTitle() {
+    return "System Property: " + this.propertyName;
+  }
 
-	@Override
-	protected ShowPathPropertyView createView() {
-		return new ShowPathPropertyView( this );
-	}
+  @Override
+  protected ShowPathPropertyView createView() {
+    return new ShowPathPropertyView(this);
+  }
 }

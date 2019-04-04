@@ -49,21 +49,21 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public interface Frame extends LgnaStackTraceElement {
-	public Frame getOwner();
+  public Frame getOwner();
 
-	public UserInstance getThis();
+  public UserInstance getThis();
 
-	public boolean isValidParameter( UserParameter parameter );
+  public boolean isValidParameter(UserParameter parameter);
 
-	public boolean isValidLocal( UserLocal local );
+  public boolean isValidLocal(UserLocal local);
 
-	public Object lookup( UserParameter parameter );
+  public Object lookup(UserParameter parameter);
 
-	public Object get( UserLocal local );
+  public Object get(UserLocal local);
 
-	public void set( UserLocal local, Object value );
+  public void set(UserLocal local, Object value);
 
-	public void push( UserLocal local, Object value );
+  public void push(UserLocal local, Object value);
 
-	public void pop( UserLocal local );
+  public void pop(UserLocal local);
 }

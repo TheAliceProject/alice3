@@ -51,14 +51,14 @@ import java.util.Locale;
  */
 //todo: move
 public abstract class LocaleListCellRenderer extends ListCellRenderer<Locale> {
-	protected abstract String getText( Locale value );
+  protected abstract String getText(Locale value);
 
-	@Override
-	protected final JLabel getListCellRendererComponent( JLabel rv, JList list, Locale value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( this.getText( value ) );
-		}
-		return rv;
-	}
+  @Override
+  protected final JLabel getListCellRendererComponent(JLabel rv, JList list, Locale value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (value != null) {
+      rv.setText(this.getText(value));
+    }
+    return rv;
+  }
 
 }

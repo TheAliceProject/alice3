@@ -52,13 +52,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SystemExitOperation extends ActionOperation {
-	public SystemExitOperation() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "40b55a1c-d499-4937-a4b8-8499c4cd1a20" ) );
-	}
+  public SystemExitOperation() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("40b55a1c-d499-4937-a4b8-8499c4cd1a20"));
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.finish();
-		System.exit( 0 );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.finish();
+    System.exit(0);
+  }
 }

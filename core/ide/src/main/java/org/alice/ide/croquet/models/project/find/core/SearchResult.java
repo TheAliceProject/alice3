@@ -70,81 +70,80 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class SearchResult {
 
-	private final AbstractDeclaration declaration;
-	private final List<Expression> references = Lists.newArrayList();
+  private final AbstractDeclaration declaration;
+  private final List<Expression> references = Lists.newArrayList();
 
-	@SuppressWarnings( "unchecked" ) private static final List<Class<? extends AbstractDeclaration>> clsList =
-			Lists.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
+  @SuppressWarnings("unchecked") private static final List<Class<? extends AbstractDeclaration>> clsList = Lists.newArrayList(AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class);
 
-	public SearchResult( AbstractDeclaration object ) {
-		assert checkClass( object );
-		this.declaration = object;
-	}
+  public SearchResult(AbstractDeclaration object) {
+    assert checkClass(object);
+    this.declaration = object;
+  }
 
-	private boolean checkClass( AbstractDeclaration object ) {
-		for( Class<?> cls : clsList ) {
-			if( cls.isAssignableFrom( object.getClass() ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  private boolean checkClass(AbstractDeclaration object) {
+    for (Class<?> cls : clsList) {
+      if (cls.isAssignableFrom(object.getClass())) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public AbstractDeclaration getDeclaration() {
-		return this.declaration;
-	}
+  public AbstractDeclaration getDeclaration() {
+    return this.declaration;
+  }
 
-	public String getName() {
-		return declaration.getName();
-	}
+  public String getName() {
+    return declaration.getName();
+  }
 
-	public void addReference( Expression reference ) {
-		references.add( reference );
-	}
+  public void addReference(Expression reference) {
+    references.add(reference);
+  }
 
-	public List<Expression> getReferences() {
-		return references;
-	}
+  public List<Expression> getReferences() {
+    return references;
+  }
 
-	public Icon getIcon() {
-		if( this.declaration instanceof AbstractMethod ) {
-			AbstractMethod method = (AbstractMethod)this.declaration;
-			if( method.isProcedure() ) {
-				return DeclarationTabState.getProcedureIcon();
-			} else {
-				return DeclarationTabState.getFunctionIcon();
-			}
-		} else if( this.declaration instanceof AbstractField ) {
-			return DeclarationTabState.getFieldIcon();
-		} else if( this.declaration instanceof AbstractConstructor ) {
-			return DeclarationTabState.getConstructorIcon();
-		} else if( this.declaration instanceof AbstractParameter ) {
-			//todo?
-			return null;
-		} else {
-			Logger.severe( this.declaration );
-			return null;
-		}
-	}
+  public Icon getIcon() {
+    if (this.declaration instanceof AbstractMethod) {
+      AbstractMethod method = (AbstractMethod) this.declaration;
+      if (method.isProcedure()) {
+        return DeclarationTabState.getProcedureIcon();
+      } else {
+        return DeclarationTabState.getFunctionIcon();
+      }
+    } else if (this.declaration instanceof AbstractField) {
+      return DeclarationTabState.getFieldIcon();
+    } else if (this.declaration instanceof AbstractConstructor) {
+      return DeclarationTabState.getConstructorIcon();
+    } else if (this.declaration instanceof AbstractParameter) {
+      //todo?
+      return null;
+    } else {
+      Logger.severe(this.declaration);
+      return null;
+    }
+  }
 
-	public void stencilHighlightForReference( Expression reference ) {
-		assert reference != null;
-		if( declaration instanceof AbstractField ) {
-			assert reference instanceof FieldAccess;
-			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
-		} else if( declaration instanceof AbstractMethod ) {
-			assert reference instanceof MethodInvocation;
-			Statement statement = reference.getFirstAncestorAssignableTo( Statement.class );
-			assert statement != null;
-			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement( statement, "" );
-		} else if( declaration instanceof UserParameter ) {
-			assert reference instanceof ParameterAccess;
-			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
-		} else if( declaration instanceof UserLocal ) {
-			assert reference instanceof LocalAccess;
-			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
-		} else {
-			assert false : declaration.getClass();
-		}
-	}
+  public void stencilHighlightForReference(Expression reference) {
+    assert reference != null;
+    if (declaration instanceof AbstractField) {
+      assert reference instanceof FieldAccess;
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+    } else if (declaration instanceof AbstractMethod) {
+      assert reference instanceof MethodInvocation;
+      Statement statement = reference.getFirstAncestorAssignableTo(Statement.class);
+      assert statement != null;
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement(statement, "");
+    } else if (declaration instanceof UserParameter) {
+      assert reference instanceof ParameterAccess;
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+    } else if (declaration instanceof UserLocal) {
+      assert reference instanceof LocalAccess;
+      IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression(reference, "");
+    } else {
+      assert false : declaration.getClass();
+    }
+  }
 }

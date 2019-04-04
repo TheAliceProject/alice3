@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProcedureState extends MethodState {
-	private static Map<NamedUserType, ProcedureState> map = Maps.newHashMap();
+  private static Map<NamedUserType, ProcedureState> map = Maps.newHashMap();
 
-	public static synchronized ProcedureState getInstance( NamedUserType type ) {
-		ProcedureState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProcedureState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized ProcedureState getInstance(NamedUserType type) {
+    ProcedureState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ProcedureState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private ProcedureState( NamedUserType type ) {
-		super( UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), new ProcedureData( type ) );
-	}
+  private ProcedureState(NamedUserType type) {
+    super(UUID.fromString("ce34123a-1e8a-4f95-8e90-77a1477609d7"), new ProcedureData(type));
+  }
 }

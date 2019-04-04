@@ -51,22 +51,22 @@ import java.util.List;
 import java.util.UUID;
 
 public class TimeEventListenerMenu extends EventListenerMenuModel {
-	private static class SingletonHolder {
-		private static TimeEventListenerMenu instance = new TimeEventListenerMenu();
-	}
+  private static class SingletonHolder {
+    private static TimeEventListenerMenu instance = new TimeEventListenerMenu();
+  }
 
-	public static TimeEventListenerMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TimeEventListenerMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TimeEventListenerMenu() {
-		super( UUID.fromString( "19e3e7d5-a2da-4f85-8897-7ef34b268af9" ) );
-	}
+  private TimeEventListenerMenu() {
+    super(UUID.fromString("19e3e7d5-a2da-4f85-8897-7ef34b268af9"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) );
-		blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode) {
+    blankChildren.add(AddEventListenerMethodInvocationFillIn.getInstance(EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD));
+    blankChildren.add(AddEventListenerMethodInvocationFillIn.getInstance(EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD));
+  }
 
 }

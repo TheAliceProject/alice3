@@ -49,21 +49,20 @@ import javax.swing.JOptionPane;
  * @author Dennis Cosgrove
  */
 public enum YesNoCancelResult {
-	YES( JOptionPane.YES_OPTION ),
-	NO( JOptionPane.NO_OPTION ),
-	CANCEL( JOptionPane.CANCEL_OPTION );
-	private final int internal;
+  YES(JOptionPane.YES_OPTION), NO(JOptionPane.NO_OPTION), CANCEL(JOptionPane.CANCEL_OPTION);
+  private final int internal;
 
-	YesNoCancelResult( int internal ) {
-		this.internal = internal;
-	}
+  YesNoCancelResult(int internal) {
+    this.internal = internal;
+  }
 
-	/*package-private*/static YesNoCancelResult getInstance( int internal ) {
-		for( YesNoCancelResult value : YesNoCancelResult.values() ) {
-			if( value.internal == internal ) {
-				return value;
-			}
-		}
-		return null;
-	}
+  /*package-private*/
+  static YesNoCancelResult getInstance(int internal) {
+    for (YesNoCancelResult value : YesNoCancelResult.values()) {
+      if (value.internal == internal) {
+        return value;
+      }
+    }
+    return null;
+  }
 }

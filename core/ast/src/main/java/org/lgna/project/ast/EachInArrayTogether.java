@@ -47,29 +47,30 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class EachInArrayTogether extends AbstractEachInTogether implements EachInArrayStatement {
-	public EachInArrayTogether() {
-	}
+  public EachInArrayTogether() {
+  }
 
-	public EachInArrayTogether( UserLocal item, Expression array, BlockStatement body ) {
-		super( item, body );
-		this.array.setValue( array );
-	}
+  public EachInArrayTogether(UserLocal item, Expression array, BlockStatement body) {
+    super(item, body);
+    this.array.setValue(array);
+  }
 
-	@Override
-	public ExpressionProperty getArrayProperty() {
-		return this.array;
-	}
+  @Override
+  public ExpressionProperty getArrayProperty() {
+    return this.array;
+  }
 
-	@Override public ExpressionProperty getArrayOrIterableProperty() {
-		return this.getArrayProperty();
-	}
+  @Override
+  public ExpressionProperty getArrayOrIterableProperty() {
+    return this.getArrayProperty();
+  }
 
-	public final ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			UserLocal item = EachInArrayTogether.this.item.getValue();
-			AbstractType<?, ?, ?> type = item.valueType.getValue();
-			return type.getArrayType();
-		}
-	};
+  public final ExpressionProperty array = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      UserLocal item = EachInArrayTogether.this.item.getValue();
+      AbstractType<?, ?, ?> type = item.valueType.getValue();
+      return type.getArrayType();
+    }
+  };
 }

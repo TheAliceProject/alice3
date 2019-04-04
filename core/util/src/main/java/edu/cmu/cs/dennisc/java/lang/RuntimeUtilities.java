@@ -56,35 +56,35 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 class StreamHandler extends Thread {
-	private final InputStream is;
-	private final PrintStream ps;
+  private final InputStream is;
+  private final PrintStream ps;
 
-	public StreamHandler( InputStream is, PrintStream ps ) {
-		this.is = is;
-		this.ps = ps;
-	}
+  public StreamHandler(InputStream is, PrintStream ps) {
+    this.is = is;
+    this.ps = ps;
+  }
 
-	@Override
-	public void run() {
-		InputStreamReader isr = new InputStreamReader( this.is );
-		BufferedReader br = new BufferedReader( isr );
-		PrintWriter pw = this.ps != null ? new PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( pw != null ) {
-						pw.println( line );
-						pw.flush();
-					}
-				} else {
-					break;
-				}
-			} catch( IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-	}
+  @Override
+  public void run() {
+    InputStreamReader isr = new InputStreamReader(this.is);
+    BufferedReader br = new BufferedReader(isr);
+    PrintWriter pw = this.ps != null ? new PrintWriter(this.ps) : null;
+    while (true) {
+      try {
+        String line = br.readLine();
+        if (line != null) {
+          if (pw != null) {
+            pw.println(line);
+            pw.flush();
+          }
+        } else {
+          break;
+        }
+      } catch (IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+    }
+  }
 }
 
 /**
@@ -92,64 +92,64 @@ class StreamHandler extends Thread {
  */
 public class RuntimeUtilities {
 
-	//todo: investigate
-	private static final boolean IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT = true;
+  //todo: investigate
+  private static final boolean IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT = true;
 
-	//todo: reorder parameters
-	public static int exec( File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out, PrintStream err ) {
-		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
-		if( workingDirectory != null ) {
-			processBuilder.directory( workingDirectory );
-		}
-		if( environment != null ) {
-			Map<String, String> map = processBuilder.environment();
-			for( String key : environment.keySet() ) {
-				map.put( key, environment.get( key ) );
-			}
-		}
-		try {
-			Process process = processBuilder.start();
-			if( ( out != null ) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT ) {
-				StreamHandler outputHandler = new StreamHandler( process.getInputStream(), out );
-				outputHandler.start();
-			}
-			if( ( err != null ) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT ) {
-				StreamHandler errorHandler = new StreamHandler( process.getErrorStream(), err );
-				errorHandler.start();
-			}
-			return process.waitFor();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+  //todo: reorder parameters
+  public static int exec(File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out, PrintStream err) {
+    ProcessBuilder processBuilder = new ProcessBuilder(cmds);
+    if (workingDirectory != null) {
+      processBuilder.directory(workingDirectory);
+    }
+    if (environment != null) {
+      Map<String, String> map = processBuilder.environment();
+      for (String key : environment.keySet()) {
+        map.put(key, environment.get(key));
+      }
+    }
+    try {
+      Process process = processBuilder.start();
+      if ((out != null) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT) {
+        StreamHandler outputHandler = new StreamHandler(process.getInputStream(), out);
+        outputHandler.start();
+      }
+      if ((err != null) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT) {
+        StreamHandler errorHandler = new StreamHandler(process.getErrorStream(), err);
+        errorHandler.start();
+      }
+      return process.waitFor();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
+    }
+  }
 
-	public static int exec( File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out ) {
-		return exec( workingDirectory, environment, cmds, out, System.err );
-	}
+  public static int exec(File workingDirectory, Map<String, String> environment, String[] cmds, PrintStream out) {
+    return exec(workingDirectory, environment, cmds, out, System.err);
+  }
 
-	public static int exec( File workingDirectory, Map<String, String> environment, String... cmds ) {
-		return exec( workingDirectory, environment, cmds, System.out );
-	}
+  public static int exec(File workingDirectory, Map<String, String> environment, String... cmds) {
+    return exec(workingDirectory, environment, cmds, System.out);
+  }
 
-	public static int exec( File workingDirectory, String... cmds ) {
-		return exec( workingDirectory, null, cmds );
-	}
+  public static int exec(File workingDirectory, String... cmds) {
+    return exec(workingDirectory, null, cmds);
+  }
 
-	public static int exec( String... cmds ) {
-		return exec( null, cmds );
-	}
+  public static int exec(String... cmds) {
+    return exec(null, cmds);
+  }
 
-	public static int execSilent( File workingDirectory, Map<String, String> environment, String... cmds ) {
-		return exec( workingDirectory, environment, cmds, null, null );
-	}
+  public static int execSilent(File workingDirectory, Map<String, String> environment, String... cmds) {
+    return exec(workingDirectory, environment, cmds, null, null);
+  }
 
-	public static int execSilent( File workingDirectory, String... cmds ) {
-		return execSilent( workingDirectory, null, cmds );
-	}
+  public static int execSilent(File workingDirectory, String... cmds) {
+    return execSilent(workingDirectory, null, cmds);
+  }
 
-	public static int execSilent( String... cmds ) {
-		return execSilent( null, cmds );
-	}
+  public static int execSilent(String... cmds) {
+    return execSilent(null, cmds);
+  }
 }

@@ -52,50 +52,50 @@ import org.lgna.croquet.views.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class PrepStep<M extends PrepModel> extends ActivityNode<M> {
-	PrepStep( UserActivity parent, M model, Trigger trigger ) {
-		super( parent, model, trigger );
-		if( parent != null ) {
-			parent.addPrepStep( this );
-		} else {
-			Logger.severe( "PrepStep parent activity is null" );
-		}
-	}
+  PrepStep(UserActivity parent, M model, Trigger trigger) {
+    super(parent, model, trigger);
+    if (parent != null) {
+      parent.addPrepStep(this);
+    } else {
+      Logger.severe("PrepStep parent activity is null");
+    }
+  }
 
-	protected ViewController<?, ?> getViewController() {
-		return this.trigger != null ? this.trigger.getViewController() : null;
-	}
+  protected ViewController<?, ?> getViewController() {
+    return this.trigger != null ? this.trigger.getViewController() : null;
+  }
 
-	public UserActivity getUserActivity() {
-		return this.getOwner();
-	}
+  public UserActivity getUserActivity() {
+    return this.getOwner();
+  }
 
-	protected void updateRepr( StringBuilder rv ) {
-		Model model = this.getModel();
-		if( model != null ) {
-			rv.append( "model=" );
-			rv.append( model );
-			rv.append( ";trigger=" );
-			Trigger trigger = this.getTrigger();
-			if( trigger != null ) {
-				trigger.appendRepr( rv );
-			}
-			rv.append( ";text=" );
-			model.appendUserRepr( rv );
-			rv.append( ";" );
-		}
-	}
+  protected void updateRepr(StringBuilder rv) {
+    Model model = this.getModel();
+    if (model != null) {
+      rv.append("model=");
+      rv.append(model);
+      rv.append(";trigger=");
+      Trigger trigger = this.getTrigger();
+      if (trigger != null) {
+        trigger.appendRepr(rv);
+      }
+      rv.append(";text=");
+      model.appendUserRepr(rv);
+      rv.append(";");
+    }
+  }
 
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		updateRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    updateRepr(sb);
+    sb.append("]");
+    return sb.toString();
+  }
 
-	public void cancelActivity() {
-		getUserActivity().cancel();
-	}
+  public void cancelActivity() {
+    getUserActivity().cancel();
+  }
 }

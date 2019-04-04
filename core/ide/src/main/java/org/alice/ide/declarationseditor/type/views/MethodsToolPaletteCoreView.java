@@ -48,9 +48,9 @@ import org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite;
  * @author Dennis Cosgrove
  */
 public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( MethodsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
-	}
+  public MethodsToolPaletteCoreView(MethodsToolPaletteCoreComposite composite) {
+    super(composite);
+    this.addComponent(composite.getMembersComposite().getView());
+    this.addComponent(composite.getAddMethodOperation().createButton());
+  }
 }

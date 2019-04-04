@@ -53,44 +53,43 @@ import org.lgna.project.ast.InstanceCreation;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceKey {
-	abstract public String getSearchText();
+  public abstract String getSearchText();
 
-	public abstract String getInternalText();
+  public abstract String getInternalText();
 
-	public abstract String getLocalizedDisplayText();
+  public abstract String getLocalizedDisplayText();
 
-	public abstract IconFactory getIconFactory();
+  public abstract IconFactory getIconFactory();
 
-	public abstract boolean isLeaf();
+  public abstract boolean isLeaf();
 
-	public boolean isInterface() {
-		return false;
-	}
+  public boolean isInterface() {
+    return false;
+  }
 
-	protected abstract void appendRep( StringBuilder sb );
+  protected abstract void appendRep(StringBuilder sb);
 
-	public abstract InstanceCreation createInstanceCreation();
+  public abstract InstanceCreation createInstanceCreation();
 
-	public abstract String[] getTags();
+  public abstract String[] getTags();
 
-	public abstract String[] getGroupTags();
+  public abstract String[] getGroupTags();
 
-	public abstract String[] getThemeTags();
+  public abstract String[] getThemeTags();
 
-	public abstract boolean isInstanceCreator();
+  public abstract boolean isInstanceCreator();
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		this.appendRep( sb );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    this.appendRep(sb);
+    sb.append("]");
+    return sb.toString();
+  }
 
-	public abstract Triggerable getLeftClickOperation( ResourceNode node,
-													   SingleSelectTreeState<ResourceNode> controller );
+  public abstract Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller);
 
-	public abstract Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite );
+  public abstract Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite);
 }

@@ -71,170 +71,169 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class MergeUtilities {
-	private MergeUtilities() {
-		throw new AssertionError();
-	}
+  private MergeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static NamedUserType findMatchingTypeInExistingTypes( NamedUserType srcType, Collection<NamedUserType> dstTypes ) {
-		for( NamedUserType dstType : dstTypes ) {
-			//todo
-			if( dstType.getName().contentEquals( srcType.getName() ) ) {
-				return dstType;
-			}
-		}
-		return null;
-	}
+  public static NamedUserType findMatchingTypeInExistingTypes(NamedUserType srcType, Collection<NamedUserType> dstTypes) {
+    for (NamedUserType dstType : dstTypes) {
+      //todo
+      if (dstType.getName().contentEquals(srcType.getName())) {
+        return dstType;
+      }
+    }
+    return null;
+  }
 
-	public static NamedUserType findMatchingTypeInExistingTypes( NamedUserType type ) {
-		Project project = ProjectStack.peekProject();
-		if( project != null ) {
-			Set<NamedUserType> dstTypes = project.getNamedUserTypes();
-			return findMatchingTypeInExistingTypes( type, dstTypes );
-		}
-		return null;
-	}
+  public static NamedUserType findMatchingTypeInExistingTypes(NamedUserType type) {
+    Project project = ProjectStack.peekProject();
+    if (project != null) {
+      Set<NamedUserType> dstTypes = project.getNamedUserTypes();
+      return findMatchingTypeInExistingTypes(type, dstTypes);
+    }
+    return null;
+  }
 
-	public static UserMethod findMethodWithMatchingName( UserMethod srcMethod, NamedUserType dstType ) {
-		for( UserMethod dstMethod : dstType.methods ) {
-			if( dstMethod.getName().contentEquals( srcMethod.getName() ) ) {
-				return dstMethod;
-			}
-		}
-		return null;
-	}
+  public static UserMethod findMethodWithMatchingName(UserMethod srcMethod, NamedUserType dstType) {
+    for (UserMethod dstMethod : dstType.methods) {
+      if (dstMethod.getName().contentEquals(srcMethod.getName())) {
+        return dstMethod;
+      }
+    }
+    return null;
+  }
 
-	private static JavaCodeGenerator createJavaCodeGeneratorForEquivalence() {
-		return new JavaCodeGenerator.Builder()
-				.isLambdaSupported( true ) //don't care
-				.build();
-	}
+  private static JavaCodeGenerator createJavaCodeGeneratorForEquivalence() {
+    return new JavaCodeGenerator.Builder().isLambdaSupported(true) //don't care
+                                          .build();
+  }
 
-	public static boolean isHeaderEquivalent( UserMethod a, UserMethod b ) {
-		String aText = a.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
-		String bText = b.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
-		return aText.contentEquals( bText );
-	}
+  public static boolean isHeaderEquivalent(UserMethod a, UserMethod b) {
+    String aText = a.generateHeaderJavaCode(createJavaCodeGeneratorForEquivalence());
+    String bText = b.generateHeaderJavaCode(createJavaCodeGeneratorForEquivalence());
+    return aText.contentEquals(bText);
+  }
 
-	public static boolean isEquivalent( CodeGenerator a, CodeGenerator b ) {
-		String aText = a.generateCode( createJavaCodeGeneratorForEquivalence() );
-		String bText = b.generateCode( createJavaCodeGeneratorForEquivalence() );
-		return aText.contentEquals( bText );
-	}
+  public static boolean isEquivalent(CodeGenerator a, CodeGenerator b) {
+    String aText = a.generateCode(createJavaCodeGeneratorForEquivalence());
+    String bText = b.generateCode(createJavaCodeGeneratorForEquivalence());
+    return aText.contentEquals(bText);
+  }
 
-	public static boolean isValueTypeEquivalent( UserField a, UserField b ) {
-		return a.getValueType().getName().contentEquals( b.getValueType().getName() ); //todo
-	}
+  public static boolean isValueTypeEquivalent(UserField a, UserField b) {
+    return a.getValueType().getName().contentEquals(b.getValueType().getName()); //todo
+  }
 
-	private static AbstractMethod findMatch( AbstractType<?, ?, ?> type, AbstractMethod original ) {
-		if( type != null ) {
-			for( AbstractMethod candidate : type.getDeclaredMethods() ) {
-				if( candidate.getName().contentEquals( original.getName() ) ) { //todo
-					return candidate;
-				}
-			}
-			return findMatch( type.getSuperType(), original );
-		} else {
-			return null;
-		}
-	}
+  private static AbstractMethod findMatch(AbstractType<?, ?, ?> type, AbstractMethod original) {
+    if (type != null) {
+      for (AbstractMethod candidate : type.getDeclaredMethods()) {
+        if (candidate.getName().contentEquals(original.getName())) { //todo
+          return candidate;
+        }
+      }
+      return findMatch(type.getSuperType(), original);
+    } else {
+      return null;
+    }
+  }
 
-	private static AbstractField findMatch( AbstractType<?, ?, ?> type, AbstractField original ) {
-		if( type != null ) {
-			for( AbstractField candidate : type.getDeclaredFields() ) {
-				if( candidate.getName().contentEquals( original.getName() ) ) { //todo
-					return candidate;
-				}
-			}
-			return findMatch( type.getSuperType(), original );
-		} else {
-			return null;
-		}
-	}
+  private static AbstractField findMatch(AbstractType<?, ?, ?> type, AbstractField original) {
+    if (type != null) {
+      for (AbstractField candidate : type.getDeclaredFields()) {
+        if (candidate.getName().contentEquals(original.getName())) { //todo
+          return candidate;
+        }
+      }
+      return findMatch(type.getSuperType(), original);
+    } else {
+      return null;
+    }
+  }
 
-	private static boolean isAcceptableType( AbstractType<?, ?, ?> declaringType, List<NamedUserType> types ) {
-		if( declaringType != null ) {
-			if( declaringType instanceof NamedUserType ) {
-				NamedUserType namedUserType = (NamedUserType)declaringType;
-				return types.contains( namedUserType );
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
+  private static boolean isAcceptableType(AbstractType<?, ?, ?> declaringType, List<NamedUserType> types) {
+    if (declaringType != null) {
+      if (declaringType instanceof NamedUserType) {
+        NamedUserType namedUserType = (NamedUserType) declaringType;
+        return types.contains(namedUserType);
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
 
-	}
+  }
 
-	private static void mendMethodInvocations( Node node, List<NamedUserType> types ) {
-		IsInstanceCrawler<MethodInvocation> crawler = IsInstanceCrawler.createInstance( MethodInvocation.class );
-		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
+  private static void mendMethodInvocations(Node node, List<NamedUserType> types) {
+    IsInstanceCrawler<MethodInvocation> crawler = IsInstanceCrawler.createInstance(MethodInvocation.class);
+    node.crawl(crawler, CrawlPolicy.COMPLETE, null);
 
-		Map<AbstractMethod, AbstractMethod> map = Maps.newHashMap();
-		for( MethodInvocation methodInvocation : crawler.getList() ) {
-			AbstractMethod method = methodInvocation.method.getValue();
-			if( isAcceptableType( method.getDeclaringType(), types ) ) {
-				//pass
-			} else {
-				AbstractMethod replacement;
-				if( map.containsKey( method ) ) {
-					replacement = map.get( method );
-				} else {
-					Expression expression = methodInvocation.expression.getValue();
-					AbstractType<?, ?, ?> type = expression.getType();
-					replacement = findMatch( type, method );
-					if( replacement != null ) {
-						map.put( method, replacement );
-					}
-				}
-				if( replacement != null ) {
-					Logger.outln( "mending", methodInvocation, method );
-					methodInvocation.method.setValue( replacement );
-					AstUtilities.fixRequiredArgumentsIfNecessary( methodInvocation );
-				} else {
-					Logger.severe( "cannot find replacement:", method );
-				}
-			}
-		}
-	}
+    Map<AbstractMethod, AbstractMethod> map = Maps.newHashMap();
+    for (MethodInvocation methodInvocation : crawler.getList()) {
+      AbstractMethod method = methodInvocation.method.getValue();
+      if (isAcceptableType(method.getDeclaringType(), types)) {
+        //pass
+      } else {
+        AbstractMethod replacement;
+        if (map.containsKey(method)) {
+          replacement = map.get(method);
+        } else {
+          Expression expression = methodInvocation.expression.getValue();
+          AbstractType<?, ?, ?> type = expression.getType();
+          replacement = findMatch(type, method);
+          if (replacement != null) {
+            map.put(method, replacement);
+          }
+        }
+        if (replacement != null) {
+          Logger.outln("mending", methodInvocation, method);
+          methodInvocation.method.setValue(replacement);
+          AstUtilities.fixRequiredArgumentsIfNecessary(methodInvocation);
+        } else {
+          Logger.severe("cannot find replacement:", method);
+        }
+      }
+    }
+  }
 
-	private static void mendFieldAccesses( Node node, List<NamedUserType> types ) {
-		IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
-		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
+  private static void mendFieldAccesses(Node node, List<NamedUserType> types) {
+    IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance(FieldAccess.class);
+    node.crawl(crawler, CrawlPolicy.COMPLETE, null);
 
-		Map<AbstractField, AbstractField> map = Maps.newHashMap();
-		for( FieldAccess fieldAccess : crawler.getList() ) {
-			AbstractField field = fieldAccess.field.getValue();
-			if( isAcceptableType( field.getDeclaringType(), types ) ) {
-				//pass
-			} else {
-				AbstractField replacement;
-				if( map.containsKey( field ) ) {
-					replacement = map.get( field );
-				} else {
-					Expression expression = fieldAccess.expression.getValue();
-					AbstractType<?, ?, ?> type = expression.getType();
-					replacement = findMatch( type, field );
-					if( replacement != null ) {
-						map.put( field, replacement );
-					}
-				}
-				if( replacement != null ) {
-					Logger.outln( "mending", fieldAccess, field );
-					fieldAccess.field.setValue( replacement );
-				} else {
-					Logger.severe( "cannot find replacement:", field );
-				}
-			}
-		}
-	}
+    Map<AbstractField, AbstractField> map = Maps.newHashMap();
+    for (FieldAccess fieldAccess : crawler.getList()) {
+      AbstractField field = fieldAccess.field.getValue();
+      if (isAcceptableType(field.getDeclaringType(), types)) {
+        //pass
+      } else {
+        AbstractField replacement;
+        if (map.containsKey(field)) {
+          replacement = map.get(field);
+        } else {
+          Expression expression = fieldAccess.expression.getValue();
+          AbstractType<?, ?, ?> type = expression.getType();
+          replacement = findMatch(type, field);
+          if (replacement != null) {
+            map.put(field, replacement);
+          }
+        }
+        if (replacement != null) {
+          Logger.outln("mending", fieldAccess, field);
+          fieldAccess.field.setValue(replacement);
+        } else {
+          Logger.severe("cannot find replacement:", field);
+        }
+      }
+    }
+  }
 
-	public static void mendMethodInvocationsAndFieldAccesses( Node node ) {
-		IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance( NamedUserType.class );
-		node.crawl( crawler, CrawlPolicy.COMPLETE, null );
-		for( NamedUserType namedUserType : crawler.getList() ) {
-			Logger.outln( namedUserType );
-		}
-		mendMethodInvocations( node, crawler.getList() );
-		mendFieldAccesses( node, crawler.getList() );
-	}
+  public static void mendMethodInvocationsAndFieldAccesses(Node node) {
+    IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance(NamedUserType.class);
+    node.crawl(crawler, CrawlPolicy.COMPLETE, null);
+    for (NamedUserType namedUserType : crawler.getList()) {
+      Logger.outln(namedUserType);
+    }
+    mendMethodInvocations(node, crawler.getList());
+    mendFieldAccesses(node, crawler.getList());
+  }
 }

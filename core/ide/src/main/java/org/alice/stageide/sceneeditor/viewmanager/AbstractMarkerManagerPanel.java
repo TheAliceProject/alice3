@@ -58,128 +58,119 @@ import org.lgna.project.ast.UserType;
 
 public abstract class AbstractMarkerManagerPanel extends GridBagPanel {
 
-	protected Button moveToMarkerButton;
-	protected Button moveToObjectButton;
-	protected FieldList fieldList;
+  protected Button moveToMarkerButton;
+  protected Button moveToObjectButton;
+  protected FieldList fieldList;
 
-	protected abstract Button createMovetoMarkerButton();
+  protected abstract Button createMovetoMarkerButton();
 
-	protected abstract Button createMoveToObjectButton();
+  protected abstract Button createMoveToObjectButton();
 
-	protected abstract FieldList createFieldList( UserType<?> type );
+  protected abstract FieldList createFieldList(UserType<?> type);
 
-	protected String getTitleString()
-	{
-		ResourceBundle resourceBundle = ResourceBundle.getBundle( AbstractMarkerManagerPanel.class.getPackage().getName() + ".croquet" );
-		return resourceBundle.getString( this.getClass().getSimpleName() + ".title" );
-	}
+  protected String getTitleString() {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(AbstractMarkerManagerPanel.class.getPackage().getName() + ".croquet");
+    return resourceBundle.getString(this.getClass().getSimpleName() + ".title");
+  }
 
-	public void setType( UserType<?> type )
-	{
-		this.removeAllComponents();
-		this.fieldList = this.createFieldList( type );
-		this.fieldList.setBackgroundColor( this.getBackgroundColor() );
-		this.addComponent( new Label( getTitleString(), 1.0f, TextWeight.BOLD ), new GridBagConstraints(
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		if( this.moveToMarkerButton == null ) {
-			this.moveToMarkerButton = createMovetoMarkerButton();
-		}
-		this.addComponent( this.moveToMarkerButton, new GridBagConstraints(
-				1, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		if( this.moveToObjectButton == null ) {
-			this.moveToObjectButton = createMoveToObjectButton();
-		}
-		this.addComponent( this.moveToObjectButton, new GridBagConstraints(
-				2, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+  public void setType(UserType<?> type) {
+    this.removeAllComponents();
+    this.fieldList = this.createFieldList(type);
+    this.fieldList.setBackgroundColor(this.getBackgroundColor());
+    this.addComponent(new Label(getTitleString(), 1.0f, TextWeight.BOLD), new GridBagConstraints(0, //gridX
+                                                                                                 0, //gridY
+                                                                                                 1, //gridWidth
+                                                                                                 1, //gridHeight
+                                                                                                 0.0, //weightX
+                                                                                                 0.0, //weightY
+                                                                                                 GridBagConstraints.WEST, //anchor
+                                                                                                 GridBagConstraints.NONE, //fill
+                                                                                                 new Insets(2, 2, 2, 2), //insets
+                                                                                                 0, //ipadX
+                                                                                                 0) //ipadY
+    );
+    if (this.moveToMarkerButton == null) {
+      this.moveToMarkerButton = createMovetoMarkerButton();
+    }
+    this.addComponent(this.moveToMarkerButton, new GridBagConstraints(1, //gridX
+                                                                      0, //gridY
+                                                                      1, //gridWidth
+                                                                      1, //gridHeight
+                                                                      0.0, //weightX
+                                                                      0.0, //weightY
+                                                                      GridBagConstraints.WEST, //anchor
+                                                                      GridBagConstraints.NONE, //fill
+                                                                      new Insets(0, 0, 0, 0), //insets
+                                                                      0, //ipadX
+                                                                      0) //ipadY
+    );
+    if (this.moveToObjectButton == null) {
+      this.moveToObjectButton = createMoveToObjectButton();
+    }
+    this.addComponent(this.moveToObjectButton, new GridBagConstraints(2, //gridX
+                                                                      0, //gridY
+                                                                      1, //gridWidth
+                                                                      1, //gridHeight
+                                                                      0.0, //weightX
+                                                                      0.0, //weightY
+                                                                      GridBagConstraints.WEST, //anchor
+                                                                      GridBagConstraints.NONE, //fill
+                                                                      new Insets(0, 0, 0, 0), //insets
+                                                                      0, //ipadX
+                                                                      0) //ipadY
+    );
 
-		this.addComponent( this.fieldList, new GridBagConstraints(
-				0, //gridX
-				1, //gridY
-				3, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.VERTICAL, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
-				3, //gridX
-				0, //gridY
-				1, //gridWidth
-				3, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
+    this.addComponent(this.fieldList, new GridBagConstraints(0, //gridX
+                                                             1, //gridY
+                                                             3, //gridWidth
+                                                             1, //gridHeight
+                                                             0.0, //weightX
+                                                             1.0, //weightY
+                                                             GridBagConstraints.NORTHWEST, //anchor
+                                                             GridBagConstraints.VERTICAL, //fill
+                                                             new Insets(0, 0, 0, 0), //insets
+                                                             0, //ipadX
+                                                             0) //ipadY
+    );
+    this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints(3, //gridX
+                                                                                  0, //gridY
+                                                                                  1, //gridWidth
+                                                                                  3, //gridHeight
+                                                                                  1.0, //weightX
+                                                                                  1.0, //weightY
+                                                                                  GridBagConstraints.NORTH, //anchor
+                                                                                  GridBagConstraints.HORIZONTAL, //fill
+                                                                                  new Insets(0, 0, 0, 0), //insets
+                                                                                  0, //ipadX
+                                                                                  0) //ipadY
+    );
 
-		this.updateButtons();
-	}
+    this.updateButtons();
+  }
 
-	public void updateButtons() {
-		this.revalidateAndRepaint();
-	}
+  public void updateButtons() {
+    this.revalidateAndRepaint();
+  }
 
-	protected Button getMoveToMarkerButton() {
-		return this.moveToMarkerButton;
-	}
+  protected Button getMoveToMarkerButton() {
+    return this.moveToMarkerButton;
+  }
 
-	protected Button getMoveToObjectButton() {
-		return this.moveToObjectButton;
-	}
+  protected Button getMoveToObjectButton() {
+    return this.moveToObjectButton;
+  }
 
-	@Override
-	public void setBackgroundColor( Color color )
-	{
-		super.setBackgroundColor( color );
-		if( this.fieldList != null ) {
-			this.fieldList.setBackgroundColor( color );
-		}
-		//        this.fieldList.setUnselectedBackgroundColor(color);
-	}
+  @Override
+  public void setBackgroundColor(Color color) {
+    super.setBackgroundColor(color);
+    if (this.fieldList != null) {
+      this.fieldList.setBackgroundColor(color);
+    }
+    //        this.fieldList.setUnselectedBackgroundColor(color);
+  }
 
-	public void setSelectedItemBackgroundColor( Color color )
-	{
-		//        this.fieldList.setSelectedBackgroundColor(color);
-	}
+  public void setSelectedItemBackgroundColor(Color color) {
+    //        this.fieldList.setSelectedBackgroundColor(color);
+  }
 
 }

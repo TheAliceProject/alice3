@@ -53,111 +53,111 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public abstract class Preference<E> {
-	private CollectionOfPreferences collectionOfPreferences;
-	private String key;
-	private E defaultValue;
-	private boolean isTransient;
-	private E currentValueIfTransient;
-	private List<PreferenceListener<E>> preferenceListeners = new LinkedList<PreferenceListener<E>>();
+  private CollectionOfPreferences collectionOfPreferences;
+  private String key;
+  private E defaultValue;
+  private boolean isTransient;
+  private E currentValueIfTransient;
+  private List<PreferenceListener<E>> preferenceListeners = new LinkedList<PreferenceListener<E>>();
 
-	public Preference( E defaultValue ) {
-		this.defaultValue = defaultValue;
-	}
+  public Preference(E defaultValue) {
+    this.defaultValue = defaultValue;
+  }
 
-	/* package private */void initialize( CollectionOfPreferences collectionOfPreferences, String key, boolean isTransient ) {
-		this.collectionOfPreferences = collectionOfPreferences;
-		this.key = key;
-		this.isTransient = isTransient;
-		if( this.isTransient ) {
-			this.currentValueIfTransient = this.defaultValue;
-		}
-	}
+  /* package private */void initialize(CollectionOfPreferences collectionOfPreferences, String key, boolean isTransient) {
+    this.collectionOfPreferences = collectionOfPreferences;
+    this.key = key;
+    this.isTransient = isTransient;
+    if (this.isTransient) {
+      this.currentValueIfTransient = this.defaultValue;
+    }
+  }
 
-	public boolean isTransient() {
-		return this.isTransient;
-	}
+  public boolean isTransient() {
+    return this.isTransient;
+  }
 
-	public String getKey() {
-		return this.key;
-	}
+  public String getKey() {
+    return this.key;
+  }
 
-	public E getDefaultValue() {
-		return this.defaultValue;
-	}
+  public E getDefaultValue() {
+    return this.defaultValue;
+  }
 
-	protected abstract E getValue( Preferences utilPrefs, String key, E defaultValue );
+  protected abstract E getValue(Preferences utilPrefs, String key, E defaultValue);
 
-	protected abstract void setAndCommitValue( Preferences utilPrefs, String key, E nextValue );
+  protected abstract void setAndCommitValue(Preferences utilPrefs, String key, E nextValue);
 
-	public final E getValue() {
-		if( this.isTransient ) {
-			return this.currentValueIfTransient;
-		} else {
-			Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
-			return this.getValue( utilPrefs, this.key, this.defaultValue );
-		}
-	}
+  public final E getValue() {
+    if (this.isTransient) {
+      return this.currentValueIfTransient;
+    } else {
+      Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
+      return this.getValue(utilPrefs, this.key, this.defaultValue);
+    }
+  }
 
-	public final void setAndCommitValue( E nextValue ) {
-		Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
-		PreferenceEvent<E> e;
-		if( this.preferenceListeners != null ) {
-			E prevValue;
-			if( this.isTransient ) {
-				prevValue = this.currentValueIfTransient;
-			} else {
-				prevValue = this.getValue( utilPrefs, this.key, this.defaultValue );
-			}
-			e = new PreferenceEvent<E>( this, prevValue, nextValue );
-		} else {
-			e = null;
-		}
-		if( e != null ) {
-			this.firePropertyChanging( e );
-		}
-		if( this.isTransient ) {
-			this.currentValueIfTransient = nextValue;
-		} else {
-			this.setAndCommitValue( utilPrefs, this.key, nextValue );
-		}
-		if( e != null ) {
-			this.firePropertyChanged( e );
-		}
-	}
+  public final void setAndCommitValue(E nextValue) {
+    Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
+    PreferenceEvent<E> e;
+    if (this.preferenceListeners != null) {
+      E prevValue;
+      if (this.isTransient) {
+        prevValue = this.currentValueIfTransient;
+      } else {
+        prevValue = this.getValue(utilPrefs, this.key, this.defaultValue);
+      }
+      e = new PreferenceEvent<E>(this, prevValue, nextValue);
+    } else {
+      e = null;
+    }
+    if (e != null) {
+      this.firePropertyChanging(e);
+    }
+    if (this.isTransient) {
+      this.currentValueIfTransient = nextValue;
+    } else {
+      this.setAndCommitValue(utilPrefs, this.key, nextValue);
+    }
+    if (e != null) {
+      this.firePropertyChanged(e);
+    }
+  }
 
-	public void addPropertyListener( PreferenceListener<E> propertyListener ) {
-		synchronized( this.preferenceListeners ) {
-			this.preferenceListeners.add( propertyListener );
-		}
-	}
+  public void addPropertyListener(PreferenceListener<E> propertyListener) {
+    synchronized (this.preferenceListeners) {
+      this.preferenceListeners.add(propertyListener);
+    }
+  }
 
-	public void removePropertyListener( PreferenceListener<E> propertyListener ) {
-		synchronized( this.preferenceListeners ) {
-			this.preferenceListeners.remove( propertyListener );
-		}
-	}
+  public void removePropertyListener(PreferenceListener<E> propertyListener) {
+    synchronized (this.preferenceListeners) {
+      this.preferenceListeners.remove(propertyListener);
+    }
+  }
 
-	public Iterable<PreferenceListener<E>> getPropertyListeners() {
-		return this.preferenceListeners;
-	}
+  public Iterable<PreferenceListener<E>> getPropertyListeners() {
+    return this.preferenceListeners;
+  }
 
-	private void firePropertyChanging( PreferenceEvent<E> e ) {
-		if( this.preferenceListeners != null ) {
-			synchronized( this.preferenceListeners ) {
-				for( PreferenceListener<E> propertyListener : this.preferenceListeners ) {
-					propertyListener.valueChanging( e );
-				}
-			}
-		}
-	}
+  private void firePropertyChanging(PreferenceEvent<E> e) {
+    if (this.preferenceListeners != null) {
+      synchronized (this.preferenceListeners) {
+        for (PreferenceListener<E> propertyListener : this.preferenceListeners) {
+          propertyListener.valueChanging(e);
+        }
+      }
+    }
+  }
 
-	private void firePropertyChanged( PreferenceEvent<E> e ) {
-		if( this.preferenceListeners != null ) {
-			synchronized( this.preferenceListeners ) {
-				for( PreferenceListener<E> propertyListener : this.preferenceListeners ) {
-					propertyListener.valueChanged( e );
-				}
-			}
-		}
-	}
+  private void firePropertyChanged(PreferenceEvent<E> e) {
+    if (this.preferenceListeners != null) {
+      synchronized (this.preferenceListeners) {
+        for (PreferenceListener<E> propertyListener : this.preferenceListeners) {
+          propertyListener.valueChanged(e);
+        }
+      }
+    }
+  }
 }

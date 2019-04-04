@@ -53,81 +53,81 @@ import org.alice.interact.handle.HandleSet;
 
 public final class InteractionGroup {
 
-	public static class PossibleObjects {
+  public static class PossibleObjects {
 
-		public PossibleObjects( ObjectType... possibleObjects ) {
-			this.possibleObjects = possibleObjects;
-		}
+    public PossibleObjects(ObjectType... possibleObjects) {
+      this.possibleObjects = possibleObjects;
+    }
 
-		public boolean containsType( ObjectType type ) {
-			for( ObjectType t : this.possibleObjects ) {
-				if( ( t == type ) || ( t == ObjectType.ANY ) ) {
-					return true;
-				}
-			}
-			return false;
-		}
+    public boolean containsType(ObjectType type) {
+      for (ObjectType t : this.possibleObjects) {
+        if ((t == type) || (t == ObjectType.ANY)) {
+          return true;
+        }
+      }
+      return false;
+    }
 
-		private final ObjectType[] possibleObjects;
-	}
+    private final ObjectType[] possibleObjects;
+  }
 
-	public static class InteractionInfo {
-		public InteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
-			this.possibleObjects = possibleObjects;
-			this.handleSet = handleSet;
-			this.manipulator = manipulator;
-			this.pickHint = new PickHint( acceptableTypes );
-		}
+  public static class InteractionInfo {
+    public InteractionInfo(PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes) {
+      this.possibleObjects = possibleObjects;
+      this.handleSet = handleSet;
+      this.manipulator = manipulator;
+      this.pickHint = new PickHint(acceptableTypes);
+    }
 
-		public HandleSet getHandleSet() {
-			return this.handleSet;
-		}
+    public HandleSet getHandleSet() {
+      return this.handleSet;
+    }
 
-		public boolean canUseIteractionGroup( PickHint pickType ) {
-			return this.pickHint.intersects( pickType );
-		}
+    public boolean canUseIteractionGroup(PickHint pickType) {
+      return this.pickHint.intersects(pickType);
+    }
 
-		@Override
-		public String toString() {
-			return HandleSet.getStringForSet( this.handleSet );
-		}
+    @Override
+    public String toString() {
+      return HandleSet.getStringForSet(this.handleSet);
+    }
 
-		private final HandleSet handleSet;
-		private final ManipulatorConditionSet manipulator;
-		private final PickHint pickHint;
-		private final PossibleObjects possibleObjects;
-	}
+    private final HandleSet handleSet;
+    private final ManipulatorConditionSet manipulator;
+    private final PickHint pickHint;
+    private final PossibleObjects possibleObjects;
+  }
 
-	public InteractionGroup() {
-	}
+  public InteractionGroup() {
+  }
 
-	public InteractionGroup( InteractionInfo... interactionInfos ) {
-		Collections.addAll( groups, interactionInfos );
-	}
+  public InteractionGroup(InteractionInfo... interactionInfos) {
+    Collections.addAll(groups, interactionInfos);
+  }
 
-	public void addInteractionInfo( InteractionInfo info ) {
-		groups.add( info );
-	}
+  public void addInteractionInfo(InteractionInfo info) {
+    groups.add(info);
+  }
 
-	public void addInteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
-		groups.add( new InteractionInfo( possibleObjects, handleSet, manipulator, acceptableTypes ) );
-	}
+  public void addInteractionInfo(PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes) {
+    groups.add(new InteractionInfo(possibleObjects, handleSet, manipulator, acceptableTypes));
+  }
 
-	public InteractionInfo getMatchingInfo( ObjectType objectType ) {
-		for( InteractionInfo e : groups ) {
-			if( e.possibleObjects.containsType( objectType ) ) {
-				return e;
-			}
-		}
-		return null;
+  public InteractionInfo getMatchingInfo(ObjectType objectType) {
+    for (InteractionInfo e : groups) {
+      if (e.possibleObjects.containsType(objectType)) {
+        return e;
+      }
+    }
+    return null;
 
-	}
+  }
 
-	public void enabledManipulators( boolean enabled ) {
-		for( InteractionInfo e : groups ) {
-			e.manipulator.setEnabled( enabled );
-		}
-	}
+  public void enabledManipulators(boolean enabled) {
+    for (InteractionInfo e : groups) {
+      e.manipulator.setEnabled(enabled);
+    }
+  }
 
-	private List<InteractionInfo> groups = new LinkedList<InteractionInfo>();
+  private List<InteractionInfo> groups = new LinkedList<InteractionInfo>();
 }

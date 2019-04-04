@@ -62,68 +62,64 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class EULAUtilities {
-	private static List<Class<?>> alreadyClearedPreferences;
+  private static List<Class<?>> alreadyClearedPreferences;
 
-	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
-		Preferences userPreferences = Preferences.userNodeForPackage( preferencesCls );
-		if( SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			if( alreadyClearedPreferences != null ) {
-				//pass
-			} else {
-				alreadyClearedPreferences = Lists.newLinkedList();
-			}
-			if( alreadyClearedPreferences.contains( preferencesCls ) ) {
-				//pass
-			} else {
-				alreadyClearedPreferences.add( preferencesCls );
-				try {
-					Logger.outln( "clearing", userPreferences );
-					userPreferences.clear();
-				} catch( BackingStoreException bse ) {
-					throw new RuntimeException( bse );
-				}
-			}
-		}
-		boolean isLicenseAccepted = userPreferences.getBoolean( preferencesKey, false );
-		if( isLicenseAccepted ) {
-			//pass
-		} else {
-			JEulaPane eulaPane = new JEulaPane( license );
-			Component owner = WindowStack.peek();
-			//			if( owner.isVisible() ) {
-			//				//pass
-			//			} else {
-			//				owner.setVisible( true );
-			//			}
-			while( true ) {
-				JDialog dialog = new JDialogBuilder()
-						.owner( owner )
-						.isModal( true )
-						.title( title )
-						.build();
-				dialog.getContentPane().add( eulaPane, BorderLayout.CENTER );
-				dialog.pack();
-				if( ( owner != null ) && owner.isVisible() ) {
-					WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, owner );
-				}
-				dialog.setVisible( true );
-				isLicenseAccepted = eulaPane.isAccepted();
-				if( isLicenseAccepted ) {
-					break;
-				} else {
-					String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
-					if( JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", JOptionPane.YES_NO_OPTION ) ) {
-						//pass
-					} else {
-						break;
-					}
-				}
-			}
-		}
-		if( isLicenseAccepted ) {
-			userPreferences.putBoolean( preferencesKey, true );
-		} else {
-			throw new LicenseRejectedException();
-		}
-	}
+  public static void promptUserToAcceptEULAIfNecessary(Class<?> preferencesCls, String preferencesKey, String title, String license, String name) throws LicenseRejectedException {
+    Preferences userPreferences = Preferences.userNodeForPackage(preferencesCls);
+    if (SystemUtilities.isPropertyTrue("org.alice.clearAllPreferences")) {
+      if (alreadyClearedPreferences != null) {
+        //pass
+      } else {
+        alreadyClearedPreferences = Lists.newLinkedList();
+      }
+      if (alreadyClearedPreferences.contains(preferencesCls)) {
+        //pass
+      } else {
+        alreadyClearedPreferences.add(preferencesCls);
+        try {
+          Logger.outln("clearing", userPreferences);
+          userPreferences.clear();
+        } catch (BackingStoreException bse) {
+          throw new RuntimeException(bse);
+        }
+      }
+    }
+    boolean isLicenseAccepted = userPreferences.getBoolean(preferencesKey, false);
+    if (isLicenseAccepted) {
+      //pass
+    } else {
+      JEulaPane eulaPane = new JEulaPane(license);
+      Component owner = WindowStack.peek();
+      //      if( owner.isVisible() ) {
+      //        //pass
+      //      } else {
+      //        owner.setVisible( true );
+      //      }
+      while (true) {
+        JDialog dialog = new JDialogBuilder().owner(owner).isModal(true).title(title).build();
+        dialog.getContentPane().add(eulaPane, BorderLayout.CENTER);
+        dialog.pack();
+        if ((owner != null) && owner.isVisible()) {
+          WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, owner);
+        }
+        dialog.setVisible(true);
+        isLicenseAccepted = eulaPane.isAccepted();
+        if (isLicenseAccepted) {
+          break;
+        } else {
+          String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
+          if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(owner, message, "Return to license agreement?", JOptionPane.YES_NO_OPTION)) {
+            //pass
+          } else {
+            break;
+          }
+        }
+      }
+    }
+    if (isLicenseAccepted) {
+      userPreferences.putBoolean(preferencesKey, true);
+    } else {
+      throw new LicenseRejectedException();
+    }
+  }
 }

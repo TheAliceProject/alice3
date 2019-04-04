@@ -48,30 +48,30 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentHashMap<K, List<E>> {
-	public List<E> getInitializingIfAbsentToLinkedList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
-			@Override
-			public List<E> initialize( K key ) {
-				return Lists.newLinkedList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToLinkedList(K key) {
+    return this.getInitializingIfAbsent(key, new Initializer<K, List<E>>() {
+      @Override
+      public List<E> initialize(K key) {
+        return Lists.newLinkedList();
+      }
+    });
+  }
 
-	public List<E> getInitializingIfAbsentToArrayList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
-			@Override
-			public List<E> initialize( K key ) {
-				return Lists.newArrayList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToArrayList(K key) {
+    return this.getInitializingIfAbsent(key, new Initializer<K, List<E>>() {
+      @Override
+      public List<E> initialize(K key) {
+        return Lists.newArrayList();
+      }
+    });
+  }
 
-	public List<E> getInitializingIfAbsentToCopyOnWriteArrayList( K key ) {
-		return this.getInitializingIfAbsent( key, new Initializer<K, List<E>>() {
-			@Override
-			public List<E> initialize( K key ) {
-				return Lists.newCopyOnWriteArrayList();
-			}
-		} );
-	}
+  public List<E> getInitializingIfAbsentToCopyOnWriteArrayList(K key) {
+    return this.getInitializingIfAbsent(key, new Initializer<K, List<E>>() {
+      @Override
+      public List<E> initialize(K key) {
+        return Lists.newCopyOnWriteArrayList();
+      }
+    });
+  }
 }

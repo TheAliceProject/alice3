@@ -48,15 +48,15 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class IntegerProperty extends InstanceProperty<Integer> {
-	public IntegerProperty( InstancePropertyOwner owner, Integer value ) {
-		super( owner, value );
-	}
+  public IntegerProperty(InstancePropertyOwner owner, Integer value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( Integer value ) {
-		assert value != null : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(Integer value) {
+    assert value != null : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 }

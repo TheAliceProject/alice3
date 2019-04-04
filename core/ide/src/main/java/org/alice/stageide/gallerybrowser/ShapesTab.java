@@ -65,46 +65,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ShapesTab extends GalleryTab {
-	// @formatter:off
-	private final List<ShapeDragModel> dragModels = Collections.unmodifiableList(
-					Lists.newArrayList(
-						DiscDragModel.getInstance()
-						, ConeDragModel.getInstance()
-						, CylinderDragModel.getInstance()
-						, SphereDragModel.getInstance()
-						, TorusDragModel.getInstance()
-						, BoxDragModel.getInstance()
-						, TextModelDragModel.getInstance()
-						, BillboardDragModel.getInstance()
-						, AxesDragModel.getInstance()
-						, GroundDragModel.getInstance()
-					) );
-	// @formatter:on
-	public ShapesTab() {
-		super( UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
-	}
+  // @formatter:off
+  private final List<ShapeDragModel> dragModels = Collections.unmodifiableList(
+          Lists.newArrayList(
+            DiscDragModel.getInstance(),
+            ConeDragModel.getInstance(),
+            CylinderDragModel.getInstance(),
+            SphereDragModel.getInstance(),
+            TorusDragModel.getInstance(),
+            BoxDragModel.getInstance(),
+            TextModelDragModel.getInstance(),
+            BillboardDragModel.getInstance(),
+            AxesDragModel.getInstance(),
+            GroundDragModel.getInstance()
+          ));
+  // @formatter:on
+  public ShapesTab() {
+    super(UUID.fromString("1e616f0e-4c57-460c-a4a7-919addbfc9d8"));
+  }
 
-	@Override
-	protected ShapesTabView createView() {
-		return new ShapesTabView( this );
-	}
+  @Override
+  protected ShapesTabView createView() {
+    return new ShapesTabView(this);
+  }
 
-	public List<ShapeDragModel> getDragModels() {
-		return this.dragModels;
-	}
+  public List<ShapeDragModel> getDragModels() {
+    return this.dragModels;
+  }
 
-	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
-		String simpleName = cls.getSimpleName();
-		if( simpleName.length() > 1 ) {
-			if( ( simpleName.charAt( 0 ) == 'S' ) && Character.isUpperCase( simpleName.charAt( 1 ) ) ) {
-				String desiredSimpleName = simpleName.substring( 1 ) + "DragModel";
-				for( ShapeDragModel dragModel : this.dragModels ) {
-					if( desiredSimpleName.contentEquals( dragModel.getClass().getSimpleName() ) ) {
-						return dragModel;
-					}
-				}
-			}
-		}
-		return null;
-	}
+  public GalleryDragModel getDragModelForCls(Class<?> cls) {
+    String simpleName = cls.getSimpleName();
+    if (simpleName.length() > 1) {
+      if ((simpleName.charAt(0) == 'S') && Character.isUpperCase(simpleName.charAt(1))) {
+        String desiredSimpleName = simpleName.substring(1) + "DragModel";
+        for (ShapeDragModel dragModel : this.dragModels) {
+          if (desiredSimpleName.contentEquals(dragModel.getClass().getSimpleName())) {
+            return dragModel;
+          }
+        }
+      }
+    }
+    return null;
+  }
 }

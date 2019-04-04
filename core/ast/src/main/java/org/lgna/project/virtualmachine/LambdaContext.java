@@ -50,5 +50,5 @@ import org.lgna.project.ast.Lambda;
  * @author Dennis Cosgrove
  */
 public interface LambdaContext {
-	public void invokeEntryPoint( Lambda lambda, AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments );
+  public void invokeEntryPoint(Lambda lambda, AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments);
 }

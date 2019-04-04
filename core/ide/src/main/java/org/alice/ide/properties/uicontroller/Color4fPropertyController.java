@@ -49,33 +49,26 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 
-public class Color4fPropertyController extends LabelBasedPropertyController<Color4f>
-{
-	public Color4fPropertyController( AbstractPropertyAdapter<Color4f, ?> propertyAdapter )
-	{
-		super( propertyAdapter );
-	}
+public class Color4fPropertyController extends LabelBasedPropertyController<Color4f> {
+  public Color4fPropertyController(AbstractPropertyAdapter<Color4f, ?> propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	@Override
-	public Class<?> getPropertyType()
-	{
-		return Color4f.class;
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return Color4f.class;
+  }
 
-	@Override
-	protected void setValueOnUI( Color4f color )
-	{
-		if( color != null )
-		{
-			this.label.setText( null );
-			this.label.setIcon( new ColorIcon( ColorUtilities.toAwtColor( color ), 50, 20 ) );
-		}
-		else
-		{
-			this.label.setText( BLANK_STRING );
-			this.label.setIcon( null );
-		}
+  @Override
+  protected void setValueOnUI(Color4f color) {
+    if (color != null) {
+      this.label.setText(null);
+      this.label.setIcon(new ColorIcon(ColorUtilities.toAwtColor(color), 50, 20));
+    } else {
+      this.label.setText(BLANK_STRING);
+      this.label.setIcon(null);
+    }
 
-	}
+  }
 
 }

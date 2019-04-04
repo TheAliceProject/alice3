@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ModelPositionPropertyValueOperation extends PropertyValueOperation<Point3> {
-	public ModelPositionPropertyValueOperation( AbstractPropertyAdapter<Point3, ?> propertyAdapter, Point3 nextValue ) {
-		super( UUID.fromString( "c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3" ), propertyAdapter, nextValue );
-	}
+  public ModelPositionPropertyValueOperation(AbstractPropertyAdapter<Point3, ?> propertyAdapter, Point3 nextValue) {
+    super(UUID.fromString("c4da3421-b4ea-4a6d-9718-7ba6b75cc3e3"), propertyAdapter, nextValue);
+  }
 }

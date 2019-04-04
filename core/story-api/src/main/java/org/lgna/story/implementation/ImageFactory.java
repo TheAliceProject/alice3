@@ -58,73 +58,73 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class ImageFactory {
-	private static Map<ImageResource, BufferedImage> resourceToBufferedImageMap = new HashMap<ImageResource, BufferedImage>();
+  private static Map<ImageResource, BufferedImage> resourceToBufferedImageMap = new HashMap<ImageResource, BufferedImage>();
 
-	private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
-		@Override
-		public void contentChanging( ResourceContentEvent e ) {
-		}
+  private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
+    @Override
+    public void contentChanging(ResourceContentEvent e) {
+    }
 
-		@Override
-		public void contentChanged( ResourceContentEvent e ) {
-			ImageFactory.forget( (ImageResource)e.getTypedSource() );
-		}
-	};
+    @Override
+    public void contentChanged(ResourceContentEvent e) {
+      ImageFactory.forget((ImageResource) e.getTypedSource());
+    }
+  };
 
-	private ImageFactory() {
-	}
+  private ImageFactory() {
+  }
 
-	public static void forget( ImageResource imageResource ) {
-		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
-		imageResource.removeContentListener( ImageFactory.resourceContentListener );
-	}
+  public static void forget(ImageResource imageResource) {
+    ImageFactory.resourceToBufferedImageMap.remove(imageResource);
+    imageResource.removeContentListener(ImageFactory.resourceContentListener);
+  }
 
-	public static BufferedImage getBufferedImage( ImageResource imageResource ) {
-		assert imageResource != null;
-		BufferedImage cachedImage = ImageFactory.resourceToBufferedImageMap.get( imageResource );
-		if (cachedImage != null) {
-			return cachedImage;
-		}
-		try {
-			BufferedImage image = ImageIO.read( new ByteArrayInputStream( imageResource.getData() ) );
-			if( image != null ) {
-				imageResource.setWidth( image.getWidth() );
-				imageResource.setHeight( image.getHeight() );
-				imageResource.addContentListener( ImageFactory.resourceContentListener );
-				ImageFactory.resourceToBufferedImageMap.put( imageResource, image );
-				return image;
-			}
-		} catch( IOException ioe ) {
-			//todo: return warning texture
-		}
-		return null;
-	}
+  public static BufferedImage getBufferedImage(ImageResource imageResource) {
+    assert imageResource != null;
+    BufferedImage cachedImage = ImageFactory.resourceToBufferedImageMap.get(imageResource);
+    if (cachedImage != null) {
+      return cachedImage;
+    }
+    try {
+      BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageResource.getData()));
+      if (image != null) {
+        imageResource.setWidth(image.getWidth());
+        imageResource.setHeight(image.getHeight());
+        imageResource.addContentListener(ImageFactory.resourceContentListener);
+        ImageFactory.resourceToBufferedImageMap.put(imageResource, image);
+        return image;
+      }
+    } catch (IOException ioe) {
+      //todo: return warning texture
+    }
+    return null;
+  }
 
-	public static ImageResource createImageResource(BufferedImage image, String fileName) throws IOException {
-		String contentType = ImageResource.getContentType( fileName );
-		if( contentType != null ) {
-			ImageResource rv = new ImageResource(image, fileName, contentType );
-			ImageFactory.resourceToBufferedImageMap.put( rv, image );
-			return rv;
-		} else {
-			throw new RuntimeException( "content type not found for " + fileName );
-		}
-	}
+  public static ImageResource createImageResource(BufferedImage image, String fileName) throws IOException {
+    String contentType = ImageResource.getContentType(fileName);
+    if (contentType != null) {
+      ImageResource rv = new ImageResource(image, fileName, contentType);
+      ImageFactory.resourceToBufferedImageMap.put(rv, image);
+      return rv;
+    } else {
+      throw new RuntimeException("content type not found for " + fileName);
+    }
+  }
 
-	public static ImageResource createImageResource( File file ) throws IOException {
-		String contentType = ImageResource.getContentType( file );
-		if( contentType != null ) {
-			ImageResource rv = new ImageResource( file, contentType );
+  public static ImageResource createImageResource(File file) throws IOException {
+    String contentType = ImageResource.getContentType(file);
+    if (contentType != null) {
+      ImageResource rv = new ImageResource(file, contentType);
 
-			//update width and height details
-			if (null == getBufferedImage( rv ) ) {
-				throw new IOException( "content not found for " + file );
-			}
+      //update width and height details
+      if (null == getBufferedImage(rv)) {
+        throw new IOException("content not found for " + file);
+      }
 
-			return rv;
-		} else {
-			throw new RuntimeException( "content type not found for " + file );
-		}
-	}
+      return rv;
+    } else {
+      throw new RuntimeException("content type not found for " + file);
+    }
+  }
 
 }

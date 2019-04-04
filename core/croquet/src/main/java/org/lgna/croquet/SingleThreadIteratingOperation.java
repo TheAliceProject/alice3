@@ -50,12 +50,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SingleThreadIteratingOperation extends IteratingOperation {
-	public SingleThreadIteratingOperation( Group group, UUID migrationId ) {
-		super( group, migrationId );
-	}
+  public SingleThreadIteratingOperation(Group group, UUID migrationId) {
+    super(group, migrationId);
+  }
 
-	@Override
-	protected final void performInActivity( final UserActivity userActivity ) {
-		this.iterateOverSubModels( userActivity );
-	}
+  @Override
+  protected final void performInActivity(final UserActivity userActivity) {
+    this.iterateOverSubModels(userActivity);
+  }
 }

@@ -48,44 +48,43 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperationSubKey {
-	public OwnedByCompositeOperationSubKey( OperationOwningComposite<?> composite, String text ) {
-		this.composite = composite;
-		this.text = text;
-	}
+  public OwnedByCompositeOperationSubKey(OperationOwningComposite<?> composite, String text) {
+    this.composite = composite;
+    this.text = text;
+  }
 
-	public OperationOwningComposite<?> getComposite() {
-		return this.composite;
-	}
+  public OperationOwningComposite<?> getComposite() {
+    return this.composite;
+  }
 
-	public String getText() {
-		return this.text;
-	}
+  public String getText() {
+    return this.text;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( this == obj ) {
-			return true;
-		}
-		if( obj instanceof OwnedByCompositeOperationSubKey ) {
-			OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey)obj;
-			return Objects.equals( this.composite, other.composite )
-					&& Objects.equals( this.text, other.text );
-		}
-		return false;
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof OwnedByCompositeOperationSubKey) {
+      OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey) obj;
+      return Objects.equals(this.composite, other.composite) && Objects.equals(this.text, other.text);
+    }
+    return false;
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.composite != null ) {
-			rv = ( 37 * rv ) + this.composite.hashCode();
-		}
-		if( this.text != null ) {
-			rv = ( 37 * rv ) + this.text.hashCode();
-		}
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.composite != null) {
+      rv = (37 * rv) + this.composite.hashCode();
+    }
+    if (this.text != null) {
+      rv = (37 * rv) + this.text.hashCode();
+    }
+    return rv;
+  }
 
-	private final OperationOwningComposite<?> composite;
-	private final String text;
+  private final OperationOwningComposite<?> composite;
+  private final String text;
 }

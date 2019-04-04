@@ -45,7 +45,6 @@ package org.lgna.croquet.triggers;
 import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
-import org.lgna.croquet.views.ViewController;
 
 import java.awt.Point;
 
@@ -53,16 +52,16 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class IterationTrigger extends Trigger {
-	public static IterationTrigger createUserInstance( UserActivity userActivity ) {
-		return new IterationTrigger(userActivity);
-	}
+  public static IterationTrigger createUserInstance(UserActivity userActivity) {
+    return new IterationTrigger(userActivity);
+  }
 
-	private IterationTrigger(UserActivity userActivity) {
-		super(userActivity);
-	}
+  private IterationTrigger(UserActivity userActivity) {
+    super(userActivity);
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), null, new Point());
+  }
 }

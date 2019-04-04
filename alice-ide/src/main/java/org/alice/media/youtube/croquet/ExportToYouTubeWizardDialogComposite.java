@@ -68,100 +68,100 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class ExportToYouTubeWizardDialogComposite extends SimpleOperationWizardDialogCoreComposite {
-	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
-	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
-	//	private final UploadComposite uploadComposite = new UploadComposite( this );
-	private final VideoExportComposite videoExportComposite = new VideoExportComposite( this );
-	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
-	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
-	private final MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
+  private final EventRecordComposite eventRecordComposite = new EventRecordComposite(this);
+  private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite(this);
+  //  private final UploadComposite uploadComposite = new UploadComposite( this );
+  private final VideoExportComposite videoExportComposite = new VideoExportComposite(this);
+  private final StringValue mouseEventName = createStringValue("mouseEvent");
+  private final StringValue keyBoardEventName = createStringValue("keyboardEvent");
+  private final MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState("eventList", EventScriptEvent.class, new EventScriptEventCodec(this), -1);
 
-	private Project project;
-	private EventScript eventScript;
-	private File tempRecordedVideoFile;
-	private long randomSeed;
+  private Project project;
+  private EventScript eventScript;
+  private File tempRecordedVideoFile;
+  private long randomSeed;
 
-	public ExportToYouTubeWizardDialogComposite() {
-		super( UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), IDE.EXPORT_GROUP );
-		this.addPage( this.eventRecordComposite );
-		this.addPage( this.imageRecordComposite );
-		this.addPage( this.videoExportComposite );
-	}
+  public ExportToYouTubeWizardDialogComposite() {
+    super(UUID.fromString("c3542871-3346-4228-a872-1c5641c14e9d"), IDE.EXPORT_GROUP);
+    this.addPage(this.eventRecordComposite);
+    this.addPage(this.imageRecordComposite);
+    this.addPage(this.videoExportComposite);
+  }
 
-	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
-		return this.eventList;
-	}
+  public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+    return this.eventList;
+  }
 
-	public StringValue getMouseEventName() {
-		return this.mouseEventName;
-	}
+  public StringValue getMouseEventName() {
+    return this.mouseEventName;
+  }
 
-	public StringValue getKeyBoardEventName() {
-		return this.keyBoardEventName;
-	}
+  public StringValue getKeyBoardEventName() {
+    return this.keyBoardEventName;
+  }
 
-	public Project getProject() {
-		return this.project;
-	}
+  public Project getProject() {
+    return this.project;
+  }
 
-	public void setProject( Project project ) {
-		this.project = project;
-	}
+  public void setProject(Project project) {
+    this.project = project;
+  }
 
-	public EventScript getEventScript() {
-		return this.eventScript;
-	}
+  public EventScript getEventScript() {
+    return this.eventScript;
+  }
 
-	public void setEventScript( EventScript script ) {
-		this.eventScript = script;
-	}
+  public void setEventScript(EventScript script) {
+    this.eventScript = script;
+  }
 
-	public File getTempRecordedVideoFile() {
-		return this.tempRecordedVideoFile;
-	}
+  public File getTempRecordedVideoFile() {
+    return this.tempRecordedVideoFile;
+  }
 
-	public void setTempRecordedVideoFile( File file ) {
-		this.tempRecordedVideoFile = file;
-		if( this.tempRecordedVideoFile != null ) {
-			FileUtilities.createParentDirectoriesIfNecessary( this.tempRecordedVideoFile );
-		}
-	}
+  public void setTempRecordedVideoFile(File file) {
+    this.tempRecordedVideoFile = file;
+    if (this.tempRecordedVideoFile != null) {
+      FileUtilities.createParentDirectoriesIfNecessary(this.tempRecordedVideoFile);
+    }
+  }
 
-	public void setRandomSeed( long currentTimeMillis ) {
-		this.randomSeed = currentTimeMillis;
-		RandomUtilities.setSeed( currentTimeMillis );
-	}
+  public void setRandomSeed(long currentTimeMillis) {
+    this.randomSeed = currentTimeMillis;
+    RandomUtilities.setSeed(currentTimeMillis);
+  }
 
-	public long getRandomSeed() {
-		return this.randomSeed;
-	}
+  public long getRandomSeed() {
+    return this.randomSeed;
+  }
 
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		return null;
-	}
+  @Override
+  protected GoldenRatioPolicy getGoldenRatioPolicy() {
+    return null;
+  }
 
-	@Override
-	protected Edit createEdit() {
-		return null;
-	}
+  @Override
+  protected Edit createEdit() {
+    return null;
+  }
 
-	public static void main( final String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new SimpleApplication();
-		File projectFile = new File( args[ 0 ] );
-		final Project project = IoUtilities.readProject( projectFile );
-		ProjectStack.pushProject( project );
+  public static void main(final String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    new SimpleApplication();
+    File projectFile = new File(args[0]);
+    final Project project = IoUtilities.readProject(projectFile);
+    ProjectStack.pushProject(project);
 
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
-				composite.setProject( project );
-				composite.getLaunchOperation().fire();
-				System.exit( 0 );
-			}
-		} );
-	}
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
+        composite.setProject(project);
+        composite.getLaunchOperation().fire();
+        System.exit(0);
+      }
+    });
+  }
 
 }

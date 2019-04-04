@@ -77,251 +77,244 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class PersonResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, PersonResource> {
-	private static class SingletonHolder {
-		private static PersonResourceComposite instance = new PersonResourceComposite();
-	}
+  private static class SingletonHolder {
+    private static PersonResourceComposite instance = new PersonResourceComposite();
+  }
 
-	public static PersonResourceComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PersonResourceComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static final class PersonResourceToExpressionConverter extends ValueConverter<PersonResource, InstanceCreation> {
-		public PersonResourceToExpressionConverter( ValueCreator<PersonResource> valueCreator ) {
-			super( UUID.fromString( "40894b2c-ebdc-4101-bc17-d920f3298d89" ), valueCreator );
-		}
+  private static final class PersonResourceToExpressionConverter extends ValueConverter<PersonResource, InstanceCreation> {
+    public PersonResourceToExpressionConverter(ValueCreator<PersonResource> valueCreator) {
+      super(UUID.fromString("40894b2c-ebdc-4101-bc17-d920f3298d89"), valueCreator);
+    }
 
-		@Override
-		protected InstanceCreation convert( PersonResource value ) {
-			try {
-				InstanceCreation instanceCreation = SimsSetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( value );
-				return instanceCreation;
-			} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
-			}
-		}
-	}
+    @Override
+    protected InstanceCreation convert(PersonResource value) {
+      try {
+        InstanceCreation instanceCreation = SimsSetUpMethodGenerator.createSims2PersonRecourseInstanceCreation(value);
+        return instanceCreation;
+      } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+        throw new RuntimeException(ccee);
+      }
+    }
+  }
 
-	private final ValueCreator<PersonResource> randomElderValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializeRandom( LifeStage.ELDER );
-				}
-			}, "randomElder" );
-	private final ValueCreator<PersonResource> randomAdultValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializeRandom( LifeStage.ADULT );
-				}
-			}, "randomAdult" );
-	private final ValueCreator<PersonResource> randomTeenValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializeRandom( LifeStage.TEEN );
-				}
-			}, "randomTeen" );
-	private final ValueCreator<PersonResource> randomChildValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializeRandom( LifeStage.CHILD );
-				}
-			}, "randomChild" );
-	private final ValueCreator<PersonResource> randomToddlerValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializeRandom( LifeStage.TODDLER );
-				}
-			}, "randomToddler" );
-	private final ValueCreator<PersonResource> previousResourceExpressionValueCreator =
-			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
-				@Override
-				public void initialize() {
-					PersonResourceComposite.this.initializePreviousExpression();
-				}
-			}, "edit" );
+  private final ValueCreator<PersonResource> randomElderValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializeRandom(LifeStage.ELDER);
+    }
+  }, "randomElder");
+  private final ValueCreator<PersonResource> randomAdultValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializeRandom(LifeStage.ADULT);
+    }
+  }, "randomAdult");
+  private final ValueCreator<PersonResource> randomTeenValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializeRandom(LifeStage.TEEN);
+    }
+  }, "randomTeen");
+  private final ValueCreator<PersonResource> randomChildValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializeRandom(LifeStage.CHILD);
+    }
+  }, "randomChild");
+  private final ValueCreator<PersonResource> randomToddlerValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializeRandom(LifeStage.TODDLER);
+    }
+  }, "randomToddler");
+  private final ValueCreator<PersonResource> previousResourceExpressionValueCreator = new OwnedByCompositeValueCreator<PersonResource>(this, new OwnedByCompositeValueCreator.Initializer() {
+    @Override
+    public void initialize() {
+      PersonResourceComposite.this.initializePreviousExpression();
+    }
+  }, "edit");
 
-	private final ValueConverter<PersonResource, InstanceCreation> randomElderExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomElderValueCreator );
-	private final ValueConverter<PersonResource, InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomAdultValueCreator );
-	private final ValueConverter<PersonResource, InstanceCreation> randomTeenExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomTeenValueCreator );
-	private final ValueConverter<PersonResource, InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomChildValueCreator );
-	private final ValueConverter<PersonResource, InstanceCreation> randomToddlerExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomToddlerValueCreator );
-	private final ValueConverter<PersonResource, InstanceCreation> previousResourceExpressionValueConverter =
-			new PersonResourceToExpressionConverter( this.previousResourceExpressionValueCreator );
+  private final ValueConverter<PersonResource, InstanceCreation> randomElderExpressionValueConverter = new PersonResourceToExpressionConverter(this.randomElderValueCreator);
+  private final ValueConverter<PersonResource, InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter(this.randomAdultValueCreator);
+  private final ValueConverter<PersonResource, InstanceCreation> randomTeenExpressionValueConverter = new PersonResourceToExpressionConverter(this.randomTeenValueCreator);
+  private final ValueConverter<PersonResource, InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter(this.randomChildValueCreator);
+  private final ValueConverter<PersonResource, InstanceCreation> randomToddlerExpressionValueConverter = new PersonResourceToExpressionConverter(this.randomToddlerValueCreator);
+  private final ValueConverter<PersonResource, InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToExpressionConverter(this.previousResourceExpressionValueCreator);
 
-	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
+  private final PreviewComposite previewComposite = new PreviewComposite();
+  private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
 
-	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.25f );
+  private final SplitComposite splitComposite = this.createHorizontalSplitComposite(this.previewComposite, this.ingredientsComposite, 0.25f);
 
-	private PersonResourceComposite() {
-		super( UUID.fromString( "a875beea-1feb-48a7-9fe0-5903af846d72" ) );
-	}
+  private PersonResourceComposite() {
+    super(UUID.fromString("a875beea-1feb-48a7-9fe0-5903af846d72"));
+  }
 
-	public IngredientsComposite getIngredientsComposite() {
-		return this.ingredientsComposite;
-	}
+  public IngredientsComposite getIngredientsComposite() {
+    return this.ingredientsComposite;
+  }
 
-	public PreviewComposite getPreviewComposite() {
-		return this.previewComposite;
-	}
+  public PreviewComposite getPreviewComposite() {
+    return this.previewComposite;
+  }
 
-	public ValueCreator<PersonResource> getRandomPersonValueCreator( LifeStage lifeStage ) {
-		if( lifeStage == LifeStage.ADULT ) {
-			return this.randomAdultValueCreator;
-		} else if( lifeStage == LifeStage.CHILD ) {
-			return this.randomChildValueCreator;
-		} else if( lifeStage == LifeStage.TEEN ) {
-			return this.randomTeenValueCreator;
-		} else if( lifeStage == LifeStage.TODDLER ) {
-			return this.randomToddlerValueCreator;
-		} else if( lifeStage == LifeStage.ELDER ) {
-			return this.randomElderValueCreator;
-		} else {
-			return this.randomAdultValueCreator;
-		}
-	}
+  public ValueCreator<PersonResource> getRandomPersonValueCreator(LifeStage lifeStage) {
+    if (lifeStage == LifeStage.ADULT) {
+      return this.randomAdultValueCreator;
+    } else if (lifeStage == LifeStage.CHILD) {
+      return this.randomChildValueCreator;
+    } else if (lifeStage == LifeStage.TEEN) {
+      return this.randomTeenValueCreator;
+    } else if (lifeStage == LifeStage.TODDLER) {
+      return this.randomToddlerValueCreator;
+    } else if (lifeStage == LifeStage.ELDER) {
+      return this.randomElderValueCreator;
+    } else {
+      return this.randomAdultValueCreator;
+    }
+  }
 
-	public ValueConverter<PersonResource, InstanceCreation> getRandomPersonExpressionValueConverter( LifeStage lifeStage ) {
-		if( lifeStage == LifeStage.ADULT ) {
-			return this.randomAdultExpressionValueConverter;
-		} else if( lifeStage == LifeStage.CHILD ) {
-			return this.randomChildExpressionValueConverter;
-		} else if( lifeStage == LifeStage.TEEN ) {
-			return this.randomTeenExpressionValueConverter;
-		} else if( lifeStage == LifeStage.TODDLER ) {
-			return this.randomToddlerExpressionValueConverter;
-		} else if( lifeStage == LifeStage.ELDER ) {
-			return this.randomElderExpressionValueConverter;
-		} else {
-			return this.randomAdultExpressionValueConverter;
-		}
-	}
+  public ValueConverter<PersonResource, InstanceCreation> getRandomPersonExpressionValueConverter(LifeStage lifeStage) {
+    if (lifeStage == LifeStage.ADULT) {
+      return this.randomAdultExpressionValueConverter;
+    } else if (lifeStage == LifeStage.CHILD) {
+      return this.randomChildExpressionValueConverter;
+    } else if (lifeStage == LifeStage.TEEN) {
+      return this.randomTeenExpressionValueConverter;
+    } else if (lifeStage == LifeStage.TODDLER) {
+      return this.randomToddlerExpressionValueConverter;
+    } else if (lifeStage == LifeStage.ELDER) {
+      return this.randomElderExpressionValueConverter;
+    } else {
+      return this.randomAdultExpressionValueConverter;
+    }
+  }
 
-	public ValueConverter<PersonResource, InstanceCreation> getPreviousResourceExpressionValueConverter() {
-		return this.previousResourceExpressionValueConverter;
-	}
+  public ValueConverter<PersonResource, InstanceCreation> getPreviousResourceExpressionValueConverter() {
+    return this.previousResourceExpressionValueConverter;
+  }
 
-	private void initializeRandom( LifeStage lifeStage ) {
-		boolean isLifeStageStateEnabled = true;
-		if( EPIC_HACK_disableLifeStageStateOneTime ) {
-			isLifeStageStateEnabled = false;
-			EPIC_HACK_disableLifeStageStateOneTime = false;
-		}
-		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
-		PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
-		this.ingredientsComposite.setStates( personResource );
-	}
+  private void initializeRandom(LifeStage lifeStage) {
+    boolean isLifeStageStateEnabled = true;
+    if (EPIC_HACK_disableLifeStageStateOneTime) {
+      isLifeStageStateEnabled = false;
+      EPIC_HACK_disableLifeStageStateOneTime = false;
+    }
+    this.ingredientsComposite.getLifeStageState().setEnabled(isLifeStageStateEnabled);
+    PersonResource personResource = RandomPersonUtilities.createRandomResource(lifeStage);
+    this.ingredientsComposite.setStates(personResource);
+  }
 
-	private static final class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
-		public Object ENTRY_POINT_createInstance( InstanceCreation instanceCreation ) {
-			return this.evaluate( instanceCreation );
-		}
-	};
+  private static final class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
+    public Object ENTRY_POINT_createInstance(InstanceCreation instanceCreation) {
+      return this.evaluate(instanceCreation);
+    }
+  }
 
-	private final InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+  private final InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
 
-	private void initializePreviousExpression() {
-		ExpressionCascadeManager expressionCascadeManager = StageIDE.getActiveInstance().getExpressionCascadeManager();
-		Expression expression = expressionCascadeManager.getPreviousExpression();
-		boolean isLifeStageStateEnabled = true;
-		if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			AbstractType<?, ?, ?> type = instanceCreation.getType();
-			if( type instanceof JavaType ) {
-				JavaType javaType = (JavaType)type;
-				if( javaType.isAssignableTo( PersonResource.class ) ) {
-					//note: duplicated below
-					isLifeStageStateEnabled = false;
+  private void initializePreviousExpression() {
+    ExpressionCascadeManager expressionCascadeManager = StageIDE.getActiveInstance().getExpressionCascadeManager();
+    Expression expression = expressionCascadeManager.getPreviousExpression();
+    boolean isLifeStageStateEnabled = true;
+    if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      AbstractType<?, ?, ?> type = instanceCreation.getType();
+      if (type instanceof JavaType) {
+        JavaType javaType = (JavaType) type;
+        if (javaType.isAssignableTo(PersonResource.class)) {
+          //note: duplicated below
+          isLifeStageStateEnabled = false;
 
-					Object instance = vm.ENTRY_POINT_createInstance( instanceCreation );
+          Object instance = vm.ENTRY_POINT_createInstance(instanceCreation);
 
-					if( instance instanceof PersonResource ) {
-						PersonResource personResource = (PersonResource)instance;
-						this.ingredientsComposite.setStates( personResource );
-						//note: duplicated above
-						isLifeStageStateEnabled = false;
-					} else {
-						Logger.severe( instance );
-					}
-				}
-			}
-		}
-		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
-	}
+          if (instance instanceof PersonResource) {
+            PersonResource personResource = (PersonResource) instance;
+            this.ingredientsComposite.setStates(personResource);
+            //note: duplicated above
+            isLifeStageStateEnabled = false;
+          } else {
+            Logger.severe(instance);
+          }
+        }
+      }
+    }
+    this.ingredientsComposite.getLifeStageState().setEnabled(isLifeStageStateEnabled);
+  }
 
-	private boolean EPIC_HACK_disableLifeStageStateOneTime;
+  private boolean EPIC_HACK_disableLifeStageStateOneTime;
 
-	public void EPIC_HACK_disableLifeStageStateOneTime() {
-		EPIC_HACK_disableLifeStageStateOneTime = true;
-	}
+  public void EPIC_HACK_disableLifeStageStateOneTime() {
+    EPIC_HACK_disableLifeStageStateOneTime = true;
+  }
 
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
+  public SplitComposite getSplitComposite() {
+    return this.splitComposite;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new BorderPanel.Builder().center( this.splitComposite.getView() ).build();
-	}
+  @Override
+  protected Panel createView() {
+    return new BorderPanel.Builder().center(this.splitComposite.getView()).build();
+  }
 
-	@Override
-	protected PersonResource createValue() {
-		return this.ingredientsComposite.createResourceFromStates();
-	}
+  @Override
+  protected PersonResource createValue() {
+    return this.ingredientsComposite.createResourceFromStates();
+  }
 
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		return 1000;
-	}
+  @Override
+  protected Integer getWiderGoldenRatioSizeFromWidth() {
+    return 1000;
+  }
 
-	@Override
-	public boolean isStatusLineDesired() {
-		return false;
-	}
+  @Override
+  public boolean isStatusLineDesired() {
+    return false;
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
-		}
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getDocumentFrame().disableRendering(ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN);
+    }
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handleFinally( Dialog dialog ) {
-		super.handleFinally( dialog );
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getDocumentFrame().enableRendering();
-		}
-	}
+  @Override
+  protected void handleFinally(Dialog dialog) {
+    super.handleFinally(dialog);
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getDocumentFrame().enableRendering();
+    }
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				UIManagerUtilities.setLookAndFeel( "Nimbus" );
+  public static void main(String[] args) throws Exception {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        UIManagerUtilities.setLookAndFeel("Nimbus");
 
-				//new org.alice.stageide.StageIDE();
-				new SimpleApplication();
+        //new org.alice.stageide.StageIDE();
+        new SimpleApplication();
 
-				try {
-					DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( LifeStage.ADULT ).fire();
-				} catch( CancelException ce ) {
-					//pass
-				}
-				System.exit( 0 );
-			}
-		} );
-	}
+        try {
+          DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage(LifeStage.ADULT).fire();
+        } catch (CancelException ce) {
+          //pass
+        }
+        System.exit(0);
+      }
+    });
+  }
 }

@@ -59,111 +59,113 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class GlrComposite<T extends Composite> extends GlrComponent<T> {
-	/*package-private*/static void handleComponentAdded( ComponentAddedEvent e ) {
-		GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrComponent<?> glrChild = AdapterFactory.getAdapterFor( e.getChild() );
-		glrComposite.handleComponentAdded( glrChild );
-	}
+  /*package-private*/
+  static void handleComponentAdded(ComponentAddedEvent e) {
+    GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor(e.getTypedSource());
+    GlrComponent<?> glrChild = AdapterFactory.getAdapterFor(e.getChild());
+    glrComposite.handleComponentAdded(glrChild);
+  }
 
-	/*package-private*/static void handleComponentRemoved( ComponentRemovedEvent e ) {
-		GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GlrComponent<?> glrChild = AdapterFactory.getAdapterFor( e.getChild() );
-		glrComposite.handleComponentRemoved( glrChild );
-	}
+  /*package-private*/
+  static void handleComponentRemoved(ComponentRemovedEvent e) {
+    GlrComposite<?> glrComposite = AdapterFactory.getAdapterFor(e.getTypedSource());
+    GlrComponent<?> glrChild = AdapterFactory.getAdapterFor(e.getChild());
+    glrComposite.handleComponentRemoved(glrChild);
+  }
 
-	@Override
-	public void accept( Visitor visitor ) {
-		super.accept( visitor );
-		synchronized( this.glrChildren ) {
-			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				glrChild.accept( visitor );
-			}
-		}
-	}
+  @Override
+  public void accept(Visitor visitor) {
+    super.accept(visitor);
+    synchronized (this.glrChildren) {
+      for (GlrComponent<?> glrChild : this.glrChildren) {
+        glrChild.accept(visitor);
+      }
+    }
+  }
 
-	private void handleComponentAdded( GlrComponent<?> childAdapter ) {
-		synchronized( this.glrChildren ) {
-			this.glrChildren.add( childAdapter );
-		}
-	}
+  private void handleComponentAdded(GlrComponent<?> childAdapter) {
+    synchronized (this.glrChildren) {
+      this.glrChildren.add(childAdapter);
+    }
+  }
 
-	private void handleComponentRemoved( GlrComponent<?> childAdapter ) {
-		synchronized( this.glrChildren ) {
-			this.glrChildren.remove( childAdapter );
-		}
-	}
+  private void handleComponentRemoved(GlrComponent<?> childAdapter) {
+    synchronized (this.glrChildren) {
+      this.glrChildren.remove(childAdapter);
+    }
+  }
 
-	@Override
-	public void initialize( T sgE ) {
-		super.initialize( sgE );
-		Iterable<Component> sgChildren = this.owner.getComponents();
-		synchronized( sgChildren ) {
-			for( Component sgChild : sgChildren ) {
-				GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgChild );
-				this.handleComponentAdded( glrComponent );
-			}
-		}
-	}
+  @Override
+  public void initialize(T sgE) {
+    super.initialize(sgE);
+    Iterable<Component> sgChildren = this.owner.getComponents();
+    synchronized (sgChildren) {
+      for (Component sgChild : sgChildren) {
+        GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor(sgChild);
+        this.handleComponentAdded(glrComponent);
+      }
+    }
+  }
 
-	public void setupAffectors( RenderContext rc ) {
-		synchronized( this.glrChildren ) {
-			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				if( glrChild instanceof GlrComposite<?> ) {
-					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
-					glrComposite.setupAffectors( rc );
-				} else if( glrChild instanceof GlrAffector<?> ) {
-					GlrAffector<?> glrAffector = (GlrAffector<?>)glrChild;
-					glrAffector.setupAffectors( rc );
-				}
-			}
-		}
-	}
+  public void setupAffectors(RenderContext rc) {
+    synchronized (this.glrChildren) {
+      for (GlrComponent<?> glrChild : this.glrChildren) {
+        if (glrChild instanceof GlrComposite<?>) {
+          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+          glrComposite.setupAffectors(rc);
+        } else if (glrChild instanceof GlrAffector<?>) {
+          GlrAffector<?> glrAffector = (GlrAffector<?>) glrChild;
+          glrAffector.setupAffectors(rc);
+        }
+      }
+    }
+  }
 
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-		synchronized( this.glrChildren ) {
-			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				if( glrChild instanceof GlrComposite<?> ) {
-					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
-					glrComposite.renderGhost( rc, root );
-				} else if( glrChild instanceof GlrRenderContributor ) {
-					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
-					glrRenderContributor.renderGhost( rc, root );
-				}
-			}
-		}
-	}
+  public void renderGhost(RenderContext rc, GlrGhost root) {
+    synchronized (this.glrChildren) {
+      for (GlrComponent<?> glrChild : this.glrChildren) {
+        if (glrChild instanceof GlrComposite<?>) {
+          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+          glrComposite.renderGhost(rc, root);
+        } else if (glrChild instanceof GlrRenderContributor) {
+          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+          glrRenderContributor.renderGhost(rc, root);
+        }
+      }
+    }
+  }
 
-	public void renderOpaque( RenderContext rc ) {
-		synchronized( this.glrChildren ) {
-			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				if( glrChild instanceof GlrComposite<?> ) {
-					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
-					glrComposite.renderOpaque( rc );
-				} else if( glrChild instanceof GlrRenderContributor ) {
-					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
-					glrRenderContributor.renderOpaque( rc );
-				}
-			}
-		}
-	}
+  public void renderOpaque(RenderContext rc) {
+    synchronized (this.glrChildren) {
+      for (GlrComponent<?> glrChild : this.glrChildren) {
+        if (glrChild instanceof GlrComposite<?>) {
+          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+          glrComposite.renderOpaque(rc);
+        } else if (glrChild instanceof GlrRenderContributor) {
+          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+          glrRenderContributor.renderOpaque(rc);
+        }
+      }
+    }
+  }
 
-	public void pick( PickContext pc, PickParameters pickParameters ) {
-		synchronized( this.glrChildren ) {
-			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				if( glrChild instanceof GlrComposite<?> ) {
-					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
-					glrComposite.pick( pc, pickParameters );
-				} else if( glrChild instanceof GlrRenderContributor ) {
-					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
-					glrRenderContributor.pick( pc, pickParameters );
-				}
-			}
-		}
-	}
+  public void pick(PickContext pc, PickParameters pickParameters) {
+    synchronized (this.glrChildren) {
+      for (GlrComponent<?> glrChild : this.glrChildren) {
+        if (glrChild instanceof GlrComposite<?>) {
+          GlrComposite<?> glrComposite = (GlrComposite<?>) glrChild;
+          glrComposite.pick(pc, pickParameters);
+        } else if (glrChild instanceof GlrRenderContributor) {
+          GlrRenderContributor glrRenderContributor = (GlrRenderContributor) glrChild;
+          glrRenderContributor.pick(pc, pickParameters);
+        }
+      }
+    }
+  }
 
-	public Iterable<GlrComponent<?>> accessChildren() {
-		return this.glrChildren;
-	}
+  public Iterable<GlrComponent<?>> accessChildren() {
+    return this.glrChildren;
+  }
 
-	private final List<GlrComponent<?>> glrChildren = Lists.newLinkedList();
+  private final List<GlrComponent<?>> glrChildren = Lists.newLinkedList();
 }

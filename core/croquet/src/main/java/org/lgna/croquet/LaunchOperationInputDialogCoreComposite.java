@@ -51,18 +51,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class LaunchOperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends OperationInputDialogCoreComposite<V> {
-	public LaunchOperationInputDialogCoreComposite( UUID migrationId, Group operationGroup ) {
-		super( migrationId );
-		this.imp = new LaunchOperationOwningCompositeImp( this, operationGroup );
-	}
+  public LaunchOperationInputDialogCoreComposite(UUID migrationId, Group operationGroup) {
+    super(migrationId);
+    this.imp = new LaunchOperationOwningCompositeImp(this, operationGroup);
+  }
 
-	protected LaunchOperationOwningCompositeImp getImp() {
-		return this.imp;
-	}
+  protected LaunchOperationOwningCompositeImp getImp() {
+    return this.imp;
+  }
 
-	public Operation getLaunchOperation( String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
-	}
+  public Operation getLaunchOperation(String subKeyText) {
+    return this.imp.getLaunchOperation(subKeyText);
+  }
 
-	private final LaunchOperationOwningCompositeImp imp;
+  private final LaunchOperationOwningCompositeImp imp;
 }

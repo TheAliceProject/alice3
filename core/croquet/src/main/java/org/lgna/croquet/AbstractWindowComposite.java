@@ -55,88 +55,88 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractWindowComposite<V extends CompositeView<?, ?>> extends AbstractSeverityStatusComposite<V> {
-	public AbstractWindowComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public AbstractWindowComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	protected static enum GoldenRatioPolicy {
-		WIDTH_LONG_SIDE {
-			@Override
-			public Dimension calculateWindowSize( AbstractWindow<?> window ) {
-				Dimension size = window.getAwtComponent().getPreferredSize();
-				int phiHeight = GoldenRatio.getShorterSideLength( size.width );
-				if( phiHeight > size.height ) {
-					return new Dimension( size.width, phiHeight );
-				} else {
-					int phiWidth = GoldenRatio.getLongerSideLength( size.height );
-					if( phiWidth > size.width ) {
-						return new Dimension( phiWidth, size.height );
-					} else {
-						return size;
-					}
-				}
-			}
-		},
-		HEIGHT_LONG_SIDE {
-			@Override
-			public Dimension calculateWindowSize( AbstractWindow<?> window ) {
-				Dimension size = window.getAwtComponent().getPreferredSize();
-				int phiHeight = GoldenRatio.getLongerSideLength( size.width );
-				if( phiHeight > size.height ) {
-					return new Dimension( size.width, phiHeight );
-				} else {
-					int phiWidth = GoldenRatio.getShorterSideLength( size.height );
-					if( phiWidth > size.width ) {
-						return new Dimension( phiWidth, size.height );
-					} else {
-						return size;
-					}
-				}
-			}
-		};
-		public abstract Dimension calculateWindowSize( AbstractWindow<?> window );
+  protected static enum GoldenRatioPolicy {
+    WIDTH_LONG_SIDE {
+      @Override
+      public Dimension calculateWindowSize(AbstractWindow<?> window) {
+        Dimension size = window.getAwtComponent().getPreferredSize();
+        int phiHeight = GoldenRatio.getShorterSideLength(size.width);
+        if (phiHeight > size.height) {
+          return new Dimension(size.width, phiHeight);
+        } else {
+          int phiWidth = GoldenRatio.getLongerSideLength(size.height);
+          if (phiWidth > size.width) {
+            return new Dimension(phiWidth, size.height);
+          } else {
+            return size;
+          }
+        }
+      }
+    }, HEIGHT_LONG_SIDE {
+      @Override
+      public Dimension calculateWindowSize(AbstractWindow<?> window) {
+        Dimension size = window.getAwtComponent().getPreferredSize();
+        int phiHeight = GoldenRatio.getLongerSideLength(size.width);
+        if (phiHeight > size.height) {
+          return new Dimension(size.width, phiHeight);
+        } else {
+          int phiWidth = GoldenRatio.getShorterSideLength(size.height);
+          if (phiWidth > size.width) {
+            return new Dimension(phiWidth, size.height);
+          } else {
+            return size;
+          }
+        }
+      }
+    };
 
-	}
+    public abstract Dimension calculateWindowSize(AbstractWindow<?> window);
 
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
-	}
+  }
 
-	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		return null;
-	}
+  protected GoldenRatioPolicy getGoldenRatioPolicy() {
+    return GoldenRatioPolicy.WIDTH_LONG_SIDE;
+  }
 
-	protected Integer getWiderGoldenRatioSizeFromHeight() {
-		return null;
-	}
+  protected Integer getWiderGoldenRatioSizeFromWidth() {
+    return null;
+  }
 
-	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
-		Integer width = this.getWiderGoldenRatioSizeFromWidth();
-		if( width != null ) {
-			return DimensionUtilities.createWiderGoldenRatioSizeFromWidth( width );
-		} else {
-			Integer height = this.getWiderGoldenRatioSizeFromHeight();
-			if( height != null ) {
-				return DimensionUtilities.createWiderGoldenRatioSizeFromHeight( height );
-			} else {
-				GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
-				if( goldenRatioPolicy != null ) {
-					window.pack();
-					return goldenRatioPolicy.calculateWindowSize( window );
-				} else {
-					window.pack();
-					return window.getAwtComponent().getPreferredSize();
-				}
-			}
-		}
-	}
+  protected Integer getWiderGoldenRatioSizeFromHeight() {
+    return null;
+  }
 
-	public final void updateWindowSize( AbstractWindow<?> window ) {
-		window.setSize( this.calculateWindowSize( window ) );
-		window.getContentPane().revalidateAndRepaint();
-	}
+  protected Dimension calculateWindowSize(AbstractWindow<?> window) {
+    Integer width = this.getWiderGoldenRatioSizeFromWidth();
+    if (width != null) {
+      return DimensionUtilities.createWiderGoldenRatioSizeFromWidth(width);
+    } else {
+      Integer height = this.getWiderGoldenRatioSizeFromHeight();
+      if (height != null) {
+        return DimensionUtilities.createWiderGoldenRatioSizeFromHeight(height);
+      } else {
+        GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
+        if (goldenRatioPolicy != null) {
+          window.pack();
+          return goldenRatioPolicy.calculateWindowSize(window);
+        } else {
+          window.pack();
+          return window.getAwtComponent().getPreferredSize();
+        }
+      }
+    }
+  }
 
-	protected Point getDesiredWindowLocation() {
-		return null;
-	}
+  public final void updateWindowSize(AbstractWindow<?> window) {
+    window.setSize(this.calculateWindowSize(window));
+    window.getContentPane().revalidateAndRepaint();
+  }
+
+  protected Point getDesiredWindowLocation() {
+    return null;
+  }
 }

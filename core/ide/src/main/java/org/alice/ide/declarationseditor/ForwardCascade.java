@@ -49,20 +49,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ForwardCascade extends HistoryCascade {
-	private static class SingletonHolder {
-		private static ForwardCascade instance = new ForwardCascade();
-	}
+  private static class SingletonHolder {
+    private static ForwardCascade instance = new ForwardCascade();
+  }
 
-	public static ForwardCascade getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ForwardCascade getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ForwardCascade() {
-		super( UUID.fromString( "fee210a0-bb0e-4c8c-8e93-fb2fdac683d7" ) );
-	}
+  private ForwardCascade() {
+    super(UUID.fromString("fee210a0-bb0e-4c8c-8e93-fb2fdac683d7"));
+  }
 
-	@Override
-	protected List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory ) {
-		return declarationCompositeHistory.getForwardList();
-	}
+  @Override
+  protected List<DeclarationComposite<?, ?>> getList(DeclarationCompositeHistory declarationCompositeHistory) {
+    return declarationCompositeHistory.getForwardList();
+  }
 }

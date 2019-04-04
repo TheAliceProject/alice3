@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public interface AnimationObserver {
-	public void started( Animation animation );
+  public void started(Animation animation);
 
-	public void finished( Animation animation );
+  public void finished(Animation animation);
 }

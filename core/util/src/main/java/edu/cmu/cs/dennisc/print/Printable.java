@@ -50,5 +50,5 @@ import java.text.DecimalFormat;
  * @author Dennis Cosgrove
  */
 public interface Printable {
-	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException;
+  public Appendable append(Appendable rv, DecimalFormat decimalFormat, boolean isLines) throws IOException;
 }

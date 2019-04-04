@@ -49,24 +49,24 @@ import org.lgna.project.code.CodeAppender;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgument extends AbstractNode implements CodeAppender {
-	public AbstractArgument() {
-	}
+  public AbstractArgument() {
+  }
 
-	public AbstractArgument( AbstractParameter parameter, Expression expression ) {
-		this.parameter.setValue( parameter );
-		this.expression.setValue( expression );
-	}
+  public AbstractArgument(AbstractParameter parameter, Expression expression) {
+    this.parameter.setValue(parameter);
+    this.expression.setValue(expression);
+  }
 
-	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
+  protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType(AbstractType<?, ?, ?> parameterType);
 
-	@Override
-	public abstract void appendCode( SourceCodeGenerator generator );
+  @Override
+  public abstract void appendCode(SourceCodeGenerator generator);
 
-	public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance( this );
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return AbstractArgument.this.getExpressionTypeForParameterType( AbstractArgument.this.parameter.getValue().getValueType() );
-		}
-	};
+  public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance(this);
+  public final ExpressionProperty expression = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return AbstractArgument.this.getExpressionTypeForParameterType(AbstractArgument.this.parameter.getValue().getValueType());
+    }
+  };
 }

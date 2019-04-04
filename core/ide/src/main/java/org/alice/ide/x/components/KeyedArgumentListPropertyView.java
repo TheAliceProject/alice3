@@ -56,30 +56,30 @@ import org.lgna.project.ast.JavaKeyedArgument;
  * @author Dennis Cosgrove
  */
 public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<JavaKeyedArgument> {
-	public KeyedArgumentListPropertyView( AstI18nFactory factory, ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
-		super( factory, argumentListProperty );
-	}
+  public KeyedArgumentListPropertyView(AstI18nFactory factory, ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
+    super(factory, argumentListProperty);
+  }
 
-	@Override
-	protected String getInitialPrefix() {
-		//todo: check to see if requiredParameters.size() > 0
-		return SEPARATOR;
-	}
+  @Override
+  protected String getInitialPrefix() {
+    //todo: check to see if requiredParameters.size() > 0
+    return SEPARATOR;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		if( AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
-			//pass
-		} else {
-			AstI18nFactory factory = this.getFactory();
-			if( factory instanceof MutableAstI18nFactory ) {
-				MutableAstI18nFactory mutableAstI18nFactory = (MutableAstI18nFactory)factory;
-				if( mutableAstI18nFactory.isKeyedArgumentListMutable( this.getArgumentListProperty() ) ) {
-					this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-					this.addComponent( new DropDown( KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
-				}
-			}
-		}
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    if (AstUtilities.isKeyedArgumentListPropertyComplete(this.getArgumentListProperty())) {
+      //pass
+    } else {
+      AstI18nFactory factory = this.getFactory();
+      if (factory instanceof MutableAstI18nFactory) {
+        MutableAstI18nFactory mutableAstI18nFactory = (MutableAstI18nFactory) factory;
+        if (mutableAstI18nFactory.isKeyedArgumentListMutable(this.getArgumentListProperty())) {
+          this.addComponent(BoxUtilities.createHorizontalSliver(8));
+          this.addComponent(new DropDown(KeyedMoreCascade.getInstance(this.getArgumentListProperty().getOwner()).getRoot().getPopupPrepModel()));
+        }
+      }
+    }
+  }
 }

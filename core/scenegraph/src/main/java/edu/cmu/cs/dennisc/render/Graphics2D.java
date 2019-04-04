@@ -52,37 +52,37 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public abstract class Graphics2D extends java.awt.Graphics2D {
-	public abstract boolean isValid();
+  public abstract boolean isValid();
 
-	//todo?
-	//public abstract void transform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
-	//public abstract void setTransform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
+  //todo?
+  //public abstract void transform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
+  //public abstract void setTransform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
 
-	public abstract boolean isRemembered( Font font );
+  public abstract boolean isRemembered(Font font);
 
-	public abstract void remember( Font font );
+  public abstract void remember(Font font);
 
-	public abstract void forget( Font font );
+  public abstract void forget(Font font);
 
-	public abstract void disposeForgottenFonts();
+  public abstract void disposeForgottenFonts();
 
-	public abstract Rectangle2D getBounds( String text, Font font );
+  public abstract Rectangle2D getBounds(String text, Font font);
 
-	public abstract boolean isRemembered( Image image );
+  public abstract boolean isRemembered(Image image);
 
-	public abstract void remember( Image image );
+  public abstract void remember(Image image);
 
-	public abstract void forget( Image image );
+  public abstract void forget(Image image);
 
-	public abstract void disposeForgottenImages();
+  public abstract void disposeForgottenImages();
 
-	public abstract boolean isRemembered( ImageGenerator imageGenerator );
+  public abstract boolean isRemembered(ImageGenerator imageGenerator);
 
-	public abstract void remember( ImageGenerator imageGenerator );
+  public abstract void remember(ImageGenerator imageGenerator);
 
-	public abstract void paint( ImageGenerator imageGenerator, float x, float y, float alpha );
+  public abstract void paint(ImageGenerator imageGenerator, float x, float y, float alpha);
 
-	public abstract void forget( ImageGenerator imageGenerator );
+  public abstract void forget(ImageGenerator imageGenerator);
 
-	public abstract void disposeForgottenImageGenerators();
+  public abstract void disposeForgottenImageGenerators();
 }

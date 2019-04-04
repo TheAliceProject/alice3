@@ -50,12 +50,12 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class MethodsView extends MembersView<UserMethod> {
-	public MethodsView( MethodsComposite composite ) {
-		super( composite );
-	}
+  public MethodsView(MethodsComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> createComponentForItem( UserMethod method ) {
-		return new MethodView( method );
-	}
+  @Override
+  protected SwingComponentView<?> createComponentForItem(UserMethod method) {
+    return new MethodView(method);
+  }
 }

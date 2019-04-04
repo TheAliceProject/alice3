@@ -50,165 +50,165 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBinaryEncoder implements BinaryEncoder {
-	//todo: handle null arrays
-	private void encodeArrayLength( Object array ) {
-		//todo: encode -1 for null?
-		int arrayLength;
-		if( array != null ) {
-			arrayLength = Array.getLength( array );
-		} else {
-			arrayLength = -1;
-		}
-		this.encode( arrayLength );
-	}
+  //todo: handle null arrays
+  private void encodeArrayLength(Object array) {
+    //todo: encode -1 for null?
+    int arrayLength;
+    if (array != null) {
+      arrayLength = Array.getLength(array);
+    } else {
+      arrayLength = -1;
+    }
+    this.encode(arrayLength);
+  }
 
-	@Override
-	public final void encode( boolean[] array ) {
-		this.encodeArrayLength( array );
-		for( boolean element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(boolean[] array) {
+    this.encodeArrayLength(array);
+    for (boolean element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( byte[] array ) {
-		this.encodeArrayLength( array );
-		this.write( array );
-	}
+  @Override
+  public final void encode(byte[] array) {
+    this.encodeArrayLength(array);
+    this.write(array);
+  }
 
-	@Override
-	public final void encode( char[] array ) {
-		this.encodeArrayLength( array );
-		for( char element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(char[] array) {
+    this.encodeArrayLength(array);
+    for (char element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( double[] array ) {
-		this.encodeArrayLength( array );
-		for( double element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(double[] array) {
+    this.encodeArrayLength(array);
+    for (double element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( float[] array ) {
-		this.encodeArrayLength( array );
-		for( float element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(float[] array) {
+    this.encodeArrayLength(array);
+    for (float element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( int[] array ) {
-		this.encodeArrayLength( array );
-		for( int element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(int[] array) {
+    this.encodeArrayLength(array);
+    for (int element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( long[] array ) {
-		this.encodeArrayLength( array );
-		for( long element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(long[] array) {
+    this.encodeArrayLength(array);
+    for (long element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( short[] array ) {
-		this.encodeArrayLength( array );
-		for( short element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(short[] array) {
+    this.encodeArrayLength(array);
+    for (short element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( String[] array ) {
-		this.encodeArrayLength( array );
-		for( String element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(String[] array) {
+    this.encodeArrayLength(array);
+    for (String element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( Enum<?>[] array ) {
-		this.encodeArrayLength( array );
-		for( Enum<?> element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(Enum<?>[] array) {
+    this.encodeArrayLength(array);
+    for (Enum<?> element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( UUID[] array ) {
-		this.encodeArrayLength( array );
-		for( UUID element : array ) {
-			this.encode( element );
-		}
-	}
+  @Override
+  public final void encode(UUID[] array) {
+    this.encodeArrayLength(array);
+    for (UUID element : array) {
+      this.encode(element);
+    }
+  }
 
-	@Override
-	public final void encode( BinaryEncodableAndDecodable[] array ) {
-		this.encodeArrayLength( array );
-		for( BinaryEncodableAndDecodable element : array ) {
-			this.encode( element );
-			//array[ i ].encode( this );
-		}
-	}
+  @Override
+  public final void encode(BinaryEncodableAndDecodable[] array) {
+    this.encodeArrayLength(array);
+    for (BinaryEncodableAndDecodable element : array) {
+      this.encode(element);
+      //array[ i ].encode( this );
+    }
+  }
 
-	@Override
-	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
-		this.encodeArrayLength( array );
-		for( ReferenceableBinaryEncodableAndDecodable element : array ) {
-			this.encode( element, map );
-			//array[ i ].encode( this, map );
-		}
-	}
+  @Override
+  public final void encode(ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+    this.encodeArrayLength(array);
+    for (ReferenceableBinaryEncodableAndDecodable element : array) {
+      this.encode(element, map);
+      //array[ i ].encode( this, map );
+    }
+  }
 
-	@Override
-	public final void encode( Enum<?> value ) {
-		boolean isNotNull = value != null;
-		this.encode( isNotNull );
-		if( isNotNull ) {
-			this.encode( value.getClass().getName() );
-			this.encode( value.name() );
-		}
-	}
+  @Override
+  public final void encode(Enum<?> value) {
+    boolean isNotNull = value != null;
+    this.encode(isNotNull);
+    if (isNotNull) {
+      this.encode(value.getClass().getName());
+      this.encode(value.name());
+    }
+  }
 
-	@Override
-	public final void encode( UUID value ) {
-		boolean isNotNull = value != null;
-		this.encode( isNotNull );
-		if( isNotNull ) {
-			this.encode( value.getMostSignificantBits() );
-			this.encode( value.getLeastSignificantBits() );
-		}
-	}
+  @Override
+  public final void encode(UUID value) {
+    boolean isNotNull = value != null;
+    this.encode(isNotNull);
+    if (isNotNull) {
+      this.encode(value.getMostSignificantBits());
+      this.encode(value.getLeastSignificantBits());
+    }
+  }
 
-	@Override
-	public final void encode( BinaryEncodableAndDecodable value ) {
-		if( value != null ) {
-			this.encode( value.getClass().getName() );
-			value.encode( this );
-		} else {
-			this.encode( "" );
-		}
-	}
+  @Override
+  public final void encode(BinaryEncodableAndDecodable value) {
+    if (value != null) {
+      this.encode(value.getClass().getName());
+      value.encode(this);
+    } else {
+      this.encode("");
+    }
+  }
 
-	@Override
-	public final void encode( ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
-		if( value != null ) {
-			this.encode( value.getClass().getName() );
-			this.encode( value.hashCode() );
-			if( map.containsKey( value ) ) {
-				//pass
-			} else {
-				map.put( value, value.hashCode() );
-				value.encode( this, map );
-			}
-		} else {
-			encode( "" );
-		}
-	}
+  @Override
+  public final void encode(ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+    if (value != null) {
+      this.encode(value.getClass().getName());
+      this.encode(value.hashCode());
+      if (map.containsKey(value)) {
+        //pass
+      } else {
+        map.put(value, value.hashCode());
+        value.encode(this, map);
+      }
+    } else {
+      encode("");
+    }
+  }
 }

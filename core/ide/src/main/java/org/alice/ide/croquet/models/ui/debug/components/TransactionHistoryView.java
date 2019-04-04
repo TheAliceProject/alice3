@@ -60,103 +60,103 @@ import javax.swing.SwingUtilities;
  */
 public class TransactionHistoryView extends BorderPanel {
 
-	private final Listener historyListener = new Listener() {
-		private void reload() {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					treeModel.reload();
-					collapseDesiredRows();
-					tree.scrollRowToVisible( tree.getRowCount() - 1 );
-					scrollPane.getAwtComponent().getHorizontalScrollBar().setValue( 0 );
-				}
-			} );
-		}
+  private final Listener historyListener = new Listener() {
+    private void reload() {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          treeModel.reload();
+          collapseDesiredRows();
+          tree.scrollRowToVisible(tree.getRowCount() - 1);
+          scrollPane.getAwtComponent().getHorizontalScrollBar().setValue(0);
+        }
+      });
+    }
 
-		@Override
-		public void changed( ActivityEvent e ) {
-			if( e instanceof ChangeEvent ) {
-				this.reload();
-			}
-			tree.repaint();
-		}
-	};
+    @Override
+    public void changed(ActivityEvent e) {
+      if (e instanceof ChangeEvent) {
+        this.reload();
+      }
+      tree.repaint();
+    }
+  };
 
-	private final ScrollPane scrollPane = new ScrollPane();
-	private final JTree tree = new JTree();
-	private UserActivity rootActivity;
-	private boolean isCollapsingDesired = true;
-	private TransactionHistoryTreeModel treeModel;
+  private final ScrollPane scrollPane = new ScrollPane();
+  private final JTree tree = new JTree();
+  private UserActivity rootActivity;
+  private boolean isCollapsingDesired = true;
+  private TransactionHistoryTreeModel treeModel;
 
-	public TransactionHistoryView( TransactionHistoryComposite composite ) {
-		super( composite );
-		this.scrollPane.getAwtComponent().setViewportView( this.tree );
-		this.tree.setRootVisible( false );
-		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
-		this.addCenterComponent( this.scrollPane );
-	}
+  public TransactionHistoryView(TransactionHistoryComposite composite) {
+    super(composite);
+    this.scrollPane.getAwtComponent().setViewportView(this.tree);
+    this.tree.setRootVisible(false);
+    this.tree.setCellRenderer(new TransactionHistoryCellRenderer());
+    this.addCenterComponent(this.scrollPane);
+  }
 
-	private void collapseDesiredRows() {
-		int childCount = treeModel.getChildCount( treeModel.getRoot() );
-		for( int i = 0; i < tree.getRowCount(); i++ ) {
-			if( isCollapsingDesired() && ( i < ( childCount - 1 ) ) ) {
-				tree.collapseRow( i );
-			} else {
-				tree.expandRow( i );
-			}
-		}
-	}
+  private void collapseDesiredRows() {
+    int childCount = treeModel.getChildCount(treeModel.getRoot());
+    for (int i = 0; i < tree.getRowCount(); i++) {
+      if (isCollapsingDesired() && (i < (childCount - 1))) {
+        tree.collapseRow(i);
+      } else {
+        tree.expandRow(i);
+      }
+    }
+  }
 
-	public boolean isCollapsingDesired() {
-		return this.isCollapsingDesired;
-	}
+  public boolean isCollapsingDesired() {
+    return this.isCollapsingDesired;
+  }
 
-	public void setCollapsingDesired( boolean isCollapsingDesired ) {
-		this.isCollapsingDesired = isCollapsingDesired;
-		if( this.treeModel != null ) {
-			this.treeModel.reload();
-		}
-	}
+  public void setCollapsingDesired(boolean isCollapsingDesired) {
+    this.isCollapsingDesired = isCollapsingDesired;
+    if (this.treeModel != null) {
+      this.treeModel.reload();
+    }
+  }
 
-	public void setRootActivity( UserActivity rootActivity ) {
-		if ( rootActivity == null ) {
-			Logger.outln( "No root activity provided to view." );
-			return;
-		}
+  public void setRootActivity(UserActivity rootActivity) {
+    if (rootActivity == null) {
+      Logger.outln("No root activity provided to view.");
+      return;
+    }
 
-		this.removeTransactionListener();
-		this.rootActivity = rootActivity;
+    this.removeTransactionListener();
+    this.rootActivity = rootActivity;
 
-		if( this.isShowing() ) {
-			this.addTransactionListener();
-		}
-	}
+    if (this.isShowing()) {
+      this.addTransactionListener();
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.addTransactionListener();
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.addTransactionListener();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.removeTransactionListener();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.removeTransactionListener();
+    super.handleUndisplayable();
+  }
 
-	private void addTransactionListener() {
-		if( this.rootActivity != null ) {
-			this.treeModel = new TransactionHistoryTreeModel( rootActivity );
-			this.tree.setModel( this.treeModel );
-			this.revalidateAndRepaint();
-			this.treeModel.reload();
-			this.rootActivity.addListener( this.historyListener );
-		}
-	}
+  private void addTransactionListener() {
+    if (this.rootActivity != null) {
+      this.treeModel = new TransactionHistoryTreeModel(rootActivity);
+      this.tree.setModel(this.treeModel);
+      this.revalidateAndRepaint();
+      this.treeModel.reload();
+      this.rootActivity.addListener(this.historyListener);
+    }
+  }
 
-	private void removeTransactionListener() {
-		if( ( this.rootActivity != null ) && ( this.rootActivity.isListening( this.historyListener ) ) ) {
-			this.rootActivity.removeListener( this.historyListener );
-		}
-	}
+  private void removeTransactionListener() {
+    if ((this.rootActivity != null) && (this.rootActivity.isListening(this.historyListener))) {
+      this.rootActivity.removeListener(this.historyListener);
+    }
+  }
 }

@@ -66,65 +66,65 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImportTypeWizard extends SimpleOperationWizardDialogCoreComposite {
-	private final AddMembersPage addMembersPage;
-	private final PreviewPage previewPage;
+  private final AddMembersPage addMembersPage;
+  private final PreviewPage previewPage;
 
-	public ImportTypeWizard( URI uriForDescriptionPurposesOnly, NamedUserType importedRootType, Set<Resource> importedResources, NamedUserType srcType, NamedUserType dstType ) {
-		super( UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), Application.PROJECT_GROUP );
-		this.addMembersPage = new AddMembersPage( this, uriForDescriptionPurposesOnly, importedRootType, importedResources, srcType, dstType );
-		this.previewPage = new PreviewPage( this );
-		this.addPage( this.addMembersPage );
-		this.addPage( this.previewPage );
-	}
+  public ImportTypeWizard(URI uriForDescriptionPurposesOnly, NamedUserType importedRootType, Set<Resource> importedResources, NamedUserType srcType, NamedUserType dstType) {
+    super(UUID.fromString("30a4572a-53e9-464b-a8a3-cdebac13372f"), Application.PROJECT_GROUP);
+    this.addMembersPage = new AddMembersPage(this, uriForDescriptionPurposesOnly, importedRootType, importedResources, srcType, dstType);
+    this.previewPage = new PreviewPage(this);
+    this.addPage(this.addMembersPage);
+    this.addPage(this.previewPage);
+  }
 
-	public AddMembersPage getAddMembersPage() {
-		return this.addMembersPage;
-	}
+  public AddMembersPage getAddMembersPage() {
+    return this.addMembersPage;
+  }
 
-	public PreviewPage getPreviewPage() {
-		return this.previewPage;
-	}
+  public PreviewPage getPreviewPage() {
+    return this.previewPage;
+  }
 
-	@Override
-	protected boolean isAdornmentDesired() {
-		return false;
-	}
+  @Override
+  protected boolean isAdornmentDesired() {
+    return false;
+  }
 
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		return null;
-	}
+  @Override
+  protected GoldenRatioPolicy getGoldenRatioPolicy() {
+    return null;
+  }
 
-	@Override
-	protected Edit createEdit() {
-		// TODO consider using a child activity
-		return this.addMembersPage.createEdit( openingActivity );
-	}
+  @Override
+  protected Edit createEdit() {
+    // TODO consider using a child activity
+    return this.addMembersPage.createEdit(openingActivity);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new SimpleApplication();
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    new SimpleApplication();
 
-		File projectFile = new File( args[ 0 ] );
+    File projectFile = new File(args[0]);
 
-		Project project = IoUtilities.readProject( projectFile );
-		ProjectStack.pushProject( project );
+    Project project = IoUtilities.readProject(projectFile);
+    ProjectStack.pushProject(project);
 
-		File typeFile = new File( args[ 1 ] );
+    File typeFile = new File(args[1]);
 
-		TypeResourcesPair typeResourcesPair = IoUtilities.readType( typeFile );
-		NamedUserType importedRootType = typeResourcesPair.getType();
-		Set<Resource> importedResources = typeResourcesPair.getResources();
-		NamedUserType srcType = importedRootType;
-		NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
-		if( dstType != null ) {
-			//pass
-		} else {
-			dstType = new NamedUserType();
-			dstType.name.setValue( importedRootType.getName() );
-		}
-		ImportTypeWizard wizard = new ImportTypeWizard( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );
-		wizard.getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+    TypeResourcesPair typeResourcesPair = IoUtilities.readType(typeFile);
+    NamedUserType importedRootType = typeResourcesPair.getType();
+    Set<Resource> importedResources = typeResourcesPair.getResources();
+    NamedUserType srcType = importedRootType;
+    NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes(srcType);
+    if (dstType != null) {
+      //pass
+    } else {
+      dstType = new NamedUserType();
+      dstType.name.setValue(importedRootType.getName());
+    }
+    ImportTypeWizard wizard = new ImportTypeWizard(typeFile.toURI(), importedRootType, importedResources, srcType, dstType);
+    wizard.getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

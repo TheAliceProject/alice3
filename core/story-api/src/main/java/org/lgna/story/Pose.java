@@ -48,19 +48,19 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Matt May
  */
 public class Pose<M extends SJointedModel> {
-	public Pose( Class<M> modelCls, JointIdTransformationPair... pairs ) {
-		this.modelCls = modelCls;
-		this.jointTPairs = pairs;
-	}
+  public Pose(Class<M> modelCls, JointIdTransformationPair... pairs) {
+    this.modelCls = modelCls;
+    this.jointTPairs = pairs;
+  }
 
-	/*package-private*/Class<M> getModelClass() {
-		return this.modelCls;
-	}
+  /*package-private*/Class<M> getModelClass() {
+    return this.modelCls;
+  }
 
-	public JointIdTransformationPair[] getJointIdTransformationPairs() {
-		return this.jointTPairs;
-	}
+  public JointIdTransformationPair[] getJointIdTransformationPairs() {
+    return this.jointTPairs;
+  }
 
-	private final Class<M> modelCls;
-	private final JointIdTransformationPair[] jointTPairs;
+  private final Class<M> modelCls;
+  private final JointIdTransformationPair[] jointTPairs;
 }

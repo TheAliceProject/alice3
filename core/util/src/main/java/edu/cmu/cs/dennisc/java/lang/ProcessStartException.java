@@ -48,12 +48,12 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class ProcessStartException extends Exception {
-	public ProcessStartException( IOException cause ) {
-		super( cause );
-	}
+  public ProcessStartException(IOException cause) {
+    super(cause);
+  }
 
-	@Override
-	public synchronized IOException getCause() {
-		return (IOException)super.getCause();
-	}
+  @Override
+  public synchronized IOException getCause() {
+    return (IOException) super.getCause();
+  }
 }

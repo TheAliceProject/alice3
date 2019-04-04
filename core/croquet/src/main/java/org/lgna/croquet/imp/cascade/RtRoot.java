@@ -60,72 +60,72 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, CascadeRoot<T, CM>, RootNode<T, CM>> {
-	public RtRoot( CascadeRoot<T, CM> element ) {
-		super( element, RootNode.createInstance( element ), null, -1 );
-	}
+  public RtRoot(CascadeRoot<T, CM> element) {
+    super(element, RootNode.createInstance(element), null, -1);
+  }
 
-	@Override
-	public RtRoot<T, CM> getRtRoot() {
-		return this;
-	}
+  @Override
+  public RtRoot<T, CM> getRtRoot() {
+    return this;
+  }
 
-	@Override
-	public RtBlank<?> getNearestBlank() {
-		return null;
-	}
+  @Override
+  public RtBlank<?> getNearestBlank() {
+    return null;
+  }
 
-	@Override
-	public void select() {
-	}
+  @Override
+  public void select() {
+  }
 
-	public final T[] createValues( Class<T> componentType ) {
-		RtBlank<T>[] rtBlanks = this.getBlankChildren();
-		T[] rv = ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
-		for( int i = 0; i < rtBlanks.length; i++ ) {
-			T value = rtBlanks[ i ].createValue();
-			try {
-				rv[ i ] = value;
-			} catch( ArrayStoreException ase ) {
-				Logger.errln( "value:", value, "componentType:", componentType );
-				throw ase;
-			}
-		}
-		return rv;
-	}
+  public final T[] createValues(Class<T> componentType) {
+    RtBlank<T>[] rtBlanks = this.getBlankChildren();
+    T[] rv = ReflectionUtilities.newTypedArrayInstance(componentType, rtBlanks.length);
+    for (int i = 0; i < rtBlanks.length; i++) {
+      T value = rtBlanks[i].createValue();
+      try {
+        rv[i] = value;
+      } catch (ArrayStoreException ase) {
+        Logger.errln("value:", value, "componentType:", componentType);
+        throw ase;
+      }
+    }
+    return rv;
+  }
 
-	public void cancel( UserActivity activity ) {
-		getElement().handleCancel( activity );
-		activity.cancel();
-	}
+  public void cancel(UserActivity activity) {
+    getElement().handleCancel(activity);
+    activity.cancel();
+  }
 
-	public void complete( UserActivity activity ) {
-		try {
-			getElement().handleCompletion( activity, this );
-		} catch( CancelException ce ) {
-			cancel( activity );
-		}
-	}
+  public void complete(UserActivity activity) {
+    try {
+      getElement().handleCompletion(activity, this);
+    } catch (CancelException ce) {
+      cancel(activity);
+    }
+  }
 
-	void handleActionPerformed( ActionEvent e ) {
-		this.complete( ActionEventTrigger.createUserActivity( e ) );
-	}
+  void handleActionPerformed(ActionEvent e) {
+    this.complete(ActionEventTrigger.createUserActivity(e));
+  }
 
-	public PopupMenuListener createPopupMenuListener( final MenuItemContainer menuItemContainer ) {
-		return new PopupMenuListener() {
-			@Override
-			public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-				RtRoot.this.addNextNodeMenuItems( menuItemContainer );
-			}
+  public PopupMenuListener createPopupMenuListener(final MenuItemContainer menuItemContainer) {
+    return new PopupMenuListener() {
+      @Override
+      public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        RtRoot.this.addNextNodeMenuItems(menuItemContainer);
+      }
 
-			@Override
-			public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-				RtRoot.this.removeAll( menuItemContainer );
-			}
+      @Override
+      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        RtRoot.this.removeAll(menuItemContainer);
+      }
 
-			@Override
-			public void popupMenuCanceled( PopupMenuEvent e ) {
-				RtRoot.this.cancel( menuItemContainer.getActivity() );
-			}
-		};
-	}
+      @Override
+      public void popupMenuCanceled(PopupMenuEvent e) {
+        RtRoot.this.cancel(menuItemContainer.getActivity());
+      }
+    };
+  }
 }

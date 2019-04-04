@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public interface PickObserver {
-	//todo: better names
-	//todo: parameters
-	public void prePick();
+  //todo: better names
+  //todo: parameters
+  public void prePick();
 
-	public void postPick();
+  public void postPick();
 }

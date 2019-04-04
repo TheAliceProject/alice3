@@ -49,23 +49,23 @@ import java.nio.FloatBuffer;
  * @author Dennis Cosgrove
  */
 public interface SynchronousImageCapturer {
-	BufferedImage createBufferedImageForUseAsColorBuffer();
+  BufferedImage createBufferedImageForUseAsColorBuffer();
 
-	BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown );
+  BufferedImage getColorBufferNotBotheringToFlipVertically(BufferedImage rv, boolean[] atIsUpsideDown);
 
-	BufferedImage getColorBuffer( BufferedImage rv );
+  BufferedImage getColorBuffer(BufferedImage rv);
 
-	BufferedImage getColorBuffer();
+  BufferedImage getColorBuffer();
 
-	BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+  BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 
-	FloatBuffer createFloatBufferForUseAsDepthBuffer();
+  FloatBuffer createFloatBufferForUseAsDepthBuffer();
 
-	FloatBuffer getDepthBuffer( FloatBuffer rv );
+  FloatBuffer getDepthBuffer(FloatBuffer rv);
 
-	FloatBuffer getDepthBuffer();
+  FloatBuffer getDepthBuffer();
 
-	BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer );
+  BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer);
 
-	BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
+  BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
 }

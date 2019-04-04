@@ -3,96 +3,96 @@ package com.dddviewr.collada.effects;
 import com.dddviewr.collada.Base;
 
 public abstract class EffectMaterial extends Base {
-	protected EffectAttribute emission;
-	protected EffectAttribute ambient;
-	protected EffectAttribute diffuse;
-	protected EffectAttribute specular;
-	protected EffectAttribute shininess;
-	protected EffectAttribute reflective;
-	protected EffectAttribute reflectivity;
-	protected EffectAttribute transparent;
-	protected EffectAttribute transparency;
-	
-	protected EffectAttribute bump;
+  protected EffectAttribute emission;
+  protected EffectAttribute ambient;
+  protected EffectAttribute diffuse;
+  protected EffectAttribute specular;
+  protected EffectAttribute shininess;
+  protected EffectAttribute reflective;
+  protected EffectAttribute reflectivity;
+  protected EffectAttribute transparent;
+  protected EffectAttribute transparency;
 
-	public EffectAttribute getAmbient() {
-		return this.ambient;
-	}
+  protected EffectAttribute bump;
 
-	public void setAmbient(EffectAttribute ambient) {
-		this.ambient = ambient;
-	}
+  public EffectAttribute getAmbient() {
+    return this.ambient;
+  }
 
-	public EffectAttribute getEmission() {
-		return this.emission;
-	}
+  public void setAmbient(EffectAttribute ambient) {
+    this.ambient = ambient;
+  }
 
-	public void setEmission(EffectAttribute emission) {
-		this.emission = emission;
-	}
+  public EffectAttribute getEmission() {
+    return this.emission;
+  }
 
-	public EffectAttribute getDiffuse() {
-		return this.diffuse;
-	}
+  public void setEmission(EffectAttribute emission) {
+    this.emission = emission;
+  }
 
-	public void setDiffuse(EffectAttribute diffuse) {
-		this.diffuse = diffuse;
-	}
+  public EffectAttribute getDiffuse() {
+    return this.diffuse;
+  }
 
-	public EffectAttribute getReflective() {
-		return this.reflective;
-	}
+  public void setDiffuse(EffectAttribute diffuse) {
+    this.diffuse = diffuse;
+  }
 
-	public void setReflective(EffectAttribute reflective) {
-		this.reflective = reflective;
-	}
+  public EffectAttribute getReflective() {
+    return this.reflective;
+  }
 
-	public EffectAttribute getReflectivity() {
-		return this.reflectivity;
-	}
+  public void setReflective(EffectAttribute reflective) {
+    this.reflective = reflective;
+  }
 
-	public void setReflectivity(EffectAttribute reflectivity) {
-		this.reflectivity = reflectivity;
-	}
+  public EffectAttribute getReflectivity() {
+    return this.reflectivity;
+  }
 
-	public EffectAttribute getShininess() {
-		return this.shininess;
-	}
+  public void setReflectivity(EffectAttribute reflectivity) {
+    this.reflectivity = reflectivity;
+  }
 
-	public void setShininess(EffectAttribute shininess) {
-		this.shininess = shininess;
-	}
+  public EffectAttribute getShininess() {
+    return this.shininess;
+  }
 
-	public EffectAttribute getSpecular() {
-		return this.specular;
-	}
+  public void setShininess(EffectAttribute shininess) {
+    this.shininess = shininess;
+  }
 
-	public void setSpecular(EffectAttribute specular) {
-		this.specular = specular;
-	}
+  public EffectAttribute getSpecular() {
+    return this.specular;
+  }
 
-	public EffectAttribute getTransparency() {
-		return this.transparency;
-	}
+  public void setSpecular(EffectAttribute specular) {
+    this.specular = specular;
+  }
 
-	public void setTransparency(EffectAttribute transparency) {
-		this.transparency = transparency;
-	}
+  public EffectAttribute getTransparency() {
+    return this.transparency;
+  }
 
-	public EffectAttribute getTransparent() {
-		return this.transparent;
-	}
+  public void setTransparency(EffectAttribute transparency) {
+    this.transparency = transparency;
+  }
 
-	public void setTransparent(EffectAttribute transparent) {
-		this.transparent = transparent;
-	}
+  public EffectAttribute getTransparent() {
+    return this.transparent;
+  }
 
-	public EffectAttribute getBump() {
-		return bump;
-	}
+  public void setTransparent(EffectAttribute transparent) {
+    this.transparent = transparent;
+  }
 
-	public void setBump(EffectAttribute bump) {
-		this.bump = bump;
-	}
+  public EffectAttribute getBump() {
+    return bump;
+  }
+
+  public void setBump(EffectAttribute bump) {
+    this.bump = bump;
+  }
 
 }

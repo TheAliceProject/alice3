@@ -53,47 +53,47 @@ import java.awt.Container;
  */
 public final class Window extends AbstractWindow<JWindow> {
 
-	private static JWindow createJWindow( AwtComponentView<?> owner ) {
-		JWindow rv;
-		if( owner != null ) {
-			AbstractWindow<?> root = owner.getRoot();
-			if( root != null ) {
-				java.awt.Window ownerWindow = root.getAwtComponent();
-				if( ownerWindow instanceof java.awt.Frame ) {
-					rv = new JWindow( (java.awt.Frame)ownerWindow );
-				} else {
-					rv = new JWindow( ownerWindow );
-				}
-			} else {
-				rv = new JWindow();
-			}
-		} else {
-			rv = new JWindow();
-		}
-		return rv;
-	}
+  private static JWindow createJWindow(AwtComponentView<?> owner) {
+    JWindow rv;
+    if (owner != null) {
+      AbstractWindow<?> root = owner.getRoot();
+      if (root != null) {
+        java.awt.Window ownerWindow = root.getAwtComponent();
+        if (ownerWindow instanceof java.awt.Frame) {
+          rv = new JWindow((java.awt.Frame) ownerWindow);
+        } else {
+          rv = new JWindow(ownerWindow);
+        }
+      } else {
+        rv = new JWindow();
+      }
+    } else {
+      rv = new JWindow();
+    }
+    return rv;
+  }
 
-	public Window() {
-		this( null );
-	}
+  public Window() {
+    this(null);
+  }
 
-	public Window( AwtComponentView<?> owner ) {
-		super( Window.createJWindow( owner ) );
-	}
+  public Window(AwtComponentView<?> owner) {
+    super(Window.createJWindow(owner));
+  }
 
-	@Override
-	/* package-private */Container getAwtContentPane() {
-		return this.getAwtComponent().getContentPane();
-	}
+  @Override
+    /* package-private */Container getAwtContentPane() {
+    return this.getAwtComponent().getContentPane();
+  }
 
-	@Override
-	/* package-private */JRootPane getJRootPane() {
-		return this.getAwtComponent().getRootPane();
-	}
+  @Override
+    /* package-private */JRootPane getJRootPane() {
+    return this.getAwtComponent().getRootPane();
+  }
 
-	@Override
-	protected void setJMenuBar( JMenuBar jMenuBar ) {
-		assert jMenuBar == null;
-		// TODO: ???
-	}
+  @Override
+  protected void setJMenuBar(JMenuBar jMenuBar) {
+    assert jMenuBar == null;
+    // TODO: ???
+  }
 }

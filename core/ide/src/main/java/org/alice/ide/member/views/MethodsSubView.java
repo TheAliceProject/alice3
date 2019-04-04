@@ -63,39 +63,39 @@ import javax.swing.BorderFactory;
  * @author Dennis Cosgrove
  */
 public class MethodsSubView<C extends MethodsSubComposite> extends PageAxisPanel {
-	public MethodsSubView( MethodsSubComposite composite ) {
-		super( composite );
-		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( BorderFactory.createEmptyBorder( 0, 8, 12, 0 ) );
-	}
+  public MethodsSubView(MethodsSubComposite composite) {
+    super(composite);
+    this.setMaximumSizeClampedToPreferredSize(true);
+    this.setBorder(BorderFactory.createEmptyBorder(0, 8, 12, 0));
+  }
 
-	@Override
-	public C getComposite() {
-		return (C)super.getComposite();
-	}
+  @Override
+  public C getComposite() {
+    return (C) super.getComposite();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		C composite = this.getComposite();
-		this.removeAllComponents();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    C composite = this.getComposite();
+    this.removeAllComponents();
 
-		composite.updateTabTitle();
+    composite.updateTabTitle();
 
-		for( AbstractMethod method : composite.getMethods() ) {
-			DragComponent<?> dragComponent = TemplateFactory.getMethodInvocationTemplate( method );
-			SwingComponentView<?> component;
-			if( method instanceof UserMethod ) {
-				UserMethod userMethod = (UserMethod)method;
-				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				Operation operation = tabState.getItemSelectionOperationForMethod( method );
-				Hyperlink hyperlink = operation.createHyperlink();
-				hyperlink.setClobberText( "edit" );
-				component = new LineAxisPanel( hyperlink, BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
-			} else {
-				component = dragComponent;
-			}
-			this.addComponent( component );
-		}
-	}
+    for (AbstractMethod method : composite.getMethods()) {
+      DragComponent<?> dragComponent = TemplateFactory.getMethodInvocationTemplate(method);
+      SwingComponentView<?> component;
+      if (method instanceof UserMethod) {
+        UserMethod userMethod = (UserMethod) method;
+        DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+        Operation operation = tabState.getItemSelectionOperationForMethod(method);
+        Hyperlink hyperlink = operation.createHyperlink();
+        hyperlink.setClobberText("edit");
+        component = new LineAxisPanel(hyperlink, BoxUtilities.createHorizontalSliver(8), dragComponent);
+      } else {
+        component = dragComponent;
+      }
+      this.addComponent(component);
+    }
+  }
 }

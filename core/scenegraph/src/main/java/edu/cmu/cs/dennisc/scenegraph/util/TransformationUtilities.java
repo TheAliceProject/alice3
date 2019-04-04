@@ -57,183 +57,183 @@ import edu.cmu.cs.dennisc.scenegraph.Scene;
  * @author Dennis Cosgrove
  */
 public abstract class TransformationUtilities {
-	private static boolean isAbsolute( ReferenceFrame sgReferenceFrame ) {
-		//todo: call isSceneOf()?
-		if( ( sgReferenceFrame instanceof Scene ) || ( sgReferenceFrame == AsSeenBy.SCENE ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+  private static boolean isAbsolute(ReferenceFrame sgReferenceFrame) {
+    //todo: call isSceneOf()?
+    if ((sgReferenceFrame instanceof Scene) || (sgReferenceFrame == AsSeenBy.SCENE)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	//Vector4d
-	public static Vector4 transformToAbsolute( Vector4 rv, Vector4 xyzwInFrom, Component sgFrom ) {
-		rv.set( xyzwInFrom );
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		return rv;
-	}
+  //Vector4d
+  public static Vector4 transformToAbsolute(Vector4 rv, Vector4 xyzwInFrom, Component sgFrom) {
+    rv.set(xyzwInFrom);
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    return rv;
+  }
 
-	public static Vector4 transformToAbsolute_New( Vector4 xyzwInFrom, Component sgFrom ) {
-		return transformToAbsolute( new Vector4(), xyzwInFrom, sgFrom );
-	}
+  public static Vector4 transformToAbsolute_New(Vector4 xyzwInFrom, Component sgFrom) {
+    return transformToAbsolute(new Vector4(), xyzwInFrom, sgFrom);
+  }
 
-	public static Vector4 transformToAbsolute_AffectReturnValuePassedIn( Vector4 rv, Component sgFrom ) {
-		if( isAbsolute( sgFrom ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Vector4 transformToAbsolute_AffectReturnValuePassedIn(Vector4 rv, Component sgFrom) {
+    if (isAbsolute(sgFrom)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Vector4 transformFromAbsolute( Vector4 rv, Vector4 xyzwInAbsolute, Component sgTo ) {
-		rv.set( xyzwInAbsolute );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Vector4 transformFromAbsolute(Vector4 rv, Vector4 xyzwInAbsolute, Component sgTo) {
+    rv.set(xyzwInAbsolute);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 
-	public static Vector4 transformFromAbsolute_New( Vector4 xyzwInAbsolute, Component sgTo ) {
-		return transformFromAbsolute( new Vector4(), xyzwInAbsolute, sgTo );
-	}
+  public static Vector4 transformFromAbsolute_New(Vector4 xyzwInAbsolute, Component sgTo) {
+    return transformFromAbsolute(new Vector4(), xyzwInAbsolute, sgTo);
+  }
 
-	public static Vector4 transformFromAbsolute_AffectReturnValuePassedIn( Vector4 rv, Component sgTo ) {
-		if( isAbsolute( sgTo ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Vector4 transformFromAbsolute_AffectReturnValuePassedIn(Vector4 rv, Component sgTo) {
+    if (isAbsolute(sgTo)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Vector4 transformTo( Vector4 rv, Vector4 xyzwInFrom, Component sgFrom, Component sgTo ) {
-		rv.set( xyzwInFrom );
-		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
-		return rv;
-	}
+  public static Vector4 transformTo(Vector4 rv, Vector4 xyzwInFrom, Component sgFrom, Component sgTo) {
+    rv.set(xyzwInFrom);
+    transformTo_AffectReturnValuePassedIn(rv, sgFrom, sgTo);
+    return rv;
+  }
 
-	public static Vector4 transformTo_New( Vector4 xyzwInFrom, Component sgFrom, Component sgTo ) {
-		return transformTo( new Vector4(), xyzwInFrom, sgFrom, sgTo );
-	}
+  public static Vector4 transformTo_New(Vector4 xyzwInFrom, Component sgFrom, Component sgTo) {
+    return transformTo(new Vector4(), xyzwInFrom, sgFrom, sgTo);
+  }
 
-	public static Vector4 transformTo_AffectReturnValuePassedIn( Vector4 rv, Component sgFrom, Component sgTo ) {
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Vector4 transformTo_AffectReturnValuePassedIn(Vector4 rv, Component sgFrom, Component sgTo) {
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 
-	//Vector3d
-	public static Vector3 transformToAbsolute( Vector3 rv, Vector3 xyzInFrom, Component sgFrom ) {
-		rv.set( xyzInFrom );
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		return rv;
-	}
+  //Vector3d
+  public static Vector3 transformToAbsolute(Vector3 rv, Vector3 xyzInFrom, Component sgFrom) {
+    rv.set(xyzInFrom);
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    return rv;
+  }
 
-	public static Vector3 transformToAbsolute_New( Vector3 xyzInFrom, Component sgFrom ) {
-		return transformToAbsolute( new Vector3(), xyzInFrom, sgFrom );
-	}
+  public static Vector3 transformToAbsolute_New(Vector3 xyzInFrom, Component sgFrom) {
+    return transformToAbsolute(new Vector3(), xyzInFrom, sgFrom);
+  }
 
-	public static Vector3 transformToAbsolute_AffectReturnValuePassedIn( Vector3 rv, Component sgFrom ) {
-		if( isAbsolute( sgFrom ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Vector3 transformToAbsolute_AffectReturnValuePassedIn(Vector3 rv, Component sgFrom) {
+    if (isAbsolute(sgFrom)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Vector3 transformFromAbsolute( Vector3 rv, Vector3 xyzInAbsolute, Component sgTo ) {
-		rv.set( xyzInAbsolute );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Vector3 transformFromAbsolute(Vector3 rv, Vector3 xyzInAbsolute, Component sgTo) {
+    rv.set(xyzInAbsolute);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 
-	public static Vector3 transformFromAbsolute_New( Vector3 xyzInAbsolute, Component sgTo ) {
-		return transformFromAbsolute( new Vector3(), xyzInAbsolute, sgTo );
-	}
+  public static Vector3 transformFromAbsolute_New(Vector3 xyzInAbsolute, Component sgTo) {
+    return transformFromAbsolute(new Vector3(), xyzInAbsolute, sgTo);
+  }
 
-	public static Vector3 transformFromAbsolute_AffectReturnValuePassedIn( Vector3 rv, Component sgTo ) {
-		if( isAbsolute( sgTo ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Vector3 transformFromAbsolute_AffectReturnValuePassedIn(Vector3 rv, Component sgTo) {
+    if (isAbsolute(sgTo)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Vector3 transformTo( Vector3 rv, Vector3 xyzInFrom, Component sgFrom, Component sgTo ) {
-		rv.set( xyzInFrom );
-		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
-		return rv;
-	}
+  public static Vector3 transformTo(Vector3 rv, Vector3 xyzInFrom, Component sgFrom, Component sgTo) {
+    rv.set(xyzInFrom);
+    transformTo_AffectReturnValuePassedIn(rv, sgFrom, sgTo);
+    return rv;
+  }
 
-	public static Vector3 transformTo_New( Vector3 xyzInFrom, Component sgFrom, Component sgTo ) {
-		return transformTo( new Vector3(), xyzInFrom, sgFrom, sgTo );
-	}
+  public static Vector3 transformTo_New(Vector3 xyzInFrom, Component sgFrom, Component sgTo) {
+    return transformTo(new Vector3(), xyzInFrom, sgFrom, sgTo);
+  }
 
-	public static Vector3 transformTo_AffectReturnValuePassedIn( Vector3 rv, Component sgFrom, Component sgTo ) {
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Vector3 transformTo_AffectReturnValuePassedIn(Vector3 rv, Component sgFrom, Component sgTo) {
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 
-	//Point3d
-	public static Point3 transformToAbsolute( Point3 rv, Point3 xyzInFrom, Component sgFrom ) {
-		rv.set( xyzInFrom );
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		return rv;
-	}
+  //Point3d
+  public static Point3 transformToAbsolute(Point3 rv, Point3 xyzInFrom, Component sgFrom) {
+    rv.set(xyzInFrom);
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    return rv;
+  }
 
-	public static Point3 transformToAbsolute_New( Point3 xyzInFrom, Component sgFrom ) {
-		return transformToAbsolute( new Point3(), xyzInFrom, sgFrom );
-	}
+  public static Point3 transformToAbsolute_New(Point3 xyzInFrom, Component sgFrom) {
+    return transformToAbsolute(new Point3(), xyzInFrom, sgFrom);
+  }
 
-	public static Point3 transformToAbsolute_AffectReturnValuePassedIn( Point3 rv, Component sgFrom ) {
-		if( isAbsolute( sgFrom ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Point3 transformToAbsolute_AffectReturnValuePassedIn(Point3 rv, Component sgFrom) {
+    if (isAbsolute(sgFrom)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgFrom.getAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Point3 transformFromAbsolute( Point3 rv, Point3 xyzInAbsolute, Component sgTo ) {
-		rv.set( xyzInAbsolute );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Point3 transformFromAbsolute(Point3 rv, Point3 xyzInAbsolute, Component sgTo) {
+    rv.set(xyzInAbsolute);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 
-	public static Point3 transformFromAbsolute_New( Point3 xyzInAbsolute, Component sgTo ) {
-		return transformFromAbsolute( new Point3(), xyzInAbsolute, sgTo );
-	}
+  public static Point3 transformFromAbsolute_New(Point3 xyzInAbsolute, Component sgTo) {
+    return transformFromAbsolute(new Point3(), xyzInAbsolute, sgTo);
+  }
 
-	public static Point3 transformFromAbsolute_AffectReturnValuePassedIn( Point3 rv, Component sgTo ) {
-		if( isAbsolute( sgTo ) ) {
-			//pass
-		} else {
-			AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
-			m.transform( rv );
-		}
-		return rv;
-	}
+  public static Point3 transformFromAbsolute_AffectReturnValuePassedIn(Point3 rv, Component sgTo) {
+    if (isAbsolute(sgTo)) {
+      //pass
+    } else {
+      AffineMatrix4x4 m = sgTo.getInverseAbsoluteTransformation();
+      m.transform(rv);
+    }
+    return rv;
+  }
 
-	public static Point3 transformTo( Point3 rv, Point3 xyzInFrom, Component sgFrom, Component sgTo ) {
-		rv.set( xyzInFrom );
-		transformTo_AffectReturnValuePassedIn( rv, sgFrom, sgTo );
-		return rv;
-	}
+  public static Point3 transformTo(Point3 rv, Point3 xyzInFrom, Component sgFrom, Component sgTo) {
+    rv.set(xyzInFrom);
+    transformTo_AffectReturnValuePassedIn(rv, sgFrom, sgTo);
+    return rv;
+  }
 
-	public static Point3 transformTo_New( Point3 xyzInFrom, Component sgFrom, Component sgTo ) {
-		return transformTo( new Point3(), xyzInFrom, sgFrom, sgTo );
-	}
+  public static Point3 transformTo_New(Point3 xyzInFrom, Component sgFrom, Component sgTo) {
+    return transformTo(new Point3(), xyzInFrom, sgFrom, sgTo);
+  }
 
-	public static Point3 transformTo_AffectReturnValuePassedIn( Point3 rv, Component sgFrom, Component sgTo ) {
-		transformToAbsolute_AffectReturnValuePassedIn( rv, sgFrom );
-		transformFromAbsolute_AffectReturnValuePassedIn( rv, sgTo );
-		return rv;
-	}
+  public static Point3 transformTo_AffectReturnValuePassedIn(Point3 rv, Component sgFrom, Component sgTo) {
+    transformToAbsolute_AffectReturnValuePassedIn(rv, sgFrom);
+    transformFromAbsolute_AffectReturnValuePassedIn(rv, sgTo);
+    return rv;
+  }
 }

@@ -59,50 +59,50 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class InsertStatementComposite<S extends Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final BlockStatementIndexPair blockStatementIndexPair;
-	private final boolean isEnveloping;
-	//todo: remove
-	private final LocalNameValidator nameValidator;
+  private final BlockStatementIndexPair blockStatementIndexPair;
+  private final boolean isEnveloping;
+  //todo: remove
+  private final LocalNameValidator nameValidator;
 
-	public InsertStatementComposite( UUID migrationId, Details details, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( migrationId, details );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.isEnveloping = isEnveloping;
-		this.nameValidator = new LocalNameValidator( blockStatementIndexPair );
-	}
+  public InsertStatementComposite(UUID migrationId, Details details, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(migrationId, details);
+    this.blockStatementIndexPair = blockStatementIndexPair;
+    this.isEnveloping = isEnveloping;
+    this.nameValidator = new LocalNameValidator(blockStatementIndexPair);
+  }
 
-	protected abstract S createStatement();
+  protected abstract S createStatement();
 
-	public BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
+  public BlockStatementIndexPair getBlockStatementIndexPair() {
+    return this.blockStatementIndexPair;
+  }
 
-	public boolean isEnveloping() {
-		return this.isEnveloping;
-	}
+  public boolean isEnveloping() {
+    return this.isEnveloping;
+  }
 
-	@Override
-	public S getPreviewValue() {
-		return this.createStatement();
-	}
+  @Override
+  public S getPreviewValue() {
+    return this.createStatement();
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new InsertStatementEdit( userActivity, this.blockStatementIndexPair, this.createStatement(), new Expression[ 0 ], this.isEnveloping );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return new InsertStatementEdit(userActivity, this.blockStatementIndexPair, this.createStatement(), new Expression[0], this.isEnveloping);
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return null;
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return null;
+  }
 
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.nameValidator.isNameAvailable( name );
-	}
+  @Override
+  protected boolean isNameAvailable(String name) {
+    return this.nameValidator.isNameAvailable(name);
+  }
 
-	@Override
-	protected DeclarationLikeSubstanceView createView() {
-		return new InsertStatementView( this );
-	}
+  @Override
+  protected DeclarationLikeSubstanceView createView() {
+    return new InsertStatementView(this);
+  }
 }

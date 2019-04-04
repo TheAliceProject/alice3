@@ -54,11 +54,11 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public final class GalleryView extends BorderPanel {
-	public final static Color BACKGROUND_COLOR = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR.brighter();
+  public static final Color BACKGROUND_COLOR = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR.brighter();
 
-	public GalleryView( GalleryComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
-		this.setBorder( BorderFactory.createMatteBorder( 1, 0, 0, 0, Color.WHITE ) );
-	}
+  public GalleryView(GalleryComposite composite) {
+    super(composite);
+    this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
+    this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.WHITE));
+  }
 }

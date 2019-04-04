@@ -70,134 +70,134 @@ import javax.swing.JComponent;
  */
 public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
-	private final Enum<? extends ModelResource> enumConstant;
+  private final Enum<? extends ModelResource> enumConstant;
 
+  public EnumConstantResourceKey(Enum<? extends ModelResource> enumConstant) {
+    this.enumConstant = enumConstant;
+  }
 
-	public EnumConstantResourceKey( Enum<? extends ModelResource> enumConstant ) {
-		this.enumConstant = enumConstant;
-	}
+  public Enum<? extends ModelResource> getEnumConstant() {
+    return this.enumConstant;
+  }
 
-	public Enum<? extends ModelResource> getEnumConstant() {
-		return this.enumConstant;
-	}
+  @Override
+  public Class<? extends ModelResource> getModelResourceCls() {
+    return this.enumConstant.getDeclaringClass();
+  }
 
-	@Override
-	public Class<? extends ModelResource> getModelResourceCls() {
-		return this.enumConstant.getDeclaringClass();
-	}
+  public JavaField getField() {
+    try {
+      return JavaField.getInstance(this.enumConstant.getClass().getField(this.enumConstant.name()));
+    } catch (NoSuchFieldException nsfe) {
+      throw new RuntimeException(nsfe);
+    }
+  }
 
-	public JavaField getField() {
-		try {
-			return JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );
-		} catch( NoSuchFieldException nsfe ) {
-			throw new RuntimeException( nsfe );
-		}
-	}
+  @Override
+  public String getInternalText() {
+    return AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), null);
+  }
 
-	@Override
-	public String getInternalText() {
-		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), null );
-	}
+  @Override
+  public String getSearchText() {
+    return AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String getSearchText() {
-		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String getLocalizedDisplayText() {
+    String simpleName = AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
-	@Override
-	public String getLocalizedDisplayText() {
-		String simpleName = AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
-		String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return String.format(formatter.getNewFormat(), simpleName, params);
+  }
 
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return String.format(formatter.getNewFormat(), simpleName, params);
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return IconFactoryManager.getIconFactoryForResourceInstance((ModelResource) this.enumConstant);
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return IconFactoryManager.getIconFactoryForResourceInstance( (ModelResource)this.enumConstant );
-	}
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    JavaField argumentField = this.getField();
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		JavaField argumentField = this.getField();
+    JavaType abstractionType = getAbstractionTypeForResourceType(JavaType.getInstance(this.enumConstant.getClass()));
+    if (abstractionType != null) {
+      NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(abstractionType, argumentField);
+      NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
+      Expression[] argumentExpressions;
+      if (constructor.getRequiredParameters().size() == 1) {
+        argumentExpressions = new Expression[] {AstUtilities.createStaticFieldAccess(argumentField)};
+      } else {
+        argumentExpressions = new Expression[] {};
+      }
+      return AstUtilities.createInstanceCreation(constructor, argumentExpressions);
+    } else {
+      return null;
+    }
+  }
 
-		JavaType abstractionType = getAbstractionTypeForResourceType( JavaType.getInstance( this.enumConstant.getClass() ) );
-		if( abstractionType != null ) {
-			NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField( abstractionType, argumentField );
-			NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-			Expression[] argumentExpressions;
-			if( constructor.getRequiredParameters().size() == 1 ) {
-				argumentExpressions = new Expression[] { AstUtilities.createStaticFieldAccess( argumentField )
-				};
-			} else {
-				argumentExpressions = new Expression[] {};
-			}
-			return AstUtilities.createInstanceCreation( constructor, argumentExpressions );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public boolean isLeaf() {
+    return true;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
+  @Override
+  public String[] getTags() {
+    return AliceResourceUtilties.getTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String[] getTags() {
-		return AliceResourceUtilties.getTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String[] getGroupTags() {
+    return AliceResourceUtilties.getGroupTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return AliceResourceUtilties.getGroupTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String[] getThemeTags() {
+    return AliceResourceUtilties.getThemeTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return AliceResourceUtilties.getThemeTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    return node.getDropOperation(null, null);
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		return node.getDropOperation( null, null );
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    return AddResourceKeyManagedFieldComposite.getInstance().
+        getLaunchOperationToCreateValue(this, true);
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		return AddResourceKeyManagedFieldComposite.getInstance().
-			getLaunchOperationToCreateValue( this, true );
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return AliceResourceUtilties.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name());
+  }
 
-	@Override public AxisAlignedBox getBoundingBox() {
-		return AliceResourceUtilties.getBoundingBox( enumConstant.getDeclaringClass(), enumConstant.name() );
-	}
+  @Override
+  public boolean getPlaceOnGround() {
+    return AliceResourceUtilties.getPlaceOnGround(enumConstant.getDeclaringClass(), enumConstant.name());
+  }
 
-	@Override public boolean getPlaceOnGround() {
-		return AliceResourceUtilties.getPlaceOnGround( enumConstant.getDeclaringClass(), enumConstant.name() );
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o instanceof EnumConstantResourceKey) {
+      EnumConstantResourceKey other = (EnumConstantResourceKey) o;
+      return this.enumConstant == other.enumConstant;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		}
-		if( o instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey other = (EnumConstantResourceKey)o;
-			return this.enumConstant == other.enumConstant;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public int hashCode() {
+    return this.enumConstant.hashCode();
+  }
 
-	@Override
-	public int hashCode() {
-		return this.enumConstant.hashCode();
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.enumConstant );
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+    sb.append(this.enumConstant);
+  }
 }

@@ -51,26 +51,26 @@ import java.lang.reflect.Constructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorInfo extends MemberWithParametersInfo {
-	private transient Constructor<?> cnstrctr = null;
+  private transient Constructor<?> cnstrctr = null;
 
-	public ConstructorInfo( ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames ) {
-		super( classInfo, parameterClassNames, parameterNames );
-	}
+  public ConstructorInfo(ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames) {
+    super(classInfo, parameterClassNames, parameterNames);
+  }
 
-	public ConstructorInfo( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+  public ConstructorInfo(BinaryDecoder binaryDecoder) {
+    super(binaryDecoder);
+  }
 
-	public Constructor<?> getCnstrctr() {
-		if( this.cnstrctr != null ) {
-			//pass
-		} else {
-			this.cnstrctr = ReflectionUtilities.getConstructor( getDeclaringCls(), getParameterClses() );
-		}
-		return this.cnstrctr;
-	}
+  public Constructor<?> getCnstrctr() {
+    if (this.cnstrctr != null) {
+      //pass
+    } else {
+      this.cnstrctr = ReflectionUtilities.getConstructor(getDeclaringCls(), getParameterClses());
+    }
+    return this.cnstrctr;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+  }
 }

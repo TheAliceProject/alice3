@@ -155,539 +155,507 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends ApiConfigurationManager {
-	public static final JavaMethod SET_ACTIVE_SCENE_METHOD = JavaMethod.getInstance( SProgram.class, "setActiveScene", SScene.class );
+  public static final JavaMethod SET_ACTIVE_SCENE_METHOD = JavaMethod.getInstance(SProgram.class, "setActiveScene", SScene.class);
 
-	private static class SingletonHolder {
-		private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
-	}
+  private static class SingletonHolder {
+    private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
+  }
 
-	public static StoryApiConfigurationManager getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StoryApiConfigurationManager getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = NebulousIde.nonfree.newExpressionCreator();
-	private final List<FilteredJavaMethodsSubComposite> categoryProcedureSubComposites;
-	private final List<FilteredJavaMethodsSubComposite> categoryFunctionSubComposites;
-	private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalProcedureSubComposites;
-	private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
+  private final org.alice.stageide.ast.ExpressionCreator expressionCreator = NebulousIde.nonfree.newExpressionCreator();
+  private final List<FilteredJavaMethodsSubComposite> categoryProcedureSubComposites;
+  private final List<FilteredJavaMethodsSubComposite> categoryFunctionSubComposites;
+  private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalProcedureSubComposites;
+  private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
 
-	private static List<FilteredJavaMethodsSubComposite> createUnmodifiableSubCompositeList( FilteredJavaMethodsSubComposite... subComposites ) {
-		return Collections.unmodifiableList( Lists.newLinkedList( subComposites ) );
-	}
+  private static List<FilteredJavaMethodsSubComposite> createUnmodifiableSubCompositeList(FilteredJavaMethodsSubComposite... subComposites) {
+    return Collections.unmodifiableList(Lists.newLinkedList(subComposites));
+  }
 
-	public StoryApiConfigurationManager() {
-		BeveledShapeForType.addRoundType( SThing.class );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SScene.class, SceneIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SCylinder.class, CylinderIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SCone.class, ConeIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SDisc.class, DiscIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SSphere.class, SphereIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( STorus.class, TorusIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SAxes.class, AxesIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( STextModel.class, TextModelIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SBillboard.class, BillboardIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SBox.class, BoxIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SGround.class, GroundIconFactory.getInstance() );
+  public StoryApiConfigurationManager() {
+    BeveledShapeForType.addRoundType(SThing.class);
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SScene.class, SceneIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCylinder.class, CylinderIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCone.class, ConeIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SDisc.class, DiscIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SSphere.class, SphereIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STorus.class, TorusIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SAxes.class, AxesIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(STextModel.class, TextModelIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBillboard.class, BillboardIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SBox.class, BoxIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SGround.class, GroundIconFactory.getInstance());
 
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SJoint.class, JointIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( SCamera.class, new ImageIconFactory( Icons.class.getResource( "images/160x120/Camera.png" ) ) );
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, JointIconFactory.getInstance());
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/160x120/Camera.png")));
 
-		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(
-				TextProceduresComposite.getInstance(),
-				AtmosphereProceduresComposite.getInstance(),
-				SayThinkProceduresComposite.getInstance(),
-				PositionProceduresComposite.getInstance(),
-				OrientationProceduresComposite.getInstance(),
-				PositionAndOrientationProceduresComposite.getInstance(),
-				SizeProceduresComposite.getInstance(),
-				AppearanceProceduresComposite.getInstance(),
-				VehicleProceduresComposite.getInstance(),
-				AudioProceduresComposite.getInstance(),
-				TimingProceduresComposite.getInstance() );
+    this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 
-		this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(
-				AtmosphereFunctionsComposite.getInstance(),
-				AppearanceFunctionsComposite.getInstance(),
-				SizeFunctionsComposite.getInstance(),
-				PromptUserFunctionsComposite.getInstance() );
+    this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(AtmosphereFunctionsComposite.getInstance(), AppearanceFunctionsComposite.getInstance(), SizeFunctionsComposite.getInstance(), PromptUserFunctionsComposite.getInstance());
 
-		this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList(
-				AddListenerProceduresComposite.getInstance() );
+    this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList(AddListenerProceduresComposite.getInstance());
 
-		this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList(
-				JointFunctionsComposite.getInstance() );
-	}
+    this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList(JointFunctionsComposite.getInstance());
+  }
 
-	private static enum TypeComparator implements Comparator<AbstractType<?, ?, ?>> {
-		SINGLETON;
-		private static final double DEFAULT_VALUE = 50.0;
-		private final Map<AbstractType<?, ?, ?>, Double> mapTypeToValue = Maps.newHashMap();
+  private static enum TypeComparator implements Comparator<AbstractType<?, ?, ?>> {
+    SINGLETON;
+    private static final double DEFAULT_VALUE = 50.0;
+    private final Map<AbstractType<?, ?, ?>, Double> mapTypeToValue = Maps.newHashMap();
 
-		TypeComparator() {
-			mapTypeToValue.put( JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
-			mapTypeToValue.put( JavaType.DOUBLE_OBJECT_TYPE, 1.2 );
-			mapTypeToValue.put( JavaType.INTEGER_OBJECT_TYPE, 1.3 );
-			mapTypeToValue.put( JavaType.STRING_TYPE, 1.4 );
+    TypeComparator() {
+      mapTypeToValue.put(JavaType.BOOLEAN_OBJECT_TYPE, 1.1);
+      mapTypeToValue.put(JavaType.DOUBLE_OBJECT_TYPE, 1.2);
+      mapTypeToValue.put(JavaType.INTEGER_OBJECT_TYPE, 1.3);
+      mapTypeToValue.put(JavaType.STRING_TYPE, 1.4);
 
-			mapTypeToValue.put( JavaType.getInstance( SThing.class ), 10.1 );
+      mapTypeToValue.put(JavaType.getInstance(SThing.class), 10.1);
 
-			mapTypeToValue.put( JavaType.getInstance( Color.class ), 20.1 );
-			mapTypeToValue.put( JavaType.getInstance( Paint.class ), 20.2 );
+      mapTypeToValue.put(JavaType.getInstance(Color.class), 20.1);
+      mapTypeToValue.put(JavaType.getInstance(Paint.class), 20.2);
 
-			mapTypeToValue.put( JavaType.getInstance( Position.class ), 30.1 );
-			mapTypeToValue.put( JavaType.getInstance( Orientation.class ), 30.2 );
-			mapTypeToValue.put( JavaType.getInstance( VantagePoint.class ), 30.3 );
+      mapTypeToValue.put(JavaType.getInstance(Position.class), 30.1);
+      mapTypeToValue.put(JavaType.getInstance(Orientation.class), 30.2);
+      mapTypeToValue.put(JavaType.getInstance(VantagePoint.class), 30.3);
 
-			mapTypeToValue.put( JavaType.getInstance( SJoint.class ), 99.9 );
-		}
+      mapTypeToValue.put(JavaType.getInstance(SJoint.class), 99.9);
+    }
 
-		private double getValue( AbstractType<?, ?, ?> type ) {
-			Double value = mapTypeToValue.get( type );
-			if( value != null ) {
-				return value;
-			} else {
-				return DEFAULT_VALUE;
-			}
-		}
+    private double getValue(AbstractType<?, ?, ?> type) {
+      Double value = mapTypeToValue.get(type);
+      if (value != null) {
+        return value;
+      } else {
+        return DEFAULT_VALUE;
+      }
+    }
 
-		@Override
-		public int compare( AbstractType<?, ?, ?> typeA, AbstractType<?, ?, ?> typeB ) {
-			double valueA = getValue( typeA );
-			double valueB = getValue( typeB );
-			if( valueA == valueB ) {
-				return typeA.getName().compareTo( typeB.getName() );
-			} else {
-				return Double.compare( valueA, valueB );
-			}
-		}
-	};
+    @Override
+    public int compare(AbstractType<?, ?, ?> typeA, AbstractType<?, ?, ?> typeB) {
+      double valueA = getValue(typeA);
+      double valueB = getValue(typeB);
+      if (valueA == valueB) {
+        return typeA.getName().compareTo(typeB.getName());
+      } else {
+        return Double.compare(valueA, valueB);
+      }
+    }
+  }
 
-	@Override
-	public Comparator<AbstractType<?, ?, ?>> getTypeComparator() {
-		return TypeComparator.SINGLETON;
-	}
+  @Override
+  public Comparator<AbstractType<?, ?, ?>> getTypeComparator() {
+    return TypeComparator.SINGLETON;
+  }
 
-	@Override
-	protected boolean isNamedUserTypesAcceptableForGallery( NamedUserType type ) {
-		return type.isAssignableTo( SModel.class );
-	}
+  @Override
+  protected boolean isNamedUserTypesAcceptableForGallery(NamedUserType type) {
+    return type.isAssignableTo(SModel.class);
+  }
 
-	@Override
-	protected boolean isNamedUserTypesAcceptableForSelection( NamedUserType type ) {
-		return ( type.isAssignableTo( SProgram.class ) == false ) || IsIncludingProgramType.getInstance().getValue();
-	}
+  @Override
+  protected boolean isNamedUserTypesAcceptableForSelection(NamedUserType type) {
+    return (type.isAssignableTo(SProgram.class) == false) || IsIncludingProgramType.getInstance().getValue();
+  }
 
-	@Override
-	public List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites() {
-		return this.categoryProcedureSubComposites;
-	}
+  @Override
+  public List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites() {
+    return this.categoryProcedureSubComposites;
+  }
 
-	@Override
-	public List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites() {
-		return this.categoryFunctionSubComposites;
-	}
+  @Override
+  public List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites() {
+    return this.categoryFunctionSubComposites;
+  }
 
-	@Override
-	public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites() {
-		return this.categoryOrAlphabeticalProcedureSubComposites;
-	}
+  @Override
+  public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites() {
+    return this.categoryOrAlphabeticalProcedureSubComposites;
+  }
 
-	@Override
-	public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites() {
-		return this.categoryOrAlphabeticalFunctionSubComposites;
-	}
+  @Override
+  public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites() {
+    return this.categoryOrAlphabeticalFunctionSubComposites;
+  }
 
-	@Override
-	public boolean isDeclaringTypeForManagedFields( UserType<?> type ) {
-		return type.isAssignableTo( SScene.class );
-	}
+  @Override
+  public boolean isDeclaringTypeForManagedFields(UserType<?> type) {
+    return type.isAssignableTo(SScene.class);
+  }
 
-	@Override
-	public boolean isInstanceFactoryDesiredForType( AbstractType<?, ?, ?> type ) {
-		if( type.isAssignableTo( SThing.class ) ) {
-			if( type.isAssignableTo( SMarker.class ) ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else if( type.isAssignableTo( SProgram.class ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type) {
+    if (type.isAssignableTo(SThing.class)) {
+      if (type.isAssignableTo(SMarker.class)) {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (type.isAssignableTo(SProgram.class)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance( BipedResource.class );
+  protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance(BipedResource.class);
 
-	@Override
-	public JavaType getGalleryResourceParentFor( JavaType type ) {
-		return StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceParentFor( type );
-	}
+  @Override
+  public JavaType getGalleryResourceParentFor(JavaType type) {
+    return StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceParentFor(type);
+  }
 
-	@Override
-	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
-		List<AbstractDeclaration> rv = StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor( type );
-		return rv;
-	}
+  @Override
+  public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
+    List<AbstractDeclaration> rv = StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor(type);
+    return rv;
+  }
 
-	@Override
-	public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThis( AbstractType<?, ?, ?> type ) {
-		if( JointedTypeInfo.isJointed( type ) ) {
-			return ThisJointedTypeMenuModel.getInstance( type );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThis(AbstractType<?, ?, ?> type) {
+    if (JointedTypeInfo.isJointed(type)) {
+      return ThisJointedTypeMenuModel.getInstance(type);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess( UserField field ) {
-		AbstractType<?, ?, ?> type = field.getValueType();
-		if( JointedTypeInfo.isJointed( type ) ) {
-			return ThisFieldAccessJointedTypeMenuModel.getInstance( field );
-		} else {
-			return null;
-		}
-		//		return org.alice.stageide.instancefactory.croquet.joint.declaration.ThisFieldAccessJointedTypeMenuModel.getMenuModel( field );
-	}
+  @Override
+  public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess(UserField field) {
+    AbstractType<?, ?, ?> type = field.getValueType();
+    if (JointedTypeInfo.isJointed(type)) {
+      return ThisFieldAccessJointedTypeMenuModel.getInstance(field);
+    } else {
+      return null;
+    }
+    //    return org.alice.stageide.instancefactory.croquet.joint.declaration.ThisFieldAccessJointedTypeMenuModel.getMenuModel( field );
+  }
 
-	@Override
-	public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccess( UserParameter parameter ) {
-		AbstractType<?, ?, ?> type = parameter.getValueType();
-		if( JointedTypeInfo.isJointed( type ) ) {
-			return ParameterAccessJointedTypeMenuModel.getInstance( parameter );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccess(UserParameter parameter) {
+    AbstractType<?, ?, ?> type = parameter.getValueType();
+    if (JointedTypeInfo.isJointed(type)) {
+      return ParameterAccessJointedTypeMenuModel.getInstance(parameter);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForLocalAccess( UserLocal local ) {
-		AbstractType<?, ?, ?> type = local.getValueType();
-		if( JointedTypeInfo.isJointed( type ) ) {
-			return LocalAccessJointedTypeMenuModel.getInstance( local );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForLocalAccess(UserLocal local) {
+    AbstractType<?, ?, ?> type = local.getValueType();
+    if (JointedTypeInfo.isJointed(type)) {
+      return LocalAccessJointedTypeMenuModel.getInstance(local);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( UserParameter parameter, AbstractMethod method ) {
-		AbstractType<?, ?, ?> type = method.getReturnType();
-		if( JointedTypeInfo.isJointed( type ) ) {
-			return ParameterAccessMethodInvocationJointedTypeMenuModel.getInstance( parameter, method );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation(UserParameter parameter, AbstractMethod method) {
+    AbstractType<?, ?, ?> type = method.getReturnType();
+    if (JointedTypeInfo.isJointed(type)) {
+      return ParameterAccessMethodInvocationJointedTypeMenuModel.getInstance(parameter, method);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public AbstractConstructor getGalleryResourceConstructorFor( AbstractType<?, ?, ?> argumentType ) {
-		List<NamedUserType> types =
-			TypeManager.getNamedUserTypesFromSuperTypes( StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes() );
-		for( AbstractType<?, ?, ?> type : types ) {
-			AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
-			if( parameters.size() == 1 ) {
-				if( parameters.get( 0 ).getValueType().isAssignableFrom( argumentType ) ) {
-					return constructor;
-				}
-			}
-		}
-		return null;
-	}
+  @Override
+  public AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType) {
+    List<NamedUserType> types = TypeManager.getNamedUserTypesFromSuperTypes(StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes());
+    for (AbstractType<?, ?, ?> type : types) {
+      AbstractConstructor constructor = type.getDeclaredConstructors().get(0);
+      List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
+      if (parameters.size() == 1) {
+        if (parameters.get(0).getValueType().isAssignableFrom(argumentType)) {
+          return constructor;
+        }
+      }
+    }
+    return null;
+  }
 
-	protected DeclarationNameLabel createDeclarationNameLabel( AbstractField field ) {
-		//todo: better name
-		class ThisFieldAccessNameLabel extends DeclarationNameLabel {
-			public ThisFieldAccessNameLabel( AbstractField field ) {
-				super( field );
-			}
+  protected DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
+    //todo: better name
+    class ThisFieldAccessNameLabel extends DeclarationNameLabel {
+      public ThisFieldAccessNameLabel(AbstractField field) {
+        super(field);
+      }
 
-			@Override
-			protected String getNameText() {
-				if( IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
-					return "this." + super.getNameText();
-				} else {
-					return super.getNameText();
-				}
-			}
-		}
-		return new ThisFieldAccessNameLabel( field );
-	}
+      @Override
+      protected String getNameText() {
+        if (IsIncludingThisForFieldAccessesState.getInstance().getValue()) {
+          return "this." + super.getNameText();
+        } else {
+          return super.getNameText();
+        }
+      }
+    }
+    return new ThisFieldAccessNameLabel(field);
+  }
 
-	@Override
-	public SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( FieldAccess fieldAccess ) {
-		Expression fieldExpression = fieldAccess.expression.getValue();
-		if( ( fieldExpression instanceof ThisExpression ) || ( fieldExpression instanceof CurrentThisExpression ) ) {
-			AbstractField field = fieldAccess.field.getValue();
-			AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-			if( ( declaringType != null ) && declaringType.isAssignableTo( SScene.class ) ) {
-				if( field.getValueType().isAssignableTo( SThing.class ) ) {
-					return this.createDeclarationNameLabel( field );
-				}
-			}
-		}
-		return null;
-	}
+  @Override
+  public SwingComponentView<?> createReplacementForFieldAccessIfAppropriate(FieldAccess fieldAccess) {
+    Expression fieldExpression = fieldAccess.expression.getValue();
+    if ((fieldExpression instanceof ThisExpression) || (fieldExpression instanceof CurrentThisExpression)) {
+      AbstractField field = fieldAccess.field.getValue();
+      AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+      if ((declaringType != null) && declaringType.isAssignableTo(SScene.class)) {
+        if (field.getValueType().isAssignableTo(SThing.class)) {
+          return this.createDeclarationNameLabel(field);
+        }
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public CascadeItem<?, ?> getCustomFillInFor( ValueDetails<?> valueDetails ) {
-		if( valueDetails instanceof PortionDetails ) {
-			return PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-		} else if( valueDetails instanceof VolumeLevelDetails ) {
-			//			return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
-			return VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public CascadeItem<?, ?> getCustomFillInFor(ValueDetails<?> valueDetails) {
+    if (valueDetails instanceof PortionDetails) {
+      return PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
+    } else if (valueDetails instanceof VolumeLevelDetails) {
+      //      return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
+      return VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public ExpressionCreator getExpressionCreator() {
-		return this.expressionCreator;
-	}
+  @Override
+  public ExpressionCreator getExpressionCreator() {
+    return this.expressionCreator;
+  }
 
-	@Override
-	public boolean isSignatureLocked( Code code ) {
-		//todo: check to see if only referenced from Program and Program type is hidden
-		return super.isSignatureLocked( code ) || BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() );
-	}
+  @Override
+  public boolean isSignatureLocked(Code code) {
+    //todo: check to see if only referenced from Program and Program type is hidden
+    return super.isSignatureLocked(code) || BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
+  }
 
-	@Override
-	public boolean isTabClosable( AbstractCode code ) {
-		return BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() ) == false;
-	}
+  @Override
+  public boolean isTabClosable(AbstractCode code) {
+    return BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName()) == false;
+  }
 
-	@Override
-	protected List<? super JavaType> addPrimeTimeJavaTypes( List<? super JavaType> rv ) {
-		rv = super.addPrimeTimeJavaTypes( rv );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
-		return rv;
-	}
+  @Override
+  protected List<? super JavaType> addPrimeTimeJavaTypes(List<? super JavaType> rv) {
+    rv = super.addPrimeTimeJavaTypes(rv);
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class ) );
+    return rv;
+  }
 
-	@Override
-	protected List<? super JavaType> addSecondaryJavaTypes( List<? super JavaType> rv ) {
-		super.addSecondaryJavaTypes( rv );
+  @Override
+  protected List<? super JavaType> addSecondaryJavaTypes(List<? super JavaType> rv) {
+    super.addSecondaryJavaTypes(rv);
 
-		rv.add( JavaType.getInstance( SJoint.class ) );
-		rv.add( null );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBillboard.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SShape.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SSphere.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCone.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
-		//		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
-		rv.add( JavaType.getInstance( Paint.class ) );
-		rv.add( JavaType.getInstance( Color.class ) );
-		rv.add( null );
-		rv.add( JavaType.getInstance( MoveDirection.class ) );
-		rv.add( JavaType.getInstance( TurnDirection.class ) );
-		rv.add( JavaType.getInstance( RollDirection.class ) );
-		rv.add( JavaType.getInstance( Key.class ) );
-		rv.add( null );
-		rv.add( JavaType.getInstance( AudioSource.class ) );
-		return rv;
-	}
+    rv.add(JavaType.getInstance(SJoint.class));
+    rv.add(null);
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBillboard.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SShape.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SSphere.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCone.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
+    //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
+    rv.add(JavaType.getInstance(Paint.class));
+    rv.add(JavaType.getInstance(Color.class));
+    rv.add(null);
+    rv.add(JavaType.getInstance(MoveDirection.class));
+    rv.add(JavaType.getInstance(TurnDirection.class));
+    rv.add(JavaType.getInstance(RollDirection.class));
+    rv.add(JavaType.getInstance(Key.class));
+    rv.add(null);
+    rv.add(JavaType.getInstance(AudioSource.class));
+    return rv;
+  }
 
-	private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance( SJointedModel.class );
+  private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance(SJointedModel.class);
 
-	private static String getFieldMethodNameHint( AbstractField field ) {
-		if( field instanceof JavaField ) {
-			Field fld = ( (JavaField)field ).getFieldReflectionProxy().getReification();
-			if( fld != null ) {
-				if( fld.isAnnotationPresent( FieldTemplate.class ) ) {
-					FieldTemplate propertyFieldTemplate = fld.getAnnotation( FieldTemplate.class );
-					String methodNameHint = propertyFieldTemplate.methodNameHint();
-					if( methodNameHint.length() > 0 ) {
-						return methodNameHint;
-					}
-				}
-			}
-		}
-		return null;
-	}
+  private static String getFieldMethodNameHint(AbstractField field) {
+    if (field instanceof JavaField) {
+      Field fld = ((JavaField) field).getFieldReflectionProxy().getReification();
+      if (fld != null) {
+        if (fld.isAnnotationPresent(FieldTemplate.class)) {
+          FieldTemplate propertyFieldTemplate = fld.getAnnotation(FieldTemplate.class);
+          String methodNameHint = propertyFieldTemplate.methodNameHint();
+          if (methodNameHint.length() > 0) {
+            return methodNameHint;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	private void addMethodsToType(UserType<?> userType, DynamicResource dynamicResource) {
-		//Get the string based "getJoint" method since we're working with dynamic resources and dynamic joints
-		JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", String.class );
-		for (JointId joint : dynamicResource.getModelSpecificJoints()) {
-			if (joint.getVisibility() != Visibility.COMPLETELY_HIDDEN) {
-				String methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( joint.toString(), "get" );
-				UserMethod method = AstUtilities.createFunction( methodName, SJoint.class );
-				method.managementLevel.setValue( ManagementLevel.GENERATED );
-				BlockStatement body = method.body.getValue();
-				Expression expression = AstUtilities.createMethodInvocation(
-						new ThisExpression(),
-						getJointMethod,
-						new StringLiteral( joint.toString() ) );
-				body.statements.add( AstUtilities.createReturnStatement( SJoint.class, expression ) );
-				userType.methods.add( method );
-			}
-		}
-	}
+  private void addMethodsToType(UserType<?> userType, DynamicResource dynamicResource) {
+    //Get the string based "getJoint" method since we're working with dynamic resources and dynamic joints
+    JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod("getJoint", String.class);
+    for (JointId joint : dynamicResource.getModelSpecificJoints()) {
+      if (joint.getVisibility() != Visibility.COMPLETELY_HIDDEN) {
+        String methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(joint.toString(), "get");
+        UserMethod method = AstUtilities.createFunction(methodName, SJoint.class);
+        method.managementLevel.setValue(ManagementLevel.GENERATED);
+        BlockStatement body = method.body.getValue();
+        Expression expression = AstUtilities.createMethodInvocation(new ThisExpression(), getJointMethod, new StringLiteral(joint.toString()));
+        body.statements.add(AstUtilities.createReturnStatement(SJoint.class, expression));
+        userType.methods.add(method);
+      }
+    }
+  }
 
-	private void addMethodsToType(UserType<?> userType, AbstractType<?,?,?> resourceType) {
-		JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointId[].class );
-		JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointArrayId.class );
-		JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", JointId.class );
-		JavaMethod strikePoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "strikePose", Pose.class, StrikePose.Detail[].class );
+  private void addMethodsToType(UserType<?> userType, AbstractType<?, ?, ?> resourceType) {
+    JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod("getJointArray", JointId[].class);
+    JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod("getJointArray", JointArrayId.class);
+    JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod("getJoint", JointId.class);
+    JavaMethod strikePoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod("strikePose", Pose.class, StrikePose.Detail[].class);
 
-		for( AbstractField field : resourceType.getDeclaredFields() ) {
-			if( field.isStatic() ) {
-				if( field.getValueType().isAssignableTo( JointId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-					String methodName = getFieldMethodNameHint( field );
-					if( methodName == null ) {
-						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-					}
-					UserMethod method = AstUtilities.createFunction( methodName, SJoint.class );
-					method.managementLevel.setValue( ManagementLevel.GENERATED );
-					BlockStatement body = method.body.getValue();
-					Expression expression = AstUtilities.createMethodInvocation(
-							new ThisExpression(),
-							getJointMethod,
-							AstUtilities.createStaticFieldAccess( field ) );
-					body.statements.add( AstUtilities.createReturnStatement( SJoint.class, expression ) );
-					userType.methods.add( method );
-				} else if( field.getValueType().isAssignableTo( JointId[].class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-					String methodName = getFieldMethodNameHint( field );
-					if( methodName == null ) {
-						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-					}
-					UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
-					method.managementLevel.setValue( ManagementLevel.GENERATED );
-					BlockStatement body = method.body.getValue();
-					Expression expression = AstUtilities.createMethodInvocation(
-							new ThisExpression(),
-							getJointArrayMethod,
-							AstUtilities.createStaticFieldAccess( field ) );
-					body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
-					userType.methods.add( method );
-				} else if( field.getValueType().isAssignableTo( JointArrayId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-					String methodName = getFieldMethodNameHint( field );
-					if( methodName == null ) {
-						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-					}
-					UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
-					method.managementLevel.setValue( ManagementLevel.GENERATED );
-					BlockStatement body = method.body.getValue();
-					Expression expression = AstUtilities.createMethodInvocation(
-							new ThisExpression(),
-							getJointArrayIdMethod,
-							AstUtilities.createStaticFieldAccess( field ) );
-					body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
-					userType.methods.add( method );
-				} else if( field.getValueType().isAssignableTo( Pose.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-					String methodName = getFieldMethodNameHint( field );
-					if( methodName == null ) {
-						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName() );
-					}
-					UserMethod method = AstUtilities.createProcedure( methodName );
-					method.managementLevel.setValue( ManagementLevel.GENERATED );
-					//								UserParameter detailsParameter = new UserParameter( "details", StrikePose.Detail.class );
-					//								method.getVariableLengthParameter().
-					//								method.requiredParameters.add( detailsParameter );
-					BlockStatement body = method.body.getValue();
-					MethodInvocation mi = AstUtilities.createMethodInvocation( new ThisExpression(), strikePoseMethod, AstUtilities.createStaticFieldAccess( field ) );
-					//mi.variableArguments.add( new SimpleArgument( strikePoseMethod.getVariableLengthParameter(), new ParameterAccess( detailsParameter ) ) );
-					body.statements.add( new ExpressionStatement( mi ) );
-					userType.methods.add( method );
-				}
-			}
-		}
-	}
+    for (AbstractField field : resourceType.getDeclaredFields()) {
+      if (field.isStatic()) {
+        if (field.getValueType().isAssignableTo(JointId.class) && (field.getVisibility() != Visibility.COMPLETELY_HIDDEN)) {
+          String methodName = getFieldMethodNameHint(field);
+          if (methodName == null) {
+            methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(field.getName(), "get");
+          }
+          UserMethod method = AstUtilities.createFunction(methodName, SJoint.class);
+          method.managementLevel.setValue(ManagementLevel.GENERATED);
+          BlockStatement body = method.body.getValue();
+          Expression expression = AstUtilities.createMethodInvocation(new ThisExpression(), getJointMethod, AstUtilities.createStaticFieldAccess(field));
+          body.statements.add(AstUtilities.createReturnStatement(SJoint.class, expression));
+          userType.methods.add(method);
+        } else if (field.getValueType().isAssignableTo(JointId[].class) && (field.getVisibility() != Visibility.COMPLETELY_HIDDEN)) {
+          String methodName = getFieldMethodNameHint(field);
+          if (methodName == null) {
+            methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(field.getName(), "get");
+          }
+          UserMethod method = AstUtilities.createFunction(methodName, SJoint[].class);
+          method.managementLevel.setValue(ManagementLevel.GENERATED);
+          BlockStatement body = method.body.getValue();
+          Expression expression = AstUtilities.createMethodInvocation(new ThisExpression(), getJointArrayMethod, AstUtilities.createStaticFieldAccess(field));
+          body.statements.add(AstUtilities.createReturnStatement(SJoint[].class, expression));
+          userType.methods.add(method);
+        } else if (field.getValueType().isAssignableTo(JointArrayId.class) && (field.getVisibility() != Visibility.COMPLETELY_HIDDEN)) {
+          String methodName = getFieldMethodNameHint(field);
+          if (methodName == null) {
+            methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(field.getName(), "get");
+          }
+          UserMethod method = AstUtilities.createFunction(methodName, SJoint[].class);
+          method.managementLevel.setValue(ManagementLevel.GENERATED);
+          BlockStatement body = method.body.getValue();
+          Expression expression = AstUtilities.createMethodInvocation(new ThisExpression(), getJointArrayIdMethod, AstUtilities.createStaticFieldAccess(field));
+          body.statements.add(AstUtilities.createReturnStatement(SJoint[].class, expression));
+          userType.methods.add(method);
+        } else if (field.getValueType().isAssignableTo(Pose.class) && (field.getVisibility() != Visibility.COMPLETELY_HIDDEN)) {
+          String methodName = getFieldMethodNameHint(field);
+          if (methodName == null) {
+            methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName(field.getName());
+          }
+          UserMethod method = AstUtilities.createProcedure(methodName);
+          method.managementLevel.setValue(ManagementLevel.GENERATED);
+          //                UserParameter detailsParameter = new UserParameter( "details", StrikePose.Detail.class );
+          //                method.getVariableLengthParameter().
+          //                method.requiredParameters.add( detailsParameter );
+          BlockStatement body = method.body.getValue();
+          MethodInvocation mi = AstUtilities.createMethodInvocation(new ThisExpression(), strikePoseMethod, AstUtilities.createStaticFieldAccess(field));
+          //mi.variableArguments.add( new SimpleArgument( strikePoseMethod.getVariableLengthParameter(), new ParameterAccess( detailsParameter ) ) );
+          body.statements.add(new ExpressionStatement(mi));
+          userType.methods.add(method);
+        }
+      }
+    }
+  }
 
-	@Override
-	public UserType<?> augmentTypeIfNecessary( UserType<?> rv ) {
-		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
-			AbstractConstructor constructor0 = rv.getFirstDeclaredConstructor();
-			//We have multiple different types of constructors to consider:
-			// No parameters:
-			// public Alien() { super(AlienResource.DEFAULT); }
-			// public Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
-			//
-			// 1 parameter:
-			// public Alice(AliceResource resource) { super(resource); }
-			// public Biped(BipedResource resource) { super(resource); }
-			Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
-			AbstractType<?,?,?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
-			AbstractType<?,?,?> inferredResourceType = constructorParameterType;
-			if( inferredResourceType == null ) {
-				JavaField field = ConstructorArgumentUtilities.getArgumentField( constructor0 );
-				if( field != null ) {
-					inferredResourceType = field.getValueType();
-				}
-			}
-			JavaType ancestorType = rv.getFirstEncounteredJavaType();
-			if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
-				if (inferredResourceType != null) {
-					addMethodsToType(rv, inferredResourceType);
-				}
-				else if (firstArgument instanceof DynamicResource) {
-					addMethodsToType(rv, (DynamicResource)firstArgument);
-				}
-				else {
-					Logger.severe("Failed to augment type " +rv+". Unable to find model resource type." );
-				}
-			}
-		}
-		return rv;
-	}
+  @Override
+  public UserType<?> augmentTypeIfNecessary(UserType<?> rv) {
+    if (JOINTED_MODEL_TYPE.isAssignableFrom(rv)) {
+      AbstractConstructor constructor0 = rv.getFirstDeclaredConstructor();
+      //We have multiple different types of constructors to consider:
+      // No parameters:
+      // public Alien() { super(AlienResource.DEFAULT); }
+      // public Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
+      //
+      // 1 parameter:
+      // public Alice(AliceResource resource) { super(resource); }
+      // public Biped(BipedResource resource) { super(resource); }
+      Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
+      AbstractType<?, ?, ?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type(constructor0);
+      AbstractType<?, ?, ?> inferredResourceType = constructorParameterType;
+      if (inferredResourceType == null) {
+        JavaField field = ConstructorArgumentUtilities.getArgumentField(constructor0);
+        if (field != null) {
+          inferredResourceType = field.getValueType();
+        }
+      }
+      JavaType ancestorType = rv.getFirstEncounteredJavaType();
+      if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
+        if (inferredResourceType != null) {
+          addMethodsToType(rv, inferredResourceType);
+        } else if (firstArgument instanceof DynamicResource) {
+          addMethodsToType(rv, (DynamicResource) firstArgument);
+        } else {
+          Logger.severe("Failed to augment type " + rv + ". Unable to find model resource type.");
+        }
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public boolean isExportTypeDesiredFor( NamedUserType type ) {
-		if( IsIncludingImportAndExportType.getValue() ) {
-			return ( type.isAssignableTo( SScene.class ) == false ) && ( type.isAssignableTo( SProgram.class ) == false );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isExportTypeDesiredFor(NamedUserType type) {
+    if (IsIncludingImportAndExportType.getValue()) {
+      return (type.isAssignableTo(SScene.class) == false) && (type.isAssignableTo(SProgram.class) == false);
+    } else {
+      return false;
+    }
+  }
 
-	private AbstractType<?, ?, ?> getSpecificPoseBuilderType( Expression expression ) {
-		if( expression instanceof MethodInvocation ) {
-			MethodInvocation methodInvocation = (MethodInvocation)expression;
-			return getSpecificPoseBuilderType( methodInvocation.expression.getValue() );
-		} else if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			return instanceCreation.getType();
-		} else {
-			return null;
-		}
-	}
+  private AbstractType<?, ?, ?> getSpecificPoseBuilderType(Expression expression) {
+    if (expression instanceof MethodInvocation) {
+      MethodInvocation methodInvocation = (MethodInvocation) expression;
+      return getSpecificPoseBuilderType(methodInvocation.expression.getValue());
+    } else if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      return instanceCreation.getType();
+    } else {
+      return null;
+    }
+  }
 
-	private AbstractType<?, ?, ?> getBuildMethodPoseBuilderType( MethodInvocation methodInvocation, boolean isSpecificPoseBuilderTypeRequired ) {
-		AbstractMethod method = methodInvocation.method.getValue();
-		if( "build".equals( method.getName() ) ) {
-			AbstractType<?, ?, ?> type = methodInvocation.expression.getExpressionType();
-			if( type.isAssignableTo( PoseBuilder.class ) ) {
-				if( isSpecificPoseBuilderTypeRequired ) {
-					return getSpecificPoseBuilderType( methodInvocation.expression.getValue() );
-				} else {
-					return type;
-				}
-			}
-		}
-		return null;
-	}
+  private AbstractType<?, ?, ?> getBuildMethodPoseBuilderType(MethodInvocation methodInvocation, boolean isSpecificPoseBuilderTypeRequired) {
+    AbstractMethod method = methodInvocation.method.getValue();
+    if ("build".equals(method.getName())) {
+      AbstractType<?, ?, ?> type = methodInvocation.expression.getExpressionType();
+      if (type.isAssignableTo(PoseBuilder.class)) {
+        if (isSpecificPoseBuilderTypeRequired) {
+          return getSpecificPoseBuilderType(methodInvocation.expression.getValue());
+        } else {
+          return type;
+        }
+      }
+    }
+    return null;
+  }
 
-	public AbstractType<?, ?, ?> getBuildMethodPoseBuilderType( MethodInvocation methodInvocation ) {
-		return getBuildMethodPoseBuilderType( methodInvocation, true );
-	}
+  public AbstractType<?, ?, ?> getBuildMethodPoseBuilderType(MethodInvocation methodInvocation) {
+    return getBuildMethodPoseBuilderType(methodInvocation, true);
+  }
 
-	public boolean isBuildMethod( MethodInvocation methodInvocation ) {
-		return getBuildMethodPoseBuilderType( methodInvocation, false ) != null;
-	}
+  public boolean isBuildMethod(MethodInvocation methodInvocation) {
+    return getBuildMethodPoseBuilderType(methodInvocation, false) != null;
+  }
 
-	@Override
-	public IconFactoryManager createIconFactoryManager() {
-		return new StoryIconFactoryManager();
-	}
+  @Override
+  public IconFactoryManager createIconFactoryManager() {
+    return new StoryIconFactoryManager();
+  }
 }

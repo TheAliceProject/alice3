@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.render;
  * @author Dennis Cosgrove
  */
 public interface OffscreenRenderTarget extends RenderTarget {
-	//todo: remove?
-	public void clearAndRenderOffscreen();
+  //todo: remove?
+  public void clearAndRenderOffscreen();
 }

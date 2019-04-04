@@ -57,32 +57,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class RenameDeclarationComposite<N extends AbstractDeclaration> extends RenameComposite<RenamePanel> {
-	private final N declaration;
+  private final N declaration;
 
-	public RenameDeclarationComposite( UUID migrationIde, NameValidator nameValidator, N declaration ) {
-		super( migrationIde, nameValidator );
-		this.declaration = declaration;
-	}
+  public RenameDeclarationComposite(UUID migrationIde, NameValidator nameValidator, N declaration) {
+    super(migrationIde, nameValidator);
+    this.declaration = declaration;
+  }
 
-	@Override
-	protected String getInitialValue() {
-		return this.declaration.getName();
-	}
+  @Override
+  protected String getInitialValue() {
+    return this.declaration.getName();
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new RenameDeclarationEdit( userActivity, declaration, this.declaration.getName(), this.getNameState().getValue() );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return new RenameDeclarationEdit(userActivity, declaration, this.declaration.getName(), this.getNameState().getValue());
+  }
 
-	private Color getViewBackgroundColor() {
-		return ThemeUtilities.getActiveTheme().getColorFor( this.declaration );
-	}
+  private Color getViewBackgroundColor() {
+    return ThemeUtilities.getActiveTheme().getColorFor(this.declaration);
+  }
 
-	@Override
-	protected RenamePanel createView() {
-		RenamePanel rv = new RenamePanel( this );
-		rv.setMinimumPreferredWidth( 320 );
-		rv.setBackgroundColor( this.getViewBackgroundColor() );
-		return rv;
-	}
+  @Override
+  protected RenamePanel createView() {
+    RenamePanel rv = new RenamePanel(this);
+    rv.setMinimumPreferredWidth(320);
+    rv.setBackgroundColor(this.getViewBackgroundColor());
+    return rv;
+  }
 }

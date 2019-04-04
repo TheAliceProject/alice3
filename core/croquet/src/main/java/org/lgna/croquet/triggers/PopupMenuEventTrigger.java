@@ -53,11 +53,11 @@ import javax.swing.event.PopupMenuEvent;
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
-	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		return new PopupMenuEventTrigger( viewController, popupMenuEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent) {
+    return new PopupMenuEventTrigger(viewController, popupMenuEvent).getUserActivity();
+  }
 
-	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, popupMenuEvent );
-	}
+  private PopupMenuEventTrigger(ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent) {
+    super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, popupMenuEvent);
+  }
 }

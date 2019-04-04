@@ -48,88 +48,88 @@ import org.lgna.croquet.Composite;
  * @author Dennis Cosgrove
  */
 public class CornerSpringPanel extends SpringPanel {
-	private AwtComponentView<?> northWestComponent;
-	private AwtComponentView<?> northEastComponent;
-	private AwtComponentView<?> southWestComponent;
-	private AwtComponentView<?> southEastComponent;
+  private AwtComponentView<?> northWestComponent;
+  private AwtComponentView<?> northEastComponent;
+  private AwtComponentView<?> southWestComponent;
+  private AwtComponentView<?> southEastComponent;
 
-	public CornerSpringPanel() {
-		this( null );
-	}
+  public CornerSpringPanel() {
+    this(null);
+  }
 
-	public CornerSpringPanel( Composite composite ) {
-		super( composite );
-	}
+  public CornerSpringPanel(Composite composite) {
+    super(composite);
+  }
 
-	protected int getPad() {
-		return 8;
-	}
+  protected int getPad() {
+    return 8;
+  }
 
-	public AwtComponentView<?> getNorthWestComponent() {
-		return this.northWestComponent;
-	}
+  public AwtComponentView<?> getNorthWestComponent() {
+    return this.northWestComponent;
+  }
 
-	public void setNorthWestComponent( AwtComponentView<?> northWestComponent ) {
-		if( this.northWestComponent != northWestComponent ) {
-			if( this.northWestComponent != null ) {
-				this.removeComponent( this.northWestComponent );
-			}
-			this.northWestComponent = northWestComponent;
-			if( this.northWestComponent != null ) {
-				int pad = getPad();
-				this.addComponent( this.northWestComponent, Horizontal.WEST, pad, Vertical.NORTH, pad );
-			}
-		}
-	}
+  public void setNorthWestComponent(AwtComponentView<?> northWestComponent) {
+    if (this.northWestComponent != northWestComponent) {
+      if (this.northWestComponent != null) {
+        this.removeComponent(this.northWestComponent);
+      }
+      this.northWestComponent = northWestComponent;
+      if (this.northWestComponent != null) {
+        int pad = getPad();
+        this.addComponent(this.northWestComponent, Horizontal.WEST, pad, Vertical.NORTH, pad);
+      }
+    }
+  }
 
-	public AwtComponentView<?> getNorthEastComponent() {
-		return this.northEastComponent;
-	}
+  public AwtComponentView<?> getNorthEastComponent() {
+    return this.northEastComponent;
+  }
 
-	public void setNorthEastComponent( AwtComponentView<?> northEastComponent ) {
-		if( this.northEastComponent != northEastComponent ) {
-			if( this.northEastComponent != null ) {
-				this.removeComponent( this.northEastComponent );
-			}
-			this.northEastComponent = northEastComponent;
-			if( this.northEastComponent != null ) {
-				int pad = getPad();
-				this.addComponent( this.northEastComponent, Horizontal.EAST, -pad, Vertical.NORTH, pad );
-			}
-		}
-	}
+  public void setNorthEastComponent(AwtComponentView<?> northEastComponent) {
+    if (this.northEastComponent != northEastComponent) {
+      if (this.northEastComponent != null) {
+        this.removeComponent(this.northEastComponent);
+      }
+      this.northEastComponent = northEastComponent;
+      if (this.northEastComponent != null) {
+        int pad = getPad();
+        this.addComponent(this.northEastComponent, Horizontal.EAST, -pad, Vertical.NORTH, pad);
+      }
+    }
+  }
 
-	public AwtComponentView<?> getSouthWestComponent() {
-		return this.southWestComponent;
-	}
+  public AwtComponentView<?> getSouthWestComponent() {
+    return this.southWestComponent;
+  }
 
-	public void setSouthWestComponent( AwtComponentView<?> southWestComponent ) {
-		if( this.southWestComponent != southWestComponent ) {
-			if( this.southWestComponent != null ) {
-				this.removeComponent( this.southWestComponent );
-			}
-			this.southWestComponent = southWestComponent;
-			if( this.southWestComponent != null ) {
-				int pad = getPad();
-				this.addComponent( this.southWestComponent, Horizontal.WEST, pad, Vertical.SOUTH, -pad );
-			}
-		}
-	}
+  public void setSouthWestComponent(AwtComponentView<?> southWestComponent) {
+    if (this.southWestComponent != southWestComponent) {
+      if (this.southWestComponent != null) {
+        this.removeComponent(this.southWestComponent);
+      }
+      this.southWestComponent = southWestComponent;
+      if (this.southWestComponent != null) {
+        int pad = getPad();
+        this.addComponent(this.southWestComponent, Horizontal.WEST, pad, Vertical.SOUTH, -pad);
+      }
+    }
+  }
 
-	public AwtComponentView<?> getSouthEastComponent() {
-		return this.southEastComponent;
-	}
+  public AwtComponentView<?> getSouthEastComponent() {
+    return this.southEastComponent;
+  }
 
-	public void setSouthEastComponent( AwtComponentView<?> southEastComponent ) {
-		if( this.southEastComponent != southEastComponent ) {
-			if( this.southEastComponent != null ) {
-				this.removeComponent( this.southEastComponent );
-			}
-			this.southEastComponent = southEastComponent;
-			if( this.southEastComponent != null ) {
-				int pad = getPad();
-				this.addComponent( this.southEastComponent, Horizontal.EAST, -pad, Vertical.SOUTH, -pad );
-			}
-		}
-	}
+  public void setSouthEastComponent(AwtComponentView<?> southEastComponent) {
+    if (this.southEastComponent != southEastComponent) {
+      if (this.southEastComponent != null) {
+        this.removeComponent(this.southEastComponent);
+      }
+      this.southEastComponent = southEastComponent;
+      if (this.southEastComponent != null) {
+        int pad = getPad();
+        this.addComponent(this.southEastComponent, Horizontal.EAST, -pad, Vertical.SOUTH, -pad);
+      }
+    }
+  }
 }

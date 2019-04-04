@@ -51,14 +51,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FrameCompositeWithInternalIsShowingState<V extends Panel> extends FrameComposite<V> {
-	public FrameCompositeWithInternalIsShowingState( UUID migrationId, Group booleanStateGroup ) {
-		super( migrationId );
-		this.isFrameShowingState = new IsFrameShowingState( booleanStateGroup, this );
-	}
+  public FrameCompositeWithInternalIsShowingState(UUID migrationId, Group booleanStateGroup) {
+    super(migrationId);
+    this.isFrameShowingState = new IsFrameShowingState(booleanStateGroup, this);
+  }
 
-	public BooleanState getIsFrameShowingState() {
-		return this.isFrameShowingState;
-	}
+  public BooleanState getIsFrameShowingState() {
+    return this.isFrameShowingState;
+  }
 
-	private final IsFrameShowingState isFrameShowingState;
+  private final IsFrameShowingState isFrameShowingState;
 }

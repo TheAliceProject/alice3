@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitJacketHighCollar implements FemaleElderFullBodyOutfit {
-	BLUE,
-	BROWN,
-	ORANGE,
-	PINK,
-	WHITE;
+  BLUE, BROWN, ORANGE, PINK, WHITE
 
 }

@@ -52,28 +52,28 @@ import java.io.InputStream;
  * @author Dennis Cosgrove
  */
 public class ClassInfoUtilities {
-	private ClassInfoUtilities() {
-		throw new AssertionError();
-	}
+  private ClassInfoUtilities() {
+    throw new AssertionError();
+  }
 
-	private static boolean isAlreadyAttempted = false;
+  private static boolean isAlreadyAttempted = false;
 
-	public static void loadClassInfos() {
-		final boolean IS_CLASSINFO_VALID = true;
-		if( IS_CLASSINFO_VALID ) {
-			if( isAlreadyAttempted ) {
-				//pass
-			} else {
-				isAlreadyAttempted = true;
-				InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
-				if( is != null ) {
-					try {
-						ClassInfoManager.addClassInfosFrom( is );
-					} catch( IOException ioe ) {
-						Logger.throwable( ioe );
-					}
-				}
-			}
-		}
-	}
+  public static void loadClassInfos() {
+    final boolean IS_CLASSINFO_VALID = true;
+    if (IS_CLASSINFO_VALID) {
+      if (isAlreadyAttempted) {
+        //pass
+      } else {
+        isAlreadyAttempted = true;
+        InputStream is = ClassInfoUtilities.class.getResourceAsStream("classinfos.zip");
+        if (is != null) {
+          try {
+            ClassInfoManager.addClassInfosFrom(is);
+          } catch (IOException ioe) {
+            Logger.throwable(ioe);
+          }
+        }
+      }
+    }
+  }
 }

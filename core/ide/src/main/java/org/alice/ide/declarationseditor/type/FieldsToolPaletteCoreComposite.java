@@ -52,29 +52,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
-	private final ManagedFieldsComposite managedFieldsComposite;
-	private final PlainStringValue managedLabel = this.createStringValue( "managedLabel" );
-	private final PlainStringValue unmanagedLabel = this.createStringValue( "unmanagedLabel" );
+  private final ManagedFieldsComposite managedFieldsComposite;
+  private final PlainStringValue managedLabel = this.createStringValue("managedLabel");
+  private final PlainStringValue unmanagedLabel = this.createStringValue("unmanagedLabel");
 
-	public FieldsToolPaletteCoreComposite( NamedUserType type ) {
-		super( UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, UnmanagedFieldsComposite.getInstance( type ) );
-		this.managedFieldsComposite = ManagedFieldsComposite.getInstance( type );
-	}
+  public FieldsToolPaletteCoreComposite(NamedUserType type) {
+    super(UUID.fromString("825af354-f73e-48ac-92b7-00359c6c7320"), true, UnmanagedFieldsComposite.getInstance(type));
+    this.managedFieldsComposite = ManagedFieldsComposite.getInstance(type);
+  }
 
-	public ManagedFieldsComposite getManagedFieldsComposite() {
-		return this.managedFieldsComposite;
-	}
+  public ManagedFieldsComposite getManagedFieldsComposite() {
+    return this.managedFieldsComposite;
+  }
 
-	public PlainStringValue getManagedLabel() {
-		return this.managedLabel;
-	}
+  public PlainStringValue getManagedLabel() {
+    return this.managedLabel;
+  }
 
-	public PlainStringValue getUnmanagedLabel() {
-		return this.unmanagedLabel;
-	}
+  public PlainStringValue getUnmanagedLabel() {
+    return this.unmanagedLabel;
+  }
 
-	@Override
-	protected FieldsToolPaletteCoreView createView() {
-		return new FieldsToolPaletteCoreView( this );
-	}
+  @Override
+  protected FieldsToolPaletteCoreView createView() {
+    return new FieldsToolPaletteCoreView(this);
+  }
 }

@@ -52,33 +52,33 @@ import org.lgna.story.SThing;
  */
 public class AbstractBinarySThingEvent extends AbstractEvent {
 
-	private final SThing a;
-	private final SThing b;
-	private final SMovableTurnable[] movables;
+  private final SThing a;
+  private final SThing b;
+  private final SMovableTurnable[] movables;
 
-	public AbstractBinarySThingEvent( SThing a, SThing b ) {
-		this.a = a;
-		this.b = b;
-		movables = new SMovableTurnable[ 2 ];
-		if( a instanceof SMovableTurnable ) {
-			movables[ 0 ] = (SMovableTurnable)a;
-		}
-		if( b instanceof SMovableTurnable ) {
-			movables[ 1 ] = (SMovableTurnable)b;
-		}
-	}
+  public AbstractBinarySThingEvent(SThing a, SThing b) {
+    this.a = a;
+    this.b = b;
+    movables = new SMovableTurnable[2];
+    if (a instanceof SMovableTurnable) {
+      movables[0] = (SMovableTurnable) a;
+    }
+    if (b instanceof SMovableTurnable) {
+      movables[1] = (SMovableTurnable) b;
+    }
+  }
 
-	public SThing getSThingFromSetA() {
-		return a;
-	}
+  public SThing getSThingFromSetA() {
+    return a;
+  }
 
-	public SThing getSThingFromSetB() {
-		return b;
-	}
+  public SThing getSThingFromSetB() {
+    return b;
+  }
 
-	@Deprecated
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public SMovableTurnable[] getModels() {
-		return movables;
-	}
+  @Deprecated
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public SMovableTurnable[] getModels() {
+    return movables;
+  }
 }

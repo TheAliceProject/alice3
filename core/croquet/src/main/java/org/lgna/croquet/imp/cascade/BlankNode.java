@@ -49,25 +49,25 @@ import org.lgna.croquet.CascadeBlank;
  * @author Dennis Cosgrove
  */
 public class BlankNode<B> extends CascadeNode<CascadeBlank<B>> {
-	public static <B> BlankNode<B> createInstance( CascadeBlank<B> model ) {
-		return new BlankNode<B>( model );
-	}
+  public static <B> BlankNode<B> createInstance(CascadeBlank<B> model) {
+    return new BlankNode<B>(model);
+  }
 
-	private BlankNode( CascadeBlank<B> model ) {
-		super( model );
-	}
+  private BlankNode(CascadeBlank<B> model) {
+    super(model);
+  }
 
-	private RtBlank<B> rtBlank;
+  private RtBlank<B> rtBlank;
 
-	/* package-private */void setRtBlank( RtBlank<B> rtBlank ) {
-		this.rtBlank = rtBlank;
-	}
+  /* package-private */void setRtBlank(RtBlank<B> rtBlank) {
+    this.rtBlank = rtBlank;
+  }
 
-	public boolean isTop() {
-		return this.rtBlank.getParent() instanceof RtRoot;
-	}
+  public boolean isTop() {
+    return this.rtBlank.getParent() instanceof RtRoot;
+  }
 
-	public AbstractItemNode getSelectedFillInContext() {
-		return this.rtBlank.getSelectedFillInNode();
-	}
+  public AbstractItemNode getSelectedFillInContext() {
+    return this.rtBlank.getSelectedFillInNode();
+  }
 }

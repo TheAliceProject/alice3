@@ -50,10 +50,10 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlankOwner<F, B> extends CascadeItem<F, B> {
-	public CascadeBlankOwner( UUID id ) {
-		super( id );
-	}
+  public CascadeBlankOwner(UUID id) {
+    super(id);
+  }
 
-	public abstract List<? extends CascadeBlank<B>> getBlanks();
+  public abstract List<? extends CascadeBlank<B>> getBlanks();
 
 }

@@ -57,82 +57,82 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class OffscreenDrawable {
-	/* package-private */static final boolean IS_HARDWARE_ACCELERATION_DESIRED = true;//edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
+  /* package-private */static final boolean IS_HARDWARE_ACCELERATION_DESIRED = true; //edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
 
-	public static interface DisplayCallback {
-		public void display( GL2 gl );
-	}
+  public static interface DisplayCallback {
+    public void display(GL2 gl);
+  }
 
-	public static OffscreenDrawable createInstance( DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height ) {
-		OffscreenDrawable od = null;
-		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtils.canCreateGlPixelBuffer() ) {
-			od = new PixelBufferOffscreenDrawable( callback );
-			try {
-				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-			} catch( GLException gle ) {
-				try {
-					od.destroy();
-				} catch( Throwable t ) {
-					//pass
-				}
-				od = null;
-			}
-		}
-		if( od != null ) {
-			//pass
-		} else {
-			Logger.severe( callback );
-			od = new SoftwareOffscreenDrawable( callback );
-			try {
-				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-			} catch( GLException gle ) {
-				try {
-					od.destroy();
-				} catch( Throwable t ) {
-					//pass
-				}
-				od = null;
-				throw gle;
-			}
-		}
-		return od;
-	}
+  public static OffscreenDrawable createInstance(DisplayCallback callback, GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height) {
+    OffscreenDrawable od = null;
+    if (IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtils.canCreateGlPixelBuffer()) {
+      od = new PixelBufferOffscreenDrawable(callback);
+      try {
+        od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+      } catch (GLException gle) {
+        try {
+          od.destroy();
+        } catch (Throwable t) {
+          //pass
+        }
+        od = null;
+      }
+    }
+    if (od != null) {
+      //pass
+    } else {
+      Logger.severe(callback);
+      od = new SoftwareOffscreenDrawable(callback);
+      try {
+        od.initialize(glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
+      } catch (GLException gle) {
+        try {
+          od.destroy();
+        } catch (Throwable t) {
+          //pass
+        }
+        od = null;
+        throw gle;
+      }
+    }
+    return od;
+  }
 
-	private final DisplayCallback callback;
+  private final DisplayCallback callback;
 
-	public OffscreenDrawable( DisplayCallback callback ) {
-		this.callback = callback;
-	}
+  public OffscreenDrawable(DisplayCallback callback) {
+    this.callback = callback;
+  }
 
-	public DisplayCallback getCallback() {
-		return this.callback;
-	}
+  public DisplayCallback getCallback() {
+    return this.callback;
+  }
 
-	public abstract void initialize( GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height );
+  public abstract void initialize(GLCapabilities glRequestedCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, GLContext glShareContext, int width, int height);
 
-	public abstract void destroy();
+  public abstract void destroy();
 
-	public abstract void display();
+  public abstract void display();
 
-	public final Dimension getSize( Dimension rv ) {
-		GLDrawable glDrawable = this.getGlDrawable();
-		if( glDrawable != null ) {
-			rv.width = GlDrawableUtils.getGlDrawableHeight( glDrawable );
-			rv.height = GlDrawableUtils.getGlDrawableHeight( glDrawable );
-		} else {
-			//todo?
-			throw new GLException();
-		}
-		return rv;
-	}
+  public final Dimension getSize(Dimension rv) {
+    GLDrawable glDrawable = this.getGlDrawable();
+    if (glDrawable != null) {
+      rv.width = GlDrawableUtils.getGlDrawableHeight(glDrawable);
+      rv.height = GlDrawableUtils.getGlDrawableHeight(glDrawable);
+    } else {
+      //todo?
+      throw new GLException();
+    }
+    return rv;
+  }
 
-	public abstract boolean isHardwareAccelerated();
+  public abstract boolean isHardwareAccelerated();
 
-	protected abstract GLDrawable getGlDrawable();
+  protected abstract GLDrawable getGlDrawable();
 
-	protected final void fireDisplay( GL2 gl ) {
-		if( this.callback != null ) {
-			this.callback.display( gl );
-		}
-	}
+  protected final void fireDisplay(GL2 gl) {
+    if (this.callback != null) {
+      this.callback.display(gl);
+    }
+  }
 }

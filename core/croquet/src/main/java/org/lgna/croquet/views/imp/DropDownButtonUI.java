@@ -60,163 +60,162 @@ import java.awt.event.MouseMotionListener;
  * @author Dennis Cosgrove
  */
 public class DropDownButtonUI extends BasicButtonUI {
-	private static enum DropDownButtonUIDispatchState {
-		DISPATCH_TO_BUTTON,
-		DISPATCH_TO_ANCESTOR
-	}
+  private static enum DropDownButtonUIDispatchState {
+    DISPATCH_TO_BUTTON, DISPATCH_TO_ANCESTOR
+  }
 
-	public DropDownButtonUI( AbstractButton button ) {
-		this.button = button;
-	}
+  public DropDownButtonUI(AbstractButton button) {
+    this.button = button;
+  }
 
-	@Override
-	protected void installListeners( AbstractButton b ) {
-		//note: do not call super
-		//super.installListeners( b );
-		b.addMouseListener( this.mouseListener );
-		b.addMouseMotionListener( this.mouseMotionListener );
-	}
+  @Override
+  protected void installListeners(AbstractButton b) {
+    //note: do not call super
+    //super.installListeners( b );
+    b.addMouseListener(this.mouseListener);
+    b.addMouseMotionListener(this.mouseMotionListener);
+  }
 
-	@Override
-	protected void uninstallListeners( AbstractButton b ) {
-		b.removeMouseMotionListener( this.mouseMotionListener );
-		b.removeMouseListener( this.mouseListener );
-		//note: do not call super
-		//super.uninstallListeners( b );
-	}
+  @Override
+  protected void uninstallListeners(AbstractButton b) {
+    b.removeMouseMotionListener(this.mouseMotionListener);
+    b.removeMouseListener(this.mouseListener);
+    //note: do not call super
+    //super.uninstallListeners( b );
+  }
 
-	private void dispatchToAncestor( MouseEvent e ) {
-		EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
-		eventQueue.postEvent( MouseEventUtilities.convertMouseEvent( this.button, e, this.ancestor ) );
-	}
+  private void dispatchToAncestor(MouseEvent e) {
+    EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+    eventQueue.postEvent(MouseEventUtilities.convertMouseEvent(this.button, e, this.ancestor));
+  }
 
-	private void handleMouseEntered( MouseEvent e ) {
-		ButtonModel buttonModel = this.button.getModel();
-		if( SwingUtilities.isLeftMouseButton( e ) ) {
-			//pass
-		} else {
-			if( this.button.isEnabled() ) {
-				if( this.dispatchState != null ) {
-					//pass
-				} else {
-					buttonModel.setRollover( true );
-				}
-			}
-		}
-	}
+  private void handleMouseEntered(MouseEvent e) {
+    ButtonModel buttonModel = this.button.getModel();
+    if (SwingUtilities.isLeftMouseButton(e)) {
+      //pass
+    } else {
+      if (this.button.isEnabled()) {
+        if (this.dispatchState != null) {
+          //pass
+        } else {
+          buttonModel.setRollover(true);
+        }
+      }
+    }
+  }
 
-	private void handleMouseExited( MouseEvent e ) {
-		ButtonModel buttonModel = this.button.getModel();
-		if( this.dispatchState != DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
-			buttonModel.setRollover( false );
-		}
-	}
+  private void handleMouseExited(MouseEvent e) {
+    ButtonModel buttonModel = this.button.getModel();
+    if (this.dispatchState != DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR) {
+      buttonModel.setRollover(false);
+    }
+  }
 
-	private void handleMousePressed( MouseEvent e ) {
-		ButtonModel buttonModel = this.button.getModel();
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.dispatchState, this );
-		if( this.button.isEnabled() ) {
-			buttonModel.setPressed( true );
-			this.mousePressedEvent = e;
-			this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON;
-		} else {
-			this.mousePressedEvent = null;
-			this.dispatchState = null;
-		}
-	}
+  private void handleMousePressed(MouseEvent e) {
+    ButtonModel buttonModel = this.button.getModel();
+    //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.dispatchState, this );
+    if (this.button.isEnabled()) {
+      buttonModel.setPressed(true);
+      this.mousePressedEvent = e;
+      this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON;
+    } else {
+      this.mousePressedEvent = null;
+      this.dispatchState = null;
+    }
+  }
 
-	private void handleMouseReleased( MouseEvent e ) {
-		ButtonModel buttonModel = this.button.getModel();
-		if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON ) {
-			buttonModel.setArmed( true );
-			buttonModel.setPressed( false );
-			buttonModel.setArmed( false );
-		} else {
-			if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
-				this.dispatchToAncestor( e );
-			}
-			buttonModel.setPressed( false );
-		}
-		buttonModel.setRollover( false );
-		this.mousePressedEvent = null;
-		this.dispatchState = null;
-	}
+  private void handleMouseReleased(MouseEvent e) {
+    ButtonModel buttonModel = this.button.getModel();
+    if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON) {
+      buttonModel.setArmed(true);
+      buttonModel.setPressed(false);
+      buttonModel.setArmed(false);
+    } else {
+      if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR) {
+        this.dispatchToAncestor(e);
+      }
+      buttonModel.setPressed(false);
+    }
+    buttonModel.setRollover(false);
+    this.mousePressedEvent = null;
+    this.dispatchState = null;
+  }
 
-	private static JDragView findDraggableJDragView( Component awtComponent ) {
-		JDragView jDragView = ComponentUtilities.findFirstAncestor( awtComponent, false, JDragView.class );
-		if( jDragView != null ) {
-			if( jDragView.isActuallyDraggable() ) {
-				return jDragView;
-			} else {
-				return findDraggableJDragView( jDragView );
-			}
-		} else {
-			return null;
-		}
-	}
+  private static JDragView findDraggableJDragView(Component awtComponent) {
+    JDragView jDragView = ComponentUtilities.findFirstAncestor(awtComponent, false, JDragView.class);
+    if (jDragView != null) {
+      if (jDragView.isActuallyDraggable()) {
+        return jDragView;
+      } else {
+        return findDraggableJDragView(jDragView);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	private void handleMouseDragged( MouseEvent e ) {
-		ButtonModel buttonModel = this.button.getModel();
-		if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON ) {
-			if( e.getComponent().contains( e.getPoint() ) ) {
-				//pass
-			} else {
-				buttonModel.setPressed( false );
-				buttonModel.setRollover( false );
-				this.ancestor = findDraggableJDragView( this.button );
-				if( this.ancestor != null ) {
-					this.dispatchToAncestor( this.mousePressedEvent );
-					this.dispatchToAncestor( e );
-					this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR;
-				} else {
-					this.dispatchState = null;
-				}
-			}
-		} else if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
-			this.dispatchToAncestor( e );
-		}
-	}
+  private void handleMouseDragged(MouseEvent e) {
+    ButtonModel buttonModel = this.button.getModel();
+    if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON) {
+      if (e.getComponent().contains(e.getPoint())) {
+        //pass
+      } else {
+        buttonModel.setPressed(false);
+        buttonModel.setRollover(false);
+        this.ancestor = findDraggableJDragView(this.button);
+        if (this.ancestor != null) {
+          this.dispatchToAncestor(this.mousePressedEvent);
+          this.dispatchToAncestor(e);
+          this.dispatchState = DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR;
+        } else {
+          this.dispatchState = null;
+        }
+      }
+    } else if (this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR) {
+      this.dispatchToAncestor(e);
+    }
+  }
 
-	private DropDownButtonUIDispatchState dispatchState;
-	private MouseEvent mousePressedEvent;
-	private JDragView ancestor;
+  private DropDownButtonUIDispatchState dispatchState;
+  private MouseEvent mousePressedEvent;
+  private JDragView ancestor;
 
-	private final AbstractButton button;
+  private final AbstractButton button;
 
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-			handleMouseEntered( e );
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      handleMouseEntered(e);
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-			handleMouseExited( e );
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+      handleMouseExited(e);
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			handleMousePressed( e );
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      handleMousePressed(e);
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			handleMouseReleased( e );
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      handleMouseReleased(e);
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+  };
 
-	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-		}
+  private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			handleMouseDragged( e );
-		}
-	};
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      handleMouseDragged(e);
+    }
+  };
 }

@@ -48,39 +48,39 @@ import org.lgna.story.SCylinder;
  * @author Dennis Cosgrove
  */
 public class CylinderImp extends AbstractCylinderImp {
-	public CylinderImp( SCylinder abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgCylinder().bottomRadius.setValue( 0.5 );
-		this.getSgCylinder().topRadius.setValue( 0.5 );
-	}
+  public CylinderImp(SCylinder abstraction) {
+    this.abstraction = abstraction;
+    this.getSgCylinder().bottomRadius.setValue(0.5);
+    this.getSgCylinder().topRadius.setValue(0.5);
+  }
 
-	@Override
-	public SCylinder getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SCylinder getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
+  @Override
+  protected void setXZ(double xz) {
+    this.radius.setValue(xz);
+  }
 
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
-	}
+  @Override
+  protected double getXZ() {
+    return this.radius.getValue();
+  }
 
-	private final SCylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
+  private final SCylinder abstraction;
+  public final DoubleProperty radius = new DoubleProperty(CylinderImp.this) {
+    @Override
+    public Double getValue() {
+      return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      //Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
+      CylinderImp.this.getSgCylinder().topRadius.setValue(value);
+      CylinderImp.this.getSgCylinder().bottomRadius.setValue(value);
+    }
+  };
 }

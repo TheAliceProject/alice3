@@ -54,26 +54,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemState<T> {
-	private final class CustomBlank extends CascadeBlank<T> {
-		CustomBlank() {
-		}
+  private final class CustomBlank extends CascadeBlank<T> {
+    CustomBlank() {
+    }
 
-		@Override
-		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<T> blankNode ) {
-			CustomItemStateWithInternalBlank.this.updateBlankChildren( children, blankNode );
-		}
-	}
+    @Override
+    protected void updateChildren(List<CascadeBlankChild> children, BlankNode<T> blankNode) {
+      CustomItemStateWithInternalBlank.this.updateBlankChildren(children, blankNode);
+    }
+  }
 
-	private final List<CustomBlank> blanks = Collections.unmodifiableList( Lists.newArrayList( new CustomBlank() ) );
+  private final List<CustomBlank> blanks = Collections.unmodifiableList(Lists.newArrayList(new CustomBlank()));
 
-	public CustomItemStateWithInternalBlank( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
-		super( group, id, initialValue, itemCodec );
-	}
+  public CustomItemStateWithInternalBlank(Group group, UUID id, T initialValue, ItemCodec<T> itemCodec) {
+    super(group, id, initialValue, itemCodec);
+  }
 
-	@Override
-	protected List<? extends CascadeBlank<T>> getBlanks() {
-		return this.blanks;
-	}
+  @Override
+  protected List<? extends CascadeBlank<T>> getBlanks() {
+    return this.blanks;
+  }
 
-	protected abstract void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode );
+  protected abstract void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode);
 }

@@ -52,62 +52,58 @@ import javax.swing.ImageIcon;
  * @author David Culyba
  */
 public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulationHandle2D {
-	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
-		Inactive( "images/tilt.png" ),
-		Highlighted( "images/tiltHighlight.png" ),
-		TurningForward( "images/tiltDown.png" ),
-		TurningBackward( "images/tiltUp.png" );
+  private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
+    Inactive("images/tilt.png"), Highlighted("images/tiltHighlight.png"), TurningForward("images/tiltDown.png"), TurningBackward("images/tiltUp.png");
 
-		private ControlState( String resourceString ) {
-			Icon icon;
-			try {
-				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
-			} catch( Exception e ) {
-				Logger.errln( "cannot load", resourceString, this );
-				icon = null;
-			}
-			this.icon = icon;
-		}
+    private ControlState(String resourceString) {
+      Icon icon;
+      try {
+        icon = new ImageIcon(this.getClass().getResource(resourceString));
+      } catch (Exception e) {
+        Logger.errln("cannot load", resourceString, this);
+        icon = null;
+      }
+      this.icon = icon;
+    }
 
-		@Override
-		public Icon getIcon() {
-			return this.icon;
-		}
+    @Override
+    public Icon getIcon() {
+      return this.icon;
+    }
 
-		private final Icon icon;
-	}
+    private final Icon icon;
+  }
 
-	public ManipulationHandle2DCameraTurnUpDown() {
-		super( "images/tiltMask.png" );
-	}
+  public ManipulationHandle2DCameraTurnUpDown() {
+    super("images/tiltMask.png");
+  }
 
-	@Override
-	protected ControlState getStateForManipulationStatus() {
-		if( this.turningForward ) {
-			return ControlState.TurningForward;
-		} else if( this.turningBackward ) {
-			return ControlState.TurningBackward;
-		}
-		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if( this.state.isRollover() ) {
-			return ControlState.Highlighted;
-		} else {
-			return ControlState.Inactive;
-		}
-	}
+  @Override
+  protected ControlState getStateForManipulationStatus() {
+    if (this.turningForward) {
+      return ControlState.TurningForward;
+    } else if (this.turningBackward) {
+      return ControlState.TurningBackward;
+    } else if (this.state.isRollover()) {
+      //If we're not moving in one of the directions, choose highlighted or inactive
+      return ControlState.Highlighted;
+    } else {
+      return ControlState.Inactive;
+    }
+  }
 
-	@Override
-	protected void setManipulationState( ManipulationEvent event, boolean isActive ) {
-		switch( event.getMovementDescription().direction ) {
-		case LEFT:
-			this.turningForward = isActive;
-			break;
-		case RIGHT:
-			this.turningBackward = isActive;
-			break;
-		}
-	}
+  @Override
+  protected void setManipulationState(ManipulationEvent event, boolean isActive) {
+    switch (event.getMovementDescription().direction) {
+    case LEFT:
+      this.turningForward = isActive;
+      break;
+    case RIGHT:
+      this.turningBackward = isActive;
+      break;
+    }
+  }
 
-	private boolean turningForward = false;
-	private boolean turningBackward = false;
+  private boolean turningForward = false;
+  private boolean turningBackward = false;
 }

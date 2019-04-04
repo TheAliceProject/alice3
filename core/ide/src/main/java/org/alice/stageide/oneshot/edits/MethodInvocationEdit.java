@@ -56,37 +56,33 @@ import org.lgna.project.ast.ExpressionStatement;
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationEdit extends AbstractEdit {
-	private final InstanceFactory instanceFactory;
-	private final AbstractMethod method;
-	private final Expression[] argumentExpressions;
+  private final InstanceFactory instanceFactory;
+  private final AbstractMethod method;
+  private final Expression[] argumentExpressions;
 
-	public MethodInvocationEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity );
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
-	}
+  public MethodInvocationEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity);
+    this.instanceFactory = instanceFactory;
+    this.method = method;
+    this.argumentExpressions = argumentExpressions;
+  }
 
-	protected abstract void preserveUndoInfo( Object instance, boolean isDo );
+  protected abstract void preserveUndoInfo(Object instance, boolean isDo);
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		IDE ide = IDE.getActiveInstance();
-		AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-		Object instance = sceneEditor.getInstanceInJavaVMForExpression( this.instanceFactory.createExpression() );
-		this.preserveUndoInfo( instance, isDo );
-		Expression methodInvocation = AstUtilities.createMethodInvocation(
-				this.instanceFactory.createExpression(),
-				method,
-				argumentExpressions
-				);
-		ExpressionStatement statement = new ExpressionStatement( methodInvocation );
-		sceneEditor.executeStatements( statement );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    IDE ide = IDE.getActiveInstance();
+    AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+    Object instance = sceneEditor.getInstanceInJavaVMForExpression(this.instanceFactory.createExpression());
+    this.preserveUndoInfo(instance, isDo);
+    Expression methodInvocation = AstUtilities.createMethodInvocation(this.instanceFactory.createExpression(), method, argumentExpressions);
+    ExpressionStatement statement = new ExpressionStatement(methodInvocation);
+    sceneEditor.executeStatements(statement);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "one shot " );
-		rv.append( this.method );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("one shot ");
+    rv.append(this.method);
+  }
 }

@@ -57,23 +57,23 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  */
 public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
 
-	private final List<SThing> modelList = Lists.newCopyOnWriteArrayList();
+  private final List<SThing> modelList = Lists.newCopyOnWriteArrayList();
 
-	public final void fireAllTargeted( SThing changedEntity ) {
-		if( shouldFire ) {
-			check( changedEntity );
-		}
-	}
+  public final void fireAllTargeted(SThing changedEntity) {
+    if (shouldFire) {
+      check(changedEntity);
+    }
+  }
 
-	protected abstract void check( SThing changedEntity );
+  protected abstract void check(SThing changedEntity);
 
-	@Override
-	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
-		fireAllTargeted( source );
-	}
+  @Override
+  public final void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) {
+    SThing source = EntityImp.getAbstractionFromSgElement(absoluteTransformationEvent.getTypedSource());
+    fireAllTargeted(source);
+  }
 
-	public List<SThing> getModelList() {
-		return modelList;
-	}
+  public List<SThing> getModelList() {
+    return modelList;
+  }
 }

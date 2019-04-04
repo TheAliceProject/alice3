@@ -50,8 +50,8 @@ import edu.cmu.cs.dennisc.scenegraph.ClippingPlane;
  * @author Dennis Cosgrove
  */
 public class GlrClippingPlane extends GlrAffector<ClippingPlane> {
-	@Override
-	public void setupAffectors( RenderContext rc ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public void setupAffectors(RenderContext rc) {
+    throw new RuntimeException("todo");
+  }
 }

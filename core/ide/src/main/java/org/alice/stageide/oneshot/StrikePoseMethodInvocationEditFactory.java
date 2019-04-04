@@ -54,18 +54,18 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class StrikePoseMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final InstanceFactory instanceFactory;
-	private final AbstractMethod method;
-	private final Expression[] argumentExpressions;
+  private final InstanceFactory instanceFactory;
+  private final AbstractMethod method;
+  private final Expression[] argumentExpressions;
 
-	public StrikePoseMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
-	}
+  public StrikePoseMethodInvocationEditFactory(InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    this.instanceFactory = instanceFactory;
+    this.method = method;
+    this.argumentExpressions = argumentExpressions;
+  }
 
-	@Override
-	public Edit createEdit( UserActivity userActivity ) {
-		return new StrikePoseEdit( userActivity, this.instanceFactory, this.method, this.argumentExpressions );
-	}
+  @Override
+  public Edit createEdit(UserActivity userActivity) {
+    return new StrikePoseEdit(userActivity, this.instanceFactory, this.method, this.argumentExpressions);
+  }
 }

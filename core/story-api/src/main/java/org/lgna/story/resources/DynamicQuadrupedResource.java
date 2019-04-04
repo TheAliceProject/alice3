@@ -4,30 +4,28 @@ import org.alice.tweedle.file.ModelManifest;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.QuadrupedImp;
 
-import java.net.URI;
-
 public class DynamicQuadrupedResource extends DynamicResource<QuadrupedImp, SQuadruped> implements QuadrupedResource {
 
-	public DynamicQuadrupedResource(String modelName, String resourceName) {
-		super(modelName, resourceName);
-	}
+  public DynamicQuadrupedResource(String modelName, String resourceName) {
+    super(modelName, resourceName);
+  }
 
-	public DynamicQuadrupedResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
-		super(modelManifest, modelVariant);
-	}
+  public DynamicQuadrupedResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
+    super(modelManifest, modelVariant);
+  }
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
+  @Override
+  public JointId[] getRootJointIds() {
+    return QuadrupedResource.JOINT_ID_ROOTS;
+  }
 
-	@Override
-	public QuadrupedImp createImplementation(SQuadruped abstraction ) {
-		return new QuadrupedImp(abstraction, this.getImplementationAndVisualFactory());
-	}
+  @Override
+  public QuadrupedImp createImplementation(SQuadruped abstraction) {
+    return new QuadrupedImp(abstraction, this.getImplementationAndVisualFactory());
+  }
 
-	@Override
-	public JointId[] getTailArray() {
-		return DEFAULT_TAIL;
-	}
+  @Override
+  public JointId[] getTailArray() {
+    return DEFAULT_TAIL;
+  }
 }

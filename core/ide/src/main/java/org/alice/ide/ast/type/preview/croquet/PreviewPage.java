@@ -56,55 +56,55 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PreviewPage extends WizardPageComposite<Panel, ImportTypeWizard> {
-	private final BooleanState isIncludingAllState = this.createBooleanState( "isIncludingAllState", false );
-	private final ValueListener<Boolean> isIncludingAllListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			getView().refreshLater();
-		}
-	};
+  private final BooleanState isIncludingAllState = this.createBooleanState("isIncludingAllState", false);
+  private final ValueListener<Boolean> isIncludingAllListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      getView().refreshLater();
+    }
+  };
 
-	public PreviewPage( ImportTypeWizard wizard ) {
-		super( UUID.fromString( "2efecc6f-eb6a-4835-80e3-6898022c3cc2" ), wizard );
-	}
+  public PreviewPage(ImportTypeWizard wizard) {
+    super(UUID.fromString("2efecc6f-eb6a-4835-80e3-6898022c3cc2"), wizard);
+  }
 
-	public BooleanState getIsIncludingAllState() {
-		return this.isIncludingAllState;
-	}
+  public BooleanState getIsIncludingAllState() {
+    return this.isIncludingAllState;
+  }
 
-	@Override
-	public Status getPageStatus() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  public Status getPageStatus() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	public boolean isClearToCommit() {
-		return true;
-	}
+  @Override
+  public boolean isClearToCommit() {
+    return true;
+  }
 
-	@Override
-	public boolean isAccountedForInPreferredSizeCalculation() {
-		return false;
-	}
+  @Override
+  public boolean isAccountedForInPreferredSizeCalculation() {
+    return false;
+  }
 
-	@Override
-	public void resetData() {
-	}
+  @Override
+  public void resetData() {
+  }
 
-	@Override
-	public void handlePreActivation() {
-		this.isIncludingAllState.addAndInvokeNewSchoolValueListener( this.isIncludingAllListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    this.isIncludingAllState.addAndInvokeNewSchoolValueListener(this.isIncludingAllListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.isIncludingAllState.removeNewSchoolValueListener( this.isIncludingAllListener );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.isIncludingAllState.removeNewSchoolValueListener(this.isIncludingAllListener);
+  }
 
-	@Override
-	protected Panel createView() {
-		return new PreviewPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new PreviewPane(this);
+  }
 }

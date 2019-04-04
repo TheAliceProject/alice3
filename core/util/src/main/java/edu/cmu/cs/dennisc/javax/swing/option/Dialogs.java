@@ -51,62 +51,61 @@ import java.awt.EventQueue;
 import java.io.File;
 
 public class Dialogs {
-	private Dialogs() {
-	}
+  private Dialogs() {
+  }
 
-	public static boolean confirm( String title, String message ) {
-		// TODO ensure this is run on DispatchThread
-		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION );
-	}
+  public static boolean confirm(String title, String message) {
+    // TODO ensure this is run on DispatchThread
+    return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION);
+  }
 
-	public static boolean confirmWithWarning( String title, String message ) {
-		// TODO ensure this is run on DispatchThread
-		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE );
-	}
+  public static boolean confirmWithWarning(String title, String message) {
+    // TODO ensure this is run on DispatchThread
+    return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+  }
 
-	public static YesNoCancelResult confirmOrCancel( String title, String message ) {
-		// TODO ensure this is run on DispatchThread
-		return YesNoCancelResult.getInstance( JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION) );
-	}
+  public static YesNoCancelResult confirmOrCancel(String title, String message) {
+    // TODO ensure this is run on DispatchThread
+    return YesNoCancelResult.getInstance(JOptionPane.showConfirmDialog(WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION));
+  }
 
-	public static void showUnableToOpenFileDialog(File file, String message) {
-		Dialogs.showError("Cannot read file",
-						  String.format("Unable to open file %s.\n\n%s", FileUtilities.getCanonicalPathIfPossible(file), message));
-	}
+  public static void showUnableToOpenFileDialog(File file, String message) {
+    Dialogs.showError("Cannot read file", String.format("Unable to open file %s.\n\n%s", FileUtilities.getCanonicalPathIfPossible(file), message));
+  }
 
-	public static void showError( String title, String message ) {
-		showMessageDialog( title, message, JOptionPane.ERROR_MESSAGE, null );
-	}
+  public static void showError(String title, String message) {
+    showMessageDialog(title, message, JOptionPane.ERROR_MESSAGE, null);
+  }
 
-	public static void showWarning( String title, String message ) {
-		showMessageDialog( title, message, JOptionPane.WARNING_MESSAGE, null );
-	}
+  public static void showWarning(String title, String message) {
+    showMessageDialog(title, message, JOptionPane.WARNING_MESSAGE, null);
+  }
 
-	public static void showWarning( String message ) {
-		showWarning( "", message );
-	}
+  public static void showWarning(String message) {
+    showWarning("", message);
+  }
 
-	public static void showInfo( String title, String message, Icon icon ) {
-		showMessageDialog( title, message, JOptionPane.INFORMATION_MESSAGE, icon );
-	}
+  public static void showInfo(String title, String message, Icon icon) {
+    showMessageDialog(title, message, JOptionPane.INFORMATION_MESSAGE, icon);
+  }
 
-	public static void showInfo( String title, String message ) {
-		showMessageDialog( title, message, JOptionPane.INFORMATION_MESSAGE, null );
-	}
+  public static void showInfo(String title, String message) {
+    showMessageDialog(title, message, JOptionPane.INFORMATION_MESSAGE, null);
+  }
 
-	public static void showInfo( String message ) {
-		showInfo( "", message );
-	}
+  public static void showInfo(String message) {
+    showInfo("", message);
+  }
 
-	private static void showMessageDialog( String title, String message, int messageType, Icon icon ) {
-		show( () -> JOptionPane.showMessageDialog( WindowStack.peek(), message, title, messageType, icon ) );
-	}
+  private static void showMessageDialog(String title, String message, int messageType, Icon icon) {
+    show(() -> JOptionPane.showMessageDialog(WindowStack.peek(), message, title, messageType, icon));
+  }
 
-	private static void show(Runnable showDialog) {
-		if( EventQueue.isDispatchThread()) {
-			showDialog.run();
-		} else {
-			EventQueue.invokeLater( showDialog );
-		}
-	}
+  private static void show(Runnable showDialog) {
+    if (EventQueue.isDispatchThread()) {
+      showDialog.run();
+    } else {
+      EventQueue.invokeLater(showDialog);
+    }
+  }
 }

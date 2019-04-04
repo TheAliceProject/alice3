@@ -51,11 +51,11 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class LineAxisPanel extends AxisPanel {
-	public LineAxisPanel( Composite composite, AwtComponentView<?>... components ) {
-		super( composite, BoxLayout.LINE_AXIS, components );
-	}
+  public LineAxisPanel(Composite composite, AwtComponentView<?>... components) {
+    super(composite, BoxLayout.LINE_AXIS, components);
+  }
 
-	public LineAxisPanel( AwtComponentView<?>... components ) {
-		this( null, components );
-	}
+  public LineAxisPanel(AwtComponentView<?>... components) {
+    this(null, components);
+  }
 }

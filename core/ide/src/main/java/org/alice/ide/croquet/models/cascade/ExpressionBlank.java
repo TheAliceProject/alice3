@@ -59,65 +59,65 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionBlank extends CascadeBlank<Expression> {
-	public static <T> ExpressionBlank getBlankForType( AbstractType<?, ?, ?> type, ValueDetails<T> details ) {
-		ExpressionBlank rv;
-		if( type != null ) {
-			rv = new TypedExpressionBlank( type, details );
-		} else {
-			rv = TypeUnsetBlank.getInstance();
-		}
-		return rv;
-	}
+  public static <T> ExpressionBlank getBlankForType(AbstractType<?, ?, ?> type, ValueDetails<T> details) {
+    ExpressionBlank rv;
+    if (type != null) {
+      rv = new TypedExpressionBlank(type, details);
+    } else {
+      rv = TypeUnsetBlank.getInstance();
+    }
+    return rv;
+  }
 
-	public static <T> ExpressionBlank getBlankForType( AbstractType<?, ?, ?> type ) {
-		return getBlankForType( type, null );
-	}
+  public static <T> ExpressionBlank getBlankForType(AbstractType<?, ?, ?> type) {
+    return getBlankForType(type, null);
+  }
 
-	public static <T> ExpressionBlank getBlankForType( Class<T> cls, ValueDetails<T> details ) {
-		return getBlankForType( JavaType.getInstance( cls ), details );
-	}
+  public static <T> ExpressionBlank getBlankForType(Class<T> cls, ValueDetails<T> details) {
+    return getBlankForType(JavaType.getInstance(cls), details);
+  }
 
-	public static <T> ExpressionBlank getBlankForType( Class<T> cls ) {
-		return getBlankForType( cls, null );
-	}
+  public static <T> ExpressionBlank getBlankForType(Class<T> cls) {
+    return getBlankForType(cls, null);
+  }
 
-	public static ExpressionBlank[] createBlanks( AbstractType<?, ?, ?>... types ) {
-		ExpressionBlank[] rv = new ExpressionBlank[ types.length ];
-		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = getBlankForType( types[ i ] );
-		}
-		return rv;
-	}
+  public static ExpressionBlank[] createBlanks(AbstractType<?, ?, ?>... types) {
+    ExpressionBlank[] rv = new ExpressionBlank[types.length];
+    for (int i = 0; i < rv.length; i++) {
+      rv[i] = getBlankForType(types[i]);
+    }
+    return rv;
+  }
 
-	public static ExpressionBlank[] createBlanks( Class<?>... clses ) {
-		return createBlanks( JavaType.getInstances( clses ) );
-	}
+  public static ExpressionBlank[] createBlanks(Class<?>... clses) {
+    return createBlanks(JavaType.getInstances(clses));
+  }
 
-	private final AbstractType<?, ?, ?> valueType;
-	private final ValueDetails<?> details;
+  private final AbstractType<?, ?, ?> valueType;
+  private final ValueDetails<?> details;
 
-	public ExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
-		this.valueType = valueType;
-		this.details = details;
-	}
+  public ExpressionBlank(AbstractType<?, ?, ?> valueType, ValueDetails<?> details) {
+    this.valueType = valueType;
+    this.details = details;
+  }
 
-	public <T> ExpressionBlank( Class<T> cls, ValueDetails<T> details ) {
-		this( JavaType.getInstance( cls ), details );
-	}
+  public <T> ExpressionBlank(Class<T> cls, ValueDetails<T> details) {
+    this(JavaType.getInstance(cls), details);
+  }
 
-	public <T> ExpressionBlank( Class<T> cls ) {
-		this( cls, null );
-	}
+  public <T> ExpressionBlank(Class<T> cls) {
+    this(cls, null);
+  }
 
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.valueType;
-	}
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.valueType;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getExpressionCascadeManager().appendItems( children, blankNode, this.valueType, this.details );
-		}
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      ide.getExpressionCascadeManager().appendItems(children, blankNode, this.valueType, this.details);
+    }
+  }
 }

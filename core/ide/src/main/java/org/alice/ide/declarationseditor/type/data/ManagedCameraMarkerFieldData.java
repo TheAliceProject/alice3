@@ -48,17 +48,16 @@ import org.lgna.story.SCameraMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 //todo: delete
-@Deprecated
-public class ManagedCameraMarkerFieldData extends AbstractManagedFieldData {
-	public ManagedCameraMarkerFieldData( NamedUserType type ) {
-		super( type );
-	}
+@Deprecated public class ManagedCameraMarkerFieldData extends AbstractManagedFieldData {
+  public ManagedCameraMarkerFieldData(NamedUserType type) {
+    super(type);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( SCameraMarker.class );
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return super.isAcceptableItem(value) && value.valueType.getValue().isAssignableTo(SCameraMarker.class);
+  }
 }

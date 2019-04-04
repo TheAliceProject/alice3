@@ -71,168 +71,168 @@ import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineE
 
 class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 
-	private static Paint FOCUS_PAINT = new Color( 191, 191, 255, 127 );
-	private static Paint ROLLOVER_PAINT = new Color( 191, 191, 191, 127 );
-	private static Paint NORMAL_PAINT = new Color( 221, 221, 221, 127 );
+  private static Paint FOCUS_PAINT = new Color(191, 191, 255, 127);
+  private static Paint ROLLOVER_PAINT = new Color(191, 191, 191, 127);
+  private static Paint NORMAL_PAINT = new Color(221, 221, 221, 127);
 
-	private static Shape createShape( JComponent c ) {
-		int w = c.getWidth() - 1;
-		int h = c.getHeight() - 1;
+  private static Shape createShape(JComponent c) {
+    int w = c.getWidth() - 1;
+    int h = c.getHeight() - 1;
 
-		double x0 = w * 0.25;
-		double x1 = w - x0;
-		double xCenter = ( x0 + x1 ) * 0.5;
+    double x0 = w * 0.25;
+    double x1 = w - x0;
+    double xCenter = (x0 + x1) * 0.5;
 
-		double yA = x0;
-		double yC = h;
-		double yB = yA + ( ( yC - yA ) * 0.8 );
+    double yA = x0;
+    double yC = h;
+    double yB = yA + ((yC - yA) * 0.8);
 
-		GeneralPath path = new GeneralPath();
-		path.moveTo( x0, yA );
-		path.lineTo( x1, yA );
-		path.lineTo( x1, yB );
-		path.lineTo( xCenter, yC );
-		path.lineTo( x0, yB );
-		path.closePath();
-		//java.awt.Shape cap = new java.awt.geom.Ellipse2D.Float( 0, 0, w, w );
-		Shape cap = new RoundRectangle2D.Float( 0, 0, w, w / 2, 8, 8 );
-		return AreaUtilities.createUnion( path, cap );
-	}
+    GeneralPath path = new GeneralPath();
+    path.moveTo(x0, yA);
+    path.lineTo(x1, yA);
+    path.lineTo(x1, yB);
+    path.lineTo(xCenter, yC);
+    path.lineTo(x0, yB);
+    path.closePath();
+    //java.awt.Shape cap = new java.awt.geom.Ellipse2D.Float( 0, 0, w, w );
+    Shape cap = new RoundRectangle2D.Float(0, 0, w, w / 2, 8, 8);
+    return AreaUtilities.createUnion(path, cap);
+  }
 
-	@Override
-	public void paint( Graphics g, JComponent c ) {
-		//note: do not invoke super
-		Graphics2D g2 = (Graphics2D)g;
-		GraphicsContext gc = new GraphicsContext();
-		gc.pushAll( g2 );
-		gc.pushPaint();
-		gc.pushAndSetAntialiasing( true );
-		AbstractButton button = (AbstractButton)c;
-		ButtonModel buttonModel = button.getModel();
-		Paint circlePaint;
-		if( buttonModel.isRollover() ) {
-			circlePaint = ROLLOVER_PAINT;
-		} else {
-			if( button.isFocusOwner() || buttonModel.isSelected() ) {
-				circlePaint = FOCUS_PAINT;
-			} else {
-				circlePaint = NORMAL_PAINT;
-			}
-		}
-		Shape shape = createShape( c );
-		g2.setPaint( circlePaint );
-		g2.fill( shape );
+  @Override
+  public void paint(Graphics g, JComponent c) {
+    //note: do not invoke super
+    Graphics2D g2 = (Graphics2D) g;
+    GraphicsContext gc = new GraphicsContext();
+    gc.pushAll(g2);
+    gc.pushPaint();
+    gc.pushAndSetAntialiasing(true);
+    AbstractButton button = (AbstractButton) c;
+    ButtonModel buttonModel = button.getModel();
+    Paint circlePaint;
+    if (buttonModel.isRollover()) {
+      circlePaint = ROLLOVER_PAINT;
+    } else {
+      if (button.isFocusOwner() || buttonModel.isSelected()) {
+        circlePaint = FOCUS_PAINT;
+      } else {
+        circlePaint = NORMAL_PAINT;
+      }
+    }
+    Shape shape = createShape(c);
+    g2.setPaint(circlePaint);
+    g2.fill(shape);
 
-		Paint drawPaint = button.isSelected() ? Color.BLACK : Color.GRAY;
-		g2.setPaint( drawPaint );
-		g2.draw( shape );
+    Paint drawPaint = button.isSelected() ? Color.BLACK : Color.GRAY;
+    g2.setPaint(drawPaint);
+    g2.draw(shape);
 
-		//todo: base on component size
-		int w = c.getWidth();
-		for( int xLine = 3; xLine < ( w - 3 ); xLine += 3 ) {
-			g2.drawLine( xLine, 4, xLine, 12 );
-		}
+    //todo: base on component size
+    int w = c.getWidth();
+    for (int xLine = 3; xLine < (w - 3); xLine += 3) {
+      g2.drawLine(xLine, 4, xLine, 12);
+    }
 
-		gc.popAll();
-	}
+    gc.popAll();
+  }
 
-	@Override
-	public boolean contains( JComponent c, int x, int y ) {
-		return createShape( c ).contains( x, y );
-	}
+  @Override
+  public boolean contains(JComponent c, int x, int y) {
+    return createShape(c).contains(x, y);
+  }
 }
 
 class JTimeLinePoseMarker extends JToggleButton {
-	public static final Dimension SIZE = new Dimension( 32, 48 );
+  public static final Dimension SIZE = new Dimension(32, 48);
 
-	public JTimeLinePoseMarker( KeyFrameData data, JTimeLineView jView ) {
-		this.keyFrameData = data;
-		this.parent = jView;
-		this.setOpaque( false );
-		this.setRolloverEnabled( true );
-		this.addMouseListener( listener );
-		this.addMouseMotionListener( motionListener );
-		this.setBorder( BorderFactory.createEmptyBorder() );
-		if( data.equals( jView.getComposite().getSelectedKeyFrame() ) ) {
-			setSelected( true );
-		}
-	}
+  public JTimeLinePoseMarker(KeyFrameData data, JTimeLineView jView) {
+    this.keyFrameData = data;
+    this.parent = jView;
+    this.setOpaque(false);
+    this.setRolloverEnabled(true);
+    this.addMouseListener(listener);
+    this.addMouseMotionListener(motionListener);
+    this.setBorder(BorderFactory.createEmptyBorder());
+    if (data.equals(jView.getComposite().getSelectedKeyFrame())) {
+      setSelected(true);
+    }
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return SIZE;
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    return SIZE;
+  }
 
-	@Override
-	public void updateUI() {
-		this.setUI( new TimeLinePoseMarkerUI() );
-	}
+  @Override
+  public void updateUI() {
+    this.setUI(new TimeLinePoseMarkerUI());
+  }
 
-	public KeyFrameData getKeyFrameData() {
-		return keyFrameData;
-	}
+  public KeyFrameData getKeyFrameData() {
+    return keyFrameData;
+  }
 
-	private final JTimeLineView parent;
-	private final KeyFrameData keyFrameData;
-	private final MouseListener listener = new MouseListener() {
+  private final JTimeLineView parent;
+  private final KeyFrameData keyFrameData;
+  private final MouseListener listener = new MouseListener() {
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			if( JTimeLinePoseMarker.this.isSelected() ) {
-				tPressed = keyFrameData.getEventTime();
-				isSliding = true;
-			}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      if (JTimeLinePoseMarker.this.isSelected()) {
+        tPressed = keyFrameData.getEventTime();
+        isSliding = true;
+      }
 
-			//			System.out.println( keyFrameData.getPose().getFakeLeftHandPosition() + " \t " + keyFrameData.getPose().getFakeRightHandPosition() );
-		}
+      //      System.out.println( keyFrameData.getPose().getFakeLeftHandPosition() + " \t " + keyFrameData.getPose().getFakeRightHandPosition() );
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			Logger.outln( e );
-			if( isSliding ) {
-				// TODO not use Application.getActiveInstance().acquireOpenActivity()
-				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      Logger.outln(e);
+      if (isSliding) {
+        // TODO not use Application.getActiveInstance().acquireOpenActivity()
+        UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 
-				double tCurrent = keyFrameData.getEventTime();
-				final double THRESHOLD = 0.0001;
-				if( Math.abs( tCurrent - tPressed ) > THRESHOLD ) {
-					userActivity.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( userActivity, parent.getComposite().getTimeLine(), keyFrameData, tCurrent, tPressed ) );
-					JTimeLinePoseMarker.this.setSelected( true );
-				} else {
-					parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData, tPressed );
-				}
-			}
-			isSliding = false;
-		}
+        double tCurrent = keyFrameData.getEventTime();
+        final double THRESHOLD = 0.0001;
+        if (Math.abs(tCurrent - tPressed) > THRESHOLD) {
+          userActivity.commitAndInvokeDo(new ModifyTimeOfExistingKeyFrameInTimeLineEdit(userActivity, parent.getComposite().getTimeLine(), keyFrameData, tCurrent, tPressed));
+          JTimeLinePoseMarker.this.setSelected(true);
+        } else {
+          parent.getComposite().getTimeLine().moveExistingKeyFrameData(keyFrameData, tPressed);
+        }
+      }
+      isSliding = false;
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-	};
-	private final MouseMotionListener motionListener = new MouseMotionListener() {
+  };
+  private final MouseMotionListener motionListener = new MouseMotionListener() {
 
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-		}
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			if( isSliding ) {
-				parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData, parent.getTime( e ) );
-				revalidate();
-			}
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      if (isSliding) {
+        parent.getComposite().getTimeLine().moveExistingKeyFrameData(keyFrameData, parent.getTime(e));
+        revalidate();
+      }
 
-		}
-	};
-	private boolean isSliding;
-	private double tPressed;
+    }
+  };
+  private boolean isSliding;
+  private double tPressed;
 }

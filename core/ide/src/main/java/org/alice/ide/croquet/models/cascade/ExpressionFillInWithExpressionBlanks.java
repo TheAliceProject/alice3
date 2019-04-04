@@ -52,7 +52,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillInWithExpressionBlanks<F extends Expression> extends ExpressionFillInWithBlanks<F, Expression> {
-	public ExpressionFillInWithExpressionBlanks( UUID id, CascadeBlank<Expression>... blanks ) {
-		super( id, Expression.class, blanks );
-	}
+  public ExpressionFillInWithExpressionBlanks(UUID id, CascadeBlank<Expression>... blanks) {
+    super(id, Expression.class, blanks);
+  }
 }

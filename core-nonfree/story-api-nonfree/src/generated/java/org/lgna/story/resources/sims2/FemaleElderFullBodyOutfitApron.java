@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitApron implements FemaleElderFullBodyOutfit {
-	FAST_FOOD,
-	CLERK;
+  FAST_FOOD, CLERK
 
 }

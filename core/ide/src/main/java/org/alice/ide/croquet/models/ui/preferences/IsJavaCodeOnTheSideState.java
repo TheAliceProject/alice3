@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsJavaCodeOnTheSideState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsJavaCodeOnTheSideState instance = new IsJavaCodeOnTheSideState();
-	}
+  private static class SingletonHolder {
+    private static IsJavaCodeOnTheSideState instance = new IsJavaCodeOnTheSideState();
+  }
 
-	public static IsJavaCodeOnTheSideState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsJavaCodeOnTheSideState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsJavaCodeOnTheSideState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "cab8417a-b29f-4a27-93de-c89876312e25" ), false );
-	}
+  private IsJavaCodeOnTheSideState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("cab8417a-b29f-4a27-93de-c89876312e25"), false);
+  }
 }

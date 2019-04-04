@@ -9,5 +9,5 @@ import org.lgna.project.Project;
  * NodeMigrations describe the specific work to be on a node in the AST.
  */
 public interface NodeMigration {
-	void migrateNode(Crawlable node, Project projectIfApplicable);
+  void migrateNode(Crawlable node, Project projectIfApplicable);
 }

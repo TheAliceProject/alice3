@@ -57,29 +57,29 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceBlank extends CascadeBlank<Expression> {
-	private static Map<AbstractType<?, ?, ?>, GalleryResourceBlank> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, GalleryResourceBlank> map = Maps.newHashMap();
 
-	public static GalleryResourceBlank getInstance( AbstractType<?, ?, ?> value ) {
-		synchronized( map ) {
-			GalleryResourceBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new GalleryResourceBlank( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static GalleryResourceBlank getInstance(AbstractType<?, ?, ?> value) {
+    synchronized (map) {
+      GalleryResourceBlank rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new GalleryResourceBlank(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private GalleryResourceBlank( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  private GalleryResourceBlank(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
-		GalleryResourceUtilities.updateChildren( children, blankNode, this.type );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+    GalleryResourceUtilities.updateChildren(children, blankNode, this.type);
+  }
 }

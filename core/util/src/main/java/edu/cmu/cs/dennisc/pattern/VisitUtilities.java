@@ -50,34 +50,34 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class VisitUtilities {
-	public static <E extends Visitable> Iterable<E> getAll( Visitable visitable, final Class<E> cls ) {
-		final List<E> rv = new LinkedList<E>();
-		visitable.accept( new Visitor() {
-			@Override
-			public void visit( Visitable visitable ) {
-				if( cls.isAssignableFrom( visitable.getClass() ) ) {
-					rv.add( (E)visitable );
-				}
-			}
-		} );
-		return rv;
-	}
+  public static <E extends Visitable> Iterable<E> getAll(Visitable visitable, final Class<E> cls) {
+    final List<E> rv = new LinkedList<E>();
+    visitable.accept(new Visitor() {
+      @Override
+      public void visit(Visitable visitable) {
+        if (cls.isAssignableFrom(visitable.getClass())) {
+          rv.add((E) visitable);
+        }
+      }
+    });
+    return rv;
+  }
 
-	public static <E extends Visitable> E getFirst( Visitable visitable, final Class<E> cls ) {
-		final E[] buffer = (E[])Array.newInstance( cls, 1 );
-		visitable.accept( new Visitor() {
-			@Override
-			public void visit( Visitable visitable ) {
-				if( buffer[ 0 ] != null ) {
-					//pass
-				} else {
-					if( cls.isAssignableFrom( visitable.getClass() ) ) {
-						buffer[ 0 ] = (E)visitable;
-						//todo: break
-					}
-				}
-			}
-		} );
-		return buffer[ 0 ];
-	}
+  public static <E extends Visitable> E getFirst(Visitable visitable, final Class<E> cls) {
+    final E[] buffer = (E[]) Array.newInstance(cls, 1);
+    visitable.accept(new Visitor() {
+      @Override
+      public void visit(Visitable visitable) {
+        if (buffer[0] != null) {
+          //pass
+        } else {
+          if (cls.isAssignableFrom(visitable.getClass())) {
+            buffer[0] = (E) visitable;
+            //todo: break
+          }
+        }
+      }
+    });
+    return buffer[0];
+  }
 }

@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildTopPieceHalter implements FemaleChildTopPiece {
-	PINK_STRIP,
-	GREEN_STRIP,
-	BLUE_STRIP;
+  PINK_STRIP, GREEN_STRIP, BLUE_STRIP
 
 }

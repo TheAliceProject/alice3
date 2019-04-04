@@ -57,67 +57,67 @@ import java.io.Writer;
  * @author Dennis Cosgrove
  */
 public class TextFileUtilities {
-	public static String read( Reader reader ) {
-		final String SEPARATOR = System.getProperty( "line.separator" );
-		BufferedReader bufferedReader = new BufferedReader( reader );
-		try {
-			try {
-				StringBuffer sb = new StringBuffer();
-				String line;
-				while( true ) {
-					line = bufferedReader.readLine();
-					if( line != null ) {
-						sb.append( line );
-						sb.append( SEPARATOR );
-					} else {
-						break;
-					}
-				}
-				return sb.toString();
-			} finally {
-				bufferedReader.close();
-			}
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static String read(Reader reader) {
+    final String SEPARATOR = System.getProperty("line.separator");
+    BufferedReader bufferedReader = new BufferedReader(reader);
+    try {
+      try {
+        StringBuffer sb = new StringBuffer();
+        String line;
+        while (true) {
+          line = bufferedReader.readLine();
+          if (line != null) {
+            sb.append(line);
+            sb.append(SEPARATOR);
+          } else {
+            break;
+          }
+        }
+        return sb.toString();
+      } finally {
+        bufferedReader.close();
+      }
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	public static String read( InputStream is ) {
-		return read( new InputStreamReader( is ) );
-	}
+  public static String read(InputStream is) {
+    return read(new InputStreamReader(is));
+  }
 
-	public static String read( File file ) {
-		try {
-			return read( new FileReader( file ) );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static String read(File file) {
+    try {
+      return read(new FileReader(file));
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	public static String read( String path ) {
-		return read( new File( path ) );
-	}
+  public static String read(String path) {
+    return read(new File(path));
+  }
 
-	public static void write( Writer writer, String contents ) {
-		try {
-			BufferedWriter bufferedWriter = new BufferedWriter( writer );
-			try {
-				bufferedWriter.write( contents );
-				bufferedWriter.flush();
-			} finally {
-				bufferedWriter.close();
-			}
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static void write(Writer writer, String contents) {
+    try {
+      BufferedWriter bufferedWriter = new BufferedWriter(writer);
+      try {
+        bufferedWriter.write(contents);
+        bufferedWriter.flush();
+      } finally {
+        bufferedWriter.close();
+      }
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	public static void write( File file, String contents ) {
-		file.getParentFile().mkdirs();
-		try {
-			write( new FileWriter( file ), contents );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public static void write(File file, String contents) {
+    file.getParentFile().mkdirs();
+    try {
+      write(new FileWriter(file), contents);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 }

@@ -53,8 +53,8 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredListPropertySingleSelectListState<E> extends RefreshableDataSingleSelectListState<E> {
-	public FilteredListPropertySingleSelectListState( Group group, UUID id, int selectionIndex, FilteredListPropertyData<E> data ) {
-		super( group, id, selectionIndex, data );
-		//this.updateData();
-	}
+  public FilteredListPropertySingleSelectListState(Group group, UUID id, int selectionIndex, FilteredListPropertyData<E> data) {
+    super(group, id, selectionIndex, data);
+    //this.updateData();
+  }
 }

@@ -62,88 +62,88 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public enum NilRenderFactory implements RenderFactory {
-	INSTANCE;
+  INSTANCE;
 
-	@Override
-	public ImageBuffer createImageBuffer( Color4f backgroundColor ) {
-		return new NrImageBuffer( backgroundColor );
-	}
+  @Override
+  public ImageBuffer createImageBuffer(Color4f backgroundColor) {
+    return new NrImageBuffer(backgroundColor);
+  }
 
-	@Override
-	public ImageBuffer createTransparentBackgroundImageBuffer() {
-		return this.createImageBuffer( null );
-	}
+  @Override
+  public ImageBuffer createTransparentBackgroundImageBuffer() {
+    return this.createImageBuffer(null);
+  }
 
-	@Override
-	public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		return new NrHeavyweightOnscreenRenderTarget( requestedCapabilities );
-	}
+  @Override
+  public HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    return new NrHeavyweightOnscreenRenderTarget(requestedCapabilities);
+  }
 
-	@Override
-	public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		return new NrLightweightOnscreenRenderTarget( requestedCapabilities );
-	}
+  @Override
+  public LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    return new NrLightweightOnscreenRenderTarget(requestedCapabilities);
+  }
 
-	@Override
-	public OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		return new NrOffscreenRenderTarget( width, height, renderTargetToShareContextWith, requestedCapabilities );
-	}
+  @Override
+  public OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    return new NrOffscreenRenderTarget(width, height, renderTargetToShareContextWith, requestedCapabilities);
+  }
 
-	@Override
-	public ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		return new NrImageCaptureRenderTarget( width, height, renderTargetToShareContextWith, requestedCapabilities );
-	}
+  @Override
+  public ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    return new NrImageCaptureRenderTarget(width, height, renderTargetToShareContextWith, requestedCapabilities);
+  }
 
-	@Override
-	public void acquireRenderingLock() {
-	}
+  @Override
+  public void acquireRenderingLock() {
+  }
 
-	@Override
-	public void releaseRenderingLock() {
-	}
+  @Override
+  public void releaseRenderingLock() {
+  }
 
-	@Override
-	public void addAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.add( automaticDisplayListener );
-	}
+  @Override
+  public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
+    this.automaticDisplayListeners.add(automaticDisplayListener);
+  }
 
-	@Override
-	public void removeAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener ) {
-		this.automaticDisplayListeners.remove( automaticDisplayListener );
-	}
+  @Override
+  public void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
+    this.automaticDisplayListeners.remove(automaticDisplayListener);
+  }
 
-	@Override
-	public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
-		return Collections.unmodifiableList( this.automaticDisplayListeners );
-	}
+  @Override
+  public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
+    return Collections.unmodifiableList(this.automaticDisplayListeners);
+  }
 
-	@Override
-	public int getAutomaticDisplayCount() {
-		return this.automaticDisplayCount;
-	}
+  @Override
+  public int getAutomaticDisplayCount() {
+    return this.automaticDisplayCount;
+  }
 
-	@Override
-	public void incrementAutomaticDisplayCount() {
-		this.automaticDisplayCount++;
-	}
+  @Override
+  public void incrementAutomaticDisplayCount() {
+    this.automaticDisplayCount++;
+  }
 
-	@Override
-	public void decrementAutomaticDisplayCount() {
-		this.automaticDisplayCount--;
-	}
+  @Override
+  public void decrementAutomaticDisplayCount() {
+    this.automaticDisplayCount--;
+  }
 
-	@Override
-	public void invokeLater( Runnable runnable ) {
-	}
+  @Override
+  public void invokeLater(Runnable runnable) {
+  }
 
-	@Override
-	public void invokeAndWait( Runnable runnable ) throws InterruptedException, InvocationTargetException {
-	}
+  @Override
+  public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
+  }
 
-	@Override
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable ) {
-	}
+  @Override
+  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable) {
+  }
 
-	private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
-	private int automaticDisplayCount;
+  private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
+  private int automaticDisplayCount;
 }

@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenBottomPieceBoardShorts implements MaleTeenBottomPiece {
-	BLUE_SKATE,
-	GREEN_SKATE,
-	RED_RUST_SKATE;
+  BLUE_SKATE, GREEN_SKATE, RED_RUST_SKATE
 
 }

@@ -60,68 +60,68 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MarkersToolPalette<V extends MarkersView> extends SideToolPalette<V> {
-	private final RefreshableDataSingleSelectListState<UserField> markerListState;
+  private final RefreshableDataSingleSelectListState<UserField> markerListState;
 
-	private NamedUserType sceneType = null;
+  private NamedUserType sceneType = null;
 
-	private final SimplifiedListPropertyAdapter<UserField> sceneTypeFieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
-		@Override
-		protected void changing( ListPropertyEvent<UserField> e ) {
-		}
+  private final SimplifiedListPropertyAdapter<UserField> sceneTypeFieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
+    @Override
+    protected void changing(ListPropertyEvent<UserField> e) {
+    }
 
-		@Override
-		protected void changed( ListPropertyEvent<UserField> e ) {
-			updateTitle();
-		}
-	};
+    @Override
+    protected void changed(ListPropertyEvent<UserField> e) {
+      updateTitle();
+    }
+  };
 
-	private final ValueListener<NamedUserType> sceneTypeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			if( sceneType != null ) {
-				sceneType.fields.removeListPropertyListener( sceneTypeFieldsListener );
-			}
-			sceneType = e.getNextValue();
-			NodeListProperty<UserField> fieldProperty;
-			if( sceneType != null ) {
-				fieldProperty = sceneType.fields;
-			} else {
-				fieldProperty = null;
-			}
+  private final ValueListener<NamedUserType> sceneTypeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      if (sceneType != null) {
+        sceneType.fields.removeListPropertyListener(sceneTypeFieldsListener);
+      }
+      sceneType = e.getNextValue();
+      NodeListProperty<UserField> fieldProperty;
+      if (sceneType != null) {
+        fieldProperty = sceneType.fields;
+      } else {
+        fieldProperty = null;
+      }
 
-			( (MarkerFieldData)markerListState.getData() ).setListProperty( fieldProperty );
-			updateTitle();
+      ((MarkerFieldData) markerListState.getData()).setListProperty(fieldProperty);
+      updateTitle();
 
-			if( sceneType != null ) {
-				sceneType.fields.addListPropertyListener( sceneTypeFieldsListener );
-			}
-		}
-	};
+      if (sceneType != null) {
+        sceneType.fields.addListPropertyListener(sceneTypeFieldsListener);
+      }
+    }
+  };
 
-	public MarkersToolPalette( UUID migrationId, MarkerFieldData markerFieldData ) {
-		super( migrationId, false );
-		this.markerListState = this.createRefreshableListState( "markerListState", markerFieldData, -1 );
-		SceneTypeMetaState.getInstance().addAndInvokeValueListener( this.sceneTypeListener );
-	}
+  public MarkersToolPalette(UUID migrationId, MarkerFieldData markerFieldData) {
+    super(migrationId, false);
+    this.markerListState = this.createRefreshableListState("markerListState", markerFieldData, -1);
+    SceneTypeMetaState.getInstance().addAndInvokeValueListener(this.sceneTypeListener);
+  }
 
-	public abstract Operation getMoveMarkerToOperation();
+  public abstract Operation getMoveMarkerToOperation();
 
-	public abstract Operation getMoveToMarkerOperation();
+  public abstract Operation getMoveToMarkerOperation();
 
-	public RefreshableDataSingleSelectListState<UserField> getMarkerListState() {
-		return this.markerListState;
-	}
+  public RefreshableDataSingleSelectListState<UserField> getMarkerListState() {
+    return this.markerListState;
+  }
 
-	public abstract Operation getAddOperation();
+  public abstract Operation getAddOperation();
 
-	@Override
-	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
-		text = super.modifyTextIfNecessary( text, isExpanded );
-		text += " (" + this.markerListState.getItemCount() + ")";
-		return text;
-	}
+  @Override
+  protected String modifyTextIfNecessary(String text, boolean isExpanded) {
+    text = super.modifyTextIfNecessary(text, isExpanded);
+    text += " (" + this.markerListState.getItemCount() + ")";
+    return text;
+  }
 
-	private void updateTitle() {
-		this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
-	}
+  private void updateTitle() {
+    this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
+  }
 }

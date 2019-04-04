@@ -60,36 +60,36 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class PotentialNameChangerHelpView extends BorderPanel {
-	private final MigPanel keepBothPanel = new MigPanel( null, "fill" );
+  private final MigPanel keepBothPanel = new MigPanel(null, "fill");
 
-	public PotentialNameChangerHelpView( PotentialNameChangerHelpComposite<?, ?, ?> composite ) {
-		super( composite );
-		AbstractLabel label = composite.getHeader().createLabel();
-		label.setIcon( IconUtilities.getQuestionIcon() );
-		label.setOpaque( true );
-		label.setBackgroundColor( Color.WHITE );
-		label.setVerticalTextPosition( VerticalTextPosition.TOP );
-		label.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		label.getAwtComponent().setIconTextGap( 12 );
-		this.addPageStartComponent( label );
+  public PotentialNameChangerHelpView(PotentialNameChangerHelpComposite<?, ?, ?> composite) {
+    super(composite);
+    AbstractLabel label = composite.getHeader().createLabel();
+    label.setIcon(IconUtilities.getQuestionIcon());
+    label.setOpaque(true);
+    label.setBackgroundColor(Color.WHITE);
+    label.setVerticalTextPosition(VerticalTextPosition.TOP);
+    label.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    label.getAwtComponent().setIconTextGap(12);
+    this.addPageStartComponent(label);
 
-		MigPanel previewPanel = new MigPanel();
-		previewPanel.addComponent( composite.getImportNameText().createLabel(), "wrap" );
-		previewPanel.addComponent( MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub(), true ), "wrap" );
-		previewPanel.addComponent( composite.getProjectNameText().createLabel(), "wrap" );
-		previewPanel.addComponent( MemberPreviewPane.createView( composite.getPotentialNameChanger().getProjectHub(), true ), "wrap" );
-		this.addCenterComponent( previewPanel );
+    MigPanel previewPanel = new MigPanel();
+    previewPanel.addComponent(composite.getImportNameText().createLabel(), "wrap");
+    previewPanel.addComponent(MemberPreviewPane.createView(composite.getPotentialNameChanger().getImportHub(), true), "wrap");
+    previewPanel.addComponent(composite.getProjectNameText().createLabel(), "wrap");
+    previewPanel.addComponent(MemberPreviewPane.createView(composite.getPotentialNameChanger().getProjectHub(), true), "wrap");
+    this.addCenterComponent(previewPanel);
 
-		ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
+    ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
-		PotentialNameChanger<?> potentialNameChanger = composite.getPotentialNameChanger();
-		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
-		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
-		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
-	}
+    PotentialNameChanger<?> potentialNameChanger = composite.getPotentialNameChanger();
+    this.keepBothPanel.addComponent(composite.getImportNameText().createLabel(), "align right");
+    this.keepBothPanel.addComponent(MemberViewUtilities.createTextField(potentialNameChanger.getImportHub().getNameState(), foregroundCustomizer), "wrap");
+    this.keepBothPanel.addComponent(composite.getProjectNameText().createLabel(), "align right");
+    this.keepBothPanel.addComponent(MemberViewUtilities.createTextField(potentialNameChanger.getProjectHub().getNameState(), foregroundCustomizer), "wrap");
+  }
 
-	public MigPanel getKeepBothPanel() {
-		return this.keepBothPanel;
-	}
+  public MigPanel getKeepBothPanel() {
+    return this.keepBothPanel;
+  }
 }

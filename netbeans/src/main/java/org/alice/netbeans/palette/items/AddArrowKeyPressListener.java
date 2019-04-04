@@ -47,11 +47,10 @@ package org.alice.netbeans.palette.items;
  * @author Dennis Cosgrove
  */
 public class AddArrowKeyPressListener extends AbstractActiveEditorDrop {
-	@Override
-	protected String[] getImports() {
-		return new String[] {
-			//"org.lgna.story.event.ArrowKeyPressListener",
-			"org.lgna.story.event.ArrowKeyEvent"
-		};
-	}
+  @Override
+  protected String[] getImports() {
+    return new String[] {
+        //"org.lgna.story.event.ArrowKeyPressListener",
+        "org.lgna.story.event.ArrowKeyEvent"};
+  }
 }

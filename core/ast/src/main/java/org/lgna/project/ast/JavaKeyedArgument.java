@@ -49,43 +49,43 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class JavaKeyedArgument extends AbstractArgument {
-	//	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
-	//		@Override
-	//		public boolean isReference() {
-	//			return true;
-	//		}
-	//	};
-	public JavaKeyedArgument() {
-	}
+  //  public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
+  //    @Override
+  //    public boolean isReference() {
+  //      return true;
+  //    }
+  //  };
+  public JavaKeyedArgument() {
+  }
 
-	public JavaKeyedArgument( AbstractParameter parameter, JavaMethod keyMethod, Expression... argumentExpressions ) {
-		super( parameter, AstUtilities.createStaticMethodInvocation( keyMethod, argumentExpressions ) );
-	}
+  public JavaKeyedArgument(AbstractParameter parameter, JavaMethod keyMethod, Expression... argumentExpressions) {
+    super(parameter, AstUtilities.createStaticMethodInvocation(keyMethod, argumentExpressions));
+  }
 
-	public JavaMethod getKeyMethod() {
-		Expression expression = this.expression.getValue();
-		if( expression != null ) {
-			assert expression instanceof MethodInvocation;
-			MethodInvocation methodInvocation = (MethodInvocation)expression;
-			assert methodInvocation.method.getValue() instanceof JavaMethod;
-			return (JavaMethod)methodInvocation.method.getValue();
-		} else {
-			return null;
-		}
-	}
+  public JavaMethod getKeyMethod() {
+    Expression expression = this.expression.getValue();
+    if (expression != null) {
+      assert expression instanceof MethodInvocation;
+      MethodInvocation methodInvocation = (MethodInvocation) expression;
+      assert methodInvocation.method.getValue() instanceof JavaMethod;
+      return (JavaMethod) methodInvocation.method.getValue();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType ) {
-		return parameterType.getComponentType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getExpressionTypeForParameterType(AbstractType<?, ?, ?> parameterType) {
+    return parameterType.getComponentType();
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.expression.getValue());
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendKeyedArgument(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendKeyedArgument(this);
+  }
 }

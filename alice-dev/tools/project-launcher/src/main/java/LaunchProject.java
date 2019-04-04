@@ -45,55 +45,55 @@
  * @author Dennis Cosgrove
  */
 public class LaunchProject {
-	private static class LaunchProgramAction extends javax.swing.AbstractAction {
-		public LaunchProgramAction( org.lgna.project.ast.NamedUserType programType, int defaultCloseOperation ) {
-			this.putValue( NAME, "launch" );
-			this.programType = programType;
-			this.defaultCloseOperation = defaultCloseOperation;
-		}
+  private static class LaunchProgramAction extends javax.swing.AbstractAction {
+    public LaunchProgramAction(org.lgna.project.ast.NamedUserType programType, int defaultCloseOperation) {
+      this.putValue(NAME, "launch");
+      this.programType = programType;
+      this.defaultCloseOperation = defaultCloseOperation;
+    }
 
-		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( programType );
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+      org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext(programType);
 
-			javax.swing.JFrame frame = new javax.swing.JFrame();
-			frame.setDefaultCloseOperation( this.defaultCloseOperation );
-			runProgramContext.initializeInContainer( frame.getContentPane(), 640, 360 );
-			frame.pack();
-			frame.setVisible( true );
+      javax.swing.JFrame frame = new javax.swing.JFrame();
+      frame.setDefaultCloseOperation(this.defaultCloseOperation);
+      runProgramContext.initializeInContainer(frame.getContentPane(), 640, 360);
+      frame.pack();
+      frame.setVisible(true);
 
-			runProgramContext.setActiveScene();
-		}
+      runProgramContext.setActiveScene();
+    }
 
-		private final org.lgna.project.ast.NamedUserType programType;
-		private final int defaultCloseOperation;
-	}
+    private final org.lgna.project.ast.NamedUserType programType;
+    private final int defaultCloseOperation;
+  }
 
-	public static void main( String[] args ) throws Exception {
-		org.lgna.project.ast.NamedUserType programType;
-		if( args.length > 0 ) {
-			String path = args[ 0 ];
-			java.io.File file = new java.io.File( path );
-			assert file.exists() : path;
-			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( file );
-			programType = project.getProgramType();
-		} else {
-			org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
-			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-		}
+  public static void main(String[] args) throws Exception {
+    org.lgna.project.ast.NamedUserType programType;
+    if (args.length > 0) {
+      String path = args[0];
+      java.io.File file = new java.io.File(path);
+      assert file.exists() : path;
+      org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject(file);
+      programType = project.getProgramType();
+    } else {
+      org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+      programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor());
+    }
 
-		final boolean IS_LAUNCH_BUTTON_DESIRED = true;
+    final boolean IS_LAUNCH_BUTTON_DESIRED = true;
 
-		LaunchProgramAction action = new LaunchProgramAction( programType, IS_LAUNCH_BUTTON_DESIRED ? javax.swing.JFrame.DISPOSE_ON_CLOSE : javax.swing.JFrame.EXIT_ON_CLOSE );
+    LaunchProgramAction action = new LaunchProgramAction(programType, IS_LAUNCH_BUTTON_DESIRED ? javax.swing.JFrame.DISPOSE_ON_CLOSE : javax.swing.JFrame.EXIT_ON_CLOSE);
 
-		if( IS_LAUNCH_BUTTON_DESIRED ) {
-			javax.swing.JFrame frame = new javax.swing.JFrame();
-			frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-			frame.getContentPane().add( new javax.swing.JButton( action ) );
-			frame.pack();
-			frame.setVisible( true );
-		} else {
-			action.actionPerformed( null );
-		}
-	}
+    if (IS_LAUNCH_BUTTON_DESIRED) {
+      javax.swing.JFrame frame = new javax.swing.JFrame();
+      frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+      frame.getContentPane().add(new javax.swing.JButton(action));
+      frame.pack();
+      frame.setVisible(true);
+    } else {
+      action.actionPerformed(null);
+    }
+  }
 }

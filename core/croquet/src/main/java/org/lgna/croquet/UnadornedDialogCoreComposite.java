@@ -52,46 +52,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends AbstractDialogComposite<V> {
-	public UnadornedDialogCoreComposite( UUID migrationId, IsModal isModal ) {
-		super( migrationId, isModal );
-	}
+  public UnadornedDialogCoreComposite(UUID migrationId, IsModal isModal) {
+    super(migrationId, isModal);
+  }
 
-	@Override
-	protected CompositeView<?, ?> allocateView() {
-		//todo
-		return this.getView();
-	}
+  @Override
+  protected CompositeView<?, ?> allocateView() {
+    //todo
+    return this.getView();
+  }
 
-	@Override
-	protected void releaseView( CompositeView<?, ?> view ) {
-		super.releaseView();
-		//todo
-	}
+  @Override
+  protected void releaseView(CompositeView<?, ?> view) {
+    super.releaseView();
+    //todo
+  }
 
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		//todo
-		return null;
-	}
+  @Override
+  protected GoldenRatioPolicy getGoldenRatioPolicy() {
+    //todo
+    return null;
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.handlePreActivation();
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.handlePreActivation();
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		this.handlePostDeactivation();
-		if (openingActivity.isPending()) {
-			openingActivity.cancel();
-		}
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    this.handlePostDeactivation();
+    if (openingActivity.isPending()) {
+      openingActivity.cancel();
+    }
+  }
 
-	public void perform( UserActivity userActivity ) {
-		this.showDialog( userActivity );
-	}
+  public void perform(UserActivity userActivity) {
+    this.showDialog(userActivity);
+  }
 
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  public String modifyNameIfNecessary(String text) {
+    return text;
+  }
 }

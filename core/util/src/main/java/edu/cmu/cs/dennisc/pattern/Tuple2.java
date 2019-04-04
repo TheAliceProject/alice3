@@ -51,58 +51,58 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 //todo: make immutable, override hashCode
 public class Tuple2<A, B> {
 
-	public static <A, B> Tuple2<A, B> createInstance( A a, B b ) {
-		return new Tuple2<A, B>( a, b );
-	}
+  public static <A, B> Tuple2<A, B> createInstance(A a, B b) {
+    return new Tuple2<A, B>(a, b);
+  }
 
-	private A a;
-	private B b;
+  private A a;
+  private B b;
 
-	private Tuple2( A a, B b ) {
-		this.a = a;
-		this.b = b;
-	}
+  private Tuple2(A a, B b) {
+    this.a = a;
+    this.b = b;
+  }
 
-	public A getA() {
-		return this.a;
-	}
+  public A getA() {
+    return this.a;
+  }
 
-	@Deprecated
-	public void setA( A a ) {
-		this.a = a;
-	}
+  @Deprecated
+  public void setA(A a) {
+    this.a = a;
+  }
 
-	public B getB() {
-		return this.b;
-	}
+  public B getB() {
+    return this.b;
+  }
 
-	@Deprecated
-	public void setB( B b ) {
-		this.b = b;
-	}
+  @Deprecated
+  public void setB(B b) {
+    this.b = b;
+  }
 
-	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple2<?, ?> ) {
-				Tuple2<?, ?> otherT = (Tuple2<?, ?>)other;
-				return Objects.equals( this.a, otherT.a ) && Objects.equals( this.b, otherT.b );
-			} else {
-				return false;
-			}
-		}
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (super.equals(other)) {
+      return true;
+    } else {
+      if (other instanceof Tuple2<?, ?>) {
+        Tuple2<?, ?> otherT = (Tuple2<?, ?>) other;
+        return Objects.equals(this.a, otherT.a) && Objects.equals(this.b, otherT.b);
+      } else {
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple2[ a=" );
-		sb.append( this.a );
-		sb.append( ", b=" );
-		sb.append( this.b );
-		sb.append( " ]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("edu.cmu.cs.dennisc.pattern.Tuple2[ a=");
+    sb.append(this.a);
+    sb.append(", b=");
+    sb.append(this.b);
+    sb.append(" ]");
+    return sb.toString();
+  }
 }

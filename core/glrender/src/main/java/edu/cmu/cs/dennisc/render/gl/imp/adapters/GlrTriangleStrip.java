@@ -50,27 +50,26 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 import edu.cmu.cs.dennisc.scenegraph.TriangleStrip;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrTriangleStrip extends GlrVertexGeometry<TriangleStrip> {
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		renderPrimative( rc, GL_TRIANGLE_STRIP );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    renderPrimative(rc, GL_TRIANGLE_STRIP);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		pickPrimative( pc, GL_TRIANGLE_STRIP );
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pickPrimative(pc, GL_TRIANGLE_STRIP);
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		//todo
-		rv.setNaN();
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    //todo
+    rv.setNaN();
+    return rv;
+  }
 }

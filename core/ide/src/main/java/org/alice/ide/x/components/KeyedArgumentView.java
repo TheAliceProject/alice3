@@ -50,13 +50,13 @@ import org.lgna.project.ast.JavaKeyedArgument;
  * @author Dennis Cosgrove
  */
 public class KeyedArgumentView extends ArgumentView<JavaKeyedArgument> {
-	public KeyedArgumentView( AstI18nFactory factory, JavaKeyedArgument keyedArgument ) {
-		super( factory, keyedArgument );
-	}
+  public KeyedArgumentView(AstI18nFactory factory, JavaKeyedArgument keyedArgument) {
+    super(factory, keyedArgument);
+  }
 
-	@Override
-	protected String getName() {
-		//return this.getArgument().keyMethod.getValue().getName();
-		return null;
-	}
+  @Override
+  protected String getName() {
+    //return this.getArgument().keyMethod.getValue().getName();
+    return null;
+  }
 }

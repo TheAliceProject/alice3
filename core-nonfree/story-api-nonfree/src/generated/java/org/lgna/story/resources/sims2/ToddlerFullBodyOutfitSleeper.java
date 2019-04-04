@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ToddlerFullBodyOutfitSleeper implements MaleToddlerFullBodyOutfit, FemaleToddlerFullBodyOutfit {
-	BLUE,
-	PINK,
-	YELLOW;
+  BLUE, PINK, YELLOW
 
 }

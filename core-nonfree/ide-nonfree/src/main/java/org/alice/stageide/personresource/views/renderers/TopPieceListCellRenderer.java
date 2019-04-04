@@ -48,20 +48,20 @@ import org.lgna.story.resources.sims2.TopPiece;
  * @author Dennis Cosgrove
  */
 public class TopPieceListCellRenderer extends IngredientListCellRenderer<TopPiece> {
-	private static class SingletonHolder {
-		private static TopPieceListCellRenderer instance = new TopPieceListCellRenderer();
-	}
+  private static class SingletonHolder {
+    private static TopPieceListCellRenderer instance = new TopPieceListCellRenderer();
+  }
 
-	public static TopPieceListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TopPieceListCellRenderer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TopPieceListCellRenderer() {
-		super( 60, 100 );
-	}
+  private TopPieceListCellRenderer() {
+    super(60, 100);
+  }
 
-	@Override
-	protected String getSubPath() {
-		return "toppiece_pictures";
-	}
+  @Override
+  protected String getSubPath() {
+    return "toppiece_pictures";
+  }
 }

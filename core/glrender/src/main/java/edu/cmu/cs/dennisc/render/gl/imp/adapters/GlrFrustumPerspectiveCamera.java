@@ -57,57 +57,57 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<FrustumPerspectiveCamera> {
-	private static final ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
+  private static final ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
 
-	@Override
-	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
-		throw new RuntimeException( "TODO" );
-	}
+  @Override
+  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+    throw new RuntimeException("TODO");
+  }
 
-	@Override
-	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
-		ClippedZPlane actualPicturePlane = getActualPicturePlane( new ClippedZPlane(), actualViewport );
-		double left = actualPicturePlane.getXMinimum();
-		double right = actualPicturePlane.getXMaximum();
-		double bottom = actualPicturePlane.getYMinimum();
-		double top = actualPicturePlane.getYMaximum();
+  @Override
+  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+    ClippedZPlane actualPicturePlane = getActualPicturePlane(new ClippedZPlane(), actualViewport);
+    double left = actualPicturePlane.getXMinimum();
+    double right = actualPicturePlane.getXMaximum();
+    double bottom = actualPicturePlane.getYMinimum();
+    double top = actualPicturePlane.getYMaximum();
 
-		double zNear = owner.nearClippingPlaneDistance.getValue();
-		double zFar = owner.farClippingPlaneDistance.getValue();
+    double zNear = owner.nearClippingPlaneDistance.getValue();
+    double zFar = owner.farClippingPlaneDistance.getValue();
 
-		rv.right.set( 2 * zNear, 0, 0, 0 );
-		rv.up.set( 0, ( 2 * zNear ) / ( top - bottom ), 0, 0 );
-		rv.backward.set( ( right + left ) / ( right - left ), ( top + bottom ) / ( top - bottom ), -( zFar + zNear ) / ( zFar + zNear ), -1 );
-		rv.translation.set( 0, 0, -( 2 * zFar * zNear ) / ( zFar - zNear ), 0 );
+    rv.right.set(2 * zNear, 0, 0, 0);
+    rv.up.set(0, (2 * zNear) / (top - bottom), 0, 0);
+    rv.backward.set((right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear), -1);
+    rv.translation.set(0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0);
 
-		return rv;
-	}
+    return rv;
+  }
 
-	@Override
-	protected Rectangle performLetterboxing( Rectangle rv ) {
-		//todo: handle NaN
-		return rv;
-	}
+  @Override
+  protected Rectangle performLetterboxing(Rectangle rv) {
+    //todo: handle NaN
+    return rv;
+  }
 
-	public ClippedZPlane getActualPicturePlane( ClippedZPlane rv, Rectangle actualViewport ) {
-		rv.set( owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI( actualViewport ) );
-		return rv;
-	}
+  public ClippedZPlane getActualPicturePlane(ClippedZPlane rv, Rectangle actualViewport) {
+    rv.set(owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI(actualViewport));
+    return rv;
+  }
 
-	@Override
-	protected void setupProjection( Context context, Rectangle actualViewport, float near, float far ) {
-		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
-			context.gl.glFrustum( s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far );
-		}
-	}
+  @Override
+  protected void setupProjection(Context context, Rectangle actualViewport, float near, float far) {
+    synchronized (s_actualPicturePlaneBufferForReuse) {
+      getActualPicturePlane(s_actualPicturePlaneBufferForReuse, actualViewport);
+      context.gl.glFrustum(s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far);
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.picturePlane ) {
-			//pass
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.picturePlane) {
+      //pass
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

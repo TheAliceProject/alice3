@@ -55,44 +55,44 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
  * @author Dennis Cosgrove
  */
 public class ModelAdapter<T extends Model> extends GenericModelAdapter<T> {
-	@Override
-	protected boolean isDisplayListDesired() {
-		return false;
-	}
+  @Override
+  protected boolean isDisplayListDesired() {
+    return false;
+  }
 
-	@Override
-	public boolean isAlphaBlended() {
-		//todo
-		return false;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    //todo
+    return false;
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		owner.synchronizedPick();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    owner.synchronizedPick();
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		//		if( rc.isGLChanged() ) {
-		//			m_element.forget();
-		//		}
-		float globalBrightness = rc.getGlobalBrightness();
-		boolean renderAlpha = ( renderType == GlrVisual.RenderType.ALPHA_BLENDED ) || ( renderType == GlrVisual.RenderType.ALL );
-		boolean renderOpaque = ( renderType == GlrVisual.RenderType.OPAQUE ) || ( renderType == GlrVisual.RenderType.ALL );
-		rc.clearDiffuseColorTextureAdapter();
-		owner.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    //    if( rc.isGLChanged() ) {
+    //      m_element.forget();
+    //    }
+    float globalBrightness = rc.getGlobalBrightness();
+    boolean renderAlpha = (renderType == GlrVisual.RenderType.ALPHA_BLENDED) || (renderType == GlrVisual.RenderType.ALL);
+    boolean renderOpaque = (renderType == GlrVisual.RenderType.OPAQUE) || (renderType == GlrVisual.RenderType.ALL);
+    rc.clearDiffuseColorTextureAdapter();
+    owner.synchronizedRender(rc.gl, globalBrightness, renderAlpha, renderOpaque);
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		Vector3 direction = Vector3.createNegation( m.translation );
-		direction.y = 0.0;
-		if( direction.calculateMagnitudeSquared() == 0.0 ) {
-			rv.setNaN();
-		} else {
-			direction.normalize();
-			GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
-		}
-		return rv;
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    Vector3 direction = Vector3.createNegation(m.translation);
+    direction.y = 0.0;
+    if (direction.calculateMagnitudeSquared() == 0.0) {
+      rv.setNaN();
+    } else {
+      direction.normalize();
+      GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, 0, direction.z);
+    }
+    return rv;
+  }
 }

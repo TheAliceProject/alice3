@@ -51,20 +51,20 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public enum ProjectChangeOfInterestManager {
-	SINGLETON;
-	private final List<ProjectChangeOfInterestListener> listeners = Lists.newCopyOnWriteArrayList();
+  SINGLETON;
+  private final List<ProjectChangeOfInterestListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public void addProjectChangeOfInterestListener( ProjectChangeOfInterestListener listener ) {
-		this.listeners.add( listener );
-	}
+  public void addProjectChangeOfInterestListener(ProjectChangeOfInterestListener listener) {
+    this.listeners.add(listener);
+  }
 
-	public void removeProjectChangeOfInterestListener( ProjectChangeOfInterestListener listener ) {
-		this.listeners.remove( listener );
-	}
+  public void removeProjectChangeOfInterestListener(ProjectChangeOfInterestListener listener) {
+    this.listeners.remove(listener);
+  }
 
-	public void fireProjectChangeOfInterestListeners() {
-		for( ProjectChangeOfInterestListener listener : this.listeners ) {
-			listener.projectChanged();
-		}
-	}
+  public void fireProjectChangeOfInterestListeners() {
+    for (ProjectChangeOfInterestListener listener : this.listeners) {
+      listener.projectChanged();
+    }
+  }
 }

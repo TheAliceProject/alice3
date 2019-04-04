@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleChildFullBodyOutfitCowGirlSkirt implements FemaleChildFullBodyOutfit {
-	REDBOOT,
-	BLACKBOOT,
-	BROWNBOOT;
+  REDBOOT, BLACKBOOT, BROWNBOOT
 
 }

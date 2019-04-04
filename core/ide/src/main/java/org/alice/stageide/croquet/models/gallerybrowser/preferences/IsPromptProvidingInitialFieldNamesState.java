@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsPromptProvidingInitialFieldNamesState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsPromptProvidingInitialFieldNamesState instance = new IsPromptProvidingInitialFieldNamesState();
-	}
+  private static class SingletonHolder {
+    private static IsPromptProvidingInitialFieldNamesState instance = new IsPromptProvidingInitialFieldNamesState();
+  }
 
-	public static IsPromptProvidingInitialFieldNamesState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsPromptProvidingInitialFieldNamesState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsPromptProvidingInitialFieldNamesState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
-	}
+  private IsPromptProvidingInitialFieldNamesState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("3e551420-bb50-4e33-9175-9f29738998f0"), true);
+  }
 }

@@ -53,144 +53,144 @@ import java.io.UTFDataFormatException;
  * @author Dennis Cosgrove
  */
 public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
-	private ObjectInputStream m_ois;
+  private ObjectInputStream m_ois;
 
-	public InputStreamBinaryDecoder( InputStream is ) {
-		initialize( is );
-	}
+  public InputStreamBinaryDecoder(InputStream is) {
+    initialize(is);
+  }
 
-	public InputStreamBinaryDecoder( File file ) {
-		try {
-			initialize( new FileInputStream( file ) );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public InputStreamBinaryDecoder(File file) {
+    try {
+      initialize(new FileInputStream(file));
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	public InputStreamBinaryDecoder( String path ) {
-		this( new File( path ) );
-	}
+  public InputStreamBinaryDecoder(String path) {
+    this(new File(path));
+  }
 
-	private void initialize( InputStream is ) {
-		try {
-			m_ois = new ObjectInputStream( is );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( is.toString(), ioe );
-		}
-	}
+  private void initialize(InputStream is) {
+    try {
+      m_ois = new ObjectInputStream(is);
+    } catch (IOException ioe) {
+      throw new RuntimeException(is.toString(), ioe);
+    }
+  }
 
-	@Override
-	public byte[] readFully( byte[] rv ) {
-		try {
-			m_ois.readFully( rv );
-			return rv;
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public byte[] readFully(byte[] rv) {
+    try {
+      m_ois.readFully(rv);
+      return rv;
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public byte[] readFully( byte[] rv, int offset, int length ) {
-		try {
-			m_ois.readFully( rv, offset, length );
-			return rv;
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public byte[] readFully(byte[] rv, int offset, int length) {
+    try {
+      m_ois.readFully(rv, offset, length);
+      return rv;
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public boolean decodeBoolean() {
-		try {
-			return m_ois.readBoolean();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public boolean decodeBoolean() {
+    try {
+      return m_ois.readBoolean();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public byte decodeByte() {
-		try {
-			return m_ois.readByte();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public byte decodeByte() {
+    try {
+      return m_ois.readByte();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public char decodeChar() {
-		try {
-			return m_ois.readChar();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public char decodeChar() {
+    try {
+      return m_ois.readChar();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public double decodeDouble() {
-		try {
-			return m_ois.readDouble();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public double decodeDouble() {
+    try {
+      return m_ois.readDouble();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public float decodeFloat() {
-		try {
-			return m_ois.readFloat();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public float decodeFloat() {
+    try {
+      return m_ois.readFloat();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public int decodeInt() {
-		try {
-			return m_ois.readInt();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public int decodeInt() {
+    try {
+      return m_ois.readInt();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public long decodeLong() {
-		try {
-			return m_ois.readLong();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public long decodeLong() {
+    try {
+      return m_ois.readLong();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public short decodeShort() {
-		try {
-			return m_ois.readShort();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public short decodeShort() {
+    try {
+      return m_ois.readShort();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public String decodeString() {
-		try {
-			// todo?
-			//			int length = m_ois.readInt();
-			//			char[] chars = new char[ length ];
-			//			for( int i=0; i<length; i++ ) {
-			//				chars[ i ] = m_ois.readChar();
-			//			}
-			//			return new String( chars );
-			boolean isNotNull = m_ois.readBoolean();
-			if( isNotNull ) {
-				return m_ois.readUTF();
-			} else {
-				return null;
-			}
-		} catch( UTFDataFormatException utfdfe ) {
-			throw new RuntimeException( utfdfe );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public String decodeString() {
+    try {
+      // todo?
+      //      int length = m_ois.readInt();
+      //      char[] chars = new char[ length ];
+      //      for( int i=0; i<length; i++ ) {
+      //        chars[ i ] = m_ois.readChar();
+      //      }
+      //      return new String( chars );
+      boolean isNotNull = m_ois.readBoolean();
+      if (isNotNull) {
+        return m_ois.readUTF();
+      } else {
+        return null;
+      }
+    } catch (UTFDataFormatException utfdfe) {
+      throw new RuntimeException(utfdfe);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 }

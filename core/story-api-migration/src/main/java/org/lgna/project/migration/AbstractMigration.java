@@ -48,38 +48,38 @@ import org.lgna.project.Version;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigration implements Migration {
-	private final Version minimumVersion;
-	private final Version resultVersion;
+  private final Version minimumVersion;
+  private final Version resultVersion;
 
-	public AbstractMigration( Version minimumVersion, Version resultVersion ) {
-		this.minimumVersion = minimumVersion;
-		this.resultVersion = resultVersion;
-	}
+  public AbstractMigration(Version minimumVersion, Version resultVersion) {
+    this.minimumVersion = minimumVersion;
+    this.resultVersion = resultVersion;
+  }
 
-	@Override
-	public Version getResultVersion() {
-		return this.resultVersion;
-	}
+  @Override
+  public Version getResultVersion() {
+    return this.resultVersion;
+  }
 
-	@Override
-	public boolean isApplicable( Version version ) {
-		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
-			return ( this.minimumVersion.compareTo( version ) <= 0 ) && ( this.resultVersion.compareTo( version ) > 0 );
-		} else {
-			//todo?
-			return false;
-		}
-	}
+  @Override
+  public boolean isApplicable(Version version) {
+    if ((this.minimumVersion != null) && (this.resultVersion != null)) {
+      return (this.minimumVersion.compareTo(version) <= 0) && (this.resultVersion.compareTo(version) > 0);
+    } else {
+      //todo?
+      return false;
+    }
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.minimumVersion );
-		sb.append( ";" );
-		sb.append( this.resultVersion );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(this.minimumVersion);
+    sb.append(";");
+    sb.append(this.resultVersion);
+    sb.append("]");
+    return sb.toString();
+  }
 }

@@ -52,19 +52,19 @@ import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrAsynchronousPicker implements AsynchronousPicker {
-	public GlrAsynchronousPicker( RenderTargetImp rtImp ) {
-		this.rtImp = rtImp;
-	}
+  public GlrAsynchronousPicker(RenderTargetImp rtImp) {
+    this.rtImp = rtImp;
+  }
 
-	@Override
-	public void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
-		this.rtImp.addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
-	}
+  @Override
+  public void pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
+    this.rtImp.addDisplayTask(new PickAllDisplayTask(xPixel, yPixel, pickSubElementPolicy, criterion, observer));
+  }
 
-	@Override
-	public void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer ) {
-		this.rtImp.addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
-	}
+  @Override
+  public void pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer) {
+    this.rtImp.addDisplayTask(new PickFrontMostDisplayTask(xPixel, yPixel, pickSubElementPolicy, criterion, observer));
+  }
 
-	private final RenderTargetImp rtImp;
+  private final RenderTargetImp rtImp;
 }

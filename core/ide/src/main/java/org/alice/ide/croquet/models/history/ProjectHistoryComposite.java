@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProjectHistoryComposite extends HistoryComposite {
-	private static class SingletonHolder {
-		private static ProjectHistoryComposite instance = new ProjectHistoryComposite();
-	}
+  private static class SingletonHolder {
+    private static ProjectHistoryComposite instance = new ProjectHistoryComposite();
+  }
 
-	public static ProjectHistoryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ProjectHistoryComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ProjectHistoryComposite() {
-		super( UUID.fromString( "ed880fda-17fb-4109-bed2-6e1eb9f12823" ), Application.PROJECT_GROUP );
-	}
+  private ProjectHistoryComposite() {
+    super(UUID.fromString("ed880fda-17fb-4109-bed2-6e1eb9f12823"), Application.PROJECT_GROUP);
+  }
 }

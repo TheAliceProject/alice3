@@ -49,27 +49,27 @@ import org.lgna.story.Color;
  * @author Dennis Cosgrove
  */
 public final class ElderPersonResource extends PersonResource {
-	public ElderPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  public ElderPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public ElderPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
-	}
+  @Deprecated
+  public ElderPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face) {
+    super(gender, skinTone, eyeColor, hair, obseityLevel, outfit, face);
+  }
 
-	@Deprecated
-	public ElderPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public ElderPersonResource(Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    this(gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Deprecated
-	public ElderPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
-	}
+  @Deprecated
+  public ElderPersonResource(Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit) {
+    super(gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00);
+  }
 
-	@Override
-	public LifeStage getLifeStage() {
-		return LifeStage.ELDER;
-	}
+  @Override
+  public LifeStage getLifeStage() {
+    return LifeStage.ELDER;
+  }
 }

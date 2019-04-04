@@ -52,25 +52,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
-	private static class SingletonHolder {
-		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
-	}
+  private static class SingletonHolder {
+    private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
+  }
 
-	public static <F> CascadeUnfilledInCancel<F> getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static <F> CascadeUnfilledInCancel<F> getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CascadeUnfilledInCancel() {
-		super( UUID.fromString( "6f5f3cb4-420a-4532-ac61-4f8eb96806e4" ) );
-	}
+  private CascadeUnfilledInCancel() {
+    super(UUID.fromString("6f5f3cb4-420a-4532-ac61-4f8eb96806e4"));
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super F, Void> step ) {
-		return null;
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super F, Void> step) {
+    return null;
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return "No suitable fillins were found.  Canceling.";
-	}
+  @Override
+  public String getMenuItemText() {
+    return "No suitable fillins were found.  Canceling.";
+  }
 }

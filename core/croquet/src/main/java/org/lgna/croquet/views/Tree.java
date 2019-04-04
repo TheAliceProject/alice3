@@ -58,96 +58,96 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class Tree<E> extends ViewController<JTree, SingleSelectTreeState<E>> {
-	public Tree( SingleSelectTreeState<E> model ) {
-		super( model );
-		this.setSwingTreeModel( model.getTreeModel() );
-		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
-	}
+  public Tree(SingleSelectTreeState<E> model) {
+    super(model);
+    this.setSwingTreeModel(model.getTreeModel());
+    this.setSwingTreeSelectionModel(model.getSwingModel().getTreeSelectionModel());
+  }
 
-	private void setSwingTreeModel( TreeModel treeModel ) {
-		this.getAwtComponent().setModel( treeModel );
-	}
+  private void setSwingTreeModel(TreeModel treeModel) {
+    this.getAwtComponent().setModel(treeModel);
+  }
 
-	private void setSwingTreeSelectionModel( TreeSelectionModel treeSelectionModel ) {
-		this.getAwtComponent().setSelectionModel( treeSelectionModel );
-	}
+  private void setSwingTreeSelectionModel(TreeSelectionModel treeSelectionModel) {
+    this.getAwtComponent().setSelectionModel(treeSelectionModel);
+  }
 
-	@Override
-	protected JTree createAwtComponent() {
-		return new JTree();
-	}
+  @Override
+  protected JTree createAwtComponent() {
+    return new JTree();
+  }
 
-	public TreeCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
+  public TreeCellRenderer getCellRenderer() {
+    return this.getAwtComponent().getCellRenderer();
+  }
 
-	public void setCellRenderer( TreeCellRenderer cellRenderer ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setCellRenderer( cellRenderer );
-	}
+  public void setCellRenderer(TreeCellRenderer cellRenderer) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setCellRenderer(cellRenderer);
+  }
 
-	public void expandEachRowOnce() {
-		this.checkEventDispatchThread();
-		Set<E> alreadyExpanded = Sets.newHashSet();
-		JTree jTree = this.getAwtComponent();
-		for( int i = 0; i < jTree.getRowCount(); i++ ) {
-			TreePath treePath = jTree.getPathForRow( i );
-			Object item = treePath.getLastPathComponent();
-			if( alreadyExpanded.contains( item ) ) {
-				jTree.collapsePath( treePath );
-			} else {
-				alreadyExpanded.add( (E)item );
-				jTree.expandRow( i );
-			}
-		}
-	}
+  public void expandEachRowOnce() {
+    this.checkEventDispatchThread();
+    Set<E> alreadyExpanded = Sets.newHashSet();
+    JTree jTree = this.getAwtComponent();
+    for (int i = 0; i < jTree.getRowCount(); i++) {
+      TreePath treePath = jTree.getPathForRow(i);
+      Object item = treePath.getLastPathComponent();
+      if (alreadyExpanded.contains(item)) {
+        jTree.collapsePath(treePath);
+      } else {
+        alreadyExpanded.add((E) item);
+        jTree.expandRow(i);
+      }
+    }
+  }
 
-	public void expandAllRows() {
-		JTree jTree = this.getAwtComponent();
-		for( int i = 0; i < jTree.getRowCount(); i++ ) {
-			jTree.expandRow( i );
-		}
-	}
+  public void expandAllRows() {
+    JTree jTree = this.getAwtComponent();
+    for (int i = 0; i < jTree.getRowCount(); i++) {
+      jTree.expandRow(i);
+    }
+  }
 
-	public void collapseAllRows() {
-		JTree jTree = this.getAwtComponent();
-		for( int i = 0; i < jTree.getRowCount(); i++ ) {
-			jTree.collapseRow( i );
-		}
-	}
+  public void collapseAllRows() {
+    JTree jTree = this.getAwtComponent();
+    for (int i = 0; i < jTree.getRowCount(); i++) {
+      jTree.collapseRow(i);
+    }
+  }
 
-	public void setRootVisible( boolean isRootVisible ) {
-		this.getAwtComponent().setRootVisible( isRootVisible );
-	}
+  public void setRootVisible(boolean isRootVisible) {
+    this.getAwtComponent().setRootVisible(isRootVisible);
+  }
 
-	public void collapseNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().collapsePath( path );
-	}
+  public void collapseNode(E node) {
+    TreePath path = this.getModel().getTreeModel().getTreePath(node);
+    this.getAwtComponent().collapsePath(path);
+  }
 
-	public void expandNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().expandPath( path );
-	}
+  public void expandNode(E node) {
+    TreePath path = this.getModel().getTreeModel().getTreePath(node);
+    this.getAwtComponent().expandPath(path);
+  }
 
-	public void scrollPathToVisible( TreePath treePath ) {
-		final boolean IS_ALIGN_LEFT_DESIRED = true;
-		if( IS_ALIGN_LEFT_DESIRED ) {
-			if( treePath != null ) {
-				this.getAwtComponent().makeVisible( treePath );
-				Rectangle bounds = this.getAwtComponent().getPathBounds( treePath );
-				if( bounds != null ) {
-					bounds.width += bounds.x;
-					bounds.x = 0;
-					this.getAwtComponent().scrollRectToVisible( bounds );
-				}
-			}
-		} else {
-			this.getAwtComponent().scrollPathToVisible( treePath );
-		}
-	}
+  public void scrollPathToVisible(TreePath treePath) {
+    final boolean IS_ALIGN_LEFT_DESIRED = true;
+    if (IS_ALIGN_LEFT_DESIRED) {
+      if (treePath != null) {
+        this.getAwtComponent().makeVisible(treePath);
+        Rectangle bounds = this.getAwtComponent().getPathBounds(treePath);
+        if (bounds != null) {
+          bounds.width += bounds.x;
+          bounds.x = 0;
+          this.getAwtComponent().scrollRectToVisible(bounds);
+        }
+      }
+    } else {
+      this.getAwtComponent().scrollPathToVisible(treePath);
+    }
+  }
 
-	public TreePath getSelectionPath() {
-		return this.getAwtComponent().getSelectionPath();
-	}
+  public TreePath getSelectionPath() {
+    return this.getAwtComponent().getSelectionPath();
+  }
 }

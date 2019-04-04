@@ -46,67 +46,67 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class DurationBasedAnimation extends AbstractAnimation {
-	public static final double DEFAULT_DURATION = 1.0;
-	public static final Style DEFAULT_STYLE = TraditionalStyle.BEGIN_AND_END_GENTLY;
+  public static final double DEFAULT_DURATION = 1.0;
+  public static final Style DEFAULT_STYLE = TraditionalStyle.BEGIN_AND_END_GENTLY;
 
-	private double m_duration;
-	private Style m_style;
+  private double m_duration;
+  private Style m_style;
 
-	public DurationBasedAnimation() {
-		this( DEFAULT_DURATION );
-	}
+  public DurationBasedAnimation() {
+    this(DEFAULT_DURATION);
+  }
 
-	public DurationBasedAnimation( Number duration ) {
-		this( duration, DEFAULT_STYLE );
-	}
+  public DurationBasedAnimation(Number duration) {
+    this(duration, DEFAULT_STYLE);
+  }
 
-	public DurationBasedAnimation( Number duration, Style style ) {
-		setDuration( duration );
-		setStyle( style );
-	}
+  public DurationBasedAnimation(Number duration, Style style) {
+    setDuration(duration);
+    setStyle(style);
+  }
 
-	public double getDuration() {
-		return m_duration;
-	}
+  public double getDuration() {
+    return m_duration;
+  }
 
-	public void setDuration( Number duration ) {
-		m_duration = duration.doubleValue();
-	}
+  public void setDuration(Number duration) {
+    m_duration = duration.doubleValue();
+  }
 
-	public Style getStyle() {
-		return m_style;
-	}
+  public Style getStyle() {
+    return m_style;
+  }
 
-	public void setStyle( Style style ) {
-		assert style != null;
-		m_style = style;
-	}
+  public void setStyle(Style style) {
+    assert style != null;
+    m_style = style;
+  }
 
-	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver ) {
-		double portion;
-		if( m_duration > 0.0 ) {
-			//portion = Math.min( deltaSincePrologue / m_duration, 1.0 );
-			portion = m_style.calculatePortion( deltaSincePrologue, m_duration );
-		} else {
-			portion = 1.0;
-		}
-		double tRemaining = m_duration - deltaSincePrologue;
-		setPortion( portion );
-		if( animationObserver instanceof DurationBasedAnimationObserver ) {
-			try {
-				( (DurationBasedAnimationObserver)animationObserver ).updated( this, portion );
-			} catch( BreakException be ) {
-				tRemaining = 0.0;
-			}
-		}
-		return tRemaining;
-	}
+  @Override
+  protected double update(double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver) {
+    double portion;
+    if (m_duration > 0.0) {
+      //portion = Math.min( deltaSincePrologue / m_duration, 1.0 );
+      portion = m_style.calculatePortion(deltaSincePrologue, m_duration);
+    } else {
+      portion = 1.0;
+    }
+    double tRemaining = m_duration - deltaSincePrologue;
+    setPortion(portion);
+    if (animationObserver instanceof DurationBasedAnimationObserver) {
+      try {
+        ((DurationBasedAnimationObserver) animationObserver).updated(this, portion);
+      } catch (BreakException be) {
+        tRemaining = 0.0;
+      }
+    }
+    return tRemaining;
+  }
 
-	@Override
-	protected final void preEpilogue() {
-		this.setPortion( 1.0 );
-	}
+  @Override
+  protected final void preEpilogue() {
+    this.setPortion(1.0);
+  }
 
-	protected abstract void setPortion( double portion );
+  protected abstract void setPortion(double portion);
 }

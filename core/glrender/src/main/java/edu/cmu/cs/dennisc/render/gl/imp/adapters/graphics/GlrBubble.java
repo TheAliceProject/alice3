@@ -58,89 +58,60 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T> {
-	private Point2D.Float originOfTail = new Point2D.Float();
-	private Point2D.Float bodyConnectionLocationOfTail = new Point2D.Float();
-	private Point2D.Float textBoundsOffset = new Point2D.Float();
+  private Point2D.Float originOfTail = new Point2D.Float();
+  private Point2D.Float bodyConnectionLocationOfTail = new Point2D.Float();
+  private Point2D.Float textBoundsOffset = new Point2D.Float();
 
-	@Override
-	protected float getWrapWidth( Rectangle actualViewport ) {
-		return (float)( actualViewport.getWidth() * 0.9 );
-	}
+  @Override
+  protected float getWrapWidth(Rectangle actualViewport) {
+    return (float) (actualViewport.getWidth() * 0.9);
+  }
 
-	protected abstract void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth,
-			Color fillColor,
-			Color outlineColor,
-			OnscreenBubble bubble,
-			double portion );
+  protected abstract void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth, Color fillColor, Color outlineColor, OnscreenBubble bubble, double portion);
 
-	@Override
-	protected void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth,
-			Color fillColor,
-			Color outlineColor ) {
-		Bubble.Originator originator = this.owner.getOriginator();
-		if( originator != null ) {
+  @Override
+  protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth, Color fillColor, Color outlineColor) {
+    Bubble.Originator originator = this.owner.getOriginator();
+    if (originator != null) {
 
-			//Scale the font size to try to match the viewport
-			double DEFAULT_WIDTH = 640;
-			double DEFAULT_HEIGHT = 360;
-			double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
-			double viewportRatio = actualViewport.getWidth() / actualViewport.getHeight();
-			float scaleFactor = 1.0f;
-			if( viewportRatio >= DEFAULT_WIDTH_TO_HEIGHT_RATIO ) {
-				scaleFactor = (float)( actualViewport.getHeight() / DEFAULT_HEIGHT );
-			}
-			else {
-				scaleFactor = (float)( actualViewport.getWidth() / DEFAULT_WIDTH );
-			}
-			Font scaledFont = font.deriveFont( font.getSize2D() * scaleFactor );
-			g2.setFont( scaledFont );
-			Dimension2D size = multilineText.getDimension( g2, wrapWidth );
-			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.owner, renderTarget, actualViewport, camera, size );
-			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.owner );
-			if( bubble == null )
-			{
-				float padding;
-				if( this instanceof GlrThoughtBubble )
-				{
-					padding = font.getSize2D() * 1.2f;
-				}
-				else
-				{
-					padding = font.getSize2D() * .4f;
-				}
-				bubble = BubbleManager.getInstance().addBubble( this.owner, originOfTail, size, padding, scaleFactor, actualViewport );
-			}
-			else
-			{
-				bubble.updateOriginOfTail( originOfTail, actualViewport );
-			}
+      //Scale the font size to try to match the viewport
+      double DEFAULT_WIDTH = 640;
+      double DEFAULT_HEIGHT = 360;
+      double DEFAULT_WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
+      double viewportRatio = actualViewport.getWidth() / actualViewport.getHeight();
+      float scaleFactor = 1.0f;
+      if (viewportRatio >= DEFAULT_WIDTH_TO_HEIGHT_RATIO) {
+        scaleFactor = (float) (actualViewport.getHeight() / DEFAULT_HEIGHT);
+      } else {
+        scaleFactor = (float) (actualViewport.getWidth() / DEFAULT_WIDTH);
+      }
+      Font scaledFont = font.deriveFont(font.getSize2D() * scaleFactor);
+      g2.setFont(scaledFont);
+      Dimension2D size = multilineText.getDimension(g2, wrapWidth);
+      originator.calculate(originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.owner, renderTarget, actualViewport, camera, size);
+      OnscreenBubble bubble = BubbleManager.getInstance().getBubble(this.owner);
+      if (bubble == null) {
+        float padding;
+        if (this instanceof GlrThoughtBubble) {
+          padding = font.getSize2D() * 1.2f;
+        } else {
+          padding = font.getSize2D() * .4f;
+        }
+        bubble = BubbleManager.getInstance().addBubble(this.owner, originOfTail, size, padding, scaleFactor, actualViewport);
+      } else {
+        bubble.updateOriginOfTail(originOfTail, actualViewport);
+      }
 
-			this.render( g2, renderTarget, actualViewport, camera, multilineText, scaledFont, textColor, wrapWidth, fillColor, outlineColor, bubble, owner.portion.getValue() );
-		}
-	}
+      this.render(g2, renderTarget, actualViewport, camera, multilineText, scaledFont, textColor, wrapWidth, fillColor, outlineColor, bubble, owner.portion.getValue());
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.portion ) {
-			//pass
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.portion) {
+      //pass
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

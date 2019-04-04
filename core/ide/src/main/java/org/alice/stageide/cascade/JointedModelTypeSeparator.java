@@ -56,30 +56,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JointedModelTypeSeparator extends CascadeLabelSeparator {
-	private static Map<AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = Maps.newHashMap();
 
-	public static synchronized JointedModelTypeSeparator getInstance( AbstractType<?, ?, ?> type ) {
-		assert type != null;
-		JointedModelTypeSeparator rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new JointedModelTypeSeparator( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized JointedModelTypeSeparator getInstance(AbstractType<?, ?, ?> type) {
+    assert type != null;
+    JointedModelTypeSeparator rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new JointedModelTypeSeparator(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private JointedModelTypeSeparator( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
-		this.type = type;
-	}
+  private JointedModelTypeSeparator(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("200467b6-6cd7-45c1-850f-b853fa695187"));
+    this.type = type;
+  }
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		String jointsFormat = ResourceBundleUtilities.getStringForKey( "JointsFormat", "org.alice.stageide.joint.croquet");
-		return String.format(jointsFormat, FormatterState.getInstance().getValue().getNameForDeclaration( type ));
-	}
+  @Override
+  protected String findDefaultLocalizedText() {
+    String jointsFormat = ResourceBundleUtilities.getStringForKey("JointsFormat", "org.alice.stageide.joint.croquet");
+    return String.format(jointsFormat, FormatterState.getInstance().getValue().getNameForDeclaration(type));
+  }
 }

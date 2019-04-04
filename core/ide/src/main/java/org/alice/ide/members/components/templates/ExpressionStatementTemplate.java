@@ -53,46 +53,46 @@ import org.lgna.project.ast.ExpressionStatement;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class ExpressionStatementTemplate extends StatementTemplate {
-	public ExpressionStatementTemplate( AbstractStatementDragModel dragAndDropModel ) {
-		super( dragAndDropModel, ExpressionStatement.class );
-	}
+  public ExpressionStatementTemplate(AbstractStatementDragModel dragAndDropModel) {
+    super(dragAndDropModel, ExpressionStatement.class);
+  }
 
-	protected abstract Expression createIncompleteExpression();
+  protected abstract Expression createIncompleteExpression();
 
-	private boolean isInitialized = false;
+  private boolean isInitialized = false;
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.refresh();
-			this.isInitialized = true;
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.isInitialized) {
+      //pass
+    } else {
+      this.refresh();
+      this.isInitialized = true;
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//this.removeAllComponents();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    //this.removeAllComponents();
+    super.handleUndisplayable();
+  }
 
-	protected void refresh() {
-		this.removeAllComponents();
-		Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( incompleteExpression ) );
-		this.addComponent( TemplateAstI18nFactory.getInstance().createExpressionPane( incompleteExpression ) );
-	}
+  protected void refresh() {
+    this.removeAllComponents();
+    Expression incompleteExpression = this.createIncompleteExpression();
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
+    this.addComponent(TemplateAstI18nFactory.getInstance().createExpressionPane(incompleteExpression));
+  }
 
-	//	@Override
-	//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-	//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-	//		if( expression != null ) {
-	//			return new org.lgna.project.ast.ExpressionStatement( expression );
-	//		} else {
-	//			return null;
-	//		}
-	//	}
+  //  @Override
+  //  protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
+  //    org.lgna.project.ast.Expression expression = this.createExpression( expressions );
+  //    if( expression != null ) {
+  //      return new org.lgna.project.ast.ExpressionStatement( expression );
+  //    } else {
+  //      return null;
+  //    }
+  //  }
 
 }

@@ -51,73 +51,73 @@ import edu.cmu.cs.dennisc.scenegraph.MultipleAppearance;
  * @author Dennis Cosgrove
  */
 public class GlrMultipleAppearance extends GlrAppearance<MultipleAppearance> {
-	@Override
-	public boolean isActuallyShowing() {
-		assert this.glrSingleAppearances != null;
-		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
-			assert sao != null;
-			if( sao.isActuallyShowing() ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean isActuallyShowing() {
+    assert this.glrSingleAppearances != null;
+    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
+      assert sao != null;
+      if (sao.isActuallyShowing()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean isAlphaBlended() {
-		assert this.glrSingleAppearances != null;
-		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
-			assert sao != null;
-			if( sao.isAlphaBlended() ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    assert this.glrSingleAppearances != null;
+    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
+      assert sao != null;
+      if (sao.isAlphaBlended()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean isAllAlphaBlended() {
-		assert this.glrSingleAppearances != null;
-		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
-			assert sao != null;
-			if( !sao.isAllAlphaBlended() ) {
-				return false;
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isAllAlphaBlended() {
+    assert this.glrSingleAppearances != null;
+    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
+      assert sao != null;
+      if (!sao.isAllAlphaBlended()) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public boolean isEthereal() {
-		assert this.glrSingleAppearances != null;
-		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
-			assert sao != null;
-			if( sao.isEthereal() ) {
-				//pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isEthereal() {
+    assert this.glrSingleAppearances != null;
+    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
+      assert sao != null;
+      if (sao.isEthereal()) {
+        //pass
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public void setPipelineState( RenderContext rc, int face ) {
-		rc.setMultipleAppearance( face, this );
-	}
+  @Override
+  public void setPipelineState(RenderContext rc, int face) {
+    rc.setMultipleAppearance(face, this);
+  }
 
-	public void setPipelineState( RenderContext rc, int face, int index ) {
-		this.glrSingleAppearances[ index ].setPipelineState( rc, face );
-	}
+  public void setPipelineState(RenderContext rc, int face, int index) {
+    this.glrSingleAppearances[index].setPipelineState(rc, face);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.singleAppearances ) {
-			this.glrSingleAppearances = AdapterFactory.getAdaptersFor( owner.singleAppearances.getValue(), GlrTexturedAppearance.class );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.singleAppearances) {
+      this.glrSingleAppearances = AdapterFactory.getAdaptersFor(owner.singleAppearances.getValue(), GlrTexturedAppearance.class);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private GlrTexturedAppearance[] glrSingleAppearances;
+  private GlrTexturedAppearance[] glrSingleAppearances;
 }

@@ -49,7 +49,7 @@ import javax.swing.border.CompoundBorder;
  * @author Dennis Cosgrove
  */
 public class TextComponentBorder extends CompoundBorder {
-	public TextComponentBorder() {
-		super( BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
-	}
+  public TextComponentBorder() {
+    super(BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), BorderFactory.createEmptyBorder(1, 3, 1, 3));
+  }
 }

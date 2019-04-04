@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenTopPieceHalter implements FemaleTeenTopPiece {
-	WHITE,
-	PINK,
-	BLUE,
-	GREY,
-	DENIM_BLUE;
+  WHITE, PINK, BLUE, GREY, DENIM_BLUE
 
 }

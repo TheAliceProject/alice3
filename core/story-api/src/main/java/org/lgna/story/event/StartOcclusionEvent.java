@@ -46,8 +46,8 @@ import org.lgna.story.SModel;
 
 public class StartOcclusionEvent extends OcclusionEvent {
 
-	public StartOcclusionEvent( SModel foreground, SModel background ) {
-		super( foreground, background );
-	}
+  public StartOcclusionEvent(SModel foreground, SModel background) {
+    super(foreground, background);
+  }
 
 }

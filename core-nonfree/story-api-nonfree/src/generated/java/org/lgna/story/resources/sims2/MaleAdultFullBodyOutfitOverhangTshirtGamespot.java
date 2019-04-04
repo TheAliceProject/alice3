@@ -44,7 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitOverhangTshirtGamespot implements MaleAdultFullBodyOutfit {
-	WHITE_BUNNY,
-	BLACK_LOGO;
+  WHITE_BUNNY, BLACK_LOGO
 
 }

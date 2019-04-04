@@ -55,97 +55,96 @@ import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
-	TypeDefinedGalleryTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass,
-								Class<? extends SModel> modelClass ) {
-		super(aliceClass != null ? aliceClass.getName() : null);
-		this.userType = aliceClass;
-		if( this.userType != null ) {
-			this.name = this.userType.getName();
-		}
-		this.modelClass = modelClass;
-		this.resourceJavaType = JavaType.getInstance( resourceClass );
-	}
+  TypeDefinedGalleryTreeNode(NamedUserType aliceClass, Class<? extends ModelResource> resourceClass, Class<? extends SModel> modelClass) {
+    super(aliceClass != null ? aliceClass.getName() : null);
+    this.userType = aliceClass;
+    if (this.userType != null) {
+      this.name = this.userType.getName();
+    }
+    this.modelClass = modelClass;
+    this.resourceJavaType = JavaType.getInstance(resourceClass);
+  }
 
-	public void setUserType( NamedUserType type ) {
-		userType = type;
-	}
+  public void setUserType(NamedUserType type) {
+    userType = type;
+  }
 
-	public NamedUserType getUserType() {
-		return userType;
-	}
+  public NamedUserType getUserType() {
+    return userType;
+  }
 
-	JavaType getResourceJavaType() {
-		return this.resourceJavaType;
-	}
+  JavaType getResourceJavaType() {
+    return this.resourceJavaType;
+  }
 
-	void setJavaField( JavaField field ) {
-		this.resourceJavaField = field;
-	}
+  void setJavaField(JavaField field) {
+    this.resourceJavaField = field;
+  }
 
-	JavaField getJavaField() {
-		return this.resourceJavaField;
-	}
+  JavaField getJavaField() {
+    return this.resourceJavaField;
+  }
 
-	void setDynamicResource( Class<? extends DynamicResource> dynamicClass ) {
-		this.dynamicClass = dynamicClass;
-	}
+  void setDynamicResource(Class<? extends DynamicResource> dynamicClass) {
+    this.dynamicClass = dynamicClass;
+  }
 
-	@Override
-	public String toString() {
-		JavaType value = resourceJavaType;
-		return value != null ? value.getName() : null;
-	}
+  @Override
+  public String toString() {
+    JavaType value = resourceJavaType;
+    return value != null ? value.getName() : null;
+  }
 
-	private TypeDefinedGalleryTreeNode getChildWithJavaType( AbstractType<?, ?, ?> type ) {
-		for( GalleryResourceTreeNode child : this.children ) {
-			if (child instanceof TypeDefinedGalleryTreeNode ) {
-				if ((((TypeDefinedGalleryTreeNode)child).resourceJavaType != null) && type.isAssignableFrom( ((TypeDefinedGalleryTreeNode)child).resourceJavaType)) {
-					return (TypeDefinedGalleryTreeNode)child;
-				}
-			}
-		}
-		return null;
-	}
+  private TypeDefinedGalleryTreeNode getChildWithJavaType(AbstractType<?, ?, ?> type) {
+    for (GalleryResourceTreeNode child : this.children) {
+      if (child instanceof TypeDefinedGalleryTreeNode) {
+        if ((((TypeDefinedGalleryTreeNode) child).resourceJavaType != null) && type.isAssignableFrom(((TypeDefinedGalleryTreeNode) child).resourceJavaType)) {
+          return (TypeDefinedGalleryTreeNode) child;
+        }
+      }
+    }
+    return null;
+  }
 
-	TypeDefinedGalleryTreeNode getDescendantOfJavaType( AbstractType<?, ?, ?> type ) {
-		TypeDefinedGalleryTreeNode rv = this.getChildWithJavaType( type );
-		if( rv != null ) {
-			return rv;
-		}
-		if( this.getChildCount() > 0 ) {
-			for( GalleryResourceTreeNode child : this.children ) {
-				if (child instanceof TypeDefinedGalleryTreeNode ) {
-					TypeDefinedGalleryTreeNode result = ((TypeDefinedGalleryTreeNode)child).getDescendantOfJavaType( type);
-					if (result != null) {
-						return result;
-					}
-				}
-			}
-		}
-		return null;
-	}
+  TypeDefinedGalleryTreeNode getDescendantOfJavaType(AbstractType<?, ?, ?> type) {
+    TypeDefinedGalleryTreeNode rv = this.getChildWithJavaType(type);
+    if (rv != null) {
+      return rv;
+    }
+    if (this.getChildCount() > 0) {
+      for (GalleryResourceTreeNode child : this.children) {
+        if (child instanceof TypeDefinedGalleryTreeNode) {
+          TypeDefinedGalleryTreeNode result = ((TypeDefinedGalleryTreeNode) child).getDescendantOfJavaType(type);
+          if (result != null) {
+            return result;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
-	private NamedUserType userType;
-	private JavaType resourceJavaType;
-	private final Class<? extends SModel> modelClass;
-	private Class<? extends DynamicResource> dynamicClass;
-	private JavaField resourceJavaField = null;
+  private NamedUserType userType;
+  private JavaType resourceJavaType;
+  private final Class<? extends SModel> modelClass;
+  private Class<? extends DynamicResource> dynamicClass;
+  private JavaField resourceJavaField = null;
 
-	@Override
-	ResourceKey createResourceKey() {
-		ResourceKey resourceKey = null;
-		if (resourceJavaField != null) {
-			try {
-				resourceKey = new EnumConstantResourceKey((Enum<? extends ModelResource>) resourceJavaField.getFieldReflectionProxy().getReification().get(null));
-			} catch (IllegalAccessException iae) {
-				throw new RuntimeException(iae);
-			}
-		} else {
-			resourceKey = new ClassResourceKey((Class<? extends ModelResource>) resourceJavaType.getClassReflectionProxy().getReification());
-		}
-		return resourceKey;
-	}
+  @Override
+  ResourceKey createResourceKey() {
+    ResourceKey resourceKey = null;
+    if (resourceJavaField != null) {
+      try {
+        resourceKey = new EnumConstantResourceKey((Enum<? extends ModelResource>) resourceJavaField.getFieldReflectionProxy().getReification().get(null));
+      } catch (IllegalAccessException iae) {
+        throw new RuntimeException(iae);
+      }
+    } else {
+      resourceKey = new ClassResourceKey((Class<? extends ModelResource>) resourceJavaType.getClassReflectionProxy().getReification());
+    }
+    return resourceKey;
+  }
 }

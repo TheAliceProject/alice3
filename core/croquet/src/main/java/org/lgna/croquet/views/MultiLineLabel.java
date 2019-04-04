@@ -56,62 +56,62 @@ import java.awt.Container;
  * @author Dennis Cosgrove
  */
 public abstract class MultiLineLabel<J extends JTextComponent> extends SwingComponentView<J> {
-	protected static Color getDesiredBackgroundColor( Container awtParent ) {
-		if( awtParent != null ) {
-			if( awtParent.isOpaque() ) {
-				return awtParent.getBackground();
-			} else {
-				return getDesiredBackgroundColor( awtParent.getParent() );
-			}
-		} else {
-			return Color.RED;
-		}
-	}
+  protected static Color getDesiredBackgroundColor(Container awtParent) {
+    if (awtParent != null) {
+      if (awtParent.isOpaque()) {
+        return awtParent.getBackground();
+      } else {
+        return getDesiredBackgroundColor(awtParent.getParent());
+      }
+    } else {
+      return Color.RED;
+    }
+  }
 
-	private final AbstractDocument document;
+  private final AbstractDocument document;
 
-	public MultiLineLabel( AbstractDocument document, String text, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this.document = document;
-		this.setText( text );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public MultiLineLabel(AbstractDocument document, String text, float fontScalar, TextAttribute<?>... textAttributes) {
+    this.document = document;
+    this.setText(text);
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	public String getText() {
-		try {
-			return this.document.getText( 0, this.document.getLength() );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  public String getText() {
+    try {
+      return this.document.getText(0, this.document.getLength());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 
-	public final void setText( String text ) {
+  public final void setText(String text) {
 
-		//todo?
-		//this.checkEventDispatchThread();
+    //todo?
+    //this.checkEventDispatchThread();
 
-		try {
-			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( text, ble );
-		}
-	}
+    try {
+      this.document.replace(0, this.document.getLength(), text, null);
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(text, ble);
+    }
+  }
 
-	protected abstract J createJTextComponent( AbstractDocument document );
+  protected abstract J createJTextComponent(AbstractDocument document);
 
-	@Override
-	protected final J createAwtComponent() {
-		J component = this.createJTextComponent( this.document );
-		//component.setOpaque( false );
-		component.setEditable( false );
-		component.setCursor( null );
-		component.setFocusable( false );
-		component.setBorder( BorderFactory.createEmptyBorder() );
-		component.setFont( UIManager.getFont( "Label.font" ) );
-		component.setAlignmentX( 0.0f );
-		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
-		component.setDisabledTextColor( UIManager.getColor( disabledColorKey ) );
-		return component;
-	}
+  @Override
+  protected final J createAwtComponent() {
+    J component = this.createJTextComponent(this.document);
+    //component.setOpaque( false );
+    component.setEditable(false);
+    component.setCursor(null);
+    component.setFocusable(false);
+    component.setBorder(BorderFactory.createEmptyBorder());
+    component.setFont(UIManager.getFont("Label.font"));
+    component.setAlignmentX(0.0f);
+    String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
+    component.setDisabledTextColor(UIManager.getColor(disabledColorKey));
+    return component;
+  }
 
 }

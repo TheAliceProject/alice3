@@ -48,17 +48,16 @@ import org.lgna.story.implementation.SunImp;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class SSun extends STurnable implements MutableRider {
-	private final SunImp implementation = new SunImp( this );
+@Deprecated public class SSun extends STurnable implements MutableRider {
+  private final SunImp implementation = new SunImp(this);
 
-	@Override
-	/* package-private */SunImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */SunImp getImplementation() {
+    return this.implementation;
+  }
 
-	@Override
-	public void setVehicle( SThing vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
+  @Override
+  public void setVehicle(SThing vehicle) {
+    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
+  }
 }

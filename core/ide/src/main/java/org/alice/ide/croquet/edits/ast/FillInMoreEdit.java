@@ -64,84 +64,84 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FillInMoreEdit extends AbstractEdit<Cascade<Expression>> {
-	private Expression argumentExpression;
+  private Expression argumentExpression;
 
-	public FillInMoreEdit( UserActivity userActivity, Expression argumentExpression ) {
-		super( userActivity );
-		this.argumentExpression = argumentExpression;
-	}
+  public FillInMoreEdit(UserActivity userActivity, Expression argumentExpression) {
+    super(userActivity);
+    this.argumentExpression = argumentExpression;
+  }
 
-	public FillInMoreEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		UUID prevExpressionId = binaryDecoder.decodeId();
-		this.argumentExpression = ProgramTypeUtilities.lookupNode( project, prevExpressionId );
-	}
+  public FillInMoreEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    UUID prevExpressionId = binaryDecoder.decodeId();
+    this.argumentExpression = ProgramTypeUtilities.lookupNode(project, prevExpressionId);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.argumentExpression.getId() );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.argumentExpression.getId());
+  }
 
-	private SimpleArgument getArgumentAt( MethodInvocation methodInvocation, int index ) {
-		return methodInvocation.requiredArguments.get( index );
-	}
+  private SimpleArgument getArgumentAt(MethodInvocation methodInvocation, int index) {
+    return methodInvocation.requiredArguments.get(index);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		MoreCascade model = (MoreCascade)this.getModel();
-		MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
-		MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    MoreCascade model = (MoreCascade) this.getModel();
+    MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
+    MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
-		Expression instanceExpression = prevMethodInvocation.expression.getValue();
-		//prevMethodInvocation.expression.setValue( null );
-		nextMethodInvocation.expression.setValue( instanceExpression );
-		final int N = prevMethodInvocation.requiredArguments.size();
-		for( int i = 0; i < N; i++ ) {
-			Expression expressionI = this.getArgumentAt( prevMethodInvocation, i ).expression.getValue();
-			//prevMethodInvocation.arguments.get( i ).expression.setValue( null );
-			this.getArgumentAt( nextMethodInvocation, i ).expression.setValue( expressionI );
-		}
-		this.getArgumentAt( nextMethodInvocation, N ).expression.setValue( this.argumentExpression );
-		model.getExpressionStatement().expression.setValue( nextMethodInvocation );
-		//		this.getModel().updateToolTipText();
-	}
+    Expression instanceExpression = prevMethodInvocation.expression.getValue();
+    //prevMethodInvocation.expression.setValue( null );
+    nextMethodInvocation.expression.setValue(instanceExpression);
+    final int N = prevMethodInvocation.requiredArguments.size();
+    for (int i = 0; i < N; i++) {
+      Expression expressionI = this.getArgumentAt(prevMethodInvocation, i).expression.getValue();
+      //prevMethodInvocation.arguments.get( i ).expression.setValue( null );
+      this.getArgumentAt(nextMethodInvocation, i).expression.setValue(expressionI);
+    }
+    this.getArgumentAt(nextMethodInvocation, N).expression.setValue(this.argumentExpression);
+    model.getExpressionStatement().expression.setValue(nextMethodInvocation);
+    //    this.getModel().updateToolTipText();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		MoreCascade model = (MoreCascade)this.getModel();
-		MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
-		MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
+  @Override
+  protected final void undoInternal() {
+    MoreCascade model = (MoreCascade) this.getModel();
+    MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
+    MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 
-		Expression instanceExpression = nextMethodInvocation.expression.getValue();
-		nextMethodInvocation.expression.setValue( null );
-		prevMethodInvocation.expression.setValue( instanceExpression );
-		final int N = prevMethodInvocation.requiredArguments.size();
-		for( int i = 0; i < N; i++ ) {
-			Expression expressionI = this.getArgumentAt( nextMethodInvocation, i ).expression.getValue();
-			//nextMethodInvocation.arguments.get( i ).expression.setValue( null );
-			this.getArgumentAt( prevMethodInvocation, i ).expression.setValue( expressionI );
-		}
-		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
+    Expression instanceExpression = nextMethodInvocation.expression.getValue();
+    nextMethodInvocation.expression.setValue(null);
+    prevMethodInvocation.expression.setValue(instanceExpression);
+    final int N = prevMethodInvocation.requiredArguments.size();
+    for (int i = 0; i < N; i++) {
+      Expression expressionI = this.getArgumentAt(nextMethodInvocation, i).expression.getValue();
+      //nextMethodInvocation.arguments.get( i ).expression.setValue( null );
+      this.getArgumentAt(prevMethodInvocation, i).expression.setValue(expressionI);
+    }
+    //nextMethodInvocation.arguments.get( N ).expression.setValue( null );
 
-		model.getExpressionStatement().expression.setValue( prevMethodInvocation );
+    model.getExpressionStatement().expression.setValue(prevMethodInvocation);
 
-		//		this.getModel().updateToolTipText();
-	}
+    //    this.getModel().updateToolTipText();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		MoreCascade model = (MoreCascade)this.getModel();
-		MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
-		if( nextMethodInvocation != null ) {
-			rv.append( "more: " );
-			NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), Application.getLocale() );
-			rv.append( " " );
-			final int N = nextMethodInvocation.requiredArguments.size();
-			AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N - 1 );
-			NodeUtilities.safeAppendRepr( rv, argument, Application.getLocale() );
-		}
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    MoreCascade model = (MoreCascade) this.getModel();
+    MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
+    if (nextMethodInvocation != null) {
+      rv.append("more: ");
+      NodeUtilities.safeAppendRepr(rv, nextMethodInvocation.method.getValue(), Application.getLocale());
+      rv.append(" ");
+      final int N = nextMethodInvocation.requiredArguments.size();
+      AbstractArgument argument = nextMethodInvocation.requiredArguments.get(N - 1);
+      NodeUtilities.safeAppendRepr(rv, argument, Application.getLocale());
+    }
+  }
 }

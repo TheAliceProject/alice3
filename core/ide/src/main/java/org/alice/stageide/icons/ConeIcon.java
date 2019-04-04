@@ -55,32 +55,32 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class ConeIcon extends ShapeIcon {
-	public ConeIcon( Dimension size ) {
-		super( size );
-	}
+  public ConeIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		float capHeight = height * 0.2f;
-		float x = 0.1f * width;
-		float w = 0.8f * width;
-		Ellipse2D bottomCap = new Ellipse2D.Float( x, height - capHeight, w, capHeight );
-		GeneralPath core = new GeneralPath();
-		core.moveTo( width * 0.5f, 0 );
-		core.lineTo( width * 0.9f, height - ( capHeight * 0.5f ) );
-		core.lineTo( width * 0.1f, height - ( capHeight * 0.5f ) );
-		core.closePath();
-		Area area = new Area( core );
-		area.add( new Area( bottomCap ) );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    float capHeight = height * 0.2f;
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height - capHeight, w, capHeight);
+    GeneralPath core = new GeneralPath();
+    core.moveTo(width * 0.5f, 0);
+    core.lineTo(width * 0.9f, height - (capHeight * 0.5f));
+    core.lineTo(width * 0.1f, height - (capHeight * 0.5f));
+    core.closePath();
+    Area area = new Area(core);
+    area.add(new Area(bottomCap));
 
-		g2.setPaint( fillPaint );
-		g2.fill( area );
-		g2.setPaint( drawPaint );
-		g2.draw( area );
+    g2.setPaint(fillPaint);
+    g2.fill(area);
+    g2.setPaint(drawPaint);
+    g2.draw(area);
 
-		if( height > 128 ) {
-			g2.setStroke( new BasicStroke( 0.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[] { height * 0.05f }, 0.0f ) );
-			g2.draw( bottomCap );
-		}
-	}
+    if (height > 128) {
+      g2.setStroke(new BasicStroke(0.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1.0f, new float[] {height * 0.05f}, 0.0f));
+      g2.draw(bottomCap);
+    }
+  }
 }

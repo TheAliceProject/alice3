@@ -48,24 +48,24 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class NullLiteral extends AbstractLiteral {
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo
-		return JavaType.OBJECT_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //todo
+    return JavaType.OBJECT_TYPE;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendNullLiteral();
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendNullLiteral();
+  }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    return true;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendNull();
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendNull();
+  }
 }

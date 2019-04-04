@@ -59,102 +59,102 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class TypeSummary {
-	public static final double CURRENT_VERSION = 3.1;
-	public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
+  public static final double CURRENT_VERSION = 3.1;
+  public static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
-	private static void addHierarchyClassNames( List<String> hierarchyClassNames, AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			if( type instanceof JavaType ) {
-				JavaType javaType = (JavaType)type;
-				hierarchyClassNames.add( javaType.getClassReflectionProxy().getReification().getName() );
-			} else {
-				hierarchyClassNames.add( type.getName() );
-				addHierarchyClassNames( hierarchyClassNames, type.getSuperType() );
-			}
-		} else {
-			//pass
-		}
-	}
+  private static void addHierarchyClassNames(List<String> hierarchyClassNames, AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      if (type instanceof JavaType) {
+        JavaType javaType = (JavaType) type;
+        hierarchyClassNames.add(javaType.getClassReflectionProxy().getReification().getName());
+      } else {
+        hierarchyClassNames.add(type.getName());
+        addHierarchyClassNames(hierarchyClassNames, type.getSuperType());
+      }
+    } else {
+      //pass
+    }
+  }
 
-	private final double version;
-	private final String typeName;
-	private final List<String> hierarchyClassNames;
-	private final ResourceInfo resourceInfo;
-	private final List<String> procedureNames;
-	private final List<FunctionInfo> functionInfos;
-	private final List<FieldInfo> fieldInfos;
+  private final double version;
+  private final String typeName;
+  private final List<String> hierarchyClassNames;
+  private final ResourceInfo resourceInfo;
+  private final List<String> procedureNames;
+  private final List<FunctionInfo> functionInfos;
+  private final List<FieldInfo> fieldInfos;
 
-	public TypeSummary( NamedUserType type ) {
-		this.version = CURRENT_VERSION;
-		this.typeName = type.getName();
+  public TypeSummary(NamedUserType type) {
+    this.version = CURRENT_VERSION;
+    this.typeName = type.getName();
 
-		this.hierarchyClassNames = Lists.newLinkedList();
-		addHierarchyClassNames( this.hierarchyClassNames, type.getSuperType() );
+    this.hierarchyClassNames = Lists.newLinkedList();
+    addHierarchyClassNames(this.hierarchyClassNames, type.getSuperType());
 
-		Declaration declaration = ResourceTypeUtilities.getResourceFieldOrType( type );
-		if( declaration instanceof JavaType ) {
-			JavaType resourceType = (JavaType)declaration;
-			this.resourceInfo = new ResourceInfo( resourceType.getClassReflectionProxy().getName(), null );
-		} else if( declaration instanceof JavaField ) {
-			JavaField resourceField = (JavaField)declaration;
-			this.resourceInfo = new ResourceInfo( resourceField.getDeclaringType().getClassReflectionProxy().getName(), resourceField.getName() );
-		} else {
-			this.resourceInfo = null;
-		}
+    Declaration declaration = ResourceTypeUtilities.getResourceFieldOrType(type);
+    if (declaration instanceof JavaType) {
+      JavaType resourceType = (JavaType) declaration;
+      this.resourceInfo = new ResourceInfo(resourceType.getClassReflectionProxy().getName(), null);
+    } else if (declaration instanceof JavaField) {
+      JavaField resourceField = (JavaField) declaration;
+      this.resourceInfo = new ResourceInfo(resourceField.getDeclaringType().getClassReflectionProxy().getName(), resourceField.getName());
+    } else {
+      this.resourceInfo = null;
+    }
 
-		this.procedureNames = Lists.newLinkedList();
-		this.functionInfos = Lists.newLinkedList();
-		for( UserMethod method : type.methods ) {
-			ManagementLevel managementLevel = method.getManagementLevel();
-			if( ( managementLevel == null ) || ( managementLevel == ManagementLevel.NONE ) ) {
-				if( method.isProcedure() ) {
-					this.procedureNames.add( method.getName() );
-				} else {
-					this.functionInfos.add( new FunctionInfo( method.getReturnType().getName(), method.getName() ) );
-				}
-			}
-		}
-		this.fieldInfos = Lists.newLinkedList();
-		for( UserField field : type.fields ) {
-			this.fieldInfos.add( new FieldInfo( field.getValueType().getName(), field.getName() ) );
-		}
-	}
+    this.procedureNames = Lists.newLinkedList();
+    this.functionInfos = Lists.newLinkedList();
+    for (UserMethod method : type.methods) {
+      ManagementLevel managementLevel = method.getManagementLevel();
+      if ((managementLevel == null) || (managementLevel == ManagementLevel.NONE)) {
+        if (method.isProcedure()) {
+          this.procedureNames.add(method.getName());
+        } else {
+          this.functionInfos.add(new FunctionInfo(method.getReturnType().getName(), method.getName()));
+        }
+      }
+    }
+    this.fieldInfos = Lists.newLinkedList();
+    for (UserField field : type.fields) {
+      this.fieldInfos.add(new FieldInfo(field.getValueType().getName(), field.getName()));
+    }
+  }
 
-	public TypeSummary( double version, String typeName, List<String> hierarchyClassNames, ResourceInfo resourceInfo, List<String> procedureNames, List<FunctionInfo> functionInfos, List<FieldInfo> fieldInfos ) {
-		this.version = version;
-		this.typeName = typeName;
-		this.resourceInfo = resourceInfo;
-		this.hierarchyClassNames = hierarchyClassNames;
-		this.procedureNames = procedureNames;
-		this.functionInfos = functionInfos;
-		this.fieldInfos = fieldInfos;
-	}
+  public TypeSummary(double version, String typeName, List<String> hierarchyClassNames, ResourceInfo resourceInfo, List<String> procedureNames, List<FunctionInfo> functionInfos, List<FieldInfo> fieldInfos) {
+    this.version = version;
+    this.typeName = typeName;
+    this.resourceInfo = resourceInfo;
+    this.hierarchyClassNames = hierarchyClassNames;
+    this.procedureNames = procedureNames;
+    this.functionInfos = functionInfos;
+    this.fieldInfos = fieldInfos;
+  }
 
-	public double getVersion() {
-		return this.version;
-	}
+  public double getVersion() {
+    return this.version;
+  }
 
-	public String getTypeName() {
-		return this.typeName;
-	}
+  public String getTypeName() {
+    return this.typeName;
+  }
 
-	public List<String> getHierarchyClassNames() {
-		return this.hierarchyClassNames;
-	}
+  public List<String> getHierarchyClassNames() {
+    return this.hierarchyClassNames;
+  }
 
-	public ResourceInfo getResourceInfo() {
-		return this.resourceInfo;
-	}
+  public ResourceInfo getResourceInfo() {
+    return this.resourceInfo;
+  }
 
-	public List<String> getProcedureNames() {
-		return this.procedureNames;
-	}
+  public List<String> getProcedureNames() {
+    return this.procedureNames;
+  }
 
-	public List<FunctionInfo> getFunctionInfos() {
-		return this.functionInfos;
-	}
+  public List<FunctionInfo> getFunctionInfos() {
+    return this.functionInfos;
+  }
 
-	public List<FieldInfo> getFieldInfos() {
-		return this.fieldInfos;
-	}
+  public List<FieldInfo> getFieldInfos() {
+    return this.fieldInfos;
+  }
 }

@@ -69,75 +69,74 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AboutView extends BorderPanel {
-	private static final ImageIcon ICON = IconUtilities.createImageIcon( AboutView.class.getResource( "images/about.png" ) );
+  private static final ImageIcon ICON = IconUtilities.createImageIcon(AboutView.class.getResource("images/about.png"));
 
-	private static class IconBorder extends AbstractBorder {
-		@Override
-		public Insets getBorderInsets( Component c, Insets insets ) {
-			insets.top = 200;
-			insets.left = 150;
-			insets.bottom = 16;
-			insets.right = 16;
-			return insets;
-		}
+  private static class IconBorder extends AbstractBorder {
+    @Override
+    public Insets getBorderInsets(Component c, Insets insets) {
+      insets.top = 200;
+      insets.left = 150;
+      insets.bottom = 16;
+      insets.right = 16;
+      return insets;
+    }
 
-		@Override
-		public void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
-			g.drawImage( ICON.getImage(), x, y, c );
-		}
-	}
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+      g.drawImage(ICON.getImage(), x, y, c);
+    }
+  }
 
-	public AboutView( final AboutComposite composite ) {
-		super( composite );
+  public AboutView(final AboutComposite composite) {
+    super(composite);
 
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( getLocalizedStringByKey( "aboutSupport" ) );
-		sb.append( "<br><ul>" );
-		for( String sponsor : new String[] { "Sun Foundation", "Oracle", "Electronic Arts Foundation", "The National Science Foundation", "Defense Advanced Research Projects Agency", "Hearst Foundations", "Heinz Endowments", "Google", "Disney and Hyperion" } ) {
-			sb.append( "<li><strong>" );
-			sb.append( sponsor );
-			sb.append( "</strong></li>" );
-		}
-		sb.append( "</ul>" );
-		sb.append( getLocalizedStringByKey( "aboutSimsDonation" ) );
-		sb.append( "</html>" );
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append(getLocalizedStringByKey("aboutSupport"));
+    sb.append("<br><ul>");
+    for (String sponsor : new String[] {"Sun Foundation", "Oracle", "Electronic Arts Foundation", "The National Science Foundation", "Defense Advanced Research Projects Agency", "Hearst Foundations", "Heinz Endowments", "Google", "Disney and Hyperion"}) {
+      sb.append("<li><strong>");
+      sb.append(sponsor);
+      sb.append("</strong></li>");
+    }
+    sb.append("</ul>");
+    sb.append(getLocalizedStringByKey("aboutSimsDonation"));
+    sb.append("</html>");
 
-		Label supportedByLabel = new Label( sb.toString() );
-		supportedByLabel.setBorder( new IconBorder() );
-		this.addPageStartComponent( supportedByLabel );
+    Label supportedByLabel = new Label(sb.toString());
+    supportedByLabel.setBorder(new IconBorder());
+    this.addPageStartComponent(supportedByLabel);
 
-		PageAxisPanel otherPanel = new PageAxisPanel();
+    PageAxisPanel otherPanel = new PageAxisPanel();
 
-		FormPanel formPanel = new FormPanel() {
-			@Override
-			protected void appendRows( List<LabeledFormRow> rows ) {
-				for( Operation operation : composite.getEulaDialogLaunchOperations() ) {
-					rows.add( new LabeledFormRow( operation.getSidekickLabel(), operation.createButton() ) );
-				}
-			}
-		};
-		otherPanel.addComponent( formPanel );
-		otherPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
+    FormPanel formPanel = new FormPanel() {
+      @Override
+      protected void appendRows(List<LabeledFormRow> rows) {
+        for (Operation operation : composite.getEulaDialogLaunchOperations()) {
+          rows.add(new LabeledFormRow(operation.getSidekickLabel(), operation.createButton()));
+        }
+      }
+    };
+    otherPanel.addComponent(formPanel);
+    otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
 
-		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 
-		//				org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
-		//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
-		//				composite.getVersionLabel().createImmutableEditorPane()
-		//		);
-		//		otherPanel.addComponent( lineAxisPanel );
-		otherPanel.addComponent( MainSiteBrowserOperation.getInstance().createHyperlink() );
-		otherPanel.addComponent( composite.getCreditsDialogLaunchOperation().createHyperlink() );
-		otherPanel.addComponent( new HtmlMultiLineLabel(
-						String.format( getLocalizedStringByKey( "aboutVersion"), ProjectVersion.getCurrentVersionText() ) ) );
-		otherPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
-		otherPanel.addComponent( new HtmlMultiLineLabel( getLocalizedStringByKey( "aboutDedication" ) ) );
+    //    org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
+    //        org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
+    //        org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
+    //        composite.getVersionLabel().createImmutableEditorPane()
+    //    );
+    //    otherPanel.addComponent( lineAxisPanel );
+    otherPanel.addComponent(MainSiteBrowserOperation.getInstance().createHyperlink());
+    otherPanel.addComponent(composite.getCreditsDialogLaunchOperation().createHyperlink());
+    otherPanel.addComponent(new HtmlMultiLineLabel(String.format(getLocalizedStringByKey("aboutVersion"), ProjectVersion.getCurrentVersionText())));
+    otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
+    otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutDedication")));
 
-		otherPanel.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-		this.addCenterComponent( otherPanel );
-	}
+    otherPanel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    this.addCenterComponent(otherPanel);
+  }
 
-	private String getLocalizedStringByKey( String key ) {
-		return ResourceBundleUtilities.getStringForKey( key, AboutComposite.class );
-	}
+  private String getLocalizedStringByKey(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, AboutComposite.class);
+  }
 }

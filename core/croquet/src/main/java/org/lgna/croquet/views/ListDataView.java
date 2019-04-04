@@ -51,52 +51,52 @@ import javax.swing.event.ListDataListener;
  * @author Dennis Cosgrove
  */
 public abstract class ListDataView<T> extends Panel {
-	private final ListDataListener listDataListener = new ListDataListener() {
-		@Override
-		public void contentsChanged( ListDataEvent e ) {
-			refreshLater();
-		}
+  private final ListDataListener listDataListener = new ListDataListener() {
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+      refreshLater();
+    }
 
-		@Override
-		public void intervalAdded( ListDataEvent e ) {
-			refreshLater();
-		}
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+      refreshLater();
+    }
 
-		@Override
-		public void intervalRemoved( ListDataEvent e ) {
-			refreshLater();
-		}
-	};
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
+      refreshLater();
+    }
+  };
 
-	public ListDataView( ListDataComposite<T, ?> composite ) {
-		super( composite );
-	}
+  public ListDataView(ListDataComposite<T, ?> composite) {
+    super(composite);
+  }
 
-	protected abstract SwingComponentView<?> createComponentForItem( T item );
+  protected abstract SwingComponentView<?> createComponentForItem(T item);
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>) this.getComposite();
 
-		this.forgetAndRemoveAllComponents();
-		for( T item : composite.getData() ) {
-			this.internalAddComponent( this.createComponentForItem( item ) );
-		}
-	}
+    this.forgetAndRemoveAllComponents();
+    for (T item : composite.getData()) {
+      this.internalAddComponent(this.createComponentForItem(item));
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().addListener( this.listDataListener );
-		this.refreshLater();
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>) this.getComposite();
+    composite.getData().addListener(this.listDataListener);
+    this.refreshLater();
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().removeListener( this.listDataListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    ListDataComposite<T, ?> composite = (ListDataComposite<T, ?>) this.getComposite();
+    composite.getData().removeListener(this.listDataListener);
+  }
 }

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph.event;
  * @author Dennis Cosgrove
  */
 public interface ComponentsListener {
-	public void componentAdded( ComponentAddedEvent e );
+  public void componentAdded(ComponentAddedEvent e);
 
-	public void componentRemoved( ComponentRemovedEvent e );
+  public void componentRemoved(ComponentRemovedEvent e);
 }

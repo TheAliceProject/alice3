@@ -47,21 +47,21 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Graphic extends Element {
-	public Layer getParent() {
-		return this.layer;
-	}
+  public Layer getParent() {
+    return this.layer;
+  }
 
-	public void setParent( Layer parent ) {
-		if( this.layer != parent ) {
-			if( this.layer != null ) {
-				this.layer.removeGraphicAndFireListeners( this );
-			}
-			this.layer = parent;
-			if( this.layer != null ) {
-				this.layer.addGraphicAndFireListeners( this );
-			}
-		}
-	}
+  public void setParent(Layer parent) {
+    if (this.layer != parent) {
+      if (this.layer != null) {
+        this.layer.removeGraphicAndFireListeners(this);
+      }
+      this.layer = parent;
+      if (this.layer != null) {
+        this.layer.addGraphicAndFireListeners(this);
+      }
+    }
+  }
 
-	private Layer layer;
+  private Layer layer;
 }

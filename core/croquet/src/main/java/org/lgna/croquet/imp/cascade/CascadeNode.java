@@ -43,19 +43,17 @@
 
 package org.lgna.croquet.imp.cascade;
 
-import org.lgna.croquet.Element;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeNode<E> {
-	CascadeNode( E element ) {
-		this.element = element;
-	}
+  CascadeNode(E element) {
+    this.element = element;
+  }
 
-	public E getElement() {
-		return this.element;
-	}
+  public E getElement() {
+    return this.element;
+  }
 
-	private final E element;
+  private final E element;
 }

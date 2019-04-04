@@ -61,173 +61,173 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
-	public static class ItemChildrenAndComboOffsetsPair {
-		private final RtItem[] rtItems;
-		private final List<Integer> comboOffsets;
+  public static class ItemChildrenAndComboOffsetsPair {
+    private final RtItem[] rtItems;
+    private final List<Integer> comboOffsets;
 
-		public ItemChildrenAndComboOffsetsPair( List<RtItem> baseRtItems, List<Integer> comboOffsets ) {
-			this.rtItems = ArrayUtilities.createArray( baseRtItems, RtItem.class );
-			if( comboOffsets.size() > 0 ) {
-				this.comboOffsets = comboOffsets;
-			} else {
-				this.comboOffsets = null;
-			}
-		}
+    public ItemChildrenAndComboOffsetsPair(List<RtItem> baseRtItems, List<Integer> comboOffsets) {
+      this.rtItems = ArrayUtilities.createArray(baseRtItems, RtItem.class);
+      if (comboOffsets.size() > 0) {
+        this.comboOffsets = comboOffsets;
+      } else {
+        this.comboOffsets = null;
+      }
+    }
 
-		public RtItem[] getItemChildren() {
-			return this.rtItems;
-		}
+    public RtItem[] getItemChildren() {
+      return this.rtItems;
+    }
 
-		public boolean isComboOffset( int index ) {
-			return this.comboOffsets != null ? this.comboOffsets.contains( index ) : false;
-		}
-	}
+    public boolean isComboOffset(int index) {
+      return this.comboOffsets != null ? this.comboOffsets.contains(index) : false;
+    }
+  }
 
-	private ItemChildrenAndComboOffsetsPair itemChildrenAndComboOffsetsPair;
+  private ItemChildrenAndComboOffsetsPair itemChildrenAndComboOffsetsPair;
 
-	private boolean isAutomaticallyDetermined;
-	private RtItem<B, ?, ?, ?> rtSelectedFillIn;
+  private boolean isAutomaticallyDetermined;
+  private RtItem<B, ?, ?, ?> rtSelectedFillIn;
 
-	public RtBlank( CascadeBlank<B> element ) {
-		super( element, BlankNode.createInstance( element ) );
-		this.getNode().setRtBlank( this );
-	}
+  public RtBlank(CascadeBlank<B> element) {
+    super(element, BlankNode.createInstance(element));
+    this.getNode().setRtBlank(this);
+  }
 
-	@Override
-	public RtBlank<?> getNearestBlank() {
-		return this;
-	}
+  @Override
+  public RtBlank<?> getNearestBlank() {
+    return this;
+  }
 
-	public boolean isAutomaticallyDetermined() {
-		this.getItemChildrenAndComboOffsets();
-		return this.isAutomaticallyDetermined;
-	}
+  public boolean isAutomaticallyDetermined() {
+    this.getItemChildrenAndComboOffsets();
+    return this.isAutomaticallyDetermined;
+  }
 
-	public AbstractItemNode getSelectedFillInNode() {
-		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.getNode();
-		} else {
-			return null;
-		}
-	}
+  public AbstractItemNode getSelectedFillInNode() {
+    if (this.rtSelectedFillIn != null) {
+      return this.rtSelectedFillIn.getNode();
+    } else {
+      return null;
+    }
+  }
 
-	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
-		RtFillIn rv = null;
-		RtItem[] children = this.getItemChildrenAndComboOffsets().rtItems;
-		for( RtItem child : children ) {
-			if( child instanceof RtFillIn ) {
-				if( rv != null ) {
-					return null;
-				} else {
-					rv = (RtFillIn)child;
-				}
-			} else if( child instanceof RtCancel ) {
-				return null;
-			} else if( child instanceof RtMenu ) {
-				return null;
-			} else if( child instanceof RtRoot ) {
-				//??
-				return null;
-			} else if( child instanceof RtSeparator ) {
-				//pass
-			} else {
-				Logger.severe( "unhandled child", child );
-				return null;
-			}
-		}
-		return rv;
-	}
+  private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
+    RtFillIn rv = null;
+    RtItem[] children = this.getItemChildrenAndComboOffsets().rtItems;
+    for (RtItem child : children) {
+      if (child instanceof RtFillIn) {
+        if (rv != null) {
+          return null;
+        } else {
+          rv = (RtFillIn) child;
+        }
+      } else if (child instanceof RtCancel) {
+        return null;
+      } else if (child instanceof RtMenu) {
+        return null;
+      } else if (child instanceof RtRoot) {
+        //??
+        return null;
+      } else if (child instanceof RtSeparator) {
+        //pass
+      } else {
+        Logger.severe("unhandled child", child);
+        return null;
+      }
+    }
+    return rv;
+  }
 
-	protected ItemChildrenAndComboOffsetsPair getItemChildrenAndComboOffsets() {
-		if( this.itemChildrenAndComboOffsetsPair != null ) {
-			//pass
-		} else {
-			List<Integer> comboOffsets = Lists.newLinkedList();
-			List<RtItem> baseRtItems = Lists.newLinkedList();
-			for( CascadeBlankChild blankChild : this.getElement().getFilteredChildren( this.getNode() ) ) {
-				final int N = blankChild.getItemCount();
-				switch( N ) {
-				case 1:
-					break;
-				case 2:
-					comboOffsets.add( baseRtItems.size() );
-					break;
-				default:
-					Logger.severe( N, blankChild );
-				}
-				for( int i = 0; i < N; i++ ) {
-					CascadeItem item = blankChild.getItemAt( i );
-					RtItem rtItem;
-					if( item instanceof AbstractCascadeMenuModel ) {
-						AbstractCascadeMenuModel menu = (AbstractCascadeMenuModel)item;
-						rtItem = new RtMenu( menu, blankChild, i );
-					} else if( item instanceof CascadeFillIn ) {
-						CascadeFillIn fillIn = (CascadeFillIn)item;
-						rtItem = new RtFillIn( fillIn, blankChild, i );
-						//					} else if( item instanceof CascadeRoot ) {
-						//						CascadeRoot root = (CascadeRoot)item;
-						//						rtItem = new RtRoot( root );
-					} else if( item instanceof CascadeSeparator ) {
-						CascadeSeparator separator = (CascadeSeparator)item;
-						rtItem = new RtSeparator( separator, blankChild, i );
-					} else if( item instanceof CascadeCancel ) {
-						CascadeCancel cancel = (CascadeCancel)item;
-						rtItem = new RtCancel( cancel, blankChild, i );
-					} else {
-						rtItem = null;
-					}
-					baseRtItems.add( rtItem );
-				}
-			}
+  protected ItemChildrenAndComboOffsetsPair getItemChildrenAndComboOffsets() {
+    if (this.itemChildrenAndComboOffsetsPair != null) {
+      //pass
+    } else {
+      List<Integer> comboOffsets = Lists.newLinkedList();
+      List<RtItem> baseRtItems = Lists.newLinkedList();
+      for (CascadeBlankChild blankChild : this.getElement().getFilteredChildren(this.getNode())) {
+        final int N = blankChild.getItemCount();
+        switch (N) {
+        case 1:
+          break;
+        case 2:
+          comboOffsets.add(baseRtItems.size());
+          break;
+        default:
+          Logger.severe(N, blankChild);
+        }
+        for (int i = 0; i < N; i++) {
+          CascadeItem item = blankChild.getItemAt(i);
+          RtItem rtItem;
+          if (item instanceof AbstractCascadeMenuModel) {
+            AbstractCascadeMenuModel menu = (AbstractCascadeMenuModel) item;
+            rtItem = new RtMenu(menu, blankChild, i);
+          } else if (item instanceof CascadeFillIn) {
+            CascadeFillIn fillIn = (CascadeFillIn) item;
+            rtItem = new RtFillIn(fillIn, blankChild, i);
+            //        } else if( item instanceof CascadeRoot ) {
+            //          CascadeRoot root = (CascadeRoot)item;
+            //          rtItem = new RtRoot( root );
+          } else if (item instanceof CascadeSeparator) {
+            CascadeSeparator separator = (CascadeSeparator) item;
+            rtItem = new RtSeparator(separator, blankChild, i);
+          } else if (item instanceof CascadeCancel) {
+            CascadeCancel cancel = (CascadeCancel) item;
+            rtItem = new RtCancel(cancel, blankChild, i);
+          } else {
+            rtItem = null;
+          }
+          baseRtItems.add(rtItem);
+        }
+      }
 
-			boolean isDevoidOfNonSeparators = true;
-			for( RtItem rtItem : baseRtItems ) {
-				if( rtItem instanceof RtSeparator ) {
-					//pass
-				} else {
-					isDevoidOfNonSeparators = false;
-				}
-			}
-			if( isDevoidOfNonSeparators ) {
-				baseRtItems.add( new RtCancel( CascadeUnfilledInCancel.getInstance(), null, -1 ) );
-			}
+      boolean isDevoidOfNonSeparators = true;
+      for (RtItem rtItem : baseRtItems) {
+        if (rtItem instanceof RtSeparator) {
+          //pass
+        } else {
+          isDevoidOfNonSeparators = false;
+        }
+      }
+      if (isDevoidOfNonSeparators) {
+        baseRtItems.add(new RtCancel(CascadeUnfilledInCancel.getInstance(), null, -1));
+      }
 
-			this.itemChildrenAndComboOffsetsPair = new ItemChildrenAndComboOffsetsPair( baseRtItems, comboOffsets );
+      this.itemChildrenAndComboOffsetsPair = new ItemChildrenAndComboOffsetsPair(baseRtItems, comboOffsets);
 
-			this.updateParentsAndNextSiblings( this.itemChildrenAndComboOffsetsPair.rtItems );
+      this.updateParentsAndNextSiblings(this.itemChildrenAndComboOffsetsPair.rtItems);
 
-			RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
-			if( ( rtFillIn != null ) && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
-				this.rtSelectedFillIn = rtFillIn;
-				this.isAutomaticallyDetermined = true;
-			} else {
-				this.isAutomaticallyDetermined = false;
-			}
-		}
-		return this.itemChildrenAndComboOffsetsPair;
-	}
+      RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
+      if ((rtFillIn != null) && rtFillIn.isAutomaticallySelectedWhenSoleOption()) {
+        this.rtSelectedFillIn = rtFillIn;
+        this.isAutomaticallyDetermined = true;
+      } else {
+        this.isAutomaticallyDetermined = false;
+      }
+    }
+    return this.itemChildrenAndComboOffsetsPair;
+  }
 
-	public void setSelectedFillIn( RtItem<B, ?, ?, ?> item ) {
-		this.rtSelectedFillIn = item;
-		RtNode parent = this.getParent();
-		if( parent instanceof RtFillIn<?, ?> ) {
-			RtFillIn<?, ?> parentFillIn = (RtFillIn<?, ?>)parent;
-			for( RtBlank blank : parentFillIn.getBlankChildren() ) {
-				if( blank.rtSelectedFillIn != null ) {
-					//pass
-				} else {
-					return;
-				}
-			}
-			parentFillIn.select();
-		}
-	}
+  public void setSelectedFillIn(RtItem<B, ?, ?, ?> item) {
+    this.rtSelectedFillIn = item;
+    RtNode parent = this.getParent();
+    if (parent instanceof RtFillIn<?, ?>) {
+      RtFillIn<?, ?> parentFillIn = (RtFillIn<?, ?>) parent;
+      for (RtBlank blank : parentFillIn.getBlankChildren()) {
+        if (blank.rtSelectedFillIn != null) {
+          //pass
+        } else {
+          return;
+        }
+      }
+      parentFillIn.select();
+    }
+  }
 
-	public B createValue() {
-		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.createValue();
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  public B createValue() {
+    if (this.rtSelectedFillIn != null) {
+      return this.rtSelectedFillIn.createValue();
+    } else {
+      throw new RuntimeException();
+    }
+  }
 }

@@ -59,42 +59,42 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public enum SimpleListCellRenderer implements ListCellRenderer {
-	SINGLETON;
+  SINGLETON;
 
-	private JBorderPane pane = new JBorderPane();
-	private JLabel label = new JLabel();
+  private JBorderPane pane = new JBorderPane();
+  private JLabel label = new JLabel();
 
-	private SimpleListCellRenderer() {
-		label.setHorizontalAlignment( SwingUtilities.CENTER );
-		label.setBorder( BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
-		label.setOpaque( true );
-		pane.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		pane.setOpaque( false );
-		pane.add( label, BorderLayout.CENTER );
-	}
+  private SimpleListCellRenderer() {
+    label.setHorizontalAlignment(SwingUtilities.CENTER);
+    label.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
+    label.setOpaque(true);
+    pane.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    pane.setOpaque(false);
+    pane.add(label, BorderLayout.CENTER);
+  }
 
-	public String getLocalizedText( Object value ) {
-		return value.toString();
-	}
+  public String getLocalizedText(Object value) {
+    return value.toString();
+  }
 
-	@Override
-	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		String text;
-		if( value instanceof LocalizedResource ) {
-			text = ( (LocalizedResource)value ).getLocalizedDisplayText();
-		} else {
-			text = value.toString();
-		}
-		this.label.setText( text );
-		if( isSelected ) {
-			this.label.setBackground( IngredientsView.SELECTED_COLOR );
-			this.label.setForeground( Color.BLACK );
-			this.label.setOpaque( true );
-		} else {
-			this.label.setBackground( IngredientsView.UNSELECTED_COLOR );
-			this.label.setForeground( list.isEnabled() ? Color.BLACK : Color.GRAY );
-			this.label.setOpaque( list.isEnabled() );
-		}
-		return this.pane;
-	}
+  @Override
+  public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    String text;
+    if (value instanceof LocalizedResource) {
+      text = ((LocalizedResource) value).getLocalizedDisplayText();
+    } else {
+      text = value.toString();
+    }
+    this.label.setText(text);
+    if (isSelected) {
+      this.label.setBackground(IngredientsView.SELECTED_COLOR);
+      this.label.setForeground(Color.BLACK);
+      this.label.setOpaque(true);
+    } else {
+      this.label.setBackground(IngredientsView.UNSELECTED_COLOR);
+      this.label.setForeground(list.isEnabled() ? Color.BLACK : Color.GRAY);
+      this.label.setOpaque(list.isEnabled());
+    }
+    return this.pane;
+  }
 }

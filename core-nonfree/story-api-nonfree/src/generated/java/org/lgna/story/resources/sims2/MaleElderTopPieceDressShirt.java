@@ -44,13 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleElderTopPieceDressShirt implements MaleElderTopPiece {
-	BLUE,
-	BROWN,
-	GREEN,
-	PURPLE_HAWAIIAN,
-	RED,
-	RED_HAWAIIAN,
-	WHITE,
-	YELLOW;
+  BLUE, BROWN, GREEN, PURPLE_HAWAIIAN, RED, RED_HAWAIIAN, WHITE, YELLOW
 
 }

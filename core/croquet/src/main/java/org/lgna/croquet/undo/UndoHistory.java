@@ -61,206 +61,206 @@ import java.util.List;
  */
 public class UndoHistory {
 
-	private DStack<Edit> stack = Stacks.newStack();
-	private int insertionIndex = 0;
-	private Group group;
+  private DStack<Edit> stack = Stacks.newStack();
+  private int insertionIndex = 0;
+  private Group group;
 
-	public UndoHistory( Group group ) {
-		this.group = group;
-	}
+  public UndoHistory(Group group) {
+    this.group = group;
+  }
 
-	public Group getGroup() {
-		return this.group;
-	}
+  public Group getGroup() {
+    return this.group;
+  }
 
-	public DStack<Edit> getStack() {
-		return this.stack;
-	}
+  public DStack<Edit> getStack() {
+    return this.stack;
+  }
 
-	public void push( Edit edit ) {
-		if( Objects.equals( edit.getGroup(), this.group ) ) {
-			HistoryPushEvent historyPushEvent = new HistoryPushEvent( this, edit );
-			this.fireOperationPushing( historyPushEvent );
-			this.stack.setSize( this.insertionIndex );
-			this.stack.push( edit );
-			this.setInsertionIndex( this.stack.size(), false );
-			this.fireOperationPushed( historyPushEvent );
-		}
-	}
+  public void push(Edit edit) {
+    if (Objects.equals(edit.getGroup(), this.group)) {
+      HistoryPushEvent historyPushEvent = new HistoryPushEvent(this, edit);
+      this.fireOperationPushing(historyPushEvent);
+      this.stack.setSize(this.insertionIndex);
+      this.stack.push(edit);
+      this.setInsertionIndex(this.stack.size(), false);
+      this.fireOperationPushed(historyPushEvent);
+    }
+  }
 
-	private static void beep() {
-		Toolkit.getDefaultToolkit().beep();
-	}
+  private static void beep() {
+    Toolkit.getDefaultToolkit().beep();
+  }
 
-	private void undo() {
-		if( this.insertionIndex > 0 ) {
-			Edit edit = this.stack.get( this.insertionIndex - 1 );
-			if( edit.canUndo() ) {
-				edit.undo();
-				this.insertionIndex--;
-			} else {
-				beep();
-			}
-		} else {
-			beep();
-		}
-	}
+  private void undo() {
+    if (this.insertionIndex > 0) {
+      Edit edit = this.stack.get(this.insertionIndex - 1);
+      if (edit.canUndo()) {
+        edit.undo();
+        this.insertionIndex--;
+      } else {
+        beep();
+      }
+    } else {
+      beep();
+    }
+  }
 
-	private void redo() {
-		if( this.insertionIndex < this.stack.size() ) {
-			Edit edit = this.stack.get( this.insertionIndex );
-			if( edit != null ) {
-				if( edit.canRedo() ) {
-					edit.doOrRedo( false );
-					this.insertionIndex++;
-				} else {
-					beep();
-				}
-			} else {
-				beep();
-			}
-		} else {
-			beep();
-		}
-	}
+  private void redo() {
+    if (this.insertionIndex < this.stack.size()) {
+      Edit edit = this.stack.get(this.insertionIndex);
+      if (edit != null) {
+        if (edit.canRedo()) {
+          edit.doOrRedo(false);
+          this.insertionIndex++;
+        } else {
+          beep();
+        }
+      } else {
+        beep();
+      }
+    } else {
+      beep();
+    }
+  }
 
-	public void performUndo() {
-		int nextIndex = this.insertionIndex - 1;
-		int actualIndex = this.setInsertionIndex( nextIndex );
-		//todo
-	}
+  public void performUndo() {
+    int nextIndex = this.insertionIndex - 1;
+    int actualIndex = this.setInsertionIndex(nextIndex);
+    //todo
+  }
 
-	public void performRedo() {
-		int nextIndex = this.insertionIndex + 1;
-		int actualIndex = this.setInsertionIndex( nextIndex );
-		//todo
-	}
+  public void performRedo() {
+    int nextIndex = this.insertionIndex + 1;
+    int actualIndex = this.setInsertionIndex(nextIndex);
+    //todo
+  }
 
-	public int getInsertionIndex() {
-		return this.insertionIndex;
-	}
+  public int getInsertionIndex() {
+    return this.insertionIndex;
+  }
 
-	private int setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
-		if( ( nextInsertionIndex >= 0 ) && ( nextInsertionIndex <= this.stack.size() ) ) {
-			if( this.insertionIndex != nextInsertionIndex ) {
-				HistoryInsertionIndexEvent e = new HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
-				this.fireInsertionIndexChanging( e );
+  private int setInsertionIndex(int nextInsertionIndex, boolean isActionDesired) {
+    if ((nextInsertionIndex >= 0) && (nextInsertionIndex <= this.stack.size())) {
+      if (this.insertionIndex != nextInsertionIndex) {
+        HistoryInsertionIndexEvent e = new HistoryInsertionIndexEvent(this, this.insertionIndex, nextInsertionIndex);
+        this.fireInsertionIndexChanging(e);
 
-				final int N = Math.abs( nextInsertionIndex - this.insertionIndex );
-				if( nextInsertionIndex < this.insertionIndex ) {
-					for( int i = 0; i < N; i++ ) {
-						if( isActionDesired ) {
-							this.undo();
-						} else {
-							this.insertionIndex--;
-						}
-					}
-				} else {
-					for( int i = 0; i < N; i++ ) {
-						if( isActionDesired ) {
-							this.redo();
-						} else {
-							this.insertionIndex++;
-						}
-					}
-				}
-				if( this.insertionIndex == nextInsertionIndex ) {
-					this.fireInsertionIndexChanged( e );
-				}
-			}
-		}
-		return this.insertionIndex;
-	}
+        final int N = Math.abs(nextInsertionIndex - this.insertionIndex);
+        if (nextInsertionIndex < this.insertionIndex) {
+          for (int i = 0; i < N; i++) {
+            if (isActionDesired) {
+              this.undo();
+            } else {
+              this.insertionIndex--;
+            }
+          }
+        } else {
+          for (int i = 0; i < N; i++) {
+            if (isActionDesired) {
+              this.redo();
+            } else {
+              this.insertionIndex++;
+            }
+          }
+        }
+        if (this.insertionIndex == nextInsertionIndex) {
+          this.fireInsertionIndexChanged(e);
+        }
+      }
+    }
+    return this.insertionIndex;
+  }
 
-	public int setInsertionIndex( int nextInsertionIndex ) {
-		return this.setInsertionIndex( nextInsertionIndex, true );
-	}
+  public int setInsertionIndex(int nextInsertionIndex) {
+    return this.setInsertionIndex(nextInsertionIndex, true);
+  }
 
-	private List<HistoryListener> historyListeners = new LinkedList<HistoryListener>();
+  private List<HistoryListener> historyListeners = new LinkedList<HistoryListener>();
 
-	public void addHistoryListener( HistoryListener l ) {
-		synchronized( this.historyListeners ) {
-			this.historyListeners.add( l );
-		}
-	}
+  public void addHistoryListener(HistoryListener l) {
+    synchronized (this.historyListeners) {
+      this.historyListeners.add(l);
+    }
+  }
 
-	public void removeHistoryListener( HistoryListener l ) {
-		synchronized( this.historyListeners ) {
-			this.historyListeners.remove( l );
-		}
-	}
+  public void removeHistoryListener(HistoryListener l) {
+    synchronized (this.historyListeners) {
+      this.historyListeners.remove(l);
+    }
+  }
 
-	private void fireOperationPushing( HistoryPushEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.operationPushing( e );
-			}
-		}
-	}
+  private void fireOperationPushing(HistoryPushEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.operationPushing(e);
+      }
+    }
+  }
 
-	private void fireOperationPushed( HistoryPushEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.operationPushed( e );
-			}
-		}
-	}
+  private void fireOperationPushed(HistoryPushEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.operationPushed(e);
+      }
+    }
+  }
 
-	private void fireInsertionIndexChanging( HistoryInsertionIndexEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.insertionIndexChanging( e );
-			}
-		}
-	}
+  private void fireInsertionIndexChanging(HistoryInsertionIndexEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.insertionIndexChanging(e);
+      }
+    }
+  }
 
-	private void fireInsertionIndexChanged( HistoryInsertionIndexEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.insertionIndexChanged( e );
-			}
-		}
-	}
+  private void fireInsertionIndexChanged(HistoryInsertionIndexEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.insertionIndexChanged(e);
+      }
+    }
+  }
 
-	private void fireClearing( HistoryClearEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.clearing( e );
-			}
-		}
-	}
+  private void fireClearing(HistoryClearEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.clearing(e);
+      }
+    }
+  }
 
-	private void fireCleared( HistoryClearEvent e ) {
-		synchronized( this.historyListeners ) {
-			for( HistoryListener l : this.historyListeners ) {
-				l.cleared( e );
-			}
-		}
-	}
+  private void fireCleared(HistoryClearEvent e) {
+    synchronized (this.historyListeners) {
+      for (HistoryListener l : this.historyListeners) {
+        l.cleared(e);
+      }
+    }
+  }
 
-	public Edit createDoIgnoringCompositeEdit( String presentation ) {
-		//		synchronized( this.stack ) {
-		//			final int N = this.insertionIndex;
-		//			if( N > 0 ) {
-		//				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
-		//				for( int i=0; i<N; i++ ) {
-		//					edits[ i ] = this.stack.get( i );
-		//				}
-		//				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
-		//			} else {
-		//				return null;
-		//			}
-		//		}
-		throw new RuntimeException( "todo" );
-	}
+  public Edit createDoIgnoringCompositeEdit(String presentation) {
+    //  synchronized( this.stack ) {
+    //    final int N = this.insertionIndex;
+    //    if( N > 0 ) {
+    //      edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
+    //      for( int i=0; i<N; i++ ) {
+    //        edits[ i ] = this.stack.get( i );
+    //      }
+    //      return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
+    //    } else {
+    //      return null;
+    //    }
+    //  }
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.getGroup() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.getGroup());
+    sb.append("]");
+    return sb.toString();
+  }
 }

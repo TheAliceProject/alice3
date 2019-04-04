@@ -48,24 +48,24 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class Player {
-	public abstract void prefetch();
+  public abstract void prefetch();
 
-	public abstract void realize();
+  public abstract void realize();
 
-	public abstract double getDuration();
+  public abstract double getDuration();
 
-	public abstract double getTimeRemaining();
+  public abstract double getTimeRemaining();
 
-	public abstract void start();
+  public abstract void start();
 
-	public abstract void playUntilStop();
+  public abstract void playUntilStop();
 
-	public abstract void stop();
+  public abstract void stop();
 
-	public abstract Component getControlPanelComponent();
+  public abstract Component getControlPanelComponent();
 
-	public abstract Component getVisualComponent();
+  public abstract Component getVisualComponent();
 
-	//todo: remove
-	public abstract void test( Component owner );
+  //todo: remove
+  public abstract void test(Component owner);
 }

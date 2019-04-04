@@ -62,79 +62,76 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class SearchTabView extends GalleryTabView {
-	public static final Icon SEARCH_ICON = IconUtilities.createImageIcon( SearchTabView.class.getResource( "images/system-search.png" ) );
-	private final AbstractLabel noMatchesLabel;
-	private final AbstractLabel noEntryLabel;
+  public static final Icon SEARCH_ICON = IconUtilities.createImageIcon(SearchTabView.class.getResource("images/system-search.png"));
+  private final AbstractLabel noMatchesLabel;
+  private final AbstractLabel noEntryLabel;
 
-	private final LineAxisPanel filteredResourcesView = new LineAxisPanel();
-	private final TextField filterTextField;
+  private final LineAxisPanel filteredResourcesView = new LineAxisPanel();
+  private final TextField filterTextField;
 
-	public SearchTabView( SearchTab composite ) {
-		super( composite );
+  public SearchTabView(SearchTab composite) {
+    super(composite);
 
-		this.noMatchesLabel = composite.getNoMatchesLabel().createLabel( 1.4f, TextPosture.OBLIQUE );
-		this.noEntryLabel = composite.getNoEntryLabel().createLabel( 1.4f, TextPosture.OBLIQUE );
-		this.noMatchesLabel.setForegroundColor( Color.DARK_GRAY );
-		this.noEntryLabel.setForegroundColor( Color.DARK_GRAY );
+    this.noMatchesLabel = composite.getNoMatchesLabel().createLabel(1.4f, TextPosture.OBLIQUE);
+    this.noEntryLabel = composite.getNoEntryLabel().createLabel(1.4f, TextPosture.OBLIQUE);
+    this.noMatchesLabel.setForegroundColor(Color.DARK_GRAY);
+    this.noEntryLabel.setForegroundColor(Color.DARK_GRAY);
 
-		this.filterTextField = composite.getFilterState().createTextField();
-		this.filterTextField.setMinimumPreferredWidth( 320 );
-		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );
-		this.filterTextField.scaleFont( 1.2f );
-		this.filterTextField.enableSelectAllWhenFocusGained();
+    this.filterTextField = composite.getFilterState().createTextField();
+    this.filterTextField.setMinimumPreferredWidth(320);
+    this.filterTextField.setMaximumSizeClampedToPreferredSize(true);
+    this.filterTextField.scaleFont(1.2f);
+    this.filterTextField.enableSelectAllWhenFocusGained();
 
-		ScrollPane scrollPane = createGalleryScrollPane( this.filteredResourcesView );
-		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+    ScrollPane scrollPane = createGalleryScrollPane(this.filteredResourcesView);
+    this.filteredResourcesView.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
 
-		this.addPageStartComponent( new LineAxisPanel(
-				composite.getFilterState().getSidekickLabel().createLabel(),
-				this.filterTextField
-				) );
-		this.addCenterComponent( scrollPane );
-	}
+    this.addPageStartComponent(new LineAxisPanel(composite.getFilterState().getSidekickLabel().createLabel(), this.filterTextField));
+    this.addCenterComponent(scrollPane);
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		this.filterTextField.requestFocusLater();
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    this.filterTextField.requestFocusLater();
+  }
 
-	//@Override
-	//public void handleCompositePostDeactivation() {
-	//	super.handleCompositePostDeactivation();
-	//}
+  //@Override
+  //public void handleCompositePostDeactivation() {
+  //  super.handleCompositePostDeactivation();
+  //}
 
-	public void removeAllGalleryDragComponents() {
-		synchronized( this.getTreeLock() ) {
-			this.filteredResourcesView.removeAllComponents();
-		}
-		this.filteredResourcesView.revalidateAndRepaint();
-	}
+  public void removeAllGalleryDragComponents() {
+    synchronized (this.getTreeLock()) {
+      this.filteredResourcesView.removeAllComponents();
+    }
+    this.filteredResourcesView.revalidateAndRepaint();
+  }
 
-	public void addGalleryDragComponents( List<ResourceNode> resourceNodes ) {
-		synchronized( this.getTreeLock() ) {
-			for( ResourceNode resourceNode : resourceNodes ) {
-				this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode, TreeUtilities.getClassTreeState() ) );
-			}
-		}
-		this.filteredResourcesView.revalidateAndRepaint();
-	}
+  public void addGalleryDragComponents(List<ResourceNode> resourceNodes) {
+    synchronized (this.getTreeLock()) {
+      for (ResourceNode resourceNode : resourceNodes) {
+        this.filteredResourcesView.addComponent(this.getGalleryDragComponent(resourceNode, TreeUtilities.getClassTreeState()));
+      }
+    }
+    this.filteredResourcesView.revalidateAndRepaint();
+  }
 
-	public void setComponentsToGalleryDragComponents( String filter, List<ResourceNode> resourceNodes ) {
-		synchronized( this.getTreeLock() ) {
-			this.filteredResourcesView.removeAllComponents();
-			if( filter.length() > 0 ) {
-				if( resourceNodes.size() > 0 ) {
-					for( ResourceNode resourceNode : resourceNodes ) {
-						this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode, TreeUtilities.getClassTreeState() ) );
-					}
-				} else {
-					this.filteredResourcesView.addComponent( this.noMatchesLabel );
-				}
-			} else {
-				this.filteredResourcesView.addComponent( this.noEntryLabel );
-			}
-		}
-		this.filteredResourcesView.revalidateAndRepaint();
-	}
+  public void setComponentsToGalleryDragComponents(String filter, List<ResourceNode> resourceNodes) {
+    synchronized (this.getTreeLock()) {
+      this.filteredResourcesView.removeAllComponents();
+      if (filter.length() > 0) {
+        if (resourceNodes.size() > 0) {
+          for (ResourceNode resourceNode : resourceNodes) {
+            this.filteredResourcesView.addComponent(this.getGalleryDragComponent(resourceNode, TreeUtilities.getClassTreeState()));
+          }
+        } else {
+          this.filteredResourcesView.addComponent(this.noMatchesLabel);
+        }
+      } else {
+        this.filteredResourcesView.addComponent(this.noEntryLabel);
+      }
+    }
+    this.filteredResourcesView.revalidateAndRepaint();
+  }
 }

@@ -54,28 +54,28 @@ import javax.media.format.AudioFormat;
  * @author Dennis Cosgrove
  */
 public class FixedJavaSoundRenderer extends JavaSoundRenderer {
-	public static void usurpControlFromJavaSoundRenderer() {
-		final String OFFENDING_RENDERER_PLUGIN_NAME = JavaSoundRenderer.class.getName();
-		Format[] rendererInputFormats = PlugInManager.getSupportedInputFormats( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
-		Format[] rendererOutputFormats = PlugInManager.getSupportedOutputFormats( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
-		if( ( rendererInputFormats != null ) || ( rendererOutputFormats != null ) ) {
-			final String REPLACEMENT_RENDERER_PLUGIN_NAME = FixedJavaSoundRenderer.class.getName();
-			PlugInManager.removePlugIn( OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER );
-			PlugInManager.addPlugIn( REPLACEMENT_RENDERER_PLUGIN_NAME, rendererInputFormats, rendererOutputFormats, PlugInManager.RENDERER );
-		}
-	}
+  public static void usurpControlFromJavaSoundRenderer() {
+    final String OFFENDING_RENDERER_PLUGIN_NAME = JavaSoundRenderer.class.getName();
+    Format[] rendererInputFormats = PlugInManager.getSupportedInputFormats(OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER);
+    Format[] rendererOutputFormats = PlugInManager.getSupportedOutputFormats(OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER);
+    if ((rendererInputFormats != null) || (rendererOutputFormats != null)) {
+      final String REPLACEMENT_RENDERER_PLUGIN_NAME = FixedJavaSoundRenderer.class.getName();
+      PlugInManager.removePlugIn(OFFENDING_RENDERER_PLUGIN_NAME, PlugInManager.RENDERER);
+      PlugInManager.addPlugIn(REPLACEMENT_RENDERER_PLUGIN_NAME, rendererInputFormats, rendererOutputFormats, PlugInManager.RENDERER);
+    }
+  }
 
-	@Override
-	protected AudioOutput createDevice( AudioFormat format ) {
-		return new JavaSoundOutput() {
-			@Override
-			public void setGain( double g ) {
-				if( this.gc != null ) {
-					g = Math.max( g, this.gc.getMinimum() );
-					g = Math.min( g, this.gc.getMaximum() );
-				}
-				super.setGain( g );
-			}
-		};
-	}
+  @Override
+  protected AudioOutput createDevice(AudioFormat format) {
+    return new JavaSoundOutput() {
+      @Override
+      public void setGain(double g) {
+        if (this.gc != null) {
+          g = Math.max(g, this.gc.getMinimum());
+          g = Math.min(g, this.gc.getMaximum());
+        }
+        super.setGain(g);
+      }
+    };
+  }
 }

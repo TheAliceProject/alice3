@@ -59,36 +59,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArithmeticExpressionRightOperandOnlyFillIn extends PreviousExpressionBasedFillInWithExpressionBlanks<ArithmeticInfixExpression> {
-	private final ArithmeticInfixExpression transientValue;
+  private final ArithmeticInfixExpression transientValue;
 
-	public ArithmeticExpressionRightOperandOnlyFillIn( UUID id, AbstractType<?, ?, ?> resultType, AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType ) {
-		super( id, ExpressionBlank.createBlanks( rightOperandType ) );
-		assert resultType != null : this;
-		assert rightOperandType != null : this;
-		this.transientValue = new ArithmeticInfixExpression(
-				new PreviousValueExpression( leftOperandType ),
-				operator,
-				new EmptyExpression( rightOperandType ),
-				resultType
-				);
-	}
+  public ArithmeticExpressionRightOperandOnlyFillIn(UUID id, AbstractType<?, ?, ?> resultType, AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType) {
+    super(id, ExpressionBlank.createBlanks(rightOperandType));
+    assert resultType != null : this;
+    assert rightOperandType != null : this;
+    this.transientValue = new ArithmeticInfixExpression(new PreviousValueExpression(leftOperandType), operator, new EmptyExpression(rightOperandType), resultType);
+  }
 
-	public ArithmeticExpressionRightOperandOnlyFillIn( UUID id, Class<?> resultCls, Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, JavaType.getInstance( resultCls ), JavaType.getInstance( leftOperandCls ), operator, JavaType.getInstance( rightOperandCls ) );
-	}
+  public ArithmeticExpressionRightOperandOnlyFillIn(UUID id, Class<?> resultCls, Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls) {
+    this(id, JavaType.getInstance(resultCls), JavaType.getInstance(leftOperandCls), operator, JavaType.getInstance(rightOperandCls));
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ArithmeticInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, this.transientValue.leftOperand.getValue().getType() );
-	//	}
-	@Override
-	protected ArithmeticInfixExpression createValue( Expression previousExpression, Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new ArithmeticInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ], this.transientValue.getType() );
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ArithmeticInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, this.transientValue.leftOperand.getValue().getType() );
+  //  }
+  @Override
+  protected ArithmeticInfixExpression createValue(Expression previousExpression, Expression[] expressions) {
+    assert expressions.length == 1;
+    return new ArithmeticInfixExpression(previousExpression, this.transientValue.operator.getValue(), expressions[0], this.transientValue.getType());
+  }
 
-	@Override
-	public ArithmeticInfixExpression getTransientValue( ItemNode<? super ArithmeticInfixExpression, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public ArithmeticInfixExpression getTransientValue(ItemNode<? super ArithmeticInfixExpression, Expression> step) {
+    return this.transientValue;
+  }
 }

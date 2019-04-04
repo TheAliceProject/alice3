@@ -52,18 +52,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ManagedEditFieldComposite extends EditFieldComposite {
-	private static InitializingIfAbsentMap<UserField, ManagedEditFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserField, ManagedEditFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized ManagedEditFieldComposite getInstance( UserField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, ManagedEditFieldComposite>() {
-			@Override
-			public ManagedEditFieldComposite initialize( UserField field ) {
-				return new ManagedEditFieldComposite( field );
-			}
-		} );
-	}
+  public static synchronized ManagedEditFieldComposite getInstance(UserField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<UserField, ManagedEditFieldComposite>() {
+      @Override
+      public ManagedEditFieldComposite initialize(UserField field) {
+        return new ManagedEditFieldComposite(field);
+      }
+    });
+  }
 
-	public ManagedEditFieldComposite( UserField field ) {
-		super( UUID.fromString( "4a72134c-1a1e-4a3a-9334-1176eff9e963" ), field, /* todo: remove */ApplicabilityStatus.DISPLAYED, field.initializer.getValue() );
-	}
+  public ManagedEditFieldComposite(UserField field) {
+    super(UUID.fromString("4a72134c-1a1e-4a3a-9334-1176eff9e963"), field, /* todo: remove */ApplicabilityStatus.DISPLAYED, field.initializer.getValue());
+  }
 }

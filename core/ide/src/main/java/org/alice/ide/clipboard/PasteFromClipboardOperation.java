@@ -57,26 +57,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PasteFromClipboardOperation extends FromClipboardOperation {
-	private static Map<BlockStatementIndexPair, PasteFromClipboardOperation> map = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, PasteFromClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized PasteFromClipboardOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		PasteFromClipboardOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PasteFromClipboardOperation( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized PasteFromClipboardOperation getInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    assert blockStatementIndexPair != null;
+    PasteFromClipboardOperation rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new PasteFromClipboardOperation(blockStatementIndexPair);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private PasteFromClipboardOperation( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair );
-	}
+  private PasteFromClipboardOperation(BlockStatementIndexPair blockStatementIndexPair) {
+    super(UUID.fromString("4dea691b-af8f-4991-80e2-3db880f1883f"), blockStatementIndexPair);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Statement statement ) {
-		return new PasteFromClipboardEdit( userActivity, statement, this.getBlockStatementIndexPair() );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Statement statement) {
+    return new PasteFromClipboardEdit(userActivity, statement, this.getBlockStatementIndexPair());
+  }
 }

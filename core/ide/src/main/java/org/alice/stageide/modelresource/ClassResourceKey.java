@@ -62,133 +62,135 @@ import javax.swing.JComponent;
  * @author Dennis Cosgrove
  */
 public final class ClassResourceKey extends InstanceCreatorKey {
-	private final Class<? extends ModelResource> cls;
+  private final Class<? extends ModelResource> cls;
 
-	public ClassResourceKey( Class<? extends ModelResource> cls ) {
-		this.cls = cls;
-	}
+  public ClassResourceKey(Class<? extends ModelResource> cls) {
+    this.cls = cls;
+  }
 
-	@Override
-	public Class<? extends ModelResource> getModelResourceCls() {
-		return this.cls;
-	}
+  @Override
+  public Class<? extends ModelResource> getModelResourceCls() {
+    return this.cls;
+  }
 
-	public JavaType getType() {
-		return JavaType.getInstance( this.cls );
-	}
+  public JavaType getType() {
+    return JavaType.getInstance(this.cls);
+  }
 
-	@Override
-	public String getInternalText() {
-		return AliceResourceUtilties.getModelClassName( getModelResourceCls(), null, null );
-	}
+  @Override
+  public String getInternalText() {
+    return AliceResourceUtilties.getModelClassName(getModelResourceCls(), null, null);
+  }
 
-	@Override
-	public String getSearchText() {
-		return AliceResourceUtilties.getModelClassName( getModelResourceCls(), null, JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String getSearchText() {
+    return AliceResourceUtilties.getModelClassName(getModelResourceCls(), null, JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String getLocalizedDisplayText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return formatter.galleryLabelFor(this);
-	}
+  @Override
+  public String getLocalizedDisplayText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return formatter.galleryLabelFor(this);
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		if( this.isLeaf() ) {
-			ModelResource modelResource = cls.getEnumConstants()[ 0 ];
-			return IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
-		} else {
-			return IconFactoryManager.getIconFactoryForResourceCls( cls );
-		}
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    if (this.isLeaf()) {
+      ModelResource modelResource = cls.getEnumConstants()[0];
+      return IconFactoryManager.getIconFactoryForResourceInstance(modelResource);
+    } else {
+      return IconFactoryManager.getIconFactoryForResourceCls(cls);
+    }
+  }
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		throw new Error();
-	}
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    throw new Error();
+  }
 
-	@Override
-	public boolean isInterface() {
-		return cls.isInterface();
-	}
+  @Override
+  public boolean isInterface() {
+    return cls.isInterface();
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
-	}
+  @Override
+  public boolean isLeaf() {
+    return this.cls.isEnum() && (this.cls.getEnumConstants().length == 1);
+  }
 
-	@Override
-	public String[] getTags() {
-		return AliceResourceUtilties.getTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String[] getTags() {
+    return AliceResourceUtilties.getTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return AliceResourceUtilties.getGroupTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String[] getGroupTags() {
+    return AliceResourceUtilties.getGroupTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return AliceResourceUtilties.getThemeTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String[] getThemeTags() {
+    return AliceResourceUtilties.getThemeTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		if( isLeaf() ) {
-			ResourceNode child = node.getFirstChild();
-			if( child != null ) {
-				return child.getLeftButtonClickOperation(controller);
-			} else {
-				return null;
-			}
-		} else {
-			return controller.getItemSelectionOperation( node );
-		}
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    if (isLeaf()) {
+      ResourceNode child = node.getFirstChild();
+      if (child != null) {
+        return child.getLeftButtonClickOperation(controller);
+      } else {
+        return null;
+      }
+    } else {
+      return controller.getItemSelectionOperation(node);
+    }
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		if( isLeaf() ) {
-			ResourceNode child = node.getFirstChild();
-			if( child != null ) {
-				return child.getDropOperation( step, dropSite );
-			} else {
-				return null;
-			}
-		} else {
-			return new AddFieldCascade( node, dropSite );
-		}
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    if (isLeaf()) {
+      ResourceNode child = node.getFirstChild();
+      if (child != null) {
+        return child.getDropOperation(step, dropSite);
+      } else {
+        return null;
+      }
+    } else {
+      return new AddFieldCascade(node, dropSite);
+    }
+  }
 
-	@Override public AxisAlignedBox getBoundingBox() {
-		return AliceResourceUtilties.getBoundingBox( getModelResourceCls() );
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return AliceResourceUtilties.getBoundingBox(getModelResourceCls());
+  }
 
-	@Override public boolean getPlaceOnGround() {
-		return AliceResourceUtilties.getPlaceOnGround( getModelResourceCls() );
-	}
+  @Override
+  public boolean getPlaceOnGround() {
+    return AliceResourceUtilties.getPlaceOnGround(getModelResourceCls());
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		}
-		if( o instanceof ClassResourceKey ) {
-			ClassResourceKey other = (ClassResourceKey)o;
-			return this.cls.equals( other.cls );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o instanceof ClassResourceKey) {
+      ClassResourceKey other = (ClassResourceKey) o;
+      return this.cls.equals(other.cls);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.cls.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.cls.hashCode();
+  }
 
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.cls.getSimpleName() );
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+    sb.append(this.cls.getSimpleName());
+  }
 }

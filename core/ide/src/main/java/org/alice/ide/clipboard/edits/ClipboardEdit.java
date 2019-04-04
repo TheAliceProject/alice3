@@ -63,60 +63,60 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ClipboardEdit extends AbstractEdit {
-	private final Statement statement;
-	private final BlockStatementIndexPair blockStatementIndexPair;
+  private final Statement statement;
+  private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public ClipboardEdit( UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( userActivity );
-		this.statement = statement;
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
+  public ClipboardEdit(UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair) {
+    super(userActivity);
+    this.statement = statement;
+    this.blockStatementIndexPair = blockStatementIndexPair;
+  }
 
-	public ClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		UUID statementId = binaryDecoder.decodeId();
-		this.statement = ProgramTypeUtilities.lookupNode( project, statementId );
-		this.blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
+  public ClipboardEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    UUID statementId = binaryDecoder.decodeId();
+    this.statement = ProgramTypeUtilities.lookupNode(project, statementId);
+    this.blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
+  }
 
-	public Statement getStatement() {
-		return this.statement;
-	}
+  public Statement getStatement() {
+    return this.statement;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.statement.getId() );
-		binaryEncoder.encode( this.blockStatementIndexPair );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.statement.getId());
+    binaryEncoder.encode(this.blockStatementIndexPair);
+  }
 
-	protected void pushAndRemove() {
-		Clipboard.SINGLETON.push( this.statement );
-		this.blockStatementIndexPair.getBlockStatement().statements.remove( this.blockStatementIndexPair.getIndex() );
-	}
+  protected void pushAndRemove() {
+    Clipboard.SINGLETON.push(this.statement);
+    this.blockStatementIndexPair.getBlockStatement().statements.remove(this.blockStatementIndexPair.getIndex());
+  }
 
-	protected void popAndAdd() {
-		Node node = Clipboard.SINGLETON.pop();
-		if( node == this.statement ) {
-			this.blockStatementIndexPair.getBlockStatement().statements.add( this.blockStatementIndexPair.getIndex(), this.statement );
-		} else {
-			StringBuilder sb = new StringBuilder();
-			try {
-				NodeUtilities.safeAppendRepr( sb, statement );
-			} catch( Throwable t ) {
-				sb.append( statement );
-			}
-			sb.append( ";" );
-			sb.append( statement.getId() );
-			final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					composite.getLaunchOperation().fire();
-				}
-			} );
-		}
-	}
+  protected void popAndAdd() {
+    Node node = Clipboard.SINGLETON.pop();
+    if (node == this.statement) {
+      this.blockStatementIndexPair.getBlockStatement().statements.add(this.blockStatementIndexPair.getIndex(), this.statement);
+    } else {
+      StringBuilder sb = new StringBuilder();
+      try {
+        NodeUtilities.safeAppendRepr(sb, statement);
+      } catch (Throwable t) {
+        sb.append(statement);
+      }
+      sb.append(";");
+      sb.append(statement.getId());
+      final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance("Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString());
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          composite.getLaunchOperation().fire();
+        }
+      });
+    }
+  }
 }

@@ -51,23 +51,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IntegerPropertyKey extends PropertyKey<Integer> {
-	public IntegerPropertyKey( UUID id, String repr ) {
-		super( id, repr );
-	}
+  public IntegerPropertyKey(UUID id, String repr) {
+    super(id, repr);
+  }
 
-	@Override
-	protected Integer decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			return binaryDecoder.decodeInt();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Integer decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      return binaryDecoder.decodeInt();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void encodeValue( BinaryEncoder binaryEncoder, Integer value ) {
-		binaryEncoder.encode( value != null );
-		binaryEncoder.encode( value );
-	}
+  @Override
+  protected void encodeValue(BinaryEncoder binaryEncoder, Integer value) {
+    binaryEncoder.encode(value != null);
+    binaryEncoder.encode(value);
+  }
 }

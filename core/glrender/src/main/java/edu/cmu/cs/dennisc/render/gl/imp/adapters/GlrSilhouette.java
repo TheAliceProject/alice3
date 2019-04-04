@@ -53,31 +53,31 @@ import java.nio.FloatBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrSilhouette extends GlrElement<Silhouette> {
-	public void setup( RenderContext rc, int face ) {
-		rc.gl.glLineWidth( this.lineWidth );
-		rc.gl.glPolygonMode( face, GL2.GL_LINE );
-		rc.setIsShadingEnabled( false );
-		rc.gl.glDisable( GL2.GL_TEXTURE_2D );
+  public void setup(RenderContext rc, int face) {
+    rc.gl.glLineWidth(this.lineWidth);
+    rc.gl.glPolygonMode(face, GL2.GL_LINE);
+    rc.setIsShadingEnabled(false);
+    rc.gl.glDisable(GL2.GL_TEXTURE_2D);
 
-		//rc.gl.glEnable( com.jogamp.opengl.GL.GL_LINE_SMOOTH );
-		//rc.gl.glEnable( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH );
-		//rc.gl.glHint( com.jogamp.opengl.GL.GL_LINE_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
-		//rc.gl.glHint( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
-		rc.gl.glColor4fv( this.color );
-		rc.gl.glDisable( GL2.GL_BLEND );
-	}
+    //rc.gl.glEnable( com.jogamp.opengl.GL.GL_LINE_SMOOTH );
+    //rc.gl.glEnable( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH );
+    //rc.gl.glHint( com.jogamp.opengl.GL.GL_LINE_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
+    //rc.gl.glHint( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
+    rc.gl.glColor4fv(this.color);
+    rc.gl.glDisable(GL2.GL_BLEND);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.color ) {
-			owner.color.getValue().getAsFloatBuffer( this.color );
-		} else if( property == owner.width ) {
-			this.lineWidth = owner.width.getValue() * 2.0f;
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.color) {
+      owner.color.getValue().getAsFloatBuffer(this.color);
+    } else if (property == owner.width) {
+      this.lineWidth = owner.width.getValue() * 2.0f;
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private final FloatBuffer color = FloatBuffer.allocate( 4 );
-	private float lineWidth;
+  private final FloatBuffer color = FloatBuffer.allocate(4);
+  private float lineWidth;
 }

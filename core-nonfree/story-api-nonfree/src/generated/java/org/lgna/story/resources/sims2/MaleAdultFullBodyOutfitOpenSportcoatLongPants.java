@@ -44,8 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitOpenSportcoatLongPants implements MaleAdultFullBodyOutfit {
-	BLACK_LEATHER_GREY_SLACKS,
-	GREEN_SHIRT_BLUE_JEANS,
-	RED_SHIRT_BLUE_JEANS;
+  BLACK_LEATHER_GREY_SLACKS, GREEN_SHIRT_BLUE_JEANS, RED_SHIRT_BLUE_JEANS
 
 }

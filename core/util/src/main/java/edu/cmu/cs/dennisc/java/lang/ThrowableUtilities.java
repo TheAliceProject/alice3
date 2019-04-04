@@ -49,19 +49,19 @@ import java.io.PrintWriter;
  * @author Dennis Cosgrove
  */
 public class ThrowableUtilities {
-	private static ByteArrayOutputStream getStackTraceAsByteArrayOutputStream( Throwable throwable ) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter pw = new PrintWriter( baos );
-		throwable.printStackTrace( pw );
-		pw.flush();
-		return baos;
-	}
+  private static ByteArrayOutputStream getStackTraceAsByteArrayOutputStream(Throwable throwable) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    throwable.printStackTrace(pw);
+    pw.flush();
+    return baos;
+  }
 
-	public static byte[] getStackTraceAsByteArray( Throwable throwable ) {
-		return getStackTraceAsByteArrayOutputStream( throwable ).toByteArray();
-	}
+  public static byte[] getStackTraceAsByteArray(Throwable throwable) {
+    return getStackTraceAsByteArrayOutputStream(throwable).toByteArray();
+  }
 
-	public static String getStackTraceAsString( Throwable throwable ) {
-		return getStackTraceAsByteArrayOutputStream( throwable ).toString();
-	}
+  public static String getStackTraceAsString(Throwable throwable) {
+    return getStackTraceAsByteArrayOutputStream(throwable).toString();
+  }
 }

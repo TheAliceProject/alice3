@@ -49,11 +49,11 @@ import org.lgna.croquet.CascadeFillIn;
  * @author Dennis Cosgrove
  */
 public class FillInNode<F, B> extends BlankOwnerNode<F, B, CascadeFillIn<F, B>> {
-	public static <F, B> FillInNode<F, B> createInstance( CascadeFillIn<F, B> model ) {
-		return new FillInNode<F, B>( model );
-	}
+  public static <F, B> FillInNode<F, B> createInstance(CascadeFillIn<F, B> model) {
+    return new FillInNode<F, B>(model);
+  }
 
-	private FillInNode( CascadeFillIn<F, B> model ) {
-		super( model );
-	}
+  private FillInNode(CascadeFillIn<F, B> model) {
+    super(model);
+  }
 }

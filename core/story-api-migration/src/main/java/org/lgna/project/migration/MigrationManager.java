@@ -50,11 +50,11 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public interface MigrationManager {
-	String NO_REPLACEMENT = null;
+  String NO_REPLACEMENT = null;
 
-	boolean hasMigrationsFor(Version decodedVersion);
+  boolean hasMigrationsFor(Version decodedVersion);
 
-	String migrate(String source, Version version);
+  String migrate(String source, Version version);
 
-	void migrate(Node root, Project projectIfApplicable, Version version);
+  void migrate(Node root, Project projectIfApplicable, Version version);
 }

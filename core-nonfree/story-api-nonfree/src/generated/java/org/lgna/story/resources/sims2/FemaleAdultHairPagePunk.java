@@ -44,24 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultHairPagePunk implements FemaleAdultHair, FemaleElderHair {
-	RED,
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY,
-	BLOOD_RED,
-	PURPLE,
-	PINK;
+  RED, BLACK, BLOND, BROWN, GREY, BLOOD_RED, PURPLE, PINK;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }

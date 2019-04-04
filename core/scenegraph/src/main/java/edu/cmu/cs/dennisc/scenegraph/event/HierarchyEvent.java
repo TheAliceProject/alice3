@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
  * @author Dennis Cosgrove
  */
 public class HierarchyEvent extends Event<Component> {
-	public HierarchyEvent( Component source ) {
-		super( source );
-	}
+  public HierarchyEvent(Component source) {
+    super(source);
+  }
 }

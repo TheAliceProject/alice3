@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitPowerSuit implements FemaleElderFullBodyOutfit {
-	BLUE_PINSTRIPE;
+  BLUE_PINSTRIPE
 
 }

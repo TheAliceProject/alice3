@@ -55,35 +55,35 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class DropTrigger extends AbstractMouseEventTrigger {
-	public static UserActivity setOnUserActivity( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent, DropSite dropSite ) {
-		new DropTrigger( userActivity, viewController, mouseEvent, dropSite );
-		return userActivity;
-	}
+  public static UserActivity setOnUserActivity(UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent, DropSite dropSite) {
+    new DropTrigger(userActivity, viewController, mouseEvent, dropSite);
+    return userActivity;
+  }
 
-	private DropSite dropSite;
+  private DropSite dropSite;
 
-	private DropTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite ) {
-		super( userActivity, viewController, e );
-		if ( dropSite == null ) {
-			Logger.severe( "drop site is null for", this );
-		}
-		this.dropSite = dropSite;
-	}
+  private DropTrigger(UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite) {
+    super(userActivity, viewController, e);
+    if (dropSite == null) {
+      Logger.severe("drop site is null for", this);
+    }
+    this.dropSite = dropSite;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.dropSite );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.dropSite);
+  }
 
-	public DropSite getDropSite() {
-		return this.dropSite;
-	}
+  public DropSite getDropSite() {
+    return this.dropSite;
+  }
 
-	@Override
-	protected void appendReprInternal( StringBuilder repr ) {
-		super.appendReprInternal( repr );
-		repr.append( ";dropSite=" );
-		repr.append( this.dropSite );
-	}
+  @Override
+  protected void appendReprInternal(StringBuilder repr) {
+    super.appendReprInternal(repr);
+    repr.append(";dropSite=");
+    repr.append(this.dropSite);
+  }
 }

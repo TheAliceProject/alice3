@@ -49,65 +49,66 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class ArrayInstanceCreation extends Expression implements PrecedentedAppender {
-	public ArrayInstanceCreation() {
-	}
+  public ArrayInstanceCreation() {
+  }
 
-	public ArrayInstanceCreation( AbstractType<?, ?, ?> arrayType, Integer[] lengths, Expression... expressions ) {
-		this.arrayType.setValue( arrayType );
-		this.lengths.add( lengths );
-		this.expressions.add( expressions );
-	}
+  public ArrayInstanceCreation(AbstractType<?, ?, ?> arrayType, Integer[] lengths, Expression... expressions) {
+    this.arrayType.setValue(arrayType);
+    this.lengths.add(lengths);
+    this.expressions.add(expressions);
+  }
 
-	public ArrayInstanceCreation( Class<?> arrayCls, Integer[] lengths, Expression... expressions ) {
-		this( JavaType.getInstance( arrayCls ), lengths, expressions );
-	}
+  public ArrayInstanceCreation(Class<?> arrayCls, Integer[] lengths, Expression... expressions) {
+    this(JavaType.getInstance(arrayCls), lengths, expressions);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.arrayType.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.arrayType.getValue();
+  }
 
-	@Override
-	public boolean isValid() {
-		AbstractType<?, ?, ?> type = this.getType();
-		if( type != null ) {
-			if( type.isArray() ) {
-				//todo: check lengths
-				for( Expression expression : this.expressions ) {
-					if( expression != null ) {
-						if( type.getComponentType().isAssignableFrom( expression.getType() ) ) {
-							if( expression.isValid() ) {
-								//pass
-							} else {
-								return false;
-							}
-						} else {
-							return false;
-						}
-					} else {
-						//todo?
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isValid() {
+    AbstractType<?, ?, ?> type = this.getType();
+    if (type != null) {
+      if (type.isArray()) {
+        //todo: check lengths
+        for (Expression expression : this.expressions) {
+          if (expression != null) {
+            if (type.getComponentType().isAssignableFrom(expression.getType())) {
+              if (expression.isValid()) {
+                //pass
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            //todo?
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendArrayInstantiation( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendArrayInstantiation(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 13;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 13;
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
-	public final ListProperty<Integer> lengths = new ListProperty<Integer>( this );
-	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
+  public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance(this);
+  public final ListProperty<Integer> lengths = new ListProperty<Integer>(this);
+  public final ExpressionListProperty expressions = new ExpressionListProperty(this);
 }

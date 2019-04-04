@@ -44,7 +44,7 @@ package org.lgna.story.resources.sims2;
 
 public interface Hair {
 
-	public Boolean hasHat();
+  public Boolean hasHat();
 
-	public Boolean hasHair();
+  public Boolean hasHair();
 }

@@ -48,13 +48,13 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public abstract class Connection extends ModelVisual {
-	public Transformable getTarget() {
-		return this.sgTarget;
-	}
+  public Transformable getTarget() {
+    return this.sgTarget;
+  }
 
-	public void setTarget( Transformable sgTarget ) {
-		this.sgTarget = sgTarget;
-	}
+  public void setTarget(Transformable sgTarget) {
+    this.sgTarget = sgTarget;
+  }
 
-	private Transformable sgTarget = null;
+  private Transformable sgTarget = null;
 }

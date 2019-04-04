@@ -59,39 +59,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CycleFrameSizeOperation extends ActionOperation {
-	private static Dimension[] sizes = new Dimension[] {
-			new Dimension( 1024, 768 ),
-			new Dimension( 1366, 768 ),
-			new Dimension( 1280, 720 )
-	};
+  private static Dimension[] sizes = new Dimension[] {new Dimension(1024, 768), new Dimension(1366, 768), new Dimension(1280, 720)};
 
-	private int index;
+  private int index;
 
-	public CycleFrameSizeOperation() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "fce834d4-4665-405e-9fae-2461613e3412" ) );
-		this.getImp().setAcceleratorKey( KeyStroke.getKeyStroke( KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
-	}
+  public CycleFrameSizeOperation() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("fce834d4-4665-405e-9fae-2461613e3412"));
+    this.getImp().setAcceleratorKey(KeyStroke.getKeyStroke(KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Cycle Frame Size" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Cycle Frame Size");
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension maximumWindowSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
-		int heightDelta = screenSize.height - maximumWindowSize.height;
+  @Override
+  protected void perform(UserActivity activity) {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension maximumWindowSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
+    int heightDelta = screenSize.height - maximumWindowSize.height;
 
-		int i = index % sizes.length;
-		int w = sizes[ i ].width;
-		int h = sizes[ i ].height - heightDelta;
+    int i = index % sizes.length;
+    int w = sizes[i].width;
+    int h = sizes[i].height - heightDelta;
 
-		Application.getActiveInstance().getDocumentFrame().getFrame().setSize( w, h );
-		index++;
+    Application.getActiveInstance().getDocumentFrame().getFrame().setSize(w, h);
+    index++;
 
-		Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
-		activity.finish();
-	}
+    Logger.outln(w + "x" + h, "(original:", sizes[i].width + "x" + sizes[i].height, "-" + heightDelta, "accounting for height of taskbar)");
+    activity.finish();
+  }
 }

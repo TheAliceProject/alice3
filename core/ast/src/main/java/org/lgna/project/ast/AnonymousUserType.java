@@ -53,67 +53,67 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
-	public AnonymousUserType() {
-	}
+  public AnonymousUserType() {
+  }
 
-	public AnonymousUserType( AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields ) {
-		super( superType, methods, fields );
-	}
+  public AnonymousUserType(AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields) {
+    super(superType, methods, fields);
+  }
 
-	public AnonymousUserType( Class<?> superCls, UserMethod[] methods, UserField[] fields ) {
-		this( JavaType.getInstance( superCls ), methods, fields );
-	}
+  public AnonymousUserType(Class<?> superCls, UserMethod[] methods, UserField[] fields) {
+    this(JavaType.getInstance(superCls), methods, fields);
+  }
 
-	@Override
-	public List<AnonymousUserConstructor> getDeclaredConstructors() {
-		//todo?
-		if( this.constructors != null ) {
-			//pass
-		} else {
-			this.constructors = Lists.newArrayList();
-			this.constructors.add( AnonymousUserConstructor.get( this ) );
-		}
-		return this.constructors;
-	}
+  @Override
+  public List<AnonymousUserConstructor> getDeclaredConstructors() {
+    //todo?
+    if (this.constructors != null) {
+      //pass
+    } else {
+      this.constructors = Lists.newArrayList();
+      this.constructors.add(AnonymousUserConstructor.get(this));
+    }
+    return this.constructors;
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	@Override
-	public AbstractPackage getPackage() {
-		//todo?
-		return null;
-	}
+  @Override
+  public AbstractPackage getPackage() {
+    //todo?
+    return null;
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		//todo?
-		return null;
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    //todo?
+    return null;
+  }
 
-	//An anonymous class is never abstract (8.1.1.1). An anonymous class is always an inner class (8.1.3); it is never static (8.1.1, 8.5.2). An anonymous class is always implicitly final (8.1.1.2).
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
+  //An anonymous class is never abstract (8.1.1.1). An anonymous class is always an inner class (8.1.3); it is never static (8.1.1, 8.5.2). An anonymous class is always implicitly final (8.1.1.2).
+  @Override
+  public boolean isAbstract() {
+    return false;
+  }
 
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public boolean isFinal() {
-		return true;
-	}
+  @Override
+  public boolean isFinal() {
+    return true;
+  }
 
-	@Override
-	public boolean isStrictFloatingPoint() {
-		//todo?
-		return false;
-	}
+  @Override
+  public boolean isStrictFloatingPoint() {
+    //todo?
+    return false;
+  }
 
-	private ArrayList<AnonymousUserConstructor> constructors;
+  private ArrayList<AnonymousUserConstructor> constructors;
 }

@@ -51,16 +51,16 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class TreeCellRenderer<E> extends DefaultTreeCellRenderer {
-	protected abstract JLabel updateListCellRendererComponent( JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+  protected abstract JLabel updateListCellRendererComponent(JLabel rv, JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus);
 
-	@Override
-	public final Component getTreeCellRendererComponent( JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );
-		if( rv instanceof JLabel ) {
-			updateListCellRendererComponent( (JLabel)rv, tree, (E)value, sel, expanded, leaf, row, hasFocus );
-		} else {
-			//todo
-		}
-		return rv;
-	}
+  @Override
+  public final Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    Component rv = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+    if (rv instanceof JLabel) {
+      updateListCellRendererComponent((JLabel) rv, tree, (E) value, sel, expanded, leaf, row, hasFocus);
+    } else {
+      //todo
+    }
+    return rv;
+  }
 }

@@ -53,11 +53,11 @@ import java.awt.event.KeyEvent;
  */
 public class KeyEventTrigger extends ComponentEventTrigger<KeyEvent> {
 
-	public static UserActivity createUserActivity( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
-		return new KeyEventTrigger( viewController, keyEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(ViewController<?, ?> viewController, KeyEvent keyEvent) {
+    return new KeyEventTrigger(viewController, keyEvent).getUserActivity();
+  }
 
-	private KeyEventTrigger( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
-		super( viewController, keyEvent );
-	}
+  private KeyEventTrigger(ViewController<?, ?> viewController, KeyEvent keyEvent) {
+    super(viewController, keyEvent);
+  }
 }

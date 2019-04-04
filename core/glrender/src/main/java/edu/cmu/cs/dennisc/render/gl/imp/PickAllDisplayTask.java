@@ -50,15 +50,15 @@ import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class PickAllDisplayTask extends PickDisplayTask {
-	public PickAllDisplayTask( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
-		super( xPixel, yPixel, pickSubElementPolicy, criterion );
-		this.observer = observer;
-	}
+  public PickAllDisplayTask(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer) {
+    super(xPixel, yPixel, pickSubElementPolicy, criterion);
+    this.observer = observer;
+  }
 
-	@Override
-	protected void fireDone( PickParameters pickParameters ) {
-		this.observer.done( pickParameters.accessAllPickResults() );
-	}
+  @Override
+  protected void fireDone(PickParameters pickParameters) {
+    this.observer.done(pickParameters.accessAllPickResults());
+  }
 
-	private final PickAllObserver observer;
+  private final PickAllObserver observer;
 }

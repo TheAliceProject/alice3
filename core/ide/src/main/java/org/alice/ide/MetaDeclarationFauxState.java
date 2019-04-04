@@ -58,89 +58,89 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MetaDeclarationFauxState {
-	public static interface ValueListener {
-		public void changed( AbstractDeclaration prevValue, AbstractDeclaration nextValue );
-	};
+  public static interface ValueListener {
+    public void changed(AbstractDeclaration prevValue, AbstractDeclaration nextValue);
+  }
 
-	public MetaDeclarationFauxState( ProjectDocumentFrame projectDocumentFrame ) {
-		this.projectDocumentFrame = projectDocumentFrame;
-		this.projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationTabListener );
-		this.prevDeclaration = this.getValue();
-	}
+  public MetaDeclarationFauxState(ProjectDocumentFrame projectDocumentFrame) {
+    this.projectDocumentFrame = projectDocumentFrame;
+    this.projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener(this.perspectiveListener);
+    this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener(this.declarationTabListener);
+    this.prevDeclaration = this.getValue();
+  }
 
-	public AbstractDeclaration getValue() {
-		if( this.projectDocumentFrame.isInSetupScenePerspective() ) {
-			return IDE.getActiveInstance().getPerformEditorGeneratedSetUpMethod();
-		} else {
-			DeclarationComposite<?, ?> declarationComposite = this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().getValue();
-			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
-		}
-	}
+  public AbstractDeclaration getValue() {
+    if (this.projectDocumentFrame.isInSetupScenePerspective()) {
+      return IDE.getActiveInstance().getPerformEditorGeneratedSetUpMethod();
+    } else {
+      DeclarationComposite<?, ?> declarationComposite = this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().getValue();
+      return declarationComposite != null ? declarationComposite.getDeclaration() : null;
+    }
+  }
 
-	public AbstractType<?, ?, ?> getType() {
-		AbstractDeclaration declaration = this.getValue();
-		if( declaration != null ) {
-			if( declaration instanceof AbstractType<?, ?, ?> ) {
-				AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
-				return type;
-			} else if( declaration instanceof AbstractMember ) {
-				AbstractMember member = (AbstractMember)declaration;
-				return member.getDeclaringType();
-			} else {
-				Logger.severe( declaration );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public AbstractType<?, ?, ?> getType() {
+    AbstractDeclaration declaration = this.getValue();
+    if (declaration != null) {
+      if (declaration instanceof AbstractType<?, ?, ?>) {
+        AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>) declaration;
+        return type;
+      } else if (declaration instanceof AbstractMember) {
+        AbstractMember member = (AbstractMember) declaration;
+        return member.getDeclaringType();
+      } else {
+        Logger.severe(declaration);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public void addValueListener( ValueListener valueListener ) {
-		this.valueListeners.add( valueListener );
-	}
+  public void addValueListener(ValueListener valueListener) {
+    this.valueListeners.add(valueListener);
+  }
 
-	public void addAndInvokeValueListener( ValueListener valueListener ) {
-		this.addValueListener( valueListener );
-		//note: same value for prev and next
-		valueListener.changed( this.prevDeclaration, this.getValue() );
-	}
+  public void addAndInvokeValueListener(ValueListener valueListener) {
+    this.addValueListener(valueListener);
+    //note: same value for prev and next
+    valueListener.changed(this.prevDeclaration, this.getValue());
+  }
 
-	public void removeValueListener( ValueListener valueListener ) {
-		this.valueListeners.remove( valueListener );
-	}
+  public void removeValueListener(ValueListener valueListener) {
+    this.valueListeners.remove(valueListener);
+  }
 
-	private void fireChanged() {
-		AbstractDeclaration nextValue = this.getValue();
-		if( this.prevDeclaration != nextValue ) {
-			for( ValueListener valueListener : this.valueListeners ) {
-				valueListener.changed( this.prevDeclaration, nextValue );
-			}
-			this.prevDeclaration = nextValue;
-		}
-	}
+  private void fireChanged() {
+    AbstractDeclaration nextValue = this.getValue();
+    if (this.prevDeclaration != nextValue) {
+      for (ValueListener valueListener : this.valueListeners) {
+        valueListener.changed(this.prevDeclaration, nextValue);
+      }
+      this.prevDeclaration = nextValue;
+    }
+  }
 
-	private void handleIsSceneEditorExpandedChanged() {
-		this.fireChanged();
-	}
+  private void handleIsSceneEditorExpandedChanged() {
+    this.fireChanged();
+  }
 
-	private void handleDeclarationTabChanged() {
-		this.fireChanged();
-	}
+  private void handleDeclarationTabChanged() {
+    this.fireChanged();
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final List<ValueListener> valueListeners = Lists.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.event.ValueListener<ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<ProjectPerspective>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
-			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
-		}
-	};
-	private final org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			MetaDeclarationFauxState.this.handleDeclarationTabChanged();
-		}
-	};
-	private AbstractDeclaration prevDeclaration;
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private final List<ValueListener> valueListeners = Lists.newCopyOnWriteArrayList();
+  private final org.lgna.croquet.event.ValueListener<ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<ProjectPerspective>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectPerspective> e) {
+      MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
+    }
+  };
+  private final org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      MetaDeclarationFauxState.this.handleDeclarationTabChanged();
+    }
+  };
+  private AbstractDeclaration prevDeclaration;
 }

@@ -55,19 +55,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryOperation extends ActionOperation {
-	public HistoryOperation( UUID id, DocumentFrame documentFrame ) {
-		super( ProjectApplication.HISTORY_GROUP, id );
-		this.documentFrame = documentFrame;
-	}
+  public HistoryOperation(UUID id, DocumentFrame documentFrame) {
+    super(ProjectApplication.HISTORY_GROUP, id);
+    this.documentFrame = documentFrame;
+  }
 
-	protected abstract void performInternal( UndoHistory historyManager );
+  protected abstract void performInternal(UndoHistory historyManager);
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory( Application.PROJECT_GROUP );
-		this.performInternal( historyManager );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory(Application.PROJECT_GROUP);
+    this.performInternal(historyManager);
+    activity.finish();
+  }
 
-	private final DocumentFrame documentFrame;
+  private final DocumentFrame documentFrame;
 }

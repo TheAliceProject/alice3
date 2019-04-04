@@ -54,27 +54,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation {
-	public AbstractSaveProjectOperation( UUID individualUUID ) {
-		super( individualUUID );
-	}
+  public AbstractSaveProjectOperation(UUID individualUUID) {
+    super(individualUUID);
+  }
 
-	@Override
-	protected File getDefaultDirectory( StageIDE application ) {
-		return application.getProjectsDirectory();
-	}
+  @Override
+  protected File getDefaultDirectory(StageIDE application) {
+    return application.getProjectsDirectory();
+  }
 
-	@Override
-	protected String getExtension() {
-		return IoUtilities.PROJECT_EXTENSION;
-	}
+  @Override
+  protected String getExtension() {
+    return IoUtilities.PROJECT_EXTENSION;
+  }
 
-	@Override
-	protected String getInitialFilename() {
-		return null;
-	}
+  @Override
+  protected String getInitialFilename() {
+    return null;
+  }
 
-	@Override
-	protected void save( ProjectApplication application, File file ) throws IOException {
-		application.saveProjectTo( file );
-	}
+  @Override
+  protected void save(ProjectApplication application, File file) throws IOException {
+    application.saveProjectTo(file);
+  }
 }

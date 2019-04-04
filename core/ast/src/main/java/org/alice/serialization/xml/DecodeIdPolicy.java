@@ -46,15 +46,14 @@ package org.alice.serialization.xml;
  * @author Dennis Cosgrove
  */
 enum DecodeIdPolicy {
-	PRESERVE_IDS( true ),
-	NEW_IDS( false );
-	private final boolean isIdPreserved;
+  PRESERVE_IDS(true), NEW_IDS(false);
+  private final boolean isIdPreserved;
 
-	DecodeIdPolicy( boolean isIdPreserved ) {
-		this.isIdPreserved = isIdPreserved;
-	}
+  DecodeIdPolicy(boolean isIdPreserved) {
+    this.isIdPreserved = isIdPreserved;
+  }
 
-	public boolean isIdPreserved() {
-		return this.isIdPreserved;
-	}
+  public boolean isIdPreserved() {
+    return this.isIdPreserved;
+  }
 }

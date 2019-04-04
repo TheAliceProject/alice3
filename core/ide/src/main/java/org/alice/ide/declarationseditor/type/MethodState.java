@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodState extends FilteredMemberState<UserMethod> {
-	public MethodState( UUID id, MethodData data ) {
-		super( Application.PROJECT_GROUP, id, data );
-	}
+  public MethodState(UUID id, MethodData data) {
+    super(Application.PROJECT_GROUP, id, data);
+  }
 }

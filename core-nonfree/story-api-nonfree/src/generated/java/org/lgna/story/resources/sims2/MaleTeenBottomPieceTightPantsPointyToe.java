@@ -44,9 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenBottomPieceTightPantsPointyToe implements MaleTeenBottomPiece {
-	GREY,
-	BLUE,
-	BLACK,
-	KHAKI;
+  GREY, BLUE, BLACK, KHAKI
 
 }

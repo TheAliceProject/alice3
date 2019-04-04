@@ -62,33 +62,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExportTypeToFileDialogOperation extends FileDialogOperation {
-	private final NamedUserType type;
+  private final NamedUserType type;
 
-	public ExportTypeToFileDialogOperation( NamedUserType type ) {
-		super( IDE.EXPORT_GROUP, UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
-		this.type = type;
-		this.setButtonIcon( Icons.FOLDER_ICON_SMALL );
-	}
+  public ExportTypeToFileDialogOperation(NamedUserType type) {
+    super(IDE.EXPORT_GROUP, UUID.fromString("000e1da5-0494-4afc-bb05-2fd0c0a46163"));
+    this.type = type;
+    this.setButtonIcon(Icons.FOLDER_ICON_SMALL);
+  }
 
-	private File getDefaultDirectory() {
-		return StageIDE.getActiveInstance().getTypesDirectory();
-	}
+  private File getDefaultDirectory() {
+    return StageIDE.getActiveInstance().getTypesDirectory();
+  }
 
-	private String getExtension() {
-		return IoUtilities.TYPE_EXTENSION;
-	}
+  private String getExtension() {
+    return IoUtilities.TYPE_EXTENSION;
+  }
 
-	private String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
+  private String getInitialFilename() {
+    return this.type.name.getValue() + "." + this.getExtension();
+  }
 
-	@Override
-	protected File showFileDialog( Component awtComponent ) {
-		return FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-	}
+  @Override
+  protected File showFileDialog(Component awtComponent) {
+    return FileDialogUtilities.showSaveFileDialog(awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true);
+  }
 
-	@Override
-	protected void handleFile( File file ) throws CancelException, IOException {
-		IoUtilities.writeType( file, type, new TypeSummaryDataSource( new TypeSummary( this.type ) ) );
-	}
+  @Override
+  protected void handleFile(File file) throws CancelException, IOException {
+    IoUtilities.writeType(file, type, new TypeSummaryDataSource(new TypeSummary(this.type)));
+  }
 }

@@ -52,42 +52,38 @@ import org.lgna.story.Paint;
  * @author Dennis Cosgrove
  */
 public abstract class PaintProperty extends Property<Paint> {
-	public PaintProperty( PropertyOwnerImp owner ) {
-		super( owner, Paint.class );
-	}
+  public PaintProperty(PropertyOwnerImp owner) {
+    super(owner, Paint.class);
+  }
 
-	@Override
-	public final Paint getValue() {
-		return this.value;
-	}
+  @Override
+  public final Paint getValue() {
+    return this.value;
+  }
 
-	protected abstract void internalSetValue( Paint value );
+  protected abstract void internalSetValue(Paint value);
 
-	@Override
-	protected final void handleSetValue( Paint value ) {
-		this.internalSetValue( value );
-		this.value = value;
-	}
+  @Override
+  protected final void handleSetValue(Paint value) {
+    this.internalSetValue(value);
+    this.value = value;
+  }
 
-	@Override
-	protected Paint interpolate( Paint a, Paint b, double portion ) {
-		if( a instanceof Color ) {
-			Color aColor = (Color)a;
-			if( b instanceof Color ) {
-				Color bColor = (Color)b;
+  @Override
+  protected Paint interpolate(Paint a, Paint b, double portion) {
+    if (a instanceof Color) {
+      Color aColor = (Color) a;
+      if (b instanceof Color) {
+        Color bColor = (Color) b;
 
-				Color4f c = Color4f.createInterpolation(
-						EmployeesOnly.getColor4f( aColor ),
-						EmployeesOnly.getColor4f( bColor ),
-						(float)portion
-						);
-				return new Color( c.red, c.green, c.blue );
-				//todo:
-				//return org.lgna.story.EmployeesOnly.createInterpolation( aColor, bColor, (float)portion );
-			}
-		}
-		return b;
-	}
+        Color4f c = Color4f.createInterpolation(EmployeesOnly.getColor4f(aColor), EmployeesOnly.getColor4f(bColor), (float) portion);
+        return new Color(c.red, c.green, c.blue);
+        //todo:
+        //return org.lgna.story.EmployeesOnly.createInterpolation( aColor, bColor, (float)portion );
+      }
+    }
+    return b;
+  }
 
-	private Paint value = Color.WHITE;
+  private Paint value = Color.WHITE;
 }

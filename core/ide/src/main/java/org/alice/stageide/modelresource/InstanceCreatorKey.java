@@ -50,44 +50,42 @@ import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class InstanceCreatorKey extends ResourceKey {
-	
-	private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
 
-	static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {
-		if ( mapResourceTypeToAbstractionType == null ) {
-			mapResourceTypeToAbstractionType = Maps.newHashMap();
-			Collection<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
-			for( JavaType abstractionType : abstractionTypes ) {
-				JavaType resourceType = (JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
-				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
-			}
-		}
-		JavaType abstractionType = null;
-		for( JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
-			if( resourceType.isAssignableFrom( assignableFromResourceType ) ) {
-				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
-				break;
-			}
-		}
-		return abstractionType;
-	}
+  private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
 
+  static JavaType getAbstractionTypeForResourceType(AbstractType<?, ?, ?> assignableFromResourceType) {
+    if (mapResourceTypeToAbstractionType == null) {
+      mapResourceTypeToAbstractionType = Maps.newHashMap();
+      Collection<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
+      for (JavaType abstractionType : abstractionTypes) {
+        JavaType resourceType = (JavaType) abstractionType.getDeclaredConstructors().get(0).getRequiredParameters().get(0).getValueType();
+        mapResourceTypeToAbstractionType.put(resourceType, abstractionType);
+      }
+    }
+    JavaType abstractionType = null;
+    for (JavaType resourceType : mapResourceTypeToAbstractionType.keySet()) {
+      if (resourceType.isAssignableFrom(assignableFromResourceType)) {
+        abstractionType = mapResourceTypeToAbstractionType.get(resourceType);
+        break;
+      }
+    }
+    return abstractionType;
+  }
 
-	public abstract Class<? extends ModelResource> getModelResourceCls();
+  public abstract Class<? extends ModelResource> getModelResourceCls();
 
-	@Override
-	public boolean isInstanceCreator() {
-		return true;
-	}
+  @Override
+  public boolean isInstanceCreator() {
+    return true;
+  }
 
-	public abstract AxisAlignedBox getBoundingBox();
+  public abstract AxisAlignedBox getBoundingBox();
 
-	public abstract boolean getPlaceOnGround();
+  public abstract boolean getPlaceOnGround();
 }

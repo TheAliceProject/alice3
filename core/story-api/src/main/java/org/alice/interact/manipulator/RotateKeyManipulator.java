@@ -48,17 +48,17 @@ import org.alice.interact.MovementKey;
  * @author David Culyba
  */
 public abstract class RotateKeyManipulator extends KeyManipulator {
-	RotateKeyManipulator( MovementKey[] keys ) {
-		super(keys);
-	}
+  RotateKeyManipulator(MovementKey[] keys) {
+    super(keys);
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Rotate";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Rotate";
+  }
 
-	@Override
-	protected void manipulate( double amountToMove, MovementKey key ) {
-		key.applyRotation( manipulatedTransformable, amountToMove );
-	}
+  @Override
+  protected void manipulate(double amountToMove, MovementKey key) {
+    key.applyRotation(manipulatedTransformable, amountToMove);
+  }
 }

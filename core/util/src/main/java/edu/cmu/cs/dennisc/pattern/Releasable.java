@@ -51,11 +51,11 @@ import java.util.Collection;
  */
 
 public interface Releasable {
-	public void release();
+  public void release();
 
-	public void addReleaseListener( ReleaseListener releaseListener );
+  public void addReleaseListener(ReleaseListener releaseListener);
 
-	public void removeReleaseListener( ReleaseListener releaseListener );
+  public void removeReleaseListener(ReleaseListener releaseListener);
 
-	public Collection<ReleaseListener> getReleaseListeners();
+  public Collection<ReleaseListener> getReleaseListeners();
 }

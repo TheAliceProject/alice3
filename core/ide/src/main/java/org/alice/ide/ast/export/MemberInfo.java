@@ -60,91 +60,91 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class MemberInfo<D extends Member> extends DeclarationInfo<D> {
-	private class Dependencies implements Crawler {
-		private final List<TypeInfo> typeInfos = Lists.newLinkedList();
-		private final List<FieldInfo> fieldInfos = Lists.newLinkedList();
-		private final List<MethodInfo> methodInfos = Lists.newLinkedList();
-		private final List<ConstructorInfo> constructorInfos = Lists.newLinkedList();
+  private class Dependencies implements Crawler {
+    private final List<TypeInfo> typeInfos = Lists.newLinkedList();
+    private final List<FieldInfo> fieldInfos = Lists.newLinkedList();
+    private final List<MethodInfo> methodInfos = Lists.newLinkedList();
+    private final List<ConstructorInfo> constructorInfos = Lists.newLinkedList();
 
-		@Override
-		public void visit( Crawlable crawlable ) {
-			if( crawlable == MemberInfo.this.getDeclaration() ) {
-				//pass
-			} else {
-				if( crawlable instanceof NamedUserType ) {
-					NamedUserType type = (NamedUserType)crawlable;
-					TypeInfo typeInfo = getProjectInfo().getInfoForType( type );
-					this.typeInfos.add( typeInfo );
-				} else if( crawlable instanceof UserConstructor ) {
-					UserConstructor constructor = (UserConstructor)crawlable;
-					TypeInfo typeInfo = getProjectInfo().getInfoForType( constructor.getDeclaringType() );
-					ConstructorInfo constructorInfo = typeInfo.getInfoForConstructor( constructor );
-					this.constructorInfos.add( constructorInfo );
-				} else if( crawlable instanceof UserMethod ) {
-					UserMethod method = (UserMethod)crawlable;
-					TypeInfo typeInfo = getProjectInfo().getInfoForType( method.getDeclaringType() );
-					MethodInfo methodInfo = typeInfo.getInfoForMethod( method );
-					this.methodInfos.add( methodInfo );
-				} else if( crawlable instanceof UserField ) {
-					UserField field = (UserField)crawlable;
-					TypeInfo typeInfo = getProjectInfo().getInfoForType( field.getDeclaringType() );
-					FieldInfo fieldInfo = typeInfo.getInfoForField( field );
-					this.fieldInfos.add( fieldInfo );
-				}
-			}
-		}
+    @Override
+    public void visit(Crawlable crawlable) {
+      if (crawlable == MemberInfo.this.getDeclaration()) {
+        //pass
+      } else {
+        if (crawlable instanceof NamedUserType) {
+          NamedUserType type = (NamedUserType) crawlable;
+          TypeInfo typeInfo = getProjectInfo().getInfoForType(type);
+          this.typeInfos.add(typeInfo);
+        } else if (crawlable instanceof UserConstructor) {
+          UserConstructor constructor = (UserConstructor) crawlable;
+          TypeInfo typeInfo = getProjectInfo().getInfoForType(constructor.getDeclaringType());
+          ConstructorInfo constructorInfo = typeInfo.getInfoForConstructor(constructor);
+          this.constructorInfos.add(constructorInfo);
+        } else if (crawlable instanceof UserMethod) {
+          UserMethod method = (UserMethod) crawlable;
+          TypeInfo typeInfo = getProjectInfo().getInfoForType(method.getDeclaringType());
+          MethodInfo methodInfo = typeInfo.getInfoForMethod(method);
+          this.methodInfos.add(methodInfo);
+        } else if (crawlable instanceof UserField) {
+          UserField field = (UserField) crawlable;
+          TypeInfo typeInfo = getProjectInfo().getInfoForType(field.getDeclaringType());
+          FieldInfo fieldInfo = typeInfo.getInfoForField(field);
+          this.fieldInfos.add(fieldInfo);
+        }
+      }
+    }
 
-		public String getToolTipText() {
-			StringBuilder sb = new StringBuilder();
-			for( TypeInfo info : this.typeInfos ) {
-				sb.append( info.getDeclaration().getName() );
-				sb.append( ", " );
-			}
-			for( FieldInfo info : this.fieldInfos ) {
-				sb.append( info.getDeclaration().getName() );
-				sb.append( ", " );
-			}
-			for( MethodInfo info : this.methodInfos ) {
-				sb.append( info.getDeclaration().getName() );
-				sb.append( ", " );
-			}
-			for( ConstructorInfo info : this.constructorInfos ) {
-				sb.append( info.getDeclaration().getName() );
-				sb.append( ", " );
-			}
-			return sb.toString();
-		}
-	}
+    public String getToolTipText() {
+      StringBuilder sb = new StringBuilder();
+      for (TypeInfo info : this.typeInfos) {
+        sb.append(info.getDeclaration().getName());
+        sb.append(", ");
+      }
+      for (FieldInfo info : this.fieldInfos) {
+        sb.append(info.getDeclaration().getName());
+        sb.append(", ");
+      }
+      for (MethodInfo info : this.methodInfos) {
+        sb.append(info.getDeclaration().getName());
+        sb.append(", ");
+      }
+      for (ConstructorInfo info : this.constructorInfos) {
+        sb.append(info.getDeclaration().getName());
+        sb.append(", ");
+      }
+      return sb.toString();
+    }
+  }
 
-	private TypeInfo declaringTypeInfo;
-	private Dependencies dependencies;
+  private TypeInfo declaringTypeInfo;
+  private Dependencies dependencies;
 
-	public MemberInfo( ProjectInfo projectInfo, D declaration ) {
-		super( projectInfo, declaration );
-	}
+  public MemberInfo(ProjectInfo projectInfo, D declaration) {
+    super(projectInfo, declaration);
+  }
 
-	/* package-private */void updateDependencies() {
-		this.dependencies = new Dependencies();
-		this.declaringTypeInfo = this.getProjectInfo().getInfoForType( (UserType<?>)this.getDeclaration().getDeclaringType() );
-		this.getDeclaration().crawl( this.dependencies, CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null );
-		this.getCheckBox().setToolTipText( this.dependencies.getToolTipText() );
-	}
+  /* package-private */void updateDependencies() {
+    this.dependencies = new Dependencies();
+    this.declaringTypeInfo = this.getProjectInfo().getInfoForType((UserType<?>) this.getDeclaration().getDeclaringType());
+    this.getDeclaration().crawl(this.dependencies, CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null);
+    this.getCheckBox().setToolTipText(this.dependencies.getToolTipText());
+  }
 
-	@Override
-	protected void addRequired( Set<DeclarationInfo<?>> visited ) {
-		super.addRequired( visited );
-		this.declaringTypeInfo.updateRequired( visited );
-		for( TypeInfo info : this.dependencies.typeInfos ) {
-			info.updateRequired( visited );
-		}
-		for( FieldInfo info : this.dependencies.fieldInfos ) {
-			info.updateRequired( visited );
-		}
-		for( MethodInfo info : this.dependencies.methodInfos ) {
-			info.updateRequired( visited );
-		}
-		for( ConstructorInfo info : this.dependencies.constructorInfos ) {
-			info.updateRequired( visited );
-		}
-	}
+  @Override
+  protected void addRequired(Set<DeclarationInfo<?>> visited) {
+    super.addRequired(visited);
+    this.declaringTypeInfo.updateRequired(visited);
+    for (TypeInfo info : this.dependencies.typeInfos) {
+      info.updateRequired(visited);
+    }
+    for (FieldInfo info : this.dependencies.fieldInfos) {
+      info.updateRequired(visited);
+    }
+    for (MethodInfo info : this.dependencies.methodInfos) {
+      info.updateRequired(visited);
+    }
+    for (ConstructorInfo info : this.dependencies.constructorInfos) {
+      info.updateRequired(visited);
+    }
+  }
 }

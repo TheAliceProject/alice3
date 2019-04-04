@@ -53,61 +53,61 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 class UnadornedButtonUI extends BasicButtonUI {
-	private static class SingletonHolder {
-		private static UnadornedButtonUI instance = new UnadornedButtonUI();
-	}
+  private static class SingletonHolder {
+    private static UnadornedButtonUI instance = new UnadornedButtonUI();
+  }
 
-	private UnadornedButtonUI() {
-	}
+  private UnadornedButtonUI() {
+  }
 
-	public static ComponentUI createUI( JComponent component ) {
-		return SingletonHolder.instance;
-	}
+  public static ComponentUI createUI(JComponent component) {
+    return SingletonHolder.instance;
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class UnadornedButton extends OperationButton<JButton, Operation> {
-	public UnadornedButton( Operation operation ) {
-		super( operation );
-	}
+  public UnadornedButton(Operation operation) {
+    super(operation);
+  }
 
-	@Override
-	protected final JButton createAwtComponent() {
-		JButton rv = new JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
+  @Override
+  protected final JButton createAwtComponent() {
+    JButton rv = new JButton() {
+      @Override
+      public String getText() {
+        if (isTextClobbered()) {
+          return getClobberText();
+        } else {
+          return super.getText();
+        }
+      }
 
-			@Override
-			public Icon getIcon() {
-				if( UnadornedButton.this.isIconClobbered() ) {
-					return UnadornedButton.this.getClobberIcon();
-				} else {
-					Operation model = UnadornedButton.this.getModel();
-					Icon buttonIcon = model.getButtonIcon();
-					if( buttonIcon != null ) {
-						return buttonIcon;
-					} else {
-						return super.getIcon();
-					}
-				}
-			}
+      @Override
+      public Icon getIcon() {
+        if (UnadornedButton.this.isIconClobbered()) {
+          return UnadornedButton.this.getClobberIcon();
+        } else {
+          Operation model = UnadornedButton.this.getModel();
+          Icon buttonIcon = model.getButtonIcon();
+          if (buttonIcon != null) {
+            return buttonIcon;
+          } else {
+            return super.getIcon();
+          }
+        }
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( UnadornedButtonUI.createUI( this ) );
-			}
-		};
-		rv.setRolloverEnabled( true );
-		rv.setBorder( BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(UnadornedButtonUI.createUI(this));
+      }
+    };
+    rv.setRolloverEnabled(true);
+    rv.setBorder(BorderFactory.createEmptyBorder());
+    rv.setOpaque(false);
+    return rv;
+  }
 }

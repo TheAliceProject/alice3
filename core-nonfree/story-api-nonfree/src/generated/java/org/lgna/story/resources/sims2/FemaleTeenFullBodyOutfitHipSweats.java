@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleTeenFullBodyOutfitHipSweats implements FemaleTeenFullBodyOutfit {
-	GREEN,
-	BLUE,
-	BROWN,
-	ORANGE,
-	BLACK,
-	PINK;
+  GREEN, BLUE, BROWN, ORANGE, BLACK, PINK
 
 }

@@ -56,17 +56,17 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class FieldView extends MemberView {
-	public FieldView( UserField field ) {
-		super( FieldMenuModel.getInstance( field ) );
-		ManagementLevel managementLevel = field.managementLevel.getValue();
-		if( managementLevel == ManagementLevel.MANAGED ) {
-			Label label = new Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			this.addComponent( label );
-		}
-		this.addComponent( new FieldDeclarationPane( SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != ManagementLevel.MANAGED ) );
-	}
+  public FieldView(UserField field) {
+    super(FieldMenuModel.getInstance(field));
+    ManagementLevel managementLevel = field.managementLevel.getValue();
+    if (managementLevel == ManagementLevel.MANAGED) {
+      Label label = new Label("*");
+      label.setToolTipText("managed by the scene editor");
+      label.setForegroundColor(Color.GRAY);
+      label.scaleFont(2.0f);
+      label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
+      this.addComponent(label);
+    }
+    this.addComponent(new FieldDeclarationPane(SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != ManagementLevel.MANAGED));
+  }
 }

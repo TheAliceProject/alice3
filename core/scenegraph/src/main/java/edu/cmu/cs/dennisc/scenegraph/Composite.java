@@ -59,136 +59,136 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
-	@Override
-	public void accept( Visitor visitor ) {
-		super.accept( visitor );
-		for( Component child : this.children ) {
-			child.accept( visitor );
-		}
-	}
+  @Override
+  public void accept(Visitor visitor) {
+    super.accept(visitor);
+    for (Component child : this.children) {
+      child.accept(visitor);
+    }
+  }
 
-	@Override
-	protected void actuallyRelease() {
-		super.actuallyRelease();
-		for( Component child : this.children ) {
-			child.release();
-		}
-	}
+  @Override
+  protected void actuallyRelease() {
+    super.actuallyRelease();
+    for (Component child : this.children) {
+      child.release();
+    }
+  }
 
-	public boolean isAncestorOf( Component component ) {
-		if( component == null ) {
-			return false;
-		} else {
-			return component.isDescendantOf( this );
-		}
-	}
+  public boolean isAncestorOf(Component component) {
+    if (component == null) {
+      return false;
+    } else {
+      return component.isDescendantOf(this);
+    }
+  }
 
-	protected void fireChildAdded( Component child ) {
-		assert child != this;
-		this.children.add( child );
-		ComponentAddedEvent e = new ComponentAddedEvent( this, child );
-		for( ComponentsListener childrenListener : this.childrenListeners ) {
-			childrenListener.componentAdded( e );
-		}
-	}
+  protected void fireChildAdded(Component child) {
+    assert child != this;
+    this.children.add(child);
+    ComponentAddedEvent e = new ComponentAddedEvent(this, child);
+    for (ComponentsListener childrenListener : this.childrenListeners) {
+      childrenListener.componentAdded(e);
+    }
+  }
 
-	protected void fireChildRemoved( Component child ) {
-		this.children.remove( child );
-		ComponentRemovedEvent e = new ComponentRemovedEvent( this, child );
-		for( ComponentsListener childrenListener : this.childrenListeners ) {
-			childrenListener.componentRemoved( e );
-		}
-	}
+  protected void fireChildRemoved(Component child) {
+    this.children.remove(child);
+    ComponentRemovedEvent e = new ComponentRemovedEvent(this, child);
+    for (ComponentsListener childrenListener : this.childrenListeners) {
+      childrenListener.componentRemoved(e);
+    }
+  }
 
-	public void addComponent( Component component ) {
-		assert component != this;
-		component.setParent( this );
-	}
+  public void addComponent(Component component) {
+    assert component != this;
+    component.setParent(this);
+  }
 
-	public void removeComponent( Component component ) {
-		if( component.getParent() == this ) {
-			component.setParent( null );
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  public void removeComponent(Component component) {
+    if (component.getParent() == this) {
+      component.setParent(null);
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	public Iterable<Component> getComponents() {
-		return this.children;
-	}
+  public Iterable<Component> getComponents() {
+    return this.children;
+  }
 
-	public int getComponentCount() {
-		return this.children.size();
-	}
+  public int getComponentCount() {
+    return this.children.size();
+  }
 
-	public int getIndexOfComponent( Component component ) {
-		return this.children.indexOf( component );
-	}
+  public int getIndexOfComponent(Component component) {
+    return this.children.indexOf(component);
+  }
 
-	public Component getComponentAt( int i ) {
-		return this.children.get( i );
-	}
+  public Component getComponentAt(int i) {
+    return this.children.get(i);
+  }
 
-	public Component[] getComponentsAsArray() {
-		return this.children.toArray( new Component[ this.children.size() ] );
-	}
+  public Component[] getComponentsAsArray() {
+    return this.children.toArray(new Component[this.children.size()]);
+  }
 
-	public void addChildrenListener( ComponentsListener childrenListener ) {
-		this.childrenListeners.add( childrenListener );
-	}
+  public void addChildrenListener(ComponentsListener childrenListener) {
+    this.childrenListeners.add(childrenListener);
+  }
 
-	public void removeChildrenListener( ComponentsListener childrenListener ) {
-		this.childrenListeners.remove( childrenListener );
-	}
+  public void removeChildrenListener(ComponentsListener childrenListener) {
+    this.childrenListeners.remove(childrenListener);
+  }
 
-	public Iterable<ComponentsListener> getChildrenListeners() {
-		return this.childrenListeners;
-	}
+  public Iterable<ComponentsListener> getChildrenListeners() {
+    return this.childrenListeners;
+  }
 
-	@Override
-	protected void fireAbsoluteTransformationChange() {
-		super.fireAbsoluteTransformationChange();
-		for( Component child : this.children ) {
-			child.fireAbsoluteTransformationChange();
-		}
-	}
+  @Override
+  protected void fireAbsoluteTransformationChange() {
+    super.fireAbsoluteTransformationChange();
+    for (Component child : this.children) {
+      child.fireAbsoluteTransformationChange();
+    }
+  }
 
-	@Override
-	protected void fireHierarchyChanged() {
-		super.fireHierarchyChanged();
-		for( Component child : this.children ) {
-			child.fireHierarchyChanged();
-		}
-	}
+  @Override
+  protected void fireHierarchyChanged() {
+    super.fireHierarchyChanged();
+    for (Component child : this.children) {
+      child.fireHierarchyChanged();
+    }
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
-		super.encode( binaryEncoder, map );
-		binaryEncoder.encode( this.children.size() );
-		for( Component component : this.children ) {
-			binaryEncoder.encode( component, map );
-		}
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map) {
+    super.encode(binaryEncoder, map);
+    binaryEncoder.encode(this.children.size());
+    for (Component component : this.children) {
+      binaryEncoder.encode(component, map);
+    }
+  }
 
-	@Override
-	public void decode( BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
-		super.decode( binaryDecoder, map );
-		final int N = binaryDecoder.decodeInt();
-		for( int i = 0; i < N; i++ ) {
-			this.addComponent( (Component)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map ) );
-		}
-	}
+  @Override
+  public void decode(BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map) {
+    super.decode(binaryDecoder, map);
+    final int N = binaryDecoder.decodeInt();
+    for (int i = 0; i < N; i++) {
+      this.addComponent((Component) binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable(map));
+    }
+  }
 
-	@Override
-	public Element newCopy() {
-		Composite rv = (Composite)super.newCopy();
-		for( Component component : this.children ) {
-			Component rvComponent = (Component)component.newCopy();
-			rvComponent.setParent( rv );
-		}
-		return rv;
-	}
+  @Override
+  public Element newCopy() {
+    Composite rv = (Composite) super.newCopy();
+    for (Component component : this.children) {
+      Component rvComponent = (Component) component.newCopy();
+      rvComponent.setParent(rv);
+    }
+    return rv;
+  }
 
-	private final List<Component> children = Lists.newCopyOnWriteArrayList();
-	private final List<ComponentsListener> childrenListeners = Lists.newCopyOnWriteArrayList();
+  private final List<Component> children = Lists.newCopyOnWriteArrayList();
+  private final List<ComponentsListener> childrenListeners = Lists.newCopyOnWriteArrayList();
 }

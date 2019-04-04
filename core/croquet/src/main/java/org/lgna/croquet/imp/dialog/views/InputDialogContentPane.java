@@ -49,10 +49,10 @@ import org.lgna.croquet.views.BoxUtilities;
  * @author Dennis Cosgrove
  */
 public final class InputDialogContentPane extends GatedCommitDialogContentPane {
-	public InputDialogContentPane( InputDialogContentComposite composite ) {
-		super( composite );
-		this.getControlLine().addComponent( BoxUtilities.createHorizontalGlue() );
-		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
-		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
-	}
+  public InputDialogContentPane(InputDialogContentComposite composite) {
+    super(composite);
+    this.getControlLine().addComponent(BoxUtilities.createHorizontalGlue());
+    this.getControlLine().addComponent(this.getLeadingCommitCancelButton());
+    this.getControlLine().addComponent(this.getTrailingCommitCancelButton());
+  }
 }

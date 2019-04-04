@@ -48,10 +48,10 @@ import org.lgna.story.implementation.BoxImp;
  * @author Dennis Cosgrove
  */
 public class SBox extends SShape {
-	private final BoxImp implementation = new BoxImp( this );
+  private final BoxImp implementation = new BoxImp(this);
 
-	@Override
-	/* package-private */BoxImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */BoxImp getImplementation() {
+    return this.implementation;
+  }
 }

@@ -50,36 +50,36 @@ import java.net.URISyntaxException;
  * @author Dennis Cosgrove
  */
 public class StarterProjectUtilities {
-	private StarterProjectUtilities() {
-		throw new AssertionError();
-	}
+  private StarterProjectUtilities() {
+    throw new AssertionError();
+  }
 
-	private static final String PREFIX = "starter";
+  private static final String PREFIX = "starter";
 
-	public static URI toUri( File file ) {
-		URI fileUri = file.toURI();
-		String str = PREFIX + fileUri.toString();
-		try {
-			return new URI( str );
-		} catch( URISyntaxException urise ) {
-			throw new RuntimeException( str, urise );
-		}
-	}
+  public static URI toUri(File file) {
+    URI fileUri = file.toURI();
+    String str = PREFIX + fileUri.toString();
+    try {
+      return new URI(str);
+    } catch (URISyntaxException urise) {
+      throw new RuntimeException(str, urise);
+    }
+  }
 
-	public static URI toFileUriFromStarterUri( URI starterUri ) {
-		try {
-			return new URI( starterUri.toString().substring( PREFIX.length() ) );
-		} catch( URISyntaxException urise ) {
-			throw new RuntimeException( urise );
-		}
-	}
+  public static URI toFileUriFromStarterUri(URI starterUri) {
+    try {
+      return new URI(starterUri.toString().substring(PREFIX.length()));
+    } catch (URISyntaxException urise) {
+      throw new RuntimeException(urise);
+    }
+  }
 
-	public static File toFile( URI uri ) {
-		String str = uri.toString().substring( PREFIX.length() );
-		try {
-			return new File( new URI( str ) );
-		} catch( URISyntaxException urise ) {
-			throw new RuntimeException( str, urise );
-		}
-	}
+  public static File toFile(URI uri) {
+    String str = uri.toString().substring(PREFIX.length());
+    try {
+      return new File(new URI(str));
+    } catch (URISyntaxException urise) {
+      throw new RuntimeException(str, urise);
+    }
+  }
 }

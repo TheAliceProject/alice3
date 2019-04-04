@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.croquet.FunctionsToolPalette;
  * @author Dennis Cosgrove
  */
 public class FunctionsView extends MethodsView {
-	public FunctionsView( FunctionsToolPalette composite ) {
-		super( composite, ThemeUtilities.getActiveTheme().getFunctionColor() );
-	}
+  public FunctionsView(FunctionsToolPalette composite) {
+    super(composite, ThemeUtilities.getActiveTheme().getFunctionColor());
+  }
 }

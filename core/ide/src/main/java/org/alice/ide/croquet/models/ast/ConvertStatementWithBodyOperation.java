@@ -55,21 +55,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ConvertStatementWithBodyOperation extends ActionOperation {
-	private AbstractStatementWithBody original;
+  private AbstractStatementWithBody original;
 
-	public ConvertStatementWithBodyOperation( UUID individualId, AbstractStatementWithBody original ) {
-		super( Application.PROJECT_GROUP, individualId );
-		this.original = original;
-	}
+  public ConvertStatementWithBodyOperation(UUID individualId, AbstractStatementWithBody original) {
+    super(Application.PROJECT_GROUP, individualId);
+    this.original = original;
+  }
 
-	public AbstractStatementWithBody getOriginal() {
-		return this.original;
-	}
+  public AbstractStatementWithBody getOriginal() {
+    return this.original;
+  }
 
-	protected abstract AbstractStatementWithBody createReplacement();
+  protected abstract AbstractStatementWithBody createReplacement();
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new ConvertStatementWithBodyEdit( activity, this.createReplacement() ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new ConvertStatementWithBodyEdit(activity, this.createReplacement()));
+  }
 }

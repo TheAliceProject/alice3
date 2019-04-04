@@ -50,22 +50,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class HoverPopupElement extends AbstractElement { //todo
-	private final PopupCoreComposite<?> composite;
+  private final PopupCoreComposite<?> composite;
 
-	public HoverPopupElement( PopupCoreComposite<?> composite ) {
-		super( UUID.fromString( "ff26c0ef-5570-4b59-bba5-0a7030290ec5" ) );
-		this.composite = composite;
-	}
+  public HoverPopupElement(PopupCoreComposite<?> composite) {
+    super(UUID.fromString("ff26c0ef-5570-4b59-bba5-0a7030290ec5"));
+    this.composite = composite;
+  }
 
-	public PopupCoreComposite<?> getComposite() {
-		return this.composite;
-	}
+  public PopupCoreComposite<?> getComposite() {
+    return this.composite;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public HoverPopupView createHoverPopupView() {
-		return new HoverPopupView( this );
-	}
+  public HoverPopupView createHoverPopupView() {
+    return new HoverPopupView(this);
+  }
 }

@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum ToddlerFullBodyOutfitDiaper implements MaleToddlerFullBodyOutfit, FemaleToddlerFullBodyOutfit {
-	WHITE;
+  WHITE
 
 }

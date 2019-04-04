@@ -55,77 +55,77 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class TypeCache {
-	private final Project project;
-	private final Map<TypeKey, NamedUserType> map = Maps.newHashMap();
+  private final Project project;
+  private final Map<TypeKey, NamedUserType> map = Maps.newHashMap();
 
-	public TypeCache( Project project ) {
-		this.project = project;
-		this.seed();
-	}
+  public TypeCache(Project project) {
+    this.project = project;
+    this.seed();
+  }
 
-	private static TypeKey createKeyForType( NamedUserType type ) {
-		AbstractType<?, ?, ?> superType = type.getSuperType();
-		List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
-		final int CONSTRUCTOR_COUNT = constructors.size();
-		switch( CONSTRUCTOR_COUNT ) {
-		case 1:
-			NamedUserConstructor constructor0 = constructors.get( 0 );
-			List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
-			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
-			switch( REQUIRED_PARAMETER_COUNT ) {
-			case 0:
-				ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
-				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
-				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
-				case 0:
-					return new ExtendsTypeKey( superType );
-				case 1:
-					Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-					if( expression instanceof FieldAccess ) {
-						//Cases like Alien() { super(AlienResource.DEFAULT); }
-						FieldAccess fieldAccess = (FieldAccess)expression;
-						return new ExtendsTypeWithSuperArgumentFieldKey( superType, fieldAccess.field.getValue() );
-					} else if (expression instanceof InstanceCreation) {
-						//Cases like Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
-						return new ExtendsTypeWithNamedType( superType, type.name.getName() );
-					} else {
-						throw new AssertionError( type + " " + expression );
-					}
-				default:
-					throw new AssertionError( type );
-				}
-			case 1:
-				//Cases like Alice(AliceResource resource) { super(resource); }
-				//Cases like AdultPerson(AdultPersonResource resource) { super(resource); }
-				AbstractParameter parameter0 = requiredParameters.get( 0 );
-				return new ExtendsTypeWithConstructorParameterTypeKey( superType, parameter0.getValueType() );
-			default:
-				throw new AssertionError( type );
-			}
-		default:
-			throw new AssertionError( type );
-		}
-	}
+  private static TypeKey createKeyForType(NamedUserType type) {
+    AbstractType<?, ?, ?> superType = type.getSuperType();
+    List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
+    final int CONSTRUCTOR_COUNT = constructors.size();
+    switch (CONSTRUCTOR_COUNT) {
+    case 1:
+      NamedUserConstructor constructor0 = constructors.get(0);
+      List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+      final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
+      switch (REQUIRED_PARAMETER_COUNT) {
+      case 0:
+        ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
+        final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
+        switch (SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT) {
+        case 0:
+          return new ExtendsTypeKey(superType);
+        case 1:
+          Expression expression = constructorInvocationStatement.requiredArguments.get(0).expression.getValue();
+          if (expression instanceof FieldAccess) {
+            //Cases like Alien() { super(AlienResource.DEFAULT); }
+            FieldAccess fieldAccess = (FieldAccess) expression;
+            return new ExtendsTypeWithSuperArgumentFieldKey(superType, fieldAccess.field.getValue());
+          } else if (expression instanceof InstanceCreation) {
+            //Cases like Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
+            return new ExtendsTypeWithNamedType(superType, type.name.getName());
+          } else {
+            throw new AssertionError(type + " " + expression);
+          }
+        default:
+          throw new AssertionError(type);
+        }
+      case 1:
+        //Cases like Alice(AliceResource resource) { super(resource); }
+        //Cases like AdultPerson(AdultPersonResource resource) { super(resource); }
+        AbstractParameter parameter0 = requiredParameters.get(0);
+        return new ExtendsTypeWithConstructorParameterTypeKey(superType, parameter0.getValueType());
+      default:
+        throw new AssertionError(type);
+      }
+    default:
+      throw new AssertionError(type);
+    }
+  }
 
-	private void seed() {
-		for( NamedUserType type : this.project.getNamedUserTypes() ) {
-			TypeKey key = createKeyForType( type );
-			if( key != null ) {
-				this.map.put( key, type );
-			} else {
-				Logger.severe( type );
-			}
-		}
-	}
+  private void seed() {
+    for (NamedUserType type : this.project.getNamedUserTypes()) {
+      TypeKey key = createKeyForType(type);
+      if (key != null) {
+        this.map.put(key, type);
+      } else {
+        Logger.severe(type);
+      }
+    }
+  }
 
-	public NamedUserType getTypeFor( TypeKey key ) {
-		synchronized( this.map ) {
-			NamedUserType rv = this.map.get( key );
-			if( rv != null ) {
-				rv = key.createType();
-				this.map.put( key, rv );
-			}
-			return rv;
-		}
-	}
+  public NamedUserType getTypeFor(TypeKey key) {
+    synchronized (this.map) {
+      NamedUserType rv = this.map.get(key);
+      if (rv != null) {
+        rv = key.createType();
+        this.map.put(key, rv);
+      }
+      return rv;
+    }
+  }
 }

@@ -54,27 +54,27 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextArea extends ImmutableTextComponent<JTextArea> {
-	public ImmutableTextArea( PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
-		super( value, fontScalar, textAttributes );
-	}
+  public ImmutableTextArea(PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes) {
+    super(value, fontScalar, textAttributes);
+  }
 
-	@Override
-	protected JTextArea createAwtComponent() {
-		JTextArea rv = new JTextArea( this.getValue().getDocument() ) {
-			@Override
-			public Color getBackground() {
-				return getDesiredBackgroundColor( this.getParent() );
-			}
+  @Override
+  protected JTextArea createAwtComponent() {
+    JTextArea rv = new JTextArea(this.getValue().getDocument()) {
+      @Override
+      public Color getBackground() {
+        return getDesiredBackgroundColor(this.getParent());
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicTextAreaUI() );
-			}
-		};
-		this.initializeJComponent( rv );
-		rv.setWrapStyleWord( true );
-		rv.setLineWrap( true );
-		rv.setMinimumSize( new Dimension() );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicTextAreaUI());
+      }
+    };
+    this.initializeJComponent(rv);
+    rv.setWrapStyleWord(true);
+    rv.setLineWrap(true);
+    rv.setMinimumSize(new Dimension());
+    return rv;
+  }
 }

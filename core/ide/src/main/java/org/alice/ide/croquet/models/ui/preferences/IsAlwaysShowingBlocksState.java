@@ -47,18 +47,18 @@ package org.alice.ide.croquet.models.ui.preferences;
  * @author Dennis Cosgrove
  */
 public class IsAlwaysShowingBlocksState {
-	private static class SingletonHolder {
-		private static IsAlwaysShowingBlocksState instance = new IsAlwaysShowingBlocksState();
-	}
+  private static class SingletonHolder {
+    private static IsAlwaysShowingBlocksState instance = new IsAlwaysShowingBlocksState();
+  }
 
-	public static IsAlwaysShowingBlocksState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsAlwaysShowingBlocksState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsAlwaysShowingBlocksState() {
-	}
+  private IsAlwaysShowingBlocksState() {
+  }
 
-	public final boolean getValue() {
-		return true;
-	}
+  public final boolean getValue() {
+    return true;
+  }
 }

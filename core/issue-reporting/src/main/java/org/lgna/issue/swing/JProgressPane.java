@@ -61,53 +61,53 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class JProgressPane extends JPanel {
-	private class RunInBackgroundAction extends AbstractAction {
-		public RunInBackgroundAction() {
-			super( "run in background" );
-		}
+  private class RunInBackgroundAction extends AbstractAction {
+    public RunInBackgroundAction() {
+      super("run in background");
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			isBackgrounded = true;
-			SwingUtilities.getRoot( JProgressPane.this ).setVisible( false );
-			worker.hideOwnerDialog();
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      isBackgrounded = true;
+      SwingUtilities.getRoot(JProgressPane.this).setVisible(false);
+      worker.hideOwnerDialog();
+    }
+  }
 
-	public JProgressPane( IssueSubmissionProgressWorker worker ) {
-		this.worker = worker;
-		JScrollPane scrollPane = new JScrollPane( this.textArea );
+  public JProgressPane(IssueSubmissionProgressWorker worker) {
+    this.worker = worker;
+    JScrollPane scrollPane = new JScrollPane(this.textArea);
 
-		this.runInBackgroundButton = new JButton( new RunInBackgroundAction() );
-		JPanel bottomPane = new JPanel();
-		bottomPane.setLayout( new FlowLayout( FlowLayout.TRAILING ) );
-		bottomPane.add( this.runInBackgroundButton );
+    this.runInBackgroundButton = new JButton(new RunInBackgroundAction());
+    JPanel bottomPane = new JPanel();
+    bottomPane.setLayout(new FlowLayout(FlowLayout.TRAILING));
+    bottomPane.add(this.runInBackgroundButton);
 
-		this.setLayout( new BorderLayout() );
-		this.add( scrollPane, BorderLayout.CENTER );
-		this.add( bottomPane, BorderLayout.PAGE_END );
+    this.setLayout(new BorderLayout());
+    this.add(scrollPane, BorderLayout.CENTER);
+    this.add(bottomPane, BorderLayout.PAGE_END);
 
-		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
-	}
+    this.setPreferredSize(DimensionUtilities.createWiderGoldenRatioSizeFromWidth(600));
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.getRootPane().setDefaultButton( this.runInBackgroundButton );
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.getRootPane().setDefaultButton(this.runInBackgroundButton);
+  }
 
-	public void addMessage( String message ) {
-		Document document = this.textArea.getDocument();
-		DocumentUtilities.appendString( document, message );
-		DocumentUtilities.appendString( document, "\n" );
-	}
+  public void addMessage(String message) {
+    Document document = this.textArea.getDocument();
+    DocumentUtilities.appendString(document, message);
+    DocumentUtilities.appendString(document, "\n");
+  }
 
-	public boolean isBackgrounded() {
-		return this.isBackgrounded;
-	}
+  public boolean isBackgrounded() {
+    return this.isBackgrounded;
+  }
 
-	private final IssueSubmissionProgressWorker worker;
-	private final JTextArea textArea = new JTextArea();
-	private final JButton runInBackgroundButton;
-	private boolean isBackgrounded;
+  private final IssueSubmissionProgressWorker worker;
+  private final JTextArea textArea = new JTextArea();
+  private final JButton runInBackgroundButton;
+  private boolean isBackgrounded;
 }

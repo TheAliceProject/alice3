@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.math.polynomial;
  * @author Dennis Cosgrove
  */
 public interface Polynomial {
-	public boolean isNaN();
+  public boolean isNaN();
 
-	public double evaluate( double t );
+  public double evaluate(double t);
 
-	public double evaluateDerivative( double t );
+  public double evaluateDerivative(double t);
 }

@@ -8,17 +8,17 @@ import com.dddviewr.collada.effects.Effect;
 import com.dddviewr.collada.effects.LibraryEffects;
 
 public class effect extends State {
-	protected Effect theEffect;
+  protected Effect theEffect;
 
-	public void init(String name, Attributes attrs, StateManager mngr) {
-		super.init(name, attrs, mngr);
+  public void init(String name, Attributes attrs, StateManager mngr) {
+    super.init(name, attrs, mngr);
 
-		this.theEffect = new Effect(attrs.getValue("id"));
-		LibraryEffects lib = ((library_effects) getParent()).getLibrary();
-		lib.addEffect(theEffect);
-	}
+    this.theEffect = new Effect(attrs.getValue("id"));
+    LibraryEffects lib = ((library_effects) getParent()).getLibrary();
+    lib.addEffect(theEffect);
+  }
 
-	public Effect getEffect() {
-		return theEffect;
-	}
+  public Effect getEffect() {
+    return theEffect;
+  }
 }

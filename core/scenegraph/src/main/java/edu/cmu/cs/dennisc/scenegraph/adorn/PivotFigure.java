@@ -46,6 +46,6 @@ package edu.cmu.cs.dennisc.scenegraph.adorn;
  * @author Dennis Cosgrove
  */
 public class PivotFigure extends Adornment {
-	//todo: add pivot length property
-	//todo: add forward length property
+  //todo: add pivot length property
+  //todo: add forward length property
 }

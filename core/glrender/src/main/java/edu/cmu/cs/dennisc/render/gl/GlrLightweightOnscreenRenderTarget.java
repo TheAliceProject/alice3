@@ -63,137 +63,137 @@ import java.awt.image.ImageObserver;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
-	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
+  private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
-	private class RenderPane extends GLJPanel {
-		private Image mostRecentDrawnImage;
-		private Image disabledImage;
+  private class RenderPane extends GLJPanel {
+    private Image mostRecentDrawnImage;
+    private Image disabledImage;
 
-		private class ImageTrackingProxyGraphics extends ProxyGraphics2D {
-			@Override
-			public Graphics create() {
-				ImageTrackingProxyGraphics rv = new ImageTrackingProxyGraphics();
-				rv.setOther( (Graphics2D)super.create() );
-				return rv;
-			}
+    private class ImageTrackingProxyGraphics extends ProxyGraphics2D {
+      @Override
+      public Graphics create() {
+        ImageTrackingProxyGraphics rv = new ImageTrackingProxyGraphics();
+        rv.setOther((Graphics2D) super.create());
+        return rv;
+      }
 
-			@Override
-			public boolean drawImage( Image img, int x, int y, int width, int height, ImageObserver observer ) {
-				mostRecentDrawnImage = img;
-				return super.drawImage( img, x, y, width, height, observer );
-			}
-		}
+      @Override
+      public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
+        mostRecentDrawnImage = img;
+        return super.drawImage(img, x, y, width, height, observer);
+      }
+    }
 
-		public RenderPane( RenderCapabilities requestedCapabilities ) {
-			super( GlDrawableUtils.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser() );
-		}
+    public RenderPane(RenderCapabilities requestedCapabilities) {
+      super(GlDrawableUtils.createGlCapabilitiesForLightweightComponent(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser());
+    }
 
-		@Override
-		public void display() {
-			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
-				super.display();
-			}
-		}
+    @Override
+    public void display() {
+      if (GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled()) {
+        super.display();
+      }
+    }
 
-		@Override
-		protected void paintComponent( Graphics g ) {
-			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
-				if( GlrLightweightOnscreenRenderTarget.this.getSgCameraCount() > 0 ) {
-					try {
-						super.paintComponent( g );
-						this.prevThrowable = null;
-					} catch( Throwable throwable ) {
-						g.setColor( Color.RED );
-						g.fillRect( 0, 0, getWidth(), getHeight() );
-						g.setColor( Color.BLACK );
-						GraphicsUtilities.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
-						//edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
-						if( this.prevThrowable != null ) {
-							//pass
-						} else {
-							this.prevThrowable = throwable;
-							throwable.printStackTrace();
-						}
-					}
-				} else {
-					g.setColor( Color.DARK_GRAY );
-					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-				}
-			}
-		}
+    @Override
+    protected void paintComponent(Graphics g) {
+      if (GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled()) {
+        if (GlrLightweightOnscreenRenderTarget.this.getSgCameraCount() > 0) {
+          try {
+            super.paintComponent(g);
+            this.prevThrowable = null;
+          } catch (Throwable throwable) {
+            g.setColor(Color.RED);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.BLACK);
+            GraphicsUtilities.drawCenteredText(g, "error in attempting to render scene", this.getSize());
+            //edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
+            if (this.prevThrowable != null) {
+              //pass
+            } else {
+              this.prevThrowable = throwable;
+              throwable.printStackTrace();
+            }
+          }
+        } else {
+          g.setColor(Color.DARK_GRAY);
+          g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        }
+      }
+    }
 
-		@Override
-		public void paint( Graphics g ) {
-			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
-				if( imageTrackingProxyGraphics != null ) {
-					Graphics2D g2 = (Graphics2D)g;
-					imageTrackingProxyGraphics.setOther( g2 );
-					mostRecentDrawnImage = null;
-					disabledImage = null;
-					super.paint( imageTrackingProxyGraphics );
-					imageTrackingProxyGraphics.setOther( null );
-				} else {
-					super.paint( g );
-				}
-			} else {
-				if( disabledImage != null ) {
-					//pass
-				} else {
-					if( mostRecentDrawnImage != null ) {
-						disabledImage = GrayFilter.createDisabledImage( mostRecentDrawnImage );
-					}
-				}
-				Dimension size = this.getSize();
-				if( disabledImage != null ) {
-					g.drawImage( disabledImage, 0, 0, this );
-				} else {
-					g.setColor( Color.GRAY );
-					g.fillRect( 0, 0, size.width, size.height );
-				}
-				String text = "rendering disabled for performance considerations";
-				g.setColor( Color.BLACK );
-				GraphicsUtilities.drawCenteredText( g, text, size );
-				g.setColor( Color.YELLOW );
-				g.translate( -1, -1 );
-				GraphicsUtilities.drawCenteredText( g, text, size );
-				g.translate( 1, 1 );
-			}
-		}
+    @Override
+    public void paint(Graphics g) {
+      if (GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled()) {
+        if (imageTrackingProxyGraphics != null) {
+          Graphics2D g2 = (Graphics2D) g;
+          imageTrackingProxyGraphics.setOther(g2);
+          mostRecentDrawnImage = null;
+          disabledImage = null;
+          super.paint(imageTrackingProxyGraphics);
+          imageTrackingProxyGraphics.setOther(null);
+        } else {
+          super.paint(g);
+        }
+      } else {
+        if (disabledImage != null) {
+          //pass
+        } else {
+          if (mostRecentDrawnImage != null) {
+            disabledImage = GrayFilter.createDisabledImage(mostRecentDrawnImage);
+          }
+        }
+        Dimension size = this.getSize();
+        if (disabledImage != null) {
+          g.drawImage(disabledImage, 0, 0, this);
+        } else {
+          g.setColor(Color.GRAY);
+          g.fillRect(0, 0, size.width, size.height);
+        }
+        String text = "rendering disabled for performance considerations";
+        g.setColor(Color.BLACK);
+        GraphicsUtilities.drawCenteredText(g, text, size);
+        g.setColor(Color.YELLOW);
+        g.translate(-1, -1);
+        GraphicsUtilities.drawCenteredText(g, text, size);
+        g.translate(1, 1);
+      }
+    }
 
-		private final ImageTrackingProxyGraphics imageTrackingProxyGraphics = IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME ? new ImageTrackingProxyGraphics() : null;
-		private Throwable prevThrowable = null;
-	}
+    private final ImageTrackingProxyGraphics imageTrackingProxyGraphics = IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME ? new ImageTrackingProxyGraphics() : null;
+    private Throwable prevThrowable = null;
+  }
 
-	/* package-private */ GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
-		super( lookingGlassFactory, requestedCapabilities );
-		this.glPanel = new RenderPane( requestedCapabilities );
-		this.glPanel.setFocusable( true );
-	}
+  /* package-private */ GlrLightweightOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
+    super(lookingGlassFactory, requestedCapabilities);
+    this.glPanel = new RenderPane(requestedCapabilities);
+    this.glPanel.setFocusable(true);
+  }
 
-	@Override
-	public JPanel getAwtComponent() {
-		return this.glPanel;
-	}
+  @Override
+  public JPanel getAwtComponent() {
+    return this.glPanel;
+  }
 
-	@Override
-	protected Dimension getSurfaceSize( Dimension rv ) {
-		return this.glPanel.getSize( rv );
-	}
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    return this.glPanel.getSize(rv);
+  }
 
-	@Override
-	protected Dimension getDrawableSize( Dimension rv ) {
-		return this.glPanel.getSize( rv );
-	}
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    return this.glPanel.getSize(rv);
+  }
 
-	@Override
-	public void repaint() {
-		this.glPanel.repaint();
-	}
+  @Override
+  public void repaint() {
+    this.glPanel.repaint();
+  }
 
-	@Override
-	public GLAutoDrawable getGLAutoDrawable() {
-		return this.glPanel;
-	}
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    return this.glPanel;
+  }
 
-	private final GLJPanel glPanel;
+  private final GLJPanel glPanel;
 }

@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface EachInStatement extends StatementWithBody {
-	public DeclarationProperty<UserLocal> getItemProperty();
+  public DeclarationProperty<UserLocal> getItemProperty();
 }

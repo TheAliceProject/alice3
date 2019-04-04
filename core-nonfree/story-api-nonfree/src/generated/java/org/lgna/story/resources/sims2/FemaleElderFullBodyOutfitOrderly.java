@@ -44,6 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleElderFullBodyOutfitOrderly implements FemaleElderFullBodyOutfit {
-	AQUA;
+  AQUA
 
 }

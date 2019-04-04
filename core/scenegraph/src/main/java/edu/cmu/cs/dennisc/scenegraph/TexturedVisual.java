@@ -49,22 +49,22 @@ import edu.cmu.cs.dennisc.texture.Texture;
  *
  */
 public abstract class TexturedVisual extends Visual {
-	public TexturedVisual() {
-		this.sgAppearance.setDiffuseColorTextureClamped( true );
-		this.frontFacingAppearance.setValue( this.sgAppearance );
-	}
+  public TexturedVisual() {
+    this.sgAppearance.setDiffuseColorTextureClamped(true);
+    this.frontFacingAppearance.setValue(this.sgAppearance);
+  }
 
-	public TexturedAppearance getAppearance() {
-		return sgAppearance;
-	}
+  public TexturedAppearance getAppearance() {
+    return sgAppearance;
+  }
 
-	public Texture getTexture() {
-		return this.sgAppearance.diffuseColorTexture.getValue();
-	}
+  public Texture getTexture() {
+    return this.sgAppearance.diffuseColorTexture.getValue();
+  }
 
-	public void setTexture( Texture texture ) {
-		this.sgAppearance.setDiffuseColorTextureAndInferAlphaBlend( texture );
-	}
+  public void setTexture(Texture texture) {
+    this.sgAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
+  }
 
-	private final TexturedAppearance sgAppearance = new TexturedAppearance();
+  private final TexturedAppearance sgAppearance = new TexturedAppearance();
 }

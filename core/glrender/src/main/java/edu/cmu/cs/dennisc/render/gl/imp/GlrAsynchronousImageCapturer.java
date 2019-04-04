@@ -54,19 +54,19 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrAsynchronousImageCapturer implements AsynchronousImageCapturer {
-	public GlrAsynchronousImageCapturer( RenderTargetImp rtImp ) {
-		this.rtImp = rtImp;
-	}
+  public GlrAsynchronousImageCapturer(RenderTargetImp rtImp) {
+    this.rtImp = rtImp;
+  }
 
-	@Override
-	public void captureImageBuffer( RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
-		this.rtImp.addDisplayTask( new ImageCaptureDisplayTask( renderTask, viewport, (GlrImageBuffer)imageBuffer, imageOrientationRequirement, observer ) );
-	}
+  @Override
+  public void captureImageBuffer(RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer) {
+    this.rtImp.addDisplayTask(new ImageCaptureDisplayTask(renderTask, viewport, (GlrImageBuffer) imageBuffer, imageOrientationRequirement, observer));
+  }
 
-	@Override
-	public final void captureImageBuffer( ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
-		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
-	}
+  @Override
+  public final void captureImageBuffer(ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer) {
+    this.captureImageBuffer(null, null, imageBuffer, imageOrientationRequirement, observer);
+  }
 
-	private final RenderTargetImp rtImp;
+  private final RenderTargetImp rtImp;
 }

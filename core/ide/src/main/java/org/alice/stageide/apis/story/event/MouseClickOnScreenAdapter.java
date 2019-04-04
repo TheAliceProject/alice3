@@ -49,12 +49,12 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseClickOnScreenAdapter extends AbstractAdapter implements MouseClickOnScreenListener {
-	public MouseClickOnScreenAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public MouseClickOnScreenAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void mouseClicked( MouseClickOnScreenEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void mouseClicked(MouseClickOnScreenEvent e) {
+    invokeEntryPoint(e);
+  }
 }

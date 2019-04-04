@@ -63,96 +63,96 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class MiniControlFlowStatementTemplate extends StatementTemplate {
-	private final Statement incompleteStatement;
-	private SwingComponentView<?> incompleteStatementPane;
-	private Label label;
-	private javax.swing.JToolTip toolTip;
+  private final Statement incompleteStatement;
+  private SwingComponentView<?> incompleteStatementPane;
+  private Label label;
+  private javax.swing.JToolTip toolTip;
 
-	public MiniControlFlowStatementTemplate( StatementTemplateDragModel dragModel ) {
-		super( dragModel, dragModel.getStatementCls() );
-		this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
-	}
+  public MiniControlFlowStatementTemplate(StatementTemplateDragModel dragModel) {
+    super(dragModel, dragModel.getStatementCls());
+    this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
+  }
 
-	private String labelText;
+  private String labelText;
 
-	private String getLabelText() {
-		if( this.labelText != null ) {
-			//pass
-		} else {
-			Class<?> cls;
-			DragModel model = this.getModel();
-			if( model instanceof ExpressionStatementTemplateDragModel ) {
-				ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (ExpressionStatementTemplateDragModel)model;
-				cls = expressionStatementTemplateDragModel.getExpressionCls();
-			} else {
-				cls = this.getStatementCls();
-			}
-			this.labelText = ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates");
-		}
-		return this.labelText;
-	}
+  private String getLabelText() {
+    if (this.labelText != null) {
+      //pass
+    } else {
+      Class<?> cls;
+      DragModel model = this.getModel();
+      if (model instanceof ExpressionStatementTemplateDragModel) {
+        ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (ExpressionStatementTemplateDragModel) model;
+        cls = expressionStatementTemplateDragModel.getExpressionCls();
+      } else {
+        cls = this.getStatementCls();
+      }
+      this.labelText = ResourceBundleUtilities.getStringFromSimpleNames(cls, "org.alice.ide.controlflow.Templates");
+    }
+    return this.labelText;
+  }
 
-	private SwingComponentView<?> getIncompleteStatementPane() {
-		if( this.incompleteStatementPane != null ) {
-			//pass
-		} else {
-			this.incompleteStatementPane = TemplateAstI18nFactory.getInstance().createStatementPane( this.incompleteStatement );
-		}
-		return this.incompleteStatementPane;
-	}
+  private SwingComponentView<?> getIncompleteStatementPane() {
+    if (this.incompleteStatementPane != null) {
+      //pass
+    } else {
+      this.incompleteStatementPane = TemplateAstI18nFactory.getInstance().createStatementPane(this.incompleteStatement);
+    }
+    return this.incompleteStatementPane;
+  }
 
-	@Override
-	public SwingComponentView<?> getSubject() {
-		return this.getIncompleteStatementPane();
-	}
+  @Override
+  public SwingComponentView<?> getSubject() {
+    return this.getIncompleteStatementPane();
+  }
 
-	@Override
-	protected Point getToolTipLocation( Point location, MouseEvent event ) {
-		javax.swing.JToolTip toolTip = this.createToolTip( null );
-		if( toolTip != null ) {
-			int offset = toolTip.getPreferredSize().height;
-			//			if( offset == 0 ) {
-			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( toolTip );
-			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( toolTip );
-			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( toolTip );
-			//				offset = toolTip.getPreferredSize().height;
-			//			}
-			offset += 4;
-			return new Point( 0, -offset );
-		} else {
-			return location;
-		}
-	}
+  @Override
+  protected Point getToolTipLocation(Point location, MouseEvent event) {
+    javax.swing.JToolTip toolTip = this.createToolTip(null);
+    if (toolTip != null) {
+      int offset = toolTip.getPreferredSize().height;
+      //      if( offset == 0 ) {
+      //        edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( toolTip );
+      //        edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( toolTip );
+      //        edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( toolTip );
+      //        offset = toolTip.getPreferredSize().height;
+      //      }
+      offset += 4;
+      return new Point(0, -offset);
+    } else {
+      return location;
+    }
+  }
 
-	@Override
-	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
-		if( this.toolTip != null ) {
-			//pass
-		} else {
-			this.toolTip = new JToolTip( this.getIncompleteStatementPane().getAwtComponent() );
-		}
-		return this.toolTip;
-	}
+  @Override
+  protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+    if (this.toolTip != null) {
+      //pass
+    } else {
+      this.toolTip = new JToolTip(this.getIncompleteStatementPane().getAwtComponent());
+    }
+    return this.toolTip;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.label != null ) {
-			//pass
-		} else {
-			this.label = new Label( this.getLabelText() );
-			if( Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForegroundColor( ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
-			}
-			//this.label.setFontToScaledFont( 1.2f );
-			this.addComponent( this.label );
-			this.setToolTipText( "" );
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.label != null) {
+      //pass
+    } else {
+      this.label = new Label(this.getLabelText());
+      if (Comment.class.isAssignableFrom(this.getStatementCls())) {
+        this.label.setForegroundColor(ThemeUtilities.getActiveTheme().getCommentForegroundColor());
+      }
+      //this.label.setFontToScaledFont( 1.2f );
+      this.addComponent(this.label);
+      this.setToolTipText("");
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//		this.removeAllComponents();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    //    this.removeAllComponents();
+    super.handleUndisplayable();
+  }
 }

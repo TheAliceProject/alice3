@@ -47,12 +47,12 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class LgnaVmNoReturnException extends LgnaVmException {
-	public LgnaVmNoReturnException( VirtualMachine vm ) {
-		super( vm );
-	}
+  public LgnaVmNoReturnException(VirtualMachine vm) {
+    super(vm);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		sb.append( "return statement required" );
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    sb.append("return statement required");
+  }
 }

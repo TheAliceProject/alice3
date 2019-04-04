@@ -50,21 +50,21 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class AngleProperty extends InstanceProperty<Angle> {
-	public AngleProperty( InstancePropertyOwner owner, Angle value, boolean isNaNAcceptable ) {
-		super( owner, value );
-		this.isNaNAcceptable = isNaNAcceptable;
-	}
+  public AngleProperty(InstancePropertyOwner owner, Angle value, boolean isNaNAcceptable) {
+    super(owner, value);
+    this.isNaNAcceptable = isNaNAcceptable;
+  }
 
-	public AngleProperty( InstancePropertyOwner owner, Angle value ) {
-		this( owner, value, false );
-	}
+  public AngleProperty(InstancePropertyOwner owner, Angle value) {
+    this(owner, value, false);
+  }
 
-	@Override
-	public void setValue( Angle value ) {
-		assert value != null : this;
-		assert ( value.isNaN() == false ) || this.isNaNAcceptable : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(Angle value) {
+    assert value != null : this;
+    assert (value.isNaN() == false) || this.isNaNAcceptable : this;
+    super.setValue(value);
+  }
 
-	private final boolean isNaNAcceptable;
+  private final boolean isNaNAcceptable;
 }

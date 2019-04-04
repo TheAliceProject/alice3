@@ -52,40 +52,40 @@ import javax.swing.JLabel;
  * @author Dennis Cosgrove
  */
 public class Label extends AbstractLabel {
-	public Label() {
-	}
+  public Label() {
+  }
 
-	public Label( String text, TextAttribute<?>... textAttributes ) {
-		this.setText( text );
-		this.changeFont( textAttributes );
-	}
+  public Label(String text, TextAttribute<?>... textAttributes) {
+    this.setText(text);
+    this.changeFont(textAttributes);
+  }
 
-	public Label( Icon icon, TextAttribute<?>... textAttributes ) {
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
+  public Label(Icon icon, TextAttribute<?>... textAttributes) {
+    this.setIcon(icon);
+    this.changeFont(textAttributes);
+  }
 
-	public Label( String text, Icon icon, TextAttribute<?>... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
+  public Label(String text, Icon icon, TextAttribute<?>... textAttributes) {
+    this.setText(text);
+    this.setIcon(icon);
+    this.changeFont(textAttributes);
+  }
 
-	public Label( String text, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this.setText( text );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public Label(String text, float fontScalar, TextAttribute<?>... textAttributes) {
+    this.setText(text);
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	public Label( String text, Icon icon, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public Label(String text, Icon icon, float fontScalar, TextAttribute<?>... textAttributes) {
+    this.setText(text);
+    this.setIcon(icon);
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		return new JLabel();
-	}
+  @Override
+  protected JLabel createAwtComponent() {
+    return new JLabel();
+  }
 }

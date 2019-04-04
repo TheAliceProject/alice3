@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPackage extends AbstractDeclaration {
-	//public ListProperty< Type > types = new ListProperty< Type >( this );
+  //public ListProperty< Type > types = new ListProperty< Type >( this );
 }

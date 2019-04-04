@@ -44,11 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleAdultFullBodyOutfitFancySuit implements MaleAdultFullBodyOutfit {
-	PINK,
-	BLACK,
-	BLUE,
-	RED,
-	NAVY,
-	SILVER;
+  PINK, BLACK, BLUE, RED, NAVY, SILVER
 
 }

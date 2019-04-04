@@ -57,31 +57,27 @@ import org.lgna.croquet.views.Panel;
  */
 public final class LogOutCard extends SimpleComposite<Panel> {
 
-	public void updateWelcomeString( String str ) {
-		usernameLabel.setText( welcome.getText() + str );
-	}
+  public void updateWelcomeString(String str) {
+    usernameLabel.setText(welcome.getText() + str);
+  }
 
-	private StringValue welcome = createStringValue( "welcome" );
-	private Label usernameLabel = new Label();
-	private ActionOperation logoutOperation;
+  private StringValue welcome = createStringValue("welcome");
+  private Label usernameLabel = new Label();
+  private ActionOperation logoutOperation;
 
-	public LogOutCard( ActionOperation logOutOperation ) {
-		super( UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
-		this.logoutOperation = logOutOperation;
-	}
+  public LogOutCard(ActionOperation logOutOperation) {
+    super(UUID.fromString("ec4e5145-6754-4add-a821-55357866ba0b"));
+    this.logoutOperation = logOutOperation;
+  }
 
-	@Override
-	protected Panel createView() {
-		this.usernameLabel.getAwtComponent().setForeground( Color.WHITE );
-		updateWelcomeString( "" );
-		return new FlowPanel(
-				this,
-				FlowPanel.Alignment.TRAILING,
-				this.usernameLabel,
-				this.logoutOperation.createButton() );
-	}
+  @Override
+  protected Panel createView() {
+    this.usernameLabel.getAwtComponent().setForeground(Color.WHITE);
+    updateWelcomeString("");
+    return new FlowPanel(this, FlowPanel.Alignment.TRAILING, this.usernameLabel, this.logoutOperation.createButton());
+  }
 
-	public Label getUsernameLabel() {
-		return this.usernameLabel;
-	}
+  public Label getUsernameLabel() {
+    return this.usernameLabel;
+  }
 }

@@ -46,5 +46,5 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public interface FormRow {
-	public void addComponents( FormPanel formPanel );
+  public void addComponents(FormPanel formPanel);
 }

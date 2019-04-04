@@ -44,10 +44,6 @@
 package org.lgna.story.resources.sims2;
 
 public enum FemaleAdultTopPieceSweaterSet implements FemaleAdultTopPiece {
-	BLUE,
-	GREEN,
-	PINK,
-	RED,
-	YELLOW;
+  BLUE, GREEN, PINK, RED, YELLOW
 
 }

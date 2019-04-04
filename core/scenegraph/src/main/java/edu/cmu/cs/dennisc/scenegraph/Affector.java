@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Affector extends Leaf {
-	//	public final edu.cmu.cs.dennisc.property.BooleanProperty isAffectLimited = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	//	public final edu.cmu.cs.dennisc.property.ListProperty<Visual> affectedVisuals = new edu.cmu.cs.dennisc.property.ListProperty<Visual>( this );
+  //  public final edu.cmu.cs.dennisc.property.BooleanProperty isAffectLimited = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+  //  public final edu.cmu.cs.dennisc.property.ListProperty<Visual> affectedVisuals = new edu.cmu.cs.dennisc.property.ListProperty<Visual>( this );
 }

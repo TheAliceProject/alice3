@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeclarationNameState extends StringState {
-	private static InitializingIfAbsentMap<AbstractDeclaration, DeclarationNameState> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractDeclaration, DeclarationNameState> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeclarationNameState getInstance( AbstractDeclaration declaration ) {
-		if( declaration.getNamePropertyIfItExists() != null ) {
-			return map.getInitializingIfAbsent( declaration, new InitializingIfAbsentMap.Initializer<AbstractDeclaration, DeclarationNameState>() {
-				@Override
-				public DeclarationNameState initialize( AbstractDeclaration declaration ) {
-					return new DeclarationNameState( declaration );
-				}
-			} );
-		} else {
-			//todo: return disabled?
-			return null;
-		}
-	}
+  public static DeclarationNameState getInstance(AbstractDeclaration declaration) {
+    if (declaration.getNamePropertyIfItExists() != null) {
+      return map.getInitializingIfAbsent(declaration, new InitializingIfAbsentMap.Initializer<AbstractDeclaration, DeclarationNameState>() {
+        @Override
+        public DeclarationNameState initialize(AbstractDeclaration declaration) {
+          return new DeclarationNameState(declaration);
+        }
+      });
+    } else {
+      //todo: return disabled?
+      return null;
+    }
+  }
 
-	private DeclarationNameState( AbstractDeclaration declaration ) {
-		super( IDE.PROJECT_GROUP, UUID.fromString( "068c5a03-ab10-4173-95b0-2cc163686f3c" ), declaration.getName() );
-	}
+  private DeclarationNameState(AbstractDeclaration declaration) {
+    super(IDE.PROJECT_GROUP, UUID.fromString("068c5a03-ab10-4173-95b0-2cc163686f3c"), declaration.getName());
+  }
 }

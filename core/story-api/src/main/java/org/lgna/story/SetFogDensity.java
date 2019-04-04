@@ -46,14 +46,13 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class SetFogDensity extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetFogDensity.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetFogDensity.class) public static interface Detail {
+  }
 
-	private SetFogDensity() {
-		super();
-	}
+  private SetFogDensity() {
+    super();
+  }
 }

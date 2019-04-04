@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetInnerRadius extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetInnerRadius.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetInnerRadius.class) public static interface Detail {
+  }
 
-	private SetInnerRadius() {
-		super();
-	}
+  private SetInnerRadius() {
+    super();
+  }
 }

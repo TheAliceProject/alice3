@@ -53,17 +53,17 @@ import org.lgna.story.ImageSource;
  * @author Dennis Cosgrove
  */
 public class ImageSourceFillerInner extends SourceFillerInner<ImageResource> {
-	public ImageSourceFillerInner() {
-		super( ImageSource.class, ImageResource.class );
-	}
+  public ImageSourceFillerInner() {
+    super(ImageSource.class, ImageResource.class);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceCreation, ?> getImportFillIn() {
-		return ImageSourceImportValueCreator.getInstance().getFillIn();
-	}
+  @Override
+  protected CascadeFillIn<InstanceCreation, ?> getImportFillIn() {
+    return ImageSourceImportValueCreator.getInstance().getFillIn();
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceCreation, ?> getResourceFillIn( ImageResource resource ) {
-		return new ImageSourceFillIn( resource );
-	}
+  @Override
+  protected CascadeFillIn<InstanceCreation, ?> getResourceFillIn(ImageResource resource) {
+    return new ImageSourceFillIn(resource);
+  }
 }

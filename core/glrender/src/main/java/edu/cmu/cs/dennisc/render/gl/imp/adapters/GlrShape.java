@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.scenegraph.Shape;
  * @author Dennis Cosgrove
  */
 public abstract class GlrShape<T extends Shape> extends GlrGeometry<T> {
-	@Override
-	public boolean isAlphaBlended() {
-		return false;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    return false;
+  }
 }

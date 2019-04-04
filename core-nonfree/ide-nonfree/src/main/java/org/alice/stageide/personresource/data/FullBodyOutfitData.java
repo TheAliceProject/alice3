@@ -57,20 +57,17 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class FullBodyOutfitData extends IngredientListData<FullBodyOutfit> {
-	public FullBodyOutfitData() {
-		super( FullBodyOutfitCodec.SINGLETON );
-	}
+  public FullBodyOutfitData() {
+    super(FullBodyOutfitCodec.SINGLETON);
+  }
 
-	@Override
-	protected List<FullBodyOutfit> createValues( LifeStage lifeStage, Gender gender ) {
-		return EnumUtilities.getEnumConstants(
-				FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				new Criterion<FullBodyOutfit>() {
-					@Override
-					public boolean accept( FullBodyOutfit e ) {
-						return FullBodyOutfitListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
-					}
-				}
-				);
-	}
+  @Override
+  protected List<FullBodyOutfit> createValues(LifeStage lifeStage, Gender gender) {
+    return EnumUtilities.getEnumConstants(FullBodyOutfitManager.getSingleton().getImplementingClasses(lifeStage, gender), new Criterion<FullBodyOutfit>() {
+      @Override
+      public boolean accept(FullBodyOutfit e) {
+        return FullBodyOutfitListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor(e, SKIN_TONE_FOR_FILTERING);
+      }
+    });
+  }
 }

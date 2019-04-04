@@ -54,17 +54,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMenu<RelationalInfixExpression> {
-	private Class<? extends Number> cls;
+  private Class<? extends Number> cls;
 
-	public AbstractRelationalCascadeMenu( UUID id, Class<? extends Number> cls ) {
-		super( id );
-		this.cls = cls;
-	}
+  public AbstractRelationalCascadeMenu(UUID id, Class<? extends Number> cls) {
+    super(id);
+    this.cls = cls;
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step ) {
-		for( RelationalInfixExpression.Operator operator : RelationalInfixExpression.Operator.values() ) {
-			blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.cls, operator ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step) {
+    for (RelationalInfixExpression.Operator operator : RelationalInfixExpression.Operator.values()) {
+      blankChildren.add(RelationalExpressionLeftAndRightOperandsFillIn.getInstance(this.cls, operator));
+    }
+  }
 }

@@ -81,122 +81,122 @@ import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
  */
 public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipulator {
 
-	AbstractTransformable objectToCopy = null;
+  AbstractTransformable objectToCopy = null;
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.objectToCopy = startInput.getClickPickTransformable();
-		if( this.objectToCopy != null ) {
-			assert this.camera != null;
-			this.sgBoundingBoxTransformable.setParent( this.camera.getRoot() );
-			this.sgBoundingBoxTransformable.setTransformation( this.objectToCopy.getAbsoluteTransformation(), AsSeenBy.SCENE );
-			this.sgBoundingBoxDecorator.isShowing.setValue( true );
-			this.setManipulatedTransformable( this.sgBoundingBoxTransformable );
-			this.initializeEventMessages();
-			this.hasMoved = false;
-			this.hidCursor = false;
-			this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation;
-			AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-			Vector3 toOrigin = Vector3.createSubtraction( this.originalPosition, cameraTransform.translation );
-			toOrigin.normalize();
-			Vector3 cameraFacingNormal = Vector3.createMultiplication( cameraTransform.orientation.backward, -1 );
-			this.orthographicPickPlane = Plane.createInstance( this.originalPosition, cameraFacingNormal );
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    this.objectToCopy = startInput.getClickPickTransformable();
+    if (this.objectToCopy != null) {
+      assert this.camera != null;
+      this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
+      this.sgBoundingBoxTransformable.setTransformation(this.objectToCopy.getAbsoluteTransformation(), AsSeenBy.SCENE);
+      this.sgBoundingBoxDecorator.isShowing.setValue(true);
+      this.setManipulatedTransformable(this.sgBoundingBoxTransformable);
+      this.initializeEventMessages();
+      this.hasMoved = false;
+      this.hidCursor = false;
+      this.originalPosition = this.objectToCopy.getAbsoluteTransformation().translation;
+      AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
+      Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
+      toOrigin.normalize();
+      Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
+      this.orthographicPickPlane = Plane.createInstance(this.originalPosition, cameraFacingNormal);
 
-			Ray orthoPickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
-			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
-			this.orthographicOffsetToOrigin = Point3.createSubtraction( this.originalPosition, orthoPickPoint );
+      Ray orthoPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y);
+      Point3 orthoPickPoint = PlaneUtilities.getPointInPlane(orthographicPickPlane, orthoPickRay);
+      this.orthographicOffsetToOrigin = Point3.createSubtraction(this.originalPosition, orthoPickPoint);
 
-			Point3 initialClickPoint = this.getInitialClickPoint( startInput );
+      Point3 initialClickPoint = this.getInitialClickPoint(startInput);
 
-			this.offsetFromOrigin = Point3.createSubtraction( initialClickPoint, this.originalPosition );
-			this.mousePlaneOffset = calculateMousePlaneOffset( startInput.getMouseLocation(), this.objectToCopy );
+      this.offsetFromOrigin = Point3.createSubtraction(initialClickPoint, this.originalPosition);
+      this.mousePlaneOffset = calculateMousePlaneOffset(startInput.getMouseLocation(), this.objectToCopy);
 
-			//We don't need special planes for the orthographic camera
-			if( !( this.getCamera() instanceof OrthographicCamera ) ) {
-				Point mousePoint = new Point( startInput.getMouseLocation().x + this.mousePlaneOffset.x, startInput.getMouseLocation().y + this.mousePlaneOffset.y );
-				setUpPlanes( this.originalPosition, mousePoint );
+      //We don't need special planes for the orthographic camera
+      if (!(this.getCamera() instanceof OrthographicCamera)) {
+        Point mousePoint = new Point(startInput.getMouseLocation().x + this.mousePlaneOffset.x, startInput.getMouseLocation().y + this.mousePlaneOffset.y);
+        setUpPlanes(this.originalPosition, mousePoint);
 
-				Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
-				cameraBackward.y = 0.0;
-				cameraBackward.normalize();
-				if( cameraBackward.isNaN() ) {
-					cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
-					cameraBackward.multiply( -1 );
-					cameraBackward.y = 0.0;
-					cameraBackward.normalize();
-				}
-				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3( new ForwardAndUpGuide( cameraBackward, Vector3.accessPositiveYAxis() ) );
-				this.sgBoundingBoxTransformable.setTranslationOnly( this.getPerspectivePositionBasedOnInput( startInput ), AsSeenBy.SCENE );
-			}
-			addPlaneTransitionPointSphereToScene();
-			AxisAlignedBox box = null;
+        Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
+        cameraBackward.y = 0.0;
+        cameraBackward.normalize();
+        if (cameraBackward.isNaN()) {
+          cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
+          cameraBackward.multiply(-1);
+          cameraBackward.y = 0.0;
+          cameraBackward.normalize();
+        }
+        OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
+        this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
+      }
+      addPlaneTransitionPointSphereToScene();
+      AxisAlignedBox box = null;
 
-			EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
-			if( entityImplementation != null ) {
-				box = entityImplementation.getAxisAlignedMinimumBoundingBox();
-			}
+      EntityImp entityImplementation = EntityImp.getInstance(this.objectToCopy);
+      if (entityImplementation != null) {
+        box = entityImplementation.getAxisAlignedMinimumBoundingBox();
+      }
 
-			if( box == null ) {
-				box = new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
-			}
-			if( this.sgAxes != null ) {
-				this.sgAxes.setParent( null );
-			}
-			if( box.isNaN() ) {
-				this.sgBoundingBoxDecorator.isShowing.setValue( false );
-				this.sgAxes = new ModestAxes( 1.0 );
-			} else {
-				this.sgBoundingBoxDecorator.setBox( box );
-				this.sgAxes = new ModestAxes( box.getWidth() * .5 );
-			}
-			this.sgAxes.setParent( this.sgDecoratorOffsetTransformable );
-			return true;
-		}
-		return false;
-	}
+      if (box == null) {
+        box = new AxisAlignedBox(new Point3(-.5, 0, -.5), new Point3(.5, 1, .5));
+      }
+      if (this.sgAxes != null) {
+        this.sgAxes.setParent(null);
+      }
+      if (box.isNaN()) {
+        this.sgBoundingBoxDecorator.isShowing.setValue(false);
+        this.sgAxes = new ModestAxes(1.0);
+      } else {
+        this.sgBoundingBoxDecorator.setBox(box);
+        this.sgAxes = new ModestAxes(box.getWidth() * .5);
+      }
+      this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
+      return true;
+    }
+    return false;
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		super.doEndManipulator( endInput, previousInput );
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+    super.doEndManipulator(endInput, previousInput);
 
-		//We need to do this because we launch a dialog box from this method that will grab focus and prevent things like letting go of the alt key from registering
-		//This ensures that we don't leave an incomplete state behind
-		this.dragAdapter.clearMouseAndKeyboardState();
-		this.sgBoundingBoxDecorator.isShowing.setValue( false );
-		if( this.sgAxes != null ) {
-			this.sgAxes.isShowing.setValue( false );
+    //We need to do this because we launch a dialog box from this method that will grab focus and prevent things like letting go of the alt key from registering
+    //This ensures that we don't leave an incomplete state behind
+    this.dragAdapter.clearMouseAndKeyboardState();
+    this.sgBoundingBoxDecorator.isShowing.setValue(false);
+    if (this.sgAxes != null) {
+      this.sgAxes.isShowing.setValue(false);
 
-			if( endInput.getInputEventType() == InputState.InputEventType.MOUSE_UP ) {
-				EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
-				if( entityImplementation != null ) {
+      if (endInput.getInputEventType() == InputState.InputEventType.MOUSE_UP) {
+        EntityImp entityImplementation = EntityImp.getInstance(this.objectToCopy);
+        if (entityImplementation != null) {
 
-					UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( entityImplementation.getAbstraction() );
-					if( field != null ) {
+          UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(entityImplementation.getAbstraction());
+          if (field != null) {
 
-						AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = AddCopiedManagedFieldComposite.getInstance();
-						addCopiedManagedFieldComposite.setFieldToBeCopied( field );
-						Triggerable triggerable = addCopiedManagedFieldComposite.getLaunchOperation();
-						DropReceptor dropReceptor = ( (StorytellingSceneEditor)IDE.getActiveInstance().getSceneEditor() ).getDropReceptor();
-						SwingComponentView<?> component = dropReceptor.getViewController();
-						ViewController<?, ?> viewController;
-						if( component instanceof ViewController<?, ?> ) {
-							viewController = (ViewController<?, ?>)component;
-						} else {
-							viewController = null;
-						}
-						DropSite dropSite = new SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
-						try {
-							MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent)endInput.getInputEvent() : null;
-							UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
-							DropTrigger.setOnUserActivity( activity, viewController, mouseEvent, dropSite );
-							triggerable.fire( activity );
-						} catch( CancelException ce ) {
-							//Do nothing on cancel
-						}
-					}
-				}
-				this.objectToCopy = null;
-			}
-		}
-	}
+            AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = AddCopiedManagedFieldComposite.getInstance();
+            addCopiedManagedFieldComposite.setFieldToBeCopied(field);
+            Triggerable triggerable = addCopiedManagedFieldComposite.getLaunchOperation();
+            DropReceptor dropReceptor = ((StorytellingSceneEditor) IDE.getActiveInstance().getSceneEditor()).getDropReceptor();
+            SwingComponentView<?> component = dropReceptor.getViewController();
+            ViewController<?, ?> viewController;
+            if (component instanceof ViewController<?, ?>) {
+              viewController = (ViewController<?, ?>) component;
+            } else {
+              viewController = null;
+            }
+            DropSite dropSite = new SceneDropSite(this.getManipulatedTransformable().getAbsoluteTransformation());
+            try {
+              MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent) endInput.getInputEvent() : null;
+              UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+              DropTrigger.setOnUserActivity(activity, viewController, mouseEvent, dropSite);
+              triggerable.fire(activity);
+            } catch (CancelException ce) {
+              //Do nothing on cancel
+            }
+          }
+        }
+        this.objectToCopy = null;
+      }
+    }
+  }
 }

@@ -50,102 +50,75 @@ import org.alice.interact.PickHint;
  */
 public class PickCondition {
 
-	protected boolean isNot = false;
-	protected PickHint pickHint;
-	protected PickCondition nextCondition = null;
+  protected boolean isNot = false;
+  protected PickHint pickHint;
+  protected PickCondition nextCondition = null;
 
-	public PickCondition( PickHint pickHint )
-	{
-		this.pickHint = pickHint;
-	}
+  public PickCondition(PickHint pickHint) {
+    this.pickHint = pickHint;
+  }
 
-	public PickCondition( PickHint pickHint, PickCondition previousCondition )
-	{
-		this( pickHint );
-		previousCondition.setNextCondition( this );
-	}
+  public PickCondition(PickHint pickHint, PickCondition previousCondition) {
+    this(pickHint);
+    previousCondition.setNextCondition(this);
+  }
 
-	public void setNextCondition( PickCondition nextCondition )
-	{
-		this.nextCondition = nextCondition;
-	}
+  public void setNextCondition(PickCondition nextCondition) {
+    this.nextCondition = nextCondition;
+  }
 
-	public boolean evaluateObject( InputState input )
-	{
-		boolean result = false;
-		if( input.getClickHandle() != null )
-		{
-			if( input.getClickHandle().isPickable() )
-			{
-				result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
-			}
-			else
-			{
-				result = false;
-			}
-		}
-		else
-		{
-			PickHint clickedType = input.getClickPickHint();
-			result = this.pickHint.intersects( clickedType );
-		}
-		if( isNot )
-		{
-			result = !result;
-		}
-		return result;
-	}
+  public boolean evaluateObject(InputState input) {
+    boolean result = false;
+    if (input.getClickHandle() != null) {
+      if (input.getClickHandle().isPickable()) {
+        result = this.pickHint.intersects(input.getClickHandle().getPickHint());
+      } else {
+        result = false;
+      }
+    } else {
+      PickHint clickedType = input.getClickPickHint();
+      result = this.pickHint.intersects(clickedType);
+    }
+    if (isNot) {
+      result = !result;
+    }
+    return result;
+  }
 
-	public boolean evaluateObject_debug( InputState input )
-	{
-		boolean result = false;
-		if( input.getClickHandle() != null )
-		{
-			if( input.getClickHandle().isPickable() )
-			{
-				System.out.println( "Handle!" );
-				result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
-			}
-			else
-			{
-				result = false;
-			}
-		}
-		else
-		{
-			PickHint clickedType = input.getClickPickHint();
-			System.out.println( "Clicked on " + clickedType + ", looking for " + this.pickHint );
-			result = this.pickHint.intersects( clickedType );
-		}
-		if( isNot )
-		{
-			result = !result;
-		}
-		return result;
-	}
+  public boolean evaluateObject_debug(InputState input) {
+    boolean result = false;
+    if (input.getClickHandle() != null) {
+      if (input.getClickHandle().isPickable()) {
+        System.out.println("Handle!");
+        result = this.pickHint.intersects(input.getClickHandle().getPickHint());
+      } else {
+        result = false;
+      }
+    } else {
+      PickHint clickedType = input.getClickPickHint();
+      System.out.println("Clicked on " + clickedType + ", looking for " + this.pickHint);
+      result = this.pickHint.intersects(clickedType);
+    }
+    if (isNot) {
+      result = !result;
+    }
+    return result;
+  }
 
-	public boolean evalutateChain( InputState input )
-	{
-		if( this.nextCondition == null )
-		{
-			return this.evaluateObject( input );
-		}
-		else
-		{
-			return this.evaluateObject( input ) && this.nextCondition.evalutateChain( input );
-		}
-	}
+  public boolean evalutateChain(InputState input) {
+    if (this.nextCondition == null) {
+      return this.evaluateObject(input);
+    } else {
+      return this.evaluateObject(input) && this.nextCondition.evalutateChain(input);
+    }
+  }
 
-	public boolean evalutateChain_debug( InputState input )
-	{
-		if( this.nextCondition == null )
-		{
-			return this.evaluateObject_debug( input );
-		}
-		else
-		{
-			return this.evaluateObject_debug( input ) && this.nextCondition.evalutateChain_debug( input );
-		}
-	}
+  public boolean evalutateChain_debug(InputState input) {
+    if (this.nextCondition == null) {
+      return this.evaluateObject_debug(input);
+    } else {
+      return this.evaluateObject_debug(input) && this.nextCondition.evalutateChain_debug(input);
+    }
+  }
 
 }

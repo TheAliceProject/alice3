@@ -60,61 +60,61 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public abstract class Formatter {
-	public Formatter( String repr ) {
-		this.repr = repr;
-	}
+  public Formatter(String repr) {
+    this.repr = repr;
+  }
 
-	public abstract String getHeaderTextForCode( UserCode code );
+  public abstract String getHeaderTextForCode(UserCode code);
 
-	public abstract String getTrailerTextForCode( UserCode code );
+  public abstract String getTrailerTextForCode(UserCode code);
 
-	public String getTemplateText( Class<?> cls ) {
-		return ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
-	}
+  public String getTemplateText(Class<?> cls) {
+    return ResourceBundleUtilities.getStringFromSimpleNames(cls, "org.alice.ide.formatter.Templates");
+  }
 
-	public String getInfixExpressionText( InfixExpression<?> infixExpression ) {
-		String clsName = infixExpression.getClass().getName();
-		ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( clsName, JComponent.getDefaultLocale() );
-		Enum<?> e = infixExpression.operator.getValue();
-		return resourceBundle.getString( e.name() );
-	}
+  public String getInfixExpressionText(InfixExpression<?> infixExpression) {
+    String clsName = infixExpression.getClass().getName();
+    ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(clsName, JComponent.getDefaultLocale());
+    Enum<?> e = infixExpression.operator.getValue();
+    return resourceBundle.getString(e.name());
+  }
 
-	public String getNameForDeclaration( AbstractDeclaration declaration ) {
-		return declaration.formatName(this::localizeName);
-	}
+  public String getNameForDeclaration(AbstractDeclaration declaration) {
+    return declaration.formatName(this::localizeName);
+  }
 
-	protected abstract String localizeName(String key, String name);
+  protected abstract String localizeName(String key, String name);
 
-	public abstract boolean isTypeExpressionDesired();
+  public abstract boolean isTypeExpressionDesired();
 
-	public abstract String getTextForThis();
+  public abstract String getTextForThis();
 
-	public abstract String getTextForNull();
+  public abstract String getTextForNull();
 
-	public String getTextForType( AbstractType<?, ?, ?> type ) {
-		return type == null ? getTextForNull() : type.formatName(this::localizeName);
-	}
+  public String getTextForType(AbstractType<?, ?, ?> type) {
+    return type == null ? getTextForNull() : type.formatName(this::localizeName);
+  }
 
-	public abstract String getFinalText();
+  public abstract String getFinalText();
 
-	@Override
-	public String toString() {
-		return this.repr;
-	}
+  @Override
+  public String toString() {
+    return this.repr;
+  }
 
-	private final String repr;
+  private final String repr;
 
-	public String galleryLabelFor( ClassResourceKey key) {
-		String className = key.getSearchText();
-		if (key.getType().isEnum()) {
-			String params = key.isLeaf() ? "" : "\u2423";
-			return String.format(getNewFormat(), className, params);
-		} else {
-			return String.format( getClassesFormat(), className );
-		}
-	}
+  public String galleryLabelFor(ClassResourceKey key) {
+    String className = key.getSearchText();
+    if (key.getType().isEnum()) {
+      String params = key.isLeaf() ? "" : "␣";
+      return String.format(getNewFormat(), className, params);
+    } else {
+      return String.format(getClassesFormat(), className);
+    }
+  }
 
-	protected abstract String getClassesFormat();
+  protected abstract String getClassesFormat();
 
-	public abstract String getNewFormat();
+  public abstract String getNewFormat();
 }

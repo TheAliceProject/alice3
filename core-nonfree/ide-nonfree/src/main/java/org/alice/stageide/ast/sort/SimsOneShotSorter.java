@@ -58,32 +58,32 @@ import org.lgna.story.SetWallPaint;
  */
 public class SimsOneShotSorter {
 
-	public static final JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
-	public static final JavaMethod ROOM_SET_WALL_PAINT_METHOD;
-	public static final JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
+  public static final JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
+  public static final JavaMethod ROOM_SET_WALL_PAINT_METHOD;
+  public static final JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
 
-	public static final JavaMethod ROOM_SET_OPACITY_METHOD;
+  public static final JavaMethod ROOM_SET_OPACITY_METHOD;
 
-	static {
-		JavaType roomType = JavaType.getInstance( SRoom.class );
+  static {
+    JavaType roomType = JavaType.getInstance(SRoom.class);
 
-		ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod( "setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class );
-		assert ROOM_SET_CEILING_PAINT_METHOD != null : roomType;
-		ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod( "setWallPaint", Paint.class, SetWallPaint.Detail[].class );
-		assert ROOM_SET_WALL_PAINT_METHOD != null : roomType;
-		ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod( "setFloorPaint", Paint.class, SetFloorPaint.Detail[].class );
-		assert ROOM_SET_FLOOR_PAINT_METHOD != null : roomType;
+    ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod("setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class);
+    assert ROOM_SET_CEILING_PAINT_METHOD != null : roomType;
+    ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod("setWallPaint", Paint.class, SetWallPaint.Detail[].class);
+    assert ROOM_SET_WALL_PAINT_METHOD != null : roomType;
+    ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod("setFloorPaint", Paint.class, SetFloorPaint.Detail[].class);
+    assert ROOM_SET_FLOOR_PAINT_METHOD != null : roomType;
 
-		ROOM_SET_OPACITY_METHOD = OneShotSorter.getSetOpacityMethod( roomType );
+    ROOM_SET_OPACITY_METHOD = OneShotSorter.getSetOpacityMethod(roomType);
 
-	}
+  }
 
-	public static double setOneShotSortValues( Map<JavaMethod, Double> map, double value, double INCREMENT ) {
-		map.put( ROOM_SET_CEILING_PAINT_METHOD, value += INCREMENT );
-		map.put( ROOM_SET_WALL_PAINT_METHOD, value += INCREMENT );
-		map.put( ROOM_SET_FLOOR_PAINT_METHOD, value += INCREMENT );
+  public static double setOneShotSortValues(Map<JavaMethod, Double> map, double value, double INCREMENT) {
+    map.put(ROOM_SET_CEILING_PAINT_METHOD, value += INCREMENT);
+    map.put(ROOM_SET_WALL_PAINT_METHOD, value += INCREMENT);
+    map.put(ROOM_SET_FLOOR_PAINT_METHOD, value += INCREMENT);
 
-		map.put( ROOM_SET_OPACITY_METHOD, value );
-		return value;
-	}
+    map.put(ROOM_SET_OPACITY_METHOD, value);
+    return value;
+  }
 }

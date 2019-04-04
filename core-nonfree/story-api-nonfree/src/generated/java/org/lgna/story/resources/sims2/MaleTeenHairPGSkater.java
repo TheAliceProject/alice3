@@ -44,21 +44,15 @@
 package org.lgna.story.resources.sims2;
 
 public enum MaleTeenHairPGSkater implements MaleTeenHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	RED,
-	BLEND;
+  BLACK, BLOND, BROWN, RED, BLEND;
 
-	@Override
-	public Boolean hasHair()
-	{
-		return true;
-	}
+  @Override
+  public Boolean hasHair() {
+    return true;
+  }
 
-	@Override
-	public Boolean hasHat()
-	{
-		return false;
-	}
+  @Override
+  public Boolean hasHat() {
+    return false;
+  }
 }
