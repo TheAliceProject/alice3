@@ -58,7 +58,7 @@
 
   <properties>
     <!-- We need to put all this stuff in the official resources directory. -->
-    <project.resources.directory>${project.basedir}/../../../core/resources/target/distribution/</project.resources.directory>
+    <project.resources.directory>${project.basedir}/../../core/resources/target/distribution/</project.resources.directory>
 
     <project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
     <project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>

@@ -5,7 +5,7 @@
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../core/</relativePath>
+    <relativePath>../../../core/</relativePath>
   </parent>
   <artifactId>source-copyright-batch</artifactId>
   <packaging>jar</packaging>

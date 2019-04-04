@@ -557,7 +557,7 @@
       <activation>
         <property>
           <name>includeSims</name>
-          <value>!true</value>
+          <value>!false</value>
         </property>
       </activation>
 
@@ -726,5 +726,4 @@
       <url>http://bits.netbeans.org/maven2/</url>
     </repository>
   </repositories>
-
 </project>

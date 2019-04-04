@@ -72,10 +72,9 @@
       <activation>
         <property>
           <name>includeSims</name>
-          <value>!true</value>
+          <value>!false</value>
         </property>
       </activation>
-
       <dependencies>
         <dependency>
           <groupId>org.alice.nonfree</groupId>
