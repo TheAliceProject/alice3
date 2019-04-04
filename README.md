@@ -17,10 +17,10 @@ Download and install the following build tools
 Clone the Alice 3 repository into a local directory, (`${alice3}`)
 
     cd ${alice3}
-    git clone https://github.com/TheAliceProject/alice3.git --recursive
+    git clone --recurse-submodules https://github.com/TheAliceProject/alice3.git
     
 Alice 3 uses a submodule for the Tweedle language, the internal representation of Alice code.
-If you do not use the `--recursive` flag above it can be pulled in explicitly.
+If you do not use the `--recurse-submodules` flag above it can be pulled in explicitly.
 
     git submodule init
     git submodule update
