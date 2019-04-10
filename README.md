@@ -72,3 +72,10 @@ To make it easier to merge in new work, when submitting PRs please:
 * Keep each one small and focused
 * Make individual commits of smaller chunks with clear descriptions
 * Follow the established coding style
+
+### Development tools
+
+This repository previously included a number of projects that were experiments, test beds, and development aids.
+
+They have been relocated to the [Alice 3 Tools](https://github.com/TheAliceProject/alice3-tools) repo.
+(NB If you are looking for historic versions of any of those projects, the richer git history is in this repo. The history did not migrate due to the way filter-branch was applied.)
