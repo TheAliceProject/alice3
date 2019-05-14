@@ -79,7 +79,7 @@
 
     <alice.build.version>3.5.0.1</alice.build.version>
     <alice.build.prerelease>-alpha</alice.build.prerelease>
-    <alice.build.metadata></alice.build.metadata>
+    <alice.build.metadata>+export</alice.build.metadata>
     <nebulous.person.version>2014.08.12</nebulous.person.version>
     <nebulous.lib.version>2017.05.01</nebulous.lib.version>
 
