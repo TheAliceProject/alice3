@@ -30,24 +30,31 @@
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>2.2</version>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-xjc-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <extensions>
+            <extension>org.apache.cxf.xjcplugins:cxf-xjc-dv:3.3.0</extension>
+          </extensions>
+        </configuration>
         <executions>
           <execution>
-            <id>xjc</id>
+            <id>generate-sources</id>
             <phase>generate-sources</phase>
             <goals>
-              <goal>xjc</goal>
+              <goal>xsdtojava</goal>
             </goals>
+            <configuration>
+              <xsdOptions>
+                <xsdOption>
+                  <xsd>src/main/resources/collada_schema_1_4_1.xsd</xsd>
+                  <packagename>org.lgna.story.resourceutilities.exporterutils.collada</packagename>
+                </xsdOption>
+              </xsdOptions>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <packageName>org.lgna.story.resourceutilities.exporterutils.collada</packageName>
-          <sources>
-            <source>src/main/resources/collada_schema_1_4_1.xsd</source>
-          </sources>
-        </configuration>
       </plugin>
     </plugins>
   </build>
