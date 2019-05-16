@@ -1,6 +1,7 @@
 package org.alice.serialization.tweedle;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.ast.*;
 import org.lgna.project.code.CodeAppender;
@@ -9,18 +10,23 @@ import org.lgna.project.code.CodeOrganizer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class Encoder extends SourceCodeGenerator {
-  private final String INDENTION = "  ";
-  private final String NODE_DISABLE = "*<";
-  private final String NODE_ENABLE = ">*";
+  private static final String INDENTION = "  ";
+  private static final String NODE_DISABLE = "*<";
+  private static final String NODE_ENABLE = ">*";
   private int indent = 0;
-  private static final HashMap<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final Map<String,String> methodsMissingOneParameterName = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
     codeOrganizerDefinitionMap.put("Program", CodeOrganizer.programClassCodeOrganizer);
+    methodsMissingOneParameterName.put("say", "text");
+    methodsMissingOneParameterName.put("think", "text");
+    methodsMissingOneParameterName.put("setJointedModelResource", "resource");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -173,14 +179,24 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
-    String label = parameter.getName();
-    if (null == label) {
-      Logger.errln("Unable to read argument name from parameter. Using the type. Generated code may contain errors.", argument, parameter);
-      label = parameter.getValueType().getName().toLowerCase();
-    }
-    appendString(label);
+    appendString(getParameterLabel(parameter));
     appendString(": ");
     argument.appendCode(this);
+  }
+
+  private String getParameterLabel(AbstractParameter parameter) {
+    String label = parameter.getName();
+    if (null != label) {
+      return label;
+    }
+    if (methodsMissingOneParameterName.containsKey(parameter.getCode().getName())) {
+      return methodsMissingOneParameterName.get(parameter.getCode().getName());
+    }
+    final String paramType = parameter.getValueType().getName().toLowerCase();
+    final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
+    Dialogs.showError("Unlabeled parameter", message);
+    Logger.errln(message);
+    return paramType;
   }
 
   @Override
