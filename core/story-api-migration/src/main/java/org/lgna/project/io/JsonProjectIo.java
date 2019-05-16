@@ -202,7 +202,16 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
       manifest.metadata.identifier.id = project.getProgramType().getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.World;
+      manifest.prerequisites.add(standardLibrary());
       return manifest;
+    }
+
+    private Manifest.ProjectIdentifier standardLibrary() {
+      final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
+      libraryIdentifier.type = Manifest.ProjectType.Library;
+      libraryIdentifier.version = "1.0";
+      libraryIdentifier.id = "970a310f-90a7-4d29-8380-5b2a742e3ee4";
+      return libraryIdentifier;
     }
 
     private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
