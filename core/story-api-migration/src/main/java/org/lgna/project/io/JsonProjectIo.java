@@ -171,8 +171,8 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
       entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
 
-      Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
-      for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
+      Map<Class, Set<JointedModelResource>> modelResources = getModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
+      for (Map.Entry<Class, Set<JointedModelResource>> entry : modelResources.entrySet()) {
         JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
@@ -229,7 +229,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
     }
 
-    private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
+    private Map<Class, Set<JointedModelResource>> getModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
       IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
         @Override
         protected boolean isAcceptable(FieldAccess fieldAccess) {
@@ -238,13 +238,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
         }
       };
       type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
-      Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
+      Map<Class, Set<JointedModelResource>> modelResources = new HashMap<>();
       for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
         JavaField field = (JavaField) fieldAccess.field.getValue();
         JointedModelResource modelResource = null;
         try {
           modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-          List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
+          Set<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new HashSet<>());
           resourceList.add(modelResource);
         } catch (IllegalAccessException e) {
           e.printStackTrace(); //TODO: Log this
