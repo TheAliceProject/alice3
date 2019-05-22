@@ -317,11 +317,20 @@ public class Encoder extends SourceCodeGenerator {
     case "Double":
       appendString("DecimalNumber");
       break;
+    case "Double[]":
+      appendString("DecimalNumber[]");
+      break;
     case "Integer":
       appendString("WholeNumber");
       break;
+    case "Integer[]":
+      appendString("WholeNumber[]");
+      break;
     case "String":
       appendString("TextString");
+      break;
+    case "String[]":
+      appendString("TextString[]");
       break;
     default:
       appendString(typeName);
