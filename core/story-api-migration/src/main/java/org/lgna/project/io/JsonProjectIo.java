@@ -157,7 +157,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = type.getName();
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = type.getId().toString();
+      manifest.metadata.identifier.name = type.getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.Library;
       return manifest;
     }
@@ -200,7 +200,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = project.getProgramType().getName(); // probably "Program"
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = project.getProgramType().getId().toString();
+      manifest.metadata.identifier.name = project.getProgramType().getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.World;
       manifest.prerequisites.add(standardLibrary());
       return manifest;
@@ -210,7 +210,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
       libraryIdentifier.type = Manifest.ProjectType.Library;
       libraryIdentifier.version = "1.0";
-      libraryIdentifier.id = "970a310f-90a7-4d29-8380-5b2a742e3ee4";
+      libraryIdentifier.name = "SceneGraphLibrary";
       return libraryIdentifier;
     }
 

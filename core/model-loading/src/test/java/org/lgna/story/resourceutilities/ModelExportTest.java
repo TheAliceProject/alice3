@@ -75,7 +75,7 @@ public class ModelExportTest {
 
         //Get the existing texture set defined by the modelInfo.
         ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelInfo);
-        //Now that we have a model and exporter, use this to get the id to image map
+        //Now that we have a model and exporter, use this to get the name to image map
         textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
         //Get all the textures from the model as data sources
         List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
@@ -86,9 +86,9 @@ public class ModelExportTest {
                 Integer imageId = exporter.getTextureIdForName(imageFileName);
                 String imageName = textureSet.idToResourceMap.get(imageId);
                 ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
-                //ResourceReference have their id initialized to the filename of the resource.
+                //ResourceReference have their name initialized to the filename of the resource.
                 //We need it to be the imageName from the idToResourceMap
-                imageReference.id = imageName;
+                imageReference.name = imageName;
                 manifest.images.add(imageReference);
                 dataSources.add(imageDataSource);
             }
