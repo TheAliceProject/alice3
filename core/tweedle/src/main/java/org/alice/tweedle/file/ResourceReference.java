@@ -7,7 +7,7 @@ public abstract class ResourceReference {
   public String name;
   public String format;
   public String file;
-  //Unitialized provenance is used to add additional info
+  //Uninitialized provenance is used to add additional info
   public Manifest.Provenance provenance;
   // Held in a variable so it is serialized
   public final String type;

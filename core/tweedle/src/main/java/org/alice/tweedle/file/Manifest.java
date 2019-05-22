@@ -41,7 +41,7 @@ public class Manifest {
   }
 
   public static class MetaData {
-    public String formatVersion;
+    public String formatVersion = "0.1";
     public ProjectIdentifier identifier = new ProjectIdentifier();
   }
 

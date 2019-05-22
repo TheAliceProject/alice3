@@ -434,7 +434,7 @@ public class ModelResourceInfo {
 
     manifest.metadata.identifier.name = getModelName();
     manifest.metadata.identifier.type = Manifest.ProjectType.Model;
-    manifest.metadata.formatVersion = "0.1+alpha";
+    manifest.metadata.formatVersion = "0.1";
 
     manifest.placeOnGround = getPlaceOnGround();
     manifest.boundingBox = createManifestBoundingBox();
