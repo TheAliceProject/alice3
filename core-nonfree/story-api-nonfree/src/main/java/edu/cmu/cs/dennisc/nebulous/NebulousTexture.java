@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.nebulous;
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy;
 import edu.cmu.cs.dennisc.texture.Texture;
@@ -53,6 +54,8 @@ import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 
 /**
  * @author alice
@@ -73,6 +76,7 @@ public class NebulousTexture extends Texture {
   private final String m_textureKey;
   private boolean m_isMipMappingDesired = true;
   private boolean m_isPotentiallyAlphaBlended = false;
+  private BufferedImage cachedImage;
 
   public native void initializeIfNecessary(Object textureKey);
 
@@ -81,6 +85,14 @@ public class NebulousTexture extends Texture {
   public native void addReference();
 
   public native void removeReference();
+
+  private native int getImageWidth();
+
+  private native int getImageHeight();
+
+  private native int getBytesPerPixel();
+
+  private native void getImageData(byte[] imageData);
 
   public NebulousTexture(String textureKey) {
     m_textureKey = textureKey;
@@ -140,12 +152,42 @@ public class NebulousTexture extends Texture {
 
   @Override
   public int getWidth() {
-    throw new RuntimeException("NOT SUPPORTED");
+    if (cachedImage != null) {
+      return cachedImage.getWidth();
+    }
+    return getImageWidth();
   }
 
   @Override
   public int getHeight() {
-    throw new RuntimeException("NOT SUPPORTED");
+    if (cachedImage != null) {
+      return cachedImage.getHeight();
+    }
+    return getImageHeight();
+  }
+
+  public BufferedImage getBufferedImage() {
+    if (cachedImage == null) {
+      cacheImage();
+    }
+    return cachedImage;
+  }
+
+  private void cacheImage() {
+    final int bytesPerPixel = getBytesPerPixel();
+    if (bytesPerPixel < 3) {
+      Logger.severe("Unable to cache texture " + m_textureKey);
+      throw new RuntimeException(String.format("Unexpected bytes per pixel %d", bytesPerPixel));
+    }
+    final int imageType = bytesPerPixel == 3 ? BufferedImage.TYPE_3BYTE_BGR : BufferedImage.TYPE_4BYTE_ABGR;
+    try {
+      cachedImage = new BufferedImage(getWidth(), getHeight(), imageType);
+      DataBufferByte dataBufferByte = (DataBufferByte) cachedImage.getRaster().getDataBuffer();
+      getImageData(dataBufferByte.getData());
+    } catch (RuntimeException re) {
+      Logger.severe("Unable to cache texture " + m_textureKey);
+      throw re;
+    }
   }
 
   @Override
