@@ -127,6 +127,19 @@ public abstract class Model extends Geometry {
 
   private native void getAbsoluteTransformationForPartNamed(double[] transformOut, JointId name);
 
+  private native String[] getUnweightedMeshIds();
+
+  private native String[] getWeightedMeshIds();
+
+  private native float[] getVerticesForMesh(String meshId);
+
+  private native float[] getNormalsForMesh(String meshId);
+
+  private native float[] getUvsForMesh(String meshId);
+
+//  Returning more structured data will be:
+//  private native void getSkinWeightsForMesh(SomethingOrOther[] skinWeightsOut, String meshId);
+
   public void setVisual(Visual visual) {
     this.sgAssociatedVisual = visual;
   }
