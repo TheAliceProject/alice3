@@ -461,7 +461,7 @@ public abstract class SourceCodeGenerator {
   void appendConcatenation(StringConcatenation concat) {
     appendPrecedented(concat, () -> {
       appendExpression(concat.leftOperand.getValue());
-      appendChar('+');
+      appendString(" .. ");
       appendExpression(concat.rightOperand.getValue());
     });
   }
