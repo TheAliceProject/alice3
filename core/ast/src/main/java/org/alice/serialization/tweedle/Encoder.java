@@ -9,6 +9,7 @@ import org.lgna.project.code.CodeOrganizer;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +79,26 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   /** Class structure **/
+
+  @Override
+  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<CodeAppender>> entry) {
+    super.appendSection(codeOrganizer, userType, entry);
+    if ("ConstructorSection".equals(entry.getKey())) {
+      appendResources(userType);
+    }
+  }
+
+  private void appendResources(NamedUserType userType) {
+    for(String resource: userType.getResourceNames()) {
+      appendNewLine();
+      appendIndent();
+      appendString("static TextString ");
+      appendString(resource);
+      appendAssignmentOperator();
+      appendEscapedString(userType.getName() + "/" + resource);
+      appendStatementCompletion();
+    }
+  }
 
   @Override
   protected void appendClassHeader(NamedUserType userType) {
