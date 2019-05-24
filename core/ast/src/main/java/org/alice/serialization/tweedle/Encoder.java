@@ -228,6 +228,12 @@ public class Encoder extends SourceCodeGenerator {
         return paramNames[i];
       }
     }
+    if (parameter instanceof JavaConstructorParameter) {
+      String javaType = parameter.getCode().getDeclaringType().getName();
+      if ("Double".equals(javaType)) {
+        return "wholeNumber";
+      }
+    }
     final String paramType = parameter.getValueType().getName().toLowerCase();
     final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
     Dialogs.showError("Unlabeled parameter", message);
