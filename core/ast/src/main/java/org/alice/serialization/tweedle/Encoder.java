@@ -19,14 +19,45 @@ public class Encoder extends SourceCodeGenerator {
   private static final String NODE_ENABLE = ">*";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
-  private static final Map<String,String> methodsMissingOneParameterName = new HashMap<>();
+  private static final Map<String,String[]> methodsMissingParameterNames = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
     codeOrganizerDefinitionMap.put("Program", CodeOrganizer.programClassCodeOrganizer);
-    methodsMissingOneParameterName.put("say", "text");
-    methodsMissingOneParameterName.put("think", "text");
-    methodsMissingOneParameterName.put("setJointedModelResource", "resource");
+    methodsMissingParameterNames.put("say", new String[] {"text"});
+    methodsMissingParameterNames.put("think", new String[] {"text"});
+    methodsMissingParameterNames.put("setJointedModelResource", new String[] {"resource"});
+    methodsMissingParameterNames.put("setVehicle", new String[] {"vehicle"});
+    methodsMissingParameterNames.put("setFloorPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setWallPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setCeilingPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setOpacity", new String[] {"portion"});
+    methodsMissingParameterNames.put("pow", new String[] {"base", "exponent"});
+    methodsMissingParameterNames.put("nextIntegerFromAToBExclusive", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("nextIntegerFromAToBInclusive", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("nextIntegerFrom0ToNExclusive", new String[] {"n"});
+    methodsMissingParameterNames.put("toFlooredInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("toRoundedInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("toCeilingedInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("abs", new String[] {"number"});
+    // Min and max cover both decimal and whole
+    methodsMissingParameterNames.put("min", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("max", new String[] {"a", "b"});
+
+    methodsMissingParameterNames.put("floor", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("rint", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("ceil", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("nextDoubleInRange", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("sqrt", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("sin", new String[] {"radians"});
+    methodsMissingParameterNames.put("cos", new String[] {"radians"});
+    methodsMissingParameterNames.put("tan", new String[] {"radians"});
+    methodsMissingParameterNames.put("asin", new String[] {"sin"});
+    methodsMissingParameterNames.put("acos", new String[] {"cos"});
+    methodsMissingParameterNames.put("atan", new String[] {"tan"});
+    methodsMissingParameterNames.put("atan2", new String[] {"y", "x"});
+    methodsMissingParameterNames.put("exp", new String[] {"power"});
+    methodsMissingParameterNames.put("log", new String[] {"x"});
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -189,14 +220,29 @@ public class Encoder extends SourceCodeGenerator {
     if (null != label) {
       return label;
     }
-    if (methodsMissingOneParameterName.containsKey(parameter.getCode().getName())) {
-      return methodsMissingOneParameterName.get(parameter.getCode().getName());
+    if (parameter instanceof JavaMethodParameter) {
+      final String methodName = parameter.getCode().getName();
+      if (methodsMissingParameterNames.containsKey(methodName)) {
+        String[] paramNames = methodsMissingParameterNames.get(methodName);
+        int i = parameterIndex((JavaMethodParameter) parameter);
+        return paramNames[i];
+      }
     }
     final String paramType = parameter.getValueType().getName().toLowerCase();
     final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
     Dialogs.showError("Unlabeled parameter", message);
     Logger.errln(message);
     return paramType;
+  }
+
+  private int parameterIndex(JavaMethodParameter parameter) {
+      AbstractParameter[] parameters = parameter.getCode().getAllParameters();
+      for (int i = 0; i < parameters.length; i++) {
+        if (parameter == parameters[i]) {
+          return i;
+        }
+      }
+      return -1;
   }
 
   @Override
