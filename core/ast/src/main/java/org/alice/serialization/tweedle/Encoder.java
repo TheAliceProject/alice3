@@ -363,6 +363,16 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
+  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
+    final String typeName = type.getName();
+    if (typeName.endsWith("Resource")) {
+      appendString("TextString");
+    } else {
+      super.appendParameterTypeName(type);
+    }
+  }
+
+  @Override
   protected void appendTypeName(AbstractType<?, ?, ?> type) {
     final String typeName = type.getName();
     switch (typeName) {
@@ -385,7 +395,11 @@ public class Encoder extends SourceCodeGenerator {
       appendString("TextString[]");
       break;
     default:
-      appendString(typeName);
+      if (typeName.endsWith("Resource")) {
+        appendString(typeName.substring(0, typeName.length() - 8));
+      } else {
+        appendString(typeName);
+      }
     }
   }
 

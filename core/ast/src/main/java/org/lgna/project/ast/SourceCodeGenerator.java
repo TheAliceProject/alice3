@@ -112,7 +112,7 @@ public abstract class SourceCodeGenerator {
     int i = 0;
     for (AbstractParameter parameter : code.getRequiredParameters()) {
       appendString(prefix);
-      appendTypeName(parameter.getValueType());
+      appendParameterTypeName(parameter.getValueType());
       appendSpace();
       String parameterName = parameter.getValidName();
       appendString(parameterName != null ? parameterName : "p" + i);
@@ -684,6 +684,10 @@ public abstract class SourceCodeGenerator {
   protected abstract void appendAssignmentOperator();
 
   protected abstract void appendTypeName(AbstractType<?, ?, ?> type);
+
+  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
+    appendTypeName(type);
+  }
 
   void appendTypeLiteral(TypeLiteral typeLiteral) {
     appendTypeName(typeLiteral.value.getValue());
