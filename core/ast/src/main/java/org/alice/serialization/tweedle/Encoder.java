@@ -233,7 +233,18 @@ public class Encoder extends SourceCodeGenerator {
   protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
     appendString(getParameterLabel(parameter));
     appendString(": ");
-    argument.appendCode(this);
+    if (shouldBePortion(parameter)) {
+      appendString("new Portion(portion: ");
+      argument.appendCode(this);
+      appendString(")");
+    } else {
+      argument.appendCode(this);
+    }
+  }
+
+  private boolean shouldBePortion(AbstractParameter parameter) {
+    String method = parameter.getCode().getName();
+    return "setFogDensity".equals(method) || "setOpacity".equals(method);
   }
 
   private String getParameterLabel(AbstractParameter parameter) {
