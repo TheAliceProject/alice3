@@ -26,6 +26,7 @@ public class Encoder extends SourceCodeGenerator {
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
+  private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -64,6 +65,17 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("atan2", new String[] {"y", "x"});
     methodsMissingParameterNames.put("exp", new String[] {"power"});
     methodsMissingParameterNames.put("log", new String[] {"x"});
+
+    Map<String, String> amount = new HashMap<>();
+    amount.put("amount", "new Angle(revolutions: ");
+    methodsWithWrappedArgs.put("roll", amount);
+    methodsWithWrappedArgs.put("turn", amount);
+    Map<String, String> density = new HashMap<>();
+    density.put("density", "new Portion(portion: ");
+    methodsWithWrappedArgs.put("setFogDensity", density);
+    Map<String, String> opacity = new HashMap<>();
+    opacity.put("opacity", "new Portion(portion: ");
+    methodsWithWrappedArgs.put("setOpacity", opacity);
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -303,20 +315,27 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
-    appendString(getParameterLabel(parameter));
+    final String parameterLabel = getParameterLabel(parameter);
+    appendString(parameterLabel);
     appendString(": ");
-    if (shouldBePortion(parameter)) {
-      appendString("new Portion(portion: ");
-      argument.appendCode(this);
+
+    final boolean wrappedArg = wrapArg(parameter.getCode().getName(), parameterLabel);
+    argument.appendCode(this);
+    if (wrappedArg) {
       appendString(")");
-    } else {
-      argument.appendCode(this);
     }
   }
 
-  private boolean shouldBePortion(AbstractParameter parameter) {
-    String method = parameter.getCode().getName();
-    return "setFogDensity".equals(method) || "setOpacity".equals(method);
+  private boolean wrapArg(String method, String param) {
+    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(method);
+    if (wrappedParams != null) {
+      String argStart = wrappedParams.get(param);
+      if (argStart != null) {
+        appendString(argStart);
+        return true;
+      }
+    }
+    return false;
   }
 
   private String getParameterLabel(AbstractParameter parameter) {
