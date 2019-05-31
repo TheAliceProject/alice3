@@ -187,8 +187,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
-      final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
-      manifest.resources.add(new TypeReference(ut.getName(), fileName, TWEEDLE_FORMAT));
+      String typeName = ut.getName();
+      // Special case (read: "hack") to catch older models from starter worlds
+      if ("SandDunes".equals(typeName)) {
+        typeName = "Terrain";
+      }
+      final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
       return createDataSource(fileName, serializedClass(ut));
     }
 
