@@ -437,7 +437,7 @@ public abstract class SourceCodeGenerator {
 
   protected void appendTargetAndMethodName(Expression target, AbstractMethod method) {
     appendExpression(target);
-    appendChar('.');
+    appendAccessSeparator();
     appendString(method.getName());
   }
 
@@ -451,7 +451,7 @@ public abstract class SourceCodeGenerator {
         appendAssignmentOperator();
       } else {
         // Only basic assignment is used in existing Alice code.
-        Logger.errln("Use of unexpected assignent operator " + assignmentOp + " in " + assignment);
+        Logger.errln("Use of unexpected assignment operator " + assignmentOp + " in " + assignment);
         assignmentOp.appendCode(this);
       }
       appendExpression(assignment.rightHandSide.getValue());
@@ -532,7 +532,7 @@ public abstract class SourceCodeGenerator {
     // Field access has the highest level of precedence, 16, so it will never need parentheses
     pushPrecedented(access, () -> {
       appendExpression(access.expression.getValue());
-      appendChar('.');
+      appendAccessSeparator();
       appendString(access.field.getValue().getName());
     });
   }
@@ -587,7 +587,7 @@ public abstract class SourceCodeGenerator {
 
   // ** Primitives and syntax **
 
-  void appendNull() {
+  protected void appendNull() {
     appendString("null");
   }
 
@@ -657,6 +657,10 @@ public abstract class SourceCodeGenerator {
     appendChar(' ');
   }
 
+  protected void appendAccessSeparator() {
+    appendChar('.');
+  }
+
   protected void appendString(String s) {
     codeStringBuilder.append(s);
   }
@@ -669,7 +673,7 @@ public abstract class SourceCodeGenerator {
     appendChar('(');
   }
 
-  private void closeParen() {
+  protected void closeParen() {
     appendChar(')');
   }
 
@@ -705,4 +709,6 @@ public abstract class SourceCodeGenerator {
   private int statementDisabledCount = 0;
   private final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitions;
   private final CodeOrganizer.CodeOrganizerDefinition defaultCodeOrganizerDefn;
+
+  public abstract void appendNewJointId(String joint, String parent, String model);
 }

@@ -3,16 +3,21 @@ package org.alice.serialization.tweedle;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.apache.commons.lang.StringUtils;
+import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Encoder extends SourceCodeGenerator {
   private static final String INDENTION = "  ";
@@ -20,7 +25,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final String NODE_ENABLE = ">*";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
-  private static final Map<String,String[]> methodsMissingParameterNames = new HashMap<>();
+  private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -89,23 +94,90 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendResources(NamedUserType userType) {
-    for(String resource: userType.getResourceNames()) {
+    Class resourceClass = userType.getResourceClass();
+    if (resourceClass == null) {
+      return;
+    }
+    appendResourceNames(userType, resourceClass);
+    appendResourceFields(resourceClass);
+  }
+
+  private void appendResourceNames(NamedUserType userType, Class resourceClass) {
+    final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
+    for (String resource: resourceNames) {
       appendNewLine();
       appendIndent();
       appendString("static TextString ");
       appendString(resource);
       appendAssignmentOperator();
-      appendEscapedString(userType.getName() + "/" + resource);
+      appendEscapedString(tweedleTypeName(userType.getName()) + "/" + resource);
       appendStatementCompletion();
     }
   }
 
+  private void appendResourceFields(Class resourceClass) {
+    Field[] fields = resourceClass.getDeclaredFields();
+    for (Field field : fields) {
+      try {
+        Object value = field.get(resourceClass);
+        if (value instanceof CodeGenerator) {
+          appendStaticField(field, (CodeGenerator) value);
+        } else {
+          Logger.info("Export will skip non-generator field " + resourceClass.getSimpleName() + "." + field.getName());
+        }
+      } catch (IllegalAccessException e) {
+        Logger.info("Export will skip inaccessible field " + resourceClass.getSimpleName() + "." + field.getName());
+      }
+    }
+  }
+
+  private void appendStaticField(Field field, CodeGenerator value) {
+    appendSingleCodeLine(() -> {
+      FieldTemplate fieldAnnotation = field.getAnnotation(FieldTemplate.class);
+      appendString(visibilityTag(fieldAnnotation));
+      appendString(" static ");
+      appendString(field.getType().getSimpleName());
+      appendSpace();
+      appendString(field.getName());
+      appendAssignmentOperator();
+      value.appendCode(this);
+    });
+  }
+
+  private String visibilityTag(FieldTemplate fieldAnnotation) {
+    switch (fieldAnnotation.visibility()) {
+    case COMPLETELY_HIDDEN:
+      return "@CompletelyHidden";
+    case PRIME_TIME:
+      return "@PrimeTime";
+    case TUCKED_AWAY:
+      return "@TuckedAway";
+    default:
+      return "";
+    }
+  }
+
+  @Override
+  public void appendNewJointId(String joint, String parent, String model) {
+    appendString("new JointId(name: \"");
+    appendString(joint);
+    appendString("\", parent: ");
+    if (parent == null) {
+     appendNull();
+    } else {
+      appendString(tweedleTypeName(model));
+      appendAccessSeparator();
+      appendString(parent);
+    }
+    closeParen();
+  }
+
   @Override
   protected void appendClassHeader(NamedUserType userType) {
-    getCodeStringBuilder().append("class ").append(userType.getName()).append(" extends ").append(userType.getSuperType().getName());
+    getCodeStringBuilder().append("class ").append(tweedleTypeName(userType.getName())).append(" extends ").append(userType.getSuperType().getName());
     // TODO Only show for models and replace with resource identifier
     //    if (userType.isModel())
-    getCodeStringBuilder().append(" models ").append(userType.getName());
+    getCodeStringBuilder().append(" models ").append(tweedleTypeName(userType.getName()));
     openBlock();
   }
 
@@ -406,31 +478,30 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   protected void appendTypeName(AbstractType<?, ?, ?> type) {
-    final String typeName = type.getName();
+    appendString(tweedleTypeName(type.getName()));
+  }
+
+  private String tweedleTypeName(String typeName) {
     switch (typeName) {
     case "Double":
-      appendString("DecimalNumber");
-      break;
+      return "DecimalNumber";
     case "Double[]":
-      appendString("DecimalNumber[]");
-      break;
+      return "DecimalNumber[]";
     case "Integer":
-      appendString("WholeNumber");
-      break;
+      return "WholeNumber";
     case "Integer[]":
-      appendString("WholeNumber[]");
-      break;
+      return "WholeNumber[]";
     case "String":
-      appendString("TextString");
-      break;
+      return "TextString";
     case "String[]":
-      appendString("TextString[]");
-      break;
+      return "TextString[]";
+    case "SandDunes":
+      return "Terrain";
     default:
       if (typeName.endsWith("Resource")) {
-        appendString(typeName.substring(0, typeName.length() - 8));
+        return typeName.substring(0, typeName.length() - 8);
       } else {
-        appendString(typeName);
+        return typeName;
       }
     }
   }

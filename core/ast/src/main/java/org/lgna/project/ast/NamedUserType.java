@@ -49,10 +49,7 @@ import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Dennis Cosgrove
@@ -146,15 +143,20 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 
   // This function is supposed to be a short term solution for exporting to tweedle.
   // Enums are replaced with strings and this is used in the conversion.
-  public List<String> getResourceNames() {
-    String resourceName = "org.lgna.story.resources." + superType.getValue().getName().toLowerCase() +"." + getName() + "Resource";
+  public Class getResourceClass() {
     try {
-      Class resourceEnum = Class.forName(resourceName);
-      return Arrays.stream(resourceEnum.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
+      return Class.forName(getResourceName());
     } catch (ClassNotFoundException e) {
-      // If there is no resource enum there are no resource names
-      return Collections.emptyList();
+      return null;
     }
+  }
+
+  private String getResourceName() {
+    String owningClass = getName();
+    if ("SandDunes".equals(owningClass)) {
+      owningClass = "Terrain";
+    }
+    return "org.lgna.story.resources." + superType.getValue().getName().toLowerCase() + "." + owningClass + "Resource";
   }
 
   public final StringProperty name = new StringProperty(this, null);

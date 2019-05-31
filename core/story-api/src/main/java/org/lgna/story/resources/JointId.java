@@ -46,6 +46,8 @@ package org.lgna.story.resources;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.SourceCodeGenerator;
+import org.lgna.project.code.CodeGenerator;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -53,7 +55,7 @@ import java.lang.reflect.Modifier;
 /**
  * @author Dennis Cosgrove
  */
-public class JointId {
+public class JointId implements CodeGenerator {
 
   private final JointId parent;
   private final Class<? extends JointedModelResource> containingClass;
@@ -110,6 +112,15 @@ public class JointId {
       return fld.getName();
     } else {
       return super.toString();
+    }
+  }
+
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    if (parent == null) {
+      generator.appendNewJointId(fld.getName(), null, null);
+    } else {
+      generator.appendNewJointId(fld.getName(), parent.fld.getName(), parent.containingClass.getSimpleName());
     }
   }
 }
