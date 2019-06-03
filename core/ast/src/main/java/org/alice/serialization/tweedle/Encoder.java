@@ -27,6 +27,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
+  private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -76,6 +77,17 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> opacity = new HashMap<>();
     opacity.put("opacity", "new Portion(portion: ");
     methodsWithWrappedArgs.put("setOpacity", opacity);
+
+    Map<String, String> sizeParams = new HashMap<>();
+    sizeParams.put("leftToRight", "width");
+    sizeParams.put("bottomToTop", "height");
+    sizeParams.put("frontToBack", "depth");
+    constructorsWithRelabeledParams.put("Size", sizeParams);
+    Map<String, String> positionParams = new HashMap<>();
+    positionParams.put("right", "x");
+    positionParams.put("up", "y");
+    positionParams.put("backward", "z");
+    constructorsWithRelabeledParams.put("Position", positionParams);
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -339,6 +351,16 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private String getParameterLabel(AbstractParameter parameter) {
+    if (parameter instanceof JavaConstructorParameter) {
+      String className = ((JavaConstructorParameter) parameter).getCode().getDeclaringType().getName();
+      Map<String, String> paramLabelMap = constructorsWithRelabeledParams.get(className);
+      if (paramLabelMap != null) {
+        final String newLabel = paramLabelMap.get(parameter.getName());
+        if (newLabel != null) {
+          return newLabel;
+        }
+      }
+    }
     String label = parameter.getName();
     if (null != label) {
       return label;
