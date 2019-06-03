@@ -53,9 +53,13 @@ import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * @author alice
@@ -173,21 +177,40 @@ public class NebulousTexture extends Texture {
     return cachedImage;
   }
 
-  private void cacheImage() {
-    final int bytesPerPixel = getBytesPerPixel();
+  public static BufferedImage createBufferedImageFromNebulousData(byte[] imageData, int width, int height, int bytesPerPixel) {
     if (bytesPerPixel < 3) {
-      Logger.severe("Unable to cache texture " + m_textureKey);
       throw new RuntimeException(String.format("Unexpected bytes per pixel %d", bytesPerPixel));
     }
-    final int imageType = bytesPerPixel == 3 ? BufferedImage.TYPE_3BYTE_BGR : BufferedImage.TYPE_4BYTE_ABGR;
-    try {
-      cachedImage = new BufferedImage(getWidth(), getHeight(), imageType);
-      DataBufferByte dataBufferByte = (DataBufferByte) cachedImage.getRaster().getDataBuffer();
-      getImageData(dataBufferByte.getData());
-    } catch (RuntimeException re) {
-      Logger.severe("Unable to cache texture " + m_textureKey);
-      throw re;
+    final int imageType = bytesPerPixel == 3 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+    BufferedImage bufferedImage = new BufferedImage(width, height, imageType);
+
+    int byteIndex = 0;
+    for (int h=0; h<height; h++) {
+      for (int w = 0; w < width; w++) {
+        //Nebulous images are packed RGB or RGBA
+        int pixelValue = (imageData[byteIndex] & 0x000000FF) << 16; //Red
+        pixelValue += (imageData[byteIndex + 1] & 0x000000FF) << 8; //Green
+        pixelValue += (imageData[byteIndex + 2] & 0x000000FF); //Blue
+        byteIndex += 3;
+        if (bytesPerPixel == 4) {
+          pixelValue += (imageData[byteIndex] & 0x000000FF) << 24; //Alpha
+          byteIndex++;
+        }
+        bufferedImage.setRGB(w, h, pixelValue);
+      }
     }
+
+    return bufferedImage;
+  }
+
+  private void cacheImage() {
+      final int bytesPerPixel = getBytesPerPixel();
+      final int imageHeight = getHeight();
+      final int imageWidth = getWidth();
+      byte[] imageByteData = new byte[bytesPerPixel * imageWidth * imageHeight];
+      getImageData(imageByteData);
+
+      cachedImage = createBufferedImageFromNebulousData(imageByteData, imageWidth, imageHeight, bytesPerPixel);
   }
 
   @Override
