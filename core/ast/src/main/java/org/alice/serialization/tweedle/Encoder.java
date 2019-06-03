@@ -27,6 +27,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
+  private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
 
   static {
@@ -77,6 +78,8 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> opacity = new HashMap<>();
     opacity.put("opacity", "new Portion(portion: ");
     methodsWithWrappedArgs.put("setOpacity", opacity);
+
+    optionalParamsToWrap.put("duration", "new Duration(seconds: ");
 
     Map<String, String> sizeParams = new HashMap<>();
     sizeParams.put("leftToRight", "width");
@@ -309,19 +312,21 @@ public class Encoder extends SourceCodeGenerator {
       if (factoryType != null) {
         appendString(method.getName());
         appendString(": ");
-        appendOneRequiredArgument(methodInvocation);
+        appendOneArgument(methodInvocation);
         return;
       }
     }
     appendExpression(expressionValue);
   }
 
-  private void appendOneRequiredArgument(ArgumentOwner argumentOwner) {
+  private void appendOneArgument(MethodInvocation argumentOwner) {
     if (!argumentOwner.getVariableArgumentsProperty().isEmpty() || !argumentOwner.getKeyedArgumentsProperty().isEmpty() || argumentOwner.getRequiredArgumentsProperty().size() != 1) {
-      Logger.errln("Expected a single required argument.", argumentOwner);
+      Logger.errln("Expected a single argument.", argumentOwner);
     }
     if (argumentOwner.getRequiredArgumentsProperty().size() > 0) {
-      argumentOwner.getRequiredArgumentsProperty().get(0).appendCode(this);
+      final String methodName = argumentOwner.method.getValue().getName();
+      Map<String, String> wrappedParams = optionalParamsToWrap.containsKey(methodName) ? optionalParamsToWrap : null;
+      appendWrappedArg(argumentOwner.getRequiredArgumentsProperty().get(0), methodName, wrappedParams);
     }
   }
 
@@ -331,23 +336,19 @@ public class Encoder extends SourceCodeGenerator {
     appendString(parameterLabel);
     appendString(": ");
 
-    final boolean wrappedArg = wrapArg(parameter.getCode().getName(), parameterLabel);
-    argument.appendCode(this);
-    if (wrappedArg) {
-      appendString(")");
-    }
+    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(parameter.getCode().getName());
+    appendWrappedArg(argument, parameterLabel, wrappedParams);
   }
 
-  private boolean wrapArg(String method, String param) {
-    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(method);
-    if (wrappedParams != null) {
-      String argStart = wrappedParams.get(param);
-      if (argStart != null) {
-        appendString(argStart);
-        return true;
-      }
+  private void appendWrappedArg(CodeAppender argument, String parameterLabel, Map<String, String> wrappedParams) {
+    String argStart = wrappedParams == null ? null : wrappedParams.get(parameterLabel);
+    if (argStart != null) {
+      appendString(argStart);
     }
-    return false;
+    argument.appendCode(this);
+    if (argStart != null) {
+      appendString(")");
+    }
   }
 
   private String getParameterLabel(AbstractParameter parameter) {
