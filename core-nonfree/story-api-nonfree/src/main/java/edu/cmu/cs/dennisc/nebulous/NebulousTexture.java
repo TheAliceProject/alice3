@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.nebulous;
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * @author alice
@@ -73,6 +73,7 @@ public class NebulousTexture extends Texture {
   private final String m_textureKey;
   private boolean m_isMipMappingDesired = true;
   private boolean m_isPotentiallyAlphaBlended = false;
+  private BufferedImage cachedImage;
 
   public native void initializeIfNecessary(Object textureKey);
 
@@ -81,6 +82,14 @@ public class NebulousTexture extends Texture {
   public native void addReference();
 
   public native void removeReference();
+
+  private native int getImageWidth();
+
+  private native int getImageHeight();
+
+  private native int getBytesPerPixel();
+
+  private native void getImageData(byte[] imageData);
 
   public NebulousTexture(String textureKey) {
     m_textureKey = textureKey;
@@ -140,12 +149,61 @@ public class NebulousTexture extends Texture {
 
   @Override
   public int getWidth() {
-    throw new RuntimeException("NOT SUPPORTED");
+    if (cachedImage != null) {
+      return cachedImage.getWidth();
+    }
+    return getImageWidth();
   }
 
   @Override
   public int getHeight() {
-    throw new RuntimeException("NOT SUPPORTED");
+    if (cachedImage != null) {
+      return cachedImage.getHeight();
+    }
+    return getImageHeight();
+  }
+
+  public BufferedImage getBufferedImage() {
+    if (cachedImage == null) {
+      cacheImage();
+    }
+    return cachedImage;
+  }
+
+  public static BufferedImage createBufferedImageFromNebulousData(byte[] imageData, int width, int height, int bytesPerPixel) {
+    if (bytesPerPixel < 3) {
+      throw new RuntimeException(String.format("Unexpected bytes per pixel %d", bytesPerPixel));
+    }
+    final int imageType = bytesPerPixel == 3 ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+    BufferedImage bufferedImage = new BufferedImage(width, height, imageType);
+
+    int byteIndex = 0;
+    for (int h = 0; h < height; h++) {
+      for (int w = 0; w < width; w++) {
+        //Nebulous images are packed RGB or RGBA
+        int pixelValue = (imageData[byteIndex] & 0x000000FF) << 16; //Red
+        pixelValue += (imageData[byteIndex + 1] & 0x000000FF) << 8; //Green
+        pixelValue += (imageData[byteIndex + 2] & 0x000000FF); //Blue
+        byteIndex += 3;
+        if (bytesPerPixel == 4) {
+          pixelValue += (imageData[byteIndex] & 0x000000FF) << 24; //Alpha
+          byteIndex++;
+        }
+        bufferedImage.setRGB(w, h, pixelValue);
+      }
+    }
+
+    return bufferedImage;
+  }
+
+  private void cacheImage() {
+      final int bytesPerPixel = getBytesPerPixel();
+      final int imageHeight = getHeight();
+      final int imageWidth = getWidth();
+      byte[] imageByteData = new byte[bytesPerPixel * imageWidth * imageHeight];
+      getImageData(imageByteData);
+
+      cachedImage = createBufferedImageFromNebulousData(imageByteData, imageWidth, imageHeight, bytesPerPixel);
   }
 
   @Override
