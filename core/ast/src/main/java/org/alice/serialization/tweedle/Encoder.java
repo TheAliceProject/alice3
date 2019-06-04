@@ -1,26 +1,96 @@
 package org.alice.serialization.tweedle;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.apache.commons.lang.StringUtils;
+import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Encoder extends SourceCodeGenerator {
-  private final String INDENTION = "  ";
-  private final String NODE_DISABLE = "*<";
-  private final String NODE_ENABLE = ">*";
+  private static final String INDENTION = "  ";
+  private static final String NODE_DISABLE = "*<";
+  private static final String NODE_ENABLE = ">*";
   private int indent = 0;
-  private static final HashMap<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
+  private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
+  private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
+  private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
     codeOrganizerDefinitionMap.put("Program", CodeOrganizer.programClassCodeOrganizer);
+    methodsMissingParameterNames.put("say", new String[] {"text"});
+    methodsMissingParameterNames.put("think", new String[] {"text"});
+    methodsMissingParameterNames.put("setJointedModelResource", new String[] {"resource"});
+    methodsMissingParameterNames.put("setVehicle", new String[] {"vehicle"});
+    methodsMissingParameterNames.put("setFloorPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setWallPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setCeilingPaint", new String[] {"paint"});
+    methodsMissingParameterNames.put("setOpacity", new String[] {"opacity"});
+    methodsMissingParameterNames.put("pow", new String[] {"base", "exponent"});
+    methodsMissingParameterNames.put("nextIntegerFromAToBExclusive", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("nextIntegerFromAToBInclusive", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("nextIntegerFrom0ToNExclusive", new String[] {"n"});
+    methodsMissingParameterNames.put("toFlooredInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("toRoundedInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("toCeilingedInteger", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("abs", new String[] {"number"});
+    // Min and max cover both decimal and whole
+    methodsMissingParameterNames.put("min", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("max", new String[] {"a", "b"});
+
+    methodsMissingParameterNames.put("floor", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("rint", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("ceil", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("nextDoubleInRange", new String[] {"a", "b"});
+    methodsMissingParameterNames.put("sqrt", new String[] {"decimalNumber"});
+    methodsMissingParameterNames.put("sin", new String[] {"radians"});
+    methodsMissingParameterNames.put("cos", new String[] {"radians"});
+    methodsMissingParameterNames.put("tan", new String[] {"radians"});
+    methodsMissingParameterNames.put("asin", new String[] {"sin"});
+    methodsMissingParameterNames.put("acos", new String[] {"cos"});
+    methodsMissingParameterNames.put("atan", new String[] {"tan"});
+    methodsMissingParameterNames.put("atan2", new String[] {"y", "x"});
+    methodsMissingParameterNames.put("exp", new String[] {"power"});
+    methodsMissingParameterNames.put("log", new String[] {"x"});
+
+    Map<String, String> amount = new HashMap<>();
+    amount.put("amount", "new Angle(revolutions: ");
+    methodsWithWrappedArgs.put("roll", amount);
+    methodsWithWrappedArgs.put("turn", amount);
+    Map<String, String> density = new HashMap<>();
+    density.put("density", "new Portion(portion: ");
+    methodsWithWrappedArgs.put("setFogDensity", density);
+    Map<String, String> opacity = new HashMap<>();
+    opacity.put("opacity", "new Portion(portion: ");
+    methodsWithWrappedArgs.put("setOpacity", opacity);
+
+    optionalParamsToWrap.put("duration", "new Duration(seconds: ");
+
+    Map<String, String> sizeParams = new HashMap<>();
+    sizeParams.put("leftToRight", "width");
+    sizeParams.put("bottomToTop", "height");
+    sizeParams.put("frontToBack", "depth");
+    constructorsWithRelabeledParams.put("Size", sizeParams);
+    Map<String, String> positionParams = new HashMap<>();
+    positionParams.put("right", "x");
+    positionParams.put("up", "y");
+    positionParams.put("backward", "z");
+    constructorsWithRelabeledParams.put("Position", positionParams);
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -43,11 +113,98 @@ public class Encoder extends SourceCodeGenerator {
   /** Class structure **/
 
   @Override
+  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<CodeAppender>> entry) {
+    super.appendSection(codeOrganizer, userType, entry);
+    if ("ConstructorSection".equals(entry.getKey())) {
+      appendResources(userType);
+    }
+  }
+
+  private void appendResources(NamedUserType userType) {
+    Class resourceClass = userType.getResourceClass();
+    if (resourceClass == null) {
+      return;
+    }
+    appendResourceNames(userType, resourceClass);
+    appendResourceFields(resourceClass);
+  }
+
+  private void appendResourceNames(NamedUserType userType, Class resourceClass) {
+    final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
+    for (String resource: resourceNames) {
+      appendNewLine();
+      appendIndent();
+      appendString("static TextString ");
+      appendString(resource);
+      appendAssignmentOperator();
+      appendEscapedString(tweedleTypeName(userType.getName()) + "/" + resource);
+      appendStatementCompletion();
+    }
+  }
+
+  private void appendResourceFields(Class resourceClass) {
+    Field[] fields = resourceClass.getDeclaredFields();
+    for (Field field : fields) {
+      try {
+        Object value = field.get(resourceClass);
+        if (value instanceof CodeGenerator) {
+          appendStaticField(field, (CodeGenerator) value);
+        } else {
+          Logger.info("Export will skip non-generator field " + resourceClass.getSimpleName() + "." + field.getName());
+        }
+      } catch (IllegalAccessException e) {
+        Logger.info("Export will skip inaccessible field " + resourceClass.getSimpleName() + "." + field.getName());
+      }
+    }
+  }
+
+  private void appendStaticField(Field field, CodeGenerator value) {
+    appendSingleCodeLine(() -> {
+      FieldTemplate fieldAnnotation = field.getAnnotation(FieldTemplate.class);
+      appendString(visibilityTag(fieldAnnotation));
+      appendString(" static ");
+      appendString(field.getType().getSimpleName());
+      appendSpace();
+      appendString(field.getName());
+      appendAssignmentOperator();
+      value.appendCode(this);
+    });
+  }
+
+  private String visibilityTag(FieldTemplate fieldAnnotation) {
+    switch (fieldAnnotation.visibility()) {
+    case COMPLETELY_HIDDEN:
+      return "@CompletelyHidden";
+    case PRIME_TIME:
+      return "@PrimeTime";
+    case TUCKED_AWAY:
+      return "@TuckedAway";
+    default:
+      return "";
+    }
+  }
+
+  @Override
+  public void appendNewJointId(String joint, String parent, String model) {
+    appendString("new JointId(name: \"");
+    appendString(joint);
+    appendString("\", parent: ");
+    if (parent == null) {
+     appendNull();
+    } else {
+      appendString(tweedleTypeName(model));
+      appendAccessSeparator();
+      appendString(parent);
+    }
+    closeParen();
+  }
+
+  @Override
   protected void appendClassHeader(NamedUserType userType) {
-    getCodeStringBuilder().append("class ").append(userType.getName()).append(" extends ").append(userType.getSuperType().getName());
+    getCodeStringBuilder().append("class ").append(tweedleTypeName(userType.getName())).append(" extends ").append(userType.getSuperType().getName());
     // TODO Only show for models and replace with resource identifier
     //    if (userType.isModel())
-    getCodeStringBuilder().append(" models ").append(userType.getName());
+    getCodeStringBuilder().append(" models ").append(tweedleTypeName(userType.getName()));
     openBlock();
   }
 
@@ -155,32 +312,89 @@ public class Encoder extends SourceCodeGenerator {
       if (factoryType != null) {
         appendString(method.getName());
         appendString(": ");
-        appendOneRequiredArgument(methodInvocation);
+        appendOneArgument(methodInvocation);
         return;
       }
     }
     appendExpression(expressionValue);
   }
 
-  private void appendOneRequiredArgument(ArgumentOwner argumentOwner) {
+  private void appendOneArgument(MethodInvocation argumentOwner) {
     if (!argumentOwner.getVariableArgumentsProperty().isEmpty() || !argumentOwner.getKeyedArgumentsProperty().isEmpty() || argumentOwner.getRequiredArgumentsProperty().size() != 1) {
-      Logger.errln("Expected a single required argument.", argumentOwner);
+      Logger.errln("Expected a single argument.", argumentOwner);
     }
     if (argumentOwner.getRequiredArgumentsProperty().size() > 0) {
-      argumentOwner.getRequiredArgumentsProperty().get(0).appendCode(this);
+      final String methodName = argumentOwner.method.getValue().getName();
+      Map<String, String> wrappedParams = optionalParamsToWrap.containsKey(methodName) ? optionalParamsToWrap : null;
+      appendWrappedArg(argumentOwner.getRequiredArgumentsProperty().get(0), methodName, wrappedParams);
     }
   }
 
   @Override
   protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
-    String label = parameter.getName();
-    if (null == label) {
-      Logger.errln("Unable to read argument name from parameter. Using the type. Generated code may contain errors.", argument, parameter);
-      label = parameter.getValueType().getName().toLowerCase();
-    }
-    appendString(label);
+    final String parameterLabel = getParameterLabel(parameter);
+    appendString(parameterLabel);
     appendString(": ");
+
+    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(parameter.getCode().getName());
+    appendWrappedArg(argument, parameterLabel, wrappedParams);
+  }
+
+  private void appendWrappedArg(CodeAppender argument, String parameterLabel, Map<String, String> wrappedParams) {
+    String argStart = wrappedParams == null ? null : wrappedParams.get(parameterLabel);
+    if (argStart != null) {
+      appendString(argStart);
+    }
     argument.appendCode(this);
+    if (argStart != null) {
+      appendString(")");
+    }
+  }
+
+  private String getParameterLabel(AbstractParameter parameter) {
+    if (parameter instanceof JavaConstructorParameter) {
+      String className = ((JavaConstructorParameter) parameter).getCode().getDeclaringType().getName();
+      Map<String, String> paramLabelMap = constructorsWithRelabeledParams.get(className);
+      if (paramLabelMap != null) {
+        final String newLabel = paramLabelMap.get(parameter.getName());
+        if (newLabel != null) {
+          return newLabel;
+        }
+      }
+    }
+    String label = parameter.getName();
+    if (null != label) {
+      return label;
+    }
+    if (parameter instanceof JavaMethodParameter) {
+      final String methodName = parameter.getCode().getName();
+      if (methodsMissingParameterNames.containsKey(methodName)) {
+        String[] paramNames = methodsMissingParameterNames.get(methodName);
+        int i = parameterIndex((JavaMethodParameter) parameter);
+        return paramNames[i];
+      }
+    }
+    if (parameter instanceof JavaConstructorParameter) {
+      String javaType = parameter.getCode().getDeclaringType().getName();
+      if ("Double".equals(javaType)) {
+        return "wholeNumber";
+      }
+    }
+    final String paramType = parameter.getValueType().getName().toLowerCase();
+    final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
+    Dialogs.showError("Unlabeled parameter", message);
+    Logger.errln(message);
+    return paramType;
+  }
+
+  private int parameterIndex(JavaMethodParameter parameter) {
+      AbstractParameter[] parameters = parameter.getCode().getAllParameters();
+      for (int i = 0; i < parameters.length; i++) {
+        if (parameter == parameters[i]) {
+          return i;
+        }
+      }
+      return -1;
   }
 
   @Override
@@ -295,20 +509,42 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendTypeName(AbstractType<?, ?, ?> type) {
+  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
     final String typeName = type.getName();
+    if (typeName.endsWith("Resource")) {
+      appendString("TextString");
+    } else {
+      super.appendParameterTypeName(type);
+    }
+  }
+
+  @Override
+  protected void appendTypeName(AbstractType<?, ?, ?> type) {
+    appendString(tweedleTypeName(type.getName()));
+  }
+
+  private String tweedleTypeName(String typeName) {
     switch (typeName) {
     case "Double":
-      appendString("DecimalNumber");
-      break;
+      return "DecimalNumber";
+    case "Double[]":
+      return "DecimalNumber[]";
     case "Integer":
-      appendString("WholeNumber");
-      break;
+      return "WholeNumber";
+    case "Integer[]":
+      return "WholeNumber[]";
     case "String":
-      appendString("TextString");
-      break;
+      return "TextString";
+    case "String[]":
+      return "TextString[]";
+    case "SandDunes":
+      return "Terrain";
     default:
-      appendString(typeName);
+      if (typeName.endsWith("Resource")) {
+        return typeName.substring(0, typeName.length() - 8);
+      } else {
+        return typeName;
+      }
     }
   }
 

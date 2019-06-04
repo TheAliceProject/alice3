@@ -93,7 +93,6 @@ import org.lgna.story.Scale;
 import org.lgna.story.SetOrientationRelativeToVehicle;
 import org.lgna.story.SetPaint;
 import org.lgna.story.SetPositionRelativeToVehicle;
-import org.lgna.story.SetScale;
 import org.lgna.story.SetSize;
 import org.lgna.story.Size;
 import org.lgna.story.SpatialRelation;
@@ -367,7 +366,7 @@ public class SetUpMethodGenerator {
             Scale scale = resizable.getScale();
             if (!Scale.IDENTITY.equals(scale)) {
               try {
-                statements.add(createStatement(Resizable.class, "setScale", new Class<?>[] {Scale.class, SetScale.Detail[].class}, createInstanceExpression(isThis, field), getExpressionCreator().createExpression(scale)));
+                statements.add(createStatement(Resizable.class, "setSize", new Class<?>[] {Size.class, SetSize.Detail[].class}, createInstanceExpression(isThis, field), getExpressionCreator().createExpression(resizable.getSize())));
               } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
                 throw new RuntimeException(ccee);
               }

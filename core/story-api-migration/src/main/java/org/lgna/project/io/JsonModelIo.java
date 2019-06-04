@@ -36,7 +36,7 @@ public class JsonModelIo extends DataSourceIo {
   private static final boolean NORMALIZE_WEIGHTS = true;
 
   private ModelManifest modelManifest;
-  private List<JointedModelResource> modelResources;
+  private Set<JointedModelResource> modelResources;
   private List<SkeletonVisual> skeletonVisuals;
   private List<BufferedImage> thumbnails;
   private final ExportFormat exportFormat;
@@ -67,7 +67,7 @@ public class JsonModelIo extends DataSourceIo {
     this.thumbnails.add(thumbnail);
   }
 
-  public JsonModelIo(List<JointedModelResource> modelResources, ExportFormat exportFormat) {
+  public JsonModelIo(Set<JointedModelResource> modelResources, ExportFormat exportFormat) {
     this(exportFormat);
     this.modelManifest = createModelManifest(modelResources);
     this.modelResources = modelResources;
@@ -104,10 +104,13 @@ public class JsonModelIo extends DataSourceIo {
   }
 
   //Build a new ModelResourceInfo that includes only the resources in the modelResources list
-  private static ModelManifest createModelManifest(List<JointedModelResource> modelResources) {
-    //Get the ModelResourceInfo from the first resource in the list.
-    //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
-    ModelResource firstResource = modelResources.get(0);
+  private static ModelManifest createModelManifest(Set<JointedModelResource> modelResources) {
+    if (modelResources == null || modelResources.isEmpty()) {
+      return null;
+    }
+    //Get the ModelResourceInfo from the first resource found.
+    //Then get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
+    JointedModelResource firstResource = modelResources.iterator().next();
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
     //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
@@ -126,10 +129,8 @@ public class JsonModelIo extends DataSourceIo {
     String parentClassName = AliceResourceClassUtilities.getAliceClassName(superClass);
     modelManifest.parentClass = parentClassName;
     //If this model is defined by JointedModelResources, then add the model data from that
-    if (modelResources != null && modelResources.size() > 0) {
-      //We use the first resource because the poses are defined on the resource enum, not on each resource instance
-      addModelDataFromResource(modelManifest, modelResources.get(0));
-    }
+    //We use the first resource because the poses are defined on the resource enum, not on each resource instance
+    addModelDataFromResource(modelManifest, firstResource);
 
     return modelManifest;
   }
@@ -393,7 +394,7 @@ public class JsonModelIo extends DataSourceIo {
 
     //Get the existing texture set defined by the modelInfo.
     ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
-    //Now that we have a model and exporter, use this to get the id to image map
+    //Now that we have a model and exporter, use this to get the name to image map
     textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
     //Get all the textures from the model as data sources
     List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
@@ -404,7 +405,7 @@ public class JsonModelIo extends DataSourceIo {
         Integer imageId = exporter.getTextureIdForName(imageFileName);
         String imageName = textureSet.idToResourceMap.get(imageId);
         ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
-        //ResourceReference have their id initialized to the filename of the resource.
+        //ResourceReference have their name initialized to the filename of the resource.
         //We need it to be the imageName from the idToResourceMap
         imageReference.name = imageName;
         manifest.resources.add(imageReference);

@@ -67,7 +67,7 @@ import java.util.UUID;
 public class FileMenuModel extends StaticMenuModel {
 
   // Set to true to enable export feature that is still in development
-  private static final boolean ENABLE_EXPORT = false;
+  private static final boolean ENABLE_EXPORT = true;
 
   public FileMenuModel(ProjectDocumentFrame projectDocumentFrame) {
     super(UUID.fromString("121c8088-7297-43d4-b7b7-61416f1d4eb0"));

@@ -44,6 +44,7 @@ package org.alice.ide.croquet.models.projecturi;
 
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.icons.Icons;
+import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +53,10 @@ import java.util.UUID;
 public class ExportProjectOperation extends AbstractSaveProjectOperation {
   public ExportProjectOperation() {
     super(UUID.fromString("44ffba8a-ff13-4cb5-9736-55cd93c48e9d"));
+  }
+  @Override
+  protected String getExtension() {
+    return IoUtilities.EXPORT_EXTENSION;
   }
 
   @Override

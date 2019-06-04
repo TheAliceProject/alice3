@@ -432,9 +432,9 @@ public class ModelResourceInfo {
     manifest.provenance.created = getCreationYear() < 0 ? ZonedDateTime.now() : Year.of(getCreationYear());
     manifest.provenance.creator = getCreator();
 
-    manifest.metadata.identifier.id = getResourceName();
+    manifest.metadata.identifier.name = getModelName();
     manifest.metadata.identifier.type = Manifest.ProjectType.Model;
-    manifest.metadata.formatVersion = "0.1+alpha";
+    manifest.metadata.formatVersion = "0.1";
 
     manifest.placeOnGround = getPlaceOnGround();
     manifest.boundingBox = createManifestBoundingBox();
@@ -481,7 +481,7 @@ public class ModelResourceInfo {
 
   private ModelManifest.TextureSet createTextureSet() {
     ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
-    textureReference.name = getTextureReferenceId();
+    textureReference.name = getTextureReferenceName();
     return textureReference;
   }
 
@@ -492,8 +492,8 @@ public class ModelResourceInfo {
     return structureReference;
   }
 
-  private String getTextureReferenceId() {
-    //Textures sets are model specific, so must prepend the model name to the id
+  private String getTextureReferenceName() {
+    //Textures sets are model specific, so must prepend the model name
     return getModelName() + "_" + getTextureName();
   }
 

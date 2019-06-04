@@ -157,7 +157,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = type.getName();
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = type.getId().toString();
+      manifest.metadata.identifier.name = type.getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.Library;
       return manifest;
     }
@@ -171,8 +171,8 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
       entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
 
-      Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
-      for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
+      Map<Class, Set<JointedModelResource>> modelResources = getModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
+      for (Map.Entry<Class, Set<JointedModelResource>> entry : modelResources.entrySet()) {
         JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
@@ -187,8 +187,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
-      final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
-      manifest.resources.add(new TypeReference(ut.getName(), fileName, TWEEDLE_FORMAT));
+      String typeName = ut.getName();
+      // Special case (read: "hack") to catch older models from starter worlds
+      if ("SandDunes".equals(typeName)) {
+        typeName = "Terrain";
+      }
+      final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
       return createDataSource(fileName, serializedClass(ut));
     }
 
@@ -200,9 +205,18 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = project.getProgramType().getName(); // probably "Program"
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = project.getProgramType().getId().toString();
+      manifest.metadata.identifier.name = project.getProgramType().getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.World;
+      manifest.prerequisites.add(standardLibrary());
       return manifest;
+    }
+
+    private Manifest.ProjectIdentifier standardLibrary() {
+      final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
+      libraryIdentifier.type = Manifest.ProjectType.Library;
+      libraryIdentifier.version = "1.0";
+      libraryIdentifier.name = "SceneGraphLibrary";
+      return libraryIdentifier;
     }
 
     private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
@@ -229,7 +243,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
     }
 
-    private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
+    private Map<Class, Set<JointedModelResource>> getModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
       IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
         @Override
         protected boolean isAcceptable(FieldAccess fieldAccess) {
@@ -238,13 +252,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
         }
       };
       type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
-      Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
+      Map<Class, Set<JointedModelResource>> modelResources = new HashMap<>();
       for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
         JavaField field = (JavaField) fieldAccess.field.getValue();
         JointedModelResource modelResource = null;
         try {
           modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-          List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
+          Set<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new HashSet<>());
           resourceList.add(modelResource);
         } catch (IllegalAccessException e) {
           e.printStackTrace(); //TODO: Log this

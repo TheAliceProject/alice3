@@ -164,6 +164,11 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
+  public void appendNewJointId(String joint, String parent, String model) {
+    throw new RuntimeException("This should not be called.");
+  }
+
+  @Override
   protected void appendAssignmentOperator() {
     appendChar('=');
   }
