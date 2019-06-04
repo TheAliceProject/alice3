@@ -45,21 +45,14 @@ package edu.cmu.cs.dennisc.nebulous;
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.*;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.awt.image.BufferedImage;
 
 /**
  * @author alice
@@ -185,7 +178,7 @@ public class NebulousTexture extends Texture {
     BufferedImage bufferedImage = new BufferedImage(width, height, imageType);
 
     int byteIndex = 0;
-    for (int h=0; h<height; h++) {
+    for (int h = 0; h < height; h++) {
       for (int w = 0; w < width; w++) {
         //Nebulous images are packed RGB or RGBA
         int pixelValue = (imageData[byteIndex] & 0x000000FF) << 16; //Red
