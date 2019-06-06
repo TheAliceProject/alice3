@@ -291,6 +291,10 @@ public class JsonModelIo extends DataSourceIo {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
       if (modelResource == null) {
         return null;
+      JointedModelImp.VisualData<JointedModelResource> v = modelResource.getImplementationAndVisualFactory().createVisualData();
+      SkeletonVisual sv = (SkeletonVisual) v.getSgVisualForExporting(modelResource);
+      if (NORMALIZE_WEIGHTS) {
+        sv.normalizeWeightedMeshes();
       }
       final JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> factory = modelResource.getImplementationAndVisualFactory();
       if (!factory.isSims()) {

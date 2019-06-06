@@ -51,6 +51,10 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointedModelResource;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -60,11 +64,20 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   private final Visual[] sgVisuals = new Visual[] {new Visual()};
   private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
 
+
+  private static final Set<Object> TESTING_modelSet = new HashSet<>();
+
   public NebulousVisualData(M nebModel) {
     this.nebModel = nebModel;
-    this.nebModel.setVisual(sgVisuals[0]);
-    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.nebModel});
-    this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
+
+    if (!TESTING_modelSet.contains(nebModel.TESTING_getResourceKey())) {
+      sgVisuals[0] = nebModel.createSkeletonVisual((JointedModelResource) nebModel.TESTING_getResourceKey());
+      this.nebModel.setVisual(sgVisuals[0]);
+      TESTING_modelSet.add(nebModel.TESTING_getResourceKey());
+    } else {
+      this.getSgVisuals()[0].geometries.setValue(new Geometry[]{this.nebModel});
+      this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
+    }
   }
 
   @Override
@@ -75,6 +88,11 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   @Override
   public Visual[] getSgVisuals() {
     return this.sgVisuals;
+  }
+
+  @Override
+  public Visual getSgVisualForExporting(JointedModelResource resource) {
+    return nebModel.createSkeletonVisual(resource);
   }
 
   public M getNebModel() {

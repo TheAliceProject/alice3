@@ -44,20 +44,23 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.Sphere;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -131,11 +134,30 @@ public abstract class Model extends Geometry {
 
   private native String[] getWeightedMeshIds();
 
+  private native String[] getTextureIds();
+
+  private native int[] getIndicesForMesh(String meshId);
+
   private native float[] getVerticesForMesh(String meshId);
 
   private native float[] getNormalsForMesh(String meshId);
 
   private native float[] getUvsForMesh(String meshId);
+
+  private native boolean isMeshWeightedToJoint(String meshId, JointId jointId);
+
+  private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, JointId jointId);
+
+  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, JointId jointId);
+
+  private native int getImageWidthForTexture(String textureId);
+
+  private native int getImageHeightForTexture(String textureId);
+
+  private native int getBytesPerPixelForTexture(String textureId);
+
+  private native void getImageDataForTexture(String textureId, byte[] imageData);
+
 
 //  Returning more structured data will be:
 //  private native void getSkinWeightsForMesh(SomethingOrOther[] skinWeightsOut, String meshId);
@@ -222,6 +244,204 @@ public abstract class Model extends Geometry {
     boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
   }
 
+  private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds) {
+
+    float[] vertices = getVerticesForMesh(meshId);
+    float[] normals = getNormalsForMesh(meshId);
+    float[] uvs = getUvsForMesh(meshId);
+    int[] indices = getIndicesForMesh(meshId);
+
+    /*
+    Indices have to be unified. Alice uses a single set of indices for vertices, normals, and UVs
+    The Sims use a single array of indices, but separate values for indices into the vertices, normals, and UVS:
+    From the Sims rendering code:
+    for( size_t i=0; i<nIndexCount;  ) {
+      nIndex = pnIndices[ i++ ];
+      glTexCoord2fv( vfTextureCoordinates + nIndex );
+      nIndex = pnIndices[ i++ ];
+      glNormal3fv( vfNormals + nIndex );
+      nIndex = pnIndices[ i++ ];
+      glVertex3fv( vfVertices + nIndex );
+     }
+     */
+
+    int indexCount = indices.length / 3;
+    double[] newVertices = new double[indexCount * 3];
+    float[] newNormals = new float[indexCount * 3];
+    float[] newUVs = new float[indexCount * 2];
+    int[] newIndices = new int[indexCount];
+    Map<Integer, Integer> oldVertexIndexToNewIndex = new HashMap<>();
+    Map<Integer, Integer> newIndexToOldVertex = new HashMap<>();
+    for (int i = 0; i < indices.length; ) {
+      int currentIndex = i / 3;
+
+      int uvIndex = indices[i];
+      newUVs[currentIndex * 2] = uvs[uvIndex];
+      newUVs[currentIndex * 2 + 1] = uvs[uvIndex + 1];
+      i++;
+
+      int normalIndex = indices[i];
+      newNormals[currentIndex * 3] = normals[normalIndex];
+      newNormals[currentIndex * 3 + 1] = normals[normalIndex + 1];
+      newNormals[currentIndex * 3 + 2] = normals[normalIndex + 2];
+      i++;
+
+      int vertexIndex = indices[i];
+      newVertices[currentIndex * 3] = vertices[vertexIndex];
+      newVertices[currentIndex * 3 + 1] = vertices[vertexIndex + 1];
+      newVertices[currentIndex * 3 + 2] = vertices[vertexIndex + 2];
+      oldVertexIndexToNewIndex.put(vertexIndex / 3, currentIndex);
+      newIndexToOldVertex.put(currentIndex, vertexIndex / 3);
+
+      newIndices[currentIndex] = currentIndex;
+      i++;
+    }
+
+    mesh.normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
+    mesh.vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
+    mesh.textCoordBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newUVs));
+    mesh.indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
+
+    if (mesh instanceof  WeightedMesh) {
+      WeightedMesh weightedMesh = (WeightedMesh) mesh;
+      WeightInfo weightInfo = new WeightInfo();
+      for (JointId joint : resourceJointIds) {
+        if (isMeshWeightedToJoint(meshId, joint)) {
+          double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint);
+          float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint);
+
+          int maxVertexIndex = 0;
+          for (int i = 0; i < vertexWeights.length; i++) {
+            if (!oldVertexIndexToNewIndex.containsKey(i)) {
+              System.out.println("NO " + i);
+            } else {
+              int newVertexIndex = oldVertexIndexToNewIndex.get(i);
+              if (newVertexIndex > maxVertexIndex) {
+                maxVertexIndex = newVertexIndex;
+              }
+            }
+          }
+          float[] remappedVertexWeights = new float[maxVertexIndex + 1];
+          for (int i = 0; i < remappedVertexWeights.length; i++) {
+            remappedVertexWeights[i] = vertexWeights[newIndexToOldVertex.get(i)];
+          }
+
+          int nonZeroWeights = 0;
+          for (float weight : remappedVertexWeights) {
+            if (weight != 0) {
+              nonZeroWeights++;
+            }
+          }
+          if (nonZeroWeights > 0) {
+            InverseAbsoluteTransformationWeightsPair iawp;
+            double portion = ((double) nonZeroWeights) / remappedVertexWeights.length;
+            if (portion > .9) {
+              iawp = new PlentifulInverseAbsoluteTransformationWeightsPair();
+            } else {
+              iawp = new SparseInverseAbsoluteTransformationWeightsPair();
+            }
+            AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
+            iawp.setWeights(remappedVertexWeights);
+            iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
+            weightInfo.addReference(joint.toString(), iawp);
+          }
+        }
+      }
+      weightedMesh.weightInfo.setValue(weightInfo);
+    }
+
+  }
+
+  private Joint createSkeleton(List<JointId> resourceJointIds) {
+    Joint rootJoint = null;
+    List<JointId> processedIds = new ArrayList<>();
+    List<Joint> processedJoints = new ArrayList<>();
+    while (resourceJointIds.size() != processedIds.size()) {
+      for (JointId currentJointId : resourceJointIds) {
+        if (currentJointId.getParent() == null || processedIds.contains(currentJointId.getParent())) {
+          Joint j = new Joint();
+          j.jointID.setValue(currentJointId.toString());
+          j.setName(currentJointId.toString());
+          j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
+
+          if (currentJointId.getParent() == null) {
+            rootJoint = j;
+          } else {
+            for (Joint p : processedJoints) {
+              if (p.jointID.getValue().equals(currentJointId.getParent().toString())) {
+                j.setParent(p);
+                break;
+              }
+            }
+          }
+          processedIds.add(currentJointId);
+          processedJoints.add(j);
+        }
+      }
+    }
+    return rootJoint;
+  }
+
+  public SkeletonVisual createSkeletonVisual(JointedModelResource resource) {
+    //Create skeleton from nebulous data
+    List<JointId> resourceJointIds = AliceResourceClassUtilities.getJoints(resource.getClass());
+    Joint skeleton = createSkeleton(resourceJointIds);
+
+    List<Mesh> unWeightedMeshes = new ArrayList<>();
+    List<WeightedMesh> weightedMeshes = new ArrayList<>();
+    //Build meshes and weighted meshes
+    String[] unweightedMeshIds = getUnweightedMeshIds();
+    String[] weightedMeshIds = getWeightedMeshIds();
+
+
+    for (String meshId : weightedMeshIds) {
+      Map<Integer, Integer> uvIndexToNewIndex = new HashMap<>();
+      Map<Integer, Integer> normalIndexToNewIndex = new HashMap<>();
+      Map<Integer, Integer> vertexIndexToNewIndex = new HashMap<>();
+      WeightedMesh mesh = new WeightedMesh();
+      initializeMesh(meshId, mesh, resourceJointIds);
+      mesh.textureId.setValue(0);
+      weightedMeshes.add(mesh);
+    }
+    for (String meshId : unweightedMeshIds) {
+      Mesh mesh = new Mesh();
+      initializeMesh(meshId, mesh, resourceJointIds);
+      mesh.textureId.setValue(0);
+      unWeightedMeshes.add(mesh);
+    }
+
+    List<TexturedAppearance> textures = new ArrayList<>();
+    String[] textureIds = getTextureIds();
+    int idCount = 0;
+    for (String textureId : textureIds) {
+      int width = this.getImageWidthForTexture(textureId);
+      int height = this.getImageHeightForTexture(textureId);
+      int bytesPerPixel = this.getBytesPerPixelForTexture(textureId);
+      byte[] imageData = new byte[width * height * bytesPerPixel];
+      this.getImageDataForTexture(textureId, imageData);
+
+      BufferedImage bufferedImage = NebulousTexture.createBufferedImageFromNebulousData(imageData, width, height, bytesPerPixel);
+
+      BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
+      bufferedImageTexture.setBufferedImage(bufferedImage);
+      TexturedAppearance texturedAppearance = new TexturedAppearance();
+      texturedAppearance.diffuseColorTexture.setValue(bufferedImageTexture);
+      texturedAppearance.textureId.setValue(idCount);
+      textures.add(texturedAppearance);
+      idCount++;
+    }
+
+    SkeletonVisual skeletonVisual = new SkeletonVisual();
+    skeletonVisual.setName(getName());
+    skeletonVisual.frontFacingAppearance.setValue(new SimpleAppearance());
+    skeletonVisual.skeleton.setValue(skeleton);
+    skeletonVisual.geometries.setValue(unWeightedMeshes.toArray(new Mesh[unWeightedMeshes.size()]));
+    skeletonVisual.weightedMeshes.setValue(weightedMeshes.toArray(new WeightedMesh[weightedMeshes.size()]));
+    skeletonVisual.textures.setValue(textures.toArray(new TexturedAppearance[textures.size()]));
+
+    return skeletonVisual;
+  }
+
   @Override
   protected void updateBoundingSphere(Sphere boundingSphere) {
     boundingSphere.setNaN();
@@ -230,6 +450,10 @@ public abstract class Model extends Geometry {
   @Override
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     throw new RuntimeException("todo");
+  }
+
+  public Object TESTING_getResourceKey() {
+    return this;
   }
 
   protected Composite sgParent;
