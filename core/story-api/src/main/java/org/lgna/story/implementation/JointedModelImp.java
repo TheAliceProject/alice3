@@ -281,6 +281,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			JointImpWrapper wrapper = new JointImpWrapper( this, entry.getValue() );
 			mapIdToJoint.put(entry.getKey(), wrapper);
 		}
+		fillInJointArrays();
 		//Go through all the wrappers and link up the parent/child relationship
 		for (Map.Entry<JointId, JointImpWrapper> entry : mapIdToJoint.entrySet()) {
 			entry.getValue().setJointParent(mapIdToJoint.get(entry.getKey().getParent()));
@@ -345,6 +346,19 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		return allJoints;
 	}
 
+	private void fillInJointArrays() {
+		for( JointArrayId arrayId : this.getJointArrayIds() ) {
+			mapArrayIdToJointIdArray.put(arrayId, findJointsMatching(arrayId.getElementNamePattern()));
+		}
+	}
+
+	private JointId[] findJointsMatching(String prefix) {
+		return mapIdToJoint.keySet().stream()
+											 .filter(jointId -> jointId.toString().startsWith(prefix))
+											 .sorted(Comparator.comparing(JointId::toString))
+											 .toArray(JointId[]::new);
+	}
+
 	public JointId[] getJointIdArray( JointArrayId jointArrayId ) {
 		return this.mapArrayIdToJointIdArray.get( jointArrayId );
 	}
@@ -394,6 +408,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			Map<JointId, JointImp> newJoints = createJointImps(allJointIds);
 
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
+
+			mapArrayIdToJointIdArray.clear();
+			fillInJointArrays();
 
 			this.visualData.setSGParent( originalParent );
 			oldVisualData.setSGParent( null );
