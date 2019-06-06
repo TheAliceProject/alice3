@@ -75,6 +75,7 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
       this.nebModel.setVisual(sgVisuals[0]);
       TESTING_modelSet.add(nebModel.TESTING_getResourceKey());
     } else {
+      this.nebModel.setVisual(sgVisuals[0]);
       this.getSgVisuals()[0].geometries.setValue(new Geometry[]{this.nebModel});
       this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
     }
