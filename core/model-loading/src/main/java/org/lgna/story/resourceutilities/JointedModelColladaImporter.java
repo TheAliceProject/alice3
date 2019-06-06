@@ -271,27 +271,13 @@ public class JointedModelColladaImporter {
     }
     WeightInfo weightInfo = new WeightInfo();
     for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
-      int nonZeroWeights = 0;
-      for (float weight : jointAndWeights.getValue()) {
-        if (weight != 0) {
-          nonZeroWeights++;
-        }
-      }
-      if (nonZeroWeights > 0) {
-        InverseAbsoluteTransformationWeightsPair iawp;
-        double portion = ((double) nonZeroWeights) / jointAndWeights.getValue().length;
-        if (portion > .9) {
-          iawp = new PlentifulInverseAbsoluteTransformationWeightsPair();
-        } else {
-          iawp = new SparseInverseAbsoluteTransformationWeightsPair();
-        }
-        int jointIndex = jointAndWeights.getKey();
-        String jointId = jointData[jointIndex];
-        float[] inverseBindMatrix = Arrays.copyOfRange(inverseBindMatrixData, 16 * jointIndex, 16 * jointIndex + 16);
-        AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix(inverseBindMatrix);
-        iawp.setWeights(jointAndWeights.getValue());
-        // The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
-        iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
+      int jointIndex = jointAndWeights.getKey();
+      String jointId = jointData[jointIndex];
+      // The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
+      float[] inverseBindMatrix = Arrays.copyOfRange(inverseBindMatrixData, 16 * jointIndex, 16 * jointIndex + 16);
+      AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix(inverseBindMatrix);
+      InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(jointAndWeights.getValue(), aliceInverseBindMatrix);
+      if (iawp != null) {
         weightInfo.addReference(jointId, iawp);
       }
     }

@@ -104,4 +104,26 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
     binaryEncoder.encode(this.inverseAbsoluteTransformation);
     binaryEncoder.encode(this.weights);
   }
+
+  public static InverseAbsoluteTransformationWeightsPair createInverseAbsoluteTransformationWeightsPair(float[] weights, AffineMatrix4x4 invAbsTransformation) {
+    int nonZeroWeights = 0;
+    for (float weight : weights) {
+      if (weight != 0) {
+        nonZeroWeights++;
+      }
+    }
+    if (nonZeroWeights > 0) {
+      InverseAbsoluteTransformationWeightsPair iawp;
+      double portion = ((double) nonZeroWeights) / weights.length;
+      if (portion > .9) {
+        iawp = new PlentifulInverseAbsoluteTransformationWeightsPair();
+      } else {
+        iawp = new SparseInverseAbsoluteTransformationWeightsPair();
+      }
+      iawp.setWeights(weights);
+      iawp.setInverseAbsoluteTransformation(invAbsTransformation);
+      return iawp;
+    }
+    return null;
+  }
 }

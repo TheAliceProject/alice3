@@ -244,13 +244,43 @@ public abstract class Model extends Geometry {
     boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
   }
 
-  private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds) {
+  private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex){
+    WeightInfo weightInfo = new WeightInfo();
+    for (JointId joint : resourceJointIds) {
+      if (isMeshWeightedToJoint(meshId, joint)) {
+        double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint);
+        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint);
+        //Sims weights reference the old vertex indices so we need to remap them to the new vertices
+        //First we find the new hightest index
+        int maxVertexIndex = 0;
+        for (int i = 0; i < vertexWeights.length; i++) {
+          int newVertexIndex = oldVertexIndexToNewIndex.get(i);
+          if (newVertexIndex > maxVertexIndex) {
+            maxVertexIndex = newVertexIndex;
+          }
+        }
+        //Since we stored weights in an array where the index in the array is also the vertex index,
+        // this becomes the size of the new weight array
+        float[] remappedVertexWeights = new float[maxVertexIndex + 1];
+        //Now we need to transfer the weight values from the old array to the new array
+        for (int i = 0; i < remappedVertexWeights.length; i++) {
+          remappedVertexWeights[i] = vertexWeights[newIndexToOldVertex.get(i)];
+        }
+        AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
+        InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix);
+        if (iawp != null) {
+          weightInfo.addReference(joint.toString(), iawp);
+        }
+      }
+    }
+    return weightInfo;
+  }
 
+  private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds) {
     float[] vertices = getVerticesForMesh(meshId);
     float[] normals = getNormalsForMesh(meshId);
     float[] uvs = getUvsForMesh(meshId);
     int[] indices = getIndicesForMesh(meshId);
-
     /*
     Indices have to be unified. Alice uses a single set of indices for vertices, normals, and UVs
     The Sims use a single array of indices, but separate values for indices into the vertices, normals, and UVS:
@@ -264,7 +294,6 @@ public abstract class Model extends Geometry {
       glVertex3fv( vfVertices + nIndex );
      }
      */
-
     int indexCount = indices.length / 3;
     double[] newVertices = new double[indexCount * 3];
     float[] newNormals = new float[indexCount * 3];
@@ -273,81 +302,36 @@ public abstract class Model extends Geometry {
     Map<Integer, Integer> oldVertexIndexToNewIndex = new HashMap<>();
     Map<Integer, Integer> newIndexToOldVertex = new HashMap<>();
     for (int i = 0; i < indices.length; ) {
-      int currentIndex = i / 3;
-
+      int currentIndex = i / 3; //sims indices are stored as triplets (uv, normal, vertex), so divide by 3 to get actual index
       int uvIndex = indices[i];
       newUVs[currentIndex * 2] = uvs[uvIndex];
       newUVs[currentIndex * 2 + 1] = uvs[uvIndex + 1];
       i++;
-
       int normalIndex = indices[i];
       newNormals[currentIndex * 3] = normals[normalIndex];
       newNormals[currentIndex * 3 + 1] = normals[normalIndex + 1];
       newNormals[currentIndex * 3 + 2] = normals[normalIndex + 2];
       i++;
-
       int vertexIndex = indices[i];
       newVertices[currentIndex * 3] = vertices[vertexIndex];
       newVertices[currentIndex * 3 + 1] = vertices[vertexIndex + 1];
       newVertices[currentIndex * 3 + 2] = vertices[vertexIndex + 2];
+      //Since we're remapping the indices, we'll need to remap the skin weights as well
+      //To do this we'll need to store the remapping data
       oldVertexIndexToNewIndex.put(vertexIndex / 3, currentIndex);
       newIndexToOldVertex.put(currentIndex, vertexIndex / 3);
 
       newIndices[currentIndex] = currentIndex;
       i++;
     }
-
     mesh.normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
     mesh.vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
     mesh.textCoordBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newUVs));
     mesh.indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
 
     if (mesh instanceof  WeightedMesh) {
-      WeightedMesh weightedMesh = (WeightedMesh) mesh;
-      WeightInfo weightInfo = new WeightInfo();
-      for (JointId joint : resourceJointIds) {
-        if (isMeshWeightedToJoint(meshId, joint)) {
-          double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint);
-          float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint);
-
-          int maxVertexIndex = 0;
-          for (int i = 0; i < vertexWeights.length; i++) {
-            if (!oldVertexIndexToNewIndex.containsKey(i)) {
-              System.out.println("NO " + i);
-            } else {
-              int newVertexIndex = oldVertexIndexToNewIndex.get(i);
-              if (newVertexIndex > maxVertexIndex) {
-                maxVertexIndex = newVertexIndex;
-              }
-            }
-          }
-          float[] remappedVertexWeights = new float[maxVertexIndex + 1];
-          for (int i = 0; i < remappedVertexWeights.length; i++) {
-            remappedVertexWeights[i] = vertexWeights[newIndexToOldVertex.get(i)];
-          }
-
-          int nonZeroWeights = 0;
-          for (float weight : remappedVertexWeights) {
-            if (weight != 0) {
-              nonZeroWeights++;
-            }
-          }
-          if (nonZeroWeights > 0) {
-            InverseAbsoluteTransformationWeightsPair iawp;
-            double portion = ((double) nonZeroWeights) / remappedVertexWeights.length;
-            if (portion > .9) {
-              iawp = new PlentifulInverseAbsoluteTransformationWeightsPair();
-            } else {
-              iawp = new SparseInverseAbsoluteTransformationWeightsPair();
-            }
-            AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
-            iawp.setWeights(remappedVertexWeights);
-            iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
-            weightInfo.addReference(joint.toString(), iawp);
-          }
-        }
-      }
-      weightedMesh.weightInfo.setValue(weightInfo);
+      WeightInfo weightInfo = createWeightInfo(meshId, resourceJointIds, newIndexToOldVertex, oldVertexIndexToNewIndex );
+      ((WeightedMesh) mesh).weightInfo.setValue(weightInfo);
     }
 
   }
@@ -393,11 +377,7 @@ public abstract class Model extends Geometry {
     String[] unweightedMeshIds = getUnweightedMeshIds();
     String[] weightedMeshIds = getWeightedMeshIds();
 
-
     for (String meshId : weightedMeshIds) {
-      Map<Integer, Integer> uvIndexToNewIndex = new HashMap<>();
-      Map<Integer, Integer> normalIndexToNewIndex = new HashMap<>();
-      Map<Integer, Integer> vertexIndexToNewIndex = new HashMap<>();
       WeightedMesh mesh = new WeightedMesh();
       initializeMesh(meshId, mesh, resourceJointIds);
       mesh.textureId.setValue(0);
@@ -419,9 +399,7 @@ public abstract class Model extends Geometry {
       int bytesPerPixel = this.getBytesPerPixelForTexture(textureId);
       byte[] imageData = new byte[width * height * bytesPerPixel];
       this.getImageDataForTexture(textureId, imageData);
-
       BufferedImage bufferedImage = NebulousTexture.createBufferedImageFromNebulousData(imageData, width, height, bytesPerPixel);
-
       BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
       bufferedImageTexture.setBufferedImage(bufferedImage);
       TexturedAppearance texturedAppearance = new TexturedAppearance();
