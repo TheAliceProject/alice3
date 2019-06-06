@@ -409,6 +409,13 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
+			//Make joint wrappers for new entries and put them in the map
+			for (Map.Entry<JointId, JointImp> entry : newJoints.entrySet()) {
+				if (!mapIdToJoint.containsKey(entry.getKey())) {
+					mapIdToJoint.put(entry.getKey(), new JointImpWrapper(this, entry.getValue()));
+				}
+			}
+
 			mapArrayIdToJointIdArray.clear();
 			fillInJointArrays();
 
