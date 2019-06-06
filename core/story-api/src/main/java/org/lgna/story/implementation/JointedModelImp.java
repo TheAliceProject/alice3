@@ -472,17 +472,22 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 				toRemove.add( jointEntry.getKey() );
 			}
 		}
-		for( JointId id : toRemove ) {
-			JointImpWrapper impToRemove = this.mapIdToJoint.remove( id );
-			//Reparent children
-			for (JointImp childImp : impToRemove.getJointChildren()) {
-				childImp.setJointParent(impToRemove.getJointParent());
+		// Order from outer-most toward root to always remove a leaf
+		toRemove.sort(JointId::descendantComparison);
+		for (JointId id : toRemove) {
+			JointImpWrapper impToRemove = this.mapIdToJoint.remove(id);
+			AbstractTransformable sgJoint = impToRemove.getSgComposite();
+			if (!impToRemove.getJointChildren().isEmpty()) {
+				Logger.warning("Attempting to remove joint with attached children. There is a problem with this model and may lead to errors.");
+				//Reparent children. If there are children it will likely lead to a concurrency exception.
+				for (JointImp childImp : impToRemove.getJointChildren()) {
+					childImp.setJointParent(impToRemove.getJointParent());
+				}
+				for (Component c : sgJoint.getComponents()) {
+					c.setParent(impToRemove.getJointParent().getSgComposite());
+				}
 			}
 			impToRemove.setJointParent(null);
-			AbstractTransformable sgJoint = impToRemove.getSgComposite();
-			for (Component c : sgJoint.getComponents()) {
-				c.setParent(impToRemove.getJointParent().getSgComposite());
-			}
 			sgJoint.setParent(null);
 		}
 	}
