@@ -478,14 +478,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			JointImpWrapper impToRemove = this.mapIdToJoint.remove(id);
 			AbstractTransformable sgJoint = impToRemove.getSgComposite();
 			if (!impToRemove.getJointChildren().isEmpty()) {
-				Logger.warning("Attempting to remove joint with attached children. There is a problem with this model and may lead to errors.");
-				//Reparent children. If there are children it will likely lead to a concurrency exception.
-				for (JointImp childImp : impToRemove.getJointChildren()) {
-					childImp.setJointParent(impToRemove.getJointParent());
-				}
-				for (Component c : sgJoint.getComponents()) {
-					c.setParent(impToRemove.getJointParent().getSgComposite());
-				}
+				Logger.severe("Removing a joint with child joints. There is a problem with this resource and may lead to errors.");
 			}
 			impToRemove.setJointParent(null);
 			sgJoint.setParent(null);
