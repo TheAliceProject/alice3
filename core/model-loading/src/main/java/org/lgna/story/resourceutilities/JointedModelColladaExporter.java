@@ -234,7 +234,7 @@ public class JointedModelColladaExporter {
     return accessorTechnique;
   }
 
-  //Helper classes to initalize Collada lists of numbers from Alice data
+  //Helper classes to initialize Collada lists of numbers from Alice data
   //These are used to convert the lists of doubles and floats that represent normals, vertices, etc.
   private interface ListInitializer {
     public void initializeList(List<Double> toInitialize);
@@ -319,7 +319,7 @@ public class JointedModelColladaExporter {
     }
   }
 
-  private Source createFloatArraySourceFromInitializer(ListInitializer initializer, String name, int stride, double scale, boolean flipXandZ) {
+  private Source createFloatArraySourceFromInitializer(ListInitializer initializer, String name, int stride, double scale, boolean flipZ) {
 
     Source source = factory.createSource();
     source.setId(name);
@@ -330,14 +330,14 @@ public class JointedModelColladaExporter {
     List<Double> values = floatArray.getValue();
     initializer.initializeList(values);
 
-    //Flip X and Z as part of flipping the normals and positions from Alice space to Collada space
-    if (flipXandZ || scale != 1.0) {
+    //Flip Z as part of flipping the normals and positions from Alice space to Collada space
+    if (flipZ || scale != 1.0) {
       //Combine whether or not we're flipping with the scale value so we can do it all in one multiply
-      double flipScale = flipXandZ ? scale * -1.0 : scale;
+      double flipScale = flipZ ? scale * -1.0 : scale;
       for (int i = 0; i < values.size(); i += 3) {
-        values.set(i, values.get(i) * flipScale); //Only flip X and Z
+        values.set(i, values.get(i) * scale);
         values.set(i + 1, values.get(i + 1) * scale);
-        values.set(i + 2, values.get(i + 2) * flipScale); //Only flip X and Z
+        values.set(i + 2, values.get(i + 2) * flipScale); //Only flip Z
       }
     }
 
@@ -379,13 +379,13 @@ public class JointedModelColladaExporter {
       triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Normal 0
       triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //UV 0
 
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Position 1
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Normal 1
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //UV 1
-
       triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Position 2
       triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Normal 2
       triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //UV 2
+
+      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Position 1
+      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Normal 1
+      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //UV 1
     }
     triangles.setCount(BigInteger.valueOf(N / 3));
 
@@ -951,7 +951,7 @@ public class JointedModelColladaExporter {
     //Meshes, Weighted Meshes, and Controllers
     createAndAddMeshComponents(collada, visualScene);
 
-    //Finally add visual scene last so it's add the end
+    //Finally add visual scene last so it's at the end
     LibraryVisualScenes lvs = factory.createLibraryVisualScenes();
     lvs.getVisualScene().add(visualScene);
     collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(lvs);
