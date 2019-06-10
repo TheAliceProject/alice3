@@ -144,6 +144,8 @@ public abstract class Model extends Geometry {
 
   private native float[] getUvsForMesh(String meshId);
 
+  private native String[] getTextureIdsForMesh(String meshId);
+
   private native boolean isMeshWeightedToJoint(String meshId, JointId jointId);
 
   private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, JointId jointId);
@@ -333,7 +335,6 @@ public abstract class Model extends Geometry {
       WeightInfo weightInfo = createWeightInfo(meshId, resourceJointIds, newIndexToOldVertex, oldVertexIndexToNewIndex );
       ((WeightedMesh) mesh).weightInfo.setValue(weightInfo);
     }
-
   }
 
   private Joint createSkeleton(List<JointId> resourceJointIds) {
@@ -371,26 +372,8 @@ public abstract class Model extends Geometry {
     List<JointId> resourceJointIds = AliceResourceClassUtilities.getJoints(resource.getClass());
     Joint skeleton = createSkeleton(resourceJointIds);
 
-    List<Mesh> unWeightedMeshes = new ArrayList<>();
-    List<WeightedMesh> weightedMeshes = new ArrayList<>();
-    //Build meshes and weighted meshes
-    String[] unweightedMeshIds = getUnweightedMeshIds();
-    String[] weightedMeshIds = getWeightedMeshIds();
-
-    for (String meshId : weightedMeshIds) {
-      WeightedMesh mesh = new WeightedMesh();
-      initializeMesh(meshId, mesh, resourceJointIds);
-      mesh.textureId.setValue(0);
-      weightedMeshes.add(mesh);
-    }
-    for (String meshId : unweightedMeshIds) {
-      Mesh mesh = new Mesh();
-      initializeMesh(meshId, mesh, resourceJointIds);
-      mesh.textureId.setValue(0);
-      unWeightedMeshes.add(mesh);
-    }
-
     List<TexturedAppearance> textures = new ArrayList<>();
+    Map<String, Integer> textureNameToIdMap = new HashMap<>();
     String[] textureIds = getTextureIds();
     int idCount = 0;
     for (String textureId : textureIds) {
@@ -405,8 +388,40 @@ public abstract class Model extends Geometry {
       TexturedAppearance texturedAppearance = new TexturedAppearance();
       texturedAppearance.diffuseColorTexture.setValue(bufferedImageTexture);
       texturedAppearance.textureId.setValue(idCount);
+      textureNameToIdMap.put(textureId, idCount);
       textures.add(texturedAppearance);
       idCount++;
+    }
+
+    List<Mesh> unWeightedMeshes = new ArrayList<>();
+    List<WeightedMesh> weightedMeshes = new ArrayList<>();
+    //Build meshes and weighted meshes
+    String[] unweightedMeshIds = getUnweightedMeshIds();
+    String[] weightedMeshIds = getWeightedMeshIds();
+
+    for (String meshId : weightedMeshIds) {
+      WeightedMesh mesh = new WeightedMesh();
+      initializeMesh(meshId, mesh, resourceJointIds);
+
+      String[] meshTextureIds = getTextureIdsForMesh(meshId);
+      if (meshTextureIds.length != 1) {
+        Logger.severe("Texture error on "+resource.toString()+": mesh "+meshId+" is mapped to "+meshTextureIds.length+" textures");
+      }
+      mesh.textureId.setValue(textureNameToIdMap.get(meshTextureIds[0]));
+
+      weightedMeshes.add(mesh);
+    }
+    for (String meshId : unweightedMeshIds) {
+      Mesh mesh = new Mesh();
+      initializeMesh(meshId, mesh, resourceJointIds);
+
+      String[] meshTextureIds = getTextureIdsForMesh(meshId);
+      if (meshTextureIds.length != 1) {
+        Logger.severe("Texture error on "+resource.toString()+": mesh "+meshId+" is mapped to "+meshTextureIds.length+" textures");
+      }
+      mesh.textureId.setValue(textureNameToIdMap.get(meshTextureIds[0]));
+
+      unWeightedMeshes.add(mesh);
     }
 
     SkeletonVisual skeletonVisual = new SkeletonVisual();
