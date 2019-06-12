@@ -186,17 +186,19 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   public void appendNewJointId(String joint, String parent, String model) {
-    appendString("new JointId(name: \"");
-    appendString(joint);
-    appendString("\", parent: ");
-    if (parent == null) {
+    appendString("new JointId");
+    parenthesize(() -> {
+      appendString("name: \"");
+      appendString(joint);
+      appendString("\", parent: ");
+      if (parent == null) {
      appendNull();
     } else {
       appendString(tweedleTypeName(model));
-      appendAccessSeparator();
-      appendString(parent);
-    }
-    closeParen();
+        appendAccessSeparator();
+        appendString(parent);
+      }
+    });
   }
 
   @Override
