@@ -236,7 +236,7 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
+  protected void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
     appendSingleStatement(supCon, () -> {
       appendSuperReference();
       appendArguments(supCon);
@@ -591,7 +591,7 @@ public abstract class SourceCodeGenerator {
     appendString("this");
   }
 
-  void appendSuperReference() {
+  protected void appendSuperReference() {
     appendString("super");
   }
 

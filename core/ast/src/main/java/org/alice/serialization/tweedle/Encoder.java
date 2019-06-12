@@ -227,6 +227,39 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
+  protected void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
+    appendSingleStatement(supCon, () -> {
+      appendSuperReference();
+      parenthesize(() -> {
+        appendEachArgument(supCon);
+        appendResourceArgs(supCon);
+      });
+    });
+  }
+
+  private void appendResourceArgs(SuperConstructorInvocationStatement supCon) {
+    final Node parent = supCon.getParent().getParent();
+    if (parent instanceof NamedUserConstructor) {
+      final AbstractType<?, ?, ?> declaringType = ((NamedUserConstructor) parent).getDeclaringType();
+      if (declaringType instanceof NamedUserType) {
+        final NamedUserType nut = (NamedUserType) declaringType;
+        Class resourceClass = nut.getResourceClass();
+        if (resourceClass != null) {
+          if (Arrays.stream(resourceClass.getDeclaredFields()).anyMatch(field -> "ROOT".equals(field.getName()))) {
+            appendString(", root:");
+            appendString(nut.getName());
+            appendString(".ROOT");
+          } else {
+            if ("Biplane".equals(nut.getName())) {
+              appendString(", root: Biplane.BIPLANE_ROOT");
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @Override
   public void appendMethod(UserMethod method) {
     appendNewLine();
     appendIndent();
