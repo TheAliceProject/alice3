@@ -66,6 +66,7 @@ public class Mesh extends Geometry {
   }
 
   public Mesh(Mesh m) {
+    super(m);
     if (m != null) {
       useAlphaTest.setValue(m.useAlphaTest.getValue());
       textureId.setValue(m.textureId.getValue());
@@ -113,7 +114,7 @@ public class Mesh extends Geometry {
   }
 
   public Mesh createCopy() {
-  	return new Mesh(this);
+    return new Mesh(this);
   }
 
   public void scale(Vector3 scale) {

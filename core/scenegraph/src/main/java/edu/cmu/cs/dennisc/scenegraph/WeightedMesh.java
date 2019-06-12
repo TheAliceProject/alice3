@@ -56,7 +56,7 @@ public class WeightedMesh extends Mesh {
     super();
   }
 
-  public WeightedMesh(WeightedMesh m){
+  public WeightedMesh(WeightedMesh m) {
     super(m);
     if (m != null) {
       skeleton.setValue(m.skeleton.getValue());
@@ -65,7 +65,7 @@ public class WeightedMesh extends Mesh {
   }
 
   @Override
-  public WeightedMesh createCopy(){
+  public WeightedMesh createCopy() {
     return new WeightedMesh(this);
   }
 

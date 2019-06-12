@@ -73,7 +73,6 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
-import edu.cmu.cs.dennisc.texture.Texture;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.story.implementation.ImageFactory;

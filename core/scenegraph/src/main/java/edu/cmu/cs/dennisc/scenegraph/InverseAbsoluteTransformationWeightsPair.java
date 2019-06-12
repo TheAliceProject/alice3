@@ -58,7 +58,7 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
   public InverseAbsoluteTransformationWeightsPair() {
   }
 
-  public InverseAbsoluteTransformationWeightsPair( InverseAbsoluteTransformationWeightsPair other ) {
+  public InverseAbsoluteTransformationWeightsPair(InverseAbsoluteTransformationWeightsPair other) {
     index = other.index;
     inverseAbsoluteTransformation = new AffineMatrix4x4(other.inverseAbsoluteTransformation);
     weights = Arrays.copyOf(other.weights, other.weights.length);

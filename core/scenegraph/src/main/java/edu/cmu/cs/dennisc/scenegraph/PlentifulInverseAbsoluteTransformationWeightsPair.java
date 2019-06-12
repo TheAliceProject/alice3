@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import java.util.Arrays;
-
 public class PlentifulInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
 
   public PlentifulInverseAbsoluteTransformationWeightsPair() {
