@@ -286,53 +286,43 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     private static void addResources(Manifest manifest, List<DataSource> dataSources, Set<Resource> resources) {
       Set<String> usedEntryNames = new HashSet<>();
       for (Resource resource : resources) {
-        // TODO add entries to manifest avoiding duplicating names
         String entryName = generateEntryName(resource, usedEntryNames);
         usedEntryNames.add(entryName);
-        addResourceReference(manifest, resource);
+        addResourceReference(manifest, resource, entryName);
         // TODO Expand to cover arbitrary data files
         dataSources.add(new ByteArrayDataSource(entryName, resource.getData()));
       }
     }
 
-    private static void addResourceReference(Manifest manifest, Resource resource) {
+    private static void addResourceReference(Manifest manifest, Resource resource, String entryName) {
+      final ResourceReference resourceReference = resourceReference(resource);
+      resourceReference.file = entryName;
+      manifest.resources.add(resourceReference);
+    }
+
+    private static ResourceReference resourceReference(Resource resource) {
       if (resource instanceof AudioResource) {
-        final AudioReference audioReference = new AudioReference((AudioResource) resource);
-        audioReference.file = "resources/" + audioReference.file;
-        manifest.resources.add(audioReference);
+        return new AudioReference((AudioResource) resource);
       }
       if (resource instanceof ImageResource) {
-        final ImageReference imageReference = new ImageReference((ImageResource) resource);
-        imageReference.file = "resources/" + imageReference.file;
-        manifest.resources.add(imageReference);
+        return new ImageReference((ImageResource) resource);
       }
+      throw new RuntimeException("Resource of unexpected type " + resource);
     }
 
-    // TODO Reconsider and rework since this is cloned from XmlProjectIo
     private static String generateEntryName(Resource resource, Set<String> usedEntryNames) {
-      String validFilename = getValidName(resource.getOriginalFileName());
-      final String DESIRED_DIRECTORY_NAME = "resources";
+      String fileName = resource.getOriginalFileName();
+      String entryName = potentialEntryName(fileName, "");
       int i = 1;
-      while (true) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(DESIRED_DIRECTORY_NAME);
-        if (i > 1) {
-          sb.append(i);
-        }
-        sb.append("/");
-        sb.append(validFilename);
-        String potentialEntryName = sb.toString();
-        if (usedEntryNames.contains(potentialEntryName)) {
-          i += 1;
-        } else {
-          return potentialEntryName;
-        }
+      while (usedEntryNames.contains(entryName)) {
+        i++;
+        entryName = potentialEntryName(fileName, String.valueOf(i));
       }
+      return entryName;
     }
 
-    private static String getValidName(String name) {
-      //todo
-      return name;
+    private static String potentialEntryName(String validFilename, String i) {
+      return "resources" + i + "/" + validFilename;
     }
   }
 }
