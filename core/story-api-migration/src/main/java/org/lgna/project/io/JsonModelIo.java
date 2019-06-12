@@ -5,8 +5,7 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.tweedle.file.*;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -34,6 +33,7 @@ import java.util.*;
 public class JsonModelIo extends DataSourceIo {
 
   private static final boolean NORMALIZE_WEIGHTS = true;
+  private static final boolean GENERATE_BACKFACES = true;
 
   private ModelManifest modelManifest;
   private Set<JointedModelResource> modelResources;
@@ -285,6 +285,14 @@ public class JsonModelIo extends DataSourceIo {
     return null;
   }
 
+  private Mesh createFlippedMesh(Mesh toFlip) {
+    Mesh newMesh = toFlip.createCopy();
+    newMesh.invertNormals();
+    newMesh.invertIndices();
+    newMesh.setName(toFlip.getName() + "_flipped");
+    return newMesh;
+  }
+
   private SkeletonVisual getVisualForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (skeletonVisuals != null) {
       for (SkeletonVisual visual : skeletonVisuals) {
@@ -298,6 +306,46 @@ public class JsonModelIo extends DataSourceIo {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
       JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory(modelResource).createVisualData();
       SkeletonVisual sv = (SkeletonVisual) v.getSgVisuals()[0];
+      //Make sure meshes have a name
+      int meshCount = 0;
+      for (Geometry g : sv.geometries.getValue()) {
+        if ((g instanceof Mesh) && g.getName() == null) {
+          g.setName("mesh" + meshCount++);
+        }
+      }
+      int weightedMeshCount = 0;
+      for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+        if (m.getName() == null) {
+          m.setName("weightedMesh" + weightedMeshCount++);
+        }
+      }
+      if (GENERATE_BACKFACES) {
+        List<Geometry> backfaceMeshes = new LinkedList<>();
+        for (Geometry g : sv.geometries.getValue()) {
+          if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
+            backfaceMeshes.add(createFlippedMesh((Mesh) g));
+          }
+        }
+        if (backfaceMeshes.size() > 0) {
+          for (int i = 0; i < sv.geometries.getLength(); i++) {
+            backfaceMeshes.add(i, sv.geometries.getValue()[i]);
+          }
+          sv.geometries.setValue(backfaceMeshes.toArray(new Geometry[backfaceMeshes.size()]));
+        }
+        List<WeightedMesh> backfaceWeightedMeshes = new LinkedList<>();
+        for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+          if (!m.cullBackfaces.getValue()) {
+            backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
+          }
+        }
+        if (backfaceWeightedMeshes.size() > 0) {
+          for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
+            backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
+          }
+          sv.weightedMeshes.setValue(backfaceWeightedMeshes.toArray(new WeightedMesh[backfaceWeightedMeshes.size()]));
+        }
+
+      }
       if (NORMALIZE_WEIGHTS) {
         sv.normalizeWeightedMeshes();
       }

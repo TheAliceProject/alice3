@@ -85,6 +85,14 @@ public class WeightInfo implements BinaryEncodableAndDecodable {
     }
   }
 
+  public WeightInfo createCopy() {
+    WeightInfo newWeightInfo = new WeightInfo();
+    for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
+      newWeightInfo.mapReferencesToInverseAbsoluteTransformationWeightsPairs.put(pair.getKey(), pair.getValue().createCopy());
+    }
+    return newWeightInfo;
+  }
+
   public void decode(BinaryDecoder binaryDecoder) {
     int count = binaryDecoder.decodeInt();
     this.mapReferencesToInverseAbsoluteTransformationWeightsPairs.clear();

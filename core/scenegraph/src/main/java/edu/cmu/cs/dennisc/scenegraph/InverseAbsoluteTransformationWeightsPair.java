@@ -48,10 +48,21 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
+import java.util.Arrays;
+
 public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable {
   protected AffineMatrix4x4 inverseAbsoluteTransformation;
   protected float[] weights;
   protected int index = 0;
+
+  public InverseAbsoluteTransformationWeightsPair() {
+  }
+
+  public InverseAbsoluteTransformationWeightsPair( InverseAbsoluteTransformationWeightsPair other ) {
+    index = other.index;
+    inverseAbsoluteTransformation = new AffineMatrix4x4(other.inverseAbsoluteTransformation);
+    weights = Arrays.copyOf(other.weights, other.weights.length);
+  }
 
   public abstract void setWeights(float[] weightsIn);
 
@@ -60,6 +71,8 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
   }
 
   public abstract int getIndex();
+
+  public abstract InverseAbsoluteTransformationWeightsPair createCopy();
 
   public boolean isDone() {
     return this.index == this.weights.length;
