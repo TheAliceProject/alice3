@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +53,15 @@ import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
   protected int[] indices;
+
+  public SparseInverseAbsoluteTransformationWeightsPair() {
+    super();
+  }
+
+  public SparseInverseAbsoluteTransformationWeightsPair(SparseInverseAbsoluteTransformationWeightsPair other) {
+    super(other);
+    indices = Arrays.copyOf(other.indices, other.indices.length);
+  }
 
   @Override
   public void setWeights(float[] weightsIn) {
@@ -83,6 +93,11 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
   @Override
   public int getIndex() {
     return this.indices[this.index];
+  }
+
+  @Override
+  public InverseAbsoluteTransformationWeightsPair createCopy() {
+    return new SparseInverseAbsoluteTransformationWeightsPair(this);
   }
 
 }

@@ -52,6 +52,23 @@ public class WeightedMesh extends Mesh {
   public final InstanceProperty<WeightInfo> weightInfo = new InstanceProperty<WeightInfo>(this, null);
   public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>(this, null);
 
+  public WeightedMesh() {
+    super();
+  }
+
+  public WeightedMesh(WeightedMesh m) {
+    super(m);
+    if (m != null) {
+      skeleton.setValue(m.skeleton.getValue());
+      weightInfo.setValue(m.weightInfo.getValue().createCopy());
+    }
+  }
+
+  @Override
+  public WeightedMesh createCopy() {
+    return new WeightedMesh(this);
+  }
+
   public void normalizeWeights() {
     int nVertexCount = this.vertexBuffer.getValue().limit() / 3;
 
@@ -92,4 +109,5 @@ public class WeightedMesh extends Mesh {
     super.scale(scale);
     weightInfo.getValue().scale(scale);
   }
+
 }

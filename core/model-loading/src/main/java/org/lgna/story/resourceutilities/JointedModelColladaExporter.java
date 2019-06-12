@@ -750,6 +750,7 @@ public class JointedModelColladaExporter {
     Node visualSceneNode = createVisualSceneNode(meshName);
     InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
     instanceGeometry.setUrl(geometryURL);
+
     instanceGeometry.setBindMaterial(createBindMaterialForTextureIndex(sgMesh.textureId.getValue()));
     visualSceneNode.getInstanceGeometry().add(instanceGeometry);
 
@@ -785,7 +786,8 @@ public class JointedModelColladaExporter {
     return colorType;
   }
 
-  private Effect createEffect(Integer textureIndex) {
+  private Effect createEffect(TexturedAppearance texturedAppearance) {
+    Integer textureIndex = texturedAppearance.textureId.getValue();
     Effect effect = factory.createEffect();
     final String effectId = getEffectIDForIndex(textureIndex);
     effect.setId(effectId);
@@ -833,6 +835,12 @@ public class JointedModelColladaExporter {
     texture.setTexcoord("UVMap"); //Based on generated example collada file
     diffuse.setTexture(texture);
     lambert.setDiffuse(diffuse);
+    //If the texture has alpha, add a transparent node to and set the texture to be the value
+    if (texturedAppearance.isDiffuseColorTextureAlphaBlended.getValue()) {
+      CommonTransparentType transparent = factory.createCommonTransparentType();
+      transparent.setTexture(texture);
+      lambert.setTransparent(transparent);
+    }
     technique.setLambert(lambert);
     profile.setTechnique(technique);
     JAXBElement<ProfileCOMMON> profileCOMMONJAXBElement = new JAXBElement<ProfileCOMMON>(new QName("http://www.collada.org/2005/11/COLLADASchema", "profile_COMMON"), ProfileCOMMON.class, profile);
@@ -879,7 +887,7 @@ public class JointedModelColladaExporter {
       material.setInstanceEffect(instanceEffect);
       libraryMaterials.getMaterial().add(material);
 
-      Effect effect = createEffect(textureIndex);
+      Effect effect = createEffect(texture);
       libraryEffects.getEffect().add(effect);
     }
     collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryImages);

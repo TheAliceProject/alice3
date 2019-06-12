@@ -45,6 +45,14 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 public class PlentifulInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
 
+  public PlentifulInverseAbsoluteTransformationWeightsPair() {
+    super();
+  }
+
+  public PlentifulInverseAbsoluteTransformationWeightsPair(PlentifulInverseAbsoluteTransformationWeightsPair other) {
+    super(other);
+  }
+
   @Override
   public void setWeights(float[] weightsIn) {
     this.weights = weightsIn;
@@ -54,4 +62,10 @@ public class PlentifulInverseAbsoluteTransformationWeightsPair extends InverseAb
   public int getIndex() {
     return this.index;
   }
+
+  @Override
+  public InverseAbsoluteTransformationWeightsPair createCopy() {
+    return new PlentifulInverseAbsoluteTransformationWeightsPair(this);
+  }
+
 }

@@ -60,6 +60,25 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class Mesh extends Geometry {
+
+  public Mesh() {
+    super();
+  }
+
+  public Mesh(Mesh m) {
+    super(m);
+    if (m != null) {
+      useAlphaTest.setValue(m.useAlphaTest.getValue());
+      textureId.setValue(m.textureId.getValue());
+      cullBackfaces.setValue(m.cullBackfaces.getValue());
+      indexBuffer.setValue(BufferUtilities.copyIntBuffer(m.indexBuffer.getValue()));
+      normalBuffer.setValue(BufferUtilities.copyFloatBuffer(m.normalBuffer.getValue()));
+      vertexBuffer.setValue(BufferUtilities.copyDoubleBuffer(m.vertexBuffer.getValue()));
+      textCoordBuffer.setValue(BufferUtilities.copyFloatBuffer(m.textCoordBuffer.getValue()));
+      setName(m.getName());
+    }
+  }
+
   @Override
   protected void updateBoundingBox(AxisAlignedBox boundingBox) {
     BoundUtilities.getBoundingBox(boundingBox, vertexBuffer.getValue());
@@ -94,6 +113,10 @@ public class Mesh extends Geometry {
     //todo
   }
 
+  public Mesh createCopy() {
+    return new Mesh(this);
+  }
+
   public void scale(Vector3 scale) {
     double[] vertices = BufferUtilities.convertDoubleBufferToArray(vertexBuffer.getValue());
     double[] newVertices = new double[vertices.length];
@@ -103,6 +126,28 @@ public class Mesh extends Geometry {
       newVertices[i + 2] = vertices[i + 2] * scale.z;
     }
     vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
+  }
+
+  public void invertNormals() {
+    float[] normals = BufferUtilities.convertFloatBufferToArray(normalBuffer.getValue());
+    float[] newNormals = new float[normals.length];
+    for (int i = 0; i < normals.length; i += 3) {
+      newNormals[i] = -normals[i];
+      newNormals[i + 1] = -normals[i + 1];
+      newNormals[i + 2] = -normals[i + 2];
+    }
+    normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
+  }
+
+  public void invertIndices() {
+    int[] indices = BufferUtilities.convertIntBufferToArray(indexBuffer.getValue());
+    int[] newIndices = new int[indices.length];
+    for (int i = 0; i < indices.length; i += 3) {
+      newIndices[i] = indices[i];
+      newIndices[i + 1] = indices[i + 2];
+      newIndices[i + 2] = indices[i + 1];
+    }
+    indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
   }
 
   public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (DoubleBuffer) null) {
