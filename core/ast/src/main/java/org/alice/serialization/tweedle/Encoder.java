@@ -10,6 +10,7 @@ import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
+  private static final List<String> classesToAddConstructorsTo = new ArrayList<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -91,6 +93,12 @@ public class Encoder extends SourceCodeGenerator {
     positionParams.put("up", "y");
     positionParams.put("backward", "z");
     constructorsWithRelabeledParams.put("Position", positionParams);
+    classesToAddConstructorsTo.add("Prop");
+    classesToAddConstructorsTo.add("Aircraft");
+    classesToAddConstructorsTo.add("Automobile");
+    classesToAddConstructorsTo.add("Train");
+    classesToAddConstructorsTo.add("Transport");
+    classesToAddConstructorsTo.add("Watercraft");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -121,6 +129,13 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendResources(NamedUserType userType) {
+    final String typeName = userType.getName();
+    if (classesToAddConstructorsTo.contains(typeName)) {
+      appendNewLine();
+      appendString(typeName);
+      appendString("(TextString resource, JointId root) {\n" + "  super(resource: resource, root: root);\n" + "}\n");
+      return;
+    }
     Class resourceClass = userType.getResourceClass();
     if (resourceClass == null) {
       return;
