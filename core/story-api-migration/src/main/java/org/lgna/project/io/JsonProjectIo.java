@@ -297,10 +297,14 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     private static void addResourceReference(Manifest manifest, Resource resource) {
       if (resource instanceof AudioResource) {
-        manifest.resources.add(new AudioReference((AudioResource) resource));
+        final AudioReference audioReference = new AudioReference((AudioResource) resource);
+        audioReference.file = "resources/" + audioReference.file;
+        manifest.resources.add(audioReference);
       }
       if (resource instanceof ImageResource) {
-        manifest.resources.add(new ImageReference((ImageResource) resource));
+        final ImageReference imageReference = new ImageReference((ImageResource) resource);
+        imageReference.file = "resources/" + imageReference.file;
+        manifest.resources.add(imageReference);
       }
     }
 
