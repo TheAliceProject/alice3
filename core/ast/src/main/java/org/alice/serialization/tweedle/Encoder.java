@@ -94,6 +94,9 @@ public class Encoder extends SourceCodeGenerator {
     positionParams.put("up", "y");
     positionParams.put("backward", "z");
     constructorsWithRelabeledParams.put("Position", positionParams);
+    Map<String, String> imageParams = new HashMap<>();
+    imageParams.put("imageResource", "resource");
+    constructorsWithRelabeledParams.put("ImageSource", imageParams);
     classesToAddConstructorsTo.add("Prop");
     classesToAddConstructorsTo.add("Aircraft");
     classesToAddConstructorsTo.add("Automobile");
@@ -208,9 +211,9 @@ public class Encoder extends SourceCodeGenerator {
       appendString(joint);
       appendString("\", parent: ");
       if (parent == null) {
-     appendNull();
-    } else {
-      appendString(tweedleTypeName(model));
+        appendNull();
+      } else {
+        appendString(tweedleTypeName(model));
         appendAccessSeparator();
         appendString(parent);
       }
