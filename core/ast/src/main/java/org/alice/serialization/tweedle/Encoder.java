@@ -43,6 +43,7 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("setWallPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setCeilingPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setOpacity", new String[] {"opacity"});
+    methodsMissingParameterNames.put("strikePose", new String[] {"pose"});
     methodsMissingParameterNames.put("pow", new String[] {"base", "exponent"});
     methodsMissingParameterNames.put("nextIntegerFromAToBExclusive", new String[] {"a", "b"});
     methodsMissingParameterNames.put("nextIntegerFromAToBInclusive", new String[] {"a", "b"});
