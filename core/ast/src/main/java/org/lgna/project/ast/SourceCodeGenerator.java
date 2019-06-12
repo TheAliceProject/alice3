@@ -107,10 +107,13 @@ public abstract class SourceCodeGenerator {
   public abstract void appendMethodHeader(AbstractMethod method);
 
   protected void appendParameters(Code code) {
-    openParen();
+    parenthesize(() -> appendParameters(code.getRequiredParameters()));
+  }
+
+  protected void appendParameters(List<? extends AbstractParameter> requiredParameters) {
     String prefix = "";
     int i = 0;
-    for (AbstractParameter parameter : code.getRequiredParameters()) {
+    for (AbstractParameter parameter : requiredParameters) {
       appendString(prefix);
       appendParameterTypeName(parameter.getValueType());
       appendSpace();
@@ -119,7 +122,6 @@ public abstract class SourceCodeGenerator {
       prefix = getListSeparator();
       i += 1;
     }
-    closeParen();
   }
 
   protected String getListSeparator() {
@@ -234,7 +236,7 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
+  protected void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
     appendSingleStatement(supCon, () -> {
       appendSuperReference();
       appendArguments(supCon);
@@ -249,7 +251,10 @@ public abstract class SourceCodeGenerator {
   }
 
   void appendArguments(ArgumentOwner argumentOwner) {
-    openParen();
+    parenthesize(() -> appendEachArgument(argumentOwner));
+  }
+
+  protected void appendEachArgument(ArgumentOwner argumentOwner) {
     String prefix = "";
     for (SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty()) {
       appendString(prefix);
@@ -266,7 +271,6 @@ public abstract class SourceCodeGenerator {
       appendArgument(argument);
       prefix = getListSeparator();
     }
-    closeParen();
   }
 
   private void appendArgument(SimpleArgument arg) {
@@ -337,9 +341,7 @@ public abstract class SourceCodeGenerator {
       String text = "if";
       for (BooleanExpressionBodyPair booleanExpressionBodyPair : stmt.booleanExpressionBodyPairs) {
         appendString(text);
-        appendString("(");
-        appendExpression(booleanExpressionBodyPair.expression.getValue());
-        closeParen();
+        parenthesize(() -> appendExpression(booleanExpressionBodyPair.expression.getValue()));
         appendStatement(booleanExpressionBodyPair.body.getValue());
         text = " else if";
       }
@@ -363,22 +365,21 @@ public abstract class SourceCodeGenerator {
   protected abstract void appendForEachToken();
 
   protected void appendEachItemsClause(UserLocal itemValue, Expression items) {
-    openParen();
-    appendTypeName(itemValue.getValueType());
-    appendSpace();
-    appendString(itemValue.getValidName());
-    appendInEachToken();
-    appendExpression(items);
-    closeParen();
+    parenthesize(() -> {
+      appendTypeName(itemValue.getValueType());
+      appendSpace();
+      appendString(itemValue.getValidName());
+      appendInEachToken();
+      appendExpression(items);
+    });
   }
 
   protected abstract void appendInEachToken();
 
   void appendWhileLoop(WhileLoop loop) {
     appendCodeFlowStatement(loop, () -> {
-      appendString("while (");
-      appendExpression(loop.conditional.getValue());
-      closeParen();
+      appendString("while ");
+      parenthesize(() -> appendExpression(loop.conditional.getValue()));
       appendStatement(loop.body.getValue());
     });
   }
@@ -538,15 +539,10 @@ public abstract class SourceCodeGenerator {
   }
 
   private void appendPrecedented(PrecedentedAppender expr, Runnable appender) {
-    boolean shouldParenthesize = areParenthesesNeeded(expr);
-    if (shouldParenthesize) {
-      openParen();
-    }
-
-    pushPrecedented(expr, appender);
-
-    if (shouldParenthesize) {
-      closeParen();
+    if (areParenthesesNeeded(expr)) {
+      parenthesize(() -> pushPrecedented(expr, appender));
+    } else {
+      pushPrecedented(expr, appender);
     }
   }
 
@@ -595,7 +591,7 @@ public abstract class SourceCodeGenerator {
     appendString("this");
   }
 
-  void appendSuperReference() {
+  protected void appendSuperReference() {
     appendString("super");
   }
 
@@ -673,8 +669,14 @@ public abstract class SourceCodeGenerator {
     appendChar('(');
   }
 
-  protected void closeParen() {
+  private void closeParen() {
     appendChar(')');
+  }
+
+  protected void parenthesize(Runnable appender) {
+    openParen();
+    appender.run();
+    closeParen();
   }
 
   protected void openBlock() {

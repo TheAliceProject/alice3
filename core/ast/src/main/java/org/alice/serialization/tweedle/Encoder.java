@@ -10,6 +10,7 @@ import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
+  private static final List<String> classesToAddConstructorsTo = new ArrayList<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -41,6 +43,7 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("setWallPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setCeilingPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setOpacity", new String[] {"opacity"});
+    methodsMissingParameterNames.put("strikePose", new String[] {"pose"});
     methodsMissingParameterNames.put("pow", new String[] {"base", "exponent"});
     methodsMissingParameterNames.put("nextIntegerFromAToBExclusive", new String[] {"a", "b"});
     methodsMissingParameterNames.put("nextIntegerFromAToBInclusive", new String[] {"a", "b"});
@@ -91,6 +94,15 @@ public class Encoder extends SourceCodeGenerator {
     positionParams.put("up", "y");
     positionParams.put("backward", "z");
     constructorsWithRelabeledParams.put("Position", positionParams);
+    Map<String, String> imageParams = new HashMap<>();
+    imageParams.put("imageResource", "resource");
+    constructorsWithRelabeledParams.put("ImageSource", imageParams);
+    classesToAddConstructorsTo.add("Prop");
+    classesToAddConstructorsTo.add("Aircraft");
+    classesToAddConstructorsTo.add("Automobile");
+    classesToAddConstructorsTo.add("Train");
+    classesToAddConstructorsTo.add("Transport");
+    classesToAddConstructorsTo.add("Watercraft");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -121,6 +133,13 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendResources(NamedUserType userType) {
+    final String typeName = userType.getName();
+    if (classesToAddConstructorsTo.contains(typeName)) {
+      appendNewLine();
+      appendString(typeName);
+      appendString("(TextString resource, JointId root) {\n" + "  super(resource: resource, root: root);\n" + "}\n");
+      return;
+    }
     Class resourceClass = userType.getResourceClass();
     if (resourceClass == null) {
       return;
@@ -186,17 +205,19 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   public void appendNewJointId(String joint, String parent, String model) {
-    appendString("new JointId(name: \"");
-    appendString(joint);
-    appendString("\", parent: ");
-    if (parent == null) {
-     appendNull();
-    } else {
-      appendString(tweedleTypeName(model));
-      appendAccessSeparator();
-      appendString(parent);
-    }
-    closeParen();
+    appendString("new JointId");
+    parenthesize(() -> {
+      appendString("name: \"");
+      appendString(joint);
+      appendString("\", parent: ");
+      if (parent == null) {
+        appendNull();
+      } else {
+        appendString(tweedleTypeName(model));
+        appendAccessSeparator();
+        appendString(parent);
+      }
+    });
   }
 
   @Override
@@ -222,6 +243,39 @@ public class Encoder extends SourceCodeGenerator {
     appendParameters(constructor);
     appendStatement(constructor.body.getValue());
     appendNewLine();
+  }
+
+  @Override
+  protected void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
+    appendSingleStatement(supCon, () -> {
+      appendSuperReference();
+      parenthesize(() -> {
+        appendEachArgument(supCon);
+        appendResourceArgs(supCon);
+      });
+    });
+  }
+
+  private void appendResourceArgs(SuperConstructorInvocationStatement supCon) {
+    final Node parent = supCon.getParent().getParent();
+    if (parent instanceof NamedUserConstructor) {
+      final AbstractType<?, ?, ?> declaringType = ((NamedUserConstructor) parent).getDeclaringType();
+      if (declaringType instanceof NamedUserType) {
+        final NamedUserType nut = (NamedUserType) declaringType;
+        Class resourceClass = nut.getResourceClass();
+        if (resourceClass != null) {
+          if (Arrays.stream(resourceClass.getDeclaredFields()).anyMatch(field -> "ROOT".equals(field.getName()))) {
+            appendString(", root:");
+            appendString(nut.getName());
+            appendString(".ROOT");
+          } else {
+            if ("Biplane".equals(nut.getName())) {
+              appendString(", root: Biplane.BIPLANE_ROOT");
+            }
+          }
+        }
+      }
+    }
   }
 
   @Override
