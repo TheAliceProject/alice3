@@ -42,12 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.ModelResourceCrawler;
+import org.lgna.story.resources.JointedModelResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class ExportProjectOperation extends AbstractSaveProjectOperation {
@@ -73,6 +82,39 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
   @Override
   public boolean isToolBarTextClobbered() {
     return true;
+  }
+
+  @Override
+  protected void perform(UserActivity activity) {
+    Set<String> problemModels = getProblemModels();
+    if (problemModels.isEmpty() || userWantsToGoAhead(problemModels)) {
+      super.perform(activity);
+    }
+  }
+
+  private boolean userWantsToGoAhead(Set<String> problemModels) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("The following model types will not export cleanly and may cause errors. Do you wish to continue with the export?");
+    for (String s : problemModels) {
+      sb.append("\n    ").append(s);
+    }
+    return Dialogs.confirmWithWarning("Problem models", sb.toString());
+  }
+
+  private Set<String> getProblemModels() {
+    StageIDE application = StageIDE.getActiveInstance();
+    ModelResourceCrawler modelResourceFieldAccessCrawler = new ModelResourceCrawler();
+    application.getProgramType().crawl(modelResourceFieldAccessCrawler, CrawlPolicy.COMPLETE);
+    Map<String, Set<JointedModelResource>> modelResources = modelResourceFieldAccessCrawler.modelResources;
+
+    Set<String> problemModels = new HashSet<>();
+    for (Map.Entry<String, Set<JointedModelResource>> entry : modelResources.entrySet()) {
+      final Set<JointedModelResource> resources = entry.getValue();
+      if (resources.isEmpty() || resources.iterator().next().getImplementationAndVisualFactory().isSims()) {
+        problemModels.add(entry.getKey());
+      }
+    }
+    return problemModels;
   }
 
   @Override
