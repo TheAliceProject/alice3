@@ -71,6 +71,9 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("exp", new String[] {"power"});
     methodsMissingParameterNames.put("log", new String[] {"x"});
 
+    Map<String, String> duration = new HashMap<>();
+    duration.put("duration", "new Duration(seconds: ");
+    methodsWithWrappedArgs.put("delay", duration);
     Map<String, String> amount = new HashMap<>();
     amount.put("amount", "new Angle(revolutions: ");
     methodsWithWrappedArgs.put("roll", amount);
