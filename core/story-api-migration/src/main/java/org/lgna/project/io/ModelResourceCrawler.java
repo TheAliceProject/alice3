@@ -75,7 +75,7 @@ public class ModelResourceCrawler implements Crawler {
   }
 
   private void addIfResourceEnum(FieldAccess fieldAccess) {
-    AbstractType<?,?,?> type = fieldAccess.getType();
+    AbstractType<?, ?, ?> type = fieldAccess.getType();
     if (type != null && type.isAssignableTo(JointedModelResource.class)) {
       JavaField field = (JavaField) fieldAccess.field.getValue();
       try {
