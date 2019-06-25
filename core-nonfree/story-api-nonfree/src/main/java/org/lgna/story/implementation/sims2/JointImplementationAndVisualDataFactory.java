@@ -139,4 +139,9 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     return AffineMatrix4x4.createIdentity();
   }
 
+  @Override
+  public boolean isSims() {
+    return true;
+  }
+
 }

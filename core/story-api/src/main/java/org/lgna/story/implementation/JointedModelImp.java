@@ -109,6 +109,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     public UnitQuaternion getOriginalJointOrientation(JointId jointId);
 
     public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId);
+
+    boolean isSims();
   }
 
   private static class JointImpWrapper extends JointImp {
