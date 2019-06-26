@@ -225,6 +225,11 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   }
 
   @Override
+  public boolean isSims() {
+    return false;
+  }
+
+  @Override
   public JointedModelImp.VisualData createVisualData() {
     return new VisualData(this.resource);
   }

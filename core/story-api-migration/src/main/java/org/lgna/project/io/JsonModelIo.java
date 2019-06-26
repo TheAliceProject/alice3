@@ -304,54 +304,64 @@ public class JsonModelIo extends DataSourceIo {
       return skeletonVisuals.get(0);
     } else if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory(modelResource).createVisualData();
-      SkeletonVisual sv = (SkeletonVisual) v.getSgVisuals()[0];
-      //Make sure meshes have a name
-      int meshCount = 0;
-      for (Geometry g : sv.geometries.getValue()) {
-        if ((g instanceof Mesh) && g.getName() == null) {
-          g.setName("mesh" + meshCount++);
-        }
+      if (modelResource == null) {
+        return null;
       }
-      int weightedMeshCount = 0;
-      for (WeightedMesh m : sv.weightedMeshes.getValue()) {
-        if (m.getName() == null) {
-          m.setName("weightedMesh" + weightedMeshCount++);
-        }
+      final JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> factory = modelResource.getImplementationAndVisualFactory();
+      if (!factory.isSims()) {
+        return getSkeletonVisual(factory.createVisualData());
       }
-      if (GENERATE_BACKFACES) {
-        List<Geometry> backfaceMeshes = new LinkedList<>();
-        for (Geometry g : sv.geometries.getValue()) {
-          if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
-            backfaceMeshes.add(createFlippedMesh((Mesh) g));
-          }
-        }
-        if (backfaceMeshes.size() > 0) {
-          for (int i = 0; i < sv.geometries.getLength(); i++) {
-            backfaceMeshes.add(i, sv.geometries.getValue()[i]);
-          }
-          sv.geometries.setValue(backfaceMeshes.toArray(new Geometry[backfaceMeshes.size()]));
-        }
-        List<WeightedMesh> backfaceWeightedMeshes = new LinkedList<>();
-        for (WeightedMesh m : sv.weightedMeshes.getValue()) {
-          if (!m.cullBackfaces.getValue()) {
-            backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
-          }
-        }
-        if (backfaceWeightedMeshes.size() > 0) {
-          for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
-            backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
-          }
-          sv.weightedMeshes.setValue(backfaceWeightedMeshes.toArray(new WeightedMesh[backfaceWeightedMeshes.size()]));
-        }
-
-      }
-      if (NORMALIZE_WEIGHTS) {
-        sv.normalizeWeightedMeshes();
-      }
-      return sv;
+      // TODO handle sims resources
     }
     return null;
+  }
+
+  private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v) {
+    SkeletonVisual sv = (SkeletonVisual) v.getSgVisuals()[0];
+    //Make sure meshes have a name
+    int meshCount = 0;
+    for (Geometry g : sv.geometries.getValue()) {
+      if ((g instanceof Mesh) && g.getName() == null) {
+        g.setName("mesh" + meshCount++);
+      }
+    }
+    int weightedMeshCount = 0;
+    for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+      if (m.getName() == null) {
+        m.setName("weightedMesh" + weightedMeshCount++);
+      }
+    }
+    if (GENERATE_BACKFACES) {
+      List<Geometry> backfaceMeshes = new LinkedList<>();
+      for (Geometry g : sv.geometries.getValue()) {
+        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
+          backfaceMeshes.add(createFlippedMesh((Mesh) g));
+        }
+      }
+      if (backfaceMeshes.size() > 0) {
+        for (int i = 0; i < sv.geometries.getLength(); i++) {
+          backfaceMeshes.add(i, sv.geometries.getValue()[i]);
+        }
+        sv.geometries.setValue(backfaceMeshes.toArray(new Geometry[backfaceMeshes.size()]));
+      }
+      List<WeightedMesh> backfaceWeightedMeshes = new LinkedList<>();
+      for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+        if (!m.cullBackfaces.getValue()) {
+          backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
+        }
+      }
+      if (backfaceWeightedMeshes.size() > 0) {
+        for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
+          backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
+        }
+        sv.weightedMeshes.setValue(backfaceWeightedMeshes.toArray(new WeightedMesh[backfaceWeightedMeshes.size()]));
+      }
+
+    }
+    if (NORMALIZE_WEIGHTS) {
+      sv.normalizeWeightedMeshes();
+    }
+    return sv;
   }
 
   private BufferedImage getThumbnailImageForSkeletonVisual(SkeletonVisual sv) {
@@ -469,6 +479,9 @@ public class JsonModelIo extends DataSourceIo {
     String resourcePath = baseModelPath + "/" + getModelName();
     for (ModelManifest.ModelVariant modelVariant : modelManifest.models) {
       SkeletonVisual sv = getVisualForModelVariant(modelVariant);
+      if (sv == null) {
+        break;
+      }
       if (exportFormat == ExportFormat.COLLADA) {
         addColladaDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
       } else if (exportFormat == ExportFormat.ALICE) {

@@ -170,10 +170,14 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
       entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
-
-      Map<Class, Set<JointedModelResource>> modelResources = getModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
-      for (Map.Entry<Class, Set<JointedModelResource>> entry : modelResources.entrySet()) {
-        JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
+      ModelResourceCrawler crawler = new ModelResourceCrawler();
+      project.getProgramType().crawl(crawler, CrawlPolicy.COMPLETE);
+      Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
+      for (Set<JointedModelResource> resourceSet : modelResources.values()) {
+        if (resourceSet.isEmpty()) {
+          break; // No enum entries for PersonResources, so they are skipped for now
+        }
+        JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
@@ -241,30 +245,6 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     private static DataSource manifestDataSource(Manifest manifest) {
       return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
-    }
-
-    private Map<Class, Set<JointedModelResource>> getModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
-      IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
-        @Override
-        protected boolean isAcceptable(FieldAccess fieldAccess) {
-          AbstractType type = fieldAccess.field.getValue().getValueType();
-          return type.isAssignableTo(JointedModelResource.class);
-        }
-      };
-      type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
-      Map<Class, Set<JointedModelResource>> modelResources = new HashMap<>();
-      for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
-        JavaField field = (JavaField) fieldAccess.field.getValue();
-        JointedModelResource modelResource = null;
-        try {
-          modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-          Set<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new HashSet<>());
-          resourceList.add(modelResource);
-        } catch (IllegalAccessException e) {
-          e.printStackTrace(); //TODO: Log this
-        }
-      }
-      return modelResources;
     }
 
     private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
