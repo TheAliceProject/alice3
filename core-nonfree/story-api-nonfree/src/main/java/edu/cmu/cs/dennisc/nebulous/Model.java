@@ -43,6 +43,7 @@
 package edu.cmu.cs.dennisc.nebulous;
 
 import com.jogamp.opengl.GL;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
@@ -50,12 +51,14 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,6 +78,30 @@ public abstract class Model extends Geometry {
       NebulousStorytellingResources.INSTANCE.loadSimsBundles();
     }
     //    Manager.setDebugDraw( true );
+  }
+
+  private enum Material {
+    NONE(0, null),
+    SIMPLE_TEXTURE(1, new Color4f(1f, 1f, 1f, 1f)),
+    GLASS(2, new Color4f(179f/255f, 223f/255f, 242f/255f, 128f/255f)),
+    METAL(3, new Color4f(150f/255f, 150f/255f, 160f/255f, 1f)),
+    STONE(4, new Color4f(135f/255f, 130f/255f, 130f/255f, 1f));
+
+    private int value;
+    private Color4f color;
+    Material(int value, Color4f color) {
+      this.value = value;
+      this.color = color;
+    }
+
+    static Material getMaterialForValue(int value) {
+      for (Material mat : Material.values()) {
+        if (mat.value == value) {
+          return mat;
+        }
+      }
+      return null;
+    }
   }
 
   public Model() throws LicenseRejectedException {
@@ -151,6 +178,8 @@ public abstract class Model extends Geometry {
   private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, JointId jointId);
 
   private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, JointId jointId);
+
+  private native int getMaterialTypeForTexture(String textureId);
 
   private native int getImageWidthForTexture(String textureId);
 
@@ -377,19 +406,27 @@ public abstract class Model extends Geometry {
     String[] textureIds = getTextureIds();
     int idCount = 0;
     for (String textureId : textureIds) {
-      int width = this.getImageWidthForTexture(textureId);
-      int height = this.getImageHeightForTexture(textureId);
-      int bytesPerPixel = this.getBytesPerPixelForTexture(textureId);
-      byte[] imageData = new byte[width * height * bytesPerPixel];
-      this.getImageDataForTexture(textureId, imageData);
-      BufferedImage bufferedImage = NebulousTexture.createBufferedImageFromNebulousData(imageData, width, height, bytesPerPixel);
-      BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
-      bufferedImageTexture.setBufferedImage(bufferedImage);
-      TexturedAppearance texturedAppearance = new TexturedAppearance();
-      texturedAppearance.diffuseColorTexture.setValue(bufferedImageTexture);
-      texturedAppearance.textureId.setValue(idCount);
+      int materialType = getMaterialTypeForTexture(textureId);
+      Material material =  Material.getMaterialForValue(materialType);
+      if (material != null) {
+        TexturedAppearance texturedAppearance = new TexturedAppearance();
+        texturedAppearance.diffuseColor.setValue(material.color);
+        texturedAppearance.textureId.setValue(idCount);
+        if (material == Material.SIMPLE_TEXTURE) {
+          int width = this.getImageWidthForTexture(textureId);
+          int height = this.getImageHeightForTexture(textureId);
+          int bytesPerPixel = this.getBytesPerPixelForTexture(textureId);
+          byte[] imageData = new byte[width * height * bytesPerPixel];
+          this.getImageDataForTexture(textureId, imageData);
+          BufferedImage bufferedImage = NebulousTexture.createBufferedImageFromNebulousData(imageData, width, height, bytesPerPixel);
+          BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
+          bufferedImageTexture.setBufferedImage(bufferedImage);
+          texturedAppearance.diffuseColorTexture.setValue(bufferedImageTexture);
+        }
+        textures.add(texturedAppearance);
+      }
       textureNameToIdMap.put(textureId, idCount);
-      textures.add(texturedAppearance);
+
       idCount++;
     }
 
