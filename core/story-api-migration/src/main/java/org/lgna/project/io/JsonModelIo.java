@@ -364,19 +364,12 @@ public class JsonModelIo extends DataSourceIo {
     return sv;
   }
 
-  private BufferedImage getThumbnailImageForSkeletonVisual(SkeletonVisual sv) {
-    if (skeletonVisuals != null) {
-      int index = this.skeletonVisuals.indexOf(sv);
-      return this.thumbnails.get(index);
-    }
-    return null;
-  }
-
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      BufferedImage classThumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass());
-      return classThumbnailImage;
+      if (modelResource != null) {
+        return AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelVariant.name);
+      }
     }
     return null;
   }
@@ -490,12 +483,7 @@ public class JsonModelIo extends DataSourceIo {
         Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
       }
       //Add DataSources for the thumbnails
-      BufferedImage thumbnailImage;
-      if (this.skeletonVisuals != null) {
-        thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
-      } else {
-        thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
-      }
+      BufferedImage thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
       String thumbnailName = modelVariant.name + ".png";
       modelVariant.icon = thumbnailName;
       DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
