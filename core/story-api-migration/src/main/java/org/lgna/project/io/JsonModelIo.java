@@ -89,7 +89,10 @@ public class JsonModelIo extends DataSourceIo {
     //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
     ModelResource firstResource = modelResources.get(0);
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
+    return copyResourceInfo(modelResources, rootInfo);
+  }
 
+  private static ModelResourceInfo copyResourceInfo(Iterable<JointedModelResource> modelResources, ModelResourceInfo rootInfo) {
     //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
     ModelResourceInfo toReturn = rootInfo.createShallowCopy();
     for (JointedModelResource modelResource : modelResources) {
@@ -99,7 +102,6 @@ public class JsonModelIo extends DataSourceIo {
       ModelResourceInfo newSubResource = subResource.createShallowCopy();
       toReturn.addSubResource(newSubResource);
     }
-
     return toReturn;
   }
 
@@ -113,15 +115,7 @@ public class JsonModelIo extends DataSourceIo {
     JointedModelResource firstResource = modelResources.iterator().next();
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
-    //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
-    ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
-    for (JointedModelResource modelResource : modelResources) {
-      String visualName = AliceResourceUtilties.getVisualResourceName(modelResource);
-      String textureName = getTextureName(modelResource);
-      ModelResourceInfo subResource = rootInfo.getSubResource(visualName, textureName);
-      ModelResourceInfo newSubResource = subResource.createShallowCopy();
-      modelInfo.addSubResource(newSubResource);
-    }
+    ModelResourceInfo modelInfo = copyResourceInfo(modelResources, rootInfo);
 
     ModelManifest modelManifest = modelInfo.createModelManifest();
     //Alice resources are enums that implement the base resource interfaces. For instance, the Alien implements the BipedResource interface
