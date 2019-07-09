@@ -227,22 +227,18 @@ public class JsonModelIo extends DataSourceIo {
     return newJointArrayId;
   }
 
-  private static List<String> createRootJoints(Method getRootJointsMethod, JointedModelResource modelResource) {
-    List<String> rootJoints = new ArrayList<>();
-
-    JointId[] rootJointIds = null;
+  private static void addRootJoints(ModelManifest manifest, JointedModelResource modelResource) {
     try {
-      rootJointIds = (JointId[]) getRootJointsMethod.invoke(modelResource);
-    } catch (InvocationTargetException e) {
-      return null;
-    } catch (IllegalAccessException e) {
-      return null;
+      // This handles only BasicResource (Props) where getRootJointIds is defined
+      // TODO Add JOINT_ID_ROOTS, add a common access pattern on JointedModelResource, or replace resources and revisit this code
+      Method rootJointsMethod = modelResource.getClass().getMethod("getRootJointIds");
+      JointId[] rootJointIds = (JointId[]) rootJointsMethod.invoke(modelResource);
+      for (JointId jointId : rootJointIds) {
+        manifest.rootJoints.add(jointId.toString());
+      }
+    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      Logger.info("No getRootJointIds found on model " + manifest.description.name);
     }
-    for (JointId jointId : rootJointIds) {
-      rootJoints.add(jointId.toString());
-    }
-
-    return rootJoints;
   }
 
   //Add poses, additionalJoints, additionalJointArrays, additionalJointArrayIds, and rootJoints
@@ -260,12 +256,7 @@ public class JsonModelIo extends DataSourceIo {
         manifest.additionalJointArrayIds.add(createJointArrayId(field, modelResource));
       }
     }
-    try {
-      Method rootJointMethod = modelResource.getClass().getMethod("getRootJointIds");
-      manifest.rootJoints.addAll(createRootJoints(rootJointMethod, modelResource));
-    } catch (NoSuchMethodException e) {
-      Logger.warning("No getRootJointIds found on model " + manifest.description.name);
-    }
+    addRootJoints(manifest, modelResource);
   }
 
   private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
