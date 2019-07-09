@@ -124,6 +124,4 @@ public abstract class Context {
       handleGLChange();
     }
   }
-
-  public abstract void setAppearanceIndex(int index);
 }

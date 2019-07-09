@@ -113,11 +113,6 @@ public class PickContext extends Context {
   protected void handleGLChange() {
   }
 
-  //todo: remove?
-  @Override
-  public void setAppearanceIndex(int index) {
-  }
-
   private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();
   private final boolean isSynchronous;
 }
