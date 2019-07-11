@@ -26,6 +26,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final String NODE_ENABLE = ">*";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final Map<String, String> typesToRename = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
@@ -35,6 +36,16 @@ public class Encoder extends SourceCodeGenerator {
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
     codeOrganizerDefinitionMap.put("Program", CodeOrganizer.programClassCodeOrganizer);
+    typesToRename.put("IntegerUtilities", "$WholeNumber");
+    typesToRename.put("RandomUtilities", "$Random");
+    typesToRename.put("Double", "DecimalNumber");
+    typesToRename.put("Double[]", "DecimalNumber[]");
+    typesToRename.put("Integer", "WholeNumber");
+    typesToRename.put("Integer[]", "WholeNumber[]");
+    typesToRename.put("String", "TextString");
+    typesToRename.put("String[]", "TextString[]");
+    typesToRename.put("SandDunes", "Terrain");
+
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
     methodsMissingParameterNames.put("setJointedModelResource", new String[] {"resource"});
@@ -581,28 +592,14 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private String tweedleTypeName(String typeName) {
-    switch (typeName) {
-    case "Double":
-      return "DecimalNumber";
-    case "Double[]":
-      return "DecimalNumber[]";
-    case "Integer":
-      return "WholeNumber";
-    case "Integer[]":
-      return "WholeNumber[]";
-    case "String":
-      return "TextString";
-    case "String[]":
-      return "TextString[]";
-    case "SandDunes":
-      return "Terrain";
-    default:
-      if (typeName.endsWith("Resource")) {
-        return typeName.substring(0, typeName.length() - 8);
-      } else {
-        return typeName;
-      }
+    String newName = typesToRename.get(typeName);
+    if (newName != null) {
+      return newName;
     }
+    if (typeName.endsWith("Resource")) {
+      return typeName.substring(0, typeName.length() - 8);
+    }
+    return typeName;
   }
 
   @Override
