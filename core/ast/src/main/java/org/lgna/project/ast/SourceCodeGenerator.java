@@ -437,9 +437,13 @@ public abstract class SourceCodeGenerator {
   }
 
   protected void appendTargetAndMethodName(Expression target, AbstractMethod method) {
+    appendTargetAndMember(target, method.getName(), method.getReturnType());
+  }
+
+  protected void appendTargetAndMember(Expression target, String member, AbstractType<?, ?, ?> returnType) {
     appendExpression(target);
     appendAccessSeparator();
-    appendString(method.getName());
+    appendString(member);
   }
 
   protected abstract void appendResourceExpression(ResourceExpression resourceExpression);
@@ -532,9 +536,7 @@ public abstract class SourceCodeGenerator {
   void appendFieldAccess(FieldAccess access) {
     // Field access has the highest level of precedence, 16, so it will never need parentheses
     pushPrecedented(access, () -> {
-      appendExpression(access.expression.getValue());
-      appendAccessSeparator();
-      appendString(access.field.getValue().getName());
+      appendTargetAndMember(access.expression.getValue(), access.field.getValue().getName(), null);
     });
   }
 

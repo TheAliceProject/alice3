@@ -26,6 +26,9 @@ public class Encoder extends SourceCodeGenerator {
   private static final String NODE_ENABLE = ">*";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
+  private static final List<String> angleMembers = new ArrayList<>();
+  private static final Map<String, String> typesToRename = new HashMap<>();
+  private static final Map<String, String> membersToRename = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
@@ -35,6 +38,28 @@ public class Encoder extends SourceCodeGenerator {
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
     codeOrganizerDefinitionMap.put("Program", CodeOrganizer.programClassCodeOrganizer);
+
+    membersToRename.put("rint", "round");
+    membersToRename.put("ceil", "ceiling");
+    typesToRename.put("IntegerUtilities", "$WholeNumber");
+    membersToRename.put("toFlooredInteger", "floor");
+    membersToRename.put("toRoundedInteger", "round");
+    membersToRename.put("toCeilingedInteger", "ceiling");
+    typesToRename.put("RandomUtilities", "$Random");
+    membersToRename.put("nextIntegerFrom0ToNExclusive", "wholeNumberFrom0ToNExclusive");
+    membersToRename.put("nextIntegerFromAToBExclusive", "wholeNumberFromAToBExclusive");
+    membersToRename.put("nextIntegerFromAToBInclusive", "wholeNumberFromAToBInclusive");
+    membersToRename.put("nextDoubleInRange", "decimalNumberInRange");
+    membersToRename.put("nextBoolean", "boolean");
+
+    typesToRename.put("Double", "DecimalNumber");
+    typesToRename.put("Double[]", "DecimalNumber[]");
+    typesToRename.put("Integer", "WholeNumber");
+    typesToRename.put("Integer[]", "WholeNumber[]");
+    typesToRename.put("String", "TextString");
+    typesToRename.put("String[]", "TextString[]");
+    typesToRename.put("SandDunes", "Terrain");
+
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
     methodsMissingParameterNames.put("setJointedModelResource", new String[] {"resource"});
@@ -44,7 +69,7 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("setCeilingPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setOpacity", new String[] {"opacity"});
     methodsMissingParameterNames.put("strikePose", new String[] {"pose"});
-    methodsMissingParameterNames.put("pow", new String[] {"base", "exponent"});
+    methodsMissingParameterNames.put("pow", new String[] {"b", "power"});
     methodsMissingParameterNames.put("nextIntegerFromAToBExclusive", new String[] {"a", "b"});
     methodsMissingParameterNames.put("nextIntegerFromAToBInclusive", new String[] {"a", "b"});
     methodsMissingParameterNames.put("nextIntegerFrom0ToNExclusive", new String[] {"n"});
@@ -61,6 +86,14 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("ceil", new String[] {"decimalNumber"});
     methodsMissingParameterNames.put("nextDoubleInRange", new String[] {"a", "b"});
     methodsMissingParameterNames.put("sqrt", new String[] {"decimalNumber"});
+    angleMembers.add("sin");
+    angleMembers.add("cos");
+    angleMembers.add("tan");
+    angleMembers.add("asin");
+    angleMembers.add("acos");
+    angleMembers.add("atan");
+    angleMembers.add("atan2");
+    angleMembers.add("PI");
     methodsMissingParameterNames.put("sin", new String[] {"radians"});
     methodsMissingParameterNames.put("cos", new String[] {"radians"});
     methodsMissingParameterNames.put("tan", new String[] {"radians"});
@@ -528,6 +561,37 @@ public class Encoder extends SourceCodeGenerator {
   /** Expressions **/
 
   @Override
+  protected void appendTargetAndMember(Expression target, String member, AbstractType<?, ?, ?> returnType) {
+    if (targetIsMath(target)) {
+      appendString(tweedleModuleForMath(member, returnType));
+    } else {
+      appendExpression(target);
+    }
+    appendAccessSeparator();
+
+    String tweedleName = membersToRename.get(member);
+    appendString(tweedleName == null ? member : tweedleName);
+  }
+
+  private boolean targetIsMath(Expression target) {
+    if (target instanceof TypeExpression) {
+      AbstractType<?, ?, ?> innerType = ((TypeExpression) target).value.getValue();
+      return innerType instanceof JavaType && "Math".equals(innerType.getName());
+    }
+    return false;
+  }
+
+  private String tweedleModuleForMath(String member, AbstractType<?, ?, ?> returnType) {
+    if (returnType != null && "int".equals(returnType.getName())) {
+      return "$WholeNumber";
+    }
+    if (angleMembers.contains(member)) {
+      return "$Angle";
+    }
+    return "$DecimalNumber";
+  }
+
+  @Override
   protected void appendResourceExpression(ResourceExpression resourceExpression) {
     appendEscapedString(resourceExpression.resource.getValue().getName());
   }
@@ -581,28 +645,14 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private String tweedleTypeName(String typeName) {
-    switch (typeName) {
-    case "Double":
-      return "DecimalNumber";
-    case "Double[]":
-      return "DecimalNumber[]";
-    case "Integer":
-      return "WholeNumber";
-    case "Integer[]":
-      return "WholeNumber[]";
-    case "String":
-      return "TextString";
-    case "String[]":
-      return "TextString[]";
-    case "SandDunes":
-      return "Terrain";
-    default:
-      if (typeName.endsWith("Resource")) {
-        return typeName.substring(0, typeName.length() - 8);
-      } else {
-        return typeName;
-      }
+    String newName = typesToRename.get(typeName);
+    if (newName != null) {
+      return newName;
     }
+    if (typeName.endsWith("Resource")) {
+      return typeName.substring(0, typeName.length() - 8);
+    }
+    return typeName;
   }
 
   @Override
