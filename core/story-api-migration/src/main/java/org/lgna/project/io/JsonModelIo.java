@@ -89,7 +89,10 @@ public class JsonModelIo extends DataSourceIo {
     //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
     ModelResource firstResource = modelResources.get(0);
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
+    return copyResourceInfo(modelResources, rootInfo);
+  }
 
+  private static ModelResourceInfo copyResourceInfo(Iterable<JointedModelResource> modelResources, ModelResourceInfo rootInfo) {
     //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
     ModelResourceInfo toReturn = rootInfo.createShallowCopy();
     for (JointedModelResource modelResource : modelResources) {
@@ -99,7 +102,6 @@ public class JsonModelIo extends DataSourceIo {
       ModelResourceInfo newSubResource = subResource.createShallowCopy();
       toReturn.addSubResource(newSubResource);
     }
-
     return toReturn;
   }
 
@@ -113,15 +115,7 @@ public class JsonModelIo extends DataSourceIo {
     JointedModelResource firstResource = modelResources.iterator().next();
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
-    //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
-    ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
-    for (JointedModelResource modelResource : modelResources) {
-      String visualName = AliceResourceUtilties.getVisualResourceName(modelResource);
-      String textureName = getTextureName(modelResource);
-      ModelResourceInfo subResource = rootInfo.getSubResource(visualName, textureName);
-      ModelResourceInfo newSubResource = subResource.createShallowCopy();
-      modelInfo.addSubResource(newSubResource);
-    }
+    ModelResourceInfo modelInfo = copyResourceInfo(modelResources, rootInfo);
 
     ModelManifest modelManifest = modelInfo.createModelManifest();
     //Alice resources are enums that implement the base resource interfaces. For instance, the Alien implements the BipedResource interface
@@ -233,22 +227,18 @@ public class JsonModelIo extends DataSourceIo {
     return newJointArrayId;
   }
 
-  private static List<String> createRootJoints(Method getRootJointsMethod, JointedModelResource modelResource) {
-    List<String> rootJoints = new ArrayList<>();
-
-    JointId[] rootJointIds = null;
+  private static void addRootJoints(ModelManifest manifest, JointedModelResource modelResource) {
     try {
-      rootJointIds = (JointId[]) getRootJointsMethod.invoke(modelResource);
-    } catch (InvocationTargetException e) {
-      return null;
-    } catch (IllegalAccessException e) {
-      return null;
+      // This handles only BasicResource (Props) where getRootJointIds is defined
+      // TODO Add JOINT_ID_ROOTS, add a common access pattern on JointedModelResource, or replace resources and revisit this code
+      Method rootJointsMethod = modelResource.getClass().getMethod("getRootJointIds");
+      JointId[] rootJointIds = (JointId[]) rootJointsMethod.invoke(modelResource);
+      for (JointId jointId : rootJointIds) {
+        manifest.rootJoints.add(jointId.toString());
+      }
+    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      Logger.info("No getRootJointIds found on model " + manifest.description.name);
     }
-    for (JointId jointId : rootJointIds) {
-      rootJoints.add(jointId.toString());
-    }
-
-    return rootJoints;
   }
 
   //Add poses, additionalJoints, additionalJointArrays, additionalJointArrayIds, and rootJoints
@@ -266,12 +256,7 @@ public class JsonModelIo extends DataSourceIo {
         manifest.additionalJointArrayIds.add(createJointArrayId(field, modelResource));
       }
     }
-    try {
-      Method rootJointMethod = modelResource.getClass().getMethod("getRootJointIds");
-      manifest.rootJoints.addAll(createRootJoints(rootJointMethod, modelResource));
-    } catch (NoSuchMethodException e) {
-      Logger.warning("No getRootJointIds found on model " + manifest.description.name);
-    }
+    addRootJoints(manifest, modelResource);
   }
 
   private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
@@ -364,19 +349,12 @@ public class JsonModelIo extends DataSourceIo {
     return sv;
   }
 
-  private BufferedImage getThumbnailImageForSkeletonVisual(SkeletonVisual sv) {
-    if (skeletonVisuals != null) {
-      int index = this.skeletonVisuals.indexOf(sv);
-      return this.thumbnails.get(index);
-    }
-    return null;
-  }
-
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      BufferedImage classThumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass());
-      return classThumbnailImage;
+      if (modelResource != null) {
+        return AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelVariant.name);
+      }
     }
     return null;
   }
@@ -490,12 +468,7 @@ public class JsonModelIo extends DataSourceIo {
         Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
       }
       //Add DataSources for the thumbnails
-      BufferedImage thumbnailImage;
-      if (this.skeletonVisuals != null) {
-        thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
-      } else {
-        thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
-      }
+      BufferedImage thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
       String thumbnailName = modelVariant.name + ".png";
       modelVariant.icon = thumbnailName;
       DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);

@@ -488,7 +488,7 @@ public class ModelResourceInfo {
   private StructureReference createStructureReference() {
     StructureReference structureReference = new StructureReference();
     structureReference.boundingBox = createManifestBoundingBox();
-    structureReference.name = getModelName();
+    structureReference.name = getTextureReferenceName();
     return structureReference;
   }
 

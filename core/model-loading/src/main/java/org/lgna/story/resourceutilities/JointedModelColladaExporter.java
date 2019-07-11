@@ -124,14 +124,6 @@ public class JointedModelColladaExporter {
     initializeTextureNameMap();
   }
 
-  public String getImageExtension() {
-    return IMAGE_EXTENSION;
-  }
-
-  public String getModelExtension() {
-    return COLLADA_EXTENSION;
-  }
-
   private Asset createAsset() {
     Asset asset = factory.createAsset();
 
@@ -849,20 +841,8 @@ public class JointedModelColladaExporter {
     return effect;
   }
 
-  private String getModelName() {
-    if (modelVariant != null) {
-      return modelName + "_" + modelVariant.structure;
-    } else {
-      return modelName;
-    }
-  }
-
   private String getFullResourceName() {
-    if (modelVariant != null) {
-      return modelName + "_" + modelVariant.textureSet;
-    } else {
-      return modelName;
-    }
+    return modelVariant == null ? modelName : modelVariant.textureSet;
   }
 
   private void createAndAddTextureComponents(COLLADA collada) {
@@ -938,7 +918,7 @@ public class JointedModelColladaExporter {
     collada.setAsset(asset);
 
     //Create the Visual Scene, but don't add it yet because it needs to be at the end
-    String sceneName = getModelName();
+    String sceneName = getFullResourceName();
     VisualScene visualScene = factory.createVisualScene();
     visualScene.setId(sceneName);
     visualScene.setName(sceneName);
@@ -1002,15 +982,8 @@ public class JointedModelColladaExporter {
     ImageIO.write(flippedImage, IMAGE_EXTENSION, os);
   }
 
-  public String getColladaFileName() {
-    String fileName;
-    if (modelVariant != null) {
-      fileName = modelName + "_" + modelVariant.structure;
-    } else {
-      fileName = modelName;
-    }
-
-    return fileName + "." + COLLADA_EXTENSION;
+  private String getColladaFileName() {
+    return getFullResourceName() + "." + COLLADA_EXTENSION;
   }
 
   public List<String> getTextureFileNames() {
@@ -1120,13 +1093,13 @@ public class JointedModelColladaExporter {
     return textureFiles;
   }
 
-  public File saveColladaToDirectory(File directory) throws IOException {
+  //Local testing code
+  private File saveColladaToDirectory(File directory) throws IOException {
     File colladaOutputFile = new File(directory, getColladaFileName());
     writeCollada(new FileOutputStream(colladaOutputFile));
     return colladaOutputFile;
   }
 
-  //Local testing code
   private static List<File> exportAliceModelToDir(JointedModelColladaExporter exporter, File rootDir) throws IOException {
     List<File> outputFiles = new ArrayList<>();
 
