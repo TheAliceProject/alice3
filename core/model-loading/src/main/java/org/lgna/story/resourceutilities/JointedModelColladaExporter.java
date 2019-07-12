@@ -70,6 +70,7 @@ import javax.xml.namespace.QName;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -350,7 +351,7 @@ public class JointedModelColladaExporter {
     return meshName + "-id";
   }
 
-  private Triangles createTriangles(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, String verticesName, String normalsName, String UVsName) {
+  private Triangles createTriangles(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, String verticesName, String normalsName, String UVsName, Integer textureId) {
     //Build the triangle data
     Triangles triangles = factory.createTriangles();
     InputLocalOffset vertexInput = createInputLocalOffset("VERTEX", verticesName, 0);
@@ -366,21 +367,28 @@ public class JointedModelColladaExporter {
     List<BigInteger> triangleList = triangles.getP();
     IntBuffer ib = sgMesh.indexBuffer.getValue();
     final int N = sgMesh.indexBuffer.getValue().limit();
+    int count = 0;
     for (int i = 0; i < N; i += 3) {
-      //Reverse the order of the triangle indices because collada needs the indices in counter clockwise order
-      triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Position 0
-      triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Normal 0
-      triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //UV 0
+      if (sgMesh.textureIdArray.get(i) != sgMesh.textureIdArray.get(i + 1) || sgMesh.textureIdArray.get(i) != sgMesh.textureIdArray.get(i + 2)) {
+        Logger.severe("Triangle material mapping isn't consistent: " + i + "=" + sgMesh.textureIdArray.get(i) + ", " + (i + 1) + "=" + sgMesh.textureIdArray.get(i + 1) + ", " + (i + 2) + "=" + sgMesh.textureIdArray.get(i + 2));
+      }
+      if (sgMesh.textureIdArray.get(i + 0) == textureId) {
+        //Reverse the order of the triangle indices because collada needs the indices in counter clockwise order
+        triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Position 0
+        triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Normal 0
+        triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //UV 0
 
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Position 1
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Normal 1
-      triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //UV 1
+        triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Position 1
+        triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //Normal 1
+        triangleList.add(BigInteger.valueOf(ib.get(i + 1))); //UV 1
 
-      triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Position 2
-      triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Normal 2
-      triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //UV 2
+        triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Position 2
+        triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //Normal 2
+        triangleList.add(BigInteger.valueOf(ib.get(i + 2))); //UV 2
+        count++;
+      }
     }
-    triangles.setCount(BigInteger.valueOf(N / 3));
+    triangles.setCount(BigInteger.valueOf(count));
 
     return triangles;
   }
@@ -426,13 +434,15 @@ public class JointedModelColladaExporter {
     Vertices vertices = createVertices(vertexName, positionName);
     mesh.setVertices(vertices);
     //Create and add the triangles
-    Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName);
-    // Grab the texture index from the mesh and use that to make the material reference
-    Integer materialIndex = sgMesh.textureId.getValue();
-    // Sets a reference to an instance_material by its symbol
-    triangles.setMaterial(getInstanceMaterialSymbolForIndex(materialIndex));
-    mesh.getLinesOrLinestripsOrPolygons().add(triangles);
-
+    //Find all the textureIds referenced by this mesh
+    List<Integer> usedTextureIds = sgMesh.getReferencedTextureIds();
+    //Make a unique triangle entry for each textureId used by the mesh
+    for (Integer usedTextureId : usedTextureIds) {
+      Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName, usedTextureId);
+      // Sets a reference to an instance_material by its symbol
+      triangles.setMaterial(getInstanceMaterialSymbolForIndex(usedTextureId));
+      mesh.getLinesOrLinestripsOrPolygons().add(triangles);
+    }
     geometry.setMesh(mesh);
 
     return geometry;
@@ -707,22 +717,24 @@ public class JointedModelColladaExporter {
     return materialNameMap.get(index) + "_fx";
   }
 
-  private BindMaterial createBindMaterialForMaterialIndex(Integer materialIndex) {
+  private BindMaterial createBindMaterialForMaterialIndexes(List<Integer> materialIndexes) {
     BindMaterial bindMaterial = factory.createBindMaterial();
 
     BindMaterial.TechniqueCommon techniqueCommon = factory.createBindMaterialTechniqueCommon();
-    InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
-    techniqueCommon.getInstanceMaterial().add(instanceMaterial);
-    // Symbol uniquely identifies the instance_material.
-    // It is referred to from a geometry sub element (e.g. triangle) by material="anInstanceMaterialSymbol"
-    instanceMaterial.setSymbol(getInstanceMaterialSymbolForIndex(materialIndex));
-    // Target is the id of the material to use does not have #
-    instanceMaterial.setTarget(getMaterialIDForIndex(materialIndex));
-    InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
-    instanceMaterial.getBindVertexInput().add(bindVertexInput);
-    bindVertexInput.setSemantic("UVMap");
-    bindVertexInput.setInputSet(BigInteger.ZERO);
-    bindVertexInput.setInputSemantic("TEXCOORD");
+    for (Integer materialIndex : materialIndexes) {
+      InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
+      // Symbol uniquely identifies the instance_material.
+      // It is referred to from a geometry sub element (e.g. triangle) by material="anInstanceMaterialSymbol"
+      instanceMaterial.setSymbol(getInstanceMaterialSymbolForIndex(materialIndex));
+      // Target is the id of the material to use does not have #
+      instanceMaterial.setTarget(getMaterialIDForIndex(materialIndex));
+      InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
+      bindVertexInput.setSemantic("UVMap");
+      bindVertexInput.setInputSet(BigInteger.ZERO);
+      bindVertexInput.setInputSemantic("TEXCOORD");
+      instanceMaterial.getBindVertexInput().add(bindVertexInput);
+      techniqueCommon.getInstanceMaterial().add(instanceMaterial);
+    }
 
     bindMaterial.setTechniqueCommon(techniqueCommon);
     return bindMaterial;
@@ -744,7 +756,7 @@ public class JointedModelColladaExporter {
     InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
     instanceGeometry.setUrl(geometryURL);
 
-    instanceGeometry.setBindMaterial(createBindMaterialForMaterialIndex(sgMesh.textureId.getValue()));
+    instanceGeometry.setBindMaterial(createBindMaterialForMaterialIndexes(sgMesh.getReferencedTextureIds()));
     visualSceneNode.getInstanceGeometry().add(instanceGeometry);
 
     return visualSceneNode;
@@ -757,7 +769,7 @@ public class JointedModelColladaExporter {
     Node visualSceneNode = createVisualSceneNode(meshName);
     InstanceController instanceController = factory.createInstanceController();
     instanceController.setUrl(controllerURL);
-    instanceController.setBindMaterial(createBindMaterialForMaterialIndex(sgWeightedMesh.textureId.getValue()));
+    instanceController.setBindMaterial(createBindMaterialForMaterialIndexes(sgWeightedMesh.getReferencedTextureIds()));
     visualSceneNode.getInstanceController().add(instanceController);
 
     return visualSceneNode;
@@ -835,8 +847,7 @@ public class JointedModelColladaExporter {
         transparent.setTexture(texture);
         lambert.setTransparent(transparent);
       }
-    }
-    else {
+    } else {
       Color4f diffuseColor = texturedAppearance.diffuseColor.getValue();
       lambert.setDiffuse(createCommonColorType("diffuse", diffuseColor.red, diffuseColor.green, diffuseColor.blue, diffuseColor.alpha));
     }

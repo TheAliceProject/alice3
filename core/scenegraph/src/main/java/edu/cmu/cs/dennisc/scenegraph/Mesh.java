@@ -58,6 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.*;
 
 public class Mesh extends Geometry {
 
@@ -159,10 +160,22 @@ public class Mesh extends Geometry {
     }
   };
 
+  public List<Integer> getReferencedTextureIds() {
+    List<Integer> referencedTextureIds = new LinkedList<>();
+      for (Integer textureId : textureIdArray) {
+        if (!referencedTextureIds.contains(textureId)) {
+          referencedTextureIds.add(textureId);
+        }
+      }
+    return referencedTextureIds;
+  }
+
   public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (IntBuffer) null);
   public final IntegerProperty textureId = new IntegerProperty(this, -1);
   public final BooleanProperty cullBackfaces = new BooleanProperty(this, Boolean.TRUE);
   public final BooleanProperty useAlphaTest = new BooleanProperty(this, Boolean.FALSE);
+
+  public ArrayList<Integer> textureIdArray = new ArrayList<>(); //Similar to vertex buffer and normal buffer, this encodes the textureId for a given index
 }

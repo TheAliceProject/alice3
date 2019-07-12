@@ -83,9 +83,9 @@ public abstract class Model extends Geometry {
   private enum Material {
     NONE(0, null),
     SIMPLE_TEXTURE(1, new Color4f(1f, 1f, 1f, 1f)),
-    GLASS(2, new Color4f(179f/255f, 223f/255f, 242f/255f, 128f/255f)),
-    METAL(3, new Color4f(150f/255f, 150f/255f, 160f/255f, 1f)),
-    STONE(4, new Color4f(135f/255f, 130f/255f, 130f/255f, 1f));
+    GLASS(2, new Color4f(179f / 255f, 223f / 255f, 242f / 255f, 128f / 255f)),
+    METAL(3, new Color4f(150f / 255f, 150f / 255f, 160f / 255f, 1f)),
+    STONE(4, new Color4f(135f / 255f, 130f / 255f, 130f / 255f, 1f));
 
     private int value;
     private Color4f color;
@@ -163,7 +163,7 @@ public abstract class Model extends Geometry {
 
   private native String[] getTextureIds();
 
-  private native int[] getIndicesForMesh(String meshId);
+  private native int[] getIndicesForMesh(String meshId, String textureId);
 
   private native float[] getVerticesForMesh(String meshId);
 
@@ -275,7 +275,7 @@ public abstract class Model extends Geometry {
     boundingBox.setMaximum(bboxData[3], bboxData[4], bboxData[5]);
   }
 
-  private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex){
+  private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex) {
     WeightInfo weightInfo = new WeightInfo();
     for (JointId joint : resourceJointIds) {
       if (isMeshWeightedToJoint(meshId, joint)) {
@@ -307,11 +307,11 @@ public abstract class Model extends Geometry {
     return weightInfo;
   }
 
-  private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds) {
+  private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds, Map<String, Integer> textureNamesToIds) {
+    String[] meshTextureIds = getTextureIdsForMesh(meshId);
     float[] vertices = getVerticesForMesh(meshId);
     float[] normals = getNormalsForMesh(meshId);
     float[] uvs = getUvsForMesh(meshId);
-    int[] indices = getIndicesForMesh(meshId);
     /*
     Indices have to be unified. Alice uses a single set of indices for vertices, normals, and UVs
     The Sims use a single array of indices, but separate values for indices into the vertices, normals, and UVS:
@@ -325,43 +325,61 @@ public abstract class Model extends Geometry {
       glVertex3fv( vfVertices + nIndex );
      }
      */
-    int indexCount = indices.length / 3;
-    double[] newVertices = new double[indexCount * 3];
-    float[] newNormals = new float[indexCount * 3];
-    float[] newUVs = new float[indexCount * 2];
-    int[] newIndices = new int[indexCount];
+    Map<String, int[]> textureIdToIndices = new HashMap<>();
+    int originalIndexCount = 0;
+    for (String textureId : meshTextureIds) {
+      int[] indices = getIndicesForMesh(meshId, textureId);
+      originalIndexCount += indices.length;
+      textureIdToIndices.put(textureId, indices);
+    }
+
+    int newIndexCount = originalIndexCount / 3;
+    double[] newVertices = new double[newIndexCount * 3];
+    float[] newNormals = new float[newIndexCount * 3];
+    float[] newUVs = new float[newIndexCount * 2];
+    String[] newTextureIds = new String[newIndexCount];
+    mesh.textureIdArray.ensureCapacity(newIndexCount);
+    int[] newIndices = new int[newIndexCount];
     Map<Integer, Integer> oldVertexIndexToNewIndex = new HashMap<>();
     Map<Integer, Integer> newIndexToOldVertex = new HashMap<>();
-    for (int i = 0; i < indices.length; ) {
-      int currentIndex = i / 3; //sims indices are stored as triplets (uv, normal, vertex), so divide by 3 to get actual index
-      int uvIndex = indices[i];
-      newUVs[currentIndex * 2] = uvs[uvIndex];
-      newUVs[currentIndex * 2 + 1] = uvs[uvIndex + 1];
-      i++;
-      int normalIndex = indices[i];
-      newNormals[currentIndex * 3] = normals[normalIndex];
-      newNormals[currentIndex * 3 + 1] = normals[normalIndex + 1];
-      newNormals[currentIndex * 3 + 2] = normals[normalIndex + 2];
-      i++;
-      int vertexIndex = indices[i];
-      newVertices[currentIndex * 3] = vertices[vertexIndex];
-      newVertices[currentIndex * 3 + 1] = vertices[vertexIndex + 1];
-      newVertices[currentIndex * 3 + 2] = vertices[vertexIndex + 2];
-      //Since we're remapping the indices, we'll need to remap the skin weights as well
-      //To do this we'll need to store the remapping data
-      oldVertexIndexToNewIndex.put(vertexIndex / 3, currentIndex);
-      newIndexToOldVertex.put(currentIndex, vertexIndex / 3);
-
-      newIndices[currentIndex] = currentIndex;
-      i++;
+    int currentIndex = 0;
+    for (Map.Entry<String, int[]> indicesEntry: textureIdToIndices.entrySet()) {
+        int[] currentIndices = indicesEntry.getValue();
+        String currentTextureId = indicesEntry.getKey();
+        for (int i = 0; i < currentIndices.length;) {
+          //int currentIndex = originalIndex / 3; //sims indices are stored as triplets (uv, normal, vertex), so divide by 3 to get actual index
+          int uvIndex = currentIndices[i];
+          newUVs[currentIndex * 2] = uvs[uvIndex];
+          newUVs[currentIndex * 2 + 1] = uvs[uvIndex + 1];
+          i++;
+          int normalIndex = currentIndices[i];
+          newNormals[currentIndex * 3] = normals[normalIndex];
+          newNormals[currentIndex * 3 + 1] = normals[normalIndex + 1];
+          newNormals[currentIndex * 3 + 2] = normals[normalIndex + 2];
+          i++;
+          int vertexIndex = currentIndices[i];
+          newVertices[currentIndex * 3] = vertices[vertexIndex];
+          newVertices[currentIndex * 3 + 1] = vertices[vertexIndex + 1];
+          newVertices[currentIndex * 3 + 2] = vertices[vertexIndex + 2];
+          //Add a mapping to the textureId
+          newTextureIds[currentIndex] = currentTextureId;
+          mesh.textureIdArray.add(currentIndex, textureNamesToIds.get(currentTextureId));
+          //Since we're remapping the indices, we'll need to remap the skin weights as well
+          //To do this we'll need to store the remapping data
+          oldVertexIndexToNewIndex.put(vertexIndex / 3, currentIndex);
+          newIndexToOldVertex.put(currentIndex, vertexIndex / 3);
+          newIndices[currentIndex] = currentIndex;
+          i++;
+          currentIndex++;
+        }
     }
     mesh.normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
     mesh.vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
     mesh.textCoordBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newUVs));
     mesh.indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
-
+    mesh.textureId.setValue(textureNamesToIds.get(meshTextureIds[0]));
     if (mesh instanceof  WeightedMesh) {
-      WeightInfo weightInfo = createWeightInfo(meshId, resourceJointIds, newIndexToOldVertex, oldVertexIndexToNewIndex );
+      WeightInfo weightInfo = createWeightInfo(meshId, resourceJointIds, newIndexToOldVertex, oldVertexIndexToNewIndex);
       ((WeightedMesh) mesh).weightInfo.setValue(weightInfo);
     }
   }
@@ -400,7 +418,6 @@ public abstract class Model extends Geometry {
     //Create skeleton from nebulous data
     List<JointId> resourceJointIds = AliceResourceClassUtilities.getJoints(resource.getClass());
     Joint skeleton = createSkeleton(resourceJointIds);
-
     List<TexturedAppearance> textures = new ArrayList<>();
     Map<String, Integer> textureNameToIdMap = new HashMap<>();
     String[] textureIds = getTextureIds();
@@ -426,38 +443,21 @@ public abstract class Model extends Geometry {
         textures.add(texturedAppearance);
       }
       textureNameToIdMap.put(textureId, idCount);
-
       idCount++;
     }
-
     List<Mesh> unWeightedMeshes = new ArrayList<>();
     List<WeightedMesh> weightedMeshes = new ArrayList<>();
     //Build meshes and weighted meshes
     String[] unweightedMeshIds = getUnweightedMeshIds();
     String[] weightedMeshIds = getWeightedMeshIds();
-
     for (String meshId : weightedMeshIds) {
       WeightedMesh mesh = new WeightedMesh();
-      initializeMesh(meshId, mesh, resourceJointIds);
-
-      String[] meshTextureIds = getTextureIdsForMesh(meshId);
-      if (meshTextureIds.length != 1) {
-        Logger.severe("Texture error on "+resource.toString()+": mesh "+meshId+" is mapped to "+meshTextureIds.length+" textures");
-      }
-      mesh.textureId.setValue(textureNameToIdMap.get(meshTextureIds[0]));
-
+      initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
       weightedMeshes.add(mesh);
     }
     for (String meshId : unweightedMeshIds) {
       Mesh mesh = new Mesh();
-      initializeMesh(meshId, mesh, resourceJointIds);
-
-      String[] meshTextureIds = getTextureIdsForMesh(meshId);
-      if (meshTextureIds.length != 1) {
-        Logger.severe("Texture error on "+resource.toString()+": mesh "+meshId+" is mapped to "+meshTextureIds.length+" textures");
-      }
-      mesh.textureId.setValue(textureNameToIdMap.get(meshTextureIds[0]));
-
+      initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
       unWeightedMeshes.add(mesh);
     }
 
