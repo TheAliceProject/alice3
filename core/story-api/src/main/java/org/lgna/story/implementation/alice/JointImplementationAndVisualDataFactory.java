@@ -95,7 +95,9 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     }
 
     @Override
-    public Visual getSgVisualForExporting(JointedModelResource resource) { return getSgVisuals()[0]; }
+    public Visual getSgVisualForExporting(JointedModelResource resource) {
+      return getSgVisuals()[0];
+    }
 
     @Override
     public double getBoundingSphereRadius() {

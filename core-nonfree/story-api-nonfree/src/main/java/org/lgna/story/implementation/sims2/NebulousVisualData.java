@@ -53,9 +53,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointedModelResource;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author Dennis Cosgrove
  */
