@@ -482,10 +482,6 @@ public abstract class Model extends Geometry {
     throw new RuntimeException("todo");
   }
 
-  public Object TESTING_getResourceKey() {
-    return this;
-  }
-
   protected Composite sgParent;
   protected Visual sgAssociatedVisual;
 

@@ -97,24 +97,6 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   public JointImp createJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
     assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
     Model nebModel = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getNebModel();
-
-    //TESTING
-    Visual visual = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getSgVisuals()[0];
-    if (visual instanceof SkeletonVisual) {
-      SkeletonVisual sv = (SkeletonVisual) visual;
-      String key = jointId.toString();
-      Joint sgSkeletonRoot = sv.skeleton.getValue();
-      Joint sgJoint = sgSkeletonRoot.getJoint(key);
-      if (sgJoint != null) {
-        sgJoint.setName(key);
-        return new org.lgna.story.implementation.alice.JointImplementation(jointedModelImplementation, jointId, sgJoint);
-      } else {
-        JointedModelResource resource = jointedModelImplementation.getResource();
-        Logger.severe(jointId, "not found for", resource.getClass(), resource);
-        return null;
-      }
-    }
-
     return new JointImplementation(jointedModelImplementation, new NebulousJoint(nebModel, jointId));
   }
 

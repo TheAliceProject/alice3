@@ -64,21 +64,11 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   private final Visual[] sgVisuals = new Visual[] {new Visual()};
   private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
 
-
-  private static final Set<Object> TESTING_modelSet = new HashSet<>();
-
   public NebulousVisualData(M nebModel) {
     this.nebModel = nebModel;
-
-    if (!TESTING_modelSet.contains(nebModel.TESTING_getResourceKey())) {
-      sgVisuals[0] = nebModel.createSkeletonVisual((JointedModelResource) nebModel.TESTING_getResourceKey());
-      this.nebModel.setVisual(sgVisuals[0]);
-      TESTING_modelSet.add(nebModel.TESTING_getResourceKey());
-    } else {
-      this.nebModel.setVisual(sgVisuals[0]);
-      this.getSgVisuals()[0].geometries.setValue(new Geometry[]{this.nebModel});
-      this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
-    }
+    this.nebModel.setVisual(sgVisuals[0]);
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[]{this.nebModel});
+    this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
   }
 
   @Override

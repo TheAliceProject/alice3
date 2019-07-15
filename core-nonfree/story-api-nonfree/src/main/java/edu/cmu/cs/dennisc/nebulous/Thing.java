@@ -69,11 +69,6 @@ public class Thing extends Model {
     }
   }
 
-  @Override
-  public Object TESTING_getResourceKey() {
-    return this.o;
-  }
-
   private native void initialize(Object o, Object o2);
 
   private native void unload();
