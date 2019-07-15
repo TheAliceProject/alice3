@@ -46,10 +46,7 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.nebulous.Model;
 import edu.cmu.cs.dennisc.nebulous.Person;
 import edu.cmu.cs.dennisc.nebulous.Thing;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -79,7 +76,7 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   }
 
   @Override
-  public Visual getSgVisualForExporting(JointedModelResource resource) {
+  public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
     return nebModel.createSkeletonVisual(resource);
   }
 

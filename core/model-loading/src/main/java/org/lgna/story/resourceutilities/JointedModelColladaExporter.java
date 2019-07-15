@@ -791,6 +791,38 @@ public class JointedModelColladaExporter {
     return colorType;
   }
 
+  private CommonNewparamType createSurfaceParam(Integer materialIndex) {
+    //Create the surface param
+    String surfaceParamId = getImageNameForIndex(materialIndex) + "-surface";
+    CommonNewparamType surfaceParam = factory.createCommonNewparamType();
+    surfaceParam.setSid(surfaceParamId);
+    FxSurfaceCommon surface = factory.createFxSurfaceCommon();
+    surface.setType("2D");
+    FxSurfaceInitFromCommon surfaceInit = factory.createFxSurfaceInitFromCommon();
+    //This "setValue" needs something that has an ID.
+    //We're using the same pattern we used for making the Image entries for the library_images section
+    Image image = factory.createImage();
+    image.setName(getImageNameForIndex(materialIndex));
+    image.setId(getImageIDForIndex(materialIndex));
+    surfaceInit.setValue(image);
+
+    surface.getInitFrom().add(surfaceInit);
+    surfaceParam.setSurface(surface);
+    return surfaceParam;
+  }
+
+  private CommonNewparamType createSamplerParam(Integer materialIndex, String surfaceParamId) {
+    //Create the sampler param
+    CommonNewparamType samplerParam = factory.createCommonNewparamType();
+    final String samplerParamSid = getImageNameForIndex(materialIndex) + "-sampler";
+    samplerParam.setSid(samplerParamSid);
+    FxSampler2DCommon sampler = factory.createFxSampler2DCommon();
+    sampler.setSource(surfaceParamId);
+    samplerParam.setSampler2D(sampler);
+    return samplerParam;
+  }
+
+
   private Effect createEffect(TexturedAppearance texturedAppearance) {
     Integer materialIndex = texturedAppearance.textureId.getValue();
     Effect effect = factory.createEffect();
@@ -808,36 +840,13 @@ public class JointedModelColladaExporter {
     lambert.setEmission(createCommonColorType("emission", 0, 0, 0, 1));
     lambert.setAmbient(createCommonColorType("ambient", 0, 0, 0, 1));
     if (texturedAppearance.diffuseColorTexture.getValue() != null) {
-      //Create the surface param
-      CommonNewparamType surfaceParam = factory.createCommonNewparamType();
-      final String surfaceParamSid = getImageNameForIndex(materialIndex) + "-surface";
-      surfaceParam.setSid(surfaceParamSid);
-      FxSurfaceCommon surface = factory.createFxSurfaceCommon();
-      surface.setType("2D");
-      FxSurfaceInitFromCommon surfaceInit = factory.createFxSurfaceInitFromCommon();
-      //This "setValue" needs something that has an ID.
-      //We're using the same pattern we used for making the Image entries for the library_images section
-      Image image = factory.createImage();
-      image.setName(getImageNameForIndex(materialIndex));
-      image.setId(getImageIDForIndex(materialIndex));
-      surfaceInit.setValue(image);
-
-      surface.getInitFrom().add(surfaceInit);
-      surfaceParam.setSurface(surface);
+      CommonNewparamType surfaceParam = createSurfaceParam(materialIndex);
       profile.getImageOrNewparam().add(surfaceParam);
-
-      //Create the sampler param
-      CommonNewparamType samplerParam = factory.createCommonNewparamType();
-      final String samplerParamSid = getImageNameForIndex(materialIndex) + "-sampler";
-      samplerParam.setSid(samplerParamSid);
-      FxSampler2DCommon sampler = factory.createFxSampler2DCommon();
-      sampler.setSource(surfaceParamSid);
-      samplerParam.setSampler2D(sampler);
+      CommonNewparamType samplerParam = createSamplerParam(materialIndex, surfaceParam.getSid());
       profile.getImageOrNewparam().add(samplerParam);
-
       CommonColorOrTextureType diffuse = factory.createCommonColorOrTextureType();
       CommonColorOrTextureType.Texture texture = factory.createCommonColorOrTextureTypeTexture();
-      texture.setTexture(samplerParamSid);
+      texture.setTexture(samplerParam.getSid());
       texture.setTexcoord("UVMap"); //Based on generated example collada file
       diffuse.setTexture(texture);
       lambert.setDiffuse(diffuse);

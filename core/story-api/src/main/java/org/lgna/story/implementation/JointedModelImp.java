@@ -86,7 +86,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   public static interface VisualData<R extends JointedModelResource> {
     public Visual[] getSgVisuals();
 
-    public Visual getSgVisualForExporting(R resource);
+    public SkeletonVisual getSgVisualForExporting(R resource);
 
     public SimpleAppearance[] getSgAppearances();
 

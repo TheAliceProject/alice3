@@ -95,8 +95,8 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     }
 
     @Override
-    public Visual getSgVisualForExporting(JointedModelResource resource) {
-      return getSgVisuals()[0];
+    public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
+      return this.sgSkeletonVisual;
     }
 
     @Override

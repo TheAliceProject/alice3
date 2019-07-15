@@ -151,15 +151,6 @@ public class Mesh extends Geometry {
     indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
   }
 
-  public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (DoubleBuffer) null) {
-    @Override
-    public void setValue(DoubleBuffer value) {
-      Mesh.this.markBoundsDirty();
-      super.setValue(value);
-      Mesh.this.fireBoundChanged();
-    }
-  };
-
   public List<Integer> getReferencedTextureIds() {
     List<Integer> referencedTextureIds = new LinkedList<>();
       for (Integer textureId : textureIdArray) {
@@ -170,12 +161,22 @@ public class Mesh extends Geometry {
     return referencedTextureIds;
   }
 
+  public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (DoubleBuffer) null) {
+    @Override
+    public void setValue(DoubleBuffer value) {
+      Mesh.this.markBoundsDirty();
+      super.setValue(value);
+      Mesh.this.fireBoundChanged();
+    }
+  };
   public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (IntBuffer) null);
   public final IntegerProperty textureId = new IntegerProperty(this, -1);
+  //textureIdArray is currently only used for model exporting. Alice rendering does not support multiple textures per mesh
+  public ArrayList<Integer> textureIdArray = new ArrayList<>(); //Similar to vertex buffer and normal buffer, this encodes the textureId for a given index
   public final BooleanProperty cullBackfaces = new BooleanProperty(this, Boolean.TRUE);
   public final BooleanProperty useAlphaTest = new BooleanProperty(this, Boolean.FALSE);
 
-  public ArrayList<Integer> textureIdArray = new ArrayList<>(); //Similar to vertex buffer and normal buffer, this encodes the textureId for a given index
+
 }
