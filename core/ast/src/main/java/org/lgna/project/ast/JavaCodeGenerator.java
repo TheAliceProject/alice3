@@ -169,6 +169,11 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
+  protected void appendConcatenationOperator() {
+    appendString(" + ");
+  }
+
+  @Override
   protected void appendAssignmentOperator() {
     appendChar('=');
   }

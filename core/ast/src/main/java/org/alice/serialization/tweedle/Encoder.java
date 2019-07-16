@@ -630,6 +630,11 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
+  protected void appendConcatenationOperator() {
+    appendString(" .. ");
+  }
+
+  @Override
   protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
     final String typeName = type.getName();
     if (typeName.endsWith("Resource")) {

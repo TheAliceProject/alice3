@@ -463,10 +463,12 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   public void processConcatenation(StringConcatenation concat) {
     appendPrecedented(concat, () -> {
       processExpression(concat.leftOperand.getValue());
-      appendString(" .. ");
+      appendConcatenationOperator();
       processExpression(concat.rightOperand.getValue());
     });
   }
+
+  protected abstract void appendConcatenationOperator();
 
   @Override
   public void processLogicalComplement(LogicalComplement complement) {
