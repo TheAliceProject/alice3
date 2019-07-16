@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.lgna.project.code;
 
-import org.lgna.project.code.PrecedentedOperation;
-import org.lgna.project.code.SymbolicOperator;
-
-/**
- * @author Dennis Cosgrove
- */
-public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-  public enum Operator implements SymbolicOperator {
-    AND("&&", 4) {
-      @Override
-      public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
-        return leftOperand && rightOperand;
-      }
-    }, OR("||", 3) {
-      @Override
-      public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
-        return leftOperand || rightOperand;
-      }
-    };
-
-    Operator(String symbol, int precedence) {
-      this.symbol = symbol;
-      this.precedence = precedence;
-    }
-
-    public abstract Boolean operate(Boolean leftOperand, Boolean rightOperand);
-
-    @Override
-    public String getSymbol() {
-      return symbol;
-    }
-
-    @Override
-    public int getLevelOfPrecedence() {
-      return precedence;
-    }
-
-    private final String symbol;
-    private final int precedence;
-  }
-
-  public ConditionalInfixExpression() {
-  }
-
-  public ConditionalInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand) {
-    super(leftOperand, operator, rightOperand);
-  }
-
-  @Override
-  protected AbstractType<?, ?, ?> getLeftOperandType() {
-    return JavaType.BOOLEAN_OBJECT_TYPE;
-  }
-
-  @Override
-  protected AbstractType<?, ?, ?> getRightOperandType() {
-    return JavaType.BOOLEAN_OBJECT_TYPE;
-  }
-
-  @Override
-  public AbstractType<?, ?, ?> getType() {
-    return JavaType.BOOLEAN_OBJECT_TYPE;
-  }
+public interface PrecedentedOperation {
+  int getLevelOfPrecedence();
 }

@@ -42,14 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class BitwiseInfixExpression extends InfixExpression<BitwiseInfixExpression.Operator> {
-  public static enum Operator implements PrecedentedAppender {
-    AND() {
+  public static enum Operator implements SymbolicOperator {
+    AND("&", 7) {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -67,17 +67,7 @@ public final class BitwiseInfixExpression extends InfixExpression<BitwiseInfixEx
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('&');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 7;
-      }
-    }, OR() {
+    }, OR("|", 5) {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -95,17 +85,7 @@ public final class BitwiseInfixExpression extends InfixExpression<BitwiseInfixEx
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('|');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 5;
-      }
-    }, XOR() {
+    }, XOR("^", 6) {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -123,22 +103,27 @@ public final class BitwiseInfixExpression extends InfixExpression<BitwiseInfixEx
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('^');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 6;
-      }
     };
+
+    Operator(String symbol, int precedence) {
+      this.symbol = symbol;
+      this.precedence = precedence;
+    }
 
     public abstract Object operate(Object leftOperand, Object rightOperand);
 
     @Override
-    public abstract void appendCode(SourceCodeGenerator generator);
+    public String getSymbol() {
+      return symbol;
+    }
+
+    @Override
+    public int getLevelOfPrecedence() {
+      return precedence;
+    }
+
+    private final String symbol;
+    private final int precedence;
   }
 
   public BitwiseInfixExpression() {

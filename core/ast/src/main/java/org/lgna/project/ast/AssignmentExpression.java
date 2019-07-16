@@ -43,25 +43,19 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import org.lgna.project.code.CodeAppender;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AssignmentExpression extends Expression implements PrecedentedAppender {
+public final class AssignmentExpression extends Expression implements PrecedentedOperation {
 
-  public enum Operator implements CodeAppender {
+  public enum Operator {
     ASSIGN("="), PLUS_ASSIGN("+="), MINUS_ASSIGN("-="), TIMES_ASSIGN("*="), DIVIDE_ASSIGN("/="), BIT_AND_ASSIGN("&="), BIT_OR_ASSIGN("|="), BIT_XOR_ASSIGN("^="), REMAINDER_ASSIGN("%="), LEFT_SHIFT_ASSIGN("<<="), RIGHT_SHIFT_SIGNED_ASSIGN(">>="), RIGHT_SHIFT_UNSIGNED_ASSIGN(">>>=");
     private final String text;
 
     Operator(String text) {
       this.text = text;
-    }
-
-    @Override
-    public void appendCode(SourceCodeGenerator generator) {
-      generator.appendString(this.text);
     }
   }
 
@@ -81,8 +75,8 @@ public final class AssignmentExpression extends Expression implements Precedente
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendAssignmentExpression(this);
+  public void process(AstProcessor processor) {
+    processor.processAssignmentExpression(this);
   }
 
   @Override

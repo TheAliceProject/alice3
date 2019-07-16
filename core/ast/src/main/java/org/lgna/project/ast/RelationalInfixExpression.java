@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove
@@ -110,15 +110,13 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
     return ((Number) o).byteValue();
   }
 
-  public static enum Operator implements PrecedentedAppender {
-    LESS() {
+  public static enum Operator implements SymbolicOperator {
+    LESS("<", 9) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) < doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -138,24 +136,12 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('<');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 9;
-      }
-    }, LESS_EQUALS() {
+    }, LESS_EQUALS("<=", 9) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) <= doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -175,24 +161,12 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("<=");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 9;
-      }
-    }, GREATER() {
+    }, GREATER(">", 9) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) > doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -212,24 +186,12 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('>');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 9;
-      }
-    }, GREATER_EQUALS() {
+    }, GREATER_EQUALS(">=", 9) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) >= doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -249,24 +211,12 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString(">=");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 9;
-      }
-    }, EQUALS() {
+    }, EQUALS("==", 8) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) == doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -286,24 +236,12 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           return leftOperand == rightOperand;
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("==");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 8;
-      }
-    }, NOT_EQUALS() {
+    }, NOT_EQUALS("!=", 8) {
       @Override
       public Boolean operate(Object leftOperand, Object rightOperand) {
         //todo Character
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
         if (isNumberComparisonDesired(leftOperand, rightOperand)) {
-          assert leftOperand != null;
-          assert rightOperand != null;
           if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
             return doubleValue(leftOperand) != doubleValue(rightOperand);
           } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
@@ -323,22 +261,27 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
           return leftOperand != rightOperand;
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("!=");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 8;
-      }
     };
+
+    Operator(String symbol, int precedence) {
+      this.symbol = symbol;
+      this.precedence = precedence;
+    }
 
     public abstract Boolean operate(Object leftOperand, Object rightOperand);
 
     @Override
-    public abstract void appendCode(SourceCodeGenerator generator);
+    public String getSymbol() {
+      return symbol;
+    }
+
+    @Override
+    public int getLevelOfPrecedence() {
+      return precedence;
+    }
+
+    private final String symbol;
+    private final int precedence;
   }
 
   public RelationalInfixExpression() {

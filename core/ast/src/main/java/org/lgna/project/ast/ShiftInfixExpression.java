@@ -42,14 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ShiftInfixExpression extends InfixExpression<ShiftInfixExpression.Operator> {
-  public static enum Operator implements PrecedentedAppender {
-    LEFT_SHIFT() {
+  public static enum Operator implements SymbolicOperator {
+    LEFT_SHIFT("<<") {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -67,17 +67,7 @@ public final class ShiftInfixExpression extends InfixExpression<ShiftInfixExpres
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("<<");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 10;
-      }
-    }, RIGHT_SHIFT_SIGNED() {
+    }, RIGHT_SHIFT_SIGNED(">>") {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -95,17 +85,7 @@ public final class ShiftInfixExpression extends InfixExpression<ShiftInfixExpres
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString(">>");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 10;
-      }
-    }, RIGHT_SHIFT_UNSIGNED() {
+    }, RIGHT_SHIFT_UNSIGNED(">>>") {
       @Override
       public Object operate(Object leftOperand, Object rightOperand) {
         //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
@@ -123,23 +103,25 @@ public final class ShiftInfixExpression extends InfixExpression<ShiftInfixExpres
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString(">>>");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 10;
-      }
-
     };
+
+    Operator(String symbol) {
+      this.symbol = symbol;
+    }
 
     public abstract Object operate(Object leftOperand, Object rightOperand);
 
     @Override
-    public abstract void appendCode(SourceCodeGenerator generator);
+    public String getSymbol() {
+      return symbol;
+    }
+
+    @Override
+    public int getLevelOfPrecedence() {
+      return 10;
+    }
+
+    private final String symbol;
   }
 
   public ShiftInfixExpression() {
