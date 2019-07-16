@@ -103,8 +103,8 @@ public final class InstanceCreation extends Expression implements ArgumentOwner,
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendInstantiation(this);
+  public void process(AstProcessor processor) {
+    processor.processInstantiation(this);
   }
 
   @Override

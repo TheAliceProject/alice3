@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-import org.lgna.project.ast.SourceCodeGenerator;
+import org.lgna.project.ast.AstProcessor;
 
 /**
  * @author dculyba
  */
-public interface CodeAppender {
-  public void appendCode(SourceCodeGenerator generator);
+public interface ProcessableNode {
+  void process(AstProcessor processor);
 }

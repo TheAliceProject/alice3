@@ -67,8 +67,8 @@ public class Getter extends AbstractMethodContainedByUserField {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendGetter(this);
+  public void process(AstProcessor processor) {
+    processor.processGetter(this);
   }
 
   @Override

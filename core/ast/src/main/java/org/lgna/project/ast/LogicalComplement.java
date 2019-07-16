@@ -43,12 +43,12 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogicalComplement extends Expression implements PrecedentedAppender {
+public final class LogicalComplement extends Expression implements PrecedentedOperation {
   public LogicalComplement() {
   }
 
@@ -73,8 +73,8 @@ public final class LogicalComplement extends Expression implements PrecedentedAp
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendLogicalComplement(this);
+  public void process(AstProcessor processor) {
+    processor.processLogicalComplement(this);
   }
 
   @Override

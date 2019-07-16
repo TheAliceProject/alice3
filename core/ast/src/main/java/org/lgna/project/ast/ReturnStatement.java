@@ -56,8 +56,8 @@ public final class ReturnStatement extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendReturnStatement(this);
+  public void process(AstProcessor processor) {
+    processor.processReturnStatement(this);
   }
 
   @Override

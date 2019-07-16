@@ -63,8 +63,8 @@ public final class DoInOrder extends AbstractStatementWithBody {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendDoInOrder(this);
+  public void process(AstProcessor processor) {
+    processor.processDoInOrder(this);
   }
 
   @Override

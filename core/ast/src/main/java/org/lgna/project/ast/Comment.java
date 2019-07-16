@@ -57,8 +57,8 @@ public class Comment extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.formatMultiLineComment(text.getValue());
+  public void process(AstProcessor processor) {
+    processor.processMultiLineComment(text.getValue());
   }
 
   @Override

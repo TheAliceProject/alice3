@@ -45,12 +45,12 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ast.localizer.AstLocalizer;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldAccess extends Expression implements PrecedentedAppender {
+public final class FieldAccess extends Expression implements PrecedentedOperation {
   public FieldAccess() {
   }
 
@@ -110,8 +110,8 @@ public final class FieldAccess extends Expression implements PrecedentedAppender
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendFieldAccess(this);
+  public void process(AstProcessor processor) {
+    processor.processFieldAccess(this);
   }
 
   @Override

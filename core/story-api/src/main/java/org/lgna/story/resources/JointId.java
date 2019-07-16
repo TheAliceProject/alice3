@@ -46,7 +46,7 @@ package org.lgna.story.resources;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.SourceCodeGenerator;
+import org.lgna.project.ast.AstProcessor;
 import org.lgna.project.code.CodeGenerator;
 
 import java.lang.reflect.Field;
@@ -116,11 +116,11 @@ public class JointId implements CodeGenerator {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
+  public void process(AstProcessor processor) {
     if (parent == null) {
-      generator.appendNewJointId(fld.getName(), null, null);
+      processor.processNewJointId(fld.getName(), null, null);
     } else {
-      generator.appendNewJointId(fld.getName(), parent.fld.getName(), parent.containingClass.getSimpleName());
+      processor.processNewJointId(fld.getName(), parent.fld.getName(), parent.containingClass.getSimpleName());
     }
   }
 }

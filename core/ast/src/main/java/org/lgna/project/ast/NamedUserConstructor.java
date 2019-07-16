@@ -118,8 +118,8 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendConstructor(this);
+  public void process(AstProcessor processor) {
+    processor.processConstructor(this);
   }
 
   @Override

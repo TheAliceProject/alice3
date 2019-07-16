@@ -65,11 +65,11 @@ public final class LambdaExpression extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
+  public void process(AstProcessor processor) {
     Lambda lambda = this.value.getValue();
     if (lambda instanceof UserLambda) {
       UserLambda userLambda = (UserLambda) lambda;
-      userLambda.appendCode(generator);
+      userLambda.process(processor);
     }
   }
 

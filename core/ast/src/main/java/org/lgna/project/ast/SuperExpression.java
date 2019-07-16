@@ -67,7 +67,7 @@ public final class SuperExpression extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendSuperReference();
+  public void process(AstProcessor processor) {
+    processor.processSuperReference();
   }
 }

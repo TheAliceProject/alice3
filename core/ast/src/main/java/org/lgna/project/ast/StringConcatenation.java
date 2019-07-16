@@ -43,12 +43,12 @@
 package org.lgna.project.ast;
 
 import org.lgna.project.ast.localizer.AstLocalizer;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class StringConcatenation extends Expression implements PrecedentedAppender {
+public final class StringConcatenation extends Expression implements PrecedentedOperation {
   public StringConcatenation() {
   }
 
@@ -70,8 +70,8 @@ public final class StringConcatenation extends Expression implements Precedented
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendConcatenation(this);
+  public void process(AstProcessor processor) {
+    processor.processConcatenation(this);
   }
 
   @Override

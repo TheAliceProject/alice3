@@ -65,8 +65,8 @@ public class ArrayItemGetter extends Getter {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendIndexedGetter(this);
+  public void process(AstProcessor processor) {
+    processor.processIndexedGetter(this);
   }
 
   @Override

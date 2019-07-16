@@ -99,8 +99,8 @@ public final class ArrayInstanceCreation extends Expression implements Precedent
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendArrayInstantiation(this);
+  public void process(AstProcessor processor) {
+    processor.processArrayInstantiation(this);
   }
 
   @Override

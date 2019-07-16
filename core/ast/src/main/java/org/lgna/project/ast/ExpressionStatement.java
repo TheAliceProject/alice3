@@ -62,8 +62,8 @@ public final class ExpressionStatement extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendExpressionStatement(this);
+  public void process(AstProcessor processor) {
+    processor.processExpressionStatement(this);
   }
 
   public final ExpressionProperty expression = new ExpressionProperty(this) {

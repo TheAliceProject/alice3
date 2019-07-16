@@ -66,8 +66,8 @@ public class WhileLoop extends AbstractLoop {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendWhileLoop(this);
+  public void process(AstProcessor processor) {
+    processor.processWhileLoop(this);
   }
 
   public final ExpressionProperty conditional = new ExpressionProperty(this) {

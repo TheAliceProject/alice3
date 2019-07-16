@@ -103,7 +103,7 @@ public class CodeOrganizer {
 
   private final LinkedHashMap<String, String[]> codeSections;
   private final HashMap<String, Boolean> shouldCollapseSection;
-  private final Map<String, List<CodeAppender>> itemLists = new HashMap<String, List<CodeAppender>>();
+  private final Map<String, List<ProcessableNode>> itemLists = new HashMap<String, List<ProcessableNode>>();
 
   public static final String ALL_METHODS = "ALL_METHODS";
   public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
@@ -132,13 +132,13 @@ public class CodeOrganizer {
     return false;
   }
 
-  private void addItem(CodeAppender toAdd, String... keyOptions) {
+  private void addItem(ProcessableNode toAdd, String... keyOptions) {
     //Use the list of keyOptions to search the codeSections map to see where to put this item
     //The keyOptions list is a prioritized list, so the first match we find is where we put the item
     for (String itemKeyOption : keyOptions) {
       if (hasItemKey(itemKeyOption)) {
         if (!itemLists.containsKey(itemKeyOption)) {
-          itemLists.put(itemKeyOption, new LinkedList<CodeAppender>());
+          itemLists.put(itemKeyOption, new LinkedList<ProcessableNode>());
         }
         itemLists.get(itemKeyOption).add(toAdd);
         return;
@@ -146,7 +146,7 @@ public class CodeOrganizer {
     }
     //Put the item in the DEFAULT list if it doesn't match a list
     if (!itemLists.containsKey(DEFAULT)) {
-      itemLists.put(DEFAULT, new LinkedList<CodeAppender>());
+      itemLists.put(DEFAULT, new LinkedList<ProcessableNode>());
     }
     itemLists.get(DEFAULT).add(toAdd);
   }
@@ -186,10 +186,10 @@ public class CodeOrganizer {
     return false;
   }
 
-  public LinkedHashMap<String, List<CodeAppender>> getOrderedSections() {
-    LinkedHashMap<String, List<CodeAppender>> orderedMap = new LinkedHashMap<String, List<CodeAppender>>();
+  public LinkedHashMap<String, List<ProcessableNode>> getOrderedSections() {
+    LinkedHashMap<String, List<ProcessableNode>> orderedMap = new LinkedHashMap<String, List<ProcessableNode>>();
     for (Map.Entry<String, String[]> entry : codeSections.entrySet()) {
-      List<CodeAppender> orderedAppenders = new LinkedList<CodeAppender>();
+      List<ProcessableNode> orderedAppenders = new LinkedList<ProcessableNode>();
       for (String itemKey : entry.getValue()) {
         if (itemLists.containsKey(itemKey)) {
           orderedAppenders.addAll(itemLists.get(itemKey));

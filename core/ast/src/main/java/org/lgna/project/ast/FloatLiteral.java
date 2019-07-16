@@ -78,8 +78,8 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendFloat(this.value.getValue());
+  public void process(AstProcessor processor) {
+    processor.processFloat(this.value.getValue());
   }
 
   public final FloatProperty value = new FloatProperty(this, 0.0f);

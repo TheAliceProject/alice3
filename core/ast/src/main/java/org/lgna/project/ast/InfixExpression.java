@@ -81,8 +81,8 @@ public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> e
   };
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendInfixExpression(this);
+  public void process(AstProcessor processor) {
+    processor.processInfixExpression(this);
   }
 
   @Override

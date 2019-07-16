@@ -56,8 +56,8 @@ public final class LocalDeclarationStatement extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendLocalDeclaration(this);
+  public void process(AstProcessor processor) {
+    processor.processLocalDeclaration(this);
   }
 
   public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>(this) {

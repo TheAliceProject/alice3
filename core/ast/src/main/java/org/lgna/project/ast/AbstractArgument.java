@@ -43,12 +43,12 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArgument extends AbstractNode implements CodeAppender {
+public abstract class AbstractArgument extends AbstractNode implements ProcessableNode {
   public AbstractArgument() {
   }
 
@@ -60,7 +60,7 @@ public abstract class AbstractArgument extends AbstractNode implements CodeAppen
   protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType(AbstractType<?, ?, ?> parameterType);
 
   @Override
-  public abstract void appendCode(SourceCodeGenerator generator);
+  public abstract void process(AstProcessor processor);
 
   public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance(this);
   public final ExpressionProperty expression = new ExpressionProperty(this) {
