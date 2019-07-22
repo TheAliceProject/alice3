@@ -111,7 +111,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     parenthesize(() -> appendParameters(code.getRequiredParameters()));
   }
 
-  protected void appendParameters(List<? extends AbstractParameter> requiredParameters) {
+  private void appendParameters(List<? extends AbstractParameter> requiredParameters) {
     String prefix = "";
     int i = 0;
     for (AbstractParameter parameter : requiredParameters) {
@@ -294,7 +294,6 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     }
   }
 
-  @Override
   public void processSingleStatement(Statement stmt, Runnable appender) {
     appender.run();
     appendStatementCompletion(stmt);

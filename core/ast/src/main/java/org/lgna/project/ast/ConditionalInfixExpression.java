@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedOperation;
 import org.lgna.project.code.SymbolicOperator;
 
 /**

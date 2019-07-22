@@ -90,8 +90,6 @@ public interface AstProcessor {
 
   void processThisConstructor(ThisConstructorInvocationStatement thisCon);
 
-  void processSingleStatement(Statement stmt, Runnable appender);
-
   void processConditional(ConditionalStatement stmt);
 
   void processCountLoop(CountLoop loop);

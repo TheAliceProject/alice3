@@ -42,6 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-public interface SymbolicOperator extends PrecedentedOperation{
+public interface SymbolicOperator extends PrecedentedOperation {
   String getSymbol();
 }
