@@ -77,7 +77,7 @@ public class LocalizeReviewFrameView extends BorderPanel {
       public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         Locale locale = (Locale) value;
-        this.setText(locale.getDisplayName(locale) + " (" + locale.getDisplayName(Locale.US) + ")");
+        this.setText(locale.getDisplayName(Locale.getDefault()) + "  -  " + locale.getDisplayName(locale));
         return this;
       }
     });
