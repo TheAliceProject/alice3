@@ -68,7 +68,7 @@ public final class Item {
   public URI createUri(String localeTag) {
     StringBuilder sb = new StringBuilder();
 
-    sb.append("https://translate.zanata.org/zanata/webtrans/Application.seam?project=");
+    sb.append("https://translate.zanata.org/webtrans/translate?project=");
     sb.append(ZANATA_PROJECT_NAME);
     sb.append("&iteration=master");
 
