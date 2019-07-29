@@ -59,6 +59,8 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("String", "TextString");
     typesToRename.put("String[]", "TextString[]");
     typesToRename.put("SandDunes", "Terrain");
+    typesToRename.put("Visual", "SThing");
+    typesToRename.put("Visual[]", "SThing[]");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -107,6 +109,9 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> duration = new HashMap<>();
     duration.put("duration", "new Duration(seconds: ");
     methodsWithWrappedArgs.put("delay", duration);
+    Map<String, String> frequency = new HashMap<>();
+    frequency.put("frequency", "new Duration(seconds: ");
+    methodsWithWrappedArgs.put("addTimeListener", frequency);
     Map<String, String> amount = new HashMap<>();
     amount.put("amount", "new Angle(revolutions: ");
     methodsWithWrappedArgs.put("roll", amount);
@@ -478,13 +483,13 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private int parameterIndex(JavaMethodParameter parameter) {
-      AbstractParameter[] parameters = parameter.getCode().getAllParameters();
-      for (int i = 0; i < parameters.length; i++) {
-        if (parameter == parameters[i]) {
-          return i;
-        }
+    AbstractParameter[] parameters = parameter.getCode().getAllParameters();
+    for (int i = 0; i < parameters.length; i++) {
+      if (parameter == parameters[i]) {
+        return i;
       }
-      return -1;
+    }
+    return -1;
   }
 
   @Override
