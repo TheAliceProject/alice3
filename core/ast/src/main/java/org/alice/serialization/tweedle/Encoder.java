@@ -59,6 +59,8 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("String", "TextString");
     typesToRename.put("String[]", "TextString[]");
     typesToRename.put("SandDunes", "Terrain");
+    typesToRename.put("Visual", "SThing");
+    typesToRename.put("Visual[]", "SThing[]");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -481,13 +483,13 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private int parameterIndex(JavaMethodParameter parameter) {
-      AbstractParameter[] parameters = parameter.getCode().getAllParameters();
-      for (int i = 0; i < parameters.length; i++) {
-        if (parameter == parameters[i]) {
-          return i;
-        }
+    AbstractParameter[] parameters = parameter.getCode().getAllParameters();
+    for (int i = 0; i < parameters.length; i++) {
+      if (parameter == parameters[i]) {
+        return i;
       }
-      return -1;
+    }
+    return -1;
   }
 
   @Override
