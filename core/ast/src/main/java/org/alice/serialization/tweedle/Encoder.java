@@ -107,6 +107,9 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> duration = new HashMap<>();
     duration.put("duration", "new Duration(seconds: ");
     methodsWithWrappedArgs.put("delay", duration);
+    Map<String, String> frequency = new HashMap<>();
+    frequency.put("frequency", "new Duration(seconds: ");
+    methodsWithWrappedArgs.put("addTimeListener", frequency);
     Map<String, String> amount = new HashMap<>();
     amount.put("amount", "new Angle(revolutions: ");
     methodsWithWrappedArgs.put("roll", amount);
