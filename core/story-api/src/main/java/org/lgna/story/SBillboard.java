@@ -60,9 +60,11 @@ public class SBillboard extends SModel {
   @MethodTemplate()
   @Override
   public void setPaint(Paint paint, SetPaint.Detail... details) {
-    this.getImplementation().paint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     if (paint instanceof ImageSource) {
-      this.getImplementation().updateAspectRatio();
+      getImplementation().paint.setValue(paint);
+      getImplementation().updateAspectRatio();
+    } else {
+      getImplementation().paint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     }
   }
 
@@ -74,9 +76,11 @@ public class SBillboard extends SModel {
 
   @MethodTemplate()
   public void setBackPaint(Paint paint, SetBackPaint.Detail... details) {
-    this.getImplementation().backPaint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     if (paint instanceof ImageSource) {
-      this.getImplementation().updateAspectRatio();
+      getImplementation().backPaint.setValue(paint);
+      getImplementation().updateAspectRatio();
+    } else {
+      getImplementation().backPaint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
     }
   }
 }
