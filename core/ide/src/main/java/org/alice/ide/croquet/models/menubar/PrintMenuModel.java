@@ -62,6 +62,9 @@ public class PrintMenuModel extends PredeterminedMenuModel {
   }
 
   private PrintMenuModel() {
-    super(UUID.fromString("115844c7-064f-4070-b9c2-3e503a43e271"), PrintAllOperation.getInstance().getMenuItemPrepModel(), PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(), PrintSceneEditorOperation.getInstance().getMenuItemPrepModel());
+    super(UUID.fromString("115844c7-064f-4070-b9c2-3e503a43e271"),
+          new PrintAllOperation().getMenuItemPrepModel(),
+          new PrintCurrentCodeOperation().getMenuItemPrepModel(),
+          PrintSceneEditorOperation.getInstance().getMenuItemPrepModel());
   }
 }
