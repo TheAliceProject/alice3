@@ -60,17 +60,17 @@ import java.util.Map;
 public class CodeOrganizer {
 
   public static class CodeOrganizerDefinition {
-    private final LinkedHashMap<String, String[]> codeSections = new LinkedHashMap<String, String[]>();
-    private final HashMap<String, Boolean> shouldCollapseSection = new HashMap<String, Boolean>();
+    private final LinkedHashMap<String, String[]> codeSections = new LinkedHashMap<>();
+    private final HashMap<String, Boolean> shouldCollapseSection = new HashMap<>();
 
-    public CodeOrganizerDefinition() {
+    CodeOrganizerDefinition() {
     }
 
-    public void addSection(String sectionKey, String... itemKeys) {
+    void addSection(String sectionKey, String... itemKeys) {
       addSection(sectionKey, false, itemKeys);
     }
 
-    public void addSection(String sectionKey, Boolean shouldCollapse, String... itemKeys) {
+    void addSection(String sectionKey, Boolean shouldCollapse, String... itemKeys) {
       codeSections.put(sectionKey, itemKeys);
       shouldCollapseSection.put(sectionKey, shouldCollapse);
     }
@@ -103,16 +103,16 @@ public class CodeOrganizer {
 
   private final LinkedHashMap<String, String[]> codeSections;
   private final HashMap<String, Boolean> shouldCollapseSection;
-  private final Map<String, List<ProcessableNode>> itemLists = new HashMap<String, List<ProcessableNode>>();
+  private final Map<String, List<ProcessableNode>> itemLists = new HashMap<>();
 
-  public static final String ALL_METHODS = "ALL_METHODS";
-  public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
-  public static final String STATIC_METHODS = "STATIC_METHODS";
-  public static final String FIELDS = "FIELDS";
-  public static final String GETTERS_AND_SETTERS = "GETTERS_AND_SETTERS";
-  public static final String GETTERS = "GETTERS";
-  public static final String SETTERS = "SETTERS";
-  public static final String CONSTRUCTORS = "CONSTRUCTORS";
+  private static final String ALL_METHODS = "ALL_METHODS";
+  private static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
+  private static final String STATIC_METHODS = "STATIC_METHODS";
+  private static final String FIELDS = "FIELDS";
+  private static final String GETTERS_AND_SETTERS = "GETTERS_AND_SETTERS";
+  private static final String GETTERS = "GETTERS";
+  private static final String SETTERS = "SETTERS";
+  private static final String CONSTRUCTORS = "CONSTRUCTORS";
 
   private static final String DEFAULT = "DEFAULT";
 
@@ -138,7 +138,7 @@ public class CodeOrganizer {
     for (String itemKeyOption : keyOptions) {
       if (hasItemKey(itemKeyOption)) {
         if (!itemLists.containsKey(itemKeyOption)) {
-          itemLists.put(itemKeyOption, new LinkedList<ProcessableNode>());
+          itemLists.put(itemKeyOption, new LinkedList<>());
         }
         itemLists.get(itemKeyOption).add(toAdd);
         return;
@@ -146,7 +146,7 @@ public class CodeOrganizer {
     }
     //Put the item in the DEFAULT list if it doesn't match a list
     if (!itemLists.containsKey(DEFAULT)) {
-      itemLists.put(DEFAULT, new LinkedList<ProcessableNode>());
+      itemLists.put(DEFAULT, new LinkedList<>());
     }
     itemLists.get(DEFAULT).add(toAdd);
   }
@@ -187,9 +187,9 @@ public class CodeOrganizer {
   }
 
   public LinkedHashMap<String, List<ProcessableNode>> getOrderedSections() {
-    LinkedHashMap<String, List<ProcessableNode>> orderedMap = new LinkedHashMap<String, List<ProcessableNode>>();
+    LinkedHashMap<String, List<ProcessableNode>> orderedMap = new LinkedHashMap<>();
     for (Map.Entry<String, String[]> entry : codeSections.entrySet()) {
-      List<ProcessableNode> orderedAppenders = new LinkedList<ProcessableNode>();
+      List<ProcessableNode> orderedAppenders = new LinkedList<>();
       for (String itemKey : entry.getValue()) {
         if (itemLists.containsKey(itemKey)) {
           orderedAppenders.addAll(itemLists.get(itemKey));
