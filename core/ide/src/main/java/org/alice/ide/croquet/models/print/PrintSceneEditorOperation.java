@@ -49,13 +49,8 @@ import org.alice.ide.sceneeditor.AbstractSceneEditor;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.Size2DSyntax;
 import javax.print.attribute.standard.DialogTypeSelection;
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.print.attribute.standard.MediaSize;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
