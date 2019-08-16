@@ -230,7 +230,7 @@ public class StatementListBorder implements Border {
           }
           initializeTextIfNecessary();
           GraphicsUtilities.drawCenteredText(g, TEXTS[textIndex], xText, 0, (int) bounds.getWidth(), height);
-          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
         } else {
           RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
           g2.setPaint(BOTTOM_COLOR);

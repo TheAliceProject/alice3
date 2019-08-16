@@ -221,7 +221,7 @@ public class JImageEditorView extends JComponent {
     Rectangle crop = this.imageEditorFrame.getCropCommitHolder().getValue();
 
     Stroke prevStroke = g2.getStroke();
-    Object prevAntialias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     if (imageEditorFrame.getDropShadowState().getValue()) {
@@ -287,7 +287,7 @@ public class JImageEditorView extends JComponent {
     }
 
     g2.setStroke(prevStroke);
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialias);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 
   private int getImageResolution() {

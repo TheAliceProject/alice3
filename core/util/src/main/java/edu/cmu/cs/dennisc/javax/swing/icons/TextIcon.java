@@ -87,7 +87,7 @@ public class TextIcon implements Icon {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     Graphics2D g2 = (Graphics2D) g;
 
-    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+    Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
     g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
     Paint prevPaint = g2.getPaint();
@@ -101,6 +101,6 @@ public class TextIcon implements Icon {
 
     g2.setFont(prevFont);
     g2.setPaint(prevPaint);
-    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing);
+    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
   }
 }
