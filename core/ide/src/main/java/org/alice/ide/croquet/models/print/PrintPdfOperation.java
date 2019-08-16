@@ -54,10 +54,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.DialogTypeSelection;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -74,10 +71,6 @@ abstract class PrintPdfOperation extends InconsequentialActionOperation {
         return;
       }
       ByteArrayOutputStream pdfStream = convertToPdf(htmlStream);
-
-      dumpToFile(htmlStream, "./tempPrint.html");
-      dumpToFile(pdfStream, "./tempPrint.pdf");
-
       printPdf(pdfStream);
     } catch (IOException e) {
       notifyWrapAndRethrow(e, "File or HTML generation failed");
@@ -113,23 +106,14 @@ abstract class PrintPdfOperation extends InconsequentialActionOperation {
 
   private void printPdf(ByteArrayOutputStream pdfStream) throws IOException, PrinterException {
     PrinterJob job = PrinterJob.getPrinterJob();
-    PDDocument document = PDDocument.load(pdfStream.toByteArray());
-    job.setPageable(new PDFPageable(document));
+    try (PDDocument document = PDDocument.load(pdfStream.toByteArray())) {
+      job.setPageable(new PDFPageable(document));
 
-    PrintRequestAttributeSet printOptions = new HashPrintRequestAttributeSet();
-    printOptions.add(DialogTypeSelection.NATIVE);
-    if (job.printDialog(printOptions)) {
-      job.print(printOptions);
+      PrintRequestAttributeSet printOptions = new HashPrintRequestAttributeSet();
+      printOptions.add(DialogTypeSelection.NATIVE);
+      if (job.printDialog(printOptions)) {
+        job.print(printOptions);
+      }
     }
-    document.close();
-  }
-
-  // Debugging
-  private void dumpToFile(ByteArrayOutputStream stream, String fileName) throws IOException {
-    final FileOutputStream fileStream = new FileOutputStream(new File(fileName));
-    BufferedOutputStream out = new BufferedOutputStream(fileStream);
-    stream.writeTo(out);
-    out.close();
-    fileStream.close();
   }
 }
