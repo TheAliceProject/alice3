@@ -55,7 +55,6 @@ import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.SideBySideScrollPane;
 
 import javax.swing.BorderFactory;
-import java.awt.print.Printable;
 import java.util.List;
 
 /**
@@ -68,8 +67,6 @@ public abstract class DeclarationView extends BorderPanel {
     this.sideBySideScrollPane.setBackgroundColor(this.getBackgroundColor());
     this.sideBySideScrollPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
   }
-
-  public abstract Printable getPrintable();
 
   public abstract void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel);
 
