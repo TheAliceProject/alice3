@@ -45,6 +45,7 @@ package org.alice.ide.ast.delete.edits;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ast.delete.DeleteStatementOperation;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.edits.ast.StatementEdit;
@@ -64,10 +65,8 @@ public class DeleteStatementEdit extends StatementEdit<DeleteStatementOperation>
 
   public DeleteStatementEdit(UserActivity userActivity, Statement statement) {
     super(userActivity, statement);
-    this.blockStatement = (BlockStatement) statement.getParent();
-    assert this.blockStatement != null : statement;
-    this.index = this.blockStatement.statements.indexOf(statement);
-    assert this.index != -1 : statement;
+    blockStatement = (BlockStatement) statement.getParent();
+    index = this.blockStatement != null ? this.blockStatement.statements.indexOf(statement) : -1;
   }
 
   public DeleteStatementEdit(BinaryDecoder binaryDecoder, Object step) {
@@ -85,17 +84,25 @@ public class DeleteStatementEdit extends StatementEdit<DeleteStatementOperation>
 
   @Override
   protected final void doOrRedoInternal(boolean isDo) {
-    Statement statement = this.getStatement();
-    assert blockStatement.statements.indexOf(statement) == this.index;
-    blockStatement.statements.remove(index);
+    if (index < 0) {
+      Logger.warning("Attempt to delete statement without context to delete from.", getStatement());
+    } else {
+      Statement statement = this.getStatement();
+      assert blockStatement.statements.indexOf(statement) == this.index;
+      blockStatement.statements.remove(index);
+    }
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
   }
 
   @Override
   protected final void undoInternal() {
-    Statement statement = this.getStatement();
-    blockStatement.statements.add(index, statement);
+    if (index < 0) {
+      Logger.warning("Attempt to undo delete statement without context to delete from or restore to.", getStatement());
+    } else {
+      Statement statement = this.getStatement();
+      blockStatement.statements.add(index, statement);
+    }
     //todo: remove
     ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
   }
