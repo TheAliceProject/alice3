@@ -42,6 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-public interface PrecedentedAppender extends CodeAppender {
-  int getLevelOfPrecedence();
+public interface SymbolicOperator extends PrecedentedOperation {
+  String getSymbol();
 }

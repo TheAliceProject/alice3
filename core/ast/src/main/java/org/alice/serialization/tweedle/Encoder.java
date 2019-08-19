@@ -5,7 +5,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
@@ -158,15 +158,15 @@ public class Encoder extends SourceCodeGenerator {
     terminalNodes = new HashSet<>();
   }
 
-  public String encode(CodeAppender node) {
-    node.appendCode(this);
+  public String encode(ProcessableNode node) {
+    node.process(this);
     return getCodeStringBuilder().toString();
   }
 
   /** Class structure **/
 
   @Override
-  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<CodeAppender>> entry) {
+  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
     super.appendSection(codeOrganizer, userType, entry);
     if ("ConstructorSection".equals(entry.getKey())) {
       appendResources(userType);
@@ -227,7 +227,7 @@ public class Encoder extends SourceCodeGenerator {
       appendSpace();
       appendString(field.getName());
       appendAssignmentOperator();
-      value.appendCode(this);
+      value.process(this);
     });
   }
 
@@ -245,14 +245,14 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendNewJointId(String joint, String parent, String model) {
+  public void processNewJointId(String joint, String parent, String model) {
     appendString("new JointId");
     parenthesize(() -> {
       appendString("name: \"");
       appendString(joint);
       appendString("\", parent: ");
       if (parent == null) {
-        appendNull();
+        processNull();
       } else {
         appendString(tweedleTypeName(model));
         appendAccessSeparator();
@@ -278,18 +278,18 @@ public class Encoder extends SourceCodeGenerator {
   /** Methods and Fields **/
 
   @Override
-  public void appendConstructor(NamedUserConstructor constructor) {
+  public void processConstructor(NamedUserConstructor constructor) {
     appendIndent();
-    appendTypeName(constructor.getDeclaringType());
+    processTypeName(constructor.getDeclaringType());
     appendParameters(constructor);
     appendStatement(constructor.body.getValue());
     appendNewLine();
   }
 
   @Override
-  protected void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
-    appendSingleStatement(supCon, () -> {
-      appendSuperReference();
+  public void processSuperConstructor(SuperConstructorInvocationStatement supCon) {
+    processSingleStatement(supCon, () -> {
+      processSuperReference();
       parenthesize(() -> {
         appendEachArgument(supCon);
         appendResourceArgs(supCon);
@@ -320,10 +320,10 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendMethod(UserMethod method) {
+  public void processMethod(UserMethod method) {
     appendNewLine();
     appendIndent();
-    super.appendMethod(method);
+    super.processMethod(method);
     appendNewLine();
   }
 
@@ -332,37 +332,37 @@ public class Encoder extends SourceCodeGenerator {
     if (method.isStatic()) {
       appendString("static ");
     }
-    appendTypeName(method.getReturnType());
+    processTypeName(method.getReturnType());
     appendSpace();
     appendString(method.getName());
     appendParameters(method);
   }
 
   @Override
-  public void appendGetter(Getter getter) {
+  public void processGetter(Getter getter) {
     appendIndent();
-    super.appendGetter(getter);
+    super.processGetter(getter);
     appendNewLine();
   }
 
   @Override
-  public void appendSetter(Setter setter) {
+  public void processSetter(Setter setter) {
     appendIndent();
-    super.appendSetter(setter);
+    super.processSetter(setter);
     appendNewLine();
   }
 
   /** Statements **/
 
   @Override
-  public void appendLocalDeclaration(LocalDeclarationStatement stmt) {
-    appendSingleStatement(stmt, () -> {
+  public void processLocalDeclaration(LocalDeclarationStatement stmt) {
+    processSingleStatement(stmt, () -> {
       UserLocal localVar = stmt.local.getValue();
-      appendTypeName(localVar.getValueType());
+      processTypeName(localVar.getValueType());
       appendSpace();
       appendString(localVar.getValidName());
       appendAssignmentOperator();
-      appendExpression(stmt.initializer.getValue());
+      processExpression(stmt.initializer.getValue());
     });
   }
 
@@ -394,11 +394,11 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   protected void appendArgument(JavaKeyedArgument arg) {
-    appendKeyedArgument(arg);
+    processKeyedArgument(arg);
   }
 
   @Override
-  protected void appendKeyedArgument(JavaKeyedArgument arg) {
+  public void processKeyedArgument(JavaKeyedArgument arg) {
     Expression expressionValue = arg.expression.getValue();
     if (expressionValue instanceof MethodInvocation) {
       MethodInvocation methodInvocation = (MethodInvocation) expressionValue;
@@ -411,7 +411,7 @@ public class Encoder extends SourceCodeGenerator {
         return;
       }
     }
-    appendExpression(expressionValue);
+    processExpression(expressionValue);
   }
 
   private void appendOneArgument(MethodInvocation argumentOwner) {
@@ -426,7 +426,7 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
+  public void processArgument(AbstractParameter parameter, AbstractArgument argument) {
     final String parameterLabel = getParameterLabel(parameter);
     appendString(parameterLabel);
     appendString(": ");
@@ -435,12 +435,12 @@ public class Encoder extends SourceCodeGenerator {
     appendWrappedArg(argument, parameterLabel, wrappedParams);
   }
 
-  private void appendWrappedArg(CodeAppender argument, String parameterLabel, Map<String, String> wrappedParams) {
+  private void appendWrappedArg(ProcessableNode argument, String parameterLabel, Map<String, String> wrappedParams) {
     String argStart = wrappedParams == null ? null : wrappedParams.get(parameterLabel);
     if (argStart != null) {
       appendString(argStart);
     }
-    argument.appendCode(this);
+    argument.process(this);
     if (argStart != null) {
       appendString(")");
     }
@@ -493,9 +493,9 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendSingleStatement(Statement stmt, Runnable appender) {
+  public void processSingleStatement(Statement stmt, Runnable appender) {
     appendIndent(stmt);
-    super.appendSingleStatement(stmt, appender);
+    super.processSingleStatement(stmt, appender);
   }
 
   @Override
@@ -514,12 +514,12 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendCountLoop(CountLoop loop) {
+  public void processCountLoop(CountLoop loop) {
     appendCodeFlowStatement(loop, () -> {
       appendString("countUpTo( ");
       appendString(loop.getVariableName());
       appendString(" < ");
-      appendExpression(loop.count.getValue());
+      processExpression(loop.count.getValue());
       appendString(" )");
       appendStatement(loop.body.getValue());
     });
@@ -536,12 +536,12 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendDoInOrder(DoInOrder doInOrder) {
+  public void processDoInOrder(DoInOrder doInOrder) {
     appendLabeledCodeFlow(doInOrder, "doInOrder");
   }
 
   @Override
-  public void appendDoTogether(DoTogether doTogether) {
+  public void processDoTogether(DoTogether doTogether) {
     appendLabeledCodeFlow(doTogether, "doTogether");
   }
 
@@ -553,7 +553,7 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendEachInTogether(AbstractEachInTogether eachInTogether) {
+  public void processEachInTogether(AbstractEachInTogether eachInTogether) {
     appendCodeFlowStatement(eachInTogether, () -> {
       appendString("eachTogether");
       UserLocal itemValue = eachInTogether.item.getValue();
@@ -570,7 +570,7 @@ public class Encoder extends SourceCodeGenerator {
     if (targetIsMath(target)) {
       appendString(tweedleModuleForMath(member, returnType));
     } else {
-      appendExpression(target);
+      processExpression(target);
     }
     appendAccessSeparator();
 
@@ -597,7 +597,7 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendResourceExpression(ResourceExpression resourceExpression) {
+  public void processResourceExpression(ResourceExpression resourceExpression) {
     appendEscapedString(resourceExpression.resource.getValue().getName());
   }
 
@@ -635,6 +635,11 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
+  protected void appendConcatenationOperator() {
+    appendString(" .. ");
+  }
+
+  @Override
   protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
     final String typeName = type.getName();
     if (typeName.endsWith("Resource")) {
@@ -645,7 +650,7 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendTypeName(AbstractType<?, ?, ?> type) {
+  public void processTypeName(AbstractType<?, ?, ?> type) {
     appendString(tweedleTypeName(type.getName()));
   }
 

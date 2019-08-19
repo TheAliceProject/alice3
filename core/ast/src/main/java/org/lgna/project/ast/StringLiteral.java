@@ -73,8 +73,8 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendEscapedStringLiteral(this);
+  public void process(AstProcessor processor) {
+    processor.processEscapedStringLiteral(this);
   }
 
   public final StringProperty value = new StringProperty(this, null);

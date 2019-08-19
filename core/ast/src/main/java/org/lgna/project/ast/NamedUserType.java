@@ -116,11 +116,11 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendClass(getCodeOrganizer(generator), this);
+  public void process(AstProcessor processor) {
+    processor.processClass(getCodeOrganizer(processor), this);
   }
 
-  private CodeOrganizer getCodeOrganizer(SourceCodeGenerator generator) {
+  private CodeOrganizer getCodeOrganizer(AstProcessor generator) {
     CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName(this.getName());
     for (NamedUserConstructor constructor : this.constructors) {
       codeOrganizer.addConstructor(constructor);

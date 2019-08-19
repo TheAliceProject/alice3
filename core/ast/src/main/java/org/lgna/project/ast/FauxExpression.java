@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  */
 public abstract class FauxExpression extends Expression {
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
+  public void process(AstProcessor processor) {
     throw new RuntimeException();
   }
 }

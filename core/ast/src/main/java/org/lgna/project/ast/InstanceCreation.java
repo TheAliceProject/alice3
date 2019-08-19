@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class InstanceCreation extends Expression implements ArgumentOwner, PrecedentedAppender {
+public final class InstanceCreation extends Expression implements ArgumentOwner, PrecedentedOperation {
   public InstanceCreation() {
   }
 
@@ -103,8 +103,8 @@ public final class InstanceCreation extends Expression implements ArgumentOwner,
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendInstantiation(this);
+  public void process(AstProcessor processor) {
+    processor.processInstantiation(this);
   }
 
   @Override

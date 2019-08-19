@@ -173,8 +173,8 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendField(this);
+  public void process(AstProcessor processor) {
+    processor.processField(this);
   }
 
   void addToOrganizer(CodeOrganizer codeOrganizer, boolean showPublicStaticFinal) {

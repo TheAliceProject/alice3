@@ -68,8 +68,8 @@ public class CountLoop extends AbstractLoop {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendCountLoop(this);
+  public void process(AstProcessor processor) {
+    processor.processCountLoop(this);
   }
 
   public final DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>(this) {

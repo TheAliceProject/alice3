@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
-import edu.cmu.cs.dennisc.java.awt.PrintHelper;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
 import org.alice.ide.ThemeUtilities;
@@ -85,7 +84,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
-import java.awt.print.Printable;
 
 /**
  * @author Dennis Cosgrove
@@ -353,11 +351,6 @@ public class CodeEditor extends CodePanelWithDropReceptor {
   @Override
   protected AwtComponentView<?> getAsSeenBy() {
     return this.bodyPane;
-  }
-
-  @Override
-  public Printable getPrintable() {
-    return new PrintHelper.Builder(this.getInsets(), this.getBackgroundColor()).center(this.getCenterComponent().getAwtComponent()).pageStart(this.getPageStartComponent().getAwtComponent()).build();
   }
 
   @Override

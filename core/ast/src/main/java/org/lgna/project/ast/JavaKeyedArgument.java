@@ -85,7 +85,7 @@ public final class JavaKeyedArgument extends AbstractArgument {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendKeyedArgument(this);
+  public void process(AstProcessor processor) {
+    processor.processKeyedArgument(this);
   }
 }

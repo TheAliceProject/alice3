@@ -252,7 +252,7 @@ public class ActionStatusIcon extends AbstractIcon {
     } else {
       Logger.severe(actionStatus);
     }
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
     g2.translate(-xOffset, -yOffset);
   }
 }

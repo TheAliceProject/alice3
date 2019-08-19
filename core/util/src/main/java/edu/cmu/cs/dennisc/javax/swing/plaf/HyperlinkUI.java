@@ -131,7 +131,7 @@ public class HyperlinkUI extends BasicButtonUI {
     try {
       g.drawString(text, x, y);
     } finally {
-      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
     }
     if ((b.isEnabled() || this.isUnderlinedWhenDisabled) && ((this.isUnderlinedOnlyWhenRolledOver == false) || model.isRollover())) {
       g.fillRect(x, y, textRect.width, 1);

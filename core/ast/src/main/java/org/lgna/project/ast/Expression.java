@@ -43,12 +43,12 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Expression extends AbstractNode implements CodeAppender {
+public abstract class Expression extends AbstractNode implements ProcessableNode {
   public abstract AbstractType<?, ?, ?> getType();
 
   //  public abstract boolean isValid();
@@ -57,5 +57,5 @@ public abstract class Expression extends AbstractNode implements CodeAppender {
   }
 
   @Override
-  public abstract void appendCode(SourceCodeGenerator generator);
+  public abstract void process(AstProcessor processor);
 }

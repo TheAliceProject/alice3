@@ -69,8 +69,8 @@ public final class TypeExpression extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendTypeName(this.value.getValue());
+  public void process(AstProcessor processor) {
+    processor.processTypeName(this.value.getValue());
   }
 
   public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance(this);

@@ -55,8 +55,8 @@ public class BlockStatement extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendBlock(this);
+  public void process(AstProcessor processor) {
+    processor.processBlock(this);
   }
 
   @Override

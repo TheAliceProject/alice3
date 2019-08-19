@@ -43,12 +43,13 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.EnumProperty;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> extends Expression implements PrecedentedAppender {
+public abstract class InfixExpression<E extends Enum<E> & SymbolicOperator> extends Expression implements PrecedentedOperation {
   public InfixExpression() {
   }
 
@@ -62,7 +63,7 @@ public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> e
 
   protected abstract AbstractType<?, ?, ?> getRightOperandType();
 
-  PrecedentedAppender getOperatorValue() {
+  SymbolicOperator getOperatorValue() {
     return operator.getValue();
   }
 
@@ -81,8 +82,8 @@ public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> e
   };
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendInfixExpression(this);
+  public void process(AstProcessor processor) {
+    processor.processInfixExpression(this);
   }
 
   @Override

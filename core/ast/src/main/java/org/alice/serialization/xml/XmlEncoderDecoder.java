@@ -4,19 +4,19 @@ import org.alice.serialization.EncoderDecoder;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractNode;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.w3c.dom.Document;
 
 import java.util.Set;
 
 public class XmlEncoderDecoder implements EncoderDecoder<Document> {
   @Override
-  public <N extends AbstractNode & CodeAppender> Document encode(N node) {
+  public <N extends AbstractNode & ProcessableNode> Document encode(N node) {
     return Encoder.encode(node);
   }
 
   @Override
-  public <N extends AbstractNode & CodeAppender> Document encode(N node, Set<AbstractDeclaration> terminals) {
+  public <N extends AbstractNode & ProcessableNode> Document encode(N node, Set<AbstractDeclaration> terminals) {
     return Encoder.encode(node, terminals);
   }
 

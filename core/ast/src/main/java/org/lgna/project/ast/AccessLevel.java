@@ -43,15 +43,13 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
-
 import javax.lang.model.element.Modifier;
 import java.util.Collection;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum AccessLevel implements CodeAppender {
+public enum AccessLevel {
   PUBLIC(Modifier.PUBLIC, "public "), PROTECTED(Modifier.PROTECTED, "protected "), PRIVATE(Modifier.PRIVATE, "private "), PACKAGE(null, "/*package-private*/ ");
 
   private final Modifier modifier;
@@ -68,9 +66,8 @@ public enum AccessLevel implements CodeAppender {
     }
   }
 
-  @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendString(this.javaCodeText);
+  public String getJavaText() {
+    return javaCodeText;
   }
 
   public static AccessLevel getValueFromModifiers(int modifiers) {

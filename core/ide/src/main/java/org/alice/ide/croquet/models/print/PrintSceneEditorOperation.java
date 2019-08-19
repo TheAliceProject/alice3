@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2015, 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,61 +44,56 @@ package org.alice.ide.croquet.models.print;
 
 import edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities;
 import org.alice.ide.IDE;
+import org.alice.ide.operations.InconsequentialActionOperation;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 
-import java.awt.Graphics;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.DialogTypeSelection;
 import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.UUID;
 
-/**
- * @author Dennis Cosgrove
- */
-public class PrintSceneEditorOperation extends PrintOperation {
-  private static class SingletonHolder {
-    private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
-  }
-
-  public static PrintSceneEditorOperation getInstance() {
-    return SingletonHolder.instance;
-  }
-
-  private PrintSceneEditorOperation() {
+public class PrintSceneEditorOperation extends InconsequentialActionOperation {
+ public PrintSceneEditorOperation() {
     super(UUID.fromString("b38997ea-e970-416e-86db-58623d1c3352"));
   }
 
   @Override
-  protected Printable getPrintable() {
-    return new Printable() {
-      @Override
-      public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
-        if (pageIndex > 0) {
-          return NO_SUCH_PAGE;
-        }
-        if (pageIndex > 0) {
-          return NO_SUCH_PAGE;
-        } else {
-          IDE ide = IDE.getActiveInstance();
-          AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-          if (sceneEditor != null) {
-            Graphics2D g2 = (Graphics2D) g;
-            int width = sceneEditor.getWidth();
-            int height = sceneEditor.getHeight();
-            double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
-            g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-            if (scale > 1.0) {
-              g2.scale(1.0 / scale, 1.0 / scale);
-            }
-            sceneEditor.getAwtComponent().paintAll(g2);
-            return PAGE_EXISTS;
-          } else {
-            return NO_SUCH_PAGE;
-          }
-        }
+  protected final void performInternal() {
+    PrinterJob job = PrinterJob.getPrinterJob();
+    job.setPrintable(getPrintable());
+    PrintRequestAttributeSet printOptions = new HashPrintRequestAttributeSet();
+    printOptions.add(DialogTypeSelection.NATIVE);
+    if (job.printDialog(printOptions)) {
+      try {
+        job.print(printOptions);
+      } catch (PrinterException pe) {
+        pe.printStackTrace();
       }
-    };
+    }
   }
 
+  private Printable getPrintable() {
+    return (g, pageFormat, pageIndex) -> {
+      if (pageIndex <= 0) {
+        AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
+        if (sceneEditor != null) {
+          Graphics2D g2 = (Graphics2D) g;
+          int width = sceneEditor.getWidth();
+          int height = sceneEditor.getHeight();
+          double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
+          g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+          if (scale > 0.0) {
+            g2.scale(1.0 / scale, 1.0 / scale);
+          }
+          sceneEditor.getAwtComponent().paintAll(g2);
+          return Printable.PAGE_EXISTS;
+        }
+      }
+      return Printable.NO_SUCH_PAGE;
+    };
+  }
 }

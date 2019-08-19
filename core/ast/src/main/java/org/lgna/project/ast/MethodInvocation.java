@@ -152,8 +152,8 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendMethodCall(this);
+  public void process(AstProcessor processor) {
+    processor.processMethodCall(this);
   }
 
   public final ExpressionProperty expression = new ExpressionProperty(this) {

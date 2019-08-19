@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,11 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-import org.lgna.project.ast.SourceCodeGenerator;
-
-/**
- * @author dculyba
- */
-public interface CodeAppender {
-  public void appendCode(SourceCodeGenerator generator);
+public interface PrecedentedOperation {
+  int getLevelOfPrecedence();
 }

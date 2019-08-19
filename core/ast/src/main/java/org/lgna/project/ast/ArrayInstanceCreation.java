@@ -43,12 +43,12 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.ListProperty;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ArrayInstanceCreation extends Expression implements PrecedentedAppender {
+public final class ArrayInstanceCreation extends Expression implements PrecedentedOperation {
   public ArrayInstanceCreation() {
   }
 
@@ -99,8 +99,8 @@ public final class ArrayInstanceCreation extends Expression implements Precedent
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendArrayInstantiation(this);
+  public void process(AstProcessor processor) {
+    processor.processArrayInstantiation(this);
   }
 
   @Override

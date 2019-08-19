@@ -103,6 +103,6 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
       g2.setPaint(drawPaint);
       g2.draw(path);
     }
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 }

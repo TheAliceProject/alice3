@@ -418,7 +418,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
           this.paintTabBorder(g2, selectedButton);
         }
         super.paintChildren(g2);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
       }
     }
 

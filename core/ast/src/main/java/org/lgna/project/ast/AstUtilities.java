@@ -55,7 +55,7 @@ import org.alice.serialization.xml.XmlEncoderDecoder;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.annotations.AddEventListenerTemplate;
 import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.w3c.dom.Document;
 
 import java.lang.reflect.Field;
@@ -74,7 +74,7 @@ public class AstUtilities {
     throw new AssertionError();
   }
 
-  public static <N extends AbstractNode & CodeAppender> N createCopy(N original, NamedUserType root) {
+  public static <N extends AbstractNode & ProcessableNode> N createCopy(N original, NamedUserType root) {
     Set<AbstractDeclaration> abstractDeclarations;
     if (root != null) {
       abstractDeclarations = root.createDeclarationSet();

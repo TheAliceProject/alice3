@@ -40,103 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.lgna.project.code;
 
-import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.annotations.Visibility;
-import org.lgna.project.code.ProcessableNode;
+import org.lgna.project.ast.AstProcessor;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public abstract class AbstractMethodContainedByUserField extends AbstractMethod implements ProcessableNode {
-  AbstractMethodContainedByUserField(UserField field) {
-    this.field = field;
-  }
-
-  public final UserField getField() {
-    return this.field;
-  }
-
-  @Override
-  public final AbstractType<?, ?, ?> getDeclaringType() {
-    return this.field.getDeclaringType();
-  }
-
-  @Override
-  public final AbstractParameter getVariableLengthParameter() {
-    return null;
-  }
-
-  @Override
-  public final AbstractParameter getKeyedParameter() {
-    return null;
-  }
-
-  @Override
-  public final Visibility getVisibility() {
-    return Visibility.PRIME_TIME;
-  }
-
-  @Override
-  public final AccessLevel getAccessLevel() {
-    return AccessLevel.PUBLIC;
-  }
-
-  @Override
-  public final StringProperty getNamePropertyIfItExists() {
-    return null;
-  }
-
-  @Override
-  public final boolean isSignatureLocked() {
-    return true;
-  }
-
-  @Override
-  public final boolean isStatic() {
-    return false;
-  }
-
-  @Override
-  public final boolean isAbstract() {
-    return false;
-  }
-
-  @Override
-  public final boolean isFinal() {
-    return false;
-  }
-
-  @Override
-  public final boolean isNative() {
-    return false;
-  }
-
-  @Override
-  public final boolean isSynchronized() {
-    return false;
-  }
-
-  @Override
-  public final boolean isStrictFloatingPoint() {
-    return false;
-  }
-
-  @Override
-  public final AbstractCode getNextLongerInChain() {
-    return null;
-  }
-
-  @Override
-  public final AbstractCode getNextShorterInChain() {
-    return null;
-  }
-
-  @Override
-  public boolean isUserAuthored() {
-    return true;
-  }
-
-  private final UserField field;
+public interface ProcessableNode {
+  void process(AstProcessor processor);
 }

@@ -63,8 +63,8 @@ public final class DoTogether extends AbstractStatementWithBody {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendDoTogether(this);
+  public void process(AstProcessor processor) {
+    processor.processDoTogether(this);
   }
 
   @Override

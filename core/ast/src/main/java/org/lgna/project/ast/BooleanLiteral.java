@@ -73,8 +73,8 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendBoolean(this.value.getValue());
+  public void process(AstProcessor processor) {
+    processor.processBoolean(this.value.getValue());
   }
 
   public final BooleanProperty value = new BooleanProperty(this, null);

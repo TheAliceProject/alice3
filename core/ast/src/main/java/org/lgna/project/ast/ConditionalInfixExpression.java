@@ -42,49 +42,44 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-  public enum Operator implements PrecedentedAppender {
-    AND() {
+  public enum Operator implements SymbolicOperator {
+    AND("&&", 4) {
       @Override
       public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
         return leftOperand && rightOperand;
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("&&");
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 4;
-      }
-    }, OR() {
+    }, OR("||", 3) {
       @Override
       public Boolean operate(Boolean leftOperand, Boolean rightOperand) {
         return leftOperand || rightOperand;
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendString("||");
-      }
     };
+
+    Operator(String symbol, int precedence) {
+      this.symbol = symbol;
+      this.precedence = precedence;
+    }
 
     public abstract Boolean operate(Boolean leftOperand, Boolean rightOperand);
 
     @Override
-    public abstract void appendCode(SourceCodeGenerator generator);
+    public String getSymbol() {
+      return symbol;
+    }
 
     @Override
     public int getLevelOfPrecedence() {
-      return 3;
+      return precedence;
     }
+
+    private final String symbol;
+    private final int precedence;
   }
 
   public ConditionalInfixExpression() {

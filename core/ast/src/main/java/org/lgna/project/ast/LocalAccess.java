@@ -81,8 +81,8 @@ public final class LocalAccess extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendString(this.local.getValue().getValidName());
+  public void process(AstProcessor processor) {
+    processor.processVariableAccess(local.getValue().getValidName());
   }
 
   @Override

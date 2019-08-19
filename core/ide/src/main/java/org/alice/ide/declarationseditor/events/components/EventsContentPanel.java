@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.events.components;
 
-import edu.cmu.cs.dennisc.java.awt.PrintHelper;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ThemeUtilities;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
@@ -61,7 +60,6 @@ import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserMethod;
 
 import java.awt.Color;
-import java.awt.print.Printable;
 
 /**
  * @author Matt May
@@ -138,10 +136,5 @@ public class EventsContentPanel extends CodePanelWithDropReceptor {
   public TrackableShape getTrackableShape(DropSite potentialDropSite) {
     Logger.todo(potentialDropSite);
     return null;
-  }
-
-  @Override
-  public Printable getPrintable() {
-    return new PrintHelper.Builder(this.getInsets(), this.getBackgroundColor()).center(this.rootPane.getAwtComponent()).build();
   }
 }

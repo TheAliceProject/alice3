@@ -282,7 +282,7 @@ public class GraphicsUtilities {
     Paint prevPaint = g2.getPaint();
     Stroke prevStroke = g2.getStroke();
     Shape prevClip = g2.getClip();
-    Object antialiasingValue = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     g2.setStroke(stroke);
@@ -298,7 +298,7 @@ public class GraphicsUtilities {
     g2.setStroke(prevStroke);
     g2.setPaint(prevPaint);
 
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasingValue);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 
   public static void draw3DishShape(Graphics g, Shape shape, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke) {

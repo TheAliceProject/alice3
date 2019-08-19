@@ -45,7 +45,6 @@ package org.alice.ide.declarationseditor.type.components;
 
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.java.awt.FontUtilities;
-import edu.cmu.cs.dennisc.java.awt.PrintHelper;
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.pattern.HowMuch;
 import org.alice.ide.ApiConfigurationManager;
@@ -69,7 +68,6 @@ import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import java.awt.print.Printable;
 import java.util.List;
 
 /**
@@ -162,11 +160,6 @@ public class TypeDeclarationView extends DeclarationView {
       this.scrollPane.setViewportView(this.typePanel);
       this.outerMainPanel.addCenterComponent(this.scrollPane);
     }
-  }
-
-  @Override
-  public Printable getPrintable() {
-    return new PrintHelper.Builder(this.getInsets(), this.getBackgroundColor()).pageStart(this.getPageStartComponent().getAwtComponent()).center(this.getCenterComponent().getAwtComponent()).build();
   }
 
   @Override

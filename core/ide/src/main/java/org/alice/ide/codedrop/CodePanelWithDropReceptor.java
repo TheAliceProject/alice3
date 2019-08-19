@@ -104,7 +104,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.print.Printable;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -541,8 +540,6 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
   public abstract AbstractCode getCode();
 
   public abstract TrackableShape getTrackableShape(DropSite potentialDropSite);
-
-  public abstract Printable getPrintable();
 
   private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
   private final InternalDropReceptor dropReceptor = new InternalDropReceptor();

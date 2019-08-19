@@ -78,8 +78,8 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendDouble(this.value.getValue());
+  public void process(AstProcessor processor) {
+    processor.processDouble(this.value.getValue());
   }
 
   public final DoubleProperty value = new DoubleProperty(this, null, true);

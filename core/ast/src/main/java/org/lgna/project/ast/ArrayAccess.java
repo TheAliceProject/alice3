@@ -43,12 +43,12 @@
 
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ArrayAccess extends Expression implements PrecedentedAppender {
+public final class ArrayAccess extends Expression implements PrecedentedOperation {
   public ArrayAccess() {
   }
 
@@ -86,8 +86,8 @@ public final class ArrayAccess extends Expression implements PrecedentedAppender
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendArrayAccess(this);
+  public void process(AstProcessor processor) {
+    processor.processArrayAccess(this);
   }
 
   @Override

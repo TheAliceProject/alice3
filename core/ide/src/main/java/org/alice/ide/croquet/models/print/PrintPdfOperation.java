@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,55 +42,78 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.print;
 
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.openhtmltopdf.svgsupport.BatikSVGDrawer;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.operations.InconsequentialActionOperation;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.Size2DSyntax;
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.print.attribute.standard.MediaSize;
-import java.awt.print.Printable;
+import javax.print.attribute.standard.DialogTypeSelection;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class PrintOperation extends InconsequentialActionOperation {
-  public PrintOperation(UUID individualId) {
-    super(individualId);
+abstract class PrintPdfOperation extends InconsequentialActionOperation {
+  PrintPdfOperation(UUID uuid) {
+    super(uuid);
   }
 
-  protected abstract Printable getPrintable();
-
   @Override
-  protected final void performInternal() {
-    PrinterJob job = PrinterJob.getPrinterJob();
-    Printable printable = this.getPrintable();
-    if (printable != null) {
-      job.setPrintable(printable);
-
-      int mm = Size2DSyntax.MM;
-      MediaSize mediaSize = MediaSize.ISO.A4;
-
-      float mediaWidth = mediaSize.getX(mm);
-      float mediaHeight = mediaSize.getY(mm);
-      float margin = mediaWidth / 50.0f;
-
-      PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
-      set.add(mediaSize.getMediaSizeName());
-      set.add(new MediaPrintableArea(margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm));
-      if (job.printDialog(set)) {
-        try {
-          job.print(set);
-        } catch (PrinterException pe) {
-          //todo
-          pe.printStackTrace();
-        }
+  protected void performInternal() {
+    try {
+      ByteArrayOutputStream htmlStream = getHtmlToPrint();
+      if (htmlStream == null) {
+        return;
       }
-    } else {
-      //todo
+      ByteArrayOutputStream pdfStream = convertToPdf(htmlStream);
+      printPdf(pdfStream);
+    } catch (IOException e) {
+      notifyWrapAndRethrow(e, "File or HTML generation failed");
+    } catch (PrinterException pe) {
+      notifyWrapAndRethrow(pe, "Printer failure");
+    } catch (Exception e) {
+      notifyWrapAndRethrow(e, "Document generation produced an error");
+    }
+  }
+
+  private void notifyWrapAndRethrow(Exception e, String message) {
+    notifyUserOfProblem(message);
+    e.printStackTrace();
+    throw new RuntimeException(message, e);
+  }
+
+  void notifyUserOfProblem(String message) {
+    Dialogs.showInfo("Unable to Print", message);
+  }
+
+  protected abstract ByteArrayOutputStream getHtmlToPrint() throws IOException;
+
+  private ByteArrayOutputStream convertToPdf(ByteArrayOutputStream htmlStream) throws Exception {
+    ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
+    PdfRendererBuilder builder = new PdfRendererBuilder();
+    builder.useFastMode();
+    builder.useSVGDrawer(new BatikSVGDrawer());
+    builder.withHtmlContent(htmlStream.toString(), "");
+    builder.toStream(pdfStream);
+    builder.run();
+    return pdfStream;
+  }
+
+  private void printPdf(ByteArrayOutputStream pdfStream) throws IOException, PrinterException {
+    PrinterJob job = PrinterJob.getPrinterJob();
+    try (PDDocument document = PDDocument.load(pdfStream.toByteArray())) {
+      job.setPageable(new PDFPageable(document));
+
+      PrintRequestAttributeSet printOptions = new HashPrintRequestAttributeSet();
+      printOptions.add(DialogTypeSelection.NATIVE);
+      if (job.printDialog(printOptions)) {
+        job.print(printOptions);
+      }
     }
   }
 }

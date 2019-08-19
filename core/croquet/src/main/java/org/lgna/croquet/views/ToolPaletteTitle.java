@@ -121,7 +121,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
           drawPaint = null;
         }
       }
-      Object antialiasingValue = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+      Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
       g2.setPaint(fillPaint);
@@ -130,7 +130,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
         g2.setPaint(drawPaint);
         g2.draw(path);
       }
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasingValue);
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
     }
   }
 

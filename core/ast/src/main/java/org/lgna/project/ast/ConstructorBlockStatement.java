@@ -57,8 +57,8 @@ public final class ConstructorBlockStatement extends BlockStatement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendConstructorBlock(this);
+  public void process(AstProcessor processor) {
+    processor.processConstructorBlock(this);
   }
 
   public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>(this);

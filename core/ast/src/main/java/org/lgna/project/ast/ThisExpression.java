@@ -84,8 +84,8 @@ public final class ThisExpression extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendThisReference();
+  public void process(AstProcessor processor) {
+    processor.processThisReference();
   }
 
   private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;

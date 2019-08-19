@@ -64,7 +64,7 @@ import org.lgna.project.ast.Member;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 
 import java.io.File;
 import java.net.URI;
@@ -244,11 +244,11 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
     addRenameIfNecessary(renames, nameState, nameState.getMember());
   }
 
-  private <M extends AbstractNode & CodeAppender> M createImportCopy(M original) {
+  private <M extends AbstractNode & ProcessableNode> M createImportCopy(M original) {
     return AstUtilities.createCopy(original, this.importedRootType);
   }
 
-  private <M extends AbstractNode & Member & CodeAppender> void addMembersAndRenames(List<M> membersToAdd, List<M> membersToRemove, List<RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite) {
+  private <M extends AbstractNode & Member & ProcessableNode> void addMembersAndRenames(List<M> membersToAdd, List<M> membersToRemove, List<RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite) {
     for (ImportOnly<M> importOnly : addMembersComposite.getImportOnlys()) {
       if (importOnly.getImportHub().getIsDesiredState().getValue()) {
         membersToAdd.add(this.createImportCopy(importOnly.getImportHub().getMember()));

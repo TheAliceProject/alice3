@@ -96,7 +96,7 @@ import org.lgna.project.ast.TypeExpression;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
@@ -413,7 +413,7 @@ public abstract class IDE extends ProjectApplication {
     }
   }
 
-  public <N extends AbstractNode & CodeAppender> N createCopy(N original) {
+  public <N extends AbstractNode & ProcessableNode> N createCopy(N original) {
     NamedUserType root = this.getProgramType();
     return AstUtilities.createCopy(original, root);
   }

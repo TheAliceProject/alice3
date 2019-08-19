@@ -88,8 +88,8 @@ public final class ParameterAccess extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendString(this.parameter.getValue().getName());
+  public void process(AstProcessor processor) {
+    processor.processVariableAccess(parameter.getValue().getName());
   }
 
   public final DeclarationProperty<UserParameter> parameter = DeclarationProperty.createReferenceInstance(this);
