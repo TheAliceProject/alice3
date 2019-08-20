@@ -57,8 +57,8 @@ import org.lgna.story.ast.EventListenerMethodUtilities;
  * @author Dennis Cosgrove
  */
 public class MouseClickAstMigration extends MethodInvocationAstMigration {
-  public MouseClickAstMigration(Version minimumVersion, Version maximumVersion) {
-    super(minimumVersion, maximumVersion);
+  public MouseClickAstMigration(Version maximumVersion) {
+    super(maximumVersion);
   }
 
   @Override

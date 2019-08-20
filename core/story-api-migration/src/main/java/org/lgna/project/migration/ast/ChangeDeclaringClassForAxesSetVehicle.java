@@ -59,8 +59,8 @@ import org.lgna.story.SThing;
  */
 public class ChangeDeclaringClassForAxesSetVehicle extends MethodInvocationAstMigration {
 
-  public ChangeDeclaringClassForAxesSetVehicle(Version minimumVersion, Version maximumVersion) {
-    super(minimumVersion, maximumVersion);
+  public ChangeDeclaringClassForAxesSetVehicle(Version maximumVersion) {
+    super(maximumVersion);
   }
 
   @Override
