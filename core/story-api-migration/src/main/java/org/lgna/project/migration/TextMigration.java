@@ -103,8 +103,8 @@ public class TextMigration extends AbstractMigration {
 
   private final Pair[] pairs;
 
-  public TextMigration(Version minimumVersion, Version resultVersion, String... values) {
-    super(minimumVersion, resultVersion);
+  public TextMigration(Version resultVersion, String... values) {
+    super(resultVersion);
     assert (values.length % 2) == 0 : values.length;
     this.pairs = new Pair[values.length / 2];
     for (int i = 0; i < this.pairs.length; i++) {

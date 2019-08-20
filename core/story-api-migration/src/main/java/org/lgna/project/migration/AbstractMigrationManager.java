@@ -93,14 +93,12 @@ public abstract class AbstractMigrationManager implements MigrationManager {
   @Override
   public void migrate(Node root, Project projectIfApplicable, Version version) {
     for (AstMigration astMigration : this.getAstMigrations()) {
-      if (astMigration != null) {
-        if (astMigration.isApplicable(version)) {
-          if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
-            Logger.outln(version, astMigration);
-          }
-          astMigration.migrate(root, projectIfApplicable);
-          version = astMigration.getResultVersion();
+      if (astMigration != null && astMigration.isApplicable(version)) {
+        if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
+          Logger.outln(version, astMigration);
         }
+        astMigration.migrate(root, projectIfApplicable);
+        version = astMigration.getResultVersion();
       }
     }
   }

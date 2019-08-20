@@ -68,8 +68,8 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
 public class EventAstMigration extends MethodInvocationAstMigration {
   private static final JavaMethod[] removeTheseDetails = {EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD, EventListenerMethodUtilities.MOVE_WITH_ARROWS, EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD, EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD, EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD, EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD, EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD};
 
-  public EventAstMigration(Version minimumVersion, Version maximumVersion) {
-    super(minimumVersion, maximumVersion);
+  public EventAstMigration(Version maximumVersion) {
+    super(maximumVersion);
   }
 
   @Override

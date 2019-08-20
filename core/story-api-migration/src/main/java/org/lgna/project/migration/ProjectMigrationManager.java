@@ -49,7 +49,6 @@ import org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle;
 import org.lgna.project.migration.ast.EventAstMigration;
 import org.lgna.project.migration.ast.MethodMovedToSuperclass;
 import org.lgna.project.migration.ast.MouseClickAstMigration;
-import org.lgna.project.migration.ast.NoOpAstMigrationStandIn;
 import org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration;
 import org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration;
 import org.lgna.story.SJointedModel;
@@ -195,11 +194,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
   private final TextMigration[] textMigrations = {
       new TextMigration(
-          new Version("3.1.7.0.0"),
           new Version("3.1.8.0.0")),
 
       new TextMigration(
-          new Version("3.1.8.0.0"),
           new Version("3.1.9.0.0"),
 
           "ARMOIRE_CLOTHING", NO_REPLACEMENT,
@@ -212,11 +209,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "org.lgna.story.resources.quadruped.Poodle", NO_REPLACEMENT),
 
       new TextMigration(
-          new Version("3.1.9.0.0"),
           new Version("3.1.11.0.0")),
 
       new TextMigration(
-          new Version("3.1.11.0.0"),
           new Version("3.1.14.0.0"),
 
           "CAMEL", NO_REPLACEMENT,
@@ -236,11 +231,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "org.lgna.story.resources.quadruped.Wolf", NO_REPLACEMENT),
 
       new TextMigration(
-          new Version("3.1.14.0.0"),
           new Version("3.1.15.1.0")),
 
       new TextMigration(
-          new Version("3.1.15.1.0"),
           new Version("3.1.20.0.0"),
 
           "org.lgna.story.resources.dresser.DresserCentralAsian",
@@ -253,11 +246,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "org.lgna.story.resources.prop.DresserDesigner"),
 
       new TextMigration(
-          new Version("3.1.20.0.0"),
           new Version("3.1.33.0.0")),
 
       new TextMigration(
-          new Version("3.1.33.0.0"),
           new Version("3.1.34.0.0"),
 
           "org.lgna.story.Program",
@@ -2209,7 +2200,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           createJointAccessorReplacement("getFrontRightFin", "SSwimmer")
       ),
       new TextMigration(
-          new Version("3.1.34.0.0"),
           new Version("3.1.35.0.0"),
 
           "org.lgna.story.resources.biped.Alien",
@@ -2552,11 +2542,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "org.lgna.story.resources.marinemammal.WalrusResource"
       ),
       new TextMigration(
-          new Version("3.1.35.0.0"),
           new Version("3.1.38.0.0")
       ),
       new TextMigration(
-          new Version("3.1.38.0.0"),
           new Version("3.1.39.0.0"),
 
           "org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
@@ -2566,14 +2554,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener"
       ),
       new TextMigration(
-          new Version("3.1.39.0.0"),
           new Version("3.1.48.0.0"),
 
           "BILLY_GOAT",
           "BIG_HORNS"
       ),
       new TextMigration(
-          new Version("3.1.48.0.0"),
           new Version("3.1.58.0.0"),
 
           "name=\"ICE_FLOW",
@@ -2592,7 +2578,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "name=\"BLUE"
       ),
       new TextMigration(
-          new Version("3.1.58.0.0"),
           new Version("3.1.59.0.0"),
 
           createMoreSpecificFieldPattern("PLANT1", "org.lgna.story.resources.prop.SeaPlantResource"),
@@ -4462,7 +4447,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "name=\"org.lgna.story.resources.prop.CakeResource"
       ),
       new TextMigration(
-          new Version("3.1.59.0.0"),
           new Version("3.1.68.0.0"),
 
           createMoreSpecificFieldPattern("STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource"),
@@ -5105,7 +5089,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
       ),
 
       new TextMigration(
-          new Version("3.1.68.0.0"),
           new Version("3.1.69.0.0"),
 
           createMoreSpecificFieldPattern("DEFAULT", "org.lgna.story.resources.prop.CaveResource"),
@@ -5119,7 +5102,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
       ),
 
       new TextMigration(
-          new Version("3.1.69.0.0"),
           new Version("3.1.70.0.0"),
 
           createMoreSpecificFieldPattern("STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource"),
@@ -5180,7 +5162,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
       ),
 
       new TextMigration(
-          new Version("3.1.70.0.0"),
           new Version("3.1.85.0.0"),
 
           //<note: moved from 68 - 69 migration when a world with the UFO discovered with old resource>
@@ -5225,12 +5206,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
       ),
 
       new TextMigration(
-          new Version("3.1.85.0.0"),
           new Version("3.1.92.0.0")
       ),
 
       new TextMigration(
-          new Version("3.1.92.0.0"),
           new Version("3.1.93.0.0"),
 
           createMoreSpecificFieldPattern("WALNUT_DOOR_WALNUT_WALNUT", "org.lgna.story.resources.prop.BiotechStationResource"),
@@ -5563,12 +5542,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           createJointIdReplacement("TAIL_4")
       ),
       new TextMigration(
-          new Version("3.1.93.0.0"),
           new Version("3.2.108.0.0")
 
           ),
       new TextMigration(
-          new Version("3.2.108.0.0"),
           new Version("3.2.110.0.0"),
 
           createMoreSpecificFieldPattern("OVAL", "org.lgna.story.resources.prop.SandDunesResource"),
@@ -5665,7 +5642,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           createMoreSpecificFieldReplacement("WATER_INDIA_WATER_TANK", "org.lgna.story.resources.prop.WaterTankWellResource")
           ),
       new TextMigration(
-          new Version("3.2.110.0.0"),
           new Version("3.2.111.0.0"),
 
           createMoreSpecificFieldPattern("BLEACHERS", "org.lgna.story.resources.prop.CircusBleachersResource"),
@@ -5681,11 +5657,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           createMoreSpecificFieldReplacement("DEFAULT", "org.lgna.story.resources.prop.WychElmResource")
           ),
       new TextMigration(
-          new Version("3.2.111.0.0"),
           new Version("3.2.112.0.0")
           ),
       new TextMigration(
-          new Version("3.2.112.0.0"),
           new Version("3.2.113.0.0"),
 
           createMoreSpecificFieldPattern("DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkMirrorResource"),
@@ -5850,7 +5824,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           ),
 
       new TextMigration(
-          new Version("3.2.113.0.0"),
           new Version("3.3.0.0.0"),
 
           "INDIA_BRICK_D",
@@ -5879,7 +5852,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           "GRAY"
           ),
 
-      new TextMigration(new Version("3.3.0.0.0"), new Version("3.4.0.0"),
+      new TextMigration(new Version("3.4.0.0"),
           "<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickEvent\"/><parameters/></method>",
           "<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickOnObjectEvent\"/><parameters/></method>"
           )
@@ -5888,32 +5861,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
   };
 
   private final AstMigration[] astMigrations = {
-      new NoOpAstMigrationStandIn(
-          new Version("3.1.0.0.0"),
-          new Version("3.1.38.0.0")
-      ),
-      new MouseClickAstMigration(
-          new Version("3.1.38.0.0"),
-          new Version("3.1.39.0.0")
-      ),
-      new UnderscoreFieldAccessAstMigration(
-          new Version("3.1.39.0.0"),
-          new Version("3.1.68.0.0")
-      ),
-      new EventAstMigration(
-          new Version("3.1.68.0.0"),
-          new Version("3.1.70.0.0")
-      ),
-      new RemoveGetMySceneMethodFromProgramTypeAstMigration(
-          new Version("3.1.70.0.0"),
-          new Version("3.1.72.0.0")
-      ),
-      new ChangeDeclaringClassForAxesSetVehicle(
-          new Version("3.2.5.0.0"),
-          new Version("3.2.113.0.0")
-      ),
+      new MouseClickAstMigration(new Version("3.1.39.0.0")),
+      new UnderscoreFieldAccessAstMigration(new Version("3.1.68.0.0")),
+      new EventAstMigration(new Version("3.1.70.0.0")),
+      new RemoveGetMySceneMethodFromProgramTypeAstMigration(new Version("3.1.72.0.0")),
+      new ChangeDeclaringClassForAxesSetVehicle(new Version("3.2.113.0.0")),
       new CompoundMigration(
-          new Version("3.2.113.0.0"),
           new Version("3.5.0.0"),
           new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "say", String.class, Say.Detail[].class),
           new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "think", String.class, Think.Detail[].class)

@@ -59,8 +59,8 @@ import org.lgna.project.migration.AstMigration;
  * @author Dennis Cosgrove
  */
 public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigration {
-  public RemoveGetMySceneMethodFromProgramTypeAstMigration(Version minimumVersion, Version resultVersion) {
-    super(minimumVersion, resultVersion);
+  public RemoveGetMySceneMethodFromProgramTypeAstMigration(Version resultVersion) {
+    super(resultVersion);
   }
 
   @Override
