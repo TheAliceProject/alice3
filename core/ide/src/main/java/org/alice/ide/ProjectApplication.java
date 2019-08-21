@@ -43,6 +43,7 @@
 
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
@@ -68,6 +69,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 
+import javax.swing.RootPaneContainer;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -347,6 +349,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader) {
+    showWaitCursor();
     this.uriProjectLoader = uriProjectLoader;
     if (uriProjectLoader != null) {
       uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj));
@@ -360,6 +363,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     } else {
       updateInterface(project);
     }
+    hideWaitCursor();
   }
 
   private void updateInterface(Project project) {
@@ -411,6 +415,18 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public abstract void ensureProjectCodeUpToDate();
+
+  public void showWaitCursor() {
+    CursorUtilities.pushAndSetRootWait(getRootComponent());
+  }
+
+  public void hideWaitCursor() {
+    CursorUtilities.popAndSetRoot(getRootComponent());
+  }
+
+  private RootPaneContainer getRootComponent() {
+    return getDocumentFrame().getFrame().getAwtComponent();
+  }
 
   private final ProjectDocumentFrame projectDocumentFrame;
   private final ProjectFileUtilities projectFileUtilities;
