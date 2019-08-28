@@ -234,6 +234,8 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
       }
     }
 
+    removeOverrides(javaMethods);
+
     if (rv.size() > 0) {
       rv.add(SEPARATOR);
     }
@@ -290,6 +292,17 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     rv.addAll(postSubComposites);
 
     return rv;
+  }
+
+  private static void removeOverrides(List<JavaMethod> javaMethods) {
+    ListIterator<JavaMethod> iterator = javaMethods.listIterator();
+    while (iterator.hasNext()) {
+      JavaMethod method = iterator.next();
+      AbstractMethod overridden = method.getOverriddenMethod();
+      if (overridden != null && javaMethods.contains(overridden)) {
+        iterator.remove();
+      }
+    }
   }
 
   @Override
