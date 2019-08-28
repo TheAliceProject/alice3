@@ -807,6 +807,90 @@
     ]
   },
   {
+    "clsName": "org.lgna.story.SRoom",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getFloorPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFloorPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetFloorPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getWallPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setWallPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetWallPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getCeilingPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setCeilingPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetCeilingPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getOpacity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOpacity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOpacity$Detail;"
+        ],
+        "parameterNames": [
+          "opacity",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
     "clsName": "org.lgna.story.SGround",
     "constructorInfos": [
       {
