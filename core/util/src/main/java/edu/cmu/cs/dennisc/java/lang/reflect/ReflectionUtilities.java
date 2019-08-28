@@ -239,7 +239,7 @@ public final class ReflectionUtilities {
       sb.append(cls.getName());
       for (Class<?> parameterCls : parameterClses) {
         sb.append(" ");
-        sb.append(parameterCls.getName());
+        sb.append(parameterCls == null ? "null" : parameterCls.getName());
       }
       throw new RuntimeException(sb.toString(), nsme);
     }

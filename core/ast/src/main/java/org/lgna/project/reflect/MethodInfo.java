@@ -42,16 +42,15 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.lang.reflect.Method;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInfo extends MemberWithParametersInfo {
+public class MethodInfo extends MemberInfo {
   private transient Method mthd;
   private final String name;
 
@@ -60,28 +59,21 @@ public class MethodInfo extends MemberWithParametersInfo {
     this.name = name;
   }
 
-  public MethodInfo(BinaryDecoder binaryDecoder) {
-    super(binaryDecoder);
-    this.name = binaryDecoder.decodeString();
+  @Override
+  void initialize(ClassInfo classInfo) {
+    try {
+      mthd = ReflectionUtilities.getMethod(classInfo.getWrappedClass(), name, getParameterClasses());
+    } catch (RuntimeException re) {
+      Logger.warning("Unable to find method " + name);
+    }
   }
 
   public String getName() {
     return this.name;
   }
 
-  @Override
-  public void encode(BinaryEncoder binaryEncoder) {
-    super.encode(binaryEncoder);
-    binaryEncoder.encode(this.name);
-  }
-
   public Method getMthd() {
-    if (this.mthd != null) {
-      //pass
-    } else {
-      this.mthd = ReflectionUtilities.getMethod(getDeclaringCls(), this.name, getParameterClses());
-    }
-    return this.mthd;
+    return mthd;
   }
 
   @Override

@@ -42,30 +42,67 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberInfo implements BinaryEncodableAndDecodable {
-  private final ClassInfo declaringClassInfo;
+public abstract class MemberInfo {
+  private final String[] parameterClassNames;
+  private final String[] parameterNames;
 
-  public MemberInfo(ClassInfo declaringClassInfo) {
-    this.declaringClassInfo = declaringClassInfo;
+  public MemberInfo(ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames) {
+    this.parameterClassNames = parameterClassNames;
+    this.parameterNames = parameterNames;
+    initialize(declaringClassInfo);
   }
 
-  public MemberInfo(BinaryDecoder binaryDecoder) {
-    this.declaringClassInfo = ClassInfo.forName(binaryDecoder.decodeString());
+  abstract void initialize(ClassInfo classInfo);
+
+  // Called only once per instance to find the method or constructor
+  Class<?>[] getParameterClasses() {
+    Class<?>[] parameterClasses = new Class<?>[parameterClassNames.length];
+      int i = 0;
+      for (String name : parameterClassNames) {
+        boolean isArray = name.endsWith("[]");
+        if (isArray) {
+          name = name.substring(0, name.length() - 2);
+        }
+        try {
+          parameterClasses[i] =  ClassUtilities.forName(name);
+          if (isArray) {
+            parameterClasses[i] = ReflectionUtilities.getArrayClass(parameterClasses[i]);
+          }
+        } catch (ClassNotFoundException cnfe) {
+          Logger.warning("Unable to find class " + name + " for parameter ");
+          //throw new RuntimeException(name, cnfe);
+        }
+        i++;
+      }
+    return parameterClasses;
   }
 
-  protected Class<?> getDeclaringCls() {
-    return this.declaringClassInfo.getCls();
+  public String[] getParameterNames() {
+    return parameterNames;
   }
+
+  protected abstract void appendRepr(StringBuilder sb);
 
   @Override
-  public void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encode(this.declaringClassInfo.getClsName());
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getClass().getSimpleName());
+    sb.append("[");
+    appendRepr(sb);
+    sb.append("]");
+    for (int i = 0; i < parameterClassNames.length; i++) {
+      sb.append("\t\t");
+      sb.append(parameterClassNames[i]);
+      sb.append(" ");
+      sb.append(parameterNames[i]);
+    }
+    return sb.toString();
   }
 }
