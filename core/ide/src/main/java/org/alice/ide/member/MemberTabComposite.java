@@ -65,6 +65,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.JComponent;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
@@ -241,8 +242,8 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     }
 
     String sortValue = this.getSortState().getValue();
-    if (SORT_ALPHABETICALLY_KEY.equals(sortValue)) {
-      //todo
+    if (findLocalizedText(SORT_ALPHABETICALLY_KEY).equals(sortValue)) {
+      javaMethods.sort(Comparator.comparing(JavaMethod::getName));
     } else {
       List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
       for (FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites) {
