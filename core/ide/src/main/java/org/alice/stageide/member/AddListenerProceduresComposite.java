@@ -49,10 +49,10 @@ import org.alice.ide.declarationseditor.CodeComposite;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.declarationseditor.DeclarationsEditorComposite;
-import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.stageide.StageIDE;
 import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -61,7 +61,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class AddListenerProceduresComposite extends FilteredJavaMethodsSubComposite {
+public class AddListenerProceduresComposite extends FilteredMethodsSubComposite {
   private static class SingletonHolder {
     private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
   }
@@ -71,9 +71,9 @@ public class AddListenerProceduresComposite extends FilteredJavaMethodsSubCompos
   }
 
   private final Collection<String> names = Lists.newArrayList("addDefaultModelManipulation", "addObjectMoverFor");
-  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
+  private final Comparator<AbstractMethod> comparator = new Comparator<AbstractMethod>() {
     @Override
-    public int compare(JavaMethod methodA, JavaMethod methodB) {
+    public int compare(AbstractMethod methodA, AbstractMethod methodB) {
       return compareMethodNames(methodA, methodB);
     }
   };
@@ -83,7 +83,7 @@ public class AddListenerProceduresComposite extends FilteredJavaMethodsSubCompos
   }
 
   @Override
-  public Comparator<JavaMethod> getComparator() {
+  public Comparator<AbstractMethod> getComparator() {
     return this.comparator;
   }
 
@@ -112,7 +112,7 @@ public class AddListenerProceduresComposite extends FilteredJavaMethodsSubCompos
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
+  protected boolean isAcceptingOf(AbstractMethod method) {
     String name = method.getName();
     return method.isProcedure() && (names.contains(name) || (name.startsWith("add") && name.endsWith("Listener")));
   }

@@ -196,13 +196,13 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
 
   protected abstract boolean isAcceptable(AbstractMethod method);
 
-  protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
+  protected abstract List<FilteredMethodsSubComposite> getPotentialCategorySubComposites();
 
-  protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
+  protected abstract List<FilteredMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
 
   protected abstract UserMethodsSubComposite getUserMethodsSubComposite(NamedUserType type);
 
-  protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
+  protected abstract UnclaimedMethodsComposite getUnclaimedMethodsComposite();
 
   public List<MethodsSubComposite> getSubComposites() {
     List<MethodsSubComposite> rv = Lists.newLinkedList();

@@ -55,7 +55,6 @@ import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -88,17 +87,17 @@ public final class FunctionTabComposite extends MemberTabComposite<FunctionTabVi
   }
 
   @Override
-  protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+  protected List<FilteredMethodsSubComposite> getPotentialCategorySubComposites() {
     return IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
   }
 
   @Override
-  protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+  protected List<FilteredMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
     return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
   }
 
   private List<MethodsSubComposite> getByReturnTypeSubComposites() {
-    Map<AbstractType<?, ?, ?>, List<AbstractMethod>> map = Maps.newHashMap();
+    Map<AbstractType<?, ?, ?>, List<AbstractMethod>> funcByType = Maps.newHashMap();
 
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
     if (instanceFactory != null) {
@@ -106,35 +105,21 @@ public final class FunctionTabComposite extends MemberTabComposite<FunctionTabVi
       while (type != null) {
         for (AbstractMethod method : type.getDeclaredMethods()) {
           AbstractType<?, ?, ?> returnType = method.getReturnType();
-          if (returnType == JavaType.VOID_TYPE) {
-            //pass
-          } else {
-            if (isInclusionDesired(method)) {
-              List<AbstractMethod> list = map.get(returnType);
-              if (list != null) {
-                //pass
-              } else {
-                list = Lists.newLinkedList();
-                map.put(returnType, list);
-              }
-              list.add(method);
-            }
+          if (returnType != JavaType.VOID_TYPE && isInclusionDesired(method)) {
+            List<AbstractMethod> methods = funcByType.computeIfAbsent(returnType, k -> Lists.newLinkedList());
+            methods.add(method);
           }
         }
-        if (type.isFollowToSuperClassDesired()) {
-          type = type.getSuperType();
-        } else {
-          break;
-        }
+        type = type.isFollowToSuperClassDesired() ? type.getSuperType() : null;
       }
     }
 
-    List<AbstractType<?, ?, ?>> types = Lists.newArrayList(map.keySet());
-    Collections.sort(types, IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator());
+    List<AbstractType<?, ?, ?>> types = Lists.newArrayList(funcByType.keySet());
+    types.sort(IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator());
     List<MethodsSubComposite> rv = Lists.newArrayListWithInitialCapacity(types.size());
     for (AbstractType<?, ?, ?> type : types) {
       FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance(type);
-      subComposite.setMethods(map.get(type));
+      subComposite.setMethods(funcByType.get(type));
       rv.add(subComposite);
     }
     return rv;
@@ -155,8 +140,8 @@ public final class FunctionTabComposite extends MemberTabComposite<FunctionTabVi
   }
 
   @Override
-  protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-    return UnclaimedJavaFunctionsComposite.getInstance();
+  protected UnclaimedMethodsComposite getUnclaimedMethodsComposite() {
+    return UnclaimedFunctionsComposite.getInstance();
   }
   //todo
   //  @Override

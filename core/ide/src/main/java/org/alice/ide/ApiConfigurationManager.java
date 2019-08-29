@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeMenuModel;
@@ -94,13 +94,13 @@ public abstract class ApiConfigurationManager {
 
   public abstract Comparator<AbstractType<?, ?, ?>> getTypeComparator();
 
-  public abstract List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
+  public abstract List<FilteredMethodsSubComposite> getCategoryProcedureSubComposites();
 
-  public abstract List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
+  public abstract List<FilteredMethodsSubComposite> getCategoryFunctionSubComposites();
 
-  public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
+  public abstract List<FilteredMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
 
-  public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
+  public abstract List<FilteredMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
 
   //override to create user types if desired
   public AbstractType<?, ?, ?> getTypeFor(AbstractType<?, ?, ?> type) {

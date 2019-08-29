@@ -44,7 +44,6 @@ package org.alice.ide.member;
 
 import org.alice.ide.member.views.MethodsSubView;
 import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.JavaMethod;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,8 +53,8 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposite {
-  protected static int compareMethodNames(JavaMethod methodA, JavaMethod methodB) {
+public abstract class FilteredMethodsSubComposite extends MethodsSubComposite {
+  protected static int compareMethodNames(AbstractMethod methodA, AbstractMethod methodB) {
     if (methodA != null) {
       if (methodB != null) {
         return methodA.getName().compareTo(methodB.getName());
@@ -71,13 +70,13 @@ public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposit
     }
   }
 
-  private List<JavaMethod> methods = Collections.emptyList();
+  private List<AbstractMethod> methods = Collections.emptyList();
 
-  public FilteredJavaMethodsSubComposite(UUID migrationId, boolean isExpandedInitialValue) {
+  public FilteredMethodsSubComposite(UUID migrationId, boolean isExpandedInitialValue) {
     super(migrationId, isExpandedInitialValue);
   }
 
-  public abstract Comparator<JavaMethod> getComparator();
+  public abstract Comparator<AbstractMethod> getComparator();
 
   @Override
   protected void localize() {
@@ -85,7 +84,7 @@ public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposit
     this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse(this.findDefaultLocalizedText());
   }
 
-  protected abstract boolean isAcceptingOf(JavaMethod method);
+  protected abstract boolean isAcceptingOf(AbstractMethod method);
 
   @Override
   public List<? extends AbstractMethod> getMethods() {
@@ -93,12 +92,12 @@ public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposit
   }
 
   @Override
-  protected MethodsSubView<FilteredJavaMethodsSubComposite> createView() {
-    return new MethodsSubView<FilteredJavaMethodsSubComposite>(this);
+  protected MethodsSubView<FilteredMethodsSubComposite> createView() {
+    return new MethodsSubView<>(this);
   }
 
-  public void sortAndSetMethods(List<JavaMethod> unsortedMethods) {
-    Collections.sort(unsortedMethods, this.getComparator());
+  void sortAndSetMethods(List<? extends AbstractMethod> unsortedMethods) {
+    unsortedMethods.sort(this.getComparator());
     this.methods = Collections.unmodifiableList(unsortedMethods);
     this.getView().refreshLater();
   }

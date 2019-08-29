@@ -43,7 +43,7 @@
 package org.alice.ide.member;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -52,26 +52,23 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMethodsSubComposite {
+public abstract class NameFilteredJavaMethodsSubComposite extends FilteredMethodsSubComposite {
   private final Map<String, Integer> map = Maps.newHashMap();
-  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-    @Override
-    public int compare(JavaMethod methodA, JavaMethod methodB) {
-      Integer valueA = map.get(methodA.getName());
-      Integer valueB = map.get(methodB.getName());
-      if ((valueA != null) && (valueB != null)) {
-        int rv = (valueA < valueB) ? -1 : ((valueA == valueB) ? 0 : 1);
-        if (rv == 0) {
-          rv = compareMethodNames(methodA, methodB);
-        }
-        return rv;
-      } else {
-        return compareMethodNames(methodA, methodB);
+  private final Comparator<AbstractMethod> comparator = (methodA, methodB) -> {
+    Integer valueA = map.get(methodA.getName());
+    Integer valueB = map.get(methodB.getName());
+    if ((valueA != null) && (valueB != null)) {
+      int rv = valueA.compareTo(valueB);
+      if (rv == 0) {
+        rv = compareMethodNames(methodA, methodB);
       }
+      return rv;
+    } else {
+      return compareMethodNames(methodA, methodB);
     }
   };
 
-  public NameFilteredJavaMethodsSubComposite(UUID migrationId, String... methodNames) {
+  NameFilteredJavaMethodsSubComposite(UUID migrationId, String... methodNames) {
     super(migrationId, true);
     for (int i = 0; i < methodNames.length; i++) {
       this.map.put(methodNames[i], i);
@@ -79,12 +76,12 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
   }
 
   @Override
-  public Comparator<JavaMethod> getComparator() {
+  public Comparator<AbstractMethod> getComparator() {
     return this.comparator;
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
-    return this.map.keySet().contains(method.getName());
+  protected boolean isAcceptingOf(AbstractMethod method) {
+    return this.map.containsKey(method.getName());
   }
 }

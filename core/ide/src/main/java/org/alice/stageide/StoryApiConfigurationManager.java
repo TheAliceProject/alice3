@@ -59,7 +59,7 @@ import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.icons.Icons;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
@@ -166,12 +166,12 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   private final org.alice.stageide.ast.ExpressionCreator expressionCreator = NebulousIde.nonfree.newExpressionCreator();
-  private final List<FilteredJavaMethodsSubComposite> categoryProcedureSubComposites;
-  private final List<FilteredJavaMethodsSubComposite> categoryFunctionSubComposites;
-  private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalProcedureSubComposites;
-  private final List<FilteredJavaMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
+  private final List<FilteredMethodsSubComposite> categoryProcedureSubComposites;
+  private final List<FilteredMethodsSubComposite> categoryFunctionSubComposites;
+  private final List<FilteredMethodsSubComposite> categoryOrAlphabeticalProcedureSubComposites;
+  private final List<FilteredMethodsSubComposite> categoryOrAlphabeticalFunctionSubComposites;
 
-  private static List<FilteredJavaMethodsSubComposite> createUnmodifiableSubCompositeList(FilteredJavaMethodsSubComposite... subComposites) {
+  private static List<FilteredMethodsSubComposite> createUnmodifiableSubCompositeList(FilteredMethodsSubComposite... subComposites) {
     return Collections.unmodifiableList(Lists.newLinkedList(subComposites));
   }
 
@@ -261,22 +261,22 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   }
 
   @Override
-  public List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites() {
+  public List<FilteredMethodsSubComposite> getCategoryProcedureSubComposites() {
     return this.categoryProcedureSubComposites;
   }
 
   @Override
-  public List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites() {
+  public List<FilteredMethodsSubComposite> getCategoryFunctionSubComposites() {
     return this.categoryFunctionSubComposites;
   }
 
   @Override
-  public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites() {
+  public List<FilteredMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites() {
     return this.categoryOrAlphabeticalProcedureSubComposites;
   }
 
   @Override
-  public List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites() {
+  public List<FilteredMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites() {
     return this.categoryOrAlphabeticalFunctionSubComposites;
   }
 

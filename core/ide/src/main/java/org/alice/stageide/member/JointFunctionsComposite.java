@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.member;
 
-import org.alice.ide.member.FilteredJavaMethodsSubComposite;
-import org.lgna.project.ast.JavaMethod;
+import org.alice.ide.member.FilteredMethodsSubComposite;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.story.SJoint;
 
 import java.util.Comparator;
@@ -52,7 +52,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class JointFunctionsComposite extends FilteredJavaMethodsSubComposite {
+public class JointFunctionsComposite extends FilteredMethodsSubComposite {
   private static class SingletonHolder {
     private static JointFunctionsComposite instance = new JointFunctionsComposite();
   }
@@ -61,19 +61,14 @@ public class JointFunctionsComposite extends FilteredJavaMethodsSubComposite {
     return SingletonHolder.instance;
   }
 
-  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-    @Override
-    public int compare(JavaMethod methodA, JavaMethod methodB) {
-      return compareMethodNames(methodA, methodB);
-    }
-  };
+  private final Comparator<AbstractMethod> comparator = FilteredMethodsSubComposite::compareMethodNames;
 
   private JointFunctionsComposite() {
     super(UUID.fromString("681b12ce-4948-4cc6-a943-985e9caa76bc"), false);
   }
 
   @Override
-  public Comparator<JavaMethod> getComparator() {
+  public Comparator<AbstractMethod> getComparator() {
     return this.comparator;
   }
 
@@ -83,7 +78,7 @@ public class JointFunctionsComposite extends FilteredJavaMethodsSubComposite {
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
+  protected boolean isAcceptingOf(AbstractMethod method) {
     return method.isFunction() && method.getReturnType().isAssignableTo(SJoint.class) && method.getName().startsWith("get");
   }
 }
