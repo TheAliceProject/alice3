@@ -65,7 +65,6 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.JComponent;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
@@ -76,7 +75,7 @@ import java.util.UUID;
 public abstract class MemberTabComposite<V extends MemberTabView> extends MemberOrControlFlowTabComposite<V> {
   public static boolean ARE_TOOL_PALETTES_INERT = true;
 
-  public static boolean getExpandedAccountingForInert(boolean isExpanded) {
+  static boolean getExpandedAccountingForInert(boolean isExpanded) {
     if (ARE_TOOL_PALETTES_INERT) {
       return true;
     } else {
@@ -84,8 +83,8 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     }
   }
 
-  protected static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
-  protected static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
+  static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
+  static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
 
   public static MethodsSubComposite SEPARATOR = null;
 
@@ -205,8 +204,42 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   protected abstract UnclaimedMethodsComposite getUnclaimedMethodsComposite();
 
   public List<MethodsSubComposite> getSubComposites() {
-    List<MethodsSubComposite> rv = Lists.newLinkedList();
+    if (findLocalizedText(SORT_ALPHABETICALLY_KEY).equals(getSortState().getValue())) {
+      return getSubCompositesAlphabetically();
+    } else {
+      return getSubCompositesByCategory();
+    }
+  }
 
+  private List<MethodsSubComposite> getSubCompositesAlphabetically() {
+    List<AbstractMethod> methods = Lists.newLinkedList();
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    if (instanceFactory != null) {
+      AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+      while (type != null) {
+        type.getDeclaredMethods();
+        for (AbstractMethod method : type.getDeclaredMethods()) {
+          if (this.isAcceptable(method)) {
+            if (isInclusionDesired(method)) {
+              methods.add(method);
+            }
+          }
+        }
+        type = type.isFollowToSuperClassDesired() ? type.getSuperType() : null;
+      }
+    }
+    removeOverrides(methods);
+    List<MethodsSubComposite> subComposites = Lists.newLinkedList();
+    if (methods.size() > 0) {
+      UnclaimedMethodsComposite methodsComposite = this.getUnclaimedMethodsComposite();
+      methodsComposite.sortAndSetMethods(methods);
+      subComposites.add(methodsComposite);
+    }
+    return subComposites;
+  }
+
+  private List<MethodsSubComposite> getSubCompositesByCategory() {
+    List<MethodsSubComposite> subComposites = Lists.newLinkedList();
     List<JavaMethod> javaMethods = Lists.newLinkedList();
 
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
@@ -216,7 +249,7 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
         if (type instanceof NamedUserType) {
           NamedUserType namedUserType = (NamedUserType) type;
           UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
-          rv.add(userMethodsSubComposite);
+          subComposites.add(userMethodsSubComposite);
         } else if (type instanceof JavaType) {
           JavaType javaType = (JavaType) type;
           for (JavaMethod javaMethod : javaType.getDeclaredMethods()) {
@@ -227,47 +260,31 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
             }
           }
         }
-        if (type.isFollowToSuperClassDesired()) {
-          type = type.getSuperType();
-        } else {
-          break;
-        }
+        type = type.isFollowToSuperClassDesired() ? type.getSuperType() : null;
       }
     }
-
     removeOverrides(javaMethods);
 
-    if (rv.size() > 0) {
-      rv.add(SEPARATOR);
+    if (subComposites.size() > 0) {
+      subComposites.add(SEPARATOR);
+    }
+    addSubComposites(subComposites, javaMethods, getPotentialCategorySubComposites());
+
+    List<FilteredMethodsSubComposite> postSubComposites = Lists.newLinkedList();
+    addSubComposites(postSubComposites, javaMethods, getPotentialCategoryOrAlphabeticalSubComposites());
+
+    if (javaMethods.size() > 0) {
+      UnclaimedMethodsComposite unclaimedMethodsComposite = this.getUnclaimedMethodsComposite();
+      unclaimedMethodsComposite.sortAndSetMethods(javaMethods);
+      subComposites.add(unclaimedMethodsComposite);
     }
 
-    String sortValue = this.getSortState().getValue();
-    if (findLocalizedText(SORT_ALPHABETICALLY_KEY).equals(sortValue)) {
-      javaMethods.sort(Comparator.comparing(JavaMethod::getName));
-    } else {
-      List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
-      for (FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites) {
-        List<JavaMethod> acceptedMethods = Lists.newLinkedList();
-        ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
-        while (methodIterator.hasNext()) {
-          JavaMethod method = methodIterator.next();
-          if (potentialSubComposite.isAcceptingOf(method)) {
-            acceptedMethods.add(method);
-            methodIterator.remove();
-          }
-        }
+    subComposites.addAll(postSubComposites);
+    return subComposites;
+  }
 
-        if (acceptedMethods.size() > 0) {
-          potentialSubComposite.sortAndSetMethods(acceptedMethods);
-          rv.add(potentialSubComposite);
-        }
-      }
-    }
-
-    List<FilteredJavaMethodsSubComposite> postSubComposites = Lists.newLinkedList();
-
-    List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
-    for (FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites) {
+  private <T extends FilteredMethodsSubComposite> void addSubComposites(List<? super FilteredMethodsSubComposite> subComposites, List<JavaMethod> javaMethods, List<T> potentialSubComposites) {
+    for (T potentialSubComposite : potentialSubComposites) {
       List<JavaMethod> acceptedMethods = Lists.newLinkedList();
       ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
       while (methodIterator.hasNext()) {
@@ -280,25 +297,15 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
 
       if (acceptedMethods.size() > 0) {
         potentialSubComposite.sortAndSetMethods(acceptedMethods);
-        postSubComposites.add(potentialSubComposite);
+        subComposites.add(potentialSubComposite);
       }
     }
-
-    if (javaMethods.size() > 0) {
-      UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
-      unclaimedJavaMethodsComposite.sortAndSetMethods(javaMethods);
-      rv.add(unclaimedJavaMethodsComposite);
-    }
-
-    rv.addAll(postSubComposites);
-
-    return rv;
   }
 
-  private static void removeOverrides(List<JavaMethod> javaMethods) {
-    ListIterator<JavaMethod> iterator = javaMethods.listIterator();
+  private static <T extends AbstractMethod> void removeOverrides(List<T> javaMethods) {
+    ListIterator<T> iterator = javaMethods.listIterator();
     while (iterator.hasNext()) {
-      JavaMethod method = iterator.next();
+      AbstractMethod method = iterator.next();
       AbstractMethod overridden = method.getOverriddenMethod();
       if (overridden != null && javaMethods.contains(overridden)) {
         iterator.remove();

@@ -75,7 +75,7 @@ public abstract class MemberTabView extends MigPanel {
   private final PopupButton popupButton;
   private final ComboBox<String> comboBox;
 
-  public MemberTabView(MemberTabComposite<?> composite) {
+  MemberTabView(MemberTabComposite<?> composite) {
     super(composite, "insets 0, fill", "[]", "[grow 0][]");
     AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
     if (addMethodMenuModel != null) {
@@ -95,9 +95,7 @@ public abstract class MemberTabView extends MigPanel {
   protected SwingComponentView<?> getComponentFor(Member member) {
     synchronized (this.map) {
       SwingComponentView<?> rv = this.map.get(member);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = createDragView(member);
         this.map.put(member, rv);
       }
@@ -146,9 +144,10 @@ public abstract class MemberTabView extends MigPanel {
           view.setBackgroundColor(this.getBackgroundColor());
           if (subComposite instanceof UserMethodsSubComposite) {
             UserMethodsSubComposite userMethodsSubComposite = (UserMethodsSubComposite) subComposite;
-            view.getTitle().setSuppressed(userMethodsSubComposite.isRelevant() == false);
+            view.getTitle().setSuppressed(!userMethodsSubComposite.isRelevant());
           }
           scrollPaneView.addComponent(view, "wrap");
+          subComposite.getView().internalRefresh();
         }
       } else {
         scrollPaneView.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "wrap");
