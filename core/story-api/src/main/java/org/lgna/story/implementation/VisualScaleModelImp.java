@@ -64,7 +64,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
 
   protected void setSgVisualsScale(Matrix3x3 m) {
     for (Visual sgVisual : this.getSgVisuals()) {
-      sgVisual.scale.setValue(m);
+      sgVisual.scale.setValue(new Matrix3x3(m));
     }
   }
 
