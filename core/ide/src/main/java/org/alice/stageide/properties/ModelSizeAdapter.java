@@ -59,12 +59,7 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 
   @Override
   public Dimension3 getValue() {
-    if (this.instance != null) {
-      Dimension3 size = this.instance.getSize();
-      size = this.instance.getSize();
-      return size;
-    }
-    return null;
+    return instance != null ? instance.getSize() : null;
   }
 
   @Override
