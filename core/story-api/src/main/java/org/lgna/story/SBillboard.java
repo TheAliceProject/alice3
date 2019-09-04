@@ -45,6 +45,7 @@ package org.lgna.story;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.story.implementation.BillboardImp;
+import org.lgna.story.implementation.PaintProperty;
 
 /**
  * @author Dennis Cosgrove
@@ -53,19 +54,14 @@ public class SBillboard extends SModel {
   private final BillboardImp implementation = new BillboardImp(this);
 
   @Override
-    /* package-private */BillboardImp getImplementation() {
+  BillboardImp getImplementation() {
     return this.implementation;
   }
 
   @MethodTemplate()
   @Override
   public void setPaint(Paint paint, SetPaint.Detail... details) {
-    if (paint instanceof ImageSource) {
-      getImplementation().paint.setValue(paint);
-      getImplementation().updateAspectRatio();
-    } else {
-      getImplementation().paint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
-    }
+    setPaintProperty(getImplementation().paint, paint, Duration.getValue(details), AnimationStyle.getValue(details));
   }
 
   @MethodTemplate()
@@ -76,11 +72,22 @@ public class SBillboard extends SModel {
 
   @MethodTemplate()
   public void setBackPaint(Paint paint, SetBackPaint.Detail... details) {
+    setPaintProperty(getImplementation().backPaint, paint, Duration.getValue(details), AnimationStyle.getValue(details));
+  }
+
+  private void setPaintProperty(PaintProperty paintProperty, Paint paint, double duration, AnimationStyle style) {
     if (paint instanceof ImageSource) {
-      getImplementation().backPaint.setValue(paint);
-      getImplementation().updateAspectRatio();
+      paintProperty.setValue(paint);
+      double newWidth = getHeight() * aspectRatio((ImageSource) paint);
+      getImplementation().animateSetWidth(newWidth, false, false, duration, style.getInternal());
     } else {
-      getImplementation().backPaint.animateValue(paint, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+      paintProperty.animateValue(paint, duration, style.getInternal());
     }
+  }
+
+  private Double aspectRatio(ImageSource imageSource) {
+    int width = imageSource.getImageResource().getWidth();
+    int height = imageSource.getImageResource().getHeight();
+    return (width > 0) && (height > 0) ? width / (double) height : 1.0;
   }
 }
