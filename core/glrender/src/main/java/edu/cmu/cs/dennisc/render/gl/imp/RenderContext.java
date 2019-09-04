@@ -606,13 +606,13 @@ public class RenderContext extends Context {
 
   public void renderVertex(Vertex vertex) {
     if (this.currDiffuseColorTextureAdapter != null) {
-      if (vertex.textureCoordinate0.isNaN() == false) {
+      if (!vertex.textureCoordinate0.isNaN()) {
         float u = this.currDiffuseColorTextureAdapter.mapU(vertex.textureCoordinate0.u);
         float v = this.currDiffuseColorTextureAdapter.mapV(vertex.textureCoordinate0.v);
         gl.glTexCoord2f(u, v);
       }
     }
-    if (vertex.diffuseColor.isNaN() == false) {
+    if (!vertex.diffuseColor.isNaN()) {
       gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);
     }
     if (this.isShadingEnabled) {

@@ -71,17 +71,11 @@ public final class TextureFactory {
         BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
         if (bufferedImage != null) {
           Texture texture = TextureFactory.resourceToTextureMap.get(e.getTypedSource());
-          if (texture instanceof BufferedImageTexture) {
+          if (texture != null) {
             BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
             TextureFactory.updateBufferedImageTexture(bufferedImageTexture, bufferedImage);
-          } else {
-            //todo
           }
-        } else {
-          //todo
         }
-      } else {
-        //todo
       }
     }
   };

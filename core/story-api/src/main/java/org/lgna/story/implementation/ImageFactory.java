@@ -58,7 +58,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class ImageFactory {
-  private static Map<ImageResource, BufferedImage> resourceToBufferedImageMap = new HashMap<ImageResource, BufferedImage>();
+  private static Map<ImageResource, BufferedImage> resourceToBufferedImageMap = new HashMap<>();
 
   private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
     @Override
@@ -74,7 +74,7 @@ public final class ImageFactory {
   private ImageFactory() {
   }
 
-  public static void forget(ImageResource imageResource) {
+  private static void forget(ImageResource imageResource) {
     ImageFactory.resourceToBufferedImageMap.remove(imageResource);
     imageResource.removeContentListener(ImageFactory.resourceContentListener);
   }
