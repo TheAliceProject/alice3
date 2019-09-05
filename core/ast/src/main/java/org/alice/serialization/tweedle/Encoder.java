@@ -61,6 +61,14 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("SandDunes", "Terrain");
     typesToRename.put("Visual", "SThing");
     typesToRename.put("Visual[]", "SThing[]");
+    typesToRename.put("StartOcclusionEvent", "ModelInteractionEvent");
+    typesToRename.put("EndOcclusionEvent", "ModelInteractionEvent");
+    typesToRename.put("StartCollisionEvent", "ThingInteractionEvent");
+    typesToRename.put("EndCollisionEvent", "ThingInteractionEvent");
+    typesToRename.put("EnterProximityEvent", "ThingInteractionEvent");
+    typesToRename.put("ExitProximityEvent", "ThingInteractionEvent");
+    typesToRename.put("EnterViewEvent", "ViewEvent");
+    typesToRename.put("ExitViewEvent", "ViewEvent");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
