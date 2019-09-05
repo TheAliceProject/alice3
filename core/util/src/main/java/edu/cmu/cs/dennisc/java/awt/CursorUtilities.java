@@ -42,6 +42,7 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import javax.swing.RootPaneContainer;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Image;
@@ -56,7 +57,7 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public class CursorUtilities {
-  private static final Map<Component, Stack<Cursor>> mapComponentToStack = new HashMap<Component, Stack<Cursor>>();
+  private static final Map<Component, Stack<Cursor>> mapComponentToStack = new HashMap<>();
   public static final Cursor NULL_CURSOR;
 
   static {
@@ -67,26 +68,26 @@ public class CursorUtilities {
   }
 
   private static Stack<Cursor> getStack(Component component) {
-    Stack<Cursor> rv = CursorUtilities.mapComponentToStack.get(component);
-    if (rv != null) {
-      //pass
-    } else {
-      rv = new Stack<Cursor>();
-      CursorUtilities.mapComponentToStack.put(component, rv);
-    }
-    return rv;
+    return mapComponentToStack.computeIfAbsent(component, k -> new Stack<>());
+  }
+
+  public static void pushAndSetRootWait(RootPaneContainer container) {
+    Component glassPane = container.getGlassPane();
+    pushAndSet(glassPane, Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    glassPane.setVisible(true);
+  }
+
+  public static void popAndSetRoot(RootPaneContainer container) {
+    Component glassPane = container.getGlassPane();
+    CursorUtilities.popAndSet(glassPane);
+    glassPane.setVisible(false);
   }
 
   public static void pushAndSet(Component component, Cursor nextCursor) {
-    if (nextCursor != null) {
-      //pass
-    } else {
-      nextCursor = NULL_CURSOR;
-    }
     Stack<Cursor> stack = CursorUtilities.getStack(component);
     Cursor prevCursor = component.getCursor();
     stack.push(prevCursor);
-    component.setCursor(nextCursor);
+    component.setCursor(nextCursor == null ? NULL_CURSOR : nextCursor);
   }
 
   public static void pushAndSetPredefinedCursor(Component component, int nextCursorType) {
@@ -94,10 +95,9 @@ public class CursorUtilities {
 
   }
 
-  public static Cursor popAndSet(Component component) {
+  public static void popAndSet(Component component) {
     Stack<Cursor> stack = CursorUtilities.getStack(component);
     Cursor prevCursor = stack.pop();
     component.setCursor(prevCursor);
-    return prevCursor;
   }
 }
