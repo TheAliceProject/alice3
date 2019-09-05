@@ -40,30 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+
 package org.alice.ide.member;
 
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnclaimedJavaFunctionsComposite extends UnclaimedJavaMethodsComposite {
+public class UnclaimedProceduresComposite extends UnclaimedMethodsComposite {
   private static class SingletonHolder {
-    private static UnclaimedJavaFunctionsComposite instance = new UnclaimedJavaFunctionsComposite();
+    private static UnclaimedProceduresComposite instance = new UnclaimedProceduresComposite();
   }
 
-  public static UnclaimedJavaFunctionsComposite getInstance() {
+  public static UnclaimedProceduresComposite getInstance() {
     return SingletonHolder.instance;
   }
 
-  private UnclaimedJavaFunctionsComposite() {
-    super(UUID.fromString("4e96b52d-ddcc-4963-8f6a-b367d3c6b3fa"));
+  private UnclaimedProceduresComposite() {
+    super(UUID.fromString("1ecd0cc1-1336-4c89-b099-5d17cb381aed"));
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
-    return method.isFunction();
+  protected boolean isAcceptingOf(AbstractMethod method) {
+    return method.isProcedure();
   }
 }

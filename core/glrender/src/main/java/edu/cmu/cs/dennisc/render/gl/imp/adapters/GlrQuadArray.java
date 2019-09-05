@@ -72,4 +72,9 @@ public class GlrQuadArray extends GlrVertexGeometry<QuadArray> {
     rv.setNaN();
     return rv;
   }
+
+  @Override
+  protected boolean isDisplayListDesired() {
+    return false;
+  }
 }

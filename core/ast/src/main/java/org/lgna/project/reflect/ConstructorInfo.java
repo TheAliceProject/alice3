@@ -42,32 +42,32 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.lang.reflect.Constructor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorInfo extends MemberWithParametersInfo {
+public class ConstructorInfo extends MemberInfo {
   private transient Constructor<?> cnstrctr = null;
 
   public ConstructorInfo(ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames) {
     super(classInfo, parameterClassNames, parameterNames);
   }
 
-  public ConstructorInfo(BinaryDecoder binaryDecoder) {
-    super(binaryDecoder);
+  @Override
+  void initialize(ClassInfo classInfo) {
+    try {
+      cnstrctr = ReflectionUtilities.getConstructor(classInfo.getWrappedClass(), getParameterClasses());
+    } catch (RuntimeException re) {
+      Logger.warning("Unable to find constructor on " + classInfo.getClsName());
+    }
   }
 
   public Constructor<?> getCnstrctr() {
-    if (this.cnstrctr != null) {
-      //pass
-    } else {
-      this.cnstrctr = ReflectionUtilities.getConstructor(getDeclaringCls(), getParameterClses());
-    }
-    return this.cnstrctr;
+    return cnstrctr;
   }
 
   @Override

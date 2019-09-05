@@ -42,109 +42,64 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClassInfo implements BinaryEncodableAndDecodable {
-  private transient boolean isGetClassForNameAlreadyAttempted = false;
+public class ClassInfo {
   private transient Class<?> cls;
   private final String clsName;
 
   private final List<ConstructorInfo> constructorInfos = new LinkedList<ConstructorInfo>();
   private final List<MethodInfo> methodInfos = new LinkedList<MethodInfo>();
 
-  private static Map<String, ClassInfo> map = new HashMap<String, ClassInfo>();
-
-  public static ClassInfo forName(String clsName) {
-    ClassInfo rv = map.get(clsName);
-    if (rv != null) {
-      //pass
-    } else {
-      rv = new ClassInfo(clsName);
-    }
-    return rv;
-  }
-
   private ClassInfo(String clsName) {
     this.clsName = clsName;
-  }
-
-  public ClassInfo(BinaryDecoder binaryDecoder) {
-    this.clsName = binaryDecoder.decodeString();
-    ArrayUtilities.set(this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray(ConstructorInfo.class));
-    ArrayUtilities.set(this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray(MethodInfo.class));
   }
 
   public String getClsName() {
     return this.clsName;
   }
 
-  @Override
-  public void encode(BinaryEncoder binaryEncoder) {
-    binaryEncoder.encode(this.clsName);
-    binaryEncoder.encode(ArrayUtilities.createArray(this.constructorInfos, ConstructorInfo.class));
-    binaryEncoder.encode(ArrayUtilities.createArray(this.methodInfos, MethodInfo.class));
-  }
-
-  /* package-private */Class<?> getCls() {
-    if (this.isGetClassForNameAlreadyAttempted) {
-      //pass
-    } else {
-      this.isGetClassForNameAlreadyAttempted = true;
-      //      if( this.cls != null ) {
-      //        //pass
-      //      } else {
-      try {
-        this.cls = Class.forName(this.clsName);
-        assert this.cls != null : this.clsName;
-      } catch (Throwable t) {
-        System.err.println("getCls" + t + " " + this.clsName);
-      }
-      //      }
+  void initialize() {
+    outOfDateMethodInfos = new HashSet<>();
+    try {
+      cls = Class.forName(this.clsName);
+    } catch (Throwable t) {
+      System.err.println("Problem finding Class" + this.clsName + ". " + t);
     }
-    return this.cls;
+    for (MethodInfo methodInfo : getMethodInfos()) {
+      methodInfo.initialize(this);
+    }
+    for (ConstructorInfo constructorInfo : getConstructorInfos()) {
+      constructorInfo.initialize(this);
+    }
   }
 
-  public void addConstructorInfo(String[] parameterClassNames, String[] parameterNames) {
-    ConstructorInfo constructorInfo = new ConstructorInfo(this, parameterClassNames, parameterNames);
-    this.constructorInfos.add(constructorInfo);
+  Class getWrappedClass() {
+    return cls;
   }
 
-  public void addMethodInfo(String name, String[] parameterClassNames, String[] parameterNames) {
-    MethodInfo methodInfo = new MethodInfo(this, name, parameterClassNames, parameterNames);
-    this.methodInfos.add(methodInfo);
-  }
-
-  public List<ConstructorInfo> getConstructorInfos() {
+  private List<ConstructorInfo> getConstructorInfos() {
     return Collections.unmodifiableList(this.constructorInfos);
   }
 
-  public List<MethodInfo> getMethodInfos() {
+  List<MethodInfo> getMethodInfos() {
     return Collections.unmodifiableList(this.methodInfos);
   }
 
-  private Set<MethodInfo> outOfDateMethodInfos = new HashSet<MethodInfo>();
+  private transient Set<MethodInfo> outOfDateMethodInfos = new HashSet<>();
 
   public MethodInfo lookupInfo(Method mthd) {
     for (MethodInfo methodInfo : getMethodInfos()) {
-      if (this.outOfDateMethodInfos.contains(methodInfo)) {
-        //pass
-      } else {
+      if (!outOfDateMethodInfos.contains(methodInfo)) {
         try {
           Method m = methodInfo.getMthd();
           if (m.equals(mthd)) {

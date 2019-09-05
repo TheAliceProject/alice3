@@ -66,7 +66,7 @@ public final class ImageResourceImporter extends Importer<ImageResource> {
   }
 
   private ImageResourceImporter() {
-    super(UUID.randomUUID(), FileUtilities.getDefaultDirectory(), SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null, ImageResource.createFilenameFilter(true), "png", "jpg", "gif", "bmp");
+    super(UUID.randomUUID(), FileUtilities.getDefaultDirectory(), SystemUtilities.isWindows() ? "*.png;*.jpeg;*.jpg;*.gif;*.bmp" : null, ImageResource.createFilenameFilter(true), "png", "jpeg", "jpg", "gif", "bmp");
   }
 
   @Override

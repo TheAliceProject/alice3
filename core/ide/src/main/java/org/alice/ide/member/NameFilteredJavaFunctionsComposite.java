@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
 import java.util.UUID;
 
@@ -55,7 +55,7 @@ public class NameFilteredJavaFunctionsComposite extends NameFilteredJavaMethodsS
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
+  protected boolean isAcceptingOf(AbstractMethod method) {
     return method.isFunction() && super.isAcceptingOf(method);
   }
 }

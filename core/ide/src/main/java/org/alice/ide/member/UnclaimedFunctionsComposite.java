@@ -42,28 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
-import java.util.Comparator;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
-  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-    @Override
-    public int compare(JavaMethod methodA, JavaMethod methodB) {
-      return compareMethodNames(methodA, methodB);
-    }
-  };
+public class UnclaimedFunctionsComposite extends UnclaimedMethodsComposite {
+  private static class SingletonHolder {
+    private static UnclaimedFunctionsComposite instance = new UnclaimedFunctionsComposite();
+  }
 
-  public UnclaimedJavaMethodsComposite(UUID migrationId) {
-    super(migrationId, true);
+  public static UnclaimedFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
+
+  private UnclaimedFunctionsComposite() {
+    super(UUID.fromString("4e96b52d-ddcc-4963-8f6a-b367d3c6b3fa"));
   }
 
   @Override
-  public Comparator<JavaMethod> getComparator() {
-    return this.comparator;
+  protected boolean isAcceptingOf(AbstractMethod method) {
+    return method.isFunction();
   }
 }

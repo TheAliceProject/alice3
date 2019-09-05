@@ -80,7 +80,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
   }
 
   @Override
-    /*package-private*/IsFrameBufferIntact handleDisplay(RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl) {
+    IsFrameBufferIntact handleDisplay(RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl) {
     synchronized (this.imageBuffer.getImageLock()) {
 
       if (this.renderTask != null) {

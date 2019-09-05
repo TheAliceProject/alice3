@@ -55,10 +55,10 @@ import java.awt.Dimension;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
+class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRenderTarget {
   private final GLOffscreenAutoDrawable glPbuffer;
 
-  /* package-private */ GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+  GlrOffscreenRenderTarget(GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
     super(lookingGlassFactory, requestedCapabilities);
     GLContext share;
     if (renderTargetToShareContextWith != null) {

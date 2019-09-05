@@ -88,13 +88,17 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
   }
 
   public boolean isOverride() {
+    return getOverriddenMethod() != null;
+  }
+
+  public AbstractMethod getOverriddenMethod() {
     List<? extends AbstractParameter> parameters = this.getRequiredParameters();
     final int N = parameters.size();
     AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[N];
     for (int i = 0; i < N; i++) {
       parameterTypes[i] = parameters.get(i).getValueType();
     }
-    return this.getDeclaringType().getSuperType().findMethod(this.getName(), parameterTypes) != null;
+    return this.getDeclaringType().getSuperType().findMethod(this.getName(), parameterTypes);
   }
 
   public boolean isFunction() {

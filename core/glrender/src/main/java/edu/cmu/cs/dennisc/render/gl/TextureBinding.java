@@ -64,13 +64,9 @@ public final class TextureBinding implements ForgettableBinding {
     private GL gl;
 
     private void disposeTextureIdIfAppropriate(GL gl) {
-      if (this.texture != null) {
-        if (this.gl != gl) {
-          //pass
-        } else {
-          Logger.info("disposing texture id", this.texture.getTextureObject(this.gl));
-          this.texture.destroy(this.gl);
-        }
+      if (this.texture != null && this.gl == gl) {
+        Logger.info("disposing texture id", this.texture.getTextureObject(this.gl));
+        this.texture.destroy(this.gl);
       }
     }
 
@@ -98,7 +94,7 @@ public final class TextureBinding implements ForgettableBinding {
       }
     }
 
-    public void updateIfNecessary(GL gl, TextureData textureData) {
+    private void updateIfNecessary(GL gl, TextureData textureData) {
       if (this.isUpdateNecessary(gl, textureData)) {
         this.disposeTextureIdIfAppropriate(gl);
         this.textureData = textureData;
@@ -112,21 +108,21 @@ public final class TextureBinding implements ForgettableBinding {
       }
     }
 
-    public void bind() {
+    private void bind() {
       this.texture.bind(this.gl);
     }
 
-    public void enable() {
+    private void enable() {
       this.texture.enable(this.gl);
     }
 
     public void forget(GL gl) {
       if (this.texture != null) {
         this.disposeTextureIdIfAppropriate(gl);
+        Logger.info("dispose", this.texture);
         this.texture = null;
         this.textureData = null;
         this.gl = null;
-        Logger.info("dispose", this.texture);
       }
     }
   }
@@ -135,9 +131,7 @@ public final class TextureBinding implements ForgettableBinding {
 
   private Data getData(RenderContext rc) {
     Data rv = this.map.get(rc);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new Data();
       this.map.put(rc, rv);
     }

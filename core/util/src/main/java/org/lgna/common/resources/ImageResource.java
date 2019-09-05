@@ -66,7 +66,7 @@ public class ImageResource extends Resource {
   private static final String GIF_MIME_TYPE = "image/gif";
 
   static {
-    ImageResource.extensionToContentTypeMap = new HashMap<String, String>();
+    ImageResource.extensionToContentTypeMap = new HashMap<>();
     ImageResource.extensionToContentTypeMap.put("png", PNG_MIME_TYPE);
     ImageResource.extensionToContentTypeMap.put("jpg", JPEG_MIME_TYPE);
     ImageResource.extensionToContentTypeMap.put("jpeg", JPEG_MIME_TYPE);
@@ -88,30 +88,22 @@ public class ImageResource extends Resource {
   }
 
   public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
-    return new FilenameFilter() {
-      @Override
-      public boolean accept(File dir, String name) {
-        File file = new File(dir, name);
-        if (file.isDirectory()) {
-          return areDirectoriesAccepted;
-        } else {
-          return getContentType(name) != null;
-        }
-      }
+    return (dir, name) -> {
+      File file = new File(dir, name);
+      return file.isDirectory() && areDirectoriesAccepted
+          || !file.isDirectory() && getContentType(name) != null;
     };
   }
 
   private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
 
   private static ImageResource get(UUID uuid) {
-    ImageResource rv = uuidToResourceMap.get(uuid);
-    if (rv != null) {
-      //pass
-    } else {
-      rv = new ImageResource(uuid);
-      uuidToResourceMap.put(uuid, rv);
+    ImageResource resource = uuidToResourceMap.get(uuid);
+    if (resource == null) {
+      resource = new ImageResource(uuid);
+      uuidToResourceMap.put(uuid, resource);
     }
-    return rv;
+    return resource;
   }
 
   public static ImageResource valueOf(String s) {
