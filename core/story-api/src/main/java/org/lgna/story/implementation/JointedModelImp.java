@@ -422,10 +422,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     this.treeWalk(new TreeWalkObserver() {
       @Override
       public void pushJoint(JointImp joint) {
-        //todo: remove null check?
-        if (joint != null) {
-          rv.add(joint);
-        }
+        rv.add(joint);
       }
 
       @Override
@@ -911,9 +908,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     @Override
     public void pushJoint(JointImp jointImp) {
-      if (jointImp != null) {
-        list.add(new JointData(jointImp));
-      }
+      list.add(new JointData(jointImp));
     }
 
     @Override

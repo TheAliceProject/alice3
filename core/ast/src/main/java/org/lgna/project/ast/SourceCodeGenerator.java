@@ -703,6 +703,12 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     appendChar('}');
   }
 
+  protected void bracketize(Runnable appender) {
+    openBlock();
+    appender.run();
+    closeBlock();
+  }
+
   protected abstract void appendAssignmentOperator();
 
   @Override

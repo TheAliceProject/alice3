@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,35 +39,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
-package org.lgna.story;
+ *******************************************************************************/
+package org.lgna.project.code;
 
 import org.alice.serialization.tweedle.Encoder;
-import org.lgna.project.code.InstantiableTweedleNode;
-import org.lgna.story.implementation.JointIdTransformationPair;
 
-/**
- * @author Matt May
- */
-public class Pose<M extends SJointedModel> implements InstantiableTweedleNode {
-  public Pose(Class<M> modelCls, JointIdTransformationPair... pairs) {
-    this.modelCls = modelCls;
-    this.jointTPairs = pairs;
-  }
-
-  Class<M> getModelClass() {
-    return this.modelCls;
-  }
-
-  public JointIdTransformationPair[] getJointIdTransformationPairs() {
-    return this.jointTPairs;
-  }
-
-  private final Class<M> modelCls;
-  private final JointIdTransformationPair[] jointTPairs;
-
-  @Override
-  public void encodeDefinition(Encoder processor) {
-    processor.appendNewPose(jointTPairs);
-  }
+public interface IdentifiableTweedleNode {
+  String getCodeIdentifier(Encoder processor);
 }

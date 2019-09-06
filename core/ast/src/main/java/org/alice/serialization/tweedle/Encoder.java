@@ -2,12 +2,16 @@ package org.alice.serialization.tweedle;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.ast.*;
+import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.ProcessableNode;
-import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.InstantiableTweedleNode;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Encoder extends SourceCodeGenerator {
@@ -215,10 +220,20 @@ public class Encoder extends SourceCodeGenerator {
     for (Field field : fields) {
       try {
         Object value = field.get(resourceClass);
-        if (value instanceof CodeGenerator) {
-          appendStaticField(field, (CodeGenerator) value);
+        if (value instanceof InstantiableTweedleNode) {
+          appendStaticField(field, () -> ((InstantiableTweedleNode) value).encodeDefinition(this));
         } else {
-          Logger.info("Export will skip non-generator field " + resourceClass.getSimpleName() + "." + field.getName());
+          if (value.getClass().isArray() && IdentifiableTweedleNode.class.isAssignableFrom(field.getType().getComponentType())) {
+            Object[] values = (Object[]) value;
+            appendStaticField(field, () -> {
+              // The new X[] syntax is not required in Java to create an array, but it is in tweedle, for now
+              appendString("new ");
+              appendString(field.getType().getSimpleName());
+              appendList(values, (v) -> appendString(((IdentifiableTweedleNode) v).getCodeIdentifier(this)));
+            });
+          } else {
+            Logger.info("Export will skip non-generator field " + resourceClass.getSimpleName() + "." + field.getName());
+          }
         }
       } catch (IllegalAccessException e) {
         Logger.info("Export will skip inaccessible field " + resourceClass.getSimpleName() + "." + field.getName());
@@ -226,46 +241,60 @@ public class Encoder extends SourceCodeGenerator {
     }
   }
 
-  private void appendStaticField(Field field, CodeGenerator value) {
+  private void appendStaticField(Field field, Runnable value) {
     appendSingleCodeLine(() -> {
-      FieldTemplate fieldAnnotation = field.getAnnotation(FieldTemplate.class);
-      appendString(visibilityTag(fieldAnnotation));
-      appendString(" static ");
+      appendVisibilityTag(field.getAnnotation(FieldTemplate.class));
+      appendString("static ");
       appendString(field.getType().getSimpleName());
       appendSpace();
       appendString(field.getName());
       appendAssignmentOperator();
-      value.process(this);
+      value.run();
     });
   }
 
-  private String visibilityTag(FieldTemplate fieldAnnotation) {
-    switch (fieldAnnotation.visibility()) {
-    case COMPLETELY_HIDDEN:
-      return "@CompletelyHidden";
-    case PRIME_TIME:
-      return "@PrimeTime";
-    case TUCKED_AWAY:
-      return "@TuckedAway";
-    default:
-      return "";
-    }
+  public void appendNewJointId(String joint, String parentReference) {
+    appendInstantiation("JointId", () -> {
+      appendArg("name", () -> quoteString(joint));
+      appendAnotherArg("parent", parentReference);
+    });
   }
 
-  @Override
-  public void processNewJointId(String joint, String parent, String model) {
-    appendString("new JointId");
-    parenthesize(() -> {
-      appendString("name: \"");
-      appendString(joint);
-      appendString("\", parent: ");
-      if (parent == null) {
-        processNull();
-      } else {
-        appendString(tweedleTypeName(model));
-        appendAccessSeparator();
-        appendString(parent);
-      }
+  public String getFieldReference(String type, String field) {
+    return tweedleTypeName(type) + "." + field;
+  }
+
+  public void appendNewPose(InstantiableTweedleNode[] jointTransformations) {
+    appendInstantiation("JointedModelPose", () -> {
+      appendString("pairs: new JointIdTransformationPair[]");
+      appendList(jointTransformations, (v) -> {
+        appendNewLine();
+        v.encodeDefinition(this);
+      });
+    });
+  }
+
+  public void appendNewJointTransformation(String jointId, AffineMatrix4x4 transformation) {
+    appendString("        ");
+    appendInstantiation("JointIdTransformationPair", () -> {
+      appendArg("joint", jointId);
+      appendAnotherArg("orientation", () -> {
+        final UnitQuaternion orientationUnitQuaternion = transformation.orientation.createUnitQuaternion();
+        appendInstantiation("Orientation", () -> {
+          appendArg("x", Double.toString(orientationUnitQuaternion.x));
+          appendAnotherArg("y", Double.toString(orientationUnitQuaternion.y));
+          appendAnotherArg("z", Double.toString(orientationUnitQuaternion.z));
+          appendAnotherArg("w", Double.toString(orientationUnitQuaternion.w));
+        });
+      });
+      appendAnotherArg("position", () -> {
+        final Point3 position = transformation.translation;
+        appendInstantiation("Position", () -> {
+          appendArg("x", Double.toString(position.x));
+          appendAnotherArg("y", Double.toString(position.y));
+          appendAnotherArg("z", Double.toString(position.z));
+        });
+      });
     });
   }
 
@@ -676,6 +705,73 @@ public class Encoder extends SourceCodeGenerator {
   @Override
   protected String getListSeparator() {
     return ", ";
+  }
+
+  /** Helper methods **/
+
+  private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
+    if (fieldAnnotation == null) {
+      return;
+    }
+    switch (fieldAnnotation.visibility()) {
+    case COMPLETELY_HIDDEN:
+      appendString("@CompletelyHidden ");
+      break;
+    case PRIME_TIME:
+      appendString("@PrimeTime ");
+      break;
+    case TUCKED_AWAY:
+      appendString("@TuckedAway ");
+      break;
+    default:
+    }
+  }
+
+  private void appendInstantiation(String className, Runnable args) {
+    appendString("new ");
+    appendString(className);
+    parenthesize(args);
+  }
+
+  private void appendArg(String label, String value) {
+    appendString(label);
+    appendString(": ");
+    appendString(value);
+  }
+
+  private void appendArg(String label, Runnable value) {
+    appendString(label);
+    appendString(": ");
+    value.run();
+  }
+
+  private void appendAnotherArg(String label, String value) {
+    appendString(getListSeparator());
+    appendArg(label, value);
+  }
+
+  private void appendAnotherArg(String label, Runnable value) {
+    appendString(getListSeparator());
+    appendArg(label, value);
+  }
+
+  private <T> void appendList(T[] values, Consumer<T> appendValue) {
+    bracketize(() -> {
+      int i = 0;
+      while (i < values.length) {
+        appendValue.accept(values[i]);
+        i++;
+        if (i < values.length) {
+          appendString(getListSeparator());
+        }
+      }
+    });
+  }
+
+  private void quoteString(String aString) {
+    appendString("\"");
+    appendString(aString);
+    appendString("\"");
   }
 
   /** Formatting **/

@@ -42,6 +42,8 @@
  */
 package org.lgna.story.implementation;
 
+import org.alice.serialization.tweedle.Encoder;
+import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
 import org.lgna.story.Position;
@@ -54,7 +56,7 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 /**
  * @author dculyba
  */
-public class JointIdTransformationPair {
+public class JointIdTransformationPair implements InstantiableTweedleNode {
   private final JointId id;
   private final AffineMatrix4x4 transformation;
   private final boolean affectsTranslation;
@@ -107,5 +109,10 @@ public class JointIdTransformationPair {
 
   public AffineMatrix4x4 getTransformation() {
     return this.transformation;
+  }
+
+  @Override
+  public void encodeDefinition(Encoder processor) {
+    processor.appendNewJointTransformation(id.getCodeIdentifier(processor), transformation);
   }
 }

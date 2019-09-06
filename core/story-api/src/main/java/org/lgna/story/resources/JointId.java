@@ -44,10 +44,11 @@
 package org.lgna.story.resources;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.serialization.tweedle.Encoder;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AstProcessor;
-import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.code.InstantiableTweedleNode;
+import org.lgna.project.code.IdentifiableTweedleNode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -55,7 +56,7 @@ import java.lang.reflect.Modifier;
 /**
  * @author Dennis Cosgrove
  */
-public class JointId implements CodeGenerator {
+public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode {
 
   private final JointId parent;
   private final Class<? extends JointedModelResource> containingClass;
@@ -116,11 +117,13 @@ public class JointId implements CodeGenerator {
   }
 
   @Override
-  public void process(AstProcessor processor) {
-    if (parent == null) {
-      processor.processNewJointId(fld.getName(), null, null);
-    } else {
-      processor.processNewJointId(fld.getName(), parent.fld.getName(), parent.containingClass.getSimpleName());
-    }
+  public void encodeDefinition(Encoder processor) {
+    processor.appendNewJointId(fld.getName(),
+                               parent == null ? "null" : parent.getCodeIdentifier(processor));
+  }
+
+  @Override
+  public String getCodeIdentifier(Encoder encoder) {
+    return encoder.getFieldReference(containingClass.getSimpleName(), fld.getName());
   }
 }
