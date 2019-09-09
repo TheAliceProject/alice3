@@ -38,7 +38,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
-  private static final List<String> classesToAddConstructorsTo = new ArrayList<>();
+  private static final Map<String,String> classesToAddPassThroughConstructorsTo = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -151,12 +151,29 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> imageParams = new HashMap<>();
     imageParams.put("imageResource", "resource");
     constructorsWithRelabeledParams.put("ImageSource", imageParams);
-    classesToAddConstructorsTo.add("Prop");
-    classesToAddConstructorsTo.add("Aircraft");
-    classesToAddConstructorsTo.add("Automobile");
-    classesToAddConstructorsTo.add("Train");
-    classesToAddConstructorsTo.add("Transport");
-    classesToAddConstructorsTo.add("Watercraft");
+    String rootConstructor =
+        "(TextString resource, JointId root) {\n" +
+        "  super(resource: resource, root: root);\n  }\n";
+    classesToAddPassThroughConstructorsTo.put("Prop", rootConstructor);
+    classesToAddPassThroughConstructorsTo.put("Aircraft", rootConstructor);
+    classesToAddPassThroughConstructorsTo.put("Automobile", rootConstructor);
+    classesToAddPassThroughConstructorsTo.put("Train", rootConstructor);
+    classesToAddPassThroughConstructorsTo.put("Transport", rootConstructor);
+    classesToAddPassThroughConstructorsTo.put("Watercraft", rootConstructor);
+    String flyerConstructor = "(TextString resource,\n" +
+        "       JointedModelPose spreadWingsPose,\n" +
+        "       JointedModelPose foldWingsPose,\n" +
+        "       JointId[] tailArray,\n" +
+        "       JointId[] neckArray)  {\n" +
+        "    super(resource: resource,\n" +
+        "          spreadWingsPose: spreadWingsPose,\n" +
+        "          foldWingsPose: foldWingsPose,\n" +
+        "          tailArray: tailArray,\n" +
+        "          neckArray: neckArray);\n  }";
+    classesToAddPassThroughConstructorsTo.put("Flyer", flyerConstructor);
+    String slithererConstructor = "(TextString resource, JointId[] tailArray) {\n" +
+        "    super(resource: resource, tailArray: tailArray);\n  }";
+    classesToAddPassThroughConstructorsTo.put("Slitherer", slithererConstructor);
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -188,13 +205,13 @@ public class Encoder extends SourceCodeGenerator {
 
   private void appendResources(NamedUserType userType) {
     final String typeName = userType.getName();
-    if (classesToAddConstructorsTo.contains(typeName)) {
+    if (classesToAddPassThroughConstructorsTo.containsKey(typeName)) {
       appendNewLine();
       appendString(typeName);
-      appendString("(TextString resource, JointId root) {\n" + "  super(resource: resource, root: root);\n" + "}\n");
+      appendString(classesToAddPassThroughConstructorsTo.get(typeName));
       return;
     }
-    Class resourceClass = userType.getResourceClass();
+    Class resourceClass = getResourceClass(userType);
     if (resourceClass == null) {
       return;
     }
@@ -340,16 +357,25 @@ public class Encoder extends SourceCodeGenerator {
       final AbstractType<?, ?, ?> declaringType = ((NamedUserConstructor) parent).getDeclaringType();
       if (declaringType instanceof NamedUserType) {
         final NamedUserType nut = (NamedUserType) declaringType;
-        Class resourceClass = nut.getResourceClass();
+        Class resourceClass = getResourceClass(nut);
         if (resourceClass != null) {
+          if ("Flyer".equals(declaringType.getSuperType().getName())) {
+            appendAnotherArg("spreadWingsPose", nut.getName() + ".SPREAD_WINGS_POSE");
+            appendAnotherArg("foldWingsPose", nut.getName() + ".FOLD_WINGS_POSE");
+            appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
+            appendAnotherArg("neckArray", nut.getName() + ".NECK_ARRAY");
+            return;
+          }
+          if ("Slitherer".equals(declaringType.getSuperType().getName())) {
+            appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
+            return;
+          }
           if (Arrays.stream(resourceClass.getDeclaredFields()).anyMatch(field -> "ROOT".equals(field.getName()))) {
-            appendString(", root:");
-            appendString(nut.getName());
-            appendString(".ROOT");
-          } else {
-            if ("Biplane".equals(nut.getName())) {
-              appendString(", root: Biplane.BIPLANE_ROOT");
-            }
+            appendAnotherArg("root", nut.getName() + ".ROOT");
+            return;
+          }
+          if ("Biplane".equals(nut.getName())) {
+            appendString(", root: Biplane.BIPLANE_ROOT");
           }
         }
       }
@@ -708,6 +734,23 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   /** Helper methods **/
+
+  // Enums are replaced with strings and this is used in the conversion.
+  private Class getResourceClass(NamedUserType nut) {
+    try {
+      return Class.forName(getResourceName(nut));
+    } catch (ClassNotFoundException e) {
+      return null;
+    }
+  }
+
+  private String getResourceName(NamedUserType nut) {
+    String owningClass = nut.getName();
+    if ("SandDunes".equals(owningClass)) {
+      owningClass = "Terrain";
+    }
+    return "org.lgna.story.resources." + nut.getSuperType().getName().toLowerCase() + "." + owningClass + "Resource";
+  }
 
   private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
     if (fieldAnnotation == null) {

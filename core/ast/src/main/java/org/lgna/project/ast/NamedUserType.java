@@ -141,24 +141,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
     return codeOrganizer;
   }
 
-  // This function is supposed to be a short term solution for exporting to tweedle.
-  // Enums are replaced with strings and this is used in the conversion.
-  public Class getResourceClass() {
-    try {
-      return Class.forName(getResourceName());
-    } catch (ClassNotFoundException e) {
-      return null;
-    }
-  }
-
-  private String getResourceName() {
-    String owningClass = getName();
-    if ("SandDunes".equals(owningClass)) {
-      owningClass = "Terrain";
-    }
-    return "org.lgna.story.resources." + superType.getValue().getName().toLowerCase() + "." + owningClass + "Resource";
-  }
-
   public final StringProperty name = new StringProperty(this, null);
   public final DeclarationProperty<UserPackage> _package = DeclarationProperty.createReferenceInstance(this);
   public final NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>(this);
