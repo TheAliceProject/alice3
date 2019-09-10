@@ -38,7 +38,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
-  private static final Map<String,String> classesToAddPassThroughConstructorsTo = new HashMap<>();
+  private static final Map<String, String> classesToAddPassThroughConstructorsTo = new HashMap<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -151,28 +151,27 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> imageParams = new HashMap<>();
     imageParams.put("imageResource", "resource");
     constructorsWithRelabeledParams.put("ImageSource", imageParams);
-    String rootConstructor =
-        "(TextString resource, JointId root) {\n" +
-        "  super(resource: resource, root: root);\n  }\n";
+    String rootConstructor = "(TextString resource, JointId root) {\n"
+            + "  super(resource: resource, root: root);\n  }\n";
     classesToAddPassThroughConstructorsTo.put("Prop", rootConstructor);
     classesToAddPassThroughConstructorsTo.put("Aircraft", rootConstructor);
     classesToAddPassThroughConstructorsTo.put("Automobile", rootConstructor);
     classesToAddPassThroughConstructorsTo.put("Train", rootConstructor);
     classesToAddPassThroughConstructorsTo.put("Transport", rootConstructor);
     classesToAddPassThroughConstructorsTo.put("Watercraft", rootConstructor);
-    String flyerConstructor = "(TextString resource,\n" +
-        "       JointedModelPose spreadWingsPose,\n" +
-        "       JointedModelPose foldWingsPose,\n" +
-        "       JointId[] tailArray,\n" +
-        "       JointId[] neckArray)  {\n" +
-        "    super(resource: resource,\n" +
-        "          spreadWingsPose: spreadWingsPose,\n" +
-        "          foldWingsPose: foldWingsPose,\n" +
-        "          tailArray: tailArray,\n" +
-        "          neckArray: neckArray);\n  }";
+    String flyerConstructor = "(TextString resource,\n"
+        + "       JointedModelPose spreadWingsPose,\n"
+        + "       JointedModelPose foldWingsPose,\n"
+        + "       JointId[] tailArray,\n"
+        + "       JointId[] neckArray)  {\n"
+        + "    super(resource: resource,\n"
+        + "          spreadWingsPose: spreadWingsPose,\n"
+        + "          foldWingsPose: foldWingsPose,\n"
+        + "          tailArray: tailArray,\n"
+        + "          neckArray: neckArray);\n  }";
     classesToAddPassThroughConstructorsTo.put("Flyer", flyerConstructor);
-    String slithererConstructor = "(TextString resource, JointId[] tailArray) {\n" +
-        "    super(resource: resource, tailArray: tailArray);\n  }";
+    String slithererConstructor = "(TextString resource, JointId[] tailArray) {\n"
+        + "    super(resource: resource, tailArray: tailArray);\n  }";
     classesToAddPassThroughConstructorsTo.put("Slitherer", slithererConstructor);
   }
 
