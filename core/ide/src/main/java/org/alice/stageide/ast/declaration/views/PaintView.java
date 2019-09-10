@@ -45,35 +45,32 @@ package org.alice.stageide.ast.declaration.views;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.common.resources.ImageResource;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.ViewController;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.virtualmachine.VirtualMachine;
+import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.ImageSource;
 import org.lgna.story.Paint;
 
 import javax.swing.JComponent;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PaintView extends ViewController<JComponent, CustomItemState<Expression>> {
-  private ValueListener<Expression> valueListener = new ValueListener<Expression>() {
-    @Override
-    public void valueChanged(ValueEvent<Expression> e) {
-      PaintView.this.repaint();
-    }
-  };
+  private ValueListener<Expression> valueListener = e -> PaintView.this.repaint();
 
-  public PaintView(CustomItemState<Expression> model) {
+  PaintView(CustomItemState<Expression> model) {
     super(model);
   }
 
@@ -105,24 +102,57 @@ public class PaintView extends ViewController<JComponent, CustomItemState<Expres
           VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
 
           Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
-          assert values.length == 1;
-          if (values[0] instanceof Paint) {
+          if ((values.length == 1) && (values[0] instanceof Paint)) {
             Paint paint = (Paint) values[0];
-
             Color4f color = EmployeesOnly.getColor4f(paint, null);
-            Texture texture = EmployeesOnly.getTexture(paint, null);
-
-            if (color != null) {
+            if (paint instanceof Color) {
               g.setColor(ColorUtilities.toAwtColor(color));
               g.fillRect(0, 0, this.getWidth(), this.getHeight());
-            }
-            if (texture instanceof BufferedImageTexture) {
-              BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
-              GraphicsUtilities.drawCenteredScaledToFitImage(g, bufferedImageTexture.getBufferedImage(), this);
+            } else {
+              if (paint instanceof ImageSource) {
+                paintImage(g, (ImageSource) paint);
+              }
             }
           }
         }
       }
+
+      private void paintImage(Graphics g, ImageSource imageSource) {
+        Texture texture = EmployeesOnly.getTexture(imageSource, null);
+        BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+        if (texture == null) {
+          return;
+        }
+        ImageResource resource = imageSource.getImageResource();
+        Image image = scaleImageToFit(bufferedImageTexture.getBufferedImage(), resource);
+
+        int x = (getWidth() - image.getWidth(null)) / 2;
+        int y = (getHeight() - image.getHeight(null)) / 2;
+        g.drawImage(image, x, y, this);
+      }
+
+      private Image scaleImageToFit(Image image, ImageResource resource) {
+        int componentWidth = getWidth();
+        int componentHeight = getHeight();
+        int imageWidth = resource.getWidth();
+        int imageHeight = resource.getHeight();
+        double widthRatio = imageWidth / (double) componentWidth;
+        double heightRatio = imageHeight / (double) componentHeight;
+        int widthFactor = -1;
+        int heightFactor = -1;
+        if ((imageWidth > imageHeight) && (widthRatio > 1.0)) {
+          widthFactor = componentWidth;
+          heightFactor = componentHeight * imageHeight / imageWidth;
+        } else if ((imageHeight > imageWidth) && (heightRatio > 1.0)) {
+          widthFactor = componentWidth * imageWidth / imageHeight;
+          heightFactor = componentHeight;
+        }
+        if ((widthFactor > 0) || (heightFactor > 0)) {
+          return image.getScaledInstance(widthFactor, heightFactor, Image.SCALE_SMOOTH);
+        }
+        return image;
+      }
+
     };
     rv.setPreferredSize(new Dimension(128, 128));
     return rv;
