@@ -90,8 +90,8 @@ public final class ImageFactory {
       BufferedImage baseImage = ImageIO.read(new ByteArrayInputStream(imageResource.getData()));
       if (baseImage != null) {
         BufferedImage image = stretchSourceImage(baseImage);
-        imageResource.setWidth(image.getWidth());
-        imageResource.setHeight(image.getHeight());
+        imageResource.setWidth(baseImage.getWidth());
+        imageResource.setHeight(baseImage.getHeight());
         imageResource.addContentListener(ImageFactory.resourceContentListener);
         ImageFactory.resourceToBufferedImageMap.put(imageResource, image);
         return image;
