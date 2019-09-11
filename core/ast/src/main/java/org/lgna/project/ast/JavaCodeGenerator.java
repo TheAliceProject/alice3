@@ -164,11 +164,6 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void processNewJointId(String joint, String parent, String model) {
-    throw new RuntimeException("This should not be called.");
-  }
-
-  @Override
   protected void appendConcatenationOperator() {
     appendString(" + ");
   }

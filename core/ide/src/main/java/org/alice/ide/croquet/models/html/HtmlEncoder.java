@@ -531,11 +531,6 @@ public class HtmlEncoder implements AstProcessor {
   public void processResourceExpression(ResourceExpression resourceExpression) {
   }
 
-  @Override
-  public void processNewJointId(String joint, String parent, String model) {
-    // Come from models. Not part of code print out.
-  }
-
   /** Comments **/
 
   @Override

@@ -156,7 +156,5 @@ public interface AstProcessor {
 
   void processMultiLineComment(String comment);
 
-  void processNewJointId(String joint, String parent, String model);
-
   void processVariableAccess(String name);
 }
