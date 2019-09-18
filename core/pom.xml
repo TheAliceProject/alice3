@@ -23,7 +23,6 @@
 
     <platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
     <platform.libvlc.label>libvlc</platform.libvlc.label>
-    <platform.nebulous.label>nebulous</platform.nebulous.label>
     <platform.jogl.label>jogl</platform.jogl.label>
   </properties>
 

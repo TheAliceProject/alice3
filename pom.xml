@@ -80,8 +80,6 @@
     <alice.build.version>3.5.0.1</alice.build.version>
     <alice.build.prerelease>-alpha</alice.build.prerelease>
     <alice.build.metadata>+export</alice.build.metadata>
-    <nebulous.person.version>2014.08.12</nebulous.person.version>
-    <nebulous.lib.version>2017.05.01</nebulous.lib.version>
 
     <netbeans.version>RELEASE82</netbeans.version>
     <guava.version>13.0.1</guava.version>
