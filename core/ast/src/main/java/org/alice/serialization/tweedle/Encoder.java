@@ -276,6 +276,13 @@ public class Encoder extends SourceCodeGenerator {
     });
   }
 
+  public void appendNewJointArrayId(String pattern, String startingJoint) {
+    appendInstantiation("JointArrayId", () -> {
+      appendArg("root", startingJoint);
+      appendAnotherArg("pattern", () -> quoteString(pattern));
+    });
+  }
+
   public String getFieldReference(String type, String field) {
     return tweedleTypeName(type) + "." + field;
   }
