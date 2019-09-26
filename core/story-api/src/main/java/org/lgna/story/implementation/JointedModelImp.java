@@ -338,8 +338,10 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       allJoints.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
     }
     //Handle joint arrays
+    mapArrayIdToJointIdArray.clear();
     for (JointArrayId arrayId : this.getJointArrayIds()) {
       JointId[] jointArrayIds = this.factory.getJointArrayIds(this, arrayId);
+      mapArrayIdToJointIdArray.put(arrayId, jointArrayIds);
       for (JointId jointId : jointArrayIds) {
         allJoints.add(jointId);
       }
