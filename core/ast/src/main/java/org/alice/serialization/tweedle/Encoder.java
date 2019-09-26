@@ -208,7 +208,6 @@ public class Encoder extends SourceCodeGenerator {
       appendNewLine();
       appendString(typeName);
       appendString(classesToAddPassThroughConstructorsTo.get(typeName));
-      return;
     }
     Class resourceClass = getResourceClass(userType);
     if (resourceClass == null) {
@@ -219,6 +218,9 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendResourceNames(NamedUserType userType, Class resourceClass) {
+    if (!resourceClass.isEnum()) {
+      return;
+    }
     final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
     for (String resource: resourceNames) {
       appendNewLine();
@@ -746,7 +748,11 @@ public class Encoder extends SourceCodeGenerator {
     try {
       return Class.forName(getResourceName(nut));
     } catch (ClassNotFoundException e) {
-      return null;
+      try {
+        return Class.forName(getAlternateResourceName(nut));
+      } catch (ClassNotFoundException cnfe) {
+        return null;
+      }
     }
   }
 
@@ -756,6 +762,10 @@ public class Encoder extends SourceCodeGenerator {
       owningClass = "Terrain";
     }
     return "org.lgna.story.resources." + nut.getSuperType().getName().toLowerCase() + "." + owningClass + "Resource";
+  }
+
+  private String getAlternateResourceName(NamedUserType nut) {
+    return "org.lgna.story.resources." + nut.getName() + "Resource";
   }
 
   private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
