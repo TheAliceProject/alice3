@@ -187,7 +187,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private Collection<? extends DataSource> createEntriesForTypes(Manifest manifest, Set<NamedUserType> userTypes) {
-      return userTypes.stream().map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
+      return userTypes.stream().sorted(Comparator.comparingInt(AbstractType::hierarchyDepth)).map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
     }
 
     private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
