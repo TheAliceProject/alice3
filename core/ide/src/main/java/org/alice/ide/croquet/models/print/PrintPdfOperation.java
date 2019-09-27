@@ -97,7 +97,8 @@ abstract class PrintPdfOperation extends InconsequentialActionOperation {
     ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
     PdfRendererBuilder builder = new PdfRendererBuilder();
     builder.useFastMode();
-    builder.useSVGDrawer(new BatikSVGDrawer());
+    builder.useSVGDrawer(new BatikSVGDrawer(BatikSVGDrawer.SvgScriptMode.SECURE,
+                                            BatikSVGDrawer.SvgExternalResourceMode.INSECURE_ALLOW_EXTERNAL_RESOURCE_REQUESTS));
     builder.withHtmlContent(htmlStream.toString(), "");
     builder.toStream(pdfStream);
     builder.run();
