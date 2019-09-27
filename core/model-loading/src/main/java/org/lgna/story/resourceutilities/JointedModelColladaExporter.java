@@ -70,7 +70,6 @@ import javax.xml.namespace.QName;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -369,10 +368,7 @@ public class JointedModelColladaExporter {
     final int N = sgMesh.indexBuffer.getValue().limit();
     int count = 0;
     for (int i = 0; i < N; i += 3) {
-      if (sgMesh.textureIdArray.get(i) != sgMesh.textureIdArray.get(i + 1) || sgMesh.textureIdArray.get(i) != sgMesh.textureIdArray.get(i + 2)) {
-        Logger.severe("Triangle material mapping isn't consistent: " + i + "=" + sgMesh.textureIdArray.get(i) + ", " + (i + 1) + "=" + sgMesh.textureIdArray.get(i + 1) + ", " + (i + 2) + "=" + sgMesh.textureIdArray.get(i + 2));
-      }
-      if (sgMesh.textureIdArray.get(i + 0) == textureId) {
+      if (sgMesh.getTextureId(i).equals(textureId)) {
         //Reverse the order of the triangle indices because collada needs the indices in counter clockwise order
         triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Position 0
         triangleList.add(BigInteger.valueOf(ib.get(i + 0))); //Normal 0

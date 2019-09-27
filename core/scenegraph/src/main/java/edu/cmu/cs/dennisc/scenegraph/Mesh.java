@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -153,11 +154,15 @@ public class Mesh extends Geometry {
 
   public List<Integer> getReferencedTextureIds() {
     List<Integer> referencedTextureIds = new LinkedList<>();
+    if (textureIdArray.isEmpty()) {
+      referencedTextureIds.add(textureId.getValue());
+    } else {
       for (Integer textureId : textureIdArray) {
         if (!referencedTextureIds.contains(textureId)) {
           referencedTextureIds.add(textureId);
         }
       }
+    }
     return referencedTextureIds;
   }
 
@@ -178,5 +183,13 @@ public class Mesh extends Geometry {
   public final BooleanProperty cullBackfaces = new BooleanProperty(this, Boolean.TRUE);
   public final BooleanProperty useAlphaTest = new BooleanProperty(this, Boolean.FALSE);
 
-
+  public Integer getTextureId(int index) {
+    if (textureIdArray.isEmpty()) {
+      return textureId.getValue();
+    }
+    if (!textureIdArray.get(index).equals(textureIdArray.get(index + 1)) || !textureIdArray.get(index).equals(textureIdArray.get(index + 2))) {
+      Logger.severe("Triangle material mapping isn't consistent: " + index + "=" + textureIdArray.get(index) + ", " + (index + 1) + "=" + textureIdArray.get(index + 1) + ", " + (index + 2) + "=" + textureIdArray.get(index + 2));
+    }
+    return textureIdArray.get(index);
+  }
 }
