@@ -300,7 +300,7 @@ public class JsonModelIo extends DataSourceIo {
 
 
   private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
-    SkeletonVisual sv = (SkeletonVisual) v.getSgVisualForExporting(modelResource);
+    SkeletonVisual sv = v.getSgVisualForExporting(modelResource);
     //Make sure meshes have a name
     int meshCount = 0;
     for (Geometry g : sv.geometries.getValue()) {
