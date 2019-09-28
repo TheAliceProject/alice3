@@ -85,71 +85,19 @@
               </resources>
             </configuration>
           </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
           <execution>
-            <id>distribution-platform</id>
-            <phase>generate-resources</phase>
+            <id>copy-nebulous-libraries</id>
+            <phase>process-resources</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <artifactItems>
-                <!-- linux-amd64 -->
-                <artifactItem>
-                  <groupId>org.alice.nonfree</groupId>
-                  <artifactId>nebulous-natives</artifactId>
-                  <version>${nebulous.lib.version}</version>
-                  <classifier>linux-amd64</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
-                </artifactItem>
-
-                <!-- linux-i586 -->
-                <artifactItem>
-                  <groupId>org.alice.nonfree</groupId>
-                  <artifactId>nebulous-natives</artifactId>
-                  <version>${nebulous.lib.version}</version>
-                  <classifier>linux-i586</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
-                </artifactItem>
-
-                <!-- macosx -->
-                <artifactItem>
-                  <groupId>org.alice.nonfree</groupId>
-                  <artifactId>nebulous-natives</artifactId>
-                  <version>${nebulous.lib.version}</version>
-                  <classifier>macosx</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
-                </artifactItem>
-
-                <!-- win32 -->
-                <artifactItem>
-                  <groupId>org.alice.nonfree</groupId>
-                  <artifactId>nebulous-natives</artifactId>
-                  <version>${nebulous.lib.version}</version>
-                  <classifier>win32</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
-                </artifactItem>
-
-                <!-- win64 -->
-                <artifactItem>
-                  <groupId>org.alice.nonfree</groupId>
-                  <artifactId>nebulous-natives</artifactId>
-                  <version>${nebulous.lib.version}</version>
-                  <classifier>win64</classifier>
-                  <type>zip</type>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
-                </artifactItem>
-              </artifactItems>
+              <outputDirectory>${project.resources.platform.directory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/platform</directory>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>

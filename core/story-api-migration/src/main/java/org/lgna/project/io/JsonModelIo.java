@@ -293,16 +293,14 @@ public class JsonModelIo extends DataSourceIo {
         return null;
       }
       final JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> factory = modelResource.getImplementationAndVisualFactory();
-      if (!factory.isSims()) {
-        return getSkeletonVisual(factory.createVisualData());
-      }
-      // TODO handle sims resources
+      return getSkeletonVisual(factory.createVisualData(), modelResource);
     }
     return null;
   }
 
-  private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v) {
-    SkeletonVisual sv = (SkeletonVisual) v.getSgVisuals()[0];
+
+  private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
+    SkeletonVisual sv = v.getSgVisualForExporting(modelResource);
     //Make sure meshes have a name
     int meshCount = 0;
     for (Geometry g : sv.geometries.getValue()) {

@@ -14,32 +14,13 @@ import com.dddviewr.collada.materials.InstanceEffect;
 import com.dddviewr.collada.materials.LibraryMaterials;
 import com.dddviewr.collada.materials.Material;
 import com.dddviewr.collada.nodes.Node;
-import com.dddviewr.collada.visualscene.BaseXform;
-import com.dddviewr.collada.visualscene.Matrix;
-import com.dddviewr.collada.visualscene.Rotate;
-import com.dddviewr.collada.visualscene.Scale;
-import com.dddviewr.collada.visualscene.Translate;
-import com.dddviewr.collada.visualscene.VisualScene;
+import com.dddviewr.collada.visualscene.*;
 import com.jogamp.common.nio.Buffers;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.Mesh;
-import edu.cmu.cs.dennisc.scenegraph.PlentifulInverseAbsoluteTransformationWeightsPair;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.SparseInverseAbsoluteTransformationWeightsPair;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.scenegraph.WeightInfo;
-import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
@@ -47,12 +28,13 @@ import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
 import org.xml.sax.SAXException;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -271,27 +253,13 @@ public class JointedModelColladaImporter {
     }
     WeightInfo weightInfo = new WeightInfo();
     for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
-      int nonZeroWeights = 0;
-      for (float weight : jointAndWeights.getValue()) {
-        if (weight != 0) {
-          nonZeroWeights++;
-        }
-      }
-      if (nonZeroWeights > 0) {
-        InverseAbsoluteTransformationWeightsPair iawp;
-        double portion = ((double) nonZeroWeights) / jointAndWeights.getValue().length;
-        if (portion > .9) {
-          iawp = new PlentifulInverseAbsoluteTransformationWeightsPair();
-        } else {
-          iawp = new SparseInverseAbsoluteTransformationWeightsPair();
-        }
-        int jointIndex = jointAndWeights.getKey();
-        String jointId = jointData[jointIndex];
-        float[] inverseBindMatrix = Arrays.copyOfRange(inverseBindMatrixData, 16 * jointIndex, 16 * jointIndex + 16);
-        AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix(inverseBindMatrix);
-        iawp.setWeights(jointAndWeights.getValue());
-        // The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
-        iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
+      int jointIndex = jointAndWeights.getKey();
+      String jointId = jointData[jointIndex];
+      // The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
+      float[] inverseBindMatrix = Arrays.copyOfRange(inverseBindMatrixData, 16 * jointIndex, 16 * jointIndex + 16);
+      AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix(inverseBindMatrix);
+      InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(jointAndWeights.getValue(), aliceInverseBindMatrix);
+      if (iawp != null) {
         weightInfo.addReference(jointId, iawp);
       }
     }
