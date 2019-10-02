@@ -423,6 +423,25 @@ public class Encoder extends SourceCodeGenerator {
     appendNewLine();
   }
 
+  @Override
+  public void processInstantiation(InstanceCreation creation) {
+    if (isPersonResourceCreation(creation)) {
+      InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+      final Object summary = vm.createInstance(creation);
+      if (summary != null) {
+        appendEscapedString(summary.toString());
+        return;
+      }
+    }
+    super.processInstantiation(creation);
+  }
+
+  private boolean isPersonResourceCreation(InstanceCreation creation) {
+    final AbstractConstructor constructor = creation.constructor.getValue();
+    return constructor instanceof JavaConstructor
+        && ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getName().endsWith("PersonResource");
+  }
+
   /** Statements **/
 
   @Override
