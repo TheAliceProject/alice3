@@ -434,7 +434,7 @@ public class Encoder extends SourceCodeGenerator {
       InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
       final Object summary = vm.createInstance(creation);
       if (summary != null) {
-        appendEscapedString(summary.toString());
+        appendEscapedString("Person/" + summary.toString());
         return;
       }
     }
