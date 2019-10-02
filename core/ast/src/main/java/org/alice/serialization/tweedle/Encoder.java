@@ -12,6 +12,7 @@ import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.code.InstantiableTweedleNode;
+import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -367,14 +368,18 @@ public class Encoder extends SourceCodeGenerator {
         final NamedUserType nut = (NamedUserType) declaringType;
         Class resourceClass = getResourceClass(nut);
         if (resourceClass != null) {
-          if ("Flyer".equals(declaringType.getSuperType().getName())) {
+          final String superType = declaringType.getSuperType().getName();
+          if ("SBiped".equals(superType) || "SSwimmer".equals(superType) || "SQuadruped".equals(superType)) {
+            return; // Root is defined and determined in those S classes
+          }
+          if ("Flyer".equals(superType)) {
             appendAnotherArg("spreadWingsPose", nut.getName() + ".SPREAD_WINGS_POSE");
             appendAnotherArg("foldWingsPose", nut.getName() + ".FOLD_WINGS_POSE");
             appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
             appendAnotherArg("neckArray", nut.getName() + ".NECK_ARRAY");
             return;
           }
-          if ("Slitherer".equals(declaringType.getSuperType().getName())) {
+          if ("Slitherer".equals(superType)) {
             appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
             return;
           }
