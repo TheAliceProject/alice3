@@ -174,13 +174,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       project.getProgramType().crawl(crawler, CrawlPolicy.COMPLETE);
       Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
       for (Set<JointedModelResource> resourceSet : modelResources.values()) {
-        if (resourceSet.isEmpty()) {
-          break; // No enum entries for PersonResources, so they are skipped for now
-        }
         JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
+      JsonModelIo modelIo = JsonModelIo.createPersonIo(crawler.personCreations, JsonModelIo.ExportFormat.COLLADA);
+      entries.addAll(modelIo.createDataSources("models"));
+      manifest.resources.add(modelIo.createModelReference("models"));
 
       entries.add(manifestDataSource(manifest));
       writeDataSources(os, entries);

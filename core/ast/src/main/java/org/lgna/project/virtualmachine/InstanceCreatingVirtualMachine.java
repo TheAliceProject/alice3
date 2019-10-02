@@ -40,63 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.io;
+package org.lgna.project.virtualmachine;
 
-import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.ast.*;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.ModelResource;
+import org.lgna.project.ast.InstanceCreation;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-public class ModelResourceCrawler implements Crawler {
-  Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
-  Set<InstanceCreation> personCreations = new HashSet<>();
-
-  @Override
-  public void visit(Crawlable crawlable) {
-    if (crawlable == null) {
-      return;
-    }
-    if (FieldAccess.class.isAssignableFrom(crawlable.getClass())) {
-      addIfResourceEnum((FieldAccess) crawlable);
-    }
-    if (InstanceCreation.class.isAssignableFrom(crawlable.getClass())) {
-      addIfSimsPersonResourceCreation((InstanceCreation) crawlable);
-    }
-  }
-
-  private void addIfResourceEnum(FieldAccess fieldAccess) {
-    AbstractType<?, ?, ?> type = fieldAccess.getType();
-    if (type != null && type.isAssignableTo(JointedModelResource.class)) {
-      JavaField field = (JavaField) fieldAccess.field.getValue();
-      try {
-        JointedModelResource modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-        final String resourceName = modelResource.getClass().getSimpleName();
-        final String modelName = modelNameForResource(resourceName);
-        Set<JointedModelResource> resources = modelResources.computeIfAbsent(modelName, k -> new HashSet<>());
-        resources.add(modelResource);
-      } catch (IllegalAccessException e) {
-        e.printStackTrace(); //TODO: Log this
-      }
-    }
-  }
-
-  private String modelNameForResource(String resourceName) {
-    return resourceName.endsWith("Resource")
-        ? resourceName.substring(0, resourceName.length() - 8)
-        : resourceName;
-  }
-
-  private void addIfSimsPersonResourceCreation(InstanceCreation resourceCreation) {
-    AbstractType<?, ?, ?> resourceType = resourceCreation.constructor.getValue().getDeclaringType();
-    final Class<?> resourceClass = resourceType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-    if (ModelResource.class.isAssignableFrom(resourceClass)) {
-      personCreations.add(resourceCreation);
-    }
+public class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
+  public Object createInstance(InstanceCreation instanceCreation) {
+    return evaluate(instanceCreation);
   }
 }
