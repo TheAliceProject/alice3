@@ -77,7 +77,7 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
 
   @Override
   public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
-    return nebModel.createSkeletonVisual(resource);
+    return nebModel.createSkeletonVisualForExporting(resource);
   }
 
   public M getNebModel() {
