@@ -302,8 +302,7 @@ public abstract class Model extends Geometry {
           //If a new index maps outside the range of weights, then set it to be unweighted. Not all vertices have weights.
           if (oldVertexIndex >= vertexWeights.length) {
             remappedVertexWeights[i] = 0;
-          }
-          else {
+          } else {
             remappedVertexWeights[i] = vertexWeights[oldVertexIndex];
           }
         }
