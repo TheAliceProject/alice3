@@ -178,10 +178,12 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
-      JsonModelIo modelIo = JsonModelIo.createPersonIo(crawler.personCreations, JsonModelIo.ExportFormat.COLLADA);
-      entries.addAll(modelIo.createDataSources("models"));
-      manifest.resources.add(modelIo.createModelReference("models"));
-
+      final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
+      if (!personResourceCreations.isEmpty()) {
+        JsonModelIo modelIo = JsonModelIo.createPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
+        entries.addAll(modelIo.createDataSources("models"));
+        manifest.resources.add(modelIo.createModelReference("models"));
+      }
       entries.add(manifestDataSource(manifest));
       writeDataSources(os, entries);
     }
