@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import java.awt.*;
@@ -462,9 +463,15 @@ public abstract class Model extends Geometry {
     String[] unweightedMeshIds = getUnweightedMeshIds();
     String[] weightedMeshIds = getWeightedMeshIds();
     for (String meshId : weightedMeshIds) {
-      WeightedMesh mesh = new WeightedMesh();
-      initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-      weightedMeshes.add(mesh);
+      if (resource instanceof PersonResource) {
+        Mesh mesh = new Mesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        unWeightedMeshes.add(mesh);
+      } else {
+        WeightedMesh mesh = new WeightedMesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        weightedMeshes.add(mesh);
+      }
     }
     for (String meshId : unweightedMeshIds) {
       Mesh mesh = new Mesh();
