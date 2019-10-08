@@ -119,6 +119,11 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("atan2", new String[] {"y", "x"});
     methodsMissingParameterNames.put("exp", new String[] {"power"});
     methodsMissingParameterNames.put("log", new String[] {"x"});
+    methodsMissingParameterNames.put("contentEquals", new String[] {"text"});
+    methodsMissingParameterNames.put("equalsIgnoreCase", new String[] {"text"});
+    methodsMissingParameterNames.put("startsWith", new String[] {"text"});
+    methodsMissingParameterNames.put("endsWith", new String[] {"text"});
+    methodsMissingParameterNames.put("contains", new String[] {"text"});
 
     Map<String, String> duration = new HashMap<>();
     duration.put("duration", "new Duration(seconds: ");
