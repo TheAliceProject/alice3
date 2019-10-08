@@ -382,17 +382,17 @@ public class ModelResourceInfo {
     return themeTags;
   }
 
-  public List<ModelResourceInfo> getSubResources() {
+  private List<ModelResourceInfo> getSubResources() {
     return subResources;
   }
 
-  public boolean matchesModelAndTexture(String modelName, String textureName) {
+  private boolean matchesModelAndTexture(String modelName, String textureName) {
     String thisModel = getModelName();
     String thisTexture = getTextureName();
     return ((thisModel != null) && thisModel.equalsIgnoreCase(modelName) && (thisTexture != null) && thisTexture.equalsIgnoreCase(textureName));
   }
 
-  public boolean matchesResource(String resourceName) {
+  private boolean matchesResource(String resourceName) {
     String resource = getResourceName();
     return (resource != null) && resource.equalsIgnoreCase(resourceName);
   }
@@ -403,7 +403,17 @@ public class ModelResourceInfo {
         return mri;
       }
     }
+    for (ModelResourceInfo subResource : this.subResources) {
+      if (subResource.matchesModel(modelName)) {
+        return subResource;
+      }
+    }
     return null;
+  }
+
+  private boolean matchesModel(String modelName) {
+    String thisModel = getModelName();
+    return thisModel != null && thisModel.equalsIgnoreCase(modelName);
   }
 
   public ModelResourceInfo getSubResource(String resourceName) {
