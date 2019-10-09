@@ -341,13 +341,25 @@ public abstract class IDE extends ProjectApplication {
   public void ensureProjectCodeUpToDate() {
     Project project = this.getProject();
     if (project != null) {
-      if (this.isProjectUpToDateWithSceneSetUp() == false) {
-        synchronized (project.getLock()) {
-          this.generateCodeForSceneSetUp();
-          this.reorganizeFieldsIfNecessary();
-          this.updateHistoryIndexSceneSetUpSync();
-        }
+      if (!isProjectUpToDateWithSceneSetUp()) {
+        updateProject(project);
       }
+    }
+  }
+
+  @Override
+  public void forceProjectCodeUpToDate() {
+    Project project = getProject();
+    if (project != null) {
+      updateProject(project);
+    }
+  }
+
+  private void updateProject(Project project) {
+    synchronized (project.getLock()) {
+      generateCodeForSceneSetUp();
+      reorganizeFieldsIfNecessary();
+      updateHistoryIndexSceneSetUpSync();
     }
   }
 
