@@ -120,4 +120,8 @@ public final class Color implements Paint {
   public Double getBlue() {
     return (double) this.internal.blue;
   }
+
+  public String rgbString() {
+    return "Color(" + internal.red + "," + internal.green + "," + internal.blue + ")";
+  }
 }

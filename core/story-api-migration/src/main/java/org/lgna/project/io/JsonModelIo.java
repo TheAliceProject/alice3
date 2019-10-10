@@ -9,6 +9,8 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.tweedle.file.*;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 import org.lgna.story.JointedModelPose;
 import org.lgna.story.Pose;
 import org.lgna.story.implementation.ImageFactory;
@@ -57,7 +59,7 @@ public class JsonModelIo extends DataSourceIo {
     this.exportFormat = exportFormat;
   }
 
-  public JsonModelIo(ModelManifest modelManifest, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
+  JsonModelIo(ModelManifest modelManifest, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
     this(exportFormat);
     this.modelManifest = modelManifest;
     this.skeletonVisuals = new ArrayList<>();
@@ -67,10 +69,41 @@ public class JsonModelIo extends DataSourceIo {
     this.thumbnails.add(thumbnail);
   }
 
-  public JsonModelIo(Set<JointedModelResource> modelResources, ExportFormat exportFormat) {
+  JsonModelIo(Set<JointedModelResource> modelResources, ExportFormat exportFormat) {
     this(exportFormat);
     this.modelManifest = createModelManifest(modelResources);
     this.modelResources = modelResources;
+  }
+
+  static JsonModelIo createPersonIo(Set<InstanceCreation> resourceCreations, ExportFormat exportFormat) {
+    final JsonModelIo jsonModelIo = new JsonModelIo(exportFormat);
+    jsonModelIo.initializeFromPersonResources(resourceCreations);
+    return jsonModelIo;
+  }
+
+  private void initializeFromPersonResources(Set<InstanceCreation> resourceCreations) {
+    InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+    modelResources = new HashSet<>();
+    for (InstanceCreation creation : resourceCreations) {
+      final Object instance = vm.createInstance(creation);
+      if (instance instanceof JointedModelResource) {
+        modelResources.add((JointedModelResource) instance);
+      }
+    }
+    ModelResourceInfo modelInfo = personModelInfo("PersonResource", "");
+    for (JointedModelResource resource: modelResources) {
+      modelInfo.addSubResource(personModelInfo(resource.toString(), resource.toString()));
+    }
+    modelManifest = modelInfo.createModelManifest();
+    modelManifest.parentClass = "BipedResource";
+  }
+
+  private ModelResourceInfo personModelInfo(String resourceName, String textureName) {
+    return new ModelResourceInfo(
+        null, resourceName, "EA", 2004,
+        new AxisAlignedBox(0, 0, 0, 1, 1, 1),
+        new String[0], new String[0], new String[0],
+        "Person", textureName, false, true);
   }
 
   //AliceResourcesUtilities.getTextureResourceName returns null for resources that use "default" texture names
@@ -350,7 +383,7 @@ public class JsonModelIo extends DataSourceIo {
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      if (modelResource != null) {
+      if (modelResource != null && !modelResource.getImplementationAndVisualFactory().isSims()) {
         return AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelVariant.name);
       }
     }
@@ -465,12 +498,14 @@ public class JsonModelIo extends DataSourceIo {
       } else {
         Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
       }
-      //Add DataSources for the thumbnails
+      //Add DataSources for the thumbnails if possible
       BufferedImage thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
-      String thumbnailName = modelVariant.name + ".png";
-      modelVariant.icon = thumbnailName;
-      DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
-      dataToWrite.add(thumbnailDataSource);
+      if (thumbnailImage != null) {
+        String thumbnailName = modelVariant.name + ".png";
+        modelVariant.icon = thumbnailName;
+        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
+        dataToWrite.add(thumbnailDataSource);
+      }
     }
 
     BufferedImage thumbnailImage;
@@ -479,11 +514,12 @@ public class JsonModelIo extends DataSourceIo {
     } else {
       thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
     }
-    String classIconName = getModelName() + "_cls.png";
-    DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
-    dataToWrite.add(thumbnailDataSource);
-    modelManifest.description.icon = classIconName;
-
+    if (thumbnailImage != null) {
+      String classIconName = getModelName() + "_cls.png";
+      DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
+      dataToWrite.add(thumbnailDataSource);
+      modelManifest.description.icon = classIconName;
+    }
     //The model manifest goes in the base model path directory
     dataToWrite.add(createDataSource(resourcePath + "/" + getModelName() + ".json", ManifestEncoderDecoder.toJson(modelManifest)));
     return dataToWrite;

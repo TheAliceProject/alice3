@@ -44,12 +44,7 @@ package org.lgna.project.io;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.*;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
 
@@ -59,7 +54,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class ModelResourceCrawler implements Crawler {
-  public Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
+  Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
+  Set<InstanceCreation> personCreations = new HashSet<>();
 
   @Override
   public void visit(Crawlable crawlable) {
@@ -82,8 +78,8 @@ public class ModelResourceCrawler implements Crawler {
         JointedModelResource modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
         final String resourceName = modelResource.getClass().getSimpleName();
         final String modelName = modelNameForResource(resourceName);
-        Set<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelName, k -> new HashSet<>());
-        resourceList.add(modelResource);
+        Set<JointedModelResource> resources = modelResources.computeIfAbsent(modelName, k -> new HashSet<>());
+        resources.add(modelResource);
       } catch (IllegalAccessException e) {
         e.printStackTrace(); //TODO: Log this
       }
@@ -100,17 +96,7 @@ public class ModelResourceCrawler implements Crawler {
     AbstractType<?, ?, ?> resourceType = resourceCreation.constructor.getValue().getDeclaringType();
     final Class<?> resourceClass = resourceType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
     if (ModelResource.class.isAssignableFrom(resourceClass)) {
-
-      final Node parent = resourceCreation.getParent();
-      if (parent instanceof SimpleArgument) {
-        if (parent.getParent() instanceof InstanceCreation) {
-          InstanceCreation modelCreation = (InstanceCreation) parent.getParent();
-          AbstractType<?, ?, ?> modelType = modelCreation.constructor.getValue().getDeclaringType();
-          modelResources.computeIfAbsent(modelType.getName(), k -> new HashSet<>());
-          // TODO fill in set with resource class when that becomes useful
-        }
-      }
+      personCreations.add(resourceCreation);
     }
   }
-
 }

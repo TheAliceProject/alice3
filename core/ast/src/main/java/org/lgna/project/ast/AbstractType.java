@@ -292,4 +292,8 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
   protected String formatTypeName(BinaryOperator<String> localizer) {
     return localizer.apply(getName(), getName());
   }
+
+  public int hierarchyDepth() {
+    return getSuperType() == null ? 0 : getSuperType().hierarchyDepth() + 1;
+  }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.croquet.models.projecturi;
+package org.lgna.project.virtualmachine;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
-import org.alice.ide.ProjectApplication;
-import org.alice.ide.icons.Icons;
-import org.lgna.project.io.IoUtilities;
+import org.lgna.project.ast.InstanceCreation;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
-public class ExportProjectOperation extends AbstractSaveProjectOperation {
-  public ExportProjectOperation() {
-    super(UUID.fromString("44ffba8a-ff13-4cb5-9736-55cd93c48e9d"));
-  }
-  @Override
-  protected String getExtension() {
-    return IoUtilities.EXPORT_EXTENSION;
-  }
-
-  @Override
-  protected boolean isPromptNecessary(File file) {
-    return true;
-  }
-
-  @Override
-  protected void localize() {
-    super.localize();
-    this.setButtonIcon(Icons.SAVE_DOCUMENT_SMALL);
-  }
-
-  @Override
-  public boolean isToolBarTextClobbered() {
-    return true;
-  }
-
-  @Override
-  protected void save(ProjectApplication application, File file) throws IOException {
-    try {
-      application.exportProjectTo(file);
-    } catch (Exception e) {
-      e.printStackTrace();
-      Logger.warning("Unable to export", e);
-      Dialogs.showWarning("Unable to Export", "There was a problem exporting this world");
-    }
+public class InstanceCreatingVirtualMachine extends ReleaseVirtualMachine {
+  public Object createInstance(InstanceCreation instanceCreation) {
+    return evaluate(instanceCreation);
   }
 }

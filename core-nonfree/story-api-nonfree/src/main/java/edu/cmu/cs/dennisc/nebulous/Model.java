@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import java.awt.*;
@@ -162,6 +163,8 @@ public abstract class Model extends Geometry {
   private native String[] getWeightedMeshIds();
 
   private native String[] getTextureIds();
+
+  private native void prepareModelForExporting();
 
   private native int[] getIndicesForMesh(String meshId, String textureId);
 
@@ -285,17 +288,23 @@ public abstract class Model extends Geometry {
         //First we find the new hightest index
         int maxVertexIndex = 0;
         for (int i = 0; i < vertexWeights.length; i++) {
-          int newVertexIndex = oldVertexIndexToNewIndex.get(i);
-          if (newVertexIndex > maxVertexIndex) {
-            maxVertexIndex = newVertexIndex;
-          }
+            int newVertexIndex = oldVertexIndexToNewIndex.get(i);
+            if (newVertexIndex > maxVertexIndex) {
+              maxVertexIndex = newVertexIndex;
+            }
         }
         //Since we stored weights in an array where the index in the array is also the vertex index,
         // this becomes the size of the new weight array
         float[] remappedVertexWeights = new float[maxVertexIndex + 1];
         //Now we need to transfer the weight values from the old array to the new array
         for (int i = 0; i < remappedVertexWeights.length; i++) {
-          remappedVertexWeights[i] = vertexWeights[newIndexToOldVertex.get(i)];
+          int oldVertexIndex = newIndexToOldVertex.get(i);
+          //If a new index maps outside the range of weights, then set it to be unweighted. Not all vertices have weights.
+          if (oldVertexIndex >= vertexWeights.length) {
+            remappedVertexWeights[i] = 0;
+          } else {
+            remappedVertexWeights[i] = vertexWeights[oldVertexIndex];
+          }
         }
         AffineMatrix4x4 aliceInverseBindMatrix = AffineMatrix4x4.createFromColumnMajorArray12(inverseAbsTransform);
         InverseAbsoluteTransformationWeightsPair iawp = InverseAbsoluteTransformationWeightsPair.createInverseAbsoluteTransformationWeightsPair(remappedVertexWeights, aliceInverseBindMatrix);
@@ -414,7 +423,9 @@ public abstract class Model extends Geometry {
     return rootJoint;
   }
 
-  public SkeletonVisual createSkeletonVisual(JointedModelResource resource) {
+  public SkeletonVisual createSkeletonVisualForExporting(JointedModelResource resource) {
+
+    prepareModelForExporting();
     //Create skeleton from nebulous data
     List<JointId> resourceJointIds = AliceResourceClassUtilities.getJoints(resource.getClass());
     Joint skeleton = createSkeleton(resourceJointIds);
@@ -451,9 +462,15 @@ public abstract class Model extends Geometry {
     String[] unweightedMeshIds = getUnweightedMeshIds();
     String[] weightedMeshIds = getWeightedMeshIds();
     for (String meshId : weightedMeshIds) {
-      WeightedMesh mesh = new WeightedMesh();
-      initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-      weightedMeshes.add(mesh);
+      if (resource instanceof PersonResource) {
+        Mesh mesh = new Mesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        unWeightedMeshes.add(mesh);
+      } else {
+        WeightedMesh mesh = new WeightedMesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        weightedMeshes.add(mesh);
+      }
     }
     for (String meshId : unweightedMeshIds) {
       Mesh mesh = new Mesh();

@@ -174,20 +174,22 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       project.getProgramType().crawl(crawler, CrawlPolicy.COMPLETE);
       Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
       for (Set<JointedModelResource> resourceSet : modelResources.values()) {
-        if (resourceSet.isEmpty()) {
-          break; // No enum entries for PersonResources, so they are skipped for now
-        }
         JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
-
+      final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
+      if (!personResourceCreations.isEmpty()) {
+        JsonModelIo modelIo = JsonModelIo.createPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
+        entries.addAll(modelIo.createDataSources("models"));
+        manifest.resources.add(modelIo.createModelReference("models"));
+      }
       entries.add(manifestDataSource(manifest));
       writeDataSources(os, entries);
     }
 
     private Collection<? extends DataSource> createEntriesForTypes(Manifest manifest, Set<NamedUserType> userTypes) {
-      return userTypes.stream().map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
+      return userTypes.stream().sorted(Comparator.comparingInt(AbstractType::hierarchyDepth)).map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
     }
 
     private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {

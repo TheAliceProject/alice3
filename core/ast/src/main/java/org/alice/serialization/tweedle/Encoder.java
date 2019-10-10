@@ -12,6 +12,7 @@ import org.lgna.project.code.IdentifiableTweedleNode;
 import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.code.InstantiableTweedleNode;
+import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -118,6 +119,11 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("atan2", new String[] {"y", "x"});
     methodsMissingParameterNames.put("exp", new String[] {"power"});
     methodsMissingParameterNames.put("log", new String[] {"x"});
+    methodsMissingParameterNames.put("contentEquals", new String[] {"text"});
+    methodsMissingParameterNames.put("equalsIgnoreCase", new String[] {"text"});
+    methodsMissingParameterNames.put("startsWith", new String[] {"text"});
+    methodsMissingParameterNames.put("endsWith", new String[] {"text"});
+    methodsMissingParameterNames.put("contains", new String[] {"text"});
 
     Map<String, String> duration = new HashMap<>();
     duration.put("duration", "new Duration(seconds: ");
@@ -208,7 +214,6 @@ public class Encoder extends SourceCodeGenerator {
       appendNewLine();
       appendString(typeName);
       appendString(classesToAddPassThroughConstructorsTo.get(typeName));
-      return;
     }
     Class resourceClass = getResourceClass(userType);
     if (resourceClass == null) {
@@ -219,6 +224,9 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendResourceNames(NamedUserType userType, Class resourceClass) {
+    if (!resourceClass.isEnum()) {
+      return;
+    }
     final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
     for (String resource: resourceNames) {
       appendNewLine();
@@ -273,6 +281,13 @@ public class Encoder extends SourceCodeGenerator {
     appendInstantiation("JointId", () -> {
       appendArg("name", () -> quoteString(joint));
       appendAnotherArg("parent", parentReference);
+    });
+  }
+
+  public void appendNewJointArrayId(String pattern, String startingJoint) {
+    appendInstantiation("JointArrayId", () -> {
+      appendArg("root", startingJoint);
+      appendAnotherArg("pattern", () -> quoteString(pattern));
     });
   }
 
@@ -358,14 +373,18 @@ public class Encoder extends SourceCodeGenerator {
         final NamedUserType nut = (NamedUserType) declaringType;
         Class resourceClass = getResourceClass(nut);
         if (resourceClass != null) {
-          if ("Flyer".equals(declaringType.getSuperType().getName())) {
+          final String superType = declaringType.getSuperType().getName();
+          if ("SBiped".equals(superType) || "SSwimmer".equals(superType) || "SQuadruped".equals(superType)) {
+            return; // Root is defined and determined in those S classes
+          }
+          if ("Flyer".equals(superType)) {
             appendAnotherArg("spreadWingsPose", nut.getName() + ".SPREAD_WINGS_POSE");
             appendAnotherArg("foldWingsPose", nut.getName() + ".FOLD_WINGS_POSE");
             appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
             appendAnotherArg("neckArray", nut.getName() + ".NECK_ARRAY");
             return;
           }
-          if ("Slitherer".equals(declaringType.getSuperType().getName())) {
+          if ("Slitherer".equals(superType)) {
             appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
             return;
           }
@@ -412,6 +431,25 @@ public class Encoder extends SourceCodeGenerator {
     appendIndent();
     super.processSetter(setter);
     appendNewLine();
+  }
+
+  @Override
+  public void processInstantiation(InstanceCreation creation) {
+    if (isPersonResourceCreation(creation)) {
+      InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+      final Object summary = vm.createInstance(creation);
+      if (summary != null) {
+        appendEscapedString("Person/" + summary.toString());
+        return;
+      }
+    }
+    super.processInstantiation(creation);
+  }
+
+  private boolean isPersonResourceCreation(InstanceCreation creation) {
+    final AbstractConstructor constructor = creation.constructor.getValue();
+    return constructor instanceof JavaConstructor
+        && ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getName().endsWith("PersonResource");
   }
 
   /** Statements **/
@@ -739,7 +777,11 @@ public class Encoder extends SourceCodeGenerator {
     try {
       return Class.forName(getResourceName(nut));
     } catch (ClassNotFoundException e) {
-      return null;
+      try {
+        return Class.forName(getAlternateResourceName(nut));
+      } catch (ClassNotFoundException cnfe) {
+        return null;
+      }
     }
   }
 
@@ -749,6 +791,10 @@ public class Encoder extends SourceCodeGenerator {
       owningClass = "Terrain";
     }
     return "org.lgna.story.resources." + nut.getSuperType().getName().toLowerCase() + "." + owningClass + "Resource";
+  }
+
+  private String getAlternateResourceName(NamedUserType nut) {
+    return "org.lgna.story.resources." + nut.getName() + "Resource";
   }
 
   private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
