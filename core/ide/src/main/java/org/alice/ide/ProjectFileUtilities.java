@@ -61,7 +61,7 @@ class ProjectFileUtilities {
   }
 
   void exportCopyOfProjectTo(File file) throws IOException {
-    Project project = projectApp.getUpToDateProject();
+    Project project = projectApp.getForcedUpToDateProject();
     IoUtilities.exportProject(file, project, thumbnailDataSources());
   }
 

@@ -409,9 +409,16 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     projectFileUtilities.exportCopyOfProjectTo(file);
   }
 
+  final Project getForcedUpToDateProject() {
+    forceProjectCodeUpToDate();
+    return getProject();
+  }
+
+  public abstract void forceProjectCodeUpToDate();
+
   public final Project getUpToDateProject() {
-    this.ensureProjectCodeUpToDate();
-    return this.getProject();
+    ensureProjectCodeUpToDate();
+    return getProject();
   }
 
   public abstract void ensureProjectCodeUpToDate();
