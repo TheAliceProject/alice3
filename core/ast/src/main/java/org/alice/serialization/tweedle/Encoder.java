@@ -443,7 +443,22 @@ public class Encoder extends SourceCodeGenerator {
         return;
       }
     }
+    if (isDecimalFromWholeNumber(creation)) {
+      final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
+      if (requiredArgs.size() == 1) {
+        appendString("$DecimalNumber.from");
+        Expression arg = requiredArgs.get(0).expression.getValue();
+        parenthesize(() -> appendArg("wholeNumber", () -> arg.process(this)));
+        return;
+      }
+    }
     super.processInstantiation(creation);
+  }
+
+  private boolean isDecimalFromWholeNumber(InstanceCreation creation) {
+    final AbstractConstructor constructor = creation.constructor.getValue();
+    return constructor instanceof JavaConstructor
+        && ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getName().equals("java.lang.Double");
   }
 
   private boolean isPersonResourceCreation(InstanceCreation creation) {
