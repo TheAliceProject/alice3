@@ -294,6 +294,8 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     }
   }
 
+  public abstract void processArgument(AbstractParameter parameter, AbstractArgument argument);
+
   public void processSingleStatement(Statement stmt, Runnable appender) {
     appender.run();
     appendStatementCompletion(stmt);

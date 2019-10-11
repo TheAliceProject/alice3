@@ -110,8 +110,6 @@ public interface AstProcessor {
 
   void processMethodCall(MethodInvocation invocation);
 
-  void processArgument(AbstractParameter parameter, AbstractArgument argument);
-
   void processKeyedArgument(JavaKeyedArgument arg);
 
   void processAssignmentExpression(AssignmentExpression assignment);
