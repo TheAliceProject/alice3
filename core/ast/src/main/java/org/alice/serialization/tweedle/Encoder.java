@@ -38,6 +38,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
+  private static final Map<String, String> methodParamsToRelabel = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
   private static final Map<String, String> classesToAddPassThroughConstructorsTo = new HashMap<>();
 
@@ -57,6 +58,7 @@ public class Encoder extends SourceCodeGenerator {
     membersToRename.put("nextIntegerFromAToBInclusive", "wholeNumberFromAToBInclusive");
     membersToRename.put("nextDoubleInRange", "decimalNumberInRange");
     membersToRename.put("nextBoolean", "boolean");
+    membersToRename.put("COMBINE", "OVERLAP");
 
     typesToRename.put("Double", "DecimalNumber");
     typesToRename.put("Double[]", "DecimalNumber[]");
@@ -75,6 +77,7 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("ExitProximityEvent", "ThingInteractionEvent");
     typesToRename.put("EnterViewEvent", "ViewEvent");
     typesToRename.put("ExitViewEvent", "ViewEvent");
+    typesToRename.put("MultipleEventPolicy", "OverlappingEventPolicy");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -143,6 +146,8 @@ public class Encoder extends SourceCodeGenerator {
     methodsWithWrappedArgs.put("setOpacity", opacity);
 
     optionalParamsToWrap.put("duration", "new Duration(seconds: ");
+
+    methodParamsToRelabel.put("multipleEventPolicy", "overlappingEventPolicy");
 
     Map<String, String> sizeParams = new HashMap<>();
     sizeParams.put("leftToRight", "width");
@@ -520,7 +525,8 @@ public class Encoder extends SourceCodeGenerator {
       AbstractMethod method = methodInvocation.method.getValue();
       AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType(arg);
       if (factoryType != null) {
-        appendString(method.getName());
+        final String label = method.getName();
+        appendString(methodParamsToRelabel.getOrDefault(label, label));
         appendString(": ");
         appendOneArgument(methodInvocation);
         return;
@@ -574,7 +580,7 @@ public class Encoder extends SourceCodeGenerator {
     }
     String label = parameter.getName();
     if (null != label) {
-      return label;
+      return methodParamsToRelabel.getOrDefault(label, label);
     }
     if (parameter instanceof JavaMethodParameter) {
       final String methodName = parameter.getCode().getName();
