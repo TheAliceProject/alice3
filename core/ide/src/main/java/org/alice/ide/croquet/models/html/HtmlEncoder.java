@@ -443,10 +443,6 @@ public class HtmlEncoder implements AstProcessor {
   public void processKeyedArgument(JavaKeyedArgument arg) {
   }
 
-  @Override
-  public void processArgument(AbstractParameter parameter, AbstractArgument argument) {
-  }
-
   /** Code Flow **/
 
   @Override
