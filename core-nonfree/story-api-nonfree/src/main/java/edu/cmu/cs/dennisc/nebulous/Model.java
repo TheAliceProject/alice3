@@ -61,10 +61,8 @@ import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -423,6 +421,15 @@ public abstract class Model extends Geometry {
     return rootJoint;
   }
 
+  private boolean isActuallyWeightedToJoints(String weightedMeshId, List<JointId> resourceJointIds) {
+    for (JointId jointId : resourceJointIds ){
+      if (isMeshWeightedToJoint(weightedMeshId, jointId)){
+        return true;
+      }
+    }
+    return false;
+  }
+
   public SkeletonVisual createSkeletonVisualForExporting(JointedModelResource resource) {
 
     prepareModelForExporting();
@@ -459,17 +466,24 @@ public abstract class Model extends Geometry {
     List<Mesh> unWeightedMeshes = new ArrayList<>();
     List<WeightedMesh> weightedMeshes = new ArrayList<>();
     //Build meshes and weighted meshes
-    String[] unweightedMeshIds = getUnweightedMeshIds();
+    List<String> unweightedMeshIds = new ArrayList<>(Arrays.asList(getUnweightedMeshIds())); //Need this as a list so we can add to it.
     String[] weightedMeshIds = getWeightedMeshIds();
     for (String meshId : weightedMeshIds) {
-      if (resource instanceof PersonResource) {
-        Mesh mesh = new Mesh();
-        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-        unWeightedMeshes.add(mesh);
+      //Check to see if the weighted mesh is really a weighted to joints, and therefore actually a weighted mesh.
+      // Some meshes are listed on the sims side as weighted meshes but are not weighted to any joints
+      if (isActuallyWeightedToJoints(meshId, resourceJointIds)) {
+        if (resource instanceof PersonResource) {
+          Mesh mesh = new Mesh();
+          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+          unWeightedMeshes.add(mesh);
+        } else {
+          WeightedMesh mesh = new WeightedMesh();
+          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+          weightedMeshes.add(mesh);
+        }
       } else {
-        WeightedMesh mesh = new WeightedMesh();
-        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-        weightedMeshes.add(mesh);
+        //Add meshes that are weighted to no joints to the unweighted mesh list
+        unweightedMeshIds.add(meshId);
       }
     }
     for (String meshId : unweightedMeshIds) {
@@ -498,6 +512,7 @@ public abstract class Model extends Geometry {
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     throw new RuntimeException("todo");
   }
+  
 
   protected Composite sgParent;
   protected Visual sgAssociatedVisual;
