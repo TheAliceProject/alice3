@@ -59,7 +59,6 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
@@ -422,8 +421,8 @@ public abstract class Model extends Geometry {
   }
 
   private boolean isActuallyWeightedToJoints(String weightedMeshId, List<JointId> resourceJointIds) {
-    for (JointId jointId : resourceJointIds ){
-      if (isMeshWeightedToJoint(weightedMeshId, jointId)){
+    for (JointId jointId : resourceJointIds) {
+      if (isMeshWeightedToJoint(weightedMeshId, jointId)) {
         return true;
       }
     }
@@ -512,7 +511,6 @@ public abstract class Model extends Geometry {
   protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
     throw new RuntimeException("todo");
   }
-  
 
   protected Composite sgParent;
   protected Visual sgAssociatedVisual;
