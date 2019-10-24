@@ -392,28 +392,22 @@ public abstract class Model extends Geometry {
 
   private Joint createSkeleton(List<JointId> resourceJointIds) {
     Joint rootJoint = null;
-    List<JointId> processedIds = new ArrayList<>();
+    resourceJointIds.sort(Comparator.comparingInt(JointId::hierarchyDepth));
     List<Joint> processedJoints = new ArrayList<>();
-    while (resourceJointIds.size() != processedIds.size()) {
-      for (JointId currentJointId : resourceJointIds) {
-        if (currentJointId.getParent() == null || processedIds.contains(currentJointId.getParent())) {
-          Joint j = new Joint();
-          j.jointID.setValue(currentJointId.toString());
-          j.setName(currentJointId.toString());
-          j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
-
-          if (currentJointId.getParent() == null) {
-            rootJoint = j;
-          } else {
-            for (Joint p : processedJoints) {
-              if (p.jointID.getValue().equals(currentJointId.getParent().toString())) {
-                j.setParent(p);
-                break;
-              }
-            }
+    for (JointId currentJointId : resourceJointIds) {
+      Joint j = new Joint();
+      j.jointID.setValue(currentJointId.toString());
+      j.setName(currentJointId.toString());
+      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
+      processedJoints.add(j);
+      if (currentJointId.getParent() == null) {
+        rootJoint = j;
+      } else {
+        for (Joint p : processedJoints) {
+          if (p.jointID.getValue().equals(currentJointId.getParent().toString())) {
+            j.setParent(p);
+            break;
           }
-          processedIds.add(currentJointId);
-          processedJoints.add(j);
         }
       }
     }

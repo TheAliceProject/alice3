@@ -106,6 +106,10 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
     return this.fld;
   }
 
+  public int hierarchyDepth() {
+    return getParent() == null ? 0 : 1 + getParent().hierarchyDepth();
+  }
+
   @Override
   public String toString() {
     Field fld = this.getPublicStaticFinalFld();
