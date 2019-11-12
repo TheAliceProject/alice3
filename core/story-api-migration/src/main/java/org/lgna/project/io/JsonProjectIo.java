@@ -176,6 +176,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       for (Set<JointedModelResource> resourceSet : modelResources.values()) {
         JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
+        entries.addAll(createEntriesForResourceTypes(manifest, resourceSet));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
       final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
@@ -205,6 +206,24 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     private String serializedClass(NamedUserType userType) {
       return coder.encode(userType);
+    }
+
+    private Collection<? extends DataSource> createEntriesForResourceTypes(Manifest manifest, Set<JointedModelResource> resources) {
+      Set<Class> distinctResources = new HashSet<>();
+      return resources.stream()
+                      .filter(resource -> !distinctResources.contains(resource.getClass()))
+                      .map(resource -> {
+                        distinctResources.add(resource.getClass());
+                        return dataSourceForResource(manifest, resource);
+                      })
+                      .collect(Collectors.toList());
+    }
+
+    private DataSource dataSourceForResource(Manifest manifest, JointedModelResource resource) {
+      String typeName = resource.getClass().getSimpleName();
+      final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
+      return createDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private Manifest createProjectManifest(Project project) {

@@ -43,12 +43,18 @@
 
 package org.lgna.story.resources;
 
+import org.lgna.project.ast.AstProcessor;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.story.implementation.JointedModelImp;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface JointedModelResource extends ModelResource {
-  public JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory();
+public interface JointedModelResource extends ModelResource, ProcessableNode {
+  JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> getImplementationAndVisualFactory();
 
+  @Override
+  default void process(AstProcessor processor) {
+    processor.processResourceType(this.getClass().getName());
+  }
 }
