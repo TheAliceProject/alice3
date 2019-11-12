@@ -143,17 +143,17 @@ public abstract class Model extends Geometry {
     }
   }
 
-  private native void getAxisAlignedBoundingBoxForJoint(JointId name, JointId parent, double[] bboxData);
+  private native void getAxisAlignedBoundingBoxForJoint(String name, String parent, double[] bboxData);
 
   private native void updateAxisAlignedBoundingBox(double[] bboxData);
 
-  private native void getOriginalTransformationForPartNamed(double[] transformOut, JointId name, JointId parent);
+  private native void getOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
-  private native void getLocalTransformationForPartNamed(double[] transformOut, JointId name, JointId parent);
+  private native void getLocalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
-  private native void setLocalTransformationForPartNamed(JointId name, JointId parent, double[] transformIn);
+  private native void setLocalTransformationForPartNamed(String name, String parent, double[] transformIn);
 
-  private native void getAbsoluteTransformationForPartNamed(double[] transformOut, JointId name);
+  private native void getAbsoluteTransformationForPartNamed(double[] transformOut, String name);
 
   private native String[] getUnweightedMeshIds();
 
@@ -173,11 +173,11 @@ public abstract class Model extends Geometry {
 
   private native String[] getTextureIdsForMesh(String meshId);
 
-  private native boolean isMeshWeightedToJoint(String meshId, JointId jointId);
+  private native boolean isMeshWeightedToJoint(String meshId, String jointId);
 
-  private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, JointId jointId);
+  private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, String jointId);
 
-  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, JointId jointId);
+  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId);
 
   private native int getMaterialTypeForTexture(String textureId);
 
@@ -208,7 +208,7 @@ public abstract class Model extends Geometry {
   public AffineMatrix4x4 getOriginalTransformationForJoint(JointId joint) {
     double[] buffer = new double[12];
     try {
-      getOriginalTransformationForPartNamed(buffer, joint, joint.getParent());
+      getOriginalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
     } catch (RuntimeException re) {
       Logger.severe(joint);
       throw re;
@@ -220,7 +220,7 @@ public abstract class Model extends Geometry {
   public AffineMatrix4x4 getLocalTransformationForJoint(JointId joint) {
     double[] buffer = new double[12];
     try {
-      getLocalTransformationForPartNamed(buffer, joint, joint.getParent());
+      getLocalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
     } catch (RuntimeException re) {
       Logger.severe(joint);
       throw re;
@@ -231,7 +231,7 @@ public abstract class Model extends Geometry {
 
   public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
     synchronized (renderLock) {
-      setLocalTransformationForPartNamed(joint, joint.getParent(), localTrans.getAsColumnMajorArray12());
+      setLocalTransformationForPartNamed(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), localTrans.getAsColumnMajorArray12());
     }
   }
 
@@ -240,7 +240,7 @@ public abstract class Model extends Geometry {
     //TODO: implement a simpler "hasJoint" in the native code
     double[] buffer = new double[12];
     try {
-      getLocalTransformationForPartNamed(buffer, joint, joint.getParent());
+      getLocalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
     } catch (RuntimeException re) {
       return false;
     }
@@ -249,7 +249,7 @@ public abstract class Model extends Geometry {
 
   public AffineMatrix4x4 getAbsoluteTransformationForJoint(JointId joint) {
     double[] buffer = new double[12];
-    getAbsoluteTransformationForPartNamed(buffer, joint);
+    getAbsoluteTransformationForPartNamed(buffer, joint.toString());
     return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
@@ -260,7 +260,7 @@ public abstract class Model extends Geometry {
 
   public AxisAlignedBox getAxisAlignedBoundingBoxForJoint(JointId joint) {
     double[] bboxData = new double[6];
-    getAxisAlignedBoundingBoxForJoint(joint, joint.getParent(), bboxData);
+    getAxisAlignedBoundingBoxForJoint(joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString(), bboxData);
     AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
     bbox.scale(this.sgAssociatedVisual.scale.getValue());
     return bbox;
@@ -278,9 +278,9 @@ public abstract class Model extends Geometry {
   private WeightInfo createWeightInfo(String meshId, List<JointId> resourceJointIds, Map<Integer, Integer> newIndexToOldVertex, Map<Integer, Integer> oldVertexIndexToNewIndex) {
     WeightInfo weightInfo = new WeightInfo();
     for (JointId joint : resourceJointIds) {
-      if (isMeshWeightedToJoint(meshId, joint)) {
-        double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint);
-        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint);
+      if (isMeshWeightedToJoint(meshId, joint.toString())) {
+        double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint.toString());
+        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString());
         //Sims weights reference the old vertex indices so we need to remap them to the new vertices
         //First we find the new hightest index
         int maxVertexIndex = 0;
@@ -416,7 +416,7 @@ public abstract class Model extends Geometry {
 
   private boolean isActuallyWeightedToJoints(String weightedMeshId, List<JointId> resourceJointIds) {
     for (JointId jointId : resourceJointIds) {
-      if (isMeshWeightedToJoint(weightedMeshId, jointId)) {
+      if (isMeshWeightedToJoint(weightedMeshId, jointId.toString())) {
         return true;
       }
     }
