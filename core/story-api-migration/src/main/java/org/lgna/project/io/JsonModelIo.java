@@ -499,11 +499,14 @@ public class JsonModelIo extends DataSourceIo {
         Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
       }
       //Add DataSources for the thumbnails if possible
-      BufferedImage thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
-      if (thumbnailImage != null) {
+      BufferedImage variantThumbnail = getThumbnailImageForModelVariant(modelVariant);
+      if (variantThumbnail == null && skeletonVisuals != null) {
+        variantThumbnail = thumbnails.get(skeletonVisuals.indexOf(sv));
+      }
+      if (variantThumbnail != null) {
         String thumbnailName = modelVariant.name + ".png";
         modelVariant.icon = thumbnailName;
-        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
+        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, variantThumbnail, resourcePath, thumbnailName);
         dataToWrite.add(thumbnailDataSource);
       }
     }
