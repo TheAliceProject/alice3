@@ -8,21 +8,28 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipOutputStream;
 
-public abstract class DataSourceIo {
+abstract class DataSourceIo {
 
-  protected static void writeDataSources(OutputStream os, List<DataSource> dataSources) throws IOException {
+  static void writeDataSources(OutputStream os, List<DataSource> dataSources) throws IOException {
     ZipOutputStream zos = new ZipOutputStream(os);
+    Set<String> names = new HashSet<>();
     for (DataSource dataSource : dataSources) {
-      ZipUtilities.write(zos, dataSource);
+      if (names.add(dataSource.getName())) {
+        ZipUtilities.write(zos, dataSource);
+      } else {
+        throw new RuntimeException("Attempt to add duplicate entries under the name " + dataSource.getName());
+      }
     }
     zos.flush();
     zos.close();
   }
 
-  protected static void writeDataSources(File outputDirectory, List<DataSource> dataSources) throws IOException {
+  static void writeDataSources(File outputDirectory, List<DataSource> dataSources) throws IOException {
     outputDirectory.mkdirs();
     for (DataSource dataSource : dataSources) {
       File outputFile = new File(outputDirectory, dataSource.getName());
@@ -33,7 +40,7 @@ public abstract class DataSourceIo {
     }
   }
 
-  protected static DataSource createDataSource(String name, String content) {
+  static DataSource createDataSource(String name, String content) {
     return new DataSource() {
       @Override
       public String getName() {
