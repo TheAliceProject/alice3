@@ -120,13 +120,13 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      final Double outer = TorusImp.this.outerRadius.getValue();
       this.value = value;
-      double outerRadius = TorusImp.this.outerRadius.getValue();
-      double minorDiameter = Math.max(outerRadius - value, MINIMUM_VALUE);
-      double minorRadius = minorDiameter * 0.5;
-      double majorRadius = Math.max(outerRadius - minorRadius, MINIMUM_VALUE);
-      sgTorus.minorRadius.setValue(minorRadius);
-      sgTorus.majorRadius.setValue(majorRadius);
+      if (outer < value) {
+        outerRadius.setValue(value);
+      } else {
+        updateRadii(value, outer);
+      }
     }
   };
   public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this) {
@@ -139,9 +139,21 @@ public class TorusImp extends ShapeImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      final Double inner = TorusImp.this.innerRadius.getValue();
       this.value = value;
-      double majorRadius = Math.max(value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE);
-      sgTorus.majorRadius.setValue(majorRadius);
+      if (inner > value) {
+        innerRadius.setValue(value);
+      } else {
+        updateRadii(inner, value);
+      }
     }
   };
+
+  private void updateRadii(double inner, double outer) {
+    double minorDiameter = Math.max(outer - inner, MINIMUM_VALUE);
+    double minorRadius = minorDiameter * 0.5;
+    double majorRadius = Math.max(outer - minorRadius, MINIMUM_VALUE);
+    sgTorus.minorRadius.setValue(minorRadius);
+    sgTorus.majorRadius.setValue(majorRadius);
+  }
 }
