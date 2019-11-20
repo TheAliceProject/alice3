@@ -115,6 +115,7 @@ import org.lgna.story.implementation.ModelImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextModelImp;
+import org.lgna.story.implementation.TorusImp;
 import org.lgna.story.resources.JointedModelResource;
 
 import javax.swing.BorderFactory;
@@ -313,6 +314,14 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
         } else if (setter.getName().equalsIgnoreCase("setBaseRadius")) {
           if (entityImp instanceof ConeImp) {
             return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp) entityImp, ((ConeImp) entityImp).baseRadius, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setInnerRadius")) {
+          if (entityImp instanceof TorusImp) {
+            return new DoublePropertyAdapter<TorusImp>("InnerRadius", (TorusImp) entityImp, ((TorusImp) entityImp).innerRadius, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setOuterRadius")) {
+          if (entityImp instanceof TorusImp) {
+            return new DoublePropertyAdapter<TorusImp>("OuterRadius", (TorusImp) entityImp, ((TorusImp) entityImp).outerRadius, state);
           }
         } else if (setter.getName().equalsIgnoreCase("setLength")) {
           if (entityImp instanceof CylinderImp) {
