@@ -78,6 +78,10 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
     }
   }
 
+  public String getValidName() {
+    return getName();
+  }
+
   @Override
   public void setName(String name) {
     StringProperty nameProperty = this.getNamePropertyIfItExists();
