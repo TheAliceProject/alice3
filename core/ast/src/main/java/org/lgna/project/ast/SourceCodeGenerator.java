@@ -567,7 +567,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   }
 
   private boolean areParenthesesNeeded(PrecedentedOperation expr) {
-    return !operatorStack.empty() && expr.getLevelOfPrecedence() < operatorStack.peek().getLevelOfPrecedence();
+    return !operatorStack.empty() && expr.getLevelOfPrecedence() <= operatorStack.peek().getLevelOfPrecedence();
   }
 
   // ** Comments **
