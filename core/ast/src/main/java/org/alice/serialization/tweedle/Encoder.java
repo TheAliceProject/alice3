@@ -30,6 +30,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final String INDENTION = "  ";
   private static final String NODE_DISABLE = "*<";
   private static final String NODE_ENABLE = ">*";
+  private static final String USER_PREFIX = "u_";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final List<String> angleMembers = new ArrayList<>();
@@ -40,6 +41,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, String> methodParamsToRelabel = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
+  private static final List<String> systemIdentifiers = new ArrayList<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -161,6 +163,18 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> imageParams = new HashMap<>();
     imageParams.put("imageResource", "resource");
     constructorsWithRelabeledParams.put("ImageSource", imageParams);
+
+    systemIdentifiers.add("args");
+    systemIdentifiers.add("index");
+    systemIdentifiers.add("value");
+    systemIdentifiers.add("event");
+    systemIdentifiers.add("resource");
+    systemIdentifiers.add("isActive");
+    systemIdentifiers.add("activationCount");
+    systemIdentifiers.add("myScene");
+    systemIdentifiers.add("story");
+    systemIdentifiers.add("ground");
+    systemIdentifiers.add("camera");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -737,6 +751,18 @@ public class Encoder extends SourceCodeGenerator {
   @Override
   protected void appendAssignmentOperator() {
     appendString(" <- ");
+  }
+
+  @Override
+  protected String identifierName(AbstractDeclaration variable) {
+    final String nom;
+    final String varName = super.identifierName(variable);
+    if (variable.isUserAuthored() && !systemIdentifiers.contains(varName)) {
+      nom = USER_PREFIX + varName;
+    } else {
+      nom = varName;
+    }
+    return nom;
   }
 
   @Override
