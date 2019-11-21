@@ -88,7 +88,7 @@ public class UserLocal extends AbstractTransient {
   }
 
   @Override
-  public final String getValidName(Node context) {
+  public final String getValidName() {
     return getName() != null ? getName() : generateName();
   }
 

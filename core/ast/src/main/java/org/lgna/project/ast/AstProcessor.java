@@ -156,5 +156,5 @@ public interface AstProcessor {
 
   void processMultiLineComment(String comment);
 
-  void processVariableAccess(String name);
+  void processVariableIdentifier(AbstractDeclaration variable);
 }

@@ -82,7 +82,7 @@ public final class LocalAccess extends Expression {
 
   @Override
   public void process(AstProcessor processor) {
-    processor.processVariableAccess(local.getValue().getValidName());
+    processor.processVariableIdentifier(local.getValue());
   }
 
   @Override

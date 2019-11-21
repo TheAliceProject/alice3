@@ -87,7 +87,6 @@ import org.lgna.project.ast.AbstractConstructor;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Accessible;
 import org.lgna.project.ast.Declaration;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
@@ -106,7 +105,6 @@ import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
-import org.lgna.story.SThing;
 import org.lgna.story.STurnable;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.JointedModelResource;
@@ -259,19 +257,6 @@ public abstract class StageIDE extends IDE {
       }
     }
     return null;
-  }
-
-  @Override
-  protected boolean isAccessibleDesired(Accessible accessible) {
-    if (super.isAccessibleDesired(accessible)) {
-      //      if( accessible.getValueType().isAssignableTo( org.lookingglassandalice.storytelling.Marker.class) ) {
-      //        return false;
-      //      } else {
-      return accessible.getValueType().isAssignableTo(SThing.class);
-      //      }
-    } else {
-      return false;
-    }
   }
 
   @Override

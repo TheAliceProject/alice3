@@ -54,6 +54,6 @@ public class LocalValidNameLabel extends DeclarationNameLabel {
 
   @Override
   protected String getTextForNullName() {
-    return ((UserLocal) getDeclaration()).getValidName();
+    return getDeclaration().getValidName();
   }
 }

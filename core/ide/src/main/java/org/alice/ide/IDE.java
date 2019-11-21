@@ -54,7 +54,6 @@ import org.alice.ide.cascade.ExpressionCascadeManager;
 import org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation;
 import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
 import org.alice.ide.croquet.models.ui.locale.LocaleState;
-import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
 import org.alice.ide.issue.DefaultExceptionHandler;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
@@ -73,12 +72,10 @@ import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractNode;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.Accessible;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Comment;
 import org.lgna.project.ast.CrawlPolicy;
@@ -408,10 +405,6 @@ public abstract class IDE extends ProjectApplication {
     this.getPotentialDropReceptorsFeedbackView().hideStencil();
   }
 
-  protected boolean isAccessibleDesired(Accessible accessible) {
-    return accessible.getValueType().isArray() == false;
-  }
-
   @Override
   public void setProject(Project project) {
     boolean isScenePerspectiveDesiredByDefault = SystemUtilities.getBooleanProperty("org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false);
@@ -523,32 +516,6 @@ public abstract class IDE extends ProjectApplication {
     } else {
       return null;
     }
-  }
-
-  public String getInstanceTextForAccessible(Accessible accessible) {
-    String text;
-    if (accessible != null) {
-      if (accessible instanceof AbstractField) {
-        AbstractField field = (AbstractField) accessible;
-        text = field.getName();
-        AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
-        if (focusedCode != null) {
-          AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
-          if (field.getValueType() == scopeType) {
-            text = "this";
-          } else if (field.getDeclaringType() == scopeType) {
-            if (IsIncludingThisForFieldAccessesState.getInstance().getValue()) {
-              text = "this." + text;
-            }
-          }
-        }
-      } else {
-        text = accessible.getValidName();
-      }
-    } else {
-      text = null;
-    }
-    return text;
   }
 
   protected static <E extends Node> E getAncestor(Node node, Class<E> cls) {

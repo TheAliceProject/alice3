@@ -324,7 +324,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       }
       processTypeName(localVar.getValueType());
       appendSpace();
-      appendString(localVar.getValidName());
+      processVariableIdentifier(localVar);
       appendAssignmentOperator();
       processExpression(stmt.initializer.getValue());
     });
