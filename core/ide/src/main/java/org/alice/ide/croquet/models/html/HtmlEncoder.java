@@ -568,7 +568,7 @@ public class HtmlEncoder implements AstProcessor {
   }
 
   @Override
-  public void processVariableAccess(String name) {
+  public void processVariableIdentifier(AbstractDeclaration variable) {
   }
 
   @Override

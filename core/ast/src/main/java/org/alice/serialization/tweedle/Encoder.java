@@ -464,7 +464,7 @@ public class Encoder extends SourceCodeGenerator {
       UserLocal localVar = stmt.local.getValue();
       processTypeName(localVar.getValueType());
       appendSpace();
-      appendString(localVar.getValidName());
+      processVariableIdentifier(localVar);
       appendAssignmentOperator();
       processExpression(stmt.initializer.getValue());
     });
@@ -562,7 +562,7 @@ public class Encoder extends SourceCodeGenerator {
         }
       }
     }
-    String label = parameter.getName();
+    String label = identifierName(parameter);
     if (null != label) {
       return methodParamsToRelabel.getOrDefault(label, label);
     }
