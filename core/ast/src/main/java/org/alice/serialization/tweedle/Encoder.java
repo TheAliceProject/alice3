@@ -79,6 +79,11 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("EnterViewEvent", "ViewEvent");
     typesToRename.put("ExitViewEvent", "ViewEvent");
     typesToRename.put("MultipleEventPolicy", "OverlappingEventPolicy");
+    typesToRename.put("ElderPersonResource", "PersonResource");
+    typesToRename.put("AdultPersonResource", "PersonResource");
+    typesToRename.put("TeenPersonResource", "PersonResource");
+    typesToRename.put("ChildPersonResource", "PersonResource");
+    typesToRename.put("ToddlerPersonResource", "PersonResource");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -445,7 +450,7 @@ public class Encoder extends SourceCodeGenerator {
         InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
         final Object summary = vm.createInstance(creation);
         if (summary != null) {
-          appendInstantiation(className, () -> appendArg("name", () -> appendEscapedString("Person/" + summary.toString())));
+          appendInstantiation("PersonResource", () -> appendArg("name", () -> appendEscapedString("Person/" + summary.toString())));
           return;
         }
       }
