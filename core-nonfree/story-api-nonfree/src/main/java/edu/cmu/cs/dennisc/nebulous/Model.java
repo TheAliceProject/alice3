@@ -322,7 +322,7 @@ public abstract class Model extends Geometry {
     //Get the appropriate vertices and normals for the mesh type passed in
     //If we're building a weighted mesh, just get the vertices and normals directly
     //If we're building an unweighted mesh, use the specific getForUnweightedMesh call to get values appropriate for an unweighted mesh
-    float[] vertices = (mesh instanceof WeightedMesh)? getVerticesForMesh(meshId) : getUnweightedVerticesForMesh(meshId);
+    float[] vertices = (mesh instanceof WeightedMesh) ? getVerticesForMesh(meshId) : getUnweightedVerticesForMesh(meshId);
     float[] normals = (mesh instanceof WeightedMesh) ? getNormalsForMesh(meshId) : getUnweightedNormalsForMesh(meshId);
     float[] uvs = getUvsForMesh(meshId);
     /*
