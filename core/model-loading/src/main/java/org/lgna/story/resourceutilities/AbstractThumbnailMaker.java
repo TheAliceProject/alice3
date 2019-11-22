@@ -75,7 +75,7 @@ import org.lgna.story.implementation.SceneImp;
  * @author Dave Culyba
  */
 public abstract class AbstractThumbnailMaker {
-  public static final int DEFAULT_THUMBNAIL_WIDTH = 160;
+  public static final int DEFAULT_THUMBNAIL_WIDTH = 640;
   public static final int DEFAULT_THUMBNAIL_HEIGHT = (DEFAULT_THUMBNAIL_WIDTH * 9) / 16;
   protected static final int DEFAULT_ANTI_ALIAS_FACTOR = 4;
 
