@@ -61,4 +61,9 @@ public abstract class TopAndBottomOutfit<T extends TopPiece, B extends BottomPie
   public B getBottomPiece() {
     return this.bottomPiece;
   }
+
+  @Override
+  public String toString() {
+    return topPiece.toString() + "-" + bottomPiece.toString();
+  }
 }
