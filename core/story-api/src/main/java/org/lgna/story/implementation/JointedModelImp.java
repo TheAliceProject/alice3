@@ -211,8 +211,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
-    protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-      return internalJointImp.updateCumulativeBound(rv, trans);
+    protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+      internalJointImp.updateCumulativeBound(rv, trans);
     }
 
     @Override
@@ -645,7 +645,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     setScale(getScaleForSize(size));
   }
 
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
     for (Visual sgVisual : this.getSgVisuals()) {
       if (sgVisual instanceof SkeletonVisual) {
         rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans, ignoreJointOrientations);
@@ -653,12 +653,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         rv.add(sgVisual, trans);
       }
     }
-    return rv;
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    return updateCumulativeBound(rv, trans, true);
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    updateCumulativeBound(rv, trans, true);
   }
 
   protected final JointImp createJointImplementation(JointId jointId) {

@@ -302,9 +302,8 @@ public class SceneImp extends EntityImp {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
     //todo
-    return rv;
   }
 
   public EventManager getEventManager() {
