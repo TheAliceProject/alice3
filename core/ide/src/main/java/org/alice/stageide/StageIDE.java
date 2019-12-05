@@ -459,36 +459,19 @@ public abstract class StageIDE extends IDE {
     return StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod(sceneType);
   }
 
-  private InstanceFactory getInstanceFactoryForSceneOrSceneField(UserField field) {
-    NamedUserType programType = this.getProgramType();
-    if (programType != null) {
-      NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(programType);
-      if (sceneType != null) {
-        NamedUserType scopeType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-        if (scopeType == sceneType) {
-          if (field != null) {
-            return ThisFieldAccessFactory.getInstance(field);
-          } else {
-            return ThisInstanceFactory.getInstance();
-          }
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    } else {
-      return null;
-    }
+
+
+  private boolean isSceneScoped() {
+    NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(getProgramType());
+    return (sceneType != null &&  sceneType == getDocumentFrame().getTypeMetaState().getValue());
   }
 
   public InstanceFactory getInstanceFactoryForScene() {
-    return this.getInstanceFactoryForSceneOrSceneField(null);
+    return isSceneScoped() ? ThisInstanceFactory.getInstance() : null;
   }
 
   public InstanceFactory getInstanceFactoryForSceneField(UserField field) {
-    assert field != null : this;
-    return this.getInstanceFactoryForSceneOrSceneField(field);
+    return isSceneScoped() ? ThisFieldAccessFactory.getInstance(field) : null;
   }
 
   public File getGalleryDirectory() {

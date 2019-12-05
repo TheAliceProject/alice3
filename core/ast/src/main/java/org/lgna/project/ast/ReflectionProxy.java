@@ -62,7 +62,7 @@ public abstract class ReflectionProxy<E> {
   protected abstract E reify();
 
   public E getReification() {
-    if (isReificationNecessary) {
+    if (isReificationNecessary || reification == null) {
       this.reification = this.reify();
       isReificationNecessary = false;
     }

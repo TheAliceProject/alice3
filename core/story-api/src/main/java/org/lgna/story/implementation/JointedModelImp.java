@@ -500,25 +500,16 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   public JointImp getJointImplementation(JointId jointId) {
-    JointImpWrapper wrapper = this.mapIdToJoint.get(jointId);
-    if (wrapper != null) {
-      return wrapper;
-    }
-    return null;
+    return this.mapIdToJoint.get(jointId);
   }
 
   //String based lookup for DynamicJointIds
   public JointImp getJointImplementation(String jointName) {
-    JointImpWrapper wrapper = null;
     //TODO: Think about maintaining a map of names to joints. It would be double accounting and might be a pain though
     for (Map.Entry<JointId, JointImpWrapper> entry : this.mapIdToJoint.entrySet()) {
       if (entry.getKey().toString().equals(jointName)) {
-        wrapper = entry.getValue();
-        break;
+        return entry.getValue();
       }
-    }
-    if (wrapper != null) {
-      return wrapper;
     }
     return null;
   }

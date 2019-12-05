@@ -89,7 +89,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
       this.hierarchyListener = new HierarchyListener() {
         @Override
         public void hierarchyChanged(HierarchyEvent hierarchyEvent) {
-          MutableRiderVehicleAdapter.this.handleHeirarchyChanged();
+          MutableRiderVehicleAdapter.this.handleHierarchyChanged();
         }
       };
     }
@@ -140,7 +140,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
     return values[0];
   }
 
-  protected void handleHeirarchyChanged() {
+  private void handleHierarchyChanged() {
     this.notifyValueObservers(this.getValue());
   }
 

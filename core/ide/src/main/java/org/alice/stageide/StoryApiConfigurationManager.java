@@ -287,17 +287,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type) {
-    if (type.isAssignableTo(SThing.class)) {
-      if (type.isAssignableTo(SMarker.class)) {
-        return false;
-      } else {
-        return true;
-      }
-    } else if (type.isAssignableTo(SProgram.class)) {
-      return true;
-    } else {
-      return false;
-    }
+    return type.isAssignableTo(SThing.class) && !type.isAssignableTo(SMarker.class)
+        || type.isAssignableTo(SProgram.class);
   }
 
   protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance(BipedResource.class);
@@ -309,8 +300,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
-    List<AbstractDeclaration> rv = StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor(type);
-    return rv;
+    return StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor(type);
   }
 
   @Override
@@ -378,10 +368,10 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     return null;
   }
 
-  protected DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
+  private DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
     //todo: better name
     class ThisFieldAccessNameLabel extends DeclarationNameLabel {
-      public ThisFieldAccessNameLabel(AbstractField field) {
+      private ThisFieldAccessNameLabel(AbstractField field) {
         super(field);
       }
 
@@ -437,7 +427,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public boolean isTabClosable(AbstractCode code) {
-    return BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName()) == false;
+    return !BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
   }
 
   @Override

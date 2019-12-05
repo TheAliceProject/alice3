@@ -133,52 +133,13 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
           return;
         }
       }
-      InstanceFactory instanceFactory = this.getValue();
-      if (instanceFactory != null) {
-        if (instanceFactory.isValid()) {
-          //pass
-        } else {
-          this.fallBackToDefaultFactory();
-        }
-      } else {
-        this.fallBackToDefaultFactory();
-      }
-      //      org.lgna.project.ast.AbstractType< ?,?,? > prevType = getDeclaringType( prevValue );
-      //      org.lgna.project.ast.AbstractType< ?,?,? > nextType = getDeclaringType( nextValue );
-      //      if( prevType != nextType ) {
-      //        InstanceFactory prevValue = this.getValue();
-      //        if( prevType != null ) {
-      //          if( prevValue != null ) {
-      //            map.put( prevType, prevValue );
-      //          } else {
-      //            map.remove( prevType );
-      //          }
-      //        }
-      //        InstanceFactory nextValue;
-      //        if( nextType != null ) {
-      //          nextValue = map.get( nextType );
-      //          if( nextValue != null ) {
-      //            //pass
-      //          } else {
-      //            nextValue = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
-      //          }
-      //        } else {
-      //          nextValue = null;
-      //        }
-      //        this.setValueTransactionlessly( nextValue );
-      //      }
+      handleAstChangeThatCouldBeOfInterest();
     }
   }
 
   private void handleAstChangeThatCouldBeOfInterest() {
     InstanceFactory instanceFactory = this.getValue();
-    if (instanceFactory != null) {
-      if (instanceFactory.isValid()) {
-        //pass
-      } else {
-        this.fallBackToDefaultFactory();
-      }
-    } else {
+    if (instanceFactory == null || !instanceFactory.isValid()) {
       this.fallBackToDefaultFactory();
     }
   }
@@ -231,16 +192,12 @@ public class InstanceFactoryState extends CustomItemStateWithInternalBlank<Insta
     }
     AbstractType<?, ?, ?> type = DeclarationMeta.getType();
 
-    if (isStaticMethod) {
-      //pass
-    } else {
+    if (!isStaticMethod) {
       blankChildren.add(createFillInMenuComboIfNecessary(InstanceFactoryFillIn.getInstance(ThisInstanceFactory.getInstance()), apiConfigurationManager.getInstanceFactorySubMenuForThis(type)));
     }
     if (type instanceof NamedUserType) {
       NamedUserType namedUserType = (NamedUserType) type;
-      if (isStaticMethod) {
-        //pass
-      } else {
+      if (!isStaticMethod) {
         List<UserField> fields = namedUserType.getDeclaredFields();
         List<UserField> filteredFields = Lists.newLinkedList();
         for (UserField field : fields) {
