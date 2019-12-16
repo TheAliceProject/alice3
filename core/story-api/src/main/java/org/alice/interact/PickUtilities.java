@@ -129,7 +129,7 @@ public class PickUtilities {
     return null;
   }
 
-  public static PickHint getPickHintForEntity(SThing entity) {
+  private static PickHint getPickHintForEntity(SThing entity) {
     List<PickHint.PickType> pickTypes = Lists.newLinkedList();
     if (entity != null) {
       if (entity instanceof STurnable) {

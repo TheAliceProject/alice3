@@ -64,7 +64,10 @@ import org.alice.stageide.cascade.fillerinners.StartCollisionListenerFillerInner
 import org.alice.stageide.cascade.fillerinners.StartOcclusionEventListenerFillerInner;
 import org.alice.stageide.cascade.fillerinners.TimerEventListenerFillerInner;
 import org.alice.stageide.cascade.fillerinners.TransformationListenerFillerInner;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;
@@ -74,13 +77,16 @@ import org.lgna.story.Key;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Paint;
 import org.lgna.story.RollDirection;
+import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SThing;
+import org.lgna.story.SVRHand;
 import org.lgna.story.Style;
 import org.lgna.story.TurnDirection;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -141,20 +147,30 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 
   @Override
   protected CascadeMenuModel<Expression> createPartMenuModel(Expression expression, AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo) {
-    if (expressionType.isAssignableTo(SJointedModel.class)) {
-      if (desiredType.isAssignableFrom(SJoint.class)) {
-        if (JointedTypeInfo.isJointed(expressionType)) {
-          List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(expressionType);
-          return new JointExpressionMenuModel(expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo);
+    if (expressionType.isAssignableTo(SJointedModel.class)
+        && desiredType.isAssignableFrom(SJoint.class)
+        && JointedTypeInfo.isJointed(expressionType)) {
+      List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(expressionType);
+      return new JointExpressionMenuModel(expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo);
+    }
+    if (expressionType.isAssignableTo(SCamera.class)
+        && desiredType.isAssignableFrom(SVRHand.class)) {
+      return new CascadeMenuModel<Expression>(UUID.fromString("2b2c901a-22f3-4080-8a28-3d3b81f326c8")) {
+        @Override
+        protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+          for (AbstractMethod method : SCamera.getHandMethods(expressionType)) {
+            blankChildren.add(JointExpressionFillIn.getInstance(expression, method));
+          }
         }
-      }
+      };
     }
     return null;
   }
 
   @Override
   protected boolean isApplicableForPartFillIn(AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType) {
-    return desiredType.isAssignableFrom(SJoint.class) && expressionType.isAssignableTo(SJointedModel.class);
+    return desiredType.isAssignableFrom(SJoint.class) && expressionType.isAssignableTo(SJointedModel.class)
+        || desiredType.isAssignableFrom(SVRHand.class) && expressionType.isAssignableTo(SCamera.class);
   }
 
   @Override

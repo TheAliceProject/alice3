@@ -162,6 +162,7 @@ import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.SThingMarker;
+import org.lgna.story.SVRHand;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
@@ -493,11 +494,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public void setSelectedField(UserType<?> declaringType, UserField field) {
     if (!this.selectionIsFromMain) {
       this.selectionIsFromMain = true;
-      if (field.getValueType().isAssignableFrom(SThingMarker.class)) {
-        //Do nothing
-      } else if (field.getValueType().isAssignableFrom(SCameraMarker.class)) {
-        //Do nothing
-      } else {
+      final AbstractType<?, ?, ?> valueType = field.getValueType();
+      if (isSelectableType(valueType)) {
         super.setSelectedField(declaringType, field);
 
         MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
@@ -507,7 +505,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
           if (field == this.getActiveSceneField()) {
             instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForScene());
-          } else if (field != null) {
+          } else {
             instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForSceneField(field));
           }
         }
@@ -532,6 +530,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     } catch (Throwable e) {
       e.printStackTrace();
     }
+  }
+
+  private boolean isSelectableType(AbstractType<?, ?, ?> valueType) {
+    return !valueType.isAssignableFrom(SThingMarker.class)
+        && !valueType.isAssignableFrom(SCameraMarker.class)
+        && !valueType.isAssignableFrom(SVRHand.class);
   }
 
   private void initializeCameraMarkers() {

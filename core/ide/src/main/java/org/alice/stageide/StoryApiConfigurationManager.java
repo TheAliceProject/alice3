@@ -59,6 +59,8 @@ import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.icons.Icons;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
@@ -101,9 +103,11 @@ import org.alice.stageide.member.SizeProceduresComposite;
 import org.alice.stageide.member.TextProceduresComposite;
 import org.alice.stageide.member.TimingProceduresComposite;
 import org.alice.stageide.member.VehicleProceduresComposite;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.ValueDetails;
@@ -138,6 +142,7 @@ import org.lgna.story.STextModel;
 import org.lgna.story.SThing;
 import org.lgna.story.STorus;
 import org.lgna.story.StrikePose;
+import org.lgna.story.SVRHand;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.VantagePoint;
 import org.lgna.story.annotation.PortionDetails;
@@ -150,12 +155,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends ApiConfigurationManager {
   public static final JavaMethod SET_ACTIVE_SCENE_METHOD = JavaMethod.getInstance(SProgram.class, "setActiveScene", SScene.class);
+  private CascadeMenuModel<InstanceFactory> cameraFieldsMenuModel;
 
   private static class SingletonHolder {
     private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
@@ -318,10 +325,25 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     AbstractType<?, ?, ?> type = field.getValueType();
     if (JointedTypeInfo.isJointed(type)) {
       return ThisFieldAccessJointedTypeMenuModel.getInstance(field);
-    } else {
-      return null;
     }
-    //    return org.alice.stageide.instancefactory.croquet.joint.declaration.ThisFieldAccessJointedTypeMenuModel.getMenuModel( field );
+    if (JavaType.getInstance(SCamera.class).isAssignableFrom(type)) {
+      return getCameraFieldsMenu(field);
+    }
+    return null;
+  }
+
+  private CascadeMenuModel<InstanceFactory> getCameraFieldsMenu(UserField cameraField) {
+    if (cameraFieldsMenuModel == null) {
+      cameraFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
+        @Override
+        protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+          for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
+            blankChildren.add(InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(cameraField, method)));
+          }
+        }
+      };
+    }
+    return cameraFieldsMenuModel;
   }
 
   @Override
