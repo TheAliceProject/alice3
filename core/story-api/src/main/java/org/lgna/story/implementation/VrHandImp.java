@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,55 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-package org.lgna.story;
+package org.lgna.story.implementation;
 
-import org.lgna.common.LgnaIllegalArgumentException;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.SVRHand;
 
-import java.util.List;
-import java.util.stream.Collectors;
+public class VrHandImp extends TransformableImp {
 
-/**
- * @author Dennis Cosgrove
- */
-public class SCamera extends SMovableTurnable implements MutableRider {
-  private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp(this);
-  private final SVRHand leftHand = new SVRHand("LeftHand", this);
-  private final SVRHand rightHand = new SVRHand("RightHand", this);
-
-  @Override
-  public void setVehicle(SThing vehicle) {
-    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
-  }
-
-  @MethodTemplate(visibility = Visibility.PRIME_TIME)
-  public SVRHand getLeftHand() {
-    return leftHand;
-  }
-
-  @MethodTemplate(visibility = Visibility.PRIME_TIME)
-  public SVRHand getRightHand() {
-    return rightHand;
-  }
-
-  public static List<AbstractMethod> getHandMethods(AbstractType<?, ?, ?> type) {
-    return type.getDeclaredMethods().stream()
-               .filter(method -> method.getName().endsWith("Hand"))
-               .collect(Collectors.toList());
+  public VrHandImp(String name, SVRHand abstraction, SymmetricPerspectiveCameraImp cameraImplementation) {
+    this.abstraction = abstraction;
+    this.cameraImplementation = cameraImplementation;
+    setName(name);
+    setVehicle(cameraImplementation);
   }
 
   @Override
-  SymmetricPerspectiveCameraImp getImplementation() {
-    return this.implementation;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
   }
 
-  @MethodTemplate()
-  public void moveAndOrientToAGoodVantagePointOf(SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details) {
-    LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
-    this.implementation.animateSetTransformationToAGoodVantagePointOf(entity.getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  @Override
+  public SVRHand getAbstraction() {
+    return this.abstraction;
+  }
+
+  private final SVRHand abstraction;
+  private final SymmetricPerspectiveCameraImp cameraImplementation;
+
+  public SymmetricPerspectiveCameraImp getCameraParent() {
+    return cameraImplementation;
   }
 }
