@@ -83,8 +83,7 @@ public class StandInImp extends AbstractTransformableImp implements Reusable {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    return rv;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
   }
 
   private final StandIn sgStandIn = new StandIn();

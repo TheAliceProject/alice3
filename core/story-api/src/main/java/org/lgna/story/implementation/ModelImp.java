@@ -155,11 +155,10 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
     for (Visual sgVisual : this.getSgVisuals()) {
       rv.add(sgVisual, trans);
     }
-    return rv;
   }
 
   //  public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {

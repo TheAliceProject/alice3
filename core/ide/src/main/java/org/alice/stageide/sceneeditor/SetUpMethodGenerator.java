@@ -81,6 +81,7 @@ import org.lgna.story.Place;
 import org.lgna.story.Position;
 import org.lgna.story.Resizable;
 import org.lgna.story.SBox;
+import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SMarker;
@@ -89,6 +90,7 @@ import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.STurnable;
+import org.lgna.story.SVRHand;
 import org.lgna.story.Scale;
 import org.lgna.story.SetOrientationRelativeToVehicle;
 import org.lgna.story.SetPaint;
@@ -98,6 +100,8 @@ import org.lgna.story.Size;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.VrHandImp;
+import org.lgna.story.resources.JointId;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -263,20 +267,28 @@ public class SetUpMethodGenerator {
     return null;
   }
 
-  public static Expression getGetterExpressionForJoint(SJoint joint, UserInstance sceneInstance) {
-    AbstractMethod getJointMethod = getJointGetterForJoint(joint, sceneInstance);
+  public static Expression getExpressionOfThingInScene(SThing value, UserInstance sceneInstance) {
+    if (value instanceof SJoint) {
+      return getGetterExpressionForJoint((SJoint) value, sceneInstance);
+    }
+    if (value instanceof SVRHand) {
+      return getGetterExpressionForHand((SVRHand) value, sceneInstance);
+    }
+    boolean isEntityScene = (value instanceof SScene);
+    AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(value);
+    return createInstanceExpression(isEntityScene, sceneField);
+  }
+
+  private static Expression getGetterExpressionForJoint(SJoint joint, UserInstance sceneInstance) {
     JointImp jointImp = EmployeesOnly.getImplementation(joint);
     SJointedModel jointedModel = getJointedModelForJointImp(jointImp);
     AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
+    AbstractMethod getJointMethod = getJointGetterForJoint(entityField, jointImp.getJointId(), sceneInstance);
     assert getJointMethod != null;
     return new MethodInvocation(new FieldAccess(entityField), getJointMethod);
   }
 
-  private static AbstractMethod getJointGetterForJoint(SJoint joint, UserInstance sceneInstance) {
-    JointImp jointImp = EmployeesOnly.getImplementation(joint);
-    SJointedModel jointedModel = getJointedModelForJointImp(jointImp);
-    AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
-    AbstractMethod getJointMethod = null;
+  private static AbstractMethod getJointGetterForJoint(AbstractField entityField, JointId jointId, UserInstance sceneInstance) {
     AbstractType<?, ?, ?> fieldType = entityField.getValueType();
     List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(fieldType);
     //Loop through all the get<joint>() methods and find the one that resolves to the joint we're seeing
@@ -286,19 +298,35 @@ public class SetUpMethodGenerator {
         for (Object o : values) {
           if (o instanceof SJoint) {
             JointImp gottenJoint = EmployeesOnly.getImplementation((SJoint) o);
-            if (gottenJoint.getJointId() == jointImp.getJointId()) {
-              getJointMethod = jointGetter;
-              break;
+            if (gottenJoint.getJointId() == jointId) {
+              return jointGetter;
             }
           }
         }
       }
-      if (getJointMethod != null) {
-        break;
+    }
+    return null;
+  }
+
+  private static Expression getGetterExpressionForHand(SVRHand hand, UserInstance sceneInstance) {
+    VrHandImp handImp = EmployeesOnly.getImplementation(hand);
+    SCamera camera = handImp.getCameraParent().getAbstraction();
+    AbstractField cameraField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(camera);
+    AbstractMethod getJointMethod = getGetterForHand(cameraField, hand, sceneInstance);
+    return new MethodInvocation(new FieldAccess(cameraField), getJointMethod);
+  }
+
+  private static AbstractMethod getGetterForHand(AbstractField cameraField, SVRHand hand, UserInstance sceneInstance) {
+    for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
+      Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(cameraField), method)});
+      for (Object o : values) {
+        if (o == hand) {
+          return method;
+        }
       }
     }
-    assert getJointMethod != null;
-    return getJointMethod;
+    return null;
+
   }
 
   public static Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, UserInstance sceneInstance, boolean captureFullState) {
@@ -309,25 +337,14 @@ public class SetUpMethodGenerator {
       if ((field != null) || isThis) {
         JavaType javaType = JavaType.getInstance(instance.getClass());
         for (JavaMethod getter : AstUtilities.getPersistentPropertyGetters(javaType)) {
-          Method gttr = getter.getMethodReflectionProxy().getReification();
-          Object value = ReflectionUtilities.invoke(instance, gttr);
           JavaMethod setter = AstUtilities.getSetterForGetter(getter, javaType);
           if (setter != null) {
+            Method gttr = getter.getMethodReflectionProxy().getReification();
+            Object value = ReflectionUtilities.invoke(instance, gttr);
             try {
-              Expression expression;
-              if (value instanceof SThing) {
-                SThing entity = (SThing) value;
-                if (entity instanceof SJoint) {
-                  SJoint joint = (SJoint) entity;
-                  expression = getGetterExpressionForJoint(joint, sceneInstance);
-                } else {
-                  boolean isEntityScene = (entity instanceof SScene);
-                  AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
-                  expression = SetUpMethodGenerator.createInstanceExpression(isEntityScene, sceneField);
-                }
-              } else {
-                expression = getExpressionCreator().createExpression(value);
-              }
+              Expression expression = value instanceof SThing
+                  ? getExpressionOfThingInScene((SThing) value, sceneInstance)
+                  : getExpressionCreator().createExpression(value);
               statements.add(AstUtilities.createMethodInvocationStatement(SetUpMethodGenerator.createInstanceExpression(isThis, field), setter, expression));
             } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
               Logger.severe("cannot create expression for: " + value);

@@ -61,8 +61,7 @@ public class TargetImp extends TransformableImp {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    return rv;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
   }
 
   private final STarget abstraction;

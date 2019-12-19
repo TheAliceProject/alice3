@@ -141,7 +141,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return (Property<?>) ReflectionUtilities.get(fld, this);
   }
 
-  protected abstract CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans);
+  protected abstract void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans);
 
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox(ReferenceFrame asSeenBy) {
     AffineMatrix4x4 trans = this.getTransformation(asSeenBy);

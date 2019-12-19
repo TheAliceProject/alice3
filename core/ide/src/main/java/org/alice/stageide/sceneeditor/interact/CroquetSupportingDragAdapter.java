@@ -111,10 +111,10 @@ public abstract class CroquetSupportingDragAdapter extends DragAdapter {
       if (selectedState != null) { //Sometimes we don't support handles--like in the create-a-sim editor
         PickHint pickHint = PickUtilities.getPickTypeForImp(selected);
         if (!selectedState.canUseIteractionGroup(pickHint)) {
-          for (HandleStyle handleStyle : handleStyleListSelectionState) {
+          for  (HandleStyle handleStyle : handleStyleListSelectionState) {
             InteractionGroup interactionStateGroup = this.mapHandleStyleToInteractionGroup.get(handleStyle);
             InteractionInfo interactionState = interactionStateGroup.getMatchingInfo(ObjectType.getObjectType(selected));
-            if (interactionState.canUseIteractionGroup(pickHint)) {
+            if (interactionState != null && interactionState.canUseIteractionGroup(pickHint)) {
               handleStyleListSelectionState.setValueTransactionlessly(handleStyle);
               break;
             }

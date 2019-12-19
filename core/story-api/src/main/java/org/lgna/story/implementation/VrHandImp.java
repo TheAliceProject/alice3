@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,40 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-package org.alice.ide.croquet.models.cascade;
+package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.map.MapToMap;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.UserParameter;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.SVRHand;
 
-import java.util.UUID;
+public class VrHandImp extends TransformableImp {
 
-/**
- * @author Dennis Cosgrove
- */
-public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
-  private static MapToMap<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
-
-  public static ParameterAccessMethodInvocationFillIn getInstance(UserParameter parameter, AbstractMethod method) {
-    assert parameter != null;
-    assert method != null;
-    return mapToMap.getInitializingIfAbsent(parameter, method, new MapToMap.Initializer<UserParameter, AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
-      @Override
-      public ParameterAccessMethodInvocationFillIn initialize(UserParameter parameter, AbstractMethod method) {
-        return new ParameterAccessMethodInvocationFillIn(parameter, method);
-      }
-    });
-  }
-
-  private ParameterAccessMethodInvocationFillIn(UserParameter parameter, AbstractMethod method) {
-    super(UUID.fromString("356231af-d038-417c-a58b-f4ad3d77a743"), new ParameterAccess(parameter), method);
+  public VrHandImp(String name, SVRHand abstraction, SymmetricPerspectiveCameraImp cameraImplementation) {
+    this.abstraction = abstraction;
+    this.cameraImplementation = cameraImplementation;
+    setName(name);
+    setVehicle(cameraImplementation);
   }
 
   @Override
-  protected Expression createExpression(Expression transientValueExpression) {
-    ParameterAccess transientValueParameterAccess = (ParameterAccess) transientValueExpression;
-    return new ParameterAccess(transientValueParameterAccess.parameter.getValue());
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
+  }
+
+  @Override
+  public SVRHand getAbstraction() {
+    return this.abstraction;
+  }
+
+  private final SVRHand abstraction;
+  private final SymmetricPerspectiveCameraImp cameraImplementation;
+
+  public SymmetricPerspectiveCameraImp getCameraParent() {
+    return cameraImplementation;
   }
 }

@@ -45,21 +45,45 @@ package org.lgna.story;
 
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SCamera extends SMovableTurnable implements MutableRider {
   private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp(this);
+  private final SVRHand leftHand = new SVRHand("LeftHand", this);
+  private final SVRHand rightHand = new SVRHand("RightHand", this);
 
   @Override
   public void setVehicle(SThing vehicle) {
     this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
   }
 
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHand getLeftHand() {
+    return leftHand;
+  }
+
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHand getRightHand() {
+    return rightHand;
+  }
+
+  public static List<AbstractMethod> getHandMethods(AbstractType<?, ?, ?> type) {
+    return type.getDeclaredMethods().stream()
+               .filter(method -> method.getName().endsWith("Hand"))
+               .collect(Collectors.toList());
+  }
+
   @Override
-    /* package-private */SymmetricPerspectiveCameraImp getImplementation() {
+  SymmetricPerspectiveCameraImp getImplementation() {
     return this.implementation;
   }
 

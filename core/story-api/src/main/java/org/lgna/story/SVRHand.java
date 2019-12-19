@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.ast.declaration;
 
-import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.PropertyState;
-import org.lgna.croquet.Application;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.JavaMethod;
+package org.lgna.story;
 
-import java.util.UUID;
+import org.lgna.story.implementation.VrHandImp;
 
-/**
- * @author Dennis Cosgrove
- */
-public class FieldDeclarationPropertyState extends PropertyState {
-  private static InitializingIfAbsentMap<JavaMethod, FieldDeclarationPropertyState> map = Maps.newInitializingIfAbsentHashMap();
+public class SVRHand extends SThing {
+  private final VrHandImp implementation;
 
-  public static FieldDeclarationPropertyState getInstanceForSetter(JavaMethod setter) {
-    return map.getInitializingIfAbsent(setter, new InitializingIfAbsentMap.Initializer<JavaMethod, FieldDeclarationPropertyState>() {
-      @Override
-      public FieldDeclarationPropertyState initialize(JavaMethod setter) {
-        return new FieldDeclarationPropertyState(setter);
-      }
-    });
+  public SVRHand(String name, SCamera camera) {
+    implementation = new VrHandImp(name, this, camera.getImplementation());
   }
 
-  public static synchronized FieldDeclarationPropertyState getInstanceForGetter(JavaMethod getter) {
-    return getInstanceForSetter(AstUtilities.getSetterForGetter(getter));
-  }
-
-  private FieldDeclarationPropertyState(JavaMethod setter) {
-    super(Application.INHERIT_GROUP, UUID.fromString("e4cd9f74-3815-46d1-ae68-b5b964f68ebd"), setter);
+  @Override
+  VrHandImp getImplementation() {
+    return implementation;
   }
 }

@@ -62,6 +62,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -73,7 +74,6 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
   private final CascadeBlankChild<F> owner;
   private final int index;
   private ViewController<?, ?> menuItem = null;
-  private boolean wasLast = false;
 
   public RtItem(M element, C node, CascadeBlankChild<F> owner, int index) {
     super(element, node);
@@ -105,11 +105,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 
   protected abstract List<? extends CascadeBlank<B>> getModelBlanks();
 
-  public int getBlankStepCount() {
-    return this.rtBlanks.length;
-  }
-
-  public BlankNode<B> getBlankStepAt(int i) {
+  BlankNode<B> getBlankStepAt(int i) {
     return this.rtBlanks[i].getNode();
   }
 
@@ -119,21 +115,12 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
     return parent.getNearestBlank();
   }
 
-  protected RtBlank<B>[] getBlankChildren() {
+  RtBlank<B>[] getBlankChildren() {
     return this.rtBlanks;
   }
 
   public boolean isAutomaticallyDetermined() {
-    if (this.rtBlanks.length > 0) {
-      for (RtBlank<B> rtBlank : this.rtBlanks) {
-        if (rtBlank.isAutomaticallyDetermined()) {
-          //pass
-        } else {
-          return false;
-        }
-      }
-    }
-    return true;
+    return this.rtBlanks.length == 0 || Arrays.stream(this.rtBlanks).allMatch(RtBlank::isAutomaticallyDetermined);
   }
 
   //todo: rename
@@ -166,11 +153,6 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
     assert nearestBlank != null : this;
     nearestBlank.setSelectedFillIn((RtItem) this);
     //  ContextManager.pushContext( this.getContext() );
-  }
-
-  public void deselect() {
-    //  AbstractModelContext< ? > stepFillIn = ContextManager.popContext();
-    //  assert stepFillIn == this.getContext() : stepFillIn;
   }
 
   protected void addNextNodeMenuItems(MenuItemContainer parent) {
@@ -218,7 +200,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
     }
   }
 
-  protected void removeAll(MenuItemContainer parent) {
+  void removeAll(MenuItemContainer parent) {
     parent.removeAllMenuItems();
   }
 
@@ -238,7 +220,6 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 
     @Override
     public void menuDeselected(MenuEvent e) {
-      RtItem.this.deselect();
       RtItem.this.removeAll((CascadeMenu) RtItem.this.getMenuItem());
     }
 
@@ -266,36 +247,27 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
     return rv;
   }
 
-  public ViewController<?, ?> getMenuItem() {
-    CascadeItem<F, B> item = this.getElement();
+  private ViewController<?, ?> getMenuItem() {
     boolean isLast = this.isLast();
-    if (this.menuItem != null) {
-      if (this.wasLast == isLast) {
-        //pass
+    if (this.menuItem != null && isLast) {
+      if (this.menuItem instanceof CascadeMenu) {
+        ((CascadeMenu) this.menuItem).getAwtComponent().removeMenuListener(this.menuListener);
+      } else if (this.menuItem instanceof CascadeMenuItem) {
+        ((CascadeMenuItem) this.menuItem).getAwtComponent().removeActionListener(this.actionListener);
       } else {
-        if (this.menuItem instanceof CascadeMenu) {
-          ((CascadeMenu) this.menuItem).getAwtComponent().removeMenuListener(this.menuListener);
-        } else if (this.menuItem instanceof CascadeMenuItem) {
-          ((CascadeMenuItem) this.menuItem).getAwtComponent().removeActionListener(this.actionListener);
-        } else {
-          Logger.severe(this.menuItem);
-        }
-        this.menuItem = null;
+        Logger.severe(this.menuItem);
       }
-    } else {
-      //pass
+      this.menuItem = null;
     }
-    if (this.menuItem != null) {
-      //pass
-    } else {
-      this.menuItem = this.createMenuItem(item, isLast);
+    if (this.menuItem == null) {
+      this.menuItem = this.createMenuItem(this.getElement(), isLast);
     }
     return this.menuItem;
   }
 }
 
 abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends BlankOwnerNode<F, B, M>> extends RtItem<F, B, M, C> {
-  public RtBlankOwner(M element, C step, CascadeBlankChild<F> owner, int index) {
+  RtBlankOwner(M element, C step, CascadeBlankChild<F> owner, int index) {
     super(element, step, owner, index);
     this.getNode().setRtBlankOwner(this);
   }
@@ -307,23 +279,23 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends B
 }
 
 class RtFillIn<F, B> extends RtBlankOwner<F, B, CascadeFillIn<F, B>, FillInNode<F, B>> {
-  public RtFillIn(CascadeFillIn<F, B> element, CascadeBlankChild<F> owner, int index) {
+  RtFillIn(CascadeFillIn<F, B> element, CascadeBlankChild<F> owner, int index) {
     super(element, FillInNode.createInstance(element), owner, index);
   }
 
-  public boolean isAutomaticallySelectedWhenSoleOption() {
+  boolean isAutomaticallySelectedWhenSoleOption() {
     return this.getElement().isAutomaticallySelectedWhenSoleOption();
   }
 }
 
 class RtMenu<F, B> extends RtBlankOwner<F, B, AbstractCascadeMenuModel<F, B>, MenuNode<F, B>> {
-  public RtMenu(AbstractCascadeMenuModel<F, B> element, CascadeBlankChild<F> owner, int index) {
+  RtMenu(AbstractCascadeMenuModel<F, B> element, CascadeBlankChild<F> owner, int index) {
     super(element, MenuNode.createInstance(element), owner, index);
   }
 }
 
 class RtSeparator extends RtItem<Void, Void, CascadeSeparator, SeparatorNode> {
-  public RtSeparator(CascadeSeparator element, CascadeBlankChild<Void> owner, int index) {
+  RtSeparator(CascadeSeparator element, CascadeBlankChild<Void> owner, int index) {
     super(element, SeparatorNode.createInstance(element), owner, index);
   }
 
@@ -351,7 +323,7 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, SeparatorNode> {
 }
 
 class RtCancel<F> extends RtItem<F, Void, CascadeCancel<F>, CancelNode<F>> {
-  public RtCancel(CascadeCancel<F> element, CascadeBlankChild<F> owner, int index) {
+  RtCancel(CascadeCancel<F> element, CascadeBlankChild<F> owner, int index) {
     super(element, CancelNode.createInstance(element), owner, index);
   }
 
