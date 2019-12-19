@@ -71,24 +71,24 @@ public enum SpatialRelationImp {
     double z = alongAxisOffset * this.placeAxis.z;
 
     if (this.placeAxis.x > 0) {
-      x = objectBoundingBox.getMaximum().x;
+      x += objectBoundingBox.getMaximum().x;
       x -= subjectBoundingBox.getMinimum().x;
     } else if (this.placeAxis.x < 0) {
-      x = objectBoundingBox.getMinimum().x;
+      x += objectBoundingBox.getMinimum().x;
       x -= subjectBoundingBox.getMaximum().x;
     }
     if (this.placeAxis.y > 0) {
-      y = objectBoundingBox.getMaximum().y;
+      y += objectBoundingBox.getMaximum().y;
       y -= subjectBoundingBox.getMinimum().y;
     } else if (this.placeAxis.y < 0) {
-      y = objectBoundingBox.getMinimum().y;
+      y += objectBoundingBox.getMinimum().y;
       y -= subjectBoundingBox.getMaximum().y;
     }
     if (this.placeAxis.z > 0) {
-      z = objectBoundingBox.getMaximum().z;
+      z += objectBoundingBox.getMaximum().z;
       z -= subjectBoundingBox.getMinimum().z;
     } else if (this.placeAxis.z < 0) {
-      z = objectBoundingBox.getMinimum().z;
+      z += objectBoundingBox.getMinimum().z;
       z -= subjectBoundingBox.getMaximum().z;
     }
 
