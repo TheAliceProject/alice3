@@ -82,6 +82,8 @@ public class FileMenuModel extends StaticMenuModel {
 				MenuModel.SEPARATOR,
 				RecentProjectsMenuModel.getInstance(),
 				MenuModel.SEPARATOR,
+				new ImportGalleryResourceOperation().getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
 				SaveProjectOperation.getInstance().getMenuItemPrepModel(),
 				SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
 		if ( ENABLE_EXPORT ) {

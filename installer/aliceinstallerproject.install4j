@@ -209,21 +209,21 @@
           <archive location="ext/uk/co/caprica/vlcj/3.1.0/vlcj-3.1.0.jar" failOnError="true" />
           <archive location="ext/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" failOnError="true" />
           <archive location="ext/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" failOnError="true" />
-          <archive location="lib/alice-ide-5.0.0.jar" failOnError="true" />
-          <archive location="lib/ast-5.0.0.jar" failOnError="true" />
-          <archive location="lib/croquet-5.0.0.jar" failOnError="true" />
-          <archive location="lib/glrender-5.0.0.jar" failOnError="true" />
-          <archive location="lib/i18n-5.0.0.jar" failOnError="true" />
-          <archive location="lib/ide-5.0.0.jar" failOnError="true" />
-          <archive location="lib/ide-nonfree-5.0.0.jar" failOnError="true" />
-          <archive location="lib/image-editor-5.0.0.jar" failOnError="true" />
-          <archive location="lib/issue-reporting-5.0.0.jar" failOnError="true" />
-          <archive location="lib/resources-nonfree-5.0.0.jar" failOnError="true" />
-          <archive location="lib/scenegraph-5.0.0.jar" failOnError="true" />
-          <archive location="lib/story-api-5.0.0.jar" failOnError="true" />
-          <archive location="lib/story-api-migration-5.0.0.jar" failOnError="true" />
-          <archive location="lib/story-api-nonfree-5.0.0.jar" failOnError="true" />
-          <archive location="lib/util-5.0.0.jar" failOnError="true" />
+          <archive location="lib/alice-ide-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ast-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/croquet-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/glrender-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/i18n-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ide-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ide-nonfree-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/image-editor-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/issue-reporting-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/resources-nonfree-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/scenegraph-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-migration-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-nonfree-5.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/util-5.0.1-SNAPSHOT.jar" failOnError="true" />
 
         </classPath>
         <nativeLibraryDirectories />
