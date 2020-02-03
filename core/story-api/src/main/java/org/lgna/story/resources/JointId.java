@@ -120,6 +120,20 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
     }
   }
 
+  public int descendantComparison(JointId b) {
+    if (isMyDescendant(b)) {
+      return 1;
+    }
+    if (b.isMyDescendant(this)) {
+      return -1;
+    }
+    return 0;
+  }
+
+  private boolean isMyDescendant(JointId b) {
+    return b != null && (b.parent == this || isMyDescendant(b.parent));
+  }
+
   @Override
   public void encodeDefinition(Encoder processor) {
     processor.appendNewJointId(fld.getName(),

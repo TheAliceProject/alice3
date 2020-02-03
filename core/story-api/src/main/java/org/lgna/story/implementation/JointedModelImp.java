@@ -285,6 +285,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       JointImpWrapper wrapper = new JointImpWrapper(this, entry.getValue());
       mapIdToJoint.put(entry.getKey(), wrapper);
     }
+    fillInJointArrays();
     //Go through all the wrappers and link up the parent/child relationship
     for (Map.Entry<JointId, JointImpWrapper> entry : mapIdToJoint.entrySet()) {
       entry.getValue().setJointParent(mapIdToJoint.get(entry.getKey().getParent()));
@@ -338,16 +339,27 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       allJoints.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
     }
     //Handle joint arrays
-    mapArrayIdToJointIdArray.clear();
     for (JointArrayId arrayId : this.getJointArrayIds()) {
       JointId[] jointArrayIds = this.factory.getJointArrayIds(this, arrayId);
-      mapArrayIdToJointIdArray.put(arrayId, jointArrayIds);
       for (JointId jointId : jointArrayIds) {
         allJoints.add(jointId);
       }
     }
 
     return allJoints;
+  }
+
+  private void fillInJointArrays() {
+    for (JointArrayId arrayId : this.getJointArrayIds()) {
+      mapArrayIdToJointIdArray.put(arrayId, findJointsMatching(arrayId.getElementNamePattern()));
+    }
+  }
+
+  private JointId[] findJointsMatching(String prefix) {
+    return mapIdToJoint.keySet().stream()
+                       .filter(jointId -> jointId.toString().startsWith(prefix))
+                       .sorted(Comparator.comparing(JointId::toString))
+                       .toArray(JointId[]::new);
   }
 
   public JointId[] getJointIdArray(JointArrayId jointArrayId) {
@@ -400,6 +412,16 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
       matchNewDataToExistingJoints(mapIdToOriginalRotation, newJoints);
 
+      //Make joint wrappers for new entries and put them in the map
+      for (Map.Entry<JointId, JointImp> entry : newJoints.entrySet()) {
+        if (!mapIdToJoint.containsKey(entry.getKey())) {
+          mapIdToJoint.put(entry.getKey(), new JointImpWrapper(this, entry.getValue()));
+        }
+      }
+
+      mapArrayIdToJointIdArray.clear();
+      fillInJointArrays();
+
       this.visualData.setSGParent(originalParent);
       oldVisualData.setSGParent(null);
       this.opacity.setValue(originalOpacity);
@@ -450,17 +472,15 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         toRemove.add(jointEntry.getKey());
       }
     }
+    // Order from outer-most toward root to always remove a leaf
+    toRemove.sort(JointId::descendantComparison);
     for (JointId id : toRemove) {
       JointImpWrapper impToRemove = this.mapIdToJoint.remove(id);
-      //Reparent children
-      for (JointImp childImp : impToRemove.getJointChildren()) {
-        childImp.setJointParent(impToRemove.getJointParent());
+      AbstractTransformable sgJoint = impToRemove.getSgComposite();
+      if (!impToRemove.getJointChildren().isEmpty()) {
+        Logger.severe("Removing a joint with child joints. There is a problem with this resource and may lead to errors.");
       }
       impToRemove.setJointParent(null);
-      AbstractTransformable sgJoint = impToRemove.getSgComposite();
-      for (Component c : sgJoint.getComponents()) {
-        c.setParent(impToRemove.getJointParent().getSgComposite());
-      }
       sgJoint.setParent(null);
     }
   }
