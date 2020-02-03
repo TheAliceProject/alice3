@@ -330,7 +330,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
 		}
 	}
 
-	private static enum Dimension {
+	protected enum Dimension {
 		LEFT_TO_RIGHT( true, false, false ),
 		TOP_TO_BOTTOM( false, true, false ),
 		FRONT_TO_BACK( false, false, true );
