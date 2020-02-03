@@ -59,73 +59,73 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarView extends MigPanel {
-	//	protected static class ViewConstraitsPair {
-	//		private final JComponent<?> view;
-	//		private final String constraints;
-	//
-	//		public ViewConstraitsPair( JComponent<?> view, String constraints ) {
-	//			this.view = view;
-	//			this.constraints = constraints;
-	//		}
-	//
-	//		public JComponent<?> getView() {
-	//			return this.view;
-	//		}
-	//
-	//		public String getConstraints() {
-	//			return this.constraints;
-	//		}
-	//	}
+  //  protected static class ViewConstraitsPair {
+  //  private final JComponent<?> view;
+  //  private final String constraints;
+  //
+  //  public ViewConstraitsPair( JComponent<?> view, String constraints ) {
+  //    this.view = view;
+  //    this.constraints = constraints;
+  //  }
+  //
+  //  public JComponent<?> getView() {
+  //    return this.view;
+  //  }
+  //
+  //  public String getConstraints() {
+  //    return this.constraints;
+  //  }
+  //  }
 
-	public ToolBarView( ToolBarComposite composite ) {
-		super( composite, "insets 0 0 2 0, gap 0", "", "" );
-		String constraints = "";
-		for( Element element : composite.getSubElements() ) {
-			constraints = this.addViewForElement( element, constraints );
-		}
+  public ToolBarView(ToolBarComposite composite) {
+    super(composite, "insets 0 0 2 0, gap 0", "", "");
+    String constraints = "";
+    for (Element element : composite.getSubElements()) {
+      constraints = this.addViewForElement(element, constraints);
+    }
 
-		this.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.DARK_GRAY ) );
-		//this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-	}
+    this.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
+    //this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+  }
 
-	protected String addViewForElement( Element element, String constraints ) {
-		String nextConstraints;
-		if( element == GapToolBarSeparator.getInstance() ) {
-			nextConstraints = "gap 10";
-		} else if( element == PushToolBarSeparator.getInstance() ) {
-			this.addComponent( new Label(), "push" );
-			nextConstraints = "";
-		} else {
-			SwingComponentView<?> component;
-			if( element instanceof Operation ) {
-				Operation operation = (Operation)element;
-				Button button = operation.createButton();
-				if( operation.isToolBarTextClobbered() ) {
-					button.setToolTipText( operation.getImp().getName() );
-					button.setClobberText( "" );
-				}
-				button.tightenUpMargin();
-				component = button;
-			} else if( element instanceof SingleSelectListState<?, ?> ) {
-				SingleSelectListState<?, ?> listSelectionState = (SingleSelectListState<?, ?>)element;
-				ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBoxWithItemCodecListCellRenderer();
-				component = comboBox;
-			} else if( element instanceof Composite<?> ) {
-				Composite<?> subComposite = (Composite<?>)element;
-				component = subComposite.getView();
-			} else if( element instanceof PlainStringValue ) {
-				PlainStringValue stringValue = (PlainStringValue)element;
-				component = stringValue.createLabel();
-			} else {
-				Logger.severe( element );
-				component = null;
-			}
-			if( component != null ) {
-				this.addComponent( component, constraints );
-			}
-			nextConstraints = "";
-		}
-		return nextConstraints;
-	}
+  protected String addViewForElement(Element element, String constraints) {
+    String nextConstraints;
+    if (element == GapToolBarSeparator.getInstance()) {
+      nextConstraints = "gap 10";
+    } else if (element == PushToolBarSeparator.getInstance()) {
+      this.addComponent(new Label(), "push");
+      nextConstraints = "";
+    } else {
+      SwingComponentView<?> component;
+      if (element instanceof Operation) {
+        Operation operation = (Operation) element;
+        Button button = operation.createButton();
+        if (operation.isToolBarTextClobbered()) {
+          button.setToolTipText(operation.getImp().getName());
+          button.setClobberText("");
+        }
+        button.tightenUpMargin();
+        component = button;
+      } else if (element instanceof SingleSelectListState<?, ?>) {
+        SingleSelectListState<?, ?> listSelectionState = (SingleSelectListState<?, ?>) element;
+        ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBoxWithItemCodecListCellRenderer();
+        component = comboBox;
+      } else if (element instanceof Composite<?>) {
+        Composite<?> subComposite = (Composite<?>) element;
+        component = subComposite.getView();
+      } else if (element instanceof PlainStringValue) {
+        PlainStringValue stringValue = (PlainStringValue) element;
+        component = stringValue.createLabel();
+      } else {
+        Logger.severe(element);
+        component = null;
+      }
+      if (component != null) {
+        this.addComponent(component, constraints);
+      }
+      nextConstraints = "";
+    }
+    return nextConstraints;
+  }
 
 }

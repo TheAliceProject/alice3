@@ -47,5 +47,6 @@ package org.lgna.croquet.history.event;
  * @author Dennis Cosgrove
  */
 public class FinishedEvent implements ActivityEvent {
-	public FinishedEvent() {}
+  public FinishedEvent() {
+  }
 }

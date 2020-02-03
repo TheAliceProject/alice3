@@ -56,80 +56,78 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Chain {
-	public static Chain createInstance( JointedModelImp<?, ?> jointedModelImp, JointId anchorId, JointId endId, boolean isLinearEnabled, boolean isAngularEnabled ) {
-		List<org.lgna.ik.core.solver.Bone.Direction> directions = Lists.newArrayList();
-		List<JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
-		return new Chain( jointImps, isLinearEnabled, isAngularEnabled );
-	}
+  public static Chain createInstance(JointedModelImp<?, ?> jointedModelImp, JointId anchorId, JointId endId, boolean isLinearEnabled, boolean isAngularEnabled) {
+    List<org.lgna.ik.core.solver.Bone.Direction> directions = Lists.newArrayList();
+    List<JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween(anchorId, endId, directions);
+    return new Chain(jointImps, isLinearEnabled, isAngularEnabled);
+  }
 
-	private final List<JointImp> jointImps;
-	private final Bone[] bones;
-	private final Vector3 desiredEndEffectorLinearVelocity;
-	private final Vector3 desiredEndEffectorAngularVelocity;
+  private final List<JointImp> jointImps;
+  private final Bone[] bones;
+  private final Vector3 desiredEndEffectorLinearVelocity;
+  private final Vector3 desiredEndEffectorAngularVelocity;
 
-	private Chain( List<JointImp> jointImps, boolean isLinearEnabled, boolean isAngularEnabled ) {
-		this.jointImps = jointImps;
-		final int N = this.jointImps.size();
-		this.bones = new Bone[ N - 1 ];
-		for( int i = 0; i < ( N - 1 ); i++ ) {
-			this.bones[ i ] = new Bone( this, i, isLinearEnabled, isAngularEnabled );
-		}
-		if( isLinearEnabled ) {
-			this.desiredEndEffectorLinearVelocity = Vector3.createZero();
-		} else {
-			this.desiredEndEffectorLinearVelocity = null;
-		}
-		if( isAngularEnabled ) {
-			this.desiredEndEffectorAngularVelocity = Vector3.createZero();
-		} else {
-			this.desiredEndEffectorAngularVelocity = null;
-		}
-	}
+  private Chain(List<JointImp> jointImps, boolean isLinearEnabled, boolean isAngularEnabled) {
+    this.jointImps = jointImps;
+    final int N = this.jointImps.size();
+    this.bones = new Bone[N - 1];
+    for (int i = 0; i < (N - 1); i++) {
+      this.bones[i] = new Bone(this, i, isLinearEnabled, isAngularEnabled);
+    }
+    if (isLinearEnabled) {
+      this.desiredEndEffectorLinearVelocity = Vector3.createZero();
+    } else {
+      this.desiredEndEffectorLinearVelocity = null;
+    }
+    if (isAngularEnabled) {
+      this.desiredEndEffectorAngularVelocity = Vector3.createZero();
+    } else {
+      this.desiredEndEffectorAngularVelocity = null;
+    }
+  }
 
-	public Bone[] getBones() {
-		return this.bones;
-	}
+  public Bone[] getBones() {
+    return this.bones;
+  }
 
-	public JointImp getJointImpAt( int index ) {
-		return this.jointImps.get( index );
-	}
+  public JointImp getJointImpAt(int index) {
+    return this.jointImps.get(index);
+  }
 
-	private boolean isLinearVelocityEnabled() {
-		return this.desiredEndEffectorLinearVelocity != null;
-	}
+  private boolean isLinearVelocityEnabled() {
+    return this.desiredEndEffectorLinearVelocity != null;
+  }
 
-	private boolean isAngularVelocityEnabled() {
-		return this.desiredEndEffectorAngularVelocity != null;
-	}
+  private boolean isAngularVelocityEnabled() {
+    return this.desiredEndEffectorAngularVelocity != null;
+  }
 
-	public void setDesiredEndEffectorLinearVelocity( Vector3 desiredEndEffectorLinearVelocity ) {
-		this.desiredEndEffectorLinearVelocity.set( desiredEndEffectorLinearVelocity );
-	}
+  public void setDesiredEndEffectorLinearVelocity(Vector3 desiredEndEffectorLinearVelocity) {
+    this.desiredEndEffectorLinearVelocity.set(desiredEndEffectorLinearVelocity);
+  }
 
-	public void setDesiredEndEffectorAngularVelocity( Vector3 desiredEndEffectorAngularVelocity ) {
-		this.desiredEndEffectorAngularVelocity.set( desiredEndEffectorAngularVelocity );
-	}
+  public void setDesiredEndEffectorAngularVelocity(Vector3 desiredEndEffectorAngularVelocity) {
+    this.desiredEndEffectorAngularVelocity.set(desiredEndEffectorAngularVelocity);
+  }
 
-	private Point3 getAnchorPosition() {
-		throw new RuntimeException( "todo" );
-	}
+  private Point3 getAnchorPosition() {
+    throw new RuntimeException("todo");
+  }
 
-	private Point3 getEndEffectorPosition() {
-		throw new RuntimeException( "todo" );
-	}
+  private Point3 getEndEffectorPosition() {
+    throw new RuntimeException("todo");
+  }
 
-	private void computeVelocityContributions() {
-		Point3 endEffectorPos = this.getEndEffectorPosition();
-		for( Bone bone : this.bones ) {
-			if( this.isLinearVelocityEnabled() ) {
-				Vector3 v = Vector3.createSubtraction(
-						endEffectorPos,
-						this.getAnchorPosition() );
-				bone.updateLinearContributions( v );
-			}
-			if( this.isAngularVelocityEnabled() ) {
-				bone.updateAngularContributions();
-			}
-		}
-	}
+  private void computeVelocityContributions() {
+    Point3 endEffectorPos = this.getEndEffectorPosition();
+    for (Bone bone : this.bones) {
+      if (this.isLinearVelocityEnabled()) {
+        Vector3 v = Vector3.createSubtraction(endEffectorPos, this.getAnchorPosition());
+        bone.updateLinearContributions(v);
+      }
+      if (this.isAngularVelocityEnabled()) {
+        bone.updateAngularContributions();
+      }
+    }
+  }
 }

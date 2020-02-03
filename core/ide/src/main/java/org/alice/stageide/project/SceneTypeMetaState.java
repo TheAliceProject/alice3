@@ -53,20 +53,20 @@ import org.lgna.project.ast.NamedUserType;
  * @author Dennis Cosgrove
  */
 public class SceneTypeMetaState extends StateTrackingMetaState<NamedUserType, ProjectDocument> {
-	private static class SingletonHolder {
-		private static SceneTypeMetaState instance = new SceneTypeMetaState();
-	}
+  private static class SingletonHolder {
+    private static SceneTypeMetaState instance = new SceneTypeMetaState();
+  }
 
-	public static SceneTypeMetaState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SceneTypeMetaState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SceneTypeMetaState() {
-		super( ProjectDocumentState.getInstance() );
-	}
+  private SceneTypeMetaState() {
+    super(ProjectDocumentState.getInstance());
+  }
 
-	@Override
-	protected NamedUserType getValue( State<ProjectDocument> state ) {
-		return StoryApiSpecificAstUtilities.getSceneTypeFromDocument( state.getValue() );
-	}
+  @Override
+  protected NamedUserType getValue(State<ProjectDocument> state) {
+    return StoryApiSpecificAstUtilities.getSceneTypeFromDocument(state.getValue());
+  }
 }

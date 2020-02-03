@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="QueenOfHearts">
+    <BoundingBox>
+        <Min x="-0.5463143014330919" y="-0.009268054613845784" z="-0.4753509632957411"/>
+        <Max x="0.5679572625033763" y="1.9624940069352725" z="0.654087850422788"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+        <Tag>queen</Tag>
+        <Tag>heart</Tag>
+        <Tag>red</Tag>
+        <Tag>villain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="QueenOfHearts" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

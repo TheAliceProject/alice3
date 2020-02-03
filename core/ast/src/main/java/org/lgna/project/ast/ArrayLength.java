@@ -47,44 +47,44 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ArrayLength extends Expression {
-	public ArrayLength() {
-	}
+  public ArrayLength() {
+  }
 
-	public ArrayLength( Expression array ) {
-		this.array.setValue( array );
-	}
+  public ArrayLength(Expression array) {
+    this.array.setValue(array);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo:
-		//return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
-		return JavaType.INTEGER_OBJECT_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //todo:
+    //return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
+    return JavaType.INTEGER_OBJECT_TYPE;
+  }
 
-	@Override
-	public boolean isValid() {
-		Expression arrayExpression = this.array.getValue();
-		if( arrayExpression != null ) {
-			AbstractType<?, ?, ?> type = arrayExpression.getType();
-			if( type != null ) {
-				return type.isArray();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isValid() {
+    Expression arrayExpression = this.array.getValue();
+    if (arrayExpression != null) {
+      AbstractType<?, ?, ?> type = arrayExpression.getType();
+      if (type != null) {
+        return type.isArray();
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendArrayLength( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendArrayLength(this);
+  }
 
-	public final ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.OBJECT_TYPE.getArrayType();
-		}
-	};
+  public final ExpressionProperty array = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.OBJECT_TYPE.getArrayType();
+    }
+  };
 }

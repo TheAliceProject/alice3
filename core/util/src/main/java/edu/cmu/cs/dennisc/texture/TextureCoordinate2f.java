@@ -50,61 +50,61 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public final class TextureCoordinate2f implements BinaryEncodableAndDecodable {
-	public float u;
-	public float v;
+  public float u;
+  public float v;
 
-	public static TextureCoordinate2f createNaN() {
-		return new TextureCoordinate2f( Float.NaN, Float.NaN );
-	}
+  public static TextureCoordinate2f createNaN() {
+    return new TextureCoordinate2f(Float.NaN, Float.NaN);
+  }
 
-	public TextureCoordinate2f( TextureCoordinate2f other ) {
-		this( other.u, other.v );
-	}
+  public TextureCoordinate2f(TextureCoordinate2f other) {
+    this(other.u, other.v);
+  }
 
-	public TextureCoordinate2f( float u, float v ) {
-		this.u = u;
-		this.v = v;
-	}
+  public TextureCoordinate2f(float u, float v) {
+    this.u = u;
+    this.v = v;
+  }
 
-	public TextureCoordinate2f( BinaryDecoder binaryDecoder ) {
-		this.u = binaryDecoder.decodeFloat();
-		this.v = binaryDecoder.decodeFloat();
-	}
+  public TextureCoordinate2f(BinaryDecoder binaryDecoder) {
+    this.u = binaryDecoder.decodeFloat();
+    this.v = binaryDecoder.decodeFloat();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( u );
-		binaryEncoder.encode( v );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(u);
+    binaryEncoder.encode(v);
+  }
 
-	public boolean isNaN() {
-		return Float.isNaN( u ) || Float.isNaN( v );
-	}
+  public boolean isNaN() {
+    return Float.isNaN(u) || Float.isNaN(v);
+  }
 
-	@Override
-	public final boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		} else {
-			if( o != null ) {
-				if( this.getClass().equals( o.getClass() ) ) {
-					TextureCoordinate2f other = (TextureCoordinate2f)o;
-					return ( Float.compare( this.u, other.u ) == 0 ) && ( Float.compare( this.v, other.v ) == 0 );
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
+  @Override
+  public final boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    } else {
+      if (o != null) {
+        if (this.getClass().equals(o.getClass())) {
+          TextureCoordinate2f other = (TextureCoordinate2f) o;
+          return (Float.compare(this.u, other.u) == 0) && (Float.compare(this.v, other.v) == 0);
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
 
-	@Override
-	public final int hashCode() {
-		int rv = 17;
-		rv = ( 37 * rv ) + this.getClass().hashCode();
-		rv = ( 37 * rv ) + Float.floatToIntBits( this.u );
-		rv = ( 37 * rv ) + Float.floatToIntBits( this.v );
-		return rv;
-	}
+  @Override
+  public final int hashCode() {
+    int rv = 17;
+    rv = (37 * rv) + this.getClass().hashCode();
+    rv = (37 * rv) + Float.floatToIntBits(this.u);
+    rv = (37 * rv) + Float.floatToIntBits(this.v);
+    return rv;
+  }
 }

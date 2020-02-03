@@ -46,6 +46,5 @@ package org.alice.ide.ast.type.merge.help.diffsig.croquet;
  * @author Dennis Cosgrove
  */
 public enum DifferentSignatureChoice {
-	ADD_AND_RETAIN_BOTH,
-	ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT
+  ADD_AND_RETAIN_BOTH, ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT
 }

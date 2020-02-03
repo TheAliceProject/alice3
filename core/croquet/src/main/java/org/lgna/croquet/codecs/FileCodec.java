@@ -52,33 +52,34 @@ import java.io.File;
  * @author Dennis Cosgrove
  */
 public enum FileCodec implements ItemCodec<File> {
-	SINGLETON;
-	@Override
-	public Class<File> getValueClass() {
-		return File.class;
-	}
+  SINGLETON;
 
-	@Override
-	public File decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Class<File> getValueClass() {
+    return File.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, File value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			throw new RuntimeException( "todo" );
-		}
-	}
+  @Override
+  public File decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      throw new RuntimeException("todo");
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, File value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, File value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      throw new RuntimeException("todo");
+    }
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, File value) {
+    sb.append(value);
+  }
 }

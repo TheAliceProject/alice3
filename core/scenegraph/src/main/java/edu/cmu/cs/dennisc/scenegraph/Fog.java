@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.color.property.Color4fProperty;
  * @author Dennis Cosgrove
  */
 public abstract class Fog extends Affector {
-	public final Color4fProperty color = new Color4fProperty( this, Color4f.WHITE );
+  public final Color4fProperty color = new Color4fProperty(this, Color4f.WHITE);
 }

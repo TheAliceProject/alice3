@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="FirTreeTrunk">
+    <BoundingBox>
+        <Min x="-1.7729754447937012" y="-0.0757177546620369" z="-1.7105971574783325"/>
+        <Max x="1.7945764064788818" y="10.814236640930176" z="1.8826574087142944"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>fir tree</Tag>
+        <Tag>tree</Tag>
+        <Tag>snow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+        <ThemeTag>haunted</ThemeTag>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7729754447937012" y="-0.0387069508433342" z="-1.4666633605957031"/>
+            <Max x="1.7945764064788818" y="6.463942527770996" z="1.705270528793335"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Mirror" resourceName="MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7729754447937012" y="-0.0387069508433342" z="-1.705270528793335"/>
+            <Max x="1.7945764064788818" y="6.463942527770996" z="1.4666633605957031"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7697054147720337" y="-0.03277688845992088" z="-1.7105971574783325"/>
+            <Max x="1.660744547843933" y="9.696176528930664" z="1.6002377271652222"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="TallMirror" resourceName="TALL_MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7697054147720337" y="-0.03277688845992088" z="-1.6002378463745117"/>
+            <Max x="1.660744547843933" y="9.696176528930664" z="1.710597038269043"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Snow" resourceName="SNOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.5541337728500366" y="-0.03541490435600281" z="-1.4645627737045288"/>
+            <Max x="1.547506332397461" y="6.460118293762207" z="1.6896250247955322"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SnowMirror" resourceName="SNOW_MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.5474902391433716" y="-0.04524123668670654" z="-1.4645473957061768"/>
+            <Max x="1.5541174411773682" y="6.450223922729492" z="1.6896073818206787"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SnowTall" resourceName="SNOW_TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7095470428466797" y="-0.059284552931785583" z="-1.6110191345214844"/>
+            <Max x="1.7022570371627808" y="10.814236640930176" z="1.858587622642517"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SnowTallMirror" resourceName="SNOW_TALL_MIRROR" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.7291808128356934" y="-0.0757177546620369" z="-1.6318827867507935"/>
+            <Max x="1.736586093902588" y="10.795381546020508" z="1.8826574087142944"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

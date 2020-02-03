@@ -52,32 +52,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class BooleanStateSetToValueOperation extends ActionOperation {
-	private final BooleanState state;
-	private final boolean value;
+  private final BooleanState state;
+  private final boolean value;
 
-	/*package-private*/BooleanStateSetToValueOperation( BooleanState state, boolean value ) {
-		super( state.getGroup(), UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
-		assert state != null;
-		this.state = state;
-		this.value = value;
-	}
+  /*package-private*/BooleanStateSetToValueOperation(BooleanState state, boolean value) {
+    super(state.getGroup(), UUID.fromString("ca23dcf0-e00d-439b-b8a2-6c691be8ab5f"));
+    assert state != null;
+    this.state = state;
+    this.value = value;
+  }
 
-	@Override
-	protected void initialize() {
-		this.state.initializeIfNecessary();
-		super.initialize();
-	}
+  @Override
+  protected void initialize() {
+    this.state.initializeIfNecessary();
+    super.initialize();
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
-		this.setButtonIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName(this.value ? this.state.getTrueText() : this.state.getFalseText());
+    this.setButtonIcon(this.value ? this.state.getTrueIcon() : this.state.getFalseIcon());
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.state.setValueTransactionlessly( this.value );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.state.setValueTransactionlessly(this.value);
+    activity.finish();
+  }
 }

@@ -47,15 +47,15 @@ import org.lgna.story.event.SceneActivationListener;
 import java.util.UUID;
 
 public class SceneActivationEventFillIn extends LambdaExpressionFillIn {
-	private static class SingletonHolder {
-		private static SceneActivationEventFillIn instance = new SceneActivationEventFillIn();
-	}
+  private static class SingletonHolder {
+    private static SceneActivationEventFillIn instance = new SceneActivationEventFillIn();
+  }
 
-	public static SceneActivationEventFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SceneActivationEventFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public SceneActivationEventFillIn() {
-		super( UUID.fromString( "b9b19a9e-cbc8-426f-a781-85a795eb424b" ), SceneActivationListener.class );
-	}
+  public SceneActivationEventFillIn() {
+    super(UUID.fromString("b9b19a9e-cbc8-426f-a781-85a795eb424b"), SceneActivationListener.class);
+  }
 }

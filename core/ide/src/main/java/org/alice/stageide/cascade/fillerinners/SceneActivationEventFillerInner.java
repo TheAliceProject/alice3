@@ -52,12 +52,12 @@ import org.lgna.story.event.SceneActivationListener;
 import java.util.List;
 
 public class SceneActivationEventFillerInner extends ExpressionFillerInner {
-	public SceneActivationEventFillerInner() {
-		super( SceneActivationListener.class );
-	}
+  public SceneActivationEventFillerInner() {
+    super(SceneActivationListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( SceneActivationEventFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(SceneActivationEventFillIn.getInstance());
+  }
 }

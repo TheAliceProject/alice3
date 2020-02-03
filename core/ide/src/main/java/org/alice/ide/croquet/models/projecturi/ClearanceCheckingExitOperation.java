@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingOperation {
-	public ClearanceCheckingExitOperation() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), new SystemExitOperation() );
-	}
+  public ClearanceCheckingExitOperation() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("ba357b75-2167-4b4d-9f11-bf34b48d6b2e"), new SystemExitOperation());
+  }
 }

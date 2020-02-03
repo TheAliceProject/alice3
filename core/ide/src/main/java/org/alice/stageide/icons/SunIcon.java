@@ -56,55 +56,55 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class SunIcon implements Icon {
-	//todo
-	private static final int SMALL_ICON_SIZE = 24;
+  //todo
+  private static final int SMALL_ICON_SIZE = 24;
 
-	@Override
-	public int getIconWidth() {
-		return SMALL_ICON_SIZE;
-	}
+  @Override
+  public int getIconWidth() {
+    return SMALL_ICON_SIZE;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return SMALL_ICON_SIZE;
-	}
+  @Override
+  public int getIconHeight() {
+    return SMALL_ICON_SIZE;
+  }
 
-	private Shape createArc( float size ) {
-		GeneralPath rv = new GeneralPath();
-		rv.moveTo( 0.0f, 0.0f );
-		rv.lineTo( size, 0.0f );
-		rv.quadTo( size, size, 0.0f, size );
-		rv.closePath();
-		return rv;
-	}
+  private Shape createArc(float size) {
+    GeneralPath rv = new GeneralPath();
+    rv.moveTo(0.0f, 0.0f);
+    rv.lineTo(size, 0.0f);
+    rv.quadTo(size, size, 0.0f, size);
+    rv.closePath();
+    return rv;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		AffineTransform m = g2.getTransform();
-		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		try {
-			Shape innerArc = this.createArc( 16.0f );
-			Shape outerArc = this.createArc( 18.0f );
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    AffineTransform m = g2.getTransform();
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    try {
+      Shape innerArc = this.createArc(16.0f);
+      Shape outerArc = this.createArc(18.0f);
 
-			g2.translate( 4.0f, 4.0f );
-			GeneralPath pathRays = new GeneralPath();
-			double thetaN = Math.PI / 2.0;
-			double thetaDelta = thetaN / 8.0;
-			g2.setColor( new Color( 255, 210, 0 ) );
-			for( double theta = 0.0; theta <= thetaN; theta += thetaDelta ) {
-				pathRays.moveTo( 0.0f, 0.0f );
-				pathRays.lineTo( (float)( Math.cos( theta ) * 20.0 ), (float)( Math.sin( theta ) * 20.0 ) );
-			}
-			g2.draw( pathRays );
-			g2.fill( outerArc );
+      g2.translate(4.0f, 4.0f);
+      GeneralPath pathRays = new GeneralPath();
+      double thetaN = Math.PI / 2.0;
+      double thetaDelta = thetaN / 8.0;
+      g2.setColor(new Color(255, 210, 0));
+      for (double theta = 0.0; theta <= thetaN; theta += thetaDelta) {
+        pathRays.moveTo(0.0f, 0.0f);
+        pathRays.lineTo((float) (Math.cos(theta) * 20.0), (float) (Math.sin(theta) * 20.0));
+      }
+      g2.draw(pathRays);
+      g2.fill(outerArc);
 
-			g2.setColor( new Color( 230, 230, 0 ) );
-			g2.fill( innerArc );
-		} finally {
-			g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-			g2.setTransform( m );
-		}
-	}
+      g2.setColor(new Color(230, 230, 0));
+      g2.fill(innerArc);
+    } finally {
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+      g2.setTransform(m);
+    }
+  }
 }

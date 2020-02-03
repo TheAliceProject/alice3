@@ -62,210 +62,210 @@ import java.util.List;
  * @author David Culyba
  */
 public abstract class AbstractManipulator {
-	public void clearManipulationEvents() {
-		this.manipulationEvents.clear();
-	}
+  public void clearManipulationEvents() {
+    this.manipulationEvents.clear();
+  }
 
-	public void addManipulationEvent( ManipulationEvent e ) {
-		this.manipulationEvents.add( e );
-	}
+  public void addManipulationEvent(ManipulationEvent e) {
+    this.manipulationEvents.add(e);
+  }
 
-	public void removeManipulationEvent( ManipulationEvent e ) {
-		this.manipulationEvents.remove( e );
-	}
+  public void removeManipulationEvent(ManipulationEvent e) {
+    this.manipulationEvents.remove(e);
+  }
 
-	public Iterable<ManipulationEvent> getManipulationEvents() {
-		this.initializeEventMessages();
-		return this.manipulationEvents;
-	}
+  public Iterable<ManipulationEvent> getManipulationEvents() {
+    this.initializeEventMessages();
+    return this.manipulationEvents;
+  }
 
-	protected void setMainManipulationEvent( ManipulationEvent mainManipulationEvent ) {
-		this.mainManipulationEvent = mainManipulationEvent;
-	}
+  protected void setMainManipulationEvent(ManipulationEvent mainManipulationEvent) {
+    this.mainManipulationEvent = mainManipulationEvent;
+  }
 
-	public AbstractTransformable getManipulatedTransformable() {
-		return this.manipulatedTransformable;
-	}
+  public AbstractTransformable getManipulatedTransformable() {
+    return this.manipulatedTransformable;
+  }
 
-	public void setManipulatedTransformable( AbstractTransformable manipulatedTransformable ) {
-		if( manipulatedTransformable != this.manipulatedTransformable ) {
-			this.manipulatedTransformable = manipulatedTransformable;
-			if( this.manipulatedTransformable != null ) {
-				this.initializeEventMessages();
-			}
-		}
-	}
+  public void setManipulatedTransformable(AbstractTransformable manipulatedTransformable) {
+    if (manipulatedTransformable != this.manipulatedTransformable) {
+      this.manipulatedTransformable = manipulatedTransformable;
+      if (this.manipulatedTransformable != null) {
+        this.initializeEventMessages();
+      }
+    }
+  }
 
-	public boolean hasStarted() {
-		return this.hasStarted;
-	}
+  public boolean hasStarted() {
+    return this.hasStarted;
+  }
 
-	public boolean hasUpdated() {
-		return this.hasDoneUpdate;
-	}
+  public boolean hasUpdated() {
+    return this.hasDoneUpdate;
+  }
 
-	protected void setHasUpdated( boolean hasUpdated ) {
-		this.hasDoneUpdate = hasUpdated;
-	}
+  protected void setHasUpdated(boolean hasUpdated) {
+    this.hasDoneUpdate = hasUpdated;
+  }
 
-	public void setDragAdapter( DragAdapter dragAdapter ) {
-		this.dragAdapter = dragAdapter;
-	}
+  public void setDragAdapter(DragAdapter dragAdapter) {
+    this.dragAdapter = dragAdapter;
+  }
 
-	protected abstract HandleSet getHandleSetToEnable();
+  protected abstract HandleSet getHandleSetToEnable();
 
-	protected void initializeEventMessages() {
-		this.manipulationEvents.clear();
-	}
+  protected void initializeEventMessages() {
+    this.manipulationEvents.clear();
+  }
 
-	public ManipulationEvent getMainManipulationEvent() {
-		return this.mainManipulationEvent;
-	}
+  public ManipulationEvent getMainManipulationEvent() {
+    return this.mainManipulationEvent;
+  }
 
-	public boolean doesManipulatedObjectHaveHandles() {
-		if( this.manipulatedTransformable != null ) {
-			EntityImp entityImplementation = EntityImp.getInstance( this.manipulatedTransformable );
-			if( !( entityImplementation instanceof MarkerImp ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  public boolean doesManipulatedObjectHaveHandles() {
+    if (this.manipulatedTransformable != null) {
+      EntityImp entityImplementation = EntityImp.getInstance(this.manipulatedTransformable);
+      if (!(entityImplementation instanceof MarkerImp)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public void triggerAllDeactivateEvents() {
-		for( ManipulationEvent manipulationEvent : this.manipulationEvents ) {
-			this.dragAdapter.triggerManipulationEvent( manipulationEvent, false );
-		}
-		if( this.mainManipulationEvent != null ) {
-			this.dragAdapter.triggerManipulationEvent( this.mainManipulationEvent, false );
-		}
-	}
+  public void triggerAllDeactivateEvents() {
+    for (ManipulationEvent manipulationEvent : this.manipulationEvents) {
+      this.dragAdapter.triggerManipulationEvent(manipulationEvent, false);
+    }
+    if (this.mainManipulationEvent != null) {
+      this.dragAdapter.triggerManipulationEvent(this.mainManipulationEvent, false);
+    }
+  }
 
-	public boolean startManipulator( InputState startInput ) {
-		try {
-			this.hasStarted = doStartManipulator( startInput );
-		} catch( Throwable t ) {
-			t.printStackTrace();
-			this.hasStarted = false;
-		}
-		setHasUpdated( false );
-		if( this.hasStarted ) {
-			undoRedoBeginManipulation();
-			if( this.getMainManipulationEvent() != null ) {
-				this.dragAdapter.triggerManipulationEvent( this.getMainManipulationEvent(), true );
-			}
-			if( this.doesManipulatedObjectHaveHandles() ) {
-				HandleSet setToShow = this.getHandleSetToEnable();
-				if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
-					this.dragAdapter.pushHandleSet( setToShow );
-				}
-			}
-		}
-		return this.hasStarted;
-	}
+  public boolean startManipulator(InputState startInput) {
+    try {
+      this.hasStarted = doStartManipulator(startInput);
+    } catch (Throwable t) {
+      t.printStackTrace();
+      this.hasStarted = false;
+    }
+    setHasUpdated(false);
+    if (this.hasStarted) {
+      undoRedoBeginManipulation();
+      if (this.getMainManipulationEvent() != null) {
+        this.dragAdapter.triggerManipulationEvent(this.getMainManipulationEvent(), true);
+      }
+      if (this.doesManipulatedObjectHaveHandles()) {
+        HandleSet setToShow = this.getHandleSetToEnable();
+        if ((setToShow != null) && (this.dragAdapter != null)) {
+          this.dragAdapter.pushHandleSet(setToShow);
+        }
+      }
+    }
+    return this.hasStarted;
+  }
 
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if( this.hasStarted ) {
-			doDataUpdateManipulator( currentInput, previousInput );
-			setHasUpdated( true );
-		}
-	}
+  public void dataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    if (this.hasStarted) {
+      doDataUpdateManipulator(currentInput, previousInput);
+      setHasUpdated(true);
+    }
+  }
 
-	public void timeUpdateManipulator( double dTime, InputState currentInput ) {
-		if( this.hasStarted ) {
-			doTimeUpdateManipulator( dTime, currentInput );
-			setHasUpdated( true );
-		}
-	}
+  public void timeUpdateManipulator(double dTime, InputState currentInput) {
+    if (this.hasStarted) {
+      doTimeUpdateManipulator(dTime, currentInput);
+      setHasUpdated(true);
+    }
+  }
 
-	public void clickManipulator( InputState clickInput, InputState previousInput ) {
-		if( startManipulator( clickInput ) ) {
-			doClickManipulator( clickInput, previousInput );
-			doEndManipulator( clickInput, previousInput );
-			if( isUndoable() ) {
-				undoRedoEndManipulation();
-			}
-			if( this.hasStarted ) {
-				this.hasStarted = false;
-				if( this.doesManipulatedObjectHaveHandles() ) {
-					HandleSet setToShow = this.getHandleSetToEnable();
-					if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
-						this.dragAdapter.popHandleSet();
-					}
-				}
-			}
-			triggerAllDeactivateEvents();
-		}
-	}
+  public void clickManipulator(InputState clickInput, InputState previousInput) {
+    if (startManipulator(clickInput)) {
+      doClickManipulator(clickInput, previousInput);
+      doEndManipulator(clickInput, previousInput);
+      if (isUndoable()) {
+        undoRedoEndManipulation();
+      }
+      if (this.hasStarted) {
+        this.hasStarted = false;
+        if (this.doesManipulatedObjectHaveHandles()) {
+          HandleSet setToShow = this.getHandleSetToEnable();
+          if ((setToShow != null) && (this.dragAdapter != null)) {
+            this.dragAdapter.popHandleSet();
+          }
+        }
+      }
+      triggerAllDeactivateEvents();
+    }
+  }
 
-	public void endManipulator( InputState endInput, InputState previousInput ) {
-		try {
-			doEndManipulator( endInput, previousInput );
-		} catch( Throwable t ) {
-			t.printStackTrace();
-		}
-		if( this.hasStarted ) {
-			if( isUndoable() ) {
-				undoRedoEndManipulation();
-			}
-			//			else if (this.getManipulatedTransformable() != null)
-			//			{
-			//				AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
-			//				if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
-			//				{
-			//					PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
-			//				}
-			//			}
-			this.hasStarted = false;
-			if( this.doesManipulatedObjectHaveHandles() ) {
-				HandleSet setToShow = this.getHandleSetToEnable();
-				if( ( setToShow != null ) && ( this.dragAdapter != null ) ) {
-					//				System.out.println("Pop on manip end:");
-					this.dragAdapter.popHandleSet();
-				}
-			}
-		}
-		SnapUtilities.hideMovementSnapVisualization();
-		triggerAllDeactivateEvents();
-	}
+  public void endManipulator(InputState endInput, InputState previousInput) {
+    try {
+      doEndManipulator(endInput, previousInput);
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
+    if (this.hasStarted) {
+      if (isUndoable()) {
+        undoRedoEndManipulation();
+      }
+      //      else if (this.getManipulatedTransformable() != null)
+      //      {
+      //        AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+      //        if (!newTransformation.equals( originalTransformation ) && originalTransformation != null)
+      //        {
+      //          PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+      //        }
+      //      }
+      this.hasStarted = false;
+      if (this.doesManipulatedObjectHaveHandles()) {
+        HandleSet setToShow = this.getHandleSetToEnable();
+        if ((setToShow != null) && (this.dragAdapter != null)) {
+          //        System.out.println("Pop on manip end:");
+          this.dragAdapter.popHandleSet();
+        }
+      }
+    }
+    SnapUtilities.hideMovementSnapVisualization();
+    triggerAllDeactivateEvents();
+  }
 
-	public abstract String getUndoRedoDescription();
+  public abstract String getUndoRedoDescription();
 
-	public void undoRedoBeginManipulation() {
-		if( this.getManipulatedTransformable() != null ) {
-			this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
-		}
-	}
+  public void undoRedoBeginManipulation() {
+    if (this.getManipulatedTransformable() != null) {
+      this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
+    }
+  }
 
-	public void undoRedoEndManipulation() {
-		this.dragAdapter.undoRedoEndManipulation( this, this.originalTransformation );
-	}
+  public void undoRedoEndManipulation() {
+    this.dragAdapter.undoRedoEndManipulation(this, this.originalTransformation);
+  }
 
-	public boolean isUndoable() {
-		return ( this.dragAdapter != null ) && this.dragAdapter.hasSceneEditor() && this.hasUpdated();
-	}
+  public boolean isUndoable() {
+    return (this.dragAdapter != null) && this.dragAdapter.hasSceneEditor() && this.hasUpdated();
+  }
 
-	public abstract boolean doStartManipulator( InputState startInput );
+  public abstract boolean doStartManipulator(InputState startInput);
 
-	public abstract void doDataUpdateManipulator( InputState currentInput, InputState previousInput );
+  public abstract void doDataUpdateManipulator(InputState currentInput, InputState previousInput);
 
-	public abstract void doTimeUpdateManipulator( double dTime, InputState currentInput );
+  public abstract void doTimeUpdateManipulator(double dTime, InputState currentInput);
 
-	public abstract void doEndManipulator( InputState endInput, InputState previousInput );
+  public abstract void doEndManipulator(InputState endInput, InputState previousInput);
 
-	public abstract void doClickManipulator( InputState endInput, InputState previousInput );
+  public abstract void doClickManipulator(InputState endInput, InputState previousInput);
 
-	@Override
-	public String toString() {
-		return this.getClass().toString() + ":" + this.hashCode();
-	}
+  @Override
+  public String toString() {
+    return this.getClass().toString() + ":" + this.hashCode();
+  }
 
-	protected DragAdapter dragAdapter;
-	protected AbstractTransformable manipulatedTransformable = null;
-	private AffineMatrix4x4 originalTransformation = null;
-	private boolean hasStarted = false;
-	protected boolean hasDoneUpdate = false;
+  protected DragAdapter dragAdapter;
+  protected AbstractTransformable manipulatedTransformable = null;
+  private AffineMatrix4x4 originalTransformation = null;
+  private boolean hasStarted = false;
+  protected boolean hasDoneUpdate = false;
 
-	private ManipulationEvent mainManipulationEvent;
-	private final List<ManipulationEvent> manipulationEvents = Lists.newCopyOnWriteArrayList();
+  private ManipulationEvent mainManipulationEvent;
+  private final List<ManipulationEvent> manipulationEvents = Lists.newCopyOnWriteArrayList();
 }

@@ -64,42 +64,42 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public abstract class FieldList extends MemberList<UserField> {
-	public FieldList( SingleSelectListState<UserField, ?> model, Operation operation ) {
-		super( model, operation );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
-	}
+  public FieldList(SingleSelectListState<UserField, ?> model, Operation operation) {
+    super(model, operation);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFieldColor());
+  }
 
-	@Override
-	protected SwingComponentView<?> createButtonLineStart( UserField item ) {
-		ManagementLevel managementLevel = item.managementLevel.getValue();
-		if( managementLevel == ManagementLevel.MANAGED ) {
-			Label label = new Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			return label;
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected SwingComponentView<?> createButtonLineStart(UserField item) {
+    ManagementLevel managementLevel = item.managementLevel.getValue();
+    if (managementLevel == ManagementLevel.MANAGED) {
+      Label label = new Label("*");
+      label.setToolTipText("managed by the scene editor");
+      label.setForegroundColor(Color.GRAY);
+      label.scaleFont(2.0f);
+      label.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
+      return label;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected SwingComponentView<?> createButtonCenter( UserField item ) {
-		ManagementLevel managementLevel = item.managementLevel.getValue();
-		return new FieldDeclarationPane( PreviewAstI18nFactory.getInstance(), item, managementLevel != ManagementLevel.MANAGED );
-	}
+  @Override
+  protected SwingComponentView<?> createButtonCenter(UserField item) {
+    ManagementLevel managementLevel = item.managementLevel.getValue();
+    return new FieldDeclarationPane(PreviewAstI18nFactory.getInstance(), item, managementLevel != ManagementLevel.MANAGED);
+  }
 
-	@Override
-	protected SwingComponentView<?> createButtonLineEnd( UserField item ) {
-		LineAxisPanel rv = new LineAxisPanel();
-		rv.addComponent( RenameFieldComposite.getInstance( item ).getLaunchOperation().createButton() );
-		if( item.isDeletionAllowed.getValue() ) {
-			rv.addComponent( DeleteFieldOperation.getInstance( item ).createButton() );
-		} else {
-			//todo
-			rv.addComponent( BoxUtilities.createHorizontalSliver( 64 ) );
-		}
-		return rv;
-	}
+  @Override
+  protected SwingComponentView<?> createButtonLineEnd(UserField item) {
+    LineAxisPanel rv = new LineAxisPanel();
+    rv.addComponent(RenameFieldComposite.getInstance(item).getLaunchOperation().createButton());
+    if (item.isDeletionAllowed.getValue()) {
+      rv.addComponent(DeleteFieldOperation.getInstance(item).createButton());
+    } else {
+      //todo
+      rv.addComponent(BoxUtilities.createHorizontalSliver(64));
+    }
+    return rv;
+  }
 }

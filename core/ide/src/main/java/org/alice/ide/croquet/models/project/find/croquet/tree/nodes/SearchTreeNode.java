@@ -52,71 +52,71 @@ import org.lgna.project.ast.MethodInvocation;
  */
 public class SearchTreeNode {
 
-	private final SearchTreeNode parent;
-	private final List<SearchTreeNode> children = Lists.newArrayList();
+  private final SearchTreeNode parent;
+  private final List<SearchTreeNode> children = Lists.newArrayList();
 
-	public SearchTreeNode( SearchTreeNode parent ) {
-		this.parent = parent;
-	}
+  public SearchTreeNode(SearchTreeNode parent) {
+    this.parent = parent;
+  }
 
-	public SearchTreeNode getParent() {
-		return parent;
-	}
+  public SearchTreeNode getParent() {
+    return parent;
+  }
 
-	public List<SearchTreeNode> getChildren() {
-		return children;
-	}
+  public List<SearchTreeNode> getChildren() {
+    return children;
+  }
 
-	public Object getValue() {
-		return null;
-	}
+  public Object getValue() {
+    return null;
+  }
 
-	public boolean getIsLeaf() {
-		return this.children.size() == 0;
-	}
+  public boolean getIsLeaf() {
+    return this.children.size() == 0;
+  }
 
-	public boolean childrenContains( Object reference ) {
-		return getChildForReference( reference ) != null;
-	}
+  public boolean childrenContains(Object reference) {
+    return getChildForReference(reference) != null;
+  }
 
-	public void addChild( SearchTreeNode newChildNode ) {
-		this.children.add( newChildNode );
-	}
+  public void addChild(SearchTreeNode newChildNode) {
+    this.children.add(newChildNode);
+  }
 
-	public void removeAllChildren() {
-		this.children.clear();
-	}
+  public void removeAllChildren() {
+    this.children.clear();
+  }
 
-	public SearchTreeNode getChildForReference( Object reference ) {
-		for( SearchTreeNode child : children ) {
-			if( child.getValue().equals( reference ) ) {
-				return child;
-			}
-		}
-		return null;
-	}
+  public SearchTreeNode getChildForReference(Object reference) {
+    for (SearchTreeNode child : children) {
+      if (child.getValue().equals(reference)) {
+        return child;
+      }
+    }
+    return null;
+  }
 
-	public int getLocationAmongstSiblings() {
-		return this.getParent().getChildren().indexOf( this );
-	}
+  public int getLocationAmongstSiblings() {
+    return this.getParent().getChildren().indexOf(this);
+  }
 
-	public SearchTreeNode getYoungerSibling() {
-		int location = this.getLocationAmongstSiblings();
-		assert location < ( this.parent.children.size() - 1 );
-		return this.getParent().children.get( location + 1 );
-	}
+  public SearchTreeNode getYoungerSibling() {
+    int location = this.getLocationAmongstSiblings();
+    assert location < (this.parent.children.size() - 1);
+    return this.getParent().children.get(location + 1);
+  }
 
-	public SearchTreeNode getOlderSibling() {
-		int location = this.getLocationAmongstSiblings();
-		assert location > 0;
-		return this.getParent().children.get( location - 1 );
-	}
+  public SearchTreeNode getOlderSibling() {
+    int location = this.getLocationAmongstSiblings();
+    assert location > 0;
+    return this.getParent().children.get(location - 1);
+  }
 
-	@Override
-	public String toString() {
-		if( getValue() instanceof MethodInvocation ) {
-			return ( (MethodInvocation)getValue() ).method.getValue().getName();
-		}
-		return getValue() != null ? getValue().toString() : "ROOT";
-	}
+  @Override
+  public String toString() {
+    if (getValue() instanceof MethodInvocation) {
+      return ((MethodInvocation) getValue()).method.getValue().getName();
+    }
+    return getValue() != null ? getValue().toString() : "ROOT";
+  }
 }

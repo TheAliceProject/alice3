@@ -53,47 +53,47 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PreviousExpressionBasedFillInWithBlanks<F extends Expression, B> extends ExpressionFillInWithBlanks<F, B> {
-	public PreviousExpressionBasedFillInWithBlanks( UUID id, Class<B> cls, CascadeBlank<B>... blanks ) {
-		super( id, cls, blanks );
-	}
+  public PreviousExpressionBasedFillInWithBlanks(UUID id, Class<B> cls, CascadeBlank<B>... blanks) {
+    super(id, cls, blanks);
+  }
 
-	private Expression getPreviousExpression() {
-		return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-	}
+  private Expression getPreviousExpression() {
+    return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+  }
 
-	private Expression createCopyOfPreviousExpression() {
-		Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return IDE.getActiveInstance().createCopy( prevExpression );
-		} else {
-			return null;
-		}
-	}
+  private Expression createCopyOfPreviousExpression() {
+    Expression prevExpression = this.getPreviousExpression();
+    if (prevExpression != null) {
+      return IDE.getActiveInstance().createCopy(prevExpression);
+    } else {
+      return null;
+    }
+  }
 
-	private Expression cleanExpression;
+  private Expression cleanExpression;
 
-	@Override
-	protected void markClean() {
-		super.markClean();
-		this.cleanExpression = this.getPreviousExpression();
-	}
+  @Override
+  protected void markClean() {
+    super.markClean();
+    this.cleanExpression = this.getPreviousExpression();
+  }
 
-	@Override
-	protected boolean isDirty() {
-		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
-		return super.isDirty() || isPrevExpressionChanged;
-	}
+  @Override
+  protected boolean isDirty() {
+    boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
+    return super.isDirty() || isPrevExpressionChanged;
+  }
 
-	//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
-	//	@Override
-	//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
-	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-	//	}
-	protected abstract F createValue( Expression previousExpression, B[] expressions );
+  //  protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
+  //  @Override
+  //  public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
+  //    org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+  //    return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+  //  }
+  protected abstract F createValue(Expression previousExpression, B[] expressions);
 
-	@Override
-	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.createCopyOfPreviousExpression(), expressions );
-	}
+  @Override
+  protected final F createValue(B[] expressions) {
+    return this.createValue(this.createCopyOfPreviousExpression(), expressions);
+  }
 }

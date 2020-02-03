@@ -48,9 +48,9 @@ package org.lgna.croquet.imp.cascade;
  */
 public interface ItemNode<F, B> {
 
-	BlankNode<B> getBlankStepAt( int index );
+  BlankNode<B> getBlankStepAt(int index);
 
-	F getTransientValue();
+  F getTransientValue();
 
-	F createValue();
+  F createValue();
 }

@@ -48,19 +48,19 @@ import org.lgna.project.ast.Member;
  * @author Dennis Cosgrove
  */
 public final class ProjectOnly<M extends Member> {
-	private final MemberHub<M> projectHub;
+  private final MemberHub<M> projectHub;
 
-	public ProjectOnly( M projectMember ) {
-		this.projectHub = new MemberHub<M>( projectMember, true ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				return ActionStatus.KEEP_UNIQUE;
-			}
-		};
-		this.projectHub.getIsDesiredState().setEnabled( false );
-	}
+  public ProjectOnly(M projectMember) {
+    this.projectHub = new MemberHub<M>(projectMember, true) {
+      @Override
+      public ActionStatus getActionStatus() {
+        return ActionStatus.KEEP_UNIQUE;
+      }
+    };
+    this.projectHub.getIsDesiredState().setEnabled(false);
+  }
 
-	public MemberHub<M> getProjectHub() {
-		return this.projectHub;
-	}
+  public MemberHub<M> getProjectHub() {
+    return this.projectHub;
+  }
 }

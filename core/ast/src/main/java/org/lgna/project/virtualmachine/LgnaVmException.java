@@ -50,65 +50,65 @@ import org.lgna.common.LgnaRuntimeException;
  * @author Dennis Cosgrove
  */
 public abstract class LgnaVmException extends LgnaRuntimeException {
-	private final Thread thread;
-	private final VirtualMachine vm;
-	private final LgnaStackTraceElement[] stackTrace;
+  private final Thread thread;
+  private final VirtualMachine vm;
+  private final LgnaStackTraceElement[] stackTrace;
 
-	public LgnaVmException( String message, VirtualMachine vm ) {
-		super( message );
-		this.vm = vm;
-		this.thread = Thread.currentThread();
-		this.stackTrace = this.vm.getStackTrace( this.thread );
-	}
+  public LgnaVmException(String message, VirtualMachine vm) {
+    super(message);
+    this.vm = vm;
+    this.thread = Thread.currentThread();
+    this.stackTrace = this.vm.getStackTrace(this.thread);
+  }
 
-	public LgnaVmException( VirtualMachine vm ) {
-		this( null, vm );
-	}
+  public LgnaVmException(VirtualMachine vm) {
+    this(null, vm);
+  }
 
-	public VirtualMachine getVirtualMachine() {
-		return this.vm;
-	}
+  public VirtualMachine getVirtualMachine() {
+    return this.vm;
+  }
 
-	public LgnaStackTraceElement[] getLgnaStackTrace() {
-		return this.stackTrace;
-	}
+  public LgnaStackTraceElement[] getLgnaStackTrace() {
+    return this.stackTrace;
+  }
 
-	protected abstract void appendDescription( StringBuilder sb );
+  protected abstract void appendDescription(StringBuilder sb);
 
-	@Override
-	protected final void appendFormattedString( StringBuilder sb ) {
-		sb.append( "<html>" );
-		sb.append( "<h1>" );
-		this.appendDescription( sb );
-		sb.append( "</h1>" );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			sb.append( "<ul>" );
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				sb.append( "<li>" );
-				if( stackTraceElement != null ) {
-					stackTraceElement.appendFormatted( sb );
-				} else {
-					Logger.severe();
-				}
-			}
-			sb.append( "</ul>" );
-		}
-		sb.append( "</html>" );
-	}
+  @Override
+  protected final void appendFormattedString(StringBuilder sb) {
+    sb.append("<html>");
+    sb.append("<h1>");
+    this.appendDescription(sb);
+    sb.append("</h1>");
+    LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
+    if (lgnaStackTrace != null) {
+      sb.append("<ul>");
+      for (LgnaStackTraceElement stackTraceElement : lgnaStackTrace) {
+        sb.append("<li>");
+        if (stackTraceElement != null) {
+          stackTraceElement.appendFormatted(sb);
+        } else {
+          Logger.severe();
+        }
+      }
+      sb.append("</ul>");
+    }
+    sb.append("</html>");
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( super.toString() );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				if( stackTraceElement != null ) {
-					sb.append( "\n\t" + stackTraceElement.toString() );
-				}
-			}
-		}
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(super.toString());
+    LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
+    if (lgnaStackTrace != null) {
+      for (LgnaStackTraceElement stackTraceElement : lgnaStackTrace) {
+        if (stackTraceElement != null) {
+          sb.append("\n\t" + stackTraceElement.toString());
+        }
+      }
+    }
+    return sb.toString();
+  }
 }

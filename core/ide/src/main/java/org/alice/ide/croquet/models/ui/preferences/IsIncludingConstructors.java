@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingConstructors extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingConstructors instance = new IsIncludingConstructors();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingConstructors instance = new IsIncludingConstructors();
+  }
 
-	public static IsIncludingConstructors getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingConstructors getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingConstructors() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "53e023fc-f502-4126-89a0-982ee3af1ec3" ), false );
-	}
+  private IsIncludingConstructors() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("53e023fc-f502-4126-89a0-982ee3af1ec3"), false);
+  }
 }

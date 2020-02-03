@@ -49,26 +49,26 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class EachInTogetherItemEvent extends VirtualMachineEvent {
-	public EachInTogetherItemEvent( VirtualMachine vm, AbstractEachInTogether eachInTogether, Object value, Object[] array ) {
-		super( vm );
-		this.eachInTogether = eachInTogether;
-		this.value = value;
-		this.array = array;
-	}
+  public EachInTogetherItemEvent(VirtualMachine vm, AbstractEachInTogether eachInTogether, Object value, Object[] array) {
+    super(vm);
+    this.eachInTogether = eachInTogether;
+    this.value = value;
+    this.array = array;
+  }
 
-	public AbstractEachInTogether getEachInTogether() {
-		return this.eachInTogether;
-	}
+  public AbstractEachInTogether getEachInTogether() {
+    return this.eachInTogether;
+  }
 
-	public Object getValue() {
-		return this.value;
-	}
+  public Object getValue() {
+    return this.value;
+  }
 
-	public Object[] getArray() {
-		return this.array;
-	}
+  public Object[] getArray() {
+    return this.array;
+  }
 
-	private final AbstractEachInTogether eachInTogether;
-	private final Object value;
-	private final Object[] array;
+  private final AbstractEachInTogether eachInTogether;
+  private final Object value;
+  private final Object[] array;
 }

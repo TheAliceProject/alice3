@@ -51,9 +51,9 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class ExpressionView extends AbstractExpressionView<Expression> {
-	public ExpressionView( AstI18nFactory factory, Expression expression ) {
-		super( factory, expression );
-		AwtComponentView<?> view = factory.createComponent( expression );
-		this.addComponent( view );
-	}
+  public ExpressionView(AstI18nFactory factory, Expression expression) {
+    super(factory, expression);
+    AwtComponentView<?> view = factory.createComponent(expression);
+    this.addComponent(view);
+  }
 }

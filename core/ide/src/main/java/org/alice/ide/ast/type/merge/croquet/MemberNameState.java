@@ -52,14 +52,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MemberNameState<M extends Member> extends StringState {
-	private final M member;
+  private final M member;
 
-	public MemberNameState( M member ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "8cb507c3-e498-4d35-9da3-111176a5b5c8" ), member.getName() );
-		this.member = member;
-	}
+  public MemberNameState(M member) {
+    super(Application.INHERIT_GROUP, UUID.fromString("8cb507c3-e498-4d35-9da3-111176a5b5c8"), member.getName());
+    this.member = member;
+  }
 
-	public M getMember() {
-		return this.member;
-	}
+  public M getMember() {
+    return this.member;
+  }
 }

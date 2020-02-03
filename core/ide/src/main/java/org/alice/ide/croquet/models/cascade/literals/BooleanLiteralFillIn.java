@@ -53,31 +53,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BooleanLiteralFillIn extends ExpressionFillInWithoutBlanks<BooleanLiteral> {
-	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
-	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( false );
+  private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn(true);
+  private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn(false);
 
-	public static BooleanLiteralFillIn getInstance( boolean value ) {
-		if( value ) {
-			return trueLiteral;
-		} else {
-			return falseLiteral;
-		}
-	}
+  public static BooleanLiteralFillIn getInstance(boolean value) {
+    if (value) {
+      return trueLiteral;
+    } else {
+      return falseLiteral;
+    }
+  }
 
-	private final BooleanLiteral transientValue;
+  private final BooleanLiteral transientValue;
 
-	private BooleanLiteralFillIn( boolean value ) {
-		super( UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
-		this.transientValue = new BooleanLiteral( value );
-	}
+  private BooleanLiteralFillIn(boolean value) {
+    super(UUID.fromString("85b65750-aded-4a5f-a41d-d30fa2914115"));
+    this.transientValue = new BooleanLiteral(value);
+  }
 
-	@Override
-	public BooleanLiteral createValue( ItemNode<? super BooleanLiteral, Void> node ) {
-		return new BooleanLiteral( this.transientValue.value.getValue() );
-	}
+  @Override
+  public BooleanLiteral createValue(ItemNode<? super BooleanLiteral, Void> node) {
+    return new BooleanLiteral(this.transientValue.value.getValue());
+  }
 
-	@Override
-	public BooleanLiteral getTransientValue( ItemNode<? super BooleanLiteral, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public BooleanLiteral getTransientValue(ItemNode<? super BooleanLiteral, Void> node) {
+    return this.transientValue;
+  }
 }

@@ -55,21 +55,21 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class TypeUnsetBlank extends ExpressionBlank {
-	private static class SingletonHolder {
-		private static TypeUnsetBlank instance = new TypeUnsetBlank();
-	}
+  private static class SingletonHolder {
+    private static TypeUnsetBlank instance = new TypeUnsetBlank();
+  }
 
-	public static TypeUnsetBlank getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TypeUnsetBlank getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TypeUnsetBlank() {
-		super( Void.class );
-	}
+  private TypeUnsetBlank() {
+    super(Void.class);
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> context ) {
-		//note: not invoking super
-		children.add( TypeUnsetCancelFillIn.getInstance() );
-	}
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> context) {
+    //note: not invoking super
+    children.add(TypeUnsetCancelFillIn.getInstance());
+  }
 }

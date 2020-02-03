@@ -47,6 +47,6 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 public interface TargetManipulator {
 
-	public AffineMatrix4x4 getTargetTransformation();
+  public AffineMatrix4x4 getTargetTransformation();
 
 }

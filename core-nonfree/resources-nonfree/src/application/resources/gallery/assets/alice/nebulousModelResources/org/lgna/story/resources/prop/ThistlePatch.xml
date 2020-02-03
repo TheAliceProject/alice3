@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="ThistlePatch">
+    <BoundingBox>
+        <Min x="-0.5011832118034363" y="0.0" z="-0.5152369141578674"/>
+        <Max x="0.5011832118034363" y="0.5377864837646484" z="0.5152369141578674"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>weed</Tag>
+        <Tag>flower</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="ThistlePatch" resourceName="THISTLE_PATCH" textureName="THISTLE_PATCH"/>
+</AliceModel>

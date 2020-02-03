@@ -52,7 +52,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentiallyEnvelopingStatementInsertCascade extends StatementInsertCascade {
-	public PotentiallyEnvelopingStatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks ) {
-		super( id, blockStatementIndexPair, isEnveloping, blanks );
-	}
+  public PotentiallyEnvelopingStatementInsertCascade(UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks) {
+    super(id, blockStatementIndexPair, isEnveloping, blanks);
+  }
 }

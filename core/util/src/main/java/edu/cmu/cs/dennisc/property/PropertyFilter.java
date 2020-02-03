@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public interface PropertyFilter {
-	boolean isToBeIgnored( InstanceProperty<?> thisInstanceProperty, InstanceProperty<?> otherInstanceProperty );
+  boolean isToBeIgnored(InstanceProperty<?> thisInstanceProperty, InstanceProperty<?> otherInstanceProperty);
 }

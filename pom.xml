@@ -1,617 +1,729 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.alice</groupId>
-	<artifactId>parent</artifactId>
-	<packaging>pom</packaging>
-	<version>5.0.1-SNAPSHOT</version>
+  <groupId>org.alice</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <version>5.0.1-SNAPSHOT</version>
 
-	<name>Alice</name>
-	<url>http://www.alice.org/</url>
+  <name>Alice</name>
+  <url>http://www.alice.org/</url>
 
-	<licenses>
-		<license>
-			<name>Alice 3 End User License Agreement</name>
-			<url>http://www.alice.org/3/licenses/Alice3-license.txt</url>
-			<distribution>repo</distribution>
-			<!--
-				Alice 3 End User License Agreement
+  <distributionManagement>
+    <site>
+      <name>Alice 3</name>
+      <id>alice3</id>
+      <url>https://www.alice.org/</url>
+    </site>
+  </distributionManagement>
 
-				Copyright (c) 2006-2014, Carnegie Mellon University. All rights reserved.
+  <licenses>
+    <license>
+      <name>Alice 3 End User License Agreement</name>
+      <!-- TODO Correct and restore this element when the plain text license is publicly available at a static URL.-->
+      <!--<url>License.txt</url>-->
+      <distribution>repo</distribution>
+      <!--
+        Alice 3 End User License Agreement
 
-				Redistribution and use in source and binary forms, with or without modification,
-				are permitted provided that the following conditions are met:
+        Copyright (c) 2006-2014, Carnegie Mellon University. All rights reserved.
 
-				1. Redistributions of source code must retain the above copyright notice,
-				this list of conditions and the following disclaimer.
+        Redistribution and use in source and binary forms, with or without modification,
+        are permitted provided that the following conditions are met:
 
-				2. Redistributions in binary form must reproduce the above copyright notice,
-				this list of conditions and the following disclaimer in the documentation
-				and/or other materials provided with the distribution.
+        1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
 
-				3. Products derived from the software may not be called "Alice", nor may
-				"Alice" appear in their name, without prior written permission of Carnegie
-				Mellon University.
+        2. Redistributions in binary form must reproduce the above copyright notice,
+        this list of conditions and the following disclaimer in the documentation
+        and/or other materials provided with the distribution.
 
-				4. All advertising materials mentioning features or use of this software
-				must display the following acknowledgement: "This product includes software
-				developed by Carnegie Mellon University"
+        3. Products derived from the software may not be called "Alice", nor may
+        "Alice" appear in their name, without prior written permission of Carnegie
+        Mellon University.
 
-				5. The gallery of art assets and animations provided with this software is
-				contributed by Electronic Arts Inc. and may be used for personal, non-commercial,
-				and academic use only. Redistributions of any program source code that utilizes
-				The Sims 2 Assets must also retain the copyright notice, list of conditions
-				and the disclaimer contained in The Alice 3.0 Art Gallery License.
+        4. All advertising materials mentioning features or use of this software
+        must display the following acknowledgement: "This product includes software
+        developed by Carnegie Mellon University"
 
-				DISCLAIMER:
+        5. The gallery of art assets and animations provided with this software is
+        contributed by Electronic Arts Inc. and may be used for personal, non-commercial,
+        and academic use only. Redistributions of any program source code that utilizes
+        The Sims 2 Assets must also retain the copyright notice, list of conditions
+        and the disclaimer contained in The Alice 3.0 Art Gallery License.
 
-				THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. ANY AND ALL
-				EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-				THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
-				TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS,
-				COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-				SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-				LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-				OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-				LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-				OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS
-				WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-			-->
-		</license>
-	</licenses>
+        DISCLAIMER:
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. ANY AND ALL
+        EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+        THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+        TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS,
+        COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+        SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+        OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+        OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS
+        WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      -->
+    </license>
+  </licenses>
 
-		<jogl.version>2.3.2</jogl.version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
 
-		<alice.build.version>3.5.0.1</alice.build.version>
-		<alice.build.prerelease>-beta</alice.build.prerelease>
-		<alice.build.metadata></alice.build.metadata>
-		<alice.model.version>2016.08.19</alice.model.version>
-		<sound.gallery.version>2017.08.09</sound.gallery.version>
-		<starter.projects.version>2016.08.16</starter.projects.version>
-		<nebulous.model.version>2016.07.15</nebulous.model.version>
-		<nebulous.person.version>2014.08.12</nebulous.person.version>
-		<nebulous.lib.version>2017.05.01</nebulous.lib.version>
+    <jogl.version>2.3.2</jogl.version>
 
-		<netbeans.version>RELEASE82</netbeans.version>
-		<guava.version>13.0.1</guava.version>
-		<commons.discovery.version>0.5</commons.discovery.version>
+    <alice.build.version>3.5.0.1</alice.build.version>
+    <alice.build.prerelease>-beta</alice.build.prerelease>
+    <alice.build.metadata></alice.build.metadata>
+    <nebulous.person.version>2014.08.12</nebulous.person.version>
+    <nebulous.lib.version>2017.05.01</nebulous.lib.version>
 
-	</properties>
+    <netbeans.version>RELEASE82</netbeans.version>
+    <guava.version>13.0.1</guava.version>
+    <commons.discovery.version>0.5</commons.discovery.version>
 
-	<modules>
-		<module>core</module>
-		<module>core/ast</module>
-		<module>core/croquet</module>
-		<module>core/i18n</module>
-		<module>core/ide</module>
-		<module>core/image-editor</module>
-		<module>core/issue-reporting</module>
-		<module>core/resources</module>
-		<module>core/scenegraph</module>
-		<module>core/glrender</module>
-		<module>core/story-api-migration</module>
-		<module>core/story-api</module>
+  </properties>
+
+  <modules>
+    <module>core</module>
+    <module>core/ast</module>
+    <module>core/croquet</module>
+    <module>core/i18n</module>
+    <module>core/ide</module>
+    <module>core/image-editor</module>
+    <module>core/issue-reporting</module>
+    <module>core/resources</module>
+    <module>core/scenegraph</module>
+    <module>core/glrender</module>
+    <module>core/story-api-migration</module>
+    <module>core/story-api</module>
     <module>core/util</module>
     <module>core/model-loading</module>
     <module>core/tweedle</module>
+    <module>core/models</module>
 
-		<module>nonfree/core</module>
-		<module>nonfree/core/ide-nonfree</module>
-		<module>nonfree/core/resources-nonfree</module>
-		<module>nonfree/core/story-api-nonfree</module>
+    <module>external</module>
+    <module>external/collada</module>
+    <module>external/collada-schema-1-4-1</module>
+    <module>external/wrapped-flow-layout</module>
+    <module>external/mmsc</module>
 
-		<module>alice/alice-ide</module>
-		<module>alice/netbeans</module>
-		<module>installer</module>
-	</modules>
+    <module>alice-ide</module>
+    <module>netbeans</module>
+    <module>installer</module>
+  </modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- Modules -->
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>util</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>ast</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>croquet</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>image-editor</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>scenegraph</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>glrender</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>issue-reporting</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>story-api</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>story-api-migration</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>resources</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>ide</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>i18n</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>alice-ide</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>model-loading</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>tweedle</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Modules -->
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>util</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>ast</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>croquet</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>image-editor</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>scenegraph</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>glrender</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>issue-reporting</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>story-api</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>story-api-migration</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>resources</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>ide</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>i18n</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>alice-ide</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>model-loading</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>tweedle</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
 
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>netbeans</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>netbeans</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
 
-			<dependency>
-				<groupId>org.alice.external</groupId>
-				<artifactId>collada-schema-1-4-1</artifactId>
-				<version>1.0</version>
-			</dependency>
+      <!-- Gallery/Models -->
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>models</artifactId>
+        <version>5.0.1-SNAPSHOT</version>
+      </dependency>
 
-			<!-- Non-free libraries/models -->
-			<dependency>
-				<groupId>org.alice.nonfree</groupId>
-				<artifactId>ide-nonfree</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice.nonfree</groupId>
-				<artifactId>resources-nonfree</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>org.alice.nonfree</groupId>
-				<artifactId>story-api-nonfree</artifactId>
-				<version>5.0.1-SNAPSHOT</version>
-			</dependency>
+      <!-- Third Party Libraries in project-->
+      <dependency>
+        <groupId>org.alice.external</groupId>
+        <artifactId>collada-schema-1-4-1</artifactId>
+        <version>1.4.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice.external</groupId>
+        <artifactId>wrapped-flow-layout</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.dddviewr</groupId>
+        <artifactId>collada</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>uk.co.mmscomputing</groupId>
+        <artifactId>mmsc</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <!-- Third Party Libraries from maven-->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jogamp.jogl</groupId>
+        <artifactId>jogl-all</artifactId>
+        <version>${jogl.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jogamp.gluegen</groupId>
+        <artifactId>gluegen-rt</artifactId>
+        <version>${jogl.version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/com.sun.media/jai-codec -->
+      <dependency>
+        <groupId>com.sun.media</groupId>
+        <artifactId>jai-codec</artifactId>
+        <version>1.1.3</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/javax.media/jai-core -->
+      <dependency>
+        <groupId>javax.media</groupId>
+        <artifactId>jai-core</artifactId>
+        <version>1.1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>uk.co.caprica</groupId>
+        <artifactId>vlcj</artifactId>
+        <version>3.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.miglayout</groupId>
+        <artifactId>miglayout-swing</artifactId>
+        <version>4.2</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.media</groupId>
+        <artifactId>jmf</artifactId>
+        <version>2.1.1e</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun</groupId>
+        <artifactId>javamp3</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-runtime</artifactId>
+        <version>4.7.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-			<!-- Gallery/Models -->
-			<dependency>
-				<groupId>org.alice</groupId>
-				<artifactId>alice-model-source</artifactId>
-				<version>${alice.model.version}</version>
-			</dependency>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <inherited>true</inherited>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0-M2</version>
+          <executions>
+            <execution>
+              <id>enforce-maven-3</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+              <requireMavenVersion>
+                <version>3.5.0</version>
+              </requireMavenVersion>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+            <encoding>UTF-8</encoding>
+            <includes>
+              <include>**/*.java</include>
+            </includes>
+            <fork>true</fork>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.10</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>2.7</version>
+        </plugin>
+        <plugin>
+          <groupId>org.commonjava.maven.plugins</groupId>
+          <artifactId>directory-maven-plugin</artifactId>
+          <version>0.3.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M3</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.surefire</groupId>
+              <artifactId>surefire-junit47</artifactId>
+              <version>3.0.0-M3</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.6.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.zanata</groupId>
+          <artifactId>zanata-maven-plugin</artifactId>
+          <version>4.2.1</version>
+          <configuration>
+            <projectConfig>${parent.basedir}/zanata.xml</projectConfig>
+            <sourceLang>en-US</sourceLang>
+            <copyTrans>false</copyTrans>
+            <deleteObsoleteModules>true</deleteObsoleteModules>
+            <interactiveMode>false</interactiveMode>
+            <srcDir>${project.basedir}/src/main</srcDir>
+            <transDir>${project.basedir}/src/l10n-alice</transDir>
+            <!-- <useCache>false</useCache> -->
+            <!-- <dryRun>true</dryRun> -->
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.install4j</groupId>
+          <artifactId>install4j-maven-plugin</artifactId>
+          <version>1.0.8</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
-			<dependency>
-				<groupId>org.alice.nonfree</groupId>
-				<artifactId>nebulous-model-source</artifactId>
-				<version>${nebulous.model.version}</version>
-			</dependency>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.commonjava.maven.plugins</groupId>
+        <artifactId>directory-maven-plugin</artifactId>
+        <version>0.1</version>
+        <executions>
+          <execution>
+            <id>parent.path.property</id>
+            <goals>
+              <goal>highest-basedir</goal>
+            </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <property>parent.basedir</property>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-			<!-- Third Party Libraries -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.11</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jogamp.jogl</groupId>
-				<artifactId>jogl-all</artifactId>
-				<version>${jogl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jogamp.gluegen</groupId>
-				<artifactId>gluegen-rt</artifactId>
-				<version>${jogl.version}</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.sun.media/jai-codec -->
-			<dependency>
-				<groupId>com.sun.media</groupId>
-				<artifactId>jai-codec</artifactId>
-				<version>1.1.3</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/javax.media/jai-core -->
-			<dependency>
-				<groupId>javax.media</groupId>
-				<artifactId>jai-core</artifactId>
-				<version>1.1.3</version>
-			</dependency>
-			<dependency>
-				<groupId>uk.co.caprica</groupId>
-				<artifactId>vlcj</artifactId>
-				<version>3.1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.miglayout</groupId>
-				<artifactId>miglayout-swing</artifactId>
-				<version>4.2</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.media</groupId>
-				<artifactId>jmf</artifactId>
-				<version>2.1.1e</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun</groupId>
-				<artifactId>javamp3</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.antlr</groupId>
-				<artifactId>antlr4-runtime</artifactId>
-				<version>4.7.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>2.8.2</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M3</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.dddviewr</groupId>
-				<artifactId>collada</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.sun</groupId>
-				<artifactId>tools</artifactId>
-				<version>1.0</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <configLocation>checkstyle.xml</configLocation>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>8.19</version> <!-- Checkstyle version -->
+          </dependency>
+        </dependencies>
+      </plugin>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.1.1</version>
-				</plugin>
-				<plugin>
-					<inherited>true</inherited>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0-M2</version>
-					<executions>
-						<execution>
-							<id>enforce-maven-3</id>
-						<goals>
-						  <goal>enforce</goal>
-						</goals>
-						<configuration>
-						  <rules>
-							<requireMavenVersion>
-							  <version>3.5.0</version>
-							</requireMavenVersion>
-						  </rules>
-						  <fail>true</fail>
-						</configuration>
-					  </execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.0</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<encoding>UTF-8</encoding>
-						<includes>
-							<include>**/*.java</include>
-						</includes>
-						<fork>true</fork>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.10</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>3.0.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.7</version>
-				</plugin>
-				<plugin>
-					<groupId>org.commonjava.maven.plugins</groupId>
-					<artifactId>directory-maven-plugin</artifactId>
-					<version>0.3.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M3</version>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.maven.surefire</groupId>
-							<artifactId>surefire-junit47</artifactId>
-							<version>3.0.0-M3</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				<plugin>
-					<groupId>org.zanata</groupId>
-					<artifactId>zanata-maven-plugin</artifactId>
-					<version>4.2.1</version>
-					<configuration>
-						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
-						<sourceLang>en-US</sourceLang>
-						<copyTrans>false</copyTrans>
-						<deleteObsoleteModules>true</deleteObsoleteModules>
-						<interactiveMode>false</interactiveMode>
-						<srcDir>${project.basedir}/src/main</srcDir>
-						<transDir>${project.basedir}/src/l10n-alice</transDir>
-						<!-- <useCache>false</useCache> -->
-						<!-- <dryRun>true</dryRun> -->
-					</configuration>
-				</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <doctitle>Alice 3</doctitle>
+          <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+          <destDir>javadoc</destDir>
+          <detectOfflineLinks>false</detectOfflineLinks>
+        </configuration>
+        <executions>
+          <execution>
+            <id>aggregate</id>
+            <goals>
+              <goal>aggregate</goal>
+            </goals>
+            <phase>site</phase>
+          </execution>
+        </executions>
+      </plugin>
 
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.commonjava.maven.plugins</groupId>
-										<artifactId>directory-maven-plugin</artifactId>
-										<versionRange>[0.1,)</versionRange>
-										<goals>
-											<goal>highest-basedir</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.sonatype.install4j</groupId>
-					<artifactId>install4j-maven-plugin</artifactId>
-					<version>1.0.8</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.0.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>1.19</version>
+        <executions>
+          <execution>
+            <id>aggregate-download-licenses</id>
+            <goals>
+              <goal>aggregate-download-licenses</goal>
+            </goals>
+            <configuration>
+              <excludedGroups>org.alice</excludedGroups>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.commonjava.maven.plugins</groupId>
-				<artifactId>directory-maven-plugin</artifactId>
-				<version>0.1</version>
-				<executions>
-					<execution>
-						<id>parent.path.property</id>
-						<goals>
-							<goal>highest-basedir</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<property>parent.basedir</property>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.txt</include>
+        </includes>
+        <excludes>
+          <exclude>**/*.gitkeep</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+        <excludes>
+          <exclude>**/*.gitkeep</exclude>
+          <exclude>**/*.txt</exclude>
+        </excludes>
+      </resource>
 
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*.txt</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.gitkeep</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>**/*.gitkeep</exclude>
-					<exclude>**/*.txt</exclude>
-				</excludes>
-			</resource>
+      <!-- generated i18n translation files -->
+      <resource>
+        <directory>src/l10n-alice/java</directory>
+        <excludes>
+          <exclude>**/*.gitkeep</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/l10n-alice/resources</directory>
+        <excludes>
+          <exclude>**/*.gitkeep</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
 
-			<!-- generated i18n translation files -->
-			<resource>
-				<directory>src/l10n-alice/java</directory>
-				<excludes>
-					<exclude>**/*.gitkeep</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/l10n-alice/resources</directory>
-				<excludes>
-					<exclude>**/*.gitkeep</exclude>
-				</excludes>
-			</resource>
-		</resources>
-	</build>
+  <profiles>
 
-	<profiles>
-		<profile>
-			<id>zanata</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.zanata</groupId>
-						<artifactId>zanata-maven-plugin</artifactId>
-						<executions>
-							<!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/push-module-mojo.html -->
-							<execution>
-								<id>zanata.push</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>push-module</goal>
-								</goals>
-							</execution>
-							<!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/pull-module-mojo.html -->
-							<execution>
-								<id>zanata.pull</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>pull-module</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+    <profile>
+      <id>includeSims</id>
+      <activation>
+        <property>
+          <name>includeSims</name>
+          <value>!false</value>
+        </property>
+      </activation>
 
-		<!-- The profile is used for localizers to pull and test their localizations -->
-		<!-- $ mvn compile -Dzanata.locales=es,es-ES,es-CR -->
-		<!-- or use Eclipse launcher: Zanata - Test Locales -->
-		<profile>
-			<id>zanata-pull</id>
-			<activation>
-				<property>
-					<name>zanata.locales</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.zanata</groupId>
-						<artifactId>zanata-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>zanata.pull.locale</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>pull-module</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+      <modules>
+        <module>core-nonfree</module>
+        <module>core-nonfree/ide-nonfree</module>
+        <module>core-nonfree/resources-nonfree</module>
+        <module>core-nonfree/story-api-nonfree</module>
+        <module>core-nonfree/models-nonfree</module>
+      </modules>
 
-	<repositories>
-		<repository>
-			<id>org.alice</id>
-			<name>Alice Repository</name>
-			<url>http://maven.alice.org/alice</url>
-		</repository>
-		<repository>
-			<id>org.alice.external</id>
-			<name>Alice External Repository</name>
-			<url>http://maven.alice.org/external</url>
-		</repository>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.alice.nonfree</groupId>
+            <artifactId>models-nonfree</artifactId>
+            <version>5.0.1-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.alice.nonfree</groupId>
+            <artifactId>resources-nonfree</artifactId>
+            <version>5.0.1-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.alice.nonfree</groupId>
+            <artifactId>story-api-nonfree</artifactId>
+            <version>5.0.1-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.alice.nonfree</groupId>
+            <artifactId>ide-nonfree</artifactId>
+            <version>5.0.1-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
 
-		<repository>
-			<id>thirdparty-releases</id>
-			<name>JBoss Thirdparty Releases</name>
-			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
-		</repository>
+    <profile>
+      <id>zanata</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.zanata</groupId>
+            <artifactId>zanata-maven-plugin</artifactId>
+            <executions>
+              <!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/push-module-mojo.html -->
+              <execution>
+                <id>zanata.push</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>push-module</goal>
+                </goals>
+              </execution>
+              <!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/pull-module-mojo.html -->
+              <execution>
+                <id>zanata.pull</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>pull-module</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
 
-		<repository>
-			<id>atlassian-public</id>
-			<name>Atlassian Public Repository</name>
-			<layout>default</layout>
-			<url>https://maven.atlassian.com/maven-external</url>
-		</repository>
+    <!-- The profile is used for localizers to pull and test their localizations -->
+    <!-- $ mvn compile -Dzanata.locales=es,es-ES,es-CR -->
+    <!-- or use Eclipse launcher: Zanata - Test Locales -->
+    <profile>
+      <id>zanata-pull</id>
+      <activation>
+        <property>
+          <name>zanata.locales</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.zanata</groupId>
+            <artifactId>zanata-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>zanata.pull.locale</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>pull-module</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>only-eclipse</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <!--This plugin's configuration is used to store Eclipse m2e settings
+              only. It has no influence on the Maven build itself. -->
+            <plugin>
+              <groupId>org.eclipse.m2e</groupId>
+              <artifactId>lifecycle-mapping</artifactId>
+              <version>1.0.0</version>
+              <configuration>
+                <lifecycleMappingMetadata>
+                  <pluginExecutions>
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.commonjava.maven.plugins</groupId>
+                        <artifactId>directory-maven-plugin</artifactId>
+                        <versionRange>[0.1,)</versionRange>
+                        <goals>
+                          <goal>highest-basedir</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <ignore/>
+                      </action>
+                    </pluginExecution>
+                  </pluginExecutions>
+                </lifecycleMappingMetadata>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+  </profiles>
 
-		<repository>
-			<id>netbeans</id>
-			<name>Netbeans</name>
-			<url>http://bits.netbeans.org/maven2/</url>
-		</repository>
-	</repositories>
+  <repositories>
+    <repository>
+      <id>org.alice</id>
+      <name>Alice Repository</name>
+      <url>http://maven.alice.org/alice</url>
+    </repository>
+    <repository>
+      <id>org.alice.external</id>
+      <name>Alice External Repository</name>
+      <url>http://maven.alice.org/external</url>
+    </repository>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>org.alice</id>
-			<name>Alice Repository</name>
-			<url>http://maven.alice.org/alice</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>org.alice.external</id>
-			<name>Alice External Repository</name>
-			<url>http://maven.alice.org/external</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <repository>
+      <id>thirdparty-releases</id>
+      <name>JBoss Thirdparty Releases</name>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+    </repository>
 
+    <repository>
+      <id>atlassian-public</id>
+      <name>Atlassian Public Repository</name>
+      <layout>default</layout>
+      <url>https://maven.atlassian.com/maven-external</url>
+    </repository>
+
+    <repository>
+      <id>netbeans</id>
+      <name>Netbeans</name>
+      <url>http://bits.netbeans.org/maven2/</url>
+    </repository>
+  </repositories>
 </project>

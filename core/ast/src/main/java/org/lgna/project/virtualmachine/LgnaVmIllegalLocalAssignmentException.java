@@ -48,7 +48,7 @@ import org.lgna.project.ast.UserLocal;
  * @author Dennis Cosgrove
  */
 public class LgnaVmIllegalLocalAssignmentException extends LgnaVmIllegalLocalException {
-	public LgnaVmIllegalLocalAssignmentException( VirtualMachine vm, UserLocal local ) {
-		super( vm, local );
-	}
+  public LgnaVmIllegalLocalAssignmentException(VirtualMachine vm, UserLocal local) {
+    super(vm, local);
+  }
 }

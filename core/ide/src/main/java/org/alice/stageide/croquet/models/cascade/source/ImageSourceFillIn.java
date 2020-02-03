@@ -48,7 +48,7 @@ import org.lgna.story.ImageSource;
 import java.util.UUID;
 
 public class ImageSourceFillIn extends SourceFillIn<ImageResource> {
-	public ImageSourceFillIn( ImageResource resource ) {
-		super( UUID.fromString( "16a99ec6-6fe4-4ba3-af34-a8f54bfe936a" ), ImageSource.class, ImageResource.class, resource );
-	}
+  public ImageSourceFillIn(ImageResource resource) {
+    super(UUID.fromString("16a99ec6-6fe4-4ba3-af34-a8f54bfe936a"), ImageSource.class, ImageResource.class, resource);
+  }
 }

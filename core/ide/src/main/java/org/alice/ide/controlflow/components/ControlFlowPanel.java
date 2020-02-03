@@ -59,25 +59,25 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class ControlFlowPanel extends Panel {
-	public ControlFlowPanel( ControlFlowComposite composite ) {
-		super( composite );
-		for( StatementTemplateDragModel dragModel : composite.getModels() ) {
-			if( dragModel != null ) {
-				this.internalAddComponent( new MiniControlFlowStatementTemplate( dragModel ) );
-			} else {
-				this.internalAddComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-			}
-		}
-		this.setBackgroundColor( null );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
-	}
+  public ControlFlowPanel(ControlFlowComposite composite) {
+    super(composite);
+    for (StatementTemplateDragModel dragModel : composite.getModels()) {
+      if (dragModel != null) {
+        this.internalAddComponent(new MiniControlFlowStatementTemplate(dragModel));
+      } else {
+        this.internalAddComponent(BoxUtilities.createHorizontalSliver(8));
+      }
+    }
+    this.setBackgroundColor(null);
+    this.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			return new WrappedFlowLayout( WrappedFlowLayout.LEADING, 1, 0 );
-		} else {
-			return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
-		}
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
+      return new WrappedFlowLayout(WrappedFlowLayout.LEADING, 1, 0);
+    } else {
+      return new BoxLayout(jPanel, BoxLayout.PAGE_AXIS);
+    }
+  }
 }

@@ -52,12 +52,12 @@ import org.lgna.story.event.PointOfViewChangeListener;
 import java.util.List;
 
 public class TransformationListenerFillerInner extends ExpressionFillerInner {
-	public TransformationListenerFillerInner() {
-		super( PointOfViewChangeListener.class );
-	}
+  public TransformationListenerFillerInner() {
+    super(PointOfViewChangeListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( TransformationEventAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(TransformationEventAdapterFillIn.getInstance());
+  }
 }

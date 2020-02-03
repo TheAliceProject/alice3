@@ -59,79 +59,74 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class EditFieldComposite extends FieldComposite {
-	private final UserField field;
-	private final UserField previewField = new UserField();
+  private final UserField field;
+  private final UserField previewField = new UserField();
 
-	public EditFieldComposite( UUID migrationId, UserField field, ApplicabilityStatus initializerApplicabilityStatus, Expression initializerInitialValue ) {
-		super( migrationId, new Details()
-				.isFinal( ApplicabilityStatus.DISPLAYED, false )
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.DISPLAYED, false )
-				.name( ApplicabilityStatus.EDITABLE )
-				.initializer( initializerApplicabilityStatus, initializerInitialValue ) );
-		this.field = field;
-	}
+  public EditFieldComposite(UUID migrationId, UserField field, ApplicabilityStatus initializerApplicabilityStatus, Expression initializerInitialValue) {
+    super(migrationId, new Details().isFinal(ApplicabilityStatus.DISPLAYED, false).valueComponentType(ApplicabilityStatus.DISPLAYED, null).valueIsArrayType(ApplicabilityStatus.DISPLAYED, false).name(ApplicabilityStatus.EDITABLE).initializer(initializerApplicabilityStatus, initializerInitialValue));
+    this.field = field;
+  }
 
-	@Override
-	protected DeclarationLikeSubstanceView createView() {
-		return new EditFieldView( this );
-	}
+  @Override
+  protected DeclarationLikeSubstanceView createView() {
+    return new EditFieldView(this);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return null;
+  }
 
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return StaticAnalysisUtilities.isAvailableFieldName( name, this.field );
-	}
+  @Override
+  protected boolean isNameAvailable(String name) {
+    return StaticAnalysisUtilities.isAvailableFieldName(name, this.field);
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return this.field.getDeclaringType();
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return this.field.getDeclaringType();
+  }
 
-	@Override
-	public UserField getPreviewValue() {
-		if( this.getIsFinalState().getValue() ) {
-			this.previewField.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
-		} else {
-			this.previewField.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.NEITHER );
-		}
-		this.previewField.valueType.setValue( this.getValueType() );
-		this.previewField.name.setValue( this.getDeclarationLikeSubstanceName() );
-		this.previewField.initializer.setValue( this.getInitializer() );
-		return this.previewField;
-	}
+  @Override
+  public UserField getPreviewValue() {
+    if (this.getIsFinalState().getValue()) {
+      this.previewField.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
+    } else {
+      this.previewField.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.NEITHER);
+    }
+    this.previewField.valueType.setValue(this.getValueType());
+    this.previewField.name.setValue(this.getDeclarationLikeSubstanceName());
+    this.previewField.initializer.setValue(this.getInitializer());
+    return this.previewField;
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		AbstractType<?, ?, ?> valueType = this.field.getValueType();
-		if( valueType.isArray() ) {
-			return valueType.getComponentType();
-		} else {
-			return valueType;
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+    AbstractType<?, ?, ?> valueType = this.field.getValueType();
+    if (valueType.isArray()) {
+      return valueType.getComponentType();
+    } else {
+      return valueType;
+    }
+  }
 
-	@Override
-	protected boolean getIsFinalInitialValue() {
-		return this.field.isFinal();
-	}
+  @Override
+  protected boolean getIsFinalInitialValue() {
+    return this.field.isFinal();
+  }
 
-	@Override
-	protected boolean getValueIsArrayTypeInitialValue() {
-		return this.field.getValueType().isArray();
-	}
+  @Override
+  protected boolean getValueIsArrayTypeInitialValue() {
+    return this.field.getValueType().isArray();
+  }
 
-	@Override
-	protected String getNameInitialValue() {
-		return this.field.getName();
-	}
+  @Override
+  protected String getNameInitialValue() {
+    return this.field.getName();
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return this.field.initializer.getValue();
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return this.field.initializer.getValue();
+  }
 }

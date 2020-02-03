@@ -51,21 +51,21 @@ import org.lgna.croquet.views.ToolPaletteView;
  * @author Dennis Cosgrove
  */
 public class AddManagedFieldView extends AddFieldView {
-	public AddManagedFieldView( AddManagedFieldComposite composite ) {
-		super( composite );
-	}
+  public AddManagedFieldView(AddManagedFieldComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected BorderPanel createMainComponent() {
-		BorderPanel rv = super.createMainComponent();
-		AddManagedFieldComposite composite = (AddManagedFieldComposite)this.getComposite();
-		if( composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0 ) {
-			ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
-			toolPaletteView.getTitle().setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
-			//rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
-			toolPaletteView.setBackgroundColor( this.getBackgroundColor() );
-			rv.addCenterComponent( toolPaletteView );
-		}
-		return rv;
-	}
+  @Override
+  protected BorderPanel createMainComponent() {
+    BorderPanel rv = super.createMainComponent();
+    AddManagedFieldComposite composite = (AddManagedFieldComposite) this.getComposite();
+    if (composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0) {
+      ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
+      toolPaletteView.getTitle().setRenderingStyle(ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY);
+      //rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+      toolPaletteView.setBackgroundColor(this.getBackgroundColor());
+      rv.addCenterComponent(toolPaletteView);
+    }
+    return rv;
+  }
 }

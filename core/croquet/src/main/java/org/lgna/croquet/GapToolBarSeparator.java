@@ -48,15 +48,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GapToolBarSeparator extends ToolBarSeparator {
-	private static class SingletonHolder {
-		private static GapToolBarSeparator instance = new GapToolBarSeparator();
-	}
+  private static class SingletonHolder {
+    private static GapToolBarSeparator instance = new GapToolBarSeparator();
+  }
 
-	public static GapToolBarSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GapToolBarSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private GapToolBarSeparator() {
-		super( UUID.fromString( "75b905d6-c7b0-4b83-9d85-1279df52dc66" ) );
-	}
+  private GapToolBarSeparator() {
+    super(UUID.fromString("75b905d6-c7b0-4b83-9d85-1279df52dc66"));
+  }
 }

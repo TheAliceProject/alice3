@@ -48,23 +48,23 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class DoubleProperty extends InstanceProperty<Double> {
-	public DoubleProperty( InstancePropertyOwner owner, Double value, boolean isNaNAcceptable ) {
-		super( owner, value );
-		this.isNaNAcceptable = isNaNAcceptable;
-	}
+  public DoubleProperty(InstancePropertyOwner owner, Double value, boolean isNaNAcceptable) {
+    super(owner, value);
+    this.isNaNAcceptable = isNaNAcceptable;
+  }
 
-	public DoubleProperty( InstancePropertyOwner owner, Double value ) {
-		this( owner, value, false );
-	}
+  public DoubleProperty(InstancePropertyOwner owner, Double value) {
+    this(owner, value, false);
+  }
 
-	@Override
-	public void setValue( Double value ) {
-		assert value != null : this;
-		assert ( Double.isNaN( value ) == false ) || this.isNaNAcceptable : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(Double value) {
+    assert value != null : this;
+    assert (Double.isNaN(value) == false) || this.isNaNAcceptable : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 
-	private final boolean isNaNAcceptable;
+  private final boolean isNaNAcceptable;
 }

@@ -58,25 +58,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ArrayAccessFillIn extends ExpressionFillInWithExpressionBlanks<ArrayAccess> {
-	private final ArrayAccess transientValue;
+  private final ArrayAccess transientValue;
 
-	public ArrayAccessFillIn( Expression arrayExpression ) {
-		super( UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ),
-				ExpressionBlank.getBlankForType( Integer.class, ArrayIndexDetails.SINGLETON ) );
-		this.transientValue = new ArrayAccess();
-		AbstractType<?, ?, ?> arrayType = arrayExpression.getType();
-		this.transientValue.arrayType.setValue( arrayType );
-		this.transientValue.array.setValue( arrayExpression );
-		this.transientValue.index.setValue( new EmptyExpression( Integer.class ) );
-	}
+  public ArrayAccessFillIn(Expression arrayExpression) {
+    super(UUID.fromString("a626aca1-094f-4618-af7b-2dcb4f63fa96"), ExpressionBlank.getBlankForType(Integer.class, ArrayIndexDetails.SINGLETON));
+    this.transientValue = new ArrayAccess();
+    AbstractType<?, ?, ?> arrayType = arrayExpression.getType();
+    this.transientValue.arrayType.setValue(arrayType);
+    this.transientValue.array.setValue(arrayExpression);
+    this.transientValue.index.setValue(new EmptyExpression(Integer.class));
+  }
 
-	@Override
-	protected ArrayAccess createValue( Expression[] expressions ) {
-		return new ArrayAccess( this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[ 0 ] );
-	}
+  @Override
+  protected ArrayAccess createValue(Expression[] expressions) {
+    return new ArrayAccess(this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[0]);
+  }
 
-	@Override
-	public ArrayAccess getTransientValue( ItemNode<? super ArrayAccess, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public ArrayAccess getTransientValue(ItemNode<? super ArrayAccess, Expression> step) {
+    return this.transientValue;
+  }
 }

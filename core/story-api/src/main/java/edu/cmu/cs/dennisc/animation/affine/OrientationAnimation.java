@@ -51,94 +51,94 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class OrientationAnimation extends AffineAnimation {
-	public static final UnitQuaternion USE_EXISTING_VALUE_AT_RUN_TIME = null;
+  public static final UnitQuaternion USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private UnitQuaternion m_quatBegin = UnitQuaternion.createNaN();
-	private UnitQuaternion m_quatEnd = UnitQuaternion.createNaN();
+  private UnitQuaternion m_quatBegin = UnitQuaternion.createNaN();
+  private UnitQuaternion m_quatEnd = UnitQuaternion.createNaN();
 
-	private UnitQuaternion m_quatBeginUsedAtRuntime = UnitQuaternion.createNaN();
+  private UnitQuaternion m_quatBeginUsedAtRuntime = UnitQuaternion.createNaN();
 
-	public OrientationAnimation() {
-		m_quatBeginUsedAtRuntime.setNaN();
-		m_quatBegin.setNaN();
-		m_quatEnd.setNaN();
-	}
+  public OrientationAnimation() {
+    m_quatBeginUsedAtRuntime.setNaN();
+    m_quatBegin.setNaN();
+    m_quatEnd.setNaN();
+  }
 
-	public OrientationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, UnitQuaternion quatBegin, UnitQuaternion quatEnd ) {
-		super( sgSubject, sgAsSeenBy );
-		m_quatBeginUsedAtRuntime.setNaN();
-		setOrientationBegin( quatBegin );
-		setOrientationEnd( quatEnd );
-	}
+  public OrientationAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, UnitQuaternion quatBegin, UnitQuaternion quatEnd) {
+    super(sgSubject, sgAsSeenBy);
+    m_quatBeginUsedAtRuntime.setNaN();
+    setOrientationBegin(quatBegin);
+    setOrientationEnd(quatEnd);
+  }
 
-	public UnitQuaternion accessOrientationBeginUsedAtRuntime() {
-		return m_quatBeginUsedAtRuntime;
-	}
+  public UnitQuaternion accessOrientationBeginUsedAtRuntime() {
+    return m_quatBeginUsedAtRuntime;
+  }
 
-	public UnitQuaternion getOrientationBeginUsedAtRuntime( UnitQuaternion rv ) {
-		rv.setValue( m_quatBeginUsedAtRuntime );
-		return rv;
-	}
+  public UnitQuaternion getOrientationBeginUsedAtRuntime(UnitQuaternion rv) {
+    rv.setValue(m_quatBeginUsedAtRuntime);
+    return rv;
+  }
 
-	public UnitQuaternion getOrientationBeginUsedAtRuntime() {
-		return getOrientationBeginUsedAtRuntime( UnitQuaternion.createNaN() );
-	}
+  public UnitQuaternion getOrientationBeginUsedAtRuntime() {
+    return getOrientationBeginUsedAtRuntime(UnitQuaternion.createNaN());
+  }
 
-	public UnitQuaternion accessOrientationBegin() {
-		return m_quatBegin;
-	}
+  public UnitQuaternion accessOrientationBegin() {
+    return m_quatBegin;
+  }
 
-	public UnitQuaternion getOrientationBegin( UnitQuaternion rv ) {
-		rv.setValue( m_quatBegin );
-		return rv;
-	}
+  public UnitQuaternion getOrientationBegin(UnitQuaternion rv) {
+    rv.setValue(m_quatBegin);
+    return rv;
+  }
 
-	public UnitQuaternion getOrientationBegin() {
-		return getOrientationBegin( UnitQuaternion.createNaN() );
-	}
+  public UnitQuaternion getOrientationBegin() {
+    return getOrientationBegin(UnitQuaternion.createNaN());
+  }
 
-	public void setOrientationBegin( UnitQuaternion quatBegin ) {
-		if( quatBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
-			m_quatBegin.setValue( quatBegin );
-		} else {
-			m_quatBegin.setNaN();
-		}
-	}
+  public void setOrientationBegin(UnitQuaternion quatBegin) {
+    if (quatBegin != USE_EXISTING_VALUE_AT_RUN_TIME) {
+      m_quatBegin.setValue(quatBegin);
+    } else {
+      m_quatBegin.setNaN();
+    }
+  }
 
-	public UnitQuaternion accessOrientationEnd() {
-		return m_quatEnd;
-	}
+  public UnitQuaternion accessOrientationEnd() {
+    return m_quatEnd;
+  }
 
-	public UnitQuaternion getOrientationEnd( UnitQuaternion rv ) {
-		rv.setValue( m_quatEnd );
-		return rv;
-	}
+  public UnitQuaternion getOrientationEnd(UnitQuaternion rv) {
+    rv.setValue(m_quatEnd);
+    return rv;
+  }
 
-	public UnitQuaternion getOrientationEnd() {
-		return getOrientationEnd( UnitQuaternion.createNaN() );
-	}
+  public UnitQuaternion getOrientationEnd() {
+    return getOrientationEnd(UnitQuaternion.createNaN());
+  }
 
-	public void setOrientationEnd( UnitQuaternion quatEnd ) {
-		m_quatEnd.setValue( quatEnd );
-	}
+  public void setOrientationEnd(UnitQuaternion quatEnd) {
+    m_quatEnd.setValue(quatEnd);
+  }
 
-	@Override
-	public void prologue() {
-		if( m_quatBegin.isNaN() ) {
-			m_quatBeginUsedAtRuntime.setValue( getSubject().getAxes( getAsSeenBy() ) );
-		} else {
-			m_quatBeginUsedAtRuntime.setValue( m_quatBegin );
-		}
-	}
+  @Override
+  public void prologue() {
+    if (m_quatBegin.isNaN()) {
+      m_quatBeginUsedAtRuntime.setValue(getSubject().getAxes(getAsSeenBy()));
+    } else {
+      m_quatBeginUsedAtRuntime.setValue(m_quatBegin);
+    }
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		getSubject().setAxesOnly( InterpolationUtilities.interpolate( m_quatBeginUsedAtRuntime, m_quatEnd, portion ), getAsSeenBy() );
-	}
+  @Override
+  public void setPortion(double portion) {
+    getSubject().setAxesOnly(InterpolationUtilities.interpolate(m_quatBeginUsedAtRuntime, m_quatEnd, portion), getAsSeenBy());
+  }
 
-	@Override
-	public void epilogue() {
-		getSubject().setAxesOnly( m_quatEnd, getAsSeenBy() );
-		m_quatBeginUsedAtRuntime.setNaN();
-	}
+  @Override
+  public void epilogue() {
+    getSubject().setAxesOnly(m_quatEnd, getAsSeenBy());
+    m_quatBeginUsedAtRuntime.setNaN();
+  }
 }

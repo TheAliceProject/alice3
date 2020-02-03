@@ -50,8 +50,8 @@ import redstone.xmlrpc.XmlRpcFault;
  * @author Dennis Cosgrove
  */
 public class Authenticator implements edu.cmu.cs.dennisc.jira.rpc.Authenticator {
-	@Override
-	public Object login( XmlRpcClient client ) throws XmlRpcException, XmlRpcFault {
-		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "iNw6aFRhNia6SirM" } );
-	}
+  @Override
+  public Object login(XmlRpcClient client) throws XmlRpcException, XmlRpcFault {
+    return client.invoke("jira1.login", new Object[] {"alice3_rpc", "iNw6aFRhNia6SirM"});
+  }
 }

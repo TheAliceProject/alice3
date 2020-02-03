@@ -51,86 +51,76 @@ import edu.cmu.cs.dennisc.media.Player;
  * @author Dennis Cosgrove
  */
 public class MediaPlayerAnimation implements Animation {
-	//	private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
-	private Player player;
-	private boolean isStarted = false;
+  //  private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
+  private Player player;
+  private boolean isStarted = false;
 
-	private double startTime = 0;
+  private double startTime = 0;
 
-	private static MediaPlayerObserver EPIC_HACK_mediaPlayerObserver;
+  private static MediaPlayerObserver EPIC_HACK_mediaPlayerObserver;
 
-	public static void EPIC_HACK_setAnimationObserver( MediaPlayerObserver mediaPlayerObserver ) {
-		EPIC_HACK_mediaPlayerObserver = mediaPlayerObserver;
-	}
+  public static void EPIC_HACK_setAnimationObserver(MediaPlayerObserver mediaPlayerObserver) {
+    EPIC_HACK_mediaPlayerObserver = mediaPlayerObserver;
+  }
 
-	public MediaPlayerAnimation( Player player ) {
-		this.player = player;
-		this.isStarted = false;
-	}
+  public MediaPlayerAnimation(Player player) {
+    this.player = player;
+    this.isStarted = false;
+  }
 
-	@Override
-	public void reset() {
-		this.isStarted = false;
-	}
+  @Override
+  public void reset() {
+    this.isStarted = false;
+  }
 
-	@Override
-	public double update( double tCurrent, AnimationObserver animationObserver ) {
-		if( this.isStarted ) {
-			//pass
-		} else {
-			//this.player.prefetch();
-			this.isStarted = true;
-			if( EPIC_HACK_mediaPlayerObserver != null ) {
-				EPIC_HACK_mediaPlayerObserver.mediaPlayerStarted( this, tCurrent );
-				this.player.start();
-				this.startTime = tCurrent;
-			}
-			else
-			{
-				this.player.start();
-			}
-		}
+  @Override
+  public double update(double tCurrent, AnimationObserver animationObserver) {
+    if (this.isStarted) {
+      //pass
+    } else {
+      //this.player.prefetch();
+      this.isStarted = true;
+      if (EPIC_HACK_mediaPlayerObserver != null) {
+        EPIC_HACK_mediaPlayerObserver.mediaPlayerStarted(this, tCurrent);
+        this.player.start();
+        this.startTime = tCurrent;
+      } else {
+        this.player.start();
+      }
+    }
 
-		double timeRemaining = 0;
-		if( EPIC_HACK_mediaPlayerObserver != null )
-		{
-			if( this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player )
-			{
-				edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-				double startTime = Double.isNaN( jmfPlayer.getStartTime() ) ? 0 : jmfPlayer.getStartTime();
-				double endTime = Double.isNaN( jmfPlayer.getStopTime() ) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
-				double totalTime = endTime - startTime;
-				double timeElapsed = tCurrent - this.startTime;
-				if( timeElapsed >= totalTime )
-				{
-					timeRemaining = 0;
-				}
-				else
-				{
-					timeRemaining = totalTime - timeElapsed;
-				}
-			}
-		}
-		else
-		{
-			timeRemaining = this.player.getTimeRemaining();
-		}
-		//		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
-		//			timeRemaining = 0.0;
-		//		}
-		return timeRemaining;
-	}
+    double timeRemaining = 0;
+    if (EPIC_HACK_mediaPlayerObserver != null) {
+      if (this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player) {
+        edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player) player;
+        double startTime = Double.isNaN(jmfPlayer.getStartTime()) ? 0 : jmfPlayer.getStartTime();
+        double endTime = Double.isNaN(jmfPlayer.getStopTime()) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
+        double totalTime = endTime - startTime;
+        double timeElapsed = tCurrent - this.startTime;
+        if (timeElapsed >= totalTime) {
+          timeRemaining = 0;
+        } else {
+          timeRemaining = totalTime - timeElapsed;
+        }
+      }
+    } else {
+      timeRemaining = this.player.getTimeRemaining();
+    }
+    //    if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
+    //      timeRemaining = 0.0;
+    //    }
+    return timeRemaining;
+  }
 
-	@Override
-	public void complete( AnimationObserver animationObserver ) {
-		this.player.stop();
-		if( animationObserver != null ) {
-			animationObserver.finished( this );
-		}
-	}
+  @Override
+  public void complete(AnimationObserver animationObserver) {
+    this.player.stop();
+    if (animationObserver != null) {
+      animationObserver.finished(this);
+    }
+  }
 
-	public Player getPlayer()
-	{
-		return this.player;
-	}
+  public Player getPlayer() {
+    return this.player;
+  }
 }

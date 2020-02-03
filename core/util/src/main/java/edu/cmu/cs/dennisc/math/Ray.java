@@ -49,144 +49,144 @@ import edu.cmu.cs.dennisc.math.immutable.MRay;
  * @author Dennis Cosgrove
  */
 public final class Ray {
-	private final Point3 origin = new Point3( 0, 0, 0 );
-	private final Vector3 direction = new Vector3( 0, 0, 1 );
+  private final Point3 origin = new Point3(0, 0, 0);
+  private final Vector3 direction = new Vector3(0, 0, 1);
 
-	public Ray() {
-	}
+  public Ray() {
+  }
 
-	public Ray( Point3 origin, Vector3 direction ) {
-		this.origin.set( origin );
-		this.direction.set( direction );
-	}
+  public Ray(Point3 origin, Vector3 direction) {
+    this.origin.set(origin);
+    this.direction.set(direction);
+  }
 
-	public Ray( Ray other ) {
-		this( other.origin, other.direction );
-	}
+  public Ray(Ray other) {
+    this(other.origin, other.direction);
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( o instanceof Ray ) {
-			Ray ray = (Ray)o;
-			return this.origin.equals( ray.origin ) && this.direction.equals( ray.direction );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (o instanceof Ray) {
+      Ray ray = (Ray) o;
+      return this.origin.equals(ray.origin) && this.direction.equals(ray.direction);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.origin != null ) {
-			rv = ( 37 * rv ) + this.origin.hashCode();
-		}
-		if( this.direction != null ) {
-			rv = ( 37 * rv ) + this.direction.hashCode();
-		}
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.origin != null) {
+      rv = (37 * rv) + this.origin.hashCode();
+    }
+    if (this.direction != null) {
+      rv = (37 * rv) + this.direction.hashCode();
+    }
+    return rv;
+  }
 
-	public boolean isNaN() {
-		return this.origin.isNaN() || this.direction.isNaN();
-	}
+  public boolean isNaN() {
+    return this.origin.isNaN() || this.direction.isNaN();
+  }
 
-	public void setNaN() {
-		this.origin.setNaN();
-		this.direction.setNaN();
-	}
+  public void setNaN() {
+    this.origin.setNaN();
+    this.direction.setNaN();
+  }
 
-	public Point3 accessOrigin() {
-		return this.origin;
-	}
+  public Point3 accessOrigin() {
+    return this.origin;
+  }
 
-	public Point3 getOrigin( Point3 rv ) {
-		rv.set( this.origin );
-		return rv;
-	}
+  public Point3 getOrigin(Point3 rv) {
+    rv.set(this.origin);
+    return rv;
+  }
 
-	public Point3 getOrigin() {
-		return getOrigin( new Point3() );
-	}
+  public Point3 getOrigin() {
+    return getOrigin(new Point3());
+  }
 
-	public void setOrigin( Point3 origin ) {
-		if( origin != null ) {
-			this.setOrigin( origin.x, origin.y, origin.z );
-		} else {
-			this.setOrigin( Double.NaN, Double.NaN, Double.NaN );
-		}
-	}
+  public void setOrigin(Point3 origin) {
+    if (origin != null) {
+      this.setOrigin(origin.x, origin.y, origin.z);
+    } else {
+      this.setOrigin(Double.NaN, Double.NaN, Double.NaN);
+    }
+  }
 
-	public void setOrigin( double x, double y, double z ) {
-		this.origin.set( x, y, z );
-	}
+  public void setOrigin(double x, double y, double z) {
+    this.origin.set(x, y, z);
+  }
 
-	public Vector3 accessDirection() {
-		return this.direction;
-	}
+  public Vector3 accessDirection() {
+    return this.direction;
+  }
 
-	public Vector3 getDirection( Vector3 rv ) {
-		rv.set( this.direction );
-		return rv;
-	}
+  public Vector3 getDirection(Vector3 rv) {
+    rv.set(this.direction);
+    return rv;
+  }
 
-	public Vector3 getDirection() {
-		return getDirection( new Vector3() );
-	}
+  public Vector3 getDirection() {
+    return getDirection(new Vector3());
+  }
 
-	public void setDirection( Vector3 direction ) {
-		if( direction != null ) {
-			this.setDirection( direction.x, direction.y, direction.z );
-		} else {
-			this.setDirection( Double.NaN, Double.NaN, Double.NaN );
-		}
-	}
+  public void setDirection(Vector3 direction) {
+    if (direction != null) {
+      this.setDirection(direction.x, direction.y, direction.z);
+    } else {
+      this.setDirection(Double.NaN, Double.NaN, Double.NaN);
+    }
+  }
 
-	public void setDirection( double x, double y, double z ) {
-		this.direction.set( x, y, z );
-	}
+  public void setDirection(double x, double y, double z) {
+    this.direction.set(x, y, z);
+  }
 
-	public Point3 getPointAlong( Point3 rv, double t ) {
-		rv.set( this.direction );
-		rv.multiply( t );
-		rv.add( this.origin );
-		return rv;
-	}
+  public Point3 getPointAlong(Point3 rv, double t) {
+    rv.set(this.direction);
+    rv.multiply(t);
+    rv.add(this.origin);
+    return rv;
+  }
 
-	public Point3 getPointAlong( double t ) {
-		return getPointAlong( new Point3(), t );
-	}
+  public Point3 getPointAlong(double t) {
+    return getPointAlong(new Point3(), t);
+  }
 
-	public double getProjectedPointT( Point3 p ) {
-		Vector3 toPoint = Vector3.createSubtraction( p, this.origin );
-		double dot = Vector3.calculateDotProduct( toPoint, this.direction );
-		return dot;
-	}
+  public double getProjectedPointT(Point3 p) {
+    Vector3 toPoint = Vector3.createSubtraction(p, this.origin);
+    double dot = Vector3.calculateDotProduct(toPoint, this.direction);
+    return dot;
+  }
 
-	public Point3 getProjectedPoint( Point3 p ) {
-		Vector3 toPoint = Vector3.createSubtraction( p, this.origin );
-		double dot = Vector3.calculateDotProduct( toPoint, this.direction );
-		return getPointAlong( dot );
-	}
+  public Point3 getProjectedPoint(Point3 p) {
+    Vector3 toPoint = Vector3.createSubtraction(p, this.origin);
+    double dot = Vector3.calculateDotProduct(toPoint, this.direction);
+    return getPointAlong(dot);
+  }
 
-	public void transform( AffineMatrix4x4 m ) {
-		m.transform( this.origin );
-		m.transform( this.direction );
-		//		Vector4d transformedOrigin = LinearAlgebra.multiply( this.origin.x, this.origin.y, this.origin.z, 1, m );
-		//		this.origin = new Point3d( transformedOrigin.x/transformedOrigin.w, transformedOrigin.y/transformedOrigin.w, transformedOrigin.z/transformedOrigin.w );
-		//		Vector4d transformedDirection = LinearAlgebra.multiply( this.direction, 0, m );
-		//		transformedDirection.w = 1;
-		//		this.direction = LinearAlgebra.newVector3d( transformedDirection );
-	}
+  public void transform(AffineMatrix4x4 m) {
+    m.transform(this.origin);
+    m.transform(this.direction);
+    //    Vector4d transformedOrigin = LinearAlgebra.multiply( this.origin.x, this.origin.y, this.origin.z, 1, m );
+    //    this.origin = new Point3d( transformedOrigin.x/transformedOrigin.w, transformedOrigin.y/transformedOrigin.w, transformedOrigin.z/transformedOrigin.w );
+    //    Vector4d transformedDirection = LinearAlgebra.multiply( this.direction, 0, m );
+    //    transformedDirection.w = 1;
+    //    this.direction = LinearAlgebra.newVector3d( transformedDirection );
+  }
 
-	public MRay createImmutable() {
-		return new MRay( this.origin.createImmutable(), this.direction.createImmutable() );
-	}
+  public MRay createImmutable() {
+    return new MRay(this.origin.createImmutable(), this.direction.createImmutable());
+  }
 
-	@Override
-	public String toString() {
-		return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";
-	}
+  @Override
+  public String toString() {
+    return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";
+  }
 }

@@ -52,7 +52,7 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrHeavyweightOnscreenRenderTarget extends NrOnscreenRenderTarget<Component> implements HeavyweightOnscreenRenderTarget {
-	public NrHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		super( requestedCapabilities, new Canvas() );
-	}
+  public NrHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities, new Canvas());
+  }
 }

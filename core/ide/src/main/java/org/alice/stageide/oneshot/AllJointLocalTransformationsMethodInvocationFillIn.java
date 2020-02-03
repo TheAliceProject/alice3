@@ -54,33 +54,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AllJointLocalTransformationsMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static MapToMap<InstanceFactory, JavaMethod, AllJointLocalTransformationsMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<InstanceFactory, JavaMethod, AllJointLocalTransformationsMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, AllJointLocalTransformationsMethodInvocationFillIn>() {
-			@Override
-			public AllJointLocalTransformationsMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
-				return new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
-			}
-		} );
-	}
+  public static AllJointLocalTransformationsMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method) {
+    return mapToMap.getInitializingIfAbsent(instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, AllJointLocalTransformationsMethodInvocationFillIn>() {
+      @Override
+      public AllJointLocalTransformationsMethodInvocationFillIn initialize(InstanceFactory instanceFactory, JavaMethod method) {
+        return new AllJointLocalTransformationsMethodInvocationFillIn(instanceFactory, method);
+      }
+    });
+  }
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
-		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
-		assert method != null : methodName;
-		return getInstance( instanceFactory, method );
-	}
+  public static AllJointLocalTransformationsMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses) {
+    JavaMethod method = type.getDeclaredMethod(methodName, parameterClses);
+    assert method != null : methodName;
+    return getInstance(instanceFactory, method);
+  }
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
-	}
+  public static AllJointLocalTransformationsMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses) {
+    return getInstance(instanceFactory, JavaType.getInstance(cls), methodName, parameterClses);
+  }
 
-	private AllJointLocalTransformationsMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
-		super( UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
-	}
+  private AllJointLocalTransformationsMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method) {
+    super(UUID.fromString("1931250e-3f00-4d95-85e9-f8c06922eb17"), instanceFactory, method);
+  }
 
-	@Override
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  @Override
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new AllJointLocalTransformationsMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 }

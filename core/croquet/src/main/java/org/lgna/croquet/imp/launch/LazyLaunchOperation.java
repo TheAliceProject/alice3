@@ -54,27 +54,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /*package-private*/final class LazyLaunchOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
-	public LazyLaunchOperation( LazyLaunchOperationFactory<C> factory, Group group, String subKeyText, Initializer<C> initializer ) {
-		super( group, UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ), initializer );
-		this.subKeyText = subKeyText;
-		this.factory = factory;
-	}
+  public LazyLaunchOperation(LazyLaunchOperationFactory<C> factory, Group group, String subKeyText, Initializer<C> initializer) {
+    super(group, UUID.fromString("18050a9f-5354-4790-8e44-1724200f3cfa"), initializer);
+    this.subKeyText = subKeyText;
+    this.factory = factory;
+  }
 
-	@Override
-	protected C getComposite() {
-		return this.factory.getLazy().get();
-	}
+  @Override
+  protected C getComposite() {
+    return this.factory.getLazy().get();
+  }
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.subKeyText;
-	}
+  @Override
+  protected String getSubKeyForLocalization() {
+    return this.subKeyText;
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.factory.getClassUsedForLocalization();
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return this.factory.getClassUsedForLocalization();
+  }
 
-	private final LazyLaunchOperationFactory<C> factory;
-	private final String subKeyText;
+  private final LazyLaunchOperationFactory<C> factory;
+  private final String subKeyText;
 }

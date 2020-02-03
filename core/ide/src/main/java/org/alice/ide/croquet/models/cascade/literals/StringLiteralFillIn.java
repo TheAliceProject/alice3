@@ -55,35 +55,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StringLiteralFillIn extends ExpressionFillInWithoutBlanks<StringLiteral> {
-	private static Map<String, StringLiteralFillIn> map = Maps.newHashMap();
+  private static Map<String, StringLiteralFillIn> map = Maps.newHashMap();
 
-	public static StringLiteralFillIn getInstance( String value ) {
-		synchronized( map ) {
-			StringLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new StringLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static StringLiteralFillIn getInstance(String value) {
+    synchronized (map) {
+      StringLiteralFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new StringLiteralFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final StringLiteral transientValue;
+  private final StringLiteral transientValue;
 
-	private StringLiteralFillIn( String value ) {
-		super( UUID.fromString( "06ad5690-dccf-4e7d-bfff-fe9bf1fd5499" ) );
-		this.transientValue = new StringLiteral( value );
-	}
+  private StringLiteralFillIn(String value) {
+    super(UUID.fromString("06ad5690-dccf-4e7d-bfff-fe9bf1fd5499"));
+    this.transientValue = new StringLiteral(value);
+  }
 
-	@Override
-	public StringLiteral getTransientValue( ItemNode<? super StringLiteral, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public StringLiteral getTransientValue(ItemNode<? super StringLiteral, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public StringLiteral createValue( ItemNode<? super StringLiteral, Void> node ) {
-		return new StringLiteral( this.transientValue.value.getValue() );
-	}
+  @Override
+  public StringLiteral createValue(ItemNode<? super StringLiteral, Void> node) {
+    return new StringLiteral(this.transientValue.value.getValue());
+  }
 }

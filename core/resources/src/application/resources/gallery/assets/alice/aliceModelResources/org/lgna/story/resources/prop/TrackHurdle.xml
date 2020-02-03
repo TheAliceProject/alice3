@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="TrackHurdle">
+    <BoundingBox>
+        <Min x="-0.38840118050575256" y="-1.9967554720778935E-8" z="-0.6673598289489746"/>
+        <Max x="0.0" y="0.6446326375007629" z="0.01915733329951763"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>track</Tag>
+        <Tag>sport</Tag>
+        <Tag>sports</Tag>
+        <Tag>running</Tag>
+        <Tag>runner</Tag>
+        <Tag>race</Tag>
+        <Tag>racetrack</Tag>
+        <Tag>barricade</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Medium" resourceName="MEDIUM" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.38840118050575256" y="0.003492239862680435" z="-0.6673598289489746"/>
+            <Max x="0.0" y="0.4670206308364868" z="0.019157323986291885"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.38840118050575256" y="-1.9967554720778935E-8" z="-0.6673598289489746"/>
+            <Max x="0.0" y="0.6446326375007629" z="0.01915733329951763"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Small" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.38840118050575256" y="-1.9967554720778935E-8" z="-0.6673597693443298"/>
+            <Max x="0.0" y="0.2832411825656891" z="0.01915733329951763"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -48,268 +48,267 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
-	public enum Operator implements PrecedentedAppender {
-		PLUS() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return leftOperand.doubleValue() + rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return leftOperand.floatValue() + rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() + rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() + rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() + rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() + rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+  public enum Operator implements PrecedentedAppender {
+    PLUS() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return leftOperand.doubleValue() + rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return leftOperand.floatValue() + rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() + rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() + rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() + rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() + rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '+' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('+');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 11;
-			}
-		},
-		MINUS() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return leftOperand.doubleValue() - rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return leftOperand.floatValue() - rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() - rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() - rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() - rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() - rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 11;
+      }
+    }, MINUS() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return leftOperand.doubleValue() - rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return leftOperand.floatValue() - rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() - rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() - rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() - rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() - rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '-' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('-');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 11;
-			}		},
-		TIMES() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return leftOperand.doubleValue() * rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return leftOperand.floatValue() * rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() * rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() * rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() * rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() * rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 11;
+      }
+    }, TIMES() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return leftOperand.doubleValue() * rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return leftOperand.floatValue() * rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() * rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() * rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() * rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() * rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '*' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('*');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 12;
-			}
-		},
-		REAL_DIVIDE() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return leftOperand.doubleValue() / rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return leftOperand.floatValue() / rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() / (double)rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() / (double)rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() / (double)rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() / (double)rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 12;
+      }
+    }, REAL_DIVIDE() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return leftOperand.doubleValue() / rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return leftOperand.floatValue() / rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() / (double) rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() / (double) rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() / (double) rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() / (double) rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '/' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('/');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 12;
-			}
-		},
-		INTEGER_DIVIDE() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return ( (int)leftOperand.doubleValue() ) / (int)rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return ( (int)leftOperand.floatValue() ) / (int)rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() / rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() / rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() / rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() / rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 12;
+      }
+    }, INTEGER_DIVIDE() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return ((int) leftOperand.doubleValue()) / (int) rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return ((int) leftOperand.floatValue()) / (int) rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() / rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() / rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() / rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() / rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '/' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('/');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 12;
-			}
-		},
-		REAL_REMAINDER() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return leftOperand.doubleValue() % rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return leftOperand.floatValue() % rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() % (double)rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() % (double)rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() % (double)rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() % (double)rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 12;
+      }
+    }, REAL_REMAINDER() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return leftOperand.doubleValue() % rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return leftOperand.floatValue() % rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() % (double) rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() % (double) rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() % (double) rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() % (double) rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '%' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('%');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 12;
-			}
-		},
-		INTEGER_REMAINDER() {
-			@Override
-			public Number operate( Number leftOperand, Number rightOperand ) {
-				assert leftOperand != null : this;
-				assert rightOperand != null : this;
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
-					return ( (int)leftOperand.doubleValue() ) % (int)rightOperand.doubleValue();
-				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
-					return ( (int)leftOperand.floatValue() ) % (int)rightOperand.floatValue();
-				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return leftOperand.longValue() % rightOperand.longValue();
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return leftOperand.intValue() % rightOperand.intValue();
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return leftOperand.shortValue() % rightOperand.shortValue();
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return leftOperand.byteValue() % rightOperand.byteValue();
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 12;
+      }
+    }, INTEGER_REMAINDER() {
+      @Override
+      public Number operate(Number leftOperand, Number rightOperand) {
+        assert leftOperand != null : this;
+        assert rightOperand != null : this;
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Double) || (rightOperand instanceof Double)) {
+          return ((int) leftOperand.doubleValue()) % (int) rightOperand.doubleValue();
+        } else if ((leftOperand instanceof Float) || (rightOperand instanceof Float)) {
+          return ((int) leftOperand.floatValue()) % (int) rightOperand.floatValue();
+        } else if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return leftOperand.longValue() % rightOperand.longValue();
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return leftOperand.intValue() % rightOperand.intValue();
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return leftOperand.shortValue() % rightOperand.shortValue();
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return leftOperand.byteValue() % rightOperand.byteValue();
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '%' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('%');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 12;
-			}
-		};
-		public abstract Number operate( Number leftOperand, Number rightOperand );
+      @Override
+      public int getLevelOfPrecedence() {
+        return 12;
+      }
+    };
 
-		@Override
-		public abstract void appendCode( SourceCodeGenerator generator );
-	}
+    public abstract Number operate(Number leftOperand, Number rightOperand);
 
-	public ArithmeticInfixExpression() {
-	}
+    @Override
+    public abstract void appendCode(SourceCodeGenerator generator);
+  }
 
-	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> expressionType ) {
-		super( leftOperand, operator, rightOperand );
-		//todo
-		assert JavaType.getInstance( Number.class ).isAssignableFrom( expressionType )
-				||
-				JavaType.getInstance( Double.TYPE ).isAssignableFrom( expressionType )
-				||
-				JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType ) : expressionType;
-		this.expressionType.setValue( expressionType );
-	}
+  public ArithmeticInfixExpression() {
+  }
 
-	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls ) {
-		this( leftOperand, operator, rightOperand, JavaType.getInstance( expressionCls ) );
-	}
+  public ArithmeticInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> expressionType) {
+    super(leftOperand, operator, rightOperand);
+    //todo
+    assert JavaType.getInstance(Number.class).isAssignableFrom(expressionType) || JavaType.getInstance(Double.TYPE).isAssignableFrom(expressionType) || JavaType.getInstance(Integer.TYPE).isAssignableFrom(expressionType) : expressionType;
+    this.expressionType.setValue(expressionType);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return this.expressionType.getValue();
-	}
+  public ArithmeticInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls) {
+    this(leftOperand, operator, rightOperand, JavaType.getInstance(expressionCls));
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return this.expressionType.getValue();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getLeftOperandType() {
+    return this.expressionType.getValue();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.expressionType.getValue();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getRightOperandType() {
+    return this.expressionType.getValue();
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.expressionType.getValue();
+  }
+
+  public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance(this);
 }

@@ -54,148 +54,148 @@ import java.util.Set;
  */
 public class StaticAnalysisUtilities {
 
-	public static boolean isValidIdentifier( String identifier ) {
-		if( identifier != null ) {
-			final int N = identifier.length();
-			if( N > 0 ) {
-				char c0 = identifier.charAt( 0 );
-				if( Character.isLetter( c0 ) || ( c0 == '_' ) ) {
-					for( int i = 1; i < N; i++ ) {
-						char cI = identifier.charAt( i );
-						if( Character.isLetterOrDigit( cI ) || ( cI == '_' ) ) {
-							//pass
-						} else {
-							return false;
-						}
-					}
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  public static boolean isValidIdentifier(String identifier) {
+    if (identifier != null) {
+      final int N = identifier.length();
+      if (N > 0) {
+        char c0 = identifier.charAt(0);
+        if (Character.isLetter(c0) || (c0 == '_')) {
+          for (int i = 1; i < N; i++) {
+            char cI = identifier.charAt(i);
+            if (Character.isLetterOrDigit(cI) || (cI == '_')) {
+              //pass
+            } else {
+              return false;
+            }
+          }
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	private static String getConventionalIdentifierName( String name, boolean cap ) {
-		String rv = "";
-		boolean isAlphaEncountered = false;
-		final int N = name.length();
-		for( int i = 0; i < N; i++ ) {
-			char c = name.charAt( i );
-			if( Character.isLetterOrDigit( c ) ) {
-				if( Character.isDigit( c ) ) {
-					if( isAlphaEncountered ) {
-						//pass
-					} else {
-						rv += "_";
-						rv += c;
-						isAlphaEncountered = true;
-						continue;
-					}
-				} else {
-					isAlphaEncountered = true;
-				}
-				if( cap ) {
-					c = Character.toUpperCase( c );
-				}
-				rv += c;
-				cap = Character.isDigit( c );
-			} else {
-				cap = true;
-			}
-		}
-		return rv;
-	}
+  private static String getConventionalIdentifierName(String name, boolean cap) {
+    String rv = "";
+    boolean isAlphaEncountered = false;
+    final int N = name.length();
+    for (int i = 0; i < N; i++) {
+      char c = name.charAt(i);
+      if (Character.isLetterOrDigit(c)) {
+        if (Character.isDigit(c)) {
+          if (isAlphaEncountered) {
+            //pass
+          } else {
+            rv += "_";
+            rv += c;
+            isAlphaEncountered = true;
+            continue;
+          }
+        } else {
+          isAlphaEncountered = true;
+        }
+        if (cap) {
+          c = Character.toUpperCase(c);
+        }
+        rv += c;
+        cap = Character.isDigit(c);
+      } else {
+        cap = true;
+      }
+    }
+    return rv;
+  }
 
-	public static String getConventionalInstanceName( String text ) {
-		return getConventionalIdentifierName( text, false );
-	}
+  public static String getConventionalInstanceName(String text) {
+    return getConventionalIdentifierName(text, false);
+  }
 
-	public static String getConventionalClassName( String text ) {
-		return getConventionalIdentifierName( text, true );
-	}
+  public static String getConventionalClassName(String text) {
+    return getConventionalIdentifierName(text, true);
+  }
 
-	public static boolean isAvailableResourceName( Project project, String name, Resource self ) {
-		if( project != null ) {
-			Set<Resource> resources = project.getResources();
-			if( resources != null ) {
-				for( Resource resource : resources ) {
-					if( ( resource != null ) && ( resource != self ) ) {
-						if( Strings.equalsIgnoreCase( name, resource.getName() ) ) {
-							return false;
-						}
-					}
-				}
-			}
-		} else {
-			//todo?
-		}
-		return true;
-	}
+  public static boolean isAvailableResourceName(Project project, String name, Resource self) {
+    if (project != null) {
+      Set<Resource> resources = project.getResources();
+      if (resources != null) {
+        for (Resource resource : resources) {
+          if ((resource != null) && (resource != self)) {
+            if (Strings.equalsIgnoreCase(name, resource.getName())) {
+              return false;
+            }
+          }
+        }
+      }
+    } else {
+      //todo?
+    }
+    return true;
+  }
 
-	public static boolean isAvailableResourceName( Project project, String name ) {
-		return isAvailableResourceName( project, name, null );
-	}
+  public static boolean isAvailableResourceName(Project project, String name) {
+    return isAvailableResourceName(project, name, null);
+  }
 
-	private static boolean isAvailableFieldName( String name, UserType<?> declaringType, UserField self ) {
-		if( declaringType != null ) {
-			for( UserField field : declaringType.fields ) {
-				assert field != null;
-				if( field == self ) {
-					//pass
-				} else {
-					if( name.equals( field.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
-		} else {
-			Logger.todo( "type == null" );
-		}
-		return true;
-	}
+  private static boolean isAvailableFieldName(String name, UserType<?> declaringType, UserField self) {
+    if (declaringType != null) {
+      for (UserField field : declaringType.fields) {
+        assert field != null;
+        if (field == self) {
+          //pass
+        } else {
+          if (name.equals(field.name.getValue())) {
+            return false;
+          }
+        }
+      }
+    } else {
+      Logger.todo("type == null");
+    }
+    return true;
+  }
 
-	public static boolean isAvailableFieldName( String name, UserType<?> declaringType ) {
-		return isAvailableFieldName( name, declaringType, null );
-	}
+  public static boolean isAvailableFieldName(String name, UserType<?> declaringType) {
+    return isAvailableFieldName(name, declaringType, null);
+  }
 
-	public static boolean isAvailableFieldName( String name, UserField self ) {
-		return isAvailableFieldName( name, self.getDeclaringType(), self );
-	}
+  public static boolean isAvailableFieldName(String name, UserField self) {
+    return isAvailableFieldName(name, self.getDeclaringType(), self);
+  }
 
-	private static boolean isAvailableMethodName( String name, UserType<?> declaringType, UserMethod self ) {
-		if( declaringType != null ) {
-			for( UserMethod method : declaringType.methods ) {
-				if( method == self ) {
-					//pass
-				} else {
-					if( name.equals( method.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
-		} else {
-			Logger.todo( "type == null" );
-		}
-		return true;
-	}
+  private static boolean isAvailableMethodName(String name, UserType<?> declaringType, UserMethod self) {
+    if (declaringType != null) {
+      for (UserMethod method : declaringType.methods) {
+        if (method == self) {
+          //pass
+        } else {
+          if (name.equals(method.name.getValue())) {
+            return false;
+          }
+        }
+      }
+    } else {
+      Logger.todo("type == null");
+    }
+    return true;
+  }
 
-	public static boolean isAvailableMethodName( String name, UserType<?> declaringType ) {
-		return isAvailableMethodName( name, declaringType, null );
-	}
+  public static boolean isAvailableMethodName(String name, UserType<?> declaringType) {
+    return isAvailableMethodName(name, declaringType, null);
+  }
 
-	public static boolean isAvailableMethodName( String name, UserMethod self ) {
-		return isAvailableMethodName( name, self.getDeclaringType(), self );
-	}
+  public static boolean isAvailableMethodName(String name, UserMethod self) {
+    return isAvailableMethodName(name, self.getDeclaringType(), self);
+  }
 
-	public static int getUserTypeDepth( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			if( type instanceof JavaType ) {
-				return -1;
-			} else {
-				return 1 + getUserTypeDepth( type.getSuperType() );
-			}
-		} else {
-			return -1;
-		}
-	}
+  public static int getUserTypeDepth(AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      if (type instanceof JavaType) {
+        return -1;
+      } else {
+        return 1 + getUserTypeDepth(type.getSuperType());
+      }
+    } else {
+      return -1;
+    }
+  }
 }

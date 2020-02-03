@@ -56,49 +56,49 @@ import javax.swing.undo.CannotUndoException;
  * @author Dennis Cosgrove
  */
 public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
-	private transient int index = -1;
+  private transient int index = -1;
 
-	private final UserField field;
+  private final UserField field;
 
-	public DeclareNonGalleryFieldEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
-		super( userActivity, declaringType, field );
-		this.field = field;
-	}
+  public DeclareNonGalleryFieldEdit(UserActivity userActivity, UserType<?> declaringType, UserField field) {
+    super(userActivity, declaringType, field);
+    this.field = field;
+  }
 
-	public DeclareNonGalleryFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
-	}
+  public DeclareNonGalleryFieldEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.field = NodeCodec.getInstance(UserField.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(UserField.class).encodeValue(binaryEncoder, this.field);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = -1;
-		}
-		int insertionIndex = this.index;
-		final int N = this.getDeclaringType().fields.size();
-		if( ( insertionIndex >= 0 ) && ( insertionIndex <= N ) ) {
-			//pass
-		} else {
-			insertionIndex = N;
-		}
-		this.getDeclaringType().fields.add( insertionIndex, this.getField() );
-		AstEventManager.fireTypeHierarchyListeners();
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      this.index = -1;
+    }
+    int insertionIndex = this.index;
+    final int N = this.getDeclaringType().fields.size();
+    if ((insertionIndex >= 0) && (insertionIndex <= N)) {
+      //pass
+    } else {
+      insertionIndex = N;
+    }
+    this.getDeclaringType().fields.add(insertionIndex, this.getField());
+    AstEventManager.fireTypeHierarchyListeners();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.index = this.getDeclaringType().fields.indexOf( this.field );
-		if( this.index != -1 ) {
-			this.getDeclaringType().fields.remove( this.index );
-		} else {
-			throw new CannotUndoException();
-		}
-	}
+  @Override
+  protected final void undoInternal() {
+    this.index = this.getDeclaringType().fields.indexOf(this.field);
+    if (this.index != -1) {
+      this.getDeclaringType().fields.remove(this.index);
+    } else {
+      throw new CannotUndoException();
+    }
+  }
 }

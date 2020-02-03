@@ -51,80 +51,80 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class ByteArraySeekablePullSourceStream implements PullSourceStream, Seekable {
-	private static final ContentDescriptor RAW_CONTENT_DISCRIPTOR = new ContentDescriptor( ContentDescriptor.RAW );
-	private byte[] data;
-	private long location;
+  private static final ContentDescriptor RAW_CONTENT_DISCRIPTOR = new ContentDescriptor(ContentDescriptor.RAW);
+  private byte[] data;
+  private long location;
 
-	public ByteArraySeekablePullSourceStream( byte[] data ) {
-		this.data = data;
-		this.location = 0;
-	}
+  public ByteArraySeekablePullSourceStream(byte[] data) {
+    this.data = data;
+    this.location = 0;
+  }
 
-	@Override
-	public int read( byte[] buffer, int offset, int length ) throws IOException {
-		long bytesLeft = ( this.data.length - this.location );
-		if( bytesLeft == 0 ) {
-			return -1;
-		}
-		int intBytesLeft = (int)bytesLeft;
-		int toRead = length;
-		if( intBytesLeft < length ) {
-			toRead = intBytesLeft;
-		}
-		System.arraycopy( this.data, (int)this.location, buffer, offset, toRead );
-		this.location = this.location + toRead;
-		return toRead;
-	}
+  @Override
+  public int read(byte[] buffer, int offset, int length) throws IOException {
+    long bytesLeft = (this.data.length - this.location);
+    if (bytesLeft == 0) {
+      return -1;
+    }
+    int intBytesLeft = (int) bytesLeft;
+    int toRead = length;
+    if (intBytesLeft < length) {
+      toRead = intBytesLeft;
+    }
+    System.arraycopy(this.data, (int) this.location, buffer, offset, toRead);
+    this.location = this.location + toRead;
+    return toRead;
+  }
 
-	@Override
-	public Object getControl( String controlType ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControl", controlType );
-		return null;
-	}
+  @Override
+  public Object getControl(String controlType) {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControl", controlType );
+    return null;
+  }
 
-	@Override
-	public Object[] getControls() {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControls" );
-		return null;
-	}
+  @Override
+  public Object[] getControls() {
+    //edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControls" );
+    return null;
+  }
 
-	@Override
-	public ContentDescriptor getContentDescriptor() {
-		return RAW_CONTENT_DISCRIPTOR;
-	}
+  @Override
+  public ContentDescriptor getContentDescriptor() {
+    return RAW_CONTENT_DISCRIPTOR;
+  }
 
-	@Override
-	public boolean endOfStream() {
-		return ( this.location == this.data.length );
-	}
+  @Override
+  public boolean endOfStream() {
+    return (this.location == this.data.length);
+  }
 
-	@Override
-	public long getContentLength() {
-		return this.data.length;
-	}
+  @Override
+  public long getContentLength() {
+    return this.data.length;
+  }
 
-	@Override
-	public boolean willReadBlock() {
-		return endOfStream();
-	}
+  @Override
+  public boolean willReadBlock() {
+    return endOfStream();
+  }
 
-	@Override
-	public boolean isRandomAccess() {
-		return true;
-	}
+  @Override
+  public boolean isRandomAccess() {
+    return true;
+  }
 
-	@Override
-	public long seek( long where ) {
-		if( where > this.data.length ) {
-			this.location = this.data.length;
-		} else {
-			this.location = where;
-		}
-		return this.location;
-	}
+  @Override
+  public long seek(long where) {
+    if (where > this.data.length) {
+      this.location = this.data.length;
+    } else {
+      this.location = where;
+    }
+    return this.location;
+  }
 
-	@Override
-	public long tell() {
-		return this.location;
-	}
+  @Override
+  public long tell() {
+    return this.location;
+  }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Ethan Gagorik" name="Shark" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.7347130522085031" y="-1.3597998975350571" z="-2.205283686541372"/>
+        <Max x="0.734713051959114" y="1.4310302573989582" z="4.201054188939777"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>villain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shark" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

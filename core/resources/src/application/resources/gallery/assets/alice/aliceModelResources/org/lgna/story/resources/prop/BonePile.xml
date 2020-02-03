@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="BonePile">
+    <BoundingBox>
+        <Min x="-0.41898253560066223" y="-0.0027555846609175205" z="-0.6033240556716919"/>
+        <Max x="0.49957525730133057" y="0.33826398849487305" z="0.24554534256458282"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BonePile" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

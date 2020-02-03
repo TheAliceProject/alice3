@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="ElephantStable">
+    <BoundingBox>
+        <Min x="-25.552743911743164" y="-0.0026162981521338224" z="-4.276663780212402"/>
+        <Max x="25.571422576904297" y="14.626988410949707" z="3.6991941928863525"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>barn</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ElephantStable" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

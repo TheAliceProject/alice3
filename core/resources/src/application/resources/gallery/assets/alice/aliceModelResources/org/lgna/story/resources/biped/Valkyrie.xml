@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Sahana Vijai" name="Valkyrie">
+    <BoundingBox>
+        <Min x="-0.27212802870942276" y="-0.0018342593416673235" z="-0.1648394840596064"/>
+        <Max x="0.2721267219338918" y="1.9846098122268099" z="0.21991246683430754"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>valkyrie</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Valkyrie" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

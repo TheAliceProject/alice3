@@ -50,18 +50,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleModalFrameComposite<V extends CompositeView<?, ?>> extends ModalFrameComposite<V> {
-	public SimpleModalFrameComposite( UUID id, Group launchOperationGroup ) {
-		super( id, launchOperationGroup );
-		this.getImp().createAndRegisterNullKeyLaunchOperation();
-	}
+  public SimpleModalFrameComposite(UUID id, Group launchOperationGroup) {
+    super(id, launchOperationGroup);
+    this.getImp().createAndRegisterNullKeyLaunchOperation();
+  }
 
-	@Override
-	protected String getName() {
-		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getImp().getName() : null;
-	}
+  @Override
+  protected String getName() {
+    Operation launchOperation = this.getLaunchOperation();
+    return launchOperation != null ? launchOperation.getImp().getName() : null;
+  }
 
-	public Operation getLaunchOperation() {
-		return this.getImp().getLaunchOperation( null );
-	}
+  public Operation getLaunchOperation() {
+    return this.getImp().getLaunchOperation(null);
+  }
 }

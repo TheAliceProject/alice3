@@ -53,14 +53,14 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public class GroundIcon extends ShapeIcon {
-	public GroundIcon( Dimension size ) {
-		super( size );
-	}
+  public GroundIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		Shape shape = new Polygon( new int[] { 0, width, (int)( width * .75 ), (int)( .25 * width ) }, new int[] { (int)( .8 * height ), (int)( .8 * height ), (int)( .2 * height ), (int)( .2 * height ) }, 4 );
-		g2.setPaint( fillPaint );
-		g2.fill( shape );
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Shape shape = new Polygon(new int[] {0, width, (int) (width * .75), (int) (.25 * width)}, new int[] {(int) (.8 * height), (int) (.8 * height), (int) (.2 * height), (int) (.2 * height)}, 4);
+    g2.setPaint(fillPaint);
+    g2.fill(shape);
+  }
 }

@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameTypeComposite extends RenameDeclarationComposite<NamedUserType> {
-	private static Map<NamedUserType, RenameTypeComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, RenameTypeComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameTypeComposite getInstance( NamedUserType type ) {
-		assert type != null;
-		RenameTypeComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameTypeComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized RenameTypeComposite getInstance(NamedUserType type) {
+    assert type != null;
+    RenameTypeComposite rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RenameTypeComposite(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private RenameTypeComposite( NamedUserType type ) {
-		super( UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new TypeNameValidator(), type );
-	}
+  private RenameTypeComposite(NamedUserType type) {
+    super(UUID.fromString("d4d98a8c-c59d-4949-bc34-ea59d7952c83"), new TypeNameValidator(), type);
+  }
 }

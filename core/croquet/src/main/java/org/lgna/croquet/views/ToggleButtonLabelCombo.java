@@ -52,26 +52,26 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class ToggleButtonLabelCombo extends Panel {
-	private final ToggleButton toggleButton;
-	private final AbstractLabel label;
+  private final ToggleButton toggleButton;
+  private final AbstractLabel label;
 
-	public ToggleButtonLabelCombo( BooleanState state ) {
-		this.toggleButton = state.createToggleButton();
-		this.label = state.getSidekickLabel().createLabel();
-		this.internalAddComponent( this.toggleButton );
-		this.internalAddComponent( this.label );
-	}
+  public ToggleButtonLabelCombo(BooleanState state) {
+    this.toggleButton = state.createToggleButton();
+    this.label = state.getSidekickLabel().createLabel();
+    this.internalAddComponent(this.toggleButton);
+    this.internalAddComponent(this.label);
+  }
 
-	public ToggleButton getToggleButton() {
-		return this.toggleButton;
-	}
+  public ToggleButton getToggleButton() {
+    return this.toggleButton;
+  }
 
-	public AbstractLabel getLabel() {
-		return this.label;
-	}
+  public AbstractLabel getLabel() {
+    return this.label;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new BoxLayout(jPanel, BoxLayout.PAGE_AXIS);
+  }
 }

@@ -49,41 +49,41 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public class TransformContext {
-	private Stack<AffineTransform> m_affineTransformStack = new Stack<AffineTransform>();
-	private AffineTransform m_affineTransform = new AffineTransform();
+  private Stack<AffineTransform> m_affineTransformStack = new Stack<AffineTransform>();
+  private AffineTransform m_affineTransform = new AffineTransform();
 
-	public void initialize() {
-		assert m_affineTransformStack.isEmpty();
-		m_affineTransform.setToIdentity();
-	}
+  public void initialize() {
+    assert m_affineTransformStack.isEmpty();
+    m_affineTransform.setToIdentity();
+  }
 
-	protected void update( AffineTransform affineTransform ) {
-	}
+  protected void update(AffineTransform affineTransform) {
+  }
 
-	public AffineTransform accessAffineTransform() {
-		return m_affineTransform;
-	}
+  public AffineTransform accessAffineTransform() {
+    return m_affineTransform;
+  }
 
-	public AffineTransform getAffineTransform() {
-		return new AffineTransform( m_affineTransform );
-	}
+  public AffineTransform getAffineTransform() {
+    return new AffineTransform(m_affineTransform);
+  }
 
-	public void pushAffineTransform() {
-		m_affineTransformStack.push( new AffineTransform( m_affineTransform ) );
-	}
+  public void pushAffineTransform() {
+    m_affineTransformStack.push(new AffineTransform(m_affineTransform));
+  }
 
-	public void popAffineTransform() {
-		m_affineTransform.setTransform( m_affineTransformStack.pop() );
-		update( m_affineTransform );
-	}
+  public void popAffineTransform() {
+    m_affineTransform.setTransform(m_affineTransformStack.pop());
+    update(m_affineTransform);
+  }
 
-	public void setAffineTransform( AffineTransform affineTransform ) {
-		m_affineTransform.setTransform( affineTransform );
-		update( m_affineTransform );
-	}
+  public void setAffineTransform(AffineTransform affineTransform) {
+    m_affineTransform.setTransform(affineTransform);
+    update(m_affineTransform);
+  }
 
-	public void multiplyAffineTransform( AffineTransform affineTransform ) {
-		m_affineTransform.concatenate( affineTransform );
-		update( m_affineTransform );
-	}
+  public void multiplyAffineTransform(AffineTransform affineTransform) {
+    m_affineTransform.concatenate(affineTransform);
+    update(m_affineTransform);
+  }
 }

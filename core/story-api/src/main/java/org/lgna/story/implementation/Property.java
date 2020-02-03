@@ -55,103 +55,103 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Property<T> {
-	public static interface Listener<T> {
-		public void propertyChanged( Property<T> property, T prevValue, T nextValue );
-	}
+  public static interface Listener<T> {
+    public void propertyChanged(Property<T> property, T prevValue, T nextValue);
+  }
 
-	public static String getPropertyNameForGetter( Method method ) {
-		Class<?> valueClass = method.getReturnType();
-		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
-		String prefix;
-		if( isBoolean ) {
-			prefix = "is";
-		} else {
-			prefix = "get";
-		}
-		String name = method.getName();
-		if( name.startsWith( prefix ) ) {
-			if( isBoolean ) {
-				return name;
-			} else {
-				return name.substring( prefix.length() );
-			}
-		} else {
-			return null;
-		}
-	}
+  public static String getPropertyNameForGetter(Method method) {
+    Class<?> valueClass = method.getReturnType();
+    boolean isBoolean = valueClass.equals(Boolean.TYPE) || valueClass.equals(Boolean.class);
+    String prefix;
+    if (isBoolean) {
+      prefix = "is";
+    } else {
+      prefix = "get";
+    }
+    String name = method.getName();
+    if (name.startsWith(prefix)) {
+      if (isBoolean) {
+        return name;
+      } else {
+        return name.substring(prefix.length());
+      }
+    } else {
+      return null;
+    }
+  }
 
-	private final List<Listener<T>> listeners = Lists.newCopyOnWriteArrayList();
-	private final PropertyOwnerImp owner;
-	private final Class<T> valueCls;
+  private final List<Listener<T>> listeners = Lists.newCopyOnWriteArrayList();
+  private final PropertyOwnerImp owner;
+  private final Class<T> valueCls;
 
-	public Property( PropertyOwnerImp owner, Class<T> valueCls ) {
-		this.owner = owner;
-		this.valueCls = valueCls;
-	}
+  public Property(PropertyOwnerImp owner, Class<T> valueCls) {
+    this.owner = owner;
+    this.valueCls = valueCls;
+  }
 
-	public PropertyOwnerImp getOwner() {
-		return this.owner;
-	}
+  public PropertyOwnerImp getOwner() {
+    return this.owner;
+  }
 
-	public Class<T> getValueCls() {
-		return this.valueCls;
-	}
+  public Class<T> getValueCls() {
+    return this.valueCls;
+  }
 
-	public abstract T getValue();
+  public abstract T getValue();
 
-	protected abstract void handleSetValue( T value );
+  protected abstract void handleSetValue(T value);
 
-	protected abstract T interpolate( T a, T b, double portion );
+  protected abstract T interpolate(T a, T b, double portion);
 
-	public final void setValue( T value ) {
-		T prevValue = this.getValue();
-		this.handleSetValue( value );
-		this.fireChanged( prevValue, value );
-	}
+  public final void setValue(T value) {
+    T prevValue = this.getValue();
+    this.handleSetValue(value);
+    this.fireChanged(prevValue, value);
+  }
 
-	public void animateValue( final T value, double duration, Style style ) {
-		duration = this.owner.adjustDurationIfNecessary( duration );
-		if( EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImp.RIGHT_NOW ) ) {
-			this.setValue( value );
-		} else {
-			final T value0 = this.getValue();
-			this.owner.perform( new DurationBasedAnimation( duration, style ) {
-				@Override
-				protected void prologue() {
-				}
+  public void animateValue(final T value, double duration, Style style) {
+    duration = this.owner.adjustDurationIfNecessary(duration);
+    if (EpsilonUtilities.isWithinReasonableEpsilon(duration, EntityImp.RIGHT_NOW)) {
+      this.setValue(value);
+    } else {
+      final T value0 = this.getValue();
+      this.owner.perform(new DurationBasedAnimation(duration, style) {
+        @Override
+        protected void prologue() {
+        }
 
-				@Override
-				protected void setPortion( double portion ) {
-					Property.this.setValue( Property.this.interpolate( value0, value, portion ) );
-				}
+        @Override
+        protected void setPortion(double portion) {
+          Property.this.setValue(Property.this.interpolate(value0, value, portion));
+        }
 
-				@Override
-				protected void epilogue() {
-					Property.this.setValue( value );
-				}
-			} );
-		}
-	}
+        @Override
+        protected void epilogue() {
+          Property.this.setValue(value);
+        }
+      });
+    }
+  }
 
-	public void animateValue( T value, double duration ) {
-		this.animateValue( value, duration, EntityImp.DEFAULT_STYLE );
-	}
+  public void animateValue(T value, double duration) {
+    this.animateValue(value, duration, EntityImp.DEFAULT_STYLE);
+  }
 
-	public void animateValue( T value ) {
-		this.animateValue( value, EntityImp.DEFAULT_DURATION );
-	}
+  public void animateValue(T value) {
+    this.animateValue(value, EntityImp.DEFAULT_DURATION);
+  }
 
-	protected void fireChanged( T prevValue, T nextValue ) {
-		for( Listener<T> listener : listeners ) {
-			listener.propertyChanged( this, prevValue, nextValue );
-		}
-	}
+  protected void fireChanged(T prevValue, T nextValue) {
+    for (Listener<T> listener : listeners) {
+      listener.propertyChanged(this, prevValue, nextValue);
+    }
+  }
 
-	public void addPropertyListener( Listener<T> listener ) {
-		this.listeners.add( listener );
-	}
+  public void addPropertyListener(Listener<T> listener) {
+    this.listeners.add(listener);
+  }
 
-	public void removePropertyListener( Listener<T> listener ) {
-		this.listeners.remove( listener );
-	}
+  public void removePropertyListener(Listener<T> listener) {
+    this.listeners.remove(listener);
+  }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Cake">
+    <BoundingBox>
+        <Min x="-0.22152824699878693" y="0.0" z="-0.21897457540035248"/>
+        <Max x="0.22152824699878693" y="0.3830285370349884" z="0.21897457540035248"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>cake</Tag>
+        <Tag>food</Tag>
+        <Tag>dessert</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Birthday" resourceName="BIRTHDAY" textureName="BIRTHDAY">
+        <BoundingBox>
+            <Min x="-0.20167912542819977" y="0.0" z="-0.21316608786582947"/>
+            <Max x="0.20167912542819977" y="0.17196661233901978" z="0.21316608786582947"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>birthday</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Wedding" resourceName="WEDDING" textureName="WEDDING">
+        <BoundingBox>
+            <Min x="-0.22152824699878693" y="0.0" z="-0.21897457540035248"/>
+            <Max x="0.22152824699878693" y="0.3830285370349884" z="0.21897457540035248"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>wedding</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

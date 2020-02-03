@@ -48,11 +48,11 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JSingleRowPane extends JGridPane {
-	public JSingleRowPane( int hgap, int vgap, Component... components ) {
-		super( true, hgap, vgap, new Component[][] { components } );
-	}
+  public JSingleRowPane(int hgap, int vgap, Component... components) {
+    super(true, hgap, vgap, new Component[][] {components});
+  }
 
-	public JSingleRowPane( Component... components ) {
-		this( 0, 0, components );
-	}
+  public JSingleRowPane(Component... components) {
+    this(0, 0, components);
+  }
 }

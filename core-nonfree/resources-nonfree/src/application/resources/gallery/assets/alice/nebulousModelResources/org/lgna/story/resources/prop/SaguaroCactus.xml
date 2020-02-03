@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="SaguaroCactus">
+    <BoundingBox>
+        <Min x="-0.6110413670539856" y="0.0" z="-0.7398542165756226"/>
+        <Max x="0.6110413670539856" y="4.527774810791016" z="0.7398542165756226"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="SaguaroCactus" resourceName="SAGUARO_CACTUS" textureName="SAGUARO_CACTUS"/>
+</AliceModel>

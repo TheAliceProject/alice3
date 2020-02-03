@@ -49,27 +49,27 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class IgnoreAdjustVisibilityCaret extends DefaultCaret {
-	@Override
-	protected void adjustVisibility( Rectangle nloc ) {
-		//super.adjustVisibility( nloc );
-	}
+  @Override
+  protected void adjustVisibility(Rectangle nloc) {
+    //super.adjustVisibility( nloc );
+  }
 
-	//	@Override
-	//	protected void adjustVisibility( java.awt.Rectangle nloc ) {
-	//		if( this.ignoreCount > 0 ) {
-	//			//pass
-	//		} else {
-	//			super.adjustVisibility( nloc );
-	//		}
-	//	}
-	//
-	//	public void pushIgnore() {
-	//		this.ignoreCount++;
-	//	}
-	//
-	//	public void popIgnore() {
-	//		this.ignoreCount--;
-	//	}
-	//
-	//	private int ignoreCount;
+  //  @Override
+  //  protected void adjustVisibility( java.awt.Rectangle nloc ) {
+  //    if( this.ignoreCount > 0 ) {
+  //      //pass
+  //    } else {
+  //      super.adjustVisibility( nloc );
+  //    }
+  //  }
+  //
+  //  public void pushIgnore() {
+  //    this.ignoreCount++;
+  //  }
+  //
+  //  public void popIgnore() {
+  //    this.ignoreCount--;
+  //  }
+  //
+  //  private int ignoreCount;
 }

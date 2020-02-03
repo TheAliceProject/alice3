@@ -56,29 +56,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExpressionListPropertyCascade extends ExpressionsCascade {
-	private final int index;
-	private final ExpressionListProperty expressionListProperty;
+  private final int index;
+  private final ExpressionListProperty expressionListProperty;
 
-	public ExpressionListPropertyCascade( Group group, UUID id, int index, ExpressionListProperty expressionListProperty, AbstractType<?, ?, ?> desiredType ) {
-		super( group, id, ExpressionBlank.createBlanks( desiredType ) );
-		this.index = index;
-		this.expressionListProperty = expressionListProperty;
-	}
+  public ExpressionListPropertyCascade(Group group, UUID id, int index, ExpressionListProperty expressionListProperty, AbstractType<?, ?, ?> desiredType) {
+    super(group, id, ExpressionBlank.createBlanks(desiredType));
+    this.index = index;
+    this.expressionListProperty = expressionListProperty;
+  }
 
-	public ExpressionListProperty getExpressionListProperty() {
-		return this.expressionListProperty;
-	}
+  public ExpressionListProperty getExpressionListProperty() {
+    return this.expressionListProperty;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	private Expression getPreviousExpression() {
-		return this.expressionListProperty.get( this.index );
-	}
+  private Expression getPreviousExpression() {
+    return this.expressionListProperty.get(this.index);
+  }
 
-	@Override
-	protected FillInExpressionListPropertyEdit createEdit( UserActivity userActivity, Expression[] values ) {
-		return new FillInExpressionListPropertyEdit( userActivity, this.getPreviousExpression(), values[ 0 ] );
-	}
+  @Override
+  protected FillInExpressionListPropertyEdit createEdit(UserActivity userActivity, Expression[] values) {
+    return new FillInExpressionListPropertyEdit(userActivity, this.getPreviousExpression(), values[0]);
+  }
 }

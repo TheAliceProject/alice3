@@ -55,40 +55,40 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class StoryIconFactoryManager implements IconFactoryManager {
-	public StoryIconFactoryManager() {
-	}
+  public StoryIconFactoryManager() {
+  }
 
-	@Override
-	public IconFactory getIconFactory( UserField field, IconFactory fallbackIconFactory ) {
-		final boolean IS_READY_FOR_PRIME_TIME = true;
-		if( IS_READY_FOR_PRIME_TIME ) {
-			AbstractType<?, ?, ?> type = field.getValueType();
-			if( type.isAssignableTo( Visual.class ) ) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
-				synchronized( this.mapFieldToIconFactory ) {
-					FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
-					if( iconFactory != null ) {
-						//pass
-					} else {
-						iconFactory = new FieldIconFactory( field, fallbackIconFactory );
-						this.mapFieldToIconFactory.put( field, iconFactory );
-					}
-					return iconFactory;
-				}
-			} else {
-				return fallbackIconFactory;
-			}
-		} else {
-			return fallbackIconFactory;
-		}
-	}
+  @Override
+  public IconFactory getIconFactory(UserField field, IconFactory fallbackIconFactory) {
+    final boolean IS_READY_FOR_PRIME_TIME = true;
+    if (IS_READY_FOR_PRIME_TIME) {
+      AbstractType<?, ?, ?> type = field.getValueType();
+      if (type.isAssignableTo(Visual.class)) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
+        synchronized (this.mapFieldToIconFactory) {
+          FieldIconFactory iconFactory = this.mapFieldToIconFactory.get(field);
+          if (iconFactory != null) {
+            //pass
+          } else {
+            iconFactory = new FieldIconFactory(field, fallbackIconFactory);
+            this.mapFieldToIconFactory.put(field, iconFactory);
+          }
+          return iconFactory;
+        }
+      } else {
+        return fallbackIconFactory;
+      }
+    } else {
+      return fallbackIconFactory;
+    }
+  }
 
-	@Override
-	public void markIconFactoryForFieldDirty( UserField field ) {
-		FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
-		if( iconFactory != null ) {
-			iconFactory.markAllIconsDirty();
-		}
-	}
+  @Override
+  public void markIconFactoryForFieldDirty(UserField field) {
+    FieldIconFactory iconFactory = this.mapFieldToIconFactory.get(field);
+    if (iconFactory != null) {
+      iconFactory.markAllIconsDirty();
+    }
+  }
 
-	private final Map<UserField, FieldIconFactory> mapFieldToIconFactory = Maps.newWeakHashMap();
+  private final Map<UserField, FieldIconFactory> mapFieldToIconFactory = Maps.newWeakHashMap();
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Bamboo">
+    <BoundingBox>
+        <Min x="-0.6344068646430969" y="-0.006325203459709883" z="-0.6172494292259216"/>
+        <Max x="0.8129389882087708" y="3.6309807300567627" z="0.6806513667106628"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>tree</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shoot1" resourceName="SHOOT1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.07068506628274918" y="0.0" z="-0.1506967693567276"/>
+            <Max x="0.19757437705993652" y="1.485694169998169" z="0.12953388690948486"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shoot2" resourceName="SHOOT2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2489655613899231" y="-0.006325203459709883" z="-0.22379200160503387"/>
+            <Max x="0.18001431226730347" y="1.3746423721313477" z="0.22625496983528137"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shoot3" resourceName="SHOOT3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.17606103420257568" y="0.0" z="-0.17739416658878326"/>
+            <Max x="0.17668597400188446" y="2.1261823177337646" z="0.20078590512275696"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shoot4" resourceName="SHOOT4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.3986733555793762" y="0.0" z="-0.4070066809654236"/>
+            <Max x="0.15770944952964783" y="2.305521249771118" z="0.12423796206712723"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster1" resourceName="CLUSTER1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.5135949850082397" y="-0.005899349693208933" z="-0.528200089931488"/>
+            <Max x="0.8129389882087708" y="2.1101295948028564" z="0.6806513667106628"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster2" resourceName="CLUSTER2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.45453521609306335" y="-0.005899349693208933" z="-0.5457026958465576"/>
+            <Max x="0.35219907760620117" y="2.1101295948028564" z="0.4688657820224762"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster3" resourceName="CLUSTER3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.5754665732383728" y="-0.005899349693208933" z="-0.4124169647693634"/>
+            <Max x="0.8086087107658386" y="2.1101298332214355" z="0.250091016292572"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cluster4" resourceName="CLUSTER4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.26133373379707336" y="-0.005899349693208933" z="-0.5596780776977539"/>
+            <Max x="0.35801634192466736" y="1.7774059772491455" z="0.30744993686676025"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="EA" modelName="Thicket" resourceName="THICKET_DARK_GREEN" textureName="DARK_GREEN">
+        <BoundingBox>
+            <Min x="-0.6344068646430969" y="0.0" z="-0.6172494292259216"/>
+            <Max x="0.6344068646430969" y="3.6309807300567627" z="0.6172494292259216"/>
+        </BoundingBox>
+    </Resource>
+    <Resource creator="EA" modelName="Thicket" resourceName="THICKET_LIGHT_GREEN" textureName="LIGHT_GREEN">
+        <BoundingBox>
+            <Min x="-0.6344068646430969" y="0.0" z="-0.6172494292259216"/>
+            <Max x="0.6344068646430969" y="3.6309807300567627" z="0.6172494292259216"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

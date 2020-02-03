@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class IndexedQuadrilateralArray extends IndexedPolygonArray {
-	@Override
-	public int getIndicesPerPolygon() {
-		return 4;
-	}
+  @Override
+  public int getIndicesPerPolygon() {
+    return 4;
+  }
 }

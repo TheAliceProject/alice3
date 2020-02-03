@@ -66,133 +66,132 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class List<T> extends ItemSelectable<JList, T, SingleSelectListState<T, ?>> {
-	public enum LayoutOrientation {
-		VERTICAL( JList.VERTICAL ),
-		VERTICAL_WRAP( JList.VERTICAL_WRAP ),
-		HORIZONTAL_WRAP( JList.HORIZONTAL_WRAP );
-		private int internal;
+  public enum LayoutOrientation {
+    VERTICAL(JList.VERTICAL), VERTICAL_WRAP(JList.VERTICAL_WRAP), HORIZONTAL_WRAP(JList.HORIZONTAL_WRAP);
+    private int internal;
 
-		private LayoutOrientation( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private LayoutOrientation(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	private static class DefaultEmptyListPainter<T> implements Painter<List<T>> {
-		private static final Map<TextAttribute, Object> mapDeriveFont;
-		static {
-			mapDeriveFont = Maps.newHashMap();
-			mapDeriveFont.put( TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE );
-			mapDeriveFont.put( TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT );
-		}
+  private static class DefaultEmptyListPainter<T> implements Painter<List<T>> {
+    private static final Map<TextAttribute, Object> mapDeriveFont;
 
-		@Override
-		public void paint( Graphics2D g2, List<T> listView, int width, int height ) {
-			SingleSelectListState<T, ?> state = listView.getModel();
-			PlainStringValue emptyConditionText = state.getEmptyConditionText();
-			String text = emptyConditionText.getText();
-			if( ( text != null ) && ( text.length() > 0 ) ) {
-				GraphicsUtilities.setRenderingHint( g2, RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-				g2.setPaint( Color.DARK_GRAY );
-				g2.setFont( g2.getFont().deriveFont( mapDeriveFont ) );
-				final int OFFSET = 4;
-				g2.drawString( text, OFFSET, OFFSET + g2.getFontMetrics().getAscent() );
-			}
-		}
-	}
+    static {
+      mapDeriveFont = Maps.newHashMap();
+      mapDeriveFont.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
+      mapDeriveFont.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT);
+    }
 
-	private Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
+    @Override
+    public void paint(Graphics2D g2, List<T> listView, int width, int height) {
+      SingleSelectListState<T, ?> state = listView.getModel();
+      PlainStringValue emptyConditionText = state.getEmptyConditionText();
+      String text = emptyConditionText.getText();
+      if ((text != null) && (text.length() > 0)) {
+        GraphicsUtilities.setRenderingHint(g2, RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setPaint(Color.DARK_GRAY);
+        g2.setFont(g2.getFont().deriveFont(mapDeriveFont));
+        final int OFFSET = 4;
+        g2.drawString(text, OFFSET, OFFSET + g2.getFontMetrics().getAscent());
+      }
+    }
+  }
 
-	public List( SingleSelectListState<T, ?> model ) {
-		super( model );
-		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
-		this.getAwtComponent().setSelectionModel( model.getSwingModel().getListSelectionModel() );
-	}
+  private Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
 
-	private final LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				AbstractWindow<?> window = List.this.getRoot();
-				if( window != null ) {
-					Button defaultButton = window.getDefaultButton();
-					if( defaultButton != null ) {
-						defaultButton.doClick();
-					}
-				}
-			}
-		}
-	};
+  public List(SingleSelectListState<T, ?> model) {
+    super(model);
+    this.getAwtComponent().setModel(model.getSwingModel().getComboBoxModel());
+    this.getAwtComponent().setSelectionModel(model.getSwingModel().getListSelectionModel());
+  }
 
-	public void enableClickingDefaultButtonOnDoubleClick() {
-		this.addMouseListener( this.mouseAdapter );
-		this.addMouseMotionListener( this.mouseAdapter );
-	}
+  private final LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {
+    @Override
+    protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickCountUnquote) {
+      if (quoteClickCountUnquote == 2) {
+        AbstractWindow<?> window = List.this.getRoot();
+        if (window != null) {
+          Button defaultButton = window.getDefaultButton();
+          if (defaultButton != null) {
+            defaultButton.doClick();
+          }
+        }
+      }
+    }
+  };
 
-	public void disableClickingDefaultButtonOnDoubleClick() {
-		this.removeMouseMotionListener( this.mouseAdapter );
-		this.removeMouseListener( this.mouseAdapter );
-	}
+  public void enableClickingDefaultButtonOnDoubleClick() {
+    this.addMouseListener(this.mouseAdapter);
+    this.addMouseMotionListener(this.mouseAdapter);
+  }
 
-	protected class JDefaultList extends JList {
-		@Override
-		public Dimension getPreferredSize() {
-			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-		}
+  public void disableClickingDefaultButtonOnDoubleClick() {
+    this.removeMouseMotionListener(this.mouseAdapter);
+    this.removeMouseListener(this.mouseAdapter);
+  }
 
-		@Override
-		protected void paintComponent( Graphics g ) {
-			super.paintComponent( g );
-			ListModel model = this.getModel();
-			if( model.getSize() == 0 ) {
-				if( emptyConditionPainter != null ) {
-					emptyConditionPainter.paint( (Graphics2D)g, List.this, this.getWidth(), this.getHeight() );
-				}
-			}
-		}
-	}
+  protected class JDefaultList extends JList {
+    @Override
+    public Dimension getPreferredSize() {
+      return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+    }
 
-	@Override
-	protected JList createAwtComponent() {
-		return new JDefaultList();
-	}
+    @Override
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      ListModel model = this.getModel();
+      if (model.getSize() == 0) {
+        if (emptyConditionPainter != null) {
+          emptyConditionPainter.paint((Graphics2D) g, List.this, this.getWidth(), this.getHeight());
+        }
+      }
+    }
+  }
 
-	public Painter<List<T>> getEmptyConditionPainter() {
-		return this.emptyConditionPainter;
-	}
+  @Override
+  protected JList createAwtComponent() {
+    return new JDefaultList();
+  }
 
-	public void setEmptyConditionPainter( Painter<List<T>> emptyConditionPainter ) {
-		this.emptyConditionPainter = emptyConditionPainter;
-	}
+  public Painter<List<T>> getEmptyConditionPainter() {
+    return this.emptyConditionPainter;
+  }
 
-	public ListCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
+  public void setEmptyConditionPainter(Painter<List<T>> emptyConditionPainter) {
+    this.emptyConditionPainter = emptyConditionPainter;
+  }
 
-	public void setCellRenderer( ListCellRenderer listCellRenderer ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
-	}
+  public ListCellRenderer getCellRenderer() {
+    return this.getAwtComponent().getCellRenderer();
+  }
 
-	public int getVisibleRowCount() {
-		return this.getAwtComponent().getVisibleRowCount();
-	}
+  public void setCellRenderer(ListCellRenderer listCellRenderer) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setCellRenderer(listCellRenderer);
+  }
 
-	public void setVisibleRowCount( int visibleRowCount ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
-	}
+  public int getVisibleRowCount() {
+    return this.getAwtComponent().getVisibleRowCount();
+  }
 
-	public int getSelectedIndex() {
-		return this.getAwtComponent().getSelectedIndex();
-	}
+  public void setVisibleRowCount(int visibleRowCount) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVisibleRowCount(visibleRowCount);
+  }
 
-	public void ensureIndexIsVisible( int index ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().ensureIndexIsVisible( index );
-	}
+  public int getSelectedIndex() {
+    return this.getAwtComponent().getSelectedIndex();
+  }
 
-	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
-	}
+  public void ensureIndexIsVisible(int index) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().ensureIndexIsVisible(index);
+  }
+
+  public void setLayoutOrientation(LayoutOrientation layoutOrientation) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setLayoutOrientation(layoutOrientation.internal);
+  }
 }

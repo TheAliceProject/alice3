@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class InputDialogContentComposite extends GatedCommitDialogContentComposite<InputDialogContentPane> {
-	public InputDialogContentComposite( InputDialogCoreComposite<?> coreComposite ) {
-		super( UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
-	}
+  public InputDialogContentComposite(InputDialogCoreComposite<?> coreComposite) {
+    super(UUID.fromString("7cb5123b-293e-4ec8-bc99-a221f8a10d1b"), coreComposite);
+  }
 
-	@Override
-	protected InputDialogContentPane createView() {
-		return new InputDialogContentPane( this );
-	}
+  @Override
+  protected InputDialogContentPane createView() {
+    return new InputDialogContentPane(this);
+  }
 }

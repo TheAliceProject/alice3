@@ -54,109 +54,109 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableListData<T> extends AbstractMutableListData<T> {
-	private boolean isRefreshNecessary = true;
-	private List<T> values;
+  private boolean isRefreshNecessary = true;
+  private List<T> values;
 
-	public RefreshableListData( ItemCodec<T> itemCodec ) {
-		super( itemCodec );
-	}
+  public RefreshableListData(ItemCodec<T> itemCodec) {
+    super(itemCodec);
+  }
 
-	private boolean refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			List<T> nextValues = this.createValues();
+  private boolean refreshIfNecessary() {
+    if (this.isRefreshNecessary) {
+      List<T> nextValues = this.createValues();
 
-			assert nextValues != null : this;
+      assert nextValues != null : this;
 
-			boolean isDataChanged = false;
-			if( this.values != null ) {
-				if( nextValues.size() == this.values.size() ) {
-					final int N = nextValues.size();
-					for( int i = 0; i < N; i++ ) {
-						if( nextValues.get( i ) != this.values.get( i ) ) {
-							isDataChanged = true;
-							break;
-						}
-					}
-				} else {
-					isDataChanged = true;
-				}
-			} else {
-				isDataChanged = true;
-			}
+      boolean isDataChanged = false;
+      if (this.values != null) {
+        if (nextValues.size() == this.values.size()) {
+          final int N = nextValues.size();
+          for (int i = 0; i < N; i++) {
+            if (nextValues.get(i) != this.values.get(i)) {
+              isDataChanged = true;
+              break;
+            }
+          }
+        } else {
+          isDataChanged = true;
+        }
+      } else {
+        isDataChanged = true;
+      }
 
-			if( isDataChanged ) {
-				this.values = nextValues;
-			}
-			this.isRefreshNecessary = false;
-			return isDataChanged;
-		} else {
-			return false;
-		}
-	}
+      if (isDataChanged) {
+        this.values = nextValues;
+      }
+      this.isRefreshNecessary = false;
+      return isDataChanged;
+    } else {
+      return false;
+    }
+  }
 
-	protected abstract List<T> createValues();
+  protected abstract List<T> createValues();
 
-	public final void refresh() {
-		this.isRefreshNecessary = true;
-		if( this.refreshIfNecessary() ) {
-			this.fireContentsChanged();
-		}
-	}
+  public final void refresh() {
+    this.isRefreshNecessary = true;
+    if (this.refreshIfNecessary()) {
+      this.fireContentsChanged();
+    }
+  }
 
-	@Override
-	public boolean contains( T item ) {
-		return this.values.contains( item );
-	}
+  @Override
+  public boolean contains(T item) {
+    return this.values.contains(item);
+  }
 
-	@Override
-	public final T getItemAt( int index ) {
-		return this.values.get( index );
-	}
+  @Override
+  public final T getItemAt(int index) {
+    return this.values.get(index);
+  }
 
-	@Override
-	public final int getItemCount() {
-		this.refreshIfNecessary();
-		return this.values.size();
-	}
+  @Override
+  public final int getItemCount() {
+    this.refreshIfNecessary();
+    return this.values.size();
+  }
 
-	@Override
-	public final int indexOf( T item ) {
-		if( this.values != null ) {
-			return this.values.indexOf( item );
-		} else {
-			return -1;
-		}
-	}
+  @Override
+  public final int indexOf(T item) {
+    if (this.values != null) {
+      return this.values.indexOf(item);
+    } else {
+      return -1;
+    }
+  }
 
-	@Override
-	public void internalAddItem( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalAddItem(int index, T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public void internalRemoveItem( T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalRemoveItem(T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public final void internalSetAllItems( Collection<T> items ) {
-		Logger.severe( items );
-	}
+  @Override
+  public final void internalSetAllItems(Collection<T> items) {
+    Logger.severe(items);
+  }
 
-	@Override
-	public void internalSetItemAt( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
+  @Override
+  public void internalSetItemAt(int index, T item) {
+    throw new UnsupportedOperationException();
+  }
 
-	@Override
-	public final Iterator<T> iterator() {
-		this.refreshIfNecessary();
-		return this.values.iterator();
-	}
+  @Override
+  public final Iterator<T> iterator() {
+    this.refreshIfNecessary();
+    return this.values.iterator();
+  }
 
-	@Override
-	protected final T[] toArray( Class<T> componentType ) {
-		this.refreshIfNecessary();
-		return ArrayUtilities.createArray( this.values, componentType );
-	}
+  @Override
+  protected final T[] toArray(Class<T> componentType) {
+    this.refreshIfNecessary();
+    return ArrayUtilities.createArray(this.values, componentType);
+  }
 }

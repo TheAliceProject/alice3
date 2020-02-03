@@ -49,18 +49,18 @@ import org.lgna.croquet.CascadeBlankOwner;
  * @author Dennis Cosgrove
  */
 public abstract class BlankOwnerNode<F, B, M extends CascadeBlankOwner<F, B>> extends AbstractItemNode<F, B, M> {
-	public BlankOwnerNode( M model ) {
-		super( model );
-	}
+  public BlankOwnerNode(M model) {
+    super(model);
+  }
 
-	private RtBlankOwner<F, B, M, ?> rtBlankOwner;
+  private RtBlankOwner<F, B, M, ?> rtBlankOwner;
 
-	/* private-private */void setRtBlankOwner( RtBlankOwner<F, B, M, ?> rtBlankOwner ) {
-		this.rtBlankOwner = rtBlankOwner;
-	}
+  /* private-private */void setRtBlankOwner(RtBlankOwner<F, B, M, ?> rtBlankOwner) {
+    this.rtBlankOwner = rtBlankOwner;
+  }
 
-	@Override
-	public BlankNode<B> getBlankStepAt( int i ) {
-		return this.rtBlankOwner.getBlankStepAt( i );
-	}
+  @Override
+  public BlankNode<B> getBlankStepAt(int i) {
+    return this.rtBlankOwner.getBlankStepAt(i);
+  }
 }

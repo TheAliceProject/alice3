@@ -59,46 +59,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SingleSelectListStateMenuModel<T, D extends ListData<T>> extends MenuModel {
-	public SingleSelectListStateMenuModel( SingleSelectListState<T, D> listSelectionState ) {
-		super( UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
-		this.listSelectionState = listSelectionState;
-	}
+  public SingleSelectListStateMenuModel(SingleSelectListState<T, D> listSelectionState) {
+    super(UUID.fromString("e33bc1ff-3790-4715-b88c-3c978aa16947"), listSelectionState.getClass());
+    this.listSelectionState = listSelectionState;
+  }
 
-	public SingleSelectListState<T, D> getListSelectionState() {
-		return this.listSelectionState;
-	}
+  public SingleSelectListState<T, D> getListSelectionState() {
+    return this.listSelectionState;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.listSelectionState.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.listSelectionState.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.listSelectionState.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.listSelectionState.setEnabled(isEnabled);
+  }
 
-	@Override
-	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		Logger.todo( menuItemContainer, e );
-		super.handleShowing( menuItemContainer, e );
-		ButtonGroup buttonGroup = new ButtonGroup();
-		for( final Object item : this.listSelectionState ) {
-			Operation operation = this.listSelectionState.getItemSelectionOperation( (T)item );
-			operation.initializeIfNecessary();
-			Action action = operation.getImp().getSwingModel().getAction();
-			JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem( action );
-			buttonGroup.add( jMenuItem );
-			jMenuItem.setSelected( this.listSelectionState.getValue() == item );
-			menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
-		}
-	}
+  @Override
+  protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    Logger.todo(menuItemContainer, e);
+    super.handleShowing(menuItemContainer, e);
+    ButtonGroup buttonGroup = new ButtonGroup();
+    for (final Object item : this.listSelectionState) {
+      Operation operation = this.listSelectionState.getItemSelectionOperation((T) item);
+      operation.initializeIfNecessary();
+      Action action = operation.getImp().getSwingModel().getAction();
+      JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem(action);
+      buttonGroup.add(jMenuItem);
+      jMenuItem.setSelected(this.listSelectionState.getValue() == item);
+      menuItemContainer.getViewController().getAwtComponent().add(jMenuItem);
+    }
+  }
 
-	@Override
-	protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		menuItemContainer.forgetAndRemoveAllMenuItems();
-		super.handleHiding( menuItemContainer, e );
-	}
+  @Override
+  protected void handleHiding(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    menuItemContainer.forgetAndRemoveAllMenuItems();
+    super.handleHiding(menuItemContainer, e);
+  }
 
-	private final SingleSelectListState<T, D> listSelectionState;
+  private final SingleSelectListState<T, D> listSelectionState;
 }

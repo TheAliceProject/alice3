@@ -48,21 +48,21 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import java.util.Map;
 
 public class AccountManager {
-	public static AccountInformation get( String key ) {
-		return map.get( key );
-	}
+  public static AccountInformation get(String key) {
+    return map.get(key);
+  }
 
-	public static void logIn( String key, AccountInformation accountInformation ) {
-		map.put( key, accountInformation );
-	}
+  public static void logIn(String key, AccountInformation accountInformation) {
+    map.put(key, accountInformation);
+  }
 
-	public static void logIn( String key, String id, String password, String fullName ) {
-		logIn( key, new AccountInformation( id, password, fullName ) );
-	}
+  public static void logIn(String key, String id, String password, String fullName) {
+    logIn(key, new AccountInformation(id, password, fullName));
+  }
 
-	public static void logOut( String key ) {
-		map.remove( key );
-	}
+  public static void logOut(String key) {
+    map.remove(key);
+  }
 
-	private static final Map<String, AccountInformation> map = Maps.newHashMap();
+  private static final Map<String, AccountInformation> map = Maps.newHashMap();
 }

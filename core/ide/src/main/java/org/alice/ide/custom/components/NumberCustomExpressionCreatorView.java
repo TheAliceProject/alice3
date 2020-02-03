@@ -68,77 +68,71 @@ import java.awt.GridBagConstraints;
  * @author Dennis Cosgrove
  */
 public final class NumberCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public NumberCustomExpressionCreatorView( NumberCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public NumberCustomExpressionCreatorView(NumberCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> createMainComponent() {
-		NumberCustomExpressionCreatorComposite composite = (NumberCustomExpressionCreatorComposite)this.getComposite();
-		NumberModel numberModel = composite.getNumberModel();
-		JTextField view = numberModel.getTextField();
+  @Override
+  protected SwingComponentView<?> createMainComponent() {
+    NumberCustomExpressionCreatorComposite composite = (NumberCustomExpressionCreatorComposite) this.getComposite();
+    NumberModel numberModel = composite.getNumberModel();
+    JTextField view = numberModel.getTextField();
 
-		PlusMinusOperation plusMinusOperation = PlusMinusOperation.getInstance( numberModel );
-		if( numberModel.isDecimalPointSupported() ) {
-			DecimalPointOperation decimalPointOperation = DecimalPointOperation.getInstance( numberModel );
-			decimalPointOperation.setEnabled( numberModel.isDecimalPointSupported() );
-		}
+    PlusMinusOperation plusMinusOperation = PlusMinusOperation.getInstance(numberModel);
+    if (numberModel.isDecimalPointSupported()) {
+      DecimalPointOperation decimalPointOperation = DecimalPointOperation.getInstance(numberModel);
+      decimalPointOperation.setEnabled(numberModel.isDecimalPointSupported());
+    }
 
-		GridBagPanel gridBagPanel = new GridBagPanel();
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weighty = 0.0;
-		gbc.weightx = 1.0;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)7 ).createButton(), gbc );
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)8 ).createButton(), gbc );
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)9 ).createButton(), gbc );
+    GridBagPanel gridBagPanel = new GridBagPanel();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weighty = 0.0;
+    gbc.weightx = 1.0;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 7).createButton(), gbc);
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 8).createButton(), gbc);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 9).createButton(), gbc);
 
-		gbc.weightx = 0.0;
-		gbc.gridwidth = 1;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)4 ).createButton(), gbc );
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)5 ).createButton(), gbc );
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)6 ).createButton(), gbc );
+    gbc.weightx = 0.0;
+    gbc.gridwidth = 1;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 4).createButton(), gbc);
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 5).createButton(), gbc);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 6).createButton(), gbc);
 
-		gbc.gridwidth = 1;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)1 ).createButton(), gbc );
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)2 ).createButton(), gbc );
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)3 ).createButton(), gbc );
+    gbc.gridwidth = 1;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 1).createButton(), gbc);
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 2).createButton(), gbc);
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 3).createButton(), gbc);
 
-		if( numberModel.isDecimalPointSupported() ) {
-			gbc.gridwidth = 1;
-			gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)0 ).createButton(), gbc );
-			gridBagPanel.addComponent( DecimalPointOperation.getInstance( numberModel ).createButton(), gbc );
-		} else {
-			gbc.gridwidth = 2;
-			gridBagPanel.addComponent( NumeralOperation.getInstance( numberModel, (short)0 ).createButton(), gbc );
-		}
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
+    if (numberModel.isDecimalPointSupported()) {
+      gbc.gridwidth = 1;
+      gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 0).createButton(), gbc);
+      gridBagPanel.addComponent(DecimalPointOperation.getInstance(numberModel).createButton(), gbc);
+    } else {
+      gbc.gridwidth = 2;
+      gridBagPanel.addComponent(NumeralOperation.getInstance(numberModel, (short) 0).createButton(), gbc);
+    }
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gridBagPanel.addComponent(plusMinusOperation.createButton(), gbc);
 
-		gbc.weighty = 1.0;
-		gridBagPanel.addComponent( BoxUtilities.createGlue(), gbc );
+    gbc.weighty = 1.0;
+    gridBagPanel.addComponent(BoxUtilities.createGlue(), gbc);
 
-		gridBagPanel.setBorder( BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+    gridBagPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
 
-		LineAxisPanel lineAxisPanel = new LineAxisPanel(
-				new SwingAdapter( view ),
-				BackspaceOperation.getInstance( numberModel ).createButton()
-				);
+    LineAxisPanel lineAxisPanel = new LineAxisPanel(new SwingAdapter(view), BackspaceOperation.getInstance(numberModel).createButton());
 
-		BorderPanel rv = new BorderPanel.Builder()
-				.pageStart( lineAxisPanel )
-				.center( gridBagPanel )
-				.build();
+    BorderPanel rv = new BorderPanel.Builder().pageStart(lineAxisPanel).center(gridBagPanel).build();
 
-		Font font = FontUtilities.scaleFont( gridBagPanel.getFont(), 2.0f );
-		view.setFont( font );
-		for( Button button : HierarchyUtilities.findAllMatches( rv, Button.class ) ) {
-			button.setFont( font );
-		}
+    Font font = FontUtilities.scaleFont(gridBagPanel.getFont(), 2.0f);
+    view.setFont(font);
+    for (Button button : HierarchyUtilities.findAllMatches(rv, Button.class)) {
+      button.setFont(font);
+    }
 
-		return rv;
-	}
+    return rv;
+  }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Raven">
+    <BoundingBox>
+        <Min x="-0.22950046220853437" y="-6.994969030619877E-4" z="-0.5347302519852405"/>
+        <Max x="0.2611147492918429" y="0.5989589804635771" z="0.5924160211069786"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>raven</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Raven" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

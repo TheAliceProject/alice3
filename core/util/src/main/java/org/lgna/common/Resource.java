@@ -61,155 +61,155 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class Resource implements Nameable, NameChangeListenable {
-	protected Resource( UUID uuid ) {
-		this.uuid = uuid;
-	}
+  protected Resource(UUID uuid) {
+    this.uuid = uuid;
+  }
 
-	protected Resource( Class<?> cls, String resourceName, String contentType ) {
-		this( UUID.randomUUID() );
-		try {
-			byte[] data = InputStreamUtilities.getBytes( cls, resourceName );
-			this.setOriginalFileName( resourceName );
-			this.setName( resourceName );
-			this.setContent( contentType, data );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( resourceName, ioe );
-		}
-	}
+  protected Resource(Class<?> cls, String resourceName, String contentType) {
+    this(UUID.randomUUID());
+    try {
+      byte[] data = InputStreamUtilities.getBytes(cls, resourceName);
+      this.setOriginalFileName(resourceName);
+      this.setName(resourceName);
+      this.setContent(contentType, data);
+    } catch (IOException ioe) {
+      throw new RuntimeException(resourceName, ioe);
+    }
+  }
 
-	protected Resource( File file, String contentType ) throws IOException {
-		this( UUID.randomUUID() );
-		String resourceName = file.getName();
-		byte[] data = InputStreamUtilities.getBytes( file );
-		this.setOriginalFileName( resourceName );
-		this.setName( resourceName );
-		this.setContent( contentType, data );
-	}
+  protected Resource(File file, String contentType) throws IOException {
+    this(UUID.randomUUID());
+    String resourceName = file.getName();
+    byte[] data = InputStreamUtilities.getBytes(file);
+    this.setOriginalFileName(resourceName);
+    this.setName(resourceName);
+    this.setContent(contentType, data);
+  }
 
-	protected Resource( String fileName, String contentType, byte[] data ) {
-		this( UUID.randomUUID() );
-		this.setOriginalFileName( fileName );
-		this.setName( fileName );
-		this.setContent( contentType, data );
-	}
+  protected Resource(String fileName, String contentType, byte[] data) {
+    this(UUID.randomUUID());
+    this.setOriginalFileName(fileName);
+    this.setName(fileName);
+    this.setContent(contentType, data);
+  }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public void setName( String name ) {
-		if( Objects.notEquals( this.name, name ) ) {
-			NameEvent nameEvent = new NameEvent( this, this.name, name );
-			for( NameListener nameListener : this.nameListeners ) {
-				nameListener.nameChanging( nameEvent );
-			}
-			this.name = name;
-			for( NameListener nameListener : this.nameListeners ) {
-				nameListener.nameChanged( nameEvent );
-			}
-		}
-	}
+  @Override
+  public void setName(String name) {
+    if (Objects.notEquals(this.name, name)) {
+      NameEvent nameEvent = new NameEvent(this, this.name, name);
+      for (NameListener nameListener : this.nameListeners) {
+        nameListener.nameChanging(nameEvent);
+      }
+      this.name = name;
+      for (NameListener nameListener : this.nameListeners) {
+        nameListener.nameChanged(nameEvent);
+      }
+    }
+  }
 
-	@Override
-	public void addNameListener( NameListener nameListener ) {
-		assert nameListener != null;
-		this.nameListeners.add( nameListener );
-	}
+  @Override
+  public void addNameListener(NameListener nameListener) {
+    assert nameListener != null;
+    this.nameListeners.add(nameListener);
+  }
 
-	@Override
-	public void removeNameListener( NameListener nameListener ) {
-		assert nameListener != null;
-		this.nameListeners.remove( nameListener );
-	}
+  @Override
+  public void removeNameListener(NameListener nameListener) {
+    assert nameListener != null;
+    this.nameListeners.remove(nameListener);
+  }
 
-	@Override
-	public Collection<NameListener> getNameListeners() {
-		return Collections.unmodifiableCollection( this.nameListeners );
-	}
+  @Override
+  public Collection<NameListener> getNameListeners() {
+    return Collections.unmodifiableCollection(this.nameListeners);
+  }
 
-	public void addContentListener( ResourceContentListener contentListener ) {
-		assert contentListener != null;
-		this.contentListeners.add( contentListener );
-	}
+  public void addContentListener(ResourceContentListener contentListener) {
+    assert contentListener != null;
+    this.contentListeners.add(contentListener);
+  }
 
-	public void removeContentListener( ResourceContentListener contentListener ) {
-		assert contentListener != null;
-		this.contentListeners.remove( contentListener );
-	}
+  public void removeContentListener(ResourceContentListener contentListener) {
+    assert contentListener != null;
+    this.contentListeners.remove(contentListener);
+  }
 
-	public Collection<ResourceContentListener> getContentListeners() {
-		return Collections.unmodifiableCollection( this.contentListeners );
-	}
+  public Collection<ResourceContentListener> getContentListeners() {
+    return Collections.unmodifiableCollection(this.contentListeners);
+  }
 
-	public UUID getId() {
-		return this.uuid;
-	}
+  public UUID getId() {
+    return this.uuid;
+  }
 
-	public String getContentType() {
-		return this.contentType;
-	}
+  public String getContentType() {
+    return this.contentType;
+  }
 
-	public byte[] getData() {
-		return this.data;
-	}
+  public byte[] getData() {
+    return this.data;
+  }
 
-	public void setContent( String contentType, byte[] data ) {
-		ResourceContentEvent e = new ResourceContentEvent( this, contentType, data );
-		for( ResourceContentListener contentListener : this.contentListeners ) {
-			contentListener.contentChanging( e );
-		}
-		this.contentType = contentType;
-		this.data = data;
-		for( ResourceContentListener contentListener : this.contentListeners ) {
-			contentListener.contentChanged( e );
-		}
-	}
+  public void setContent(String contentType, byte[] data) {
+    ResourceContentEvent e = new ResourceContentEvent(this, contentType, data);
+    for (ResourceContentListener contentListener : this.contentListeners) {
+      contentListener.contentChanging(e);
+    }
+    this.contentType = contentType;
+    this.data = data;
+    for (ResourceContentListener contentListener : this.contentListeners) {
+      contentListener.contentChanged(e);
+    }
+  }
 
-	public String getOriginalFileName() {
-		return this.originalFileName;
-	}
+  public String getOriginalFileName() {
+    return this.originalFileName;
+  }
 
-	public void setOriginalFileName( String originalFileName ) {
-		this.originalFileName = originalFileName;
-	}
+  public void setOriginalFileName(String originalFileName) {
+    this.originalFileName = originalFileName;
+  }
 
-	private static String XML_NAME_ATTRIBUTE = "name";
-	private static String XML_ORIGINAL_FILE_NAME_ATTRIBUTE = "originalFileName";
-	private static String XML_CONTENT_TYPE_ATTRIBUTE = "contentType";
+  private static String XML_NAME_ATTRIBUTE = "name";
+  private static String XML_ORIGINAL_FILE_NAME_ATTRIBUTE = "originalFileName";
+  private static String XML_CONTENT_TYPE_ATTRIBUTE = "contentType";
 
-	public void decodeAttributes( Element xmlElement, byte[] data ) {
-		this.setName( xmlElement.getAttribute( XML_NAME_ATTRIBUTE ) );
-		this.setOriginalFileName( xmlElement.getAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE ) );
-		this.setContent( xmlElement.getAttribute( XML_CONTENT_TYPE_ATTRIBUTE ), data );
-	}
+  public void decodeAttributes(Element xmlElement, byte[] data) {
+    this.setName(xmlElement.getAttribute(XML_NAME_ATTRIBUTE));
+    this.setOriginalFileName(xmlElement.getAttribute(XML_ORIGINAL_FILE_NAME_ATTRIBUTE));
+    this.setContent(xmlElement.getAttribute(XML_CONTENT_TYPE_ATTRIBUTE), data);
+  }
 
-	public void encodeAttributes( Element xmlElement ) {
-		xmlElement.setAttribute( XML_NAME_ATTRIBUTE, this.getName() );
-		xmlElement.setAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE, this.getOriginalFileName() );
-		xmlElement.setAttribute( XML_CONTENT_TYPE_ATTRIBUTE, this.getContentType() );
-	}
+  public void encodeAttributes(Element xmlElement) {
+    xmlElement.setAttribute(XML_NAME_ATTRIBUTE, this.getName());
+    xmlElement.setAttribute(XML_ORIGINAL_FILE_NAME_ATTRIBUTE, this.getOriginalFileName());
+    xmlElement.setAttribute(XML_CONTENT_TYPE_ATTRIBUTE, this.getContentType());
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( Resource.class.getName() );
-		sb.append( "[name=" );
-		sb.append( this.getName() );
-		sb.append( ";contentType=" );
-		sb.append( this.getContentType() );
-		sb.append( ";uuid=" );
-		sb.append( this.getId() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(Resource.class.getName());
+    sb.append("[name=");
+    sb.append(this.getName());
+    sb.append(";contentType=");
+    sb.append(this.getContentType());
+    sb.append(";uuid=");
+    sb.append(this.getId());
+    sb.append("]");
+    return sb.toString();
+  }
 
-	private final UUID uuid;
-	private String name;
-	private String originalFileName;
-	private String contentType;
-	private byte[] data;
-	private List<NameListener> nameListeners = Lists.newCopyOnWriteArrayList();
-	private List<ResourceContentListener> contentListeners = Lists.newCopyOnWriteArrayList();
+  private final UUID uuid;
+  private String name;
+  private String originalFileName;
+  private String contentType;
+  private byte[] data;
+  private List<NameListener> nameListeners = Lists.newCopyOnWriteArrayList();
+  private List<ResourceContentListener> contentListeners = Lists.newCopyOnWriteArrayList();
 }

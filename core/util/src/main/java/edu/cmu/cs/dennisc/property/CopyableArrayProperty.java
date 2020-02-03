@@ -46,49 +46,49 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public abstract class CopyableArrayProperty<T> extends CopyableInstanceProperty<T[]> {
-	public CopyableArrayProperty( InstancePropertyOwner owner, T... value ) {
-		super( owner, value );
-	}
+  public CopyableArrayProperty(InstancePropertyOwner owner, T... value) {
+    super(owner, value);
+  }
 
-	public int getLength() {
-		T[] value = this.getValue();
-		if( value != null ) {
-			return value.length;
-		} else {
-			return 0;
-		}
-	}
+  public int getLength() {
+    T[] value = this.getValue();
+    if (value != null) {
+      return value.length;
+    } else {
+      return 0;
+    }
+  }
 
-	@Override
-	public void setValue( T[] value ) {
-		assert value != null : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(T[] value) {
+    assert value != null : this;
+    super.setValue(value);
+  }
 
-	protected abstract T[] createArray( int length );
+  protected abstract T[] createArray(int length);
 
-	protected abstract T createCopy( T e );
+  protected abstract T createCopy(T e);
 
-	@Override
-	public T[] getCopy( T[] rv ) {
-		T[] value = getValue();
-		for( int i = 0; i < value.length; i++ ) {
-			rv[ i ] = createCopy( value[ i ] );
-		}
-		return rv;
-	}
+  @Override
+  public T[] getCopy(T[] rv) {
+    T[] value = getValue();
+    for (int i = 0; i < value.length; i++) {
+      rv[i] = createCopy(value[i]);
+    }
+    return rv;
+  }
 
-	@Override
-	public final T[] getCopy() {
-		return this.getCopy( this.createArray( this.getLength() ) );
-	}
+  @Override
+  public final T[] getCopy() {
+    return this.getCopy(this.createArray(this.getLength()));
+  }
 
-	@Override
-	public void setCopy( T[] value ) {
-		T[] dst = this.createArray( value.length );
-		for( int i = 0; i < value.length; i++ ) {
-			dst[ i ] = this.createCopy( value[ i ] );
-		}
-		this.setValue( value );
-	}
+  @Override
+  public void setCopy(T[] value) {
+    T[] dst = this.createArray(value.length);
+    for (int i = 0; i < value.length; i++) {
+      dst[i] = this.createCopy(value[i]);
+    }
+    this.setValue(value);
+  }
 }

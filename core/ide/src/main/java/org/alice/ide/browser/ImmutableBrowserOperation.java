@@ -52,32 +52,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImmutableBrowserOperation extends BrowserOperation {
-	private final URL url;
+  private final URL url;
 
-	public ImmutableBrowserOperation( UUID id, String spec ) {
-		super( id );
-		try {
-			this.url = new URL( spec );
-		} catch( MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
-	}
+  public ImmutableBrowserOperation(UUID id, String spec) {
+    super(id);
+    try {
+      this.url = new URL(spec);
+    } catch (MalformedURLException murle) {
+      throw new RuntimeException(spec, murle);
+    }
+  }
 
-	@Override
-	protected final void localize() {
-		String spec = this.url.toString();
-		this.setName( spec );
-		super.localize();
-		String name = this.getImp().getName();
-		if( Objects.equals( spec, name ) ) {
-			//pass
-		} else {
-			this.setToolTipText( spec );
-		}
-	}
+  @Override
+  protected final void localize() {
+    String spec = this.url.toString();
+    this.setName(spec);
+    super.localize();
+    String name = this.getImp().getName();
+    if (Objects.equals(spec, name)) {
+      //pass
+    } else {
+      this.setToolTipText(spec);
+    }
+  }
 
-	@Override
-	protected URL getUrl() {
-		return this.url;
-	}
+  @Override
+  protected URL getUrl() {
+    return this.url;
+  }
 }

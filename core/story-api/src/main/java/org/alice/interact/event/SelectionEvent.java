@@ -52,23 +52,23 @@ import org.lgna.story.implementation.AbstractTransformableImp;
  * @author David Culyba
  */
 public class SelectionEvent extends Event<DragAdapter> {
-	public SelectionEvent( DragAdapter source, AbstractTransformableImp transformable ) {
-		super( source );
-		this.transformable = transformable;
-	}
+  public SelectionEvent(DragAdapter source, AbstractTransformableImp transformable) {
+    super(source);
+    this.transformable = transformable;
+  }
 
-	public SelectionEvent( DragAdapter source, STurnable mtTransformable ) {
-		super( source );
-		if( mtTransformable != null ) {
-			this.transformable = EmployeesOnly.getImplementation( mtTransformable );
-		} else {
-			this.transformable = null;
-		}
-	}
+  public SelectionEvent(DragAdapter source, STurnable mtTransformable) {
+    super(source);
+    if (mtTransformable != null) {
+      this.transformable = EmployeesOnly.getImplementation(mtTransformable);
+    } else {
+      this.transformable = null;
+    }
+  }
 
-	public AbstractTransformableImp getTransformable() {
-		return this.transformable;
-	}
+  public AbstractTransformableImp getTransformable() {
+    return this.transformable;
+  }
 
-	private final AbstractTransformableImp transformable;
+  private final AbstractTransformableImp transformable;
 }

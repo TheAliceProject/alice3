@@ -55,36 +55,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
-	private static class SingletonHolder {
-		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
-	}
+  private static class SingletonHolder {
+    private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+  }
 
-	public static ActiveTransactionHistoryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ActiveTransactionHistoryComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ActiveTransactionHistoryComposite() {
-		super( UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), ProjectApplication.INFORMATION_GROUP );
-		//todo: investigate
-		this.initializeIfNecessary();
-		final boolean IS_SHOWING_BY_DEFAULT = false;
-		if( IS_SHOWING_BY_DEFAULT ) {
-			this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-		}
-	}
+  private ActiveTransactionHistoryComposite() {
+    super(UUID.fromString("2c299a2c-98fa-44d8-9d63-74c19da4bd2b"), ProjectApplication.INFORMATION_GROUP);
+    //todo: investigate
+    this.initializeIfNecessary();
+    final boolean IS_SHOWING_BY_DEFAULT = false;
+    if (IS_SHOWING_BY_DEFAULT) {
+      this.getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected(true);
+    }
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "UserActivity History" );
-		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F8, 0 ) );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    // do not want to bother localizers with this composite
+    this.getIsFrameShowingState().setTextForBothTrueAndFalse("UserActivity History");
+    this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue(javax.swing.Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0));
+  }
 
-	@Override
-	protected TransactionHistoryView createView() {
-		TransactionHistoryView rv = super.createView();
-		rv.setRootActivity( IDE.getActiveInstance().getOverallUserActivity() );
-		return rv;
-	}
+  @Override
+  protected TransactionHistoryView createView() {
+    TransactionHistoryView rv = super.createView();
+    rv.setRootActivity(IDE.getActiveInstance().getOverallUserActivity());
+    return rv;
+  }
 }

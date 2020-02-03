@@ -52,26 +52,26 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
-	@Override
-	public String generateTitle( URI uri, boolean isDocumentUpToDateWithUri ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( IDE.getApplicationName() );
-		sb.append( " " );
-		sb.append( IDE.getVersionAdornment() );
-		sb.append( " " );
-		if( uri != null ) {
-			File file = UriUtilities.getFile( uri );
-			if( file != null ) {
-				sb.append( file );
-			}
-			sb.append( " " );
-		}
-		if( isDocumentUpToDateWithUri ) {
-			//pass
-		} else {
-			sb.append( "*" );
-		}
+  @Override
+  public String generateTitle(URI uri, boolean isDocumentUpToDateWithUri) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(IDE.getApplicationName());
+    sb.append(" ");
+    sb.append(IDE.getVersionAdornment());
+    sb.append(" ");
+    if (uri != null) {
+      File file = UriUtilities.getFile(uri);
+      if (file != null) {
+        sb.append(file);
+      }
+      sb.append(" ");
+    }
+    if (isDocumentUpToDateWithUri) {
+      //pass
+    } else {
+      sb.append("*");
+    }
 
-		return sb.toString();
-	}
+    return sb.toString();
+  }
 }

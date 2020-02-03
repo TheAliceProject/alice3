@@ -51,26 +51,26 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public class AddListPropertyEvent<E> extends ListPropertyEvent<E> {
-	private int m_startIndex;
-	private Collection<? extends E> m_collection;
+  private int m_startIndex;
+  private Collection<? extends E> m_collection;
 
-	public AddListPropertyEvent( ListProperty<E> source, int startIndex, E... elements ) {
-		super( source );
-		m_startIndex = startIndex;
-		m_collection = Arrays.asList( elements );
-	}
+  public AddListPropertyEvent(ListProperty<E> source, int startIndex, E... elements) {
+    super(source);
+    m_startIndex = startIndex;
+    m_collection = Arrays.asList(elements);
+  }
 
-	public AddListPropertyEvent( ListProperty<E> source, int startIndex, Collection<? extends E> elements ) {
-		super( source );
-		m_startIndex = startIndex;
-		m_collection = elements;
-	}
+  public AddListPropertyEvent(ListProperty<E> source, int startIndex, Collection<? extends E> elements) {
+    super(source);
+    m_startIndex = startIndex;
+    m_collection = elements;
+  }
 
-	public int getStartIndex() {
-		return m_startIndex;
-	}
+  public int getStartIndex() {
+    return m_startIndex;
+  }
 
-	public Collection<? extends E> getElements() {
-		return m_collection;
-	}
+  public Collection<? extends E> getElements() {
+    return m_collection;
+  }
 }

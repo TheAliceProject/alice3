@@ -52,27 +52,28 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum IdePerspectiveCodec implements ItemCodec<ProjectPerspective> {
-	SINGLETON;
-	@Override
-	public Class<ProjectPerspective> getValueClass() {
-		return ProjectPerspective.class;
-	}
+  SINGLETON;
 
-	@Override
-	public ProjectPerspective decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-		//org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		//return resolver.getResolved();
-	}
+  @Override
+  public Class<ProjectPerspective> getValueClass() {
+    return ProjectPerspective.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, ProjectPerspective value ) {
-		throw new RuntimeException( "todo" );
-		//binaryEncoder.encode( value.getResolver() );
-	}
+  @Override
+  public ProjectPerspective decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+    //org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    //return resolver.getResolved();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, ProjectPerspective value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, ProjectPerspective value) {
+    throw new RuntimeException("todo");
+    //binaryEncoder.encode( value.getResolver() );
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, ProjectPerspective value) {
+    sb.append(value);
+  }
 }

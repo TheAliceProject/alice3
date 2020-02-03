@@ -51,18 +51,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeSeparator extends CascadeItem<Void, Void> {
-	public CascadeSeparator( UUID id ) {
-		super( id );
-	}
+  public CascadeSeparator(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public final Void createValue( ItemNode<? super Void, Void> node ) {
-		throw new AssertionError();
-	}
+  @Override
+  public final Void createValue(ItemNode<? super Void, Void> node) {
+    throw new AssertionError();
+  }
 
-	@Override
-	public final Void getTransientValue( ItemNode<? super Void, Void> node ) {
-		throw new AssertionError();
-	}
+  @Override
+  public final Void getTransientValue(ItemNode<? super Void, Void> node) {
+    throw new AssertionError();
+  }
 
 }

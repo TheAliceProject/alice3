@@ -68,120 +68,106 @@ import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
-	protected static final Dimension ICON_DIMENSION = new Dimension( 25, 20 );
+  protected static final Dimension ICON_DIMENSION = new Dimension(25, 20);
 
-	private UserField markerField;
-	private UserField selectedField;
+  private UserField markerField;
+  private UserField selectedField;
 
-	private UserField toMoveToField;
-	private UserField toMoveField;
+  private UserField toMoveToField;
+  private UserField toMoveField;
 
-	private MoveToImageIcon imageIcon;
+  private MoveToImageIcon imageIcon;
 
-	protected ObjectMarkerMoveActionOperation( UUID id ) {
-		super( Application.PROJECT_GROUP, id );
-		this.markerField = null;
-		this.selectedField = null;
-		this.imageIcon = new MoveToImageIcon();
-		this.setButtonIcon( imageIcon );
-		this.updateBasedOnSettings();
-	}
+  protected ObjectMarkerMoveActionOperation(UUID id) {
+    super(Application.PROJECT_GROUP, id);
+    this.markerField = null;
+    this.selectedField = null;
+    this.imageIcon = new MoveToImageIcon();
+    this.setButtonIcon(imageIcon);
+    this.updateBasedOnSettings();
+  }
 
-	protected abstract void updateMoveFields( UserField markerField, UserField selectedField );
+  protected abstract void updateMoveFields(UserField markerField, UserField selectedField);
 
-	protected void setToMoveToField( UserField toMoveTo, Icon icon ) {
-		this.toMoveToField = toMoveTo;
-		if( this.toMoveToField != null ) {
-			this.imageIcon.setRightImage( icon );
-		}
-		else {
-			this.imageIcon.setRightImage( null );
-		}
-	}
+  protected void setToMoveToField(UserField toMoveTo, Icon icon) {
+    this.toMoveToField = toMoveTo;
+    if (this.toMoveToField != null) {
+      this.imageIcon.setRightImage(icon);
+    } else {
+      this.imageIcon.setRightImage(null);
+    }
+  }
 
-	protected void setToMoveField( UserField toMove, Icon icon ) {
-		this.toMoveField = toMove;
-		if( this.toMoveField != null ) {
-			this.imageIcon.setLeftImage( icon );
-		}
-		else {
-			this.imageIcon.setLeftImage( null );
-		}
-	}
+  protected void setToMoveField(UserField toMove, Icon icon) {
+    this.toMoveField = toMove;
+    if (this.toMoveField != null) {
+      this.imageIcon.setLeftImage(icon);
+    } else {
+      this.imageIcon.setLeftImage(null);
+    }
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return ObjectMarkerMoveActionOperation.class;
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return ObjectMarkerMoveActionOperation.class;
+  }
 
-	private void updateBasedOnSettings()
-	{
-		if( ( this.toMoveToField != null ) && ( this.toMoveField != null ) )
-		{
-			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
-			MessageFormat formatter = new MessageFormat( "" );
-			formatter.setLocale( JComponent.getDefaultLocale() );
-			formatter.applyPattern( unformattedTooltipText );
-			String tooltipText = formatter.format( new Object[] { this.toMoveField.getName(), this.toMoveToField.getName() } );
-			this.setToolTipText( tooltipText );
-			this.setEnabled( true );
-		}
-		else
-		{
-			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
-			this.setEnabled( false );
-		}
-		this.setButtonIcon( this.imageIcon );
-	}
+  private void updateBasedOnSettings() {
+    if ((this.toMoveToField != null) && (this.toMoveField != null)) {
+      String unformattedTooltipText = this.findLocalizedText("tooltip");
+      MessageFormat formatter = new MessageFormat("");
+      formatter.setLocale(JComponent.getDefaultLocale());
+      formatter.applyPattern(unformattedTooltipText);
+      String tooltipText = formatter.format(new Object[] {this.toMoveField.getName(), this.toMoveToField.getName()});
+      this.setToolTipText(tooltipText);
+      this.setEnabled(true);
+    } else {
+      this.setToolTipText(this.findLocalizedText("disabledTooltip"));
+      this.setEnabled(false);
+    }
+    this.setButtonIcon(this.imageIcon);
+  }
 
-	public void setMarkerField( UserField markerField )
-	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( SThingMarker.class ) )
-		{
-			this.markerField = markerField;
-		}
-		else
-		{
-			this.markerField = null;
-		}
-		if( this.selectedField == this.markerField ) {
-			this.selectedField = null;
-		}
-		updateMoveFields( this.markerField, this.selectedField );
-		this.updateBasedOnSettings();
-	}
+  public void setMarkerField(UserField markerField) {
+    if ((markerField == null) || markerField.getValueType().isAssignableTo(SThingMarker.class)) {
+      this.markerField = markerField;
+    } else {
+      this.markerField = null;
+    }
+    if (this.selectedField == this.markerField) {
+      this.selectedField = null;
+    }
+    updateMoveFields(this.markerField, this.selectedField);
+    this.updateBasedOnSettings();
+  }
 
-	public void setSelectedField( AbstractField field )
-	{
-		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( SMovableTurnable.class ) )
-		{
-			this.selectedField = (UserField)field;
-		}
-		else
-		{
-			this.selectedField = null;
-		}
-		if( this.selectedField == this.markerField ) {
-			this.selectedField = null;
-		}
-		updateMoveFields( this.markerField, this.selectedField );
-		this.updateBasedOnSettings();
-	}
+  public void setSelectedField(AbstractField field) {
+    if ((field instanceof UserField) && field.getValueType().isAssignableTo(SMovableTurnable.class)) {
+      this.selectedField = (UserField) field;
+    } else {
+      this.selectedField = null;
+    }
+    if (this.selectedField == this.markerField) {
+      this.selectedField = null;
+    }
+    updateMoveFields(this.markerField, this.selectedField);
+    this.updateBasedOnSettings();
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
-			Expression toMoveToExpression = new FieldAccess(toMoveToField);
-			AbstractMethod method = AstUtilities.lookupMethod( SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { SThing.class, MoveAndOrientTo.Detail[].class } );
-			LocalTransformationEdit edit = new LocalTransformationEdit( activity, ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new Expression[] { toMoveToExpression } );
-			activity.commitAndInvokeDo( edit );
-		} else {
-			activity.cancel();
-		}
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    if ((this.toMoveField != null) && (this.toMoveToField != null)) {
+      Expression toMoveToExpression = new FieldAccess(toMoveToField);
+      AbstractMethod method = AstUtilities.lookupMethod(SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] {SThing.class, MoveAndOrientTo.Detail[].class});
+      LocalTransformationEdit edit = new LocalTransformationEdit(activity, ThisFieldAccessFactory.getInstance(this.toMoveField), method, new Expression[] {toMoveToExpression});
+      activity.commitAndInvokeDo(edit);
+    } else {
+      activity.cancel();
+    }
+  }
 
 }

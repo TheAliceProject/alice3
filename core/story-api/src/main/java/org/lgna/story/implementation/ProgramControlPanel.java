@@ -72,121 +72,121 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public class ProgramControlPanel extends JPanel {
-	public ProgramControlPanel( final ProgramImp programImp ) {
-		final ButtonModel buttonModel = new JToggleButton.ToggleButtonModel();
-		buttonModel.setSelected( true );
-		buttonModel.addChangeListener( new ChangeListener() {
-			@Override
-			public void stateChanged( ChangeEvent e ) {
-				programImp.getAnimator().setSpeedFactor( buttonModel.isSelected() ? 1.0 : 0.0 );
-			}
-		} );
+  public ProgramControlPanel(final ProgramImp programImp) {
+    final ButtonModel buttonModel = new JToggleButton.ToggleButtonModel();
+    buttonModel.setSelected(true);
+    buttonModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        programImp.getAnimator().setSpeedFactor(buttonModel.isSelected() ? 1.0 : 0.0);
+      }
+    });
 
-		JButton playPauseButton = new JButton();
-		playPauseButton.setModel( buttonModel );
-		playPauseButton.setIcon( new Icon() {
-			@Override
-			public int getIconWidth() {
-				return 12;
-			}
+    JButton playPauseButton = new JButton();
+    playPauseButton.setModel(buttonModel);
+    playPauseButton.setIcon(new Icon() {
+      @Override
+      public int getIconWidth() {
+        return 12;
+      }
 
-			@Override
-			public int getIconHeight() {
-				return 12;
-			}
+      @Override
+      public int getIconHeight() {
+        return 12;
+      }
 
-			@Override
-			public void paintIcon( Component c, Graphics g, int x, int y ) {
-				AbstractButton toggleButton = (AbstractButton)c;
-				ButtonModel buttonModel = toggleButton.getModel();
-				if( buttonModel.isSelected() ) {
-					g.fillRect( x + 1, y + 1, 3, 10 );
-					g.fillRect( x + 7, y + 1, 3, 10 );
-				} else {
-					GraphicsUtilities.fillTriangle( g, GraphicsUtilities.Heading.EAST, x, y, 12, 12 );
-				}
-			}
-		} );
+      @Override
+      public void paintIcon(Component c, Graphics g, int x, int y) {
+        AbstractButton toggleButton = (AbstractButton) c;
+        ButtonModel buttonModel = toggleButton.getModel();
+        if (buttonModel.isSelected()) {
+          g.fillRect(x + 1, y + 1, 3, 10);
+          g.fillRect(x + 7, y + 1, 3, 10);
+        } else {
+          GraphicsUtilities.fillTriangle(g, GraphicsUtilities.Heading.EAST, x, y, 12, 12);
+        }
+      }
+    });
 
-		final int PAD_X = 12;
-		final int PAD_Y = 8;
-		playPauseButton.setBorder( BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
+    final int PAD_X = 12;
+    final int PAD_Y = 8;
+    playPauseButton.setBorder(BorderFactory.createEmptyBorder(PAD_Y, PAD_X, PAD_Y, PAD_X));
 
-		FontUtilities.setFontToDerivedFont( label, TextFamily.MONOSPACED );
+    FontUtilities.setFontToDerivedFont(label, TextFamily.MONOSPACED);
 
-		boundedRangeModel.setMinimum( 1 );
-		boundedRangeModel.setMaximum( 8 );
-		boundedRangeModel.addChangeListener( new ChangeListener() {
-			@Override
-			public void stateChanged( ChangeEvent e ) {
-				ProgramControlPanel.this.updateLabel(programImp.getSpeedFormat());
-				programImp.handleSpeedChange( boundedRangeModel.getValue() );
-			}
-		} );
-		this.updateLabel(programImp.getSpeedFormat());
+    boundedRangeModel.setMinimum(1);
+    boundedRangeModel.setMaximum(8);
+    boundedRangeModel.addChangeListener(new ChangeListener() {
+      @Override
+      public void stateChanged(ChangeEvent e) {
+        ProgramControlPanel.this.updateLabel(programImp.getSpeedFormat());
+        programImp.handleSpeedChange(boundedRangeModel.getValue());
+      }
+    });
+    this.updateLabel(programImp.getSpeedFormat());
 
-		JSlider slider = new JSlider( boundedRangeModel );
-		slider.addMouseListener( new MouseListener() {
-			@Override
-			public void mousePressed( MouseEvent e ) {
-			}
+    JSlider slider = new JSlider(boundedRangeModel);
+    slider.addMouseListener(new MouseListener() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseReleased( MouseEvent e ) {
-				if( InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
-					//pass
-				} else {
-					ProgramControlPanel.this.boundedRangeModel.setValue( 1 );
-				}
-			}
+      @Override
+      public void mouseReleased(MouseEvent e) {
+        if (InputEventUtilities.isQuoteControlUnquoteDown(e)) {
+          //pass
+        } else {
+          ProgramControlPanel.this.boundedRangeModel.setValue(1);
+        }
+      }
 
-			@Override
-			public void mouseClicked( MouseEvent e ) {
-			}
+      @Override
+      public void mouseClicked(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseEntered( MouseEvent e ) {
-			}
+      @Override
+      public void mouseEntered(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseExited( MouseEvent e ) {
-			}
-		} );
+      @Override
+      public void mouseExited(MouseEvent e) {
+      }
+    });
 
-		final int LARGE_PAD = 8;
-		final int SMALL_PAD = 2;
-		this.setLayout( new GridBagLayout() );
+    final int LARGE_PAD = 8;
+    final int SMALL_PAD = 2;
+    this.setLayout(new GridBagLayout());
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 0.0;
-		this.add( playPauseButton, gbc );
-		gbc.insets.left = LARGE_PAD;
-		this.add( this.label, gbc );
-		gbc.weightx = 1.0;
-		gbc.insets.left = SMALL_PAD;
-		this.add( slider, gbc );
-		gbc.weightx = 0.0;
-		gbc.insets.left = LARGE_PAD;
-		Action restartAction = programImp.getRestartAction();
-		if( restartAction != null ) {
-			this.add( new JButton( restartAction ), gbc );
-		}
-		Action toggleFullScreenAction = programImp.getToggleFullScreenAction();
-		if( toggleFullScreenAction != null ) {
-			gbc.insets.left = 0;//SMALL_PAD;
-			this.add( new JToggleButton( toggleFullScreenAction ), gbc );
-		}
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.weightx = 0.0;
+    this.add(playPauseButton, gbc);
+    gbc.insets.left = LARGE_PAD;
+    this.add(this.label, gbc);
+    gbc.weightx = 1.0;
+    gbc.insets.left = SMALL_PAD;
+    this.add(slider, gbc);
+    gbc.weightx = 0.0;
+    gbc.insets.left = LARGE_PAD;
+    Action restartAction = programImp.getRestartAction();
+    if (restartAction != null) {
+      this.add(new JButton(restartAction), gbc);
+    }
+    Action toggleFullScreenAction = programImp.getToggleFullScreenAction();
+    if (toggleFullScreenAction != null) {
+      gbc.insets.left = 0; //SMALL_PAD;
+      this.add(new JToggleButton(toggleFullScreenAction), gbc);
+    }
 
-		for( Component awtComponent : this.getComponents() ) {
-			awtComponent.setFocusable( false );
-		}
-	}
+    for (Component awtComponent : this.getComponents()) {
+      awtComponent.setFocusable(false);
+    }
+  }
 
-	private void updateLabel(String speedFormat) {
-		label.setText(String.format(speedFormat, boundedRangeModel.getValue()));
-	}
+  private void updateLabel(String speedFormat) {
+    label.setText(String.format(speedFormat, boundedRangeModel.getValue()));
+  }
 
-	private final JLabel label = new JLabel();
-	private final BoundedRangeModel boundedRangeModel = new DefaultBoundedRangeModel();
+  private final JLabel label = new JLabel();
+  private final BoundedRangeModel boundedRangeModel = new DefaultBoundedRangeModel();
 }

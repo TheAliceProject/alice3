@@ -52,47 +52,47 @@ import java.awt.geom.AffineTransform;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractScaledIcon implements Icon {
-	private final int width;
-	private final int height;
-	private final float factor;
+  private final int width;
+  private final int height;
+  private final float factor;
 
-	public AbstractScaledIcon( int width, int height ) {
-		this.width = width;
-		this.height = height;
-		this.factor = Float.NaN;
-	}
+  public AbstractScaledIcon(int width, int height) {
+    this.width = width;
+    this.height = height;
+    this.factor = Float.NaN;
+  }
 
-	public AbstractScaledIcon( float factor ) {
-		this.width = -1;
-		this.height = -1;
-		this.factor = factor;
-	}
+  public AbstractScaledIcon(float factor) {
+    this.width = -1;
+    this.height = -1;
+    this.factor = factor;
+  }
 
-	@Override
-	public final int getIconWidth() {
-		return Float.isNaN( this.factor ) ? this.width : (int)( this.getSourceWidth() * this.factor );
-	}
+  @Override
+  public final int getIconWidth() {
+    return Float.isNaN(this.factor) ? this.width : (int) (this.getSourceWidth() * this.factor);
+  }
 
-	@Override
-	public final int getIconHeight() {
-		return Float.isNaN( this.factor ) ? this.height : (int)( this.getSourceHeight() * this.factor );
-	}
+  @Override
+  public final int getIconHeight() {
+    return Float.isNaN(this.factor) ? this.height : (int) (this.getSourceHeight() * this.factor);
+  }
 
-	protected abstract int getSourceWidth();
+  protected abstract int getSourceWidth();
 
-	protected abstract int getSourceHeight();
+  protected abstract int getSourceHeight();
 
-	protected abstract void paintSource( Component c, Graphics g );
+  protected abstract void paintSource(Component c, Graphics g);
 
-	@Override
-	public final void paintIcon( Component c, Graphics g, int x, int y ) {
-		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.getSourceWidth() : this.factor;
-		double yScale = Float.isNaN( this.factor ) ? this.height / (double)this.getSourceHeight() : this.factor;
-		Graphics2D g2 = (Graphics2D)g;
-		AffineTransform prevTransform = g2.getTransform();
-		g2.translate( x, y );
-		g2.scale( xScale, yScale );
-		this.paintSource( c, g2 );
-		g2.setTransform( prevTransform );
-	}
+  @Override
+  public final void paintIcon(Component c, Graphics g, int x, int y) {
+    double xScale = Float.isNaN(this.factor) ? this.width / (double) this.getSourceWidth() : this.factor;
+    double yScale = Float.isNaN(this.factor) ? this.height / (double) this.getSourceHeight() : this.factor;
+    Graphics2D g2 = (Graphics2D) g;
+    AffineTransform prevTransform = g2.getTransform();
+    g2.translate(x, y);
+    g2.scale(xScale, yScale);
+    this.paintSource(c, g2);
+    g2.setTransform(prevTransform);
+  }
 }

@@ -57,108 +57,108 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class BufferedImageTexture extends Texture {
-	private BufferedImage m_bufferedImage = null;
-	private boolean m_isMipMappingDesired = true;
-	private boolean m_isPotentiallyAlphaBlended = false;
+  private BufferedImage m_bufferedImage = null;
+  private boolean m_isMipMappingDesired = true;
+  private boolean m_isPotentiallyAlphaBlended = false;
 
-	public BufferedImageTexture() {
-	}
+  public BufferedImageTexture() {
+  }
 
-	public BufferedImageTexture( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		byte[] buffer = binaryDecoder.decodeByteArray();
-		ByteArrayInputStream bais = new ByteArrayInputStream( buffer );
-		try {
-			setBufferedImage( ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, bais ) );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( binaryDecoder.toString(), ioe );
-		}
-	}
+  public BufferedImageTexture(BinaryDecoder binaryDecoder) {
+    super(binaryDecoder);
+    byte[] buffer = binaryDecoder.decodeByteArray();
+    ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
+    try {
+      setBufferedImage(ImageUtilities.read(ImageUtilities.PNG_CODEC_NAME, bais));
+    } catch (IOException ioe) {
+      throw new RuntimeException(binaryDecoder.toString(), ioe);
+    }
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		//todo
-		assert m_bufferedImage != null;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		try {
-			ImageUtilities.write( ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( binaryEncoder.toString(), ioe );
-		}
-		binaryEncoder.encode( baos.toByteArray() );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    //todo
+    assert m_bufferedImage != null;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try {
+      ImageUtilities.write(ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage);
+    } catch (IOException ioe) {
+      throw new RuntimeException(binaryEncoder.toString(), ioe);
+    }
+    binaryEncoder.encode(baos.toByteArray());
+  }
 
-	public BufferedImage getBufferedImage() {
-		return m_bufferedImage;
-	}
+  public BufferedImage getBufferedImage() {
+    return m_bufferedImage;
+  }
 
-	public void setBufferedImage( BufferedImage bufferedImage ) {
-		if( m_bufferedImage != bufferedImage ) {
-			m_bufferedImage = bufferedImage;
-			fireTextureChanged();
-		}
-	}
+  public void setBufferedImage(BufferedImage bufferedImage) {
+    if (m_bufferedImage != bufferedImage) {
+      m_bufferedImage = bufferedImage;
+      fireTextureChanged();
+    }
+  }
 
-	@Override
-	public boolean isMipMappingDesired() {
-		return m_isMipMappingDesired;
-	}
+  @Override
+  public boolean isMipMappingDesired() {
+    return m_isMipMappingDesired;
+  }
 
-	public void setMipMappingDesired( boolean isMipMappingDesired ) {
-		if( m_isMipMappingDesired != isMipMappingDesired ) {
-			m_isMipMappingDesired = isMipMappingDesired;
-			fireTextureChanged();
-		}
-	}
+  public void setMipMappingDesired(boolean isMipMappingDesired) {
+    if (m_isMipMappingDesired != isMipMappingDesired) {
+      m_isMipMappingDesired = isMipMappingDesired;
+      fireTextureChanged();
+    }
+  }
 
-	public void directSetMipMappingDesired( boolean isMipMappingDesired ) {
-		if( m_isMipMappingDesired != isMipMappingDesired ) {
-			m_isMipMappingDesired = isMipMappingDesired;
-		}
-	}
+  public void directSetMipMappingDesired(boolean isMipMappingDesired) {
+    if (m_isMipMappingDesired != isMipMappingDesired) {
+      m_isMipMappingDesired = isMipMappingDesired;
+    }
+  }
 
-	@Override
-	public boolean isPotentiallyAlphaBlended() {
-		return m_isPotentiallyAlphaBlended;
-	}
+  @Override
+  public boolean isPotentiallyAlphaBlended() {
+    return m_isPotentiallyAlphaBlended;
+  }
 
-	public void setPotentiallyAlphaBlended( boolean isPotentiallyAlphaBlended ) {
-		if( m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended ) {
-			m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
-			fireTextureChanged();
-		}
-	}
+  public void setPotentiallyAlphaBlended(boolean isPotentiallyAlphaBlended) {
+    if (m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended) {
+      m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
+      fireTextureChanged();
+    }
+  }
 
-	@Override
-	public int getWidth() {
-		if( m_bufferedImage != null ) {
-			return m_bufferedImage.getWidth();
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public int getWidth() {
+    if (m_bufferedImage != null) {
+      return m_bufferedImage.getWidth();
+    } else {
+      return 0;
+    }
+  }
 
-	@Override
-	public int getHeight() {
-		if( m_bufferedImage != null ) {
-			return m_bufferedImage.getHeight();
-		} else {
-			return 0;
-		}
-	}
+  @Override
+  public int getHeight() {
+    if (m_bufferedImage != null) {
+      return m_bufferedImage.getHeight();
+    } else {
+      return 0;
+    }
+  }
 
-	@Override
-	public boolean isAnimated() {
-		return false;
-	}
+  @Override
+  public boolean isAnimated() {
+    return false;
+  }
 
-	@Override
-	public MipMapGenerationPolicy getMipMapGenerationPolicy() {
-		return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
-	}
+  @Override
+  public MipMapGenerationPolicy getMipMapGenerationPolicy() {
+    return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
+  }
 
-	@Override
-	public void paint( Graphics2D g, int width, int height ) {
-		g.drawImage( m_bufferedImage, 0, 0, width, height, null );
-	}
+  @Override
+  public void paint(Graphics2D g, int width, int height) {
+    g.drawImage(m_bufferedImage, 0, 0, width, height, null);
+  }
 }

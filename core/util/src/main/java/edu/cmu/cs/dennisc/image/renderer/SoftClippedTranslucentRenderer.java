@@ -52,60 +52,60 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public abstract class SoftClippedTranslucentRenderer extends TranslucentRenderer {
-	protected abstract void renderClip( Graphics2D g2, int x, int y, int width, int height );
+  protected abstract void renderClip(Graphics2D g2, int x, int y, int width, int height);
 
-	@Override
-	protected void clear( Graphics2D g2, int x, int y, int width, int height ) {
-		super.clear( g2, x, y, width, height );
-		g2.setComposite( AlphaComposite.Src );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		g2.setPaint( Color.WHITE );
-		renderClip( g2, x, y, width, height );
-	}
+  @Override
+  protected void clear(Graphics2D g2, int x, int y, int width, int height) {
+    super.clear(g2, x, y, width, height);
+    g2.setComposite(AlphaComposite.Src);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setPaint(Color.WHITE);
+    renderClip(g2, x, y, width, height);
+  }
 
-	protected abstract void renderForegroundIntoBufferedImage( Graphics2D g2, int x, int y, int width, int height );
+  protected abstract void renderForegroundIntoBufferedImage(Graphics2D g2, int x, int y, int width, int height);
 
-	@Override
-	public final void renderIntoBufferedImage( GraphicsConfiguration gc ) {
-		int x = 0;
-		int y = 0;
-		int width = getWidth();
-		int height = getHeight();
-		int transparency = getTransparency();
-		createBufferedImageIfNecessary( gc, width, height, transparency );
-		Graphics2D g2 = getBufferedImage().createGraphics();
-		clear( g2, x, y, getAllocatedWidth(), getAllocatedHeight() );
-		g2.dispose();
+  @Override
+  public final void renderIntoBufferedImage(GraphicsConfiguration gc) {
+    int x = 0;
+    int y = 0;
+    int width = getWidth();
+    int height = getHeight();
+    int transparency = getTransparency();
+    createBufferedImageIfNecessary(gc, width, height, transparency);
+    Graphics2D g2 = getBufferedImage().createGraphics();
+    clear(g2, x, y, getAllocatedWidth(), getAllocatedHeight());
+    g2.dispose();
 
-		Graphics2D _g2 = getBufferedImage().createGraphics();
-		_g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		renderForegroundIntoBufferedImage( _g2, x, y, width, height );
-		_g2.dispose();
+    Graphics2D _g2 = getBufferedImage().createGraphics();
+    _g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    renderForegroundIntoBufferedImage(_g2, x, y, width, height);
+    _g2.dispose();
 
-		//		int x = 0;
-		//		int y = 0;
-		//		int width = getWidth();
-		//		int height = getHeight();
-		//		int transparency = getTransparency();
-		//		createBufferedImageIfNecessary( gc, width, height, transparency );
-		//
-		//		java.awt.Graphics2D g2 = getBufferedImage().createGraphics();
-		//		java.awt.Composite prevComposite = g2.getComposite();
-		//		try {
-		//			g2.setComposite( java.awt.AlphaComposite.Clear );
-		//			g2.fillRect( x, y, width, height );
-		//			g2.setComposite( java.awt.AlphaComposite.Src );
-		//			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		//			g2.setPaint( java.awt.Color.WHITE );
-		//			renderClip( g2, x, y, width, height );
-		//		} finally {
-		//			g2.setComposite( prevComposite );
-		//			g2.dispose();
-		//		}
-		//
-		//		java.awt.Graphics2D _g2 = getBufferedImage().createGraphics();
-		//		_g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		//		renderForeground( _g2, x, y, width, height );
-		//		_g2.dispose();
-	}
+    //    int x = 0;
+    //    int y = 0;
+    //    int width = getWidth();
+    //    int height = getHeight();
+    //    int transparency = getTransparency();
+    //    createBufferedImageIfNecessary( gc, width, height, transparency );
+    //
+    //    java.awt.Graphics2D g2 = getBufferedImage().createGraphics();
+    //    java.awt.Composite prevComposite = g2.getComposite();
+    //    try {
+    //      g2.setComposite( java.awt.AlphaComposite.Clear );
+    //      g2.fillRect( x, y, width, height );
+    //      g2.setComposite( java.awt.AlphaComposite.Src );
+    //      g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+    //      g2.setPaint( java.awt.Color.WHITE );
+    //      renderClip( g2, x, y, width, height );
+    //    } finally {
+    //      g2.setComposite( prevComposite );
+    //      g2.dispose();
+    //    }
+    //
+    //    java.awt.Graphics2D _g2 = getBufferedImage().createGraphics();
+    //    _g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+    //    renderForeground( _g2, x, y, width, height );
+    //    _g2.dispose();
+  }
 }

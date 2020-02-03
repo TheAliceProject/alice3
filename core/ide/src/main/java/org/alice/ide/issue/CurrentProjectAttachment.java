@@ -54,52 +54,52 @@ import java.io.ByteArrayOutputStream;
  * @author Dennis Cosgrove
  */
 public class CurrentProjectAttachment implements Attachment {
-	private boolean isCreateAttempted = false;
-	private boolean isCreateSuccessful = false;
-	private byte[] bytes = null;
+  private boolean isCreateAttempted = false;
+  private boolean isCreateSuccessful = false;
+  private byte[] bytes = null;
 
-	private void createBytesIfNecessary() {
-		if( this.isCreateAttempted ) {
-			//pass
-		} else {
-			try {
-				IDE ide = IDE.getActiveInstance();
-				Project project = ide.getUpToDateProject();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				IoUtilities.writeProject( baos, project );
-				baos.flush();
-				this.bytes = baos.toByteArray();
-				this.isCreateSuccessful = true;
-			} catch( Throwable t ) {
-				this.bytes = ThrowableUtilities.getStackTraceAsByteArray( t );
-			}
-			this.isCreateAttempted = true;
-		}
-	}
+  private void createBytesIfNecessary() {
+    if (this.isCreateAttempted) {
+      //pass
+    } else {
+      try {
+        IDE ide = IDE.getActiveInstance();
+        Project project = ide.getUpToDateProject();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        IoUtilities.writeProject(baos, project);
+        baos.flush();
+        this.bytes = baos.toByteArray();
+        this.isCreateSuccessful = true;
+      } catch (Throwable t) {
+        this.bytes = ThrowableUtilities.getStackTraceAsByteArray(t);
+      }
+      this.isCreateAttempted = true;
+    }
+  }
 
-	@Override
-	public byte[] getBytes() {
-		this.createBytesIfNecessary();
-		return this.bytes;
-	}
+  @Override
+  public byte[] getBytes() {
+    this.createBytesIfNecessary();
+    return this.bytes;
+  }
 
-	@Override
-	public String getMIMEType() {
-		this.createBytesIfNecessary();
-		if( this.isCreateSuccessful ) {
-			return "application/a3p";
-		} else {
-			return "text/plain";
-		}
-	}
+  @Override
+  public String getMIMEType() {
+    this.createBytesIfNecessary();
+    if (this.isCreateSuccessful) {
+      return "application/a3p";
+    } else {
+      return "text/plain";
+    }
+  }
 
-	@Override
-	public String getFileName() {
-		this.createBytesIfNecessary();
-		if( this.isCreateSuccessful ) {
-			return "currentProject.a3p";
-		} else {
-			return "failedToAttachProject.txt";
-		}
-	}
+  @Override
+  public String getFileName() {
+    this.createBytesIfNecessary();
+    if (this.isCreateSuccessful) {
+      return "currentProject.a3p";
+    } else {
+      return "failedToAttachProject.txt";
+    }
+  }
 }

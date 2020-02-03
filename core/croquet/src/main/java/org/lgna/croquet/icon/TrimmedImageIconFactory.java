@@ -54,28 +54,28 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	private final Dimension defaultSize;
+  private final Dimension defaultSize;
 
-	public TrimmedImageIconFactory( ImageIcon imageIcon, int width, int height ) {
-		super( imageIcon );
-		this.defaultSize = new Dimension( width, height );
-	}
+  public TrimmedImageIconFactory(ImageIcon imageIcon, int width, int height) {
+    super(imageIcon);
+    this.defaultSize = new Dimension(width, height);
+  }
 
-	public TrimmedImageIconFactory( URL resource, int width, int height ) {
-		this( IconUtilities.createImageIcon( resource ), width, height );
-	}
+  public TrimmedImageIconFactory(URL resource, int width, int height) {
+    this(IconUtilities.createImageIcon(resource), width, height);
+  }
 
-	public TrimmedImageIconFactory( Image image, int width, int height ) {
-		this( IconUtilities.createImageIcon( image ), width, height );
-	}
+  public TrimmedImageIconFactory(Image image, int width, int height) {
+    this(IconUtilities.createImageIcon(image), width, height);
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new TrimmedIcon( this.getSourceImageIcon(), size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new TrimmedIcon(this.getSourceImageIcon(), size);
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		return this.defaultSize;
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    return this.defaultSize;
+  }
 }

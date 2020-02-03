@@ -51,20 +51,20 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class PropertyEvent extends Event<InstanceProperty> {
-	private InstancePropertyOwner m_owner;
-	private Object m_value;
+  private InstancePropertyOwner m_owner;
+  private Object m_value;
 
-	public PropertyEvent( InstanceProperty source, InstancePropertyOwner owner, Object value ) {
-		super( source );
-		m_owner = owner;
-		m_value = value;
-	}
+  public PropertyEvent(InstanceProperty source, InstancePropertyOwner owner, Object value) {
+    super(source);
+    m_owner = owner;
+    m_value = value;
+  }
 
-	public InstancePropertyOwner getOwner() {
-		return m_owner;
-	}
+  public InstancePropertyOwner getOwner() {
+    return m_owner;
+  }
 
-	public Object getValue() {
-		return m_value;
-	}
+  public Object getValue() {
+    return m_value;
+  }
 }

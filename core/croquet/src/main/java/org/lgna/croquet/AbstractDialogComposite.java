@@ -60,171 +60,171 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> {
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
+  protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance(UUID.fromString("4e436a8e-cfbc-447c-8c80-bc488d318f5b"), "DIALOG_IMPLEMENTATION_GROUP");
 
-	protected static enum IsModal {
-		TRUE( true ),
-		FALSE( true );
-		private IsModal( boolean value ) {
-			this.value = value;
-		}
+  protected static enum IsModal {
+    TRUE(true), FALSE(true);
 
-		private final boolean value;
-	}
+    private IsModal(boolean value) {
+      this.value = value;
+    }
 
-	private final boolean isModal;
-	private String title;
-	protected Dialog dialog;
-	protected UserActivity openingActivity;
+    private final boolean value;
+  }
 
-	public AbstractDialogComposite( UUID migrationId, IsModal isModal ) {
-		super( migrationId );
-		this.isModal = isModal.value;
-	}
+  private final boolean isModal;
+  private String title;
+  protected Dialog dialog;
+  protected UserActivity openingActivity;
 
-	public UserActivity getOpeningActivity() {
-		return openingActivity;
-	}
+  public AbstractDialogComposite(UUID migrationId, IsModal isModal) {
+    super(migrationId);
+    this.isModal = isModal.value;
+  }
 
-	protected void showDialog( UserActivity userActivity ) {
-		openingActivity = userActivity;
-		Application<?> application = Application.getActiveInstance();
-		DocumentFrame documentFrame = application.getDocumentFrame();
+  public UserActivity getOpeningActivity() {
+    return openingActivity;
+  }
 
-		AbstractWindow<?> window = documentFrame.peekWindow();
+  protected void showDialog(UserActivity userActivity) {
+    openingActivity = userActivity;
+    Application<?> application = Application.getActiveInstance();
+    DocumentFrame documentFrame = application.getDocumentFrame();
 
-		ScreenElement owner;
-		if( window != null ) {
-			owner = window;
-		} else {
-//			Trigger trigger = completionStep.getTrigger();
-			ViewController<?, ?> viewController = null; //trigger.getViewController();
-			if( viewController != null ) {
-				owner = viewController;
-			} else {
-				owner = documentFrame.getFrame().getContentPane();
-			}
-		}
-		dialog = new Dialog( owner, this.isModal );
-		class DialogWindowListener implements WindowListener {
-			@Override
-			public void windowOpened( WindowEvent e ) {
-				handleDialogOpened();
-			}
+    AbstractWindow<?> window = documentFrame.peekWindow();
 
-			@Override
-			public void windowClosing( WindowEvent e ) {
-				dialog.setVisible( false );
-			}
+    ScreenElement owner;
+    if (window != null) {
+      owner = window;
+    } else {
+      //    Trigger trigger = completionStep.getTrigger();
+      ViewController<?, ?> viewController = null; //trigger.getViewController();
+      if (viewController != null) {
+        owner = viewController;
+      } else {
+        owner = documentFrame.getFrame().getContentPane();
+      }
+    }
+    dialog = new Dialog(owner, this.isModal);
+    class DialogWindowListener implements WindowListener {
+      @Override
+      public void windowOpened(WindowEvent e) {
+        handleDialogOpened();
+      }
 
-			@Override
-			public void windowClosed( WindowEvent e ) {
-				handleDialogClosed();
-			}
+      @Override
+      public void windowClosing(WindowEvent e) {
+        dialog.setVisible(false);
+      }
 
-			@Override
-			public void windowActivated( WindowEvent e ) {
-			}
+      @Override
+      public void windowClosed(WindowEvent e) {
+        handleDialogClosed();
+      }
 
-			@Override
-			public void windowDeactivated( WindowEvent e ) {
-			}
+      @Override
+      public void windowActivated(WindowEvent e) {
+      }
 
-			@Override
-			public void windowDeiconified( WindowEvent e ) {
-			}
+      @Override
+      public void windowDeactivated(WindowEvent e) {
+      }
 
-			@Override
-			public void windowIconified( WindowEvent e ) {
-			}
-		}
-		DialogWindowListener dialogWindowListener = new DialogWindowListener();
-		dialog.addWindowListener( dialogWindowListener );
-		CompositeView<?, ?> view = this.allocateView();
-		try {
-			dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
-			this.updateWindowSize( dialog );
-			if( window != null ) {
-				final int OFFSET = 32;
-				Point p = window.getLocation();
-				dialog.setLocation( p.x + OFFSET, p.y + OFFSET );
-				//dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
-			} else {
-				Point location = this.getDesiredWindowLocation();
-				if( location != null ) {
-					dialog.setLocation( location );
-				} else {
-					WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), owner.getAwtComponent() );
-				}
-			}
-			dialog.setTitle( this.getDialogTitle() );
-			handlePreShowDialog( dialog );
-			//application.pushWindow( dialog );
-			dialog.setVisible( true );
+      @Override
+      public void windowDeiconified(WindowEvent e) {
+      }
 
-			if( isModal ) {
-				this.handlePostHideDialog();
-				dialog.removeWindowListener( dialogWindowListener );
-				this.releaseView( view );
-				dialog.getAwtComponent().dispose();
-			} else {
-				Logger.outln( "todo: handle non-modal dialogs" );
-			}
-		} finally {
-			if( isModal ) {
-				//application.popWindow();
-				this.handleFinally( dialog );
-			} else {
-				Logger.outln( "todo: handle non-modal dialogs" );
-			}
-		}
-	}
+      @Override
+      public void windowIconified(WindowEvent e) {
+      }
+    }
+    DialogWindowListener dialogWindowListener = new DialogWindowListener();
+    dialog.addWindowListener(dialogWindowListener);
+    CompositeView<?, ?> view = this.allocateView();
+    try {
+      dialog.getAwtComponent().setContentPane(view.getAwtComponent());
+      this.updateWindowSize(dialog);
+      if (window != null) {
+        final int OFFSET = 32;
+        Point p = window.getLocation();
+        dialog.setLocation(p.x + OFFSET, p.y + OFFSET);
+        //dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
+      } else {
+        Point location = this.getDesiredWindowLocation();
+        if (location != null) {
+          dialog.setLocation(location);
+        } else {
+          WindowUtilities.setLocationOnScreenToCenteredWithin(dialog.getAwtComponent(), owner.getAwtComponent());
+        }
+      }
+      dialog.setTitle(this.getDialogTitle());
+      handlePreShowDialog(dialog);
+      //application.pushWindow( dialog );
+      dialog.setVisible(true);
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
+      if (isModal) {
+        this.handlePostHideDialog();
+        dialog.removeWindowListener(dialogWindowListener);
+        this.releaseView(view);
+        dialog.getAwtComponent().dispose();
+      } else {
+        Logger.outln("todo: handle non-modal dialogs");
+      }
+    } finally {
+      if (isModal) {
+        //application.popWindow();
+        this.handleFinally(dialog);
+      } else {
+        Logger.outln("todo: handle non-modal dialogs");
+      }
+    }
+  }
 
-	//todo
-	protected abstract CompositeView<?, ?> allocateView();
+  @Override
+  protected void localize() {
+    super.localize();
+    this.title = this.findLocalizedText("title");
+  }
 
-	protected abstract void releaseView( CompositeView<?, ?> view );
+  //todo
+  protected abstract CompositeView<?, ?> allocateView();
 
-	protected abstract String getDefaultTitleText();
+  protected abstract void releaseView(CompositeView<?, ?> view);
 
-	protected String getDialogTitle() {
-		this.initializeIfNecessary();
-		String rv = this.title;
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.getDefaultTitleText();
-			if( rv != null ) {
-				rv = rv.replaceAll( "<[a-z]*>", "" );
-				rv = rv.replaceAll( "</[a-z]*>", "" );
-				if( rv.endsWith( "..." ) ) {
-					rv = rv.substring( 0, rv.length() - 3 );
-				}
-			}
-		}
-		return rv;
-	}
+  protected abstract String getDefaultTitleText();
 
-	private void handleDialogOpened() {
-	}
+  protected String getDialogTitle() {
+    this.initializeIfNecessary();
+    String rv = this.title;
+    if (rv != null) {
+      //pass
+    } else {
+      rv = this.getDefaultTitleText();
+      if (rv != null) {
+        rv = rv.replaceAll("<[a-z]*>", "");
+        rv = rv.replaceAll("</[a-z]*>", "");
+        if (rv.endsWith("...")) {
+          rv = rv.substring(0, rv.length() - 3);
+        }
+      }
+    }
+    return rv;
+  }
 
-	private void handleDialogClosed() {
-	}
+  private void handleDialogOpened() {
+  }
 
-	protected boolean isDefaultButtonDesired() {
-		return true;
-	}
+  private void handleDialogClosed() {
+  }
 
-	protected abstract void handlePreShowDialog( Dialog dialog );
+  protected boolean isDefaultButtonDesired() {
+    return true;
+  }
 
-	protected abstract void handlePostHideDialog();
+  protected abstract void handlePreShowDialog(Dialog dialog);
 
-	protected void handleFinally( Dialog dialog ) {
-	}
+  protected abstract void handlePostHideDialog();
+
+  protected void handleFinally(Dialog dialog) {
+  }
 }

@@ -52,41 +52,41 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel {
-	private Icon icon;
-	private String name;
+  private Icon icon;
+  private String name;
 
-	public LabelMenuSeparatorModel( UUID id ) {
-		super( id );
-	}
+  public LabelMenuSeparatorModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected void localize() {
-		this.name = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    this.name = this.findDefaultLocalizedText();
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public Icon getIcon() {
-		return this.icon;
-	}
+  public Icon getIcon() {
+    return this.icon;
+  }
 
-	public void setIcon( Icon icon ) {
-		this.icon = icon;
-	}
+  public void setIcon(Icon icon) {
+    this.icon = icon;
+  }
 
-	@Override
-	public MenuTextSeparator createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
-		this.initializeIfNecessary();
-		String name = this.getName();
-		if( ( name != null ) || ( this.icon != null ) ) {
-			MenuTextSeparator menuTextSeparator = new MenuTextSeparator( this );
-			menuItemContainer.addSeparator( menuTextSeparator );
-			return menuTextSeparator;
-		} else {
-			menuItemContainer.addSeparator();
-			return null;
-		}
-	}
+  @Override
+  public MenuTextSeparator createMenuItemAndAddTo(MenuItemContainer menuItemContainer) {
+    this.initializeIfNecessary();
+    String name = this.getName();
+    if ((name != null) || (this.icon != null)) {
+      MenuTextSeparator menuTextSeparator = new MenuTextSeparator(this);
+      menuItemContainer.addSeparator(menuTextSeparator);
+      return menuTextSeparator;
+    } else {
+      menuItemContainer.addSeparator();
+      return null;
+    }
+  }
 }

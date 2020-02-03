@@ -55,36 +55,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ResourceFillIn extends ImmutableCascadeFillIn<ResourceNode, Void> {
-	private final ResourceNode resourceNode;
+  private final ResourceNode resourceNode;
 
-	public ResourceFillIn( ResourceNode resourceNode ) {
-		super( UUID.fromString( "a59f9479-b04a-4582-9b98-3bc4e91ec200" ) );
-		this.resourceNode = resourceNode;
-	}
+  public ResourceFillIn(ResourceNode resourceNode) {
+    super(UUID.fromString("a59f9479-b04a-4582-9b98-3bc4e91ec200"));
+    this.resourceNode = resourceNode;
+  }
 
-	@Override
-	public ResourceNode getTransientValue( ItemNode<? super ResourceNode, Void> node ) {
-		return this.resourceNode;
-	}
+  @Override
+  public ResourceNode getTransientValue(ItemNode<? super ResourceNode, Void> node) {
+    return this.resourceNode;
+  }
 
-	@Override
-	public ResourceNode createValue( ItemNode<? super ResourceNode, Void> node ) {
-		return this.resourceNode;
-	}
+  @Override
+  public ResourceNode createValue(ItemNode<? super ResourceNode, Void> node) {
+    return this.resourceNode;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super ResourceNode, Void> node ) {
-		throw new Error();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super ResourceNode, Void> node) {
+    throw new Error();
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return this.resourceNode.getText();
-	}
+  @Override
+  public String getMenuItemText() {
+    return this.resourceNode.getText();
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super ResourceNode, Void> node ) {
-		IconFactory iconFactory = this.resourceNode.getIconFactory();
-		return iconFactory != null ? iconFactory.getIcon( Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super ResourceNode, Void> node) {
+    IconFactory iconFactory = this.resourceNode.getIconFactory();
+    return iconFactory != null ? iconFactory.getIcon(Theme.DEFAULT_SMALL_ICON_SIZE) : null;
+  }
 }

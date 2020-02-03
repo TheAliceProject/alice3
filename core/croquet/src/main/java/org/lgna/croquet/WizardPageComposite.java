@@ -51,73 +51,73 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class WizardPageComposite<V extends CompositeView<?, ?>, O extends WizardDialogCoreComposite> extends AbstractSeverityStatusComposite<V> {
-	private final O owner;
-	private String name;
-	private String title;
+  private final O owner;
+  private String name;
+  private String title;
 
-	public WizardPageComposite( UUID migrationId, O owner ) {
-		super( migrationId );
-		this.owner = owner;
-	}
+  public WizardPageComposite(UUID migrationId, O owner) {
+    super(migrationId);
+    this.owner = owner;
+  }
 
-	public O getOwner() {
-		return this.owner;
-	}
+  public O getOwner() {
+    return this.owner;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.name = this.findDefaultLocalizedText();
-		this.title = this.findLocalizedText( "title" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.name = this.findDefaultLocalizedText();
+    this.title = this.findLocalizedText("title");
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public String getTitle() {
-		if( this.title != null ) {
-			return this.title;
-		} else {
-			return this.getName();
-		}
-	}
+  public String getTitle() {
+    if (this.title != null) {
+      return this.title;
+    } else {
+      return this.getName();
+    }
+  }
 
-	public abstract Status getPageStatus();
+  public abstract Status getPageStatus();
 
-	public boolean isAccountedForInPreferredSizeCalculation() {
-		return true;
-	}
+  public boolean isAccountedForInPreferredSizeCalculation() {
+    return true;
+  }
 
-	protected boolean isOptional() {
-		return false;
-	}
+  protected boolean isOptional() {
+    return false;
+  }
 
-	public void handlePreShowDialog() {
-	}
+  public void handlePreShowDialog() {
+  }
 
-	public void handlePostHideDialog() {
-	}
+  public void handlePostHideDialog() {
+  }
 
-	protected boolean isAutoAdvanceWorthAttempting() {
-		return this.isOptional();
-	}
+  protected boolean isAutoAdvanceWorthAttempting() {
+    return this.isOptional();
+  }
 
-	protected boolean isClearedForAutoAdvance() {
-		return getPageStatus() == IS_GOOD_TO_GO_STATUS;
-	}
+  protected boolean isClearedForAutoAdvance() {
+    return getPageStatus() == IS_GOOD_TO_GO_STATUS;
+  }
 
-	final boolean isAutoAdvanceDesired() {
-		return isAutoAdvanceWorthAttempting() && isClearedForAutoAdvance();
-	}
+  final boolean isAutoAdvanceDesired() {
+    return isAutoAdvanceWorthAttempting() && isClearedForAutoAdvance();
+  }
 
-	public boolean isClearToCommit() {
-		return this.isOptional() || this.isAutoAdvanceDesired();
-	}
+  public boolean isClearToCommit() {
+    return this.isOptional() || this.isAutoAdvanceDesired();
+  }
 
-	public abstract void resetData();
+  public abstract void resetData();
 
-	protected void refreshOwnerStatus() {
-		this.owner.refreshStatus();
-	}
+  protected void refreshOwnerStatus() {
+    this.owner.refreshStatus();
+  }
 }

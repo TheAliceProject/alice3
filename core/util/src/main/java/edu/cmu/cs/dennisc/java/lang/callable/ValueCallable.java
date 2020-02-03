@@ -50,32 +50,32 @@ import java.util.concurrent.Callable;
  * @author Dennis Cosgrove
  */
 public class ValueCallable<T> implements Callable<T> {
-	private final T value;
+  private final T value;
 
-	public ValueCallable( T value ) {
-		this.value = value;
-	}
+  public ValueCallable(T value) {
+    this.value = value;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( this == obj ) {
-			return true;
-		}
-		if( obj instanceof ValueCallable ) {
-			ValueCallable other = (ValueCallable)obj;
-			return Objects.equals( this.value, other.value );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof ValueCallable) {
+      ValueCallable other = (ValueCallable) obj;
+      return Objects.equals(this.value, other.value);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.value != null ? this.value.hashCode() : 0;
-	}
+  @Override
+  public int hashCode() {
+    return this.value != null ? this.value.hashCode() : 0;
+  }
 
-	@Override
-	public T call() throws Exception {
-		return this.value;
-	}
+  @Override
+  public T call() throws Exception {
+    return this.value;
+  }
 }

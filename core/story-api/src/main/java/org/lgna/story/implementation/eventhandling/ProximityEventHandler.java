@@ -64,118 +64,118 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, ProximityEvent> {
 
-	private final ProximityEventManager proximityEventManager = new ProximityEventManager();
+  private final ProximityEventManager proximityEventManager = new ProximityEventManager();
 
-	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance, MultipleEventPolicy policy ) {
-		registerIsFiringMap( pEList );
-		registerPolicyMap( pEList, policy );
-		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
-		allObserving.addAll( groupTwo );
-		for( SThing m : allObserving ) {
-			if( !getModelList().contains( m ) ) {
-				getModelList().add( m );
-				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-			}
-		}
-		proximityEventManager.register( pEList, groupOne, groupTwo, distance );
-	}
+  public void addProximityEventListener(Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance, MultipleEventPolicy policy) {
+    registerIsFiringMap(pEList);
+    registerPolicyMap(pEList, policy);
+    List<SThing> allObserving = Lists.newCopyOnWriteArrayList(groupOne);
+    allObserving.addAll(groupTwo);
+    for (SThing m : allObserving) {
+      if (!getModelList().contains(m)) {
+        getModelList().add(m);
+        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+      }
+    }
+    proximityEventManager.register(pEList, groupOne, groupTwo, distance);
+  }
 
-	@Override
-	protected void fire( Object listener, ProximityEvent e ) {
-		if( listener instanceof ProximityEnterListener ) {
-			ProximityEnterListener enter = (ProximityEnterListener)listener;
-			enter.proximityEntered( (EnterProximityEvent)e );
-		} else if( listener instanceof ProximityExitListener ) {
-			ProximityExitListener exit = (ProximityExitListener)listener;
-			exit.proximityExited( (ExitProximityEvent)e );
-		}
-	}
+  @Override
+  protected void fire(Object listener, ProximityEvent e) {
+    if (listener instanceof ProximityEnterListener) {
+      ProximityEnterListener enter = (ProximityEnterListener) listener;
+      enter.proximityEntered((EnterProximityEvent) e);
+    } else if (listener instanceof ProximityExitListener) {
+      ProximityExitListener exit = (ProximityExitListener) listener;
+      exit.proximityExited((ExitProximityEvent) e);
+    }
+  }
 
-	@Override
-	protected void check( SThing changedEntity ) {
-		proximityEventManager.check( changedEntity );
-	}
+  @Override
+  protected void check(SThing changedEntity) {
+    proximityEventManager.check(changedEntity);
+  }
 
-	protected class ProximityEventManager {
+  protected class ProximityEventManager {
 
-		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
-		private final Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
-		private final Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
-		private final Map<Object, Double> distMap = Maps.newConcurrentHashMap();
-		private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
+    private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
+    private final Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
+    private final Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
+    private final Map<Object, Double> distMap = Maps.newConcurrentHashMap();
+    private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
 
-		public void check( SThing changedEntity ) {
-			for( SThing m : checkMap.get( changedEntity ) ) {
-				for( Object proxList : eventMap.get( changedEntity ).get( m ) ) {
-					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
-						if( proxList instanceof ProximityEnterListener ) {
-							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
-								fireEvent( proxList, new EnterProximityEvent( m, changedEntity ), m, changedEntity );
-							} else {
-								fireEvent( proxList, new EnterProximityEvent( changedEntity, m ), changedEntity, m );
-							}
-						} else if( proxList instanceof ProximityExitListener ) {
-							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
-								fireEvent( proxList, new ExitProximityEvent( m, changedEntity ), m, changedEntity );
-							} else {
-								fireEvent( proxList, new ExitProximityEvent( changedEntity, m ), changedEntity, m );
-							}
-						}
-					}
-					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get( proxList ) );
-					wereClose.get( proxList ).get( m ).put( changedEntity, areTheseClose );
-					wereClose.get( proxList ).get( changedEntity ).put( m, areTheseClose );
-				}
-			}
-		}
+    public void check(SThing changedEntity) {
+      for (SThing m : checkMap.get(changedEntity)) {
+        for (Object proxList : eventMap.get(changedEntity).get(m)) {
+          if (check(proxList, m, changedEntity, distMap.get(proxList))) {
+            if (proxList instanceof ProximityEnterListener) {
+              if (listenerToGroupAMap.get(proxList).contains(m)) {
+                fireEvent(proxList, new EnterProximityEvent(m, changedEntity), m, changedEntity);
+              } else {
+                fireEvent(proxList, new EnterProximityEvent(changedEntity, m), changedEntity, m);
+              }
+            } else if (proxList instanceof ProximityExitListener) {
+              if (listenerToGroupAMap.get(proxList).contains(m)) {
+                fireEvent(proxList, new ExitProximityEvent(m, changedEntity), m, changedEntity);
+              } else {
+                fireEvent(proxList, new ExitProximityEvent(changedEntity, m), changedEntity, m);
+              }
+            }
+          }
+          boolean areTheseClose = AabbCollisionDetector.doTheseCollide(m, changedEntity, distMap.get(proxList));
+          wereClose.get(proxList).get(m).put(changedEntity, areTheseClose);
+          wereClose.get(proxList).get(changedEntity).put(m, areTheseClose);
+        }
+      }
+    }
 
-		private boolean check( Object proxList, SThing m, SThing changedEntity, Double dist ) {
-			if( proxList instanceof ProximityEnterListener ) {
-				return !wereClose.get( proxList ).get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
-			} else if( proxList instanceof ProximityExitListener ) {
-				return wereClose.get( proxList ).get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
-			}
-			return false;
-		}
+    private boolean check(Object proxList, SThing m, SThing changedEntity, Double dist) {
+      if (proxList instanceof ProximityEnterListener) {
+        return !wereClose.get(proxList).get(m).get(changedEntity) && AabbCollisionDetector.doTheseCollide(m, changedEntity, dist);
+      } else if (proxList instanceof ProximityExitListener) {
+        return wereClose.get(proxList).get(m).get(changedEntity) && !AabbCollisionDetector.doTheseCollide(m, changedEntity, dist);
+      }
+      return false;
+    }
 
-		public void register( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
-			listenerToGroupAMap.put( proximityEventListener, groupOne );
-			distMap.put( proximityEventListener, dist );
-			wereClose.put( proximityEventListener, new HashMap<SThing, HashMap<SThing, Boolean>>() );
-			for( SThing m : groupOne ) {
-				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
-					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
-				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
-				for( SThing t : groupTwo ) {
-					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
-					}
-					if( !m.equals( t ) ) {
-						eventMap.get( m ).get( t ).add( proximityEventListener );
-						wereClose.get( proximityEventListener ).get( m ).put( t, false );
-						checkMap.get( m ).add( t );
-					}
-				}
-			}
-			for( SThing m : groupTwo ) {
-				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
-					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
-				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
-				for( SThing t : groupOne ) {
-					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
-					}
-					if( !m.equals( t ) ) {
-						eventMap.get( m ).get( t ).add( proximityEventListener );
-						wereClose.get( proximityEventListener ).get( m ).put( t, false );
-						checkMap.get( m ).add( t );
-					}
-				}
-			}
-		}
-	}
+    public void register(Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist) {
+      listenerToGroupAMap.put(proximityEventListener, groupOne);
+      distMap.put(proximityEventListener, dist);
+      wereClose.put(proximityEventListener, new HashMap<SThing, HashMap<SThing, Boolean>>());
+      for (SThing m : groupOne) {
+        if (eventMap.get(m) == null) {
+          eventMap.put(m, new HashMap<SThing, CopyOnWriteArrayList<Object>>());
+          checkMap.put(m, new CopyOnWriteArrayList<SThing>());
+        }
+        wereClose.get(proximityEventListener).put(m, new HashMap<SThing, Boolean>());
+        for (SThing t : groupTwo) {
+          if (eventMap.get(m).get(t) == null) {
+            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
+          }
+          if (!m.equals(t)) {
+            eventMap.get(m).get(t).add(proximityEventListener);
+            wereClose.get(proximityEventListener).get(m).put(t, false);
+            checkMap.get(m).add(t);
+          }
+        }
+      }
+      for (SThing m : groupTwo) {
+        if (eventMap.get(m) == null) {
+          eventMap.put(m, new HashMap<SThing, CopyOnWriteArrayList<Object>>());
+          checkMap.put(m, new CopyOnWriteArrayList<SThing>());
+        }
+        wereClose.get(proximityEventListener).put(m, new HashMap<SThing, Boolean>());
+        for (SThing t : groupOne) {
+          if (eventMap.get(m).get(t) == null) {
+            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
+          }
+          if (!m.equals(t)) {
+            eventMap.get(m).get(t).add(proximityEventListener);
+            wereClose.get(proximityEventListener).get(m).put(t, false);
+            checkMap.get(m).add(t);
+          }
+        }
+      }
+    }
+  }
 }

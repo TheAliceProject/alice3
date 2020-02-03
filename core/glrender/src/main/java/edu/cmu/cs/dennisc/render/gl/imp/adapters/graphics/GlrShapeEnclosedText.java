@@ -55,42 +55,24 @@ import java.awt.Font;
 import java.awt.Rectangle;
 
 public abstract class GlrShapeEnclosedText<T extends ShapeEnclosedText> extends GlrText<T> {
-	private Color fillColor = null;
-	private Color outlineColor = null;
+  private Color fillColor = null;
+  private Color outlineColor = null;
 
-	protected abstract void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth,
-			Color fillColor,
-			Color outlineColor );
+  protected abstract void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth, Color fillColor, Color outlineColor);
 
-	@Override
-	protected void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth ) {
-		this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
-	}
+  @Override
+  protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth) {
+    this.render(g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.fillColor ) {
-			this.fillColor = ColorUtilities.toAwtColor( this.owner.fillColor.getValue() );
-		} else if( property == owner.outlineColor ) {
-			this.outlineColor = ColorUtilities.toAwtColor( this.owner.outlineColor.getValue() );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.fillColor) {
+      this.fillColor = ColorUtilities.toAwtColor(this.owner.fillColor.getValue());
+    } else if (property == owner.outlineColor) {
+      this.outlineColor = ColorUtilities.toAwtColor(this.owner.outlineColor.getValue());
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

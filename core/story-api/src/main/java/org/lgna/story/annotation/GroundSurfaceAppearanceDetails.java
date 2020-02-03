@@ -53,14 +53,15 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public enum GroundSurfaceAppearanceDetails implements PublicStaticFieldValueDetails<ImagePaint> {
-	SINGLETON;
-	@Override
-	public Class<ImagePaint> getSupportedCls() {
-		return ImagePaint.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Field[] getFlds() {
-		return SGround.SurfaceAppearance.class.getFields();
-	}
+  @Override
+  public Class<ImagePaint> getSupportedCls() {
+    return ImagePaint.class;
+  }
+
+  @Override
+  public Field[] getFlds() {
+    return SGround.SurfaceAppearance.class.getFields();
+  }
 }

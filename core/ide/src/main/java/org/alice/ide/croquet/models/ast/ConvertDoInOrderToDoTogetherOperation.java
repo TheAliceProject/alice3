@@ -55,25 +55,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConvertDoInOrderToDoTogetherOperation extends ConvertStatementWithBodyOperation {
-	private static Map<DoInOrder, ConvertDoInOrderToDoTogetherOperation> map = Maps.newHashMap();
+  private static Map<DoInOrder, ConvertDoInOrderToDoTogetherOperation> map = Maps.newHashMap();
 
-	public static synchronized ConvertDoInOrderToDoTogetherOperation getInstance( DoInOrder doInOrder ) {
-		ConvertDoInOrderToDoTogetherOperation rv = map.get( doInOrder );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ConvertDoInOrderToDoTogetherOperation( doInOrder );
-			map.put( doInOrder, rv );
-		}
-		return rv;
-	}
+  public static synchronized ConvertDoInOrderToDoTogetherOperation getInstance(DoInOrder doInOrder) {
+    ConvertDoInOrderToDoTogetherOperation rv = map.get(doInOrder);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ConvertDoInOrderToDoTogetherOperation(doInOrder);
+      map.put(doInOrder, rv);
+    }
+    return rv;
+  }
 
-	private ConvertDoInOrderToDoTogetherOperation( DoInOrder doInOrder ) {
-		super( UUID.fromString( "3a8140ed-9f28-41c5-a537-75943486efd9" ), doInOrder );
-	}
+  private ConvertDoInOrderToDoTogetherOperation(DoInOrder doInOrder) {
+    super(UUID.fromString("3a8140ed-9f28-41c5-a537-75943486efd9"), doInOrder);
+  }
 
-	@Override
-	protected AbstractStatementWithBody createReplacement() {
-		return new DoTogether();
-	}
+  @Override
+  protected AbstractStatementWithBody createReplacement() {
+    return new DoTogether();
+  }
 }

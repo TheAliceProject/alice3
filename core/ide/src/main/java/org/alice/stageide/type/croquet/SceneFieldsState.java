@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SceneFieldsState extends MultipleSelectionListState<UserField> {
-	public SceneFieldsState( SceneFieldListData sceneFieldListData ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "8ca04e01-acba-4a45-84ae-ba02f2decb9e" ), sceneFieldListData );
-	}
+  public SceneFieldsState(SceneFieldListData sceneFieldListData) {
+    super(Application.INHERIT_GROUP, UUID.fromString("8ca04e01-acba-4a45-84ae-ba02f2decb9e"), sceneFieldListData);
+  }
 }

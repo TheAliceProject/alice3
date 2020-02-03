@@ -69,150 +69,150 @@ import javax.swing.JScrollBar;
 import javax.swing.SwingUtilities;
 
 public class EventListenersView extends AbstractCodeDeclarationView {
-	public EventListenersView( CodeComposite composite ) {
-		super( composite, new EventsContentPanel( (UserMethod)composite.getDeclaration() ) );
-		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-		LineAxisPanel bottom = new LineAxisPanel( button );
-		this.stickyBottomPanel = new StickyBottomPanel();
-		this.stickyBottomPanel.setBottomView( bottom );
-		//		this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
-		//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-		//				Object src = e.getSource();
-		//				if( src instanceof java.awt.Component ) {
-		//					java.awt.Component awtComponent = (java.awt.Component)src;
-		//					if( awtComponent.isValid() ) {
-		//						//pass
-		//					} else {
-		//						stickyBottomPanel.revalidateAndRepaint();
-		//					}
-		//				}
-		//			}
-		//		} );
+  public EventListenersView(CodeComposite composite) {
+    super(composite, new EventsContentPanel((UserMethod) composite.getDeclaration()));
+    PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+    LineAxisPanel bottom = new LineAxisPanel(button);
+    this.stickyBottomPanel = new StickyBottomPanel();
+    this.stickyBottomPanel.setBottomView(bottom);
+    //    this.scrollPane.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
+    //      public void stateChanged( javax.swing.event.ChangeEvent e ) {
+    //        Object src = e.getSource();
+    //        if( src instanceof java.awt.Component ) {
+    //          java.awt.Component awtComponent = (java.awt.Component)src;
+    //          if( awtComponent.isValid() ) {
+    //            //pass
+    //          } else {
+    //            stickyBottomPanel.revalidateAndRepaint();
+    //          }
+    //        }
+    //      }
+    //    } );
 
-		this.stickyBottomPanel.setBackgroundColor( this.getBackgroundColor() );
-		this.stickyBottomPanel.setBorder( BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
-		this.scrollPane.setBackgroundColor( this.getBackgroundColor() );
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
-		}
-	}
+    this.stickyBottomPanel.setBackgroundColor(this.getBackgroundColor());
+    this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
+    this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+    this.scrollPane.setBackgroundColor(this.getBackgroundColor());
+    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
+      this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());
+    }
+  }
 
-	@Override
-	protected AwtComponentView<?> getMainComponent() {
-		return this.stickyBottomPanel;
-	}
+  @Override
+  protected AwtComponentView<?> getMainComponent() {
+    return this.stickyBottomPanel;
+  }
 
-	private JScrollBar getJVerticalScrollBar() {
-		if( IsJavaCodeOnTheSideState.getInstance().getValue() ) {
-			return this.getSideBySideScrollPane().getAwtComponent().getVerticalScrollBar();
-		} else {
-			return this.scrollPane.getAwtComponent().getVerticalScrollBar();
-		}
-	}
+  private JScrollBar getJVerticalScrollBar() {
+    if (IsJavaCodeOnTheSideState.getInstance().getValue()) {
+      return this.getSideBySideScrollPane().getAwtComponent().getVerticalScrollBar();
+    } else {
+      return this.scrollPane.getAwtComponent().getVerticalScrollBar();
+    }
+  }
 
-	private void handleStatementsChanged( boolean isScrollDesired ) {
-		this.revalidateAndRepaint();
-		if( isScrollDesired ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					JScrollBar verticalScrollBar = getJVerticalScrollBar();
-					verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
-				}
-			} );
-		}
-	}
+  private void handleStatementsChanged(boolean isScrollDesired) {
+    this.revalidateAndRepaint();
+    if (isScrollDesired) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          JScrollBar verticalScrollBar = getJVerticalScrollBar();
+          verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+        }
+      });
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		CodeComposite codeComposite = (CodeComposite)this.getComposite();
-		UserCode userCode = (UserCode)codeComposite.getDeclaration();
-		userCode.getBodyProperty().getValue().statements.addListPropertyListener( this.statementsListener );
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    CodeComposite codeComposite = (CodeComposite) this.getComposite();
+    UserCode userCode = (UserCode) codeComposite.getDeclaration();
+    userCode.getBodyProperty().getValue().statements.addListPropertyListener(this.statementsListener);
 
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		//
-	}
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+    //
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		//todo: remove
-		ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		//
+  @Override
+  protected void handleUndisplayable() {
+    //todo: remove
+    ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+    //
 
-		CodeComposite codeComposite = (CodeComposite)this.getComposite();
-		UserCode userCode = (UserCode)codeComposite.getDeclaration();
-		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );
-		super.handleUndisplayable();
-	}
+    CodeComposite codeComposite = (CodeComposite) this.getComposite();
+    UserCode userCode = (UserCode) codeComposite.getDeclaration();
+    userCode.getBodyProperty().getValue().statements.removeListPropertyListener(this.statementsListener);
+    super.handleUndisplayable();
+  }
 
-	@Override
-	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		super.setJavaCodeOnTheSide( value, isFirstTime );
-		SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
-		if( value ) {
-			this.scrollPane.setViewportView( null );
-			this.stickyBottomPanel.setTopView( codePanel );
-		} else {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.stickyBottomPanel.removeComponent( codePanel );
-			}
-			this.scrollPane.setViewportView( codePanel );
-			this.stickyBottomPanel.setTopView( this.scrollPane );
-		}
-	}
+  @Override
+  protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
+    super.setJavaCodeOnTheSide(value, isFirstTime);
+    SwingComponentView<?> codePanel = this.getCodePanelWithDropReceptor();
+    if (value) {
+      this.scrollPane.setViewportView(null);
+      this.stickyBottomPanel.setTopView(codePanel);
+    } else {
+      if (isFirstTime) {
+        //pass
+      } else {
+        this.stickyBottomPanel.removeComponent(codePanel);
+      }
+      this.scrollPane.setViewportView(codePanel);
+      this.stickyBottomPanel.setTopView(this.scrollPane);
+    }
+  }
 
-	private final ListPropertyListener<Statement> statementsListener = new ListPropertyListener<Statement>() {
-		@Override
-		public void adding( AddListPropertyEvent<Statement> e ) {
-		}
+  private final ListPropertyListener<Statement> statementsListener = new ListPropertyListener<Statement>() {
+    @Override
+    public void adding(AddListPropertyEvent<Statement> e) {
+    }
 
-		@Override
-		public void added( AddListPropertyEvent<Statement> e ) {
-			EventListenersView.this.handleStatementsChanged( true );
-		}
+    @Override
+    public void added(AddListPropertyEvent<Statement> e) {
+      EventListenersView.this.handleStatementsChanged(true);
+    }
 
-		@Override
-		public void clearing( ClearListPropertyEvent<Statement> e ) {
-		}
+    @Override
+    public void clearing(ClearListPropertyEvent<Statement> e) {
+    }
 
-		@Override
-		public void cleared( ClearListPropertyEvent<Statement> e ) {
-			EventListenersView.this.handleStatementsChanged( false );
-		}
+    @Override
+    public void cleared(ClearListPropertyEvent<Statement> e) {
+      EventListenersView.this.handleStatementsChanged(false);
+    }
 
-		@Override
-		public void removing( RemoveListPropertyEvent<Statement> e ) {
-		}
+    @Override
+    public void removing(RemoveListPropertyEvent<Statement> e) {
+    }
 
-		@Override
-		public void removed( RemoveListPropertyEvent<Statement> e ) {
-			EventListenersView.this.handleStatementsChanged( false );
-		}
+    @Override
+    public void removed(RemoveListPropertyEvent<Statement> e) {
+      EventListenersView.this.handleStatementsChanged(false);
+    }
 
-		@Override
-		public void setting( SetListPropertyEvent<Statement> e ) {
-		}
+    @Override
+    public void setting(SetListPropertyEvent<Statement> e) {
+    }
 
-		@Override
-		public void set( SetListPropertyEvent<Statement> e ) {
-			EventListenersView.this.handleStatementsChanged( false );
-		}
+    @Override
+    public void set(SetListPropertyEvent<Statement> e) {
+      EventListenersView.this.handleStatementsChanged(false);
+    }
 
-	};
+  };
 
-	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			revalidateAndRepaint();
-		}
-	};
+  private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
+    @Override
+    public void projectChanged() {
+      revalidateAndRepaint();
+    }
+  };
 
-	private final ScrollPane scrollPane = new ScrollPane();
-	private final StickyBottomPanel stickyBottomPanel;
+  private final ScrollPane scrollPane = new ScrollPane();
+  private final StickyBottomPanel stickyBottomPanel;
 
 }

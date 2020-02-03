@@ -59,90 +59,89 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode> implements ValueListener<ResourceNode> {
-	private final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> listState;
-	private String unselectedMessage;
+  private final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> listState;
+  private String unselectedMessage;
 
-	public SuperclassPopupButton( SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state,
-								  String unselectedMessage ) {
-		super(state.getMenuModel().getPopupPrepModel());
-		listState = state;
-		this.unselectedMessage = unselectedMessage;
-		getAwtComponent().setLayout( new BoxLayout( getAwtComponent(), BoxLayout.LINE_AXIS ) );
-	}
+  public SuperclassPopupButton(SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state, String unselectedMessage) {
+    super(state.getMenuModel().getPopupPrepModel());
+    listState = state;
+    this.unselectedMessage = unselectedMessage;
+    getAwtComponent().setLayout(new BoxLayout(getAwtComponent(), BoxLayout.LINE_AXIS));
+  }
 
-	@Override
-	protected AbstractButton createSwingButton() {
-		return new JFauxComboBoxPopupButton() {
-			@Override
-			public void invalidate() {
-				super.invalidate();
-				refreshIfNecessary();
-			}
-		};
-	}
+  @Override
+  protected AbstractButton createSwingButton() {
+    return new JFauxComboBoxPopupButton() {
+      @Override
+      public void invalidate() {
+        super.invalidate();
+        refreshIfNecessary();
+      }
+    };
+  }
 
-	private ResourceNode nextValue;
+  private ResourceNode nextValue;
 
-	@Override
-	public void valueChanged( ValueEvent<ResourceNode> e ) {
-		nextValue = e.getNextValue();
-		refreshLater();
-	}
+  @Override
+  public void valueChanged(ValueEvent<ResourceNode> e) {
+    nextValue = e.getNextValue();
+    refreshLater();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		refreshLater();
-		listState.addAndInvokeNewSchoolValueListener( this );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    refreshLater();
+    listState.addAndInvokeNewSchoolValueListener(this);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		listState.removeNewSchoolValueListener( this );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    listState.removeNewSchoolValueListener(this);
+    super.handleUndisplayable();
+  }
 
-	private void refreshLater() {
-		isRefreshNecessary = true;
-		revalidateAndRepaint();
-	}
+  private void refreshLater() {
+    isRefreshNecessary = true;
+    revalidateAndRepaint();
+  }
 
-	private void refreshIfNecessary() {
-		if ( isRefreshNecessary && !isInTheMidstOfRefreshing ) {
-			isInTheMidstOfRefreshing = true;
-			try {
-				synchronized (getTreeLock()) {
-					internalRefresh();
-				}
-				isRefreshNecessary = false;
-			} finally {
-				isInTheMidstOfRefreshing = false;
-			}
-		}
-	}
+  private void refreshIfNecessary() {
+    if (isRefreshNecessary && !isInTheMidstOfRefreshing) {
+      isInTheMidstOfRefreshing = true;
+      try {
+        synchronized (getTreeLock()) {
+          internalRefresh();
+        }
+        isRefreshNecessary = false;
+      } finally {
+        isInTheMidstOfRefreshing = false;
+      }
+    }
+  }
 
-	protected void internalRefresh() {
-		internalForgetAndRemoveAllComponents();
-		if( nextValue != null ) {
-			IconFactory iconFactory = nextValue.getIconFactory();
-			if( ( iconFactory != null ) && ( iconFactory != EmptyIconFactory.getInstance() ) ) {
-				Dimension size = iconFactory.getTrimmedSizeForHeight( Theme.DEFAULT_SMALL_ICON_SIZE.height );
-				Icon icon = iconFactory.getIcon( size );
-				if( icon != null ) {
-					internalAddComponent( new Label( icon ) );
-				}
-			}
-			String className = nextValue.getSimpleClassName();
-			if ( className != null ) {
-				internalAddComponent( new Label( className ) );
-			}
-		} else {
-			internalAddComponent( new Label( new EmptyIcon( 0, 30 )) );
-			internalAddComponent( new Label( unselectedMessage ) );
-		}
-		revalidateAndRepaint();
-	}
+  protected void internalRefresh() {
+    internalForgetAndRemoveAllComponents();
+    if (nextValue != null) {
+      IconFactory iconFactory = nextValue.getIconFactory();
+      if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
+        Dimension size = iconFactory.getTrimmedSizeForHeight(Theme.DEFAULT_SMALL_ICON_SIZE.height);
+        Icon icon = iconFactory.getIcon(size);
+        if (icon != null) {
+          internalAddComponent(new Label(icon));
+        }
+      }
+      String className = nextValue.getSimpleClassName();
+      if (className != null) {
+        internalAddComponent(new Label(className));
+      }
+    } else {
+      internalAddComponent(new Label(new EmptyIcon(0, 30)));
+      internalAddComponent(new Label(unselectedMessage));
+    }
+    revalidateAndRepaint();
+  }
 
-	private boolean isInTheMidstOfRefreshing = false;
-	private boolean isRefreshNecessary = true;
+  private boolean isInTheMidstOfRefreshing = false;
+  private boolean isRefreshNecessary = true;
 }

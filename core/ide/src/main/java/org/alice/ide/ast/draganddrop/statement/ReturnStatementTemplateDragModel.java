@@ -60,34 +60,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel {
-	private static Map<UserMethod, ReturnStatementTemplateDragModel> map = Maps.newHashMap();
+  private static Map<UserMethod, ReturnStatementTemplateDragModel> map = Maps.newHashMap();
 
-	public static synchronized ReturnStatementTemplateDragModel getInstance( UserMethod method ) {
-		ReturnStatementTemplateDragModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ReturnStatementTemplateDragModel( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized ReturnStatementTemplateDragModel getInstance(UserMethod method) {
+    ReturnStatementTemplateDragModel rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ReturnStatementTemplateDragModel(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private final UserMethod method;
+  private final UserMethod method;
 
-	private ReturnStatementTemplateDragModel( UserMethod method ) {
-		super(
-				UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ),
-				ReturnStatement.class,
-				IncompleteAstUtilities.createIncompleteReturnStatement(
-						//todo
-						method != null ? method.getReturnType() : JavaType.OBJECT_TYPE
-						) );
-		this.method = method;
-	}
+  private ReturnStatementTemplateDragModel(UserMethod method) {
+    super(UUID.fromString("7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2"), ReturnStatement.class, IncompleteAstUtilities.createIncompleteReturnStatement(
+        //todo
+        method != null ? method.getReturnType() : JavaType.OBJECT_TYPE));
+    this.method = method;
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
-		return ReturnStatementInsertCascade.getInstance( blockStatementIndexPair );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
+    return ReturnStatementInsertCascade.getInstance(blockStatementIndexPair);
+  }
 }

@@ -47,11 +47,11 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class DurationAnimationStyleSetDimensionPolicyArgumentFactory extends DurationAnimationStyleArgumentFactory {
-	protected DurationAnimationStyleSetDimensionPolicyArgumentFactory() {
-		super();
-	}
+  protected DurationAnimationStyleSetDimensionPolicyArgumentFactory() {
+    super();
+  }
 
-	public static SetDimensionPolicy policy( SetDimensionPolicy policy ) {
-		return policy;
-	}
+  public static SetDimensionPolicy policy(SetDimensionPolicy policy) {
+    return policy;
+  }
 }

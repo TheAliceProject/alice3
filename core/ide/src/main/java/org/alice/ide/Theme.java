@@ -54,45 +54,45 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public interface Theme {
-	public static final Dimension DEFAULT_SMALLER_ICON_SIZE = new Dimension( 32, 24 );
-	public static final Dimension DEFAULT_SMALL_ICON_SIZE = new Dimension( 40, 30 );
-	public static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension( 120, 90 );
+  public static final Dimension DEFAULT_SMALLER_ICON_SIZE = new Dimension(32, 24);
+  public static final Dimension DEFAULT_SMALL_ICON_SIZE = new Dimension(40, 30);
+  public static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension(120, 90);
 
-	public Color getTypeColor();
+  public Color getTypeColor();
 
-	public Color getMutedTypeColor();
+  public Color getMutedTypeColor();
 
-	public Color getProcedureColor();
+  public Color getProcedureColor();
 
-	public Color getFunctionColor();
+  public Color getFunctionColor();
 
-	public Color getConstructorColor();
+  public Color getConstructorColor();
 
-	public Color getFieldColor();
+  public Color getFieldColor();
 
-	public Color getLocalColor();
+  public Color getLocalColor();
 
-	public Color getParameterColor();
+  public Color getParameterColor();
 
-	public Color getEventColor();
+  public Color getEventColor();
 
-	public Color getEventBodyColor();
+  public Color getEventBodyColor();
 
-	public Paint getPaintFor( Class<? extends Statement> cls, int x, int y, int width, int height );
+  public Paint getPaintFor(Class<? extends Statement> cls, int x, int y, int width, int height);
 
-	public Color getColorFor( Class<? extends Node> cls );
+  public Color getColorFor(Class<? extends Node> cls);
 
-	public Color getColorFor( Node node );
+  public Color getColorFor(Node node);
 
-	public Color getCommentForegroundColor();
+  public Color getCommentForegroundColor();
 
-	public Color getCodeColor( Code code );
+  public Color getCodeColor(Code code);
 
-	public Color getSelectedColor();
+  public Color getSelectedColor();
 
-	public Color getUnselectedColor();
+  public Color getUnselectedColor();
 
-	public Color getPrimaryBackgroundColor();
+  public Color getPrimaryBackgroundColor();
 
-	public Color getSecondaryBackgroundColor();
+  public Color getSecondaryBackgroundColor();
 }

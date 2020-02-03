@@ -48,255 +48,231 @@ package edu.cmu.cs.dennisc.math;
  */
 //todo: make final (account for Frustum) and immutable
 public class Hexahedron {
-	public enum RightOrLeft {
-		RIGHT( 0x0 ),
-		LEFT( 0x1 );
-		private int mask;
+  public enum RightOrLeft {
+    RIGHT(0x0), LEFT(0x1);
+    private int mask;
 
-		RightOrLeft( int mask ) {
-			this.mask = mask;
-		}
+    RightOrLeft(int mask) {
+      this.mask = mask;
+    }
 
-		public int getMask() {
-			return this.mask;
-		}
-	}
+    public int getMask() {
+      return this.mask;
+    }
+  }
 
-	public enum TopOrBottom {
-		TOP( 0x0 ),
-		BOTTOM( 0x2 );
-		private int mask;
+  public enum TopOrBottom {
+    TOP(0x0), BOTTOM(0x2);
+    private int mask;
 
-		TopOrBottom( int mask ) {
-			this.mask = mask;
-		}
+    TopOrBottom(int mask) {
+      this.mask = mask;
+    }
 
-		public int getMask() {
-			return this.mask;
-		}
-	}
+    public int getMask() {
+      return this.mask;
+    }
+  }
 
-	public enum BackOrFront {
-		BACK( 0x0 ),
-		FRONT( 0x4 );
-		private int mask;
+  public enum BackOrFront {
+    BACK(0x0), FRONT(0x4);
+    private int mask;
 
-		BackOrFront( int mask ) {
-			this.mask = mask;
-		}
+    BackOrFront(int mask) {
+      this.mask = mask;
+    }
 
-		public int getMask() {
-			return this.mask;
-		}
-	}
+    public int getMask() {
+      return this.mask;
+    }
+  }
 
-	public enum Side {
-		RIGHT( 0, 0x0, 0x1, 0x2, 0x3 ),
-		LEFT( 1, 0x0, 0x1, 0x2, 0x3 ),
-		TOP( 2, 0x0, 0x1, 0x2, 0x3 ),
-		BOTTOM( 3, 0x0, 0x1, 0x2, 0x3 ),
-		BACK( 4, 0x0, 0x1, 0x2, 0x3 ),
-		FRONT( 5, 0x0, 0x1, 0x2, 0x3 );
-		private int normalIndex;
-		private int[] pointIndices;
+  public enum Side {
+    RIGHT(0, 0x0, 0x1, 0x2, 0x3), LEFT(1, 0x0, 0x1, 0x2, 0x3), TOP(2, 0x0, 0x1, 0x2, 0x3), BOTTOM(3, 0x0, 0x1, 0x2, 0x3), BACK(4, 0x0, 0x1, 0x2, 0x3), FRONT(5, 0x0, 0x1, 0x2, 0x3);
+    private int normalIndex;
+    private int[] pointIndices;
 
-		Side( int normalIndex, int... pointIndices ) {
-			assert ( 0 <= normalIndex ) && ( normalIndex < 6 );
-			assert pointIndices.length == 4;
-			for( int pointIndex : pointIndices ) {
-				assert ( 0 <= pointIndex ) && ( pointIndex < 8 );
-			}
-			this.normalIndex = normalIndex;
-			this.pointIndices = pointIndices;
-		}
+    Side(int normalIndex, int... pointIndices) {
+      assert (0 <= normalIndex) && (normalIndex < 6);
+      assert pointIndices.length == 4;
+      for (int pointIndex : pointIndices) {
+        assert (0 <= pointIndex) && (pointIndex < 8);
+      }
+      this.normalIndex = normalIndex;
+      this.pointIndices = pointIndices;
+    }
 
-		public int getNormalIndex() {
-			return this.normalIndex;
-		}
+    public int getNormalIndex() {
+      return this.normalIndex;
+    }
 
-		public int[] getPointIndices() {
-			return this.pointIndices;
-		}
+    public int[] getPointIndices() {
+      return this.pointIndices;
+    }
 
-		public int getPointIndexAt( int i ) {
-			return this.pointIndices[ i ];
-		}
-	}
+    public int getPointIndexAt(int i) {
+      return this.pointIndices[i];
+    }
+  }
 
-	private final Point3[] points = {
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3(),
-			new Point3()
-	};
-	private final Vector3[] normals = {
-			new Vector3(),
-			new Vector3(),
-			new Vector3(),
-			new Vector3(),
-			new Vector3(),
-			new Vector3()
-	};
+  private final Point3[] points = {new Point3(), new Point3(), new Point3(), new Point3(), new Point3(), new Point3(), new Point3(), new Point3()};
+  private final Vector3[] normals = {new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3()};
 
-	public static Hexahedron createNaN() {
-		Hexahedron rv = new Hexahedron();
-		rv.setNaN();
-		return rv;
-	}
+  public static Hexahedron createNaN() {
+    Hexahedron rv = new Hexahedron();
+    rv.setNaN();
+    return rv;
+  }
 
-	private Hexahedron() {
-		setNaN();
-	}
+  private Hexahedron() {
+    setNaN();
+  }
 
-	public Hexahedron( Point3[] points, Vector3[] normals ) {
-		set( points, normals );
-	}
+  public Hexahedron(Point3[] points, Vector3[] normals) {
+    set(points, normals);
+  }
 
-	private boolean isEqual( Hexahedron otherHexahedron ) {
-		for( int i = 0; i < this.points.length; i++ ) {
-			if( this.points[ i ].equals( otherHexahedron.points[ i ] ) ) {
-				// pass
-			} else {
-				return false;
-			}
-		}
-		for( int i = 0; i < this.normals.length; i++ ) {
-			if( this.normals[ i ].equals( otherHexahedron.normals[ i ] ) ) {
-				// pass
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  private boolean isEqual(Hexahedron otherHexahedron) {
+    for (int i = 0; i < this.points.length; i++) {
+      if (this.points[i].equals(otherHexahedron.points[i])) {
+        // pass
+      } else {
+        return false;
+      }
+    }
+    for (int i = 0; i < this.normals.length; i++) {
+      if (this.normals[i].equals(otherHexahedron.normals[i])) {
+        // pass
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public boolean equals( Object other ) {
-		if( other == this ) {
-			return true;
-		}
-		if( other instanceof Hexahedron ) {
-			return isEqual( (Hexahedron)other );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (other instanceof Hexahedron) {
+      return isEqual((Hexahedron) other);
+    } else {
+      return false;
+    }
+  }
 
-	//todo: hashCode
+  //todo: hashCode
 
-	public void set( Point3[] points, Vector3[] normals ) {
-		for( int i = 0; i < this.points.length; i++ ) {
-			this.points[ i ].set( points[ i ] );
-		}
-		for( int i = 0; i < this.normals.length; i++ ) {
-			this.normals[ i ].set( normals[ i ] );
-		}
-	}
+  public void set(Point3[] points, Vector3[] normals) {
+    for (int i = 0; i < this.points.length; i++) {
+      this.points[i].set(points[i]);
+    }
+    for (int i = 0; i < this.normals.length; i++) {
+      this.normals[i].set(normals[i]);
+    }
+  }
 
-	public void set( Hexahedron other ) {
-		if( other != null ) {
-			set( other.points, other.normals );
-		} else {
-			setNaN();
-		}
-	}
+  public void set(Hexahedron other) {
+    if (other != null) {
+      set(other.points, other.normals);
+    } else {
+      setNaN();
+    }
+  }
 
-	public void setNaN() {
-		for( Point3 point : this.points ) {
-			point.setNaN();
-		}
-		for( Vector3 normal : this.normals ) {
-			normal.setNaN();
-		}
-	}
+  public void setNaN() {
+    for (Point3 point : this.points) {
+      point.setNaN();
+    }
+    for (Vector3 normal : this.normals) {
+      normal.setNaN();
+    }
+  }
 
-	public boolean isNaN() {
-		for( Point3 point : this.points ) {
-			if( point.isNaN() ) {
-				return true;
-			}
-		}
-		for( Vector3 normal : this.normals ) {
-			if( normal.isNaN() ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  public boolean isNaN() {
+    for (Point3 point : this.points) {
+      if (point.isNaN()) {
+        return true;
+      }
+    }
+    for (Vector3 normal : this.normals) {
+      if (normal.isNaN()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	public void transform( AbstractMatrix4x4 m ) {
-		for( Point3 point : this.points ) {
-			m.transform( point );
-		}
-		for( Vector3 normal : this.normals ) {
-			m.transform( normal );
-		}
-	}
+  public void transform(AbstractMatrix4x4 m) {
+    for (Point3 point : this.points) {
+      m.transform(point);
+    }
+    for (Vector3 normal : this.normals) {
+      m.transform(normal);
+    }
+  }
 
-	@Deprecated
-	public Point3 getPointAt( int index ) {
-		return new Point3( this.points[ index ] );
-	}
+  @Deprecated
+  public Point3 getPointAt(int index) {
+    return new Point3(this.points[index]);
+  }
 
-	@Deprecated
-	public Point3[] getPoints() {
-		return this.points;
-	}
+  @Deprecated
+  public Point3[] getPoints() {
+    return this.points;
+  }
 
-	@Deprecated
-	public Vector3[] getNormals() {
-		return this.normals;
-	}
+  @Deprecated
+  public Vector3[] getNormals() {
+    return this.normals;
+  }
 
-	private int getPointIndex( RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront ) {
-		return rightOrLeft.getMask() | topOrBottom.getMask() | backOrFront.getMask();
-	}
+  private int getPointIndex(RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront) {
+    return rightOrLeft.getMask() | topOrBottom.getMask() | backOrFront.getMask();
+  }
 
-	public Point3 getPoint( Point3 rv, RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront ) {
-		rv.set( this.points[ getPointIndex( rightOrLeft, topOrBottom, backOrFront ) ] );
-		return rv;
-	}
+  public Point3 getPoint(Point3 rv, RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront) {
+    rv.set(this.points[getPointIndex(rightOrLeft, topOrBottom, backOrFront)]);
+    return rv;
+  }
 
-	public Point3 getPoint( RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront ) {
-		return getPoint( new Point3(), rightOrLeft, topOrBottom, backOrFront );
-	}
+  public Point3 getPoint(RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront) {
+    return getPoint(new Point3(), rightOrLeft, topOrBottom, backOrFront);
+  }
 
-	private Point3[] getPoints( Side side ) {
-		Point3[] rv = new Point3[ 4 ];
-		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = this.points[ side.getPointIndexAt( i ) ];
-		}
-		return rv;
-	}
+  private Point3[] getPoints(Side side) {
+    Point3[] rv = new Point3[4];
+    for (int i = 0; i < rv.length; i++) {
+      rv[i] = this.points[side.getPointIndexAt(i)];
+    }
+    return rv;
+  }
 
-	public ClippedPlane getClippedPlane( Side side ) {
-		Point3[] points = getPoints( side );
-		Vector3 normal = this.normals[ side.getNormalIndex() ];
-		return new ClippedPlane( points, normal );
-	}
+  public ClippedPlane getClippedPlane(Side side) {
+    Point3[] points = getPoints(side);
+    Vector3 normal = this.normals[side.getNormalIndex()];
+    return new ClippedPlane(points, normal);
+  }
 
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
-		Point3 minimum = new Point3( this.points[ 0 ] );
-		Point3 maximum = new Point3( this.points[ 0 ] );
-		for( int i = 1; i < this.points.length; i++ ) {
-			Point3 p = this.points[ i ];
-			minimum.x = Math.min( minimum.x, p.x );
-			minimum.y = Math.min( minimum.y, p.y );
-			minimum.z = Math.min( minimum.z, p.z );
-			maximum.x = Math.max( maximum.x, p.x );
-			maximum.y = Math.max( maximum.y, p.y );
-			maximum.z = Math.max( maximum.z, p.z );
-		}
-		rv.setMinimum( minimum );
-		rv.setMaximum( maximum );
-		return rv;
-	}
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
+    Point3 minimum = new Point3(this.points[0]);
+    Point3 maximum = new Point3(this.points[0]);
+    for (int i = 1; i < this.points.length; i++) {
+      Point3 p = this.points[i];
+      minimum.x = Math.min(minimum.x, p.x);
+      minimum.y = Math.min(minimum.y, p.y);
+      minimum.z = Math.min(minimum.z, p.z);
+      maximum.x = Math.max(maximum.x, p.x);
+      maximum.y = Math.max(maximum.y, p.y);
+      maximum.z = Math.max(maximum.z, p.z);
+    }
+    rv.setMinimum(minimum);
+    rv.setMaximum(maximum);
+    return rv;
+  }
 
-	public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-		return getAxisAlignedMinimumBoundingBox( new AxisAlignedBox() );
-	}
+  public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+    return getAxisAlignedMinimumBoundingBox(new AxisAlignedBox());
+  }
 }

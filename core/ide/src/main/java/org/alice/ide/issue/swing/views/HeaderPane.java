@@ -57,30 +57,30 @@ import javax.swing.WindowConstants;
 import java.awt.Color;
 
 public class HeaderPane extends JLineAxisPane {
-	public HeaderPane() {
-		this.setBackground( Color.DARK_GRAY );
-		this.setOpaque( true );
+  public HeaderPane() {
+    this.setBackground(Color.DARK_GRAY);
+    this.setOpaque(true);
 
-		JBrowserHyperlink hyperlink = new JBrowserHyperlink( ReportSubmissionConfiguration.JIRA_URL );
-		hyperlink.setIcon( IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
-		hyperlink.setDefaultColor( Color.LIGHT_GRAY );
-		hyperlink.setArmedColor( Color.YELLOW );
-		hyperlink.setForeground( hyperlink.getDefaultColor() );
-		hyperlink.setVerticalTextPosition( SwingConstants.BOTTOM );
-		hyperlink.setHorizontalTextPosition( SwingConstants.CENTER );
-		this.add( hyperlink );
-		this.add( Box.createHorizontalStrut( 32 ) );
-		this.add( Box.createHorizontalGlue() );
-		this.add( new LogInStatusPane() );
-		this.setBorder( BorderFactory.createEmptyBorder( 2, 6, 8, 12 ) );
-	}
+    JBrowserHyperlink hyperlink = new JBrowserHyperlink(ReportSubmissionConfiguration.JIRA_URL);
+    hyperlink.setIcon(IconUtilities.createImageIcon(HeaderPane.class.getResource("images/logo.png")));
+    hyperlink.setDefaultColor(Color.LIGHT_GRAY);
+    hyperlink.setArmedColor(Color.YELLOW);
+    hyperlink.setForeground(hyperlink.getDefaultColor());
+    hyperlink.setVerticalTextPosition(SwingConstants.BOTTOM);
+    hyperlink.setHorizontalTextPosition(SwingConstants.CENTER);
+    this.add(hyperlink);
+    this.add(Box.createHorizontalStrut(32));
+    this.add(Box.createHorizontalGlue());
+    this.add(new LogInStatusPane());
+    this.setBorder(BorderFactory.createEmptyBorder(2, 6, 8, 12));
+  }
 
-	public static void main( String[] args ) {
-		HeaderPane pane = new HeaderPane();
-		//LogInPane pane = new LogInPane();
-		//PasswordPane pane = new PasswordPane();
-		JDialog dialog = JDialogUtilities.createPackedJDialog( pane, null, "", true, WindowConstants.DISPOSE_ON_CLOSE );
-		WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, null );
-		dialog.setVisible( true );
-	}
+  public static void main(String[] args) {
+    HeaderPane pane = new HeaderPane();
+    //LogInPane pane = new LogInPane();
+    //PasswordPane pane = new PasswordPane();
+    JDialog dialog = JDialogUtilities.createPackedJDialog(pane, null, "", true, WindowConstants.DISPOSE_ON_CLOSE);
+    WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, null);
+    dialog.setVisible(true);
+  }
 }

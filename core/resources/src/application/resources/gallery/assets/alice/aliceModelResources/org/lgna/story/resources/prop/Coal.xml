@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Coal">
+    <BoundingBox>
+        <Min x="-0.130161315202713" y="-0.059992387890815735" z="-0.16158004105091095"/>
+        <Max x="0.1685733050107956" y="0.10928767174482346" z="0.17197677493095398"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>fire</Tag>
+        <Tag>train</Tag>
+        <Tag>coal</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Coal" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Coal" resourceName="BURNING" textureName="BURNING"/>
+</AliceModel>

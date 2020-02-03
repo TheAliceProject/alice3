@@ -57,45 +57,45 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  */
 public class AudioMuxer {
 
-	private final List<ScheduledAudioStream> scheduledStreams = Lists.newLinkedList();
+  private final List<ScheduledAudioStream> scheduledStreams = Lists.newLinkedList();
 
-	public void addAudioStream( ScheduledAudioStream audio ) {
-		scheduledStreams.add( audio );
-	}
+  public void addAudioStream(ScheduledAudioStream audio) {
+    scheduledStreams.add(audio);
+  }
 
-	public List<ScheduledAudioStream> getScheduledStreams() {
-		return this.scheduledStreams;
-	}
+  public List<ScheduledAudioStream> getScheduledStreams() {
+    return this.scheduledStreams;
+  }
 
-	public boolean hasAudioToMix() {
-		return ( scheduledStreams.size() > 0 );
-	}
+  public boolean hasAudioToMix() {
+    return (scheduledStreams.size() > 0);
+  }
 
-	private void convertAudioStreamsToWav() {
-		Map<AudioResource, AudioResource> wavResouces = Maps.newHashMap();
-		for( ScheduledAudioStream stream : this.scheduledStreams ) {
-			if( !wavResouces.containsKey( stream.getAudioResource() ) ) {
-				AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary( stream.getAudioResource() );
-				wavResouces.put( stream.getAudioResource(), wavAudio );
-				stream.setAudioResource( wavAudio );
-			} else {
-				stream.setAudioResource( wavResouces.get( stream.getAudioResource() ) );
-			}
-		}
-	}
+  private void convertAudioStreamsToWav() {
+    Map<AudioResource, AudioResource> wavResouces = Maps.newHashMap();
+    for (ScheduledAudioStream stream : this.scheduledStreams) {
+      if (!wavResouces.containsKey(stream.getAudioResource())) {
+        AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary(stream.getAudioResource());
+        wavResouces.put(stream.getAudioResource(), wavAudio);
+        stream.setAudioResource(wavAudio);
+      } else {
+        stream.setAudioResource(wavResouces.get(stream.getAudioResource()));
+      }
+    }
+  }
 
-	public void mixAudioStreams( OutputStream outputStream, double length ) {
-		if( this.hasAudioToMix() ) {
-			convertAudioStreamsToWav();
-			try {
-				AudioTrackMixer mixer = new AudioTrackMixer( AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length );
-				for( ScheduledAudioStream stream : scheduledStreams ) {
-					mixer.addScheduledStream( stream );
-				}
-				mixer.write( outputStream );
-			} catch( IOException e ) {
-				throw new RuntimeException( "could not write to stream: " + outputStream, e );
-			}
-		}
-	}
+  public void mixAudioStreams(OutputStream outputStream, double length) {
+    if (this.hasAudioToMix()) {
+      convertAudioStreamsToWav();
+      try {
+        AudioTrackMixer mixer = new AudioTrackMixer(AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length);
+        for (ScheduledAudioStream stream : scheduledStreams) {
+          mixer.addScheduledStream(stream);
+        }
+        mixer.write(outputStream);
+      } catch (IOException e) {
+        throw new RuntimeException("could not write to stream: " + outputStream, e);
+      }
+    }
+  }
 }

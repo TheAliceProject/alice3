@@ -49,46 +49,46 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class LocalAccess extends Expression {
-	public LocalAccess() {
-	}
+  public LocalAccess() {
+  }
 
-	public LocalAccess( UserLocal local ) {
-		this.local.setValue( local );
-	}
+  public LocalAccess(UserLocal local) {
+    this.local.setValue(local);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.local.getValue().valueType.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.local.getValue().valueType.getValue();
+  }
 
-	@Override
-	public boolean isValid() {
-		UserLocal local = this.local.getValue();
-		if( local != null ) {
-			Code localCode = local.getFirstAncestorAssignableTo( Code.class );
-			if( localCode != null ) {
-				Code code = this.getFirstAncestorAssignableTo( Code.class );
+  @Override
+  public boolean isValid() {
+    UserLocal local = this.local.getValue();
+    if (local != null) {
+      Code localCode = local.getFirstAncestorAssignableTo(Code.class);
+      if (localCode != null) {
+        Code code = this.getFirstAncestorAssignableTo(Code.class);
 
-				//todo: check location
+        //todo: check location
 
-				return code == localCode;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+        return code == localCode;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendString( this.local.getValue().getValidName() );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendString(this.local.getValue().getValidName());
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.local.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.local.getValue());
+  }
 
-	public final DeclarationProperty<UserLocal> local = DeclarationProperty.createReferenceInstance( this );
+  public final DeclarationProperty<UserLocal> local = DeclarationProperty.createReferenceInstance(this);
 }

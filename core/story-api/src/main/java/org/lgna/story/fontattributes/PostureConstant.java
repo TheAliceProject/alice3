@@ -49,21 +49,20 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public enum PostureConstant implements PostureAttribute {
-	REGULAR( TextAttribute.POSTURE_REGULAR ),
-	OBLIQUE( TextAttribute.POSTURE_OBLIQUE );
-	private Float m_value;
+  REGULAR(TextAttribute.POSTURE_REGULAR), OBLIQUE(TextAttribute.POSTURE_OBLIQUE);
+  private Float m_value;
 
-	private PostureConstant( Float value ) {
-		m_value = value;
-	}
+  private PostureConstant(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.POSTURE;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.POSTURE;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

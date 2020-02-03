@@ -48,7 +48,7 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class MethodInfo extends MemberInfo<UserMethod> {
-	public MethodInfo( ProjectInfo projectInfo, UserMethod method ) {
-		super( projectInfo, method );
-	}
+  public MethodInfo(ProjectInfo projectInfo, UserMethod method) {
+    super(projectInfo, method);
+  }
 }

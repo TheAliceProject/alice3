@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class NodeProperty<E extends Node> extends InstanceProperty<E> {
-	public NodeProperty( InstancePropertyOwner owner ) {
-		super( owner, null );
-	}
+  public NodeProperty(InstancePropertyOwner owner) {
+    super(owner, null);
+  }
 
 }

@@ -72,169 +72,169 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RunComposite extends SimpleModalFrameComposite<RunView> {
-	private static class SingletonHolder {
-		private static RunComposite instance = new RunComposite();
-	}
+  private static class SingletonHolder {
+    private static RunComposite instance = new RunComposite();
+  }
 
-	public static RunComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RunComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final PlainStringValue restartLabel = this.createStringValue( "restart" );
-	private final PlainStringValue speedFormat= this.createStringValue( "speed" );
+  private final PlainStringValue restartLabel = this.createStringValue("restart");
+  private final PlainStringValue speedFormat = this.createStringValue("speed");
 
-	private RunComposite() {
-		super( UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), IDE.RUN_GROUP );
-		//todo: move to localize
-		this.getLaunchOperation().setButtonIcon( new RunIcon() );
-	}
+  private RunComposite() {
+    super(UUID.fromString("985b3795-e1c7-4114-9819-fae4dcfe5676"), IDE.RUN_GROUP);
+    //todo: move to localize
+    this.getLaunchOperation().setButtonIcon(new RunIcon());
+  }
 
-	private transient RunProgramContext programContext;
-	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
-	private static final int DEFAULT_WIDTH = 640;
-	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
-	private Point location = null;
-	private Dimension size = null;
+  private transient RunProgramContext programContext;
+  public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
+  private static final int DEFAULT_WIDTH = 640;
+  private static final int DEFAULT_HEIGHT = (int) (DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO);
+  private Point location = null;
+  private Dimension size = null;
 
-	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		return null;
-	}
+  @Override
+  protected GoldenRatioPolicy getGoldenRatioPolicy() {
+    return null;
+  }
 
-	@Override
-	protected Point getDesiredWindowLocation() {
-		return this.location;
-	}
+  @Override
+  protected Point getDesiredWindowLocation() {
+    return this.location;
+  }
 
-	@Override
-	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
-		if( this.size != null ) {
-			return this.size;
-		} else {
-			return super.calculateWindowSize( window );
-		}
-	}
+  @Override
+  protected Dimension calculateWindowSize(AbstractWindow<?> window) {
+    if (this.size != null) {
+      return this.size;
+    } else {
+      return super.calculateWindowSize(window);
+    }
+  }
 
-	private class ProgramRunnable implements Runnable {
-		public ProgramRunnable( ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
-			RunComposite.this.programContext = new RunProgramContext();
-			RunComposite.this.programContext.getProgramImp().setRestartAction( RunComposite.this.restartAction );
-			RunComposite.this.programContext.getProgramImp().setSpeedFormat( RunComposite.this.speedFormat.getText());
-			RunComposite.this.programContext.initializeInContainer( awtContainerInitializer );
-		}
+  private class ProgramRunnable implements Runnable {
+    public ProgramRunnable(ProgramImp.AwtContainerInitializer awtContainerInitializer) {
+      RunComposite.this.programContext = new RunProgramContext();
+      RunComposite.this.programContext.getProgramImp().setRestartAction(RunComposite.this.restartAction);
+      RunComposite.this.programContext.getProgramImp().setSpeedFormat(RunComposite.this.speedFormat.getText());
+      RunComposite.this.programContext.initializeInContainer(awtContainerInitializer);
+    }
 
-		@Override
-		public void run() {
-			RunComposite.this.programContext.setActiveScene();
-		}
-	}
+    @Override
+    public void run() {
+      RunComposite.this.programContext.setActiveScene();
+    }
+  }
 
-	private final class RunAwtContainerInitializer implements ProgramImp.AwtContainerInitializer {
-		@Override
-		public void addComponents( OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel ) {
-			RunView runView = RunComposite.this.getView();
-			runView.forgetAndRemoveAllComponents();
+  private final class RunAwtContainerInitializer implements ProgramImp.AwtContainerInitializer {
+    @Override
+    public void addComponents(OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel) {
+      RunView runView = RunComposite.this.getView();
+      runView.forgetAndRemoveAllComponents();
 
-			AwtComponentView<?> lookingGlassContainer = new AwtAdapter( onscreenRenderTarget.getAwtComponent() );
-			FixedAspectRatioPanel fixedAspectRatioPanel = new FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
-			fixedAspectRatioPanel.setBackgroundColor( Color.BLACK );
-			if( controlPanel != null ) {
-				runView.getAwtComponent().add( controlPanel, BorderLayout.PAGE_START );
-			}
-			runView.addCenterComponent( fixedAspectRatioPanel );
-			runView.revalidateAndRepaint();
-		}
-	}
+      AwtComponentView<?> lookingGlassContainer = new AwtAdapter(onscreenRenderTarget.getAwtComponent());
+      FixedAspectRatioPanel fixedAspectRatioPanel = new FixedAspectRatioPanel(lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO);
+      fixedAspectRatioPanel.setBackgroundColor(Color.BLACK);
+      if (controlPanel != null) {
+        runView.getAwtComponent().add(controlPanel, BorderLayout.PAGE_START);
+      }
+      runView.addCenterComponent(fixedAspectRatioPanel);
+      runView.revalidateAndRepaint();
+    }
+  }
 
-	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
+  private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
-	private void startProgram() {
-		new ComponentExecutor( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getImp().getName() ).start();
-		if( this.fastForwardToStatementOperation != null ) {
-			this.fastForwardToStatementOperation.pre( this.programContext );
-		}
-	}
+  private void startProgram() {
+    new ComponentExecutor(new ProgramRunnable(runAwtContainerInitializer), RunComposite.this.getLaunchOperation().getImp().getName()).start();
+    if (this.fastForwardToStatementOperation != null) {
+      this.fastForwardToStatementOperation.pre(this.programContext);
+    }
+  }
 
-	private void stopProgram() {
-		if( this.programContext != null ) {
-			this.programContext.cleanUpProgram();
-			this.programContext = null;
-		} else {
-			Logger.warning( this );
-		}
-	}
+  private void stopProgram() {
+    if (this.programContext != null) {
+      this.programContext.cleanUpProgram();
+      this.programContext = null;
+    } else {
+      Logger.warning(this);
+    }
+  }
 
-	private class RestartAction extends AbstractAction {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			RunComposite.this.stopProgram();
-			RunComposite.this.startProgram();
-		}
-	};
+  private class RestartAction extends AbstractAction {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      RunComposite.this.stopProgram();
+      RunComposite.this.startProgram();
+    }
+  }
 
-	private final RestartAction restartAction = new RestartAction();
+  private final RestartAction restartAction = new RestartAction();
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.restartAction.putValue( javax.swing.Action.NAME, this.restartLabel.getText() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.restartAction.putValue(javax.swing.Action.NAME, this.restartLabel.getText());
+  }
 
-	@Override
-	protected void handlePreShowWindow( Frame frame ) {
-		super.handlePreShowWindow( frame );
-		this.startProgram();
-		if( this.size != null ) {
-			frame.setSize( this.size );
-		} else {
-			this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
-			frame.pack();
-		}
-		if( this.location != null ) {
-			frame.setLocation( this.location );
-		} else {
-			Frame documentFrame = IDE.getActiveInstance().getDocumentFrame().getFrame();
-			if( documentFrame != null ) {
-				frame.setLocationRelativeTo( documentFrame );
-			} else {
-				frame.setLocationByPlatform( true );
-			}
-		}
-	}
+  @Override
+  protected void handlePreShowWindow(Frame frame) {
+    super.handlePreShowWindow(frame);
+    this.startProgram();
+    if (this.size != null) {
+      frame.setSize(this.size);
+    } else {
+      this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+      frame.pack();
+    }
+    if (this.location != null) {
+      frame.setLocation(this.location);
+    } else {
+      Frame documentFrame = IDE.getActiveInstance().getDocumentFrame().getFrame();
+      if (documentFrame != null) {
+        frame.setLocationRelativeTo(documentFrame);
+      } else {
+        frame.setLocationByPlatform(true);
+      }
+    }
+  }
 
-	@Override
-	protected void handlePostHideWindow( Frame frame ) {
-		final RunProgramContext context = programContext;
-		if (frame != null && context!= null) {
-			final ProgramImp imp = context.getProgramImp();
-			if (imp != null) {
-				Rectangle bounds = imp.getNormalDialogBounds(frame.getAwtComponent());
-				this.location = bounds.getLocation();
-				this.size = bounds.getSize();
-			}
-		}
-		super.handlePostHideWindow( frame );
-	}
+  @Override
+  protected void handlePostHideWindow(Frame frame) {
+    final RunProgramContext context = programContext;
+    if (frame != null && context != null) {
+      final ProgramImp imp = context.getProgramImp();
+      if (imp != null) {
+        Rectangle bounds = imp.getNormalDialogBounds(frame.getAwtComponent());
+        this.location = bounds.getLocation();
+        this.size = bounds.getSize();
+      }
+    }
+    super.handlePostHideWindow(frame);
+  }
 
-	@Override
-	protected void handleFinally() {
-		if( this.fastForwardToStatementOperation != null ) {
-			this.fastForwardToStatementOperation.post();
-			this.fastForwardToStatementOperation = null;
-		}
-		this.stopProgram();
-		super.handleFinally();
-	}
+  @Override
+  protected void handleFinally() {
+    if (this.fastForwardToStatementOperation != null) {
+      this.fastForwardToStatementOperation.post();
+      this.fastForwardToStatementOperation = null;
+    }
+    this.stopProgram();
+    super.handleFinally();
+  }
 
-	@Override
-	protected RunView createView() {
-		return new RunView( this );
-	}
+  @Override
+  protected RunView createView() {
+    return new RunView(this);
+  }
 
-	public void setFastForwardToStatementOperation( FastForwardToStatementOperation fastForwardToStatementOperation ) {
-		this.fastForwardToStatementOperation = fastForwardToStatementOperation;
-	}
+  public void setFastForwardToStatementOperation(FastForwardToStatementOperation fastForwardToStatementOperation) {
+    this.fastForwardToStatementOperation = fastForwardToStatementOperation;
+  }
 
-	private FastForwardToStatementOperation fastForwardToStatementOperation;
+  private FastForwardToStatementOperation fastForwardToStatementOperation;
 
 }

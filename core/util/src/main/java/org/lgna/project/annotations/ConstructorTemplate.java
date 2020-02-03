@@ -49,10 +49,8 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ConstructorTemplate {
-	Visibility visibility() default Visibility.PRIME_TIME;
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ConstructorTemplate {
+  Visibility visibility() default Visibility.PRIME_TIME;
 
-	boolean isFollowedByLongerConstructor() default false;
+  boolean isFollowedByLongerConstructor() default false;
 }

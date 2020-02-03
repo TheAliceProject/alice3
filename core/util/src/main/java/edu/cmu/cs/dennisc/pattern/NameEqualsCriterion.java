@@ -46,26 +46,26 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public class NameEqualsCriterion extends NameCriterion {
-	private String m_target;
-	private boolean m_isSensitiveToCase;
+  private String m_target;
+  private boolean m_isSensitiveToCase;
 
-	public NameEqualsCriterion( String target, boolean isSensitiveToCase ) {
-		m_target = target;
-		m_isSensitiveToCase = isSensitiveToCase;
-	}
+  public NameEqualsCriterion(String target, boolean isSensitiveToCase) {
+    m_target = target;
+    m_isSensitiveToCase = isSensitiveToCase;
+  }
 
-	@Override
-	public boolean acceptName( String name ) {
-		boolean isAccepted;
-		if( name != null ) {
-			if( m_isSensitiveToCase ) {
-				isAccepted = name.equals( m_target );
-			} else {
-				isAccepted = name.equalsIgnoreCase( m_target );
-			}
-		} else {
-			isAccepted = m_target == null;
-		}
-		return isAccepted;
-	}
+  @Override
+  public boolean acceptName(String name) {
+    boolean isAccepted;
+    if (name != null) {
+      if (m_isSensitiveToCase) {
+        isAccepted = name.equals(m_target);
+      } else {
+        isAccepted = name.equalsIgnoreCase(m_target);
+      }
+    } else {
+      isAccepted = m_target == null;
+    }
+    return isAccepted;
+  }
 }

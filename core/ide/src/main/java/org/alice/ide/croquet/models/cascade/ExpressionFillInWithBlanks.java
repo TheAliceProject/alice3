@@ -53,22 +53,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillInWithBlanks<F extends Expression, B> extends ExpressionFillIn<F, B> {
-	private final Class<B> cls;
+  private final Class<B> cls;
 
-	public ExpressionFillInWithBlanks( UUID id, Class<B> cls, CascadeBlank<B>... blanks ) {
-		super( id, blanks );
-		this.cls = cls;
-	}
+  public ExpressionFillInWithBlanks(UUID id, Class<B> cls, CascadeBlank<B>... blanks) {
+    super(id, blanks);
+    this.cls = cls;
+  }
 
-	protected abstract F createValue( B[] expressions );
+  protected abstract F createValue(B[] expressions);
 
-	@Override
-	public final F createValue( ItemNode<? super F, B> node ) {
-		return this.createValue( this.createFromBlanks( node, this.cls ) );
-	}
-	//	protected abstract F getTransientValue( B[] expressions );
-	//	@Override
-	//	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > step ) {
-	//		return this.getTransientValue( runBlanks( step, BlankOperation.GET_TRANSIENT_VALUES ) );
-	//	}
+  @Override
+  public final F createValue(ItemNode<? super F, B> node) {
+    return this.createValue(this.createFromBlanks(node, this.cls));
+  }
+  //  protected abstract F getTransientValue( B[] expressions );
+  //  @Override
+  //  public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > step ) {
+  //    return this.getTransientValue( runBlanks( step, BlankOperation.GET_TRANSIENT_VALUES ) );
+  //  }
 }

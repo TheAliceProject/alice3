@@ -53,29 +53,29 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialNameChanger<M extends Member> {
-	private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
-		@Override
-		public Color changeColorIfAppropriate( Color defaultColor ) {
-			return isRenameRequired() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
-		}
-	};
-	private final URI uriForDescriptionPurposesOnly;
+  private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
+    @Override
+    public Color changeColorIfAppropriate(Color defaultColor) {
+      return isRenameRequired() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+    }
+  };
+  private final URI uriForDescriptionPurposesOnly;
 
-	public PotentialNameChanger( URI uriForDescriptionPurposesOnly ) {
-		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
-	}
+  public PotentialNameChanger(URI uriForDescriptionPurposesOnly) {
+    this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
+  }
 
-	public URI getUriForDescriptionPurposesOnly() {
-		return this.uriForDescriptionPurposesOnly;
-	}
+  public URI getUriForDescriptionPurposesOnly() {
+    return this.uriForDescriptionPurposesOnly;
+  }
 
-	public abstract MemberHubWithNameState<M> getImportHub();
+  public abstract MemberHubWithNameState<M> getImportHub();
 
-	public abstract MemberHubWithNameState<M> getProjectHub();
+  public abstract MemberHubWithNameState<M> getProjectHub();
 
-	protected abstract boolean isRenameRequired();
+  protected abstract boolean isRenameRequired();
 
-	public ColorCustomizer getForegroundCustomizer() {
-		return this.foregroundCustomizer;
-	}
+  public ColorCustomizer getForegroundCustomizer() {
+    return this.foregroundCustomizer;
+  }
 }

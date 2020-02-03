@@ -50,19 +50,19 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class JConcealedBin extends JPanel {
-	//	public ConcealedBin() {
-	//		this.setLayout( new java.awt.FlowLayout() );
-	//	}
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension( 0, 0 );
-	}
+  //  public ConcealedBin() {
+  //    this.setLayout( new java.awt.FlowLayout() );
+  //  }
+  @Override
+  public Dimension getPreferredSize() {
+    return new Dimension(0, 0);
+  }
 
-	//	@Override
-	//	public java.awt.Dimension getMaximumSize() {
-	//		return new java.awt.Dimension( 0, 0 );
-	//	}
-	@Override
-	public void update( Graphics g ) {
-	}
+  //  @Override
+  //  public java.awt.Dimension getMaximumSize() {
+  //    return new java.awt.Dimension( 0, 0 );
+  //  }
+  @Override
+  public void update(Graphics g) {
+  }
 }

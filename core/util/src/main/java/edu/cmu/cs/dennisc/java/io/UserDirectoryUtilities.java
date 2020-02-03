@@ -50,23 +50,23 @@ import java.io.File;
  * @author Dennis Cosgrove
  */
 public class UserDirectoryUtilities {
-	private UserDirectoryUtilities() {
-		throw new AssertionError();
-	}
+  private UserDirectoryUtilities() {
+    throw new AssertionError();
+  }
 
-	public static File getBestGuessPicturesDirectory() {
-		File defaultDirectory = FileUtilities.getDefaultDirectory();
-		File userDirectory;
-		if( SystemUtilities.isWindows() ) {
-			userDirectory = defaultDirectory.getParentFile();
-		} else {
-			userDirectory = defaultDirectory;
-		}
-		File file = new File( userDirectory, "Pictures" );
-		if( file.isDirectory() ) {
-			return file;
-		} else {
-			return defaultDirectory;
-		}
-	}
+  public static File getBestGuessPicturesDirectory() {
+    File defaultDirectory = FileUtilities.getDefaultDirectory();
+    File userDirectory;
+    if (SystemUtilities.isWindows()) {
+      userDirectory = defaultDirectory.getParentFile();
+    } else {
+      userDirectory = defaultDirectory;
+    }
+    File file = new File(userDirectory, "Pictures");
+    if (file.isDirectory()) {
+      return file;
+    } else {
+      return defaultDirectory;
+    }
+  }
 }

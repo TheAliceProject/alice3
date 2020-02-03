@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MDimension2I {
-	public MDimension2I( int width, int height ) {
-		this.width = width;
-		this.height = height;
-	}
+  public MDimension2I(int width, int height) {
+    this.width = width;
+    this.height = height;
+  }
 
-	public final int width;
-	public final int height;
+  public final int width;
+  public final int height;
 }

@@ -56,25 +56,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StringComparisonCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
-	private static class SingletonHolder {
-		private static StringComparisonCascadeMenu instance = new StringComparisonCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static StringComparisonCascadeMenu instance = new StringComparisonCascadeMenu();
+  }
 
-	public static StringComparisonCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StringComparisonCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private StringComparisonCascadeMenu() {
-		super( UUID.fromString( "bcf7f58d-3431-4c6c-820c-55dc31b5d765" ) );
-	}
+  private StringComparisonCascadeMenu() {
+    super(UUID.fromString("bcf7f58d-3431-4c6c-820c-55dc31b5d765"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> step ) {
-		//rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
-		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
-		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );
-		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "startsWith", String.class ) ) );
-		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "endsWith", String.class ) ) );
-		blankChildren.add( MethodInvocationFillInWithInstance.getInstance( JavaMethod.getInstance( String.class, "contains", CharSequence.class ) ) );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> step) {
+    //rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
+    blankChildren.add(MethodInvocationFillInWithInstance.getInstance(JavaMethod.getInstance(String.class, "contentEquals", CharSequence.class)));
+    blankChildren.add(MethodInvocationFillInWithInstance.getInstance(JavaMethod.getInstance(String.class, "equalsIgnoreCase", String.class)));
+    blankChildren.add(MethodInvocationFillInWithInstance.getInstance(JavaMethod.getInstance(String.class, "startsWith", String.class)));
+    blankChildren.add(MethodInvocationFillInWithInstance.getInstance(JavaMethod.getInstance(String.class, "endsWith", String.class)));
+    blankChildren.add(MethodInvocationFillInWithInstance.getInstance(JavaMethod.getInstance(String.class, "contains", CharSequence.class)));
+  }
 }

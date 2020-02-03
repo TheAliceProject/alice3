@@ -52,24 +52,23 @@ import org.lgna.story.SSun;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class SunImp extends TransformableImp {
-	public SunImp( SSun abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgComposite().addComponent( this.sgSun );
-		this.getSgComposite().applyRotationAboutXAxis( new AngleInRevolutions( -0.25 ) );
-	}
+@Deprecated public class SunImp extends TransformableImp {
+  public SunImp(SSun abstraction) {
+    this.abstraction = abstraction;
+    this.getSgComposite().addComponent(this.sgSun);
+    this.getSgComposite().applyRotationAboutXAxis(new AngleInRevolutions(-0.25));
+  }
 
-	@Override
-	public SSun getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SSun getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    return rv;
+  }
 
-	private final SSun abstraction;
-	private final DirectionalLight sgSun = new DirectionalLight();
+  private final SSun abstraction;
+  private final DirectionalLight sgSun = new DirectionalLight();
 }

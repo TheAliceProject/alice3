@@ -52,64 +52,64 @@ import java.awt.event.KeyListener;
  * @author Dennis Cosgrove
  */
 public class JSuggestiveTextArea extends JTextArea {
-	private String textForBlankCondition;
+  private String textForBlankCondition;
 
-	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
-		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
-		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
-		this.addKeyListener( new KeyListener() {
-			@Override
-			public void keyPressed( KeyEvent e ) {
-				if( e.getKeyCode() == KeyEvent.VK_TAB ) {
-					e.consume();
-					if( e.isShiftDown() ) {
-						KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();
-					} else {
-						KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
-					}
-				}
-			}
+  public JSuggestiveTextArea(String text, String textForBlankCondition) {
+    //this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+    this.addFocusListener(new SuggestiveTextFocusAdapter(this));
+    this.addKeyListener(new KeyListener() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_TAB) {
+          e.consume();
+          if (e.isShiftDown()) {
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();
+          } else {
+            KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+          }
+        }
+      }
 
-			@Override
-			public void keyReleased( KeyEvent e ) {
-			}
+      @Override
+      public void keyReleased(KeyEvent e) {
+      }
 
-			@Override
-			public void keyTyped( KeyEvent e ) {
-			}
-		} );
-		if( text != null ) {
-			this.setText( text );
-		}
-		if( textForBlankCondition != null ) {
-			this.setTextForBlankCondition( textForBlankCondition );
-		}
-	}
+      @Override
+      public void keyTyped(KeyEvent e) {
+      }
+    });
+    if (text != null) {
+      this.setText(text);
+    }
+    if (textForBlankCondition != null) {
+      this.setTextForBlankCondition(textForBlankCondition);
+    }
+  }
 
-	public JSuggestiveTextArea( String text ) {
-		this( text, null );
-	}
+  public JSuggestiveTextArea(String text) {
+    this(text, null);
+  }
 
-	public JSuggestiveTextArea() {
-		this( null, null );
-	}
+  public JSuggestiveTextArea() {
+    this(null, null);
+  }
 
-	public String getTextForBlankCondition() {
-		return this.textForBlankCondition;
-	}
+  public String getTextForBlankCondition() {
+    return this.textForBlankCondition;
+  }
 
-	public void setTextForBlankCondition( String textForBlankCondition ) {
-		this.textForBlankCondition = textForBlankCondition;
-	}
+  public void setTextForBlankCondition(String textForBlankCondition) {
+    this.textForBlankCondition = textForBlankCondition;
+  }
 
-	@Override
-	public boolean isManagingFocus() {
-		return false;
-	}
+  @Override
+  public boolean isManagingFocus() {
+    return false;
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
-	}
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    SuggestiveTextUtilities.drawBlankTextIfNecessary(this, g, this.textForBlankCondition);
+  }
 }

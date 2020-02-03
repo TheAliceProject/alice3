@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Trestle">
+    <BoundingBox>
+        <Min x="-2.3425309658050537" y="-8.966064197011292E-4" z="-2.2327184677124023"/>
+        <Max x="2.3425309658050537" y="4.447908401489258" z="2.2327184677124023"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>train track</Tag>
+        <Tag>railroad</Tag>
+        <Tag>trestle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Trestle" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

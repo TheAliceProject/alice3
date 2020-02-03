@@ -52,27 +52,28 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum InstanceFactoryCodec implements ItemCodec<InstanceFactory> {
-	SINGLETON;
-	@Override
-	public Class<InstanceFactory> getValueClass() {
-		return InstanceFactory.class;
-	}
+  SINGLETON;
 
-	@Override
-	public InstanceFactory decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-		//org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		//return resolver.getResolved();
-	}
+  @Override
+  public Class<InstanceFactory> getValueClass() {
+    return InstanceFactory.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, InstanceFactory value ) {
-		throw new RuntimeException( "todo" );
-		//binaryEncoder.encode( value.getResolver() );
-	}
+  @Override
+  public InstanceFactory decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+    //org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    //return resolver.getResolved();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, InstanceFactory value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, InstanceFactory value) {
+    throw new RuntimeException("todo");
+    //binaryEncoder.encode( value.getResolver() );
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, InstanceFactory value) {
+    sb.append(value);
+  }
 }

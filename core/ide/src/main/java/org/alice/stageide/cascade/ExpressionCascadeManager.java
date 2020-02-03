@@ -86,85 +86,84 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCascadeManager {
-	public ExpressionCascadeManager() {
-		this.addExpressionFillerInner( new ImagePaintFillerInner() );
-		this.addExpressionFillerInner( new ImageSourceFillerInner() );
-		this.addExpressionFillerInner( new AudioSourceFillerInner() );
-		this.addExpressionFillerInner( new ColorFillerInner() );
-		this.addExpressionFillerInner( new KeyFillerInner() );
-		this.addExpressionFillerInner( new ArrowKeyListenerFillerInner() );
-		this.addExpressionFillerInner( new NumberKeyListenerFillerInner() );
-		this.addExpressionFillerInner( new MouseClickedOnScreenFillerInner() );
-		this.addExpressionFillerInner( new MouseClickOnObjectFillerInner() );
-		this.addExpressionFillerInner( new TransformationListenerFillerInner() );
-		this.addExpressionFillerInner( new ComesIntoViewEventListenerFillerInner() );
-		this.addExpressionFillerInner( new LeavesViewEventListenerFillerInner() );
-		this.addExpressionFillerInner( new StartCollisionListenerFillerInner() );
-		this.addExpressionFillerInner( new EndCollisionListenerFillerInner() );
-		this.addExpressionFillerInner( new EnterProximityEventListenerFillerInner() );
-		this.addExpressionFillerInner( new ExitProximityEventListenerFillerInner() );
-		this.addExpressionFillerInner( new StartOcclusionEventListenerFillerInner() );
-		this.addExpressionFillerInner( new EndOcclusionEventListenerFillerInner() );
-		this.addExpressionFillerInner( new SceneActivationEventFillerInner() );
-		this.addExpressionFillerInner( new TimerEventListenerFillerInner() );
-		this.addExpressionFillerInner( new KeyListenerFillerInner() );
+  public ExpressionCascadeManager() {
+    this.addExpressionFillerInner(new ImagePaintFillerInner());
+    this.addExpressionFillerInner(new ImageSourceFillerInner());
+    this.addExpressionFillerInner(new AudioSourceFillerInner());
+    this.addExpressionFillerInner(new ColorFillerInner());
+    this.addExpressionFillerInner(new KeyFillerInner());
+    this.addExpressionFillerInner(new ArrowKeyListenerFillerInner());
+    this.addExpressionFillerInner(new NumberKeyListenerFillerInner());
+    this.addExpressionFillerInner(new MouseClickedOnScreenFillerInner());
+    this.addExpressionFillerInner(new MouseClickOnObjectFillerInner());
+    this.addExpressionFillerInner(new TransformationListenerFillerInner());
+    this.addExpressionFillerInner(new ComesIntoViewEventListenerFillerInner());
+    this.addExpressionFillerInner(new LeavesViewEventListenerFillerInner());
+    this.addExpressionFillerInner(new StartCollisionListenerFillerInner());
+    this.addExpressionFillerInner(new EndCollisionListenerFillerInner());
+    this.addExpressionFillerInner(new EnterProximityEventListenerFillerInner());
+    this.addExpressionFillerInner(new ExitProximityEventListenerFillerInner());
+    this.addExpressionFillerInner(new StartOcclusionEventListenerFillerInner());
+    this.addExpressionFillerInner(new EndOcclusionEventListenerFillerInner());
+    this.addExpressionFillerInner(new SceneActivationEventFillerInner());
+    this.addExpressionFillerInner(new TimerEventListenerFillerInner());
+    this.addExpressionFillerInner(new KeyListenerFillerInner());
 
-		this.addSimsExpressionFillerInners();
-		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
+    this.addSimsExpressionFillerInners();
+    //this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 
-		this.addRelationalTypeToBooleanFillerInner( SThing.class );
-		this.addRelationalTypeToBooleanFillerInner( MoveDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( TurnDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( RollDirection.class );
-		this.addRelationalTypeToBooleanFillerInner( Key.class );
-		this.addRelationalTypeToBooleanFillerInner( Color.class );
-		this.addRelationalTypeToBooleanFillerInner( Paint.class );
-	}
+    this.addRelationalTypeToBooleanFillerInner(SThing.class);
+    this.addRelationalTypeToBooleanFillerInner(MoveDirection.class);
+    this.addRelationalTypeToBooleanFillerInner(TurnDirection.class);
+    this.addRelationalTypeToBooleanFillerInner(RollDirection.class);
+    this.addRelationalTypeToBooleanFillerInner(Key.class);
+    this.addRelationalTypeToBooleanFillerInner(Color.class);
+    this.addRelationalTypeToBooleanFillerInner(Paint.class);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType( AbstractType<?, ?, ?> interfaceType ) {
-		if( interfaceType == JavaType.getInstance( Style.class ) ) {
-			return JavaType.getInstance( AnimationStyle.class );
-		} else {
-			return super.getEnumTypeForInterfaceType( interfaceType );
-		}
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType(AbstractType<?, ?, ?> interfaceType) {
+    if (interfaceType == JavaType.getInstance(Style.class)) {
+      return JavaType.getInstance(AnimationStyle.class);
+    } else {
+      return super.getEnumTypeForInterfaceType(interfaceType);
+    }
+  }
 
-	@Override
-	protected boolean areEnumConstantsDesired( AbstractType enumType ) {
-		if( enumType == JavaType.getInstance( Key.class ) ) {
-			return false;
-		} else {
-			return super.areEnumConstantsDesired( enumType );
-		}
-	}
+  @Override
+  protected boolean areEnumConstantsDesired(AbstractType enumType) {
+    if (enumType == JavaType.getInstance(Key.class)) {
+      return false;
+    } else {
+      return super.areEnumConstantsDesired(enumType);
+    }
+  }
 
-	@Override
-	protected CascadeMenuModel<Expression> createPartMenuModel( Expression expression, AbstractType<?, ?, ?> desiredType,
-			AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
-		if( expressionType.isAssignableTo( SJointedModel.class ) ) {
-			if( desiredType.isAssignableFrom( SJoint.class ) ) {
-				if( JointedTypeInfo.isJointed( expressionType ) ) {
-					List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( expressionType );
-					return new JointExpressionMenuModel( expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo );
-				}
-			}
-		}
-		return null;
-	}
+  @Override
+  protected CascadeMenuModel<Expression> createPartMenuModel(Expression expression, AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo) {
+    if (expressionType.isAssignableTo(SJointedModel.class)) {
+      if (desiredType.isAssignableFrom(SJoint.class)) {
+        if (JointedTypeInfo.isJointed(expressionType)) {
+          List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(expressionType);
+          return new JointExpressionMenuModel(expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo);
+        }
+      }
+    }
+    return null;
+  }
 
-	@Override
-	protected boolean isApplicableForPartFillIn( AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType ) {
-		return desiredType.isAssignableFrom( SJoint.class ) && expressionType.isAssignableTo( SJointedModel.class );
-	}
+  @Override
+  protected boolean isApplicableForPartFillIn(AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType) {
+    return desiredType.isAssignableFrom(SJoint.class) && expressionType.isAssignableTo(SJointedModel.class);
+  }
 
-	@Override
-	protected void appendOtherTypes( List<AbstractType<?, ?, ?>> otherTypes ) {
-		super.appendOtherTypes( otherTypes );
-		otherTypes.add( JavaType.getInstance( SThing.class ) );
+  @Override
+  protected void appendOtherTypes(List<AbstractType<?, ?, ?>> otherTypes) {
+    super.appendOtherTypes(otherTypes);
+    otherTypes.add(JavaType.getInstance(SThing.class));
 
-	}
+  }
 
-	protected void addSimsExpressionFillerInners() {
-	}
+  protected void addSimsExpressionFillerInners() {
+  }
 }

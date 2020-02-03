@@ -57,54 +57,54 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class EnumConstantsIcon extends AbstractIcon {
-	private static final int OFFSET = 8;
-	private final Icon[] icons;
+  private static final int OFFSET = 8;
+  private final Icon[] icons;
 
-	public EnumConstantsIcon( Dimension size, List<IconFactory> iconFactories ) {
-		super( size );
-		if( size.width >= 160 ) {
-			final int N = iconFactories.size();
-			this.icons = new Icon[ N ];
-			int totalOffset = OFFSET * ( N - 1 );
-			int subWidth = Math.max( size.width - totalOffset, size.width / 2 );
-			int subHeight = Math.max( size.height - totalOffset, size.height / 2 );
-			Dimension subSize = new Dimension( subWidth, subHeight );
-			for( int i = 0; i < N; i++ ) {
-				this.icons[ N - i - 1 ] = iconFactories.get( i ).getIcon( subSize );
-			}
-		} else {
-			this.icons = new Icon[ 1 ];
-			this.icons[ 0 ] = iconFactories.get( 0 ).getIcon( size );
-		}
-	}
+  public EnumConstantsIcon(Dimension size, List<IconFactory> iconFactories) {
+    super(size);
+    if (size.width >= 160) {
+      final int N = iconFactories.size();
+      this.icons = new Icon[N];
+      int totalOffset = OFFSET * (N - 1);
+      int subWidth = Math.max(size.width - totalOffset, size.width / 2);
+      int subHeight = Math.max(size.height - totalOffset, size.height / 2);
+      Dimension subSize = new Dimension(subWidth, subHeight);
+      for (int i = 0; i < N; i++) {
+        this.icons[N - i - 1] = iconFactories.get(i).getIcon(subSize);
+      }
+    } else {
+      this.icons = new Icon[1];
+      this.icons[0] = iconFactories.get(0).getIcon(size);
+    }
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		if( this.icons.length == 1 ) {
-			this.icons[ 0 ].paintIcon( c, g2, 0, 0 );
-		} else {
-			int totalOffset = OFFSET * ( this.icons.length - 1 );
-			int x = totalOffset;
-			int y = 0;
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    if (this.icons.length == 1) {
+      this.icons[0].paintIcon(c, g2, 0, 0);
+    } else {
+      int totalOffset = OFFSET * (this.icons.length - 1);
+      int x = totalOffset;
+      int y = 0;
 
-			float alphaDelta = 0.1f;
-			float alpha = 0.5f - ( ( this.icons.length - 1 ) * alphaDelta );
-			Composite prevComposite = g2.getComposite();
-			for( Icon icon : this.icons ) {
-				try {
-					if( x > 0 ) {
-						g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, alpha ) );
-						//					g2.setPaint( c.getBackground() );
-						//					g2.fillRect( x, y, icon.getIconWidth(), icon.getIconHeight() );
-					}
-					icon.paintIcon( c, g2, x, y );
-					x -= OFFSET;
-					y += OFFSET;
-					alpha += alphaDelta;
-				} finally {
-					g2.setComposite( prevComposite );
-				}
-			}
-		}
-	}
+      float alphaDelta = 0.1f;
+      float alpha = 0.5f - ((this.icons.length - 1) * alphaDelta);
+      Composite prevComposite = g2.getComposite();
+      for (Icon icon : this.icons) {
+        try {
+          if (x > 0) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+            //          g2.setPaint( c.getBackground() );
+            //          g2.fillRect( x, y, icon.getIconWidth(), icon.getIconHeight() );
+          }
+          icon.paintIcon(c, g2, x, y);
+          x -= OFFSET;
+          y += OFFSET;
+          alpha += alphaDelta;
+        } finally {
+          g2.setComposite(prevComposite);
+        }
+      }
+    }
+  }
 }

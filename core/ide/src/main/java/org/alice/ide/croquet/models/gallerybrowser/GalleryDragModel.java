@@ -65,59 +65,59 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryDragModel extends AbstractModel implements DragModel {
-	private static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension( 160, 120 );
+  private static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension(160, 120);
 
-	protected static Dimension getDefaultLargeIconSize() {
-		return DEFAULT_LARGE_ICON_SIZE;
-	}
+  protected static Dimension getDefaultLargeIconSize() {
+    return DEFAULT_LARGE_ICON_SIZE;
+  }
 
-	public GalleryDragModel( UUID migrationId ) {
-		super( migrationId );
-	}
+  public GalleryDragModel(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public final boolean isClickAndClackAppropriate() {
-		//todo
-		return false;
-	}
+  public final boolean isClickAndClackAppropriate() {
+    //todo
+    return false;
+  }
 
-	public abstract String getText();
+  public abstract String getText();
 
-	public abstract IconFactory getIconFactory();
+  public abstract IconFactory getIconFactory();
 
-	public Dimension getIconSize() {
-		return DEFAULT_LARGE_ICON_SIZE;
-	}
+  public Dimension getIconSize() {
+    return DEFAULT_LARGE_ICON_SIZE;
+  }
 
-	public abstract Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller );
+  public abstract Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller);
 
-	@Override
-	public List<? extends DropReceptor> createListOfPotentialDropReceptors() {
-		StageIDE ide = StageIDE.getActiveInstance();
-		if( ide != null ) {
-			StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
-			return Lists.newArrayList( sceneEditor.getDropReceptor() );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  public List<? extends DropReceptor> createListOfPotentialDropReceptors() {
+    StageIDE ide = StageIDE.getActiveInstance();
+    if (ide != null) {
+      StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
+      return Lists.newArrayList(sceneEditor.getDropReceptor());
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	@Override
-	public void handleDragStarted( DragStep step ) {
-	}
+  @Override
+  public void handleDragStarted(DragStep step) {
+  }
 
-	@Override
-	public void handleDragEnteredDropReceptor( DragStep step ) {
-	}
+  @Override
+  public void handleDragEnteredDropReceptor(DragStep step) {
+  }
 
-	@Override
-	public void handleDragExitedDropReceptor( DragStep step ) {
-	}
+  @Override
+  public void handleDragExitedDropReceptor(DragStep step) {
+  }
 
-	@Override
-	public void handleDragStopped( DragStep step ) {
-	}
+  @Override
+  public void handleDragStopped(DragStep step) {
+  }
 
-	public abstract AxisAlignedBox getBoundingBox();
+  public abstract AxisAlignedBox getBoundingBox();
 
-	public abstract boolean placeOnGround();
+  public abstract boolean placeOnGround();
 }

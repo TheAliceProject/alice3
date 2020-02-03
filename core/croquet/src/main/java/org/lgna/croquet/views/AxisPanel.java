@@ -54,31 +54,31 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class AxisPanel extends Panel {
-	private final int axis;
+  private final int axis;
 
-	protected AxisPanel( Composite composite, int axis, AwtComponentView<?>... components ) {
-		super( composite );
-		this.axis = axis;
-		for( AwtComponentView<?> component : components ) {
-			this.addComponent( component );
-		}
-	}
+  protected AxisPanel(Composite composite, int axis, AwtComponentView<?>... components) {
+    super(composite);
+    this.axis = axis;
+    for (AwtComponentView<?> component : components) {
+      this.addComponent(component);
+    }
+  }
 
-	protected int getBoxLayoutPad() {
-		return 0;
-	}
+  protected int getBoxLayoutPad() {
+    return 0;
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		int pad = this.getBoxLayoutPad();
-		if( pad > 0 ) {
-			return new PaddedBoxLayout( jPanel, BoxLayout.PAGE_AXIS, pad );
-		} else {
-			return new BoxLayout( jPanel, this.axis );
-		}
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    int pad = this.getBoxLayoutPad();
+    if (pad > 0) {
+      return new PaddedBoxLayout(jPanel, BoxLayout.PAGE_AXIS, pad);
+    } else {
+      return new BoxLayout(jPanel, this.axis);
+    }
+  }
 
-	public void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  public void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 }

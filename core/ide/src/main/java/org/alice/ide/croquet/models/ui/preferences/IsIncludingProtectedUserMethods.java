@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingProtectedUserMethods extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingProtectedUserMethods instance = new IsIncludingProtectedUserMethods();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingProtectedUserMethods instance = new IsIncludingProtectedUserMethods();
+  }
 
-	public static IsIncludingProtectedUserMethods getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingProtectedUserMethods getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingProtectedUserMethods() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "07fcbb04-a1f1-4e6a-8bd4-7489a8c6dcfc" ), true );
-	}
+  private IsIncludingProtectedUserMethods() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("07fcbb04-a1f1-4e6a-8bd4-7489a8c6dcfc"), true);
+  }
 }

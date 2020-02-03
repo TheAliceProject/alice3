@@ -59,38 +59,38 @@ import java.util.UUID;
  */
 public class GroundDragModel extends ShapeDragModel {
 
-	private static final SGround sModel = new SGround();
+  private static final SGround sModel = new SGround();
 
-	private static class SingletonHolder {
-		private static GroundDragModel instance = new GroundDragModel();
-	}
+  private static class SingletonHolder {
+    private static GroundDragModel instance = new GroundDragModel();
+  }
 
-	public static GroundDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GroundDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private GroundDragModel() {
-		super( UUID.fromString( "3aa18490-f758-46e6-84eb-c9eff76c0185" ) );
-	}
+  private GroundDragModel() {
+    super(UUID.fromString("3aa18490-f758-46e6-84eb-c9eff76c0185"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddGroundManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddGroundManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return GroundIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return GroundIconFactory.getInstance();
+  }
 
 }

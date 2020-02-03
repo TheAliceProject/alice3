@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Mausoleum">
+    <BoundingBox>
+        <Min x="-1.5560152530670166" y="-0.034668195992708206" z="-2.301719903945923"/>
+        <Max x="1.5560152530670166" y="4.527071952819824" z="2.4040307998657227"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="DEFAULT" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.5560152530670166" y="-0.034668195992708206" z="-2.301719903945923"/>
+            <Max x="1.5560152530670166" y="4.527071952819824" z="2.4040307998657227"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Base" resourceName="BASE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.145163655281067" y="-0.034668195992708206" z="-2.301719903945923"/>
+            <Max x="1.145163655281067" y="1.7499713897705078" z="2.267711639404297"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -50,13 +50,13 @@ import org.lgna.story.event.StartCollisionEvent;
 
 public class StartCollisionAdapter extends AbstractAdapter implements CollisionStartListener {
 
-	public StartCollisionAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public StartCollisionAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void collisionStarted( StartCollisionEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void collisionStarted(StartCollisionEvent e) {
+    invokeEntryPoint(e);
+  }
 
 }

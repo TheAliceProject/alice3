@@ -49,13 +49,13 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldNode extends Node<UserField> {
-	public static FieldNode createAndAddToParent( TypeNode parent, UserField field ) {
-		FieldNode rv = new FieldNode( parent, field );
-		parent.getFieldNodes().add( rv );
-		return rv;
-	}
+  public static FieldNode createAndAddToParent(TypeNode parent, UserField field) {
+    FieldNode rv = new FieldNode(parent, field);
+    parent.getFieldNodes().add(rv);
+    return rv;
+  }
 
-	private FieldNode( TypeNode parent, UserField field ) {
-		super( parent, field );
-	}
+  private FieldNode(TypeNode parent, UserField field) {
+    super(parent, field);
+  }
 }

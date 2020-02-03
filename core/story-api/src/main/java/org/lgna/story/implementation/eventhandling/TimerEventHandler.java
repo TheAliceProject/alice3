@@ -63,79 +63,79 @@ import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
  */
 public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
-	private final Map<TimeListener, Double> freqMap = Maps.newConcurrentHashMap();
-	private final List<TimeListener> timerList = Lists.newCopyOnWriteArrayList();
-	private final Map<TimeListener, Double> mostRecentFire = Maps.newConcurrentHashMap();
-	private final Map<TimeListener, Boolean> activationMap = Maps.newConcurrentHashMap();
-	private Double currentTime;
-	private boolean isEnabled = false;
-	private boolean isActivated = false;
+  private final Map<TimeListener, Double> freqMap = Maps.newConcurrentHashMap();
+  private final List<TimeListener> timerList = Lists.newCopyOnWriteArrayList();
+  private final Map<TimeListener, Double> mostRecentFire = Maps.newConcurrentHashMap();
+  private final Map<TimeListener, Boolean> activationMap = Maps.newConcurrentHashMap();
+  private Double currentTime;
+  private boolean isEnabled = false;
+  private boolean isActivated = false;
 
-	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
-		@Override
-		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			currentTime = scene.getProgram().getAnimator().getCurrentTime();
-			update();
-		}
-	};
+  private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+    @Override
+    public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
+      currentTime = scene.getProgram().getAnimator().getCurrentTime();
+      update();
+    }
+  };
 
-	public void enable() {
-		isEnabled = true;
-		RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
-	}
+  public void enable() {
+    isEnabled = true;
+    RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener(this.automaticDisplayListener);
+  }
 
-	public void disable() {
-		isEnabled = false;
-		RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
-	}
+  public void disable() {
+    isEnabled = false;
+    RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener(this.automaticDisplayListener);
+  }
 
-	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {
-		activationMap.put( timerEventListener, true );
-		if( !isEnabled ) {
-			enable();
-		}
-		registerPolicyMap( timerEventListener, policy );
-		registerIsFiringMap( timerEventListener );
-		freqMap.put( timerEventListener, frequency );
-		mostRecentFire.put( timerEventListener, Double.MIN_VALUE );
-		timerList.add( timerEventListener );
-	}
+  public void addListener(TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy) {
+    activationMap.put(timerEventListener, true);
+    if (!isEnabled) {
+      enable();
+    }
+    registerPolicyMap(timerEventListener, policy);
+    registerIsFiringMap(timerEventListener);
+    freqMap.put(timerEventListener, frequency);
+    mostRecentFire.put(timerEventListener, Double.MIN_VALUE);
+    timerList.add(timerEventListener);
+  }
 
-	private void update() {
-		for( TimeListener listener : timerList ) {
-			if( timeToFire( listener ) ) {
-				double timeElapsed = currentTime - mostRecentFire.get( listener );
-				trigger( listener, new TimeEvent( timeElapsed ) );
-				mostRecentFire.put( listener, currentTime );
-			}
-		}
-	}
+  private void update() {
+    for (TimeListener listener : timerList) {
+      if (timeToFire(listener)) {
+        double timeElapsed = currentTime - mostRecentFire.get(listener);
+        trigger(listener, new TimeEvent(timeElapsed));
+        mostRecentFire.put(listener, currentTime);
+      }
+    }
+  }
 
-	private void trigger( TimeListener listener, TimeEvent timerEvent ) {
-		if( isActivated ) {
-			fireEvent( listener, timerEvent );
-		}
-	}
+  private void trigger(TimeListener listener, TimeEvent timerEvent) {
+    if (isActivated) {
+      fireEvent(listener, timerEvent);
+    }
+  }
 
-	private boolean timeToFire( TimeListener listener ) {
-		return ( ( ( currentTime - mostRecentFire.get( listener ) ) > freqMap.get( listener ) ) && activationMap.get( listener ) );
-	}
+  private boolean timeToFire(TimeListener listener) {
+    return (((currentTime - mostRecentFire.get(listener)) > freqMap.get(listener)) && activationMap.get(listener));
+  }
 
-	@Override
-	protected void fire( TimeListener listener, TimeEvent event ) {
-		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() ) );
-	}
+  @Override
+  protected void fire(TimeListener listener, TimeEvent event) {
+    listener.timeElapsed(new TimeEvent(event.getTimeSinceLastFire()));
+  }
 
-	@Override
-	public void sceneActivated( SceneActivationEvent e ) {
-		this.isActivated = true;
-	}
+  @Override
+  public void sceneActivated(SceneActivationEvent e) {
+    this.isActivated = true;
+  }
 
-	public void deactivate( WhileContingencyListener listener ) {
-		activationMap.put( listener, false );
-	}
+  public void deactivate(WhileContingencyListener listener) {
+    activationMap.put(listener, false);
+  }
 
-	public void activate( WhileContingencyListener listener ) {
-		activationMap.put( listener, true );
-	}
+  public void activate(WhileContingencyListener listener) {
+    activationMap.put(listener, true);
+  }
 }

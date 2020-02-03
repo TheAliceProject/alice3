@@ -55,25 +55,25 @@ import java.util.UUID;
  */
 @Deprecated // Use a FileDialogValueCreator instead of getting this by inheritance
 public abstract class UriCreator<T> extends ValueCreator<T> {
-	UriCreator( UUID migrationId ) {
-		super( migrationId );
-	}
+  UriCreator(UUID migrationId) {
+    super(migrationId);
+  }
 
-	protected abstract File getInitialDirectory();
+  protected abstract File getInitialDirectory();
 
-	protected abstract String getExtension();
+  protected abstract String getExtension();
 
-	protected abstract T internalGetValueFrom( File file );
+  protected abstract T internalGetValueFrom(File file);
 
-	@Override
-	protected T createValue( UserActivity userActivity ) {
-		Application application = Application.getActiveInstance();
-		DocumentFrame documentFrame = application.getDocumentFrame();
-		File file = documentFrame.showOpenFileDialog( null, getInitialDirectory(), getExtension() );
-		if( file != null ) {
-			return internalGetValueFrom( file );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected T createValue(UserActivity userActivity) {
+    Application application = Application.getActiveInstance();
+    DocumentFrame documentFrame = application.getDocumentFrame();
+    File file = documentFrame.showOpenFileDialog(null, getInitialDirectory(), getExtension());
+    if (file != null) {
+      return internalGetValueFrom(file);
+    } else {
+      return null;
+    }
+  }
 }

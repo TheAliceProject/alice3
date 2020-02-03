@@ -58,114 +58,115 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class VFB {
-	public static Vertex[] loadVertices( InputStream is ) throws IOException, FileNotFoundException {
-		return (Vertex[])load( new BufferedInputStream( is ) )[ 0 ];
-	}
+  public static Vertex[] loadVertices(InputStream is) throws IOException, FileNotFoundException {
+    return (Vertex[]) load(new BufferedInputStream(is))[0];
+  }
 
-	public static int[] loadIndices( InputStream is ) throws IOException, FileNotFoundException {
-		return (int[])load( new BufferedInputStream( is ) )[ 1 ];
-	}
+  public static int[] loadIndices(InputStream is) throws IOException, FileNotFoundException {
+    return (int[]) load(new BufferedInputStream(is))[1];
+  }
 
-	public static Object[] load( BufferedInputStream bis ) throws IOException, FileNotFoundException {
-		int nByteCount = bis.available();
-		byte[] byteArray = new byte[ nByteCount ];
-		bis.read( byteArray );
-		int nByteIndex;
-		for( nByteIndex = 0; nByteIndex < nByteCount; nByteIndex += 4 ) {
-			byte b;
-			b = byteArray[ nByteIndex ];
-			byteArray[ nByteIndex ] = byteArray[ nByteIndex + 3 ];
-			byteArray[ nByteIndex + 3 ] = b;
-			b = byteArray[ nByteIndex + 1 ];
-			byteArray[ nByteIndex + 1 ] = byteArray[ nByteIndex + 2 ];
-			byteArray[ nByteIndex + 2 ] = b;
-		}
-		ByteArrayInputStream bais = new ByteArrayInputStream( byteArray );
-		DataInputStream dis = new DataInputStream( bais );
-		Object[] verticesAndIndices = { null, null };
-		int nVersion = dis.readInt();
-		if( nVersion == 1 ) {
-			int vertexCount = dis.readInt();
-			Vertex[] vertices = new Vertex[ vertexCount ];
-			for( int index = 0; index < vertices.length; index++ ) {
-				float x = -dis.readFloat();
-				float y = dis.readFloat();
-				float z = dis.readFloat();
-				float i = -dis.readFloat();
-				float j = dis.readFloat();
-				float k = dis.readFloat();
-				float u = dis.readFloat();
-				float v = dis.readFloat();
-				vertices[ index ] = Vertex.createXYZIJKUV( x, y, z, i, j, k, u, v );
-			}
+  public static Object[] load(BufferedInputStream bis) throws IOException, FileNotFoundException {
+    int nByteCount = bis.available();
+    byte[] byteArray = new byte[nByteCount];
+    bis.read(byteArray);
+    int nByteIndex;
+    for (nByteIndex = 0; nByteIndex < nByteCount; nByteIndex += 4) {
+      byte b;
+      b = byteArray[nByteIndex];
+      byteArray[nByteIndex] = byteArray[nByteIndex + 3];
+      byteArray[nByteIndex + 3] = b;
+      b = byteArray[nByteIndex + 1];
+      byteArray[nByteIndex + 1] = byteArray[nByteIndex + 2];
+      byteArray[nByteIndex + 2] = b;
+    }
+    ByteArrayInputStream bais = new ByteArrayInputStream(byteArray);
+    DataInputStream dis = new DataInputStream(bais);
+    Object[] verticesAndIndices = {null, null};
+    int nVersion = dis.readInt();
+    if (nVersion == 1) {
+      int vertexCount = dis.readInt();
+      Vertex[] vertices = new Vertex[vertexCount];
+      for (int index = 0; index < vertices.length; index++) {
+        float x = -dis.readFloat();
+        float y = dis.readFloat();
+        float z = dis.readFloat();
+        float i = -dis.readFloat();
+        float j = dis.readFloat();
+        float k = dis.readFloat();
+        float u = dis.readFloat();
+        float v = dis.readFloat();
+        vertices[index] = Vertex.createXYZIJKUV(x, y, z, i, j, k, u, v);
+      }
 
-			int faceCount = dis.readInt();
-			/* unused int faceDataCount = */dis.readInt();
-			int verticesPerFace = dis.readInt();
-			int[] indices = new int[ faceCount * 3 ];
-			int i = 0;
-			for( int f = 0; f < faceCount; f++ ) {
-				int length;
-				if( verticesPerFace == 0 ) {
-					length = dis.readInt();
-				} else {
-					length = verticesPerFace;
-				}
-				indices[ i + 0 ] = dis.readInt();
-				indices[ i + 1 ] = dis.readInt();
-				indices[ i + 2 ] = dis.readInt();
-				i += 3;
-				for( int lcv = 3; lcv < length; lcv++ ) {
-					dis.readInt();
-				}
-			}
-			verticesAndIndices[ 0 ] = vertices;
-			verticesAndIndices[ 1 ] = indices;
-		}
-		return verticesAndIndices;
-	}
+      int faceCount = dis.readInt();
+      /* unused int faceDataCount = */
+      dis.readInt();
+      int verticesPerFace = dis.readInt();
+      int[] indices = new int[faceCount * 3];
+      int i = 0;
+      for (int f = 0; f < faceCount; f++) {
+        int length;
+        if (verticesPerFace == 0) {
+          length = dis.readInt();
+        } else {
+          length = verticesPerFace;
+        }
+        indices[i + 0] = dis.readInt();
+        indices[i + 1] = dis.readInt();
+        indices[i + 2] = dis.readInt();
+        i += 3;
+        for (int lcv = 3; lcv < length; lcv++) {
+          dis.readInt();
+        }
+      }
+      verticesAndIndices[0] = vertices;
+      verticesAndIndices[1] = indices;
+    }
+    return verticesAndIndices;
+  }
 
-	private static void store( BufferedOutputStream bos, int i ) throws IOException {
-		bos.write( (byte)( i & 0x000000FF ) );
-		bos.write( (byte)( ( i >> 8 ) & 0x000000FF ) );
-		bos.write( (byte)( ( i >> 16 ) & 0x000000FF ) );
-		bos.write( (byte)( ( i >> 24 ) & 0x000000FF ) );
-	}
+  private static void store(BufferedOutputStream bos, int i) throws IOException {
+    bos.write((byte) (i & 0x000000FF));
+    bos.write((byte) ((i >> 8) & 0x000000FF));
+    bos.write((byte) ((i >> 16) & 0x000000FF));
+    bos.write((byte) ((i >> 24) & 0x000000FF));
+  }
 
-	private static void store( BufferedOutputStream bos, float f ) throws IOException {
-		store( bos, Float.floatToIntBits( f ) );
-	}
+  private static void store(BufferedOutputStream bos, float f) throws IOException {
+    store(bos, Float.floatToIntBits(f));
+  }
 
-	public static void store( OutputStream os, Vertex[] vertices, int[] indices ) throws IOException {
-		BufferedOutputStream bos = new BufferedOutputStream( os );
-		store( bos, 1 );
-		if( vertices != null ) {
-			store( bos, vertices.length );
-			for( Vertex vertice : vertices ) {
-				store( bos, (float)vertice.position.x );
-				store( bos, (float)vertice.position.y );
-				store( bos, (float)vertice.position.z );
-				store( bos, vertice.normal.x );
-				store( bos, vertice.normal.y );
-				store( bos, vertice.normal.z );
-				store( bos, vertice.textureCoordinate0.u );
-				store( bos, vertice.textureCoordinate0.v );
-			}
-		} else {
-			store( bos, 0 );
-		}
-		if( indices != null ) {
-			store( bos, indices.length / 3 );
-			store( bos, indices.length );
-			store( bos, 3 );
-			for( int i = 0; i < indices.length; i += 3 ) {
-				store( bos, indices[ i + 2 ] );
-				store( bos, indices[ i + 1 ] );
-				store( bos, indices[ i ] );
-			}
-		} else {
-			store( bos, 0 );
-		}
-		bos.flush();
-	}
+  public static void store(OutputStream os, Vertex[] vertices, int[] indices) throws IOException {
+    BufferedOutputStream bos = new BufferedOutputStream(os);
+    store(bos, 1);
+    if (vertices != null) {
+      store(bos, vertices.length);
+      for (Vertex vertice : vertices) {
+        store(bos, (float) vertice.position.x);
+        store(bos, (float) vertice.position.y);
+        store(bos, (float) vertice.position.z);
+        store(bos, vertice.normal.x);
+        store(bos, vertice.normal.y);
+        store(bos, vertice.normal.z);
+        store(bos, vertice.textureCoordinate0.u);
+        store(bos, vertice.textureCoordinate0.v);
+      }
+    } else {
+      store(bos, 0);
+    }
+    if (indices != null) {
+      store(bos, indices.length / 3);
+      store(bos, indices.length);
+      store(bos, 3);
+      for (int i = 0; i < indices.length; i += 3) {
+        store(bos, indices[i + 2]);
+        store(bos, indices[i + 1]);
+        store(bos, indices[i]);
+      }
+    } else {
+      store(bos, 0);
+    }
+    bos.flush();
+  }
 }

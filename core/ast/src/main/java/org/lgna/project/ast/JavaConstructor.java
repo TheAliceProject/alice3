@@ -63,172 +63,172 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class JavaConstructor extends AbstractConstructor {
-	private static final InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
+  private static final InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
-	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
-		if( constructorReflectionProxy != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( constructorReflectionProxy, new InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
-				@Override
-				public JavaConstructor initialize( ConstructorReflectionProxy key ) {
-					return new JavaConstructor( key );
-				}
-			} );
-		} else {
-			return null;
-		}
-	}
+  public static JavaConstructor getInstance(ConstructorReflectionProxy constructorReflectionProxy) {
+    if (constructorReflectionProxy != null) {
+      return mapReflectionProxyToInstance.getInitializingIfAbsent(constructorReflectionProxy, new InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
+        @Override
+        public JavaConstructor initialize(ConstructorReflectionProxy key) {
+          return new JavaConstructor(key);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
 
-	public static JavaConstructor getInstance( Constructor<?> cnstrctr ) {
-		return getInstance( new ConstructorReflectionProxy( cnstrctr ) );
-	}
+  public static JavaConstructor getInstance(Constructor<?> cnstrctr) {
+    return getInstance(new ConstructorReflectionProxy(cnstrctr));
+  }
 
-	public static JavaConstructor getInstance( Class<?> declaringCls, Class<?>... parameterClses ) {
-		return getInstance( ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
-	}
+  public static JavaConstructor getInstance(Class<?> declaringCls, Class<?>... parameterClses) {
+    return getInstance(ReflectionUtilities.getConstructor(declaringCls, parameterClses));
+  }
 
-	@Override
-	public Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
-		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
-		return ReflectionUtilities.newInstance( getConstructorReflectionProxy().getReification(), arguments );
-	}
+  @Override
+  public Object evaluate(VirtualMachine vm, AbstractType fallbackType, Object[] arguments) {
+    UserInstance.updateArrayWithInstancesInJavaIfNecessary(arguments);
+    return ReflectionUtilities.newInstance(getConstructorReflectionProxy().getReification(), arguments);
+  }
 
-	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
-		this.constructorReflectionProxy = constructorReflectionProxy;
-		ClassReflectionProxy[] parameterTypeReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
-		final int N;
-		if( this.constructorReflectionProxy.isVarArgs() ) {
-			N = parameterTypeReflectionProxies.length - 1;
-		} else {
-			N = parameterTypeReflectionProxies.length;
-		}
-		ArrayList<JavaConstructorParameter> list = Lists.newArrayListWithInitialCapacity( N );
-		Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
-		for( int i = 0; i < N; i++ ) {
-			list.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
-		}
-		this.requiredParameters = Collections.unmodifiableList( list );
-		if( this.constructorReflectionProxy.isVarArgs() ) {
-			this.variableOrKeyedParameter = new JavaConstructorParameter( this, N, parameterAnnotations[ N ] );
-		} else {
-			this.variableOrKeyedParameter = null;
-		}
-	}
+  private JavaConstructor(ConstructorReflectionProxy constructorReflectionProxy) {
+    this.constructorReflectionProxy = constructorReflectionProxy;
+    ClassReflectionProxy[] parameterTypeReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
+    final int N;
+    if (this.constructorReflectionProxy.isVarArgs()) {
+      N = parameterTypeReflectionProxies.length - 1;
+    } else {
+      N = parameterTypeReflectionProxies.length;
+    }
+    ArrayList<JavaConstructorParameter> list = Lists.newArrayListWithInitialCapacity(N);
+    Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
+    for (int i = 0; i < N; i++) {
+      list.add(new JavaConstructorParameter(this, i, parameterAnnotations[i]));
+    }
+    this.requiredParameters = Collections.unmodifiableList(list);
+    if (this.constructorReflectionProxy.isVarArgs()) {
+      this.variableOrKeyedParameter = new JavaConstructorParameter(this, N, parameterAnnotations[N]);
+    } else {
+      this.variableOrKeyedParameter = null;
+    }
+  }
 
-	public ConstructorReflectionProxy getConstructorReflectionProxy() {
-		return this.constructorReflectionProxy;
-	}
+  public ConstructorReflectionProxy getConstructorReflectionProxy() {
+    return this.constructorReflectionProxy;
+  }
 
-	@Override
-	public JavaType getDeclaringType() {
-		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
-	}
+  @Override
+  public JavaType getDeclaringType() {
+    return JavaType.getInstance(this.constructorReflectionProxy.getDeclaringClassReflectionProxy());
+  }
 
-	@Override
-	public JavaConstructorParameter getKeyedParameter() {
-		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
-				return this.variableOrKeyedParameter;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public JavaConstructorParameter getKeyedParameter() {
+    if (this.variableOrKeyedParameter != null) {
+      if (variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null) {
+        return this.variableOrKeyedParameter;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public JavaConstructorParameter getVariableLengthParameter() {
-		if( this.variableOrKeyedParameter != null ) {
-			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
-				return null;
-			} else {
-				return this.variableOrKeyedParameter;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public JavaConstructorParameter getVariableLengthParameter() {
+    if (this.variableOrKeyedParameter != null) {
+      if (variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null) {
+        return null;
+      } else {
+        return this.variableOrKeyedParameter;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public List<JavaConstructorParameter> getRequiredParameters() {
-		return this.requiredParameters;
-	}
+  @Override
+  public List<JavaConstructorParameter> getRequiredParameters() {
+    return this.requiredParameters;
+  }
 
-	@Override
-	public Visibility getVisibility() {
-		Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
-		if( cnstrctr != null ) {
-			if( cnstrctr.isAnnotationPresent( ConstructorTemplate.class ) ) {
-				//todo: investigate cast requirement
-				ConstructorTemplate cnstrctrTemplate = cnstrctr.getAnnotation( ConstructorTemplate.class );
-				return cnstrctrTemplate.visibility();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Visibility getVisibility() {
+    Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
+    if (cnstrctr != null) {
+      if (cnstrctr.isAnnotationPresent(ConstructorTemplate.class)) {
+        //todo: investigate cast requirement
+        ConstructorTemplate cnstrctrTemplate = cnstrctr.getAnnotation(ConstructorTemplate.class);
+        return cnstrctrTemplate.visibility();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	private JavaConstructor nextLongerInChain = null;
+  private JavaConstructor nextLongerInChain = null;
 
-	public boolean isParameterInShortestChainedConstructor( JavaConstructorParameter javaConstructorParameter ) {
-		int index = javaConstructorParameter.getIndex();
-		JavaConstructor javaConstructor = (JavaConstructor)getShortestInChain();
-		return index < javaConstructor.getRequiredParameters().size();
-	}
+  public boolean isParameterInShortestChainedConstructor(JavaConstructorParameter javaConstructorParameter) {
+    int index = javaConstructorParameter.getIndex();
+    JavaConstructor javaConstructor = (JavaConstructor) getShortestInChain();
+    return index < javaConstructor.getRequiredParameters().size();
+  }
 
-	@Override
-	public JavaConstructor getNextLongerInChain() {
-		return this.nextLongerInChain;
-	}
+  @Override
+  public JavaConstructor getNextLongerInChain() {
+    return this.nextLongerInChain;
+  }
 
-	public void setNextLongerInChain( JavaConstructor nextLongerInChain ) {
-		this.nextLongerInChain = nextLongerInChain;
-	}
+  public void setNextLongerInChain(JavaConstructor nextLongerInChain) {
+    this.nextLongerInChain = nextLongerInChain;
+  }
 
-	private JavaConstructor nextShorterInChain = null;
+  private JavaConstructor nextShorterInChain = null;
 
-	@Override
-	public JavaConstructor getNextShorterInChain() {
-		return this.nextShorterInChain;
-	}
+  @Override
+  public JavaConstructor getNextShorterInChain() {
+    return this.nextShorterInChain;
+  }
 
-	public void setNextShorterInChain( JavaConstructor nextShorterInChain ) {
-		this.nextShorterInChain = nextShorterInChain;
-	}
+  public void setNextShorterInChain(JavaConstructor nextShorterInChain) {
+    this.nextShorterInChain = nextShorterInChain;
+  }
 
-	@Override
-	public boolean isSignatureLocked() {
-		return true;
-	}
+  @Override
+  public boolean isSignatureLocked() {
+    return true;
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
-		if( cnstrctr != null ) {
-			return AccessLevel.getValueFromModifiers( cnstrctr.getModifiers() );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
+    if (cnstrctr != null) {
+      return AccessLevel.getValueFromModifiers(cnstrctr.getModifiers());
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public boolean isEquivalentTo( Object o ) {
-		JavaConstructor other = ClassUtilities.getInstance( o, JavaConstructor.class );
-		if( other != null ) {
-			return this.constructorReflectionProxy.equals( other.constructorReflectionProxy );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquivalentTo(Object o) {
+    JavaConstructor other = ClassUtilities.getInstance(o, JavaConstructor.class);
+    if (other != null) {
+      return this.constructorReflectionProxy.equals(other.constructorReflectionProxy);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return false;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return false;
+  }
 
-	private final ConstructorReflectionProxy constructorReflectionProxy;
-	private final List<JavaConstructorParameter> requiredParameters;
-	private final JavaConstructorParameter variableOrKeyedParameter;
+  private final ConstructorReflectionProxy constructorReflectionProxy;
+  private final List<JavaConstructorParameter> requiredParameters;
+  private final JavaConstructorParameter variableOrKeyedParameter;
 }

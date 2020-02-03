@@ -51,31 +51,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SaveProjectOperation extends AbstractSaveProjectOperation {
-	private static class SingletonHolder {
-		private static SaveProjectOperation instance = new SaveProjectOperation();
-	}
+  private static class SingletonHolder {
+    private static SaveProjectOperation instance = new SaveProjectOperation();
+  }
 
-	public static SaveProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SaveProjectOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SaveProjectOperation() {
-		super( UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
-	}
+  private SaveProjectOperation() {
+    super(UUID.fromString("44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d"));
+  }
 
-	@Override
-	protected boolean isPromptNecessary( File file ) {
-		return ( ( file != null ) && file.canWrite() ) == false;
-	}
+  @Override
+  protected boolean isPromptNecessary(File file) {
+    return ((file != null) && file.canWrite()) == false;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setButtonIcon( Icons.SAVE_DOCUMENT_SMALL );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setButtonIcon(Icons.SAVE_DOCUMENT_SMALL);
+  }
 
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
-	}
+  @Override
+  public boolean isToolBarTextClobbered() {
+    return true;
+  }
 }

@@ -57,27 +57,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class JointsSubMenu<FB> extends CascadeMenuModel<FB> {
-	private final List<CascadeFillIn<FB, ?>> fillIns = Lists.newLinkedList();
-	private final List<String> methodNames;
+  private final List<CascadeFillIn<FB, ?>> fillIns = Lists.newLinkedList();
+  private final List<String> methodNames;
 
-	public JointsSubMenu( UUID migrationId, Class<?> cls, String... methodNames ) {
-		super( migrationId );
-		this.methodNames = Lists.newArrayList( methodNames );
-	}
+  public JointsSubMenu(UUID migrationId, Class<?> cls, String... methodNames) {
+    super(migrationId);
+    this.methodNames = Lists.newArrayList(methodNames);
+  }
 
-	public boolean consumeIfAppropriate( Method method, CascadeFillIn<FB, ?> fillIn ) {
-		if( this.methodNames.contains( method.getName() ) ) {
-			this.fillIns.add( fillIn );
-			return true;
-		} else {
-			return false;
-		}
-	}
+  public boolean consumeIfAppropriate(Method method, CascadeFillIn<FB, ?> fillIn) {
+    if (this.methodNames.contains(method.getName())) {
+      this.fillIns.add(fillIn);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<FB> blankNode ) {
-		for( CascadeFillIn<FB, ?> fillIn : this.fillIns ) {
-			blankChildren.add( fillIn );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<FB> blankNode) {
+    for (CascadeFillIn<FB, ?> fillIn : this.fillIns) {
+      blankChildren.add(fillIn);
+    }
+  }
 }

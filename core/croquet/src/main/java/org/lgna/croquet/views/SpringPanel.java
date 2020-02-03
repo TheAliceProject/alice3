@@ -55,157 +55,153 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class SpringPanel extends Panel {
-	public enum Vertical {
-		NORTH( SpringLayout.NORTH ),
-		CENTER( null ),
-		SOUTH( SpringLayout.SOUTH );
-		private String internal;
+  public enum Vertical {
+    NORTH(SpringLayout.NORTH), CENTER(null), SOUTH(SpringLayout.SOUTH);
+    private String internal;
 
-		private Vertical( String internal ) {
-			this.internal = internal;
-		}
+    private Vertical(String internal) {
+      this.internal = internal;
+    }
 
-		public String getInternal() {
-			return internal;
-		}
-	}
+    public String getInternal() {
+      return internal;
+    }
+  }
 
-	public enum Horizontal {
-		WEST( SpringLayout.WEST ),
-		CENTER( null ),
-		EAST( SpringLayout.EAST );
-		private String internal;
+  public enum Horizontal {
+    WEST(SpringLayout.WEST), CENTER(null), EAST(SpringLayout.EAST);
+    private String internal;
 
-		private Horizontal( String internal ) {
-			this.internal = internal;
-		}
+    private Horizontal(String internal) {
+      this.internal = internal;
+    }
 
-		public String getInternal() {
-			return internal;
-		}
-	}
+    public String getInternal() {
+      return internal;
+    }
+  }
 
-	private final SpringLayout springLayout = new SpringLayout();
+  private final SpringLayout springLayout = new SpringLayout();
 
-	public SpringPanel() {
-		this( null );
-	}
+  public SpringPanel() {
+    this(null);
+  }
 
-	public SpringPanel( Composite composite ) {
-		super( composite );
-	}
+  public SpringPanel(Composite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		return this.springLayout;
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    return this.springLayout;
+  }
 
-	//	protected javax.swing.SpringLayout getSpringLayout() {
-	//		return this.springLayout;
-	//	}
-	abstract class CenterSpring extends Spring {
-		private AwtComponentView<?> component;
-		private int offset;
+  //  protected javax.swing.SpringLayout getSpringLayout() {
+  //  return this.springLayout;
+  //  }
+  abstract class CenterSpring extends Spring {
+    private AwtComponentView<?> component;
+    private int offset;
 
-		public CenterSpring( AwtComponentView<?> component, int offset ) {
-			this.component = component;
-			this.offset = offset;
-		}
+    public CenterSpring(AwtComponentView<?> component, int offset) {
+      this.component = component;
+      this.offset = offset;
+    }
 
-		@Override
-		public int getValue() {
-			return this.getPreferredValue();
-		}
+    @Override
+    public int getValue() {
+      return this.getPreferredValue();
+    }
 
-		@Override
-		public void setValue( int value ) {
-		}
+    @Override
+    public void setValue(int value) {
+    }
 
-		protected abstract int getValue( Dimension dimension );
+    protected abstract int getValue(Dimension dimension);
 
-		@Override
-		public int getPreferredValue() {
-			int macro = getValue( SpringPanel.this.getAwtComponent().getSize() );
-			Dimension size;
-			if( this.component.getAwtComponent().isValid() ) {
-				size = this.component.getAwtComponent().getSize();
-			} else {
-				size = this.component.getAwtComponent().getPreferredSize();
-			}
-			int micro = getValue( size );
-			return this.offset + ( ( macro - micro ) / 2 );
-		}
+    @Override
+    public int getPreferredValue() {
+      int macro = getValue(SpringPanel.this.getAwtComponent().getSize());
+      Dimension size;
+      if (this.component.getAwtComponent().isValid()) {
+        size = this.component.getAwtComponent().getSize();
+      } else {
+        size = this.component.getAwtComponent().getPreferredSize();
+      }
+      int micro = getValue(size);
+      return this.offset + ((macro - micro) / 2);
+    }
 
-		@Override
-		public int getMinimumValue() {
-			return this.getPreferredValue();
-		}
+    @Override
+    public int getMinimumValue() {
+      return this.getPreferredValue();
+    }
 
-		@Override
-		public int getMaximumValue() {
-			return this.getPreferredValue();
-		}
-	}
+    @Override
+    public int getMaximumValue() {
+      return this.getPreferredValue();
+    }
+  }
 
-	class HorizontalCenterSpring extends CenterSpring {
-		public HorizontalCenterSpring( AwtComponentView<?> component, int offset ) {
-			super( component, offset );
-		}
+  class HorizontalCenterSpring extends CenterSpring {
+    public HorizontalCenterSpring(AwtComponentView<?> component, int offset) {
+      super(component, offset);
+    }
 
-		@Override
-		protected int getValue( Dimension dimension ) {
-			return dimension.width;
-		}
-	}
+    @Override
+    protected int getValue(Dimension dimension) {
+      return dimension.width;
+    }
+  }
 
-	class VerticalCenterSpring extends CenterSpring {
-		public VerticalCenterSpring( AwtComponentView<?> component, int offset ) {
-			super( component, offset );
-		}
+  class VerticalCenterSpring extends CenterSpring {
+    public VerticalCenterSpring(AwtComponentView<?> component, int offset) {
+      super(component, offset);
+    }
 
-		@Override
-		protected int getValue( Dimension dimension ) {
-			return dimension.height;
-		}
-	}
+    @Override
+    protected int getValue(Dimension dimension) {
+      return dimension.height;
+    }
+  }
 
-	private void putConstraint( AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, AwtComponentView<?> anchor ) {
-		String horizontalDependentConstraint = horizontalDependent.getInternal();
-		String horizontalAnchorConstraint = horizontalAnchor.getInternal();
-		if( ( horizontalDependentConstraint != null ) && ( horizontalAnchorConstraint != null ) ) {
-			this.springLayout.putConstraint( horizontalDependentConstraint, dependent.getAwtComponent(), x, horizontalAnchorConstraint, anchor.getAwtComponent() );
-		} else {
-			this.springLayout.putConstraint( SpringLayout.WEST, dependent.getAwtComponent(), new HorizontalCenterSpring( dependent, x ), SpringLayout.WEST, anchor.getAwtComponent() );
-		}
-		String verticalDependentConstraint = verticalDependent.getInternal();
-		String verticalAnchorConstraint = verticalAnchor.getInternal();
-		if( ( verticalDependentConstraint != null ) && ( verticalAnchorConstraint != null ) ) {
-			this.springLayout.putConstraint( verticalDependentConstraint, dependent.getAwtComponent(), y, verticalAnchorConstraint, anchor.getAwtComponent() );
-		} else {
-			this.springLayout.putConstraint( SpringLayout.NORTH, dependent.getAwtComponent(), new VerticalCenterSpring( dependent, y ), SpringLayout.NORTH, anchor.getAwtComponent() );
-		}
-	}
+  private void putConstraint(AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, AwtComponentView<?> anchor) {
+    String horizontalDependentConstraint = horizontalDependent.getInternal();
+    String horizontalAnchorConstraint = horizontalAnchor.getInternal();
+    if ((horizontalDependentConstraint != null) && (horizontalAnchorConstraint != null)) {
+      this.springLayout.putConstraint(horizontalDependentConstraint, dependent.getAwtComponent(), x, horizontalAnchorConstraint, anchor.getAwtComponent());
+    } else {
+      this.springLayout.putConstraint(SpringLayout.WEST, dependent.getAwtComponent(), new HorizontalCenterSpring(dependent, x), SpringLayout.WEST, anchor.getAwtComponent());
+    }
+    String verticalDependentConstraint = verticalDependent.getInternal();
+    String verticalAnchorConstraint = verticalAnchor.getInternal();
+    if ((verticalDependentConstraint != null) && (verticalAnchorConstraint != null)) {
+      this.springLayout.putConstraint(verticalDependentConstraint, dependent.getAwtComponent(), y, verticalAnchorConstraint, anchor.getAwtComponent());
+    } else {
+      this.springLayout.putConstraint(SpringLayout.NORTH, dependent.getAwtComponent(), new VerticalCenterSpring(dependent, y), SpringLayout.NORTH, anchor.getAwtComponent());
+    }
+  }
 
-	public void addComponent( AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, AwtComponentView<?> anchor ) {
-		this.internalAddComponent( dependent );
-		this.putConstraint( dependent, horizontalDependent, horizontalAnchor, x, verticalDependent, verticalAnchor, y, anchor );
-	}
+  public void addComponent(AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, AwtComponentView<?> anchor) {
+    this.internalAddComponent(dependent);
+    this.putConstraint(dependent, horizontalDependent, horizontalAnchor, x, verticalDependent, verticalAnchor, y, anchor);
+  }
 
-	public void addComponent( AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalThis, int x, Vertical verticalDependent, Vertical verticalThis, int y ) {
-		this.addComponent( dependent, horizontalDependent, horizontalThis, x, verticalDependent, verticalThis, y, this );
-	}
+  public void addComponent(AwtComponentView<?> dependent, Horizontal horizontalDependent, Horizontal horizontalThis, int x, Vertical verticalDependent, Vertical verticalThis, int y) {
+    this.addComponent(dependent, horizontalDependent, horizontalThis, x, verticalDependent, verticalThis, y, this);
+  }
 
-	public void addComponent( AwtComponentView<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y, AwtComponentView<?> anchor ) {
-		this.addComponent( dependent, horizontal, horizontal, x, vertical, vertical, y, anchor );
-	}
+  public void addComponent(AwtComponentView<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y, AwtComponentView<?> anchor) {
+    this.addComponent(dependent, horizontal, horizontal, x, vertical, vertical, y, anchor);
+  }
 
-	public void addComponent( AwtComponentView<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		this.addComponent( dependent, horizontal, x, vertical, y, this );
-	}
+  public void addComponent(AwtComponentView<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y) {
+    this.addComponent(dependent, horizontal, x, vertical, y, this);
+  }
 
-	@Override
-	public void removeComponent( AwtComponentView<?> component ) {
-		super.removeComponent( component );
-		this.springLayout.removeLayoutComponent( component.getAwtComponent() );
-	}
+  @Override
+  public void removeComponent(AwtComponentView<?> component) {
+    super.removeComponent(component);
+    this.springLayout.removeLayoutComponent(component.getAwtComponent());
+  }
 }

@@ -49,53 +49,53 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public final class KnurlUtilities {
-	private KnurlUtilities() {
-	}
+  private KnurlUtilities() {
+  }
 
-	private static void paintPoint( Graphics g2, int x, int y ) {
-		g2.fillRect( x, y, 1, 1 );
-	}
+  private static void paintPoint(Graphics g2, int x, int y) {
+    g2.fillRect(x, y, 1, 1);
+  }
 
-	public static void paintKnurl3( Graphics g2, float x, float y, float width, float height ) {
-		int xPixel0 = (int)x;
-		int xPixelA = (int)( x + ( width * 0.5f ) );
-		int xPixel1 = (int)( x + width );
-		int yPixel = (int)y;
-		float yPixelMax = yPixel + height;
-		while( yPixel < yPixelMax ) {
-			paintPoint( g2, xPixelA, yPixel );
-			if( ( yPixel + 2 ) < yPixelMax ) {
-				paintPoint( g2, xPixel0, yPixel + 2 );
-				paintPoint( g2, xPixel1, yPixel + 2 );
-			}
-			yPixel += 4;
-		}
-		if( ( yPixel + 2 ) < yPixelMax ) {
-			paintPoint( g2, xPixelA, yPixel + 2 );
-		}
-	}
+  public static void paintKnurl3(Graphics g2, float x, float y, float width, float height) {
+    int xPixel0 = (int) x;
+    int xPixelA = (int) (x + (width * 0.5f));
+    int xPixel1 = (int) (x + width);
+    int yPixel = (int) y;
+    float yPixelMax = yPixel + height;
+    while (yPixel < yPixelMax) {
+      paintPoint(g2, xPixelA, yPixel);
+      if ((yPixel + 2) < yPixelMax) {
+        paintPoint(g2, xPixel0, yPixel + 2);
+        paintPoint(g2, xPixel1, yPixel + 2);
+      }
+      yPixel += 4;
+    }
+    if ((yPixel + 2) < yPixelMax) {
+      paintPoint(g2, xPixelA, yPixel + 2);
+    }
+  }
 
-	public static void paintKnurl5( Graphics g2, float x, float y, float width, float height ) {
-		int xPixel0 = (int)x;
-		int xPixelA = (int)( x + ( width * 0.25f ) );
-		int xPixelB = (int)( x + ( width * 0.5f ) );
-		int xPixelC = (int)( x + ( width * 0.75f ) );
-		int xPixel1 = (int)( x + width );
-		int yPixel = (int)y;
-		float yPixelMax = yPixel + height;
-		while( yPixel < yPixelMax ) {
-			paintPoint( g2, xPixelA, yPixel );
-			paintPoint( g2, xPixelC, yPixel );
-			if( ( yPixel + 2 ) < yPixelMax ) {
-				paintPoint( g2, xPixel0, yPixel + 2 );
-				paintPoint( g2, xPixelB, yPixel + 2 );
-				paintPoint( g2, xPixel1, yPixel + 2 );
-			}
-			yPixel += 4;
-		}
-		if( ( yPixel + 2 ) < yPixelMax ) {
-			paintPoint( g2, xPixelA, yPixel + 2 );
-			paintPoint( g2, xPixelC, yPixel + 2 );
-		}
-	}
+  public static void paintKnurl5(Graphics g2, float x, float y, float width, float height) {
+    int xPixel0 = (int) x;
+    int xPixelA = (int) (x + (width * 0.25f));
+    int xPixelB = (int) (x + (width * 0.5f));
+    int xPixelC = (int) (x + (width * 0.75f));
+    int xPixel1 = (int) (x + width);
+    int yPixel = (int) y;
+    float yPixelMax = yPixel + height;
+    while (yPixel < yPixelMax) {
+      paintPoint(g2, xPixelA, yPixel);
+      paintPoint(g2, xPixelC, yPixel);
+      if ((yPixel + 2) < yPixelMax) {
+        paintPoint(g2, xPixel0, yPixel + 2);
+        paintPoint(g2, xPixelB, yPixel + 2);
+        paintPoint(g2, xPixel1, yPixel + 2);
+      }
+      yPixel += 4;
+    }
+    if ((yPixel + 2) < yPixelMax) {
+      paintPoint(g2, xPixelA, yPixel + 2);
+      paintPoint(g2, xPixelC, yPixel + 2);
+    }
+  }
 }

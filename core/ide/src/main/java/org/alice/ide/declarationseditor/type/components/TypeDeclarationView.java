@@ -76,113 +76,105 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class TypeDeclarationView extends DeclarationView {
-	public TypeDeclarationView( TypeComposite composite ) {
-		super( composite );
-		NamedUserType type = (NamedUserType)composite.getDeclaration();
-		Theme theme = ThemeUtilities.getActiveTheme();
-		this.setBackgroundColor( theme.getMutedTypeColor() );
+  public TypeDeclarationView(TypeComposite composite) {
+    super(composite);
+    NamedUserType type = (NamedUserType) composite.getDeclaration();
+    Theme theme = ThemeUtilities.getActiveTheme();
+    this.setBackgroundColor(theme.getMutedTypeColor());
 
-		ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
-		constructorsToolPalette.setBackgroundColor( theme.getConstructorColor() );
+    ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
+    constructorsToolPalette.setBackgroundColor(theme.getConstructorColor());
 
-		ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
-		proceduresToolPalette.setBackgroundColor( theme.getProcedureColor() );
+    ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
+    proceduresToolPalette.setBackgroundColor(theme.getProcedureColor());
 
-		ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
-		functionsToolPalette.setBackgroundColor( theme.getFunctionColor() );
+    ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
+    functionsToolPalette.setBackgroundColor(theme.getFunctionColor());
 
-		ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
-		fieldsToolPalette.setBackgroundColor( theme.getFieldColor() );
+    ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
+    fieldsToolPalette.setBackgroundColor(theme.getFieldColor());
 
-		for( ToolPaletteView toolPalette : new ToolPaletteView[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
-			toolPalette.getTitle().changeFont( TextPosture.OBLIQUE );
-			toolPalette.getTitle().scaleFont( 1.4f );
-			toolPalette.getTitle().setRoundedOnTop( true );
-			toolPalette.getCenterView().setBorder( BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-		}
+    for (ToolPaletteView toolPalette : new ToolPaletteView[] {constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette}) {
+      toolPalette.getTitle().changeFont(TextPosture.OBLIQUE);
+      toolPalette.getTitle().scaleFont(1.4f);
+      toolPalette.getTitle().setRoundedOnTop(true);
+      toolPalette.getCenterView().setBorder(BorderFactory.createEmptyBorder(4, 14, 4, 4));
+    }
 
-		PageAxisPanel membersPanel = new PageAxisPanel();
-		if( IsIncludingConstructors.getInstance().getValue() ) {
-			membersPanel.addComponent( constructorsToolPalette );
-			membersPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
-		}
-		membersPanel.addComponent( proceduresToolPalette );
-		membersPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
-		membersPanel.addComponent( functionsToolPalette );
-		membersPanel.addComponent( BoxUtilities.createVerticalSliver( 16 ) );
-		membersPanel.addComponent( fieldsToolPalette );
-		membersPanel.setBorder( BorderFactory.createEmptyBorder( 12, 24, 0, 0 ) );
-		membersPanel.setBackgroundColor( this.getBackgroundColor() );
+    PageAxisPanel membersPanel = new PageAxisPanel();
+    if (IsIncludingConstructors.getInstance().getValue()) {
+      membersPanel.addComponent(constructorsToolPalette);
+      membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
+    }
+    membersPanel.addComponent(proceduresToolPalette);
+    membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
+    membersPanel.addComponent(functionsToolPalette);
+    membersPanel.addComponent(BoxUtilities.createVerticalSliver(16));
+    membersPanel.addComponent(fieldsToolPalette);
+    membersPanel.setBorder(BorderFactory.createEmptyBorder(12, 24, 0, 0));
+    membersPanel.setBackgroundColor(this.getBackgroundColor());
 
-		outerMainPanel.setBackgroundColor( this.getBackgroundColor() );
-		typePanel.setBackgroundColor( this.getBackgroundColor() );
+    outerMainPanel.setBackgroundColor(this.getBackgroundColor());
+    typePanel.setBackgroundColor(this.getBackgroundColor());
 
-		scrollPane.setBorder( null );
-		scrollPane.setBackgroundColor( this.getBackgroundColor() );
+    scrollPane.setBorder(null);
+    scrollPane.setBackgroundColor(this.getBackgroundColor());
 
-		TypeHeader typeHeader = new TypeHeader( type );
+    TypeHeader typeHeader = new TypeHeader(type);
 
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		ApiConfigurationManager apiConfigurationManager = IDE.getActiveInstance().getApiConfigurationManager();
-		if( apiConfigurationManager.isExportTypeDesiredFor( type ) ) {
-			LineAxisPanel header = new LineAxisPanel(
-					typeHeader,
-					BoxUtilities.createHorizontalSliver( 8 ),
-					composite.getImportOperation().createButton(),
-					composite.getExportOperation().createButton()
-					);
-			this.typePanel.addPageStartComponent( header );
-		} else {
-			this.typePanel.addPageStartComponent( typeHeader );
-		}
-		this.typePanel.addCenterComponent( new BorderPanel.Builder().pageStart( membersPanel ).build() );
+    ApiConfigurationManager apiConfigurationManager = IDE.getActiveInstance().getApiConfigurationManager();
+    if (apiConfigurationManager.isExportTypeDesiredFor(type)) {
+      LineAxisPanel header = new LineAxisPanel(typeHeader, BoxUtilities.createHorizontalSliver(8), composite.getImportOperation().createButton(), composite.getExportOperation().createButton());
+      this.typePanel.addPageStartComponent(header);
+    } else {
+      this.typePanel.addPageStartComponent(typeHeader);
+    }
+    this.typePanel.addCenterComponent(new BorderPanel.Builder().pageStart(membersPanel).build());
 
-		for( JComponent component : ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), HowMuch.DESCENDANTS_ONLY, JComponent.class ) ) {
-			FontUtilities.setFontToScaledFont( component, 1.2f );
-		}
-	}
+    for (JComponent component : ComponentUtilities.findAllMatches(typeHeader.getAwtComponent(), HowMuch.DESCENDANTS_ONLY, JComponent.class)) {
+      FontUtilities.setFontToScaledFont(component, 1.2f);
+    }
+  }
 
-	@Override
-	public void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
-	}
+  @Override
+  public void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
+  }
 
-	@Override
-	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		super.setJavaCodeOnTheSide( value, isFirstTime );
-		if( value ) {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.outerMainPanel.removeComponent( this.scrollPane );
-			}
-			this.scrollPane.setViewportView( null );
-			this.outerMainPanel.addCenterComponent( this.typePanel );
-		} else {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.outerMainPanel.removeComponent( this.typePanel );
-			}
-			this.scrollPane.setViewportView( this.typePanel );
-			this.outerMainPanel.addCenterComponent( this.scrollPane );
-		}
-	}
+  @Override
+  protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
+    super.setJavaCodeOnTheSide(value, isFirstTime);
+    if (value) {
+      if (isFirstTime) {
+        //pass
+      } else {
+        this.outerMainPanel.removeComponent(this.scrollPane);
+      }
+      this.scrollPane.setViewportView(null);
+      this.outerMainPanel.addCenterComponent(this.typePanel);
+    } else {
+      if (isFirstTime) {
+        //pass
+      } else {
+        this.outerMainPanel.removeComponent(this.typePanel);
+      }
+      this.scrollPane.setViewportView(this.typePanel);
+      this.outerMainPanel.addCenterComponent(this.scrollPane);
+    }
+  }
 
-	@Override
-	public Printable getPrintable() {
-		return new PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
-				.pageStart( this.getPageStartComponent().getAwtComponent() )
-				.center( this.getCenterComponent().getAwtComponent() )
-				.build();
-	}
+  @Override
+  public Printable getPrintable() {
+    return new PrintHelper.Builder(this.getInsets(), this.getBackgroundColor()).pageStart(this.getPageStartComponent().getAwtComponent()).center(this.getCenterComponent().getAwtComponent()).build();
+  }
 
-	@Override
-	protected AwtComponentView<?> getMainComponent() {
-		return this.outerMainPanel;
-	}
+  @Override
+  protected AwtComponentView<?> getMainComponent() {
+    return this.outerMainPanel;
+  }
 
-	private final BorderPanel outerMainPanel = new BorderPanel();
-	private final BorderPanel typePanel = new BorderPanel();
-	private final ScrollPane scrollPane = new ScrollPane();
+  private final BorderPanel outerMainPanel = new BorderPanel();
+  private final BorderPanel typePanel = new BorderPanel();
+  private final ScrollPane scrollPane = new ScrollPane();
 }

@@ -52,28 +52,28 @@ import org.lgna.story.SScene;
  * @author Dennis Cosgrove
  */
 public class SceneAdapter extends SScene {
-	private final MethodContext context;
-	private final UserType<?> type;
+  private final MethodContext context;
+  private final UserType<?> type;
 
-	public SceneAdapter( MethodContext context, UserType<?> type, Object[] arguments ) {
-		this.context = context;
-		this.type = type;
-		assert arguments.length == 0;
-	}
+  public SceneAdapter(MethodContext context, UserType<?> type, Object[] arguments) {
+    this.context = context;
+    this.type = type;
+    assert arguments.length == 0;
+  }
 
-	@Override
-	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
-		UserMethod method = type.getDeclaredMethod( "handleActiveChanged", Boolean.class, Integer.class );
-		this.context.invokeEntryPoint( method, isActive, activeCount );
-	}
+  @Override
+  protected void handleActiveChanged(Boolean isActive, Integer activeCount) {
+    UserMethod method = type.getDeclaredMethod("handleActiveChanged", Boolean.class, Integer.class);
+    this.context.invokeEntryPoint(method, isActive, activeCount);
+  }
 
-	@Override
-	public void preserveStateAndEventListeners() {
-		super.preserveStateAndEventListeners();
-	}
+  @Override
+  public void preserveStateAndEventListeners() {
+    super.preserveStateAndEventListeners();
+  }
 
-	@Override
-	public void restoreStateAndEventListeners() {
-		super.restoreStateAndEventListeners();
-	}
+  @Override
+  public void restoreStateAndEventListeners() {
+    super.restoreStateAndEventListeners();
+  }
 }

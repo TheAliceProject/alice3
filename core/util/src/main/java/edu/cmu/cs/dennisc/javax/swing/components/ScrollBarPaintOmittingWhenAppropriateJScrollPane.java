@@ -52,40 +52,40 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	protected class PaintOmittingJScrollBar extends JViewBasedBackgroundColorScrollBar {
-		public PaintOmittingJScrollBar( int orientation ) {
-			super( orientation );
-		}
+  protected class PaintOmittingJScrollBar extends JViewBasedBackgroundColorScrollBar {
+    public PaintOmittingJScrollBar(int orientation) {
+      super(orientation);
+    }
 
-		@Override
-		public void paint( Graphics g ) {
-			JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( ScrollBarPaintUtilities.isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && ScrollBarPaintUtilities.isPaintRequiredFor( otherScrollBar ) ) ) {
-				super.paint( g );
-			} else {
-				Graphics2D g2 = (Graphics2D)g;
-				Shape clip = g.getClip();
-				Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
-				if( component != null ) {
-					//pass
-				} else {
-					component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
-				}
-				g2.setPaint( component.getBackground() );
-				g2.fill( clip );
-			}
-		}
-	}
+    @Override
+    public void paint(Graphics g) {
+      JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar(this);
+      if (ScrollBarPaintUtilities.isPaintRequiredFor(this) || (isPaintRequiredIfOtherRequiresIt() && ScrollBarPaintUtilities.isPaintRequiredFor(otherScrollBar))) {
+        super.paint(g);
+      } else {
+        Graphics2D g2 = (Graphics2D) g;
+        Shape clip = g.getClip();
+        Component component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getViewport().getView();
+        if (component != null) {
+          //pass
+        } else {
+          component = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this;
+        }
+        g2.setPaint(component.getBackground());
+        g2.fill(clip);
+      }
+    }
+  }
 
-	protected boolean isPaintRequiredIfOtherRequiresIt() {
-		return true;
-	}
+  protected boolean isPaintRequiredIfOtherRequiresIt() {
+    return true;
+  }
 
-	private JScrollBar getOtherScrollBar( JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == JScrollBar.HORIZONTAL ) {
-			return this.getVerticalScrollBar();
-		} else {
-			return this.getHorizontalScrollBar();
-		}
-	}
+  private JScrollBar getOtherScrollBar(JScrollBar scrollBar) {
+    if (scrollBar.getOrientation() == JScrollBar.HORIZONTAL) {
+      return this.getVerticalScrollBar();
+    } else {
+      return this.getHorizontalScrollBar();
+    }
+  }
 }

@@ -57,62 +57,62 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class PropertyOfNodeCodec<T extends InstanceProperty<?>> implements ItemCodec<T> {
-	private static Map<Class<?>, PropertyOfNodeCodec<?>> map = Maps.newHashMap();
+  private static Map<Class<?>, PropertyOfNodeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance( Class<T> cls ) {
-		PropertyOfNodeCodec<?> rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PropertyOfNodeCodec<T>( cls );
-		}
-		return (PropertyOfNodeCodec<T>)rv;
-	}
+  public static synchronized <T extends InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance(Class<T> cls) {
+    PropertyOfNodeCodec<?> rv = map.get(cls);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new PropertyOfNodeCodec<T>(cls);
+    }
+    return (PropertyOfNodeCodec<T>) rv;
+  }
 
-	private Class<T> valueCls;
+  private Class<T> valueCls;
 
-	private PropertyOfNodeCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
+  private PropertyOfNodeCodec(Class<T> valueCls) {
+    this.valueCls = valueCls;
+  }
 
-	@Override
-	public Class<T> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<T> getValueClass() {
+    return this.valueCls;
+  }
 
-	@Override
-	public T decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			NodeCodec<Node> nodeCodec = NodeCodec.getInstance( Node.class );
-			Node node = nodeCodec.decodeValue( binaryDecoder );
-			String name = binaryDecoder.decodeString();
-			if( node != null ) {
-				return (T)node.getPropertyNamed( name );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public T decodeValue(BinaryDecoder binaryDecoder) {
+    boolean valueIsNotNull = binaryDecoder.decodeBoolean();
+    if (valueIsNotNull) {
+      NodeCodec<Node> nodeCodec = NodeCodec.getInstance(Node.class);
+      Node node = nodeCodec.decodeValue(binaryDecoder);
+      String name = binaryDecoder.decodeString();
+      if (node != null) {
+        return (T) node.getPropertyNamed(name);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			NodeCodec<Node> nodeCodec = NodeCodec.getInstance( Node.class );
-			Node node = (Node)value.getOwner();
-			nodeCodec.encodeValue( binaryEncoder, node );
-			Logger.todo( "investigate value.getName() or node.getName()" );
-			binaryEncoder.encode( node != null ? value.getName() : null );
-		}
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, T value) {
+    boolean valueIsNotNull = value != null;
+    binaryEncoder.encode(valueIsNotNull);
+    if (valueIsNotNull) {
+      NodeCodec<Node> nodeCodec = NodeCodec.getInstance(Node.class);
+      Node node = (Node) value.getOwner();
+      nodeCodec.encodeValue(binaryEncoder, node);
+      Logger.todo("investigate value.getName() or node.getName()");
+      binaryEncoder.encode(node != null ? value.getName() : null);
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, T value ) {
-		//todo
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, T value) {
+    //todo
+    sb.append(value);
+  }
 }

@@ -49,7 +49,7 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public interface IconFactoryManager {
-	IconFactory getIconFactory( UserField field, IconFactory defaultIconFactory );
+  IconFactory getIconFactory(UserField field, IconFactory defaultIconFactory);
 
-	void markIconFactoryForFieldDirty( UserField field );
+  void markIconFactoryForFieldDirty(UserField field);
 }

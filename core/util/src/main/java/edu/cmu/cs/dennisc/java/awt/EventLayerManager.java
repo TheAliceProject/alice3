@@ -56,194 +56,194 @@ import java.util.LinkedList;
  * @author Dennis Cosgrove
  */
 public class EventLayerManager extends LinkedList<EventLayer> implements ComponentListener, MouseListener, MouseMotionListener, KeyListener {
-	private Component m_awtComponent;
+  private Component m_awtComponent;
 
-	public Component getComponent() {
-		return m_awtComponent;
-	}
+  public Component getComponent() {
+    return m_awtComponent;
+  }
 
-	public void setComponent( Component awtComponent ) {
-		if( m_awtComponent != null ) {
-			m_awtComponent.removeComponentListener( this );
-			m_awtComponent.removeMouseListener( this );
-			m_awtComponent.removeMouseMotionListener( this );
-			m_awtComponent.removeKeyListener( this );
-		}
-		m_awtComponent = awtComponent;
-		if( m_awtComponent != null ) {
-			m_awtComponent.addComponentListener( this );
-			m_awtComponent.addMouseListener( this );
-			m_awtComponent.addMouseMotionListener( this );
-			m_awtComponent.addKeyListener( this );
-		}
-	}
+  public void setComponent(Component awtComponent) {
+    if (m_awtComponent != null) {
+      m_awtComponent.removeComponentListener(this);
+      m_awtComponent.removeMouseListener(this);
+      m_awtComponent.removeMouseMotionListener(this);
+      m_awtComponent.removeKeyListener(this);
+    }
+    m_awtComponent = awtComponent;
+    if (m_awtComponent != null) {
+      m_awtComponent.addComponentListener(this);
+      m_awtComponent.addMouseListener(this);
+      m_awtComponent.addMouseMotionListener(this);
+      m_awtComponent.addKeyListener(this);
+    }
+  }
 
-	@Override
-	public void componentShown( ComponentEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof ComponentListener ) {
-				( (ComponentListener)eventInterceptor ).componentShown( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void componentShown(ComponentEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof ComponentListener) {
+        ((ComponentListener) eventInterceptor).componentShown(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void componentHidden( ComponentEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof ComponentListener ) {
-				( (ComponentListener)eventInterceptor ).componentHidden( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void componentHidden(ComponentEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof ComponentListener) {
+        ((ComponentListener) eventInterceptor).componentHidden(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void componentMoved( ComponentEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof ComponentListener ) {
-				( (ComponentListener)eventInterceptor ).componentMoved( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void componentMoved(ComponentEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof ComponentListener) {
+        ((ComponentListener) eventInterceptor).componentMoved(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void componentResized( ComponentEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof ComponentListener ) {
-				( (ComponentListener)eventInterceptor ).componentResized( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void componentResized(ComponentEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof ComponentListener) {
+        ((ComponentListener) eventInterceptor).componentResized(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mousePressed( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseListener ) {
-				( (MouseListener)eventInterceptor ).mousePressed( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mousePressed(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseListener) {
+        ((MouseListener) eventInterceptor).mousePressed(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseReleased( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseListener ) {
-				( (MouseListener)eventInterceptor ).mouseReleased( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseReleased(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseListener) {
+        ((MouseListener) eventInterceptor).mouseReleased(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseClicked( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseListener ) {
-				( (MouseListener)eventInterceptor ).mouseClicked( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseListener) {
+        ((MouseListener) eventInterceptor).mouseClicked(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseEntered( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseListener ) {
-				( (MouseListener)eventInterceptor ).mouseEntered( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseEntered(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseListener) {
+        ((MouseListener) eventInterceptor).mouseEntered(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseExited( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseListener ) {
-				( (MouseListener)eventInterceptor ).mouseExited( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseExited(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseListener) {
+        ((MouseListener) eventInterceptor).mouseExited(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseMoved( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseMotionListener ) {
-				( (MouseMotionListener)eventInterceptor ).mouseMoved( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseMoved(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseMotionListener) {
+        ((MouseMotionListener) eventInterceptor).mouseMoved(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void mouseDragged( MouseEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof MouseMotionListener ) {
-				( (MouseMotionListener)eventInterceptor ).mouseDragged( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void mouseDragged(MouseEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof MouseMotionListener) {
+        ((MouseMotionListener) eventInterceptor).mouseDragged(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void keyPressed( KeyEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof KeyListener ) {
-				( (KeyListener)eventInterceptor ).keyPressed( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void keyPressed(KeyEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof KeyListener) {
+        ((KeyListener) eventInterceptor).keyPressed(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void keyReleased( KeyEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof KeyListener ) {
-				( (KeyListener)eventInterceptor ).keyReleased( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void keyReleased(KeyEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof KeyListener) {
+        ((KeyListener) eventInterceptor).keyReleased(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public void keyTyped( KeyEvent e ) {
-		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof KeyListener ) {
-				( (KeyListener)eventInterceptor ).keyTyped( e );
-				if( eventInterceptor.isEventIntercepted( e ) ) {
-					break;
-				}
-			}
-		}
-	}
+  @Override
+  public void keyTyped(KeyEvent e) {
+    for (EventLayer eventInterceptor : this) {
+      if (eventInterceptor instanceof KeyListener) {
+        ((KeyListener) eventInterceptor).keyTyped(e);
+        if (eventInterceptor.isEventIntercepted(e)) {
+          break;
+        }
+      }
+    }
+  }
 
 }

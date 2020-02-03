@@ -48,15 +48,15 @@ import org.alice.ide.croquet.models.cascade.ExpressionBlank;
  * @author Dennis Cosgrove
  */
 public class IntegerBlank extends ExpressionBlank {
-	private static class SingletonHolder {
-		private static IntegerBlank instance = new IntegerBlank();
-	}
+  private static class SingletonHolder {
+    private static IntegerBlank instance = new IntegerBlank();
+  }
 
-	public static IntegerBlank getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IntegerBlank getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IntegerBlank() {
-		super( Integer.class );
-	}
+  private IntegerBlank() {
+    super(Integer.class);
+  }
 }

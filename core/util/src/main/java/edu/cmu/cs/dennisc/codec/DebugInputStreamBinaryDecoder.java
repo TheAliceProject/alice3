@@ -48,92 +48,92 @@ import java.io.InputStream;
  * @author Dennis Cosgrove
  */
 public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
-	public DebugInputStreamBinaryDecoder( InputStream is ) {
-		super( is );
-	}
+  public DebugInputStreamBinaryDecoder(InputStream is) {
+    super(is);
+  }
 
-	private void readAndAssertByte( char c ) {
-		byte b = super.decodeByte();
-		assert b == (byte)c : b + " " + (byte)c + " " + c;
-	}
+  private void readAndAssertByte(char c) {
+    byte b = super.decodeByte();
+    assert b == (byte) c : b + " " + (byte) c + " " + c;
+  }
 
-	@Override
-	public boolean decodeBoolean() {
-		this.readAndAssertByte( 'B' );
-		try {
-			return super.decodeBoolean();
-		} finally {
-			this.readAndAssertByte( 'b' );
-		}
-	}
+  @Override
+  public boolean decodeBoolean() {
+    this.readAndAssertByte('B');
+    try {
+      return super.decodeBoolean();
+    } finally {
+      this.readAndAssertByte('b');
+    }
+  }
 
-	@Override
-	public char decodeChar() {
-		this.readAndAssertByte( 'C' );
-		try {
-			return super.decodeChar();
-		} finally {
-			this.readAndAssertByte( 'c' );
-		}
-	}
+  @Override
+  public char decodeChar() {
+    this.readAndAssertByte('C');
+    try {
+      return super.decodeChar();
+    } finally {
+      this.readAndAssertByte('c');
+    }
+  }
 
-	@Override
-	public double decodeDouble() {
-		this.readAndAssertByte( 'D' );
-		try {
-			return super.decodeDouble();
-		} finally {
-			this.readAndAssertByte( 'd' );
-		}
-	}
+  @Override
+  public double decodeDouble() {
+    this.readAndAssertByte('D');
+    try {
+      return super.decodeDouble();
+    } finally {
+      this.readAndAssertByte('d');
+    }
+  }
 
-	@Override
-	public float decodeFloat() {
-		this.readAndAssertByte( 'F' );
-		try {
-			return super.decodeFloat();
-		} finally {
-			this.readAndAssertByte( 'f' );
-		}
-	}
+  @Override
+  public float decodeFloat() {
+    this.readAndAssertByte('F');
+    try {
+      return super.decodeFloat();
+    } finally {
+      this.readAndAssertByte('f');
+    }
+  }
 
-	@Override
-	public long decodeLong() {
-		this.readAndAssertByte( 'L' );
-		try {
-			return super.decodeLong();
-		} finally {
-			this.readAndAssertByte( 'l' );
-		}
-	}
+  @Override
+  public long decodeLong() {
+    this.readAndAssertByte('L');
+    try {
+      return super.decodeLong();
+    } finally {
+      this.readAndAssertByte('l');
+    }
+  }
 
-	@Override
-	public int decodeInt() {
-		this.readAndAssertByte( 'I' );
-		try {
-			return super.decodeInt();
-		} finally {
-			this.readAndAssertByte( 'i' );
-		}
-	}
+  @Override
+  public int decodeInt() {
+    this.readAndAssertByte('I');
+    try {
+      return super.decodeInt();
+    } finally {
+      this.readAndAssertByte('i');
+    }
+  }
 
-	@Override
-	public short decodeShort() {
-		this.readAndAssertByte( 'S' );
-		try {
-			return super.decodeShort();
-		} finally {
-			this.readAndAssertByte( 's' );
-		}
-	}
+  @Override
+  public short decodeShort() {
+    this.readAndAssertByte('S');
+    try {
+      return super.decodeShort();
+    } finally {
+      this.readAndAssertByte('s');
+    }
+  }
 
-	@Override
-	public String decodeString() {
-		this.readAndAssertByte( 'X' );
-		try {
-			return super.decodeString();
-		} finally {
-			this.readAndAssertByte( 'x' );
-		}
-	}
+  @Override
+  public String decodeString() {
+    this.readAndAssertByte('X');
+    try {
+      return super.decodeString();
+    } finally {
+      this.readAndAssertByte('x');
+    }
+  }
 }

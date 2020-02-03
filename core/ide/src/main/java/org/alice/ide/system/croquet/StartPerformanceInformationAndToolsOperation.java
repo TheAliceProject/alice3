@@ -53,26 +53,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class StartPerformanceInformationAndToolsOperation extends ActionOperation {
-	private static class SingletonHolder {
-		private static StartPerformanceInformationAndToolsOperation instance = new StartPerformanceInformationAndToolsOperation();
-	}
+  private static class SingletonHolder {
+    private static StartPerformanceInformationAndToolsOperation instance = new StartPerformanceInformationAndToolsOperation();
+  }
 
-	public static StartPerformanceInformationAndToolsOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StartPerformanceInformationAndToolsOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private StartPerformanceInformationAndToolsOperation() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "34fb0683-dc63-4dfa-adad-0d026e831e89" ) );
-	}
+  private StartPerformanceInformationAndToolsOperation() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("34fb0683-dc63-4dfa-adad-0d026e831e89"));
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		ProcessBuilder processBuilder = new ProcessBuilder( "control", "/name", "Microsoft.PerformanceInformationAndTools" );
-		try {
-			Process process = processBuilder.start();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    ProcessBuilder processBuilder = new ProcessBuilder("control", "/name", "Microsoft.PerformanceInformationAndTools");
+    try {
+      Process process = processBuilder.start();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    activity.finish();
+  }
 }

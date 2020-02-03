@@ -59,44 +59,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConditionalExpressionRightOperandOnlyFillIn extends PreviousExpressionBasedFillInWithExpressionBlanks<ConditionalInfixExpression> {
-	private static Map<ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn> map = Maps.newHashMap();
+  private static Map<ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn> map = Maps.newHashMap();
 
-	public static ConditionalExpressionRightOperandOnlyFillIn getInstance( ConditionalInfixExpression.Operator operator ) {
-		synchronized( map ) {
-			ConditionalExpressionRightOperandOnlyFillIn rv = map.get( operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConditionalExpressionRightOperandOnlyFillIn( operator );
-				map.put( operator, rv );
-			}
-			return rv;
-		}
-	}
+  public static ConditionalExpressionRightOperandOnlyFillIn getInstance(ConditionalInfixExpression.Operator operator) {
+    synchronized (map) {
+      ConditionalExpressionRightOperandOnlyFillIn rv = map.get(operator);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ConditionalExpressionRightOperandOnlyFillIn(operator);
+        map.put(operator, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final ConditionalInfixExpression transientValue;
+  private final ConditionalInfixExpression transientValue;
 
-	private ConditionalExpressionRightOperandOnlyFillIn( ConditionalInfixExpression.Operator operator ) {
-		super( UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ), ExpressionBlank.createBlanks( Boolean.class ) );
-		this.transientValue = new ConditionalInfixExpression(
-				new PreviousValueExpression( Boolean.class ),
-				operator,
-				new EmptyExpression( Boolean.class )
-				);
-	}
+  private ConditionalExpressionRightOperandOnlyFillIn(ConditionalInfixExpression.Operator operator) {
+    super(UUID.fromString("d59dd098-3426-453e-927f-84dbf3687824"), ExpressionBlank.createBlanks(Boolean.class));
+    this.transientValue = new ConditionalInfixExpression(new PreviousValueExpression(Boolean.class), operator, new EmptyExpression(Boolean.class));
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
-	//	}
-	@Override
-	protected ConditionalInfixExpression createValue( Expression previousExpression, Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new ConditionalInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ] );
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+  //  }
+  @Override
+  protected ConditionalInfixExpression createValue(Expression previousExpression, Expression[] expressions) {
+    assert expressions.length == 1;
+    return new ConditionalInfixExpression(previousExpression, this.transientValue.operator.getValue(), expressions[0]);
+  }
 
-	@Override
-	public ConditionalInfixExpression getTransientValue( ItemNode<? super ConditionalInfixExpression, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public ConditionalInfixExpression getTransientValue(ItemNode<? super ConditionalInfixExpression, Expression> step) {
+    return this.transientValue;
+  }
 }

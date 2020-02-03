@@ -55,50 +55,50 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class HtmlMultiLineLabel extends MultiLineLabel<JEditorPane> {
-	public HtmlMultiLineLabel( String text, float fontScalar, TextAttribute<?>... textAttributes ) {
-		super( new HTMLDocument(), text, fontScalar, textAttributes );
-	}
+  public HtmlMultiLineLabel(String text, float fontScalar, TextAttribute<?>... textAttributes) {
+    super(new HTMLDocument(), text, fontScalar, textAttributes);
+  }
 
-	public HtmlMultiLineLabel( String text, TextAttribute<?>... textAttributes ) {
-		this( text, 1.0f, textAttributes );
-	}
+  public HtmlMultiLineLabel(String text, TextAttribute<?>... textAttributes) {
+    this(text, 1.0f, textAttributes);
+  }
 
-	public HtmlMultiLineLabel( TextAttribute<?>... textAttributes ) {
-		this( "", textAttributes );
-	}
+  public HtmlMultiLineLabel(TextAttribute<?>... textAttributes) {
+    this("", textAttributes);
+  }
 
-	@Override
-	protected JEditorPane createJTextComponent( AbstractDocument document ) {
-		//todo: investigate
-		//String text = "";
-		String text = this.getText();
-		JEditorPane rv = new JEditorPane( "text/html", text ) {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JEditorPane createJTextComponent(AbstractDocument document) {
+    //todo: investigate
+    //String text = "";
+    String text = this.getText();
+    JEditorPane rv = new JEditorPane("text/html", text) {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				Dimension rv = super.getMaximumSize();
-				if( HtmlMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				}
-				return rv;
-			}
+      @Override
+      public Dimension getMaximumSize() {
+        Dimension rv = super.getMaximumSize();
+        if (HtmlMultiLineLabel.this.isMaximumSizeClampedToPreferredSize()) {
+          rv.setSize(this.getPreferredSize());
+        }
+        return rv;
+      }
 
-			@Override
-			public Color getBackground() {
-				return getDesiredBackgroundColor( this.getParent() );
-			}
+      @Override
+      public Color getBackground() {
+        return getDesiredBackgroundColor(this.getParent());
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( new BasicEditorPaneUI() );
-			}
-		};
-		//todo: investigate
-		//rv.setDocument( document );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(new BasicEditorPaneUI());
+      }
+    };
+    //todo: investigate
+    //rv.setDocument( document );
+    return rv;
+  }
 }

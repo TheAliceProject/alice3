@@ -66,257 +66,255 @@ import java.util.stream.Collectors;
 //TODO add migration on read - ProjectMigrationManager, MigrationManager, and DecodedVersion
 public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
-	private static final String MANIFEST_ENTRY_NAME = "manifest.json";
-	private static final String TWEEDLE_EXTENSION = "twe";
-	private static final String TWEEDLE_FORMAT = "tweedle";
+  private static final String MANIFEST_ENTRY_NAME = "manifest.json";
+  private static final String TWEEDLE_EXTENSION = "twe";
+  private static final String TWEEDLE_FORMAT = "tweedle";
 
-	public static JsonProjectReader reader(ZipEntryContainer container) {
-		return new JsonProjectReader(container);
-	}
+  public static JsonProjectReader reader(ZipEntryContainer container) {
+    return new JsonProjectReader(container);
+  }
 
-	public static JsonProjectWriter writer() {
-		return new JsonProjectWriter();
-	}
+  public static JsonProjectWriter writer() {
+    return new JsonProjectWriter();
+  }
 
-	private static class JsonProjectReader implements ProjectReader {
-		JsonProjectReader(ZipEntryContainer container) {
-		}
+  private static class JsonProjectReader implements ProjectReader {
+    JsonProjectReader(ZipEntryContainer container) {
+    }
 
-		@Override
-		public Project readProject() throws IOException, VersionNotSupportedException {
-			Manifest manifest = readManifest();
-			Set<Resource> resources = readResources(manifest);
-			//TODO Read manifest and content for program type
-			return new Project(null, Collections.emptySet(), resources);
-		}
+    @Override
+    public Project readProject() throws IOException, VersionNotSupportedException {
+      Manifest manifest = readManifest();
+      Set<Resource> resources = readResources(manifest);
+      //TODO Read manifest and content for program type
+      return new Project(null, Collections.emptySet(), resources);
+    }
 
-		@Override
-		public TypeResourcesPair readType() throws IOException, VersionNotSupportedException {
-			Manifest manifest = readManifest();
-			Set<Resource> resources = readResources(manifest);
-			return new TypeResourcesPair(null, resources);
-		}
+    @Override
+    public TypeResourcesPair readType() throws IOException, VersionNotSupportedException {
+      Manifest manifest = readManifest();
+      Set<Resource> resources = readResources(manifest);
+      return new TypeResourcesPair(null, resources);
+    }
 
-		@Override
-		public Version checkForFutureVersion() throws IOException {
-			// TODO
-			return null;
-		}
+    @Override
+    public Version checkForFutureVersion() throws IOException {
+      // TODO
+      return null;
+    }
 
-		private Manifest readManifest() {
-			return null;
-		}
+    private Manifest readManifest() {
+      return null;
+    }
 
-		// On XML side this reads the resources.xml and files in the referenced files in the resource directory.
-		// It relies on further XML decoding inside Resource class as well.
-		private static Set<Resource> readResources(Manifest manifest) throws IOException {
-			Set<Resource> resources = new HashSet<>();
-			for (ResourceReference resource : manifest.resources) {
-				resources.add(readResource(resource));
-			}
-			return resources;
-		}
+    // On XML side this reads the resources.xml and files in the referenced files in the resource directory.
+    // It relies on further XML decoding inside Resource class as well.
+    private static Set<Resource> readResources(Manifest manifest) throws IOException {
+      Set<Resource> resources = new HashSet<>();
+      for (ResourceReference resource : manifest.resources) {
+        resources.add(readResource(resource));
+      }
+      return resources;
+    }
 
-		private static Resource readResource(ResourceReference resourceReference) {
-			String contentType = resourceReference.getContentType();
-			String id = resourceReference.name;
-			String entry = resourceReference.file;
-			if ((contentType != null) && (id != null) && (entry != null)) {
-				// TODO Read all entries
-				//			byte[] data = InputStreamUtilities.getBytes( container.getInputStream( entryName ) );
-				//			if( data != null ) {
-				// TODO translate contentType to Resource subclass and fill in data
-				Resource resource = null;
-				return resource;
-				//			} else {
-				//				PrintUtilities.println( "WARNING: no data for resource:", entryName );
-				//			}
-			}
-			return null;
-		}
-	}
+    private static Resource readResource(ResourceReference resourceReference) {
+      String contentType = resourceReference.getContentType();
+      String id = resourceReference.name;
+      String entry = resourceReference.file;
+      if ((contentType != null) && (id != null) && (entry != null)) {
+        // TODO Read all entries
+        //      byte[] data = InputStreamUtilities.getBytes( container.getInputStream( entryName ) );
+        //      if( data != null ) {
+        // TODO translate contentType to Resource subclass and fill in data
+        Resource resource = null;
+        return resource;
+        //      } else {
+        //        PrintUtilities.println( "WARNING: no data for resource:", entryName );
+        //      }
+      }
+      return null;
+    }
+  }
 
-	private static class JsonProjectWriter implements ProjectWriter {
-		JsonProjectWriter() {
-		}
+  private static class JsonProjectWriter implements ProjectWriter {
+    JsonProjectWriter() {
+    }
 
-		private TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
+    private TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
 
-		@Override
-		public void writeType(OutputStream os, NamedUserType type, DataSource... dataSources) throws IOException {
-			Manifest manifest = createTypeManifest(type);
-			Set<Resource> resources = getResources(type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+    @Override
+    public void writeType(OutputStream os, NamedUserType type, DataSource... dataSources) throws IOException {
+      Manifest manifest = createTypeManifest(type);
+      Set<Resource> resources = getResources(type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
 
-			List<DataSource> entries = collectEntries(manifest, resources, dataSources);
-			entries.add(dataSourceForType(manifest, type));
-			entries.add(manifestDataSource(manifest));
-			writeDataSources(os, entries);
-		}
+      List<DataSource> entries = collectEntries(manifest, resources, dataSources);
+      entries.add(dataSourceForType(manifest, type));
+      entries.add(manifestDataSource(manifest));
+      writeDataSources(os, entries);
+    }
 
-		private Manifest createTypeManifest(AbstractType<?, ?, ?> type) {
-			final Manifest manifest = new Manifest();
-			manifest.description.name = type.getName();
-			manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-			manifest.metadata.identifier.id = type.getId().toString();
-			manifest.metadata.identifier.type = Manifest.ProjectType.Library;
-			return manifest;
-		}
+    private Manifest createTypeManifest(AbstractType<?, ?, ?> type) {
+      final Manifest manifest = new Manifest();
+      manifest.description.name = type.getName();
+      manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+      manifest.metadata.identifier.id = type.getId().toString();
+      manifest.metadata.identifier.type = Manifest.ProjectType.Library;
+      return manifest;
+    }
 
-		@Override
-		public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
-			Manifest manifest = createProjectManifest(project);
-			Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
-			compareResources(project.getResources(), resources);
+    @Override
+    public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
+      Manifest manifest = createProjectManifest(project);
+      Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
+      compareResources(project.getResources(), resources);
 
-			List<DataSource> entries = collectEntries(manifest, resources, dataSources);
-			entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
+      List<DataSource> entries = collectEntries(manifest, resources, dataSources);
+      entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
 
-			Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(),
-																							 CrawlPolicy.COMPLETE);
-			for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
-				JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
-				entries.addAll(modelIo.createDataSources("models"));
-				manifest.resources.add(modelIo.createModelReference("models"));
-			}
+      Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
+      for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
+        JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
+        entries.addAll(modelIo.createDataSources("models"));
+        manifest.resources.add(modelIo.createModelReference("models"));
+      }
 
-			entries.add(manifestDataSource(manifest));
-			writeDataSources(os, entries);
-		}
+      entries.add(manifestDataSource(manifest));
+      writeDataSources(os, entries);
+    }
 
-		private Collection<? extends DataSource> createEntriesForTypes(Manifest manifest, Set<NamedUserType> userTypes) {
-			return userTypes.stream().map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
-		}
+    private Collection<? extends DataSource> createEntriesForTypes(Manifest manifest, Set<NamedUserType> userTypes) {
+      return userTypes.stream().map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
+    }
 
-		private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
-			final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
-			manifest.resources.add(new TypeReference(ut.getName(), fileName, TWEEDLE_FORMAT));
-			return createDataSource(fileName, serializedClass(ut));
-		}
+    private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
+      final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(ut.getName(), fileName, TWEEDLE_FORMAT));
+      return createDataSource(fileName, serializedClass(ut));
+    }
 
-		private String serializedClass(NamedUserType userType) {
-			return coder.encode(userType);
-		}
+    private String serializedClass(NamedUserType userType) {
+      return coder.encode(userType);
+    }
 
-		private Manifest createProjectManifest(Project project) {
-			final Manifest manifest = new Manifest();
-			manifest.description.name = project.getProgramType().getName(); // probably "Program"
-			manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-			manifest.metadata.identifier.id = project.getProgramType().getId().toString();
-			manifest.metadata.identifier.type = Manifest.ProjectType.World;
-			return manifest;
-		}
+    private Manifest createProjectManifest(Project project) {
+      final Manifest manifest = new Manifest();
+      manifest.description.name = project.getProgramType().getName(); // probably "Program"
+      manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+      manifest.metadata.identifier.id = project.getProgramType().getId().toString();
+      manifest.metadata.identifier.type = Manifest.ProjectType.World;
+      return manifest;
+    }
 
-		private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
-			for (Resource crawledResource : crawledResources) {
-				if (!projectResources.contains(crawledResource)) {
-					PrintUtilities.println("WARNING: added missing resource", crawledResource);
-				}
-			}
-		}
+    private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
+      for (Resource crawledResource : crawledResources) {
+        if (!projectResources.contains(crawledResource)) {
+          PrintUtilities.println("WARNING: added missing resource", crawledResource);
+        }
+      }
+    }
 
-		private List<DataSource> collectEntries(Manifest manifest, Set<Resource> resources, DataSource[] dataSources) {
-			List<DataSource> entries = new ArrayList<>();
-			Collections.addAll(entries, dataSources);
-			entries.add(versionDataSource());
-			addResources(manifest, entries, resources);
-			return entries;
-		}
+    private List<DataSource> collectEntries(Manifest manifest, Set<Resource> resources, DataSource[] dataSources) {
+      List<DataSource> entries = new ArrayList<>();
+      Collections.addAll(entries, dataSources);
+      entries.add(versionDataSource());
+      addResources(manifest, entries, resources);
+      return entries;
+    }
 
-		private static DataSource versionDataSource() {
-			return createDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
-		}
+    private static DataSource versionDataSource() {
+      return createDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
+    }
 
-		private static DataSource manifestDataSource(Manifest manifest) {
-			return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
-		}
+    private static DataSource manifestDataSource(Manifest manifest) {
+      return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
+    }
 
-		private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
-			IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(
-				FieldAccess.class) {
-				@Override
-				protected boolean isAcceptable(FieldAccess fieldAccess) {
-					AbstractType type = fieldAccess.field.getValue().getValueType();
-					return type.isAssignableTo(JointedModelResource.class);
-				}
-			};
-			type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
-			Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
-			for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
-				JavaField field = (JavaField) fieldAccess.field.getValue();
-				JointedModelResource modelResource = null;
-				try {
-					modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-					List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
-					resourceList.add(modelResource);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace(); //TODO: Log this
-				}
-			}
-			return modelResources;
-		}
+    private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
+      IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
+        @Override
+        protected boolean isAcceptable(FieldAccess fieldAccess) {
+          AbstractType type = fieldAccess.field.getValue().getValueType();
+          return type.isAssignableTo(JointedModelResource.class);
+        }
+      };
+      type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
+      Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
+      for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
+        JavaField field = (JavaField) fieldAccess.field.getValue();
+        JointedModelResource modelResource = null;
+        try {
+          modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
+          List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
+          resourceList.add(modelResource);
+        } catch (IllegalAccessException e) {
+          e.printStackTrace(); //TODO: Log this
+        }
+      }
+      return modelResources;
+    }
 
-		private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
-			IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
-				@Override
-				protected boolean isAcceptable(ResourceExpression resourceExpression1) {
-					return true;
-				}
-			};
+    private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
+      IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
+        @Override
+        protected boolean isAcceptable(ResourceExpression resourceExpression1) {
+          return true;
+        }
+      };
 
-			type.crawl(crawler, crawlPolicy);
-			Set<Resource> resources = new HashSet<>();
-			for (ResourceExpression resourceExpression : crawler.getList()) {
-				resources.add(resourceExpression.resource.getValue());
-			}
-			return resources;
-		}
+      type.crawl(crawler, crawlPolicy);
+      Set<Resource> resources = new HashSet<>();
+      for (ResourceExpression resourceExpression : crawler.getList()) {
+        resources.add(resourceExpression.resource.getValue());
+      }
+      return resources;
+    }
 
-		private static void addResources(Manifest manifest, List<DataSource> dataSources, Set<Resource> resources) {
-			Set<String> usedEntryNames = new HashSet<>();
-			for (Resource resource : resources) {
-				// TODO add entries to manifest avoiding duplicating names
-				String entryName = generateEntryName(resource, usedEntryNames);
-				usedEntryNames.add(entryName);
-				addResourceReference(manifest, resource);
-				// TODO Expand to cover arbitrary data files
-				dataSources.add(new ByteArrayDataSource(entryName, resource.getData()));
-			}
-		}
+    private static void addResources(Manifest manifest, List<DataSource> dataSources, Set<Resource> resources) {
+      Set<String> usedEntryNames = new HashSet<>();
+      for (Resource resource : resources) {
+        // TODO add entries to manifest avoiding duplicating names
+        String entryName = generateEntryName(resource, usedEntryNames);
+        usedEntryNames.add(entryName);
+        addResourceReference(manifest, resource);
+        // TODO Expand to cover arbitrary data files
+        dataSources.add(new ByteArrayDataSource(entryName, resource.getData()));
+      }
+    }
 
-		private static void addResourceReference(Manifest manifest, Resource resource) {
-			if (resource instanceof AudioResource) {
-				manifest.resources.add(new AudioReference((AudioResource) resource));
-			}
-			if (resource instanceof ImageResource) {
-				manifest.resources.add(new ImageReference((ImageResource) resource));
-			}
-		}
+    private static void addResourceReference(Manifest manifest, Resource resource) {
+      if (resource instanceof AudioResource) {
+        manifest.resources.add(new AudioReference((AudioResource) resource));
+      }
+      if (resource instanceof ImageResource) {
+        manifest.resources.add(new ImageReference((ImageResource) resource));
+      }
+    }
 
-		// TODO Reconsider and rework since this is cloned from XmlProjectIo
-		private static String generateEntryName(Resource resource, Set<String> usedEntryNames) {
-			String validFilename = getValidName(resource.getOriginalFileName());
-			final String DESIRED_DIRECTORY_NAME = "resources";
-			int i = 1;
-			while (true) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(DESIRED_DIRECTORY_NAME);
-				if (i > 1) {
-					sb.append(i);
-				}
-				sb.append("/");
-				sb.append(validFilename);
-				String potentialEntryName = sb.toString();
-				if (usedEntryNames.contains(potentialEntryName)) {
-					i += 1;
-				} else {
-					return potentialEntryName;
-				}
-			}
-		}
+    // TODO Reconsider and rework since this is cloned from XmlProjectIo
+    private static String generateEntryName(Resource resource, Set<String> usedEntryNames) {
+      String validFilename = getValidName(resource.getOriginalFileName());
+      final String DESIRED_DIRECTORY_NAME = "resources";
+      int i = 1;
+      while (true) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(DESIRED_DIRECTORY_NAME);
+        if (i > 1) {
+          sb.append(i);
+        }
+        sb.append("/");
+        sb.append(validFilename);
+        String potentialEntryName = sb.toString();
+        if (usedEntryNames.contains(potentialEntryName)) {
+          i += 1;
+        } else {
+          return potentialEntryName;
+        }
+      }
+    }
 
-		private static String getValidName(String name) {
-			//todo
-			return name;
-		}
-	}
+    private static String getValidName(String name) {
+      //todo
+      return name;
+    }
+  }
 }

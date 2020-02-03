@@ -56,34 +56,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class BrowserOperation extends InconsequentialActionOperation {
-	public BrowserOperation( UUID id ) {
-		super( id );
-	}
+  public BrowserOperation(UUID id) {
+    super(id);
+  }
 
-	protected abstract URL getUrl();
+  protected abstract URL getUrl();
 
-	@Override
-	protected void performInternal() {
-		URL url = this.getUrl();
-		if( url != null ) {
-			try {
-				BrowserUtilities.browse( url );
-			} catch( Exception e ) {
-				ClipboardUtilities.setClipboardContents( url.toString() );
-				Dialogs
-					.showInfo( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
-			}
-		} else {
-			StringBuilder sbDescription = new StringBuilder();
-			sbDescription.append( "URL is null for " );
-			sbDescription.append( this.getClass() );
-			final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "Oh no!  We do not know which web page to send you to.", sbDescription.toString() );
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					composite.getLaunchOperation().fire();
-				}
-			} );
-		}
-	}
+  @Override
+  protected void performInternal() {
+    URL url = this.getUrl();
+    if (url != null) {
+      try {
+        BrowserUtilities.browse(url);
+      } catch (Exception e) {
+        ClipboardUtilities.setClipboardContents(url.toString());
+        Dialogs.showInfo("An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
+      }
+    } else {
+      StringBuilder sbDescription = new StringBuilder();
+      sbDescription.append("URL is null for ");
+      sbDescription.append(this.getClass());
+      final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance("Oh no!  We do not know which web page to send you to.", sbDescription.toString());
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          composite.getLaunchOperation().fire();
+        }
+      });
+    }
+  }
 }

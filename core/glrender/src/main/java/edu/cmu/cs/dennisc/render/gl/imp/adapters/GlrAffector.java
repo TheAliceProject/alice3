@@ -50,5 +50,5 @@ import edu.cmu.cs.dennisc.scenegraph.Affector;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAffector<T extends Affector> extends GlrLeaf<T> {
-	public abstract void setupAffectors( RenderContext rc );
+  public abstract void setupAffectors(RenderContext rc);
 }

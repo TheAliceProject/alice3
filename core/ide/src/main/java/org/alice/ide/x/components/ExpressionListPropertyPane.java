@@ -55,21 +55,21 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class ExpressionListPropertyPane extends AbstractListPropertyPane<ExpressionListProperty, Expression> {
-	public ExpressionListPropertyPane( AstI18nFactory factory, ExpressionListProperty property ) {
-		super( factory, property, BoxLayout.LINE_AXIS );
-	}
+  public ExpressionListPropertyPane(AstI18nFactory factory, ExpressionListProperty property) {
+    super(factory, property, BoxLayout.LINE_AXIS);
+  }
 
-	@Override
-	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
-		if( i < ( N - 1 ) ) {
-			return new Label( ", " );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected AwtComponentView<?> createInterstitial(int i, final int N) {
+    if (i < (N - 1)) {
+      return new Label(", ");
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected AwtComponentView<?> createComponent( Expression expression ) {
-		return this.getFactory().createExpressionPane( expression );
-	}
+  @Override
+  protected AwtComponentView<?> createComponent(Expression expression) {
+    return this.getFactory().createExpressionPane(expression);
+  }
 }

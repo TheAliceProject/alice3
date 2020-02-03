@@ -55,30 +55,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ChangePerspectiveStencilModel extends IdeStencil {
-	private final ProjectPerspective perspective;
+  private final ProjectPerspective perspective;
 
-	public ChangePerspectiveStencilModel( UUID migrationId, ProjectPerspective perspective ) {
-		super( migrationId );
-		this.perspective = perspective;
-	}
+  public ChangePerspectiveStencilModel(UUID migrationId, ProjectPerspective perspective) {
+    super(migrationId);
+    this.perspective = perspective;
+  }
 
-	@Override
-	protected final void showStencil() {
-		final ItemState<ProjectPerspective> perspectiveState = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState();
-		Operation operation = perspectiveState.getItemSelectionOperation( this.perspective );
-		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( operation, this.getText() );
-		new Thread() {
-			@Override
-			public void run() {
-				ThreadUtilities.sleep( 2000 );
-				SwingUtilities.invokeLater( new Runnable() {
-					@Override
-					public void run() {
-						perspectiveState.setValueTransactionlessly( perspective );
-					}
-				} );
-				barrierAwait();
-			}
-		}.start();
-	}
+  @Override
+  protected final void showStencil() {
+    final ItemState<ProjectPerspective> perspectiveState = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState();
+    Operation operation = perspectiveState.getItemSelectionOperation(this.perspective);
+    IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController(operation, this.getText());
+    new Thread() {
+      @Override
+      public void run() {
+        ThreadUtilities.sleep(2000);
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            perspectiveState.setValueTransactionlessly(perspective);
+          }
+        });
+        barrierAwait();
+      }
+    }.start();
+  }
 }

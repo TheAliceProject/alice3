@@ -49,61 +49,61 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface BinaryEncoder {
-	public void write( byte[] data );
+  public void write(byte[] data);
 
-	public void write( byte[] data, int offset, int length );
+  public void write(byte[] data, int offset, int length);
 
-	public void encode( boolean value );
+  public void encode(boolean value);
 
-	public void encode( byte value );
+  public void encode(byte value);
 
-	public void encode( char value );
+  public void encode(char value);
 
-	public void encode( double value );
+  public void encode(double value);
 
-	public void encode( float value );
+  public void encode(float value);
 
-	public void encode( int value );
+  public void encode(int value);
 
-	public void encode( long value );
+  public void encode(long value);
 
-	public void encode( short value );
+  public void encode(short value);
 
-	public void encode( String value );
+  public void encode(String value);
 
-	public void encode( Enum<?> value );
+  public void encode(Enum<?> value);
 
-	public void encode( UUID value );
+  public void encode(UUID value);
 
-	public void encode( BinaryEncodableAndDecodable value );
+  public void encode(BinaryEncodableAndDecodable value);
 
-	public void encode( ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
+  public void encode(ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
 
-	public void encode( boolean[] array );
+  public void encode(boolean[] array);
 
-	public void encode( byte[] array );
+  public void encode(byte[] array);
 
-	public void encode( char[] array );
+  public void encode(char[] array);
 
-	public void encode( double[] array );
+  public void encode(double[] array);
 
-	public void encode( float[] array );
+  public void encode(float[] array);
 
-	public void encode( int[] array );
+  public void encode(int[] array);
 
-	public void encode( long[] array );
+  public void encode(long[] array);
 
-	public void encode( short[] array );
+  public void encode(short[] array);
 
-	public void encode( String[] array );
+  public void encode(String[] array);
 
-	public void encode( Enum<?>[] array );
+  public void encode(Enum<?>[] array);
 
-	public void encode( UUID[] array );
+  public void encode(UUID[] array);
 
-	public void encode( BinaryEncodableAndDecodable[] array );
+  public void encode(BinaryEncodableAndDecodable[] array);
 
-	public void encode( ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
+  public void encode(ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map);
 
-	public void flush();
+  public void flush();
 }

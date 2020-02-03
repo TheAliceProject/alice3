@@ -48,29 +48,29 @@ import java.awt.Insets;
  * @author Dennis Cosgrove
  */
 public class EmptyBorder extends javax.swing.border.EmptyBorder {
-	public EmptyBorder() {
-		super( 0, 0, 0, 0 );
-	}
+  public EmptyBorder() {
+    super(0, 0, 0, 0);
+  }
 
-	public EmptyBorder( Insets insets ) {
-		super( insets );
-	}
+  public EmptyBorder(Insets insets) {
+    super(insets);
+  }
 
-	public EmptyBorder( int top, int left, int bottom, int right ) {
-		super( top, left, bottom, right );
-	}
+  public EmptyBorder(int top, int left, int bottom, int right) {
+    super(top, left, bottom, right);
+  }
 
-	public void setBorderInsets( int top, int left, int bottom, int right ) {
-		this.top = top;
-		this.left = left;
-		this.bottom = bottom;
-		this.right = right;
-	}
+  public void setBorderInsets(int top, int left, int bottom, int right) {
+    this.top = top;
+    this.left = left;
+    this.bottom = bottom;
+    this.right = right;
+  }
 
-	public void setBorderInsets( Insets insets ) {
-		this.top = insets.top;
-		this.left = insets.left;
-		this.bottom = insets.bottom;
-		this.right = insets.right;
-	}
+  public void setBorderInsets(Insets insets) {
+    this.top = insets.top;
+    this.left = insets.left;
+    this.bottom = insets.bottom;
+    this.right = insets.right;
+  }
 }

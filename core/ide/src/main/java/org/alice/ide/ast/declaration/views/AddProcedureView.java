@@ -49,8 +49,8 @@ import org.alice.ide.ast.declaration.AddProcedureComposite;
  * @author Dennis Cosgrove
  */
 public class AddProcedureView extends AddMethodView {
-	public AddProcedureView( AddProcedureComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getProcedureColor() );
-	}
+  public AddProcedureView(AddProcedureComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getProcedureColor());
+  }
 }

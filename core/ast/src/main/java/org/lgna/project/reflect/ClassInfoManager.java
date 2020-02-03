@@ -63,95 +63,95 @@ import java.util.zip.ZipInputStream;
  * @author Dennis Cosgrove
  */
 public class ClassInfoManager {
-	private static Map<String, Lazy<ClassInfo>> s_map = Maps.newHashMap();
+  private static Map<String, Lazy<ClassInfo>> s_map = Maps.newHashMap();
 
-	private ClassInfoManager() {
-	}
+  private ClassInfoManager() {
+  }
 
-	public static void addClassInfosFrom( InputStream is ) throws IOException {
-		ZipInputStream zis = new ZipInputStream( is );
-		while( true ) {
-			ZipEntry zipEntry = zis.getNextEntry();
-			if( zipEntry != null ) {
-				if( zipEntry.isDirectory() ) {
-					//pass
-				} else {
-					String clsName = FileUtilities.getBaseName( zipEntry.getName() );
-					final byte[] data = ZipUtilities.extractBytes( zis, zipEntry );
-					s_map.put( clsName, new Lazy<ClassInfo>() {
-						@Override
-						protected ClassInfo create() {
-							ClassInfo rv = CodecUtilities.decodeBinary( data, ClassInfo.class );
-							//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
-							return rv;
-						}
-					} );
-				}
-			} else {
-				break;
-			}
-		}
-	}
+  public static void addClassInfosFrom(InputStream is) throws IOException {
+    ZipInputStream zis = new ZipInputStream(is);
+    while (true) {
+      ZipEntry zipEntry = zis.getNextEntry();
+      if (zipEntry != null) {
+        if (zipEntry.isDirectory()) {
+          //pass
+        } else {
+          String clsName = FileUtilities.getBaseName(zipEntry.getName());
+          final byte[] data = ZipUtilities.extractBytes(zis, zipEntry);
+          s_map.put(clsName, new Lazy<ClassInfo>() {
+            @Override
+            protected ClassInfo create() {
+              ClassInfo rv = CodecUtilities.decodeBinary(data, ClassInfo.class);
+              //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+              return rv;
+            }
+          });
+        }
+      } else {
+        break;
+      }
+    }
+  }
 
-	public static Set<String> getKeys() {
-		return Collections.unmodifiableSet( s_map.keySet() );
-	}
+  public static Set<String> getKeys() {
+    return Collections.unmodifiableSet(s_map.keySet());
+  }
 
-	public static ClassInfo getInstance( String clsName ) {
-		if( clsName != null ) {
-			Lazy<ClassInfo> lazyClassInfo = s_map.get( clsName );
-			if( lazyClassInfo != null ) {
-				try {
-					return lazyClassInfo.get();
-				} catch( Throwable t ) {
-					Logger.throwable( t, clsName );
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static ClassInfo getInstance(String clsName) {
+    if (clsName != null) {
+      Lazy<ClassInfo> lazyClassInfo = s_map.get(clsName);
+      if (lazyClassInfo != null) {
+        try {
+          return lazyClassInfo.get();
+        } catch (Throwable t) {
+          Logger.throwable(t, clsName);
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static ClassInfo getInstance( Class<?> cls ) {
-		if( cls != null ) {
-			return getInstance( cls.getName() );
-		} else {
-			return null;
-		}
-	}
+  public static ClassInfo getInstance(Class<?> cls) {
+    if (cls != null) {
+      return getInstance(cls.getName());
+    } else {
+      return null;
+    }
+  }
 
-	public static List<MethodInfo> getMethodInfos( String clsName ) {
-		ClassInfo clsInfo = getInstance( clsName );
-		if( clsInfo != null ) {
-			return clsInfo.getMethodInfos();
-		} else {
-			//throw new NullPointerException();
-			return null;
-		}
-	}
+  public static List<MethodInfo> getMethodInfos(String clsName) {
+    ClassInfo clsInfo = getInstance(clsName);
+    if (clsInfo != null) {
+      return clsInfo.getMethodInfos();
+    } else {
+      //throw new NullPointerException();
+      return null;
+    }
+  }
 
-	public static List<MethodInfo> getMethodInfos( Class<?> cls ) {
-		if( cls != null ) {
-			return getMethodInfos( cls.getName() );
-		} else {
-			return null;
-		}
-	}
+  public static List<MethodInfo> getMethodInfos(Class<?> cls) {
+    if (cls != null) {
+      return getMethodInfos(cls.getName());
+    } else {
+      return null;
+    }
+  }
 
-	public static String[] getParameterNamesFor( Method mthd ) {
-		ClassInfo clsInfo = getInstance( mthd.getDeclaringClass() );
-		if( clsInfo != null ) {
-			MethodInfo methodInfo = clsInfo.lookupInfo( mthd );
-			if( methodInfo != null ) {
-				return methodInfo.getParameterNames();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static String[] getParameterNamesFor(Method mthd) {
+    ClassInfo clsInfo = getInstance(mthd.getDeclaringClass());
+    if (clsInfo != null) {
+      MethodInfo methodInfo = clsInfo.lookupInfo(mthd);
+      if (methodInfo != null) {
+        return methodInfo.getParameterNames();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

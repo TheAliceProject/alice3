@@ -49,164 +49,152 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public enum ActionStatus {
-	OMIT() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be omitted.</html>" );
-			return sb.toString();
-		}
-	},
-	ADD_UNIQUE() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be added.</html>" );
-			return sb.toString();
-		}
-	},
-	ADD_AND_RENAME() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be added and renamed.</html>" );
-			return sb.toString();
-		}
-	},
-	REPLACE_OVER_ORIGINAL() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is chosen to replace the version already in your project.</html>" );
-			return sb.toString();
-		}
-	},
-	OMIT_IN_FAVOR_OF_ORIGINAL() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be omitted in favor of the project version.</html>" );
-			return sb.toString();
-		}
-	},
-	DELETE_IN_FAVOR_OF_REPLACEMENT() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be replaced.</html>" );
-			return sb.toString();
-		}
-	},
-	KEEP_OVER_DIFFERENT_SIGNATURE() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be retained.</html>" );
-			return sb.toString();
-		}
-	},
-	KEEP_OVER_REPLACEMENT() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be retained.</html>" );
-			return sb.toString();
-		}
-	},
-	KEEP_AND_RENAME() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be retained.</html>" );
-			return sb.toString();
-		}
-	},
-	KEEP_IDENTICAL() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be retained.</html>" );
-			return sb.toString();
-		}
-	},
-	KEEP_UNIQUE() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html><strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> is to be retained.</html>" );
-			return sb.toString();
-		}
-	},
-	RENAME_REQUIRED() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>You must rename at least one of the <strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> " );
-			sb.append( getPluralMemberClassText( member ) );
-			sb.append( "." );
-			return sb.toString();
-		}
-	},
-	SELECTION_REQUIRED() {
-		@Override
-		public String getDescriptionText( Member member ) {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>You must select which version of <strong>" );
-			sb.append( member.getName() );
-			sb.append( "</strong> to add/retain <em>or</em> select both and rename at least one of them.</html>" );
-			return sb.toString();
-		}
-	};
+  OMIT() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be omitted.</html>");
+      return sb.toString();
+    }
+  }, ADD_UNIQUE() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be added.</html>");
+      return sb.toString();
+    }
+  }, ADD_AND_RENAME() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be added and renamed.</html>");
+      return sb.toString();
+    }
+  }, REPLACE_OVER_ORIGINAL() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is chosen to replace the version already in your project.</html>");
+      return sb.toString();
+    }
+  }, OMIT_IN_FAVOR_OF_ORIGINAL() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be omitted in favor of the project version.</html>");
+      return sb.toString();
+    }
+  }, DELETE_IN_FAVOR_OF_REPLACEMENT() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be replaced.</html>");
+      return sb.toString();
+    }
+  }, KEEP_OVER_DIFFERENT_SIGNATURE() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be retained.</html>");
+      return sb.toString();
+    }
+  }, KEEP_OVER_REPLACEMENT() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be retained.</html>");
+      return sb.toString();
+    }
+  }, KEEP_AND_RENAME() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be retained.</html>");
+      return sb.toString();
+    }
+  }, KEEP_IDENTICAL() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be retained.</html>");
+      return sb.toString();
+    }
+  }, KEEP_UNIQUE() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html><strong>");
+      sb.append(member.getName());
+      sb.append("</strong> is to be retained.</html>");
+      return sb.toString();
+    }
+  }, RENAME_REQUIRED() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html>You must rename at least one of the <strong>");
+      sb.append(member.getName());
+      sb.append("</strong> ");
+      sb.append(getPluralMemberClassText(member));
+      sb.append(".");
+      return sb.toString();
+    }
+  }, SELECTION_REQUIRED() {
+    @Override
+    public String getDescriptionText(Member member) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<html>You must select which version of <strong>");
+      sb.append(member.getName());
+      sb.append("</strong> to add/retain <em>or</em> select both and rename at least one of them.</html>");
+      return sb.toString();
+    }
+  };
 
-	public abstract String getDescriptionText( Member member );
+  public abstract String getDescriptionText(Member member);
 
-	private static String getSingularMemberClassText( Member member ) {
-		if( member instanceof UserMethod ) {
-			UserMethod method = (UserMethod)member;
-			if( method.isProcedure() ) {
-				return "procedure";
-			} else {
-				return "function";
-			}
-		} else {
-			return "property";
-		}
-	}
+  private static String getSingularMemberClassText(Member member) {
+    if (member instanceof UserMethod) {
+      UserMethod method = (UserMethod) member;
+      if (method.isProcedure()) {
+        return "procedure";
+      } else {
+        return "function";
+      }
+    } else {
+      return "property";
+    }
+  }
 
-	private static String getPluralMemberClassText( Member member ) {
-		if( member instanceof UserMethod ) {
-			UserMethod method = (UserMethod)member;
-			if( method.isProcedure() ) {
-				return "procedures";
-			} else {
-				return "functions";
-			}
-		} else {
-			return "properties";
-		}
-	}
+  private static String getPluralMemberClassText(Member member) {
+    if (member instanceof UserMethod) {
+      UserMethod method = (UserMethod) member;
+      if (method.isProcedure()) {
+        return "procedures";
+      } else {
+        return "functions";
+      }
+    } else {
+      return "properties";
+    }
+  }
 }

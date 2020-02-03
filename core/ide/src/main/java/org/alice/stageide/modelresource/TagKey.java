@@ -55,82 +55,82 @@ import javax.swing.JComponent;
  * @author Dennis Cosgrove
  */
 public abstract class TagKey extends ResourceKey {
-	public static final char SEPARATOR = ':';
+  public static final char SEPARATOR = ':';
 
-	private final String tag;
+  private final String tag;
 
-	TagKey( String tag ) {
-		this.tag = tag;
-	}
+  TagKey(String tag) {
+    this.tag = tag;
+  }
 
-	public String getTag() {
-		return this.tag;
-	}
+  public String getTag() {
+    return this.tag;
+  }
 
-	@Override
-	public String getInternalText() {
-		String tagValue;
-		int lastIndex = tag.lastIndexOf( TagKey.SEPARATOR );
-		if( lastIndex != -1 ) {
-			tagValue = tag.substring( lastIndex + 1 );
-		} else {
-			tagValue = this.tag;
-		}
-		return tagValue;
-	}
+  @Override
+  public String getInternalText() {
+    String tagValue;
+    int lastIndex = tag.lastIndexOf(TagKey.SEPARATOR);
+    if (lastIndex != -1) {
+      tagValue = tag.substring(lastIndex + 1);
+    } else {
+      tagValue = this.tag;
+    }
+    return tagValue;
+  }
 
-	@Override
-	public String getLocalizedDisplayText() {
-		return AliceResourceUtilties.getLocalizedTag( getInternalText(), JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String getLocalizedDisplayText() {
+    return AliceResourceUtilties.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
+  }
 
-	@Override
-	public String getSearchText() {
-		return this.getLocalizedDisplayText();
-	}
+  @Override
+  public String getSearchText() {
+    return this.getLocalizedDisplayText();
+  }
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		return null;
-	}
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    return null;
+  }
 
-	@Override
-	public String[] getTags() {
-		return null;
-	}
+  @Override
+  public String[] getTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
+  @Override
+  public String[] getGroupTags() {
+    return null;
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
+  @Override
+  public String[] getThemeTags() {
+    return null;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
+  @Override
+  public boolean isLeaf() {
+    return false;
+  }
 
-	@Override
-	public boolean isInstanceCreator() {
-		return false;
-	}
+  @Override
+  public boolean isInstanceCreator() {
+    return false;
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		return controller.getItemSelectionOperation( node );
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    return controller.getItemSelectionOperation(node);
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		return new AddFieldCascade( node, dropSite );
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    return new AddFieldCascade(node, dropSite);
+  }
 
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getLocalizedDisplayText() );
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+    sb.append(this.getLocalizedDisplayText());
+  }
 }

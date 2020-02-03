@@ -53,21 +53,21 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class OperationSwingModel {
-	/*package-private*/OperationSwingModel( Operation operation ) {
-		this.operation = operation;
-	}
+  /*package-private*/OperationSwingModel(Operation operation) {
+    this.operation = operation;
+  }
 
-	public Action getAction() {
-		return this.action;
-	}
+  public Action getAction() {
+    return this.action;
+  }
 
-	private final Operation operation;
-	//todo: private
-	/*package-private*/final Action action = new AbstractAction() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			operation.fire( ActionEventTrigger.createUserActivity( e ) );
-		}
-	};
+  private final Operation operation;
+  //todo: private
+  /*package-private*/final Action action = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      operation.fire(ActionEventTrigger.createUserActivity(e));
+    }
+  };
 
 }

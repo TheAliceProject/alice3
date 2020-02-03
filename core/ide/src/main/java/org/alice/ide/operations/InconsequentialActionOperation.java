@@ -54,17 +54,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class InconsequentialActionOperation extends ActionOperation {
-	private static final Group INCONSEQUENTIAL_GROUP = Group.getInstance( UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
+  private static final Group INCONSEQUENTIAL_GROUP = Group.getInstance(UUID.fromString("a3a6ebb5-e942-48df-b091-9aa461d68240"), "INCONSEQUENTIAL_GROUP");
 
-	public InconsequentialActionOperation( UUID id ) {
-		super( INCONSEQUENTIAL_GROUP, id );
-	}
+  public InconsequentialActionOperation(UUID id) {
+    super(INCONSEQUENTIAL_GROUP, id);
+  }
 
-	protected abstract void performInternal();
+  protected abstract void performInternal();
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.performInternal();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.performInternal();
+    activity.finish();
+  }
 }

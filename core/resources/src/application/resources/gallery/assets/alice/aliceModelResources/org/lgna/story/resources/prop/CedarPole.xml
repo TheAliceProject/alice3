@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Mathew Kline" name="CedarPole">
+    <BoundingBox>
+        <Min x="-0.36990538239479065" y="-4.743885947391391E-4" z="-0.33549487590789795"/>
+        <Max x="0.3330428898334503" y="3.244807720184326" z="0.34992289543151855"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>northwest</Tag>
+        <Tag>native american</Tag>
+        <Tag>pole</Tag>
+        <Tag>wood</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*northwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="LARGE" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.36990538239479065" y="0.004111207090318203" z="-0.33549487590789795"/>
+            <Max x="0.3330428898334503" y="3.244807720184326" z="0.34992289543151855"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="MEDIUM" resourceName="MEDIUM" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.23713469505310059" y="-4.743885947391391E-4" z="-0.24319976568222046"/>
+            <Max x="0.23713469505310059" y="2.255342721939087" z="0.24319976568222046"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SMALL" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.29939574003219604" y="0.0" z="-0.25144457817077637"/>
+            <Max x="0.19122131168842316" y="1.3330347537994385" z="0.2269371598958969"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

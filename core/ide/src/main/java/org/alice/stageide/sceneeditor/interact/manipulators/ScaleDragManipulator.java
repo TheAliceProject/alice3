@@ -64,88 +64,88 @@ import org.lgna.story.implementation.ModelImp;
  */
 public class ScaleDragManipulator extends LinearDragManipulator {
 
-	public static final double MIN_HANDLE_PULL = .1d;
+  public static final double MIN_HANDLE_PULL = .1d;
 
-	@Override
-	protected void initializeEventMessages() {
-		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable ) );
-		this.clearManipulationEvents();
-		if( this.linearHandle != null ) {
-			this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
-		}
-	}
+  @Override
+  protected void initializeEventMessages() {
+    this.setMainManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable));
+    this.clearManipulationEvents();
+    if (this.linearHandle != null) {
+      this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable));
+    }
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		boolean started = super.doStartManipulator( startInput );
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    boolean started = super.doStartManipulator(startInput);
 
-		if( started ) {
-			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			if( scalable != null ) {
-				Resizer resizer = scaleHandle.getResizer();
-				this.initialScale = scalable.getValueForResizer( resizer );
-			}
-		}
+    if (started) {
+      LinearScaleHandle scaleHandle = (LinearScaleHandle) this.linearHandle;
+      Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+      if (scalable != null) {
+        Resizer resizer = scaleHandle.getResizer();
+        this.initialScale = scalable.getValueForResizer(resizer);
+      }
+    }
 
-		return started;
-	}
+    return started;
+  }
 
-	@Override
-	protected void updateBasedOnHandlePull( double initialPull, double newPull ) {
-		double pullDif = newPull - initialPull;
-		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-		double scale = pullDif;
-		//Don't scale if the handles are pulled past their origin
-		if( newPull <= MIN_HANDLE_PULL ) {
-			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
-		}
-		if( ( this.initialScale + scale ) < ResizeDragManipulator.MIN_SCALE ) {
-			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
-		}
-		accumulatedScale = scale + this.initialScale;
+  @Override
+  protected void updateBasedOnHandlePull(double initialPull, double newPull) {
+    double pullDif = newPull - initialPull;
+    LinearScaleHandle scaleHandle = (LinearScaleHandle) this.linearHandle;
+    double scale = pullDif;
+    //Don't scale if the handles are pulled past their origin
+    if (newPull <= MIN_HANDLE_PULL) {
+      scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
+    }
+    if ((this.initialScale + scale) < ResizeDragManipulator.MIN_SCALE) {
+      scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
+    }
+    accumulatedScale = scale + this.initialScale;
 
-		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-		if( scalable != null ) {
-			scalable.setValueForResizer( scaleHandle.getResizer(), accumulatedScale );
-		}
+    Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+    if (scalable != null) {
+      scalable.setValueForResizer(scaleHandle.getResizer(), accumulatedScale);
+    }
 
-	}
+  }
 
-	@Override
-	public void undoRedoBeginManipulation() {
-		accumulatedScale = this.initialScale;
-	}
+  @Override
+  public void undoRedoBeginManipulation() {
+    accumulatedScale = this.initialScale;
+  }
 
-	@Override
-	public void undoRedoEndManipulation() {
-		if( this.getManipulatedTransformable() != null ) {
-			Animator animator;
-			if( this.dragAdapter != null ) {
-				animator = this.dragAdapter.getAnimator();
-			} else {
-				animator = null;
-			}
-			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			SThing aliceThing = ( (ModelImp)scalable ).getAbstraction();
-			UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+  @Override
+  public void undoRedoEndManipulation() {
+    if (this.getManipulatedTransformable() != null) {
+      Animator animator;
+      if (this.dragAdapter != null) {
+        animator = this.dragAdapter.getAnimator();
+      } else {
+        animator = null;
+      }
+      Scalable scalable = this.manipulatedTransformable.getBonusDataFor(Scalable.KEY);
+      SThing aliceThing = ((ModelImp) scalable).getAbstraction();
+      UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(aliceThing);
 
-			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Application.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
-			undoOperation.fire();
-		}
-	}
+      LinearScaleHandle scaleHandle = (LinearScaleHandle) this.linearHandle;
+      PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation(Application.PROJECT_GROUP, false, animator, manipulatedField, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription());
+      undoOperation.fire();
+    }
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Object Resize";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Object Resize";
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet( this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE );
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return new HandleSet(this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE);
+  }
 
-	private double initialScale;
-	private double accumulatedScale = 1.0d;
+  private double initialScale;
+  private double accumulatedScale = 1.0d;
 }

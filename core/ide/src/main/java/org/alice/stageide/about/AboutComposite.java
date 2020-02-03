@@ -55,24 +55,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AboutComposite extends LazyOperationUnadornedDialogCoreComposite<AboutView> {
-	public AboutComposite() {
-		super( UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
-	}
+  public AboutComposite() {
+    super(UUID.fromString("c3c2bc1a-697e-4934-b605-1019605ce4ea"));
+  }
 
-	public Operation[] getEulaDialogLaunchOperations() {
-		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
-			return new Operation[] { IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation() };
-		} else {
-			return new Operation[] { IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation() };
-		}
-	}
+  public Operation[] getEulaDialogLaunchOperations() {
+    if (NebulousIde.nonfree.isNonFreeEnabled()) {
+      return new Operation[] {IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation()};
+    } else {
+      return new Operation[] {IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation()};
+    }
+  }
 
-	public Operation getCreditsDialogLaunchOperation() {
-		return IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
-	}
+  public Operation getCreditsDialogLaunchOperation() {
+    return IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
+  }
 
-	@Override
-	protected AboutView createView() {
-		return new AboutView( this );
-	}
+  @Override
+  protected AboutView createView() {
+    return new AboutView(this);
+  }
 }

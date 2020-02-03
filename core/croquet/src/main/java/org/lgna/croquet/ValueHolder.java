@@ -53,46 +53,46 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class ValueHolder<T> {
-	private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
 
-	private T value;
+  private T value;
 
-	public static <T> ValueHolder<T> createInstance( T value ) {
-		return new ValueHolder<T>( value );
-	}
+  public static <T> ValueHolder<T> createInstance(T value) {
+    return new ValueHolder<T>(value);
+  }
 
-	private ValueHolder( T value ) {
-		this.value = value;
-	}
+  private ValueHolder(T value) {
+    this.value = value;
+  }
 
-	public T getValue() {
-		return this.value;
-	}
+  public T getValue() {
+    return this.value;
+  }
 
-	public void setValue( T value ) {
-		if( Objects.equals( this.value, value ) ) {
-			//pass
-		} else {
-			ValueEvent<T> e = ValueEvent.createInstance( this.value, value );
-			this.value = value;
-			for( ValueListener<T> listener : this.valueListeners ) {
-				listener.valueChanged( e );
-			}
-		}
-	}
+  public void setValue(T value) {
+    if (Objects.equals(this.value, value)) {
+      //pass
+    } else {
+      ValueEvent<T> e = ValueEvent.createInstance(this.value, value);
+      this.value = value;
+      for (ValueListener<T> listener : this.valueListeners) {
+        listener.valueChanged(e);
+      }
+    }
+  }
 
-	public void addValueListener( ValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
+  public void addValueListener(ValueListener<T> listener) {
+    this.valueListeners.add(listener);
+  }
 
-	public void addAndInvokeValueListener( ValueListener<T> listener ) {
-		ValueEvent<T> e = ValueEvent.createInstance( this.value );
-		listener.valueChanged( e );
-		this.addValueListener( listener );
-	}
+  public void addAndInvokeValueListener(ValueListener<T> listener) {
+    ValueEvent<T> e = ValueEvent.createInstance(this.value);
+    listener.valueChanged(e);
+    this.addValueListener(listener);
+  }
 
-	public void removeValueListener( ValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
+  public void removeValueListener(ValueListener<T> listener) {
+    this.valueListeners.add(listener);
+  }
 
 }

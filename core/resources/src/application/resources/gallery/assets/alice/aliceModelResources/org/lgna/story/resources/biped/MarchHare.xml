@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="MarchHare">
+    <BoundingBox>
+        <Min x="-0.36813271658896585" y="6.732800369379365E-4" z="-0.1673052770277705"/>
+        <Max x="0.36813271817231086" y="1.690060814142712" z="0.5592014132231883"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>hare</Tag>
+        <Tag>march</Tag>
+        <Tag>rabbit</Tag>
+        <Tag>bunny</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="MarchHare" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -50,125 +50,125 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class OutputStreamBinaryEncoder extends AbstractBinaryEncoder {
-	private ObjectOutputStream m_oos;
+  private ObjectOutputStream m_oos;
 
-	public OutputStreamBinaryEncoder( OutputStream os ) {
-		try {
-			m_oos = new ObjectOutputStream( os );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  public OutputStreamBinaryEncoder(OutputStream os) {
+    try {
+      m_oos = new ObjectOutputStream(os);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void write( byte[] data ) {
-		try {
-			m_oos.write( data );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void write(byte[] data) {
+    try {
+      m_oos.write(data);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void write( byte[] data, int offset, int length ) {
-		try {
-			m_oos.write( data, offset, length );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void write(byte[] data, int offset, int length) {
+    try {
+      m_oos.write(data, offset, length);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( boolean value ) {
-		try {
-			m_oos.writeBoolean( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(boolean value) {
+    try {
+      m_oos.writeBoolean(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( byte value ) {
-		try {
-			m_oos.writeByte( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(byte value) {
+    try {
+      m_oos.writeByte(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( char value ) {
-		try {
-			m_oos.writeChar( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(char value) {
+    try {
+      m_oos.writeChar(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( double value ) {
-		try {
-			m_oos.writeDouble( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(double value) {
+    try {
+      m_oos.writeDouble(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( float value ) {
-		try {
-			m_oos.writeFloat( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(float value) {
+    try {
+      m_oos.writeFloat(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( int value ) {
-		try {
-			m_oos.writeInt( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(int value) {
+    try {
+      m_oos.writeInt(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( long value ) {
-		try {
-			m_oos.writeLong( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(long value) {
+    try {
+      m_oos.writeLong(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( short value ) {
-		try {
-			m_oos.writeShort( value );
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(short value) {
+    try {
+      m_oos.writeShort(value);
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public void encode( String value ) {
-		try {
-			boolean isNotNull = value != null;
-			m_oos.writeBoolean( isNotNull );
-			if( isNotNull ) {
-				m_oos.writeUTF( value );
-			}
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public void encode(String value) {
+    try {
+      boolean isNotNull = value != null;
+      m_oos.writeBoolean(isNotNull);
+      if (isNotNull) {
+        m_oos.writeUTF(value);
+      }
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 
-	@Override
-	public final void flush() {
-		try {
-			m_oos.flush();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
+  @Override
+  public final void flush() {
+    try {
+      m_oos.flush();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+  }
 }

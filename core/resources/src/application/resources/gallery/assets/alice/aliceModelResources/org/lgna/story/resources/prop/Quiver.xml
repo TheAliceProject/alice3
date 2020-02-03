@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Laura Paoletti" name="Quiver">
+    <BoundingBox>
+        <Min x="-0.05071147158741951" y="-0.4174823760986328" z="-0.01267240010201931"/>
+        <Max x="0.12809135019779205" y="0.015129775740206242" z="0.23709514737129211"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>skadi</Tag>
+        <Tag>arctic</Tag>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>hunting</Tag>
+        <Tag>quiver</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*norse</ThemeTag>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Quiver" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="QuiverArrows" resourceName="QUIVER_ARROWS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.05071147158741951" y="-0.4174823760986328" z="-0.17445819079875946"/>
+            <Max x="0.24838075041770935" y="0.16167083382606506" z="0.23709514737129211"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -57,44 +57,44 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ProcedureTabComposite extends MemberTabComposite<ProcedureTabView> {
-	private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ) );
+  private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState("sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText(GROUP_BY_CATEGORY_KEY), this.findLocalizedText(SORT_ALPHABETICALLY_KEY));
 
-	public ProcedureTabComposite() {
-		super( UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddProcedureMenuModel() );
-	}
+  public ProcedureTabComposite() {
+    super(UUID.fromString("cdc6fb94-34ef-4992-b3d0-2ad90bd0179c"), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddProcedureMenuModel());
+  }
 
-	@Override
-	public ImmutableDataSingleSelectListState<String> getSortState() {
-		return this.sortState;
-	}
+  @Override
+  public ImmutableDataSingleSelectListState<String> getSortState() {
+    return this.sortState;
+  }
 
-	@Override
-	protected ProcedureTabView createView() {
-		return new ProcedureTabView( this );
-	}
+  @Override
+  protected ProcedureTabView createView() {
+    return new ProcedureTabView(this);
+  }
 
-	@Override
-	protected UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type ) {
-		return UserProceduresSubComposite.getInstance( type );
-	}
+  @Override
+  protected UserMethodsSubComposite getUserMethodsSubComposite(NamedUserType type) {
+    return UserProceduresSubComposite.getInstance(type);
+  }
 
-	@Override
-	protected boolean isAcceptable( AbstractMethod method ) {
-		return method.isProcedure();
-	}
+  @Override
+  protected boolean isAcceptable(AbstractMethod method) {
+    return method.isProcedure();
+  }
 
-	@Override
-	protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
-		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
-	}
+  @Override
+  protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+    return IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
+  }
 
-	@Override
-	protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
-		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
-	}
+  @Override
+  protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+    return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
+  }
 
-	@Override
-	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-		return UnclaimedJavaProceduresComposite.getInstance();
-	}
+  @Override
+  protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
+    return UnclaimedJavaProceduresComposite.getInstance();
+  }
 }

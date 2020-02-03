@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BedSingle">
+    <BoundingBox>
+        <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+        <Max x="0.41555359959602356" y="2.5211660861968994" z="1.141150951385498"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bed</Tag>
+        <Tag>sleep</Tag>
+        <Tag>bedroom</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bedroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bedroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Moderate" resourceName="MODERATE_BLUE_STRIPES_WOOD_FRAME" textureName="BLUE_STRIPES_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_LIGHT_BLUE_WOOD_FRAME" textureName="LIGHT_BLUE_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_STRIPES_WOOD_FRAME" textureName="STRIPES_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_BLUE_SQUARES_WOOD_FRAME" textureName="BLUE_SQUARES_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_PINK_KIDS_WOOD_FRAME" textureName="PINK_KIDS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_BLUE_KIDS_WOOD_FRAME" textureName="BLUE_KIDS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_WHITE_WOOD_FRAME" textureName="WHITE_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_PINK_FLOWERS_WOOD_FRAME" textureName="PINK_FLOWERS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE_YELLOW_FLOWERS_WOOD_FRAME" textureName="YELLOW_FLOWERS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.4036482572555542" y="0.0" z="-1.0841604471206665"/>
+            <Max x="0.4036482572555542" y="1.1031492948532104" z="1.084160327911377"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_STRIPES_BLUE_FRAME" textureName="STRIPES_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_STRIPES_RED_FRAME" textureName="STRIPES_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_STRIPES_GREEN_FRAME" textureName="STRIPES_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_STRIPES_YELLOW_FRAME" textureName="STRIPES_YELLOW_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_WHITE_BLUE_FRAME" textureName="WHITE_BLUE_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_WHITE_RED_FRAME" textureName="WHITE_RED_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_WHITE_GREEN_FRAME" textureName="WHITE_GREEN_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Loft" resourceName="LOFT_WHITE_YELLOW_FRAME" textureName="WHITE_YELLOW_FRAME">
+        <BoundingBox>
+            <Min x="-0.41130128502845764" y="0.0" z="-1.1017330884933472"/>
+            <Max x="0.41130128502845764" y="2.5211660861968994" z="1.1017330884933472"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_BLUE_STRIPES_WOOD_FRAME" textureName="BLUE_STRIPES_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_LIGHT_BLUE_WOOD_FRAME" textureName="LIGHT_BLUE_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_BLUE_SQUARES_WOOD_FRAME" textureName="BLUE_SQUARES_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_PINK_KIDS_WOOD_FRAME" textureName="PINK_KIDS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_BLUE_KIDS_WOOD_FRAME" textureName="BLUE_KIDS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_WHITE_WOOD_FRAME" textureName="WHITE_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_PINK_FLOWERS_WOOD_FRAME" textureName="PINK_FLOWERS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cheap" resourceName="CHEAP_YELLOW_FLOWERS_WOOD_FRAME" textureName="YELLOW_FLOWERS_WOOD_FRAME">
+        <BoundingBox>
+            <Min x="-0.40364840626716614" y="0.0" z="-1.0845683813095093"/>
+            <Max x="0.40364840626716614" y="0.8354958891868591" z="1.0845683813095093"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BROWN_CIRCLES_CHERRY_FRAME" textureName="BROWN_CIRCLES_CHERRY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BROWN_CIRCLES_MAHOGANY_FRAME" textureName="BROWN_CIRCLES_MAHOGANY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_LEOPARD_CHERRY_FRAME" textureName="LEOPARD_CHERRY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_LEOPARD_MAHOGANY_FRAME" textureName="LEOPARD_MAHOGANY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_PURPLE_CIRCLES_CHERRY_FRAME" textureName="PURPLE_CIRCLES_CHERRY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_PURPLE_CIRCLES_MAHOGANY_FRAME" textureName="PURPLE_CIRCLES_MAHOGANY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_OFF_WHITE_CHERRY_FRAME" textureName="OFF_WHITE_CHERRY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_OFF_WHITE_MAHOGANY_FRAME" textureName="OFF_WHITE_MAHOGANY_FRAME">
+        <BoundingBox>
+            <Min x="-0.41555359959602356" y="0.0" z="-1.1411510705947876"/>
+            <Max x="0.41555359959602356" y="1.0491502285003662" z="1.141150951385498"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

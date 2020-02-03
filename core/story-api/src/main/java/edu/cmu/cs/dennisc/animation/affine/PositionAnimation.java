@@ -51,94 +51,94 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class PositionAnimation extends AffineAnimation {
-	public static final Point3 USE_EXISTING_VALUE_AT_RUN_TIME = null;
+  public static final Point3 USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private Point3 m_posBegin = new Point3();
-	private Point3 m_posEnd = new Point3();
+  private Point3 m_posBegin = new Point3();
+  private Point3 m_posEnd = new Point3();
 
-	private Point3 m_posBeginUsedAtRuntime = new Point3();
+  private Point3 m_posBeginUsedAtRuntime = new Point3();
 
-	public PositionAnimation() {
-		m_posBeginUsedAtRuntime.setNaN();
-		m_posBegin.setNaN();
-		m_posEnd.setNaN();
-	}
+  public PositionAnimation() {
+    m_posBeginUsedAtRuntime.setNaN();
+    m_posBegin.setNaN();
+    m_posEnd.setNaN();
+  }
 
-	public PositionAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 posBegin, Point3 posEnd ) {
-		super( sgSubject, sgAsSeenBy );
-		m_posBeginUsedAtRuntime.setNaN();
-		setPositionBegin( posBegin );
-		setPositionEnd( posEnd );
-	}
+  public PositionAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 posBegin, Point3 posEnd) {
+    super(sgSubject, sgAsSeenBy);
+    m_posBeginUsedAtRuntime.setNaN();
+    setPositionBegin(posBegin);
+    setPositionEnd(posEnd);
+  }
 
-	public Point3 accessPositionBeginUsedAtRuntime() {
-		return m_posBeginUsedAtRuntime;
-	}
+  public Point3 accessPositionBeginUsedAtRuntime() {
+    return m_posBeginUsedAtRuntime;
+  }
 
-	public Point3 getPositionBeginUsedAtRuntime( Point3 rv ) {
-		rv.set( m_posBeginUsedAtRuntime );
-		return rv;
-	}
+  public Point3 getPositionBeginUsedAtRuntime(Point3 rv) {
+    rv.set(m_posBeginUsedAtRuntime);
+    return rv;
+  }
 
-	public Point3 getPositionBeginUsedAtRuntime() {
-		return getPositionBeginUsedAtRuntime( new Point3() );
-	}
+  public Point3 getPositionBeginUsedAtRuntime() {
+    return getPositionBeginUsedAtRuntime(new Point3());
+  }
 
-	public Point3 accessPositionBegin() {
-		return m_posBegin;
-	}
+  public Point3 accessPositionBegin() {
+    return m_posBegin;
+  }
 
-	public Point3 getPositionBegin( Point3 rv ) {
-		rv.set( m_posBegin );
-		return rv;
-	}
+  public Point3 getPositionBegin(Point3 rv) {
+    rv.set(m_posBegin);
+    return rv;
+  }
 
-	public Point3 getPositionBegin() {
-		return getPositionBegin( new Point3() );
-	}
+  public Point3 getPositionBegin() {
+    return getPositionBegin(new Point3());
+  }
 
-	public void setPositionBegin( Point3 posBegin ) {
-		if( posBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
-			m_posBegin.set( posBegin );
-		} else {
-			m_posBegin.setNaN();
-		}
-	}
+  public void setPositionBegin(Point3 posBegin) {
+    if (posBegin != USE_EXISTING_VALUE_AT_RUN_TIME) {
+      m_posBegin.set(posBegin);
+    } else {
+      m_posBegin.setNaN();
+    }
+  }
 
-	public Point3 accessPositionEnd() {
-		return m_posEnd;
-	}
+  public Point3 accessPositionEnd() {
+    return m_posEnd;
+  }
 
-	public Point3 getPositionEnd( Point3 rv ) {
-		rv.set( m_posEnd );
-		return rv;
-	}
+  public Point3 getPositionEnd(Point3 rv) {
+    rv.set(m_posEnd);
+    return rv;
+  }
 
-	public Point3 getPositionEnd() {
-		return getPositionEnd( new Point3() );
-	}
+  public Point3 getPositionEnd() {
+    return getPositionEnd(new Point3());
+  }
 
-	public void setPositionEnd( Point3 posEnd ) {
-		m_posEnd.set( posEnd );
-	}
+  public void setPositionEnd(Point3 posEnd) {
+    m_posEnd.set(posEnd);
+  }
 
-	@Override
-	public void prologue() {
-		if( m_posBegin.isNaN() ) {
-			m_posBeginUsedAtRuntime.set( getSubject().getTranslation( getAsSeenBy() ) );
-		} else {
-			m_posBeginUsedAtRuntime.set( m_posBegin );
-		}
-	}
+  @Override
+  public void prologue() {
+    if (m_posBegin.isNaN()) {
+      m_posBeginUsedAtRuntime.set(getSubject().getTranslation(getAsSeenBy()));
+    } else {
+      m_posBeginUsedAtRuntime.set(m_posBegin);
+    }
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		getSubject().setTranslationOnly( InterpolationUtilities.interpolate( m_posBeginUsedAtRuntime, m_posEnd, portion ), getAsSeenBy() );
-	}
+  @Override
+  public void setPortion(double portion) {
+    getSubject().setTranslationOnly(InterpolationUtilities.interpolate(m_posBeginUsedAtRuntime, m_posEnd, portion), getAsSeenBy());
+  }
 
-	@Override
-	public void epilogue() {
-		getSubject().setTranslationOnly( m_posEnd, getAsSeenBy() );
-		m_posBeginUsedAtRuntime.setNaN();
-	}
+  @Override
+  public void epilogue() {
+    getSubject().setTranslationOnly(m_posEnd, getAsSeenBy());
+    m_posBeginUsedAtRuntime.setNaN();
+  }
 }

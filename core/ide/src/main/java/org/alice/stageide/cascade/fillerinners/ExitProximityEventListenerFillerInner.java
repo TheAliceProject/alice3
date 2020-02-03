@@ -52,12 +52,12 @@ import org.lgna.story.event.ProximityExitListener;
 import java.util.List;
 
 public class ExitProximityEventListenerFillerInner extends ExpressionFillerInner {
-	public ExitProximityEventListenerFillerInner() {
-		super( ProximityExitListener.class );
-	}
+  public ExitProximityEventListenerFillerInner() {
+    super(ProximityExitListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( ExitProximityEventListenerAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(ExitProximityEventListenerAdapterFillIn.getInstance());
+  }
 }

@@ -55,29 +55,29 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public class TemplateAstI18nFactory extends IdeAstI18nFactory {
-	private static class SingletonHolder {
-		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
+  }
 
-	public static TemplateAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TemplateAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TemplateAstI18nFactory() {
-	}
+  private TemplateAstI18nFactory() {
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+    return IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
+  }
 
-	@Override
-	protected SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
-	}
+  @Override
+  protected SwingComponentView<?> createSimpleArgumentListPropertyPane(SimpleArgumentListProperty argumentListProperty) {
+    return new ArgumentListPropertyPane(this, argumentListProperty);
+  }
 
-	@Override
-	protected SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty ) {
-		return new Label();
-	}
+  @Override
+  protected SwingComponentView<?> createKeyedArgumentListPropertyPane(KeyedArgumentListProperty argumentListProperty) {
+    return new Label();
+  }
 }

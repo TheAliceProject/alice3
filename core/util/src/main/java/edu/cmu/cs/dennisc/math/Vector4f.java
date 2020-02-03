@@ -46,58 +46,58 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class Vector4f extends Tuple4f {
-	public Vector4f() {
-	}
+  public Vector4f() {
+  }
 
-	public Vector4f( Vector4f other ) {
-		super( other );
-	}
+  public Vector4f(Vector4f other) {
+    super(other);
+  }
 
-	public Vector4f( float x, float y, float z, float w ) {
-		super( x, y, z, w );
-	}
+  public Vector4f(float x, float y, float z, float w) {
+    super(x, y, z, w);
+  }
 
-	public static Vector4f createZero() {
-		return (Vector4f)setReturnValueToZero( new Vector4f() );
-	}
+  public static Vector4f createZero() {
+    return (Vector4f) setReturnValueToZero(new Vector4f());
+  }
 
-	public static Vector4f createNaN() {
-		return (Vector4f)setReturnValueToNaN( new Vector4f() );
-	}
+  public static Vector4f createNaN() {
+    return (Vector4f) setReturnValueToNaN(new Vector4f());
+  }
 
-	public static Vector4f createAddition( Tuple4f a, Tuple4f b ) {
-		return (Vector4f)setReturnValueToAddition( new Vector4f(), a, b );
-	}
+  public static Vector4f createAddition(Tuple4f a, Tuple4f b) {
+    return (Vector4f) setReturnValueToAddition(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createSubtraction( Tuple4f a, Tuple4f b ) {
-		return (Vector4f)setReturnValueToSubtraction( new Vector4f(), a, b );
-	}
+  public static Vector4f createSubtraction(Tuple4f a, Tuple4f b) {
+    return (Vector4f) setReturnValueToSubtraction(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createNegation( Tuple4f a ) {
-		return (Vector4f)setReturnValueToNegation( new Vector4f(), a );
-	}
+  public static Vector4f createNegation(Tuple4f a) {
+    return (Vector4f) setReturnValueToNegation(new Vector4f(), a);
+  }
 
-	public static Vector4f createMultiplication( Tuple4f a, Tuple4f b ) {
-		return (Vector4f)setReturnValueToMultiplication( new Vector4f(), a, b );
-	}
+  public static Vector4f createMultiplication(Tuple4f a, Tuple4f b) {
+    return (Vector4f) setReturnValueToMultiplication(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createMultiplication( Tuple4f a, float b ) {
-		return (Vector4f)setReturnValueToMultiplication( new Vector4f(), a, b );
-	}
+  public static Vector4f createMultiplication(Tuple4f a, float b) {
+    return (Vector4f) setReturnValueToMultiplication(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createDivision( Tuple4f a, Tuple4f b ) {
-		return (Vector4f)setReturnValueToDivision( new Vector4f(), a, b );
-	}
+  public static Vector4f createDivision(Tuple4f a, Tuple4f b) {
+    return (Vector4f) setReturnValueToDivision(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createDivision( Tuple4f a, float b ) {
-		return (Vector4f)setReturnValueToDivision( new Vector4f(), a, b );
-	}
+  public static Vector4f createDivision(Tuple4f a, float b) {
+    return (Vector4f) setReturnValueToDivision(new Vector4f(), a, b);
+  }
 
-	public static Vector4f createInterpolation( Tuple4f a, Tuple4f b, float portion ) {
-		return (Vector4f)setReturnValueToInterpolation( new Vector4f(), a, b, portion );
-	}
+  public static Vector4f createInterpolation(Tuple4f a, Tuple4f b, float portion) {
+    return (Vector4f) setReturnValueToInterpolation(new Vector4f(), a, b, portion);
+  }
 
-	public static Vector4f createNormalized( Tuple4f a ) {
-		return (Vector4f)setReturnValueToNormalized( new Vector4f(), a );
-	}
+  public static Vector4f createNormalized(Tuple4f a) {
+    return (Vector4f) setReturnValueToNormalized(new Vector4f(), a);
+  }
 }

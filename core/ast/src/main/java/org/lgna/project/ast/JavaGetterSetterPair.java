@@ -47,19 +47,19 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaGetterSetterPair {
-	private final AbstractMethod getter;
-	private final AbstractMethod setter;
+  private final AbstractMethod getter;
+  private final AbstractMethod setter;
 
-	public JavaGetterSetterPair( AbstractMethod getter, AbstractMethod setter ) {
-		this.getter = getter;
-		this.setter = setter;
-	}
+  public JavaGetterSetterPair(AbstractMethod getter, AbstractMethod setter) {
+    this.getter = getter;
+    this.setter = setter;
+  }
 
-	public AbstractMethod getGetter() {
-		return this.getter;
-	}
+  public AbstractMethod getGetter() {
+    return this.getter;
+  }
 
-	public AbstractMethod getSetter() {
-		return this.setter;
-	}
+  public AbstractMethod getSetter() {
+    return this.setter;
+  }
 }

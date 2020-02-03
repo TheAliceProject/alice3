@@ -52,208 +52,206 @@ import java.util.logging.Level;
  * @author Dennis Cosgrove
  */
 public class Logger {
-	private static final String LOGGER_NAME = "static";
+  private static final String LOGGER_NAME = "static";
 
-	private static java.util.logging.Logger initializeLogger() {
-		java.util.logging.Logger logger = java.util.logging.Logger.getLogger( LOGGER_NAME );
-		logger.setUseParentHandlers( false );
+  private static java.util.logging.Logger initializeLogger() {
+    java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LOGGER_NAME);
+    logger.setUseParentHandlers(false);
 
-		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
-		Level level = null;
-		for( Level customLevel : new Level[] {
-				THROWABLE,
-				TODO,
-		//TESTING 
-		} ) {
-			if( levelText.equalsIgnoreCase( customLevel.getName() ) ) {
-				level = customLevel;
-				break;
-			}
-		}
-		if( level != null ) {
-			//pass
-		} else {
-			level = Level.parse( levelText );
-			if( level != null ) {
-				//pass
-			} else {
-				level = Level.SEVERE;
-			}
-		}
-		logger.setLevel( level );
+    String levelText = System.getProperty(LEVEL_KEY, "SEVERE");
+    Level level = null;
+    for (Level customLevel : new Level[] {THROWABLE, TODO,
+        //TESTING
+    }) {
+      if (levelText.equalsIgnoreCase(customLevel.getName())) {
+        level = customLevel;
+        break;
+      }
+    }
+    if (level != null) {
+      //pass
+    } else {
+      level = Level.parse(levelText);
+      if (level != null) {
+        //pass
+      } else {
+        level = Level.SEVERE;
+      }
+    }
+    logger.setLevel(level);
 
-		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
-		consoleHandler.setFormatter( new ConsoleFormatter() );
-		logger.addHandler( consoleHandler );
-		return logger;
-	}
+    SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
+    consoleHandler.setFormatter(new ConsoleFormatter());
+    logger.addHandler(consoleHandler);
+    return logger;
+  }
 
-	private static class InstanceHolder {
-		private static java.util.logging.Logger instance = initializeLogger();
-	}
+  private static class InstanceHolder {
+    private static java.util.logging.Logger instance = initializeLogger();
+  }
 
-	public static java.util.logging.Logger getInstance() {
-		return InstanceHolder.instance;
-	}
+  public static java.util.logging.Logger getInstance() {
+    return InstanceHolder.instance;
+  }
 
-	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
+  private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
 
-	private static final Level THROWABLE = new Level( "THROWABLE", Level.SEVERE.intValue() + 1 ) {
-	};
-	//	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
-	private static final Level TODO = new Level( "TODO", Level.WARNING.intValue() - 1 ) {
-	};
+  private static final Level THROWABLE = new Level("THROWABLE", Level.SEVERE.intValue() + 1) {
+  };
+  //  private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
+  private static final Level TODO = new Level("TODO", Level.WARNING.intValue() - 1) {
+  };
 
-	private Logger() {
-		throw new AssertionError();
-	}
+  private Logger() {
+    throw new AssertionError();
+  }
 
-	public static Level getLevel() {
-		return getInstance().getLevel();
-	}
+  public static Level getLevel() {
+    return getInstance().getLevel();
+  }
 
-	public static void setLevel( Level level ) {
-		getInstance().setLevel( level );
-	}
+  public static void setLevel(Level level) {
+    getInstance().setLevel(level);
+  }
 
-	private static String buildMessage( Object object ) {
-		return object != null ? object.toString() : null;
-	}
+  private static String buildMessage(Object object) {
+    return object != null ? object.toString() : null;
+  }
 
-	private static String buildMessage( Object[] objects ) {
-		StringBuilder sb = new StringBuilder();
-		String separator = "";
-		for( Object o : objects ) {
-			sb.append( separator );
-			sb.append( ArrayUtilities.toString( o ) );
-			separator = " ";
-		}
-		return sb.toString();
-	}
+  private static String buildMessage(Object[] objects) {
+    StringBuilder sb = new StringBuilder();
+    String separator = "";
+    for (Object o : objects) {
+      sb.append(separator);
+      sb.append(ArrayUtilities.toString(o));
+      separator = " ";
+    }
+    return sb.toString();
+  }
 
-	private static boolean isLoggable( Level level ) {
-		return getInstance().isLoggable( level );
-	}
+  private static boolean isLoggable(Level level) {
+    return getInstance().isLoggable(level);
+  }
 
-	private static void log( Level level, Object object, Throwable throwable ) {
-		if( isLoggable( level ) ) {
-			String message = buildMessage( object );
-			if( throwable != null ) {
-				getInstance().log( level, message, throwable );
-			} else {
-				getInstance().log( level, message );
-			}
-		}
-	}
+  private static void log(Level level, Object object, Throwable throwable) {
+    if (isLoggable(level)) {
+      String message = buildMessage(object);
+      if (throwable != null) {
+        getInstance().log(level, message, throwable);
+      } else {
+        getInstance().log(level, message);
+      }
+    }
+  }
 
-	private static void log( Level level, Object[] objects, Throwable throwable ) {
-		if( isLoggable( level ) ) {
-			String message = buildMessage( objects );
-			if( throwable != null ) {
-				getInstance().log( level, message, throwable );
-			} else {
-				getInstance().log( level, message );
-			}
-		}
-	}
+  private static void log(Level level, Object[] objects, Throwable throwable) {
+    if (isLoggable(level)) {
+      String message = buildMessage(objects);
+      if (throwable != null) {
+        getInstance().log(level, message, throwable);
+      } else {
+        getInstance().log(level, message);
+      }
+    }
+  }
 
-	private static void log( Level level, Object object ) {
-		log( level, object, null );
-	}
+  private static void log(Level level, Object object) {
+    log(level, object, null);
+  }
 
-	private static void log( Level level, Object[] objects ) {
-		log( level, objects, null );
-	}
+  private static void log(Level level, Object[] objects) {
+    log(level, objects, null);
+  }
 
-	public static void outln( Object object ) {
-		System.out.println( buildMessage( object ) );
-	}
+  public static void outln(Object object) {
+    System.out.println(buildMessage(object));
+  }
 
-	public static void outln( Object... objects ) {
-		System.out.println( buildMessage( objects ) );
-	}
+  public static void outln(Object... objects) {
+    System.out.println(buildMessage(objects));
+  }
 
-	public static void errln( Object object ) {
-		System.err.println( buildMessage( object ) );
-	}
+  public static void errln(Object object) {
+    System.err.println(buildMessage(object));
+  }
 
-	public static void errln( Object... objects ) {
-		System.err.println( buildMessage( objects ) );
-	}
+  public static void errln(Object... objects) {
+    System.err.println(buildMessage(objects));
+  }
 
-	public static void throwable( Throwable t, Object object ) {
-		Object[] array = { ThrowableUtilities.getStackTraceAsString( t ), object };
-		log( THROWABLE, array );
-	}
+  public static void throwable(Throwable t, Object object) {
+    Object[] array = {ThrowableUtilities.getStackTraceAsString(t), object};
+    log(THROWABLE, array);
+  }
 
-	public static void throwable( Throwable t, Object... objects ) {
-		Object[] array = new Object[ objects.length + 1 ];
-		System.arraycopy( objects, 0, array, 0, objects.length );
-		array[ array.length - 1 ] = ThrowableUtilities.getStackTraceAsString( t );
-		log( THROWABLE, array );
-	}
+  public static void throwable(Throwable t, Object... objects) {
+    Object[] array = new Object[objects.length + 1];
+    System.arraycopy(objects, 0, array, 0, objects.length);
+    array[array.length - 1] = ThrowableUtilities.getStackTraceAsString(t);
+    log(THROWABLE, array);
+  }
 
-	public static void todo( Object object ) {
-		log( TODO, object );
-	}
+  public static void todo(Object object) {
+    log(TODO, object);
+  }
 
-	public static void todo( Object... objects ) {
-		log( TODO, objects );
-	}
+  public static void todo(Object... objects) {
+    log(TODO, objects);
+  }
 
-	public static void severe( Object object ) {
-		log( Level.SEVERE, object );
-	}
+  public static void severe(Object object) {
+    log(Level.SEVERE, object);
+  }
 
-	public static void severe( Object... objects ) {
-		log( Level.SEVERE, objects );
-	}
+  public static void severe(Object... objects) {
+    log(Level.SEVERE, objects);
+  }
 
-	public static void warning( Object object ) {
-		log( Level.WARNING, object );
-	}
+  public static void warning(Object object) {
+    log(Level.WARNING, object);
+  }
 
-	public static void warning( Object... objects ) {
-		log( Level.WARNING, objects );
-	}
+  public static void warning(Object... objects) {
+    log(Level.WARNING, objects);
+  }
 
-	public static void info( Object object ) {
-		log( Level.INFO, object );
-	}
+  public static void info(Object object) {
+    log(Level.INFO, object);
+  }
 
-	public static void info( Object... objects ) {
-		log( Level.INFO, objects );
-	}
+  public static void info(Object... objects) {
+    log(Level.INFO, objects);
+  }
 
-	public static void config( Object object ) {
-		log( Level.CONFIG, object );
-	}
+  public static void config(Object object) {
+    log(Level.CONFIG, object);
+  }
 
-	public static void config( Object... objects ) {
-		log( Level.CONFIG, objects );
-	}
+  public static void config(Object... objects) {
+    log(Level.CONFIG, objects);
+  }
 
-	public static void fine( Object object ) {
-		log( Level.FINE, object );
-	}
+  public static void fine(Object object) {
+    log(Level.FINE, object);
+  }
 
-	public static void fine( Object... objects ) {
-		log( Level.FINE, objects );
-	}
+  public static void fine(Object... objects) {
+    log(Level.FINE, objects);
+  }
 
-	public static void finer( Object object ) {
-		log( Level.FINER, object );
-	}
+  public static void finer(Object object) {
+    log(Level.FINER, object);
+  }
 
-	public static void finer( Object... objects ) {
-		log( Level.FINER, objects );
-	}
+  public static void finer(Object... objects) {
+    log(Level.FINER, objects);
+  }
 
-	public static void finest( Object object ) {
-		log( Level.FINEST, object );
-	}
+  public static void finest(Object object) {
+    log(Level.FINEST, object);
+  }
 
-	public static void finest( Object... objects ) {
-		log( Level.FINEST, objects );
-	}
+  public static void finest(Object... objects) {
+    log(Level.FINEST, objects);
+  }
 }

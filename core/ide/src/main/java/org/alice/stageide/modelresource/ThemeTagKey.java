@@ -49,15 +49,15 @@ import org.lgna.croquet.icon.IconFactory;
  * @author Dennis Cosgrove
  */
 public class ThemeTagKey extends TagKey {
-	private final IconFactory iconFactory;
+  private final IconFactory iconFactory;
 
-	public ThemeTagKey( String groupTag ) {
-		super( groupTag );
-		this.iconFactory = new ThemeIconFactory( this );
-	}
+  public ThemeTagKey(String groupTag) {
+    super(groupTag);
+    this.iconFactory = new ThemeIconFactory(this);
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return this.iconFactory;
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return this.iconFactory;
+  }
 }

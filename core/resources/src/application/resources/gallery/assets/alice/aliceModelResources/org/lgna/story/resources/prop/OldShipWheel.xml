@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="OldShipWheel">
+    <BoundingBox>
+        <Min x="-1.5172795057296753" y="0.0" z="-1.5314091444015503"/>
+        <Max x="1.517266035079956" y="0.20194198191165924" z="1.5178451538085938"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>shell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="OldShipWheel" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

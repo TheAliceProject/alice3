@@ -57,54 +57,54 @@ import java.awt.Cursor;
  * @author Dennis Cosgrove
  */
 public class Hyperlink extends OperationButton<JButton, Operation> {
-	public Hyperlink( Operation model ) {
-		super( model );
-	}
+  public Hyperlink(Operation model) {
+    super(model);
+  }
 
-	public Hyperlink( Operation model, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this( model );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public Hyperlink(Operation model, float fontScalar, TextAttribute<?>... textAttributes) {
+    this(model);
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	public Hyperlink( Operation model, TextAttribute<?>... textAttributes ) {
-		this( model, 1.0f, textAttributes );
-	}
+  public Hyperlink(Operation model, TextAttribute<?>... textAttributes) {
+    this(model, 1.0f, textAttributes);
+  }
 
-	public boolean isUnderlinedOnlyWhenRolledOver() {
-		HyperlinkUI ui = (HyperlinkUI)this.getAwtComponent().getUI();
-		return ui.isUnderlinedOnlyWhenRolledOver();
-	}
+  public boolean isUnderlinedOnlyWhenRolledOver() {
+    HyperlinkUI ui = (HyperlinkUI) this.getAwtComponent().getUI();
+    return ui.isUnderlinedOnlyWhenRolledOver();
+  }
 
-	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
-		HyperlinkUI ui = (HyperlinkUI)this.getAwtComponent().getUI();
-		ui.setUnderlinedOnlyWhenRolledOver( isUnderlinedOnlyWhenRolledOver );
-	}
+  public void setUnderlinedOnlyWhenRolledOver(boolean isUnderlinedOnlyWhenRolledOver) {
+    HyperlinkUI ui = (HyperlinkUI) this.getAwtComponent().getUI();
+    ui.setUnderlinedOnlyWhenRolledOver(isUnderlinedOnlyWhenRolledOver);
+  }
 
-	@Override
-	protected final JButton createAwtComponent() {
-		JButton rv = new JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
+  @Override
+  protected final JButton createAwtComponent() {
+    JButton rv = new JButton() {
+      @Override
+      public String getText() {
+        if (isTextClobbered()) {
+          return getClobberText();
+        } else {
+          return super.getText();
+        }
+      }
 
-			@Override
-			public void updateUI() {
-				this.setUI( HyperlinkUI.createUI( this ) );
-			}
-		};
-		rv.setForeground( new Color( 0, 0, 191 ) );
-		rv.setBackground( Color.LIGHT_GRAY );
-		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( SwingConstants.LEADING );
-		rv.setBorder( BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		rv.setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) );
-		return rv;
-	}
+      @Override
+      public void updateUI() {
+        this.setUI(HyperlinkUI.createUI(this));
+      }
+    };
+    rv.setForeground(new Color(0, 0, 191));
+    rv.setBackground(Color.LIGHT_GRAY);
+    rv.setRolloverEnabled(true);
+    rv.setHorizontalAlignment(SwingConstants.LEADING);
+    rv.setBorder(BorderFactory.createEmptyBorder());
+    rv.setOpaque(false);
+    rv.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    return rv;
+  }
 }

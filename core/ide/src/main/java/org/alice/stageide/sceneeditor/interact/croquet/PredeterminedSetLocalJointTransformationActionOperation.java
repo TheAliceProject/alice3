@@ -59,17 +59,17 @@ import java.util.UUID;
  */
 public class PredeterminedSetLocalJointTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
 
-	private final JointId jointId;
+  private final JointId jointId;
 
-	public PredeterminedSetLocalJointTransformationActionOperation( Group group, boolean isDoRequired, Animator animator, UserField field, JointId jointId, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, UUID.fromString( "5893d8da-19cc-4eb9-be05-dbd21dab1740" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
-		this.jointId = jointId;
-	}
+  public PredeterminedSetLocalJointTransformationActionOperation(Group group, boolean isDoRequired, Animator animator, UserField field, JointId jointId, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey) {
+    super(group, UUID.fromString("5893d8da-19cc-4eb9-be05-dbd21dab1740"), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey);
+    this.jointId = jointId;
+  }
 
-	@Override
-	protected AbstractTransformable getSGTransformable() {
-		JointedModelImp<SJointedModel, JointedModelResource> jointedModelImp = (JointedModelImp<SJointedModel, JointedModelResource>)getEntityImp();
-		return jointedModelImp.getJointImplementation( this.jointId ).getSgComposite();
-	}
+  @Override
+  protected AbstractTransformable getSGTransformable() {
+    JointedModelImp<SJointedModel, JointedModelResource> jointedModelImp = (JointedModelImp<SJointedModel, JointedModelResource>) getEntityImp();
+    return jointedModelImp.getJointImplementation(this.jointId).getSgComposite();
+  }
 
 }

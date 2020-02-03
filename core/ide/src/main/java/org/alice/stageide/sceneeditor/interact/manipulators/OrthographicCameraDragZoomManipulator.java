@@ -64,183 +64,183 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import org.lgna.croquet.Application;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator {
-	private static final Color IN = Color.RED;
-	private static final Color OUT = Color.GREEN;
+  private static final Color IN = Color.RED;
+  private static final Color OUT = Color.GREEN;
 
-	private static final double INITIAL_ZOOM_FACTOR = .1d;
-	private static final double ZOOMS_PER_SECOND = .1d;
-	private static final double ZOOM_CLICK_FACTOR = 1d;
+  private static final double INITIAL_ZOOM_FACTOR = .1d;
+  private static final double ZOOMS_PER_SECOND = .1d;
+  private static final double ZOOM_CLICK_FACTOR = 1d;
 
-	public static final double MAX_ZOOM = 30.0d;
-	public static final double MIN_ZOOM = .01d;
+  public static final double MAX_ZOOM = 30.0d;
+  public static final double MIN_ZOOM = .01d;
 
-	public OrthographicCameraDragZoomManipulator( ImageBasedManipulationHandle2D handle ) {
-		super( handle );
-	}
+  public OrthographicCameraDragZoomManipulator(ImageBasedManipulationHandle2D handle) {
+    super(handle);
+  }
 
-	public double getCameraZoom() {
-		OrthographicCamera orthoCam = (OrthographicCamera)this.camera;
-		ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
-		return picturePlane.getHeight();
-	}
+  public double getCameraZoom() {
+    OrthographicCamera orthoCam = (OrthographicCamera) this.camera;
+    ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
+    return picturePlane.getHeight();
+  }
 
-	public void setCameraZoom( double amount ) {
-		OrthographicCamera orthoCam = (OrthographicCamera)this.camera;
-		ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
-		double newZoom = picturePlane.getHeight() + amount;
-		if( newZoom > MAX_ZOOM ) {
-			newZoom = MAX_ZOOM;
-		} else if( newZoom < MIN_ZOOM ) {
-			newZoom = MIN_ZOOM;
-		}
-		picturePlane.setHeight( newZoom );
-		orthoCam.picturePlane.setValue( picturePlane );
-	}
+  public void setCameraZoom(double amount) {
+    OrthographicCamera orthoCam = (OrthographicCamera) this.camera;
+    ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
+    double newZoom = picturePlane.getHeight() + amount;
+    if (newZoom > MAX_ZOOM) {
+      newZoom = MAX_ZOOM;
+    } else if (newZoom < MIN_ZOOM) {
+      newZoom = MIN_ZOOM;
+    }
+    picturePlane.setHeight(newZoom);
+    orthoCam.picturePlane.setValue(picturePlane);
+  }
 
-	@Override
-	protected void initializeEventMessages() {
-		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Zoom, null, this.manipulatedTransformable ) );
-		this.clearManipulationEvents();
-		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
-		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Zoom, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ), this.manipulatedTransformable ) );
-	}
+  @Override
+  protected void initializeEventMessages() {
+    this.setMainManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Zoom, null, this.manipulatedTransformable));
+    this.clearManipulationEvents();
+    this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Zoom, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), this.manipulatedTransformable));
+    this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Zoom, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL), this.manipulatedTransformable));
+  }
 
-	@Override
-	public void setCamera( AbstractCamera camera ) {
-		super.setCamera( camera );
-		assert camera instanceof OrthographicCamera : this;
-		initializeEventMessages();
-	}
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    super.setCamera(camera);
+    assert camera instanceof OrthographicCamera : this;
+    initializeEventMessages();
+  }
 
-	protected double getZoomValueForColor( Color color ) {
-		double initialZoom = 0.0d;
-		if( color != null ) {
-			if( color.equals( IN ) ) {
-				initialZoom = -INITIAL_ZOOM_FACTOR;
-			} else if( color.equals( OUT ) ) {
-				initialZoom = INITIAL_ZOOM_FACTOR;
-			}
-		}
-		return initialZoom;
-	}
+  protected double getZoomValueForColor(Color color) {
+    double initialZoom = 0.0d;
+    if (color != null) {
+      if (color.equals(IN)) {
+        initialZoom = -INITIAL_ZOOM_FACTOR;
+      } else if (color.equals(OUT)) {
+        initialZoom = INITIAL_ZOOM_FACTOR;
+      }
+    }
+    return initialZoom;
+  }
 
-	@Override
-	public void undoRedoBeginManipulation() {
-		if( this.getCamera() != null ) {
-			this.originalZoomValue = this.getCameraZoom();
-		}
-	}
+  @Override
+  public void undoRedoBeginManipulation() {
+    if (this.getCamera() != null) {
+      this.originalZoomValue = this.getCameraZoom();
+    }
+  }
 
-	@Override
-	public void undoRedoEndManipulation() {
-		if( this.getCamera() != null ) {
-			double newZoom = this.getCameraZoom();
+  @Override
+  public void undoRedoEndManipulation() {
+    if (this.getCamera() != null) {
+      double newZoom = this.getCameraZoom();
 
-			if( newZoom == this.originalZoomValue ) {
-				Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the zoom." );
-			}
-			Animator animator;
-			if( this.dragAdapter != null ) {
-				animator = this.dragAdapter.getAnimator();
-			} else {
-				animator = null;
-			}
-			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation( Application.PROJECT_GROUP, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription() );
-			undoOperation.fire();
-		}
-	}
+      if (newZoom == this.originalZoomValue) {
+        Logger.warning("Adding an undoable action for a manipulation that didn't actually change the zoom.");
+      }
+      Animator animator;
+      if (this.dragAdapter != null) {
+        animator = this.dragAdapter.getAnimator();
+      } else {
+        animator = null;
+      }
+      PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Application.PROJECT_GROUP, false, animator, (OrthographicCamera) this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
+      undoOperation.fire();
+    }
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Camera Zoom";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Camera Zoom";
+  }
 
-	protected double getRelativeZoomAmount( Vector2 mousePos, double time ) {
-		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
-		double amountToZoom = relativeMousePos.y * ZOOMS_PER_SECOND * time;
-		return amountToZoom;
-	}
+  protected double getRelativeZoomAmount(Vector2 mousePos, double time) {
+    Vector2 relativeMousePos = Vector2.createSubtraction(mousePos, this.initialMousePosition);
+    double amountToZoom = relativeMousePos.y * ZOOMS_PER_SECOND * time;
+    return amountToZoom;
+  }
 
-	protected double getTotalZoomAmount( Vector2 mousePos, double time ) {
-		double relativeZoomAmount = this.getRelativeZoomAmount( mousePos, time );
-		double amountToZoomInitial = this.initialZoomValue * ZOOMS_PER_SECOND * time;
-		double amountToZoom = relativeZoomAmount + amountToZoomInitial;
-		return amountToZoom;
-	}
+  protected double getTotalZoomAmount(Vector2 mousePos, double time) {
+    double relativeZoomAmount = this.getRelativeZoomAmount(mousePos, time);
+    double amountToZoomInitial = this.initialZoomValue * ZOOMS_PER_SECOND * time;
+    double amountToZoom = relativeZoomAmount + amountToZoomInitial;
+    return amountToZoom;
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) ) {
-			this.initialZoomValue = this.getZoomValueForColor( this.initialHandleColor );
-			return true;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    if (super.doStartManipulator(startInput)) {
+      this.initialZoomValue = this.getZoomValueForColor(this.initialHandleColor);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
-		if( doStartManipulator( clickInput ) ) {
-			double amountToZoomClick = this.initialZoomValue * ZOOM_CLICK_FACTOR;
-			applyZoom( amountToZoomClick );
-		}
-	}
+  @Override
+  public void doClickManipulator(InputState clickInput, InputState previousInput) {
+    if (doStartManipulator(clickInput)) {
+      double amountToZoomClick = this.initialZoomValue * ZOOM_CLICK_FACTOR;
+      applyZoom(amountToZoomClick);
+    }
+  }
 
-	protected void applyZoom( double zoomAmount ) {
-		this.setCameraZoom( zoomAmount );
+  protected void applyZoom(double zoomAmount) {
+    this.setCameraZoom(zoomAmount);
 
-		for( ManipulationEvent event : this.getManipulationEvents() ) {
-			if( event.getMovementDescription().direction == MovementDirection.FORWARD ) {
-				this.dragAdapter.triggerManipulationEvent( event, zoomAmount < 0.0d );
-			} else if( event.getMovementDescription().direction == MovementDirection.BACKWARD ) {
-				this.dragAdapter.triggerManipulationEvent( event, zoomAmount >= 0.0d );
-			}
-		}
-	}
+    for (ManipulationEvent event : this.getManipulationEvents()) {
+      if (event.getMovementDescription().direction == MovementDirection.FORWARD) {
+        this.dragAdapter.triggerManipulationEvent(event, zoomAmount < 0.0d);
+      } else if (event.getMovementDescription().direction == MovementDirection.BACKWARD) {
+        this.dragAdapter.triggerManipulationEvent(event, zoomAmount >= 0.0d);
+      }
+    }
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		if( time < MIN_TIME ) {
-			time = MIN_TIME;
-		} else if( time > MAX_TIME ) {
-			time = MAX_TIME;
-		}
+  @Override
+  public void doTimeUpdateManipulator(double time, InputState currentInput) {
+    if (time < MIN_TIME) {
+      time = MIN_TIME;
+    } else if (time > MAX_TIME) {
+      time = MAX_TIME;
+    }
 
-		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
-		double zoomAmount = this.getTotalZoomAmount( mousePos, time );
-		applyZoom( zoomAmount );
-	}
+    Vector2 mousePos = new Vector2(currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+    double zoomAmount = this.getTotalZoomAmount(mousePos, time);
+    applyZoom(zoomAmount);
+  }
 
-	@Override
-	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time ) {
-		return new Vector3( 0.0d, 0.0d, 0.0d );
-	}
+  @Override
+  protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time) {
+    return new Vector3(0.0d, 0.0d, 0.0d);
+  }
 
-	@Override
-	protected ReferenceFrame getRotationReferenceFrame() {
-		return this.getManipulatedTransformable();
-	}
+  @Override
+  protected ReferenceFrame getRotationReferenceFrame() {
+    return this.getManipulatedTransformable();
+  }
 
-	@Override
-	protected ReferenceFrame getMovementReferenceFrame() {
-		return this.getManipulatedTransformable();
-	}
+  @Override
+  protected ReferenceFrame getMovementReferenceFrame() {
+    return this.getManipulatedTransformable();
+  }
 
-	@Override
-	protected Vector3 getMovementVectorForColor( Color color ) {
-		return null;
-	}
+  @Override
+  protected Vector3 getMovementVectorForColor(Color color) {
+    return null;
+  }
 
-	@Override
-	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time ) {
-		return null;
-	}
+  @Override
+  protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time) {
+    return null;
+  }
 
-	@Override
-	protected Vector3 getRotationVectorForColor( Color color ) {
-		return null;
-	}
+  @Override
+  protected Vector3 getRotationVectorForColor(Color color) {
+    return null;
+  }
 
-	private double initialZoomValue = 0.0d;
-	private double originalZoomValue = 0.0d;
+  private double initialZoomValue = 0.0d;
+  private double originalZoomValue = 0.0d;
 }

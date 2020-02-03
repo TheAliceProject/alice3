@@ -58,44 +58,44 @@ import org.lgna.project.ast.NodeUtilities;
  * @author Dennis Cosgrove
  */
 public class AddExpressionEdit extends AbstractEdit<Cascade<Expression>> {
-	private final ExpressionListProperty expressionListProperty;
-	private final Expression expression;
-	private transient int index;
+  private final ExpressionListProperty expressionListProperty;
+  private final Expression expression;
+  private transient int index;
 
-	public AddExpressionEdit( UserActivity userActivity, ExpressionListProperty expressionListProperty, Expression expression ) {
-		super( userActivity );
-		this.expressionListProperty = expressionListProperty;
-		this.expression = expression;
-	}
+  public AddExpressionEdit(UserActivity userActivity, ExpressionListProperty expressionListProperty, Expression expression) {
+    super(userActivity);
+    this.expressionListProperty = expressionListProperty;
+    this.expression = expression;
+  }
 
-	public AddExpressionEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		Logger.todo( "decode expressionListProperty" );
-		this.expressionListProperty = null;
-		this.expression = NodeCodec.getInstance( Expression.class ).decodeValue( binaryDecoder );
-	}
+  public AddExpressionEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    Logger.todo("decode expressionListProperty");
+    this.expressionListProperty = null;
+    this.expression = NodeCodec.getInstance(Expression.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		Logger.todo( "encode expressionListProperty" );
-		NodeCodec.getInstance( Expression.class ).encodeValue( binaryEncoder, this.expression );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    Logger.todo("encode expressionListProperty");
+    NodeCodec.getInstance(Expression.class).encodeValue(binaryEncoder, this.expression);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.index = this.expressionListProperty.size();
-		this.expressionListProperty.add( this.expression );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.index = this.expressionListProperty.size();
+    this.expressionListProperty.add(this.expression);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.expressionListProperty.remove( this.index );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.expressionListProperty.remove(this.index);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "add: " );
-		NodeUtilities.safeAppendRepr( rv, this.expression, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("add: ");
+    NodeUtilities.safeAppendRepr(rv, this.expression, Application.getLocale());
+  }
 }

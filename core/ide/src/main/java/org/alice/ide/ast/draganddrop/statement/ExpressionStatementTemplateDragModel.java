@@ -51,14 +51,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementTemplateDragModel extends StatementTemplateDragModel {
-	private final Class<? extends Expression> expressionCls;
+  private final Class<? extends Expression> expressionCls;
 
-	public ExpressionStatementTemplateDragModel( UUID migrationId, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement, Class<? extends Expression> expressionCls ) {
-		super( migrationId, statementCls, possiblyIncompleteStatement );
-		this.expressionCls = expressionCls;
-	}
+  public ExpressionStatementTemplateDragModel(UUID migrationId, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement, Class<? extends Expression> expressionCls) {
+    super(migrationId, statementCls, possiblyIncompleteStatement);
+    this.expressionCls = expressionCls;
+  }
 
-	public Class<? extends Expression> getExpressionCls() {
-		return this.expressionCls;
-	}
+  public Class<? extends Expression> getExpressionCls() {
+    return this.expressionCls;
+  }
 }

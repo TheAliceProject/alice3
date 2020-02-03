@@ -52,22 +52,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
-	private final Importer<I> importer;
+  private final Importer<I> importer;
 
-	public ImportValueCreator( UUID migrationId, Importer<I> importer ) {
-		super( migrationId );
-		this.importer = importer;
-	}
+  public ImportValueCreator(UUID migrationId, Importer<I> importer) {
+    super(migrationId);
+    this.importer = importer;
+  }
 
-	protected abstract T createValueFromImportedValue( I importedValue );
+  protected abstract T createValueFromImportedValue(I importedValue);
 
-	@Override
-	protected T createValue( UserActivity userActivity ) {
-		I importedValue = this.importer.createValue( "Import" );
-		if( importedValue != null ) {
-			return this.createValueFromImportedValue( importedValue );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected T createValue(UserActivity userActivity) {
+    I importedValue = this.importer.createValue("Import");
+    if (importedValue != null) {
+      return this.createValueFromImportedValue(importedValue);
+    } else {
+      return null;
+    }
+  }
 }

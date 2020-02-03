@@ -59,31 +59,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CopyToClipboardOperation extends ActionOperation {
-	private static Map<AbstractNode, CopyToClipboardOperation> map = Maps.newHashMap();
+  private static Map<AbstractNode, CopyToClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized CopyToClipboardOperation getInstance( Statement node ) {
-		assert node != null;
-		CopyToClipboardOperation rv = map.get( node );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new CopyToClipboardOperation( node );
-			map.put( node, rv );
-		}
-		return rv;
-	}
+  public static synchronized CopyToClipboardOperation getInstance(Statement node) {
+    assert node != null;
+    CopyToClipboardOperation rv = map.get(node);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new CopyToClipboardOperation(node);
+      map.put(node, rv);
+    }
+    return rv;
+  }
 
-	private final Statement node;
+  private final Statement node;
 
-	private CopyToClipboardOperation( Statement node ) {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
-		this.node = node;
-	}
+  private CopyToClipboardOperation(Statement node) {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("86025bf5-1f1f-4f2d-8182-190574a3c3d0"));
+    this.node = node;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		Node copyOfNode = IDE.getActiveInstance().createCopy( this.node );
-		Clipboard.SINGLETON.push( copyOfNode );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    Node copyOfNode = IDE.getActiveInstance().createCopy(this.node);
+    Clipboard.SINGLETON.push(copyOfNode);
+    activity.finish();
+  }
 }

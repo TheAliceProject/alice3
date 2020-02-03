@@ -61,35 +61,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class OneShotJavaMethodInvocationFillIn extends ImmutableCascadeFillIn<MethodInvocationEditFactory, Expression> {
-	private final InstanceFactory instanceFactory;
-	private final MethodInvocation transientValue;
+  private final InstanceFactory instanceFactory;
+  private final MethodInvocation transientValue;
 
-	public OneShotJavaMethodInvocationFillIn( UUID id, InstanceFactory instanceFactory, JavaMethod method ) {
-		super( id, MethodUtilities.createParameterBlanks( method ) );
-		this.instanceFactory = instanceFactory;
-		this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation( method );
-		this.transientValue.expression.setValue( instanceFactory.createExpression() );
-	}
+  public OneShotJavaMethodInvocationFillIn(UUID id, InstanceFactory instanceFactory, JavaMethod method) {
+    super(id, MethodUtilities.createParameterBlanks(method));
+    this.instanceFactory = instanceFactory;
+    this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation(method);
+    this.transientValue.expression.setValue(instanceFactory.createExpression());
+  }
 
-	private JavaMethod getMethod() {
-		return (JavaMethod)this.transientValue.method.getValue();
-	}
+  private JavaMethod getMethod() {
+    return (JavaMethod) this.transientValue.method.getValue();
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
-		return PreviewAstI18nFactory.getInstance().createStatementPane( new ExpressionStatement( this.transientValue ) ).getAwtComponent();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super MethodInvocationEditFactory, Expression> itemNode) {
+    return PreviewAstI18nFactory.getInstance().createStatementPane(new ExpressionStatement(this.transientValue)).getAwtComponent();
+  }
 
-	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions );
+  protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions);
 
-	@Override
-	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
-		Expression[] argumentExpressions = this.createFromBlanks( itemNode, Expression.class );
-		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
-	}
+  @Override
+  public MethodInvocationEditFactory createValue(ItemNode<? super MethodInvocationEditFactory, Expression> itemNode) {
+    Expression[] argumentExpressions = this.createFromBlanks(itemNode, Expression.class);
+    return this.createMethodInvocationEditFactory(this.instanceFactory, this.getMethod(), argumentExpressions);
+  }
 
-	@Override
-	public MethodInvocationEditFactory getTransientValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
-		return null;
-	}
+  @Override
+  public MethodInvocationEditFactory getTransientValue(ItemNode<? super MethodInvocationEditFactory, Expression> itemNode) {
+    return null;
+  }
 }

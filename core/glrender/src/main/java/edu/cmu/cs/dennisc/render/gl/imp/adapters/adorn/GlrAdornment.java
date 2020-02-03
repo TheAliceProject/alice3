@@ -57,38 +57,38 @@ import edu.cmu.cs.dennisc.scenegraph.adorn.Adornment;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAdornment<A extends Adornment> extends GlrComponent<A> implements GlrRenderContributor {
-	protected abstract void actuallyRender( RenderContext rc, GlrComposite<?> adornmentRootAdapter );
+  protected abstract void actuallyRender(RenderContext rc, GlrComposite<?> adornmentRootAdapter);
 
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-		if( glrAdornmentRoot != null ) {
-			rc.gl.glPushMatrix();
-			rc.gl.glMultMatrixd( accessInverseAbsoluteTransformationAsBuffer() );
-			actuallyRender( rc, glrAdornmentRoot );
-			rc.gl.glPopMatrix();
-		}
-	}
+  @Override
+  public void renderOpaque(RenderContext rc) {
+    if (glrAdornmentRoot != null) {
+      rc.gl.glPushMatrix();
+      rc.gl.glMultMatrixd(accessInverseAbsoluteTransformationAsBuffer());
+      actuallyRender(rc, glrAdornmentRoot);
+      rc.gl.glPopMatrix();
+    }
+  }
 
-	@Override
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-		//todo?
-		//pass
-	}
+  @Override
+  public void renderGhost(RenderContext rc, GlrGhost root) {
+    //todo?
+    //pass
+  }
 
-	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
-		//todo?
-		//pass
-	}
+  @Override
+  public void pick(PickContext pc, PickParameters pickParameters) {
+    //todo?
+    //pass
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.adorningRoot ) {
-			this.glrAdornmentRoot = AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.adorningRoot) {
+      this.glrAdornmentRoot = AdapterFactory.getAdapterFor(owner.adorningRoot.getValue());
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private GlrComposite<?> glrAdornmentRoot = null;
+  private GlrComposite<?> glrAdornmentRoot = null;
 }

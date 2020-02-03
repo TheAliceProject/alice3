@@ -52,29 +52,29 @@ import org.lgna.project.ast.AbstractArgument;
  * @author Dennis Cosgrove
  */
 public abstract class ArgumentView<N extends AbstractArgument> extends LineAxisPanel {
-	private final AstI18nFactory factory;
-	private final N argument;
+  private final AstI18nFactory factory;
+  private final N argument;
 
-	public ArgumentView( AstI18nFactory factory, N argument ) {
-		this.factory = factory;
-		this.argument = argument;
-		this.refreshLater();
-	}
+  public ArgumentView(AstI18nFactory factory, N argument) {
+    this.factory = factory;
+    this.argument = argument;
+    this.refreshLater();
+  }
 
-	public N getArgument() {
-		return this.argument;
-	}
+  public N getArgument() {
+    return this.argument;
+  }
 
-	protected abstract String getName();
+  protected abstract String getName();
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		String name = this.getName();
-		if( name != null ) {
-			this.internalAddComponent( new Label( name + ": " ) );
-		}
-		//this.internalAddComponent( this.factory.createExpressionPane( argument.expression.getValue() ) );
-		this.internalAddComponent( this.factory.createExpressionPropertyPane( argument.expression ) );
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    String name = this.getName();
+    if (name != null) {
+      this.internalAddComponent(new Label(name + ": "));
+    }
+    //this.internalAddComponent( this.factory.createExpressionPane( argument.expression.getValue() ) );
+    this.internalAddComponent(this.factory.createExpressionPropertyPane(argument.expression));
+  }
 }

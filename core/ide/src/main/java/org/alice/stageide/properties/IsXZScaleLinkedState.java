@@ -49,20 +49,19 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
-public class IsXZScaleLinkedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static IsXZScaleLinkedState instance = new IsXZScaleLinkedState();
-	}
+public class IsXZScaleLinkedState extends BooleanState {
+  private static class SingletonHolder {
+    private static IsXZScaleLinkedState instance = new IsXZScaleLinkedState();
+  }
 
-	public static IsXZScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsXZScaleLinkedState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsXZScaleLinkedState() {
-		super( IDE.DOCUMENT_UI_GROUP, UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
-		this.setIconForBothTrueAndFalse( LinkScaleIcon.SUB_SCALE_LONG_ICON );
-	}
+  private IsXZScaleLinkedState() {
+    super(IDE.DOCUMENT_UI_GROUP, UUID.fromString("14e9d2d1-50a4-4d49-85b3-52d6f457b288"), true);
+    this.setIconForBothTrueAndFalse(LinkScaleIcon.SUB_SCALE_LONG_ICON);
+  }
 }

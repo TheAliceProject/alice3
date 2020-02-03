@@ -48,11 +48,11 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarSeparator extends AbstractElement {
-	public ToolBarSeparator( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ToolBarSeparator(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 }

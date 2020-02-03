@@ -53,24 +53,24 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GroupIconFactory extends AbstractIconFactory {
-	private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
+  private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
 
-	public GroupIconFactory( List<? extends AbstractSingleSourceImageIconFactory> iconFactories ) {
-		super( IsCachingDesired.TRUE );
-		this.iconFactories = iconFactories;
-	}
+  public GroupIconFactory(List<? extends AbstractSingleSourceImageIconFactory> iconFactories) {
+    super(IsCachingDesired.TRUE);
+    this.iconFactories = iconFactories;
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new GroupIcon( size, this.iconFactories );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new GroupIcon(size, this.iconFactories);
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    if (this.iconFactories.size() > 0) {
+      return this.iconFactories.get(0).getDefaultSize(sizeIfResolutionIndependent);
+    } else {
+      return sizeIfResolutionIndependent;
+    }
+  }
 }

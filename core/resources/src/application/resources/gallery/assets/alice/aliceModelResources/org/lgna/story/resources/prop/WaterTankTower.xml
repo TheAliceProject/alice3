@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Greg Mirles" name="WaterTankTower">
+    <BoundingBox>
+        <Min x="-3.7153570652008057" y="-0.012478766031563282" z="-3.1033806800842285"/>
+        <Max x="2.726241111755371" y="15.374845504760742" z="3.3193180561065674"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>temple</Tag>
+        <Tag>well</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery:water tank</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india:water tank</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WaterTankTower" resourceName="GRAY" textureName="GRAY"/>
+    <Resource modelName="WaterTankTower" resourceName="GOLD" textureName="GOLD"/>
+    <Resource modelName="WaterTankTower" resourceName="SAND" textureName="SAND"/>
+    <Resource modelName="WaterTankTower" resourceName="RED" textureName="RED"/>
+</AliceModel>

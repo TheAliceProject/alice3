@@ -54,14 +54,14 @@ import javax.swing.SwingConstants;
  * @author Dennis Cosgrove
  */
 public class MemberCellRenderer extends ListCellRenderer<Member> {
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, Member value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-			rv.setIcon( TypeIcon.getInstance( value.getDeclaringType() ) );
-			rv.setIconTextGap( 16 );
-			rv.setHorizontalTextPosition( SwingConstants.LEADING );
-		}
-		return rv;
-	}
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, Member value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (value != null) {
+      rv.setText(value.getName());
+      rv.setIcon(TypeIcon.getInstance(value.getDeclaringType()));
+      rv.setIconTextGap(16);
+      rv.setHorizontalTextPosition(SwingConstants.LEADING);
+    }
+    return rv;
+  }
 }

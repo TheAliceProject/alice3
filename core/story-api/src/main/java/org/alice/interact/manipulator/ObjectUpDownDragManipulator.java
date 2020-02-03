@@ -59,47 +59,47 @@ import edu.cmu.cs.dennisc.math.Vector3;
  */
 public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator {
 
-	@Override
-	protected void initializeEventMessages() {
-		this.setMainManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable ) );
-		this.clearManipulationEvents();
-		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-		this.addManipulationEvent( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
-	}
+  @Override
+  protected void initializeEventMessages() {
+    this.setMainManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable));
+    this.clearManipulationEvents();
+    this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), this.manipulatedTransformable));
+    this.addManipulationEvent(new ManipulationEvent(ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), this.manipulatedTransformable));
+  }
 
-	@Override
-	protected Plane createPickPlane( Point3 clickPoint ) {
-		return this.createCameraFacingStoodUpPlane( clickPoint );
-	}
+  @Override
+  protected Plane createPickPlane(Point3 clickPoint) {
+    return this.createCameraFacingStoodUpPlane(clickPoint);
+  }
 
-	@Override
-	protected Plane createBadAnglePlane( Point3 clickPoint ) {
-		Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation.up;
-		Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
-		badPlaneNormal.subtract( cameraUp );
-		badPlaneNormal.normalize();
-		if( badPlaneNormal.isNaN() ) {
-			badPlaneNormal = Vector3.createPositiveYAxis();
-		}
-		return Plane.createInstance( clickPoint, badPlaneNormal );
-	}
+  @Override
+  protected Plane createBadAnglePlane(Point3 clickPoint) {
+    Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation.up;
+    Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
+    badPlaneNormal.subtract(cameraUp);
+    badPlaneNormal.normalize();
+    if (badPlaneNormal.isNaN()) {
+      badPlaneNormal = Vector3.createPositiveYAxis();
+    }
+    return Plane.createInstance(clickPoint, badPlaneNormal);
+  }
 
-	@Override
-	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay ) {
-		if( pickRay != null ) {
-			Point3 pointInPlane = PlaneUtilities.getPointInPlane( movementPlane, pickRay );
-			Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
-			newPosition.x = this.initialObjectPosition.x;
-			newPosition.z = this.initialObjectPosition.z;
-			return newPosition;
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Point3 getPositionForPlane(Plane movementPlane, Ray pickRay) {
+    if (pickRay != null) {
+      Point3 pointInPlane = PlaneUtilities.getPointInPlane(movementPlane, pickRay);
+      Point3 newPosition = Point3.createAddition(this.offsetToOrigin, pointInPlane);
+      newPosition.x = this.initialObjectPosition.x;
+      newPosition.z = this.initialObjectPosition.z;
+      return newPosition;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ABSOLUTE_TRANSLATION );
-	}
+  @Override
+  protected HandleSet getHandleSetToEnable() {
+    return new HandleSet(HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ABSOLUTE_TRANSLATION);
+  }
 
 }

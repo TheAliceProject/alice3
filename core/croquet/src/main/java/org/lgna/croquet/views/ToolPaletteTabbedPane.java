@@ -60,133 +60,133 @@ import java.awt.LayoutManager;
  */
 public class ToolPaletteTabbedPane<E extends TabComposite<?>> extends TabbedPane<E> {
 
-	private static class AccordionLayoutManager implements LayoutManager {
-		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+  private static class AccordionLayoutManager implements LayoutManager {
+    //private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
-		@Override
-		public void addLayoutComponent( String name, Component awtComponent ) {
-			//this.awtComponents.add( awtComponent );
-		}
+    @Override
+    public void addLayoutComponent(String name, Component awtComponent) {
+      //this.awtComponents.add( awtComponent );
+    }
 
-		@Override
-		public void removeLayoutComponent( Component awtComponent ) {
-			//this.awtComponents.remove( awtComponent );
-		}
+    @Override
+    public void removeLayoutComponent(Component awtComponent) {
+      //this.awtComponents.remove( awtComponent );
+    }
 
-		@Override
-		public Dimension minimumLayoutSize( Container parent ) {
-			return new Dimension( 0, 0 );
-		}
+    @Override
+    public Dimension minimumLayoutSize(Container parent) {
+      return new Dimension(0, 0);
+    }
 
-		@Override
-		public Dimension preferredLayoutSize( Container parent ) {
-			final int N = parent.getComponentCount();
-			if( ( N % 2 ) == 0 ) {
-				Dimension rv = new Dimension( 0, 0 );
-				for( int i = 0; i < N; i += 2 ) {
-					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
-					Component contents = parent.getComponent( i + 1 );
-					ButtonModel buttonModel = button.getModel();
-					rv.width = Math.max( rv.width, button.getPreferredSize().width );
-					rv.width = Math.max( rv.width, contents.getPreferredSize().width );
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+      final int N = parent.getComponentCount();
+      if ((N % 2) == 0) {
+        Dimension rv = new Dimension(0, 0);
+        for (int i = 0; i < N; i += 2) {
+          javax.swing.AbstractButton button = (javax.swing.AbstractButton) parent.getComponent(i);
+          Component contents = parent.getComponent(i + 1);
+          ButtonModel buttonModel = button.getModel();
+          rv.width = Math.max(rv.width, button.getPreferredSize().width);
+          rv.width = Math.max(rv.width, contents.getPreferredSize().width);
 
-					//todo: investigate why not preferredSize
-					rv.height += button.getHeight();
-					if( buttonModel.isSelected() ) {
-						rv.height += contents.getPreferredSize().height;
-					}
-				}
-				return rv;
-			} else {
-				Logger.severe( N );
-				return new Dimension( 100, 100 );
-			}
-		}
+          //todo: investigate why not preferredSize
+          rv.height += button.getHeight();
+          if (buttonModel.isSelected()) {
+            rv.height += contents.getPreferredSize().height;
+          }
+        }
+        return rv;
+      } else {
+        Logger.severe(N);
+        return new Dimension(100, 100);
+      }
+    }
 
-		@Override
-		public void layoutContainer( Container parent ) {
-			final int N = parent.getComponentCount();
-			if( ( N % 2 ) == 0 ) {
-				Dimension parentSize = parent.getSize();
-				int consumedHeight = 0;
-				for( int i = 0; i < N; i += 2 ) {
-					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
-					int height = button.getPreferredSize().height;
-					button.setSize( parentSize.width, height );
-					consumedHeight += height;
-				}
-				for( int i = 0; i < N; i += 2 ) {
-					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
-					Component contents = parent.getComponent( i + 1 );
-					ButtonModel buttonModel = button.getModel();
-					if( buttonModel.isSelected() ) {
-						contents.setSize( parentSize.width, parentSize.height - consumedHeight );
-					} else {
-						contents.setSize( 0, 0 );
-					}
-				}
-				int y = 0;
-				for( int i = 0; i < N; i++ ) {
-					Component component = parent.getComponent( i );
-					component.setLocation( 0, y );
-					y += component.getHeight();
-				}
-			} else {
-				Logger.severe( N );
-			}
-		}
+    @Override
+    public void layoutContainer(Container parent) {
+      final int N = parent.getComponentCount();
+      if ((N % 2) == 0) {
+        Dimension parentSize = parent.getSize();
+        int consumedHeight = 0;
+        for (int i = 0; i < N; i += 2) {
+          javax.swing.AbstractButton button = (javax.swing.AbstractButton) parent.getComponent(i);
+          int height = button.getPreferredSize().height;
+          button.setSize(parentSize.width, height);
+          consumedHeight += height;
+        }
+        for (int i = 0; i < N; i += 2) {
+          javax.swing.AbstractButton button = (javax.swing.AbstractButton) parent.getComponent(i);
+          Component contents = parent.getComponent(i + 1);
+          ButtonModel buttonModel = button.getModel();
+          if (buttonModel.isSelected()) {
+            contents.setSize(parentSize.width, parentSize.height - consumedHeight);
+          } else {
+            contents.setSize(0, 0);
+          }
+        }
+        int y = 0;
+        for (int i = 0; i < N; i++) {
+          Component component = parent.getComponent(i);
+          component.setLocation(0, y);
+          y += component.getHeight();
+        }
+      } else {
+        Logger.severe(N);
+      }
+    }
 
-	}
+  }
 
-	//	private E card;
+  //  private E card;
 
-	public ToolPaletteTabbedPane( TabState<E, ?> model ) {
-		super( model );
-	}
+  public ToolPaletteTabbedPane(TabState<E, ?> model) {
+    super(model);
+  }
 
-	@Override
-	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState ) {
-		ToolPaletteTitle rv = new ToolPaletteTitle( itemSelectedState );
-		rv.setPartOfAccordion( true );
-		rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
-		return rv;
-	}
+  @Override
+  protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton(E item, BooleanState itemSelectedState) {
+    ToolPaletteTitle rv = new ToolPaletteTitle(itemSelectedState);
+    rv.setPartOfAccordion(true);
+    rv.setHorizontalAlignment(HorizontalAlignment.LEADING);
+    return rv;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new AccordionLayoutManager();
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new AccordionLayoutManager();
+  }
 
-	@Override
-	protected void handleValueChanged( E card ) {
-		//		if( card != this.card ) {
-		//			if( this.card != null ) {
-		//				this.card.handlePostDeactivation();
-		//			}
-		//			this.card = card;
-		//			if( this.card != null ) {
-		//				this.card.handlePreActivation();
-		//			}
-		this.revalidateAndRepaint();
-		//		}
-	}
+  @Override
+  protected void handleValueChanged(E card) {
+    //  if( card != this.card ) {
+    //    if( this.card != null ) {
+    //      this.card.handlePostDeactivation();
+    //    }
+    //    this.card = card;
+    //    if( this.card != null ) {
+    //      this.card.handlePreActivation();
+    //    }
+    this.revalidateAndRepaint();
+    //  }
+  }
 
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
+  @Override
+  protected void removeAllDetails() {
+    this.internalRemoveAllComponents();
+  }
 
-	@Override
-	protected void addPrologue( int count ) {
-	}
+  @Override
+  protected void addPrologue(int count) {
+  }
 
-	@Override
-	protected void addItem( E item, BooleanStateButton<?> button ) {
-		this.internalAddComponent( button );
-		this.internalAddComponent( item.getRootComponent() );
-	}
+  @Override
+  protected void addItem(E item, BooleanStateButton<?> button) {
+    this.internalAddComponent(button);
+    this.internalAddComponent(item.getRootComponent());
+  }
 
-	@Override
-	protected void addEpilogue() {
-	}
+  @Override
+  protected void addEpilogue() {
+  }
 }

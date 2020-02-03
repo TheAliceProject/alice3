@@ -58,28 +58,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<ArithmeticInfixExpression> {
-	private final ArithmeticInfixExpression transientValue;
+  private final ArithmeticInfixExpression transientValue;
 
-	public ArithmeticExpressionLeftAndRightOperandsFillIn( UUID id, AbstractType<?, ?, ?> resultType, AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType ) {
-		super( id, ExpressionBlank.createBlanks( leftOperandType, rightOperandType ) );
-		assert resultType != null : this;
-		assert leftOperandType != null : this;
-		assert rightOperandType != null : this;
-		this.transientValue = IncompleteAstUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
-	}
+  public ArithmeticExpressionLeftAndRightOperandsFillIn(UUID id, AbstractType<?, ?, ?> resultType, AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType) {
+    super(id, ExpressionBlank.createBlanks(leftOperandType, rightOperandType));
+    assert resultType != null : this;
+    assert leftOperandType != null : this;
+    assert rightOperandType != null : this;
+    this.transientValue = IncompleteAstUtilities.createIncompleteArithmeticInfixExpression(leftOperandType, operator, rightOperandType, resultType);
+  }
 
-	public ArithmeticExpressionLeftAndRightOperandsFillIn( UUID id, Class<?> resultCls, Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, JavaType.getInstance( resultCls ), JavaType.getInstance( leftOperandCls ), operator, JavaType.getInstance( rightOperandCls ) );
-	}
+  public ArithmeticExpressionLeftAndRightOperandsFillIn(UUID id, Class<?> resultCls, Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls) {
+    this(id, JavaType.getInstance(resultCls), JavaType.getInstance(leftOperandCls), operator, JavaType.getInstance(rightOperandCls));
+  }
 
-	@Override
-	protected ArithmeticInfixExpression createValue( Expression[] expressions ) {
-		assert expressions.length == 2 : this;
-		return new ArithmeticInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.expressionType.getValue() );
-	}
+  @Override
+  protected ArithmeticInfixExpression createValue(Expression[] expressions) {
+    assert expressions.length == 2 : this;
+    return new ArithmeticInfixExpression(expressions[0], this.transientValue.operator.getValue(), expressions[1], this.transientValue.expressionType.getValue());
+  }
 
-	@Override
-	public ArithmeticInfixExpression getTransientValue( ItemNode<? super ArithmeticInfixExpression, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public ArithmeticInfixExpression getTransientValue(ItemNode<? super ArithmeticInfixExpression, Expression> step) {
+    return this.transientValue;
+  }
 }

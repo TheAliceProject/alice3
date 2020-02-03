@@ -61,32 +61,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeCascadeMenuModel extends CascadeMenuModel<InstanceFactory> {
-	private final TypeNode typeNode;
-	private final ApiConfigurationManager apiConfigurationManager;
+  private final TypeNode typeNode;
+  private final ApiConfigurationManager apiConfigurationManager;
 
-	public TypeCascadeMenuModel( TypeNode typeNode, ApiConfigurationManager apiConfigurationManager ) {
-		super( UUID.fromString( "2c7247f3-d788-4155-9676-97f643d15f62" ) );
-		this.typeNode = typeNode;
-		this.apiConfigurationManager = apiConfigurationManager;
-	}
+  public TypeCascadeMenuModel(TypeNode typeNode, ApiConfigurationManager apiConfigurationManager) {
+    super(UUID.fromString("2c7247f3-d788-4155-9676-97f643d15f62"));
+    this.typeNode = typeNode;
+    this.apiConfigurationManager = apiConfigurationManager;
+  }
 
-	@Override
-	protected boolean isBackedByIconProxy() {
-		return false;
-	}
+  @Override
+  protected boolean isBackedByIconProxy() {
+    return false;
+  }
 
-	@Override
-	public Icon getMenuItemIcon( ItemNode<? super InstanceFactory, InstanceFactory> node ) {
-		return TypeIcon.getInstance( this.typeNode.getDeclaration() );
-	}
+  @Override
+  public Icon getMenuItemIcon(ItemNode<? super InstanceFactory, InstanceFactory> node) {
+    return TypeIcon.getInstance(this.typeNode.getDeclaration());
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode ) {
-		for( FieldNode fieldNode : this.typeNode.getFieldNodes() ) {
-			blankChildren.add( InstanceFactoryState.createFillInMenuComboIfNecessaryForField( this.apiConfigurationManager, fieldNode.getDeclaration() ) );
-		}
-		for( TypeNode typeNode : this.typeNode.getTypeNodes() ) {
-			blankChildren.add( new TypeCascadeMenuModel( typeNode, this.apiConfigurationManager ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+    for (FieldNode fieldNode : this.typeNode.getFieldNodes()) {
+      blankChildren.add(InstanceFactoryState.createFillInMenuComboIfNecessaryForField(this.apiConfigurationManager, fieldNode.getDeclaration()));
+    }
+    for (TypeNode typeNode : this.typeNode.getTypeNodes()) {
+      blankChildren.add(new TypeCascadeMenuModel(typeNode, this.apiConfigurationManager));
+    }
+  }
 }

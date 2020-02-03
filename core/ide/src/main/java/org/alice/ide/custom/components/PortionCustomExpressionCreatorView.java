@@ -57,24 +57,24 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PortionCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public PortionCustomExpressionCreatorView( PortionCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public PortionCustomExpressionCreatorView(PortionCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		PortionCustomExpressionCreatorComposite composite = (PortionCustomExpressionCreatorComposite)this.getComposite();
-		Slider slider = composite.getValueState().createSlider();
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    PortionCustomExpressionCreatorComposite composite = (PortionCustomExpressionCreatorComposite) this.getComposite();
+    Slider slider = composite.getValueState().createSlider();
 
-		Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
-		labelTable.put( 0, new JLabel( "0.0" ) );
-		labelTable.put( 100, new JLabel( "1.0" ) );
-		slider.setLabelTable( labelTable );
-		slider.setPaintLabels( true );
+    Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
+    labelTable.put(0, new JLabel("0.0"));
+    labelTable.put(100, new JLabel("1.0"));
+    slider.setLabelTable(labelTable);
+    slider.setPaintLabels(true);
 
-		slider.setMajorTickSpacing( 10 );
-		slider.setPaintTicks( true );
+    slider.setMajorTickSpacing(10);
+    slider.setPaintTicks(true);
 
-		rows.add( new LabeledFormRow( composite.getValueLabel(), slider ) );
-	}
+    rows.add(new LabeledFormRow(composite.getValueLabel(), slider));
+  }
 }

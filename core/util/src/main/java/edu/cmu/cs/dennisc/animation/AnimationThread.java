@@ -49,32 +49,31 @@ import edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class AnimationThread extends ThreadWithRevealingToString {
-	private Animator m_animator;
-	private Animation m_animation;
-	private AnimationObserver m_animationObserver;
+@Deprecated public class AnimationThread extends ThreadWithRevealingToString {
+  private Animator m_animator;
+  private Animation m_animation;
+  private AnimationObserver m_animationObserver;
 
-	public AnimationThread( Animator animator, Animation animation, AnimationObserver animationObserver ) {
-		m_animator = animator;
-		m_animation = animation;
-		m_animationObserver = animationObserver;
-	}
+  public AnimationThread(Animator animator, Animation animation, AnimationObserver animationObserver) {
+    m_animator = animator;
+    m_animation = animation;
+    m_animationObserver = animationObserver;
+  }
 
-	@Override
-	public void run() {
-		m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( m_animation, m_animationObserver );
-	}
+  @Override
+  public void run() {
+    m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary(m_animation, m_animationObserver);
+  }
 
-	@Override
-	protected StringBuffer updateRepr( StringBuffer rv ) {
-		rv = super.updateRepr( rv );
-		rv.append( ";animator=" );
-		rv.append( m_animator );
-		rv.append( ";animation=" );
-		rv.append( m_animation );
-		rv.append( ";observer=" );
-		rv.append( m_animationObserver );
-		return rv;
-	}
+  @Override
+  protected StringBuffer updateRepr(StringBuffer rv) {
+    rv = super.updateRepr(rv);
+    rv.append(";animator=");
+    rv.append(m_animator);
+    rv.append(";animation=");
+    rv.append(m_animation);
+    rv.append(";observer=");
+    rv.append(m_animationObserver);
+    return rv;
+  }
 }

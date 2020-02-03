@@ -56,17 +56,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAccessCascade extends ProjectExpressionPropertyCascade {
-	public ArrayAccessCascade( UUID id, ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty, ExpressionBlank.createBlanks( Integer.class ) );
-	}
+  public ArrayAccessCascade(UUID id, ExpressionProperty expressionProperty) {
+    super(id, expressionProperty, ExpressionBlank.createBlanks(Integer.class));
+  }
 
-	protected abstract AbstractType<?, ?, ?> getArrayType();
+  protected abstract AbstractType<?, ?, ?> getArrayType();
 
-	protected abstract Expression createAccessExpression();
+  protected abstract Expression createAccessExpression();
 
-	@Override
-	protected Expression createExpression( Expression[] expressions ) {
-		assert expressions.length == 1;
-		return new ArrayAccess( this.getArrayType(), this.createAccessExpression(), expressions[ 0 ] );
-	}
+  @Override
+  protected Expression createExpression(Expression[] expressions) {
+    assert expressions.length == 1;
+    return new ArrayAccess(this.getArrayType(), this.createAccessExpression(), expressions[0]);
+  }
 }

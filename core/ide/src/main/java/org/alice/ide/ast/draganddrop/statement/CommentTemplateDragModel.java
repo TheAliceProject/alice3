@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CommentTemplateDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static CommentTemplateDragModel instance = new CommentTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static CommentTemplateDragModel instance = new CommentTemplateDragModel();
+  }
 
-	public static CommentTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CommentTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CommentTemplateDragModel() {
-		super( UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ), Comment.class, AstUtilities.createComment() );
-	}
+  private CommentTemplateDragModel() {
+    super(UUID.fromString("6ef0a017-c3e7-4c4b-85c9-348ca34641fa"), Comment.class, AstUtilities.createComment());
+  }
 
-	@Override
-	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
-		return CommentInsertOperation.getInstance( blockStatementIndexPair );
-	}
+  @Override
+  public Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
+    return CommentInsertOperation.getInstance(blockStatementIndexPair);
+  }
 }

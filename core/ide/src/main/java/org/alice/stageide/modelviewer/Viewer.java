@@ -64,71 +64,71 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends BorderPanel {
-	private HeavyweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new RenderCapabilities.Builder().build() );
-	private Animator animator = new ClockBasedAnimator();
-	private SceneImp scene = new SceneImp( null );
-	private SymmetricPerspectiveCameraImp camera = new SymmetricPerspectiveCameraImp( null );
-	private SunImp sunLight = new SunImp( null );
+  private HeavyweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget(new RenderCapabilities.Builder().build());
+  private Animator animator = new ClockBasedAnimator();
+  private SceneImp scene = new SceneImp(null);
+  private SymmetricPerspectiveCameraImp camera = new SymmetricPerspectiveCameraImp(null);
+  private SunImp sunLight = new SunImp(null);
 
-	private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
-		@Override
-		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			animator.update();
-		}
-	};
+  private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+    @Override
+    public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
+      animator.update();
+    }
+  };
 
-	public Viewer() {
-		this.camera.setVehicle( this.scene );
-		this.sunLight.setVehicle( this.scene );
-		this.sunLight.applyRotationInRevolutions( Vector3.accessNegativeXAxis(), 0.25 );
-		this.getAwtComponent().add( this.onscreenRenderTarget.getAwtComponent(), BorderLayout.CENTER );
-	}
+  public Viewer() {
+    this.camera.setVehicle(this.scene);
+    this.sunLight.setVehicle(this.scene);
+    this.sunLight.applyRotationInRevolutions(Vector3.accessNegativeXAxis(), 0.25);
+    this.getAwtComponent().add(this.onscreenRenderTarget.getAwtComponent(), BorderLayout.CENTER);
+  }
 
-	private boolean isInitialized = false;
+  private boolean isInitialized = false;
 
-	protected void initialize() {
-		this.onscreenRenderTarget.addSgCamera( this.camera.getSgCamera() );
-	}
+  protected void initialize() {
+    this.onscreenRenderTarget.addSgCamera(this.camera.getSgCamera());
+  }
 
-	protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
-		return this.onscreenRenderTarget;
-	}
+  protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+    return this.onscreenRenderTarget;
+  }
 
-	protected SceneImp getScene() {
-		return this.scene;
-	}
+  protected SceneImp getScene() {
+    return this.scene;
+  }
 
-	protected SymmetricPerspectiveCameraImp getCamera() {
-		return this.camera;
-	}
+  protected SymmetricPerspectiveCameraImp getCamera() {
+    return this.camera;
+  }
 
-	protected SunImp getSunLight() {
-		return this.sunLight;
-	}
+  protected SunImp getSunLight() {
+    return this.sunLight;
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.initialize();
-			this.isInitialized = true;
-		}
-		RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
-		renderFactory.incrementAutomaticDisplayCount();
-		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.isInitialized) {
+      //pass
+    } else {
+      this.initialize();
+      this.isInitialized = true;
+    }
+    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    renderFactory.incrementAutomaticDisplayCount();
+    renderFactory.addAutomaticDisplayListener(this.automaticDisplayListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
-		renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
-		renderFactory.decrementAutomaticDisplayCount();
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
+    renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
+    renderFactory.decrementAutomaticDisplayCount();
+    super.handleUndisplayable();
+  }
 
-	protected Animator getAnimator() {
-		return this.animator;
-	}
+  protected Animator getAnimator() {
+    return this.animator;
+  }
 }

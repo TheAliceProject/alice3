@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Dishwasher">
+    <BoundingBox>
+        <Min x="-0.4505300521850586" y="0.0" z="-0.32984668016433716"/>
+        <Max x="0.4505300521850586" y="0.8583856225013733" z="0.32984668016433716"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>kitchen</Tag>
+        <Tag>counter</Tag>
+        <Tag>cabinet</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:kitchen</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Dishwasher" resourceName="PINK" textureName="PINK"/>
+    <Resource modelName="Dishwasher" resourceName="ORANGE" textureName="ORANGE"/>
+    <Resource modelName="Dishwasher" resourceName="YELLOW" textureName="YELLOW"/>
+    <Resource modelName="Dishwasher" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

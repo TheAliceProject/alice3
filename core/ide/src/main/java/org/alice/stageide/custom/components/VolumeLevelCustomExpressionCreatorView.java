@@ -53,13 +53,13 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class VolumeLevelCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public VolumeLevelCustomExpressionCreatorView( VolumeLevelCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public VolumeLevelCustomExpressionCreatorView(VolumeLevelCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		VolumeLevelCustomExpressionCreatorComposite composite = (VolumeLevelCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new LabeledFormRow( composite.getValueLabel(), new VolumeLevelSlider( composite.getValueState() ) ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    VolumeLevelCustomExpressionCreatorComposite composite = (VolumeLevelCustomExpressionCreatorComposite) this.getComposite();
+    rows.add(new LabeledFormRow(composite.getValueLabel(), new VolumeLevelSlider(composite.getValueState())));
+  }
 }

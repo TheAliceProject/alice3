@@ -66,137 +66,137 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public final class JCloseButton extends JButton {
-	private static class CloseButtonUI extends BasicButtonUI {
-		private static final Color BASE_COLOR = new Color( 127, 63, 63 );
-		private static final Color HIGHLIGHT_COLOR = ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
-		private static final Color PRESS_COLOR = ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
+  private static class CloseButtonUI extends BasicButtonUI {
+    private static final Color BASE_COLOR = new Color(127, 63, 63);
+    private static final Color HIGHLIGHT_COLOR = ColorUtilities.shiftHSB(BASE_COLOR, 0, 0, +0.25f);
+    private static final Color PRESS_COLOR = ColorUtilities.shiftHSB(BASE_COLOR, 0, 0, -0.125f);
 
-		private static final int SIZE = 14;
+    private static final int SIZE = 14;
 
-		@Override
-		public void paint( Graphics g, JComponent c ) {
-			AbstractButton button = (AbstractButton)c;
-			ButtonModel model = button.getModel();
+    @Override
+    public void paint(Graphics g, JComponent c) {
+      AbstractButton button = (AbstractButton) c;
+      ButtonModel model = button.getModel();
 
-			Graphics2D g2 = (Graphics2D)g;
+      Graphics2D g2 = (Graphics2D) g;
 
-			int closeWidth = SIZE;
-			int closeHeight = closeWidth;
-			float size = Math.min( closeWidth, closeHeight ) * 0.9f;
+      int closeWidth = SIZE;
+      int closeHeight = closeWidth;
+      float size = Math.min(closeWidth, closeHeight) * 0.9f;
 
-			float w = size;
-			float h = size * 0.25f;
-			float xC = -w * 0.5f;
-			float yC = -h * 0.5f;
-			RoundRectangle2D.Float rr = new RoundRectangle2D.Float( xC, yC, w, h, h, h );
+      float w = size;
+      float h = size * 0.25f;
+      float xC = -w * 0.5f;
+      float yC = -h * 0.5f;
+      RoundRectangle2D.Float rr = new RoundRectangle2D.Float(xC, yC, w, h, h, h);
 
-			Area area0 = new Area( rr );
-			Area area1 = new Area( rr );
+      Area area0 = new Area(rr);
+      Area area1 = new Area(rr);
 
-			AffineTransform m0 = new AffineTransform();
-			m0.rotate( Math.PI * 0.25 );
-			area0.transform( m0 );
+      AffineTransform m0 = new AffineTransform();
+      m0.rotate(Math.PI * 0.25);
+      area0.transform(m0);
 
-			AffineTransform m1 = new AffineTransform();
-			m1.rotate( Math.PI * 0.75 );
-			area1.transform( m1 );
+      AffineTransform m1 = new AffineTransform();
+      m1.rotate(Math.PI * 0.75);
+      area1.transform(m1);
 
-			area0.add( area1 );
+      area0.add(area1);
 
-			int x0 = 0;
-			int y0 = 0;
+      int x0 = 0;
+      int y0 = 0;
 
-			AffineTransform m = new AffineTransform();
-			m.translate( x0 + ( closeWidth / 2 ), y0 + ( closeHeight / 2 ) );
-			area0.transform( m );
+      AffineTransform m = new AffineTransform();
+      m.translate(x0 + (closeWidth / 2), y0 + (closeHeight / 2));
+      area0.transform(m);
 
-			Paint prevPaint = g2.getPaint();
-			g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-			if( model.isRollover() || model.isArmed() ) {
-				if( model.isPressed() ) {
-					//pass
-				} else {
-					g2.setPaint( HIGHLIGHT_COLOR );
-				}
-			} else {
-				g2.setPaint( Color.WHITE );
-			}
+      Paint prevPaint = g2.getPaint();
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      if (model.isRollover() || model.isArmed()) {
+        if (model.isPressed()) {
+          //pass
+        } else {
+          g2.setPaint(HIGHLIGHT_COLOR);
+        }
+      } else {
+        g2.setPaint(Color.WHITE);
+      }
 
-			g2.fill( area0 );
+      g2.fill(area0);
 
-			boolean isParentSelected;
-			Container parent = button.getParent();
-			if( parent instanceof AbstractButton ) {
-				AbstractButton parentButton = (AbstractButton)parent;
-				isParentSelected = parentButton.isSelected();
-			} else {
-				isParentSelected = false;
-			}
+      boolean isParentSelected;
+      Container parent = button.getParent();
+      if (parent instanceof AbstractButton) {
+        AbstractButton parentButton = (AbstractButton) parent;
+        isParentSelected = parentButton.isSelected();
+      } else {
+        isParentSelected = false;
+      }
 
-			if( isParentSelected ) {
-				g2.setPaint( Color.BLACK );
-			} else {
-				g2.setPaint( Color.GRAY );
-			}
-			g2.draw( area0 );
-			g2.setPaint( prevPaint );
-		}
+      if (isParentSelected) {
+        g2.setPaint(Color.BLACK);
+      } else {
+        g2.setPaint(Color.GRAY);
+      }
+      g2.draw(area0);
+      g2.setPaint(prevPaint);
+    }
 
-		@Override
-		public Dimension getPreferredSize( JComponent c ) {
-			return new Dimension( SIZE, SIZE );
-		}
-	}
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
+      return new Dimension(SIZE, SIZE);
+    }
+  }
 
-	private boolean isVisibleOnlyWhenParentIsSelected;
+  private boolean isVisibleOnlyWhenParentIsSelected;
 
-	public JCloseButton( boolean isVisibleOnlyWhenParentIsSelected ) {
-		this.isVisibleOnlyWhenParentIsSelected = isVisibleOnlyWhenParentIsSelected;
-		this.setOpaque( false );
-		this.setAlignmentY( Component.CENTER_ALIGNMENT );
-		this.setBorder( null );
-		this.setRolloverEnabled( true );
-	}
+  public JCloseButton(boolean isVisibleOnlyWhenParentIsSelected) {
+    this.isVisibleOnlyWhenParentIsSelected = isVisibleOnlyWhenParentIsSelected;
+    this.setOpaque(false);
+    this.setAlignmentY(Component.CENTER_ALIGNMENT);
+    this.setBorder(null);
+    this.setRolloverEnabled(true);
+  }
 
-	@Override
-	public void updateUI() {
-		this.setUI( new CloseButtonUI() );
-	}
+  @Override
+  public void updateUI() {
+    this.setUI(new CloseButtonUI());
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		return this.getPreferredSize();
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    return this.getPreferredSize();
+  }
 
-	@Override
-	public boolean contains( int x, int y ) {
-		if( this.isVisibleOnlyWhenParentIsSelected ) {
-			Container parent = this.getParent();
-			if( parent instanceof AbstractButton ) {
-				AbstractButton button = (AbstractButton)parent;
-				if( button.isSelected() ) {
-					//pass
-				} else {
-					return false;
-				}
-			}
-		}
-		return super.contains( x, y );
-	}
+  @Override
+  public boolean contains(int x, int y) {
+    if (this.isVisibleOnlyWhenParentIsSelected) {
+      Container parent = this.getParent();
+      if (parent instanceof AbstractButton) {
+        AbstractButton button = (AbstractButton) parent;
+        if (button.isSelected()) {
+          //pass
+        } else {
+          return false;
+        }
+      }
+    }
+    return super.contains(x, y);
+  }
 
-	@Override
-	public boolean isVisible() {
-		if( this.isVisibleOnlyWhenParentIsSelected ) {
-			Container parent = this.getParent();
-			if( parent instanceof AbstractButton ) {
-				AbstractButton button = (AbstractButton)parent;
-				if( button.isSelected() ) {
-					//pass
-				} else {
-					return false;
-				}
-			}
-		}
-		return super.isVisible();
-	}
+  @Override
+  public boolean isVisible() {
+    if (this.isVisibleOnlyWhenParentIsSelected) {
+      Container parent = this.getParent();
+      if (parent instanceof AbstractButton) {
+        AbstractButton button = (AbstractButton) parent;
+        if (button.isSelected()) {
+          //pass
+        } else {
+          return false;
+        }
+      }
+    }
+    return super.isVisible();
+  }
 }

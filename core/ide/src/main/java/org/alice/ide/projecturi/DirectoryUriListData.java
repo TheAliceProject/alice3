@@ -57,34 +57,34 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class DirectoryUriListData extends RefreshableListData<URI> {
-	private final File directory;
+  private final File directory;
 
-	public DirectoryUriListData( File directory ) {
-		super( UriCodec.SINGLETON );
-		this.directory = directory;
-	}
+  public DirectoryUriListData(File directory) {
+    super(UriCodec.SINGLETON);
+    this.directory = directory;
+  }
 
-	@Override
-	protected List<URI> createValues() {
-		if( directory != null ) {
-			URI[] uris;
-			File[] files = IoUtilities.listProjectFiles( directory );
-			final int N = files.length;
-			uris = new URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					uris[ i ] = files[ i ].toURI();
-				} else {
-					uris[ i ] = null;
-				}
-			}
-			return Lists.newArrayList( uris );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  protected List<URI> createValues() {
+    if (directory != null) {
+      URI[] uris;
+      File[] files = IoUtilities.listProjectFiles(directory);
+      final int N = files.length;
+      uris = new URI[N];
+      for (int i = 0; i < N; i++) {
+        if (files[i] != null) {
+          uris[i] = files[i].toURI();
+        } else {
+          uris[i] = null;
+        }
+      }
+      return Lists.newArrayList(uris);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public File getDirectory() {
-		return this.directory;
-	}
+  public File getDirectory() {
+    return this.directory;
+  }
 }

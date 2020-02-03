@@ -49,80 +49,80 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JCompassPointSpringPane extends JCornerSpringPane {
-	private Component northComponent;
-	private Component eastComponent;
-	private Component southComponent;
-	private Component westComponent;
+  private Component northComponent;
+  private Component eastComponent;
+  private Component southComponent;
+  private Component westComponent;
 
-	public Component getNorthComponent() {
-		return this.northComponent;
-	}
+  public Component getNorthComponent() {
+    return this.northComponent;
+  }
 
-	public void setNorthComponent( Component northComponent ) {
-		SpringLayout springLayout = this.getSpringLayout();
-		if( this.northComponent != null ) {
-			springLayout.removeLayoutComponent( this.northComponent );
-			this.remove( this.northComponent );
-		}
-		this.northComponent = northComponent;
-		if( this.northComponent != null ) {
-			int pad = getPad();
-			this.putConstraint( this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad );
-			this.add( this.northComponent );
-		}
-	}
+  public void setNorthComponent(Component northComponent) {
+    SpringLayout springLayout = this.getSpringLayout();
+    if (this.northComponent != null) {
+      springLayout.removeLayoutComponent(this.northComponent);
+      this.remove(this.northComponent);
+    }
+    this.northComponent = northComponent;
+    if (this.northComponent != null) {
+      int pad = getPad();
+      this.putConstraint(this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad);
+      this.add(this.northComponent);
+    }
+  }
 
-	public Component getEastComponent() {
-		return this.eastComponent;
-	}
+  public Component getEastComponent() {
+    return this.eastComponent;
+  }
 
-	public void setEastComponent( Component eastComponent ) {
-		SpringLayout springLayout = this.getSpringLayout();
-		if( this.eastComponent != null ) {
-			springLayout.removeLayoutComponent( this.eastComponent );
-			this.remove( this.eastComponent );
-		}
-		this.eastComponent = eastComponent;
-		if( this.eastComponent != null ) {
-			int pad = getPad();
-			this.putConstraint( this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0 );
-			this.add( this.eastComponent );
-		}
-	}
+  public void setEastComponent(Component eastComponent) {
+    SpringLayout springLayout = this.getSpringLayout();
+    if (this.eastComponent != null) {
+      springLayout.removeLayoutComponent(this.eastComponent);
+      this.remove(this.eastComponent);
+    }
+    this.eastComponent = eastComponent;
+    if (this.eastComponent != null) {
+      int pad = getPad();
+      this.putConstraint(this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0);
+      this.add(this.eastComponent);
+    }
+  }
 
-	public Component getSouthComponent() {
-		return this.southComponent;
-	}
+  public Component getSouthComponent() {
+    return this.southComponent;
+  }
 
-	public void setSouthComponent( Component southComponent ) {
-		SpringLayout springLayout = this.getSpringLayout();
-		if( this.southComponent != null ) {
-			springLayout.removeLayoutComponent( this.southComponent );
-			this.remove( this.southComponent );
-		}
-		this.southComponent = southComponent;
-		if( this.southComponent != null ) {
-			int pad = getPad();
-			this.putConstraint( this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad );
-			this.add( this.southComponent );
-		}
-	}
+  public void setSouthComponent(Component southComponent) {
+    SpringLayout springLayout = this.getSpringLayout();
+    if (this.southComponent != null) {
+      springLayout.removeLayoutComponent(this.southComponent);
+      this.remove(this.southComponent);
+    }
+    this.southComponent = southComponent;
+    if (this.southComponent != null) {
+      int pad = getPad();
+      this.putConstraint(this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad);
+      this.add(this.southComponent);
+    }
+  }
 
-	public Component getWestComponent() {
-		return this.westComponent;
-	}
+  public Component getWestComponent() {
+    return this.westComponent;
+  }
 
-	public void setWestComponent( Component westComponent ) {
-		SpringLayout springLayout = this.getSpringLayout();
-		if( this.westComponent != null ) {
-			springLayout.removeLayoutComponent( this.westComponent );
-			this.remove( this.westComponent );
-		}
-		this.westComponent = westComponent;
-		if( this.westComponent != null ) {
-			int pad = getPad();
-			this.putConstraint( this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0 );
-			this.add( this.westComponent );
-		}
-	}
+  public void setWestComponent(Component westComponent) {
+    SpringLayout springLayout = this.getSpringLayout();
+    if (this.westComponent != null) {
+      springLayout.removeLayoutComponent(this.westComponent);
+      this.remove(this.westComponent);
+    }
+    this.westComponent = westComponent;
+    if (this.westComponent != null) {
+      int pad = getPad();
+      this.putConstraint(this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0);
+      this.add(this.westComponent);
+    }
+  }
 }

@@ -59,25 +59,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddModelManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", Color.WHITE, SModel.class, "setPaint", Paint.class, SetPaint.Detail[].class );
-	private final CustomItemState<Expression> opacityState = this.createInitialPropertyValueExpressionState( "opacityState", 1.0, SModel.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
+  private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState("paintState", Color.WHITE, SModel.class, "setPaint", Paint.class, SetPaint.Detail[].class);
+  private final CustomItemState<Expression> opacityState = this.createInitialPropertyValueExpressionState("opacityState", 1.0, SModel.class, "setOpacity", Number.class, SetOpacity.Detail[].class);
 
-	public AddModelManagedFieldComposite( UUID id, Class<? extends SModel> cls ) {
-		super( id, cls );
-	}
+  public AddModelManagedFieldComposite(UUID id, Class<? extends SModel> cls) {
+    super(id, cls);
+  }
 
-	public CustomItemState<Expression> getPaintState() {
-		return this.paintState;
-	}
+  public CustomItemState<Expression> getPaintState() {
+    return this.paintState;
+  }
 
-	public CustomItemState<Expression> getOpacityState() {
-		return this.opacityState;
-	}
+  public CustomItemState<Expression> getOpacityState() {
+    return this.opacityState;
+  }
 
-	protected abstract ShapeDragModel getDragModel();
+  protected abstract ShapeDragModel getDragModel();
 
-	@Override
-	public String generateName() {
-		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(getDragModel().getLocalizedClassName());
-	}
+  @Override
+  public String generateName() {
+    return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(getDragModel().getLocalizedClassName());
+  }
 }

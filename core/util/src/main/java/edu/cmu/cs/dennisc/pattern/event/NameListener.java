@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.pattern.event;
  * @author Dennis Cosgrove
  */
 public interface NameListener {
-	public void nameChanging( NameEvent nameEvent );
+  public void nameChanging(NameEvent nameEvent);
 
-	public void nameChanged( NameEvent nameEvent );
+  public void nameChanged(NameEvent nameEvent);
 }

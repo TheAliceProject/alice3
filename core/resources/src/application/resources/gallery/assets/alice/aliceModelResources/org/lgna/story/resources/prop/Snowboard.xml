@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Snowboard">
+    <BoundingBox>
+        <Min x="-0.16728255152702332" y="7.480204221792519E-4" z="-0.9101121425628662"/>
+        <Max x="0.1855240911245346" y="0.06330052018165588" z="0.910112202167511"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ski</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Snowboard" resourceName="BABY_PINK" textureName="BABY_PINK"/>
+    <Resource modelName="Snowboard" resourceName="BABY_ORANGE" textureName="BABY_ORANGE"/>
+    <Resource modelName="Snowboard" resourceName="ADULT_RED" textureName="ADULT_RED"/>
+    <Resource modelName="Snowboard" resourceName="ADULT_GREEN" textureName="ADULT_GREEN"/>
+</AliceModel>

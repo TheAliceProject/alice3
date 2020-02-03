@@ -53,59 +53,59 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JavaPackage extends AbstractPackage {
-	private static Map<PackageReflectionProxy, JavaPackage> s_map = new HashMap<PackageReflectionProxy, JavaPackage>();
+  private static Map<PackageReflectionProxy, JavaPackage> s_map = new HashMap<PackageReflectionProxy, JavaPackage>();
 
-	public static JavaPackage getInstance( PackageReflectionProxy packageReflectionProxy ) {
-		if( packageReflectionProxy != null ) {
-			JavaPackage rv = s_map.get( packageReflectionProxy );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JavaPackage( packageReflectionProxy );
-				s_map.put( packageReflectionProxy, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static JavaPackage getInstance(PackageReflectionProxy packageReflectionProxy) {
+    if (packageReflectionProxy != null) {
+      JavaPackage rv = s_map.get(packageReflectionProxy);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new JavaPackage(packageReflectionProxy);
+        s_map.put(packageReflectionProxy, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	public static JavaPackage getInstance( Package pckg ) {
-		return getInstance( new PackageReflectionProxy( pckg ) );
-	}
+  public static JavaPackage getInstance(Package pckg) {
+    return getInstance(new PackageReflectionProxy(pckg));
+  }
 
-	private JavaPackage( PackageReflectionProxy packageReflectionProxy ) {
-		this.packageReflectionProxy = packageReflectionProxy;
-	}
+  private JavaPackage(PackageReflectionProxy packageReflectionProxy) {
+    this.packageReflectionProxy = packageReflectionProxy;
+  }
 
-	public PackageReflectionProxy getPackageReflectionProxy() {
-		return this.packageReflectionProxy;
-	}
+  public PackageReflectionProxy getPackageReflectionProxy() {
+    return this.packageReflectionProxy;
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return false;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return false;
+  }
 
-	@Override
-	public String getName() {
-		return this.packageReflectionProxy.getName();
-	}
+  @Override
+  public String getName() {
+    return this.packageReflectionProxy.getName();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	@Override
-	public boolean isEquivalentTo( Object o ) {
-		JavaPackage other = ClassUtilities.getInstance( o, JavaPackage.class );
-		if( other != null ) {
-			return this.packageReflectionProxy.equals( other.packageReflectionProxy );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquivalentTo(Object o) {
+    JavaPackage other = ClassUtilities.getInstance(o, JavaPackage.class);
+    if (other != null) {
+      return this.packageReflectionProxy.equals(other.packageReflectionProxy);
+    } else {
+      return false;
+    }
+  }
 
-	private final PackageReflectionProxy packageReflectionProxy;
+  private final PackageReflectionProxy packageReflectionProxy;
 }

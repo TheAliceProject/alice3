@@ -48,16 +48,16 @@ import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserParameter;
 
 public class ParameterNameValidator extends TransientNameValidator {
-	private static UserCode getCode( UserParameter parameter ) {
-		return (UserCode)parameter.getFirstAncestorAssignableTo( AbstractCode.class );
-	}
+  private static UserCode getCode(UserParameter parameter) {
+    return (UserCode) parameter.getFirstAncestorAssignableTo(AbstractCode.class);
+  }
 
-	public ParameterNameValidator( UserParameter parameter ) {
-		super( parameter, getCode( parameter ), null );
-	}
+  public ParameterNameValidator(UserParameter parameter) {
+    super(parameter, getCode(parameter), null);
+  }
 
-	public ParameterNameValidator( UserCode code ) {
-		super( null, code, null );
-	}
+  public ParameterNameValidator(UserCode code) {
+    super(null, code, null);
+  }
 
 }

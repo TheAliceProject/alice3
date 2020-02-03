@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="CliffWall">
+    <BoundingBox>
+        <Min x="-6.019398212432861" y="-0.03380432352423668" z="-7.134422302246094"/>
+        <Max x="6.019398212432861" y="5.388022422790527" z="0.8169950842857361"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>cliff</Tag>
+        <Tag>mountain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-5.445051670074463" y="-0.03380432352423668" z="-7.134422302246094"/>
+            <Max x="6.019398212432861" y="5.388022422790527" z="0.8169950842857361"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-5.445051670074463" y="-0.03380432352423668" z="-7.134422302246094"/>
+            <Max x="6.019398212432861" y="5.388022422790527" z="0.8169950842857361"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_DESERT" textureName="DESERT">
+        <BoundingBox>
+            <Min x="-6.019398212432861" y="-0.03380432352423668" z="-7.134422302246094"/>
+            <Max x="5.445051193237305" y="5.388022422790527" z="0.8169950842857361"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED_MARS" textureName="MARS">
+        <BoundingBox>
+            <Min x="-6.019398212432861" y="-0.03380432352423668" z="-7.134422302246094"/>
+            <Max x="5.445051193237305" y="5.388022422790527" z="0.8169950842857361"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

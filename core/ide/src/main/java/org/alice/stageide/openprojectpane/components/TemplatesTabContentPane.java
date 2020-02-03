@@ -56,24 +56,24 @@ import javax.swing.ListCellRenderer;
 import java.net.URI;
 
 public class TemplatesTabContentPane extends ListContentPanel {
-	public TemplatesTabContentPane( TemplatesTab composite ) {
-		super( composite );
-	}
+  public TemplatesTabContentPane(TemplatesTab composite) {
+    super(composite);
+  }
 
-	@Override
-	protected ListCellRenderer createListCellRenderer() {
-		return new ProjectSnapshotListCellRenderer() {
-			@Override
-			protected JLabel updateLabel( JLabel rv, Object value ) {
-				URI uri = (URI)value;
-				String textKey = uri.getFragment();
-				String text = TemplateUriState.getLocalizedName( textKey );
-				ImageIcon imageIcon = IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + textKey + ".png" ) );
-				Icon icon = imageIcon != null ? new SnapshotIcon( imageIcon.getImage() ) : null;
-				rv.setIcon( icon );
-				rv.setText( text );
-				return rv;
-			}
-		};
-	}
+  @Override
+  protected ListCellRenderer createListCellRenderer() {
+    return new ProjectSnapshotListCellRenderer() {
+      @Override
+      protected JLabel updateLabel(JLabel rv, Object value) {
+        URI uri = (URI) value;
+        String textKey = uri.getFragment();
+        String text = TemplateUriState.getLocalizedName(textKey);
+        ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + textKey + ".png"));
+        Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;
+        rv.setIcon(icon);
+        rv.setText(text);
+        return rv;
+      }
+    };
+  }
 }

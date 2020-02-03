@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class ByteArrayPreference extends Preference<byte[]> {
-	public ByteArrayPreference( byte[] defaultValue ) {
-		super( defaultValue );
-	}
+  public ByteArrayPreference(byte[] defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected byte[] getValue( Preferences utilPrefs, String key, byte[] defaultValue ) {
-		return utilPrefs.getByteArray( key, defaultValue );
-	}
+  @Override
+  protected byte[] getValue(Preferences utilPrefs, String key, byte[] defaultValue) {
+    return utilPrefs.getByteArray(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, byte[] nextValue ) {
-		utilPrefs.putByteArray( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, byte[] nextValue) {
+    utilPrefs.putByteArray(key, nextValue);
+  }
 }

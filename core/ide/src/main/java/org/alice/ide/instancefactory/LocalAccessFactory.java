@@ -58,61 +58,61 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class LocalAccessFactory extends AbstractInstanceFactory {
-	private static Map<UserLocal, LocalAccessFactory> map = Maps.newHashMap();
+  private static Map<UserLocal, LocalAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized LocalAccessFactory getInstance( UserLocal local ) {
-		assert local != null;
-		LocalAccessFactory rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAccessFactory( local );
-			map.put( local, rv );
-		}
-		return rv;
-	}
+  public static synchronized LocalAccessFactory getInstance(UserLocal local) {
+    assert local != null;
+    LocalAccessFactory rv = map.get(local);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new LocalAccessFactory(local);
+      map.put(local, rv);
+    }
+    return rv;
+  }
 
-	private final UserLocal local;
+  private final UserLocal local;
 
-	private LocalAccessFactory( UserLocal local ) {
-		super( local.name );
-		this.local = local;
-	}
+  private LocalAccessFactory(UserLocal local) {
+    super(local.name);
+    this.local = local;
+  }
 
-	@Override
-	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		if( code != null ) {
-			return this.local.getFirstAncestorAssignableTo( AbstractCode.class ) == code;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    if (code != null) {
+      return this.local.getFirstAncestorAssignableTo(AbstractCode.class) == code;
+    } else {
+      return false;
+    }
+  }
 
-	public UserLocal getLocal() {
-		return this.local;
-	}
+  public UserLocal getLocal() {
+    return this.local;
+  }
 
-	private LocalAccess createLocalAccess( Expression expression ) {
-		return new LocalAccess( this.local );
-	}
+  private LocalAccess createLocalAccess(Expression expression) {
+    return new LocalAccess(this.local);
+  }
 
-	@Override
-	public LocalAccess createTransientExpression() {
-		return this.createLocalAccess( new CurrentThisExpression() );
-	}
+  @Override
+  public LocalAccess createTransientExpression() {
+    return this.createLocalAccess(new CurrentThisExpression());
+  }
 
-	@Override
-	public LocalAccess createExpression() {
-		return this.createLocalAccess( new ThisExpression() );
-	}
+  @Override
+  public LocalAccess createExpression() {
+    return this.createLocalAccess(new ThisExpression());
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.local.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.local.getValueType();
+  }
 
-	@Override
-	public String getRepr() {
-		return this.local.getValidName();
-	}
+  @Override
+  public String getRepr() {
+    return this.local.getValidName();
+  }
 }

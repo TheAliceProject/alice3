@@ -54,25 +54,25 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public abstract class StatementEdit<M extends CompletionModel> extends AbstractEdit<M> {
-	private Statement statement;
+  private Statement statement;
 
-	public StatementEdit( UserActivity userActivity, Statement statement ) {
-		super( userActivity );
-		this.statement = statement;
-	}
+  public StatementEdit(UserActivity userActivity, Statement statement) {
+    super(userActivity);
+    this.statement = statement;
+  }
 
-	public StatementEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.statement = NodeCodec.getInstance( Statement.class ).decodeValue( binaryDecoder );
-	}
+  public StatementEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.statement = NodeCodec.getInstance(Statement.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( Statement.class ).encodeValue( binaryEncoder, this.statement );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(Statement.class).encodeValue(binaryEncoder, this.statement);
+  }
 
-	public final Statement getStatement() {
-		return this.statement;
-	}
+  public final Statement getStatement() {
+    return this.statement;
+  }
 }

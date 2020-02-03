@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.alice</groupId>
-		<artifactId>parent</artifactId>
-		<version>5.0.1-SNAPSHOT</version>
-		<relativePath>../</relativePath>
-	</parent>
+  <parent>
+    <groupId>org.alice</groupId>
+    <artifactId>parent</artifactId>
+    <version>5.0.1-SNAPSHOT</version>
+  </parent>
 
-	<artifactId>core</artifactId>
-	<packaging>pom</packaging>
+  <name>Alice Core</name>
+  <description>Core modules for Alice</description>
+  <artifactId>core</artifactId>
+  <packaging>pom</packaging>
 
-	<properties>
-		<platform.win32.label>win32</platform.win32.label>
-		<platform.win64.label>win64</platform.win64.label>
-		<platform.macosx.label>macosx</platform.macosx.label>
-		<platform.linux-i586.label>linux-i586</platform.linux-i586.label>
-		<platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
+  <properties>
+    <platform.win32.label>win32</platform.win32.label>
+    <platform.win64.label>win64</platform.win64.label>
+    <platform.macosx.label>macosx</platform.macosx.label>
+    <platform.linux-i586.label>linux-i586</platform.linux-i586.label>
+    <platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
 
-		<platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
-		<platform.libvlc.label>libvlc</platform.libvlc.label>
-		<platform.nebulous.label>nebulous</platform.nebulous.label>
-		<platform.jogl.label>jogl</platform.jogl.label>
-	</properties>
+    <platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
+    <platform.libvlc.label>libvlc</platform.libvlc.label>
+    <platform.nebulous.label>nebulous</platform.nebulous.label>
+    <platform.jogl.label>jogl</platform.jogl.label>
+  </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

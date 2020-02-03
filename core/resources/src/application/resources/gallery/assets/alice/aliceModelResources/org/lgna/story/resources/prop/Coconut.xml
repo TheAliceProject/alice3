@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Coconut">
+    <BoundingBox>
+        <Min x="-0.15569843351840973" y="0.0" z="-0.279446005821228"/>
+        <Max x="0.14906597137451172" y="0.3870575726032257" z="0.17595063149929047"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>beach</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon:coconutpalm</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Coconut" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

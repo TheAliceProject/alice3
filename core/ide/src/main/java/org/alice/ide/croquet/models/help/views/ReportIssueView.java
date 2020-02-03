@@ -68,53 +68,53 @@ import org.lgna.issue.IssueReportingHub;
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
+  private static final Icon headerIcon = IconUtilities.createImageIcon(HeaderPane.class.getResource("images/logo.png"));
 
-	public ReportIssueView( final ReportIssueComposite composite ) {
-		super( composite );
-		final TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
-		//environmentTextArea.getAwtComponent().setEditable( false );
-		//environmentTextArea.setToolTipText( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
-		FormPanel centerComponent = new FormPanel() {
-			@Override
-			protected void appendRows( List<LabeledFormRow> rows ) {
-				rows.add( new LabeledFormRow( composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
-				rows.add( new LabeledFormRow( composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBoxWithItemCodecListCellRenderer(), VerticalAlignment.CENTER, false ) );
-				rows.add( new LabeledFormRow( composite.getSummaryState().getSidekickLabel(), composite.getSummaryState().createTextField() ) );
-				rows.add( new LabeledFormRow( composite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea( composite.getDescriptionState() ), VerticalAlignment.TOP ) );
-				rows.add( new LabeledFormRow( composite.getStepsState().getSidekickLabel(), createScrollPaneTextArea( composite.getStepsState() ), VerticalAlignment.TOP ) );
-				rows.add( new LabeledFormRow( composite.getEnvironmentState().getSidekickLabel(), environmentTextArea, VerticalAlignment.TOP ) );
-				rows.add( new LabeledFormRow( composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
-			}
-		};
+  public ReportIssueView(final ReportIssueComposite composite) {
+    super(composite);
+    final TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
+    //environmentTextArea.getAwtComponent().setEditable( false );
+    //environmentTextArea.setToolTipText( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
+    FormPanel centerComponent = new FormPanel() {
+      @Override
+      protected void appendRows(List<LabeledFormRow> rows) {
+        rows.add(new LabeledFormRow(composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+        rows.add(new LabeledFormRow(composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBoxWithItemCodecListCellRenderer(), VerticalAlignment.CENTER, false));
+        rows.add(new LabeledFormRow(composite.getSummaryState().getSidekickLabel(), composite.getSummaryState().createTextField()));
+        rows.add(new LabeledFormRow(composite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea(composite.getDescriptionState()), VerticalAlignment.TOP));
+        rows.add(new LabeledFormRow(composite.getStepsState().getSidekickLabel(), createScrollPaneTextArea(composite.getStepsState()), VerticalAlignment.TOP));
+        rows.add(new LabeledFormRow(composite.getEnvironmentState().getSidekickLabel(), environmentTextArea, VerticalAlignment.TOP));
+        rows.add(new LabeledFormRow(composite.getAttachmentState().getSidekickLabel(), composite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP));
+      }
+    };
 
-		Color backgroundColor = Color.DARK_GRAY;
-		Label headerLabel = new Label();
-		headerLabel.setIcon( headerIcon );
-		headerLabel.setAlignmentX( 0.5f );
-		Hyperlink link = composite.getBrowserOperation().createHyperlink();
-		link.setForegroundColor( Color.LIGHT_GRAY );
-		link.getAwtComponent().setBackground( backgroundColor );
-		link.setAlignmentX( 0.5f );
+    Color backgroundColor = Color.DARK_GRAY;
+    Label headerLabel = new Label();
+    headerLabel.setIcon(headerIcon);
+    headerLabel.setAlignmentX(0.5f);
+    Hyperlink link = composite.getBrowserOperation().createHyperlink();
+    link.setForegroundColor(Color.LIGHT_GRAY);
+    link.getAwtComponent().setBackground(backgroundColor);
+    link.setAlignmentX(0.5f);
 
-		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
+    PageAxisPanel lineStartPanel = new PageAxisPanel(headerLabel, link);
 
-		BorderPanel header = new BorderPanel();
-		header.addLineStartComponent( lineStartPanel );
+    BorderPanel header = new BorderPanel();
+    header.addLineStartComponent(lineStartPanel);
 
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
-			IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
-			if( issueReportingHub.isLoginSupported() ) {
-				header.addLineEndComponent( composite.getLogInOutCardComposite().getView() );
-			}
-		}
-		header.setBackgroundColor( backgroundColor );
-		header.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		centerComponent.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
+      IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
+      if (issueReportingHub.isLoginSupported()) {
+        header.addLineEndComponent(composite.getLogInOutCardComposite().getView());
+      }
+    }
+    header.setBackgroundColor(backgroundColor);
+    header.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+    centerComponent.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-		this.addPageStartComponent( header );
-		this.addCenterComponent( centerComponent );
-	}
+    this.addPageStartComponent(header);
+    this.addCenterComponent(centerComponent);
+  }
 }

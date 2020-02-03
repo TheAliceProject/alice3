@@ -62,56 +62,55 @@ import org.lgna.story.SMarker;
  * @author Dennis Cosgrove
  */
 public class MarkerColorIdEdit extends AbstractEdit {
-	private final UserField field;
-	private final Expression nextArgumentExpression;
-	private transient Expression prevArgumentExpression;
+  private final UserField field;
+  private final Expression nextArgumentExpression;
+  private transient Expression prevArgumentExpression;
 
-	private static final JavaMethod SET_COLOR_ID_METHOD = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
+  private static final JavaMethod SET_COLOR_ID_METHOD = JavaMethod.getInstance(SMarker.class, "setColorId", Color.class);
 
-	public MarkerColorIdEdit( UserActivity userActivity, UserField field, Expression nextArgumentExpression ) {
-		super( userActivity );
-		this.field = field;
-		this.nextArgumentExpression = nextArgumentExpression;
-	}
+  public MarkerColorIdEdit(UserActivity userActivity, UserField field, Expression nextArgumentExpression) {
+    super(userActivity);
+    this.field = field;
+    this.nextArgumentExpression = nextArgumentExpression;
+  }
 
-	private void set( Expression argumentExpression ) {
-		Statement statement = AstUtilities.createMethodInvocationStatement(
-			new FieldAccess(field), SET_COLOR_ID_METHOD, argumentExpression );
-		StageIDE.getActiveInstance().getSceneEditor().executeStatements( statement );
-	}
+  private void set(Expression argumentExpression) {
+    Statement statement = AstUtilities.createMethodInvocationStatement(new FieldAccess(field), SET_COLOR_ID_METHOD, argumentExpression);
+    StageIDE.getActiveInstance().getSceneEditor().executeStatements(statement);
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			StageIDE ide = StageIDE.getActiveInstance();
-			SMarker marker = ide.getSceneEditor().getInstanceInJavaVMForField( this.field, SMarker.class );
-			if( marker != null ) {
-				Color colorId = marker.getColorId();
-				try {
-					this.prevArgumentExpression = ide.getApiConfigurationManager().getExpressionCreator().createExpression( colorId );
-				} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-					Logger.throwable( ccee, colorId );
-					this.prevArgumentExpression = new NullLiteral();
-				}
-			} else {
-				this.prevArgumentExpression = new NullLiteral();
-			}
-		}
-		this.set( this.nextArgumentExpression );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      StageIDE ide = StageIDE.getActiveInstance();
+      SMarker marker = ide.getSceneEditor().getInstanceInJavaVMForField(this.field, SMarker.class);
+      if (marker != null) {
+        Color colorId = marker.getColorId();
+        try {
+          this.prevArgumentExpression = ide.getApiConfigurationManager().getExpressionCreator().createExpression(colorId);
+        } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+          Logger.throwable(ccee, colorId);
+          this.prevArgumentExpression = new NullLiteral();
+        }
+      } else {
+        this.prevArgumentExpression = new NullLiteral();
+      }
+    }
+    this.set(this.nextArgumentExpression);
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.set( this.prevArgumentExpression );
-	}
+  @Override
+  protected void undoInternal() {
+    this.set(this.prevArgumentExpression);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "change " );
-		NodeUtilities.safeAppendRepr( rv, this.field );
-		rv.append( " color id " );
-		NodeUtilities.safeAppendRepr( rv, this.prevArgumentExpression );
-		rv.append( " ===> " );
-		NodeUtilities.safeAppendRepr( rv, this.nextArgumentExpression );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("change ");
+    NodeUtilities.safeAppendRepr(rv, this.field);
+    rv.append(" color id ");
+    NodeUtilities.safeAppendRepr(rv, this.prevArgumentExpression);
+    rv.append(" ===> ");
+    NodeUtilities.safeAppendRepr(rv, this.nextArgumentExpression);
+  }
 }

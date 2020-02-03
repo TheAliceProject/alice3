@@ -53,33 +53,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeParameterOperation extends AbstractCodeActionOperation {
-	private UserParameter parameter;
-	private NodeListProperty<UserParameter> parametersProperty;
+  private UserParameter parameter;
+  private NodeListProperty<UserParameter> parametersProperty;
 
-	public AbstractCodeParameterOperation( UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
-		super( individualId );
-		this.parametersProperty = parametersProperty;
-		this.parameter = parameter;
-	}
+  public AbstractCodeParameterOperation(UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter) {
+    super(individualId);
+    this.parametersProperty = parametersProperty;
+    this.parameter = parameter;
+  }
 
-	public NodeListProperty<UserParameter> getParametersProperty() {
-		return this.parametersProperty;
-	}
+  public NodeListProperty<UserParameter> getParametersProperty() {
+    return this.parametersProperty;
+  }
 
-	protected UserParameter getParameter() {
-		return this.parameter;
-	}
+  protected UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	protected int getIndex() {
-		return this.parametersProperty.indexOf( this.parameter );
-	}
+  protected int getIndex() {
+    return this.parametersProperty.indexOf(this.parameter);
+  }
 
-	protected int getParameterCount() {
-		return this.parametersProperty.size();
-	}
+  protected int getParameterCount() {
+    return this.parametersProperty.size();
+  }
 
-	@Override
-	protected UserCode getCode() {
-		return (UserCode)this.parameter.getFirstAncestorAssignableTo( AbstractCode.class );
-	}
+  @Override
+  protected UserCode getCode() {
+    return (UserCode) this.parameter.getFirstAncestorAssignableTo(AbstractCode.class);
+  }
 }

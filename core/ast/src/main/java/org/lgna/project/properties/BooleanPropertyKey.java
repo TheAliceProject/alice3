@@ -51,23 +51,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BooleanPropertyKey extends PropertyKey<Boolean> {
-	public BooleanPropertyKey( UUID id, String repr ) {
-		super( id, repr );
-	}
+  public BooleanPropertyKey(UUID id, String repr) {
+    super(id, repr);
+  }
 
-	@Override
-	protected Boolean decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			return binaryDecoder.decodeBoolean();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Boolean decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      return binaryDecoder.decodeBoolean();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void encodeValue( BinaryEncoder binaryEncoder, Boolean value ) {
-		binaryEncoder.encode( value != null );
-		binaryEncoder.encode( value );
-	}
+  @Override
+  protected void encodeValue(BinaryEncoder binaryEncoder, Boolean value) {
+    binaryEncoder.encode(value != null);
+    binaryEncoder.encode(value);
+  }
 }

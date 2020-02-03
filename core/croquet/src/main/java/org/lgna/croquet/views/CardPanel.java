@@ -59,97 +59,95 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
-	private class CustomPreferredSizeCardLayout extends CardLayout {
-		public CustomPreferredSizeCardLayout( int hgap, int vgap ) {
-			super( hgap, vgap );
-		}
+  private class CustomPreferredSizeCardLayout extends CardLayout {
+    public CustomPreferredSizeCardLayout(int hgap, int vgap) {
+      super(hgap, vgap);
+    }
 
-		@Override
-		public Dimension preferredLayoutSize( Container parent ) {
-			synchronized( parent.getTreeLock() ) {
-				CardOwnerComposite cardOwner = (CardOwnerComposite)getComposite();
+    @Override
+    public Dimension preferredLayoutSize(Container parent) {
+      synchronized (parent.getTreeLock()) {
+        CardOwnerComposite cardOwner = (CardOwnerComposite) getComposite();
 
-				int widthMax = 0;
-				int heightMax = 0;
+        int widthMax = 0;
+        int heightMax = 0;
 
-				for( Composite<?> card : cardOwner.getCards() ) {
-					if( cardOwner.isCardAccountedForInPreferredSizeCalculation( card ) ) {
-						Component awtChild = card.getRootComponent().getAwtComponent();
-						Dimension awtChildPreferredSize = awtChild.getPreferredSize();
-						widthMax = Math.max( widthMax, awtChildPreferredSize.width );
-						heightMax = Math.max( heightMax, awtChildPreferredSize.height );
-					}
-				}
-				Insets insets = parent.getInsets();
-				int hgap = this.getHgap();
-				int vgap = this.getVgap();
-				return new Dimension(
-						hgap + insets.left + widthMax + insets.right + hgap,
-						vgap + insets.top + heightMax + insets.bottom + vgap );
-			}
-		}
-	}
+        for (Composite<?> card : cardOwner.getCards()) {
+          if (cardOwner.isCardAccountedForInPreferredSizeCalculation(card)) {
+            Component awtChild = card.getRootComponent().getAwtComponent();
+            Dimension awtChildPreferredSize = awtChild.getPreferredSize();
+            widthMax = Math.max(widthMax, awtChildPreferredSize.width);
+            heightMax = Math.max(heightMax, awtChildPreferredSize.height);
+          }
+        }
+        Insets insets = parent.getInsets();
+        int hgap = this.getHgap();
+        int vgap = this.getVgap();
+        return new Dimension(hgap + insets.left + widthMax + insets.right + hgap, vgap + insets.top + heightMax + insets.bottom + vgap);
+      }
+    }
+  }
 
-	private final CardLayout cardLayout;
+  private final CardLayout cardLayout;
 
-	public CardPanel( CardOwnerComposite composite, int hgap, int vgap ) {
-		super( composite );
-		this.cardLayout = new CustomPreferredSizeCardLayout( hgap, vgap );
-		Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
-		if( composite != null ) {
-			java.util.List<Composite<?>> cards = composite.getCards();
-			for( Composite<?> card : cards ) {
-				this.addComposite( card );
-			}
-			if( cards.size() > 0 ) {
-				color = cards.get( 0 ).getView().getBackgroundColor();
-			}
-		}
-		this.setBackgroundColor( color );
-	}
+  public CardPanel(CardOwnerComposite composite, int hgap, int vgap) {
+    super(composite);
+    this.cardLayout = new CustomPreferredSizeCardLayout(hgap, vgap);
+    Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
+    if (composite != null) {
+      java.util.List<Composite<?>> cards = composite.getCards();
+      for (Composite<?> card : cards) {
+        this.addComposite(card);
+      }
+      if (cards.size() > 0) {
+        color = cards.get(0).getView().getBackgroundColor();
+      }
+    }
+    this.setBackgroundColor(color);
+  }
 
-	public CardPanel( CardOwnerComposite composite ) {
-		this( composite, 0, 0 );
-	}
+  public CardPanel(CardOwnerComposite composite) {
+    this(composite, 0, 0);
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		return this.cardLayout;
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    return this.cardLayout;
+  }
 
-	private static final String NULL_KEY = "null";
+  private static final String NULL_KEY = "null";
 
-	private Label nullLabel;
+  private Label nullLabel;
 
-	private static String getKey( Composite<?> composite ) {
-		return composite != null ? composite.getCardId().toString() : NULL_KEY;
-	}
+  private static String getKey(Composite<?> composite) {
+    return composite != null ? composite.getCardId().toString() : NULL_KEY;
+  }
 
-	public void addComposite( Composite<?> composite ) {
-		assert composite != null : this;
-		synchronized( this.getTreeLock() ) {
-			this.internalAddComponent( composite.getRootComponent(), getKey( composite ) );
-		}
-	}
+  public void addComposite(Composite<?> composite) {
+    assert composite != null : this;
+    synchronized (this.getTreeLock()) {
+      this.internalAddComponent(composite.getRootComponent(), getKey(composite));
+    }
+  }
 
-	public void removeComposite( Composite<?> composite ) {
-		assert composite != null : this;
-		synchronized( this.getTreeLock() ) {
-			this.internalRemoveComponent( composite.getRootComponent() );
-		}
-	}
+  public void removeComposite(Composite<?> composite) {
+    assert composite != null : this;
+    synchronized (this.getTreeLock()) {
+      this.internalRemoveComponent(composite.getRootComponent());
+    }
+  }
 
-	public void showComposite( Composite<?> composite ) {
-		if( composite != null ) {
-			//pass
-		} else {
-			if( this.nullLabel != null ) {
-				//pass
-			} else {
-				this.nullLabel = new Label();
-				this.internalAddComponent( this.nullLabel, NULL_KEY );
-			}
-		}
-		this.cardLayout.show( this.getAwtComponent(), getKey( composite ) );
-	}
+  public void showComposite(Composite<?> composite) {
+    if (composite != null) {
+      //pass
+    } else {
+      if (this.nullLabel != null) {
+        //pass
+      } else {
+        this.nullLabel = new Label();
+        this.internalAddComponent(this.nullLabel, NULL_KEY);
+      }
+    }
+    this.cardLayout.show(this.getAwtComponent(), getKey(composite));
+  }
 }

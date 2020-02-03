@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="IceMountain">
+    <BoundingBox>
+        <Min x="-5.8358893394470215" y="-3.099441414633475E-8" z="-4.643775463104248"/>
+        <Max x="1.7674835920333862" y="7.16843843460083" z="4.643775463104248"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>mountain</Tag>
+        <Tag>peak. cave</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-5.8358893394470215" y="-3.099441414633475E-8" z="-3.579796314239502"/>
+            <Max x="1.7674835920333862" y="7.16843843460083" z="4.643775463104248"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Flipped" resourceName="FLIPPED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-5.8358893394470215" y="-3.099441414633475E-8" z="-4.643775463104248"/>
+            <Max x="1.7674835920333862" y="7.16843843460083" z="3.579796314239502"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

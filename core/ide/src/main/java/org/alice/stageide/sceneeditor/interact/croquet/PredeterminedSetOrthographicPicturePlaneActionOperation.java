@@ -56,75 +56,73 @@ import org.lgna.croquet.history.UserActivity;
 import java.util.UUID;
 
 public class PredeterminedSetOrthographicPicturePlaneActionOperation extends ActionOperation {
-	private boolean isDoRequired;
-	private Animator animator;
-	private OrthographicCamera orthoCamera;
-	private double previousPicturePlaneHeight;
-	private double nextPicturePlaneHeight;
+  private boolean isDoRequired;
+  private Animator animator;
+  private OrthographicCamera orthoCamera;
+  private double previousPicturePlaneHeight;
+  private double nextPicturePlaneHeight;
 
-	private String editPresentationKey;
+  private String editPresentationKey;
 
-	public PredeterminedSetOrthographicPicturePlaneActionOperation( Group group, boolean isDoRequired, Animator animator, OrthographicCamera orthoCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey ) {
-		super( group, UUID.fromString( "67faf90c-97c6-40d4-9ddb-f31f22003682" ) );
-		this.isDoRequired = isDoRequired;
-		this.animator = animator;
-		this.orthoCamera = orthoCamera;
+  public PredeterminedSetOrthographicPicturePlaneActionOperation(Group group, boolean isDoRequired, Animator animator, OrthographicCamera orthoCamera, double previousPicturePlaneHeight, double nextPicturePlaneHeight, String editPresentationKey) {
+    super(group, UUID.fromString("67faf90c-97c6-40d4-9ddb-f31f22003682"));
+    this.isDoRequired = isDoRequired;
+    this.animator = animator;
+    this.orthoCamera = orthoCamera;
 
-		this.previousPicturePlaneHeight = previousPicturePlaneHeight;
-		this.nextPicturePlaneHeight = nextPicturePlaneHeight;
+    this.previousPicturePlaneHeight = previousPicturePlaneHeight;
+    this.nextPicturePlaneHeight = nextPicturePlaneHeight;
 
-		this.editPresentationKey = editPresentationKey;
-	}
+    this.editPresentationKey = editPresentationKey;
+  }
 
-	private void setHeightOnCamera( OrthographicCamera camera, double height )
-	{
-		ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.getValue();
-		picturePlane.setHeight( height );
-		PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.setValue( picturePlane );
-	}
+  private void setHeightOnCamera(OrthographicCamera camera, double height) {
+    ClippedZPlane picturePlane = PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.getValue();
+    picturePlane.setHeight(height);
+    PredeterminedSetOrthographicPicturePlaneActionOperation.this.orthoCamera.picturePlane.setValue(picturePlane);
+  }
 
-	private void setPicturePlaneHeight( final double height ) {
-		if( this.animator != null ) {
-			class ZoomAnimation extends DoubleAnimation {
-				public ZoomAnimation() {
-					super( 0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, orthoCamera.picturePlane.getValue().getHeight(), height );
-				}
+  private void setPicturePlaneHeight(final double height) {
+    if (this.animator != null) {
+      class ZoomAnimation extends DoubleAnimation {
+        public ZoomAnimation() {
+          super(0.5, TraditionalStyle.BEGIN_AND_END_GENTLY, orthoCamera.picturePlane.getValue().getHeight(), height);
+        }
 
-				@Override
-				protected void updateValue( Double newHeight ) {
-					setHeightOnCamera( orthoCamera, newHeight.doubleValue() );
-				}
-			}
-			this.animator.invokeLater( new ZoomAnimation(), null );
-		} else
-		{
-			setHeightOnCamera( orthoCamera, height );
-		}
+        @Override
+        protected void updateValue(Double newHeight) {
+          setHeightOnCamera(orthoCamera, newHeight.doubleValue());
+        }
+      }
+      this.animator.invokeLater(new ZoomAnimation(), null);
+    } else {
+      setHeightOnCamera(orthoCamera, height);
+    }
 
-	}
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
-			@Override
-			protected void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired == false ) ) {
-					//pass
-				} else {
-					setPicturePlaneHeight( nextPicturePlaneHeight );
-				}
-			}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new AbstractEdit(activity) {
+      @Override
+      protected void doOrRedoInternal(boolean isDo) {
+        if (isDo && (isDoRequired == false)) {
+          //pass
+        } else {
+          setPicturePlaneHeight(nextPicturePlaneHeight);
+        }
+      }
 
-			@Override
-			protected void undoInternal() {
-				setPicturePlaneHeight( previousPicturePlaneHeight );
-			}
+      @Override
+      protected void undoInternal() {
+        setPicturePlaneHeight(previousPicturePlaneHeight);
+      }
 
-			@Override
-			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-				rv.append( editPresentationKey );
-			}
-		} );
-	}
+      @Override
+      protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+        rv.append(editPresentationKey);
+      }
+    });
+  }
 
 }

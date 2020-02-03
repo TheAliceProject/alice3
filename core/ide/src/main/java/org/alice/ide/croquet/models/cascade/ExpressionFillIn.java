@@ -63,55 +63,55 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillIn<F extends Expression, B> extends ImmutableCascadeFillIn<F, B> {
-	private String text;
+  private String text;
 
-	public ExpressionFillIn( UUID id, CascadeBlank<B>... blanks ) {
-		super( id, blanks );
-	}
+  public ExpressionFillIn(UUID id, CascadeBlank<B>... blanks) {
+    super(id, blanks);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.text = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.text = this.findDefaultLocalizedText();
+  }
 
-	protected Icon getLeadingIcon( ItemNode<? super F, B> step ) {
-		return null;
-	}
+  protected Icon getLeadingIcon(ItemNode<? super F, B> step) {
+    return null;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super F, B> step ) {
-		Expression expression = this.getTransientValue( step );
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super F, B> step) {
+    Expression expression = this.getTransientValue(step);
 
-		Icon leadingIcon = this.getLeadingIcon( step );
-		JLabel trailingLabel;
-		if( ( this.text != null ) && ( this.text.length() > 0 ) ) {
-			trailingLabel = LabelUtilities.createLabel( this.text, TextPosture.OBLIQUE, TextWeight.LIGHT );
-		} else {
-			trailingLabel = null;
-		}
-		JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
-		if( ( leadingIcon != null ) || ( trailingLabel != null ) ) {
-			JLineAxisPane rv = new JLineAxisPane();
-			if( leadingIcon != null ) {
-				rv.add( new JLabel( leadingIcon ) );
-			}
-			rv.add( expressionPane );
-			if( trailingLabel != null ) {
-				trailingLabel.setBorder( new EmptyBorder( 0, 16, 0, 0 ) );
-				rv.add( trailingLabel );
-			}
-			return rv;
-		} else {
-			return expressionPane;
-		}
-	}
-	//	@Override
-	//	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-	//		return super.getMenuItemIcon( step );
-	//	}
-	//	@Override
-	//	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-	//		return super.getMenuItemText( step );
-	//	}
+    Icon leadingIcon = this.getLeadingIcon(step);
+    JLabel trailingLabel;
+    if ((this.text != null) && (this.text.length() > 0)) {
+      trailingLabel = LabelUtilities.createLabel(this.text, TextPosture.OBLIQUE, TextWeight.LIGHT);
+    } else {
+      trailingLabel = null;
+    }
+    JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
+    if ((leadingIcon != null) || (trailingLabel != null)) {
+      JLineAxisPane rv = new JLineAxisPane();
+      if (leadingIcon != null) {
+        rv.add(new JLabel(leadingIcon));
+      }
+      rv.add(expressionPane);
+      if (trailingLabel != null) {
+        trailingLabel.setBorder(new EmptyBorder(0, 16, 0, 0));
+        rv.add(trailingLabel);
+      }
+      return rv;
+    } else {
+      return expressionPane;
+    }
+  }
+  //  @Override
+  //  public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
+  //    return super.getMenuItemIcon( step );
+  //  }
+  //  @Override
+  //  public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
+  //    return super.getMenuItemText( step );
+  //  }
 }

@@ -47,15 +47,15 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 import java.util.UUID;
 
 public class MouseClickedOnScreenAdapterFillIn extends LambdaExpressionFillIn {
-	private static class SingletonHolder {
-		private static MouseClickedOnScreenAdapterFillIn instance = new MouseClickedOnScreenAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static MouseClickedOnScreenAdapterFillIn instance = new MouseClickedOnScreenAdapterFillIn();
+  }
 
-	public static MouseClickedOnScreenAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MouseClickedOnScreenAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MouseClickedOnScreenAdapterFillIn() {
-		super( UUID.fromString( "b7939d99-86ea-4f68-a42e-db044e8f3cf6" ), MouseClickOnScreenListener.class );
-	}
+  private MouseClickedOnScreenAdapterFillIn() {
+    super(UUID.fromString("b7939d99-86ea-4f68-a42e-db044e8f3cf6"), MouseClickOnScreenListener.class);
+  }
 }

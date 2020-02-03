@@ -55,35 +55,35 @@ import java.awt.font.GlyphVector;
  * @author Dennis Cosgrove
  */
 public class TextModelIcon extends ShapeIcon {
-	private final Font font;
+  private final Font font;
 
-	public TextModelIcon( Dimension size ) {
-		super( size );
-		this.font = new Font( null, Font.ITALIC, ( size.height * 4 ) / 5 );
-	}
+  public TextModelIcon(Dimension size) {
+    super(size);
+    this.font = new Font(null, Font.ITALIC, (size.height * 4) / 5);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		Font prevFont = g2.getFont();
-		g2.setFont( font );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    Font prevFont = g2.getFont();
+    g2.setFont(font);
 
-		String text = "A";
-		FontMetrics fm = g2.getFontMetrics();
-		int messageWidth = fm.stringWidth( text );
-		int ascent = fm.getMaxAscent();
-		int descent = fm.getMaxDescent();
-		int x = ( width / 2 ) - ( messageWidth / 2 );
-		int y = ( ( height / 2 ) + ( ascent / 2 ) ) - ( descent / 2 );
+    String text = "A";
+    FontMetrics fm = g2.getFontMetrics();
+    int messageWidth = fm.stringWidth(text);
+    int ascent = fm.getMaxAscent();
+    int descent = fm.getMaxDescent();
+    int x = (width / 2) - (messageWidth / 2);
+    int y = ((height / 2) + (ascent / 2)) - (descent / 2);
 
-		GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
-		Shape outline = glyphVector.getOutline( x, y );
-		g2.setPaint( drawPaint );
-		g2.draw( outline );
+    GlyphVector glyphVector = font.createGlyphVector(g2.getFontRenderContext(), text);
+    Shape outline = glyphVector.getOutline(x, y);
+    g2.setPaint(drawPaint);
+    g2.draw(outline);
 
-		g2.setPaint( fillPaint );
-		g2.fill( outline );
-		//		g2.drawString( text, x, y );
+    g2.setPaint(fillPaint);
+    g2.fill(outline);
+    //    g2.drawString( text, x, y );
 
-		g2.setFont( prevFont );
-	}
+    g2.setFont(prevFont);
+  }
 }

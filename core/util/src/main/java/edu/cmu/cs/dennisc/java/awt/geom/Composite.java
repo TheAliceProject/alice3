@@ -50,28 +50,28 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Composite extends Transformable {
-	private List<Transformable> m_children = new LinkedList<Transformable>();
+  private List<Transformable> m_children = new LinkedList<Transformable>();
 
-	public void add( Transformable child ) {
-		m_children.add( child );
-	}
+  public void add(Transformable child) {
+    m_children.add(child);
+  }
 
-	public void remove( Transformable child ) {
-		m_children.remove( child );
-	}
+  public void remove(Transformable child) {
+    m_children.remove(child);
+  }
 
-	@Override
-	protected void paintComponent( GraphicsContext gc ) {
-		for( Transformable child : m_children ) {
-			child.paint( gc );
-		}
-	}
+  @Override
+  protected void paintComponent(GraphicsContext gc) {
+    for (Transformable child : m_children) {
+      child.paint(gc);
+    }
+  }
 
-	@Override
-	protected Area update( Area rv, TransformContext tc ) {
-		for( Transformable child : m_children ) {
-			child.getArea( rv, tc );
-		}
-		return rv;
-	}
+  @Override
+  protected Area update(Area rv, TransformContext tc) {
+    for (Transformable child : m_children) {
+      child.getArea(rv, tc);
+    }
+    return rv;
+  }
 }

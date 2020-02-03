@@ -58,87 +58,79 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class SelectProjectUriComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, UriProjectLoader> {
-	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
-	private final StartersTab startersTab = new StartersTab();
-	private final TemplatesTab templatesTab = new TemplatesTab();
-	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
-	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
-	private final FileSystemTab fileSystemTab = new FileSystemTab();
-	private final ImmutableDataTabState<SelectUriTab> tabState = this.createImmutableTabState(
-			"tabState",
-			-1,
-			SelectUriTab.class,
-			this.templatesTab,
-			this.startersTab,
-			this.myProjectsTab,
-			this.recentProjectsTab,
-			this.fileSystemTab );
+  private final ErrorStatus noSelectionError = this.createErrorStatus("noSelectionError");
+  private final StartersTab startersTab = new StartersTab();
+  private final TemplatesTab templatesTab = new TemplatesTab();
+  private final MyProjectsTab myProjectsTab = new MyProjectsTab();
+  private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
+  private final FileSystemTab fileSystemTab = new FileSystemTab();
+  private final ImmutableDataTabState<SelectUriTab> tabState = this.createImmutableTabState("tabState", -1, SelectUriTab.class, this.templatesTab, this.startersTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab);
 
-	private UriProjectLoader getSelectedProject() {
-		SelectUriTab tab = tabState.getValue();
-		return tab != null ? tab.getSelectedUri() : null;
-	}
+  private UriProjectLoader getSelectedProject() {
+    SelectUriTab tab = tabState.getValue();
+    return tab != null ? tab.getSelectedUri() : null;
+  }
 
-	private static class SingletonHolder {
-		private static SelectProjectUriComposite instance = new SelectProjectUriComposite();
-	}
+  private static class SingletonHolder {
+    private static SelectProjectUriComposite instance = new SelectProjectUriComposite();
+  }
 
-	public static SelectProjectUriComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SelectProjectUriComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SelectProjectUriComposite() {
-		super( UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
-	}
+  private SelectProjectUriComposite() {
+    super(UUID.fromString("3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9"));
+  }
 
-	public ImmutableDataTabState<SelectUriTab> getTabState() {
-		return this.tabState;
-	}
+  public ImmutableDataTabState<SelectUriTab> getTabState() {
+    return this.tabState;
+  }
 
-	@Override
-	protected UriProjectLoader createValue() {
-		return getSelectedProject();
-	}
+  @Override
+  protected UriProjectLoader createValue() {
+    return getSelectedProject();
+  }
 
-	@Override
-	protected Panel createView() {
-		BorderPanel view = new BorderPanel( this );
-		view.addCenterComponent( getTabState().createFolderTabbedPane() );
-		view.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
-		return view;
-	}
+  @Override
+  protected Panel createView() {
+    BorderPanel view = new BorderPanel(this);
+    view.addCenterComponent(getTabState().createFolderTabbedPane());
+    view.setBackgroundColor(TabContentPanel.DEFAULT_BACKGROUND_COLOR);
+    return view;
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return getSelectedProject() != null ? IS_GOOD_TO_GO_STATUS : this.noSelectionError;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return getSelectedProject() != null ? IS_GOOD_TO_GO_STATUS : this.noSelectionError;
+  }
 
-	@Override
-	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		return 800;
-	}
+  @Override
+  protected Integer getWiderGoldenRatioSizeFromWidth() {
+    return 800;
+  }
 
-	public void selectAppropriateTab( boolean isNew ) {
-		SelectUriTab tab;
-		if( isNew ) {
-			//tab = this.startersTab != null ? this.startersTab : this.templatesTab;
-			tab = this.templatesTab;
-		} else {
-			tab = this.myProjectsTab; // todo: recentTab?
-		}
-		this.tabState.setValueTransactionlessly( tab );
-		ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
-	}
+  public void selectAppropriateTab(boolean isNew) {
+    SelectUriTab tab;
+    if (isNew) {
+      //tab = this.startersTab != null ? this.startersTab : this.templatesTab;
+      tab = this.templatesTab;
+    } else {
+      tab = this.myProjectsTab; // todo: recentTab?
+    }
+    this.tabState.setValueTransactionlessly(tab);
+    ComponentManager.revalidateAndRepaintAllComponents(this.tabState);
+  }
 
-	private void refresh() {
-		for( SelectUriTab contentTab : this.tabState ) {
-			contentTab.refresh();
-		}
-	}
+  private void refresh() {
+    for (SelectUriTab contentTab : this.tabState) {
+      contentTab.refresh();
+    }
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.refresh();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.refresh();
+    super.handlePreShowDialog(dialog);
+  }
 }

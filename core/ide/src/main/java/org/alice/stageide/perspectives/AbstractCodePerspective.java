@@ -61,26 +61,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodePerspective extends ProjectPerspective {
-	public AbstractCodePerspective( UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
-		super( id, projectDocumentFrame, menuBar );
-	}
+  public AbstractCodePerspective(UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar) {
+    super(id, projectDocumentFrame, menuBar);
+  }
 
-	@Override
-	public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return this.getProjectDocumentFrame().getDeclarationsEditorComposite().getView().getCodeDropReceptorInFocus();
-	}
+  @Override
+  public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
+    return this.getProjectDocumentFrame().getDeclarationsEditorComposite().getView().getCodeDropReceptorInFocus();
+  }
 
-	@Override
-	public TrackableShape getRenderWindow() {
-		return StorytellingSceneEditor.getInstance();
-	}
+  @Override
+  public TrackableShape getRenderWindow() {
+    return StorytellingSceneEditor.getInstance();
+  }
 
-	@Override
-	protected void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
-		DeclarationComposite<?, ?> declarationComposite = this.getProjectDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-		if( declarationComposite != null ) {
-			DeclarationView declarationView = declarationComposite.getView();
-			declarationView.addPotentialDropReceptors( out, dragModel );
-		}
-	}
+  @Override
+  protected void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel) {
+    DeclarationComposite<?, ?> declarationComposite = this.getProjectDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+    if (declarationComposite != null) {
+      DeclarationView declarationView = declarationComposite.getView();
+      declarationView.addPotentialDropReceptors(out, dragModel);
+    }
+  }
 }

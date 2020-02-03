@@ -61,105 +61,105 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public class PopupMenuUtilities {
-	public static void showModal( JPopupMenu popupMenu, Component invoker, Point pt ) {
-		Component root = SwingUtilities.getRoot( invoker );
-		final JLayeredPane layeredPane;
-		if( root instanceof JFrame ) {
-			JFrame window = (JFrame)root;
-			layeredPane = window.getLayeredPane();
-		} else if( root instanceof JDialog ) {
-			JDialog window = (JDialog)root;
-			layeredPane = window.getLayeredPane();
-		} else if( root instanceof JWindow ) {
-			JWindow window = (JWindow)root;
-			layeredPane = window.getLayeredPane();
-		} else {
-			layeredPane = null;
-		}
-		if( layeredPane != null ) {
-			class EventConsumer extends JComponent {
-				private MouseListener mouseAdapter = new MouseListener() {
-					@Override
-					public void mouseEntered( MouseEvent e ) {
-					}
+  public static void showModal(JPopupMenu popupMenu, Component invoker, Point pt) {
+    Component root = SwingUtilities.getRoot(invoker);
+    final JLayeredPane layeredPane;
+    if (root instanceof JFrame) {
+      JFrame window = (JFrame) root;
+      layeredPane = window.getLayeredPane();
+    } else if (root instanceof JDialog) {
+      JDialog window = (JDialog) root;
+      layeredPane = window.getLayeredPane();
+    } else if (root instanceof JWindow) {
+      JWindow window = (JWindow) root;
+      layeredPane = window.getLayeredPane();
+    } else {
+      layeredPane = null;
+    }
+    if (layeredPane != null) {
+      class EventConsumer extends JComponent {
+        private MouseListener mouseAdapter = new MouseListener() {
+          @Override
+          public void mouseEntered(MouseEvent e) {
+          }
 
-					@Override
-					public void mouseExited( MouseEvent e ) {
-					}
+          @Override
+          public void mouseExited(MouseEvent e) {
+          }
 
-					@Override
-					public void mousePressed( MouseEvent e ) {
-					}
+          @Override
+          public void mousePressed(MouseEvent e) {
+          }
 
-					@Override
-					public void mouseReleased( MouseEvent e ) {
-						EventConsumer.this.removeFromParentJustInCaseAnExceptionWasThrownSomewhere();
-					}
+          @Override
+          public void mouseReleased(MouseEvent e) {
+            EventConsumer.this.removeFromParentJustInCaseAnExceptionWasThrownSomewhere();
+          }
 
-					@Override
-					public void mouseClicked( MouseEvent e ) {
-					}
-				};
+          @Override
+          public void mouseClicked(MouseEvent e) {
+          }
+        };
 
-				private void removeFromParentJustInCaseAnExceptionWasThrownSomewhere() {
-					Container parent = this.getParent();
-					if( parent != null ) {
-						parent.remove( this );
-					}
-				}
+        private void removeFromParentJustInCaseAnExceptionWasThrownSomewhere() {
+          Container parent = this.getParent();
+          if (parent != null) {
+            parent.remove(this);
+          }
+        }
 
-				@Override
-				public void addNotify() {
-					super.addNotify();
-					this.setLocation( 0, 0 );
-					Component parent = this.getParent();
-					if( parent != null ) {
-						this.setSize( parent.getSize() );
-					}
-					this.addMouseListener( this.mouseAdapter );
-				}
+        @Override
+        public void addNotify() {
+          super.addNotify();
+          this.setLocation(0, 0);
+          Component parent = this.getParent();
+          if (parent != null) {
+            this.setSize(parent.getSize());
+          }
+          this.addMouseListener(this.mouseAdapter);
+        }
 
-				@Override
-				public void removeNotify() {
-					this.removeMouseListener( this.mouseAdapter );
-					super.removeNotify();
-				}
+        @Override
+        public void removeNotify() {
+          this.removeMouseListener(this.mouseAdapter);
+          super.removeNotify();
+        }
 
-			}
-			final EventConsumer eventConsumer = new EventConsumer();
-			popupMenu.addPopupMenuListener( new PopupMenuListener() {
-				@Override
-				public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-					layeredPane.add( eventConsumer, new Integer( JLayeredPane.MODAL_LAYER ) );
-				}
+      }
+      final EventConsumer eventConsumer = new EventConsumer();
+      popupMenu.addPopupMenuListener(new PopupMenuListener() {
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+          layeredPane.add(eventConsumer, new Integer(JLayeredPane.MODAL_LAYER));
+        }
 
-				@Override
-				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-					layeredPane.remove( eventConsumer );
-				}
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+          layeredPane.remove(eventConsumer);
+        }
 
-				@Override
-				public void popupMenuCanceled( PopupMenuEvent e ) {
-				}
-			} );
-		}
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+        }
+      });
+    }
 
-		int x;
-		int y;
-		if( pt != null ) {
-			x = pt.x;
-			y = pt.y;
-		} else {
-			if( invoker != null ) {
-				//todo
-				//if( invoker.getComponentOrientation().isLeftToRight() ) {
-				x = 0;
-				y = invoker.getHeight();
-			} else {
-				x = 0;
-				y = 0;
-			}
-		}
-		popupMenu.show( invoker, x, y );
-	}
+    int x;
+    int y;
+    if (pt != null) {
+      x = pt.x;
+      y = pt.y;
+    } else {
+      if (invoker != null) {
+        //todo
+        //if( invoker.getComponentOrientation().isLeftToRight() ) {
+        x = 0;
+        y = invoker.getHeight();
+      } else {
+        x = 0;
+        y = 0;
+      }
+    }
+    popupMenu.show(invoker, x, y);
+  }
 }

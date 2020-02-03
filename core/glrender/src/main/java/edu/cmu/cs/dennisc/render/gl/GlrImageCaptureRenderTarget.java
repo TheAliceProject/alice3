@@ -52,39 +52,35 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrImageCaptureRenderTarget extends GlrRenderTarget implements ImageCaptureRenderTarget {
-	public GlrImageCaptureRenderTarget( GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
-		super( renderFactory, requestedCapabilities );
-		this.width = width;
-		this.height = height;
-		this.glDrawable = GlDrawableUtils.createGlPixelBuffer(
-				GlDrawableUtils.createGlCapabilities( requestedCapabilities ),
-				GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(),
-				this.width, this.height,
-				GlDrawableUtils.getGlContextToShare( renderTargetToShareContextWith ) );
-	}
+  public GlrImageCaptureRenderTarget(GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
+    super(renderFactory, requestedCapabilities);
+    this.width = width;
+    this.height = height;
+    this.glDrawable = GlDrawableUtils.createGlPixelBuffer(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), this.width, this.height, GlDrawableUtils.getGlContextToShare(renderTargetToShareContextWith));
+  }
 
-	@Override
-	protected void repaintIfAppropriate() {
-	}
+  @Override
+  protected void repaintIfAppropriate() {
+  }
 
-	@Override
-	public GLAutoDrawable getGLAutoDrawable() {
-		return this.glDrawable;
-	}
+  @Override
+  public GLAutoDrawable getGLAutoDrawable() {
+    return this.glDrawable;
+  }
 
-	@Override
-	protected Dimension getSurfaceSize( Dimension rv ) {
-		rv.setSize( this.width, this.height );
-		return rv;
-	}
+  @Override
+  protected Dimension getSurfaceSize(Dimension rv) {
+    rv.setSize(this.width, this.height);
+    return rv;
+  }
 
-	@Override
-	protected Dimension getDrawableSize( Dimension rv ) {
-		rv.setSize( this.width, this.height );
-		return rv;
-	}
+  @Override
+  protected Dimension getDrawableSize(Dimension rv) {
+    rv.setSize(this.width, this.height);
+    return rv;
+  }
 
-	private final int width;
-	private final int height;
-	private final GLAutoDrawable glDrawable;
+  private final int width;
+  private final int height;
+  private final GLAutoDrawable glDrawable;
 }

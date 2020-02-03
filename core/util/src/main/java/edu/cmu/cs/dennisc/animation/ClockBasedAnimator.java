@@ -48,22 +48,22 @@ import edu.cmu.cs.dennisc.clock.Clock;
  * @author Dennis Cosgrove
  */
 public class ClockBasedAnimator extends AbstractAnimator {
-	private double m_tPreviousClock = Double.NaN;
-	private double m_tPreviousSimulation = Double.NaN;
+  private double m_tPreviousClock = Double.NaN;
+  private double m_tPreviousSimulation = Double.NaN;
 
-	@Override
-	protected void updateCurrentTime( boolean isPaused ) {
-		//todo: optimize for speed factor == 0
-		double tCurrentClock = Clock.getCurrentTime();
-		double tCurrentSimulation;
-		if( Double.isNaN( m_tPreviousClock ) ) {
-			tCurrentSimulation = 0.0;
-		} else {
-			//todo: optimize for speed factor == 0
-			tCurrentSimulation = m_tPreviousSimulation + ( ( tCurrentClock - m_tPreviousClock ) * getSpeedFactor() );
-		}
-		setCurrentTime( tCurrentSimulation );
-		m_tPreviousClock = tCurrentClock;
-		m_tPreviousSimulation = tCurrentSimulation;
-	}
+  @Override
+  protected void updateCurrentTime(boolean isPaused) {
+    //todo: optimize for speed factor == 0
+    double tCurrentClock = Clock.getCurrentTime();
+    double tCurrentSimulation;
+    if (Double.isNaN(m_tPreviousClock)) {
+      tCurrentSimulation = 0.0;
+    } else {
+      //todo: optimize for speed factor == 0
+      tCurrentSimulation = m_tPreviousSimulation + ((tCurrentClock - m_tPreviousClock) * getSpeedFactor());
+    }
+    setCurrentTime(tCurrentSimulation);
+    m_tPreviousClock = tCurrentClock;
+    m_tPreviousSimulation = tCurrentSimulation;
+  }
 }

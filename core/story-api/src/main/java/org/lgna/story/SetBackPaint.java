@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetBackPaint extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetBackPaint.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetBackPaint.class) public static interface Detail {
+  }
 
-	private SetBackPaint() {
-		super();
-	}
+  private SetBackPaint() {
+    super();
+  }
 }

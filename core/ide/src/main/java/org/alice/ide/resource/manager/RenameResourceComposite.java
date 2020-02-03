@@ -59,49 +59,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameResourceComposite extends RenameComposite<ResourceRenamePanel> {
-	public RenameResourceComposite( ItemState<Resource> resourceState ) {
-		super( UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), new ResourceNameValidator() );
-		this.resourceState = resourceState;
-	}
+  public RenameResourceComposite(ItemState<Resource> resourceState) {
+    super(UUID.fromString("52410415-1293-4857-9e35-4d52bc4f2a9d"), new ResourceNameValidator());
+    this.resourceState = resourceState;
+  }
 
-	private Resource getResource() {
-		return this.resourceState.getValue();
-	}
+  private Resource getResource() {
+    return this.resourceState.getValue();
+  }
 
-	@Override
-	protected String getInitialValue() {
-		Resource resource = this.getResource();
-		return resource != null ? resource.getName() : null;
-	}
+  @Override
+  protected String getInitialValue() {
+    Resource resource = this.getResource();
+    return resource != null ? resource.getName() : null;
+  }
 
-	@Override
-	protected ResourceRenamePanel createView() {
-		return new ResourceRenamePanel( this );
-	}
+  @Override
+  protected ResourceRenamePanel createView() {
+    return new ResourceRenamePanel(this);
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		Resource resource = this.getResource();
-		if( resource != null ) {
-			return new RenameResourceEdit( userActivity, resource, resource.getName(), this.getNameState().getValue() );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    Resource resource = this.getResource();
+    if (resource != null) {
+      return new RenameResourceEdit(userActivity, resource, resource.getName(), this.getNameState().getValue());
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		Resource resource = this.resourceState.getValue();
-		( (ResourceNameValidator)this.getNameValidator() ).setResource( resource );
-		this.getView().setResource( resource );
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    Resource resource = this.resourceState.getValue();
+    ((ResourceNameValidator) this.getNameValidator()).setResource(resource);
+    this.getView().setResource(resource);
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		this.getView().onHide();
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    this.getView().onHide();
+  }
 
-	private final ItemState<Resource> resourceState;
+  private final ItemState<Resource> resourceState;
 }

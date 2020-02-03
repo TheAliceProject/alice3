@@ -48,7 +48,7 @@ import org.lgna.story.AudioSource;
 import java.util.UUID;
 
 public class AudioSourceFillIn extends SourceFillIn<AudioResource> {
-	public AudioSourceFillIn( AudioResource resource ) {
-		super( UUID.fromString( "16a99ec6-6fe4-4ba3-af34-a8f54bfe936a" ), AudioSource.class, AudioResource.class, resource );
-	}
+  public AudioSourceFillIn(AudioResource resource) {
+    super(UUID.fromString("16a99ec6-6fe4-4ba3-af34-a8f54bfe936a"), AudioSource.class, AudioResource.class, resource);
+  }
 }

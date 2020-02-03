@@ -52,17 +52,17 @@ import org.lgna.croquet.views.ScrollPane;
  * @author Dennis Cosgrove
  */
 public class ShapesTabView extends GalleryTabView {
-	public ShapesTabView( ShapesTab composite ) {
-		super( composite );
-		MigPanel panel = new MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
-		for( ShapeDragModel dragModel : composite.getDragModels() ) {
-			panel.addComponent( new GalleryDragComponent( dragModel ) );
-		}
+  public ShapesTabView(ShapesTab composite) {
+    super(composite);
+    MigPanel panel = new MigPanel(null, "insets 0, aligny bottom", "[]0[]", "");
+    for (ShapeDragModel dragModel : composite.getDragModels()) {
+      panel.addComponent(new GalleryDragComponent(dragModel));
+    }
 
-		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+    panel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
 
-		ScrollPane scrollPane = createGalleryScrollPane( panel );
-		this.addCenterComponent( scrollPane );
-		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-	}
+    ScrollPane scrollPane = createGalleryScrollPane(panel);
+    this.addCenterComponent(scrollPane);
+    this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+  }
 }

@@ -43,23 +43,23 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class ConstructorBlockStatement extends BlockStatement {
-	public ConstructorBlockStatement() {
-		this.constructorInvocationStatement.setValue( new SuperConstructorInvocationStatement() );
-	}
+  public ConstructorBlockStatement() {
+    this.constructorInvocationStatement.setValue(new SuperConstructorInvocationStatement());
+  }
 
-	public ConstructorBlockStatement( ConstructorInvocationStatement constructorInvocationStatement, Statement... statements ) {
-		super( statements );
-		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
-	}
+  public ConstructorBlockStatement(ConstructorInvocationStatement constructorInvocationStatement, Statement... statements) {
+    super(statements);
+    this.constructorInvocationStatement.setValue(constructorInvocationStatement);
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendConstructorBlock(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendConstructorBlock(this);
+  }
 
-	public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );
+  public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>(this);
 }

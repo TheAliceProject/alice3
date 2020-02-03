@@ -2,9 +2,9 @@ package org.alice.tweedle;
 
 public class TweedleNull extends TweedleValue {
 
-	public static TweedleNull NULL = new TweedleNull();
+  public static TweedleNull NULL = new TweedleNull();
 
-	private TweedleNull() {
-		super( TweedleVoidType.VOID );
-	}
+  private TweedleNull() {
+    super(TweedleVoidType.VOID);
+  }
 }

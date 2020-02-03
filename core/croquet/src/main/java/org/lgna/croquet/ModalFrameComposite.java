@@ -58,155 +58,155 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> implements OperationOwningComposite<V> {
-	public ModalFrameComposite( UUID id, Group launchOperationGroup ) {
-		super( id );
-		this.imp = new LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>( this, launchOperationGroup );
-	}
+  public ModalFrameComposite(UUID id, Group launchOperationGroup) {
+    super(id);
+    this.imp = new LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>(this, launchOperationGroup);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.title = this.findLocalizedText("title");
+  }
 
-	protected LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> getImp() {
-		return this.imp;
-	}
+  protected LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> getImp() {
+    return this.imp;
+  }
 
-	public Operation getLaunchOperation( String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
-	}
+  public Operation getLaunchOperation(String subKeyText) {
+    return this.imp.getLaunchOperation(subKeyText);
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    return text;
+  }
 
-	protected void handlePreShowWindow( Frame frame ) {
-	}
+  protected void handlePreShowWindow(Frame frame) {
+  }
 
-	protected void handlePostHideWindow( Frame frame ) {
-	}
+  protected void handlePostHideWindow(Frame frame) {
+  }
 
-	protected void handleFinally() {
-	}
+  protected void handleFinally() {
+  }
 
-	@Override
-	public void perform( UserActivity userActivity ) {
-		final List<Frame> framesToDisable = Lists.newLinkedList();
+  @Override
+  public void perform(UserActivity userActivity) {
+    final List<Frame> framesToDisable = Lists.newLinkedList();
 
-		Application application = Application.getActiveInstance();
-		DocumentFrame documentFrame = application.getDocumentFrame();
-		framesToDisable.add( documentFrame.getFrame() );
+    Application application = Application.getActiveInstance();
+    DocumentFrame documentFrame = application.getDocumentFrame();
+    framesToDisable.add(documentFrame.getFrame());
 
-		final Frame frame = new Frame();
-		class ModalFrameWindowListener implements WindowListener {
-			@Override
-			public void windowOpened( WindowEvent e ) {
-				for( Frame frame : framesToDisable ) {
-					frame.getAwtComponent().setEnabled( false );
-				}
-			}
+    final Frame frame = new Frame();
+    class ModalFrameWindowListener implements WindowListener {
+      @Override
+      public void windowOpened(WindowEvent e) {
+        for (Frame frame : framesToDisable) {
+          frame.getAwtComponent().setEnabled(false);
+        }
+      }
 
-			@Override
-			public void windowClosing( WindowEvent e ) {
-				if( isWindowClosingEnabled() ) {
-					for( Frame frame : framesToDisable ) {
-						frame.getAwtComponent().setEnabled( true );
-					}
-					//e.getComponent().setVisible( false );
-					frame.release();
-				}
-			}
+      @Override
+      public void windowClosing(WindowEvent e) {
+        if (isWindowClosingEnabled()) {
+          for (Frame frame : framesToDisable) {
+            frame.getAwtComponent().setEnabled(true);
+          }
+          //e.getComponent().setVisible( false );
+          frame.release();
+        }
+      }
 
-			@Override
-			public void windowClosed( WindowEvent e ) {
-				frame.removeWindowListener( this );
-				try {
-					userActivity.finish();
-					handlePostHideWindow( frame );
-				} finally {
-					handleFinally();
-				}
-			}
+      @Override
+      public void windowClosed(WindowEvent e) {
+        frame.removeWindowListener(this);
+        try {
+          userActivity.finish();
+          handlePostHideWindow(frame);
+        } finally {
+          handleFinally();
+        }
+      }
 
-			@Override
-			public void windowActivated( WindowEvent e ) {
-			}
+      @Override
+      public void windowActivated(WindowEvent e) {
+      }
 
-			@Override
-			public void windowDeactivated( WindowEvent e ) {
-			}
+      @Override
+      public void windowDeactivated(WindowEvent e) {
+      }
 
-			@Override
-			public void windowDeiconified( WindowEvent e ) {
-			}
+      @Override
+      public void windowDeiconified(WindowEvent e) {
+      }
 
-			@Override
-			public void windowIconified( WindowEvent e ) {
-			}
-		}
+      @Override
+      public void windowIconified(WindowEvent e) {
+      }
+    }
 
-		ModalFrameWindowListener windowListener = new ModalFrameWindowListener();
-		frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
-		frame.addWindowListener( windowListener );
-		V view = this.getView();
-		frame.getAwtComponent().setContentPane( view.getAwtComponent() );
+    ModalFrameWindowListener windowListener = new ModalFrameWindowListener();
+    frame.setDefaultCloseOperation(Frame.DefaultCloseOperation.DO_NOTHING);
+    frame.addWindowListener(windowListener);
+    V view = this.getView();
+    frame.getAwtComponent().setContentPane(view.getAwtComponent());
 
-		this.updateWindowSize( frame );
-		final int OFFSET = 32;
-		Point p = documentFrame.getFrame().getLocation();
-		frame.setLocation( p.x + OFFSET, p.y + OFFSET );
-		frame.setTitle( this.getModalFrameTitle() );
-		this.handlePreShowWindow( frame );
-		frame.setVisible( true );
+    this.updateWindowSize(frame);
+    final int OFFSET = 32;
+    Point p = documentFrame.getFrame().getLocation();
+    frame.setLocation(p.x + OFFSET, p.y + OFFSET);
+    frame.setTitle(this.getModalFrameTitle());
+    this.handlePreShowWindow(frame);
+    frame.setVisible(true);
 
-		//			dialogOwner.handlePreShowDialog( userActivity );
-		//			//application.pushWindow( dialog );
-		//			dialog.setVisible( true );
-		//
-		//			if( isModal ) {
-		//				dialogOwner.handlePostHideDialog( userActivity );
-		//				dialog.removeWindowListener( dialogWindowListener );
-		//				dialogOwner.releaseView( userActivity, view );
-		//				dialog.getAwtComponent().dispose();
-		//			} else {
-		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
-		//			}
-		//		} finally {
-		//			if( isModal ) {
-		//				//application.popWindow();
-		//				dialogOwner.handleFinally( userActivity, dialog );
-		//			} else {
-		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
-		//			}
-		//		}
-	}
+    //    dialogOwner.handlePreShowDialog( userActivity );
+    //    //application.pushWindow( dialog );
+    //    dialog.setVisible( true );
+    //
+    //    if( isModal ) {
+    //      dialogOwner.handlePostHideDialog( userActivity );
+    //      dialog.removeWindowListener( dialogWindowListener );
+    //      dialogOwner.releaseView( userActivity, view );
+    //      dialog.getAwtComponent().dispose();
+    //    } else {
+    //      edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+    //    }
+    //  } finally {
+    //    if( isModal ) {
+    //      //application.popWindow();
+    //      dialogOwner.handleFinally( userActivity, dialog );
+    //    } else {
+    //      edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+    //    }
+    //  }
+  }
 
-	protected abstract String getName();
+  protected abstract String getName();
 
-	protected String getModalFrameTitle() {
-		this.initializeIfNecessary();
-		String rv = this.title;
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.getName();
-			if( rv != null ) {
-				rv = rv.replaceAll( "<[a-z]*>", "" );
-				rv = rv.replaceAll( "</[a-z]*>", "" );
-				if( rv.endsWith( "..." ) ) {
-					rv = rv.substring( 0, rv.length() - 3 );
-				}
-			}
-		}
-		return rv;
-	}
+  protected String getModalFrameTitle() {
+    this.initializeIfNecessary();
+    String rv = this.title;
+    if (rv != null) {
+      //pass
+    } else {
+      rv = this.getName();
+      if (rv != null) {
+        rv = rv.replaceAll("<[a-z]*>", "");
+        rv = rv.replaceAll("</[a-z]*>", "");
+        if (rv.endsWith("...")) {
+          rv = rv.substring(0, rv.length() - 3);
+        }
+      }
+    }
+    return rv;
+  }
 
-	protected boolean isWindowClosingEnabled() {
-		return true;
-	}
+  protected boolean isWindowClosingEnabled() {
+    return true;
+  }
 
-	private final LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> imp;
-	private String title;
+  private final LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> imp;
+  private String title;
 }

@@ -48,21 +48,21 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public class SelectedInstanceFactoryExpression extends IdeExpression {
-	public SelectedInstanceFactoryExpression( AbstractType<?, ?, ?> requiredType ) {
-		this.requiredType = requiredType;
-	}
+  public SelectedInstanceFactoryExpression(AbstractType<?, ?, ?> requiredType) {
+    this.requiredType = requiredType;
+  }
 
-	public AbstractType<?, ?, ?> getRequiredType() {
-		return this.requiredType;
-	}
+  public AbstractType<?, ?, ?> getRequiredType() {
+    return this.requiredType;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo?
-		//org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
-		//return instanceFactory.getValueType();
-		return this.requiredType;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //todo?
+    //org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
+    //return instanceFactory.getValueType();
+    return this.requiredType;
+  }
 
-	private final AbstractType<?, ?, ?> requiredType;
+  private final AbstractType<?, ?, ?> requiredType;
 }

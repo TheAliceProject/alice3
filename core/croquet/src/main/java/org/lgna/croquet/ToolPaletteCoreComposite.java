@@ -52,79 +52,79 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ToolPaletteCoreComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
-	private static class InternalIsExpandedState extends BooleanState {
-		private final ToolPaletteCoreComposite<?> coreComposite;
+  private static class InternalIsExpandedState extends BooleanState {
+    private final ToolPaletteCoreComposite<?> coreComposite;
 
-		private InternalIsExpandedState( Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( group, UUID.fromString( "470a871b-61ec-495b-8007-06a573a7a126" ), initialValue );
-			this.coreComposite = coreComposite;
-		}
+    private InternalIsExpandedState(Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite) {
+      super(group, UUID.fromString("470a871b-61ec-495b-8007-06a573a7a126"), initialValue);
+      this.coreComposite = coreComposite;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.coreComposite.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return this.coreComposite.getClassUsedForLocalization();
+    }
 
-		@Override
-		protected String modifyTextIfNecessary( String text, boolean isTrue ) {
-			return this.coreComposite.modifyTextIfNecessary( super.modifyTextIfNecessary( text, isTrue ), isTrue );
-		}
-	}
+    @Override
+    protected String modifyTextIfNecessary(String text, boolean isTrue) {
+      return this.coreComposite.modifyTextIfNecessary(super.modifyTextIfNecessary(text, isTrue), isTrue);
+    }
+  }
 
-	public static final class OuterComposite extends AbstractComposite<ToolPaletteView> {
-		private final BooleanState isExpandedState;
-		private final ToolPaletteCoreComposite<?> coreComposite;
+  public static final class OuterComposite extends AbstractComposite<ToolPaletteView> {
+    private final BooleanState isExpandedState;
+    private final ToolPaletteCoreComposite<?> coreComposite;
 
-		private OuterComposite( BooleanState isExpandedState, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( UUID.fromString( "92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0" ) );
-			this.isExpandedState = isExpandedState;
-			this.coreComposite = coreComposite;
-		}
+    private OuterComposite(BooleanState isExpandedState, ToolPaletteCoreComposite<?> coreComposite) {
+      super(UUID.fromString("92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0"));
+      this.isExpandedState = isExpandedState;
+      this.coreComposite = coreComposite;
+    }
 
-		public BooleanState getIsExpandedState() {
-			return this.isExpandedState;
-		}
+    public BooleanState getIsExpandedState() {
+      return this.isExpandedState;
+    }
 
-		public ToolPaletteCoreComposite<?> getCoreComposite() {
-			return this.coreComposite;
-		}
+    public ToolPaletteCoreComposite<?> getCoreComposite() {
+      return this.coreComposite;
+    }
 
-		@Override
-		protected ScrollPane createScrollPaneIfDesired() {
-			return null;
-		}
+    @Override
+    protected ScrollPane createScrollPaneIfDesired() {
+      return null;
+    }
 
-		@Override
-		protected ToolPaletteView createView() {
-			return new ToolPaletteView( this );
-		}
+    @Override
+    protected ToolPaletteView createView() {
+      return new ToolPaletteView(this);
+    }
 
-		@Override
-		public void handlePreActivation() {
-			this.coreComposite.handlePreActivation();
-			super.handlePreActivation();
-		}
+    @Override
+    public void handlePreActivation() {
+      this.coreComposite.handlePreActivation();
+      super.handlePreActivation();
+    }
 
-		@Override
-		public void handlePostDeactivation() {
-			super.handlePostDeactivation();
-			this.coreComposite.handlePostDeactivation();
-		}
-	}
+    @Override
+    public void handlePostDeactivation() {
+      super.handlePostDeactivation();
+      this.coreComposite.handlePostDeactivation();
+    }
+  }
 
-	private final OuterComposite outerComposite;
+  private final OuterComposite outerComposite;
 
-	public ToolPaletteCoreComposite( UUID migrationId, Group group, boolean initialValue ) {
-		super( migrationId );
-		InternalIsExpandedState isExpandedState = new InternalIsExpandedState( group, initialValue, this );
-		this.outerComposite = new OuterComposite( isExpandedState, this );
-	}
+  public ToolPaletteCoreComposite(UUID migrationId, Group group, boolean initialValue) {
+    super(migrationId);
+    InternalIsExpandedState isExpandedState = new InternalIsExpandedState(group, initialValue, this);
+    this.outerComposite = new OuterComposite(isExpandedState, this);
+  }
 
-	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
-		return text;
-	}
+  protected String modifyTextIfNecessary(String text, boolean isExpanded) {
+    return text;
+  }
 
-	public OuterComposite getOuterComposite() {
-		return this.outerComposite;
-	}
+  public OuterComposite getOuterComposite() {
+    return this.outerComposite;
+  }
 }

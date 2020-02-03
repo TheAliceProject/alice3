@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PickupTruck">
+    <BoundingBox>
+        <Min x="-1.3366316556930542" y="8.951228203102346E-9" z="-2.8338801860809326"/>
+        <Max x="1.3366316556930542" y="1.9462968111038208" z="2.8338804244995117"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>truck</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Green" resourceName="GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-1.3366316556930542" y="8.951228203102346E-9" z="-2.8338801860809326"/>
+            <Max x="1.3366316556930542" y="1.9462968111038208" z="2.8338804244995117"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Blue" resourceName="BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-1.3366316556930542" y="8.951228203102346E-9" z="-2.8338801860809326"/>
+            <Max x="1.3366316556930542" y="1.9462968111038208" z="2.8338804244995117"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

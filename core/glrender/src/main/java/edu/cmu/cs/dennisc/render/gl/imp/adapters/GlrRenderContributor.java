@@ -50,9 +50,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public interface GlrRenderContributor {
-	public void renderGhost( RenderContext rc, GlrGhost root );
+  public void renderGhost(RenderContext rc, GlrGhost root);
 
-	public void renderOpaque( RenderContext rc );
+  public void renderOpaque(RenderContext rc);
 
-	public void pick( PickContext pc, PickParameters pickParameters );
+  public void pick(PickContext pc, PickParameters pickParameters);
 }

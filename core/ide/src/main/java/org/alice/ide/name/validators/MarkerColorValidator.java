@@ -51,60 +51,53 @@ import org.lgna.story.SMarker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 
-	public MarkerColorValidator( UserField field ) {
-		super( field, field.getDeclaringType() );
-	}
+  public MarkerColorValidator(UserField field) {
+    super(field, field.getDeclaringType());
+  }
 
-	public MarkerColorValidator( UserType<?> type ) {
-		super( null, type );
-	}
+  public MarkerColorValidator(UserType<?> type) {
+    super(null, type);
+  }
 
-	private static String getColorAndNumberSuffix( String name )
-	{
-		String[] splitName = name.split( "_" );
-		if( splitName.length == 1 )
-		{
-			return name;
-		}
-		if( splitName.length == 2 )
-		{
-			return splitName[ 1 ];
-		}
-		else
-		{
-			return splitName[ splitName.length - 2 ] + "_" + splitName[ splitName.length - 1 ];
-		}
-	}
+  private static String getColorAndNumberSuffix(String name) {
+    String[] splitName = name.split("_");
+    if (splitName.length == 1) {
+      return name;
+    }
+    if (splitName.length == 2) {
+      return splitName[1];
+    } else {
+      return splitName[splitName.length - 2] + "_" + splitName[splitName.length - 1];
+    }
+  }
 
-	@Override
-	public boolean isNameAvailable( String name ) {
-		String suffix = getColorAndNumberSuffix( name );
+  @Override
+  public boolean isNameAvailable(String name) {
+    String suffix = getColorAndNumberSuffix(name);
 
-		Node node = this.getNode();
-		UserType<?> type = this.getType();
-		if( type != null ) {
-			for( UserField field : type.fields ) {
-				assert field != null;
-				if( field == node ) {
-					//pass
-				} else if( field.getValueType().isAssignableTo( SMarker.class ) ) {
-					String fieldSuffix = getColorAndNumberSuffix( field.name.getValue() );
-					if( suffix.equals( fieldSuffix ) ) {
-						return false;
-					}
-				} else
-				{
-					if( name.equals( field.name.getValue() ) )
-					{
-						return false;
-					}
+    Node node = this.getNode();
+    UserType<?> type = this.getType();
+    if (type != null) {
+      for (UserField field : type.fields) {
+        assert field != null;
+        if (field == node) {
+          //pass
+        } else if (field.getValueType().isAssignableTo(SMarker.class)) {
+          String fieldSuffix = getColorAndNumberSuffix(field.name.getValue());
+          if (suffix.equals(fieldSuffix)) {
+            return false;
+          }
+        } else {
+          if (name.equals(field.name.getValue())) {
+            return false;
+          }
 
-				}
-			}
-		} else {
-			Logger.todo( "type == null" );
-		}
-		return true;
-	}
+        }
+      }
+    } else {
+      Logger.todo("type == null");
+    }
+    return true;
+  }
 
 }

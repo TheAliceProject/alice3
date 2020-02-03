@@ -52,17 +52,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableSplitComposite extends AbstractSplitComposite<SplitPane> {
-	public ImmutableSplitComposite( UUID id ) {
-		super( id );
-	}
+  public ImmutableSplitComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected final HorizontalSplitPane createHorizontalSplitPane() {
-		return new HorizontalSplitPane( this );
-	}
+  @Override
+  protected final HorizontalSplitPane createHorizontalSplitPane() {
+    return new HorizontalSplitPane(this);
+  }
 
-	@Override
-	protected final VerticalSplitPane createVerticalSplitPane() {
-		return new VerticalSplitPane( this );
-	}
+  @Override
+  protected final VerticalSplitPane createVerticalSplitPane() {
+    return new VerticalSplitPane(this);
+  }
 }

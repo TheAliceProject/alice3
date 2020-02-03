@@ -49,28 +49,28 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  * @author Dennis Cosgrove
  */
 public class Square extends TriangleFan {
-	public Square() {
-		this._vertices[ 0 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 0, 1 );
-		this._vertices[ 1 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 1, 1 );
-		this._vertices[ 2 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 1, 0 );
-		this._vertices[ 3 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 0, 0 );
-		setHalfSize( 0.5 );
-	}
+  public Square() {
+    this._vertices[0] = Vertex.createXYZIJKUV(0, 0, 0, 0, 0, 1, 0, 1);
+    this._vertices[1] = Vertex.createXYZIJKUV(0, 0, 0, 0, 0, 1, 1, 1);
+    this._vertices[2] = Vertex.createXYZIJKUV(0, 0, 0, 0, 0, 1, 1, 0);
+    this._vertices[3] = Vertex.createXYZIJKUV(0, 0, 0, 0, 0, 1, 0, 0);
+    setHalfSize(0.5);
+  }
 
-	public void setHalfSize( double halfSize ) {
-		this._vertices[ 0 ].position.x = -halfSize;
-		this._vertices[ 0 ].position.y = -halfSize;
+  public void setHalfSize(double halfSize) {
+    this._vertices[0].position.x = -halfSize;
+    this._vertices[0].position.y = -halfSize;
 
-		this._vertices[ 1 ].position.x = +halfSize;
-		this._vertices[ 1 ].position.y = -halfSize;
+    this._vertices[1].position.x = +halfSize;
+    this._vertices[1].position.y = -halfSize;
 
-		this._vertices[ 2 ].position.x = +halfSize;
-		this._vertices[ 2 ].position.y = +halfSize;
+    this._vertices[2].position.x = +halfSize;
+    this._vertices[2].position.y = +halfSize;
 
-		this._vertices[ 3 ].position.x = -halfSize;
-		this._vertices[ 3 ].position.y = +halfSize;
-		this.vertices.setValue( this._vertices );
-	}
+    this._vertices[3].position.x = -halfSize;
+    this._vertices[3].position.y = +halfSize;
+    this.vertices.setValue(this._vertices);
+  }
 
-	private final Vertex[] _vertices = new Vertex[ 4 ];
+  private final Vertex[] _vertices = new Vertex[4];
 }

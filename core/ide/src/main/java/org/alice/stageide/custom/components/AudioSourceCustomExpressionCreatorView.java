@@ -54,17 +54,17 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class AudioSourceCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( AudioSourceCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
+  public AudioSourceCustomExpressionCreatorView(AudioSourceCustomExpressionCreatorComposite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		AudioSourceCustomExpressionCreatorComposite composite = (AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new LabeledFormRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( DialogAstI18nFactory.getInstance() ), false ) );
-		rows.add( new LabeledFormRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
-		rows.add( new LabeledFormRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new LabeledFormRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new LabeledFormRow( null, composite.getTestOperation().createButton(), false ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    AudioSourceCustomExpressionCreatorComposite composite = (AudioSourceCustomExpressionCreatorComposite) this.getComposite();
+    rows.add(new LabeledFormRow(composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor(DialogAstI18nFactory.getInstance()), false));
+    rows.add(new LabeledFormRow(composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider(composite.getVolumeState()), false));
+    rows.add(new LabeledFormRow(composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider()));
+    rows.add(new LabeledFormRow(composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider()));
+    rows.add(new LabeledFormRow(null, composite.getTestOperation().createButton(), false));
+  }
 }

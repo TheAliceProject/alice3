@@ -73,251 +73,251 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends MemberTabView> extends MemberOrControlFlowTabComposite<V> {
-	public static boolean ARE_TOOL_PALETTES_INERT = true;
+  public static boolean ARE_TOOL_PALETTES_INERT = true;
 
-	public static boolean getExpandedAccountingForInert( boolean isExpanded ) {
-		if( ARE_TOOL_PALETTES_INERT ) {
-			return true;
-		} else {
-			return isExpanded;
-		}
-	}
+  public static boolean getExpandedAccountingForInert(boolean isExpanded) {
+    if (ARE_TOOL_PALETTES_INERT) {
+      return true;
+    } else {
+      return isExpanded;
+    }
+  }
 
-	protected static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
-	protected static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
+  protected static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
+  protected static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
 
-	public static MethodsSubComposite SEPARATOR = null;
+  public static MethodsSubComposite SEPARATOR = null;
 
-	protected static boolean isInclusionDesired( AbstractMember member ) {
-		if( member instanceof AbstractMethod ) {
-			AbstractMethod method = (AbstractMethod)member;
-			if( method.isStatic() ) {
-				return false;
-			}
-		} else if( member instanceof AbstractField ) {
-			AbstractField field = (AbstractField)member;
-			if( field.isStatic() ) {
-				return false;
-			}
-		}
-		if( member.isPublicAccess() || member.isUserAuthored() ) {
-			Visibility visibility = member.getVisibility();
-			return ( visibility == null ) || visibility.equals( Visibility.PRIME_TIME );
-		} else {
-			return false;
-		}
-	}
+  protected static boolean isInclusionDesired(AbstractMember member) {
+    if (member instanceof AbstractMethod) {
+      AbstractMethod method = (AbstractMethod) member;
+      if (method.isStatic()) {
+        return false;
+      }
+    } else if (member instanceof AbstractField) {
+      AbstractField field = (AbstractField) member;
+      if (field.isStatic()) {
+        return false;
+      }
+    }
+    if (member.isPublicAccess() || member.isUserAuthored()) {
+      Visibility visibility = member.getVisibility();
+      return (visibility == null) || visibility.equals(Visibility.PRIME_TIME);
+    } else {
+      return false;
+    }
+  }
 
-	private class InstanceFactoryListener implements ValueListener<InstanceFactory> {
-		private boolean isActive;
+  private class InstanceFactoryListener implements ValueListener<InstanceFactory> {
+    private boolean isActive;
 
-		public boolean isActive() {
-			return this.isActive;
-		}
+    public boolean isActive() {
+      return this.isActive;
+    }
 
-		public void setActive( boolean isActive ) {
-			this.isActive = isActive;
-		}
+    public void setActive(boolean isActive) {
+      this.isActive = isActive;
+    }
 
-		@Override
-		public void valueChanged( ValueEvent<InstanceFactory> e ) {
-			if( e.isAdjusting() ) {
-				//pass
-			} else {
-				if( this.isActive ) {
-					MemberTabComposite.this.refreshContentsLater();
-				}
-				MemberTabComposite.this.repaintTitles();
-			}
-		}
-	}
+    @Override
+    public void valueChanged(ValueEvent<InstanceFactory> e) {
+      if (e.isAdjusting()) {
+        //pass
+      } else {
+        if (this.isActive) {
+          MemberTabComposite.this.refreshContentsLater();
+        }
+        MemberTabComposite.this.repaintTitles();
+      }
+    }
+  }
 
-	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
+  private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
 
-	private final ValueListener<String> sortListener = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			MemberTabComposite.this.getView().refreshLater();
-		}
-	};
+  private final ValueListener<String> sortListener = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      MemberTabComposite.this.getView().refreshLater();
+    }
+  };
 
-	private final ValueListener<DeclarationComposite<?, ?>> declarationCompositeListener = new ValueListener<DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
-			MemberTabComposite.this.refreshContentsLater();
-		}
-	};
+  private final ValueListener<DeclarationComposite<?, ?>> declarationCompositeListener = new ValueListener<DeclarationComposite<?, ?>>() {
+    @Override
+    public void valueChanged(ValueEvent<DeclarationComposite<?, ?>> e) {
+      MemberTabComposite.this.refreshContentsLater();
+    }
+  };
 
-	private final List<JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = Lists.newCopyOnWriteArrayList();
-	private final AddMethodMenuModel addMethodMenuModel;
+  private final List<JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = Lists.newCopyOnWriteArrayList();
+  private final AddMethodMenuModel addMethodMenuModel;
 
-	public MemberTabComposite( UUID migrationId, AddMethodMenuModel addMethodMenuModel ) {
-		super( migrationId );
-		this.addMethodMenuModel = addMethodMenuModel;
-	}
+  public MemberTabComposite(UUID migrationId, AddMethodMenuModel addMethodMenuModel) {
+    super(migrationId);
+    this.addMethodMenuModel = addMethodMenuModel;
+  }
 
-	public AddMethodMenuModel getAddMethodMenuModel() {
-		return this.addMethodMenuModel;
-	}
+  public AddMethodMenuModel getAddMethodMenuModel() {
+    return this.addMethodMenuModel;
+  }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addNewSchoolValueListener( this.instanceFactoryListener );
-	}
+  @Override
+  protected void initialize() {
+    super.initialize();
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addNewSchoolValueListener(this.instanceFactoryListener);
+  }
 
-	public abstract ImmutableDataSingleSelectListState<String> getSortState();
+  public abstract ImmutableDataSingleSelectListState<String> getSortState();
 
-	@Override
-	protected final ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected final ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	private void repaintTitles() {
-		try {
-			for( JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges ) {
-				jComponent.repaint();
-			}
-		} catch( Throwable t ) {
-			// deemed not worth an exception
-			t.printStackTrace();
-		}
-	}
+  private void repaintTitles() {
+    try {
+      for (JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges) {
+        jComponent.repaint();
+      }
+    } catch (Throwable t) {
+      // deemed not worth an exception
+      t.printStackTrace();
+    }
+  }
 
-	private void refreshContentsLater() {
-		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
-			if( subComposite != null ) {
-				subComposite.getView().refreshLater();
-			}
-		}
-		this.getView().refreshLater();
-	}
+  private void refreshContentsLater() {
+    for (MethodsSubComposite subComposite : this.getSubComposites()) {
+      if (subComposite != null) {
+        subComposite.getView().refreshLater();
+      }
+    }
+    this.getView().refreshLater();
+  }
 
-	protected abstract boolean isAcceptable( AbstractMethod method );
+  protected abstract boolean isAcceptable(AbstractMethod method);
 
-	protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
+  protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
 
-	protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
+  protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
 
-	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type );
+  protected abstract UserMethodsSubComposite getUserMethodsSubComposite(NamedUserType type);
 
-	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
+  protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
 
-	public List<MethodsSubComposite> getSubComposites() {
-		List<MethodsSubComposite> rv = Lists.newLinkedList();
+  public List<MethodsSubComposite> getSubComposites() {
+    List<MethodsSubComposite> rv = Lists.newLinkedList();
 
-		List<JavaMethod> javaMethods = Lists.newLinkedList();
+    List<JavaMethod> javaMethods = Lists.newLinkedList();
 
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		if( instanceFactory != null ) {
-			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-			while( type != null ) {
-				if( type instanceof NamedUserType ) {
-					NamedUserType namedUserType = (NamedUserType)type;
-					UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite( namedUserType );
-					rv.add( userMethodsSubComposite );
-				} else if( type instanceof JavaType ) {
-					JavaType javaType = (JavaType)type;
-					for( JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
-						if( this.isAcceptable( javaMethod ) ) {
-							if( isInclusionDesired( javaMethod ) ) {
-								javaMethods.add( javaMethod );
-							}
-						}
-					}
-				}
-				if( type.isFollowToSuperClassDesired() ) {
-					type = type.getSuperType();
-				} else {
-					break;
-				}
-			}
-		}
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    if (instanceFactory != null) {
+      AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+      while (type != null) {
+        if (type instanceof NamedUserType) {
+          NamedUserType namedUserType = (NamedUserType) type;
+          UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite(namedUserType);
+          rv.add(userMethodsSubComposite);
+        } else if (type instanceof JavaType) {
+          JavaType javaType = (JavaType) type;
+          for (JavaMethod javaMethod : javaType.getDeclaredMethods()) {
+            if (this.isAcceptable(javaMethod)) {
+              if (isInclusionDesired(javaMethod)) {
+                javaMethods.add(javaMethod);
+              }
+            }
+          }
+        }
+        if (type.isFollowToSuperClassDesired()) {
+          type = type.getSuperType();
+        } else {
+          break;
+        }
+      }
+    }
 
-		if( rv.size() > 0 ) {
-			rv.add( SEPARATOR );
-		}
+    if (rv.size() > 0) {
+      rv.add(SEPARATOR);
+    }
 
-		String sortValue = this.getSortState().getValue();
-		if( SORT_ALPHABETICALLY_KEY.equals( sortValue ) ) {
-			//todo
-		} else {
-			List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
-			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-				List<JavaMethod> acceptedMethods = Lists.newLinkedList();
-				ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
-				while( methodIterator.hasNext() ) {
-					JavaMethod method = methodIterator.next();
-					if( potentialSubComposite.isAcceptingOf( method ) ) {
-						acceptedMethods.add( method );
-						methodIterator.remove();
-					}
-				}
+    String sortValue = this.getSortState().getValue();
+    if (SORT_ALPHABETICALLY_KEY.equals(sortValue)) {
+      //todo
+    } else {
+      List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
+      for (FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites) {
+        List<JavaMethod> acceptedMethods = Lists.newLinkedList();
+        ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
+        while (methodIterator.hasNext()) {
+          JavaMethod method = methodIterator.next();
+          if (potentialSubComposite.isAcceptingOf(method)) {
+            acceptedMethods.add(method);
+            methodIterator.remove();
+          }
+        }
 
-				if( acceptedMethods.size() > 0 ) {
-					potentialSubComposite.sortAndSetMethods( acceptedMethods );
-					rv.add( potentialSubComposite );
-				}
-			}
-		}
+        if (acceptedMethods.size() > 0) {
+          potentialSubComposite.sortAndSetMethods(acceptedMethods);
+          rv.add(potentialSubComposite);
+        }
+      }
+    }
 
-		List<FilteredJavaMethodsSubComposite> postSubComposites = Lists.newLinkedList();
+    List<FilteredJavaMethodsSubComposite> postSubComposites = Lists.newLinkedList();
 
-		List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
-		for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-			List<JavaMethod> acceptedMethods = Lists.newLinkedList();
-			ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
-			while( methodIterator.hasNext() ) {
-				JavaMethod method = methodIterator.next();
-				if( potentialSubComposite.isAcceptingOf( method ) ) {
-					acceptedMethods.add( method );
-					methodIterator.remove();
-				}
-			}
+    List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
+    for (FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites) {
+      List<JavaMethod> acceptedMethods = Lists.newLinkedList();
+      ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
+      while (methodIterator.hasNext()) {
+        JavaMethod method = methodIterator.next();
+        if (potentialSubComposite.isAcceptingOf(method)) {
+          acceptedMethods.add(method);
+          methodIterator.remove();
+        }
+      }
 
-			if( acceptedMethods.size() > 0 ) {
-				potentialSubComposite.sortAndSetMethods( acceptedMethods );
-				postSubComposites.add( potentialSubComposite );
-			}
-		}
+      if (acceptedMethods.size() > 0) {
+        potentialSubComposite.sortAndSetMethods(acceptedMethods);
+        postSubComposites.add(potentialSubComposite);
+      }
+    }
 
-		if( javaMethods.size() > 0 ) {
-			UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
-			unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
-			rv.add( unclaimedJavaMethodsComposite );
-		}
+    if (javaMethods.size() > 0) {
+      UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
+      unclaimedJavaMethodsComposite.sortAndSetMethods(javaMethods);
+      rv.add(unclaimedJavaMethodsComposite);
+    }
 
-		rv.addAll( postSubComposites );
+    rv.addAll(postSubComposites);
 
-		return rv;
-	}
+    return rv;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.instanceFactoryListener.setActive( true );
-		this.getSortState().addNewSchoolValueListener( this.sortListener );
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
-		this.refreshContentsLater();
-		this.repaintTitles();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.instanceFactoryListener.setActive(true);
+    this.getSortState().addNewSchoolValueListener(this.sortListener);
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener(this.declarationCompositeListener);
+    this.refreshContentsLater();
+    this.repaintTitles();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
-		this.getSortState().removeNewSchoolValueListener( this.sortListener );
-		this.instanceFactoryListener.setActive( false );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener(this.declarationCompositeListener);
+    this.getSortState().removeNewSchoolValueListener(this.sortListener);
+    this.instanceFactoryListener.setActive(false);
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		final boolean IS_ICON_DESIRED = IsAlwaysShowingBlocksState.getInstance().getValue() == false;
-		if( IS_ICON_DESIRED ) {
-			button.getModel().setIconForBothTrueAndFalse( IndirectCurrentAccessibleTypeIcon.SINGLTON );
-			button.setHorizontalTextPosition( HorizontalTextPosition.TRAILING );
-			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
-		}
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    super.customizeTitleComponentAppearance(button);
+    final boolean IS_ICON_DESIRED = IsAlwaysShowingBlocksState.getInstance().getValue() == false;
+    if (IS_ICON_DESIRED) {
+      button.getModel().setIconForBothTrueAndFalse(IndirectCurrentAccessibleTypeIcon.SINGLTON);
+      button.setHorizontalTextPosition(HorizontalTextPosition.TRAILING);
+      this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add(button.getAwtComponent());
+    }
+  }
 }

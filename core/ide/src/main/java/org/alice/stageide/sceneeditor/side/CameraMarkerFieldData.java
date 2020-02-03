@@ -49,8 +49,8 @@ import org.lgna.story.SCameraMarker;
  * @author Dennis Cosgrove
  */
 public class CameraMarkerFieldData extends MarkerFieldData {
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( SCameraMarker.class );
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return super.isAcceptableItem(value) && value.valueType.getValue().isAssignableTo(SCameraMarker.class);
+  }
 }

@@ -55,49 +55,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeLabelSeparator extends CascadeSeparator {
-	private String menuItemText;
+  private String menuItemText;
 
-	public CascadeLabelSeparator( UUID id ) {
-		super( id );
-	}
+  public CascadeLabelSeparator(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.menuItemText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.menuItemText = this.findDefaultLocalizedText();
+  }
 
-	protected String getMenuItemIconProxyText() {
-		if (menuItemText == null) {
-			initializeIfNecessary();
-		}
-		return menuItemText;
-	}
+  protected String getMenuItemIconProxyText() {
+    if (menuItemText == null) {
+      initializeIfNecessary();
+    }
+    return menuItemText;
+  }
 
-	public boolean isValid() {
-		return isValid(getMenuItemIconProxyText());
-	}
+  public boolean isValid() {
+    return isValid(getMenuItemIconProxyText());
+  }
 
-	private boolean isValid(String text) {
-		return ( text != null ) && ( text.length() > 0 ) && (!"null".equals(text));
-	}
+  private boolean isValid(String text) {
+    return (text != null) && (text.length() > 0) && (!"null".equals(text));
+  }
 
-	@Override
-	protected final JComponent createMenuItemIconProxy( ItemNode<? super Void, Void> step ) {
-		String text = getMenuItemIconProxyText();
-		if( isValid(text) ) {
-			JLabel rv = new JLabel();
-			rv.setText( text + ":" );
-			FontUtilities.setFontToDerivedFont( rv, TextPosture.OBLIQUE );
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected final JComponent createMenuItemIconProxy(ItemNode<? super Void, Void> step) {
+    String text = getMenuItemIconProxyText();
+    if (isValid(text)) {
+      JLabel rv = new JLabel();
+      rv.setText(text + ":");
+      FontUtilities.setFontToDerivedFont(rv, TextPosture.OBLIQUE);
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public String getMenuItemText() {
-		return null;
-		//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
-	}
+  @Override
+  public String getMenuItemText() {
+    return null;
+    //  return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
+  }
 }

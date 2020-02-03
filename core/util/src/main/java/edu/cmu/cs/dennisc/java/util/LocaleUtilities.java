@@ -49,37 +49,37 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public abstract class LocaleUtilities {
-	private LocaleUtilities() {
-	}
+  private LocaleUtilities() {
+  }
 
-	private static Comparator<Locale> displayNameComparator = new Comparator<Locale>() {
-		@Override
-		public int compare( Locale o1, Locale o2 ) {
-			return o1.getDisplayName().compareTo( o2.getDisplayName() );
-		}
-	};
+  private static Comparator<Locale> displayNameComparator = new Comparator<Locale>() {
+    @Override
+    public int compare(Locale o1, Locale o2) {
+      return o1.getDisplayName().compareTo(o2.getDisplayName());
+    }
+  };
 
-	public static Locale[] alphabetizeByDisplayName( Locale[] rv ) {
-		java.util.Arrays.sort( rv, displayNameComparator );
-		return rv;
-	}
+  public static Locale[] alphabetizeByDisplayName(Locale[] rv) {
+    java.util.Arrays.sort(rv, displayNameComparator);
+    return rv;
+  }
 
-	public static String toLanguageTag( Locale locale ) {
-		if( locale != null ) {
-			String text = locale.toString();
-			text = text.replaceAll( "_", "-" );
-			if( text.equals( "iw" ) ) {
-				text = "he";
-			} else if( text.equals( "ji" ) ) {
-				text = "yi";
-			} else if( text.equals( "in" ) ) {
-				text = "id";
-			}
-			return text;
-			//TODO: jdk7
-			//return locale.toLanguageTag();
-		} else {
-			return null;
-		}
-	}
+  public static String toLanguageTag(Locale locale) {
+    if (locale != null) {
+      String text = locale.toString();
+      text = text.replaceAll("_", "-");
+      if (text.equals("iw")) {
+        text = "he";
+      } else if (text.equals("ji")) {
+        text = "yi";
+      } else if (text.equals("in")) {
+        text = "id";
+      }
+      return text;
+      //TODO: jdk7
+      //return locale.toLanguageTag();
+    } else {
+      return null;
+    }
+  }
 }

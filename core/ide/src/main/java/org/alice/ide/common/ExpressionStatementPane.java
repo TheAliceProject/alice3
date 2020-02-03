@@ -66,130 +66,130 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
-	private PropertyListener refreshAdapter = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private PropertyListener refreshAdapter = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					ExpressionStatementPane.this.refresh();
-				}
-			} );
-		}
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          ExpressionStatementPane.this.refresh();
+        }
+      });
+    }
+  };
 
-	public ExpressionStatementPane( DragModel model, AstI18nFactory factory, ExpressionStatement expressionStatement, StatementListProperty owner ) {
-		super( model, factory, expressionStatement, owner );
-		this.refresh();
-	}
+  public ExpressionStatementPane(DragModel model, AstI18nFactory factory, ExpressionStatement expressionStatement, StatementListProperty owner) {
+    super(model, factory, expressionStatement, owner);
+    this.refresh();
+  }
 
-	@Override
-	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		final ExpressionStatement expressionStatement = (ExpressionStatement)getStatement();
-		Expression expression = expressionStatement.expression.getValue();
-		if (expression instanceof MethodInvocation && !expression.isValid()) {
-			return Color.RED;
-		}
-		return super.getBackgroundPaint( x, y, width, height );
-	}
+  @Override
+  protected Paint getBackgroundPaint(int x, int y, int width, int height) {
+    final ExpressionStatement expressionStatement = (ExpressionStatement) getStatement();
+    Expression expression = expressionStatement.expression.getValue();
+    if (expression instanceof MethodInvocation && !expression.isValid()) {
+      return Color.RED;
+    }
+    return super.getBackgroundPaint(x, y, width, height);
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getExpressionStatement().expression.addPropertyListener(this.refreshAdapter);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getExpressionStatement().expression.removePropertyListener(this.refreshAdapter);
+    super.handleUndisplayable();
+  }
 
-	private void refresh() {
-		this.forgetAndRemoveAllComponents();
-		final ExpressionStatement expressionStatement = (ExpressionStatement)getStatement();
-		Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof AssignmentExpression ) {
-			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (AssignmentExpression)expression ) );
-		} else {
-			SwingComponentView<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
-			this.addComponent( expressionPane );
-			if( expression instanceof MethodInvocation ) {
-				final MethodInvocation methodInvocation = (MethodInvocation)expression;
-				assert methodInvocation.getParent() == expressionStatement;
+  private void refresh() {
+    this.forgetAndRemoveAllComponents();
+    final ExpressionStatement expressionStatement = (ExpressionStatement) getStatement();
+    Expression expression = expressionStatement.expression.getValue();
+    if (expression instanceof AssignmentExpression) {
+      this.addComponent(new AssignmentExpressionPane(this.getFactory(), (AssignmentExpression) expression));
+    } else {
+      SwingComponentView<?> expressionPane = this.getFactory().createComponent(expressionStatement.expression.getValue());
+      this.addComponent(expressionPane);
+      if (expression instanceof MethodInvocation) {
+        final MethodInvocation methodInvocation = (MethodInvocation) expression;
+        assert methodInvocation.getParent() == expressionStatement;
 
-				if( ( this.getFactory() == PreviewAstI18nFactory.getInstance() ) || methodInvocation.isValid() ) {
-					//pass
-				} else {
-					this.setBackgroundColor( Color.RED );
-					Logger.severe( methodInvocation );
-				}
+        if ((this.getFactory() == PreviewAstI18nFactory.getInstance()) || methodInvocation.isValid()) {
+          //pass
+        } else {
+          this.setBackgroundColor(Color.RED);
+          Logger.severe(methodInvocation);
+        }
 
-				//				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-				//				//todo:
-				//				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
-				//					org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
-				//					if( nextLonger != null ) {
-				//						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getRequiredParameters();
-				//						org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				//						org.lgna.croquet.Cascade< ? > cascade;
-				//						if( lastParameter.isKeyworded() ) {
-				//							cascade = org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade.getInstance( methodInvocation );
-				//						} else {
-				//							cascade = org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
-				//						}
-				//						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-				//						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( cascade.getRoot().getPopupPrepModel() );
-				//						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-				//						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
-				//						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-				//						this.addComponent( button );
-				//					}
-				//				}
+        //        org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+        //        //todo:
+        //        if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
+        //          org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
+        //          if( nextLonger != null ) {
+        //            java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getRequiredParameters();
+        //            org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+        //            org.lgna.croquet.Cascade< ? > cascade;
+        //            if( lastParameter.isKeyworded() ) {
+        //              cascade = org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade.getInstance( methodInvocation );
+        //            } else {
+        //              cascade = org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
+        //            }
+        //            this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+        //            org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( cascade.getRoot().getPopupPrepModel() );
+        //            button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+        //            button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+        //            button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+        //            this.addComponent( button );
+        //          }
+        //        }
 
-				//			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
-				//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) { 
-				//				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
-				//				
-				//				if( instanceCreation.isValid() ) {
-				//					//pass
-				//				} else {
-				//					this.setBackground( java.awt.Color.RED );
-				//				}
-				//				
-				//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				//				//todo:
-				//				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
-				//					org.lgna.project.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
-				//					if( nextLonger != null ) {
-				//						final org.lgna.project.ast.AbstractConstructor nextLongerAbstractConstructor = (org.lgna.project.ast.AbstractConstructor)nextLonger;
-				//						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-				//						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
-				//					}
-				//				}
-			}
-		}
-		if( FormatterState.isJava() ) {
-			this.addComponent( new Label( ";" ) );
-		}
-		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
-		this.revalidateAndRepaint();
-	}
+        //      not worth while since instance creations are not normally (ever) the expression of an expression statements
+        //      } else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+        //        final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+        //
+        //        if( instanceCreation.isValid() ) {
+        //          //pass
+        //        } else {
+        //          this.setBackground( java.awt.Color.RED );
+        //        }
+        //
+        //        org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+        //        //todo:
+        //        if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
+        //          org.lgna.project.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
+        //          if( nextLonger != null ) {
+        //            final org.lgna.project.ast.AbstractConstructor nextLongerAbstractConstructor = (org.lgna.project.ast.AbstractConstructor)nextLonger;
+        //            this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+        //            this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+        //          }
+        //        }
+      }
+    }
+    if (FormatterState.isJava()) {
+      this.addComponent(new Label(";"));
+    }
+    this.addComponent(BoxUtilities.createHorizontalSliver(8));
+    this.revalidateAndRepaint();
+  }
 
-	//	@Override
-	//	protected void handleControlClick( java.awt.event.MouseEvent e) {
-	//		//super.handleControlClick();
-	//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
-	//		if( methodDeclaredInAlice != null ) {
-	//			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
-	//		}
-	//	}
+  //  @Override
+  //  protected void handleControlClick( java.awt.event.MouseEvent e) {
+  //    //super.handleControlClick();
+  //    org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+  //    if( methodDeclaredInAlice != null ) {
+  //      getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
+  //    }
+  //  }
 
-	protected ExpressionStatement getExpressionStatement() {
-		return (ExpressionStatement)this.getStatement();
-	}
+  protected ExpressionStatement getExpressionStatement() {
+    return (ExpressionStatement) this.getStatement();
+  }
 }

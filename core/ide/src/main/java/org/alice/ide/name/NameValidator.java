@@ -47,23 +47,19 @@ import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
 import org.lgna.croquet.AbstractElement;
 
 public abstract class NameValidator {
-	public abstract boolean isNameValid( String name );
+  public abstract boolean isNameValid(String name);
 
-	public abstract boolean isNameAvailable( String name );
+  public abstract boolean isNameAvailable(String name);
 
-	public final String getExplanationIfOkButtonShouldBeDisabled( String name ) {
-		if( this.isNameValid( name ) ) {
-			if( this.isNameAvailable( name ) ) {
-				return null;
-			} else {
-				return AbstractElement
-					.findLocalizedText( DeclarationLikeSubstanceComposite.class, "isNotAvailable" )
-					.replaceAll( "</name/>", "\"" + name + "\"" );
-			}
-		} else {
-			return AbstractElement
-				.findLocalizedText( DeclarationLikeSubstanceComposite.class, "isNotAValidName" )
-				.replaceAll( "</name/>", "\"" + name + "\"" );
-		}
-	}
+  public final String getExplanationIfOkButtonShouldBeDisabled(String name) {
+    if (this.isNameValid(name)) {
+      if (this.isNameAvailable(name)) {
+        return null;
+      } else {
+        return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAvailable").replaceAll("</name/>", "\"" + name + "\"");
+      }
+    } else {
+      return AbstractElement.findLocalizedText(DeclarationLikeSubstanceComposite.class, "isNotAValidName").replaceAll("</name/>", "\"" + name + "\"");
+    }
+  }
 }

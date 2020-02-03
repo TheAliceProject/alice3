@@ -46,15 +46,15 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MRectangleI {
-	public MRectangleI( int x, int y, int width, int height ) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-	}
+  public MRectangleI(int x, int y, int width, int height) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
 
-	public final int x;
-	public final int y;
-	public final int width;
-	public final int height;
+  public final int x;
+  public final int y;
+  public final int width;
+  public final int height;
 }

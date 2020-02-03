@@ -58,39 +58,39 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
 
-	public static ConstantsOwningFillerInner getInstance( AbstractType<?, ?, ?> type ) {
-		synchronized( map ) {
-			ConstantsOwningFillerInner rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConstantsOwningFillerInner( type );
-				map.put( type, rv );
-			}
-			return rv;
-		}
-	}
+  public static ConstantsOwningFillerInner getInstance(AbstractType<?, ?, ?> type) {
+    synchronized (map) {
+      ConstantsOwningFillerInner rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ConstantsOwningFillerInner(type);
+        map.put(type, rv);
+      }
+      return rv;
+    }
+  }
 
-	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( JavaType.getInstance( cls ) );
-	}
+  public static ConstantsOwningFillerInner getInstance(Class<?> cls) {
+    return getInstance(JavaType.getInstance(cls));
+  }
 
-	private ConstantsOwningFillerInner( AbstractType<?, ?, ?> type ) {
-		super( type );
-	}
+  private ConstantsOwningFillerInner(AbstractType<?, ?, ?> type) {
+    super(type);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		AbstractType<?, ?, ?> type = this.getType();
-		for( AbstractField field : type.getDeclaredFields() ) {
-			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				//todo: should this be identical? to?
-				if( type.isAssignableFrom( field.getValueType() ) ) {
-					items.add( StaticFieldAccessFillIn.getInstance( field ) );
-				}
-			}
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    AbstractType<?, ?, ?> type = this.getType();
+    for (AbstractField field : type.getDeclaredFields()) {
+      if (field.isPublicAccess() && field.isStatic() && field.isFinal()) {
+        //todo: should this be identical? to?
+        if (type.isAssignableFrom(field.getValueType())) {
+          items.add(StaticFieldAccessFillIn.getInstance(field));
+        }
+      }
+    }
+  }
 }

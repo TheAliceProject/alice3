@@ -53,35 +53,35 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class EnumUtilities {
-	private EnumUtilities() {
-		throw new AssertionError();
-	}
+  private EnumUtilities() {
+    throw new AssertionError();
+  }
 
-	public static Field getFld( Enum<?> e ) {
-		if( e != null ) {
-			try {
-				return e.getDeclaringClass().getDeclaredField( e.name() );
-			} catch( NoSuchFieldException nsfe ) {
-				throw new RuntimeException( nsfe );
-			}
-		} else {
-			return null;
-		}
-	}
+  public static Field getFld(Enum<?> e) {
+    if (e != null) {
+      try {
+        return e.getDeclaringClass().getDeclaredField(e.name());
+      } catch (NoSuchFieldException nsfe) {
+        throw new RuntimeException(nsfe);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static <E> List<E> getEnumConstants( Class<? extends E>[] clses, Criterion<E> criterion ) {
-		List<E> rv = Lists.newLinkedList();
-		for( Class<?> cls : clses ) {
-			E[] enumConstansts = (E[])cls.getEnumConstants();
-			for( E e : enumConstansts ) {
-				if( ( criterion == null ) || criterion.accept( e ) ) {
-					rv.add( e );
-				}
-			}
-		}
-		return rv;
-	}
-	//	public static <E> E[] getEnumConstants( Class<E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion, Class<E> componentCls ) {
-	//		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( getEnumConstants( clses, criterion ), componentCls );
-	//	}
+  public static <E> List<E> getEnumConstants(Class<? extends E>[] clses, Criterion<E> criterion) {
+    List<E> rv = Lists.newLinkedList();
+    for (Class<?> cls : clses) {
+      E[] enumConstansts = (E[]) cls.getEnumConstants();
+      for (E e : enumConstansts) {
+        if ((criterion == null) || criterion.accept(e)) {
+          rv.add(e);
+        }
+      }
+    }
+    return rv;
+  }
+  //  public static <E> E[] getEnumConstants( Class<E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion, Class<E> componentCls ) {
+  //    return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( getEnumConstants( clses, criterion ), componentCls );
+  //  }
 }

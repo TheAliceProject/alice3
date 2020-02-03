@@ -53,12 +53,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MainComposite extends SimpleComposite {
-	public MainComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712" ) );
-	}
+  public MainComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712"));
+  }
 
-	@Override
-	protected CompositeView createView() {
-		return new BorderPanel();
-	}
+  @Override
+  protected CompositeView createView() {
+    return new BorderPanel();
+  }
 }

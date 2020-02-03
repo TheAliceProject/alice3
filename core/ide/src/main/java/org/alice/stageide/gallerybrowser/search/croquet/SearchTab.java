@@ -56,75 +56,75 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SearchTab extends GalleryTab {
-	public SearchTab() {
-		super( UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
-	}
+  public SearchTab() {
+    super(UUID.fromString("4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d"));
+  }
 
-	public StringState getFilterState() {
-		return this.filterState;
-	}
+  public StringState getFilterState() {
+    return this.filterState;
+  }
 
-	public PlainStringValue getNoMatchesLabel() {
-		return this.noMatchesLabel;
-	}
+  public PlainStringValue getNoMatchesLabel() {
+    return this.noMatchesLabel;
+  }
 
-	public PlainStringValue getNoEntryLabel() {
-		return this.noEntryLabel;
-	}
+  public PlainStringValue getNoEntryLabel() {
+    return this.noEntryLabel;
+  }
 
-	@Override
-	protected SearchTabView createView() {
-		return new SearchTabView( this );
-	}
+  @Override
+  protected SearchTabView createView() {
+    return new SearchTabView(this);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.getFilterState().addAndInvokeNewSchoolValueListener( this.filterListener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.getFilterState().addAndInvokeNewSchoolValueListener(this.filterListener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.getFilterState().removeNewSchoolValueListener( this.filterListener );
-		this.cancelWorkerIfNecessary();
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.getFilterState().removeNewSchoolValueListener(this.filterListener);
+    this.cancelWorkerIfNecessary();
+    super.handlePostDeactivation();
+  }
 
-	private void cancelWorkerIfNecessary() {
-		if( this.worker != null ) {
-			if( this.worker.isDone() ) {
-				//pass
-			} else {
-				this.worker.cancel( false );
-			}
-			this.worker = null;
-		}
-	}
+  private void cancelWorkerIfNecessary() {
+    if (this.worker != null) {
+      if (this.worker.isDone()) {
+        //pass
+      } else {
+        this.worker.cancel(false);
+      }
+      this.worker = null;
+    }
+  }
 
-	private void handleFilterChanged( String filter ) {
-		this.cancelWorkerIfNecessary();
-		SearchTabView view = (SearchTabView)this.getView();
-		synchronized( view.getTreeLock() ) {
-			view.removeAllGalleryDragComponents();
-		}
-		this.worker = new SearchGalleryWorker( filter, view );
-		this.worker.execute();
-	}
+  private void handleFilterChanged(String filter) {
+    this.cancelWorkerIfNecessary();
+    SearchTabView view = (SearchTabView) this.getView();
+    synchronized (view.getTreeLock()) {
+      view.removeAllGalleryDragComponents();
+    }
+    this.worker = new SearchGalleryWorker(filter, view);
+    this.worker.execute();
+  }
 
-	@Override
-	public void modelUpdated() {
-		handleFilterChanged( getFilterState().getValue() );
-		super.modelUpdated();
-	}
+  @Override
+  public void modelUpdated() {
+    handleFilterChanged(getFilterState().getValue());
+    super.modelUpdated();
+  }
 
-	private SearchGalleryWorker worker;
-	private final StringState filterState = this.createStringState( "filterState" );
-	private final PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );
-	private final PlainStringValue noEntryLabel = this.createStringValue( "noEntryLabel" );
-	private final ValueListener<String> filterListener = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			SearchTab.this.handleFilterChanged( e.getNextValue() );
-		}
-	};
+  private SearchGalleryWorker worker;
+  private final StringState filterState = this.createStringState("filterState");
+  private final PlainStringValue noMatchesLabel = this.createStringValue("noMatchesLabel");
+  private final PlainStringValue noEntryLabel = this.createStringValue("noEntryLabel");
+  private final ValueListener<String> filterListener = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      SearchTab.this.handleFilterChanged(e.getNextValue());
+    }
+  };
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="TrainStation">
+    <BoundingBox>
+        <Min x="-3.1999998092651367" y="-0.07364551723003387" z="-6.190000534057617"/>
+        <Max x="1.379956603050232" y="3.440690517425537" z="6.190000057220459"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train station</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TrainStation" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -58,104 +58,104 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ValueCreator<T> extends AbstractCompletionModel implements Triggerable {
-	//todo: edits are never created by value creators.  allow group specification anyways?
-	public static final Group VALUE_CREATOR_GROUP = Group.getInstance( UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
+  //todo: edits are never created by value creators.  allow group specification anyways?
+  public static final Group VALUE_CREATOR_GROUP = Group.getInstance(UUID.fromString("4bef663b-1474-40ec-9731-4e2a2cb49333"), "VALUE_CREATOR_GROUP");
 
-	private static final class InternalFillIn<F> extends ImmutableCascadeFillIn<F, Void> {
-		private final ValueCreator<F> valueCreator;
-		private String text;
+  private static final class InternalFillIn<F> extends ImmutableCascadeFillIn<F, Void> {
+    private final ValueCreator<F> valueCreator;
+    private String text;
 
-		private InternalFillIn( ValueCreator<F> valueCreator ) {
-			super( UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
-			this.valueCreator = valueCreator;
-		}
+    private InternalFillIn(ValueCreator<F> valueCreator) {
+      super(UUID.fromString("258797f2-c1b6-4887-b6fc-42702493d573"));
+      this.valueCreator = valueCreator;
+    }
 
-		@Override
-		protected void localize() {
-			super.localize();
-			this.text = this.findDefaultLocalizedText();
-		}
+    @Override
+    protected void localize() {
+      super.localize();
+      this.text = this.findDefaultLocalizedText();
+    }
 
-		public ValueCreator<F> getValueCreator() {
-			return this.valueCreator;
-		}
+    public ValueCreator<F> getValueCreator() {
+      return this.valueCreator;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.valueCreator.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return this.valueCreator.getClassUsedForLocalization();
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return this.valueCreator.getSubKeyForLocalization();
-		}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return this.valueCreator.getSubKeyForLocalization();
+    }
 
-		@Override
-		protected JComponent createMenuItemIconProxy( ItemNode<? super F, Void> step ) {
-			return new JLabel( this.text );
-		}
+    @Override
+    protected JComponent createMenuItemIconProxy(ItemNode<? super F, Void> step) {
+      return new JLabel(this.text);
+    }
 
-		@Override
-		public final F createValue( ItemNode<? super F, Void> node ) {
-			return this.valueCreator.fireAndGetValue();
-		}
+    @Override
+    public final F createValue(ItemNode<? super F, Void> node) {
+      return this.valueCreator.fireAndGetValue();
+    }
 
-		@Override
-		public F getTransientValue( ItemNode<? super F, Void> node ) {
-			return null;
-		}
-	}
+    @Override
+    public F getTransientValue(ItemNode<? super F, Void> node) {
+      return null;
+    }
+  }
 
-	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
+  private InternalFillIn<T> fillIn = new InternalFillIn<T>(this);
 
-	public ValueCreator( UUID migrationId ) {
-		super( VALUE_CREATOR_GROUP, migrationId );
-	}
+  public ValueCreator(UUID migrationId) {
+    super(VALUE_CREATOR_GROUP, migrationId);
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	public CascadeFillIn<T, Void> getFillIn() {
-		return this.fillIn;
-	}
+  public CascadeFillIn<T, Void> getFillIn() {
+    return this.fillIn;
+  }
 
-	protected abstract T createValue( UserActivity transaction );
+  protected abstract T createValue(UserActivity transaction);
 
-	protected void performInActivity( UserActivity activity ) {
-		activity.setCompletionModel( this );
+  protected void performInActivity(UserActivity activity) {
+    activity.setCompletionModel(this);
 
-		T value = this.createValue( activity );
+    T value = this.createValue(activity);
 
-		if ( activity.isCanceled() || value == null ) {
-			throw new CancelException();
-		}
+    if (activity.isCanceled() || value == null) {
+      throw new CancelException();
+    }
 
-		activity.setProducedValue(value);
-		activity.finish();
-	}
+    activity.setProducedValue(value);
+    activity.finish();
+  }
 
-	public T fireAndGetValue() throws CancelException {
-		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
-		IterationTrigger.createUserInstance( activity );
-		fire( activity );
-		if( activity.isSuccessfullyCompleted() ) {
-			return (T)activity.getProducedValue();
-		} else {
-			throw new CancelException();
-		}
-	}
+  public T fireAndGetValue() throws CancelException {
+    final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+    IterationTrigger.createUserInstance(activity);
+    fire(activity);
+    if (activity.isSuccessfullyCompleted()) {
+      return (T) activity.getProducedValue();
+    } else {
+      throw new CancelException();
+    }
+  }
 
-	@Override
-	public void fire( UserActivity activity ) {
-		if( this.isEnabled() ) {
-			this.initializeIfNecessary();
-			this.performInActivity( activity );
-		}
-	}
+  @Override
+  public void fire(UserActivity activity) {
+    if (this.isEnabled()) {
+      this.initializeIfNecessary();
+      this.performInActivity(activity);
+    }
+  }
 }

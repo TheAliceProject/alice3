@@ -48,22 +48,21 @@ import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
  * @author Dennis Cosgrove
  */
 /* package-private */enum ScrollDirection {
-	UP( GraphicsUtilities.Heading.NORTH, -1 ),
-	DOWN( GraphicsUtilities.Heading.SOUTH, 1 );
+  UP(GraphicsUtilities.Heading.NORTH, -1), DOWN(GraphicsUtilities.Heading.SOUTH, 1);
 
-	private final int delta;
-	private final GraphicsUtilities.Heading arrowHeading;
+  private final int delta;
+  private final GraphicsUtilities.Heading arrowHeading;
 
-	ScrollDirection( GraphicsUtilities.Heading arrowHeading, int delta ) {
-		this.delta = delta;
-		this.arrowHeading = arrowHeading;
-	}
+  ScrollDirection(GraphicsUtilities.Heading arrowHeading, int delta) {
+    this.delta = delta;
+    this.arrowHeading = arrowHeading;
+  }
 
-	public int getDelta() {
-		return this.delta;
-	}
+  public int getDelta() {
+    return this.delta;
+  }
 
-	public GraphicsUtilities.Heading getArrowHeading() {
-		return this.arrowHeading;
-	}
+  public GraphicsUtilities.Heading getArrowHeading() {
+    return this.arrowHeading;
+  }
 }

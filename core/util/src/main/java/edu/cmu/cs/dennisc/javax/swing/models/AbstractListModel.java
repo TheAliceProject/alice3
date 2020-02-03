@@ -46,42 +46,42 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractListModel<E> extends javax.swing.AbstractListModel implements ListModel<E> {
-	@Override
-	public E get( int index ) {
-		return (E)this.getElementAt( index );
-	}
+  @Override
+  public E get(int index) {
+    return (E) this.getElementAt(index);
+  }
 
-	@Override
-	public int indexOf( E element ) {
-		final int N = this.getSize();
-		for( int i = 0; i < N; i++ ) {
-			E item = this.get( i );
-			if( element != null ? element.equals( item ) : item == null ) {
-				return i;
-			}
-		}
-		return -1;
-	}
+  @Override
+  public int indexOf(E element) {
+    final int N = this.getSize();
+    for (int i = 0; i < N; i++) {
+      E item = this.get(i);
+      if (element != null ? element.equals(item) : item == null) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	@Override
-	public int lastIndexOf( E element ) {
-		final int N = this.getSize();
-		for( int i = 0; i < N; i++ ) {
-			int index = N - 1 - i;
-			E item = this.get( index );
-			if( element != null ? element.equals( item ) : item == null ) {
-				return index;
-			}
-		}
-		return -1;
-	}
+  @Override
+  public int lastIndexOf(E element) {
+    final int N = this.getSize();
+    for (int i = 0; i < N; i++) {
+      int index = N - 1 - i;
+      E item = this.get(index);
+      if (element != null ? element.equals(item) : item == null) {
+        return index;
+      }
+    }
+    return -1;
+  }
 
-	@Override
-	public boolean contains( E element ) {
-		return this.indexOf( element ) != -1;
-	}
+  @Override
+  public boolean contains(E element) {
+    return this.indexOf(element) != -1;
+  }
 
-	public boolean isEmpty() {
-		return this.getSize() == 0;
-	}
+  public boolean isEmpty() {
+    return this.getSize() == 0;
+  }
 }

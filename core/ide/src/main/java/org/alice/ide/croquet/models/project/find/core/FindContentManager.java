@@ -72,192 +72,192 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  */
 public class FindContentManager {
 
-	private final List<SearchResult> objectList = Lists.newArrayList();
-	private final List<Object> superTypeList = Lists.newArrayList();
+  private final List<SearchResult> objectList = Lists.newArrayList();
+  private final List<Object> superTypeList = Lists.newArrayList();
 
-	public void initialize( UserType sceneType, List<Criterion> criteria ) {
-		//		this.sceneType = sceneType;
-		tunnelField( sceneType );
-		FindCrawler crawler = new FindCrawler( criteria, objectList );
-		for( SearchResult object : objectList ) {
-			if( object.getDeclaration() instanceof UserMethod ) {
-				UserMethod method = (UserMethod)object.getDeclaration();
-				method.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			}
-		}
-	}
+  public void initialize(UserType sceneType, List<Criterion> criteria) {
+    //    this.sceneType = sceneType;
+    tunnelField(sceneType);
+    FindCrawler crawler = new FindCrawler(criteria, objectList);
+    for (SearchResult object : objectList) {
+      if (object.getDeclaration() instanceof UserMethod) {
+        UserMethod method = (UserMethod) object.getDeclaration();
+        method.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+      }
+    }
+  }
 
-	private void tunnelField( UserType<?> type ) {
-		tunnelSuper( (AbstractType)type.superType.getValue() );
-		for( UserField field : type.fields ) {
-			if( !checkContains( field ) ) {
-				objectList.add( new SearchResult( field ) );
-				if( field.getValueType() instanceof UserType ) {
-					tunnelField( (UserType)field.getValueType() );
-				}
-			}
-		}
-		for( UserMethod method : type.methods ) {
-			if( !checkContains( method ) ) {
-				objectList.add( new SearchResult( method ) );
-				tunnelMethod( method );
-			}
-		}
-	}
+  private void tunnelField(UserType<?> type) {
+    tunnelSuper((AbstractType) type.superType.getValue());
+    for (UserField field : type.fields) {
+      if (!checkContains(field)) {
+        objectList.add(new SearchResult(field));
+        if (field.getValueType() instanceof UserType) {
+          tunnelField((UserType) field.getValueType());
+        }
+      }
+    }
+    for (UserMethod method : type.methods) {
+      if (!checkContains(method)) {
+        objectList.add(new SearchResult(method));
+        tunnelMethod(method);
+      }
+    }
+  }
 
-	private void tunnelSuper( AbstractType parent ) {
-		if( ( parent != null ) && !superTypeList.contains( parent ) ) {
-			//pass
-		} else {
-			return;
-		}
-		superTypeList.add( parent );
-		List<AbstractField> fields = parent.getDeclaredFields();
-		List<AbstractMethod> methods = parent.getDeclaredMethods();
-		for( AbstractField field : fields ) {
-			if( !checkContains( field ) ) {
-				objectList.add( new SearchResult( field ) );
-			}
-		}
-		for( AbstractMethod method : methods ) {
-			if( !checkContains( method ) ) {
-				objectList.add( new SearchResult( method ) );
-			}
-		}
-		if( parent != null ) {
-			AbstractType grandparent = parent.getSuperType();
-			if( ( grandparent != null ) && grandparent.isFollowToSuperClassDesired() ) {
-				tunnelSuper( grandparent );
-			}
-		}
-	}
+  private void tunnelSuper(AbstractType parent) {
+    if ((parent != null) && !superTypeList.contains(parent)) {
+      //pass
+    } else {
+      return;
+    }
+    superTypeList.add(parent);
+    List<AbstractField> fields = parent.getDeclaredFields();
+    List<AbstractMethod> methods = parent.getDeclaredMethods();
+    for (AbstractField field : fields) {
+      if (!checkContains(field)) {
+        objectList.add(new SearchResult(field));
+      }
+    }
+    for (AbstractMethod method : methods) {
+      if (!checkContains(method)) {
+        objectList.add(new SearchResult(method));
+      }
+    }
+    if (parent != null) {
+      AbstractType grandparent = parent.getSuperType();
+      if ((grandparent != null) && grandparent.isFollowToSuperClassDesired()) {
+        tunnelSuper(grandparent);
+      }
+    }
+  }
 
-	private void tunnelMethod( UserMethod method ) {
-		NodeListProperty<UserParameter> nodeListProperty = method.requiredParameters;
-		BlockStatement blockStatement = method.body.getValue();
-		for( UserParameter parameter : nodeListProperty ) {
-			assert !checkContains( parameter );
-			objectList.add( new SearchResult( parameter ) );
-		}
-		for( Statement statement : blockStatement.statements ) {
-			if( statement instanceof LocalDeclarationStatement ) {
-				UserLocal local = ( (LocalDeclarationStatement)statement ).local.getValue();
-				assert !checkContains( local );
-				objectList.add( new SearchResult( local ) );
-			}
-		}
-	}
+  private void tunnelMethod(UserMethod method) {
+    NodeListProperty<UserParameter> nodeListProperty = method.requiredParameters;
+    BlockStatement blockStatement = method.body.getValue();
+    for (UserParameter parameter : nodeListProperty) {
+      assert !checkContains(parameter);
+      objectList.add(new SearchResult(parameter));
+    }
+    for (Statement statement : blockStatement.statements) {
+      if (statement instanceof LocalDeclarationStatement) {
+        UserLocal local = ((LocalDeclarationStatement) statement).local.getValue();
+        assert !checkContains(local);
+        objectList.add(new SearchResult(local));
+      }
+    }
+  }
 
-	private boolean checkContains( Object searchObject ) {
-		return checkFind( searchObject ) != null;
-	}
+  private boolean checkContains(Object searchObject) {
+    return checkFind(searchObject) != null;
+  }
 
-	private SearchResult checkFind( Object searchObject ) {
-		for( SearchResult object : objectList ) {
-			if( object.getDeclaration().equals( searchObject ) ) {
-				return object;
-			}
-		}
-		return null;
-	}
+  private SearchResult checkFind(Object searchObject) {
+    for (SearchResult object : objectList) {
+      if (object.getDeclaration().equals(searchObject)) {
+        return object;
+      }
+    }
+    return null;
+  }
 
-	public List<SearchResult> getResultsForString( String nextValue ) {
-		List<SearchResult> rv = Lists.newArrayList();
-		String check = nextValue;
-		//all these characters break regex
-		check = check.replaceAll( "\\*", ".*" );
-		check = check.replaceAll( "\\(", "" );
-		check = check.replaceAll( "\\)", "" );
-		check = check.replaceAll( "\\[", "" );
-		check = check.replaceAll( "\\]", "" );
-		check = check.replaceAll( "\\{", "" );
-		check = check.replaceAll( "\\}", "" );
-		check = check.replaceAll( "\\\\", "" );
-		//		if( check.length() == 0 ) {
-		//			return rv;
-		//		}
-		while( true ) {
-			try {
-				Pattern pattern = Pattern.compile( check.toLowerCase() );
-				System.out.println( objectList );
-				for( SearchResult o : objectList ) {
-					String name = o.getName();
-					Matcher matcher = pattern.matcher( name.toLowerCase() );
-					if( matcher.find() ) {
-						if( o.getReferences().size() > 0 ) {
-							rv.add( o );
-						}
-					}
-				}
-				break;
-			} catch( PatternSyntaxException pse ) {
-				throw pse;
-			}
-		}
-		rv = sortByRelevance( nextValue, rv );
-		return rv;
-	}
+  public List<SearchResult> getResultsForString(String nextValue) {
+    List<SearchResult> rv = Lists.newArrayList();
+    String check = nextValue;
+    //all these characters break regex
+    check = check.replaceAll("\\*", ".*");
+    check = check.replaceAll("\\(", "");
+    check = check.replaceAll("\\)", "");
+    check = check.replaceAll("\\[", "");
+    check = check.replaceAll("\\]", "");
+    check = check.replaceAll("\\{", "");
+    check = check.replaceAll("\\}", "");
+    check = check.replaceAll("\\\\", "");
+    //    if( check.length() == 0 ) {
+    //      return rv;
+    //    }
+    while (true) {
+      try {
+        Pattern pattern = Pattern.compile(check.toLowerCase());
+        System.out.println(objectList);
+        for (SearchResult o : objectList) {
+          String name = o.getName();
+          Matcher matcher = pattern.matcher(name.toLowerCase());
+          if (matcher.find()) {
+            if (o.getReferences().size() > 0) {
+              rv.add(o);
+            }
+          }
+        }
+        break;
+      } catch (PatternSyntaxException pse) {
+        throw pse;
+      }
+    }
+    rv = sortByRelevance(nextValue, rv);
+    return rv;
+  }
 
-	public List<SearchResult> getResultsForField( UserField field ) {
-		List<SearchResult> resultsForString = getResultsForString( field.getName() );
-		List<SearchResult> rv = Lists.newArrayList();
-		for( SearchResult obj : resultsForString ) {
-			if( obj.getDeclaration().equals( field ) ) {
-				rv.add( obj );
-			}
-		}
-		if( rv.size() < 1 ) {
-			return resultsForString;
-		} else {
-			return rv;
-		}
-	}
+  public List<SearchResult> getResultsForField(UserField field) {
+    List<SearchResult> resultsForString = getResultsForString(field.getName());
+    List<SearchResult> rv = Lists.newArrayList();
+    for (SearchResult obj : resultsForString) {
+      if (obj.getDeclaration().equals(field)) {
+        rv.add(obj);
+      }
+    }
+    if (rv.size() < 1) {
+      return resultsForString;
+    } else {
+      return rv;
+    }
+  }
 
-	private List<SearchResult> sortByRelevance( String string, List<SearchResult> searchResults ) {
-		List<SearchResult> unsortedList = Lists.newArrayList( searchResults );
-		List<SearchResult> rv = Lists.newArrayList();
-		Map<SearchResult, Double> scoreMap = Maps.newHashMap();
-		for( SearchResult obj : unsortedList ) {
-			scoreMap.put( obj, score( obj, string ) );
-		}
-		//n^2 sort O:-)
-		while( !unsortedList.isEmpty() ) {
-			double max = Double.NEGATIVE_INFINITY;
-			SearchResult maxObj = null;
-			for( SearchResult o : unsortedList ) {
-				if( scoreMap.get( o ) > max ) {
-					max = scoreMap.get( o );
-					maxObj = o;
-				}
-			}
-			assert maxObj != null : unsortedList.size();
-			rv.add( unsortedList.remove( unsortedList.indexOf( maxObj ) ) );
-		}
-		return rv;
-	}
+  private List<SearchResult> sortByRelevance(String string, List<SearchResult> searchResults) {
+    List<SearchResult> unsortedList = Lists.newArrayList(searchResults);
+    List<SearchResult> rv = Lists.newArrayList();
+    Map<SearchResult, Double> scoreMap = Maps.newHashMap();
+    for (SearchResult obj : unsortedList) {
+      scoreMap.put(obj, score(obj, string));
+    }
+    //n^2 sort O:-)
+    while (!unsortedList.isEmpty()) {
+      double max = Double.NEGATIVE_INFINITY;
+      SearchResult maxObj = null;
+      for (SearchResult o : unsortedList) {
+        if (scoreMap.get(o) > max) {
+          max = scoreMap.get(o);
+          maxObj = o;
+        }
+      }
+      assert maxObj != null : unsortedList.size();
+      rv.add(unsortedList.remove(unsortedList.indexOf(maxObj)));
+    }
+    return rv;
+  }
 
-	private Double score( SearchResult obj, String string ) {
-		double rv = 0;
-		if( obj.getName().equals( string ) ) {
-			rv += 2;
-		}
-		if( obj.getName().contains( string ) ) {
-			rv += 1;
-		}
-		if( obj.getName().toLowerCase().startsWith( string.toLowerCase() ) ) {
-			rv += 1;
-		}
-		rv += obj.getReferences().size() / 10.0;
-		return rv;
-	}
+  private Double score(SearchResult obj, String string) {
+    double rv = 0;
+    if (obj.getName().equals(string)) {
+      rv += 2;
+    }
+    if (obj.getName().contains(string)) {
+      rv += 1;
+    }
+    if (obj.getName().toLowerCase().startsWith(string.toLowerCase())) {
+      rv += 1;
+    }
+    rv += obj.getReferences().size() / 10.0;
+    return rv;
+  }
 
-	public void refresh( UserType sceneType, List<Criterion> criteria ) {
-		objectList.clear();
-		superTypeList.clear();
-		initialize( sceneType, criteria );
-	}
+  public void refresh(UserType sceneType, List<Criterion> criteria) {
+    objectList.clear();
+    superTypeList.clear();
+    initialize(sceneType, criteria);
+  }
 
-	//	public boolean isInitialized() {
-	//		return sceneType != null;
-	//	}
+  //  public boolean isInitialized() {
+  //    return sceneType != null;
+  //  }
 }

@@ -49,14 +49,12 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ClassTemplate {
-	public static final Class<?> VOID_ACTS_AS_NULL = Void.class;
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ClassTemplate {
+  public static final Class<?> VOID_ACTS_AS_NULL = Void.class;
 
-	boolean isFollowToSuperClassDesired() default true;
+  boolean isFollowToSuperClassDesired() default true;
 
-	boolean isConsumptionBySubClassDesired() default false;
+  boolean isConsumptionBySubClassDesired() default false;
 
-	Class<?> keywordFactoryCls() default Void.class;
+  Class<?> keywordFactoryCls() default Void.class;
 }

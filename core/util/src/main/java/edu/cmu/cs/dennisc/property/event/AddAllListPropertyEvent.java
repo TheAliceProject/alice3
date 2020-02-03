@@ -50,20 +50,20 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public class AddAllListPropertyEvent<E> extends ListPropertyEvent<E> {
-	private int m_index;
-	private Collection<? extends E> m_collection;
+  private int m_index;
+  private Collection<? extends E> m_collection;
 
-	public AddAllListPropertyEvent( ListProperty<E> source, int index, Collection<? extends E> collection ) {
-		super( source );
-		m_index = index;
-		m_collection = collection;
-	}
+  public AddAllListPropertyEvent(ListProperty<E> source, int index, Collection<? extends E> collection) {
+    super(source);
+    m_index = index;
+    m_collection = collection;
+  }
 
-	public int getIndex() {
-		return m_index;
-	}
+  public int getIndex() {
+    return m_index;
+  }
 
-	public Collection<? extends E> getCollection() {
-		return m_collection;
-	}
+  public Collection<? extends E> getCollection() {
+    return m_collection;
+  }
 }

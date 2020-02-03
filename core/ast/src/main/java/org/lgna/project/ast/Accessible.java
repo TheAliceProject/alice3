@@ -49,12 +49,12 @@ import edu.cmu.cs.dennisc.property.StringProperty;
  * @author Dennis Cosgrove
  */
 public interface Accessible extends Node {
-	public AbstractType<?, ?, ?> getValueType();
+  public AbstractType<?, ?, ?> getValueType();
 
-	public StringProperty getNamePropertyIfItExists();
+  public StringProperty getNamePropertyIfItExists();
 
-	public String getValidName( Node context );
+  public String getValidName(Node context);
 
-	@Deprecated
-	public String getValidName();
+  @Deprecated
+  public String getValidName();
 }

@@ -51,18 +51,18 @@ import edu.cmu.cs.dennisc.scenegraph.Background;
  * @author Dennis Cosgrove
  */
 public class GlrBackground extends GlrElement<Background> {
-	public void setup( RenderContext rc ) {
-		rc.setClearColor( this.color );
-	}
+  public void setup(RenderContext rc) {
+    rc.setClearColor(this.color);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.color ) {
-			owner.color.getValue().getAsArray( this.color );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.color) {
+      owner.color.getValue().getAsArray(this.color);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private final float[] color = new float[ 4 ];
+  private final float[] color = new float[4];
 }

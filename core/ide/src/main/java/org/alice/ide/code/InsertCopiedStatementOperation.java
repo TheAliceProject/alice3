@@ -55,20 +55,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InsertCopiedStatementOperation extends ActionOperation {
-	public InsertCopiedStatementOperation( BlockStatement blockStatement, int index, Statement statement ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "a6292be1-64b5-4fb3-a8c8-c967635fe48f" ) );
-		this.blockStatement = blockStatement;
-		this.index = index;
-		this.statement = statement;
-	}
+  public InsertCopiedStatementOperation(BlockStatement blockStatement, int index, Statement statement) {
+    super(Application.PROJECT_GROUP, UUID.fromString("a6292be1-64b5-4fb3-a8c8-c967635fe48f"));
+    this.blockStatement = blockStatement;
+    this.index = index;
+    this.statement = statement;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		InsertCopiedStatementEdit edit = new InsertCopiedStatementEdit( activity, this.blockStatement, this.index, this.statement );
-		activity.commitAndInvokeDo( edit );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    InsertCopiedStatementEdit edit = new InsertCopiedStatementEdit(activity, this.blockStatement, this.index, this.statement);
+    activity.commitAndInvokeDo(edit);
+  }
 
-	private final BlockStatement blockStatement;
-	private final int index;
-	private final Statement statement;
+  private final BlockStatement blockStatement;
+  private final int index;
+  private final Statement statement;
 }

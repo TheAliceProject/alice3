@@ -58,18 +58,18 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ImagePaintFillerInner extends ExpressionFillerInner {
-	public ImagePaintFillerInner() {
-		super( ImagePaint.class );
-	}
+  public ImagePaintFillerInner() {
+    super(ImagePaint.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		if( details instanceof PublicStaticFieldValueDetails ) {
-			PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails)details;
-			Field[] flds = publicStaticFieldValueDetails.getFlds();
-			for( Field fld : flds ) {
-				items.add( StaticFieldAccessFillIn.getInstance( fld ) );
-			}
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    if (details instanceof PublicStaticFieldValueDetails) {
+      PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails) details;
+      Field[] flds = publicStaticFieldValueDetails.getFlds();
+      for (Field fld : flds) {
+        items.add(StaticFieldAccessFillIn.getInstance(fld));
+      }
+    }
+  }
 }

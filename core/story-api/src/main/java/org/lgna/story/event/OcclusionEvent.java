@@ -46,20 +46,20 @@ import org.lgna.story.SModel;
 
 public class OcclusionEvent extends AbstractEvent {
 
-	private SModel foreground;
-	private SModel background;
+  private SModel foreground;
+  private SModel background;
 
-	public OcclusionEvent( SModel foreground, SModel background ) {
-		this.foreground = foreground;
-		this.background = background;
-	}
+  public OcclusionEvent(SModel foreground, SModel background) {
+    this.foreground = foreground;
+    this.background = background;
+  }
 
-	public SModel getForegroundModel() {
-		return foreground;
-	}
+  public SModel getForegroundModel() {
+    return foreground;
+  }
 
-	public SModel getBackgroundModel() {
-		return background;
-	}
+  public SModel getBackgroundModel() {
+    return background;
+  }
 
 }

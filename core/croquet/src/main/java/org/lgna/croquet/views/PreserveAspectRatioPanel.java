@@ -53,68 +53,68 @@ import java.awt.LayoutManager;
  */
 public class PreserveAspectRatioPanel extends Panel {
 
-	private Dimension dimension;
+  private Dimension dimension;
 
-	public PreserveAspectRatioPanel( AwtComponentView<?> centerPanel, Dimension dimension ) {
-		this.dimension = dimension;
-		this.internalAddComponent( centerPanel );
-	}
+  public PreserveAspectRatioPanel(AwtComponentView<?> centerPanel, Dimension dimension) {
+    this.dimension = dimension;
+    this.internalAddComponent(centerPanel);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new LayoutManager() {
-			@Override
-			public void addLayoutComponent( String name, Component comp ) {
-			}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new LayoutManager() {
+      @Override
+      public void addLayoutComponent(String name, Component comp) {
+      }
 
-			@Override
-			public void removeLayoutComponent( Component comp ) {
-			}
+      @Override
+      public void removeLayoutComponent(Component comp) {
+      }
 
-			private Dimension layoutSize( Container parent ) {
-				if( parent.getComponentCount() > 0 ) {
-					return parent.getComponent( 0 ).getPreferredSize();
-				} else {
-					return new Dimension();
-				}
-			}
+      private Dimension layoutSize(Container parent) {
+        if (parent.getComponentCount() > 0) {
+          return parent.getComponent(0).getPreferredSize();
+        } else {
+          return new Dimension();
+        }
+      }
 
-			@Override
-			public Dimension minimumLayoutSize( Container parent ) {
-				return this.layoutSize( parent );
-			}
+      @Override
+      public Dimension minimumLayoutSize(Container parent) {
+        return this.layoutSize(parent);
+      }
 
-			@Override
-			public Dimension preferredLayoutSize( Container parent ) {
-				return this.layoutSize( parent );
-			}
+      @Override
+      public Dimension preferredLayoutSize(Container parent) {
+        return this.layoutSize(parent);
+      }
 
-			@Override
-			public void layoutContainer( Container parent ) {
-				if( parent.getComponentCount() > 0 ) {
-					Dimension parentSize = parent.getSize();
-					Component component = parent.getComponent( 0 );
-					Dimension properSize = getProperSize();
-					component.setSize( properSize );
-					component.setLocation( ( parentSize.width - properSize.width ) / 2, ( parentSize.height - properSize.height ) / 2 );
-				}
-			}
+      @Override
+      public void layoutContainer(Container parent) {
+        if (parent.getComponentCount() > 0) {
+          Dimension parentSize = parent.getSize();
+          Component component = parent.getComponent(0);
+          Dimension properSize = getProperSize();
+          component.setSize(properSize);
+          component.setLocation((parentSize.width - properSize.width) / 2, (parentSize.height - properSize.height) / 2);
+        }
+      }
 
-			private Dimension getProperSize() {
-				Dimension rv = new Dimension();
-				if( isTooFat() ) {
-					rv.width = (int)( ( getHeight() / dimension.getHeight() ) * dimension.getWidth() );
-					rv.height = getHeight();
-				} else {
-					rv.width = getWidth();
-					rv.height = (int)( ( getWidth() / dimension.getWidth() ) * dimension.getHeight() );
-				}
-				return rv;
-			}
+      private Dimension getProperSize() {
+        Dimension rv = new Dimension();
+        if (isTooFat()) {
+          rv.width = (int) ((getHeight() / dimension.getHeight()) * dimension.getWidth());
+          rv.height = getHeight();
+        } else {
+          rv.width = getWidth();
+          rv.height = (int) ((getWidth() / dimension.getWidth()) * dimension.getHeight());
+        }
+        return rv;
+      }
 
-			private boolean isTooFat() {
-				return ( getWidth() / dimension.getWidth() ) > ( getHeight() / dimension.getHeight() );
-			}
-		};
-	}
+      private boolean isTooFat() {
+        return (getWidth() / dimension.getWidth()) > (getHeight() / dimension.getHeight());
+      }
+    };
+  }
 }

@@ -58,113 +58,113 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class TypeInfo extends DeclarationInfo<UserType<?>> {
-	private final Map<UserConstructor, ConstructorInfo> constructorInfoMap;
-	private final Map<UserMethod, MethodInfo> methodInfoMap;
-	private final Map<UserField, FieldInfo> fieldInfoMap;
+  private final Map<UserConstructor, ConstructorInfo> constructorInfoMap;
+  private final Map<UserMethod, MethodInfo> methodInfoMap;
+  private final Map<UserField, FieldInfo> fieldInfoMap;
 
-	public TypeInfo( ProjectInfo projectInfo, UserType<?> type ) {
-		super( projectInfo, type );
-		Map<UserConstructor, ConstructorInfo> mapC = Maps.newHashMap();
-		for( UserConstructor constructor : type.getDeclaredConstructors() ) {
-			mapC.put( constructor, new ConstructorInfo( projectInfo, constructor ) );
-		}
-		this.constructorInfoMap = Collections.unmodifiableMap( mapC );
-		Map<UserMethod, MethodInfo> mapM = Maps.newHashMap();
-		for( UserMethod method : type.methods ) {
-			mapM.put( method, new MethodInfo( projectInfo, method ) );
-		}
-		this.methodInfoMap = Collections.unmodifiableMap( mapM );
-		Map<UserField, FieldInfo> mapF = Maps.newHashMap();
-		for( UserField field : type.fields ) {
-			mapF.put( field, new FieldInfo( projectInfo, field ) );
-		}
-		this.fieldInfoMap = Collections.unmodifiableMap( mapF );
-	}
+  public TypeInfo(ProjectInfo projectInfo, UserType<?> type) {
+    super(projectInfo, type);
+    Map<UserConstructor, ConstructorInfo> mapC = Maps.newHashMap();
+    for (UserConstructor constructor : type.getDeclaredConstructors()) {
+      mapC.put(constructor, new ConstructorInfo(projectInfo, constructor));
+    }
+    this.constructorInfoMap = Collections.unmodifiableMap(mapC);
+    Map<UserMethod, MethodInfo> mapM = Maps.newHashMap();
+    for (UserMethod method : type.methods) {
+      mapM.put(method, new MethodInfo(projectInfo, method));
+    }
+    this.methodInfoMap = Collections.unmodifiableMap(mapM);
+    Map<UserField, FieldInfo> mapF = Maps.newHashMap();
+    for (UserField field : type.fields) {
+      mapF.put(field, new FieldInfo(projectInfo, field));
+    }
+    this.fieldInfoMap = Collections.unmodifiableMap(mapF);
+  }
 
-	public TypeInfo getSuperTypeInfo() {
-		AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
-		if( superType instanceof UserType<?> ) {
-			return this.getProjectInfo().getInfoForType( (UserType<?>)superType );
-		} else {
-			return null;
-		}
-	}
+  public TypeInfo getSuperTypeInfo() {
+    AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
+    if (superType instanceof UserType<?>) {
+      return this.getProjectInfo().getInfoForType((UserType<?>) superType);
+    } else {
+      return null;
+    }
+  }
 
-	public Collection<ConstructorInfo> getConstructorInfos() {
-		return this.constructorInfoMap.values();
-	}
+  public Collection<ConstructorInfo> getConstructorInfos() {
+    return this.constructorInfoMap.values();
+  }
 
-	public Collection<MethodInfo> getMethodInfos() {
-		return this.methodInfoMap.values();
-	}
+  public Collection<MethodInfo> getMethodInfos() {
+    return this.methodInfoMap.values();
+  }
 
-	public Collection<FieldInfo> getFieldInfos() {
-		return this.fieldInfoMap.values();
-	}
+  public Collection<FieldInfo> getFieldInfos() {
+    return this.fieldInfoMap.values();
+  }
 
-	public ConstructorInfo getInfoForConstructor( UserConstructor constructor ) {
-		return this.constructorInfoMap.get( constructor );
-	}
+  public ConstructorInfo getInfoForConstructor(UserConstructor constructor) {
+    return this.constructorInfoMap.get(constructor);
+  }
 
-	public MethodInfo getInfoForMethod( UserMethod method ) {
-		return this.methodInfoMap.get( method );
-	}
+  public MethodInfo getInfoForMethod(UserMethod method) {
+    return this.methodInfoMap.get(method);
+  }
 
-	public FieldInfo getInfoForField( UserField field ) {
-		return this.fieldInfoMap.get( field );
-	}
+  public FieldInfo getInfoForField(UserField field) {
+    return this.fieldInfoMap.get(field);
+  }
 
-	/* package-private */void updateDependencies() {
-		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
-			info.updateDependencies();
-		}
-		for( MethodInfo info : this.methodInfoMap.values() ) {
-			info.updateDependencies();
-		}
-		for( FieldInfo info : this.fieldInfoMap.values() ) {
-			info.updateDependencies();
-		}
-	}
+  /* package-private */void updateDependencies() {
+    for (ConstructorInfo info : this.constructorInfoMap.values()) {
+      info.updateDependencies();
+    }
+    for (MethodInfo info : this.methodInfoMap.values()) {
+      info.updateDependencies();
+    }
+    for (FieldInfo info : this.fieldInfoMap.values()) {
+      info.updateDependencies();
+    }
+  }
 
-	@Override
-	public void appendDesired( List<DeclarationInfo<?>> desired ) {
-		super.appendDesired( desired );
-		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
-			info.appendDesired( desired );
-		}
-		for( MethodInfo info : this.methodInfoMap.values() ) {
-			info.appendDesired( desired );
-		}
-		for( FieldInfo info : this.fieldInfoMap.values() ) {
-			info.appendDesired( desired );
-		}
-	}
+  @Override
+  public void appendDesired(List<DeclarationInfo<?>> desired) {
+    super.appendDesired(desired);
+    for (ConstructorInfo info : this.constructorInfoMap.values()) {
+      info.appendDesired(desired);
+    }
+    for (MethodInfo info : this.methodInfoMap.values()) {
+      info.appendDesired(desired);
+    }
+    for (FieldInfo info : this.fieldInfoMap.values()) {
+      info.appendDesired(desired);
+    }
+  }
 
-	@Override
-	public void resetRequired() {
-		super.resetRequired();
-		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
-			info.resetRequired();
-		}
-		for( MethodInfo info : this.methodInfoMap.values() ) {
-			info.resetRequired();
-		}
-		for( FieldInfo info : this.fieldInfoMap.values() ) {
-			info.resetRequired();
-		}
-	}
+  @Override
+  public void resetRequired() {
+    super.resetRequired();
+    for (ConstructorInfo info : this.constructorInfoMap.values()) {
+      info.resetRequired();
+    }
+    for (MethodInfo info : this.methodInfoMap.values()) {
+      info.resetRequired();
+    }
+    for (FieldInfo info : this.fieldInfoMap.values()) {
+      info.resetRequired();
+    }
+  }
 
-	@Override
-	public void updateSwing() {
-		super.updateSwing();
-		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
-			info.updateSwing();
-		}
-		for( MethodInfo info : this.methodInfoMap.values() ) {
-			info.updateSwing();
-		}
-		for( FieldInfo info : this.fieldInfoMap.values() ) {
-			info.updateSwing();
-		}
-	}
+  @Override
+  public void updateSwing() {
+    super.updateSwing();
+    for (ConstructorInfo info : this.constructorInfoMap.values()) {
+      info.updateSwing();
+    }
+    for (MethodInfo info : this.methodInfoMap.values()) {
+      info.updateSwing();
+    }
+    for (FieldInfo info : this.fieldInfoMap.values()) {
+      info.updateSwing();
+    }
+  }
 }

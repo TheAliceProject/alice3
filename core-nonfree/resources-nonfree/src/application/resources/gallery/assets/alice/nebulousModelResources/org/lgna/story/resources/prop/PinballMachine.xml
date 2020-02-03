@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PinballMachine">
+    <BoundingBox>
+        <Min x="-0.33569034934043884" y="0.0" z="-0.7917590737342834"/>
+        <Max x="0.33569034934043884" y="1.7618764638900757" z="0.7917590737342834"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>game</Tag>
+        <Tag>arcade</Tag>
+        <Tag>bar</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:recreation room</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shark" resourceName="SHARK" textureName="SHARK">
+        <BoundingBox>
+            <Min x="-0.33569034934043884" y="0.0" z="-0.7917590737342834"/>
+            <Max x="0.33569034934043884" y="1.7618764638900757" z="0.7917590737342834"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ufo" resourceName="UFO" textureName="UFO">
+        <BoundingBox>
+            <Min x="-0.33569034934043884" y="0.0" z="-0.7917590737342834"/>
+            <Max x="0.33569034934043884" y="1.756045937538147" z="0.7917590737342834"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

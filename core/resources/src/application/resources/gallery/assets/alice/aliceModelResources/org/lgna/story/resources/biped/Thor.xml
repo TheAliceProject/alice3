@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Thor">
+    <BoundingBox>
+        <Min x="-0.4952265819834205" y="-0.005234908139328913" z="-0.2829972598079348"/>
+        <Max x="0.4928220715681837" y="1.8788121639999855" z="0.19406343120469657"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>thor</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Thor" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

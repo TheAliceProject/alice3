@@ -53,58 +53,57 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
  * @author David Culyba
  */
 public enum MovementType {
-	STOOD_UP() {
-		@Override
-		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
-			StandIn standIn = new StandIn();
-			standIn.setVehicle( transformable );
-			try {
-				standIn.setAxesOnlyToStandUp();
-				transformable.applyTranslation( translateAmount, standIn );
-			} finally {
-				standIn.setVehicle( null );
-			}
-		}
-		@Override
-		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
-			StandIn standIn = new StandIn();
-			standIn.setVehicle( transformable );
-			try {
-				standIn.setAxesOnlyToStandUp();
-				transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, standIn );
-			} finally {
-				standIn.setVehicle( null );
-			}
-		}
+  STOOD_UP() {
+    @Override
+    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+      StandIn standIn = new StandIn();
+      standIn.setVehicle(transformable);
+      try {
+        standIn.setAxesOnlyToStandUp();
+        transformable.applyTranslation(translateAmount, standIn);
+      } finally {
+        standIn.setVehicle(null);
+      }
+    }
 
-	},
-	LOCAL() {
-		@Override
-		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
-			transformable.applyTranslation( translateAmount, transformable );
-		}
+    @Override
+    public void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation) {
+      StandIn standIn = new StandIn();
+      standIn.setVehicle(transformable);
+      try {
+        standIn.setAxesOnlyToStandUp();
+        transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, standIn);
+      } finally {
+        standIn.setVehicle(null);
+      }
+    }
 
-		@Override
-		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
-			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, transformable );
-		}
+  }, LOCAL() {
+    @Override
+    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+      transformable.applyTranslation(translateAmount, transformable);
+    }
 
-	},
-	ABSOLUTE() {
-		@Override
-		public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount ) {
-			transformable.applyTranslation( translateAmount, AsSeenBy.SCENE );
-		}
+    @Override
+    public void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation) {
+      transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, transformable);
+    }
 
-		@Override
-		public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation ) {
-			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, AsSeenBy.SCENE );
-		}
+  }, ABSOLUTE() {
+    @Override
+    public void applyTranslation(AbstractTransformable transformable, Point3 translateAmount) {
+      transformable.applyTranslation(translateAmount, AsSeenBy.SCENE);
+    }
 
-	};
+    @Override
+    public void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation) {
+      transformable.applyRotationAboutArbitraryAxis(rotationAxis, rotation, AsSeenBy.SCENE);
+    }
 
-	public abstract void applyTranslation( AbstractTransformable transformable, Point3 translateAmount );
+  };
 
-	public abstract void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation );
+  public abstract void applyTranslation(AbstractTransformable transformable, Point3 translateAmount);
+
+  public abstract void applyRotation(AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation);
 
 }

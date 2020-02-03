@@ -71,176 +71,176 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 /* package-private */class JFauxSlider extends JComponent {
-	private static final int THUMB_HEIGHT = 12;
-	private static final int HALF_THUMB_WIDTH = 8;
-	private static final int THUMB_WIDTH = HALF_THUMB_WIDTH * 2;
+  private static final int THUMB_HEIGHT = 12;
+  private static final int HALF_THUMB_WIDTH = 8;
+  private static final int THUMB_WIDTH = HALF_THUMB_WIDTH * 2;
 
-	private static final int TRACK_HEIGHT = 8;
-	private static final Color TRACK_LEADING_COLOR = Color.WHITE;
-	private static final Color TRACK_TRAILING_COLOR = ColorUtilities.createGray( 221 );
-	private static final Color THUMB_FILL_COLOR = Color.LIGHT_GRAY;
-	private static final Color THUMB_DRAW_COLOR = Color.BLACK;
+  private static final int TRACK_HEIGHT = 8;
+  private static final Color TRACK_LEADING_COLOR = Color.WHITE;
+  private static final Color TRACK_TRAILING_COLOR = ColorUtilities.createGray(221);
+  private static final Color THUMB_FILL_COLOR = Color.LIGHT_GRAY;
+  private static final Color THUMB_DRAW_COLOR = Color.BLACK;
 
-	private float portion = 0.0f;
+  private float portion = 0.0f;
 
-	private static final Shape THUMB_SHAPE = createThumbShape();
+  private static final Shape THUMB_SHAPE = createThumbShape();
 
-	private static Shape createThumbShape() {
-		RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float( -HALF_THUMB_WIDTH, -THUMB_HEIGHT, THUMB_WIDTH, THUMB_HEIGHT, 4, 4 );
-		GeneralPath path = new GeneralPath();
-		path.moveTo( HALF_THUMB_WIDTH / 2, 0 );
-		path.lineTo( 0, TRACK_HEIGHT / 2 );
-		path.lineTo( -HALF_THUMB_WIDTH / 2, 0 );
-		path.closePath();
-		return AreaUtilities.createUnion( roundRect, path );
-	}
+  private static Shape createThumbShape() {
+    RoundRectangle2D.Float roundRect = new RoundRectangle2D.Float(-HALF_THUMB_WIDTH, -THUMB_HEIGHT, THUMB_WIDTH, THUMB_HEIGHT, 4, 4);
+    GeneralPath path = new GeneralPath();
+    path.moveTo(HALF_THUMB_WIDTH / 2, 0);
+    path.lineTo(0, TRACK_HEIGHT / 2);
+    path.lineTo(-HALF_THUMB_WIDTH / 2, 0);
+    path.closePath();
+    return AreaUtilities.createUnion(roundRect, path);
+  }
 
-	private final List<ThumbListener> thumbListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ThumbListener> thumbListeners = Lists.newCopyOnWriteArrayList();
 
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-		@Override
-		public void mousePressed( MouseEvent e ) {
-			fireThumbPressed( e );
-		}
+    @Override
+    public void mousePressed(MouseEvent e) {
+      fireThumbPressed(e);
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			fireThumbReleased( e );
-		}
-	};
-	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
-		@Override
-		public void mouseMoved( MouseEvent e ) {
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      fireThumbReleased(e);
+    }
+  };
+  private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseDragged( MouseEvent e ) {
-			fireThumbDragged( e );
-		}
-	};
+    @Override
+    public void mouseDragged(MouseEvent e) {
+      fireThumbDragged(e);
+    }
+  };
 
-	public JFauxSlider() {
-		this.setBorder( BorderFactory.createEmptyBorder( 2, 0, 10, 0 ) );
-	}
+  public JFauxSlider() {
+    this.setBorder(BorderFactory.createEmptyBorder(2, 0, 10, 0));
+  }
 
-	public void addThumbListener( ThumbListener listener ) {
-		this.thumbListeners.add( listener );
-	}
+  public void addThumbListener(ThumbListener listener) {
+    this.thumbListeners.add(listener);
+  }
 
-	public void removeThumbListener( ThumbListener listener ) {
-		this.thumbListeners.remove( listener );
-	}
+  public void removeThumbListener(ThumbListener listener) {
+    this.thumbListeners.remove(listener);
+  }
 
-	private void fireThumbPressed( MouseEvent e ) {
-		this.updatePortion( e );
-		for( ThumbListener listener : thumbListeners ) {
-			listener.thumbPressed( this.portion );
-		}
-	}
+  private void fireThumbPressed(MouseEvent e) {
+    this.updatePortion(e);
+    for (ThumbListener listener : thumbListeners) {
+      listener.thumbPressed(this.portion);
+    }
+  }
 
-	private void fireThumbReleased( MouseEvent e ) {
-		this.updatePortion( e );
-		for( ThumbListener listener : thumbListeners ) {
-			listener.thumbReleased( this.portion );
-		}
-	}
+  private void fireThumbReleased(MouseEvent e) {
+    this.updatePortion(e);
+    for (ThumbListener listener : thumbListeners) {
+      listener.thumbReleased(this.portion);
+    }
+  }
 
-	private void fireThumbDragged( MouseEvent e ) {
-		this.updatePortion( e );
-		for( ThumbListener listener : thumbListeners ) {
-			listener.thumbDragged( this.portion );
-		}
-	}
+  private void fireThumbDragged(MouseEvent e) {
+    this.updatePortion(e);
+    for (ThumbListener listener : thumbListeners) {
+      listener.thumbDragged(this.portion);
+    }
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addMouseListener( this.mouseListener );
-		this.addMouseMotionListener( this.mouseMotionListener );
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.addMouseListener(this.mouseListener);
+    this.addMouseMotionListener(this.mouseMotionListener);
+  }
 
-	@Override
-	public void removeNotify() {
-		this.removeMouseMotionListener( this.mouseMotionListener );
-		this.removeMouseListener( this.mouseListener );
-		super.removeNotify();
-	}
+  @Override
+  public void removeNotify() {
+    this.removeMouseMotionListener(this.mouseMotionListener);
+    this.removeMouseListener(this.mouseListener);
+    super.removeNotify();
+  }
 
-	public float getPortion() {
-		return this.portion;
-	}
+  public float getPortion() {
+    return this.portion;
+  }
 
-	public void setPortion( float portion ) {
-		this.portion = portion;
-		this.repaint();
-	}
+  public void setPortion(float portion) {
+    this.portion = portion;
+    this.repaint();
+  }
 
-	private void updatePortion( MouseEvent e ) {
-		int w = this.getWidth();
-		int trackWidth = w - ( HALF_THUMB_WIDTH * 2 );
-		int x0 = HALF_THUMB_WIDTH;
-		float p = ( e.getX() - x0 ) / (float)trackWidth;
-		p = Math.max( p, 0.0f );
-		p = Math.min( p, 1.0f );
-		this.setPortion( p );
-	}
+  private void updatePortion(MouseEvent e) {
+    int w = this.getWidth();
+    int trackWidth = w - (HALF_THUMB_WIDTH * 2);
+    int x0 = HALF_THUMB_WIDTH;
+    float p = (e.getX() - x0) / (float) trackWidth;
+    p = Math.max(p, 0.0f);
+    p = Math.min(p, 1.0f);
+    this.setPortion(p);
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		Insets insets = this.getInsets();
-		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), THUMB_HEIGHT + TRACK_HEIGHT + insets.top + insets.bottom );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    Insets insets = this.getInsets();
+    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), THUMB_HEIGHT + TRACK_HEIGHT + insets.top + insets.bottom);
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		Graphics2D g2 = (Graphics2D)g;
-		Object prevAntialiasing = GraphicsUtilities.setAntialiasing( g2, RenderingHints.VALUE_ANTIALIAS_ON );
-		Insets insets = this.getInsets();
-		try {
-			int trackWidth = this.getWidth() - ( HALF_THUMB_WIDTH * 2 );
-			int x = HALF_THUMB_WIDTH;
-			//int y = ( this.getHeight() - ( TRACK_HEIGHT + THUMB_HEIGHT ) ) / 2;
-			int y = insets.top;
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D) g;
+    Object prevAntialiasing = GraphicsUtilities.setAntialiasing(g2, RenderingHints.VALUE_ANTIALIAS_ON);
+    Insets insets = this.getInsets();
+    try {
+      int trackWidth = this.getWidth() - (HALF_THUMB_WIDTH * 2);
+      int x = HALF_THUMB_WIDTH;
+      //int y = ( this.getHeight() - ( TRACK_HEIGHT + THUMB_HEIGHT ) ) / 2;
+      int y = insets.top;
 
-			y += THUMB_HEIGHT;
+      y += THUMB_HEIGHT;
 
-			int centerX = x + (int)Math.round( this.portion * trackWidth );
-			Shape trackShape = new RoundRectangle2D.Float( x, y, trackWidth, TRACK_HEIGHT, TRACK_HEIGHT, TRACK_HEIGHT );
-			g2.setColor( TRACK_TRAILING_COLOR );
-			g2.fill( trackShape );
+      int centerX = x + (int) Math.round(this.portion * trackWidth);
+      Shape trackShape = new RoundRectangle2D.Float(x, y, trackWidth, TRACK_HEIGHT, TRACK_HEIGHT, TRACK_HEIGHT);
+      g2.setColor(TRACK_TRAILING_COLOR);
+      g2.fill(trackShape);
 
-			Shape leadingRect = new Rectangle( x, y, centerX - x, TRACK_HEIGHT );
-			Shape prevClip = g2.getClip();
-			Area leadingClip = AreaUtilities.createIntersection( prevClip, leadingRect );
-			try {
-				g2.setClip( leadingClip );
-				g2.setPaint( TRACK_LEADING_COLOR );
-				g2.fill( trackShape );
-			} finally {
-				g2.setClip( prevClip );
-			}
-			//java.awt.Shape thumbShape = new java.awt.geom.Ellipse2D.Float( centerX - ( THUMB_SIZE / 2 ), 0, THUMB_SIZE, THUMB_SIZE );
-			g2.translate( centerX, y );
-			g2.setPaint( THUMB_FILL_COLOR );
-			g2.fill( THUMB_SHAPE );
-			g2.setPaint( THUMB_DRAW_COLOR );
-			g2.draw( THUMB_SHAPE );
-			g2.translate( -centerX, 10 );
-		} finally {
-			GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-		}
-	}
+      Shape leadingRect = new Rectangle(x, y, centerX - x, TRACK_HEIGHT);
+      Shape prevClip = g2.getClip();
+      Area leadingClip = AreaUtilities.createIntersection(prevClip, leadingRect);
+      try {
+        g2.setClip(leadingClip);
+        g2.setPaint(TRACK_LEADING_COLOR);
+        g2.fill(trackShape);
+      } finally {
+        g2.setClip(prevClip);
+      }
+      //java.awt.Shape thumbShape = new java.awt.geom.Ellipse2D.Float( centerX - ( THUMB_SIZE / 2 ), 0, THUMB_SIZE, THUMB_SIZE );
+      g2.translate(centerX, y);
+      g2.setPaint(THUMB_FILL_COLOR);
+      g2.fill(THUMB_SHAPE);
+      g2.setPaint(THUMB_DRAW_COLOR);
+      g2.draw(THUMB_SHAPE);
+      g2.translate(-centerX, 10);
+    } finally {
+      GraphicsUtilities.setAntialiasing(g2, prevAntialiasing);
+    }
+  }
 }

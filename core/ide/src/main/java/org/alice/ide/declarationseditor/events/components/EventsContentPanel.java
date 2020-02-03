@@ -67,83 +67,81 @@ import java.awt.print.Printable;
  * @author Matt May
  */
 public class EventsContentPanel extends CodePanelWithDropReceptor {
-	private static class RootStatementListPropertyPane extends StatementListPropertyView {
-		public RootStatementListPropertyPane( UserCode userCode ) {
-			super( ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
-		}
+  private static class RootStatementListPropertyPane extends StatementListPropertyView {
+    public RootStatementListPropertyPane(UserCode userCode) {
+      super(ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements);
+    }
 
-		@Override
-		public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
-			return true;
-		}
+    @Override
+    public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
+      return true;
+    }
 
-		@Override
-		protected int getBoxLayoutPad() {
-			return 0;
-		}
+    @Override
+    protected int getBoxLayoutPad() {
+      return 0;
+    }
 
-		@Override
-		protected int getLeftInset() {
-			return 0;
-		}
+    @Override
+    protected int getLeftInset() {
+      return 0;
+    }
 
-		@Override
-		protected int getRightInset() {
-			return 0;
-		}
+    @Override
+    protected int getRightInset() {
+      return 0;
+    }
 
-		@Override
-		protected AwtComponentView<?> createComponent( Statement statement ) {
-			if( statement instanceof ExpressionStatement ) {
-				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-				Expression expression = expressionStatement.expression.getValue();
-				if( expression instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)expression;
-					AddEventListenerStatementPanel statementPanel = new AddEventListenerStatementPanel( expressionStatement );
-					statementPanel.addComponent( new EventListenerComponent( methodInvocation ) );
-					return statementPanel;
-				}
-			}
-			return null;
-		}
-	}
+    @Override
+    protected AwtComponentView<?> createComponent(Statement statement) {
+      if (statement instanceof ExpressionStatement) {
+        ExpressionStatement expressionStatement = (ExpressionStatement) statement;
+        Expression expression = expressionStatement.expression.getValue();
+        if (expression instanceof MethodInvocation) {
+          MethodInvocation methodInvocation = (MethodInvocation) expression;
+          AddEventListenerStatementPanel statementPanel = new AddEventListenerStatementPanel(expressionStatement);
+          statementPanel.addComponent(new EventListenerComponent(methodInvocation));
+          return statementPanel;
+        }
+      }
+      return null;
+    }
+  }
 
-	private final AbstractCode code;
-	private final RootStatementListPropertyPane rootPane;
+  private final AbstractCode code;
+  private final RootStatementListPropertyPane rootPane;
 
-	public EventsContentPanel( UserMethod code ) {
-		this.code = code;
-		this.rootPane = new RootStatementListPropertyPane( code );
-		this.addCenterComponent( this.rootPane );
-		Color color = ThemeUtilities.getActiveTheme().getProcedureColor();
-		this.rootPane.setBackgroundColor( color );
-		this.setBackgroundColor( color );
-	}
+  public EventsContentPanel(UserMethod code) {
+    this.code = code;
+    this.rootPane = new RootStatementListPropertyPane(code);
+    this.addCenterComponent(this.rootPane);
+    Color color = ThemeUtilities.getActiveTheme().getProcedureColor();
+    this.rootPane.setBackgroundColor(color);
+    this.setBackgroundColor(color);
+  }
 
-	@Override
-	public AbstractCode getCode() {
-		return this.code;
-	}
+  @Override
+  public AbstractCode getCode() {
+    return this.code;
+  }
 
-	@Override
-	protected AwtComponentView<?> getAsSeenBy() {
-		return this;
-	}
+  @Override
+  protected AwtComponentView<?> getAsSeenBy() {
+    return this;
+  }
 
-	@Override
-	public void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-	}
+  @Override
+  public void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
+  }
 
-	@Override
-	public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
-		Logger.todo( potentialDropSite );
-		return null;
-	}
+  @Override
+  public TrackableShape getTrackableShape(DropSite potentialDropSite) {
+    Logger.todo(potentialDropSite);
+    return null;
+  }
 
-	@Override
-	public Printable getPrintable() {
-		return new PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
-				.center( this.rootPane.getAwtComponent() )
-				.build();
-	}
+  @Override
+  public Printable getPrintable() {
+    return new PrintHelper.Builder(this.getInsets(), this.getBackgroundColor()).center(this.rootPane.getAwtComponent()).build();
+  }
 }

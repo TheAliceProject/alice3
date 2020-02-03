@@ -57,29 +57,29 @@ import java.util.Hashtable;
  * @author Dennis Cosgrove
  */
 public class VolumeLevelSlider extends Slider {
-	public VolumeLevelSlider( BoundedNumberState<?> model ) {
-		super( model );
+  public VolumeLevelSlider(BoundedNumberState<?> model) {
+    super(model);
 
-		VolumeLevelCustomExpressionCreatorComposite composite = VolumeLevelCustomExpressionCreatorComposite.getInstance();
+    VolumeLevelCustomExpressionCreatorComposite composite = VolumeLevelCustomExpressionCreatorComposite.getInstance();
 
-		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMinimumFractionDigits( 1 );
-		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
-		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
-		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
+    NumberFormat format = NumberFormat.getNumberInstance();
+    format.setMinimumFractionDigits(1);
+    String silentText = composite.getSilentLabel().getText() + " (" + format.format(0.0) + ")";
+    String normalText = composite.getNormalLabel().getText() + " (" + format.format(1.0) + ")";
+    String louderText = composite.getLouderLabel().getText() + " (" + format.format(2.0) + ")";
 
-		this.setOrientation( Slider.Orientation.VERTICAL );
+    this.setOrientation(Slider.Orientation.VERTICAL);
 
-		Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
-		labelTable.put( 0, new JLabel( silentText ) );
-		labelTable.put( 100, new JLabel( normalText ) );
-		labelTable.put( 200, new JLabel( louderText ) );
-		this.setLabelTable( labelTable );
-		this.setPaintLabels( true );
+    Dictionary<Integer, JComponent> labelTable = new Hashtable<Integer, JComponent>();
+    labelTable.put(0, new JLabel(silentText));
+    labelTable.put(100, new JLabel(normalText));
+    labelTable.put(200, new JLabel(louderText));
+    this.setLabelTable(labelTable);
+    this.setPaintLabels(true);
 
-		this.setSnapToTicks( false );
-		this.setMinorTickSpacing( 10 );
-		this.setMajorTickSpacing( 100 );
-		this.setPaintTicks( true );
-	}
+    this.setSnapToTicks(false);
+    this.setMinorTickSpacing(10);
+    this.setMajorTickSpacing(100);
+    this.setPaintTicks(true);
+  }
 }

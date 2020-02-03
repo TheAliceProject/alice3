@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  * @author Dennis Cosgrove
  */
 public abstract class JFormPane extends JRowsSpringPane {
-	public JFormPane( int xPad, int yPad ) {
-		super( xPad, yPad );
-	}
+  public JFormPane(int xPad, int yPad) {
+    super(xPad, yPad);
+  }
 
-	public JFormPane() {
-		this( 8, 8 );
-	}
+  public JFormPane() {
+    this(8, 8);
+  }
 }

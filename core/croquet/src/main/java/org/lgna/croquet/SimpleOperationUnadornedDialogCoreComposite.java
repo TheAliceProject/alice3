@@ -50,22 +50,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationUnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends LaunchOperationUnadornedDialogCoreComposite<V> {
-	public SimpleOperationUnadornedDialogCoreComposite( UUID migrationId, IsModal isModal, Group operationGroup ) {
-		super( migrationId, isModal, operationGroup );
-		this.getImp().createAndRegisterNullKeyLaunchOperation();
-	}
+  public SimpleOperationUnadornedDialogCoreComposite(UUID migrationId, IsModal isModal, Group operationGroup) {
+    super(migrationId, isModal, operationGroup);
+    this.getImp().createAndRegisterNullKeyLaunchOperation();
+  }
 
-	public SimpleOperationUnadornedDialogCoreComposite( UUID migrationId, Group operationGroup ) {
-		this( migrationId, IsModal.TRUE, operationGroup );
-	}
+  public SimpleOperationUnadornedDialogCoreComposite(UUID migrationId, Group operationGroup) {
+    this(migrationId, IsModal.TRUE, operationGroup);
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getImp().getName() : null;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    Operation launchOperation = this.getLaunchOperation();
+    return launchOperation != null ? launchOperation.getImp().getName() : null;
+  }
 
-	public Operation getLaunchOperation() {
-		return this.getImp().getLaunchOperation( null );
-	}
+  public Operation getLaunchOperation() {
+    return this.getImp().getLaunchOperation(null);
+  }
 }

@@ -45,7 +45,6 @@ package org.alice.ide.ast.draganddrop.expression;
 
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayAccessCascade;
 import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractField;
@@ -58,36 +57,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
-	private static InitializingIfAbsentMap<AbstractField, FieldArrayAtIndexDragModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractField, FieldArrayAtIndexDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldArrayAtIndexDragModel getInstance( AbstractField field ) {
-		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayAtIndexDragModel>() {
-			@Override
-			public FieldArrayAtIndexDragModel initialize( AbstractField field ) {
-				return new FieldArrayAtIndexDragModel( field );
-			}
-		} );
-	}
+  public static FieldArrayAtIndexDragModel getInstance(AbstractField field) {
+    return map.getInitializingIfAbsent(field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayAtIndexDragModel>() {
+      @Override
+      public FieldArrayAtIndexDragModel initialize(AbstractField field) {
+        return new FieldArrayAtIndexDragModel(field);
+      }
+    });
+  }
 
-	private final AbstractField field;
+  private final AbstractField field;
 
-	private FieldArrayAtIndexDragModel( AbstractField field ) {
-		super( UUID.fromString( "732cb037-cc8c-4be0-b89c-8c541c282d0c" ) );
-		this.field = field;
-	}
+  private FieldArrayAtIndexDragModel(AbstractField field) {
+    super(UUID.fromString("732cb037-cc8c-4be0-b89c-8c541c282d0c"));
+    this.field = field;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.field.getValueType().getComponentType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.field.getValueType().getComponentType();
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return FieldArrayAccessCascade.getInstance( this.field, expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return FieldArrayAccessCascade.getInstance(this.field, expressionProperty);
+  }
 }

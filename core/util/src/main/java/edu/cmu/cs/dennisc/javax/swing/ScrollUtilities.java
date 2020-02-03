@@ -49,17 +49,17 @@ import javax.swing.SwingUtilities;
  * @author Dennis Cosgrove
  */
 public class ScrollUtilities {
-	public static void scrollToVisible( final JComponent c ) {
-		assert c != null;
-		if( c.isValid() ) {
-			c.scrollRectToVisible( SwingUtilities.getLocalBounds( c ) );
-		} else {
-			SwingUtilities.invokeLater( new Runnable() {
-				@Override
-				public void run() {
-					ScrollUtilities.scrollToVisible( c );
-				}
-			} );
-		}
-	}
+  public static void scrollToVisible(final JComponent c) {
+    assert c != null;
+    if (c.isValid()) {
+      c.scrollRectToVisible(SwingUtilities.getLocalBounds(c));
+    } else {
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          ScrollUtilities.scrollToVisible(c);
+        }
+      });
+    }
+  }
 }

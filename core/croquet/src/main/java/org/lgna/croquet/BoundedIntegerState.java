@@ -54,195 +54,191 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
-	public static class Details {
-		private static class IntegerSwingModel implements SwingModel<Integer> {
-			private boolean isInTheMidstOfStateChanged = false;
+  public static class Details {
+    private static class IntegerSwingModel implements SwingModel<Integer> {
+      private boolean isInTheMidstOfStateChanged = false;
 
-			private class CustomSpinnerNumberModel extends SpinnerNumberModel {
-				public CustomSpinnerNumberModel( Details details ) {
-					super( details.initialValue, details.minimum, details.maximum, details.stepSize );
-				}
+      private class CustomSpinnerNumberModel extends SpinnerNumberModel {
+        public CustomSpinnerNumberModel(Details details) {
+          super(details.initialValue, details.minimum, details.maximum, details.stepSize);
+        }
 
-				@Override
-				protected void fireStateChanged() {
-					super.fireStateChanged();
-					if( isInTheMidstOfStateChanged ) {
-						//pass
-					} else {
-						isInTheMidstOfStateChanged = true;
-						try {
-							boolean isAdjusting = false;
-							boundedRangeModel.setRangeProperties( (Integer)this.getValue(), boundedRangeModel.getExtent(), (Integer)this.getMinimum(), (Integer)this.getMaximum(), isAdjusting );
-						} finally {
-							isInTheMidstOfStateChanged = false;
-						}
-					}
-				}
-			}
+        @Override
+        protected void fireStateChanged() {
+          super.fireStateChanged();
+          if (isInTheMidstOfStateChanged) {
+            //pass
+          } else {
+            isInTheMidstOfStateChanged = true;
+            try {
+              boolean isAdjusting = false;
+              boundedRangeModel.setRangeProperties((Integer) this.getValue(), boundedRangeModel.getExtent(), (Integer) this.getMinimum(), (Integer) this.getMaximum(), isAdjusting);
+            } finally {
+              isInTheMidstOfStateChanged = false;
+            }
+          }
+        }
+      }
 
-			private class CustomBoundedRangeModel extends DefaultBoundedRangeModel {
-				public CustomBoundedRangeModel( Details details ) {
-					super(
-							Math.min( Math.max( details.initialValue, details.minimum ), details.maximum - details.extent ),
-							details.extent,
-							details.minimum,
-							details.maximum );
-				}
+      private class CustomBoundedRangeModel extends DefaultBoundedRangeModel {
+        public CustomBoundedRangeModel(Details details) {
+          super(Math.min(Math.max(details.initialValue, details.minimum), details.maximum - details.extent), details.extent, details.minimum, details.maximum);
+        }
 
-				@Override
-				protected void fireStateChanged() {
-					super.fireStateChanged();
-					if( isInTheMidstOfStateChanged ) {
-						//pass
-					} else {
-						isInTheMidstOfStateChanged = true;
-						try {
-							spinnerModel.setMinimum( this.getMinimum() );
-							spinnerModel.setMaximum( this.getMaximum() );
-							spinnerModel.setValue( this.getValue() );
-						} finally {
-							isInTheMidstOfStateChanged = false;
-						}
-					}
-				}
-			}
+        @Override
+        protected void fireStateChanged() {
+          super.fireStateChanged();
+          if (isInTheMidstOfStateChanged) {
+            //pass
+          } else {
+            isInTheMidstOfStateChanged = true;
+            try {
+              spinnerModel.setMinimum(this.getMinimum());
+              spinnerModel.setMaximum(this.getMaximum());
+              spinnerModel.setValue(this.getValue());
+            } finally {
+              isInTheMidstOfStateChanged = false;
+            }
+          }
+        }
+      }
 
-			private final CustomBoundedRangeModel boundedRangeModel;
-			private final CustomSpinnerNumberModel spinnerModel;
+      private final CustomBoundedRangeModel boundedRangeModel;
+      private final CustomSpinnerNumberModel spinnerModel;
 
-			public IntegerSwingModel( Details details ) {
-				this.spinnerModel = new CustomSpinnerNumberModel( details );
-				this.boundedRangeModel = new CustomBoundedRangeModel( details );
-			}
+      public IntegerSwingModel(Details details) {
+        this.spinnerModel = new CustomSpinnerNumberModel(details);
+        this.boundedRangeModel = new CustomBoundedRangeModel(details);
+      }
 
-			@Override
-			public BoundedRangeModel getBoundedRangeModel() {
-				return this.boundedRangeModel;
-			}
+      @Override
+      public BoundedRangeModel getBoundedRangeModel() {
+        return this.boundedRangeModel;
+      }
 
-			@Override
-			public SpinnerNumberModel getSpinnerModel() {
-				return this.spinnerModel;
-			}
+      @Override
+      public SpinnerNumberModel getSpinnerModel() {
+        return this.spinnerModel;
+      }
 
-			@Override
-			public void setValue( Integer value ) {
-				this.boundedRangeModel.setValue( value );
-			}
+      @Override
+      public void setValue(Integer value) {
+        this.boundedRangeModel.setValue(value);
+      }
 
-			@Override
-			public void setAll( Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting ) {
-				if( value != null ) {
-					//pass
-				} else {
-					value = this.boundedRangeModel.getValue();
-				}
-				if( extent != null ) {
-					//pass
-				} else {
-					extent = this.boundedRangeModel.getExtent();
-				}
-				if( minimum != null ) {
-					//pass
-				} else {
-					minimum = this.boundedRangeModel.getMinimum();
-				}
-				if( maximum != null ) {
-					//pass
-				} else {
-					maximum = this.boundedRangeModel.getMaximum();
-				}
-				this.boundedRangeModel.setRangeProperties( value, extent, minimum, maximum, isAdjusting );
-				if( stepSize != null ) {
-					Number prevStepSize = this.spinnerModel.getStepSize();
-					if( stepSize.doubleValue() == prevStepSize.doubleValue() ) {
-						//pass
-					} else {
-						this.spinnerModel.setStepSize( stepSize );
-					}
-				}
-			}
-		}
+      @Override
+      public void setAll(Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting) {
+        if (value != null) {
+          //pass
+        } else {
+          value = this.boundedRangeModel.getValue();
+        }
+        if (extent != null) {
+          //pass
+        } else {
+          extent = this.boundedRangeModel.getExtent();
+        }
+        if (minimum != null) {
+          //pass
+        } else {
+          minimum = this.boundedRangeModel.getMinimum();
+        }
+        if (maximum != null) {
+          //pass
+        } else {
+          maximum = this.boundedRangeModel.getMaximum();
+        }
+        this.boundedRangeModel.setRangeProperties(value, extent, minimum, maximum, isAdjusting);
+        if (stepSize != null) {
+          Number prevStepSize = this.spinnerModel.getStepSize();
+          if (stepSize.doubleValue() == prevStepSize.doubleValue()) {
+            //pass
+          } else {
+            this.spinnerModel.setStepSize(stepSize);
+          }
+        }
+      }
+    }
 
-		private final Group group;
-		private final UUID id;
-		private int minimum = 0;
-		private int maximum = 100;
-		private int extent = 0;
-		private int stepSize = 1;
-		private int initialValue = 50;
+    private final Group group;
+    private final UUID id;
+    private int minimum = 0;
+    private int maximum = 100;
+    private int extent = 0;
+    private int stepSize = 1;
+    private int initialValue = 50;
 
-		public Details( Group group, UUID id ) {
-			this.group = group;
-			this.id = id;
-		}
+    public Details(Group group, UUID id) {
+      this.group = group;
+      this.id = id;
+    }
 
-		public Details minimum( int minimum ) {
-			this.minimum = minimum;
-			return this;
-		}
+    public Details minimum(int minimum) {
+      this.minimum = minimum;
+      return this;
+    }
 
-		public Details maximum( int maximum ) {
-			this.maximum = maximum;
-			return this;
-		}
+    public Details maximum(int maximum) {
+      this.maximum = maximum;
+      return this;
+    }
 
-		public Details extent( int extent ) {
-			this.extent = extent;
-			return this;
-		}
+    public Details extent(int extent) {
+      this.extent = extent;
+      return this;
+    }
 
-		public Details stepSize( int stepSize ) {
-			this.stepSize = stepSize;
-			return this;
-		}
+    public Details stepSize(int stepSize) {
+      this.stepSize = stepSize;
+      return this;
+    }
 
-		public Details initialValue( int initialValue ) {
-			this.initialValue = initialValue;
-			return this;
-		}
+    public Details initialValue(int initialValue) {
+      this.initialValue = initialValue;
+      return this;
+    }
 
-		private synchronized IntegerSwingModel createSwingModel() {
-			return new IntegerSwingModel( this );
-		}
-	}
+    private synchronized IntegerSwingModel createSwingModel() {
+      return new IntegerSwingModel(this);
+    }
+  }
 
-	public BoundedIntegerState( Details details ) {
-		super( details.group, details.id, details.initialValue, details.createSwingModel() );
-	}
+  public BoundedIntegerState(Details details) {
+    super(details.group, details.id, details.initialValue, details.createSwingModel());
+  }
 
-	@Override
-	public Integer decodeValue( BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeInt();
-	}
+  @Override
+  public Integer decodeValue(BinaryDecoder binaryDecoder) {
+    return binaryDecoder.decodeInt();
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Integer value ) {
-		binaryEncoder.encode( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Integer value) {
+    binaryEncoder.encode(value);
+  }
 
-	@Override
-	public Integer getMinimum() {
-		return this.getSwingModel().getBoundedRangeModel().getMinimum();
-	}
+  @Override
+  public Integer getMinimum() {
+    return this.getSwingModel().getBoundedRangeModel().getMinimum();
+  }
 
-	@Override
-	public void setMinimum( Integer minimum ) {
-		this.getSwingModel().getBoundedRangeModel().setMinimum( minimum );
-	}
+  @Override
+  public void setMinimum(Integer minimum) {
+    this.getSwingModel().getBoundedRangeModel().setMinimum(minimum);
+  }
 
-	@Override
-	public Integer getMaximum() {
-		return this.getSwingModel().getBoundedRangeModel().getMaximum();
-	}
+  @Override
+  public Integer getMaximum() {
+    return this.getSwingModel().getBoundedRangeModel().getMaximum();
+  }
 
-	@Override
-	public void setMaximum( Integer maximum ) {
-		this.getSwingModel().getBoundedRangeModel().setMaximum( maximum );
-	}
+  @Override
+  public void setMaximum(Integer maximum) {
+    this.getSwingModel().getBoundedRangeModel().setMaximum(maximum);
+  }
 
-	@Override
-	protected Integer getSwingValue() {
-		return this.getSwingModel().getBoundedRangeModel().getValue();
-	}
+  @Override
+  protected Integer getSwingValue() {
+    return this.getSwingModel().getBoundedRangeModel().getValue();
+  }
 }

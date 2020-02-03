@@ -59,34 +59,34 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
-	public static int[] getLiterals( ValueDetails<?> details ) {
-		if( details instanceof IntegerValueDetails ) {
-			return ( (IntegerValueDetails)details ).getLiterals();
-		} else {
-			return new int[] { 0, 1, 2, 3 };
-		}
-	}
+  public static int[] getLiterals(ValueDetails<?> details) {
+    if (details instanceof IntegerValueDetails) {
+      return ((IntegerValueDetails) details).getLiterals();
+    } else {
+      return new int[] {0, 1, 2, 3};
+    }
+  }
 
-	public IntegerFillerInner() {
-		super( Integer.class );
-	}
+  public IntegerFillerInner() {
+    super(Integer.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		super.appendItems( items, details, isTop, prevExpression );
-		int[] literals = getLiterals( details );
-		for( int i : literals ) {
-			items.add( IntegerLiteralFillIn.getInstance( i ) );
-		}
-		if( isTop && ( prevExpression != null ) ) {
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( RandomCascadeMenu.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( RealToIntegerCascadeMenu.getInstance() );
-			items.add( CascadeLineSeparator.getInstance() );
-			items.add( MathCascadeMenu.getInstance() );
-		}
-		items.add( CascadeLineSeparator.getInstance() );
-		items.add( IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    super.appendItems(items, details, isTop, prevExpression);
+    int[] literals = getLiterals(details);
+    for (int i : literals) {
+      items.add(IntegerLiteralFillIn.getInstance(i));
+    }
+    if (isTop && (prevExpression != null)) {
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(RandomCascadeMenu.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(RealToIntegerCascadeMenu.getInstance());
+      items.add(CascadeLineSeparator.getInstance());
+      items.add(MathCascadeMenu.getInstance());
+    }
+    items.add(CascadeLineSeparator.getInstance());
+    items.add(IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+  }
 }

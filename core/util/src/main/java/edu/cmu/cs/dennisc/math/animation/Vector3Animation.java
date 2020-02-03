@@ -49,12 +49,12 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public abstract class Vector3Animation extends Tuple3Animation<Vector3> {
-	public Vector3Animation( double duration, Style style, Vector3 v0, Vector3 v1 ) {
-		super( duration, style, v0, v1 );
-	}
+  public Vector3Animation(double duration, Style style, Vector3 v0, Vector3 v1) {
+    super(duration, style, v0, v1);
+  }
 
-	@Override
-	protected Vector3 newE( Vector3 other ) {
-		return new Vector3( other );
-	}
+  @Override
+  protected Vector3 newE(Vector3 other) {
+    return new Vector3(other);
+  }
 }

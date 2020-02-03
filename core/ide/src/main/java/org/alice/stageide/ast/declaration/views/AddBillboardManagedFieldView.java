@@ -52,24 +52,24 @@ import org.lgna.croquet.views.SwingComponentView;
  * @author Dennis Cosgrove
  */
 public class AddBillboardManagedFieldView extends AddManagedFieldView {
-	private static class SidePanel extends MigPanel {
-		public SidePanel( AddBillboardManagedFieldComposite composite ) {
-			this.addComponent( composite.getPaintState().getSidekickLabel().createLabel() );
-			this.addComponent( composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap" );
-			this.addComponent( new PaintView( composite.getPaintState() ) );
-			this.addComponent( new PaintView( composite.getBackPaintState() ) );
-		}
-	}
+  private static class SidePanel extends MigPanel {
+    public SidePanel(AddBillboardManagedFieldComposite composite) {
+      this.addComponent(composite.getPaintState().getSidekickLabel().createLabel());
+      this.addComponent(composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap");
+      this.addComponent(new PaintView(composite.getPaintState()));
+      this.addComponent(new PaintView(composite.getBackPaintState()));
+    }
+  }
 
-	private final SidePanel sidePanel;
+  private final SidePanel sidePanel;
 
-	public AddBillboardManagedFieldView( AddBillboardManagedFieldComposite composite ) {
-		super( composite );
-		this.sidePanel = new SidePanel( composite );
-	}
+  public AddBillboardManagedFieldView(AddBillboardManagedFieldComposite composite) {
+    super(composite);
+    this.sidePanel = new SidePanel(composite);
+  }
 
-	@Override
-	protected SwingComponentView<?> getSideView() {
-		return this.sidePanel;
-	}
+  @Override
+  protected SwingComponentView<?> getSideView() {
+    return this.sidePanel;
+  }
 }

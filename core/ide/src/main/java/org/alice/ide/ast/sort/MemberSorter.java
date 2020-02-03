@@ -51,5 +51,5 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface MemberSorter {
-	public <T extends AbstractMember> List<T> createSortedList( List<T> src );
+  public <T extends AbstractMember> List<T> createSortedList(List<T> src);
 }

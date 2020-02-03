@@ -52,26 +52,26 @@ import org.lgna.croquet.views.ViewController;
  */
 public class CascadeAutomaticDeterminationTrigger extends Trigger {
 
-	public static UserActivity createChildActivity( UserActivity parent ) {
-		UserActivity childActivity = parent.newChildActivity();
-		new CascadeAutomaticDeterminationTrigger( childActivity, parent.getTrigger() );
-		return childActivity;
-	}
+  public static UserActivity createChildActivity(UserActivity parent) {
+    UserActivity childActivity = parent.newChildActivity();
+    new CascadeAutomaticDeterminationTrigger(childActivity, parent.getTrigger());
+    return childActivity;
+  }
 
-	private final transient Trigger previousTrigger;
+  private final transient Trigger previousTrigger;
 
-	private CascadeAutomaticDeterminationTrigger( UserActivity activity, Trigger previousTrigger ) {
-		super(activity);
-		this.previousTrigger = previousTrigger;
-	}
+  private CascadeAutomaticDeterminationTrigger(UserActivity activity, Trigger previousTrigger) {
+    super(activity);
+    this.previousTrigger = previousTrigger;
+  }
 
-	@Override
-	public ViewController<?, ?> getViewController() {
-		return this.previousTrigger.getViewController();
-	}
+  @Override
+  public ViewController<?, ?> getViewController() {
+    return this.previousTrigger.getViewController();
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		this.previousTrigger.showPopupMenu( popupMenu );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    this.previousTrigger.showPopupMenu(popupMenu);
+  }
 }

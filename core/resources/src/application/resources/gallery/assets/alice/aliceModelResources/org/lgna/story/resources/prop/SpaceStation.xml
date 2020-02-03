@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="SpaceStation">
+    <BoundingBox>
+        <Min x="-92.6134262084961" y="-67.38323211669922" z="-94.35572052001953"/>
+        <Max x="94.01060485839844" y="82.73043823242188" z="92.26829528808594"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>mars</Tag>
+        <Tag>space</Tag>
+        <Tag>base</Tag>
+        <Tag>spacestation</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SpaceStation" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

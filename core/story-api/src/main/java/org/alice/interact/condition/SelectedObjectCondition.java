@@ -50,83 +50,82 @@ import org.alice.interact.PickHint;
  */
 public class SelectedObjectCondition extends InputCondition {
 
-	public static enum ObjectSwitchBehavior {
-		END_ON_SWITCH,
-		IGNORE_SWITCH,
-	}
+  public static enum ObjectSwitchBehavior {
+    END_ON_SWITCH, IGNORE_SWITCH,
+  }
 
-	public SelectedObjectCondition( PickHint acceptableType ) {
-		this( acceptableType, ObjectSwitchBehavior.END_ON_SWITCH );
-	}
+  public SelectedObjectCondition(PickHint acceptableType) {
+    this(acceptableType, ObjectSwitchBehavior.END_ON_SWITCH);
+  }
 
-	public SelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior ) {
-		this( acceptableType, switchBehavior, false );
-	}
+  public SelectedObjectCondition(PickHint acceptableType, ObjectSwitchBehavior switchBehavior) {
+    this(acceptableType, switchBehavior, false);
+  }
 
-	protected SelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior, boolean isNot ) {
-		this.acceptableType = acceptableType;
-		this.switchBehavior = switchBehavior;
-		this.isNot = isNot;
-	}
+  protected SelectedObjectCondition(PickHint acceptableType, ObjectSwitchBehavior switchBehavior, boolean isNot) {
+    this.acceptableType = acceptableType;
+    this.switchBehavior = switchBehavior;
+    this.isNot = isNot;
+  }
 
-	@Override
-	protected boolean testState( InputState state ) {
-		if( state.getIsDragEvent() ) {
-			return false;
-		}
-		boolean isValid = this.acceptableType.intersects( state.getCurrentlySelectedObjectPickHint() );
-		if( isNot ) {
-			return !isValid;
-		} else {
-			return isValid;
-		}
-	}
+  @Override
+  protected boolean testState(InputState state) {
+    if (state.getIsDragEvent()) {
+      return false;
+    }
+    boolean isValid = this.acceptableType.intersects(state.getCurrentlySelectedObjectPickHint());
+    if (isNot) {
+      return !isValid;
+    } else {
+      return isValid;
+    }
+  }
 
-	protected boolean selectedObjectSwitched( InputState currentState, InputState previousState ) {
-		if( this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH ) {
-			return currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject();
-		} else {
-			return false;
-		}
-	}
+  protected boolean selectedObjectSwitched(InputState currentState, InputState previousState) {
+    if (this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH) {
+      return currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject();
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isRunning( InputState currentState, InputState previousState ) {
-		return ( super.isRunning( currentState, previousState ) && !selectedObjectSwitched( currentState, previousState ) );
-	}
+  @Override
+  public boolean isRunning(InputState currentState, InputState previousState) {
+    return (super.isRunning(currentState, previousState) && !selectedObjectSwitched(currentState, previousState));
+  }
 
-	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		if( super.justEnded( currentState, previousState ) ) {
-			return true;
-		} else if( testState( previousState ) ) {
-			return selectedObjectSwitched( currentState, previousState );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean justEnded(InputState currentState, InputState previousState) {
+    if (super.justEnded(currentState, previousState)) {
+      return true;
+    } else if (testState(previousState)) {
+      return selectedObjectSwitched(currentState, previousState);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if( super.justStarted( currentState, previousState ) ) {
-			return true;
-		} else if( testState( currentState ) ) {
-			return selectedObjectSwitched( currentState, previousState );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean justStarted(InputState currentState, InputState previousState) {
+    if (super.justStarted(currentState, previousState)) {
+      return true;
+    } else if (testState(currentState)) {
+      return selectedObjectSwitched(currentState, previousState);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		if( ( this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH ) && ( currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject() ) ) {
-			return true;
-		} else {
-			return ( testState( currentState ) != testState( previousState ) );
-		}
-	}
+  @Override
+  public boolean stateChanged(InputState currentState, InputState previousState) {
+    if ((this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH) && (currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject())) {
+      return true;
+    } else {
+      return (testState(currentState) != testState(previousState));
+    }
+  }
 
-	private final PickHint acceptableType;
-	private final boolean isNot;
-	private final ObjectSwitchBehavior switchBehavior;
+  private final PickHint acceptableType;
+  private final boolean isNot;
+  private final ObjectSwitchBehavior switchBehavior;
 }

@@ -55,42 +55,42 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class FileTransferHandler extends TransferHandler {
-	protected abstract void handleFiles( List<File> files );
+  protected abstract void handleFiles(List<File> files);
 
-	@Override
-	public boolean canImport( JComponent component, DataFlavor[] dataFlavors ) {
-		for( DataFlavor dataFlavor : dataFlavors ) {
-			if( dataFlavor.equals( DataFlavor.javaFileListFlavor ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean canImport(JComponent component, DataFlavor[] dataFlavors) {
+    for (DataFlavor dataFlavor : dataFlavors) {
+      if (dataFlavor.equals(DataFlavor.javaFileListFlavor)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public boolean importData( JComponent comp, Transferable t ) {
-		for( DataFlavor dataFlavor : t.getTransferDataFlavors() ) {
-			if( dataFlavor.equals( DataFlavor.javaFileListFlavor ) ) {
-				try {
-					final Object data = t.getTransferData( DataFlavor.javaFileListFlavor );
-					if( data instanceof List ) {
-						new Thread() {
-							@Override
-							public void run() {
-								handleFiles( (List<File>)data );
-							}
-						}.start();
-					}
-					return true;
-				} catch( IOException ioe ) {
-					throw new RuntimeException( ioe );
-				} catch( UnsupportedFlavorException ufe ) {
-					throw new RuntimeException( ufe );
-				}
-			} else {
-				//todo?
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean importData(JComponent comp, Transferable t) {
+    for (DataFlavor dataFlavor : t.getTransferDataFlavors()) {
+      if (dataFlavor.equals(DataFlavor.javaFileListFlavor)) {
+        try {
+          final Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
+          if (data instanceof List) {
+            new Thread() {
+              @Override
+              public void run() {
+                handleFiles((List<File>) data);
+              }
+            }.start();
+          }
+          return true;
+        } catch (IOException ioe) {
+          throw new RuntimeException(ioe);
+        } catch (UnsupportedFlavorException ufe) {
+          throw new RuntimeException(ufe);
+        }
+      } else {
+        //todo?
+      }
+    }
+    return false;
+  }
 }

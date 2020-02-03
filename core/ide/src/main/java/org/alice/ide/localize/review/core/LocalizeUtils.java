@@ -64,77 +64,77 @@ import java.util.regex.Pattern;
  * @author Dennis Cosgrove
  */
 public class LocalizeUtils {
-	private LocalizeUtils() {
-		throw new Error();
-	}
+  private LocalizeUtils() {
+    throw new Error();
+  }
 
-	public static List<String> getTags( String value ) {
-		Pattern pattern = Pattern.compile( "</(.+?)/>" );
-		Matcher matcher = pattern.matcher( value );
+  public static List<String> getTags(String value) {
+    Pattern pattern = Pattern.compile("</(.+?)/>");
+    Matcher matcher = pattern.matcher(value);
 
-		List<String> tags = Lists.newLinkedList();
-		while( matcher.find() ) {
-			tags.add( matcher.group( 0 ) );
-		}
-		return Collections.unmodifiableList( tags );
-	}
+    List<String> tags = Lists.newLinkedList();
+    while (matcher.find()) {
+      tags.add(matcher.group(0));
+    }
+    return Collections.unmodifiableList(tags);
+  }
 
-	public static List<Item> getItems( Class<? extends IDE> specificIdeCls, String specificIdeProjectName ) {
-		final String SUFFIX = ".properties";
+  public static List<Item> getItems(Class<? extends IDE> specificIdeCls, String specificIdeProjectName) {
+    final String SUFFIX = ".properties";
 
-		List<ClassProjectNamePair> clsProjectNamePairs = Lists.newLinkedList();
+    List<ClassProjectNamePair> clsProjectNamePairs = Lists.newLinkedList();
 
-		clsProjectNamePairs.add( new ClassProjectNamePair( Element.class, "croquet" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( AbstractNode.class, "ast" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( HandleStyle.class, "story-api" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( ImageEditorFrame.class, "image-editor" ) );
-		clsProjectNamePairs.add( new ClassProjectNamePair( IDE.class, "ide" ) );
+    clsProjectNamePairs.add(new ClassProjectNamePair(Element.class, "croquet"));
+    clsProjectNamePairs.add(new ClassProjectNamePair(AbstractNode.class, "ast"));
+    clsProjectNamePairs.add(new ClassProjectNamePair(HandleStyle.class, "story-api"));
+    clsProjectNamePairs.add(new ClassProjectNamePair(ImageEditorFrame.class, "image-editor"));
+    clsProjectNamePairs.add(new ClassProjectNamePair(IDE.class, "ide"));
 
-		clsProjectNamePairs.add( new ClassProjectNamePair( specificIdeCls, specificIdeProjectName ) );
+    clsProjectNamePairs.add(new ClassProjectNamePair(specificIdeCls, specificIdeProjectName));
 
-		List<Item> _allItems = Lists.newLinkedList();
+    List<Item> _allItems = Lists.newLinkedList();
 
-		Locale prevLocale = Locale.getDefault();
-		Locale.setDefault( new Locale( "en", "US" ) );
+    Locale prevLocale = Locale.getDefault();
+    Locale.setDefault(new Locale("en", "US"));
 
-		try {
+    try {
 
-			for( ClassProjectNamePair clsProjectNamePair : clsProjectNamePairs ) {
-				List<String> classPathEntries;
-				try {
-					classPathEntries = ClassPathUtilities.getClassPathEntries( clsProjectNamePair.getCls(), new Criterion<String>() {
-						@Override
-						public boolean accept( String path ) {
-							if( path.startsWith( "META-INF/" ) ) {
-								return false;
-							} else {
-								if( path.endsWith( SUFFIX ) ) {
-									return path.contains( "_" ) == false;
-								} else {
-									return false;
-								}
-							}
-						}
-					} );
-				} catch( IOException ioe ) {
-					throw new RuntimeException( ioe );
-				}
-				for( String classPathEntry : classPathEntries ) {
-					String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
-					try {
-						ResourceBundle resourceBundle = ResourceBundle.getBundle( bundleName );
-						for( String key : resourceBundle.keySet() ) {
-							_allItems.add( new Item( clsProjectNamePair.getProjectName(), bundleName, key, resourceBundle.getString( key ) ) );
-						}
-					} catch( Throwable t ) {
-						Logger.severe( "unable to get resource bundle for:", bundleName );
-					}
-				}
-			}
-		} finally {
-			Locale.setDefault( prevLocale );
-		}
+      for (ClassProjectNamePair clsProjectNamePair : clsProjectNamePairs) {
+        List<String> classPathEntries;
+        try {
+          classPathEntries = ClassPathUtilities.getClassPathEntries(clsProjectNamePair.getCls(), new Criterion<String>() {
+            @Override
+            public boolean accept(String path) {
+              if (path.startsWith("META-INF/")) {
+                return false;
+              } else {
+                if (path.endsWith(SUFFIX)) {
+                  return path.contains("_") == false;
+                } else {
+                  return false;
+                }
+              }
+            }
+          });
+        } catch (IOException ioe) {
+          throw new RuntimeException(ioe);
+        }
+        for (String classPathEntry : classPathEntries) {
+          String bundleName = classPathEntry.substring(0, classPathEntry.length() - SUFFIX.length());
+          try {
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(bundleName);
+            for (String key : resourceBundle.keySet()) {
+              _allItems.add(new Item(clsProjectNamePair.getProjectName(), bundleName, key, resourceBundle.getString(key)));
+            }
+          } catch (Throwable t) {
+            Logger.severe("unable to get resource bundle for:", bundleName);
+          }
+        }
+      }
+    } finally {
+      Locale.setDefault(prevLocale);
+    }
 
-		return Collections.unmodifiableList( _allItems );
-	}
+    return Collections.unmodifiableList(_allItems);
+  }
 }

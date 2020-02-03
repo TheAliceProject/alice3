@@ -55,30 +55,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StencilsIteratingOperation extends IteratingOperation {
-	private final StencilModel[] stencilModels;
+  private final StencilModel[] stencilModels;
 
-	StencilsIteratingOperation( UUID id, StencilModel... stencilModels ) {
-		super( Application.INFORMATION_GROUP, id );
-		this.stencilModels = stencilModels;
-	}
+  StencilsIteratingOperation(UUID id, StencilModel... stencilModels) {
+    super(Application.INFORMATION_GROUP, id);
+    this.stencilModels = stencilModels;
+  }
 
-	@Override
-	protected boolean hasNext( List<UserActivity> finishedSteps ) {
-		return finishedSteps.size() < stencilModels.length;
-	}
+  @Override
+  protected boolean hasNext(List<UserActivity> finishedSteps) {
+    return finishedSteps.size() < stencilModels.length;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		int i = finishedSteps.size();
-		if( i < this.stencilModels.length ) {
-			return this.stencilModels[ i ];
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    int i = finishedSteps.size();
+    if (i < this.stencilModels.length) {
+      return this.stencilModels[i];
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected final void performInActivity( final UserActivity userActivity ) {
-		new Thread( () -> iterateOverSubModels( userActivity ) ).start();
-	}
+  @Override
+  protected final void performInActivity(final UserActivity userActivity) {
+    new Thread(() -> iterateOverSubModels(userActivity)).start();
+  }
 }

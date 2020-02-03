@@ -53,24 +53,24 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrSynchronousPicker implements SynchronousPicker {
-	@Override
-	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
-		return null;
-	}
+  @Override
+  public List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+    return null;
+  }
 
-	@Override
-	public final List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
-		return this.pickAll( xPixel, yPixel, pickSubElementPolicy, null );
-	}
+  @Override
+  public final List<PickResult> pickAll(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickAll(xPixel, yPixel, pickSubElementPolicy, null);
+  }
 
-	@Override
-	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver ) {
-		return null;
-	}
+  @Override
+  public PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver) {
+    return null;
+  }
 
-	@Override
-	public final PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy ) {
-		return this.pickFrontMost( xPixel, yPixel, pickSubElementPolicy, null );
-	}
+  @Override
+  public final PickResult pickFrontMost(int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy) {
+    return this.pickFrontMost(xPixel, yPixel, pickSubElementPolicy, null);
+  }
 
 }

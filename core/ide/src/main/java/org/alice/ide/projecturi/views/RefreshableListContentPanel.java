@@ -53,21 +53,21 @@ import java.awt.event.KeyEvent;
  * @author Dennis Cosgrove
  */
 public final class RefreshableListContentPanel extends ListContentPanel {
-	private final ActionListener refreshListener = new ActionListener() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			RefreshableListContentPanel.this.handleRefresh();
-		}
-	};
+  private final ActionListener refreshListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      RefreshableListContentPanel.this.handleRefresh();
+    }
+  };
 
-	private void handleRefresh() {
-		RefreshableListUriTab composite = (RefreshableListUriTab)this.getComposite();
-		composite.refresh();
-		this.revalidateAndRepaint();
-	}
+  private void handleRefresh() {
+    RefreshableListUriTab composite = (RefreshableListUriTab) this.getComposite();
+    composite.refresh();
+    this.revalidateAndRepaint();
+  }
 
-	public RefreshableListContentPanel( RefreshableListUriTab composite ) {
-		super( composite );
-		this.getList().registerKeyboardAction( this.refreshListener, KeyStroke.getKeyStroke( KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
-	}
+  public RefreshableListContentPanel(RefreshableListUriTab composite) {
+    super(composite);
+    this.getList().registerKeyboardAction(this.refreshListener, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), Condition.WHEN_IN_FOCUSED_WINDOW);
+  }
 }

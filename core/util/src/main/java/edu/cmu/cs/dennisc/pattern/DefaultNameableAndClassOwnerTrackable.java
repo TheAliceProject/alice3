@@ -51,41 +51,41 @@ import java.lang.reflect.Field;
  */
 
 public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable implements ClassOwnerTrackable {
-	private Class<?> m_clsOwner = null;
+  private Class<?> m_clsOwner = null;
 
-	@Override
-	public Class<?> getClassOwner() {
-		return m_clsOwner;
-	}
+  @Override
+  public Class<?> getClassOwner() {
+    return m_clsOwner;
+  }
 
-	@Override
-	public void setClassOwner( Class<?> clsOwner ) {
-		m_clsOwner = clsOwner;
-	}
+  @Override
+  public void setClassOwner(Class<?> clsOwner) {
+    m_clsOwner = clsOwner;
+  }
 
-	@Override
-	public String toString() {
-		String name = getName();
-		if( m_clsOwner != null ) {
-			StringBuffer sb = new StringBuffer();
-			sb.append( m_clsOwner.getName() );
-			sb.append( "." );
-			if( name != null ) {
-				sb.append( name );
-			} else {
-				sb.append( "???" );
-			}
-			return sb.toString();
-		} else {
-			return super.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    String name = getName();
+    if (m_clsOwner != null) {
+      StringBuffer sb = new StringBuffer();
+      sb.append(m_clsOwner.getName());
+      sb.append(".");
+      if (name != null) {
+        sb.append(name);
+      } else {
+        sb.append("???");
+      }
+      return sb.toString();
+    } else {
+      return super.toString();
+    }
+  }
 
-	public static void setNamesAndClassOwnersForPublicStaticFinalInstancesOwnedBy( Class<?> clsOwner ) {
-		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
-			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)ReflectionUtilities.get( field, null );
-			instance.setName( field.getName() );
-			instance.setClassOwner( clsOwner );
-		}
-	}
+  public static void setNamesAndClassOwnersForPublicStaticFinalInstancesOwnedBy(Class<?> clsOwner) {
+    for (Field field : ReflectionUtilities.getPublicStaticFinalFields(clsOwner, DefaultNameableAndClassOwnerTrackable.class)) {
+      DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable) ReflectionUtilities.get(field, null);
+      instance.setName(field.getName());
+      instance.setClassOwner(clsOwner);
+    }
+  }
 }

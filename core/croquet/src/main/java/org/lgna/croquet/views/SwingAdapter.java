@@ -48,16 +48,15 @@ import javax.swing.JComponent;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class SwingAdapter extends SwingComponentView<JComponent> {
-	private final JComponent jComponent;
+@Deprecated public class SwingAdapter extends SwingComponentView<JComponent> {
+  private final JComponent jComponent;
 
-	public SwingAdapter( JComponent jComponent ) {
-		this.jComponent = jComponent;
-	}
+  public SwingAdapter(JComponent jComponent) {
+    this.jComponent = jComponent;
+  }
 
-	@Override
-	protected JComponent createAwtComponent() {
-		return this.jComponent;
-	}
+  @Override
+  protected JComponent createAwtComponent() {
+    return this.jComponent;
+  }
 }

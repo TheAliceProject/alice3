@@ -57,70 +57,70 @@ import java.lang.annotation.Annotation;
  * @author Dennis Cosgrove
  */
 public class JavaMethodParameter extends JavaParameter {
-	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
-		String rv = null;
-		try {
-			ClassInfo classInfo = ClassInfoManager.getInstance( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
-			if( classInfo != null ) {
-				MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
-				if( methodInfo != null ) {
-					String[] parameterNames = methodInfo.getParameterNames();
-					if( parameterNames != null ) {
-						rv = parameterNames[ index ];
-					}
-				}
-			}
-		} catch( Throwable t ) {
-			Logger.throwable( t, methodReflectionProxy, index );
-		}
-		return rv;
-	}
+  private static String getParameterNameFor(MethodReflectionProxy methodReflectionProxy, int index) {
+    String rv = null;
+    try {
+      ClassInfo classInfo = ClassInfoManager.getInstance(methodReflectionProxy.getDeclaringClassReflectionProxy().getReification());
+      if (classInfo != null) {
+        MethodInfo methodInfo = classInfo.lookupInfo(methodReflectionProxy.getReification());
+        if (methodInfo != null) {
+          String[] parameterNames = methodInfo.getParameterNames();
+          if (parameterNames != null) {
+            rv = parameterNames[index];
+          }
+        }
+      }
+    } catch (Throwable t) {
+      Logger.throwable(t, methodReflectionProxy, index);
+    }
+    return rv;
+  }
 
-	/* package-private */JavaMethodParameter( JavaMethod method, int index, Annotation[] annotations ) {
-		super( annotations );
-		this.method = method;
-		this.index = index;
-		MethodReflectionProxy methodReflectionProxy = this.method.getMethodReflectionProxy();
-		this.name = getParameterNameFor( methodReflectionProxy, this.index );
-		this.valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ this.index ] );
-	}
+  /* package-private */JavaMethodParameter(JavaMethod method, int index, Annotation[] annotations) {
+    super(annotations);
+    this.method = method;
+    this.index = index;
+    MethodReflectionProxy methodReflectionProxy = this.method.getMethodReflectionProxy();
+    this.name = getParameterNameFor(methodReflectionProxy, this.index);
+    this.valueType = JavaType.getInstance(methodReflectionProxy.getParameterClassReflectionProxies()[this.index]);
+  }
 
-	@Override
-	public JavaMethod getCode() {
-		return this.method;
-	}
+  @Override
+  public JavaMethod getCode() {
+    return this.method;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public JavaType getValueType() {
-		return this.valueType;
-	}
+  @Override
+  public JavaType getValueType() {
+    return this.valueType;
+  }
 
-	@Override
-	public boolean isVariableLength() {
-		return false;
-	}
+  @Override
+  public boolean isVariableLength() {
+    return false;
+  }
 
-	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof JavaMethodParameter ) {
-			JavaMethodParameter otherJMP = (JavaMethodParameter)other;
-			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && Objects.equals( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquivalentTo(Object other) {
+    if (other instanceof JavaMethodParameter) {
+      JavaMethodParameter otherJMP = (JavaMethodParameter) other;
+      return this.method.equals(otherJMP.method) && (this.index == otherJMP.index) && Objects.equals(this.name, otherJMP.name) && this.valueType.equals(otherJMP.valueType);
+    } else {
+      return false;
+    }
+  }
 
-	private final JavaMethod method;
-	private final int index;
-	private final String name;
-	private final JavaType valueType;
+  private final JavaMethod method;
+  private final int index;
+  private final String name;
+  private final JavaType valueType;
 }

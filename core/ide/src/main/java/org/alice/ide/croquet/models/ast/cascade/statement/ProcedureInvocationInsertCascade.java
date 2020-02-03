@@ -57,32 +57,32 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-	private static MapToMap<BlockStatementIndexPair, AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<BlockStatementIndexPair, AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ProcedureInvocationInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method ) {
-		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProcedureInvocationInsertCascade( blockStatementIndexPair, method );
-			mapToMap.put( blockStatementIndexPair, method, rv );
-		}
-		return rv;
-	}
+  public static synchronized ProcedureInvocationInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
+    ProcedureInvocationInsertCascade rv = mapToMap.get(blockStatementIndexPair, method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ProcedureInvocationInsertCascade(blockStatementIndexPair, method);
+      mapToMap.put(blockStatementIndexPair, method, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 
-	private ProcedureInvocationInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method ) {
-		super( UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, MethodUtilities.createParameterBlanks( method ) );
-		this.method = method;
-	}
+  private ProcedureInvocationInsertCascade(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
+    super(UUID.fromString("d8ea7244-f0eb-4c3a-a9fa-a92182ed221a"), blockStatementIndexPair, MethodUtilities.createParameterBlanks(method));
+    this.method = method;
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 
-	@Override
-	protected Expression createExpression( Expression... expressions ) {
-		return AstUtilities.createMethodInvocation( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
-	}
+  @Override
+  protected Expression createExpression(Expression... expressions) {
+    return AstUtilities.createMethodInvocation(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions);
+  }
 }

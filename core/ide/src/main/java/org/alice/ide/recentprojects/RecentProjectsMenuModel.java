@@ -75,155 +75,155 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RecentProjectsMenuModel extends MenuModel {
-	private static class SingletonHolder {
-		private static RecentProjectsMenuModel instance = new RecentProjectsMenuModel();
-	}
+  private static class SingletonHolder {
+    private static RecentProjectsMenuModel instance = new RecentProjectsMenuModel();
+  }
 
-	public static RecentProjectsMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static RecentProjectsMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private RecentProjectsMenuModel() {
-		super( UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
-	}
+  private RecentProjectsMenuModel() {
+    super(UUID.fromString("0a39a07c-d23f-4cf8-a195-5d114b903505"));
+  }
 
-	private void setChildren( MenuItemContainer menuItemContainer ) {
-		IDE ide = IDE.getActiveInstance();
-		URI currentUri = ide.getUri();
-		URI[] uris = RecentProjectsListData.getInstance().toArray();
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-		for( URI uri : uris ) {
-			if( Objects.equals( uri, currentUri ) ) {
-				//pass
-			} else {
-				models.add( OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );
-			}
-		}
-		if( models.size() == 0 ) {
-			models.add( NoRecentUrisSeparatorModel.getInstance() );
-		}
-		MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
-	}
+  private void setChildren(MenuItemContainer menuItemContainer) {
+    IDE ide = IDE.getActiveInstance();
+    URI currentUri = ide.getUri();
+    URI[] uris = RecentProjectsListData.getInstance().toArray();
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    for (URI uri : uris) {
+      if (Objects.equals(uri, currentUri)) {
+        //pass
+      } else {
+        models.add(OpenRecentProjectOperation.getInstance(uri).getMenuItemPrepModel());
+      }
+    }
+    if (models.size() == 0) {
+      models.add(NoRecentUrisSeparatorModel.getInstance());
+    }
+    MenuItemContainerUtilities.setMenuElements(menuItemContainer, models);
+  }
 
-	//	@Override
-	//	public org.lgna.croquet.components.Menu createMenu() {
-	//		org.lgna.croquet.components.Menu rv = super.createMenu();
-	//		this.addChildren( rv );
-	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( rv );
-	//		return rv;
-	//	}
-	//	@Override
-	//	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
-	//		super.handlePopupMenuPrologue( popupMenu, step );
-	//		this.addChildren( popupMenu );
-	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
-	//	}
-	@Override
-	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		Object src = e.getSource();
-		if( src instanceof JPopupMenu ) {
-			final JPopupMenu jPopupMenu = (JPopupMenu)e.getSource();
-			this.setChildren( new MenuItemContainer() {
-				@Override
-				public ViewController<?, ?> getViewController() {
-					return null;
-				}
+  //  @Override
+  //  public org.lgna.croquet.components.Menu createMenu() {
+  //    org.lgna.croquet.components.Menu rv = super.createMenu();
+  //    this.addChildren( rv );
+  //    edu.cmu.cs.dennisc.java.util.logging.Logger.testing( rv );
+  //    return rv;
+  //  }
+  //  @Override
+  //  public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+  //    super.handlePopupMenuPrologue( popupMenu, step );
+  //    this.addChildren( popupMenu );
+  //    edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
+  //  }
+  @Override
+  protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    Object src = e.getSource();
+    if (src instanceof JPopupMenu) {
+      final JPopupMenu jPopupMenu = (JPopupMenu) e.getSource();
+      this.setChildren(new MenuItemContainer() {
+        @Override
+        public ViewController<?, ?> getViewController() {
+          return null;
+        }
 
-				@Override
-				public void addPopupMenuListener( PopupMenuListener listener ) {
-				}
+        @Override
+        public void addPopupMenuListener(PopupMenuListener listener) {
+        }
 
-				@Override
-				public void removePopupMenuListener( PopupMenuListener listener ) {
-				}
+        @Override
+        public void removePopupMenuListener(PopupMenuListener listener) {
+        }
 
-				@Override
-				public UserActivity getActivity() {
-					return menuItemContainer.getActivity();
-				}
+        @Override
+        public UserActivity getActivity() {
+          return menuItemContainer.getActivity();
+        }
 
-				@Override
-				public AwtComponentView<?> getMenuComponent( int i ) {
-					MenuElement menuElement = jPopupMenu.getSubElements()[ i ];
-					if( menuElement instanceof Component ) {
-						Component awtComponent = (Component)menuElement;
-						return AwtComponentView.lookup( awtComponent );
-					} else {
-						return null;
-					}
-				}
+        @Override
+        public AwtComponentView<?> getMenuComponent(int i) {
+          MenuElement menuElement = jPopupMenu.getSubElements()[i];
+          if (menuElement instanceof Component) {
+            Component awtComponent = (Component) menuElement;
+            return AwtComponentView.lookup(awtComponent);
+          } else {
+            return null;
+          }
+        }
 
-				@Override
-				public int getMenuComponentCount() {
-					return jPopupMenu.getSubElements().length;
-				}
+        @Override
+        public int getMenuComponentCount() {
+          return jPopupMenu.getSubElements().length;
+        }
 
-				@Override
-				public synchronized AwtComponentView<?>[] getMenuComponents() {
-					final int N = this.getMenuComponentCount();
-					AwtComponentView<?>[] rv = new AwtComponentView<?>[ N ];
-					for( int i = 0; i < N; i++ ) {
-						rv[ i ] = this.getMenuComponent( i );
-					}
-					return rv;
-				}
+        @Override
+        public synchronized AwtComponentView<?>[] getMenuComponents() {
+          final int N = this.getMenuComponentCount();
+          AwtComponentView<?>[] rv = new AwtComponentView<?>[N];
+          for (int i = 0; i < N; i++) {
+            rv[i] = this.getMenuComponent(i);
+          }
+          return rv;
+        }
 
-				@Override
-				public AwtContainerView<?> getParent() {
-					return null;
-				}
+        @Override
+        public AwtContainerView<?> getParent() {
+          return null;
+        }
 
-				@Override
-				public void addMenu( Menu menu ) {
-					jPopupMenu.add( menu.getAwtComponent() );
-				}
+        @Override
+        public void addMenu(Menu menu) {
+          jPopupMenu.add(menu.getAwtComponent());
+        }
 
-				@Override
-				public void addMenuItem( MenuItem menuItem ) {
-					jPopupMenu.add( menuItem.getAwtComponent() );
-				}
+        @Override
+        public void addMenuItem(MenuItem menuItem) {
+          jPopupMenu.add(menuItem.getAwtComponent());
+        }
 
-				@Override
-				public void addCascadeMenu( CascadeMenu cascadeMenu ) {
-				}
+        @Override
+        public void addCascadeMenu(CascadeMenu cascadeMenu) {
+        }
 
-				@Override
-				public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-				}
+        @Override
+        public void addCascadeMenuItem(CascadeMenuItem cascadeMenuItem) {
+        }
 
-				@Override
-				public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu ) {
-					this.addCascadeMenuItem( cascadeMenuItem );
-					this.addCascadeMenu( cascadeMenu );
-				}
+        @Override
+        public void addCascadeCombo(CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu) {
+          this.addCascadeMenuItem(cascadeMenuItem);
+          this.addCascadeMenu(cascadeMenu);
+        }
 
-				@Override
-				public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-				}
+        @Override
+        public void addCheckBoxMenuItem(CheckBoxMenuItem checkBoxMenuItem) {
+        }
 
-				@Override
-				public void addSeparator() {
-					jPopupMenu.addSeparator();
-				}
+        @Override
+        public void addSeparator() {
+          jPopupMenu.addSeparator();
+        }
 
-				@Override
-				public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-					jPopupMenu.add( menuTextSeparator.getAwtComponent() );
-				}
+        @Override
+        public void addSeparator(MenuTextSeparator menuTextSeparator) {
+          jPopupMenu.add(menuTextSeparator.getAwtComponent());
+        }
 
-				@Override
-				public void forgetAndRemoveAllMenuItems() {
-					Logger.todo();
-					this.removeAllMenuItems();
-				}
+        @Override
+        public void forgetAndRemoveAllMenuItems() {
+          Logger.todo();
+          this.removeAllMenuItems();
+        }
 
-				@Override
-				public void removeAllMenuItems() {
-					jPopupMenu.removeAll();
-				}
+        @Override
+        public void removeAllMenuItems() {
+          jPopupMenu.removeAll();
+        }
 
-			} );
-		}
-		super.handleShowing( menuItemContainer, e );
-	}
+      });
+    }
+    super.handleShowing(menuItemContainer, e);
+  }
 }

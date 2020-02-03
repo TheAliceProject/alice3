@@ -54,50 +54,50 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class TabState<T extends TabComposite<?>, D extends ListData<T>> extends SingleSelectListState<T, D> {
-	public TabState( Group group, UUID id, int selectionIndex, D data ) {
-		super( group, id, selectionIndex, data );
-	}
+  public TabState(Group group, UUID id, int selectionIndex, D data) {
+    super(group, id, selectionIndex, data);
+  }
 
-	public FolderTabbedPane<T> createFolderTabbedPane() {
-		return new FolderTabbedPane<T>( this );
-	}
+  public FolderTabbedPane<T> createFolderTabbedPane() {
+    return new FolderTabbedPane<T>(this);
+  }
 
-	public ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
-		return new ToolPaletteTabbedPane<T>( this );
-	}
+  public ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
+    return new ToolPaletteTabbedPane<T>(this);
+  }
 
-	public void setItemIconForBothTrueAndFalse( T item, Icon icon ) {
-		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
-	}
+  public void setItemIconForBothTrueAndFalse(T item, Icon icon) {
+    this.getItemSelectedState(item).setIconForBothTrueAndFalse(icon);
+  }
 
-	@Override
-	protected void fireChanging( T prevValue, T nextValue ) {
-		if( prevValue != null ) {
-			prevValue.handlePostDeactivation();
-		}
-		super.fireChanging( prevValue, nextValue );
-	}
+  @Override
+  protected void fireChanging(T prevValue, T nextValue) {
+    if (prevValue != null) {
+      prevValue.handlePostDeactivation();
+    }
+    super.fireChanging(prevValue, nextValue);
+  }
 
-	@Override
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		super.fireChanged( prevValue, nextValue, isAdjusting );
-		if( nextValue != null ) {
-			nextValue.handlePreActivation();
-		}
-	}
+  @Override
+  protected void fireChanged(T prevValue, T nextValue, boolean isAdjusting) {
+    super.fireChanged(prevValue, nextValue, isAdjusting);
+    if (nextValue != null) {
+      nextValue.handlePreActivation();
+    }
+  }
 
-	public void handlePreActivation() {
-		this.initializeIfNecessary();
-		TabComposite<?> selected = this.getValue();
-		if( selected != null ) {
-			selected.handlePreActivation();
-		}
-	}
+  public void handlePreActivation() {
+    this.initializeIfNecessary();
+    TabComposite<?> selected = this.getValue();
+    if (selected != null) {
+      selected.handlePreActivation();
+    }
+  }
 
-	public void handlePostDeactivation() {
-		TabComposite<?> selected = this.getValue();
-		if( selected != null ) {
-			selected.handlePostDeactivation();
-		}
-	}
+  public void handlePostDeactivation() {
+    TabComposite<?> selected = this.getValue();
+    if (selected != null) {
+      selected.handlePostDeactivation();
+    }
+  }
 }

@@ -51,54 +51,54 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class ApplyTranslationAnimation extends AffineAnimation {
-	private Point3 m_translation = new Point3();
-	private Point3 m_sum = new Point3();
-	private Point3 m_interp = new Point3();
-	private Point3 m_delta = new Point3();
+  private Point3 m_translation = new Point3();
+  private Point3 m_sum = new Point3();
+  private Point3 m_interp = new Point3();
+  private Point3 m_delta = new Point3();
 
-	public ApplyTranslationAnimation() {
-		m_translation.setNaN();
-		m_sum.setNaN();
-	}
+  public ApplyTranslationAnimation() {
+    m_translation.setNaN();
+    m_sum.setNaN();
+  }
 
-	public ApplyTranslationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 translation ) {
-		super( sgSubject, sgAsSeenBy );
-		setTranslation( translation );
-		m_sum.setNaN();
-	}
+  public ApplyTranslationAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 translation) {
+    super(sgSubject, sgAsSeenBy);
+    setTranslation(translation);
+    m_sum.setNaN();
+  }
 
-	public Point3 accessTranslation() {
-		return m_translation;
-	}
+  public Point3 accessTranslation() {
+    return m_translation;
+  }
 
-	public Point3 getTranslation( Point3 rv ) {
-		rv.set( m_translation );
-		return rv;
-	}
+  public Point3 getTranslation(Point3 rv) {
+    rv.set(m_translation);
+    return rv;
+  }
 
-	public Point3 getTranslation() {
-		return getTranslation( new Point3() );
-	}
+  public Point3 getTranslation() {
+    return getTranslation(new Point3());
+  }
 
-	public void setTranslation( Point3 translation ) {
-		m_translation.set( translation );
-	}
+  public void setTranslation(Point3 translation) {
+    m_translation.set(translation);
+  }
 
-	@Override
-	public void prologue() {
-		m_sum.set( 0, 0, 0 );
-	}
+  @Override
+  public void prologue() {
+    m_sum.set(0, 0, 0);
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		InterpolationUtilities.interpolate( m_interp, m_translation, portion );
-		m_delta.setToSubtraction( m_interp, m_sum );
-		getSubject().applyTranslation( m_delta, getAsSeenBy() );
-		m_sum.set( m_interp );
-	}
+  @Override
+  public void setPortion(double portion) {
+    InterpolationUtilities.interpolate(m_interp, m_translation, portion);
+    m_delta.setToSubtraction(m_interp, m_sum);
+    getSubject().applyTranslation(m_delta, getAsSeenBy());
+    m_sum.set(m_interp);
+  }
 
-	@Override
-	public void epilogue() {
-		m_sum.setNaN();
-	}
+  @Override
+  public void epilogue() {
+    m_sum.setNaN();
+  }
 }

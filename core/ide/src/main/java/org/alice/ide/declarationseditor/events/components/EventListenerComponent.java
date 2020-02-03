@@ -75,82 +75,73 @@ import org.lgna.project.ast.UserLambda;
  */
 public class EventListenerComponent extends BorderPanel {
 
-	public EventListenerComponent( MethodInvocation methodInvocation ) {
-		int bottom = 0;
-		this.addPageStartComponent( createHeader( methodInvocation ) );
-		if( methodInvocation.requiredArguments.size() > 0 ) {
-			SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
-			AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get( 0 );
-			if( argument0.expression.getValue() instanceof LambdaExpression ) {
-				LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
-				if( lambdaExpression.value.getValue() instanceof UserLambda ) {
-					UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
-					//ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
-					Formatter formatter = FormatterState.getInstance().getValue();
-					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
-							getDeclareProcedureLabel(),
-							BoxUtilities.createHorizontalSliver( 4 ),
-							new Label( formatter.getNameForDeclaration( singleAbstractMethod ), 1.5f, TextWeight.BOLD ),
-							BoxUtilities.createHorizontalSliver( 8 ),
-							new EventAccessorMethodsPanel( lambda )
-							);
+  public EventListenerComponent(MethodInvocation methodInvocation) {
+    int bottom = 0;
+    this.addPageStartComponent(createHeader(methodInvocation));
+    if (methodInvocation.requiredArguments.size() > 0) {
+      SimpleArgument argument0 = methodInvocation.requiredArguments.get(0);
+      AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
+      if (argument0.expression.getValue() instanceof LambdaExpression) {
+        LambdaExpression lambdaExpression = (LambdaExpression) argument0.expression.getValue();
+        if (lambdaExpression.value.getValue() instanceof UserLambda) {
+          UserLambda lambda = (UserLambda) lambdaExpression.value.getValue();
+          //ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
+          Formatter formatter = FormatterState.getInstance().getValue();
+          LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(getDeclareProcedureLabel(), BoxUtilities.createHorizontalSliver(4), new Label(formatter.getNameForDeclaration(singleAbstractMethod), 1.5f, TextWeight.BOLD), BoxUtilities.createHorizontalSliver(8), new EventAccessorMethodsPanel(lambda));
 
-					StatementListPropertyView putCodeHere = new StatementListPropertyView( ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
-					BodyPane bodyPane = new BodyPane( putCodeHere );
+          StatementListPropertyView putCodeHere = new StatementListPropertyView(ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements);
+          BodyPane bodyPane = new BodyPane(putCodeHere);
 
-					BorderPanel codeContainer = new BorderPanel.Builder()
-							.pageStart( singleAbstractMethodHeader )
-							.center( bodyPane )
-							.build();
-					codeContainer.setBackgroundColor( ThemeUtilities.getActiveTheme().getEventBodyColor() );
-					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
-					this.addCenterComponent( codeContainer );
-					bottom = 8;
-				}
-			}
-		}
-		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, bottom, 4 ) );
-	}
+          BorderPanel codeContainer = new BorderPanel.Builder().pageStart(singleAbstractMethodHeader).center(bodyPane).build();
+          codeContainer.setBackgroundColor(ThemeUtilities.getActiveTheme().getEventBodyColor());
+          codeContainer.setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 4));
+          this.addCenterComponent(codeContainer);
+          bottom = 8;
+        }
+      }
+    }
+    this.setBorder(BorderFactory.createEmptyBorder(4, 4, bottom, 4));
+  }
 
-	private SwingComponentView<?> createHeader( MethodInvocation methodInvocation ) {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		AbstractMethod method = methodInvocation.method.getValue();
-		LineAxisPanel rv = new LineAxisPanel();
-		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
-		rv.addComponent( new ThisPane() );
-		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-		Label label = new Label( formatter.getNameForDeclaration( method ), TextWeight.BOLD );
-		rv.addComponent( label );
-		if( method.getRequiredParameters() != null ) {
-			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
-			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane( ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty ) {
-				@Override
-				protected AwtComponentView<?> createComponent( SimpleArgument argument ) {
-					if( argument.expression.getValue() instanceof LambdaExpression ) {
-						return null;
-					} else {
-						return super.createComponent( argument );
-					}
-				}
-			};
-			//			if(requiredParametersListView.getComposite() != null){
-			//			requiredParametersListView.
-			rv.addComponent( requiredParametersListView );
-			//			}
-			//			System.out.println(requiredParametersListView);
-		}
-		if( method.getKeyedParameter() != null ) {
-			SwingComponentView<?> keyedArgumentListView = new KeyedArgumentListPropertyView( ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
-			rv.addComponent( keyedArgumentListView );
-		}
-		return rv;
-	}
+  private SwingComponentView<?> createHeader(MethodInvocation methodInvocation) {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    AbstractMethod method = methodInvocation.method.getValue();
+    LineAxisPanel rv = new LineAxisPanel();
+    rv.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
+    rv.addComponent(new ThisPane());
+    rv.addComponent(BoxUtilities.createHorizontalSliver(4));
+    Label label = new Label(formatter.getNameForDeclaration(method), TextWeight.BOLD);
+    rv.addComponent(label);
+    if (method.getRequiredParameters() != null) {
+      SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
+      ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane(ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty) {
+        @Override
+        protected AwtComponentView<?> createComponent(SimpleArgument argument) {
+          if (argument.expression.getValue() instanceof LambdaExpression) {
+            return null;
+          } else {
+            return super.createComponent(argument);
+          }
+        }
+      };
+      //      if(requiredParametersListView.getComposite() != null){
+      //      requiredParametersListView.
+      rv.addComponent(requiredParametersListView);
+      //      }
+      //      System.out.println(requiredParametersListView);
+    }
+    if (method.getKeyedParameter() != null) {
+      SwingComponentView<?> keyedArgumentListView = new KeyedArgumentListPropertyView(ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty());
+      rv.addComponent(keyedArgumentListView);
+    }
+    return rv;
+  }
 
-	private Label getDeclareProcedureLabel() {
-		return new Label( localize( "declare" ) + " " + localize( "procedure" ), TextPosture.OBLIQUE );
-	}
+  private Label getDeclareProcedureLabel() {
+    return new Label(localize("declare") + " " + localize("procedure"), TextPosture.OBLIQUE);
+  }
 
-	private String localize( String key ) {
-		return ResourceBundleUtilities.getStringForKey( key, "org.alice.ide.codeeditor.CodeEditor" );
-	}
+  private String localize(String key) {
+    return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
+  }
 }

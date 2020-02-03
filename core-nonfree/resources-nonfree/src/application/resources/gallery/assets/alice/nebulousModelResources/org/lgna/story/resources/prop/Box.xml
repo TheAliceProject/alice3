@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Box">
+    <BoundingBox>
+        <Min x="-0.28341788053512573" y="0.0" z="-0.28157490491867065"/>
+        <Max x="0.28341788053512573" y="0.24618519842624664" z="0.28157490491867065"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>package</Tag>
+        <Tag>delivery</Tag>
+        <Tag>ups</Tag>
+        <Tag>present</Tag>
+        <Tag>mail</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:recreation room</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Box" resourceName="BOX" textureName="BOX"/>
+</AliceModel>

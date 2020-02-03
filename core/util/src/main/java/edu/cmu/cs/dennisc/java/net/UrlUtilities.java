@@ -49,15 +49,15 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class UrlUtilities {
-	private UrlUtilities() {
-		throw new AssertionError();
-	}
+  private UrlUtilities() {
+    throw new AssertionError();
+  }
 
-	public static URL createUrl( String spec ) {
-		try {
-			return new URL( spec );
-		} catch( MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
-	}
+  public static URL createUrl(String spec) {
+    try {
+      return new URL(spec);
+    } catch (MalformedURLException murle) {
+      throw new RuntimeException(spec, murle);
+    }
+  }
 }

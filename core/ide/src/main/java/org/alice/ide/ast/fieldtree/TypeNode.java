@@ -54,84 +54,84 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class TypeNode extends Node<AbstractType<?, ?, ?>> {
-	private final int collapseThreshold;
-	private final int collapseThresholdForDescendants;
-	private final List<TypeNode> typeNodes = Lists.newLinkedList();
-	private final List<FieldNode> fieldNodes = Lists.newLinkedList();
+  private final int collapseThreshold;
+  private final int collapseThresholdForDescendants;
+  private final List<TypeNode> typeNodes = Lists.newLinkedList();
+  private final List<FieldNode> fieldNodes = Lists.newLinkedList();
 
-	public static TypeNode createAndAddToParent( TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
-		TypeNode rv = new TypeNode( parent, type, collapseThreshold, collapseThresholdForDescendants );
-		if( parent != null ) {
-			parent.getTypeNodes().add( rv );
-		}
-		return rv;
-	}
+  public static TypeNode createAndAddToParent(TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants) {
+    TypeNode rv = new TypeNode(parent, type, collapseThreshold, collapseThresholdForDescendants);
+    if (parent != null) {
+      parent.getTypeNodes().add(rv);
+    }
+    return rv;
+  }
 
-	protected TypeNode( TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
-		super( parent, type );
-		this.collapseThreshold = collapseThreshold;
-		this.collapseThresholdForDescendants = collapseThresholdForDescendants;
-	}
+  protected TypeNode(TypeNode parent, AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants) {
+    super(parent, type);
+    this.collapseThreshold = collapseThreshold;
+    this.collapseThresholdForDescendants = collapseThresholdForDescendants;
+  }
 
-	public List<TypeNode> getTypeNodes() {
-		return this.typeNodes;
-	}
+  public List<TypeNode> getTypeNodes() {
+    return this.typeNodes;
+  }
 
-	public List<FieldNode> getFieldNodes() {
-		return this.fieldNodes;
-	}
+  public List<FieldNode> getFieldNodes() {
+    return this.fieldNodes;
+  }
 
-	public int getCollapseThreshold() {
-		return this.collapseThreshold;
-	}
+  public int getCollapseThreshold() {
+    return this.collapseThreshold;
+  }
 
-	public int getCollapseThresholdForDescendants() {
-		return this.collapseThresholdForDescendants;
-	}
+  public int getCollapseThresholdForDescendants() {
+    return this.collapseThresholdForDescendants;
+  }
 
-	public void collapseIfAppropriate() {
-		for( TypeNode typeNode : this.typeNodes ) {
-			typeNode.collapseIfAppropriate();
-		}
-		if( this.fieldNodes.size() < this.getCollapseThreshold() ) {
-			TypeNode superTypeNode = this.getParent();
-			if( superTypeNode != null ) {
-				superTypeNode.fieldNodes.addAll( this.fieldNodes );
-				this.fieldNodes.clear();
-			}
-		}
-	}
+  public void collapseIfAppropriate() {
+    for (TypeNode typeNode : this.typeNodes) {
+      typeNode.collapseIfAppropriate();
+    }
+    if (this.fieldNodes.size() < this.getCollapseThreshold()) {
+      TypeNode superTypeNode = this.getParent();
+      if (superTypeNode != null) {
+        superTypeNode.fieldNodes.addAll(this.fieldNodes);
+        this.fieldNodes.clear();
+      }
+    }
+  }
 
-	public void removeEmptyTypeNodes() {
-		TypeNode[] copy = ArrayUtilities.createArray( this.typeNodes, TypeNode.class );
-		for( TypeNode typeNode : copy ) {
-			typeNode.removeEmptyTypeNodes();
-		}
-		TypeNode superTypeNode = this.getParent();
-		if( this.fieldNodes.size() == 0 && superTypeNode != null) {
-			superTypeNode.typeNodes.remove( this );
-			if( this.typeNodes.size() > 0 ) {
-				superTypeNode.typeNodes.addAll( this.typeNodes );
-			}
-		}
-	}
+  public void removeEmptyTypeNodes() {
+    TypeNode[] copy = ArrayUtilities.createArray(this.typeNodes, TypeNode.class);
+    for (TypeNode typeNode : copy) {
+      typeNode.removeEmptyTypeNodes();
+    }
+    TypeNode superTypeNode = this.getParent();
+    if (this.fieldNodes.size() == 0 && superTypeNode != null) {
+      superTypeNode.typeNodes.remove(this);
+      if (this.typeNodes.size() > 0) {
+        superTypeNode.typeNodes.addAll(this.typeNodes);
+      }
+    }
+  }
 
-	public void sort() {
-		Collections.sort( this.typeNodes );
-		Collections.sort( this.fieldNodes );
-		for( TypeNode typeNode : this.typeNodes ) {
-			typeNode.sort();
-		}
-	}
+  public void sort() {
+    Collections.sort(this.typeNodes);
+    Collections.sort(this.fieldNodes);
+    for (TypeNode typeNode : this.typeNodes) {
+      typeNode.sort();
+    }
+  }
 
-	@Override
-	protected void append( StringBuilder sb, int depth ) {
-		super.append( sb, depth );
-		for( TypeNode typeNode : this.typeNodes ) {
-			typeNode.append( sb, depth + 1 );
-		}
-		for( FieldNode fieldNode : this.fieldNodes ) {
-			fieldNode.append( sb, depth + 1 );
-		}
-	}
+  @Override
+  protected void append(StringBuilder sb, int depth) {
+    super.append(sb, depth);
+    for (TypeNode typeNode : this.typeNodes) {
+      typeNode.append(sb, depth + 1);
+    }
+    for (FieldNode fieldNode : this.fieldNodes) {
+      fieldNode.append(sb, depth + 1);
+    }
+  }
 }

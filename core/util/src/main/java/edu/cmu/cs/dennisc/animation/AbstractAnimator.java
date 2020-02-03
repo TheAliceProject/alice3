@@ -56,173 +56,173 @@ import java.util.Queue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractAnimator implements Animator {
-	private final Queue<WaitingAnimation> waitingAnimations = Queues.newConcurrentLinkedQueue();
-	private final List<FrameObserver> frameObservers = Lists.newCopyOnWriteArrayList();
+  private final Queue<WaitingAnimation> waitingAnimations = Queues.newConcurrentLinkedQueue();
+  private final List<FrameObserver> frameObservers = Lists.newCopyOnWriteArrayList();
 
-	private double speedFactor = 1.0;
-	private double tCurrent;
+  private double speedFactor = 1.0;
+  private double tCurrent;
 
-	protected abstract void updateCurrentTime( boolean isPaused );
+  protected abstract void updateCurrentTime(boolean isPaused);
 
-	protected final void setCurrentTime( double tCurrent ) {
-		this.tCurrent = tCurrent;
-	}
+  protected final void setCurrentTime(double tCurrent) {
+    this.tCurrent = tCurrent;
+  }
 
-	@Override
-	public final double getCurrentTime() {
-		return this.tCurrent;
-	}
+  @Override
+  public final double getCurrentTime() {
+    return this.tCurrent;
+  }
 
-	@Override
-	public double getSpeedFactor() {
-		return this.speedFactor;
-	}
+  @Override
+  public double getSpeedFactor() {
+    return this.speedFactor;
+  }
 
-	@Override
-	public void setSpeedFactor( double speedFactor ) {
-		this.speedFactor = speedFactor;
-	}
+  @Override
+  public void setSpeedFactor(double speedFactor) {
+    this.speedFactor = speedFactor;
+  }
 
-	@Override
-	public boolean isUpdateRequired() {
-		return this.waitingAnimations.isEmpty() == false;
-	}
+  @Override
+  public boolean isUpdateRequired() {
+    return this.waitingAnimations.isEmpty() == false;
+  }
 
-	@Override
-	public void update() {
-		boolean isPaused = this.speedFactor <= 0.0;
-		updateCurrentTime( isPaused );
-		if( isPaused ) {
-			//pass
-		} else {
-			double tCurrent = getCurrentTime();
-			if( this.waitingAnimations.size() > 0 ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.waitingAnimations.size() );
-				Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
-				while( iterator.hasNext() ) {
-					WaitingAnimation waitingAnimation = iterator.next();
-					double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
-					if( tRemaining > 0.0 ) {
-						//pass
-					} else {
-						Thread thread = waitingAnimation.getThread();
-						if( thread != null ) {
-							synchronized( thread ) {
-								thread.notify();
-							}
-						}
-						iterator.remove();
-					}
-				}
-			}
-			if( this.frameObservers.size() > 0 ) {
-				for( FrameObserver frameObserver : this.frameObservers ) {
-					frameObserver.update( tCurrent );
-				}
-			}
-		}
-	}
+  @Override
+  public void update() {
+    boolean isPaused = this.speedFactor <= 0.0;
+    updateCurrentTime(isPaused);
+    if (isPaused) {
+      //pass
+    } else {
+      double tCurrent = getCurrentTime();
+      if (this.waitingAnimations.size() > 0) {
+        //edu.cmu.cs.dennisc.print.PrintUtilities.println( this.waitingAnimations.size() );
+        Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
+        while (iterator.hasNext()) {
+          WaitingAnimation waitingAnimation = iterator.next();
+          double tRemaining = waitingAnimation.getAnimation().update(tCurrent, waitingAnimation.getAnimationObserver());
+          if (tRemaining > 0.0) {
+            //pass
+          } else {
+            Thread thread = waitingAnimation.getThread();
+            if (thread != null) {
+              synchronized (thread) {
+                thread.notify();
+              }
+            }
+            iterator.remove();
+          }
+        }
+      }
+      if (this.frameObservers.size() > 0) {
+        for (FrameObserver frameObserver : this.frameObservers) {
+          frameObserver.update(tCurrent);
+        }
+      }
+    }
+  }
 
-	protected WaitingAnimation createWaitingAnimation( Animation animation, AnimationObserver animationObserver, Thread currentThread ) {
-		return new WaitingAnimation( animation, animationObserver, currentThread );
-	}
+  protected WaitingAnimation createWaitingAnimation(Animation animation, AnimationObserver animationObserver, Thread currentThread) {
+    return new WaitingAnimation(animation, animationObserver, currentThread);
+  }
 
-	@Override
-	public void invokeLater( Animation animation, AnimationObserver animationObserver ) {
-		WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, null );
-		this.waitingAnimations.add( waitingAnimation );
-	}
+  @Override
+  public void invokeLater(Animation animation, AnimationObserver animationObserver) {
+    WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, null);
+    this.waitingAnimations.add(waitingAnimation);
+  }
 
-	protected boolean isAcceptableThread() {
-		return EventQueue.isDispatchThread() == false;
-	}
+  protected boolean isAcceptableThread() {
+    return EventQueue.isDispatchThread() == false;
+  }
 
-	@Override
-	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, InvocationTargetException {
-		if( this.isAcceptableThread() ) {
-			Thread currentThread = Thread.currentThread();
-			WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, currentThread );
-			synchronized( currentThread ) {
-				this.waitingAnimations.add( waitingAnimation );
-				currentThread.wait();
-			}
-			if( waitingAnimation.getException() != null ) {
-				throw new InvocationTargetException( waitingAnimation.getException() );
-			}
-		} else {
-			Logger.warning( "Animation called from AWT event dispatch thread.  Launching as separate thread." );
-			new AnimationThread( this, animation, animationObserver ).start();
-		}
-	}
+  @Override
+  public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException {
+    if (this.isAcceptableThread()) {
+      Thread currentThread = Thread.currentThread();
+      WaitingAnimation waitingAnimation = createWaitingAnimation(animation, animationObserver, currentThread);
+      synchronized (currentThread) {
+        this.waitingAnimations.add(waitingAnimation);
+        currentThread.wait();
+      }
+      if (waitingAnimation.getException() != null) {
+        throw new InvocationTargetException(waitingAnimation.getException());
+      }
+    } else {
+      Logger.warning("Animation called from AWT event dispatch thread.  Launching as separate thread.");
+      new AnimationThread(this, animation, animationObserver).start();
+    }
+  }
 
-	@Override
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Animation animation, AnimationObserver animationObserver ) {
-		try {
-			invokeAndWait( animation, animationObserver );
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		} catch( InvocationTargetException ie ) {
-			throw new RuntimeException( ie );
-		}
-	}
+  @Override
+  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Animation animation, AnimationObserver animationObserver) {
+    try {
+      invokeAndWait(animation, animationObserver);
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
+    } catch (InvocationTargetException ie) {
+      throw new RuntimeException(ie);
+    }
+  }
 
-	@Override
-	public Iterable<FrameObserver> getFrameObservers() {
-		return this.frameObservers;
-	}
+  @Override
+  public Iterable<FrameObserver> getFrameObservers() {
+    return this.frameObservers;
+  }
 
-	@Override
-	public void addFrameObserver( FrameObserver frameObserver ) {
-		this.frameObservers.add( frameObserver );
-	}
+  @Override
+  public void addFrameObserver(FrameObserver frameObserver) {
+    this.frameObservers.add(frameObserver);
+  }
 
-	@Override
-	public void removeFrameObserver( FrameObserver frameObserver ) {
-		this.frameObservers.remove( frameObserver );
-	}
+  @Override
+  public void removeFrameObserver(FrameObserver frameObserver) {
+    this.frameObservers.remove(frameObserver);
+  }
 
-	public void cancelAnimation() {
-		Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
-		while( iterator.hasNext() ) {
-			WaitingAnimation waitingAnimation = iterator.next();
-			Thread thread = waitingAnimation.getThread();
-			if( thread != null ) {
-				synchronized( thread ) {
-					thread.notify();
-				}
-			}
-			iterator.remove();
-		}
-	}
+  public void cancelAnimation() {
+    Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
+    while (iterator.hasNext()) {
+      WaitingAnimation waitingAnimation = iterator.next();
+      Thread thread = waitingAnimation.getThread();
+      if (thread != null) {
+        synchronized (thread) {
+          thread.notify();
+        }
+      }
+      iterator.remove();
+    }
+  }
 
-	@Override
-	public void completeAnimations( AnimationObserver animationObserver ) {
-		Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
-		while( iterator.hasNext() ) {
-			WaitingAnimation waitingAnimation = iterator.next();
-			waitingAnimation.getAnimation().complete( waitingAnimation.getAnimationObserver() );
-			Thread thread = waitingAnimation.getThread();
-			if( thread != null ) {
-				synchronized( thread ) {
-					thread.notify();
-				}
-			}
-			iterator.remove();
-		}
-	}
+  @Override
+  public void completeAnimations(AnimationObserver animationObserver) {
+    Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
+    while (iterator.hasNext()) {
+      WaitingAnimation waitingAnimation = iterator.next();
+      waitingAnimation.getAnimation().complete(waitingAnimation.getAnimationObserver());
+      Thread thread = waitingAnimation.getThread();
+      if (thread != null) {
+        synchronized (thread) {
+          thread.notify();
+        }
+      }
+      iterator.remove();
+    }
+  }
 
-	@Override
-	public void completeFrameObservers() {
-		if( this.frameObservers.size() > 0 ) {
-			for( FrameObserver frameObserver : this.frameObservers ) {
-				frameObserver.complete();
-			}
-		}
-	}
+  @Override
+  public void completeFrameObservers() {
+    if (this.frameObservers.size() > 0) {
+      for (FrameObserver frameObserver : this.frameObservers) {
+        frameObserver.complete();
+      }
+    }
+  }
 
-	@Override
-	public void completeAll( AnimationObserver animationObserver ) {
-		this.completeAnimations( animationObserver );
-		this.completeFrameObservers();
-	}
+  @Override
+  public void completeAll(AnimationObserver animationObserver) {
+    this.completeAnimations(animationObserver);
+    this.completeFrameObservers();
+  }
 }

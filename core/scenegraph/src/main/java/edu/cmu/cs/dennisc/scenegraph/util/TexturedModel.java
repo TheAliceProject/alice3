@@ -51,28 +51,28 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class TexturedModel extends ModelTransformable {
-	private BufferedImageTexture m_bufferedImageTexture = new BufferedImageTexture();
+  private BufferedImageTexture m_bufferedImageTexture = new BufferedImageTexture();
 
-	public TexturedModel() {
-		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTexture( m_bufferedImageTexture );
-	}
+  public TexturedModel() {
+    getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTexture(m_bufferedImageTexture);
+  }
 
-	public BufferedImageTexture getBufferedImageTexture() {
-		return m_bufferedImageTexture;
-	}
+  public BufferedImageTexture getBufferedImageTexture() {
+    return m_bufferedImageTexture;
+  }
 
-	public void setIsAlphaBlended( boolean isAlphaBlended ) {
-		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTextureAlphaBlended( isAlphaBlended );
-		m_bufferedImageTexture.setPotentiallyAlphaBlended( isAlphaBlended );
-	}
+  public void setIsAlphaBlended(boolean isAlphaBlended) {
+    getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTextureAlphaBlended(isAlphaBlended);
+    m_bufferedImageTexture.setPotentiallyAlphaBlended(isAlphaBlended);
+  }
 
-	public void loadImage( String path ) throws IOException {
-		m_bufferedImageTexture.setBufferedImage( ImageUtilities.read( path ) );
-	}
+  public void loadImage(String path) throws IOException {
+    m_bufferedImageTexture.setBufferedImage(ImageUtilities.read(path));
+  }
 
-	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		m_bufferedImageTexture.setName( name + ".m_bufferedImageTexture" );
-	}
+  @Override
+  public void setName(String name) {
+    super.setName(name);
+    m_bufferedImageTexture.setName(name + ".m_bufferedImageTexture");
+  }
 }

@@ -48,55 +48,45 @@ import java.awt.Insets;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 
-public class BlankPropertyController<P> extends LabelBasedPropertyController<P>
-{
-	public BlankPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
-		super( propertyAdapter );
-	}
+public class BlankPropertyController<P> extends LabelBasedPropertyController<P> {
+  public BlankPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	@Override
-	protected void initializeComponents()
-	{
-		super.initializeComponents();
-		this.label.setText( BLANK_STRING );
-		this.addComponent( this.propertyComponent, new GridBagConstraints(
-				0, // gridX
-				0, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				0.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.WEST, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, // ipadX
-				0 ) // ipadY
-		);
-	}
+  @Override
+  protected void initializeComponents() {
+    super.initializeComponents();
+    this.label.setText(BLANK_STRING);
+    this.addComponent(this.propertyComponent, new GridBagConstraints(0, // gridX
+                                                                     0, // gridY
+                                                                     1, // gridWidth
+                                                                     1, // gridHeight
+                                                                     0.0, // weightX
+                                                                     0.0, // weightY
+                                                                     GridBagConstraints.WEST, // anchor
+                                                                     GridBagConstraints.HORIZONTAL, // fill
+                                                                     new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                     0, // ipadX
+                                                                     0) // ipadY
+    );
+  }
 
-	@Override
-	public Class<?> getPropertyType()
-	{
-		return Object.class;
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return Object.class;
+  }
 
-	@Override
-	protected void setValueOnUI( Object value )
-	{
-		if( value != null )
-		{
-			this.label.setText( BLANK_STRING + value.getClass().getSimpleName() );
-		}
-		else
-		{
-			this.label.setText( BLANK_STRING + "NULL" );
-		}
-	}
+  @Override
+  protected void setValueOnUI(Object value) {
+    if (value != null) {
+      this.label.setText(BLANK_STRING + value.getClass().getSimpleName());
+    } else {
+      this.label.setText(BLANK_STRING + "NULL");
+    }
+  }
 
-	@Override
-	protected void setValueOnData( Object value )
-	{
-		//Do Nothing
-	}
+  @Override
+  protected void setValueOnData(Object value) {
+    //Do Nothing
+  }
 }

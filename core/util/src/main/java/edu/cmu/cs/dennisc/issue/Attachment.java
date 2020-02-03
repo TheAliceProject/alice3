@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public interface Attachment {
-	public String getFileName();
+  public String getFileName();
 
-	public String getMIMEType();
+  public String getMIMEType();
 
-	public byte[] getBytes();
+  public byte[] getBytes();
 }

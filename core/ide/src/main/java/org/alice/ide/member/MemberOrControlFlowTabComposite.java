@@ -53,14 +53,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MemberOrControlFlowTabComposite<V extends CompositeView<?, ?>> extends SimpleTabComposite<V> {
-	public MemberOrControlFlowTabComposite( UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-	}
+  public MemberOrControlFlowTabComposite(UUID migrationId) {
+    super(migrationId, IsCloseable.FALSE);
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.4f );
-		button.changeFont( TextWeight.BOLD );
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    super.customizeTitleComponentAppearance(button);
+    button.scaleFont(1.4f);
+    button.changeFont(TextWeight.BOLD);
+  }
 }

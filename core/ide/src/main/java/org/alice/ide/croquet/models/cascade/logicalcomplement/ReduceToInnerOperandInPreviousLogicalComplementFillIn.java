@@ -53,31 +53,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ReduceToInnerOperandInPreviousLogicalComplementFillIn extends PreviousExpressionBasedFillInWithoutBlanks<Expression> {
-	private static class SingletonHolder {
-		private static ReduceToInnerOperandInPreviousLogicalComplementFillIn instance = new ReduceToInnerOperandInPreviousLogicalComplementFillIn();
-	}
+  private static class SingletonHolder {
+    private static ReduceToInnerOperandInPreviousLogicalComplementFillIn instance = new ReduceToInnerOperandInPreviousLogicalComplementFillIn();
+  }
 
-	public static ReduceToInnerOperandInPreviousLogicalComplementFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ReduceToInnerOperandInPreviousLogicalComplementFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ReduceToInnerOperandInPreviousLogicalComplementFillIn() {
-		super( UUID.fromString( "63c2c1bf-fc6a-439c-93df-d8135b5c5447" ) );
-	}
+  private ReduceToInnerOperandInPreviousLogicalComplementFillIn() {
+    super(UUID.fromString("63c2c1bf-fc6a-439c-93df-d8135b5c5447"));
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, org.lgna.project.ast.Expression previousExpression ) {
-	//		if( previousExpression instanceof org.lgna.project.ast.LogicalComplement ) {
-	//			org.lgna.project.ast.LogicalComplement previousLogicalComplement = (org.lgna.project.ast.LogicalComplement)previousExpression;
-	//			return true;
-	//		} else {
-	//			return false;
-	//		}
-	//	}
-	@Override
-	protected Expression createValue( Expression previousExpression ) {
-		assert previousExpression instanceof LogicalComplement;
-		LogicalComplement previousLogicalComplement = (LogicalComplement)previousExpression;
-		return previousLogicalComplement.operand.getValue();
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep context, org.lgna.project.ast.Expression previousExpression ) {
+  //    if( previousExpression instanceof org.lgna.project.ast.LogicalComplement ) {
+  //      org.lgna.project.ast.LogicalComplement previousLogicalComplement = (org.lgna.project.ast.LogicalComplement)previousExpression;
+  //      return true;
+  //    } else {
+  //      return false;
+  //    }
+  //  }
+  @Override
+  protected Expression createValue(Expression previousExpression) {
+    assert previousExpression instanceof LogicalComplement;
+    LogicalComplement previousLogicalComplement = (LogicalComplement) previousExpression;
+    return previousLogicalComplement.operand.getValue();
+  }
 }

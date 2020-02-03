@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Orchid">
+    <BoundingBox>
+        <Min x="-0.20751424133777618" y="0.0" z="-0.24030624330043793"/>
+        <Max x="0.20751424133777618" y="0.564059853553772" z="0.24030624330043793"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>pot</Tag>
+        <Tag>potted</Tag>
+        <Tag>container</Tag>
+        <Tag>houseplant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Orchid" resourceName="ORCHID" textureName="ORCHID"/>
+</AliceModel>

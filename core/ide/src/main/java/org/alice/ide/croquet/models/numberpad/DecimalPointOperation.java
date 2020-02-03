@@ -53,33 +53,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DecimalPointOperation extends NumberPadOperation {
-	private static Map<NumberModel<?>, DecimalPointOperation> map = Maps.newHashMap();
+  private static Map<NumberModel<?>, DecimalPointOperation> map = Maps.newHashMap();
 
-	public static synchronized DecimalPointOperation getInstance( NumberModel<?> model ) {
-		DecimalPointOperation rv = map.get( model );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DecimalPointOperation( model );
-			map.put( model, rv );
-		}
-		return rv;
-	}
+  public static synchronized DecimalPointOperation getInstance(NumberModel<?> model) {
+    DecimalPointOperation rv = map.get(model);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DecimalPointOperation(model);
+      map.put(model, rv);
+    }
+    return rv;
+  }
 
-	private DecimalPointOperation( NumberModel<?> model ) {
-		super( UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
-	}
+  private DecimalPointOperation(NumberModel<?> model) {
+    super(UUID.fromString("45fb7f55-166b-421c-9e6d-cf781b562936"), model);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-		this.setName( "" + decimalFormatSymbols.getDecimalSeparator() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+    this.setName("" + decimalFormatSymbols.getDecimalSeparator());
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		this.numberModel.replaceSelectionWithDecimalPoint();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    this.numberModel.replaceSelectionWithDecimalPoint();
+    activity.finish();
+  }
 }

@@ -58,102 +58,102 @@ import org.lgna.project.ast.UserField;
  */
 public class ThisFieldAccessArrayElementMethodInvocationFactory extends AbstractInstanceFactory {
 
-	private static MapToMap<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ThisFieldAccessArrayElementMethodInvocationFactory getInstance( UserField field, AbstractMethod method ) {
-		assert field != null;
-		return mapToMap.getInitializingIfAbsent( field, method, new MapToMap.Initializer<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory>() {
-			@Override
-			public ThisFieldAccessArrayElementMethodInvocationFactory initialize( UserField field, AbstractMethod method ) {
-				return new ThisFieldAccessArrayElementMethodInvocationFactory( field, method );
-			}
-		} );
-	}
+  public static synchronized ThisFieldAccessArrayElementMethodInvocationFactory getInstance(UserField field, AbstractMethod method) {
+    assert field != null;
+    return mapToMap.getInitializingIfAbsent(field, method, new MapToMap.Initializer<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory>() {
+      @Override
+      public ThisFieldAccessArrayElementMethodInvocationFactory initialize(UserField field, AbstractMethod method) {
+        return new ThisFieldAccessArrayElementMethodInvocationFactory(field, method);
+      }
+    });
+  }
 
-	private final AbstractMethod method;
-	private final UserField field;
-	private final Integer arrayIndex;
+  private final AbstractMethod method;
+  private final UserField field;
+  private final Integer arrayIndex;
 
-	public ThisFieldAccessArrayElementMethodInvocationFactory( UserField field, AbstractMethod method ) {
-		super( field.name );
-		this.method = method;
-		this.field = field;
-		this.arrayIndex = 0;
-	}
+  public ThisFieldAccessArrayElementMethodInvocationFactory(UserField field, AbstractMethod method) {
+    super(field.name);
+    this.method = method;
+    this.field = field;
+    this.arrayIndex = 0;
+  }
 
-	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
-		if( ( fieldDeclarationType != null ) && fieldDeclarationType.isAssignableFrom( type ) ) {
-			return this.field.getValueType();
-		} else {
-			return null;
-		}
-	}
+  protected AbstractType<?, ?, ?> getValidInstanceType(AbstractType<?, ?, ?> type, AbstractCode code) {
+    AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
+    if ((fieldDeclarationType != null) && fieldDeclarationType.isAssignableFrom(type)) {
+      return this.field.getValueType();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected final boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
-		return ( methodDeclarationType != null ) && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
-	}
+  @Override
+  protected final boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
+    return (methodDeclarationType != null) && methodDeclarationType.isAssignableFrom(this.getValidInstanceType(type, code));
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	private FieldAccess createFieldAccess( Expression expression ) {
-		return new FieldAccess( expression, this.field );
-	}
+  private FieldAccess createFieldAccess(Expression expression) {
+    return new FieldAccess(expression, this.field);
+  }
 
-	protected Expression createTransientExpressionForMethodInvocation() {
-		return this.createFieldAccess( createTransientThisExpression() );
-	}
+  protected Expression createTransientExpressionForMethodInvocation() {
+    return this.createFieldAccess(createTransientThisExpression());
+  }
 
-	protected Expression createExpressionForMethodInvocation() {
-		return this.createFieldAccess( createThisExpression() );
-	}
+  protected Expression createExpressionForMethodInvocation() {
+    return this.createFieldAccess(createThisExpression());
+  }
 
-	private MethodInvocation createMethodInvocation( Expression access ) {
-		return new MethodInvocation( access, this.method );
-	}
+  private MethodInvocation createMethodInvocation(Expression access) {
+    return new MethodInvocation(access, this.method);
+  }
 
-	private ArrayAccess createArrayAccess( Expression access ) {
-		return new ArrayAccess( this.method.getReturnType(), this.createMethodInvocation( access ), new IntegerLiteral( this.arrayIndex ) );
-	}
+  private ArrayAccess createArrayAccess(Expression access) {
+    return new ArrayAccess(this.method.getReturnType(), this.createMethodInvocation(access), new IntegerLiteral(this.arrayIndex));
+  }
 
-	@Override
-	public final Expression createTransientExpression() {
-		return this.createArrayAccess( this.createTransientExpressionForMethodInvocation() );
-	}
+  @Override
+  public final Expression createTransientExpression() {
+    return this.createArrayAccess(this.createTransientExpressionForMethodInvocation());
+  }
 
-	@Override
-	public final Expression createExpression() {
-		return this.createArrayAccess( this.createExpressionForMethodInvocation() );
-	}
+  @Override
+  public final Expression createExpression() {
+    return this.createArrayAccess(this.createExpressionForMethodInvocation());
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getValueType() {
-		return this.method.getReturnType().getComponentType();
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getValueType() {
+    return this.method.getReturnType().getComponentType();
+  }
 
-	protected StringBuilder addAccessRepr( StringBuilder rv ) {
-		rv.append( "this." );
-		rv.append( this.field.getName() );
-		return rv;
-	}
+  protected StringBuilder addAccessRepr(StringBuilder rv) {
+    rv.append("this.");
+    rv.append(this.field.getName());
+    return rv;
+  }
 
-	@Override
-	public final String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		this.addAccessRepr( sb );
-		sb.append( "'s " );
-		sb.append( this.method.getName().substring( 3 ) );
-		sb.append( "[ " );
-		sb.append( this.arrayIndex );
-		sb.append( " ]" );
-		return sb.toString();
-	}
+  @Override
+  public final String getRepr() {
+    StringBuilder sb = new StringBuilder();
+    this.addAccessRepr(sb);
+    sb.append("'s ");
+    sb.append(this.method.getName().substring(3));
+    sb.append("[ ");
+    sb.append(this.arrayIndex);
+    sb.append(" ]");
+    return sb.toString();
+  }
 }

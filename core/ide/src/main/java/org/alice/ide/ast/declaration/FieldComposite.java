@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FieldComposite extends DeclarationLikeSubstanceComposite<UserField> {
-	public FieldComposite( UUID migrationId, Details details ) {
-		super( migrationId, details );
-	}
+  public FieldComposite(UUID migrationId, Details details) {
+    super(migrationId, details);
+  }
 }

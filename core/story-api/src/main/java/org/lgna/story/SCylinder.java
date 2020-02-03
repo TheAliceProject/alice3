@@ -50,32 +50,32 @@ import org.lgna.story.implementation.CylinderImp;
  * @author Dennis Cosgrove
  */
 public class SCylinder extends SShape {
-	private final CylinderImp implementation = new CylinderImp( this );
+  private final CylinderImp implementation = new CylinderImp(this);
 
-	@Override
-	/* package-private */CylinderImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */CylinderImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getRadius() {
-		return this.implementation.radius.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getRadius() {
+    return this.implementation.radius.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setRadius( Number radius, SetRadius.Detail... details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setRadius(Number radius, SetRadius.Detail... details) {
+    this.implementation.radius.animateValue(radius.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Double getLength() {
-		return this.implementation.length.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getLength() {
+    return this.implementation.length.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setLength( Number length, SetLength.Detail... details ) {
-		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setLength(Number length, SetLength.Detail... details) {
+    this.implementation.length.animateValue(length.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="LeatherBook">
+    <BoundingBox>
+        <Min x="-0.33604973554611206" y="8.456468418809687E-5" z="-0.06755625564448459"/>
+        <Max x="4.774015588657145E-6" y="0.3496559904751305" z="0.06753349701871915"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>book</Tag>
+        <Tag>circus wagon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="LeatherBook" resourceName="BLANK" textureName="BLANK"/>
+    <Resource modelName="LeatherBook" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="LeatherBook" resourceName="AQUA" textureName="AQUA"/>
+    <Resource modelName="LeatherBook" resourceName="LIME" textureName="LIME"/>
+    <Resource modelName="LeatherBook" resourceName="YELLOW" textureName="YELLOW"/>
+    <Resource modelName="LeatherBook" resourceName="RUST" textureName="RUST"/>
+    <Resource modelName="LeatherBook" resourceName="VIOLET" textureName="VIOLET"/>
+    <Resource modelName="LeatherBook" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="LeatherBook" resourceName="PERIWINKLE" textureName="PERIWINKLE"/>
+    <Resource modelName="LeatherBook" resourceName="MOSS" textureName="MOSS"/>
+    <Resource modelName="LeatherBook" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="LeatherBook" resourceName="TRIG" textureName="TRIG"/>
+    <Resource modelName="LeatherBook" resourceName="CALCULUS" textureName="CALCULUS"/>
+    <Resource modelName="LeatherBook" resourceName="GEOMETRY" textureName="GEOMETRY"/>
+    <Resource modelName="LeatherBook" resourceName="LINEAR_ALGEBRA" textureName="LINEAR_ALGEBRA"/>
+    <Resource modelName="LeatherBook" resourceName="ALGEBRA" textureName="ALGEBRA"/>
+    <Resource modelName="LeatherBook" resourceName="PROBABILITY" textureName="PROBABILITY"/>
+    <Resource modelName="LeatherBook" resourceName="STATISTICS" textureName="STATISTICS"/>
+    <Resource modelName="LeatherBook" resourceName="CALCULUS3_D" textureName="CALCULUS3_D"/>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_BLANK" textureName="BLANK">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_AQUA" textureName="AQUA">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_LIME" textureName="LIME">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_YELLOW" textureName="YELLOW">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_RUST" textureName="RUST">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_VIOLET" textureName="VIOLET">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_PERIWINKLE" textureName="PERIWINKLE">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_MOSS" textureName="MOSS">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_TRIG" textureName="TRIG">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_CALCULUS" textureName="CALCULUS">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_GEOMETRY" textureName="GEOMETRY">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_LINEAR_ALGEBRA" textureName="LINEAR_ALGEBRA">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_ALGEBRA" textureName="ALGEBRA">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_PROBABILITY" textureName="PROBABILITY">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_STATISTICS" textureName="STATISTICS">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LeatherBookTall" resourceName="LEATHER_BOOK_TALL_CALCULUS3_D" textureName="CALCULUS3_D">
+        <BoundingBox>
+            <Min x="-0.33604973554611206" y="5.358695589162557E-4" z="-0.05536955048419139"/>
+            <Max x="4.771947815787437E-6" y="0.464016931640144" z="0.05536955177548643"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

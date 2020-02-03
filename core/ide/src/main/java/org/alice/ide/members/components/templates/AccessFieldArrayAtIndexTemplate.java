@@ -56,22 +56,19 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 /* package-private */class AccessFieldArrayAtIndexTemplate extends ExpressionTemplate {
-	private AbstractField field;
+  private AbstractField field;
 
-	public AccessFieldArrayAtIndexTemplate( AbstractField field ) {
-		super( FieldArrayAtIndexDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof UserField ) {
-			UserField userField = (UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
-	}
+  public AccessFieldArrayAtIndexTemplate(AbstractField field) {
+    super(FieldArrayAtIndexDragModel.getInstance(field));
+    this.field = field;
+    if (this.field instanceof UserField) {
+      UserField userField = (UserField) this.field;
+      this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
+    }
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		return new ArrayAccess(
-				field.getValueType(),
-				IncompleteAstUtilities.createIncompleteFieldAccess( field ),
-				new EmptyExpression( JavaType.INTEGER_OBJECT_TYPE ) );
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    return new ArrayAccess(field.getValueType(), IncompleteAstUtilities.createIncompleteFieldAccess(field), new EmptyExpression(JavaType.INTEGER_OBJECT_TYPE));
+  }
 }

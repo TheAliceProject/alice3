@@ -50,37 +50,37 @@ import org.lgna.croquet.StringState;
  * @author Dennis Cosgrove
  */
 public class TextArea extends TextComponent<JSuggestiveTextArea> {
-	public TextArea( StringState model ) {
-		super( model );
-	}
+  public TextArea(StringState model) {
+    super(model);
+  }
 
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
-	}
+  @Override
+  public void updateTextForBlankCondition(String textForBlankCondition) {
+    this.getAwtComponent().setTextForBlankCondition(textForBlankCondition);
+  }
 
-	@Override
-	protected JSuggestiveTextArea createAwtComponent() {
-		JSuggestiveTextArea rv = new JSuggestiveTextArea() {
-			//			@Override
-			//			public java.awt.Dimension getPreferredSize() {
-			//				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			//			}
-			//
-			//			//			@Override
-			//			//			public java.awt.Dimension getPreferredScrollableViewportSize() {
-			//			//				return this.getPreferredSize();
-			//			//			}
-			//			@Override
-			//			public java.awt.Dimension getMaximumSize() {
-			//				java.awt.Dimension rv = super.getMaximumSize();
-			//				if( TextArea.this.isMaximumSizeClampedToPreferredSize() ) {
-			//					rv.setSize( this.getPreferredSize() );
-			//				}
-			//				return rv;
-			//			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
-	}
+  @Override
+  protected JSuggestiveTextArea createAwtComponent() {
+    JSuggestiveTextArea rv = new JSuggestiveTextArea() {
+      //    @Override
+      //    public java.awt.Dimension getPreferredSize() {
+      //      return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+      //    }
+      //
+      //    //    @Override
+      //    //    public java.awt.Dimension getPreferredScrollableViewportSize() {
+      //    //      return this.getPreferredSize();
+      //    //    }
+      //    @Override
+      //    public java.awt.Dimension getMaximumSize() {
+      //      java.awt.Dimension rv = super.getMaximumSize();
+      //      if( TextArea.this.isMaximumSizeClampedToPreferredSize() ) {
+      //        rv.setSize( this.getPreferredSize() );
+      //      }
+      //      return rv;
+      //    }
+    };
+    rv.setTextForBlankCondition(this.getModel().getTextForBlankCondition());
+    return rv;
+  }
 }

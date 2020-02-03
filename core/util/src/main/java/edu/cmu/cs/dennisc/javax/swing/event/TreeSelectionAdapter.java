@@ -47,27 +47,27 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 public abstract class TreeSelectionAdapter<E> implements TreeSelectionListener {
-	protected abstract void valueChanged( TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+  protected abstract void valueChanged(TreeSelectionEvent e, E oldLeadValue, E newLeadValue);
 
-	@Override
-	public final void valueChanged( TreeSelectionEvent e ) {
-		//javax.swing.JTree tree = (javax.swing.JTree)e.getSource();
-		TreePath oldLeadPath = e.getOldLeadSelectionPath();
-		TreePath newLeadPath = e.getNewLeadSelectionPath();
-		//int oldRow = tree.getRowForPath( oldLeadPath );
-		//int newRow = tree.getRowForPath( newLeadPath );
-		E oldLeadValue;
-		if( oldLeadPath != null ) {
-			oldLeadValue = (E)oldLeadPath.getLastPathComponent();
-		} else {
-			oldLeadValue = null;
-		}
-		E newLeadValue;
-		if( newLeadPath != null ) {
-			newLeadValue = (E)newLeadPath.getLastPathComponent();
-		} else {
-			newLeadValue = null;
-		}
-		this.valueChanged( e, oldLeadValue, newLeadValue );
-	}
+  @Override
+  public final void valueChanged(TreeSelectionEvent e) {
+    //javax.swing.JTree tree = (javax.swing.JTree)e.getSource();
+    TreePath oldLeadPath = e.getOldLeadSelectionPath();
+    TreePath newLeadPath = e.getNewLeadSelectionPath();
+    //int oldRow = tree.getRowForPath( oldLeadPath );
+    //int newRow = tree.getRowForPath( newLeadPath );
+    E oldLeadValue;
+    if (oldLeadPath != null) {
+      oldLeadValue = (E) oldLeadPath.getLastPathComponent();
+    } else {
+      oldLeadValue = null;
+    }
+    E newLeadValue;
+    if (newLeadPath != null) {
+      newLeadValue = (E) newLeadPath.getLastPathComponent();
+    } else {
+      newLeadValue = null;
+    }
+    this.valueChanged(e, oldLeadValue, newLeadValue);
+  }
 }

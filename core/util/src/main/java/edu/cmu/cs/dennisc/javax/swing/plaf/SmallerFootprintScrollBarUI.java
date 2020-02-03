@@ -64,65 +64,65 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public class SmallerFootprintScrollBarUI extends BasicScrollBarUI {
-	public static final int INSET = 2;
+  public static final int INSET = 2;
 
-	public static ScrollBarUI createUI() {
-		return new SmallerFootprintScrollBarUI();
-	}
+  public static ScrollBarUI createUI() {
+    return new SmallerFootprintScrollBarUI();
+  }
 
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
-		this.thumbRolloverColor = ColorUtilities.createGray( 100 );
-		this.thumbPressedColor = new Color( 100, 140, 255 );
-	}
+  @Override
+  protected void installDefaults() {
+    super.installDefaults();
+    this.thumbRolloverColor = ColorUtilities.createGray(100);
+    this.thumbPressedColor = new Color(100, 140, 255);
+  }
 
-	@Override
-	protected void paintThumb( Graphics g, JComponent c, Rectangle thumbBounds ) {
-		//super.paintThumb( g, c, thumbBounds );
-		if( c instanceof JScrollBar ) {
-			JScrollBar jScrollBar = (JScrollBar)c;
-			int span = jScrollBar.getOrientation() == JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
-			int arc = span - INSET - INSET;
-			Shape shape = new RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
-			Paint paint;
-			if( this.isDragging ) {
-				paint = this.thumbPressedColor;
-			} else {
-				paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
-			}
-			Graphics2D g2 = (Graphics2D)g;
-			Object prevAntialiasing = GraphicsUtilities.setAntialiasing( g2, RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setPaint( paint );
-			g2.fill( shape );
-			GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-		}
-	}
+  @Override
+  protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+    //super.paintThumb( g, c, thumbBounds );
+    if (c instanceof JScrollBar) {
+      JScrollBar jScrollBar = (JScrollBar) c;
+      int span = jScrollBar.getOrientation() == JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
+      int arc = span - INSET - INSET;
+      Shape shape = new RoundRectangle2D.Float(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc);
+      Paint paint;
+      if (this.isDragging) {
+        paint = this.thumbPressedColor;
+      } else {
+        paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
+      }
+      Graphics2D g2 = (Graphics2D) g;
+      Object prevAntialiasing = GraphicsUtilities.setAntialiasing(g2, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2.setPaint(paint);
+      g2.fill(shape);
+      GraphicsUtilities.setAntialiasing(g2, prevAntialiasing);
+    }
+  }
 
-	@Override
-	protected void paintTrack( Graphics g, JComponent c, Rectangle trackBounds ) {
-		//super.paintTrack( g, c, trackBounds );
-	}
+  @Override
+  protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+    //super.paintTrack( g, c, trackBounds );
+  }
 
-	private static JButton create0SizeButton() {
-		JButton rv = new JButton();
-		Dimension size = new Dimension( 0, 0 );
-		rv.setMinimumSize( size );
-		rv.setPreferredSize( size );
-		rv.setMaximumSize( size );
-		return rv;
-	}
+  private static JButton create0SizeButton() {
+    JButton rv = new JButton();
+    Dimension size = new Dimension(0, 0);
+    rv.setMinimumSize(size);
+    rv.setPreferredSize(size);
+    rv.setMaximumSize(size);
+    return rv;
+  }
 
-	@Override
-	protected JButton createIncreaseButton( int orientation ) {
-		return create0SizeButton();
-	}
+  @Override
+  protected JButton createIncreaseButton(int orientation) {
+    return create0SizeButton();
+  }
 
-	@Override
-	protected JButton createDecreaseButton( int orientation ) {
-		return create0SizeButton();
-	}
+  @Override
+  protected JButton createDecreaseButton(int orientation) {
+    return create0SizeButton();
+  }
 
-	private Color thumbPressedColor;
-	private Color thumbRolloverColor;
+  private Color thumbPressedColor;
+  private Color thumbRolloverColor;
 }

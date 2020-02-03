@@ -55,24 +55,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FormatterState extends PreferenceMutableDataSingleSelectListState<Formatter> {
-	@Deprecated
-	public static boolean isJava() {
-		return FormatterState.getInstance().getValue() == JavaFormatter.getInstance();
-	}
+  @Deprecated
+  public static boolean isJava() {
+    return FormatterState.getInstance().getValue() == JavaFormatter.getInstance();
+  }
 
-	private static class SingletonHolder {
-		private static FormatterState instance = new FormatterState();
-	}
+  private static class SingletonHolder {
+    private static FormatterState instance = new FormatterState();
+  }
 
-	public static FormatterState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FormatterState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private FormatterState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ),
-				0,
-				SingletonCodec.getInstance( Formatter.class ),
-				AliceFormatter.getInstance(),
-				JavaFormatter.getInstance() );
-	}
+  private FormatterState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("bae5a8d1-29ad-4205-9445-578a54c8d1e3"), 0, SingletonCodec.getInstance(Formatter.class), AliceFormatter.getInstance(), JavaFormatter.getInstance());
+  }
 }

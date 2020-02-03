@@ -47,11 +47,11 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class DurationAnimationStyleIsVolumePreservedArgumentFactory extends DurationAnimationStyleArgumentFactory {
-	protected DurationAnimationStyleIsVolumePreservedArgumentFactory() {
-		super();
-	}
+  protected DurationAnimationStyleIsVolumePreservedArgumentFactory() {
+    super();
+  }
 
-	public static IsVolumePreserved isVolumePreserved( Boolean isVolumePreserved ) {
-		return new IsVolumePreserved( isVolumePreserved );
-	}
+  public static IsVolumePreserved isVolumePreserved(Boolean isVolumePreserved) {
+    return new IsVolumePreserved(isVolumePreserved);
+  }
 }

@@ -52,54 +52,54 @@ import java.nio.FloatBuffer;
  */
 /*package-private*/class NrSynchronousImageCapturer implements SynchronousImageCapturer {
 
-	@Override
-	public BufferedImage createBufferedImageForUseAsColorBuffer() {
-		return null;
-	}
+  @Override
+  public BufferedImage createBufferedImageForUseAsColorBuffer() {
+    return null;
+  }
 
-	@Override
-	public BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown ) {
-		return rv;
-	}
+  @Override
+  public BufferedImage getColorBufferNotBotheringToFlipVertically(BufferedImage rv, boolean[] atIsUpsideDown) {
+    return rv;
+  }
 
-	@Override
-	public BufferedImage getColorBuffer( BufferedImage rv ) {
-		return rv;
-	}
+  @Override
+  public BufferedImage getColorBuffer(BufferedImage rv) {
+    return rv;
+  }
 
-	@Override
-	public BufferedImage getColorBuffer() {
-		return null;
-	}
+  @Override
+  public BufferedImage getColorBuffer() {
+    return null;
+  }
 
-	@Override
-	public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return null;
-	}
+  @Override
+  public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+    return null;
+  }
 
-	@Override
-	public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return null;
-	}
+  @Override
+  public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+    return null;
+  }
 
-	@Override
-	public FloatBuffer getDepthBuffer( FloatBuffer rv ) {
-		return rv;
-	}
+  @Override
+  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
+    return rv;
+  }
 
-	@Override
-	public FloatBuffer getDepthBuffer() {
-		return null;
-	}
+  @Override
+  public FloatBuffer getDepthBuffer() {
+    return null;
+  }
 
-	@Override
-	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer ) {
-		return rv;
-	}
+  @Override
+  public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer) {
+    return rv;
+  }
 
-	@Override
-	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return null;
-	}
+  @Override
+  public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
+    return null;
+  }
 
 }

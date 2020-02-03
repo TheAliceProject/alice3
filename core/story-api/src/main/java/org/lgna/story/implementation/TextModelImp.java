@@ -55,104 +55,104 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public class TextModelImp extends SimpleModelImp {
-	public TextModelImp( STextModel abstraction ) {
-		this.abstraction = abstraction;
-		this.sgText.text.setValue( "" );
+  public TextModelImp(STextModel abstraction) {
+    this.abstraction = abstraction;
+    this.sgText.text.setValue("");
 
-		final int height = 12;
-		final double scale = 1.0 / height;
-		this.sgText.font.setValue( new Font( null, 0, height ) );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgText } );
-		this.getSgVisuals()[ 0 ].scale.setValue( ScaleUtilities.newScaleMatrix3d( scale, scale, scale ) );
-	}
+    final int height = 12;
+    final double scale = 1.0 / height;
+    this.sgText.font.setValue(new Font(null, 0, height));
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgText});
+    this.getSgVisuals()[0].scale.setValue(ScaleUtilities.newScaleMatrix3d(scale, scale, scale));
+  }
 
-	@Override
-	public STextModel getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public STextModel getAbstraction() {
+    return this.abstraction;
+  }
 
-	private void updateSGText() {
-		this.sgText.text.setValue( this.sb.toString() );
-	}
+  private void updateSGText() {
+    this.sgText.text.setValue(this.sb.toString());
+  }
 
-	public String getValue() {
-		return this.sb.toString();
-	}
+  public String getValue() {
+    return this.sb.toString();
+  }
 
-	public void setValue( String text ) {
-		this.sb = new StringBuffer( text );
-		updateSGText();
-	}
+  public void setValue(String text) {
+    this.sb = new StringBuffer(text);
+    updateSGText();
+  }
 
-	public Font getFont() {
-		return this.sgText.font.getValue();
-	}
+  public Font getFont() {
+    return this.sgText.font.getValue();
+  }
 
-	public void setFont( Font font ) {
-		this.sgText.font.setValue( font );
-	}
+  public void setFont(Font font) {
+    this.sgText.font.setValue(font);
+  }
 
-	public void append( Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
+  public void append(Object value) {
+    this.sb.append(value);
+    this.updateSGText();
+  }
 
-	public char charAt( int index ) {
-		return this.sb.charAt( index );
-	}
+  public char charAt(int index) {
+    return this.sb.charAt(index);
+  }
 
-	public void delete( int start, int end ) {
-		this.sb.delete( start, end );
-		this.updateSGText();
-	}
+  public void delete(int start, int end) {
+    this.sb.delete(start, end);
+    this.updateSGText();
+  }
 
-	public void deleteCharAt( int index ) {
-		this.sb.deleteCharAt( index );
-		this.updateSGText();
-	}
+  public void deleteCharAt(int index) {
+    this.sb.deleteCharAt(index);
+    this.updateSGText();
+  }
 
-	public int indexOf( String s ) {
-		return this.sb.indexOf( s );
-	}
+  public int indexOf(String s) {
+    return this.sb.indexOf(s);
+  }
 
-	public int indexOf( String s, int fromIndex ) {
-		return this.sb.indexOf( s, fromIndex );
-	}
+  public int indexOf(String s, int fromIndex) {
+    return this.sb.indexOf(s, fromIndex);
+  }
 
-	public void insert( int offset, Object value ) {
-		this.sb.append( value );
-		this.updateSGText();
-	}
+  public void insert(int offset, Object value) {
+    this.sb.append(value);
+    this.updateSGText();
+  }
 
-	public int lastIndexOf( String s ) {
-		return this.sb.lastIndexOf( s );
-	}
+  public int lastIndexOf(String s) {
+    return this.sb.lastIndexOf(s);
+  }
 
-	public int lastIndexOf( String s, int fromIndex ) {
-		return this.sb.lastIndexOf( s, fromIndex );
-	}
+  public int lastIndexOf(String s, int fromIndex) {
+    return this.sb.lastIndexOf(s, fromIndex);
+  }
 
-	//todo: rename length?
-	public int getLength() {
-		return this.sb.length();
-	}
+  //todo: rename length?
+  public int getLength() {
+    return this.sb.length();
+  }
 
-	public void replace( int start, int end, String s ) {
-		this.sb.replace( start, end, s );
-		this.updateSGText();
-	}
+  public void replace(int start, int end, String s) {
+    this.sb.replace(start, end, s);
+    this.updateSGText();
+  }
 
-	public void setCharAt( int index, Character c ) {
-		this.sb.setCharAt( index, c );
-		this.updateSGText();
-	}
+  public void setCharAt(int index, Character c) {
+    this.sb.setCharAt(index, c);
+    this.updateSGText();
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		this.setScale( getScaleForSize( size ) );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    this.setScale(getScaleForSize(size));
+  }
 
-	private final STextModel abstraction;
-	private final Text sgText = new Text();
-	private StringBuffer sb = new StringBuffer();
+  private final STextModel abstraction;
+  private final Text sgText = new Text();
+  private StringBuffer sb = new StringBuffer();
 }

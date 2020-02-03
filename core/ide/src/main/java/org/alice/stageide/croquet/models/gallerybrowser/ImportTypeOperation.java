@@ -54,24 +54,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ImportTypeOperation extends Operation { //todo: ValueOperation?
-	private static class SingletonHolder {
-		private static ImportTypeOperation instance = new ImportTypeOperation();
-	}
+  private static class SingletonHolder {
+    private static ImportTypeOperation instance = new ImportTypeOperation();
+  }
 
-	public static ImportTypeOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ImportTypeOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ImportTypeOperation() {
-		super( Application.PROJECT_GROUP, UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
-	}
+  private ImportTypeOperation() {
+    super(Application.PROJECT_GROUP, UUID.fromString("7f07e40b-8ec6-4273-a79b-bffb28a013a5"));
+  }
 
-	@Override
-	protected void performInActivity( UserActivity activity ) {
-		final UserActivity child = activity.newChildActivity();
-		TypeFromUriProducer.getInstance().fire( child );
-		NamedUserType userType = (NamedUserType) child.getProducedValue();
-		Logger.outln( userType );
-		child.finish();
-	}
+  @Override
+  protected void performInActivity(UserActivity activity) {
+    final UserActivity child = activity.newChildActivity();
+    TypeFromUriProducer.getInstance().fire(child);
+    NamedUserType userType = (NamedUserType) child.getProducedValue();
+    Logger.outln(userType);
+    child.finish();
+  }
 }

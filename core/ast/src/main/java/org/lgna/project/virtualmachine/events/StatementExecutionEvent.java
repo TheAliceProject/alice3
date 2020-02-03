@@ -49,14 +49,14 @@ import org.lgna.project.virtualmachine.VirtualMachine;
  * @author Dennis Cosgrove
  */
 public class StatementExecutionEvent extends VirtualMachineEvent {
-	public StatementExecutionEvent( VirtualMachine vm, Statement statement ) {
-		super( vm );
-		this.statement = statement;
-	}
+  public StatementExecutionEvent(VirtualMachine vm, Statement statement) {
+    super(vm);
+    this.statement = statement;
+  }
 
-	public Statement getStatement() {
-		return this.statement;
-	}
+  public Statement getStatement() {
+    return this.statement;
+  }
 
-	private final Statement statement;
+  private final Statement statement;
 }

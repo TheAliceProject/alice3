@@ -60,28 +60,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FileMenuModel extends PredeterminedMenuModel {
-	private static StandardMenuItemPrepModel[] createMenuItemPrepModels( ProjectDocumentFrame projectDocumentFrame ) {
-		List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
-				projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
-				projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				RecentProjectsMenuModel.getInstance()
-				);
-		if( SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( MenuModel.SEPARATOR );
-			list.add( ExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return ArrayUtilities.createArray( list, StandardMenuItemPrepModel.class );
-	}
+  private static StandardMenuItemPrepModel[] createMenuItemPrepModels(ProjectDocumentFrame projectDocumentFrame) {
+    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(), projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, RecentProjectsMenuModel.getInstance());
+    if (SystemUtilities.isMac()) {
+      //pass
+    } else {
+      list.add(MenuModel.SEPARATOR);
+      list.add(ExitOperation.getInstance().getMenuItemPrepModel());
+    }
+    return ArrayUtilities.createArray(list, StandardMenuItemPrepModel.class);
+  }
 
-	public FileMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels( projectDocumentFrame ) );
-	}
+  public FileMenuModel(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("f35b5ea2-315e-487d-af62-52f99f1c6306"), createMenuItemPrepModels(projectDocumentFrame));
+  }
 
-	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return org.alice.ide.croquet.models.menubar.FileMenuModel.class;
-	}
+  @Override
+  protected Class<? extends Element> getClassUsedForLocalization() {
+    return org.alice.ide.croquet.models.menubar.FileMenuModel.class;
+  }
 }

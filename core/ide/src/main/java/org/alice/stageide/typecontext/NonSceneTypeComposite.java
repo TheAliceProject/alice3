@@ -55,28 +55,28 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 enum SceneTypeCallable implements Callable<DeclarationComposite<?, ?>> {
-	SINGLEON() {
-		@Override
-		public TypeComposite call() throws Exception {
-			return TypeComposite.getInstance( StageIDE.getActiveInstance().getSceneType() );
-		}
-	};
+  SINGLEON() {
+    @Override
+    public TypeComposite call() throws Exception {
+      return TypeComposite.getInstance(StageIDE.getActiveInstance().getSceneType());
+    }
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public final class NonSceneTypeComposite extends SimpleComposite<NonSceneTypeView> {
-	public NonSceneTypeComposite() {
-		super( UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
-	}
+  public NonSceneTypeComposite() {
+    super(UUID.fromString("866337e5-9309-4f31-9214-c319056e705d"));
+  }
 
-	public Operation getSelectSceneTypeOperation() {
-		return IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
-	}
+  public Operation getSelectSceneTypeOperation() {
+    return IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation(SceneTypeCallable.SINGLEON);
+  }
 
-	@Override
-	protected NonSceneTypeView createView() {
-		return new NonSceneTypeView( this );
-	}
+  @Override
+  protected NonSceneTypeView createView() {
+    return new NonSceneTypeView(this);
+  }
 }

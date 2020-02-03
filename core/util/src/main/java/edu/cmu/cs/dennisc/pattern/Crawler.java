@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public interface Crawler {
-	public void visit( Crawlable crawlable );
+  public void visit(Crawlable crawlable);
 }

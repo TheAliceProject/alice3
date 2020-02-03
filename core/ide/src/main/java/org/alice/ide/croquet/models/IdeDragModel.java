@@ -58,47 +58,47 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends AbstractModel implements  DragModel {
-	public IdeDragModel( UUID id ) {
-		super( id );
-	}
+public abstract class IdeDragModel extends AbstractModel implements DragModel {
+  public IdeDragModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public final List<? extends DropReceptor> createListOfPotentialDropReceptors() {
-		Perspective perspective = IDE.getActiveInstance().getPerspective();
-		if( perspective instanceof ProjectPerspective ) {
-			ProjectPerspective idePerspective = (ProjectPerspective)perspective;
-			return idePerspective.createListOfPotentialDropReceptors( this );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  public final List<? extends DropReceptor> createListOfPotentialDropReceptors() {
+    Perspective perspective = IDE.getActiveInstance().getPerspective();
+    if (perspective instanceof ProjectPerspective) {
+      ProjectPerspective idePerspective = (ProjectPerspective) perspective;
+      return idePerspective.createListOfPotentialDropReceptors(this);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	private PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
-		return IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
-	}
+  private PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
+    return IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
+  }
 
-	@Override
-	public void handleDragStarted( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted();
-	}
+  @Override
+  public void handleDragStarted(DragStep step) {
+    this.getPotentialDropReceptorsStencil().handleDragStarted();
+  }
 
-	@Override
-	public void handleDragEnteredDropReceptor( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor();
-	}
+  @Override
+  public void handleDragEnteredDropReceptor(DragStep step) {
+    this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor();
+  }
 
-	@Override
-	public void handleDragExitedDropReceptor( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor();
-	}
+  @Override
+  public void handleDragExitedDropReceptor(DragStep step) {
+    this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor();
+  }
 
-	@Override
-	public void handleDragStopped( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped();
-	}
+  @Override
+  public void handleDragStopped(DragStep step) {
+    this.getPotentialDropReceptorsStencil().handleDragStopped();
+  }
 }

@@ -54,7 +54,6 @@ import java.util.ResourceBundle;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
@@ -64,7 +63,6 @@ import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.icon.ImageIconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.Color;
@@ -80,400 +78,374 @@ import javax.swing.JComponent;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class MarkerUtilities {
-	private static final String[] COLOR_NAME_KEYS;
-	private static final Color[] COLORS;
+  private static final String[] COLOR_NAME_KEYS;
+  private static final Color[] COLORS;
 
-	private static final HashMap<CameraMarker, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
-	private static final HashMap<CameraMarker, View> cameraToViewMap = Maps.newHashMap();
+  private static final HashMap<CameraMarker, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
+  private static final HashMap<CameraMarker, View> cameraToViewMap = Maps.newHashMap();
 
-	private static final HashMap<Color, ImageIcon> colorToObjectIconMap = Maps.newHashMap();
-	private static final HashMap<Color, ImageIcon> colorToCameraIconMap = Maps.newHashMap();
-	private static Map<CameraMarker, IconFactory> mapCameraIconFactory = Maps.newHashMap();
+  private static final HashMap<Color, ImageIcon> colorToObjectIconMap = Maps.newHashMap();
+  private static final HashMap<Color, ImageIcon> colorToCameraIconMap = Maps.newHashMap();
+  private static Map<CameraMarker, IconFactory> mapCameraIconFactory = Maps.newHashMap();
 
-	static
-	{
-		String[] colorNameKeys = {
-				"red",
-				"green",
-				//				"blue",
-				"magenta",
-				"yellow",
-				//				"cyan",
-				"orange",
-				"pink",
-				"purple",
-		};
-		COLOR_NAME_KEYS = colorNameKeys;
+  static {
+    String[] colorNameKeys = {
+        "red",
+        "green",
+        //        "blue",
+        "magenta",
+        "yellow",
+        //        "cyan",
+        "orange",
+        "pink",
+        "purple",
+    };
+    COLOR_NAME_KEYS = colorNameKeys;
 
-		Color[] colors = {
-				Color.RED,
-				Color.GREEN,
-				//				org.lgna.story.Color.BLUE,
-				Color.MAGENTA,
-				Color.YELLOW,
-				//				org.lgna.story.Color.CYAN,
-				Color.ORANGE,
-				Color.PINK,
-				Color.PURPLE
-		};
-		COLORS = colors;
-	}
+    Color[] colors = {
+        Color.RED,
+        Color.GREEN,
+        //        org.lgna.story.Color.BLUE,
+        Color.MAGENTA,
+        Color.YELLOW,
+        //        org.lgna.story.Color.CYAN,
+        Color.ORANGE,
+        Color.PINK,
+        Color.PURPLE
+    };
+    COLORS = colors;
+  }
 
-	private static String findLocalizedText( String subKey ) {
-		String bundleName = MarkerUtilities.class.getPackage().getName() + ".croquet";
-		try {
-			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-			String key = MarkerUtilities.class.getSimpleName();
+  private static String findLocalizedText(String subKey) {
+    String bundleName = MarkerUtilities.class.getPackage().getName() + ".croquet";
+    try {
+      ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+      String key = MarkerUtilities.class.getSimpleName();
 
-			if( subKey != null ) {
-				StringBuilder sb = new StringBuilder();
-				sb.append( key );
-				sb.append( "." );
-				sb.append( subKey );
-				key = sb.toString();
-			}
-			String rv = resourceBundle.getString( key );
-			return rv;
-		} catch( MissingResourceException mre ) {
-			return null;
-		}
-	}
+      if (subKey != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(key);
+        sb.append(".");
+        sb.append(subKey);
+        key = sb.toString();
+      }
+      String rv = resourceBundle.getString(key);
+      return rv;
+    } catch (MissingResourceException mre) {
+      return null;
+    }
+  }
 
-	private static int getColorIndexForName( String name )
-	{
-		String lowerName = name.toLowerCase( Locale.ENGLISH );
-		for( int i = 0; i < getColorCount(); i++ )
-		{
-			String currentColor = getColorNameForIndex( i ).toLowerCase( Locale.ENGLISH );
-			if( lowerName.endsWith( currentColor ) )
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
+  private static int getColorIndexForName(String name) {
+    String lowerName = name.toLowerCase(Locale.ENGLISH);
+    for (int i = 0; i < getColorCount(); i++) {
+      String currentColor = getColorNameForIndex(i).toLowerCase(Locale.ENGLISH);
+      if (lowerName.endsWith(currentColor)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	private static int getColorIndexForColor( Color color )
-	{
-		for( int i = 0; i < getColorCount(); i++ )
-		{
-			if( getColorForIndex( i ).equals( color ) )
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
+  private static int getColorIndexForColor(Color color) {
+    for (int i = 0; i < getColorCount(); i++) {
+      if (getColorForIndex(i).equals(color)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
-	private static int getColorCount() {
-		return COLORS.length;
-	}
+  private static int getColorCount() {
+    return COLORS.length;
+  }
 
-	private static Color getColorForIndex( int i ) {
-		return COLORS[ i ];
-	}
+  private static Color getColorForIndex(int i) {
+    return COLORS[i];
+  }
 
-	private static String getColorNameForIndex( int i ) {
-		return findLocalizedText( COLOR_NAME_KEYS[ i ] );
-	}
+  private static String getColorNameForIndex(int i) {
+    return findLocalizedText(COLOR_NAME_KEYS[i]);
+  }
 
-	private static String getColorFileName( Color color )
-	{
-		int index = getColorIndexForColor( color );
-		if( index != -1 ) {
-			String colorName = COLOR_NAME_KEYS[ index ];
-			String properName = colorName.substring( 0, 1 ).toUpperCase() + colorName.substring( 1 );
-			return properName;
-		}
-		return "White";
-	}
+  private static String getColorFileName(Color color) {
+    int index = getColorIndexForColor(color);
+    if (index != -1) {
+      String colorName = COLOR_NAME_KEYS[index];
+      String properName = colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
+      return properName;
+    }
+    return "White";
+  }
 
-	private static String getIconSuffixForMarkerColor( Color color )
-	{
-		String colorName = getColorFileName( color );
-		return "_" + colorName + ".png";
-	}
+  private static String getIconSuffixForMarkerColor(Color color) {
+    String colorName = getColorFileName(color);
+    return "_" + colorName + ".png";
+  }
 
-	public static String getNameForView( View view ) {
-		ResourceBundle resourceBundle = ResourceBundle.getBundle( StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews" );
-		if( view != null ) {
-			switch( view ) {
-			case STARTING_CAMERA_VIEW:
-				return resourceBundle.getString( "sceneCameraView" );
-			case LAYOUT_SCENE_VIEW:
-				return resourceBundle.getString( "layoutPerspectiveView" );
-			case TOP:
-				return resourceBundle.getString( "topOrthographicView" );
-			case SIDE:
-				return resourceBundle.getString( "sideOrthographicView" );
-			case FRONT:
-				return resourceBundle.getString( "frontOrthographicView" );
-			}
-		}
-		return "";
-	}
+  public static String getNameForView(View view) {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews");
+    if (view != null) {
+      switch (view) {
+      case STARTING_CAMERA_VIEW:
+        return resourceBundle.getString("sceneCameraView");
+      case LAYOUT_SCENE_VIEW:
+        return resourceBundle.getString("layoutPerspectiveView");
+      case TOP:
+        return resourceBundle.getString("topOrthographicView");
+      case SIDE:
+        return resourceBundle.getString("sideOrthographicView");
+      case FRONT:
+        return resourceBundle.getString("frontOrthographicView");
+      }
+    }
+    return "";
+  }
 
-	public static String getNameForCameraImp( CameraMarkerImp cameraImp ) {
-		return getNameForView( getViewForCameraImp( cameraImp ) );
-	}
+  public static String getNameForCameraImp(CameraMarkerImp cameraImp) {
+    return getNameForView(getViewForCameraImp(cameraImp));
+  }
 
-	public static String getNameForCamera( CameraMarker camera ) {
-		return getNameForView( getViewForCamera( camera ) );
-	}
+  public static String getNameForCamera(CameraMarker camera) {
+    return getNameForView(getViewForCamera(camera));
+  }
 
-	public static void addIconForCameraImp( CameraMarkerImp cameraImp, String iconName ) {
-		assert cameraImp != null;
-		addIconForCamera( cameraImp.getAbstraction(), iconName );
-	}
+  public static void addIconForCameraImp(CameraMarkerImp cameraImp, String iconName) {
+    assert cameraImp != null;
+    addIconForCamera(cameraImp.getAbstraction(), iconName);
+  }
 
-	public static void setViewForCameraImp( CameraMarkerImp cameraImp, View view ) {
-		assert cameraImp != null;
-		setViewForCamera( cameraImp.getAbstraction(), view );
-	}
+  public static void setViewForCameraImp(CameraMarkerImp cameraImp, View view) {
+    assert cameraImp != null;
+    setViewForCamera(cameraImp.getAbstraction(), view);
+  }
 
-	public static void setViewForCamera( CameraMarker camera, View view ) {
-		cameraToViewMap.put( camera, view );
-	}
+  public static void setViewForCamera(CameraMarker camera, View view) {
+    cameraToViewMap.put(camera, view);
+  }
 
-	public static View getViewForCameraImp( CameraMarkerImp cameraImp ) {
-		if( cameraImp != null ) {
-			return cameraToViewMap.get( cameraImp.getAbstraction() );
-		}
-		return null;
-	}
+  public static View getViewForCameraImp(CameraMarkerImp cameraImp) {
+    if (cameraImp != null) {
+      return cameraToViewMap.get(cameraImp.getAbstraction());
+    }
+    return null;
+  }
 
-	public static View getViewForCamera( CameraMarker camera ) {
-		return cameraToViewMap.get( camera );
-	}
+  public static View getViewForCamera(CameraMarker camera) {
+    return cameraToViewMap.get(camera);
+  }
 
-	public static void addIconForCamera( CameraMarker camera, String iconName ) {
-		URL normalIconURL = StorytellingSceneEditor.class.getResource( "images/" + iconName + "Icon.png" );
-		assert normalIconURL != null;
-		ImageIcon normalIcon = new ImageIcon( normalIconURL );
-		URL highlightedIconURL = StorytellingSceneEditor.class.getResource( "images/" + iconName + "Icon_highlighted.png" );
-		assert highlightedIconURL != null;
-		ImageIcon highlightedIcon = new ImageIcon( highlightedIconURL );
+  public static void addIconForCamera(CameraMarker camera, String iconName) {
+    URL normalIconURL = StorytellingSceneEditor.class.getResource("images/" + iconName + "Icon.png");
+    assert normalIconURL != null;
+    ImageIcon normalIcon = new ImageIcon(normalIconURL);
+    URL highlightedIconURL = StorytellingSceneEditor.class.getResource("images/" + iconName + "Icon_highlighted.png");
+    assert highlightedIconURL != null;
+    ImageIcon highlightedIcon = new ImageIcon(highlightedIconURL);
 
-		cameraToIconMap.put( camera, Tuple2.createInstance( new ImageIconFactory( normalIcon ), new ImageIconFactory( highlightedIcon ) ) );
-	}
+    cameraToIconMap.put(camera, Tuple2.createInstance(new ImageIconFactory(normalIcon), new ImageIconFactory(highlightedIcon)));
+  }
 
-	private static ImageIcon loadIconForObjectMarker( Color color ) {
-		URL markerIconURL = StorytellingSceneEditor.class.getResource( "images/axis" + getIconSuffixForMarkerColor( color ) );
-		assert markerIconURL != null : color;
-		ImageIcon markerIcon = new ImageIcon( markerIconURL );
-		return markerIcon;
-	}
+  private static ImageIcon loadIconForObjectMarker(Color color) {
+    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/axis" + getIconSuffixForMarkerColor(color));
+    assert markerIconURL != null : color;
+    ImageIcon markerIcon = new ImageIcon(markerIconURL);
+    return markerIcon;
+  }
 
-	private static ImageIcon loadIconForCameraMarker( Color color ) {
-		URL markerIconURL = StorytellingSceneEditor.class.getResource( "images/markerIcon" + getIconSuffixForMarkerColor( color ) );
-		assert markerIconURL != null;
-		ImageIcon markerIcon = new ImageIcon( markerIconURL );
-		return markerIcon;
-	}
+  private static ImageIcon loadIconForCameraMarker(Color color) {
+    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIcon" + getIconSuffixForMarkerColor(color));
+    assert markerIconURL != null;
+    ImageIcon markerIcon = new ImageIcon(markerIconURL);
+    return markerIcon;
+  }
 
-	public static IconFactory getIconFactoryForObjectMarker( UserField marker )
-	{
-		if( marker != null ) {
-			Color markerColor = getColorForMarkerField( marker );
-			return IconFactoryManager.getIconFactoryForObjectMarker( markerColor );
-		}
-		return null;
-	}
+  public static IconFactory getIconFactoryForObjectMarker(UserField marker) {
+    if (marker != null) {
+      Color markerColor = getColorForMarkerField(marker);
+      return IconFactoryManager.getIconFactoryForObjectMarker(markerColor);
+    }
+    return null;
+  }
 
-	public static IconFactory getIconFactoryForCameraMarker( UserField marker )
-	{
-		if( marker != null ) {
-			Color markerColor = getColorForMarkerField( marker );
-			return IconFactoryManager.getIconFactoryForCameraMarker( markerColor );
-		}
-		return null;
-	}
+  public static IconFactory getIconFactoryForCameraMarker(UserField marker) {
+    if (marker != null) {
+      Color markerColor = getColorForMarkerField(marker);
+      return IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
+    }
+    return null;
+  }
 
-	public static ImageIcon getIconForObjectMarker( UserField marker )
-	{
-		if( marker != null ) {
-			Color markerColor = getColorForMarkerField( marker );
-			return getObjectMarkIconForColor( markerColor );
-		}
-		return null;
-	}
+  public static ImageIcon getIconForObjectMarker(UserField marker) {
+    if (marker != null) {
+      Color markerColor = getColorForMarkerField(marker);
+      return getObjectMarkIconForColor(markerColor);
+    }
+    return null;
+  }
 
-	public static ImageIcon getIconForCameraMarker( UserField marker )
-	{
-		if( marker != null ) {
-			Color markerColor = getColorForMarkerField( marker );
-			return getCameraMarkIconForColor( markerColor );
-		}
-		return null;
-	}
+  public static ImageIcon getIconForCameraMarker(UserField marker) {
+    if (marker != null) {
+      Color markerColor = getColorForMarkerField(marker);
+      return getCameraMarkIconForColor(markerColor);
+    }
+    return null;
+  }
 
-	public static ImageIcon getCameraMarkIconForColor( Color markerColor ) {
-		if( colorToCameraIconMap.containsKey( markerColor ) ) {
-			return colorToCameraIconMap.get( markerColor );
-		}
-		else {
-			ImageIcon icon = loadIconForCameraMarker( markerColor );
-			colorToCameraIconMap.put( markerColor, icon );
-			return icon;
-		}
-	}
+  public static ImageIcon getCameraMarkIconForColor(Color markerColor) {
+    if (colorToCameraIconMap.containsKey(markerColor)) {
+      return colorToCameraIconMap.get(markerColor);
+    } else {
+      ImageIcon icon = loadIconForCameraMarker(markerColor);
+      colorToCameraIconMap.put(markerColor, icon);
+      return icon;
+    }
+  }
 
-	public static ImageIcon getObjectMarkIconForColor( Color markerColor ) {
-		if( colorToObjectIconMap.containsKey( markerColor ) ) {
-			return colorToObjectIconMap.get( markerColor );
-		}
-		else {
-			ImageIcon icon = loadIconForObjectMarker( markerColor );
-			colorToObjectIconMap.put( markerColor, icon );
-			return icon;
-		}
-	}
+  public static ImageIcon getObjectMarkIconForColor(Color markerColor) {
+    if (colorToObjectIconMap.containsKey(markerColor)) {
+      return colorToObjectIconMap.get(markerColor);
+    } else {
+      ImageIcon icon = loadIconForObjectMarker(markerColor);
+      colorToObjectIconMap.put(markerColor, icon);
+      return icon;
+    }
+  }
 
-	public static ImageIcon getIconForMarkerField( UserField markerField ) {
-		if( markerField != null ) {
-			if( markerField.getValueType().isAssignableTo( CameraMarker.class ) ) {
-				return getIconForCameraMarker( markerField );
-			}
-			else if( markerField.getValueType().isAssignableFrom( SThingMarker.class ) ) {
-				return getIconForObjectMarker( markerField );
-			}
-		}
-		return null;
-	}
+  public static ImageIcon getIconForMarkerField(UserField markerField) {
+    if (markerField != null) {
+      if (markerField.getValueType().isAssignableTo(CameraMarker.class)) {
+        return getIconForCameraMarker(markerField);
+      } else if (markerField.getValueType().isAssignableFrom(SThingMarker.class)) {
+        return getIconForObjectMarker(markerField);
+      }
+    }
+    return null;
+  }
 
-	private static IconFactory getIconFactoryForCameraMarker( CameraMarker camera ) {
-		assert cameraToIconMap.containsKey( camera );
-		return cameraToIconMap.get( camera ).getA();
-	}
+  private static IconFactory getIconFactoryForCameraMarker(CameraMarker camera) {
+    assert cameraToIconMap.containsKey(camera);
+    return cameraToIconMap.get(camera).getA();
+  }
 
-	private static IconFactory getHighlightedIconFactoryForCameraMarker( CameraMarker camera ) {
-		assert cameraToIconMap.containsKey( camera );
-		return cameraToIconMap.get( camera ).getB();
-	}
+  private static IconFactory getHighlightedIconFactoryForCameraMarker(CameraMarker camera) {
+    assert cameraToIconMap.containsKey(camera);
+    return cameraToIconMap.get(camera).getB();
+  }
 
-	private static final Dimension DEFAULT_SIZE_IF_NULL = IconSize.MEDIUM.getSize();
+  private static final Dimension DEFAULT_SIZE_IF_NULL = IconSize.MEDIUM.getSize();
 
-	public static Icon getIconForCameraMarkerImp( CameraMarkerImp camera ) {
-		if( camera != null ) {
-			IconFactory factory = getIconFactoryForCameraMarker( camera.getAbstraction() );
-			return factory.getIcon( factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ) );
-		}
-		return null;
-	}
+  public static Icon getIconForCameraMarkerImp(CameraMarkerImp camera) {
+    if (camera != null) {
+      IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
+      return factory.getIcon(factory.getDefaultSize(DEFAULT_SIZE_IF_NULL));
+    }
+    return null;
+  }
 
-	public static Icon getHighlightedIconForCameraMarkerImp( CameraMarkerImp camera ) {
-		if( camera != null ) {
-			IconFactory factory = getHighlightedIconFactoryForCameraMarker( camera.getAbstraction() );
-			return factory.getIcon( factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ) );
-		}
-		return null;
-	}
+  public static Icon getHighlightedIconForCameraMarkerImp(CameraMarkerImp camera) {
+    if (camera != null) {
+      IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
+      return factory.getIcon(factory.getDefaultSize(DEFAULT_SIZE_IF_NULL));
+    }
+    return null;
+  }
 
-	public static IconFactory getIconFactoryForCameraMarkerImp( CameraMarkerImp camera ) {
-		if( camera != null ) {
-			IconFactory factory = getIconFactoryForCameraMarker( camera.getAbstraction() );
-			return factory;
-		}
-		return null;
-	}
+  public static IconFactory getIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
+    if (camera != null) {
+      IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
+      return factory;
+    }
+    return null;
+  }
 
-	public static IconFactory getHighlightedIconFactoryForCameraMarkerImp( CameraMarkerImp camera ) {
-		if( camera != null ) {
-			IconFactory factory = getHighlightedIconFactoryForCameraMarker( camera.getAbstraction() );
-			return factory;
-		}
-		return null;
-	}
+  public static IconFactory getHighlightedIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
+    if (camera != null) {
+      IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
+      return factory;
+    }
+    return null;
+  }
 
-	private static Color getNewMarkerColor( Class<? extends SMarker> markerCls ) {
-		AbstractType<?, ?, ?> sceneType = StageIDE.getActiveInstance().getSceneEditor().getActiveSceneField().getValueType();
-		int[] colorCounts = new int[ getColorCount() ];
-		Arrays.fill( colorCounts, 0 );
-		List<? extends AbstractField> fields = sceneType.getDeclaredFields();
-		for( AbstractField f : fields ) {
-			if( f.getValueType().isAssignableTo( markerCls ) ) {
-				SMarker marker = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( f, markerCls );
-				if( marker != null ) {
-					int colorIndex = getColorIndexForColor( marker.getColorId() );
-					if( colorIndex != -1 ) {
-						colorCounts[ colorIndex ]++;
-					}
-				}
-			}
-		}
-		int minIndex = 0;
-		int minCount = Integer.MAX_VALUE;
-		for( int i = 0; i < colorCounts.length; i++ ) {
-			if( colorCounts[ i ] < minCount ) {
-				minIndex = i;
-				minCount = colorCounts[ i ];
-			}
-		}
-		return getColorForIndex( minIndex );
-	}
+  private static Color getNewMarkerColor(Class<? extends SMarker> markerCls) {
+    AbstractType<?, ?, ?> sceneType = StageIDE.getActiveInstance().getSceneEditor().getActiveSceneField().getValueType();
+    int[] colorCounts = new int[getColorCount()];
+    Arrays.fill(colorCounts, 0);
+    List<? extends AbstractField> fields = sceneType.getDeclaredFields();
+    for (AbstractField f : fields) {
+      if (f.getValueType().isAssignableTo(markerCls)) {
+        SMarker marker = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
+        if (marker != null) {
+          int colorIndex = getColorIndexForColor(marker.getColorId());
+          if (colorIndex != -1) {
+            colorCounts[colorIndex]++;
+          }
+        }
+      }
+    }
+    int minIndex = 0;
+    int minCount = Integer.MAX_VALUE;
+    for (int i = 0; i < colorCounts.length; i++) {
+      if (colorCounts[i] < minCount) {
+        minIndex = i;
+        minCount = colorCounts[i];
+      }
+    }
+    return getColorForIndex(minIndex);
+  }
 
-	public static Color getNewObjectMarkerColor() {
-		return getNewMarkerColor( SThingMarker.class );
-	}
+  public static Color getNewObjectMarkerColor() {
+    return getNewMarkerColor(SThingMarker.class);
+  }
 
-	public static Color getNewCameraMarkerColor() {
-		return getNewMarkerColor( CameraMarker.class );
-	}
+  public static Color getNewCameraMarkerColor() {
+    return getNewMarkerColor(CameraMarker.class);
+  }
 
-	public static Color getColorForMarkerField( UserField markerField )
-	{
-		SMarker marker = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( markerField, SMarker.class );
-		if( marker != null )
-		{
-			return marker.getColorId();
-		}
-		else {
-			return Color.WHITE;
-		}
-	}
+  public static Color getColorForMarkerField(UserField markerField) {
+    SMarker marker = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(markerField, SMarker.class);
+    if (marker != null) {
+      return marker.getColorId();
+    } else {
+      return Color.WHITE;
+    }
+  }
 
-	public static Color getColorForMarkerName( String markerName )
-	{
-		int colorIndex = getColorIndexForName( markerName );
-		if( colorIndex != -1 )
-		{
-			return getColorForIndex( colorIndex );
-		}
-		else
-		{
-			return null;
-		}
-	}
+  public static Color getColorForMarkerName(String markerName) {
+    int colorIndex = getColorIndexForName(markerName);
+    if (colorIndex != -1) {
+      return getColorForIndex(colorIndex);
+    } else {
+      return null;
+    }
+  }
 
-	private static String makeMarkerName( String baseName, Color color, int addOnNumber )
-	{
-		String colorName = getNameForColor( color );
-		String markerName = baseName + "_" + colorName;
-		if( addOnNumber > 0 )
-		{
-			markerName += "_" + Integer.toString( addOnNumber );
-		}
-		return markerName;
-	}
+  private static String makeMarkerName(String baseName, Color color, int addOnNumber) {
+    String colorName = getNameForColor(color);
+    String markerName = baseName + "_" + colorName;
+    if (addOnNumber > 0) {
+      markerName += "_" + Integer.toString(addOnNumber);
+    }
+    return markerName;
+  }
 
-	private static String getNameForColor( Color color ) {
-		int colorIndex = getColorIndexForColor( color );
-		if( colorIndex != -1 ) {
-			return getColorNameForIndex( colorIndex );
-		}
-		else {
-			return "";
-		}
-	}
+  private static String getNameForColor(Color color) {
+    int colorIndex = getColorIndexForColor(color);
+    if (colorIndex != -1) {
+      return getColorNameForIndex(colorIndex);
+    } else {
+      return "";
+    }
+  }
 
-	public static String getBaseNameForObjectMarker() {
-		return findLocalizedText( "defaultMarkerName" );
-	}
+  public static String getBaseNameForObjectMarker() {
+    return findLocalizedText("defaultMarkerName");
+  }
 
-	public static String getBaseNameForCameraMarker() {
-		return findLocalizedText( "defaultCameraMarkerName" );
-	}
+  public static String getBaseNameForCameraMarker() {
+    return findLocalizedText("defaultCameraMarkerName");
+  }
 }

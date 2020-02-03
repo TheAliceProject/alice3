@@ -51,9 +51,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CodeDragModel extends IdeDragModel {
-	public CodeDragModel( UUID id ) {
-		super( id );
-	}
+  public CodeDragModel(UUID id) {
+    super(id);
+  }
 
-	public abstract AbstractType<?, ?, ?> getType();
+  public abstract AbstractType<?, ?, ?> getType();
 }

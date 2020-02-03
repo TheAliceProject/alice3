@@ -50,78 +50,78 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class MemberWithParametersInfo extends MemberInfo {
-	private transient Class<?>[] parameterClses;
-	private final String[] parameterClassNames;
-	private final String[] parameterNames;
+  private transient Class<?>[] parameterClses;
+  private final String[] parameterClassNames;
+  private final String[] parameterNames;
 
-	public MemberWithParametersInfo( ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames ) {
-		super( declaringClassInfo );
-		this.parameterClassNames = parameterClassNames;
-		this.parameterNames = parameterNames;
-	}
+  public MemberWithParametersInfo(ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames) {
+    super(declaringClassInfo);
+    this.parameterClassNames = parameterClassNames;
+    this.parameterNames = parameterNames;
+  }
 
-	public MemberWithParametersInfo( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.parameterClassNames = binaryDecoder.decodeStringArray();
-		this.parameterNames = binaryDecoder.decodeStringArray();
-	}
+  public MemberWithParametersInfo(BinaryDecoder binaryDecoder) {
+    super(binaryDecoder);
+    this.parameterClassNames = binaryDecoder.decodeStringArray();
+    this.parameterNames = binaryDecoder.decodeStringArray();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.parameterClassNames );
-		binaryEncoder.encode( this.parameterNames );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.parameterClassNames);
+    binaryEncoder.encode(this.parameterNames);
+  }
 
-	public Class<?>[] getParameterClses() {
-		if( this.parameterClses != null ) {
-			//pass
-		} else {
-			this.parameterClses = new Class<?>[ this.parameterClassNames.length ];
-			int i = 0;
-			for( String name : this.parameterClassNames ) {
-				//				boolean isArray = name.startsWith( "L[" ) && name.endsWith( ";" );
-				//				if( isArray ) {
-				//					name = name.substring( 2, name.length()-1 );
-				//				}
-				boolean isArray = name.endsWith( "[]" );
-				if( isArray ) {
-					name = name.substring( 0, name.length() - 2 );
-				}
-				this.parameterClses[ i ] = ReflectionUtilities.getClassForName( name );
-				if( isArray ) {
-					this.parameterClses[ i ] = ReflectionUtilities.getArrayClass( this.parameterClses[ i ] );
-				}
-				if( this.parameterClses[ i ] != null ) {
-					//pass
-				} else {
-					throw new NullPointerException( name );
-				}
-				i++;
-			}
-		}
-		return this.parameterClses;
-	}
+  public Class<?>[] getParameterClses() {
+    if (this.parameterClses != null) {
+      //pass
+    } else {
+      this.parameterClses = new Class<?>[this.parameterClassNames.length];
+      int i = 0;
+      for (String name : this.parameterClassNames) {
+        //        boolean isArray = name.startsWith( "L[" ) && name.endsWith( ";" );
+        //        if( isArray ) {
+        //          name = name.substring( 2, name.length()-1 );
+        //        }
+        boolean isArray = name.endsWith("[]");
+        if (isArray) {
+          name = name.substring(0, name.length() - 2);
+        }
+        this.parameterClses[i] = ReflectionUtilities.getClassForName(name);
+        if (isArray) {
+          this.parameterClses[i] = ReflectionUtilities.getArrayClass(this.parameterClses[i]);
+        }
+        if (this.parameterClses[i] != null) {
+          //pass
+        } else {
+          throw new NullPointerException(name);
+        }
+        i++;
+      }
+    }
+    return this.parameterClses;
+  }
 
-	public String[] getParameterNames() {
-		return this.parameterNames;
-	}
+  public String[] getParameterNames() {
+    return this.parameterNames;
+  }
 
-	protected abstract void appendRepr( StringBuilder sb );
+  protected abstract void appendRepr(StringBuilder sb);
 
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getClass().getSimpleName() );
-		sb.append( "[" );
-		this.appendRepr( sb );
-		sb.append( "]" );
-		for( int i = 0; i < this.parameterClassNames.length; i++ ) {
-			sb.append( "\t\t" );
-			sb.append( this.parameterClassNames[ i ] );
-			sb.append( " " );
-			sb.append( this.parameterNames[ i ] );
-		}
-		return sb.toString();
-	}
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getClass().getSimpleName());
+    sb.append("[");
+    this.appendRepr(sb);
+    sb.append("]");
+    for (int i = 0; i < this.parameterClassNames.length; i++) {
+      sb.append("\t\t");
+      sb.append(this.parameterClassNames[i]);
+      sb.append(" ");
+      sb.append(this.parameterNames[i]);
+    }
+    return sb.toString();
+  }
 }

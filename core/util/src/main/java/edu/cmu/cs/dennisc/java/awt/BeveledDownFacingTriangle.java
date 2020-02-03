@@ -48,37 +48,37 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public class BeveledDownFacingTriangle extends BeveledShape {
-	public BeveledDownFacingTriangle() {
-	}
+  public BeveledDownFacingTriangle() {
+  }
 
-	public BeveledDownFacingTriangle( float x0, float y0, float width, float height ) {
-		initialize( x0, y0, width, height );
-	}
+  public BeveledDownFacingTriangle(float x0, float y0, float width, float height) {
+    initialize(x0, y0, width, height);
+  }
 
-	public void initialize( float x, float y, float width, float height ) {
-		GeneralPath base = new GeneralPath();
-		GeneralPath high = new GeneralPath();
-		GeneralPath neut = new GeneralPath();
-		GeneralPath shad = new GeneralPath();
+  public void initialize(float x, float y, float width, float height) {
+    GeneralPath base = new GeneralPath();
+    GeneralPath high = new GeneralPath();
+    GeneralPath neut = new GeneralPath();
+    GeneralPath shad = new GeneralPath();
 
-		float xC = x + ( width * 0.5f );
-		float x1 = x + width;
-		float y1 = y + height;
+    float xC = x + (width * 0.5f);
+    float x1 = x + width;
+    float y1 = y + height;
 
-		base.moveTo( x1, y );
-		base.lineTo( x, y );
-		base.lineTo( xC, y1 );
-		base.closePath();
+    base.moveTo(x1, y);
+    base.lineTo(x, y);
+    base.lineTo(xC, y1);
+    base.closePath();
 
-		high.moveTo( x1, y );
-		high.lineTo( x, y );
+    high.moveTo(x1, y);
+    high.lineTo(x, y);
 
-		neut.moveTo( x, y );
-		neut.lineTo( xC, y1 );
+    neut.moveTo(x, y);
+    neut.lineTo(xC, y1);
 
-		shad.moveTo( xC, y1 );
-		shad.lineTo( x1, y );
+    shad.moveTo(xC, y1);
+    shad.lineTo(x1, y);
 
-		initialize( base, high, neut, shad );
-	}
+    initialize(base, high, neut, shad);
+  }
 }

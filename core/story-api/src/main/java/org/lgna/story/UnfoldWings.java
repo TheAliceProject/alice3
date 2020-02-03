@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Alice Build
  */
 public class UnfoldWings extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = UnfoldWings.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = UnfoldWings.class) public static interface Detail {
+  }
 
-	private UnfoldWings() {
-		super();
-	}
+  private UnfoldWings() {
+    super();
+  }
 }

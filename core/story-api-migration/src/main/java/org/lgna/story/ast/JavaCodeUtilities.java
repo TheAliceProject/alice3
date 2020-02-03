@@ -53,33 +53,15 @@ import org.lgna.project.code.CodeOrganizer;
  */
 public class JavaCodeUtilities {
 
-	private JavaCodeUtilities() {
-		throw new AssertionError();
-	}
+  private JavaCodeUtilities() {
+    throw new AssertionError();
+  }
 
-	public static JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
-		return new JavaCodeGenerator.Builder()
-				.isLambdaSupported( true )
-				.isPublicStaticFinalFieldGetterDesired( false )
-				.addCommentsLocalizationBundleName( "org.lgna.story.CodeComments" )
-				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
-				.addDefaultCodeOrganizerDefinition( CodeOrganizer.defaultCodeOrganizer )
-				.addCodeOrganizerDefinition( "Scene", CodeOrganizer.sceneClassCodeOrganizer )
-				.addCodeOrganizerDefinition( "Program", CodeOrganizer.programClassCodeOrganizer )
-				.addImportStaticMethod(
-						ReflectionUtilities.getMethod(
-								ThreadUtilities.class,
-								"doTogether",
-								Runnable[].class ) )
-				.addImportStaticMethod(
-						ReflectionUtilities.getMethod(
-								ThreadUtilities.class,
-								"eachInTogether",
-								EachInTogetherRunnable.class,
-								Object[].class ) );
-	}
+  public static JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
+    return new JavaCodeGenerator.Builder().isLambdaSupported(true).isPublicStaticFinalFieldGetterDesired(false).addCommentsLocalizationBundleName("org.lgna.story.CodeComments").addImportOnDemandPackage(Package.getPackage("org.lgna.story")).addDefaultCodeOrganizerDefinition(CodeOrganizer.defaultCodeOrganizer).addCodeOrganizerDefinition("Scene", CodeOrganizer.sceneClassCodeOrganizer).addCodeOrganizerDefinition("Program", CodeOrganizer.programClassCodeOrganizer).addImportStaticMethod(ReflectionUtilities.getMethod(ThreadUtilities.class, "doTogether", Runnable[].class)).addImportStaticMethod(ReflectionUtilities.getMethod(ThreadUtilities.class, "eachInTogether", EachInTogetherRunnable.class, Object[].class));
+  }
 
-	public static JavaCodeGenerator createJavaCodeGenerator() {
-		return createJavaCodeGeneratorBuilder().build();
-	}
+  public static JavaCodeGenerator createJavaCodeGenerator() {
+    return createJavaCodeGeneratorBuilder().build();
+  }
 }

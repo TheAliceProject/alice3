@@ -51,77 +51,77 @@ import java.awt.geom.Area;
  * @author Dennis Cosgrove
  */
 public abstract class Shape extends Transformable {
-	private Paint m_fillPaint = Color.WHITE;
-	private Paint m_drawPaint = Color.BLACK;
-	private boolean m_isFilled = true;
-	private boolean m_isDrawn = true;
+  private Paint m_fillPaint = Color.WHITE;
+  private Paint m_drawPaint = Color.BLACK;
+  private boolean m_isFilled = true;
+  private boolean m_isDrawn = true;
 
-	public boolean isFilled() {
-		return m_isFilled;
-	}
+  public boolean isFilled() {
+    return m_isFilled;
+  }
 
-	public void setFilled( boolean isFilled ) {
-		m_isFilled = isFilled;
-	}
+  public void setFilled(boolean isFilled) {
+    m_isFilled = isFilled;
+  }
 
-	public boolean isDrawn() {
-		return m_isDrawn;
-	}
+  public boolean isDrawn() {
+    return m_isDrawn;
+  }
 
-	public void setDrawn( boolean isDrawn ) {
-		m_isDrawn = isDrawn;
-	}
+  public void setDrawn(boolean isDrawn) {
+    m_isDrawn = isDrawn;
+  }
 
-	public Paint getDrawPaint() {
-		return m_drawPaint;
-	}
+  public Paint getDrawPaint() {
+    return m_drawPaint;
+  }
 
-	public void setDrawPaint( Paint drawPaint ) {
-		m_drawPaint = drawPaint;
-	}
+  public void setDrawPaint(Paint drawPaint) {
+    m_drawPaint = drawPaint;
+  }
 
-	public Paint getFillPaint() {
-		return m_fillPaint;
-	}
+  public Paint getFillPaint() {
+    return m_fillPaint;
+  }
 
-	public void setFillPaint( Paint fillPaint ) {
-		m_fillPaint = fillPaint;
-	}
+  public void setFillPaint(Paint fillPaint) {
+    m_fillPaint = fillPaint;
+  }
 
-	protected abstract java.awt.Shape getFillShape();
+  protected abstract java.awt.Shape getFillShape();
 
-	protected abstract java.awt.Shape getDrawShape();
+  protected abstract java.awt.Shape getDrawShape();
 
-	@Override
-	protected void paintComponent( GraphicsContext gc ) {
-		Graphics2D g2 = gc.getAWTGraphics2D();
+  @Override
+  protected void paintComponent(GraphicsContext gc) {
+    Graphics2D g2 = gc.getAWTGraphics2D();
 
-		if( isFilled() ) {
-			java.awt.Shape fillShape = getFillShape();
-			if( fillShape != null ) {
-				g2.setPaint( m_fillPaint );
-				g2.fill( fillShape );
-			}
-		}
-		if( isDrawn() ) {
-			java.awt.Shape drawShape = getDrawShape();
-			if( drawShape != null ) {
-				g2.setPaint( m_drawPaint );
-				g2.draw( drawShape );
-			}
-		}
-	}
+    if (isFilled()) {
+      java.awt.Shape fillShape = getFillShape();
+      if (fillShape != null) {
+        g2.setPaint(m_fillPaint);
+        g2.fill(fillShape);
+      }
+    }
+    if (isDrawn()) {
+      java.awt.Shape drawShape = getDrawShape();
+      if (drawShape != null) {
+        g2.setPaint(m_drawPaint);
+        g2.draw(drawShape);
+      }
+    }
+  }
 
-	@Override
-	protected Area update( Area rv, TransformContext tc ) {
-		if( isFilled() ) {// TODO Auto-generated method stub
-			java.awt.Shape fillShape = getFillShape();
-			if( fillShape != null ) {
-				Area area = new Area( fillShape );
-				area.transform( tc.getAffineTransform() );
-				rv.add( area );
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected Area update(Area rv, TransformContext tc) {
+    if (isFilled()) { // TODO Auto-generated method stub
+      java.awt.Shape fillShape = getFillShape();
+      if (fillShape != null) {
+        Area area = new Area(fillShape);
+        area.transform(tc.getAffineTransform());
+        rv.add(area);
+      }
+    }
+    return rv;
+  }
 }

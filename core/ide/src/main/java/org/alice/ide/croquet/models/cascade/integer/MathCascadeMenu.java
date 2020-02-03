@@ -60,37 +60,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MathCascadeMenu extends ExpressionCascadeMenu<Expression> {
-	private static class SingletonHolder {
-		private static MathCascadeMenu instance = new MathCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static MathCascadeMenu instance = new MathCascadeMenu();
+  }
 
-	public static MathCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MathCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MathCascadeMenu() {
-		super( UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
-	}
+  private MathCascadeMenu() {
+    super(UUID.fromString("a7c69555-3232-4091-96f6-8f9b6ec2ee3a"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
-		Expression prevExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-		if( prevExpression != null ) {
-			if( prevExpression.getType().isAssignableTo( Integer.class ) ) {
-				for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-					blankChildren.add( IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
-				}
-			}
-		}
-		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
-		}
-		blankChildren.add( IncompleteDivideRemainderCascadeMenu.getInstance() );
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> context) {
+    Expression prevExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+    if (prevExpression != null) {
+      if (prevExpression.getType().isAssignableTo(Integer.class)) {
+        for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS) {
+          blankChildren.add(IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance(operator));
+        }
+      }
+    }
+    for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS) {
+      blankChildren.add(IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance(operator));
+    }
+    blankChildren.add(IncompleteDivideRemainderCascadeMenu.getInstance());
 
-		blankChildren.add( CascadeLineSeparator.getInstance() );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
-		blankChildren.add( CascadeLineSeparator.getInstance() );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
-		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
-	}
+    blankChildren.add(CascadeLineSeparator.getInstance());
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "abs", Integer.TYPE));
+    blankChildren.add(CascadeLineSeparator.getInstance());
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "min", Integer.TYPE, Integer.TYPE));
+    blankChildren.add(StaticMethodInvocationFillIn.getInstance(Math.class, "max", Integer.TYPE, Integer.TYPE));
+  }
 }

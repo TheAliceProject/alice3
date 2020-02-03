@@ -52,68 +52,68 @@ import org.lgna.story.resources.SlithererResource;
  */
 public class SSlitherer extends SJointedModel {
 
-	private final SlithererImp implementation;
+  private final SlithererImp implementation;
 
-	@Override
-	/* package-private */SlithererImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */SlithererImp getImplementation() {
+    return this.implementation;
+  }
 
-	public SSlitherer( SlithererResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
+  public SSlitherer(SlithererResource resource) {
+    this.implementation = resource.createImplementation(this);
+  }
 
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public SJoint getRoot() {
-		return SJoint.getJoint( this, SlithererResource.ROOT );
-	}
+  @MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+  public SJoint getRoot() {
+    return SJoint.getJoint(this, SlithererResource.ROOT);
+  }
 
-	public SJoint getNeck() {
-		return SJoint.getJoint( this, SlithererResource.NECK );
-	}
+  public SJoint getNeck() {
+    return SJoint.getJoint(this, SlithererResource.NECK);
+  }
 
-	public SJoint getHead() {
-		return SJoint.getJoint( this, SlithererResource.HEAD );
-	}
+  public SJoint getHead() {
+    return SJoint.getJoint(this, SlithererResource.HEAD);
+  }
 
-	public SJoint getMouth() {
-		return SJoint.getJoint( this, SlithererResource.MOUTH );
-	}
+  public SJoint getMouth() {
+    return SJoint.getJoint(this, SlithererResource.MOUTH);
+  }
 
-	public SJoint getLeftEye() {
-		return SJoint.getJoint( this, SlithererResource.LEFT_EYE );
-	}
+  public SJoint getLeftEye() {
+    return SJoint.getJoint(this, SlithererResource.LEFT_EYE);
+  }
 
-	public SJoint getRightEye() {
-		return SJoint.getJoint( this, SlithererResource.RIGHT_EYE );
-	}
+  public SJoint getRightEye() {
+    return SJoint.getJoint(this, SlithererResource.RIGHT_EYE);
+  }
 
-	public SJoint getLeftEyelid() {
-		return SJoint.getJoint( this, SlithererResource.LEFT_EYELID );
-	}
+  public SJoint getLeftEyelid() {
+    return SJoint.getJoint(this, SlithererResource.LEFT_EYELID);
+  }
 
-	public SJoint getRightEyelid() {
-		return SJoint.getJoint( this, SlithererResource.RIGHT_EYELID );
-	}
+  public SJoint getRightEyelid() {
+    return SJoint.getJoint(this, SlithererResource.RIGHT_EYELID);
+  }
 
-	public SJoint getSpineBase() {
-		return SJoint.getJoint( this, SlithererResource.SPINE_BASE );
-	}
+  public SJoint getSpineBase() {
+    return SJoint.getJoint(this, SlithererResource.SPINE_BASE);
+  }
 
-	public SJoint getSpineMiddle() {
-		return SJoint.getJoint( this, SlithererResource.SPINE_MIDDLE );
-	}
+  public SJoint getSpineMiddle() {
+    return SJoint.getJoint(this, SlithererResource.SPINE_MIDDLE);
+  }
 
-	public SJoint getSpineUpper() {
-		return SJoint.getJoint( this, SlithererResource.SPINE_UPPER );
-	}
+  public SJoint getSpineUpper() {
+    return SJoint.getJoint(this, SlithererResource.SPINE_UPPER);
+  }
 
-	public SJoint[] getTailArray() {
-		return SJoint.getJointArray( this, this.getImplementation().getResource().getTailArray() );
-	}
+  public SJoint[] getTailArray() {
+    return SJoint.getJointArray(this, this.getImplementation().getResource().getTailArray());
+  }
 
-	public SJoint getTail() {
-		return SJoint.getJoint( this, SlithererResource.TAIL_0 );
-	}
+  public SJoint getTail() {
+    return SJoint.getJoint(this, SlithererResource.TAIL_0);
+  }
 
 }

@@ -52,37 +52,37 @@ import java.util.logging.LogRecord;
  * @author Dennis Cosgrove
  */
 public class SegregatingConsoleHandler extends Handler {
-	private static Level ERROR_LEVEL = Level.SEVERE;
+  private static Level ERROR_LEVEL = Level.SEVERE;
 
-	private final PrintStream out;
-	private final PrintStream err;
+  private final PrintStream out;
+  private final PrintStream err;
 
-	public SegregatingConsoleHandler( PrintStream out, PrintStream err ) {
-		this.out = out;
-		this.err = err;
-	}
+  public SegregatingConsoleHandler(PrintStream out, PrintStream err) {
+    this.out = out;
+    this.err = err;
+  }
 
-	public SegregatingConsoleHandler() {
-		this( System.out, System.err );
-	}
+  public SegregatingConsoleHandler() {
+    this(System.out, System.err);
+  }
 
-	@Override
-	public void publish( LogRecord record ) {
-		PrintStream os;
-		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
-			os = this.err;
-		} else {
-			os = this.out;
-		}
-		os.print( this.getFormatter().format( record ) );
-		os.flush();
-	}
+  @Override
+  public void publish(LogRecord record) {
+    PrintStream os;
+    if (record.getLevel().intValue() >= ERROR_LEVEL.intValue()) {
+      os = this.err;
+    } else {
+      os = this.out;
+    }
+    os.print(this.getFormatter().format(record));
+    os.flush();
+  }
 
-	@Override
-	public void flush() {
-	}
+  @Override
+  public void flush() {
+  }
 
-	@Override
-	public void close() throws SecurityException {
-	}
+  @Override
+  public void close() throws SecurityException {
+  }
 }

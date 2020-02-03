@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
  * @author Dennis Cosgrove
  */
 public class BoundEvent extends Event<Geometry> {
-	public BoundEvent( Geometry source ) {
-		super( source );
-	}
+  public BoundEvent(Geometry source) {
+    super(source);
+  }
 }

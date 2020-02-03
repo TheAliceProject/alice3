@@ -57,42 +57,42 @@ import java.util.List;
 
 public abstract class AbstractReleasable implements Releasable {
 
-	protected void actuallyRelease() {
-	}
+  protected void actuallyRelease() {
+  }
 
-	@Override
-	public final void release() {
-		if( this.releaseListeners.size() > 0 ) {
-			//perhaps overdone?
-			ReleaseListener[] copyOfReleaseListeners = ArrayUtilities.createArray( this.releaseListeners, ReleaseListener.class );
+  @Override
+  public final void release() {
+    if (this.releaseListeners.size() > 0) {
+      //perhaps overdone?
+      ReleaseListener[] copyOfReleaseListeners = ArrayUtilities.createArray(this.releaseListeners, ReleaseListener.class);
 
-			ReleaseEvent e = new ReleaseEvent( this );
-			for( ReleaseListener releaseListener : copyOfReleaseListeners ) {
-				releaseListener.releasing( e );
-			}
+      ReleaseEvent e = new ReleaseEvent(this);
+      for (ReleaseListener releaseListener : copyOfReleaseListeners) {
+        releaseListener.releasing(e);
+      }
 
-			actuallyRelease();
+      actuallyRelease();
 
-			for( ReleaseListener releaseListener : copyOfReleaseListeners ) {
-				releaseListener.released( e );
-			}
-		}
-	}
+      for (ReleaseListener releaseListener : copyOfReleaseListeners) {
+        releaseListener.released(e);
+      }
+    }
+  }
 
-	@Override
-	public void addReleaseListener( ReleaseListener releaseListener ) {
-		this.releaseListeners.add( releaseListener );
-	}
+  @Override
+  public void addReleaseListener(ReleaseListener releaseListener) {
+    this.releaseListeners.add(releaseListener);
+  }
 
-	@Override
-	public void removeReleaseListener( ReleaseListener releaseListener ) {
-		this.releaseListeners.remove( releaseListener );
-	}
+  @Override
+  public void removeReleaseListener(ReleaseListener releaseListener) {
+    this.releaseListeners.remove(releaseListener);
+  }
 
-	@Override
-	public Collection<ReleaseListener> getReleaseListeners() {
-		return Collections.unmodifiableCollection( this.releaseListeners );
-	}
+  @Override
+  public Collection<ReleaseListener> getReleaseListeners() {
+    return Collections.unmodifiableCollection(this.releaseListeners);
+  }
 
-	private final List<ReleaseListener> releaseListeners = Lists.newCopyOnWriteArrayList();
+  private final List<ReleaseListener> releaseListeners = Lists.newCopyOnWriteArrayList();
 }

@@ -16,112 +16,101 @@ import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 
 public class DynamicResourceKey extends InstanceCreatorKey {
-	private DynamicResource dynamicResource;
+  private DynamicResource dynamicResource;
 
-	public DynamicResourceKey( DynamicResource resource ) {
-		dynamicResource = resource;
-	}
+  public DynamicResourceKey(DynamicResource resource) {
+    dynamicResource = resource;
+  }
 
-	@Override
-	public Class<? extends ModelResource> getModelResourceCls() {
-		return dynamicResource.getClass();
-	}
+  @Override
+  public Class<? extends ModelResource> getModelResourceCls() {
+    return dynamicResource.getClass();
+  }
 
-	@Override
-	public String getInternalText() {
-		return dynamicResource.getInternalModelClassName();
-	}
+  @Override
+  public String getInternalText() {
+    return dynamicResource.getInternalModelClassName();
+  }
 
-	@Override
-	public String getSearchText() {
-		return dynamicResource.getModelClassName();
-	}
+  @Override
+  public String getSearchText() {
+    return dynamicResource.getModelClassName();
+  }
 
-	@Override
-	public String getLocalizedDisplayText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
-	}
+  @Override
+  public String getLocalizedDisplayText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return IconFactoryManager.getIconFactoryForModelStructure( dynamicResource );
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return IconFactoryManager.getIconFactoryForModelStructure(dynamicResource);
+  }
 
-	@Override
-	public InstanceCreation createInstanceCreation() {
-		InstanceCreation resourceInstanceCreation = AstUtilities.createInstanceCreation(
-				dynamicResource.getClass(),
-				new Class<?>[] {
-						String.class,
-						String.class
-				},
-				new StringLiteral( dynamicResource.getModelClassName() ),
-				new StringLiteral( dynamicResource.getModelVariantName() ));
+  @Override
+  public InstanceCreation createInstanceCreation() {
+    InstanceCreation resourceInstanceCreation = AstUtilities.createInstanceCreation(dynamicResource.getClass(), new Class<?>[] {String.class, String.class}, new StringLiteral(dynamicResource.getModelClassName()), new StringLiteral(dynamicResource.getModelVariantName()));
 
-		JavaType resourceType = getAbstractionTypeForResourceType( JavaType.getInstance( dynamicResource.getClass() ) );
-		NamedUserType type = TypeManager.getNamedUserTypeFromDynamicResourceInstanceCreation( resourceType, resourceInstanceCreation, dynamicResource.getModelClassName() );
+    JavaType resourceType = getAbstractionTypeForResourceType(JavaType.getInstance(dynamicResource.getClass()));
+    NamedUserType type = TypeManager.getNamedUserTypeFromDynamicResourceInstanceCreation(resourceType, resourceInstanceCreation, dynamicResource.getModelClassName());
 
-		return AstUtilities.createInstanceCreation(
-				type.getFirstDeclaredConstructor(),
-				resourceInstanceCreation
-		);
-	}
+    return AstUtilities.createInstanceCreation(type.getFirstDeclaredConstructor(), resourceInstanceCreation);
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
+  @Override
+  public boolean isLeaf() {
+    return true;
+  }
 
-	@Override
-	public String[] getTags() {
-		return dynamicResource.getTags();
-	}
+  @Override
+  public String[] getTags() {
+    return dynamicResource.getTags();
+  }
 
-	@Override
-	public String[] getGroupTags() {
-		return dynamicResource.getGroupTags();
-	}
+  @Override
+  public String[] getGroupTags() {
+    return dynamicResource.getGroupTags();
+  }
 
-	@Override
-	public String[] getThemeTags() {
-		return dynamicResource.getThemeTags();
-	}
+  @Override
+  public String[] getThemeTags() {
+    return dynamicResource.getThemeTags();
+  }
 
-	@Override
-	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
-		return node.getDropOperation( null, null );
-	}
+  @Override
+  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
+    return node.getDropOperation(null, null);
+  }
 
-	@Override
-	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
-		return AddResourceKeyManagedFieldComposite.getInstance().
-			getLaunchOperationToCreateValue( this, true );
-	}
+  @Override
+  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
+    return AddResourceKeyManagedFieldComposite.getInstance().
+        getLaunchOperationToCreateValue(this, true);
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return dynamicResource.getBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return dynamicResource.getBoundingBox();
+  }
 
-	@Override
-	public boolean getPlaceOnGround() {
-		return dynamicResource.getPlaceOnGround();
-	}
+  @Override
+  public boolean getPlaceOnGround() {
+    return dynamicResource.getPlaceOnGround();
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		return this == o ||
-						o instanceof DynamicResourceKey && dynamicResource == ((DynamicResourceKey) o).dynamicResource;
-	}
+  @Override
+  public boolean equals(Object o) {
+    return this == o || o instanceof DynamicResourceKey && dynamicResource == ((DynamicResourceKey) o).dynamicResource;
+  }
 
-	@Override
-	public int hashCode() {
-		return dynamicResource.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return dynamicResource.hashCode();
+  }
 
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( dynamicResource );
-	}
+  @Override
+  protected void appendRep(StringBuilder sb) {
+    sb.append(dynamicResource);
+  }
 }

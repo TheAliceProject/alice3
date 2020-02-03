@@ -57,29 +57,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class HelpMenuModel extends PredeterminedMenuModel {
-	private static StandardMenuItemPrepModel[] createMenuItemPrepModels( IdeApp app ) {
-		List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
-				app.getHelpDialogLaunchOperation().getMenuItemPrepModel(),
-				app.getGraphicsHelpDialogLaunchOperation().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				app.getReportBugLaunchOperation().getMenuItemPrepModel(),
-				app.getSuggestImprovementLaunchOperation().getMenuItemPrepModel(),
-				app.getRequestNewFeatureLaunchOperation().getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				app.getWarningDialogLaunchOperation().getMenuItemPrepModel(),
-				app.getShowSystemPropertiesDialogLaunchOperation().getMenuItemPrepModel(),
-				app.getBrowseReleaseNotesOperation().getMenuItemPrepModel()
-				);
-		if( SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( MenuModel.SEPARATOR );
-			list.add( app.getAboutDialogLaunchOperation().getMenuItemPrepModel() );
-		}
-		return ArrayUtilities.createArray( list, StandardMenuItemPrepModel.class );
-	}
+  private static StandardMenuItemPrepModel[] createMenuItemPrepModels(IdeApp app) {
+    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(app.getHelpDialogLaunchOperation().getMenuItemPrepModel(), app.getGraphicsHelpDialogLaunchOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, app.getReportBugLaunchOperation().getMenuItemPrepModel(), app.getSuggestImprovementLaunchOperation().getMenuItemPrepModel(), app.getRequestNewFeatureLaunchOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, app.getWarningDialogLaunchOperation().getMenuItemPrepModel(), app.getShowSystemPropertiesDialogLaunchOperation().getMenuItemPrepModel(), app.getBrowseReleaseNotesOperation().getMenuItemPrepModel());
+    if (SystemUtilities.isMac()) {
+      //pass
+    } else {
+      list.add(MenuModel.SEPARATOR);
+      list.add(app.getAboutDialogLaunchOperation().getMenuItemPrepModel());
+    }
+    return ArrayUtilities.createArray(list, StandardMenuItemPrepModel.class);
+  }
 
-	public HelpMenuModel( IdeApp app ) {
-		super( UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels( app ) );
-	}
+  public HelpMenuModel(IdeApp app) {
+    super(UUID.fromString("435770a7-fb94-49ee-8c4d-b55a80618a09"), createMenuItemPrepModels(app));
+  }
 }

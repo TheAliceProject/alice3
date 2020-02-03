@@ -53,10 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /* package-private */class FieldMenu extends PredeterminedMenuModel {
-	public FieldMenu( UserField field ) {
-		super(
-				UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
-				RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel(),
-				DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-	}
+  public FieldMenu(UserField field) {
+    super(UUID.fromString("525cb5c8-1490-4468-8eca-cee0affff602"), RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel(), DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
+  }
 }

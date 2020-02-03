@@ -50,46 +50,39 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 
-public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
-{
-	protected int[] indices;
+public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair {
+  protected int[] indices;
 
-	@Override
-	public void setWeights( float[] weightsIn )
-	{
-		List<Float> nonZeroWeights = new LinkedList<>();
-		List<Integer> nonZeroIndices = new LinkedList<>();
-		for( int i = 0; i < weightsIn.length; i++ )
-		{
-			if( weightsIn[ i ] != 0 )
-			{
-				nonZeroWeights.add(weightsIn[i]);
-				nonZeroIndices.add(i);
-			}
-		}
+  @Override
+  public void setWeights(float[] weightsIn) {
+    List<Float> nonZeroWeights = new LinkedList<>();
+    List<Integer> nonZeroIndices = new LinkedList<>();
+    for (int i = 0; i < weightsIn.length; i++) {
+      if (weightsIn[i] != 0) {
+        nonZeroWeights.add(weightsIn[i]);
+        nonZeroIndices.add(i);
+      }
+    }
 
-		this.weights = ArrayUtilities.createFloatArray( nonZeroWeights );
-		this.indices = ArrayUtilities.createIntArray( nonZeroIndices );
-	}
+    this.weights = ArrayUtilities.createFloatArray(nonZeroWeights);
+    this.indices = ArrayUtilities.createIntArray(nonZeroIndices);
+  }
 
-	@Override
-	public void decode( BinaryDecoder binaryDecoder )
-	{
-		super.decode( binaryDecoder );
-		this.indices = binaryDecoder.decodeIntArray();
-	}
+  @Override
+  public void decode(BinaryDecoder binaryDecoder) {
+    super.decode(binaryDecoder);
+    this.indices = binaryDecoder.decodeIntArray();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder )
-	{
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.indices );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.indices);
+  }
 
-	@Override
-	public int getIndex()
-	{
-		return this.indices[ this.index ];
-	}
+  @Override
+  public int getIndex() {
+    return this.indices[this.index];
+  }
 
 }

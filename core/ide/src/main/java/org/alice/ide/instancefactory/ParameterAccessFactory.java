@@ -58,61 +58,61 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessFactory extends AbstractInstanceFactory {
-	private static Map<UserParameter, ParameterAccessFactory> map = Maps.newHashMap();
+  private static Map<UserParameter, ParameterAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized ParameterAccessFactory getInstance( UserParameter parameter ) {
-		assert parameter != null;
-		ParameterAccessFactory rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessFactory( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
-	}
+  public static synchronized ParameterAccessFactory getInstance(UserParameter parameter) {
+    assert parameter != null;
+    ParameterAccessFactory rv = map.get(parameter);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ParameterAccessFactory(parameter);
+      map.put(parameter, rv);
+    }
+    return rv;
+  }
 
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	private ParameterAccessFactory( UserParameter parameter ) {
-		super( parameter.name );
-		this.parameter = parameter;
-	}
+  private ParameterAccessFactory(UserParameter parameter) {
+    super(parameter.name);
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		if( code != null ) {
-			return this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code;
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    if (code != null) {
+      return this.parameter.getFirstAncestorAssignableTo(AbstractCode.class) == code;
+    } else {
+      return false;
+    }
+  }
 
-	public UserParameter getParameter() {
-		return this.parameter;
-	}
+  public UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	private ParameterAccess createParameterAccess( Expression expression ) {
-		return new ParameterAccess( this.parameter );
-	}
+  private ParameterAccess createParameterAccess(Expression expression) {
+    return new ParameterAccess(this.parameter);
+  }
 
-	@Override
-	public ParameterAccess createTransientExpression() {
-		return this.createParameterAccess( new CurrentThisExpression() );
-	}
+  @Override
+  public ParameterAccess createTransientExpression() {
+    return this.createParameterAccess(new CurrentThisExpression());
+  }
 
-	@Override
-	public ParameterAccess createExpression() {
-		return this.createParameterAccess( new ThisExpression() );
-	}
+  @Override
+  public ParameterAccess createExpression() {
+    return this.createParameterAccess(new ThisExpression());
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.parameter.getValueType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.parameter.getValueType();
+  }
 
-	@Override
-	public String getRepr() {
-		return this.parameter.getName();
-	}
+  @Override
+  public String getRepr() {
+    return this.parameter.getName();
+  }
 }

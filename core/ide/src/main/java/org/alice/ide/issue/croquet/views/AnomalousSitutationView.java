@@ -58,40 +58,36 @@ import javax.swing.Icon;
  * @author Dennis Cosgrove
  */
 public class AnomalousSitutationView extends AbstractIssueView {
-	private static final Icon ICON = new ScaledIcon( RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
+  private static final Icon ICON = new ScaledIcon(RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f);
 
-	public AnomalousSitutationView( AnomalousSituationComposite composite ) {
-		super( composite );
-		Label iconLabel = new Label( ICON );
-		iconLabel.setVerticalAlignment( VerticalAlignment.TOP );
-		this.addLineStartComponent( iconLabel );
+  public AnomalousSitutationView(AnomalousSituationComposite composite) {
+    super(composite);
+    Label iconLabel = new Label(ICON);
+    iconLabel.setVerticalAlignment(VerticalAlignment.TOP);
+    this.addLineStartComponent(iconLabel);
 
-		Throwable throwable = composite.getThrowable();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<body>" );
-		sb.append( "<h2>" );
-		sb.append( throwable.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "<h3>" );
-		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab." );
-		sb.append( "</h3>" );
-		sb.append( "<h3>" );
-		sb.append( "If you can, please describe what you were doing when this bug was triggered." );
-		sb.append( "</h3>" );
-		sb.append( "</body>" );
-		sb.append( "<html>" );
+    Throwable throwable = composite.getThrowable();
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append("<body>");
+    sb.append("<h2>");
+    sb.append(throwable.getMessage());
+    sb.append("</h2>");
+    sb.append("<h3>");
+    sb.append("We are aware that this problem exists.  However, we are unable to reproduce it in the lab.");
+    sb.append("</h3>");
+    sb.append("<h3>");
+    sb.append("If you can, please describe what you were doing when this bug was triggered.");
+    sb.append("</h3>");
+    sb.append("</body>");
+    sb.append("<html>");
 
-		MigPanel centerPanel = new MigPanel();
-		centerPanel.addComponent( new Label( sb.toString() ), "wrap" );
-		centerPanel.addComponent( createScrollPaneTextArea( composite.getStepsState() ), "wrap, growx" );
-		centerPanel.addComponent( new LineAxisPanel(
-				composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(),
-				BoxUtilities.createHorizontalSliver( 8 ),
-				composite.getShowApplicationContentPanelImageOperation().createHyperlink()
-				), "wrap" );
-		centerPanel.addComponent( new Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
+    MigPanel centerPanel = new MigPanel();
+    centerPanel.addComponent(new Label(sb.toString()), "wrap");
+    centerPanel.addComponent(createScrollPaneTextArea(composite.getStepsState()), "wrap, growx");
+    centerPanel.addComponent(new LineAxisPanel(composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(), BoxUtilities.createHorizontalSliver(8), composite.getShowApplicationContentPanelImageOperation().createHyperlink()), "wrap");
+    centerPanel.addComponent(new Label("<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>"));
 
-		this.addCenterComponent( centerPanel );
-	}
+    this.addCenterComponent(centerPanel);
+  }
 }

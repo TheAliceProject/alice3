@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="BaobabTree">
+    <BoundingBox>
+        <Min x="-4.275938510894775" y="-0.010118098929524422" z="-5.954011917114258"/>
+        <Max x="5.725878715515137" y="8.093270301818848" z="5.000757694244385"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>tree</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BaobabTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

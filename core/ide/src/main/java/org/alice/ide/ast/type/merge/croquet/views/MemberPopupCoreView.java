@@ -54,16 +54,16 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class MemberPopupCoreView extends BorderPanel {
-	public MemberPopupCoreView( final MemberPopupCoreComposite composite ) {
-		super( composite );
-		AwtComponentView<?> component = MemberPreviewPane.createView( composite.getMemberHub(), false );
-		AbstractLabel label = composite.getDescription().createLabel();
-		label.setIcon( composite.getIcon() );
-		this.addPageStartComponent( label );
-		this.addCenterComponent( component );
+  public MemberPopupCoreView(final MemberPopupCoreComposite composite) {
+    super(composite);
+    AwtComponentView<?> component = MemberPreviewPane.createView(composite.getMemberHub(), false);
+    AbstractLabel label = composite.getDescription().createLabel();
+    label.setIcon(composite.getIcon());
+    this.addPageStartComponent(label);
+    this.addCenterComponent(component);
 
-		label.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.DARK_GRAY ) );
-		this.setBorder( BorderFactory.createMatteBorder( 4, 4, 4, 4, Color.WHITE ) );
-		this.setMinimumPreferredWidth( 200 );
-	}
+    label.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY));
+    this.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
+    this.setMinimumPreferredWidth(200);
+  }
 }

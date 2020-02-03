@@ -45,7 +45,6 @@ package org.alice.ide.ast.draganddrop.expression;
 
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade;
 import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractMethod;
@@ -58,36 +57,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
-	private static InitializingIfAbsentMap<AbstractMethod, FunctionInvocationDragModel> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<AbstractMethod, FunctionInvocationDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FunctionInvocationDragModel getInstance( AbstractMethod method ) {
-		return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<AbstractMethod, FunctionInvocationDragModel>() {
-			@Override
-			public FunctionInvocationDragModel initialize( AbstractMethod method ) {
-				return new FunctionInvocationDragModel( method );
-			}
-		} );
-	}
+  public static FunctionInvocationDragModel getInstance(AbstractMethod method) {
+    return map.getInitializingIfAbsent(method, new InitializingIfAbsentMap.Initializer<AbstractMethod, FunctionInvocationDragModel>() {
+      @Override
+      public FunctionInvocationDragModel initialize(AbstractMethod method) {
+        return new FunctionInvocationDragModel(method);
+      }
+    });
+  }
 
-	private final AbstractMethod method;
+  private final AbstractMethod method;
 
-	private FunctionInvocationDragModel( AbstractMethod method ) {
-		super( UUID.fromString( "ba2ea332-c7e1-4153-b8d9-39d524b19362" ) );
-		this.method = method;
-	}
+  private FunctionInvocationDragModel(AbstractMethod method) {
+    super(UUID.fromString("ba2ea332-c7e1-4153-b8d9-39d524b19362"));
+    this.method = method;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.method.getReturnType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.method.getReturnType();
+  }
 
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
+  @Override
+  public boolean isPotentialStatementCreator() {
+    return false;
+  }
 
-	@Override
-	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
-		return FunctionInvocationCascade.getInstance( this.method, expressionProperty );
-	}
+  @Override
+  protected Triggerable getDropOperation(ExpressionProperty expressionProperty) {
+    return FunctionInvocationCascade.getInstance(this.method, expressionProperty);
+  }
 }

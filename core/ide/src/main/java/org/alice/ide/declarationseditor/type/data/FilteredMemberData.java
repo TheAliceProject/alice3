@@ -53,15 +53,15 @@ import org.lgna.project.ast.UserMember;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredMemberData<T extends UserMember> extends FilteredListPropertyData<T> {
-	private final NamedUserType type;
+  private final NamedUserType type;
 
-	public FilteredMemberData( Class<T> cls, NamedUserType type, ListProperty<T> listProperty ) {
-		super( NodeCodec.getInstance( cls ) );
-		this.type = type;
-		this.setListProperty( listProperty );
-	}
+  public FilteredMemberData(Class<T> cls, NamedUserType type, ListProperty<T> listProperty) {
+    super(NodeCodec.getInstance(cls));
+    this.type = type;
+    this.setListProperty(listProperty);
+  }
 
-	public NamedUserType getType() {
-		return this.type;
-	}
+  public NamedUserType getType() {
+    return this.type;
+  }
 }

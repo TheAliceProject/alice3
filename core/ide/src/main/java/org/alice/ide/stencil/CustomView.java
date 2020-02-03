@@ -53,45 +53,45 @@ import java.awt.Graphics2D;
  * @author Dennis Cosgrove
  */
 public abstract class CustomView extends SwingComponentView<JPanel> {
-	protected abstract void paintComponentPrologue( Graphics2D g2 );
+  protected abstract void paintComponentPrologue(Graphics2D g2);
 
-	protected abstract void paintComponentEpilogue( Graphics2D g2 );
+  protected abstract void paintComponentEpilogue(Graphics2D g2);
 
-	protected abstract void paintEpilogue( Graphics2D g2 );
+  protected abstract void paintEpilogue(Graphics2D g2);
 
-	protected abstract boolean contains( int x, int y, boolean superContains );
+  protected abstract boolean contains(int x, int y, boolean superContains);
 
-	@Override
-	protected JPanel createAwtComponent() {
-		JPanel rv = new JPanel() {
-			@Override
-			protected void paintComponent( Graphics g ) {
-				GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
-				gc.pushAndSetAntialiasing( true );
-				gc.pushPaint();
-				try {
-					Graphics2D g2 = (Graphics2D)g;
-					CustomView.this.paintComponentPrologue( g2 );
-					super.paintComponent( g2 );
-					CustomView.this.paintComponentEpilogue( g2 );
-				} finally {
-					gc.popAll();
-				}
-			}
+  @Override
+  protected JPanel createAwtComponent() {
+    JPanel rv = new JPanel() {
+      @Override
+      protected void paintComponent(Graphics g) {
+        GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g);
+        gc.pushAndSetAntialiasing(true);
+        gc.pushPaint();
+        try {
+          Graphics2D g2 = (Graphics2D) g;
+          CustomView.this.paintComponentPrologue(g2);
+          super.paintComponent(g2);
+          CustomView.this.paintComponentEpilogue(g2);
+        } finally {
+          gc.popAll();
+        }
+      }
 
-			@Override
-			public void paint( Graphics g ) {
-				super.paint( g );
-				Graphics2D g2 = (Graphics2D)g;
-				CustomView.this.paintEpilogue( g2 );
-			}
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        CustomView.this.paintEpilogue(g2);
+      }
 
-			@Override
-			public boolean contains( int x, int y ) {
-				return CustomView.this.contains( x, y, super.contains( x, y ) );
-			}
-		};
-		rv.setOpaque( false );
-		return rv;
-	}
+      @Override
+      public boolean contains(int x, int y) {
+        return CustomView.this.contains(x, y, super.contains(x, y));
+      }
+    };
+    rv.setOpaque(false);
+    return rv;
+  }
 }

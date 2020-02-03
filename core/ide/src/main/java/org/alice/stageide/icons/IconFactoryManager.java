@@ -85,402 +85,401 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class IconFactoryManager {
-	private static interface ResourceDeclaration {
-		public IconFactory createIconFactory();
-	}
+  private static interface ResourceDeclaration {
+    public IconFactory createIconFactory();
+  }
 
-	// @formatter:off
-	private static Set<Class<? extends JointedModelResource>> setOfClassesWithIcons = Sets.newHashSet(
-			BipedResource.class,
-			FishResource.class,
-			FlyerResource.class,
-			PropResource.class,
-			QuadrupedResource.class,
-			SwimmerResource.class,
-			SlithererResource.class,
-			MarineMammalResource.class,
-			TransportResource.class,
-			AutomobileResource.class,
-			AircraftResource.class,
-			WatercraftResource.class,
-			TrainResource.class );
+  // @formatter:off
+  private static Set<Class<? extends JointedModelResource>> setOfClassesWithIcons = Sets.newHashSet(
+      BipedResource.class,
+      FishResource.class,
+      FlyerResource.class,
+      PropResource.class,
+      QuadrupedResource.class,
+      SwimmerResource.class,
+      SlithererResource.class,
+      MarineMammalResource.class,
+      TransportResource.class,
+      AutomobileResource.class,
+      AircraftResource.class,
+      WatercraftResource.class,
+      TrainResource.class);
 
-	// @formatter:on
+  // @formatter:on
 
-	public static Set<Class<? extends JointedModelResource>> getSetOfClassesWithIcons() {
-		return setOfClassesWithIcons;
-	}
+  public static Set<Class<? extends JointedModelResource>> getSetOfClassesWithIcons() {
+    return setOfClassesWithIcons;
+  }
 
-	private static ImageIcon getIcon( Class<?> cls, boolean isSmall ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
-		sb.append( cls.getName().replace( ".", "/" ) );
-		if( isSmall ) {
-			sb.append( "_small" );
-		}
-		sb.append( ".png" );
-		return IconUtilities.createImageIcon( GalleryDragModel.class.getResource( sb.toString() ) );
-	}
+  private static ImageIcon getIcon(Class<?> cls, boolean isSmall) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("images/");
+    sb.append(cls.getName().replace(".", "/"));
+    if (isSmall) {
+      sb.append("_small");
+    }
+    sb.append(".png");
+    return IconUtilities.createImageIcon(GalleryDragModel.class.getResource(sb.toString()));
+  }
 
-	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
-		protected abstract Class<? extends ModelResource> getModelResourceClass();
+  private abstract static class UrlResourceDeclaration implements ResourceDeclaration {
+    protected abstract Class<? extends ModelResource> getModelResourceClass();
 
-		protected abstract String getModelResourceName();
+    protected abstract String getModelResourceName();
 
-		@Override
-		public final IconFactory createIconFactory() {
-			Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
-			String modelResourceName = this.getModelResourceName();
-			if( modelResourceName != null ) {
-				//pass
-			} else {
-				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					ImageIcon smallIcon = getIcon( modelResourceCls, true );
-					ImageIcon largeIcon = getIcon( modelResourceCls, false );
-					return new MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
-					//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
-				}
-			}
-			URL url;
-			if( modelResourceCls != null ) {
-				url = AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
-			} else {
-				url = null;
-			}
-			if( url != null ) {
-				return new TrimmedImageIconFactory( url, 160, 120 );
-			} else {
-				Logger.severe( this, this.getClass(), modelResourceCls, modelResourceName );
-				return EmptyIconFactory.getInstance();
-			}
-		}
-	}
+    @Override
+    public final IconFactory createIconFactory() {
+      Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
+      String modelResourceName = this.getModelResourceName();
+      if (modelResourceName != null) {
+        //pass
+      } else {
+        if (getSetOfClassesWithIcons().contains(modelResourceCls)) {
+          ImageIcon smallIcon = getIcon(modelResourceCls, true);
+          ImageIcon largeIcon = getIcon(modelResourceCls, false);
+          return new MultipleSourceImageIconFactory(1, smallIcon, largeIcon);
+          //return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
+        }
+      }
+      URL url;
+      if (modelResourceCls != null) {
+        url = AliceResourceUtilties.getThumbnailURL(modelResourceCls, modelResourceName);
+      } else {
+        url = null;
+      }
+      if (url != null) {
+        return new TrimmedImageIconFactory(url, 160, 120);
+      } else {
+        Logger.severe(this, this.getClass(), modelResourceCls, modelResourceName);
+        return EmptyIconFactory.getInstance();
+      }
+    }
+  }
 
-	private static final class ResourceEnumConstant extends UrlResourceDeclaration {
-		private final Enum<? extends ModelResource> enm;
+  private static final class ResourceEnumConstant extends UrlResourceDeclaration {
+    private final Enum<? extends ModelResource> enm;
 
-		public ResourceEnumConstant( Enum<? extends ModelResource> enm ) {
-			assert enm != null;
-			this.enm = enm;
-		}
+    public ResourceEnumConstant(Enum<? extends ModelResource> enm) {
+      assert enm != null;
+      this.enm = enm;
+    }
 
-		@Override
-		protected Class<? extends ModelResource> getModelResourceClass() {
-			//todo?
-			return (Class<? extends ModelResource>)this.enm.getClass();
-		}
+    @Override
+    protected Class<? extends ModelResource> getModelResourceClass() {
+      //todo?
+      return (Class<? extends ModelResource>) this.enm.getClass();
+    }
 
-		@Override
-		protected String getModelResourceName() {
-			return this.enm.name();
-		}
+    @Override
+    protected String getModelResourceName() {
+      return this.enm.name();
+    }
 
-		@Override
-		public boolean equals( Object obj ) {
-			if( this == obj ) {
-				return true;
-			}
-			if( obj instanceof ResourceEnumConstant ) {
-				ResourceEnumConstant other = (ResourceEnumConstant)obj;
-				return this.enm.equals( other.enm );
-			}
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (obj instanceof ResourceEnumConstant) {
+        ResourceEnumConstant other = (ResourceEnumConstant) obj;
+        return this.enm.equals(other.enm);
+      }
+      return false;
+    }
 
-		@Override
-		public int hashCode() {
-			return this.enm.hashCode();
-		}
-	}
+    @Override
+    public int hashCode() {
+      return this.enm.hashCode();
+    }
+  }
 
-	private static final class ResourceType extends UrlResourceDeclaration {
-		private final Class<? extends ModelResource> cls;
+  private static final class ResourceType extends UrlResourceDeclaration {
+    private final Class<? extends ModelResource> cls;
 
-		public ResourceType( Class<? extends ModelResource> cls ) {
-			assert cls != null;
-			this.cls = cls;
-		}
+    public ResourceType(Class<? extends ModelResource> cls) {
+      assert cls != null;
+      this.cls = cls;
+    }
 
-		@Override
-		protected Class<? extends ModelResource> getModelResourceClass() {
-			return this.cls;
-		}
+    @Override
+    protected Class<? extends ModelResource> getModelResourceClass() {
+      return this.cls;
+    }
 
-		@Override
-		protected String getModelResourceName() {
-			return null;
-		}
+    @Override
+    protected String getModelResourceName() {
+      return null;
+    }
 
-		@Override
-		public boolean equals( Object obj ) {
-			if( this == obj ) {
-				return true;
-			}
-			if( obj instanceof ResourceType ) {
-				ResourceType other = (ResourceType)obj;
-				return this.cls.equals( other.cls );
-			}
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (obj instanceof ResourceType) {
+        ResourceType other = (ResourceType) obj;
+        return this.cls.equals(other.cls);
+      }
+      return false;
+    }
 
-		@Override
-		public int hashCode() {
-			return this.cls.hashCode();
-		}
-	}
+    @Override
+    public int hashCode() {
+      return this.cls.hashCode();
+    }
+  }
 
-	private static final class ResourceInstance implements ResourceDeclaration {
-		private final ModelResource instance;
+  private static final class ResourceInstance implements ResourceDeclaration {
+    private final ModelResource instance;
 
-		public ResourceInstance( ModelResource instance ) {
-			assert instance != null;
-			this.instance = instance;
-		}
+    public ResourceInstance(ModelResource instance) {
+      assert instance != null;
+      this.instance = instance;
+    }
 
-		@Override
-		public IconFactory createIconFactory() {
-			if (instance instanceof ModelStructure) {
-				return getIconFactoryForModelStructure((ModelStructure)instance);
-			}
-			else {
-				return NebulousIde.nonfree.createIconFactory(this.instance);
-			}
-		}
+    @Override
+    public IconFactory createIconFactory() {
+      if (instance instanceof ModelStructure) {
+        return getIconFactoryForModelStructure((ModelStructure) instance);
+      } else {
+        return NebulousIde.nonfree.createIconFactory(this.instance);
+      }
+    }
 
-		@Override
-		public boolean equals( Object obj ) {
-			if( this == obj ) {
-				return true;
-			}
-			if( obj instanceof ResourceInstance ) {
-				ResourceInstance other = (ResourceInstance)obj;
-				return this.instance.equals( other.instance );
-			}
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (obj instanceof ResourceInstance) {
+        ResourceInstance other = (ResourceInstance) obj;
+        return this.instance.equals(other.instance);
+      }
+      return false;
+    }
 
-		@Override
-		public int hashCode() {
-			return this.instance.hashCode();
-		}
-	}
+    @Override
+    public int hashCode() {
+      return this.instance.hashCode();
+    }
+  }
 
-	private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
-	private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
-	private static Map<ModelStructure, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
-	private static Map<Color, IconFactory> mapColorToCameraMarkerIconFactory = Maps.newHashMap();
-	private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
+  private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
+  private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
+  private static Map<ModelStructure, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
+  private static Map<Color, IconFactory> mapColorToCameraMarkerIconFactory = Maps.newHashMap();
+  private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
 
-	private IconFactoryManager() {
-	}
+  private IconFactoryManager() {
+  }
 
-	public static void registerIconFactory( JavaType javaType, IconFactory iconFactory ) {
-		mapTypeToIconFactory.put( javaType, iconFactory );
-	}
+  public static void registerIconFactory(JavaType javaType, IconFactory iconFactory) {
+    mapTypeToIconFactory.put(javaType, iconFactory);
+  }
 
-	public static void registerIconFactory( Class<?> cls, IconFactory iconFactory ) {
-		registerIconFactory( JavaType.getInstance( cls ), iconFactory );
-	}
+  public static void registerIconFactory(Class<?> cls, IconFactory iconFactory) {
+    registerIconFactory(JavaType.getInstance(cls), iconFactory);
+  }
 
-	private static ResourceDeclaration createResourceDeclarationFromRequiredArguments( SimpleArgumentListProperty requiredArguments ) {
-		if( requiredArguments.size() == 1 ) {
-			SimpleArgument arg0 = requiredArguments.get( 0 );
-			Expression expression0 = arg0.expression.getValue();
-			if( expression0 instanceof InstanceCreation ) {
-				Object instance = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression0 );
-				if( instance instanceof ModelResource ) {
-					ModelResource modelResource = (ModelResource)instance;
-					return new ResourceInstance( modelResource );
-				}
-			}
-		}
-		JavaField argumentField = ConstructorArgumentUtilities.getField( requiredArguments );
-		if( argumentField != null ) {
-			if( argumentField.isStatic() ) {
-				Field fld = argumentField.getFieldReflectionProxy().getReification();
-				try {
-					Object o = fld.get( null );
-					if( o != null ) {
-						if( o instanceof ModelResource ) {
-							if( o.getClass().isEnum() ) {
-								Enum<? extends ModelResource> e = (Enum<? extends ModelResource>)o;
-								return new ResourceEnumConstant( e );
-							}
-						}
-					}
-				} catch( IllegalAccessException iae ) {
-					iae.printStackTrace();
-					return null;
-				}
-			}
-		}
+  private static ResourceDeclaration createResourceDeclarationFromRequiredArguments(SimpleArgumentListProperty requiredArguments) {
+    if (requiredArguments.size() == 1) {
+      SimpleArgument arg0 = requiredArguments.get(0);
+      Expression expression0 = arg0.expression.getValue();
+      if (expression0 instanceof InstanceCreation) {
+        Object instance = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(expression0);
+        if (instance instanceof ModelResource) {
+          ModelResource modelResource = (ModelResource) instance;
+          return new ResourceInstance(modelResource);
+        }
+      }
+    }
+    JavaField argumentField = ConstructorArgumentUtilities.getField(requiredArguments);
+    if (argumentField != null) {
+      if (argumentField.isStatic()) {
+        Field fld = argumentField.getFieldReflectionProxy().getReification();
+        try {
+          Object o = fld.get(null);
+          if (o != null) {
+            if (o instanceof ModelResource) {
+              if (o.getClass().isEnum()) {
+                Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) o;
+                return new ResourceEnumConstant(e);
+              }
+            }
+          }
+        } catch (IllegalAccessException iae) {
+          iae.printStackTrace();
+          return null;
+        }
+      }
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	private static int getRequiredArgumentsInInitializer( UserField userField ) {
-		Expression initializer = userField.initializer.getValue();
-		if( initializer instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)initializer;
-			return instanceCreation.requiredArguments.size();
-		}
-		return -1;
-	}
+  private static int getRequiredArgumentsInInitializer(UserField userField) {
+    Expression initializer = userField.initializer.getValue();
+    if (initializer instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) initializer;
+      return instanceCreation.requiredArguments.size();
+    }
+    return -1;
+  }
 
-	private static ResourceDeclaration createResourceDeclarationFromField( UserField userField ) {
-		Expression initializer = userField.initializer.getValue();
-		if( initializer instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)initializer;
-			return createResourceDeclarationFromRequiredArguments( instanceCreation.requiredArguments );
-		}
-		return null;
-	}
+  private static ResourceDeclaration createResourceDeclarationFromField(UserField userField) {
+    Expression initializer = userField.initializer.getValue();
+    if (initializer instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) initializer;
+      return createResourceDeclarationFromRequiredArguments(instanceCreation.requiredArguments);
+    }
+    return null;
+  }
 
-	public static IconFactory getRegisteredIconFactory( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			JavaType javaType = type.getFirstEncounteredJavaType();
-			if( mapTypeToIconFactory.containsKey( javaType ) ) {
-				return mapTypeToIconFactory.get( javaType );
-			}
-		}
-		return null;
-	}
+  public static IconFactory getRegisteredIconFactory(AbstractType<?, ?, ?> type) {
+    if (type != null) {
+      JavaType javaType = type.getFirstEncounteredJavaType();
+      if (mapTypeToIconFactory.containsKey(javaType)) {
+        return mapTypeToIconFactory.get(javaType);
+      }
+    }
+    return null;
+  }
 
-	public static IconFactory getIconFactoryForResourceCls( Class<? extends ModelResource> cls ) {
-		ResourceType resourceType = new ResourceType( cls );
-		IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceType );
-		if( iconFactory != null ) {
-			//pass
-		} else {
-			iconFactory = resourceType.createIconFactory();
-			mapResourceDeclarationToIconFactory.put( resourceType, iconFactory );
-		}
-		return iconFactory;
-	}
+  public static IconFactory getIconFactoryForResourceCls(Class<? extends ModelResource> cls) {
+    ResourceType resourceType = new ResourceType(cls);
+    IconFactory iconFactory = mapResourceDeclarationToIconFactory.get(resourceType);
+    if (iconFactory != null) {
+      //pass
+    } else {
+      iconFactory = resourceType.createIconFactory();
+      mapResourceDeclarationToIconFactory.put(resourceType, iconFactory);
+    }
+    return iconFactory;
+  }
 
-	public static IconFactory getIconFactoryForModelStructure(ModelStructure modelStructure) {
-		IconFactory iconFactory = mapModelStructureToIconFactory.get( modelStructure );
-		if( iconFactory != null ) {
-			//pass
-		} else {
-			URL url = null;
-			try {
-				url = modelStructure.getIconURI().toURL();
-			} catch (MalformedURLException e) {
-				Logger.severe( "Malformed URL: "+modelStructure.getIconURI() );
-			}
-			if( url != null ) {
-				iconFactory = new TrimmedImageIconFactory( url, 160, 120 );
-			} else {
-				iconFactory = EmptyIconFactory.getInstance();
-			}
-			mapModelStructureToIconFactory.put( modelStructure, iconFactory );
-		}
-		return iconFactory;
-	}
+  public static IconFactory getIconFactoryForModelStructure(ModelStructure modelStructure) {
+    IconFactory iconFactory = mapModelStructureToIconFactory.get(modelStructure);
+    if (iconFactory != null) {
+      //pass
+    } else {
+      URL url = null;
+      try {
+        url = modelStructure.getIconURI().toURL();
+      } catch (MalformedURLException e) {
+        Logger.severe("Malformed URL: " + modelStructure.getIconURI());
+      }
+      if (url != null) {
+        iconFactory = new TrimmedImageIconFactory(url, 160, 120);
+      } else {
+        iconFactory = EmptyIconFactory.getInstance();
+      }
+      mapModelStructureToIconFactory.put(modelStructure, iconFactory);
+    }
+    return iconFactory;
+  }
 
-	public static IconFactory getIconFactoryForResourceInstance( ModelResource modelResource ) {
-		ResourceDeclaration resourceDeclaration;
-		if( modelResource.getClass().isEnum() ) {
-			Enum<? extends ModelResource> e = (Enum<? extends ModelResource>)modelResource;
-			resourceDeclaration = new ResourceEnumConstant( e );
-		} else {
-			resourceDeclaration = new ResourceInstance( modelResource );
-		}
-		IconFactory iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
-		return iconFactory;
-	}
+  public static IconFactory getIconFactoryForResourceInstance(ModelResource modelResource) {
+    ResourceDeclaration resourceDeclaration;
+    if (modelResource.getClass().isEnum()) {
+      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) modelResource;
+      resourceDeclaration = new ResourceEnumConstant(e);
+    } else {
+      resourceDeclaration = new ResourceInstance(modelResource);
+    }
+    IconFactory iconFactory = getIconFactoryForResourceDeclaration(resourceDeclaration);
+    return iconFactory;
+  }
 
-	private static IconFactory getIconFactoryForResourceDeclaration( ResourceDeclaration resourceDeclaration ){
-		IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
-		if( iconFactory != null ) {
-			//pass
-		} else {
-			iconFactory = resourceDeclaration.createIconFactory();
-			mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
-		}
-		return iconFactory;
-	}
+  private static IconFactory getIconFactoryForResourceDeclaration(ResourceDeclaration resourceDeclaration) {
+    IconFactory iconFactory = mapResourceDeclarationToIconFactory.get(resourceDeclaration);
+    if (iconFactory != null) {
+      //pass
+    } else {
+      iconFactory = resourceDeclaration.createIconFactory();
+      mapResourceDeclarationToIconFactory.put(resourceDeclaration, iconFactory);
+    }
+    return iconFactory;
+  }
 
-	public static IconFactory getIconFactoryForType( AbstractType<?, ?, ?> type ) {
-		IconFactory iconFactory = getRegisteredIconFactory( type );
-		if( iconFactory != null ) {
-			return iconFactory;
-		} else {
-			ResourceDeclaration resourceDeclaration = null;
-			AbstractConstructor constructor0 =  type != null? type.getFirstDeclaredConstructor() : null;
-			if( constructor0 != null ) {
-				List<? extends AbstractParameter> parameters = constructor0.getRequiredParameters();
-				switch( parameters.size() ) {
-				case 0:
-					if( constructor0 instanceof UserConstructor ) {
-						NamedUserConstructor userConstructor0 = (NamedUserConstructor)constructor0;
-						ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
-						resourceDeclaration = createResourceDeclarationFromRequiredArguments( constructorInvocationStatement.requiredArguments );
-					}
-					break;
-				case 1:
-					AbstractParameter parameter0 = parameters.get( 0 );
-					AbstractType<?, ?, ?> parameter0Type = parameter0.getValueType();
-					if( parameter0Type != null ) {
-						if( parameter0Type.isAssignableTo( ModelResource.class ) ) {
-							Class<? extends ModelResource> cls = (Class<? extends ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-							resourceDeclaration = new ResourceType( cls );
-						}
-					}
-					break;
-				}
-				if( resourceDeclaration != null ) {
-					iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
-					return iconFactory;
-				}
-			}
-		}
-		return EmptyIconFactory.getInstance();
-	}
+  public static IconFactory getIconFactoryForType(AbstractType<?, ?, ?> type) {
+    IconFactory iconFactory = getRegisteredIconFactory(type);
+    if (iconFactory != null) {
+      return iconFactory;
+    } else {
+      ResourceDeclaration resourceDeclaration = null;
+      AbstractConstructor constructor0 = type != null ? type.getFirstDeclaredConstructor() : null;
+      if (constructor0 != null) {
+        List<? extends AbstractParameter> parameters = constructor0.getRequiredParameters();
+        switch (parameters.size()) {
+        case 0:
+          if (constructor0 instanceof UserConstructor) {
+            NamedUserConstructor userConstructor0 = (NamedUserConstructor) constructor0;
+            ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
+            resourceDeclaration = createResourceDeclarationFromRequiredArguments(constructorInvocationStatement.requiredArguments);
+          }
+          break;
+        case 1:
+          AbstractParameter parameter0 = parameters.get(0);
+          AbstractType<?, ?, ?> parameter0Type = parameter0.getValueType();
+          if (parameter0Type != null) {
+            if (parameter0Type.isAssignableTo(ModelResource.class)) {
+              Class<? extends ModelResource> cls = (Class<? extends ModelResource>) parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+              resourceDeclaration = new ResourceType(cls);
+            }
+          }
+          break;
+        }
+        if (resourceDeclaration != null) {
+          iconFactory = getIconFactoryForResourceDeclaration(resourceDeclaration);
+          return iconFactory;
+        }
+      }
+    }
+    return EmptyIconFactory.getInstance();
+  }
 
-	public static IconFactory getIconFactoryForField( UserField userField ) {
-		if( userField != null ) {
-			IconFactory iconFactory = getRegisteredIconFactory( userField.getValueType() );
-			if( iconFactory != null ) {
-				return iconFactory;
-			}
-			ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField( userField );
-			if( resourceDeclaration != null ) {
-				iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
-				return iconFactory;
-			}
-			int requiredArgumentCount = getRequiredArgumentsInInitializer( userField );
-			if( requiredArgumentCount != 0 ) {
-				Logger.outln( "Note: non-zero initializer detected, but no resource specific icon found. Falling back to type for icon for", userField );
-			}
-			return getIconFactoryForType( userField.getValueType() );
-		}
-		return EmptyIconFactory.getInstance();
-	}
+  public static IconFactory getIconFactoryForField(UserField userField) {
+    if (userField != null) {
+      IconFactory iconFactory = getRegisteredIconFactory(userField.getValueType());
+      if (iconFactory != null) {
+        return iconFactory;
+      }
+      ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField(userField);
+      if (resourceDeclaration != null) {
+        iconFactory = getIconFactoryForResourceDeclaration(resourceDeclaration);
+        return iconFactory;
+      }
+      int requiredArgumentCount = getRequiredArgumentsInInitializer(userField);
+      if (requiredArgumentCount != 0) {
+        Logger.outln("Note: non-zero initializer detected, but no resource specific icon found. Falling back to type for icon for", userField);
+      }
+      return getIconFactoryForType(userField.getValueType());
+    }
+    return EmptyIconFactory.getInstance();
+  }
 
-	public static IconFactory getIconFactoryForCameraMarker( Color color ) {
-		IconFactory rv = mapColorToCameraMarkerIconFactory.get( color );
-		if( rv != null ) {
-			//pass
-		} else {
-			ImageIcon imageIcon = MarkerUtilities.getCameraMarkIconForColor( color ); //todo
-			rv = new ImageIconFactory( imageIcon );
-			mapColorToCameraMarkerIconFactory.put( color, rv );
-		}
-		return rv;
-	}
+  public static IconFactory getIconFactoryForCameraMarker(Color color) {
+    IconFactory rv = mapColorToCameraMarkerIconFactory.get(color);
+    if (rv != null) {
+      //pass
+    } else {
+      ImageIcon imageIcon = MarkerUtilities.getCameraMarkIconForColor(color); //todo
+      rv = new ImageIconFactory(imageIcon);
+      mapColorToCameraMarkerIconFactory.put(color, rv);
+    }
+    return rv;
+  }
 
-	public static IconFactory getIconFactoryForObjectMarker( Color color ) {
-		IconFactory rv = mapColorToObjectMarkerIconFactory.get( color );
-		if( rv != null ) {
-			//pass
-		} else {
-			ImageIcon imageIcon = MarkerUtilities.getObjectMarkIconForColor( color );
-			//todo
-			rv = new ImageIconFactory( imageIcon );
-			mapColorToObjectMarkerIconFactory.put( color, rv );
-		}
-		return rv;
-	}
+  public static IconFactory getIconFactoryForObjectMarker(Color color) {
+    IconFactory rv = mapColorToObjectMarkerIconFactory.get(color);
+    if (rv != null) {
+      //pass
+    } else {
+      ImageIcon imageIcon = MarkerUtilities.getObjectMarkIconForColor(color);
+      //todo
+      rv = new ImageIconFactory(imageIcon);
+      mapColorToObjectMarkerIconFactory.put(color, rv);
+    }
+    return rv;
+  }
 }

@@ -47,40 +47,40 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class PackageReflectionProxy extends ReflectionProxy<Package> {
-	private String name;
+  private String name;
 
-	public PackageReflectionProxy( String name ) {
-		this.name = name;
-	}
+  public PackageReflectionProxy(String name) {
+    this.name = name;
+  }
 
-	public PackageReflectionProxy( Package pckg ) {
-		super( pckg );
-		this.name = pckg.getName();
-	}
+  public PackageReflectionProxy(Package pckg) {
+    super(pckg);
+    this.name = pckg.getName();
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		return this.name.hashCode();
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    return this.name.hashCode();
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		PackageReflectionProxy other = (PackageReflectionProxy)o;
-		return this.name != null ? this.name.equals( other.name ) : other.name == null;
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    PackageReflectionProxy other = (PackageReflectionProxy) o;
+    return this.name != null ? this.name.equals(other.name) : other.name == null;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	protected Package reify() {
-		return Package.getPackage( this.name );
-	}
+  @Override
+  protected Package reify() {
+    return Package.getPackage(this.name);
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "name=" );
-		sb.append( this.name );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("name=");
+    sb.append(this.name);
+  }
 }

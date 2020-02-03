@@ -53,20 +53,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<Expression> {
-	public ReduceToOperandInPreviousConditionalExpressionFillIn( UUID id ) {
-		super( id );
-	}
+  public ReduceToOperandInPreviousConditionalExpressionFillIn(UUID id) {
+    super(id);
+  }
 
-	//	@Override
-	//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-	//	}
-	protected abstract Expression getOperand( ConditionalInfixExpression previousConditional );
+  //  @Override
+  //  protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
+  //  }
+  protected abstract Expression getOperand(ConditionalInfixExpression previousConditional);
 
-	@Override
-	protected final Expression createValue( Expression previousExpression ) {
-		assert previousExpression instanceof ConditionalInfixExpression;
-		ConditionalInfixExpression previousConditional = (ConditionalInfixExpression)previousExpression;
-		return this.getOperand( previousConditional );
-	}
+  @Override
+  protected final Expression createValue(Expression previousExpression) {
+    assert previousExpression instanceof ConditionalInfixExpression;
+    ConditionalInfixExpression previousConditional = (ConditionalInfixExpression) previousExpression;
+    return this.getOperand(previousConditional);
+  }
 }

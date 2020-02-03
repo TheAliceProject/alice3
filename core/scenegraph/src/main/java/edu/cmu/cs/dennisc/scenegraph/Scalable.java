@@ -50,23 +50,23 @@ import edu.cmu.cs.dennisc.math.property.Dimension3Property;
  * @author Dennis Cosgrove
  */
 public class Scalable extends Composite {
-	public final Dimension3Property scale = new Dimension3Property( this, new Dimension3( 1, 1, 1 ) ) {
-		@Override
-		public void setValue( Dimension3 value ) {
-			super.setValue( value );
-			Scalable.this.fireAbsoluteTransformationChange();
-		}
-	};
+  public final Dimension3Property scale = new Dimension3Property(this, new Dimension3(1, 1, 1)) {
+    @Override
+    public void setValue(Dimension3 value) {
+      super.setValue(value);
+      Scalable.this.fireAbsoluteTransformationChange();
+    }
+  };
 
-	@Override
-	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
-		super.getAbsoluteTransformation( rv );
-		Dimension3 scale = this.scale.getValue();
-		AffineMatrix4x4 s = AffineMatrix4x4.createIdentity();
-		s.orientation.right.x = scale.x;
-		s.orientation.up.y = scale.y;
-		s.orientation.backward.z = scale.z;
-		AffineMatrix4x4.setReturnValueToMultiplication( rv, rv, s );
-		return rv;
-	}
+  @Override
+  public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
+    super.getAbsoluteTransformation(rv);
+    Dimension3 scale = this.scale.getValue();
+    AffineMatrix4x4 s = AffineMatrix4x4.createIdentity();
+    s.orientation.right.x = scale.x;
+    s.orientation.up.y = scale.y;
+    s.orientation.backward.z = scale.z;
+    AffineMatrix4x4.setReturnValueToMultiplication(rv, rv, s);
+    return rv;
+  }
 }

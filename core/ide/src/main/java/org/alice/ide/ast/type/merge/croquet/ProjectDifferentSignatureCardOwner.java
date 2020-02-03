@@ -53,34 +53,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ProjectDifferentSignatureCardOwner extends CardOwnerComposite {
-	private final DifferentSignature<?> differentSignature;
-	private final Composite<?> keepCard;
-	private final Composite<?> renameCard;
+  private final DifferentSignature<?> differentSignature;
+  private final Composite<?> keepCard;
+  private final Composite<?> renameCard;
 
-	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			updateCard();
-		}
-	};
+  private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      updateCard();
+    }
+  };
 
-	public ProjectDifferentSignatureCardOwner( DifferentSignature<?> differentSignature ) {
-		super( UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
-		this.differentSignature = differentSignature;
-		this.keepCard = new KeepSignatureCard( differentSignature );
-		this.renameCard = new RenameCard( differentSignature.getProjectHub(), differentSignature.getForegroundCustomizer() );
+  public ProjectDifferentSignatureCardOwner(DifferentSignature<?> differentSignature) {
+    super(UUID.fromString("ff22d54f-05fc-487d-b1c5-a8e4459c6a6a"));
+    this.differentSignature = differentSignature;
+    this.keepCard = new KeepSignatureCard(differentSignature);
+    this.renameCard = new RenameCard(differentSignature.getProjectHub(), differentSignature.getForegroundCustomizer());
 
-		this.addCard( this.keepCard );
-		this.addCard( this.renameCard );
-		this.showCard( this.renameCard );
-		this.differentSignature.getImportHub().getIsDesiredState().addNewSchoolValueListener( this.valueListener );
-	}
+    this.addCard(this.keepCard);
+    this.addCard(this.renameCard);
+    this.showCard(this.renameCard);
+    this.differentSignature.getImportHub().getIsDesiredState().addNewSchoolValueListener(this.valueListener);
+  }
 
-	private void updateCard() {
-		if( this.differentSignature.getImportHub().getIsDesiredState().getValue() ) {
-			this.showCard( this.renameCard );
-		} else {
-			this.showCard( this.keepCard );
-		}
-	}
+  private void updateCard() {
+    if (this.differentSignature.getImportHub().getIsDesiredState().getValue()) {
+      this.showCard(this.renameCard);
+    } else {
+      this.showCard(this.keepCard);
+    }
+  }
 }

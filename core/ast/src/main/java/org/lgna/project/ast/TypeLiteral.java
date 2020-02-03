@@ -45,44 +45,42 @@ package org.lgna.project.ast;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
-import edu.cmu.cs.dennisc.property.PropertyFilter;
-
 /**
  * @author Dennis Cosgrove
  */
 public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?>> {
-	public TypeLiteral() {
-	}
+  public TypeLiteral() {
+  }
 
-	public TypeLiteral( AbstractType<?, ?, ?> value ) {
-		this.value.setValue( value );
-	}
+  public TypeLiteral(AbstractType<?, ?, ?> value) {
+    this.value.setValue(value);
+  }
 
-	public TypeLiteral( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public TypeLiteral(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		//todo
-		return JavaType.getInstance( value.getValue().getClass() );
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    //todo
+    return JavaType.getInstance(value.getValue().getClass());
+  }
 
-	@Override
-	public InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
-		return this.value;
-	}
+  @Override
+  public InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
+    return this.value;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.value.getValue() );
-		localizer.appendText( ".class" );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.value.getValue());
+    localizer.appendText(".class");
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendTypeLiteral( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendTypeLiteral(this);
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );
+  public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance(this);
 }

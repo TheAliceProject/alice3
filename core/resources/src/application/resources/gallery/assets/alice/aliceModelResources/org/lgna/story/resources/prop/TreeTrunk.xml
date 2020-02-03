@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="TreeTrunk">
+    <BoundingBox>
+        <Min x="-4.591111183166504" y="-0.18578830361366272" z="-3.91131591796875"/>
+        <Max x="4.146754264831543" y="5.450684547424316" z="4.245876789093018"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>tree</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TreeTrunk" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

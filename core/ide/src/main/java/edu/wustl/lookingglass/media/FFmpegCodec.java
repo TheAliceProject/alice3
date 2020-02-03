@@ -46,112 +46,112 @@ package edu.wustl.lookingglass.media;
  * @author Dennis Cosgrove
  */
 public class FFmpegCodec {
-	private final boolean isDecodingSupported;
-	private final boolean isEncodingSupported;
-	private final boolean isVideo;
-	private final boolean isAudio;
-	private final boolean isSubtitle;
-	private final boolean isIntraFrameOnly;
-	private final boolean isLossy;
-	private final boolean isLossless;
-	private final String name;
-	private final String description;
+  private final boolean isDecodingSupported;
+  private final boolean isEncodingSupported;
+  private final boolean isVideo;
+  private final boolean isAudio;
+  private final boolean isSubtitle;
+  private final boolean isIntraFrameOnly;
+  private final boolean isLossy;
+  private final boolean isLossless;
+  private final String name;
+  private final String description;
 
-	public FFmpegCodec( String line ) {
-		String[] split = line.split( " ", 3 );
-		String mask = split[ 0 ];
-		this.isDecodingSupported = mask.charAt( 0 ) == 'D';
-		this.isEncodingSupported = mask.charAt( 1 ) == 'E';
-		this.isVideo = mask.charAt( 2 ) == 'V';
-		this.isAudio = mask.charAt( 2 ) == 'A';
-		this.isSubtitle = mask.charAt( 2 ) == 'S';
-		this.isIntraFrameOnly = mask.charAt( 3 ) == 'I';
-		this.isLossy = mask.charAt( 4 ) == 'L';
-		this.isLossless = mask.charAt( 5 ) == 'S';
-		this.name = split[ 1 ];
-		if( split.length == 3 ) {
-			this.description = split[ 2 ].trim();
-		} else {
-			this.description = null;
-		}
-	}
+  public FFmpegCodec(String line) {
+    String[] split = line.split(" ", 3);
+    String mask = split[0];
+    this.isDecodingSupported = mask.charAt(0) == 'D';
+    this.isEncodingSupported = mask.charAt(1) == 'E';
+    this.isVideo = mask.charAt(2) == 'V';
+    this.isAudio = mask.charAt(2) == 'A';
+    this.isSubtitle = mask.charAt(2) == 'S';
+    this.isIntraFrameOnly = mask.charAt(3) == 'I';
+    this.isLossy = mask.charAt(4) == 'L';
+    this.isLossless = mask.charAt(5) == 'S';
+    this.name = split[1];
+    if (split.length == 3) {
+      this.description = split[2].trim();
+    } else {
+      this.description = null;
+    }
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public String getDescription() {
-		return this.description;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public boolean isDecodingSupported() {
-		return this.isDecodingSupported;
-	}
+  public boolean isDecodingSupported() {
+    return this.isDecodingSupported;
+  }
 
-	public boolean isEncodingSupported() {
-		return this.isEncodingSupported;
-	}
+  public boolean isEncodingSupported() {
+    return this.isEncodingSupported;
+  }
 
-	public boolean isAudio() {
-		return this.isAudio;
-	}
+  public boolean isAudio() {
+    return this.isAudio;
+  }
 
-	public boolean isVideo() {
-		return this.isVideo;
-	}
+  public boolean isVideo() {
+    return this.isVideo;
+  }
 
-	public boolean isSubtitle() {
-		return this.isSubtitle;
-	}
+  public boolean isSubtitle() {
+    return this.isSubtitle;
+  }
 
-	public boolean isIntraFrameOnly() {
-		return this.isIntraFrameOnly;
-	}
+  public boolean isIntraFrameOnly() {
+    return this.isIntraFrameOnly;
+  }
 
-	public boolean isLossy() {
-		return this.isLossy;
-	}
+  public boolean isLossy() {
+    return this.isLossy;
+  }
 
-	public boolean isLossless() {
-		return this.isLossless;
-	}
+  public boolean isLossless() {
+    return this.isLossless;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.name );
-		sb.append( "," );
-		sb.append( this.description );
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(this.name);
+    sb.append(",");
+    sb.append(this.description);
 
-		if( this.isDecodingSupported ) {
-			sb.append( ", decode" );
-		}
-		if( this.isEncodingSupported ) {
-			sb.append( ", encode" );
-		}
-		if( this.isVideo ) {
-			sb.append( ", video" );
-		}
-		if( this.isAudio ) {
-			sb.append( ", audio" );
-		}
-		if( this.isSubtitle ) {
-			sb.append( ", subtitle" );
-		}
+    if (this.isDecodingSupported) {
+      sb.append(", decode");
+    }
+    if (this.isEncodingSupported) {
+      sb.append(", encode");
+    }
+    if (this.isVideo) {
+      sb.append(", video");
+    }
+    if (this.isAudio) {
+      sb.append(", audio");
+    }
+    if (this.isSubtitle) {
+      sb.append(", subtitle");
+    }
 
-		if( this.isIntraFrameOnly ) {
-			sb.append( ", intraFrameOnly" );
-		}
-		if( this.isLossy ) {
-			sb.append( ", lossy" );
-		}
-		if( this.isLossless ) {
-			sb.append( ", lossless" );
-		}
+    if (this.isIntraFrameOnly) {
+      sb.append(", intraFrameOnly");
+    }
+    if (this.isLossy) {
+      sb.append(", lossy");
+    }
+    if (this.isLossless) {
+      sb.append(", lossless");
+    }
 
-		sb.append( "]" );
-		return sb.toString();
-	}
+    sb.append("]");
+    return sb.toString();
+  }
 }

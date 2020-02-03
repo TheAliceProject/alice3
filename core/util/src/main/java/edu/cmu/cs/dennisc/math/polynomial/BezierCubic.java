@@ -50,13 +50,13 @@ import edu.cmu.cs.dennisc.math.Vector4;
  * @author Dennis Cosgrove
  */
 public class BezierCubic extends BasisMatrixCubic {
-	private static final Matrix4x4 s_h = new Matrix4x4( -1, 3, -3, 1, 3, -6, 3, 0, -3, 3, 0, 0, 1, 0, 0, 0 );
+  private static final Matrix4x4 s_h = new Matrix4x4(-1, 3, -3, 1, 3, -6, 3, 0, -3, 3, 0, 0, 1, 0, 0, 0);
 
-	public BezierCubic( Vector4 g ) {
-		super( s_h, g );
-	}
+  public BezierCubic(Vector4 g) {
+    super(s_h, g);
+  }
 
-	public BezierCubic( double g0, double g1, double g2, double g3 ) {
-		this( new Vector4( g0, g1, g2, g3 ) );
-	}
+  public BezierCubic(double g0, double g1, double g2, double g3) {
+    this(new Vector4(g0, g1, g2, g3));
+  }
 }

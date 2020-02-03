@@ -46,85 +46,64 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MVector3 extends MTuple3 {
-	public static MVector3 createAddition( MTuple3 a, MTuple3 b ) {
-		return new MVector3(
-				a.x + b.x,
-				a.y + b.y,
-				a.z + b.z );
-	}
+  public static MVector3 createAddition(MTuple3 a, MTuple3 b) {
+    return new MVector3(a.x + b.x, a.y + b.y, a.z + b.z);
+  }
 
-	public static MVector3 createSubtraction( MTuple3 a, MTuple3 b ) {
-		return new MVector3(
-				a.x - b.x,
-				a.y - b.y,
-				a.z - b.z );
-	}
+  public static MVector3 createSubtraction(MTuple3 a, MTuple3 b) {
+    return new MVector3(a.x - b.x, a.y - b.y, a.z - b.z);
+  }
 
-	public static MVector3 createMultiplication( MTuple3 a, MTuple3 b ) {
-		return new MVector3(
-				a.x * b.x,
-				a.y * b.y,
-				a.z * b.z );
-	}
+  public static MVector3 createMultiplication(MTuple3 a, MTuple3 b) {
+    return new MVector3(a.x * b.x, a.y * b.y, a.z * b.z);
+  }
 
-	public static MVector3 createMultiplication( MTuple3 v, double d ) {
-		return new MVector3(
-				v.x * d,
-				v.y * d,
-				v.z * d );
-	}
+  public static MVector3 createMultiplication(MTuple3 v, double d) {
+    return new MVector3(v.x * d, v.y * d, v.z * d);
+  }
 
-	public static MVector3 createDivision( MTuple3 a, MTuple3 b ) {
-		return new MVector3(
-				a.x / b.x,
-				a.y / b.y,
-				a.z / b.z );
-	}
+  public static MVector3 createDivision(MTuple3 a, MTuple3 b) {
+    return new MVector3(a.x / b.x, a.y / b.y, a.z / b.z);
+  }
 
-	public static MVector3 createDivision( MTuple3 v, double d ) {
-		return new MVector3(
-				v.x / d,
-				v.y / d,
-				v.z / d );
-	}
+  public static MVector3 createDivision(MTuple3 v, double d) {
+    return new MVector3(v.x / d, v.y / d, v.z / d);
+  }
 
-	public static MVector3 createCrossProduct( MVector3 a, MVector3 b ) {
-		return new MVector3(
-				( a.y * b.z ) - ( a.z * b.y ),
-				( b.x * a.z ) - ( b.z * a.x ),
-				( a.x * b.y ) - ( a.y * b.x ) );
-	}
+  public static MVector3 createCrossProduct(MVector3 a, MVector3 b) {
+    return new MVector3((a.y * b.z) - (a.z * b.y), (b.x * a.z) - (b.z * a.x), (a.x * b.y) - (a.y * b.x));
+  }
 
-	public static double calculateDotProduct( MVector3 a, MVector3 b ) {
-		return ( a.x * b.x ) + ( a.y * b.y ) + ( a.z * b.z );
-	}
+  public static double calculateDotProduct(MVector3 a, MVector3 b) {
+    return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+  }
 
-	public MVector3( double x, double y, double z ) {
-		super( x, y, z );
-	}
+  public MVector3(double x, double y, double z) {
+    super(x, y, z);
+  }
 
-	public MVector3 createNormal() {
-		double magnitudeSquared = this.calculateMagnitudeSquared();
-		if( magnitudeSquared != 1.0 ) {
-			return createDivision( this, Math.sqrt( magnitudeSquared ) );
-		} else {
-			return this;
-		}
-	}
+  public MVector3 createNormal() {
+    double magnitudeSquared = this.calculateMagnitudeSquared();
+    if (magnitudeSquared != 1.0) {
+      return createDivision(this, Math.sqrt(magnitudeSquared));
+    } else {
+      return this;
+    }
+  }
 
-	public MVector3 createTransformed( MAffineMatrix4x4 m ) {
-		double m00 = m.orientation.right.x;
-		double m10 = m.orientation.right.y;
-		double m20 = m.orientation.right.z;
-		double m01 = m.orientation.up.x;
-		double m11 = m.orientation.up.y;
-		double m21 = m.orientation.up.z;
-		double m02 = m.orientation.backward.x;
-		double m12 = m.orientation.backward.y;
-		double m22 = m.orientation.backward.z;
-		double x = ( m00 * this.x ) + ( m01 * this.y ) + ( m02 * this.z );
-		double y = ( m10 * this.x ) + ( m11 * this.y ) + ( m12 * this.z );
-		double z = ( m20 * this.x ) + ( m21 * this.y ) + ( m22 * this.z );
-		return new MVector3( x, y, z );
-	}
+  public MVector3 createTransformed(MAffineMatrix4x4 m) {
+    double m00 = m.orientation.right.x;
+    double m10 = m.orientation.right.y;
+    double m20 = m.orientation.right.z;
+    double m01 = m.orientation.up.x;
+    double m11 = m.orientation.up.y;
+    double m21 = m.orientation.up.z;
+    double m02 = m.orientation.backward.x;
+    double m12 = m.orientation.backward.y;
+    double m22 = m.orientation.backward.z;
+    double x = (m00 * this.x) + (m01 * this.y) + (m02 * this.z);
+    double y = (m10 * this.x) + (m11 * this.y) + (m12 * this.z);
+    double z = (m20 * this.x) + (m21 * this.y) + (m22 * this.z);
+    return new MVector3(x, y, z);
+  }
 }

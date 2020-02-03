@@ -51,21 +51,21 @@ import java.util.Collection;
  * @author Dennis Cosgrove
  */
 public class IterableUtilities {
-	public static <E> E[] toArray( Iterable<E> iterable, Class<E> cls ) {
-		Collection<Object> collection;
-		if( iterable instanceof Collection<?> ) {
-			collection = (Collection<Object>)iterable;
-		} else {
-			collection = Lists.newLinkedList();
-			for( Object item : iterable ) {
-				collection.add( item );
-			}
-		}
-		E[] rv = (E[])Array.newInstance( cls, collection.size() );
-		return collection.toArray( rv );
-	}
+  public static <E> E[] toArray(Iterable<E> iterable, Class<E> cls) {
+    Collection<Object> collection;
+    if (iterable instanceof Collection<?>) {
+      collection = (Collection<Object>) iterable;
+    } else {
+      collection = Lists.newLinkedList();
+      for (Object item : iterable) {
+        collection.add(item);
+      }
+    }
+    E[] rv = (E[]) Array.newInstance(cls, collection.size());
+    return collection.toArray(rv);
+  }
 
-	public static Object[] toArray( Iterable iterable ) {
-		return toArray( iterable, Object.class );
-	}
+  public static Object[] toArray(Iterable iterable) {
+    return toArray(iterable, Object.class);
+  }
 }

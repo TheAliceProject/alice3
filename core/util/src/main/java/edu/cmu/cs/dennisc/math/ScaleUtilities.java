@@ -43,154 +43,154 @@
 package edu.cmu.cs.dennisc.math;
 
 //todo: fix names
+
 /**
  * @author Dennis Cosgrove
  */
 public class ScaleUtilities {
-	public static Matrix3x3 set_AffectScaleXOnly( Matrix3x3 rv, double x ) {
-		rv.right.x = x;
-		return rv;
-	}
+  public static Matrix3x3 set_AffectScaleXOnly(Matrix3x3 rv, double x) {
+    rv.right.x = x;
+    return rv;
+  }
 
-	public static Matrix3x3 set_AffectScaleYOnly( Matrix3x3 rv, double y ) {
-		rv.up.y = y;
-		return rv;
-	}
+  public static Matrix3x3 set_AffectScaleYOnly(Matrix3x3 rv, double y) {
+    rv.up.y = y;
+    return rv;
+  }
 
-	public static Matrix3x3 set_AffectScaleZOnly( Matrix3x3 rv, double z ) {
-		rv.backward.z = z;
-		return rv;
-	}
+  public static Matrix3x3 set_AffectScaleZOnly(Matrix3x3 rv, double z) {
+    rv.backward.z = z;
+    return rv;
+  }
 
-	public static Matrix3x3 set_AffectScaleOnly( Matrix3x3 rv, double x, double y, double z ) {
-		set_AffectScaleXOnly( rv, x );
-		set_AffectScaleYOnly( rv, y );
-		set_AffectScaleZOnly( rv, z );
-		return rv;
-	}
+  public static Matrix3x3 set_AffectScaleOnly(Matrix3x3 rv, double x, double y, double z) {
+    set_AffectScaleXOnly(rv, x);
+    set_AffectScaleYOnly(rv, y);
+    set_AffectScaleZOnly(rv, z);
+    return rv;
+  }
 
-	public static Matrix3x3 set_AffectScaleOnly( Matrix3x3 rv, Tuple3 t ) {
-		return set_AffectScaleOnly( rv, t.x, t.y, t.z );
-	}
+  public static Matrix3x3 set_AffectScaleOnly(Matrix3x3 rv, Tuple3 t) {
+    return set_AffectScaleOnly(rv, t.x, t.y, t.z);
+  }
 
-	public static Matrix3x3 newScaleMatrix3d( Matrix3x3 rv, double x, double y, double z ) {
-		rv.right.set( x, 0, 0 );
-		rv.up.set( 0, y, 0 );
-		rv.backward.set( 0, 0, z );
-		return rv;
-	}
+  public static Matrix3x3 newScaleMatrix3d(Matrix3x3 rv, double x, double y, double z) {
+    rv.right.set(x, 0, 0);
+    rv.up.set(0, y, 0);
+    rv.backward.set(0, 0, z);
+    return rv;
+  }
 
-	public static Matrix3x3 newScaleMatrix3d( double x, double y, double z ) {
-		return newScaleMatrix3d( Matrix3x3.createNaN(), x, y, z );
-	}
+  public static Matrix3x3 newScaleMatrix3d(double x, double y, double z) {
+    return newScaleMatrix3d(Matrix3x3.createNaN(), x, y, z);
+  }
 
-	public static Matrix3x3 newScaleMatrix3d( Matrix3x3 rv, Tuple3 t ) {
-		return newScaleMatrix3d( rv, t.x, t.y, t.z );
-	}
+  public static Matrix3x3 newScaleMatrix3d(Matrix3x3 rv, Tuple3 t) {
+    return newScaleMatrix3d(rv, t.x, t.y, t.z);
+  }
 
-	public static Matrix3x3 newScaleMatrix3d( Tuple3 t ) {
-		return newScaleMatrix3d( Matrix3x3.createNaN(), t );
-	}
+  public static Matrix3x3 newScaleMatrix3d(Tuple3 t) {
+    return newScaleMatrix3d(Matrix3x3.createNaN(), t);
+  }
 
-	public static Vector3 newScaleVector3( Matrix3x3 scaleMatrix )
-	{
-		return new Vector3( scaleMatrix.right.x, scaleMatrix.up.y, scaleMatrix.backward.z );
-	}
+  public static Vector3 newScaleVector3(Matrix3x3 scaleMatrix) {
+    return new Vector3(scaleMatrix.right.x, scaleMatrix.up.y, scaleMatrix.backward.z);
+  }
 
-	public static Matrix3x3 applyScale( Matrix3x3 rv, double x, double y, double z ) {
-		rv.applyMultiplication( newScaleMatrix3d( x, y, z ) );
-		return rv;
-	}
+  public static Matrix3x3 applyScale(Matrix3x3 rv, double x, double y, double z) {
+    rv.applyMultiplication(newScaleMatrix3d(x, y, z));
+    return rv;
+  }
 
-	public static Matrix3x3 applyScale( Matrix3x3 rv, Tuple3 t ) {
-		return applyScale( rv, t.x, t.y, t.z );
-	}
+  public static Matrix3x3 applyScale(Matrix3x3 rv, Tuple3 t) {
+    return applyScale(rv, t.x, t.y, t.z);
+  }
 
-	// todo: add setScales when rv is not the identity
-	public static Matrix4x4 set_AffectScaleXOnly( Matrix4x4 rv, double x ) {
-		rv.right.x = x;
-		return rv;
-	}
+  // todo: add setScales when rv is not the identity
+  public static Matrix4x4 set_AffectScaleXOnly(Matrix4x4 rv, double x) {
+    rv.right.x = x;
+    return rv;
+  }
 
-	public static Matrix4x4 set_AffectScaleYOnly( Matrix4x4 rv, double y ) {
-		rv.up.y = y;
-		return rv;
-	}
+  public static Matrix4x4 set_AffectScaleYOnly(Matrix4x4 rv, double y) {
+    rv.up.y = y;
+    return rv;
+  }
 
-	public static Matrix4x4 set_AffectScaleZOnly( Matrix4x4 rv, double z ) {
-		rv.backward.z = z;
-		return rv;
-	}
+  public static Matrix4x4 set_AffectScaleZOnly(Matrix4x4 rv, double z) {
+    rv.backward.z = z;
+    return rv;
+  }
 
-	public static Matrix4x4 set_AffectScaleOnly( Matrix4x4 rv, double x, double y, double z ) {
-		set_AffectScaleXOnly( rv, x );
-		set_AffectScaleYOnly( rv, y );
-		set_AffectScaleZOnly( rv, z );
-		return rv;
-	}
+  public static Matrix4x4 set_AffectScaleOnly(Matrix4x4 rv, double x, double y, double z) {
+    set_AffectScaleXOnly(rv, x);
+    set_AffectScaleYOnly(rv, y);
+    set_AffectScaleZOnly(rv, z);
+    return rv;
+  }
 
-	public static Matrix4x4 set_AffectScaleOnly( Matrix4x4 rv, Tuple3 t ) {
-		return set_AffectScaleOnly( rv, t.x, t.y, t.z );
-	}
+  public static Matrix4x4 set_AffectScaleOnly(Matrix4x4 rv, Tuple3 t) {
+    return set_AffectScaleOnly(rv, t.x, t.y, t.z);
+  }
 
-	public static Matrix4x4 newScaleMatrix4d( Matrix4x4 rv, double x, double y, double z ) {
-		rv.right.x = x;
-		rv.up.x = 0;
-		rv.backward.x = 0;
-		rv.translation.x = 0;
-		rv.right.y = 0;
-		rv.up.y = y;
-		rv.backward.y = 0;
-		rv.translation.y = 0;
-		rv.right.z = 0;
-		rv.up.z = 0;
-		rv.backward.z = z;
-		rv.translation.z = 0;
-		rv.right.w = 0;
-		rv.up.w = 0;
-		rv.backward.w = 0;
-		rv.translation.w = 1;
-		return rv;
-	}
+  public static Matrix4x4 newScaleMatrix4d(Matrix4x4 rv, double x, double y, double z) {
+    rv.right.x = x;
+    rv.up.x = 0;
+    rv.backward.x = 0;
+    rv.translation.x = 0;
+    rv.right.y = 0;
+    rv.up.y = y;
+    rv.backward.y = 0;
+    rv.translation.y = 0;
+    rv.right.z = 0;
+    rv.up.z = 0;
+    rv.backward.z = z;
+    rv.translation.z = 0;
+    rv.right.w = 0;
+    rv.up.w = 0;
+    rv.backward.w = 0;
+    rv.translation.w = 1;
+    return rv;
+  }
 
-	public static Matrix4x4 newScaleMatrix4d( double x, double y, double z ) {
-		return newScaleMatrix4d( new Matrix4x4(), x, y, z );
-	}
+  public static Matrix4x4 newScaleMatrix4d(double x, double y, double z) {
+    return newScaleMatrix4d(new Matrix4x4(), x, y, z);
+  }
 
-	public static Matrix4x4 newScaleMatrix4d( Matrix4x4 rv, Tuple3 t ) {
-		return newScaleMatrix4d( rv, t.x, t.y, t.z );
-	}
+  public static Matrix4x4 newScaleMatrix4d(Matrix4x4 rv, Tuple3 t) {
+    return newScaleMatrix4d(rv, t.x, t.y, t.z);
+  }
 
-	public static Matrix4x4 newScaleMatrix4d( Tuple3 t ) {
-		return newScaleMatrix4d( new Matrix4x4(), t );
-	}
+  public static Matrix4x4 newScaleMatrix4d(Tuple3 t) {
+    return newScaleMatrix4d(new Matrix4x4(), t);
+  }
 
-	public static Matrix4x4 applyScale( Matrix4x4 rv, double x, double y, double z ) {
-		rv.applyMultiplication( newScaleMatrix4d( x, y, z ) );
-		return rv;
-	}
+  public static Matrix4x4 applyScale(Matrix4x4 rv, double x, double y, double z) {
+    rv.applyMultiplication(newScaleMatrix4d(x, y, z));
+    return rv;
+  }
 
-	public static Matrix4x4 applyScale( Matrix4x4 rv, Tuple3 t ) {
-		return applyScale( rv, t.x, t.y, t.z );
-	}
+  public static Matrix4x4 applyScale(Matrix4x4 rv, Tuple3 t) {
+    return applyScale(rv, t.x, t.y, t.z);
+  }
 
-	public static AffineMatrix4x4 applyScale( AffineMatrix4x4 rv, double x, double y, double z ) {
-		rv.orientation.right.x *= x;
-		rv.orientation.right.y *= y;
-		rv.orientation.right.z *= z;
-		rv.orientation.up.x *= x;
-		rv.orientation.up.y *= y;
-		rv.orientation.up.z *= z;
-		rv.orientation.backward.x *= x;
-		rv.orientation.backward.y *= y;
-		rv.orientation.backward.z *= z;
-		rv.translation.x *= x;
-		rv.translation.y *= y;
-		rv.translation.z *= z;
-		return rv;
-	}
+  public static AffineMatrix4x4 applyScale(AffineMatrix4x4 rv, double x, double y, double z) {
+    rv.orientation.right.x *= x;
+    rv.orientation.right.y *= y;
+    rv.orientation.right.z *= z;
+    rv.orientation.up.x *= x;
+    rv.orientation.up.y *= y;
+    rv.orientation.up.z *= z;
+    rv.orientation.backward.x *= x;
+    rv.orientation.backward.y *= y;
+    rv.orientation.backward.z *= z;
+    rv.translation.x *= x;
+    rv.translation.y *= y;
+    rv.translation.z *= z;
+    return rv;
+  }
 
-	public static AffineMatrix4x4 applyScale( AffineMatrix4x4 rv, Tuple3 t ) {
-		return applyScale( rv, t.x, t.y, t.z );
-	}
+  public static AffineMatrix4x4 applyScale(AffineMatrix4x4 rv, Tuple3 t) {
+    return applyScale(rv, t.x, t.y, t.z);
+  }
 }

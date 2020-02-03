@@ -51,26 +51,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DigitsKeyCascadeMenu extends AbstractKeyCascadeMenu {
-	private static class SingletonHolder {
-		private static DigitsKeyCascadeMenu instance = new DigitsKeyCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static DigitsKeyCascadeMenu instance = new DigitsKeyCascadeMenu();
+  }
 
-	public static DigitsKeyCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DigitsKeyCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DigitsKeyCascadeMenu() {
-		super( UUID.fromString( "e9aff3d5-c300-4275-89f5-4800f0fc25c4" ),
-				Key.DIGIT_0,
-				Key.DIGIT_1,
-				Key.DIGIT_2,
-				Key.DIGIT_3,
-				Key.DIGIT_4,
-				Key.DIGIT_5,
-				Key.DIGIT_6,
-				Key.DIGIT_7,
-				Key.DIGIT_8,
-				Key.DIGIT_9 );
-	}
+  private DigitsKeyCascadeMenu() {
+    super(UUID.fromString("e9aff3d5-c300-4275-89f5-4800f0fc25c4"), Key.DIGIT_0, Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5, Key.DIGIT_6, Key.DIGIT_7, Key.DIGIT_8, Key.DIGIT_9);
+  }
 
 }

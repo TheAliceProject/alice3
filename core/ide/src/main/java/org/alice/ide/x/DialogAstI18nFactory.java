@@ -48,15 +48,15 @@ import org.alice.ide.IDE;
  * @author Dennis Cosgrove
  */
 public class DialogAstI18nFactory extends MutableAstI18nFactory {
-	private static class SingletonHolder {
-		private static DialogAstI18nFactory instance = new DialogAstI18nFactory();
-	}
+  private static class SingletonHolder {
+    private static DialogAstI18nFactory instance = new DialogAstI18nFactory();
+  }
 
-	public static DialogAstI18nFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DialogAstI18nFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DialogAstI18nFactory() {
-		super( IDE.INHERIT_GROUP );
-	}
+  private DialogAstI18nFactory() {
+    super(IDE.INHERIT_GROUP);
+  }
 }

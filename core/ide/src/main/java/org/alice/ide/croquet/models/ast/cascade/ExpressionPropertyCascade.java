@@ -60,40 +60,40 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionPropertyCascade extends ImmutableCascade<Expression> {
-	private final ExpressionProperty expressionProperty;
-	private ExpressionCascadeContext pushedContext;
+  private final ExpressionProperty expressionProperty;
+  private ExpressionCascadeContext pushedContext;
 
-	public ExpressionPropertyCascade( Group group, UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks ) {
-		super( group, id, Expression.class, blanks );
-		this.expressionProperty = expressionProperty;
-	}
+  public ExpressionPropertyCascade(Group group, UUID id, ExpressionProperty expressionProperty, CascadeBlank<Expression>... blanks) {
+    super(group, id, Expression.class, blanks);
+    this.expressionProperty = expressionProperty;
+  }
 
-	public final ExpressionProperty getExpressionProperty() {
-		return this.expressionProperty;
-	}
+  public final ExpressionProperty getExpressionProperty() {
+    return this.expressionProperty;
+  }
 
-	@Override
-	protected void prologue() {
-		this.pushedContext = new ExpressionPropertyContext( this.expressionProperty );
-		IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		super.prologue();
-	}
+  @Override
+  protected void prologue() {
+    this.pushedContext = new ExpressionPropertyContext(this.expressionProperty);
+    IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+    super.prologue();
+  }
 
-	@Override
-	protected void epilogue() {
-		super.epilogue();
-		IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
-		this.pushedContext = null;
-	}
+  @Override
+  protected void epilogue() {
+    super.epilogue();
+    IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(this.pushedContext);
+    this.pushedContext = null;
+  }
 
-	protected abstract Expression createExpression( Expression[] expressions );
+  protected abstract Expression createExpression(Expression[] expressions);
 
-	protected ExpressionPropertyEdit createExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
-		return new ExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression );
-	}
+  protected ExpressionPropertyEdit createExpressionPropertyEdit(UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression) {
+    return new ExpressionPropertyEdit(userActivity, expressionProperty, prevExpression, nextExpression);
+  }
 
-	@Override
-	protected final ExpressionPropertyEdit createEdit( UserActivity userActivity, Expression[] values ) {
-		return this.createExpressionPropertyEdit( userActivity, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
-	}
+  @Override
+  protected final ExpressionPropertyEdit createEdit(UserActivity userActivity, Expression[] values) {
+    return this.createExpressionPropertyEdit(userActivity, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression(values));
+  }
 }

@@ -52,23 +52,23 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class FileProjectLoader extends AbstractFileProjectLoader {
-	public FileProjectLoader( File file ) {
-		super( file );
-	}
+  public FileProjectLoader(File file) {
+    super(file);
+  }
 
-	@Override
-	public URI getUri() {
-		return this.getFile().toURI();
-	}
+  @Override
+  public URI getUri() {
+    return this.getFile().toURI();
+  }
 
-	public static void main( String[] args ) throws Exception {
-		File file = new File( FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" );
-		FileProjectLoader uriProjectPair = new FileProjectLoader( file );
+  public static void main(String[] args) throws Exception {
+    File file = new File(FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p");
+    FileProjectLoader uriProjectPair = new FileProjectLoader(file);
 
-		for( int i = 0; i < 32; i++ ) {
-			Logger.outln( i );
-			uriProjectPair.deliverContentOnEventDispatchThread(Logger::outln);
-			Thread.sleep( 100 );
-		}
-	}
+    for (int i = 0; i < 32; i++) {
+      Logger.outln(i);
+      uriProjectPair.deliverContentOnEventDispatchThread(Logger::outln);
+      Thread.sleep(100);
+    }
+  }
 }

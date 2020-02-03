@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Carp" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.09018462718965733" y="-0.0816935752589863" z="-0.2314625612744165"/>
+        <Max x="0.09018463024270915" y="0.09598500581127943" z="0.31739755353118076"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>koi</Tag>
+        <Tag>goldfish</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Carp" resourceName="MOTTLED" textureName="MOTTLED"/>
+    <Resource modelName="Carp" resourceName="GOLD" textureName="GOLD"/>
+</AliceModel>

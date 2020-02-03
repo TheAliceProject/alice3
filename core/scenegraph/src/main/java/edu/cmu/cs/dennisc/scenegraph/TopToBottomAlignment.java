@@ -47,12 +47,9 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public enum TopToBottomAlignment {
-	ALIGN_TOP,
-	ALIGN_CENTER_OF_TOP_AND_BOTTOM,
-	ALIGN_BOTTOM,
+  ALIGN_TOP, ALIGN_CENTER_OF_TOP_AND_BOTTOM, ALIGN_BOTTOM,
 
-	//todo?
-	//what i would really like to do is create a new enum TopToBottomTextAlignment which extends TopToBottomAlignment
-	ALIGN_BASELINE,
-	ALIGN_CENTER_OF_TOP_AND_BASELINE
+  //todo?
+  //what i would really like to do is create a new enum TopToBottomTextAlignment which extends TopToBottomAlignment
+  ALIGN_BASELINE, ALIGN_CENTER_OF_TOP_AND_BASELINE
 }

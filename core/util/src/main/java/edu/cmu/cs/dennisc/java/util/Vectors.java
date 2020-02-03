@@ -50,25 +50,25 @@ import java.util.Vector;
  * @author Dennis Cosgrove
  */
 public class Vectors {
-	private Vectors() {
-		throw new Error();
-	}
+  private Vectors() {
+    throw new Error();
+  }
 
-	public static <E> Vector<E> newVector() {
-		return new Vector<E>();
-	}
+  public static <E> Vector<E> newVector() {
+    return new Vector<E>();
+  }
 
-	public static <E, X extends E> Vector<E> newVector( X... array ) {
-		Vector<E> rv = new Vector<E>();
-		if( array != null ) {
-			Collections.addAll( rv, array );
-		}
-		return rv;
-	}
+  public static <E, X extends E> Vector<E> newVector(X... array) {
+    Vector<E> rv = new Vector<E>();
+    if (array != null) {
+      Collections.addAll(rv, array);
+    }
+    return rv;
+  }
 
-	public static <E> Vector<E> newVector( Collection<E> other ) {
-		Vector<E> rv = new Vector<E>();
-		rv.addAll( other );
-		return rv;
-	}
+  public static <E> Vector<E> newVector(Collection<E> other) {
+    Vector<E> rv = new Vector<E>();
+    rv.addAll(other);
+    return rv;
+  }
 }

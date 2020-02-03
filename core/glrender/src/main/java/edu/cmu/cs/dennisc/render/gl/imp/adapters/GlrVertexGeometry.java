@@ -53,69 +53,69 @@ import edu.cmu.cs.dennisc.scenegraph.VertexGeometry;
  * @author Dennis Cosgrove
  */
 public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeometry<T> {
-	private void updateVertices() {
-		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = this.sgE;
-		//	    int vertexCount = vg.getVertexCount();
-		//	    if( vertexCount != this.vertices.length ) {
-		//	        this.vertices = vg.getVertices();
-		//	    } else {
-		//	        this.vertices = vg.getVertices( this.vertices );
-		//	    }
-		setIsGeometryChanged( true );
-		this.isAlphaBlended = false;
-		//	    this.isVertexColored = false;
-		for( Vertex v : owner.vertices.getValue() ) {
-			if( v.diffuseColor.isNaN() == false ) {
-				//this.isVertexColored = true;
-				if( v.diffuseColor.alpha < 1.0f ) {
-					this.isAlphaBlended = true;
-					break;
-				}
-			}
-		}
-	}
+  private void updateVertices() {
+    //      edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = this.sgE;
+    //      int vertexCount = vg.getVertexCount();
+    //      if( vertexCount != this.vertices.length ) {
+    //          this.vertices = vg.getVertices();
+    //      } else {
+    //          this.vertices = vg.getVertices( this.vertices );
+    //      }
+    setIsGeometryChanged(true);
+    this.isAlphaBlended = false;
+    //      this.isVertexColored = false;
+    for (Vertex v : owner.vertices.getValue()) {
+      if (v.diffuseColor.isNaN() == false) {
+        //this.isVertexColored = true;
+        if (v.diffuseColor.alpha < 1.0f) {
+          this.isAlphaBlended = true;
+          break;
+        }
+      }
+    }
+  }
 
-	@Override
-	public boolean isAlphaBlended() {
-		return this.isAlphaBlended;
-	}
+  @Override
+  public boolean isAlphaBlended() {
+    return this.isAlphaBlended;
+  }
 
-	//    public boolean isVertexColored() {
-	//    	return this.isVertexColored;
-	//    }
+  //    public boolean isVertexColored() {
+  //      return this.isVertexColored;
+  //    }
 
-	protected Vertex accessVertexAt( int index ) {
-		return owner.vertices.getValue()[ index ];
-	}
+  protected Vertex accessVertexAt(int index) {
+    return owner.vertices.getValue()[index];
+  }
 
-	public void renderPrimative( RenderContext rc, int mode ) {
-		rc.gl.glBegin( mode );
-		for( Vertex vertex : owner.vertices.getValue() ) {
-			rc.renderVertex( vertex );
-		}
-		rc.gl.glEnd();
-	}
+  public void renderPrimative(RenderContext rc, int mode) {
+    rc.gl.glBegin(mode);
+    for (Vertex vertex : owner.vertices.getValue()) {
+      rc.renderVertex(vertex);
+    }
+    rc.gl.glEnd();
+  }
 
-	public void pickPrimative( PickContext pc, int mode ) {
-		pc.gl.glPushName( -1 );
-		pc.gl.glBegin( mode );
-		for( Vertex vertex : owner.vertices.getValue() ) {
-			pc.pickVertex( vertex );
-		}
-		pc.gl.glEnd();
-		pc.gl.glPopName();
-	}
+  public void pickPrimative(PickContext pc, int mode) {
+    pc.gl.glPushName(-1);
+    pc.gl.glBegin(mode);
+    for (Vertex vertex : owner.vertices.getValue()) {
+      pc.pickVertex(vertex);
+    }
+    pc.gl.glEnd();
+    pc.gl.glPopName();
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.vertices ) {
-			updateVertices();
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.vertices) {
+      updateVertices();
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	//    private boolean isVertexColored;
-	private boolean isAlphaBlended;
+  //    private boolean isVertexColored;
+  private boolean isAlphaBlended;
 }

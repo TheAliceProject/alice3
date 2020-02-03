@@ -53,32 +53,32 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  * @author Matt May
  */
 public class InputEventRecorder {
-	private final SceneImp scene;
-	private final EventScript eventScript = new EventScript();
+  private final SceneImp scene;
+  private final EventScript eventScript = new EventScript();
 
-	public InputEventRecorder( SceneImp scene ) {
-		this.scene = scene;
-	}
+  public InputEventRecorder(SceneImp scene) {
+    this.scene = scene;
+  }
 
-	public void record( KeyEvent e ) {
-		Animator animator = scene.getProgram().getAnimator();
-		if( animator != null ) {
-			eventScript.record( animator.getCurrentTime(), e );
-		} else {
-			Logger.warning( "animator is null", this, e );
-		}
-	}
+  public void record(KeyEvent e) {
+    Animator animator = scene.getProgram().getAnimator();
+    if (animator != null) {
+      eventScript.record(animator.getCurrentTime(), e);
+    } else {
+      Logger.warning("animator is null", this, e);
+    }
+  }
 
-	public void record( MouseEventWrapper e ) {
-		Animator animator = scene.getProgram().getAnimator();
-		if( animator != null ) {
-			eventScript.record( animator.getCurrentTime(), e );
-		} else {
-			Logger.warning( "animator is null", this, e );
-		}
-	}
+  public void record(MouseEventWrapper e) {
+    Animator animator = scene.getProgram().getAnimator();
+    if (animator != null) {
+      eventScript.record(animator.getCurrentTime(), e);
+    } else {
+      Logger.warning("animator is null", this, e);
+    }
+  }
 
-	public EventScript getScript() {
-		return eventScript;
-	}
+  public EventScript getScript() {
+    return eventScript;
+  }
 }

@@ -51,25 +51,25 @@ import javax.swing.ListCellRenderer;
  * @author Dennis Cosgrove
  */
 public class MultipleSelectionListView<T> extends ViewController<JList, MultipleSelectionListState<T>> {
-	public MultipleSelectionListView( MultipleSelectionListState<T> state ) {
-		super( state );
-	}
+  public MultipleSelectionListView(MultipleSelectionListState<T> state) {
+    super(state);
+  }
 
-	public ListCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
+  public ListCellRenderer getCellRenderer() {
+    return this.getAwtComponent().getCellRenderer();
+  }
 
-	public void setCellRenderer( ListCellRenderer listCellRenderer ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
-	}
+  public void setCellRenderer(ListCellRenderer listCellRenderer) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setCellRenderer(listCellRenderer);
+  }
 
-	@Override
-	protected JList createAwtComponent() {
-		MultipleSelectionListState.SwingModel swingModel = this.getModel().getSwingModel();
-		JList rv = new JList( swingModel.getListModel() );
-		rv.setSelectionModel( swingModel.getListSelectionModel() );
-		return rv;
-	}
+  @Override
+  protected JList createAwtComponent() {
+    MultipleSelectionListState.SwingModel swingModel = this.getModel().getSwingModel();
+    JList rv = new JList(swingModel.getListModel());
+    rv.setSelectionModel(swingModel.getListSelectionModel());
+    return rv;
+  }
 
 }

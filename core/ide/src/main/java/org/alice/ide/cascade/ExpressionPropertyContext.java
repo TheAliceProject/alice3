@@ -55,37 +55,37 @@ import org.lgna.project.ast.Statement;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyContext implements ExpressionCascadeContext {
-	private final ExpressionProperty expressionProperty;
+  private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyContext( ExpressionProperty expressionProperty ) {
-		this.expressionProperty = expressionProperty;
-	}
+  public ExpressionPropertyContext(ExpressionProperty expressionProperty) {
+    this.expressionProperty = expressionProperty;
+  }
 
-	@Override
-	public Expression getPreviousExpression() {
-		return this.expressionProperty.getValue();
-	}
+  @Override
+  public Expression getPreviousExpression() {
+    return this.expressionProperty.getValue();
+  }
 
-	@Override
-	public BlockStatementIndexPair getBlockStatementIndexPair() {
-		InstancePropertyOwner owner = this.expressionProperty.getOwner();
-		if( owner instanceof Node ) {
-			Node node = (Node)owner;
-			Statement statement = node.getFirstAncestorAssignableTo( Statement.class, true );
-			if( statement != null ) {
-				if( statement instanceof ConstructorInvocationStatement ) {
-					//todo
-					return null;
-				} else {
-					Node parent = statement.getParent();
-					if( parent instanceof BlockStatement ) {
-						BlockStatement blockStatement = (BlockStatement)parent;
-						int index = blockStatement.statements.indexOf( statement );
-						return new BlockStatementIndexPair( blockStatement, index );
-					}
-				}
-			}
-		}
-		return null;
-	}
+  @Override
+  public BlockStatementIndexPair getBlockStatementIndexPair() {
+    InstancePropertyOwner owner = this.expressionProperty.getOwner();
+    if (owner instanceof Node) {
+      Node node = (Node) owner;
+      Statement statement = node.getFirstAncestorAssignableTo(Statement.class, true);
+      if (statement != null) {
+        if (statement instanceof ConstructorInvocationStatement) {
+          //todo
+          return null;
+        } else {
+          Node parent = statement.getParent();
+          if (parent instanceof BlockStatement) {
+            BlockStatement blockStatement = (BlockStatement) parent;
+            int index = blockStatement.statements.indexOf(statement);
+            return new BlockStatementIndexPair(blockStatement, index);
+          }
+        }
+      }
+    }
+    return null;
+  }
 }

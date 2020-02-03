@@ -55,94 +55,94 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public final class DifferentSignature<M extends Member> extends PotentialNameChanger<M> {
-	private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
-	private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
-	private final MemberHubWithNameState<M> importHub;
-	private final MemberHubWithNameState<M> projectHub;
-	private final ProjectDifferentSignatureCardOwner projectCardOwner;
-	private final DifferentSignatureHelpComposite<M> helpComposite;
+  private static final String METHOD_POST_FIX = "<br><em>(different signature)</em>";
+  private static final String FIELD_POST_FIX = "<br><em>(different value class)</em>";
+  private final MemberHubWithNameState<M> importHub;
+  private final MemberHubWithNameState<M> projectHub;
+  private final ProjectDifferentSignatureCardOwner projectCardOwner;
+  private final DifferentSignatureHelpComposite<M> helpComposite;
 
-	public DifferentSignature( URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
-		super( uriForDescriptionPurposesOnly );
-		this.importHub = new MemberHubWithNameState<M>( importMember, true ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				if( importHub.getIsDesiredState().getValue() ) {
-					if( isRenameRequired() ) {
-						return ActionStatus.RENAME_REQUIRED;
-					} else {
-						return ActionStatus.ADD_AND_RENAME;
-					}
-				} else {
-					return ActionStatus.OMIT;
-				}
-			}
-		};
+  public DifferentSignature(URI uriForDescriptionPurposesOnly, M importMember, M projectMember) {
+    super(uriForDescriptionPurposesOnly);
+    this.importHub = new MemberHubWithNameState<M>(importMember, true) {
+      @Override
+      public ActionStatus getActionStatus() {
+        if (importHub.getIsDesiredState().getValue()) {
+          if (isRenameRequired()) {
+            return ActionStatus.RENAME_REQUIRED;
+          } else {
+            return ActionStatus.ADD_AND_RENAME;
+          }
+        } else {
+          return ActionStatus.OMIT;
+        }
+      }
+    };
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, true ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				if( importHub.getIsDesiredState().getValue() ) {
-					if( isRenameRequired() ) {
-						return ActionStatus.RENAME_REQUIRED;
-					} else {
-						return ActionStatus.KEEP_AND_RENAME;
-					}
-				} else {
-					return ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE;
-				}
-			}
-		};
+    this.projectHub = new MemberHubWithNameState<M>(projectMember, true) {
+      @Override
+      public ActionStatus getActionStatus() {
+        if (importHub.getIsDesiredState().getValue()) {
+          if (isRenameRequired()) {
+            return ActionStatus.RENAME_REQUIRED;
+          } else {
+            return ActionStatus.KEEP_AND_RENAME;
+          }
+        } else {
+          return ActionStatus.KEEP_OVER_DIFFERENT_SIGNATURE;
+        }
+      }
+    };
 
-		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
-		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
+    this.importHub.setOtherIsDesiredState(this.projectHub.getIsDesiredState());
+    this.projectHub.setOtherIsDesiredState(this.importHub.getIsDesiredState());
 
-		this.projectHub.getIsDesiredState().setEnabled( false );
-		this.projectCardOwner = new ProjectDifferentSignatureCardOwner( this );
+    this.projectHub.getIsDesiredState().setEnabled(false);
+    this.projectCardOwner = new ProjectDifferentSignatureCardOwner(this);
 
-		//todo
-		if( importMember instanceof UserMethod ) {
-			this.helpComposite = (DifferentSignatureHelpComposite<M>)new MethodDifferentSignatureHelpComposite( (DifferentSignature<UserMethod>)this );
-		} else if( importMember instanceof UserField ) {
-			this.helpComposite = (DifferentSignatureHelpComposite<M>)new FieldDifferentSignatureHelpComposite( (DifferentSignature<UserField>)this );
-		} else {
-			//todo
-			this.helpComposite = null;
-		}
-	}
+    //todo
+    if (importMember instanceof UserMethod) {
+      this.helpComposite = (DifferentSignatureHelpComposite<M>) new MethodDifferentSignatureHelpComposite((DifferentSignature<UserMethod>) this);
+    } else if (importMember instanceof UserField) {
+      this.helpComposite = (DifferentSignatureHelpComposite<M>) new FieldDifferentSignatureHelpComposite((DifferentSignature<UserField>) this);
+    } else {
+      //todo
+      this.helpComposite = null;
+    }
+  }
 
-	@Override
-	public MemberHubWithNameState<M> getImportHub() {
-		return this.importHub;
-	}
+  @Override
+  public MemberHubWithNameState<M> getImportHub() {
+    return this.importHub;
+  }
 
-	@Override
-	public MemberHubWithNameState<M> getProjectHub() {
-		return this.projectHub;
-	}
+  @Override
+  public MemberHubWithNameState<M> getProjectHub() {
+    return this.projectHub;
+  }
 
-	public ProjectDifferentSignatureCardOwner getProjectCardOwner() {
-		return this.projectCardOwner;
-	}
+  public ProjectDifferentSignatureCardOwner getProjectCardOwner() {
+    return this.projectCardOwner;
+  }
 
-	public DifferentSignatureHelpComposite<M> getHelpComposite() {
-		return this.helpComposite;
-	}
+  public DifferentSignatureHelpComposite<M> getHelpComposite() {
+    return this.helpComposite;
+  }
 
-	@Override
-	protected boolean isRenameRequired() {
-		if( this.importHub.getIsDesiredState().getValue() ) {
-			//todo
-			return this.projectHub.getNameState().getValue().contentEquals( this.importHub.getNameState().getValue() );
-		}
-		return false;
-	}
+  @Override
+  protected boolean isRenameRequired() {
+    if (this.importHub.getIsDesiredState().getValue()) {
+      //todo
+      return this.projectHub.getNameState().getValue().contentEquals(this.importHub.getNameState().getValue());
+    }
+    return false;
+  }
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
-		if( this.isRenameRequired() ) {
-			sb.append( "must not have same name: \"" );
-			sb.append( this.importHub.getMember().getName() );
-			sb.append( "\"." );
-		}
-	}
+  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+    if (this.isRenameRequired()) {
+      sb.append("must not have same name: \"");
+      sb.append(this.importHub.getMember().getName());
+      sb.append("\".");
+    }
+  }
 }

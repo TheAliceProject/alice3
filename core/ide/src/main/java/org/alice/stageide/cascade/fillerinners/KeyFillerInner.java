@@ -59,16 +59,16 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class KeyFillerInner extends ExpressionFillerInner {
-	public KeyFillerInner() {
-		super( Key.class );
-	}
+  public KeyFillerInner() {
+    super(Key.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( LettersKeyCascadeMenu.getInstance() );
-		items.add( DigitsKeyCascadeMenu.getInstance() );
-		items.add( ArrowsKeyCascadeMenu.getInstance() );
-		items.add( CascadeLineSeparator.getInstance() );
-		items.add( KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(LettersKeyCascadeMenu.getInstance());
+    items.add(DigitsKeyCascadeMenu.getInstance());
+    items.add(ArrowsKeyCascadeMenu.getInstance());
+    items.add(CascadeLineSeparator.getInstance());
+    items.add(KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+  }
 }

@@ -51,157 +51,137 @@ import org.lgna.croquet.BoundedDoubleState;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 
-public class SnapState
-{
+public class SnapState {
 
-	private static class SingletonHolder {
-		private static SnapState instance = new SnapState();
-	}
+  private static class SingletonHolder {
+    private static SnapState instance = new SnapState();
+  }
 
-	public static SnapState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SnapState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SnapState()
-	{
-	}
+  private SnapState() {
+  }
 
-	private static SideComposite getSideComposite() {
-		return SideComposite.getInstance();
-	}
+  private static SideComposite getSideComposite() {
+    return SideComposite.getInstance();
+  }
 
-	private SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
-		return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
-	}
+  private SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+    return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
+  }
 
-	public BooleanState getIsSnapEnabledState()
-	{
-		return getSideComposite().getIsSnapEnabledState();
-	}
+  public BooleanState getIsSnapEnabledState() {
+    return getSideComposite().getIsSnapEnabledState();
+  }
 
-	public BooleanState getIsSnapToGroundEnabledState()
-	{
-		return getSnapDetailsToolPaletteCoreComposite().getIsSnapToGroundEnabledState();
-	}
+  public BooleanState getIsSnapToGroundEnabledState() {
+    return getSnapDetailsToolPaletteCoreComposite().getIsSnapToGroundEnabledState();
+  }
 
-	public BooleanState getIsSnapToGridEnabledState()
-	{
-		return getIsSnapEnabledState();
-	}
+  public BooleanState getIsSnapToGridEnabledState() {
+    return getIsSnapEnabledState();
+  }
 
-	public BooleanState getIsRotationSnapEnabledState()
-	{
-		return getSnapDetailsToolPaletteCoreComposite().getIsRotationState();
-	}
+  public BooleanState getIsRotationSnapEnabledState() {
+    return getSnapDetailsToolPaletteCoreComposite().getIsRotationState();
+  }
 
-	public BooleanState getShowSnapGridState()
-	{
-		return getSnapDetailsToolPaletteCoreComposite().getIsGridShowingState();
-	}
+  public BooleanState getShowSnapGridState() {
+    return getSnapDetailsToolPaletteCoreComposite().getIsGridShowingState();
+  }
 
-	public BoundedDoubleState getSnapGridSpacingState()
-	{
-		return getSnapDetailsToolPaletteCoreComposite().getGridSpacingState();
-	}
+  public BoundedDoubleState getSnapGridSpacingState() {
+    return getSnapDetailsToolPaletteCoreComposite().getGridSpacingState();
+  }
 
-	public BoundedDoubleState getSnapAngleInDegreesState()
-	{
-		return getSnapDetailsToolPaletteCoreComposite().getAngleState();
-	}
+  public BoundedDoubleState getSnapAngleInDegreesState() {
+    return getSnapDetailsToolPaletteCoreComposite().getAngleState();
+  }
 
-	//	public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)
-	//	{
-	//		this.getIsSnapToGroundEnabledState().setValue(shouldSnapToGround);
-	//	}
+  //  public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)
+  //  {
+  //    this.getIsSnapToGroundEnabledState().setValue(shouldSnapToGround);
+  //  }
 
-	public boolean shouldSnapToGround()
-	{
-		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGroundEnabledState().getValue();
-	}
+  public boolean shouldSnapToGround() {
+    return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGroundEnabledState().getValue();
+  }
 
-	public boolean isSnapToGroundEnabled()
-	{
-		return this.getIsSnapToGroundEnabledState().getValue();
-	}
+  public boolean isSnapToGroundEnabled() {
+    return this.getIsSnapToGroundEnabledState().getValue();
+  }
 
-	//	public void setShouldSnapToGridEnabled(boolean shouldSnapToGround)
-	//	{
-	//		this.getIsSnapToGridEnabledState().setValue(shouldSnapToGround);
-	//	}
+  //  public void setShouldSnapToGridEnabled(boolean shouldSnapToGround)
+  //  {
+  //    this.getIsSnapToGridEnabledState().setValue(shouldSnapToGround);
+  //  }
 
-	public boolean shouldSnapToGrid()
-	{
-		return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGridEnabledState().getValue();
-	}
+  public boolean shouldSnapToGrid() {
+    return this.getIsSnapEnabledState().getValue() && this.getIsSnapToGridEnabledState().getValue();
+  }
 
-	public boolean isSnapToGridEnabled()
-	{
-		return this.getIsSnapToGridEnabledState().getValue();
-	}
+  public boolean isSnapToGridEnabled() {
+    return this.getIsSnapToGridEnabledState().getValue();
+  }
 
-	//	public void setGridSpacing(double gridSpacing)
-	//	{
-	//		this.getSnapGridSpacingState().setValue(gridSpacing);
-	//	}
+  //  public void setGridSpacing(double gridSpacing)
+  //  {
+  //    this.getSnapGridSpacingState().setValue(gridSpacing);
+  //  }
 
-	public double getGridSpacing()
-	{
-		return this.getSnapGridSpacingState().getValue();
-	}
+  public double getGridSpacing() {
+    return this.getSnapGridSpacingState().getValue();
+  }
 
-	//	public void setSnapEnabled(boolean snapEnabled)
-	//	{
-	//		this.getIsSnapEnabledState().setValue(snapEnabled);
-	//	}
+  //  public void setSnapEnabled(boolean snapEnabled)
+  //  {
+  //    this.getIsSnapEnabledState().setValue(snapEnabled);
+  //  }
 
-	public boolean isSnapEnabled()
-	{
-		return this.getIsSnapEnabledState().getValue();
-	}
+  public boolean isSnapEnabled() {
+    return this.getIsSnapEnabledState().getValue();
+  }
 
-	//	public void setRotationSnapEnabled(boolean rotationSnapEnabled)
-	//	{
-	//		this.getIsRotationSnapEnabledState().setValue(rotationSnapEnabled);
-	//	}
+  //  public void setRotationSnapEnabled(boolean rotationSnapEnabled)
+  //  {
+  //    this.getIsRotationSnapEnabledState().setValue(rotationSnapEnabled);
+  //  }
 
-	public boolean shouldSnapToRotation()
-	{
-		return this.getIsSnapEnabledState().getValue() && this.getIsRotationSnapEnabledState().getValue();
-	}
+  public boolean shouldSnapToRotation() {
+    return this.getIsSnapEnabledState().getValue() && this.getIsRotationSnapEnabledState().getValue();
+  }
 
-	public boolean isRotationSnapEnabled()
-	{
-		return this.getIsRotationSnapEnabledState().getValue();
-	}
+  public boolean isRotationSnapEnabled() {
+    return this.getIsRotationSnapEnabledState().getValue();
+  }
 
-	//	public void setRotationSnapAngleInDegrees(double degrees)
-	//	{
-	//		this.getSnapAngleInDegreesState().setValue(degrees);
-	//	}
+  //  public void setRotationSnapAngleInDegrees(double degrees)
+  //  {
+  //    this.getSnapAngleInDegreesState().setValue(degrees);
+  //  }
 
-	//	public void setRotationSnapAngle(Angle snapAngle)
-	//	{
-	//		setRotationSnapAngleInDegrees(new AngleInDegrees(snapAngle).getAsDegrees());
-	//	}
+  //  public void setRotationSnapAngle(Angle snapAngle)
+  //  {
+  //    setRotationSnapAngleInDegrees(new AngleInDegrees(snapAngle).getAsDegrees());
+  //  }
 
-	public Angle getRotationSnapAngle()
-	{
-		return new AngleInDegrees( this.getSnapAngleInDegreesState().getValue() );
-	}
+  public Angle getRotationSnapAngle() {
+    return new AngleInDegrees(this.getSnapAngleInDegreesState().getValue());
+  }
 
-	public boolean shouldShowSnapGrid()
-	{
-		return this.getIsSnapEnabledState().getValue() && this.getShowSnapGridState().getValue();
-	}
+  public boolean shouldShowSnapGrid() {
+    return this.getIsSnapEnabledState().getValue() && this.getShowSnapGridState().getValue();
+  }
 
-	public boolean isShowSnapGridEnabled()
-	{
-		return this.getShowSnapGridState().getValue();
-	}
+  public boolean isShowSnapGridEnabled() {
+    return this.getShowSnapGridState().getValue();
+  }
 
-	//	public void setShowSnapGrid( boolean showSnapGrid )
-	//	{
-	//		this.getShowSnapGridState().setValue(showSnapGrid);
-	//	}
+  //  public void setShowSnapGrid( boolean showSnapGrid )
+  //  {
+  //    this.getShowSnapGridState().setValue(showSnapGrid);
+  //  }
 
 }

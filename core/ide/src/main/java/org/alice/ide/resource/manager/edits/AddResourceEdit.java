@@ -51,23 +51,23 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public final class AddResourceEdit extends AddOrRemoveResourceEdit {
-	public AddResourceEdit( UserActivity userActivity, Resource resource ) {
-		super( userActivity, resource );
-	}
+  public AddResourceEdit(UserActivity userActivity, Resource resource) {
+    super(userActivity, resource);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.addResource();
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.addResource();
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.removeResource();
-	}
+  @Override
+  protected final void undoInternal() {
+    this.removeResource();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "add resource" );
-		rv.append( NameableUtilities.safeGetName( this.getResource() ) );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("add resource");
+    rv.append(NameableUtilities.safeGetName(this.getResource()));
+  }
 }

@@ -46,9 +46,9 @@ package org.alice.ide.video.preview.views.events;
  * @author Dennis Cosgrove
  */
 public interface ThumbListener {
-	public void thumbPressed( float position );
+  public void thumbPressed(float position);
 
-	public void thumbDragged( float position );
+  public void thumbDragged(float position);
 
-	public void thumbReleased( float position );
+  public void thumbReleased(float position);
 }

@@ -98,239 +98,232 @@ import org.lgna.story.implementation.PoseUtilities;
  */
 public class AnimatorControlComposite<M extends SJointedModel> extends AbstractPoserControlComposite<AnimatorControlView> {
 
-	public static final Group GROUP = Group.getInstance( UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
-	private final StringState nameState = createStringState( "nameState" );
-	private final TimeLineComposite tlComposite = new TimeLineComposite();
-	private final BoundedDoubleState currentTime = createBoundedDoubleState( "currentTime", new BoundedDoubleDetails() );
-	private final TimeLineModifierComposite tlModifierComposite = new TimeLineModifierComposite( tlComposite );
+  public static final Group GROUP = Group.getInstance(UUID.fromString("813e60bb-77f3-45b5-a319-aa0bc42faffb"), "AnimatorOperations");
+  private final StringState nameState = createStringState("nameState");
+  private final TimeLineComposite tlComposite = new TimeLineComposite();
+  private final BoundedDoubleState currentTime = createBoundedDoubleState("currentTime", new BoundedDoubleDetails());
+  private final TimeLineModifierComposite tlModifierComposite = new TimeLineModifierComposite(tlComposite);
 
-	public AnimatorControlComposite( AbstractPoserOrAnimatorComposite parent ) {
-		super( parent, UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
-		currentTime.addValueListener( new ValueListener<Double>() {
+  public AnimatorControlComposite(AbstractPoserOrAnimatorComposite parent) {
+    super(parent, UUID.fromString("09599add-4c1b-4ec6-ab5d-4c35f9053bae"));
+    currentTime.addValueListener(new ValueListener<Double>() {
 
-			@Override
-			public void changing( State<Double> state, Double prevValue, Double nextValue ) {
-			}
+      @Override
+      public void changing(State<Double> state, Double prevValue, Double nextValue) {
+      }
 
-			@Override
-			public void changed( State<Double> state, Double prevValue, Double nextValue ) {
-				tlComposite.getTimeLine().setCurrentTime( nextValue );
-			}
-		} );
-		parent.getScene().addDragListener( sphereDragListener );
-		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
+      @Override
+      public void changed(State<Double> state, Double prevValue, Double nextValue) {
+        tlComposite.getTimeLine().setCurrentTime(nextValue);
+      }
+    });
+    parent.getScene().addDragListener(sphereDragListener);
+    currentTime.setValueTransactionlessly(tlComposite.getTimeLine().getCurrentTime());
 
-		tlComposite.getTimeLine().addListener( timeLineListener );
-		tlComposite.setInitialPose( PoseUtilities.createPoseFromT( parent.getModel() ) );
-	}
+    tlComposite.getTimeLine().addListener(timeLineListener);
+    tlComposite.setInitialPose(PoseUtilities.createPoseFromT(parent.getModel()));
+  }
 
-	private final TimeLineListener timeLineListener = new TimeLineListener() {
+  private final TimeLineListener timeLineListener = new TimeLineListener() {
 
-		@Override
-		public void selectedKeyFrameChanged( KeyFrameData event ) {
-		}
+    @Override
+    public void selectedKeyFrameChanged(KeyFrameData event) {
+    }
 
-		@Override
-		public void keyFrameAdded( KeyFrameData event ) {
-			if( tlComposite.getTimeLine().getCurrentTime() == event.getEventTime() ) {
-				tlComposite.selectKeyFrame( event );
-			}
-		}
+    @Override
+    public void keyFrameAdded(KeyFrameData event) {
+      if (tlComposite.getTimeLine().getCurrentTime() == event.getEventTime()) {
+        tlComposite.selectKeyFrame(event);
+      }
+    }
 
-		@Override
-		public void keyFrameDeleted( KeyFrameData event ) {
-			tlComposite.getTimeLine().setCurrentTime( tlComposite.getTimeLine().getCurrentTime() );//to refire to get interpolation for pose
-		}
+    @Override
+    public void keyFrameDeleted(KeyFrameData event) {
+      tlComposite.getTimeLine().setCurrentTime(tlComposite.getTimeLine().getCurrentTime()); //to refire to get interpolation for pose
+    }
 
-		@Override
-		public void keyFrameModified( KeyFrameData event ) {
-			tlComposite.getTimeLine().setCurrentTime( event.getEventTime() );
-		}
+    @Override
+    public void keyFrameModified(KeyFrameData event) {
+      tlComposite.getTimeLine().setCurrentTime(event.getEventTime());
+    }
 
-		@Override
-		public void endTimeChanged( double endTime ) {
-		}
+    @Override
+    public void endTimeChanged(double endTime) {
+    }
 
-		@Override
-		public void currentTimeChanged( double currentTime, Pose pose ) {
-			parent.strikePose( pose );
-		}
-	};
+    @Override
+    public void currentTimeChanged(double currentTime, Pose pose) {
+      parent.strikePose(pose);
+    }
+  };
 
-	private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
+  private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
 
-		@Override
-		public void fireStart( PoserEvent poserEvent ) {
-		}
+    @Override
+    public void fireStart(PoserEvent poserEvent) {
+    }
 
-		@Override
-		public void fireFinish( PoserEvent poserEvent ) {
-			TimeLine timeLine = tlComposite.getTimeLine();
-			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
-			// TODO not use Application.getActiveInstance().acquireOpenActivity()
-			UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
-			if( currentFrame != null ) {
-				userActivity.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( userActivity, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
-			} else {
-				userActivity.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( userActivity, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
-			}
-		}
+    @Override
+    public void fireFinish(PoserEvent poserEvent) {
+      TimeLine timeLine = tlComposite.getTimeLine();
+      KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
+      // TODO not use Application.getActiveInstance().acquireOpenActivity()
+      UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+      if (currentFrame != null) {
+        userActivity.commitAndInvokeDo(new ModifyPoseOnExistingKeyFrameInTimeLineEdit(userActivity, timeLine, currentFrame, parent.getPose(), currentFrame.getPose()));
+      } else {
+        userActivity.commitAndInvokeDo(new AddKeyFrameToTimeLineEdit(userActivity, timeLine, new KeyFrameData(timeLine.getCurrentTime(), parent.getPose())));
+      }
+    }
 
-		@Override
-		public void fireAnchorUpdate( PoserEvent poserEvent ) {
-		}
-	};
-	private final ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
+    @Override
+    public void fireAnchorUpdate(PoserEvent poserEvent) {
+    }
+  };
+  private final ActionOperation runAnimationOperation = createActionOperation("runAnimation", new Action() {
 
-		boolean stillRunning = true;
+    boolean stillRunning = true;
 
-		@Override
-		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			final M model = (M)parent.getModel();
-			final TimeLine timeLine = tlComposite.getTimeLine();
-			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
-			final ComponentExecutor timerThread = new ComponentExecutor( new Runnable() {
+    @Override
+    public AbstractEdit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      final M model = (M) parent.getModel();
+      final TimeLine timeLine = tlComposite.getTimeLine();
+      final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
+      final ComponentExecutor timerThread = new ComponentExecutor(new Runnable() {
 
-				@Override
-				public void run() {
-					timeLine.disableListeners();
-					timeLine.setCurrentTime( 0 );
-					while( stillRunning ) {
-						try {
-							Thread.sleep( 10 );
-							timeLine.setCurrentTime( timeLine.getCurrentTime() + .01 );
-						} catch( InterruptedException e ) {
-							e.printStackTrace();
-						}
-					}
-					timeLine.setCurrentTime( timeLine.getKeyFrames().get( timeLine.getKeyFrames().size() - 1 ).getEventTime() );
-					timeLine.enableListeners();
-				}
+        @Override
+        public void run() {
+          timeLine.disableListeners();
+          timeLine.setCurrentTime(0);
+          while (stillRunning) {
+            try {
+              Thread.sleep(10);
+              timeLine.setCurrentTime(timeLine.getCurrentTime() + .01);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+          }
+          timeLine.setCurrentTime(timeLine.getKeyFrames().get(timeLine.getKeyFrames().size() - 1).getEventTime());
+          timeLine.enableListeners();
+        }
 
-			}, "runAnimation" );
-			ComponentExecutor thread = new ComponentExecutor(new Runnable() {
+      }, "runAnimation");
+      ComponentExecutor thread = new ComponentExecutor(new Runnable() {
 
-				@Override
-				public void run() {
-					if( keyFrames.size() > 0 ) {
-						model.straightenOutJoints();
-						stillRunning = true;
-						timerThread.start();
-					}
-					for( KeyFrameData data : keyFrames ) {
-						double duration = timeLine.getDurationForKeyFrame( data );
-						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
-						JointedModelImp imp = EmployeesOnly.getImplementation( model );
-						imp.strikePose( data.getPoseActual(), duration, EmployeesOnly.getInternal( styleForKeyFramePose ) );
-						//						tlComposite.selectKeyFrame( data );
-					}
-					stillRunning = false;
-				}
+        @Override
+        public void run() {
+          if (keyFrames.size() > 0) {
+            model.straightenOutJoints();
+            stillRunning = true;
+            timerThread.start();
+          }
+          for (KeyFrameData data : keyFrames) {
+            double duration = timeLine.getDurationForKeyFrame(data);
+            AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose(data);
+            JointedModelImp imp = EmployeesOnly.getImplementation(model);
+            imp.strikePose(data.getPoseActual(), duration, EmployeesOnly.getInternal(styleForKeyFramePose));
+            //            tlComposite.selectKeyFrame( data );
+          }
+          stillRunning = false;
+        }
 
-			}, "runAnimation" );
-			thread.start();
-			return null;
-		}
-	} );
+      }, "runAnimation");
+      thread.start();
+      return null;
+    }
+  });
 
-	public BlockStatement createMethodBody() {
-		ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.getInstance();
-		ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
+  public BlockStatement createMethodBody() {
+    ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.getInstance();
+    ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
 
-		List<KeyFrameData> keyFrameList = tlComposite.getTimeLine().getKeyFrames();
-		ExpressionStatement[] miArr = new ExpressionStatement[ keyFrameList.size() ];
-		int i = 0;
-		for( KeyFrameData event : keyFrameList ) {
-			try {
-				Expression argumentExpression = expressionCreator.createExpression( event.getPose() );
-				double duration = tlComposite.getTimeLine().getDurationForKeyFrame( event );
-				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
+    List<KeyFrameData> keyFrameList = tlComposite.getTimeLine().getKeyFrames();
+    ExpressionStatement[] miArr = new ExpressionStatement[keyFrameList.size()];
+    int i = 0;
+    for (KeyFrameData event : keyFrameList) {
+      try {
+        Expression argumentExpression = expressionCreator.createExpression(event.getPose());
+        double duration = tlComposite.getTimeLine().getDurationForKeyFrame(event);
+        AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose(event);
 
-				Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass( parent.getModelClass() );
-				JavaMethod STRIKE_POSE_METHOD = JavaMethod.getInstance( parent.getModelClass(), PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
-				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new ThisExpression(), STRIKE_POSE_METHOD, argumentExpression );
-				JavaMethod durationKeyMethod = JavaMethod.getInstance(
-						DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
-				methodInv.keyedArguments.add(
-						new JavaKeyedArgument(
-								methodInv.method.getValue().getKeyedParameter(),
-								durationKeyMethod,
-								new DoubleLiteral( duration ) ) );
+        Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass(parent.getModelClass());
+        JavaMethod STRIKE_POSE_METHOD = JavaMethod.getInstance(parent.getModelClass(), PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class);
+        MethodInvocation methodInv = AstUtilities.createMethodInvocation(new ThisExpression(), STRIKE_POSE_METHOD, argumentExpression);
+        JavaMethod durationKeyMethod = JavaMethod.getInstance(DurationAnimationStyleArgumentFactory.class, "duration", Number.class);
+        methodInv.keyedArguments.add(new JavaKeyedArgument(methodInv.method.getValue().getKeyedParameter(), durationKeyMethod, new DoubleLiteral(duration)));
 
-				//animationStyle
-				JavaMethod styleKeyMethod = JavaMethod.getInstance(
-						DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class );
-				methodInv.keyedArguments.add( new JavaKeyedArgument( methodInv.method.getValue().getKeyedParameter(),
-						styleKeyMethod, expressionCreator.createExpression( style ) ) );
-				//
-				ExpressionStatement statement = new ExpressionStatement( methodInv );
-				miArr[ i ] = statement;
-			} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
-			}
-			++i;
-		}
-		return new BlockStatement( miArr );
-	}
+        //animationStyle
+        JavaMethod styleKeyMethod = JavaMethod.getInstance(DurationAnimationStyleArgumentFactory.class, "animationStyle", AnimationStyle.class);
+        methodInv.keyedArguments.add(new JavaKeyedArgument(methodInv.method.getValue().getKeyedParameter(), styleKeyMethod, expressionCreator.createExpression(style)));
+        //
+        ExpressionStatement statement = new ExpressionStatement(methodInv);
+        miArr[i] = statement;
+      } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+        throw new RuntimeException(ccee);
+      }
+      ++i;
+    }
+    return new BlockStatement(miArr);
+  }
 
-	public ActionOperation getRunAnimationOperation() {
-		return this.runAnimationOperation;
-	}
+  public ActionOperation getRunAnimationOperation() {
+    return this.runAnimationOperation;
+  }
 
-	public TimeLineComposite getTimeLine() {
-		return this.tlComposite;
-	}
+  public TimeLineComposite getTimeLine() {
+    return this.tlComposite;
+  }
 
-	@Override
-	protected AnimatorControlView createView() {
-		return new AnimatorControlView( this );
-	}
+  @Override
+  protected AnimatorControlView createView() {
+    return new AnimatorControlView(this);
+  }
 
-	public BoundedDoubleState getCurrentTime() {
-		return this.currentTime;
-	}
+  public BoundedDoubleState getCurrentTime() {
+    return this.currentTime;
+  }
 
-	public Group getGroup() {
-		return GROUP;
-	}
+  public Group getGroup() {
+    return GROUP;
+  }
 
-	public TimeLineModifierComposite getEditComposite() {
-		return this.tlModifierComposite;
-	}
+  public TimeLineModifierComposite getEditComposite() {
+    return this.tlModifierComposite;
+  }
 
-	public StringState getNameState() {
-		return this.nameState;
-	}
+  public StringState getNameState() {
+    return this.nameState;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		UserMethod method = ( (AnimatorComposite)parent ).getMethod();
-		if( method == null ) {
-			tlComposite.getTimeLine().refresh();
-			parent.getModel().straightenOutJoints( new Duration( 0 ) );
-		} else {
-			parseMethod( method );
-			nameState.setValueTransactionlessly( method.getName() );
-			nameState.setEnabled( false );
-		}
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    UserMethod method = ((AnimatorComposite) parent).getMethod();
+    if (method == null) {
+      tlComposite.getTimeLine().refresh();
+      parent.getModel().straightenOutJoints(new Duration(0));
+    } else {
+      parseMethod(method);
+      nameState.setValueTransactionlessly(method.getName());
+      nameState.setEnabled(false);
+    }
+  }
 
-	public CompositeView getSouthViewForDialog() {
-		BorderPanel borderPanel = new BorderPanel();
-		borderPanel.addCenterComponent( tlComposite.getView() );
-		borderPanel.addLineStartComponent( runAnimationOperation.createButton() );
-		return borderPanel;
-	}
+  public CompositeView getSouthViewForDialog() {
+    BorderPanel borderPanel = new BorderPanel();
+    borderPanel.addCenterComponent(tlComposite.getView());
+    borderPanel.addLineStartComponent(runAnimationOperation.createButton());
+    return borderPanel;
+  }
 
-	public void parseMethod( UserMethod method ) {
-		ArrayList<KeyFrameData> frames = AnimationParser.initializeAndParse( method );
-		for( KeyFrameData frame : frames ) {
-			tlComposite.getTimeLine().addKeyFrameData( frame );
-		}
-	}
+  public void parseMethod(UserMethod method) {
+    ArrayList<KeyFrameData> frames = AnimationParser.initializeAndParse(method);
+    for (KeyFrameData frame : frames) {
+      tlComposite.getTimeLine().addKeyFrameData(frame);
+    }
+  }
 
-	public boolean isEmpty() {
-		return tlComposite.getTimeLine().getKeyFrames().size() == 0;
-	}
+  public boolean isEmpty() {
+    return tlComposite.getTimeLine().getKeyFrames().size() == 0;
+  }
 }

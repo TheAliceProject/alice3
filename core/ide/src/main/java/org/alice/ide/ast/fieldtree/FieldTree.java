@@ -63,120 +63,111 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class FieldTree {
-	public static class TypeCollapseThresholdData {
-		private final AbstractType<?, ?, ?> type;
-		private final int collapseThreshold;
-		private final int collapseThresholdForDescendants;
+  public static class TypeCollapseThresholdData {
+    private final AbstractType<?, ?, ?> type;
+    private final int collapseThreshold;
+    private final int collapseThresholdForDescendants;
 
-		public TypeCollapseThresholdData( AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
-			this.type = type;
-			this.collapseThreshold = collapseThreshold;
-			this.collapseThresholdForDescendants = collapseThresholdForDescendants;
-		}
+    public TypeCollapseThresholdData(AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants) {
+      this.type = type;
+      this.collapseThreshold = collapseThreshold;
+      this.collapseThresholdForDescendants = collapseThresholdForDescendants;
+    }
 
-		public TypeCollapseThresholdData( Class<?> cls, int collapseThreshold, int collapseThresholdForDescendants ) {
-			this( JavaType.getInstance( cls ), collapseThreshold, collapseThresholdForDescendants );
-		}
+    public TypeCollapseThresholdData(Class<?> cls, int collapseThreshold, int collapseThresholdForDescendants) {
+      this(JavaType.getInstance(cls), collapseThreshold, collapseThresholdForDescendants);
+    }
 
-		public AbstractType<?, ?, ?> getType() {
-			return this.type;
-		}
+    public AbstractType<?, ?, ?> getType() {
+      return this.type;
+    }
 
-		public int getCollapseThreshold() {
-			return this.collapseThreshold;
-		}
+    public int getCollapseThreshold() {
+      return this.collapseThreshold;
+    }
 
-		public int getCollapseThresholdForDescendants() {
-			return this.collapseThresholdForDescendants;
-		}
-	}
+    public int getCollapseThresholdForDescendants() {
+      return this.collapseThresholdForDescendants;
+    }
+  }
 
-	private static class Data {
-		private final Map<AbstractType, TypeNode> map = Maps.newHashMap();
-		private final RootNode root = new RootNode();
+  private static class Data {
+    private final Map<AbstractType, TypeNode> map = Maps.newHashMap();
+    private final RootNode root = new RootNode();
 
-		public Data( TypeCollapseThresholdData[] topLevels ) {
-			//map.put( null, this.root );
-			for( TypeCollapseThresholdData typeCollapseThresholdData : topLevels ) {
-				TypeNode typeNode = TypeNode.createAndAddToParent( root, typeCollapseThresholdData.getType(), typeCollapseThresholdData.getCollapseThreshold(), typeCollapseThresholdData.getCollapseThresholdForDescendants() );
-				map.put( typeCollapseThresholdData.getType(), typeNode );
-			}
-		}
+    public Data(TypeCollapseThresholdData[] topLevels) {
+      //map.put( null, this.root );
+      for (TypeCollapseThresholdData typeCollapseThresholdData : topLevels) {
+        TypeNode typeNode = TypeNode.createAndAddToParent(root, typeCollapseThresholdData.getType(), typeCollapseThresholdData.getCollapseThreshold(), typeCollapseThresholdData.getCollapseThresholdForDescendants());
+        map.put(typeCollapseThresholdData.getType(), typeNode);
+      }
+    }
 
-		private TypeNode getTypeNode( AbstractType<?, ?, ?> type ) {
-			if( type != null ) {
-				TypeNode typeNode = map.get( type );
-				if( typeNode != null ) {
-					//pass
-				} else {
-					TypeNode superTypeNode = getTypeNode( type.getSuperType() );
-					int collapseThreshold = superTypeNode.getCollapseThresholdForDescendants();
-					typeNode = TypeNode.createAndAddToParent( superTypeNode, type, collapseThreshold, collapseThreshold );
-					map.put( type, typeNode );
-				}
-				return typeNode;
-			} else {
-				return null;
-			}
-		}
+    private TypeNode getTypeNode(AbstractType<?, ?, ?> type) {
+      if (type != null) {
+        TypeNode typeNode = map.get(type);
+        if (typeNode != null) {
+          //pass
+        } else {
+          TypeNode superTypeNode = getTypeNode(type.getSuperType());
+          int collapseThreshold = superTypeNode.getCollapseThresholdForDescendants();
+          typeNode = TypeNode.createAndAddToParent(superTypeNode, type, collapseThreshold, collapseThreshold);
+          map.put(type, typeNode);
+        }
+        return typeNode;
+      } else {
+        return null;
+      }
+    }
 
-		public void insertField( UserField field ) {
-			FieldNode.createAndAddToParent( getTypeNode( field.getValueType() ), field );
-		}
+    public void insertField(UserField field) {
+      FieldNode.createAndAddToParent(getTypeNode(field.getValueType()), field);
+    }
 
-		public RootNode getRoot() {
-			return this.root;
-		}
-	}
+    public RootNode getRoot() {
+      return this.root;
+    }
+  }
 
-	private FieldTree() {
-		throw new AssertionError();
-	}
+  private FieldTree() {
+    throw new AssertionError();
+  }
 
-	public static RootNode createTreeFor( Iterable<UserField> fields, TypeCollapseThresholdData... topLevels ) {
-		Data data = new Data( topLevels );
-		for( UserField field : fields ) {
-			data.insertField( field );
-		}
-		RootNode root = data.getRoot();
-		root.collapseIfAppropriate();
-		root.removeEmptyTypeNodes();
-		root.sort();
+  public static RootNode createTreeFor(Iterable<UserField> fields, TypeCollapseThresholdData... topLevels) {
+    Data data = new Data(topLevels);
+    for (UserField field : fields) {
+      data.insertField(field);
+    }
+    RootNode root = data.getRoot();
+    root.collapseIfAppropriate();
+    root.removeEmptyTypeNodes();
+    root.sort();
 
-		return root;
-	}
+    return root;
+  }
 
-	private static final int COLLAPSE_THRESHOLD_FOR_FIRST_CLASS = 10;
-	private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS;
-	private static final int COLLAPSE_THRESHOLD_FOR_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS / 2;
-	private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_SECOND_CLASS;
+  private static final int COLLAPSE_THRESHOLD_FOR_FIRST_CLASS = 10;
+  private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS;
+  private static final int COLLAPSE_THRESHOLD_FOR_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS / 2;
+  private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_SECOND_CLASS;
 
-	public static TypeCollapseThresholdData createFirstClassThreshold( Class<?> cls ) {
-		return new TypeCollapseThresholdData( cls, COLLAPSE_THRESHOLD_FOR_FIRST_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS );
-	}
+  public static TypeCollapseThresholdData createFirstClassThreshold(Class<?> cls) {
+    return new TypeCollapseThresholdData(cls, COLLAPSE_THRESHOLD_FOR_FIRST_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS);
+  }
 
-	public static TypeCollapseThresholdData createSecondClassThreshold( Class<?> cls ) {
-		return new TypeCollapseThresholdData( cls, COLLAPSE_THRESHOLD_FOR_SECOND_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS );
-	}
+  public static TypeCollapseThresholdData createSecondClassThreshold(Class<?> cls) {
+    return new TypeCollapseThresholdData(cls, COLLAPSE_THRESHOLD_FOR_SECOND_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		Project project = IoUtilities.readProject( args[ 0 ] );
-		NamedUserType sceneType = (NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+  public static void main(String[] args) throws Exception {
+    Project project = IoUtilities.readProject(args[0]);
+    NamedUserType sceneType = (NamedUserType) project.getProgramType().fields.get(0).getValueType();
 
-		RootNode root = createTreeFor(
-				sceneType.fields,
-				createFirstClassThreshold( SBiped.class ),
-				createFirstClassThreshold( SQuadruped.class ),
-				createFirstClassThreshold( SSwimmer.class ),
-				createFirstClassThreshold( SFlyer.class ),
+    RootNode root = createTreeFor(sceneType.fields, createFirstClassThreshold(SBiped.class), createFirstClassThreshold(SQuadruped.class), createFirstClassThreshold(SSwimmer.class), createFirstClassThreshold(SFlyer.class),
 
-				createSecondClassThreshold( SProp.class ),
-				createSecondClassThreshold( SShape.class ),
-				createSecondClassThreshold( SThing.class ),
-				createSecondClassThreshold( Object.class )
-				);
-		StringBuilder sb = new StringBuilder();
-		root.append( sb, 0 );
-		System.out.println( sb.toString() );
-	}
+                                  createSecondClassThreshold(SProp.class), createSecondClassThreshold(SShape.class), createSecondClassThreshold(SThing.class), createSecondClassThreshold(Object.class));
+    StringBuilder sb = new StringBuilder();
+    root.append(sb, 0);
+    System.out.println(sb.toString());
+  }
 }

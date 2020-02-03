@@ -49,19 +49,14 @@ import org.lgna.story.implementation.SpatialRelationImp;
  * @author Dennis Cosgrove
  */
 public enum SpatialRelation {
-	LEFT_OF( SpatialRelationImp.LEFT_OF ),
-	RIGHT_OF( SpatialRelationImp.RIGHT_OF ),
-	ABOVE( SpatialRelationImp.ABOVE ),
-	BELOW( SpatialRelationImp.BELOW ),
-	IN_FRONT_OF( SpatialRelationImp.IN_FRONT_OF ),
-	BEHIND( SpatialRelationImp.BEHIND );
-	private final SpatialRelationImp imp;
+  LEFT_OF(SpatialRelationImp.LEFT_OF), RIGHT_OF(SpatialRelationImp.RIGHT_OF), ABOVE(SpatialRelationImp.ABOVE), BELOW(SpatialRelationImp.BELOW), IN_FRONT_OF(SpatialRelationImp.IN_FRONT_OF), BEHIND(SpatialRelationImp.BEHIND);
+  private final SpatialRelationImp imp;
 
-	SpatialRelation( SpatialRelationImp imp ) {
-		this.imp = imp;
-	}
+  SpatialRelation(SpatialRelationImp imp) {
+    this.imp = imp;
+  }
 
-	/* package-private */SpatialRelationImp getImp() {
-		return this.imp;
-	}
+  /* package-private */SpatialRelationImp getImp() {
+    return this.imp;
+  }
 }

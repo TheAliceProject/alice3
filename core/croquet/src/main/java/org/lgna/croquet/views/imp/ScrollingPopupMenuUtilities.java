@@ -53,45 +53,45 @@ import java.awt.event.MouseWheelListener;
  * @author Dennis Cosgrove
  */
 public class ScrollingPopupMenuUtilities {
-	private ScrollingPopupMenuUtilities() {
-		throw new AssertionError();
-	}
+  private ScrollingPopupMenuUtilities() {
+    throw new AssertionError();
+  }
 
-	private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
-		@Override
-		public void mouseWheelMoved( MouseWheelEvent e ) {
-			Component component = e.getComponent();
-			if( component instanceof JPopupMenu ) {
-				JPopupMenu jPopupMenu = (JPopupMenu)component;
-				LayoutManager layoutManager = jPopupMenu.getLayout();
-				if( layoutManager instanceof ScrollingPopupMenuLayout ) {
-					ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout)layoutManager;
-					scrollingPopupMenuLayout.adjustIndex( e.getWheelRotation() );
-				}
-			}
-			e.consume();
-		}
-	};
+  private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+      Component component = e.getComponent();
+      if (component instanceof JPopupMenu) {
+        JPopupMenu jPopupMenu = (JPopupMenu) component;
+        LayoutManager layoutManager = jPopupMenu.getLayout();
+        if (layoutManager instanceof ScrollingPopupMenuLayout) {
+          ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout) layoutManager;
+          scrollingPopupMenuLayout.adjustIndex(e.getWheelRotation());
+        }
+      }
+      e.consume();
+    }
+  };
 
-	public static void initializeScrollingCapability( JPopupMenu jPopupMenu ) {
-		ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout( jPopupMenu );
-		jPopupMenu.setLayout( layout );
-		jPopupMenu.addMouseWheelListener( mouseWheelListener );
-		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.UP ), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START );
-		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.DOWN ), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END );
-	}
+  public static void initializeScrollingCapability(JPopupMenu jPopupMenu) {
+    ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout(jPopupMenu);
+    jPopupMenu.setLayout(layout);
+    jPopupMenu.addMouseWheelListener(mouseWheelListener);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.UP), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_START);
+    jPopupMenu.add(new JScrollMenuItem(layout, ScrollDirection.DOWN), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END);
+  }
 
-	public static void addSideMenu( JPopupMenu jPopupMenu, JMenu jSideMenu ) {
-		jPopupMenu.add( jSideMenu, ScrollingPopupMenuLayout.ColumnConstraint.SIDE );
-	}
+  public static void addSideMenu(JPopupMenu jPopupMenu, JMenu jSideMenu) {
+    jPopupMenu.add(jSideMenu, ScrollingPopupMenuLayout.ColumnConstraint.SIDE);
+  }
 
-	public static void removeAllNonScrollComponents( JPopupMenu jPopupMenu ) {
-		for( Component component : jPopupMenu.getComponents() ) {
-			if( component instanceof JScrollMenuItem ) {
-				//pass
-			} else {
-				jPopupMenu.remove( component );
-			}
-		}
-	}
+  public static void removeAllNonScrollComponents(JPopupMenu jPopupMenu) {
+    for (Component component : jPopupMenu.getComponents()) {
+      if (component instanceof JScrollMenuItem) {
+        //pass
+      } else {
+        jPopupMenu.remove(component);
+      }
+    }
+  }
 }

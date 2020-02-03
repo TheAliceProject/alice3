@@ -65,61 +65,61 @@ import java.util.UUID;
  * @author Dave Culyba
  */
 public class StrikePoseMethodInvocationFillIn extends ImmutableCascadeFillIn<MethodInvocationEditFactory, Expression> {
-	private static MapToMapToMap<InstanceFactory, JavaMethod, List<SimpleArgument>, StrikePoseMethodInvocationFillIn> mapToMapToMap = MapToMapToMap.newInstance();
+  private static MapToMapToMap<InstanceFactory, JavaMethod, List<SimpleArgument>, StrikePoseMethodInvocationFillIn> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static StrikePoseMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments ) {
-		StrikePoseMethodInvocationFillIn rv = mapToMapToMap.get( instanceFactory, method, arguments );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new StrikePoseMethodInvocationFillIn( instanceFactory, method, arguments );
-			mapToMapToMap.put( instanceFactory, method, arguments, rv );
-		}
-		return rv;
-	}
+  public static StrikePoseMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments) {
+    StrikePoseMethodInvocationFillIn rv = mapToMapToMap.get(instanceFactory, method, arguments);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new StrikePoseMethodInvocationFillIn(instanceFactory, method, arguments);
+      mapToMapToMap.put(instanceFactory, method, arguments, rv);
+    }
+    return rv;
+  }
 
-	private final InstanceFactory instanceFactory;
-	private final MethodInvocation transientValue;
+  private final InstanceFactory instanceFactory;
+  private final MethodInvocation transientValue;
 
-	private StrikePoseMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments ) {
-		super( UUID.fromString( "00505921-ef68-4c5a-bbf9-40e9a4dc56cd" ), new ParameterBlank[ 0 ] );
-		this.instanceFactory = instanceFactory;
+  private StrikePoseMethodInvocationFillIn(InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments) {
+    super(UUID.fromString("00505921-ef68-4c5a-bbf9-40e9a4dc56cd"), new ParameterBlank[0]);
+    this.instanceFactory = instanceFactory;
 
-		MethodInvocation mi = new MethodInvocation();
-		mi.expression.setValue( new SelectedInstanceFactoryExpression( method.getDeclaringType() ) );
-		mi.method.setValue( method );
-		for( SimpleArgument argument : arguments ) {
-			mi.requiredArguments.add( argument );
-		}
-		this.transientValue = mi;
-		this.transientValue.expression.setValue( instanceFactory.createExpression() );
-	}
+    MethodInvocation mi = new MethodInvocation();
+    mi.expression.setValue(new SelectedInstanceFactoryExpression(method.getDeclaringType()));
+    mi.method.setValue(method);
+    for (SimpleArgument argument : arguments) {
+      mi.requiredArguments.add(argument);
+    }
+    this.transientValue = mi;
+    this.transientValue.expression.setValue(instanceFactory.createExpression());
+  }
 
-	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
-		return new StrikePoseMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
-	}
+  protected MethodInvocationEditFactory createMethodInvocationEditFactory(InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions) {
+    return new StrikePoseMethodInvocationEditFactory(instanceFactory, method, argumentExpressions);
+  }
 
-	private JavaMethod getMethod() {
-		return (JavaMethod)this.transientValue.method.getValue();
-	}
+  private JavaMethod getMethod() {
+    return (JavaMethod) this.transientValue.method.getValue();
+  }
 
-	@Override
-	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
-		Expression[] argumentExpressions = new Expression[ this.transientValue.requiredArguments.size() ];
-		for( int i = 0; i < this.transientValue.requiredArguments.size(); i++ ) {
-			argumentExpressions[ i ] = this.transientValue.requiredArguments.get( i ).expression.getValue();
-		}
-		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
-	}
+  @Override
+  public MethodInvocationEditFactory createValue(ItemNode<? super MethodInvocationEditFactory, Expression> itemNode) {
+    Expression[] argumentExpressions = new Expression[this.transientValue.requiredArguments.size()];
+    for (int i = 0; i < this.transientValue.requiredArguments.size(); i++) {
+      argumentExpressions[i] = this.transientValue.requiredArguments.get(i).expression.getValue();
+    }
+    return this.createMethodInvocationEditFactory(this.instanceFactory, this.getMethod(), argumentExpressions);
+  }
 
-	@Override
-	public MethodInvocationEditFactory getTransientValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
-		return null;
-	}
+  @Override
+  public MethodInvocationEditFactory getTransientValue(ItemNode<? super MethodInvocationEditFactory, Expression> itemNode) {
+    return null;
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super MethodInvocationEditFactory, Expression> node ) {
-		return PreviewAstI18nFactory.getInstance().createStatementPane( new ExpressionStatement( this.transientValue ) ).getAwtComponent();
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super MethodInvocationEditFactory, Expression> node) {
+    return PreviewAstI18nFactory.getInstance().createStatementPane(new ExpressionStatement(this.transientValue)).getAwtComponent();
+  }
 
 }

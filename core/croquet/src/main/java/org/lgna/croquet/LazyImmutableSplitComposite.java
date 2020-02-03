@@ -50,34 +50,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class LazyImmutableSplitComposite<LC extends Composite<?>, TC extends Composite<?>> extends ImmutableSplitComposite {
-	public LazyImmutableSplitComposite( UUID id ) {
-		super( id );
-	}
+  public LazyImmutableSplitComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public final LC getLeadingComposite() {
-		return this.leadingCompositeLazy.get();
-	}
+  @Override
+  public final LC getLeadingComposite() {
+    return this.leadingCompositeLazy.get();
+  }
 
-	@Override
-	public final TC getTrailingComposite() {
-		return this.trailingCompositeLazy.get();
-	}
+  @Override
+  public final TC getTrailingComposite() {
+    return this.trailingCompositeLazy.get();
+  }
 
-	protected abstract LC createLeadingComposite();
+  protected abstract LC createLeadingComposite();
 
-	protected abstract TC createTrailingComposite();
+  protected abstract TC createTrailingComposite();
 
-	private final Lazy<LC> leadingCompositeLazy = new Lazy<LC>() {
-		@Override
-		protected LC create() {
-			return createLeadingComposite();
-		}
-	};
-	private final Lazy<TC> trailingCompositeLazy = new Lazy<TC>() {
-		@Override
-		protected TC create() {
-			return createTrailingComposite();
-		}
-	};
+  private final Lazy<LC> leadingCompositeLazy = new Lazy<LC>() {
+    @Override
+    protected LC create() {
+      return createLeadingComposite();
+    }
+  };
+  private final Lazy<TC> trailingCompositeLazy = new Lazy<TC>() {
+    @Override
+    protected TC create() {
+      return createTrailingComposite();
+    }
+  };
 }

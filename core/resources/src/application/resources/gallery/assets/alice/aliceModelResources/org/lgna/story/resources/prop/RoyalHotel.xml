@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="RoyalHotel">
+    <BoundingBox>
+        <Min x="-2.631218194961548" y="9.781939981676722E-4" z="-4.354746434700905"/>
+        <Max x="2.6312181557533414" y="7.665816336840376" z="4.048081376938693"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>house</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>hotel</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RoyalHotel" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

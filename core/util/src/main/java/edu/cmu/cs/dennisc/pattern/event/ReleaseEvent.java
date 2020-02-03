@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.pattern.Releasable;
  * @author Dennis Cosgrove
  */
 public class ReleaseEvent extends Event<Releasable> {
-	public ReleaseEvent( Releasable source ) {
-		super( source );
-	}
+  public ReleaseEvent(Releasable source) {
+    super(source);
+  }
 }

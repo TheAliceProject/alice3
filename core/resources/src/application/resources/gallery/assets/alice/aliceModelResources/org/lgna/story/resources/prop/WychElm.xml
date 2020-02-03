@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="WychElm">
+    <BoundingBox>
+        <Min x="-1.9618159532546997" y="-2.499999993688107E-7" z="-2.6305019855499268"/>
+        <Max x="1.934018611907959" y="5.869338035583496" z="2.630502462387085"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>tree</Tag>
+        <Tag>wych elm</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WychElm" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

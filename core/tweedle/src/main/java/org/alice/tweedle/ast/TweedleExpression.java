@@ -4,20 +4,20 @@ import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
-abstract public class TweedleExpression {
-	private TweedleType type;
+public abstract class TweedleExpression {
+  private TweedleType type;
 
-	protected TweedleExpression( TweedleType type ) {
-		this.type = type;
-	}
+  protected TweedleExpression(TweedleType type) {
+    this.type = type;
+  }
 
-	public TweedleExpression() {
-		type = null;
-	}
+  public TweedleExpression() {
+    type = null;
+  }
 
-	public TweedleType getType() {
-		return type;
-	}
+  public TweedleType getType() {
+    return type;
+  }
 
-	abstract public TweedleValue evaluate( Frame frame );
+  public abstract TweedleValue evaluate(Frame frame);
 }

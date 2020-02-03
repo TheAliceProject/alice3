@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusWagon">
+    <BoundingBox>
+        <Min x="-1.228591799736023" y="-0.004578713192091835" z="-3.4938740999215345"/>
+        <Max x="1.228591799736023" y="3.962045168053348" z="1.5671441355680604"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusWagon" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="CircusWagonCover" resourceName="CIRCUS_WAGON_COVER" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.228591799736023" y="-0.004578713192091835" z="-3.4938740999215345"/>
+            <Max x="1.228591799736023" y="3.962045168053348" z="1.9897463745769046"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusWagonCoverOpen" resourceName="CIRCUS_WAGON_COVER_OPEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.228591799736023" y="-0.004578713192091835" z="-3.4938740999215345"/>
+            <Max x="1.228591799736023" y="3.962045168053348" z="1.9981730222493357"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -54,21 +54,21 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class GroupIcon extends CollageIcon {
-	public GroupIcon( Dimension size, List<? extends AbstractSingleSourceImageIconFactory> iconFactories ) {
-		super( size, iconFactories );
-	}
+  public GroupIcon(Dimension size, List<? extends AbstractSingleSourceImageIconFactory> iconFactories) {
+    super(size, iconFactories);
+  }
 
-	private static final double ROUND = 10;
+  private static final double ROUND = 10;
 
-	@Override
-	protected Shape createBackShape( double width, double height ) {
-		RoundRectangle2D a = new RoundRectangle2D.Double( 0, 0, width * 0.4, height, ROUND, ROUND );
-		RoundRectangle2D b = new RoundRectangle2D.Double( 0, height * 0.1, width, height * 0.9, ROUND, ROUND );
-		return AreaUtilities.createUnion( a, b );
-	}
+  @Override
+  protected Shape createBackShape(double width, double height) {
+    RoundRectangle2D a = new RoundRectangle2D.Double(0, 0, width * 0.4, height, ROUND, ROUND);
+    RoundRectangle2D b = new RoundRectangle2D.Double(0, height * 0.1, width, height * 0.9, ROUND, ROUND);
+    return AreaUtilities.createUnion(a, b);
+  }
 
-	@Override
-	protected Shape createFrontShape( double width, double height ) {
-		return new RoundRectangle2D.Double( 0, height * 0.5, width, height * 0.5, ROUND, ROUND );
-	}
+  @Override
+  protected Shape createFrontShape(double width, double height) {
+    return new RoundRectangle2D.Double(0, height * 0.5, width, height * 0.5, ROUND, ROUND);
+  }
 }

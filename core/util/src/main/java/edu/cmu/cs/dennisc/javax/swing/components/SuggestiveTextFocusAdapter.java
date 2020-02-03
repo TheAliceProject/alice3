@@ -50,26 +50,26 @@ import java.awt.event.FocusListener;
  * @author Dennis Cosgrove
  */
 class SuggestiveTextFocusAdapter implements FocusListener {
-	private JTextComponent textComponent;
+  private JTextComponent textComponent;
 
-	public SuggestiveTextFocusAdapter( JTextComponent textComponent ) {
-		this.textComponent = textComponent;
-	}
+  public SuggestiveTextFocusAdapter(JTextComponent textComponent) {
+    this.textComponent = textComponent;
+  }
 
-	@Override
-	public void focusGained( FocusEvent e ) {
-		if( this.textComponent.getText().length() == 0 ) {
-			this.textComponent.repaint();
-		}
-		//this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
-	}
+  @Override
+  public void focusGained(FocusEvent e) {
+    if (this.textComponent.getText().length() == 0) {
+      this.textComponent.repaint();
+    }
+    //this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
+  }
 
-	@Override
-	public void focusLost( FocusEvent e ) {
-		//Thread.dumpStack();
-		if( this.textComponent.getText().length() == 0 ) {
-			this.textComponent.repaint();
-		}
-		//this.textComponent.setBackground( java.awt.Color.WHITE );
-	}
+  @Override
+  public void focusLost(FocusEvent e) {
+    //Thread.dumpStack();
+    if (this.textComponent.getText().length() == 0) {
+      this.textComponent.repaint();
+    }
+    //this.textComponent.setBackground( java.awt.Color.WHITE );
+  }
 }

@@ -57,29 +57,29 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageIconFactory {
-	public MultipleSourceImageIconFactory( int defaultIndex, ImageIcon... imageIcons ) {
-		super( defaultIndex, imageIcons );
-	}
+  public MultipleSourceImageIconFactory(int defaultIndex, ImageIcon... imageIcons) {
+    super(defaultIndex, imageIcons);
+  }
 
-	public MultipleSourceImageIconFactory( int defaultIndex, URL... resources ) {
-		this( defaultIndex, IconUtilities.createImageIcons( resources ) );
-	}
+  public MultipleSourceImageIconFactory(int defaultIndex, URL... resources) {
+    this(defaultIndex, IconUtilities.createImageIcons(resources));
+  }
 
-	public MultipleSourceImageIconFactory( int defaultIndex, Image... images ) {
-		this( defaultIndex, IconUtilities.createImageIcons( images ) );
-	}
+  public MultipleSourceImageIconFactory(int defaultIndex, Image... images) {
+    this(defaultIndex, IconUtilities.createImageIcons(images));
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		ImageIcon imageIcon = this.getSourceImageIcon( size );
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new ScaledIcon( imageIcon, size.width, size.height );
-			}
-		} else {
-			return new ColorIcon( Color.RED, size.width, size.height );
-		}
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    ImageIcon imageIcon = this.getSourceImageIcon(size);
+    if (imageIcon != null) {
+      if ((imageIcon.getIconWidth() == size.width) && (imageIcon.getIconHeight() == size.height)) {
+        return imageIcon;
+      } else {
+        return new ScaledIcon(imageIcon, size.width, size.height);
+      }
+    } else {
+      return new ColorIcon(Color.RED, size.width, size.height);
+    }
+  }
 }

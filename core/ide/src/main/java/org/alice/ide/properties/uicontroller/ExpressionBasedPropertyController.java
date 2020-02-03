@@ -49,66 +49,56 @@ import org.lgna.croquet.views.Panel;
 
 /**
  * @author dculyba
- * 
+ *
  */
-public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P>
-{
-	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
+public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P> {
+  protected AbstractPropertyAdapter<P, ?> propertyAdapter;
 
-	public ExpressionBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
-		super();
-		this.initializeComponents();
-		this.setPropertyAdapter( propertyAdapter );
-	}
+  public ExpressionBasedPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter) {
+    super();
+    this.initializeComponents();
+    this.setPropertyAdapter(propertyAdapter);
+  }
 
-	@Override
-	public Class<?> getPropertyType()
-	{
-		return this.propertyAdapter.getPropertyType();
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return this.propertyAdapter.getPropertyType();
+  }
 
-	protected void setValueOnUI( P value )
-	{
+  protected void setValueOnUI(P value) {
 
-	}
+  }
 
-	protected void setValueOnData( P value )
-	{
-		this.propertyAdapter.setValue( value );
-	}
+  protected void setValueOnData(P value) {
+    this.propertyAdapter.setValue(value);
+  }
 
-	protected void initializeComponents()
-	{
-	}
+  protected void initializeComponents() {
+  }
 
-	@Override
-	public Panel getPanel()
-	{
-		return this;
-	}
+  @Override
+  public Panel getPanel() {
+    return this;
+  }
 
-	@Override
-	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
-	{
-		return this.propertyAdapter;
-	}
+  @Override
+  public AbstractPropertyAdapter<P, ?> getPropertyAdapter() {
+    return this.propertyAdapter;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.removeAllComponents();
-		if( propertyAdapter != null )
-		{
-			this.addCenterComponent( this.propertyAdapter.getExpressionState().createEditor( ProjectEditorAstI18nFactory.getInstance() ) );
-		}
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.removeAllComponents();
+    if (propertyAdapter != null) {
+      this.addCenterComponent(this.propertyAdapter.getExpressionState().createEditor(ProjectEditorAstI18nFactory.getInstance()));
+    }
+  }
 
-	@Override
-	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
-	{
-		this.propertyAdapter = propertyAdapter;
-		this.refreshLater();
-	}
+  @Override
+  public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter) {
+    this.propertyAdapter = propertyAdapter;
+    this.refreshLater();
+  }
 
 }

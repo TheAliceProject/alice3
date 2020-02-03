@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="JapaneseMapleTree">
+    <BoundingBox>
+        <Min x="-1.5770623683929443" y="0.0" z="-1.6167957782745361"/>
+        <Max x="1.5770623683929443" y="4.5130696296691895" z="1.6167957782745361"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="JapaneseMapleTree" resourceName="PURPLE" textureName="PURPLE"/>
+    <Resource modelName="JapaneseMapleTree" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

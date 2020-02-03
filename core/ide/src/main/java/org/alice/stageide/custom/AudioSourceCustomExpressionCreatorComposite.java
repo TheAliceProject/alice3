@@ -75,270 +75,256 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AudioSourceCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<AudioSourceCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static AudioSourceCustomExpressionCreatorComposite instance = new AudioSourceCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static AudioSourceCustomExpressionCreatorComposite instance = new AudioSourceCustomExpressionCreatorComposite();
+  }
 
-	public static AudioSourceCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AudioSourceCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static final int MARKER_MAX = 1000;
+  private static final int MARKER_MAX = 1000;
 
-	private final PlainStringValue resourceSidekickLabel = this.createStringValue( "resourceState.sidekickLabel" );
-	private final BoundedIntegerState volumeState = this.createBoundedIntegerState( "volumeState", VolumeLevelUtilities.createDetails() );
-	private final BoundedIntegerState startMarkerState = this.createBoundedIntegerState( "startMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
-	private final BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( "stopMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+  private final PlainStringValue resourceSidekickLabel = this.createStringValue("resourceState.sidekickLabel");
+  private final BoundedIntegerState volumeState = this.createBoundedIntegerState("volumeState", VolumeLevelUtilities.createDetails());
+  private final BoundedIntegerState startMarkerState = this.createBoundedIntegerState("startMarkerState", new BoundedIntegerDetails().minimum(0).maximum(MARKER_MAX).initialValue(0));
+  private final BoundedIntegerState stopMarkerState = this.createBoundedIntegerState("stopMarkerState", new BoundedIntegerDetails().minimum(0).maximum(MARKER_MAX).initialValue(MARKER_MAX));
 
-	private ValueListener<Integer> startValueListiner = new ValueListener<Integer>() {
-		@Override
-		public void valueChanged( ValueEvent<Integer> e ) {
-			updateStopValueIfNecessary();
-		}
-	};
-	private ValueListener<Integer> stopValueListiner = new ValueListener<Integer>() {
-		@Override
-		public void valueChanged( ValueEvent<Integer> e ) {
-			updateStartValueIfNecessary();
-		}
-	};
+  private ValueListener<Integer> startValueListiner = new ValueListener<Integer>() {
+    @Override
+    public void valueChanged(ValueEvent<Integer> e) {
+      updateStopValueIfNecessary();
+    }
+  };
+  private ValueListener<Integer> stopValueListiner = new ValueListener<Integer>() {
+    @Override
+    public void valueChanged(ValueEvent<Integer> e) {
+      updateStartValueIfNecessary();
+    }
+  };
 
-	private double toDouble( int markerValue, double defaultValue ) {
-		AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
-		double duration;
-		if( audioResource != null ) {
-			duration = audioResource.getDuration();
-		} else {
-			duration = Double.NaN;
-		}
-		if( Double.isNaN( duration ) ) {
-			return defaultValue;
-		} else {
-			double value = markerValue * 0.001 * duration;
-			value = DoubleUtilities.round( value, 3 );
-			return value;
-		}
-	}
+  private double toDouble(int markerValue, double defaultValue) {
+    AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
+    double duration;
+    if (audioResource != null) {
+      duration = audioResource.getDuration();
+    } else {
+      duration = Double.NaN;
+    }
+    if (Double.isNaN(duration)) {
+      return defaultValue;
+    } else {
+      double value = markerValue * 0.001 * duration;
+      value = DoubleUtilities.round(value, 3);
+      return value;
+    }
+  }
 
-	private boolean isIgnoringValueChanges;
+  private boolean isIgnoringValueChanges;
 
-	private void updateStartValueIfNecessary() {
-		if( this.isIgnoringValueChanges ) {
-			//pass
-		} else {
-			int start = this.startMarkerState.getValue();
-			int stop = this.stopMarkerState.getValue();
-			if( start > stop ) {
-				this.isIgnoringValueChanges = true;
-				try {
-					this.startMarkerState.setValueTransactionlessly( stop );
-				} finally {
-					this.isIgnoringValueChanges = false;
-				}
-				this.getView().updatePreview();
-			}
-		}
-	}
+  private void updateStartValueIfNecessary() {
+    if (this.isIgnoringValueChanges) {
+      //pass
+    } else {
+      int start = this.startMarkerState.getValue();
+      int stop = this.stopMarkerState.getValue();
+      if (start > stop) {
+        this.isIgnoringValueChanges = true;
+        try {
+          this.startMarkerState.setValueTransactionlessly(stop);
+        } finally {
+          this.isIgnoringValueChanges = false;
+        }
+        this.getView().updatePreview();
+      }
+    }
+  }
 
-	private void updateStopValueIfNecessary() {
-		if( this.isIgnoringValueChanges ) {
-			//pass
-		} else {
-			int start = this.startMarkerState.getValue();
-			int stop = this.stopMarkerState.getValue();
-			if( start > stop ) {
-				this.isIgnoringValueChanges = true;
-				try {
-					this.stopMarkerState.setValueTransactionlessly( start );
-				} finally {
-					this.isIgnoringValueChanges = false;
-				}
-				this.getView().updatePreview();
-			}
-		}
-	}
+  private void updateStopValueIfNecessary() {
+    if (this.isIgnoringValueChanges) {
+      //pass
+    } else {
+      int start = this.startMarkerState.getValue();
+      int stop = this.stopMarkerState.getValue();
+      if (start > stop) {
+        this.isIgnoringValueChanges = true;
+        try {
+          this.stopMarkerState.setValueTransactionlessly(start);
+        } finally {
+          this.isIgnoringValueChanges = false;
+        }
+        this.getView().updatePreview();
+      }
+    }
+  }
 
-	private double getStartMarkerTime() {
-		int value = this.startMarkerState.getValue();
-		return toDouble( value, 0.0 );
-	}
+  private double getStartMarkerTime() {
+    int value = this.startMarkerState.getValue();
+    return toDouble(value, 0.0);
+  }
 
-	private double getStopMarkerTime() {
-		int value = this.stopMarkerState.getValue();
-		if( value == MARKER_MAX ) {
-			return Double.NaN;
-		} else {
-			return toDouble( value, Double.NaN );
-		}
-	}
+  private double getStopMarkerTime() {
+    int value = this.stopMarkerState.getValue();
+    if (value == MARKER_MAX) {
+      return Double.NaN;
+    } else {
+      return toDouble(value, Double.NaN);
+    }
+  }
 
-	private final Operation testOperation = this.createActionOperation( "test", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
-			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );
-			double startTime = getStartMarkerTime();
-			double stopTime = getStopMarkerTime();
-			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
-			Player player = mediaFactory.createPlayer( audioResource, volume, startTime, stopTime );
-			player.test( null);
-			return null;
-		}
-	} );
+  private final Operation testOperation = this.createActionOperation("test", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
+      double volume = VolumeLevelUtilities.toDouble(getVolumeState().getValue());
+      double startTime = getStartMarkerTime();
+      double stopTime = getStopMarkerTime();
+      edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
+      Player player = mediaFactory.createPlayer(audioResource, volume, startTime, stopTime);
+      player.test(null);
+      return null;
+    }
+  });
 
-	private AudioSourceCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) );
-		this.startMarkerState.addNewSchoolValueListener( this.startValueListiner );
-		this.stopMarkerState.addNewSchoolValueListener( this.stopValueListiner );
-	}
+  private AudioSourceCustomExpressionCreatorComposite() {
+    super(UUID.fromString("786280be-fdba-4135-bcc4-b0548ded2e50"));
+    this.startMarkerState.addNewSchoolValueListener(this.startValueListiner);
+    this.stopMarkerState.addNewSchoolValueListener(this.stopValueListiner);
+  }
 
-	public AudioResourceExpressionState getAudioResourceExpressionState() {
-		return AudioResourceExpressionState.getInstance();
-	}
+  public AudioResourceExpressionState getAudioResourceExpressionState() {
+    return AudioResourceExpressionState.getInstance();
+  }
 
-	public BoundedIntegerState getVolumeState() {
-		return this.volumeState;
-	}
+  public BoundedIntegerState getVolumeState() {
+    return this.volumeState;
+  }
 
-	public BoundedIntegerState getStartMarkerState() {
-		return this.startMarkerState;
-	}
+  public BoundedIntegerState getStartMarkerState() {
+    return this.startMarkerState;
+  }
 
-	public BoundedIntegerState getStopMarkerState() {
-		return this.stopMarkerState;
-	}
+  public BoundedIntegerState getStopMarkerState() {
+    return this.stopMarkerState;
+  }
 
-	public Operation getTestOperation() {
-		return this.testOperation;
-	}
+  public Operation getTestOperation() {
+    return this.testOperation;
+  }
 
-	public PlainStringValue getResourceSidekickLabel() {
-		return this.resourceSidekickLabel;
-	}
+  public PlainStringValue getResourceSidekickLabel() {
+    return this.resourceSidekickLabel;
+  }
 
-	@Override
-	protected Expression createValue() {
-		ResourceExpression resourceExpression = (ResourceExpression)this.getAudioResourceExpressionState().getValue();
-		if( resourceExpression != null ) {
-			AudioResource audioResource = (AudioResource)resourceExpression.resource.getValue();
-			Expression arg0Expression;
-			if( audioResource != null ) {
-				arg0Expression = new ResourceExpression( AudioResource.class, audioResource );
-			} else {
-				arg0Expression = new NullLiteral();
-			}
+  @Override
+  protected Expression createValue() {
+    ResourceExpression resourceExpression = (ResourceExpression) this.getAudioResourceExpressionState().getValue();
+    if (resourceExpression != null) {
+      AudioResource audioResource = (AudioResource) resourceExpression.resource.getValue();
+      Expression arg0Expression;
+      if (audioResource != null) {
+        arg0Expression = new ResourceExpression(AudioResource.class, audioResource);
+      } else {
+        arg0Expression = new NullLiteral();
+      }
 
-			double volume = VolumeLevelUtilities.toDouble( this.getVolumeState().getValue() );
-			double startTime = this.getStartMarkerTime();
-			double stopTime = this.getStopMarkerTime();
+      double volume = VolumeLevelUtilities.toDouble(this.getVolumeState().getValue());
+      double startTime = this.getStartMarkerTime();
+      double stopTime = this.getStopMarkerTime();
 
-			// apologies for the negative logic
-			boolean isNotDefaultVolume = AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
-			boolean isNotDefaultStartTime = AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
-			boolean isNotDefaultStopTime = AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
+      // apologies for the negative logic
+      boolean isNotDefaultVolume = AudioSource.isWithinReasonableEpsilonOfDefaultVolume(volume) == false;
+      boolean isNotDefaultStartTime = AudioSource.isWithinReasonableEpsilonOfDefaultStartTime(startTime) == false;
+      boolean isNotDefaultStopTime = AudioSource.isDefaultStopTime_aka_NaN(stopTime) == false;
 
-			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
-				DoubleLiteral volumeLiteral = new DoubleLiteral( volume );
-				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
-					DoubleLiteral startTimeLiteral = new DoubleLiteral( startTime );
-					if( isNotDefaultStopTime ) {
-						DoubleLiteral stopTimeLiteral = new DoubleLiteral( stopTime );
+      if (isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime) {
+        DoubleLiteral volumeLiteral = new DoubleLiteral(volume);
+        if (isNotDefaultStartTime || isNotDefaultStopTime) {
+          DoubleLiteral startTimeLiteral = new DoubleLiteral(startTime);
+          if (isNotDefaultStopTime) {
+            DoubleLiteral stopTimeLiteral = new DoubleLiteral(stopTime);
 
-						JavaConstructor constructor = JavaConstructor.getInstance(
-								AudioSource.class,
-								AudioResource.class,
-								Number.class,
-								Number.class,
-								Number.class );
-						return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
-					} else {
-						JavaConstructor constructor = JavaConstructor.getInstance(
-								AudioSource.class,
-								AudioResource.class,
-								Number.class,
-								Number.class );
-						return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
-					}
-				} else {
-					JavaConstructor constructor = JavaConstructor.getInstance(
-							AudioSource.class,
-							AudioResource.class,
-							Number.class );
-					return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
-				}
-			} else {
-				JavaConstructor constructor = JavaConstructor.getInstance(
-						AudioSource.class,
-						AudioResource.class );
-				return AstUtilities.createInstanceCreation( constructor, arg0Expression );
-			}
-		} else {
-			return null;
-		}
-	}
+            JavaConstructor constructor = JavaConstructor.getInstance(AudioSource.class, AudioResource.class, Number.class, Number.class, Number.class);
+            return AstUtilities.createInstanceCreation(constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral);
+          } else {
+            JavaConstructor constructor = JavaConstructor.getInstance(AudioSource.class, AudioResource.class, Number.class, Number.class);
+            return AstUtilities.createInstanceCreation(constructor, arg0Expression, volumeLiteral, startTimeLiteral);
+          }
+        } else {
+          JavaConstructor constructor = JavaConstructor.getInstance(AudioSource.class, AudioResource.class, Number.class);
+          return AstUtilities.createInstanceCreation(constructor, arg0Expression, volumeLiteral);
+        }
+      } else {
+        JavaConstructor constructor = JavaConstructor.getInstance(AudioSource.class, AudioResource.class);
+        return AstUtilities.createInstanceCreation(constructor, arg0Expression);
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return null;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return null;
+  }
 
-	private static Expression getArgumentExpressionAt( InstanceCreation instanceCreation, int index ) {
-		assert instanceCreation.requiredArguments.size() >= index;
-		AbstractArgument arg = instanceCreation.requiredArguments.get( index );
-		assert arg != null;
-		assert arg instanceof SimpleArgument;
-		return ( (SimpleArgument)arg ).expression.getValue();
-	}
+  private static Expression getArgumentExpressionAt(InstanceCreation instanceCreation, int index) {
+    assert instanceCreation.requiredArguments.size() >= index;
+    AbstractArgument arg = instanceCreation.requiredArguments.get(index);
+    assert arg != null;
+    assert arg instanceof SimpleArgument;
+    return ((SimpleArgument) arg).expression.getValue();
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		ResourceExpression resourceExpression = null;
-		AudioResource audioResource = null;
-		double volumeLevel = 1.0;
-		double startTime = 0.0;
-		double stopTime = Double.NaN;
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    ResourceExpression resourceExpression = null;
+    AudioResource audioResource = null;
+    double volumeLevel = 1.0;
+    double startTime = 0.0;
+    double stopTime = Double.NaN;
 
-		if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			int n = instanceCreation.requiredArguments.size();
-			if( n > 0 ) {
-				Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
-				if( expression0 instanceof ResourceExpression ) {
-					resourceExpression = (ResourceExpression)expression0;
-					Resource resource = resourceExpression.resource.getValue();
-					if( resource instanceof AudioResource ) {
-						audioResource = (AudioResource)resource;
-					}
-					if( n > 1 ) {
-						if( n > 2 ) {
-							if( n > 3 ) {
-								Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
-								if( expression3 instanceof DoubleLiteral ) {
-									DoubleLiteral stopTimeLiteral = (DoubleLiteral)expression3;
-									stopTime = stopTimeLiteral.value.getValue();
-								}
-							}
-							Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
-							if( expression2 instanceof DoubleLiteral ) {
-								DoubleLiteral startTimeLiteral = (DoubleLiteral)expression2;
-								startTime = startTimeLiteral.value.getValue();
-							}
-						}
-						Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
-						if( expression1 instanceof DoubleLiteral ) {
-							DoubleLiteral volumeLevelLiteral = (DoubleLiteral)expression1;
-							volumeLevel = volumeLevelLiteral.value.getValue();
-						}
-					}
-				}
-			}
-		}
-		this.getVolumeState().setValueTransactionlessly( VolumeLevelUtilities.toInt( volumeLevel ) );
-		this.getAudioResourceExpressionState().setValueTransactionlessly( resourceExpression );
-	}
+    if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      int n = instanceCreation.requiredArguments.size();
+      if (n > 0) {
+        Expression expression0 = getArgumentExpressionAt(instanceCreation, 0);
+        if (expression0 instanceof ResourceExpression) {
+          resourceExpression = (ResourceExpression) expression0;
+          Resource resource = resourceExpression.resource.getValue();
+          if (resource instanceof AudioResource) {
+            audioResource = (AudioResource) resource;
+          }
+          if (n > 1) {
+            if (n > 2) {
+              if (n > 3) {
+                Expression expression3 = getArgumentExpressionAt(instanceCreation, 3);
+                if (expression3 instanceof DoubleLiteral) {
+                  DoubleLiteral stopTimeLiteral = (DoubleLiteral) expression3;
+                  stopTime = stopTimeLiteral.value.getValue();
+                }
+              }
+              Expression expression2 = getArgumentExpressionAt(instanceCreation, 2);
+              if (expression2 instanceof DoubleLiteral) {
+                DoubleLiteral startTimeLiteral = (DoubleLiteral) expression2;
+                startTime = startTimeLiteral.value.getValue();
+              }
+            }
+            Expression expression1 = getArgumentExpressionAt(instanceCreation, 1);
+            if (expression1 instanceof DoubleLiteral) {
+              DoubleLiteral volumeLevelLiteral = (DoubleLiteral) expression1;
+              volumeLevel = volumeLevelLiteral.value.getValue();
+            }
+          }
+        }
+      }
+    }
+    this.getVolumeState().setValueTransactionlessly(VolumeLevelUtilities.toInt(volumeLevel));
+    this.getAudioResourceExpressionState().setValueTransactionlessly(resourceExpression);
+  }
 
-	@Override
-	protected AudioSourceCustomExpressionCreatorView createView() {
-		return new AudioSourceCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected AudioSourceCustomExpressionCreatorView createView() {
+    return new AudioSourceCustomExpressionCreatorView(this);
+  }
 }

@@ -58,78 +58,78 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationInfo<D extends Declaration> {
-	private final ProjectInfo projectInfo;
-	private final D declaration;
-	private final Action action = new AbstractAction() {
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-		}
-	};
-	private final JCheckBox checkBox = new JCheckBox( this.action );
-	private final ItemListener itemListener = new ItemListener() {
-		@Override
-		public void itemStateChanged( ItemEvent e ) {
-			handleItemStateChanged( e );
-		}
-	};
+  private final ProjectInfo projectInfo;
+  private final D declaration;
+  private final Action action = new AbstractAction() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
+  };
+  private final JCheckBox checkBox = new JCheckBox(this.action);
+  private final ItemListener itemListener = new ItemListener() {
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+      handleItemStateChanged(e);
+    }
+  };
 
-	private boolean isDesired;
-	private boolean isRequired;
+  private boolean isDesired;
+  private boolean isRequired;
 
-	public DeclarationInfo( ProjectInfo projectInfo, D declaration ) {
-		this.projectInfo = projectInfo;
-		this.declaration = declaration;
-		this.action.putValue( Action.NAME, this.declaration.getName() );
-		this.checkBox.getModel().addItemListener( this.itemListener );
-	}
+  public DeclarationInfo(ProjectInfo projectInfo, D declaration) {
+    this.projectInfo = projectInfo;
+    this.declaration = declaration;
+    this.action.putValue(Action.NAME, this.declaration.getName());
+    this.checkBox.getModel().addItemListener(this.itemListener);
+  }
 
-	public ProjectInfo getProjectInfo() {
-		return this.projectInfo;
-	}
+  public ProjectInfo getProjectInfo() {
+    return this.projectInfo;
+  }
 
-	public D getDeclaration() {
-		return this.declaration;
-	}
+  public D getDeclaration() {
+    return this.declaration;
+  }
 
-	public JCheckBox getCheckBox() {
-		return this.checkBox;
-	}
+  public JCheckBox getCheckBox() {
+    return this.checkBox;
+  }
 
-	private void handleItemStateChanged( ItemEvent e ) {
-		if( this.projectInfo.isInTheMidstOfChange() ) {
-			//pass
-		} else {
-			this.isDesired = e.getStateChange() == ItemEvent.SELECTED;
-			this.projectInfo.update();
-		}
-	}
+  private void handleItemStateChanged(ItemEvent e) {
+    if (this.projectInfo.isInTheMidstOfChange()) {
+      //pass
+    } else {
+      this.isDesired = e.getStateChange() == ItemEvent.SELECTED;
+      this.projectInfo.update();
+    }
+  }
 
-	public void resetRequired() {
-		this.isRequired = false;
-	}
+  public void resetRequired() {
+    this.isRequired = false;
+  }
 
-	public void appendDesired( List<DeclarationInfo<?>> desired ) {
-		if( this.isDesired ) {
-			desired.add( this );
-		}
-	}
+  public void appendDesired(List<DeclarationInfo<?>> desired) {
+    if (this.isDesired) {
+      desired.add(this);
+    }
+  }
 
-	protected void addRequired( Set<DeclarationInfo<?>> visited ) {
-		visited.add( this );
-		this.isRequired = true;
-	}
+  protected void addRequired(Set<DeclarationInfo<?>> visited) {
+    visited.add(this);
+    this.isRequired = true;
+  }
 
-	public final void updateRequired( Set<DeclarationInfo<?>> visited ) {
-		if( visited.contains( this ) ) {
-			//pass
-		} else {
-			this.addRequired( visited );
-		}
-	}
+  public final void updateRequired(Set<DeclarationInfo<?>> visited) {
+    if (visited.contains(this)) {
+      //pass
+    } else {
+      this.addRequired(visited);
+    }
+  }
 
-	public void updateSwing() {
-		ButtonModel buttonModel = this.checkBox.getModel();
-		buttonModel.setSelected( this.isDesired || this.isRequired );
-		buttonModel.setEnabled( this.isDesired || ( this.isRequired == false ) );
-	}
+  public void updateSwing() {
+    ButtonModel buttonModel = this.checkBox.getModel();
+    buttonModel.setSelected(this.isDesired || this.isRequired);
+    buttonModel.setEnabled(this.isDesired || (this.isRequired == false));
+  }
 }

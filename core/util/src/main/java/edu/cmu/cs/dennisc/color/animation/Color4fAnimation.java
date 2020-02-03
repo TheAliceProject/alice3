@@ -51,22 +51,22 @@ import edu.cmu.cs.dennisc.color.Color4f;
  * @author Dennis Cosgrove
  */
 public abstract class Color4fAnimation extends InterpolationAnimation<Color4f> {
-	public Color4fAnimation( Number duration, Style style, Color4f c0, Color4f c1 ) {
-		super( duration, style, c0, c1 );
-	}
+  public Color4fAnimation(Number duration, Style style, Color4f c0, Color4f c1) {
+    super(duration, style, c0, c1);
+  }
 
-	@Override
-	protected Color4f newE( Color4f other ) {
-		if( other != null ) {
-			return new Color4f( other );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Color4f newE(Color4f other) {
+    if (other != null) {
+      return new Color4f(other);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Color4f interpolate( Color4f rv, Color4f v0, Color4f v1, double portion ) {
-		assert rv == null;
-		return Color4f.createInterpolation( v0, v1, (float)portion );
-	}
+  @Override
+  protected Color4f interpolate(Color4f rv, Color4f v0, Color4f v1, double portion) {
+    assert rv == null;
+    return Color4f.createInterpolation(v0, v1, (float) portion);
+  }
 }

@@ -52,46 +52,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
-	public ValueCreatorInputDialogCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ValueCreatorInputDialogCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.defaultTitleText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.defaultTitleText = this.findDefaultLocalizedText();
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		return this.defaultTitleText;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    return this.defaultTitleText;
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		if( isCommitted ) { // close button condition
-			try {
-				this.value = createValue();
-				openingActivity.finish();
-			} catch( CancelException ce ) {
-				openingActivity.cancel(ce);
-			}
-		} else {
-			openingActivity.cancel();
-		}
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    if (isCommitted) { // close button condition
+      try {
+        this.value = createValue();
+        openingActivity.finish();
+      } catch (CancelException ce) {
+        openingActivity.cancel(ce);
+      }
+    } else {
+      openingActivity.cancel();
+    }
+  }
 
-	protected abstract T createValue();
+  protected abstract T createValue();
 
-	private T value;
+  private T value;
 
-	@Override
-	public T createValue( UserActivity userActivity ) {
-		this.value = null;
-		this.showDialog( userActivity );
-		return this.value;
-	}
+  @Override
+  public T createValue(UserActivity userActivity) {
+    this.value = null;
+    this.showDialog(userActivity);
+    return this.value;
+  }
 
-	private String defaultTitleText;
+  private String defaultTitleText;
 }

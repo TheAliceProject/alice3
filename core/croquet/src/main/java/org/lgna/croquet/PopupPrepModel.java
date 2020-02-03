@@ -60,89 +60,89 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepModel extends AbstractModel  implements PrepModel, Triggerable {
-	public class SwingModel {
-		private final Action action = new AbstractAction() {
-			@Override
-			public void actionPerformed( final ActionEvent e ) {
-				PopupPrepModel.this.perform( ActionEventTrigger.createUserActivity( e ) );
-			}
-		};
+public abstract class PopupPrepModel extends AbstractModel implements PrepModel, Triggerable {
+  public class SwingModel {
+    private final Action action = new AbstractAction() {
+      @Override
+      public void actionPerformed(final ActionEvent e) {
+        PopupPrepModel.this.perform(ActionEventTrigger.createUserActivity(e));
+      }
+    };
 
-		public Action getAction() {
-			return this.action;
-		}
-	}
+    public Action getAction() {
+      return this.action;
+    }
+  }
 
-	private final SwingModel swingModel = new SwingModel();
+  private final SwingModel swingModel = new SwingModel();
 
-	public PopupPrepModel( UUID id ) {
-		super( id );
-	}
+  public PopupPrepModel(UUID id) {
+    super(id);
+  }
 
-	@Override
-	protected final void localize() {
-		String name = this.findDefaultLocalizedText();
-		if( name != null ) {
-			this.setName( name );
-		}
-	}
+  @Override
+  protected final void localize() {
+    String name = this.findDefaultLocalizedText();
+    if (name != null) {
+      this.setName(name);
+    }
+  }
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	public String getName() {
-		return String.class.cast( this.swingModel.action.getValue( Action.NAME ) );
-	}
+  public String getName() {
+    return String.class.cast(this.swingModel.action.getValue(Action.NAME));
+  }
 
-	public void setName( String name ) {
-		this.swingModel.action.putValue( Action.NAME, name );
-	}
+  public void setName(String name) {
+    this.swingModel.action.putValue(Action.NAME, name);
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.swingModel.action.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.swingModel.action.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.swingModel.action.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.swingModel.action.setEnabled(isEnabled);
+  }
 
-	public PopupButton createPopupButton() {
-		return new PopupButton( this );
-	}
+  public PopupButton createPopupButton() {
+    return new PopupButton(this);
+  }
 
-	private ButtonModel prevButtonModel;
+  private ButtonModel prevButtonModel;
 
-	protected void prologue( Trigger trigger ) {
-		this.prevButtonModel = null;
-		if( trigger instanceof EventObjectTrigger ) {
-			EventObjectTrigger<?> eventTrigger = (EventObjectTrigger<?>)trigger;
-			EventObject e = eventTrigger.getEvent();
-			Object source = e.getSource();
-			if( source instanceof AbstractButton ) {
-				AbstractButton button = (AbstractButton)source;
-				this.prevButtonModel = button.getModel();
-			}
-		}
-		if( this.prevButtonModel != null ) {
-			this.prevButtonModel.setPressed( true );
-		}
-	}
+  protected void prologue(Trigger trigger) {
+    this.prevButtonModel = null;
+    if (trigger instanceof EventObjectTrigger) {
+      EventObjectTrigger<?> eventTrigger = (EventObjectTrigger<?>) trigger;
+      EventObject e = eventTrigger.getEvent();
+      Object source = e.getSource();
+      if (source instanceof AbstractButton) {
+        AbstractButton button = (AbstractButton) source;
+        this.prevButtonModel = button.getModel();
+      }
+    }
+    if (this.prevButtonModel != null) {
+      this.prevButtonModel.setPressed(true);
+    }
+  }
 
-	protected void epilogue() {
-		if( this.prevButtonModel != null ) {
-			this.prevButtonModel.setSelected( false );
-			this.prevButtonModel.setPressed( false );
-		}
-	}
+  protected void epilogue() {
+    if (this.prevButtonModel != null) {
+      this.prevButtonModel.setSelected(false);
+      this.prevButtonModel.setPressed(false);
+    }
+  }
 
-	protected abstract void perform( UserActivity activity );
+  protected abstract void perform(UserActivity activity);
 
-	@Override
-	public void fire( UserActivity activity ) {
-		perform( activity );
-	}
+  @Override
+  public void fire(UserActivity activity) {
+    perform(activity);
+  }
 }

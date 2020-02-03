@@ -51,61 +51,61 @@ import java.lang.annotation.Annotation;
  * @author Dennis Cosgrove
  */
 public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<E> {
-	protected ClassReflectionProxy[] parameterClassReflectionProxies;
+  protected ClassReflectionProxy[] parameterClassReflectionProxies;
 
-	public InvocableReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		super( declaringClassReflectionProxy );
-		this.parameterClassReflectionProxies = parameterClassReflectionProxies;
-	}
+  public InvocableReflectionProxy(ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies) {
+    super(declaringClassReflectionProxy);
+    this.parameterClassReflectionProxies = parameterClassReflectionProxies;
+  }
 
-	public InvocableReflectionProxy( E e, Class<?> declaringCls, Class<?>[] parameterClses ) {
-		super( e, declaringCls );
-		this.parameterClassReflectionProxies = ClassReflectionProxy.create( parameterClses );
-	}
+  public InvocableReflectionProxy(E e, Class<?> declaringCls, Class<?>[] parameterClses) {
+    super(e, declaringCls);
+    this.parameterClassReflectionProxies = ClassReflectionProxy.create(parameterClses);
+  }
 
-	@Override
-	protected int hashCodeNonReifiable() {
-		int rv = super.hashCodeNonReifiable();
-		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
-			rv = ( 37 * rv ) + parameterClassReflectionProxy.hashCode();
-		}
-		return rv;
-	}
+  @Override
+  protected int hashCodeNonReifiable() {
+    int rv = super.hashCodeNonReifiable();
+    for (ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies) {
+      rv = (37 * rv) + parameterClassReflectionProxy.hashCode();
+    }
+    return rv;
+  }
 
-	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
-		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
-			InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>)o;
-			if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
-				for( int i = 0; i < this.parameterClassReflectionProxies.length; i++ ) {
-					if( Objects.equals( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
-						//pass
-					} else {
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean equalsInstanceOfSameClassButNonReifiable(ReflectionProxy<?> o) {
+    if (super.equalsInstanceOfSameClassButNonReifiable(o)) {
+      InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>) o;
+      if (this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length) {
+        for (int i = 0; i < this.parameterClassReflectionProxies.length; i++) {
+          if (Objects.equals(this.parameterClassReflectionProxies[i], other.parameterClassReflectionProxies[i])) {
+            //pass
+          } else {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	public ClassReflectionProxy[] getParameterClassReflectionProxies() {
-		return this.parameterClassReflectionProxies;
-	}
+  public ClassReflectionProxy[] getParameterClassReflectionProxies() {
+    return this.parameterClassReflectionProxies;
+  }
 
-	protected abstract Annotation[][] getReifiedParameterAnnotations();
+  protected abstract Annotation[][] getReifiedParameterAnnotations();
 
-	public final Annotation[][] getParameterAnnotations() {
-		Annotation[][] rv = this.getReifiedParameterAnnotations();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Annotation[ this.parameterClassReflectionProxies.length ][];
-		}
-		return rv;
-	}
+  public final Annotation[][] getParameterAnnotations() {
+    Annotation[][] rv = this.getReifiedParameterAnnotations();
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new Annotation[this.parameterClassReflectionProxies.length][];
+    }
+    return rv;
+  }
 }

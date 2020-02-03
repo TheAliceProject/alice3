@@ -51,32 +51,32 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ProgressBar extends SwingComponentView<JProgressBar> {
-	private final BoundedRangeModel boundedRangeModel;
+  private final BoundedRangeModel boundedRangeModel;
 
-	public ProgressBar() {
-		this( new DefaultBoundedRangeModel() );
-	}
+  public ProgressBar() {
+    this(new DefaultBoundedRangeModel());
+  }
 
-	public ProgressBar( BoundedRangeModel boundedRangeModel ) {
-		this.boundedRangeModel = boundedRangeModel;
-	}
+  public ProgressBar(BoundedRangeModel boundedRangeModel) {
+    this.boundedRangeModel = boundedRangeModel;
+  }
 
-	@Override
-	protected JProgressBar createAwtComponent() {
-		return new JProgressBar( this.boundedRangeModel ) {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JProgressBar createAwtComponent() {
+    return new JProgressBar(this.boundedRangeModel) {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				Dimension rv = super.getMaximumSize();
-				if( ProgressBar.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				}
-				return rv;
-			}
-		};
-	}
+      @Override
+      public Dimension getMaximumSize() {
+        Dimension rv = super.getMaximumSize();
+        if (ProgressBar.this.isMaximumSizeClampedToPreferredSize()) {
+          rv.setSize(this.getPreferredSize());
+        }
+        return rv;
+      }
+    };
+  }
 }

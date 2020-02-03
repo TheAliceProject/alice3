@@ -52,17 +52,17 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractReport {
-	private final List<Attachment> attachments = Lists.newLinkedList();
+  private final List<Attachment> attachments = Lists.newLinkedList();
 
-	public void addAttachment( Attachment attachment ) {
-		this.attachments.add( attachment );
-	}
+  public void addAttachment(Attachment attachment) {
+    this.attachments.add(attachment);
+  }
 
-	public void removeAttachment( Attachment attachment ) {
-		this.attachments.remove( attachment );
-	}
+  public void removeAttachment(Attachment attachment) {
+    this.attachments.remove(attachment);
+  }
 
-	public List<Attachment> getAttachments() {
-		return Collections.unmodifiableList( this.attachments );
-	}
+  public List<Attachment> getAttachments() {
+    return Collections.unmodifiableList(this.attachments);
+  }
 }

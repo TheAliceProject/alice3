@@ -51,77 +51,73 @@ import org.lgna.story.annotation.PortionDetails;
  * @author Dennis Cosgrove
  */
 public final class Color implements Paint {
-	public static final Color BLACK = new Color( Color4f.BLACK );
-	public static final Color BLUE = new Color( Color4f.BLUE );
-	public static final Color CYAN = new Color( Color4f.CYAN );
-	public static final Color DARK_GRAY = new Color( Color4f.DARK_GRAY );
-	public static final Color GRAY = new Color( Color4f.GRAY );
-	public static final Color GREEN = new Color( Color4f.GREEN );
-	public static final Color LIGHT_GRAY = new Color( Color4f.LIGHT_GRAY );
-	public static final Color MAGENTA = new Color( Color4f.MAGENTA );
-	public static final Color ORANGE = new Color( Color4f.ORANGE );
-	public static final Color PINK = new Color( Color4f.PINK );
-	public static final Color RED = new Color( Color4f.RED );
-	public static final Color WHITE = new Color( Color4f.WHITE );
-	public static final Color YELLOW = new Color( Color4f.YELLOW );
-	public static final Color LIGHT_BLUE = new Color( 149.0 / 255.0, 166.0 / 255.0, 216.0 / 255.0 );
-	public static final Color DARK_BLUE = new Color( 0 / 255.0, 0 / 255.0, 150.0 / 255.0 );
+  public static final Color BLACK = new Color(Color4f.BLACK);
+  public static final Color BLUE = new Color(Color4f.BLUE);
+  public static final Color CYAN = new Color(Color4f.CYAN);
+  public static final Color DARK_GRAY = new Color(Color4f.DARK_GRAY);
+  public static final Color GRAY = new Color(Color4f.GRAY);
+  public static final Color GREEN = new Color(Color4f.GREEN);
+  public static final Color LIGHT_GRAY = new Color(Color4f.LIGHT_GRAY);
+  public static final Color MAGENTA = new Color(Color4f.MAGENTA);
+  public static final Color ORANGE = new Color(Color4f.ORANGE);
+  public static final Color PINK = new Color(Color4f.PINK);
+  public static final Color RED = new Color(Color4f.RED);
+  public static final Color WHITE = new Color(Color4f.WHITE);
+  public static final Color YELLOW = new Color(Color4f.YELLOW);
+  public static final Color LIGHT_BLUE = new Color(149.0 / 255.0, 166.0 / 255.0, 216.0 / 255.0);
+  public static final Color DARK_BLUE = new Color(0 / 255.0, 0 / 255.0, 150.0 / 255.0);
 
-	public static final Color PURPLE = new Color( Color4f.PURPLE );
-	public static final Color BROWN = new Color( Color4f.BROWN );
+  public static final Color PURPLE = new Color(Color4f.PURPLE);
+  public static final Color BROWN = new Color(Color4f.BROWN);
 
-	private final Color4f internal;
+  private final Color4f internal;
 
-	public Color(
-			@ValueTemplate( detailsEnumCls = PortionDetails.class )
-			Number red,
-			@ValueTemplate( detailsEnumCls = PortionDetails.class )
-			Number green,
-			@ValueTemplate( detailsEnumCls = PortionDetails.class )
-			Number blue ) {
-		this( new Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
-	}
+  public Color(@ValueTemplate(detailsEnumCls = PortionDetails.class) Number red, @ValueTemplate(detailsEnumCls = PortionDetails.class) Number green, @ValueTemplate(detailsEnumCls = PortionDetails.class) Number blue) {
+    this(new Color4f(red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f));
+  }
 
-	private Color( Color4f internal ) {
-		this.internal = internal;
-	}
+  private Color(Color4f internal) {
+    this.internal = internal;
+  }
 
-	/* package-private */static Color createInstance( Color4f internal ) {
-		return internal != null ? new Color( internal ) : null;
-	}
+  /* package-private */
+  static Color createInstance(Color4f internal) {
+    return internal != null ? new Color(internal) : null;
+  }
 
-	/* package-private */Color4f getInternal() {
-		return this.internal;
-	}
+  /* package-private */Color4f getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static Color4f getInternal( Color color ) {
-		return color != null ? color.internal : null;
-	}
+  /* package-private */
+  static Color4f getInternal(Color color) {
+    return color != null ? color.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Color ) {
-			Color other = (Color)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Color) {
+      Color other = (Color) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 
-	public Double getRed() {
-		return (double)this.internal.red;
-	}
+  public Double getRed() {
+    return (double) this.internal.red;
+  }
 
-	public Double getGreen() {
-		return (double)this.internal.green;
-	}
+  public Double getGreen() {
+    return (double) this.internal.green;
+  }
 
-	public Double getBlue() {
-		return (double)this.internal.blue;
-	}
+  public Double getBlue() {
+    return (double) this.internal.blue;
+  }
 }

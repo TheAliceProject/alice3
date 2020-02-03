@@ -49,38 +49,38 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public final class ExtendsTypeWithConstructorParameterTypeKey extends AbstractExtendsTypeKey {
-	private final AbstractType<?, ?, ?> parameterType;
+  private final AbstractType<?, ?, ?> parameterType;
 
-	public ExtendsTypeWithConstructorParameterTypeKey( AbstractType<?, ?, ?> superType, AbstractType<?, ?, ?> parameterType ) {
-		super( superType );
-		assert parameterType != null;
-		this.parameterType = parameterType;
-	}
+  public ExtendsTypeWithConstructorParameterTypeKey(AbstractType<?, ?, ?> superType, AbstractType<?, ?, ?> parameterType) {
+    super(superType);
+    assert parameterType != null;
+    this.parameterType = parameterType;
+  }
 
-	//	@Override
-	//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-	//		if( super.accept( userType ) ) {
-	//			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructor( this.parameterType );
-	//			if( constructor != null ) {
-	//				org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-	//				return parameter0.getValueType() == this.parameterType;
-	//			} else {
-	//				return false;
-	//			}
-	//		} else {
-	//			return false;
-	//		}
-	//	}
-	@Override
-	public int hashCode() {
-		int rv = super.hashCode();
-		rv = ( 37 * rv ) + this.parameterType.hashCode();
-		return rv;
-	}
+  //  @Override
+  //  public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+  //    if( super.accept( userType ) ) {
+  //      org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructor( this.parameterType );
+  //      if( constructor != null ) {
+  //        org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
+  //        return parameter0.getValueType() == this.parameterType;
+  //      } else {
+  //        return false;
+  //      }
+  //    } else {
+  //      return false;
+  //    }
+  //  }
+  @Override
+  public int hashCode() {
+    int rv = super.hashCode();
+    rv = (37 * rv) + this.parameterType.hashCode();
+    return rv;
+  }
 
-	@Override
-	protected boolean contentEquals( TypeKey other ) {
-		// super class's equals methods ensures this.getClass() == other.getClass()
-		return super.contentEquals( other ) && ( this.parameterType == ( (ExtendsTypeWithConstructorParameterTypeKey)other ).parameterType );
-	}
+  @Override
+  protected boolean contentEquals(TypeKey other) {
+    // super class's equals methods ensures this.getClass() == other.getClass()
+    return super.contentEquals(other) && (this.parameterType == ((ExtendsTypeWithConstructorParameterTypeKey) other).parameterType);
+  }
 }

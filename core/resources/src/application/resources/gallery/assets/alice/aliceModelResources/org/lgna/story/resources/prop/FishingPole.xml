@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingPole">
+    <BoundingBox>
+        <Min x="-0.518669068813324" y="0.03258640319108963" z="0.015426743775606155"/>
+        <Max x="0.5938491821289062" y="0.5256073474884033" z="0.062456414103507996"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+        <Tag>fishing pole</Tag>
+        <Tag>fishing</Tag>
+        <Tag>pole</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingPole" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

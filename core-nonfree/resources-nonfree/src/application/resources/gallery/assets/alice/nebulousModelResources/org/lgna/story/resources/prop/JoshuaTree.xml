@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="JoshuaTree">
+    <BoundingBox>
+        <Min x="-1.5446882247924805" y="0.0" z="-1.200107216835022"/>
+        <Max x="1.5446882247924805" y="4.396794319152832" z="1.200107216835022"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="JoshuaTree" resourceName="JOSHUA_TREE" textureName="JOSHUA_TREE"/>
+</AliceModel>

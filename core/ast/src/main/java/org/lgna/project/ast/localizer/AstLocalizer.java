@@ -49,31 +49,31 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public interface AstLocalizer {
-	void appendDeclaration( Declaration declaration );
+  void appendDeclaration(Declaration declaration);
 
-	void appendThis();
+  void appendThis();
 
-	void appendNull();
+  void appendNull();
 
-	void appendNullLiteral();
+  void appendNullLiteral();
 
-	void appendSpace();
+  void appendSpace();
 
-	void appendDot();
+  void appendDot();
 
-	void appendChar( char value );
+  void appendChar(char value);
 
-	void appendBoolean( boolean value );
+  void appendBoolean(boolean value);
 
-	void appendInt( int value );
+  void appendInt(int value);
 
-	void appendLong( long value );
+  void appendLong(long value);
 
-	void appendFloat( float value );
+  void appendFloat(float value);
 
-	void appendDouble( double value );
+  void appendDouble(double value);
 
-	void appendText( String text );
+  void appendText(String text);
 
-	void appendLocalizedText( Class<? extends Node> cls, String subKey );
+  void appendLocalizedText(Class<? extends Node> cls, String subKey);
 }

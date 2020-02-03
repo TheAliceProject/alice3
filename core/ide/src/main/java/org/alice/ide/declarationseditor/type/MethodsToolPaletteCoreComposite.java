@@ -50,14 +50,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<MethodsComposite> {
-	private final Operation addMethodOperation;
+  private final Operation addMethodOperation;
 
-	public MethodsToolPaletteCoreComposite( UUID migrationId, MethodsComposite methodsComposite, Operation addMethodOperation ) {
-		super( migrationId, true, methodsComposite );
-		this.addMethodOperation = addMethodOperation;
-	}
+  public MethodsToolPaletteCoreComposite(UUID migrationId, MethodsComposite methodsComposite, Operation addMethodOperation) {
+    super(migrationId, true, methodsComposite);
+    this.addMethodOperation = addMethodOperation;
+  }
 
-	public final Operation getAddMethodOperation() {
-		return this.addMethodOperation;
-	}
+  public final Operation getAddMethodOperation() {
+    return this.addMethodOperation;
+  }
 }

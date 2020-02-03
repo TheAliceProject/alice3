@@ -53,17 +53,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public interface Node extends InstancePropertyOwner, Crawlable {
-	public UUID getId();
+  public UUID getId();
 
-	public Node getParent();
+  public Node getParent();
 
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
+  public <N extends Node> N getFirstAncestorAssignableTo(Class<N> cls, boolean isThisIncludedInSearch);
 
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
+  public <N extends Node> N getFirstAncestorAssignableTo(Class<N> cls);
 
-	public void crawl( Crawler crawler, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter );
+  public void crawl(Crawler crawler, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter);
 
-	public String getRepr();
+  public String getRepr();
 
-	String generateLocalName( UserLocal local );
+  String generateLocalName(UserLocal local);
 }

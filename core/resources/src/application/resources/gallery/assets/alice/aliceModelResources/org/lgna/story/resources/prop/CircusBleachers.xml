@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusBleachers">
+    <BoundingBox>
+        <Min x="-5.6126532554626465" y="-0.007000084966421127" z="-3.470097541809082"/>
+        <Max x="0.0061187744140625" y="1.7043839693069458" z="0.8522289991378784"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+        <Tag>bleachers</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="DEFAULT" resourceName="DEFAULT_BLEACHERS" textureName="BLEACHERS">
+        <BoundingBox>
+            <Min x="-5.6126532554626465" y="-0.007000084966421127" z="-3.459566354751587"/>
+            <Max x="0.005503215827047825" y="1.7043839693069458" z="0.8520263433456421"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="DEFAULT" resourceName="DEFAULT_BLEACHERS_OLD" textureName="BLEACHERS_OLD">
+        <BoundingBox>
+            <Min x="-5.6126532554626465" y="-0.007000084966421127" z="-3.459566354751587"/>
+            <Max x="0.005503215827047825" y="1.7043839693069458" z="0.8520263433456421"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SMALL" resourceName="SMALL_BLEACHERS" textureName="BLEACHERS">
+        <BoundingBox>
+            <Min x="-4.482804298400879" y="-0.004754218738526106" z="-3.470097541809082"/>
+            <Max x="0.0061187744140625" y="1.6808907985687256" z="0.8522289991378784"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="SMALL" resourceName="SMALL_BLEACHERS_OLD" textureName="BLEACHERS_OLD">
+        <BoundingBox>
+            <Min x="-4.482804298400879" y="-0.004754218738526106" z="-3.470097541809082"/>
+            <Max x="0.0061187744140625" y="1.6808907985687256" z="0.8522289991378784"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -55,42 +55,42 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCamera extends Leaf {
-	public Point transformToAWT( Point rv, Vector4 xyzw, RenderTarget renderTarget ) {
-		return transformToAWT( rv, xyzw, renderTarget, this );
-	}
+  public Point transformToAWT(Point rv, Vector4 xyzw, RenderTarget renderTarget) {
+    return transformToAWT(rv, xyzw, renderTarget, this);
+  }
 
-	public Vector4 transformFromAWT( Vector4 rv, Point p, double z, RenderTarget renderTarget ) {
-		return transformFromAWT( rv, p, z, renderTarget, this );
-	}
+  public Vector4 transformFromAWT(Vector4 rv, Point p, double z, RenderTarget renderTarget) {
+    return transformFromAWT(rv, p, z, renderTarget, this);
+  }
 
-	public Point transformToAWT_New( Vector4 xyzw, RenderTarget renderTarget ) {
-		return transformToAWT_New( xyzw, renderTarget, this );
-	}
+  public Point transformToAWT_New(Vector4 xyzw, RenderTarget renderTarget) {
+    return transformToAWT_New(xyzw, renderTarget, this);
+  }
 
-	public Point transformToAWT_New( Point3 xyz, RenderTarget renderTarget ) {
-		return transformToAWT_New( xyz, renderTarget, this );
-	}
+  public Point transformToAWT_New(Point3 xyz, RenderTarget renderTarget) {
+    return transformToAWT_New(xyz, renderTarget, this);
+  }
 
-	public Vector4 transformFromAWT_NewVectorD4( Point p, double z, RenderTarget renderTarget ) {
-		return transformFromAWT_NewVectorD4( p, z, renderTarget, this );
-	}
+  public Vector4 transformFromAWT_NewVectorD4(Point p, double z, RenderTarget renderTarget) {
+    return transformFromAWT_NewVectorD4(p, z, renderTarget, this);
+  }
 
-	public Point3 transformFromAWT_NewPointD3( Point p, double z, RenderTarget renderTarget ) {
-		return transformFromAWT_NewPointD3( p, z, renderTarget, this );
-	}
+  public Point3 transformFromAWT_NewPointD3(Point p, double z, RenderTarget renderTarget) {
+    return transformFromAWT_NewPointD3(p, z, renderTarget, this);
+  }
 
-	public final InstanceProperty<Background> background = new InstanceProperty<Background>( this, null );
-	//public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
-	public final CopyableArrayProperty<Layer> postRenderLayers = new CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
-		@Override
-		protected Layer[] createArray( int length ) {
-			return new Layer[ length ];
-		}
+  public final InstanceProperty<Background> background = new InstanceProperty<Background>(this, null);
+  //public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
+  public final CopyableArrayProperty<Layer> postRenderLayers = new CopyableArrayProperty<Layer>(this, new Layer[0]) {
+    @Override
+    protected Layer[] createArray(int length) {
+      return new Layer[length];
+    }
 
-		@Override
-		protected Layer createCopy( Layer src ) {
-			//todo?
-			return src;
-		}
-	};
+    @Override
+    protected Layer createCopy(Layer src) {
+      //todo?
+      return src;
+    }
+  };
 }

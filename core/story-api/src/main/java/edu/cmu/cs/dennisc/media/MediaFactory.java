@@ -48,21 +48,21 @@ import org.lgna.common.resources.AudioResource;
  * @author Dennis Cosgrove
  */
 public abstract class MediaFactory {
-	public static final double DEFAULT_VOLUME = 1.0;
-	public static final double DEFAULT_START_TIME = 0.0;
-	public static final double DEFAULT_STOP_TIME = Double.NaN;
+  public static final double DEFAULT_VOLUME = 1.0;
+  public static final double DEFAULT_START_TIME = 0.0;
+  public static final double DEFAULT_STOP_TIME = Double.NaN;
 
-	public abstract Player createPlayer( AudioResource audioResource, double volume, double startTime, double stopTime );
+  public abstract Player createPlayer(AudioResource audioResource, double volume, double startTime, double stopTime);
 
-	public Player createPlayer( AudioResource audioResource, double volume, double startTime ) {
-		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
-	}
+  public Player createPlayer(AudioResource audioResource, double volume, double startTime) {
+    return createPlayer(audioResource, volume, startTime, DEFAULT_STOP_TIME);
+  }
 
-	public Player createPlayer( AudioResource audioResource, double volume ) {
-		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
-	}
+  public Player createPlayer(AudioResource audioResource, double volume) {
+    return createPlayer(audioResource, volume, DEFAULT_START_TIME);
+  }
 
-	public Player createPlayer( AudioResource audioResource ) {
-		return createPlayer( audioResource, DEFAULT_VOLUME );
-	}
+  public Player createPlayer(AudioResource audioResource) {
+    return createPlayer(audioResource, DEFAULT_VOLUME);
+  }
 }

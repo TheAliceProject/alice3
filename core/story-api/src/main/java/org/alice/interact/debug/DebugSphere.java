@@ -53,26 +53,24 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class DebugSphere extends Transformable {
-	public DebugSphere()
-	{
-		SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
-		sgFrontFacingAppearance.opacity.setValue( new Float( 1.0 ) );
+  public DebugSphere() {
+    SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
+    sgFrontFacingAppearance.diffuseColor.setValue(Color4f.RED);
+    sgFrontFacingAppearance.opacity.setValue(new Float(1.0));
 
-		this.sgPickPointSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
-		this.sgPickPointSphere.radius.setValue( .1d );
-		this.sgPickPointSphereVisual.geometries.setValue( new Geometry[] { this.sgPickPointSphere } );
-		this.sgPickPointSphereVisual.setParent( this );
+    this.sgPickPointSphereVisual.frontFacingAppearance.setValue(sgFrontFacingAppearance);
+    this.sgPickPointSphere.radius.setValue(.1d);
+    this.sgPickPointSphereVisual.geometries.setValue(new Geometry[] {this.sgPickPointSphere});
+    this.sgPickPointSphereVisual.setParent(this);
 
-	}
+  }
 
-	public void setLocalTranslation( Tuple3 position )
-	{
-		AffineMatrix4x4 transform = this.localTransformation.getValue();
-		transform.translation.set( position );
-		this.localTransformation.setValue( transform );
-	}
+  public void setLocalTranslation(Tuple3 position) {
+    AffineMatrix4x4 transform = this.localTransformation.getValue();
+    transform.translation.set(position);
+    this.localTransformation.setValue(transform);
+  }
 
-	private final Sphere sgPickPointSphere = new Sphere();
-	private final Visual sgPickPointSphereVisual = new Visual();
+  private final Sphere sgPickPointSphere = new Sphere();
+  private final Visual sgPickPointSphereVisual = new Visual();
 }

@@ -49,7 +49,7 @@ import org.lgna.croquet.SingleSelectListState;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractRadioButtons<E> extends ItemSelectablePanel<E> {
-	/* package-private */AbstractRadioButtons( SingleSelectListState<E, ?> model ) {
-		super( model );
-	}
+  /* package-private */AbstractRadioButtons(SingleSelectListState<E, ?> model) {
+    super(model);
+  }
 }

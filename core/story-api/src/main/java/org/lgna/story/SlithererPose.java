@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Dculyba
  */
 public class SlithererPose extends Pose<SSlitherer> {
-	/*package-private*/ SlithererPose( JointIdTransformationPair... pairs ) {
-		super( SSlitherer.class, pairs );
-	}
+  /*package-private*/ SlithererPose(JointIdTransformationPair... pairs) {
+    super(SSlitherer.class, pairs);
+  }
 }

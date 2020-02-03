@@ -47,19 +47,19 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class CancelException extends RuntimeException {
-	public CancelException() {
-		super();
-	}
+  public CancelException() {
+    super();
+  }
 
-	public CancelException( String message ) {
-		super( message );
-	}
+  public CancelException(String message) {
+    super(message);
+  }
 
-	public CancelException( Throwable e ) {
-		super( e );
-	}
+  public CancelException(Throwable e) {
+    super(e);
+  }
 
-	public CancelException( String message, Throwable e ) {
-		super( message, e );
-	}
+  public CancelException(String message, Throwable e) {
+    super(message, e);
+  }
 }

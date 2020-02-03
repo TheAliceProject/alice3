@@ -52,18 +52,18 @@ import java.awt.geom.Ellipse2D;
  * @author Dennis Cosgrove
  */
 public class DiscIcon extends ShapeIcon {
-	public DiscIcon( Dimension size ) {
-		super( size );
-	}
+  public DiscIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		float x = 0.1f * width;
-		float w = 0.8f * width;
-		Ellipse2D bottomCap = new Ellipse2D.Float( x, height * 0.8f, w, height * 0.2f );
-		g2.setPaint( fillPaint );
-		g2.fill( bottomCap );
-		g2.setPaint( drawPaint );
-		g2.draw( bottomCap );
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height * 0.8f, w, height * 0.2f);
+    g2.setPaint(fillPaint);
+    g2.fill(bottomCap);
+    g2.setPaint(drawPaint);
+    g2.draw(bottomCap);
+  }
 }

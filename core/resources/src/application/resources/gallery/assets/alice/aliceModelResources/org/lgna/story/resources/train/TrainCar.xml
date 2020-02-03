@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="TrainCar">
+    <BoundingBox>
+        <Min x="-1.327136516571045" y="-1.2044662980770227E-5" z="-2.2513697147369385"/>
+        <Max x="1.327136516571045" y="3.4195327758789062" z="2.248612642288208"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>train car</Tag>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.327136516571045" y="-1.2044662980770227E-5" z="-2.2513697147369385"/>
+            <Max x="1.327136516571045" y="3.4195327758789062" z="2.248612642288208"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Circus" resourceName="CIRCUS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.327136516571045" y="-1.2044662980770227E-5" z="-2.2513697147369385"/>
+            <Max x="1.327136516571045" y="3.4195327758789062" z="2.248612642288208"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CircusLights" resourceName="CIRCUS_LIGHTS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.327136516571045" y="-1.2044662980770227E-5" z="-2.2513697147369385"/>
+            <Max x="1.327136516571045" y="3.4195327758789062" z="2.248612642288208"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Ice" resourceName="ICE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.327136516571045" y="-1.2044662980770227E-5" z="-2.2513697147369385"/>
+            <Max x="1.327136516571045" y="3.4195327758789062" z="2.248612642288208"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,43 +1,43 @@
 /**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.ik.poser.croquet;
@@ -64,68 +64,61 @@ import java.util.UUID;
  * @author Matt May
  */
 public class AddUnmanagedPoseFieldComposite extends AddFieldComposite {
-	private static InitializingIfAbsentMap<NamedUserType, AddUnmanagedPoseFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<NamedUserType, AddUnmanagedPoseFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddUnmanagedPoseFieldComposite getInstance( NamedUserType declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, AddUnmanagedPoseFieldComposite>() {
-			@Override
-			public AddUnmanagedPoseFieldComposite initialize( NamedUserType declaringType ) {
-				return new AddUnmanagedPoseFieldComposite( declaringType );
-			}
-		} );
-	}
+  public static AddUnmanagedPoseFieldComposite getInstance(NamedUserType declaringType) {
+    return map.getInitializingIfAbsent(declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, AddUnmanagedPoseFieldComposite>() {
+      @Override
+      public AddUnmanagedPoseFieldComposite initialize(NamedUserType declaringType) {
+        return new AddUnmanagedPoseFieldComposite(declaringType);
+      }
+    });
+  }
 
-	private AddUnmanagedPoseFieldComposite( NamedUserType declaringType ) {
-		super(
-				UUID.fromString( "882dc293-d176-48c6-9b42-abc15c734779" ),
-				new FieldDetailsBuilder()
-						.isFinal( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-						.valueComponentType( ApplicabilityStatus.DISPLAYED, JavaType.getInstance( Pose.class ) )
-						.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-						.initializer( ApplicabilityStatus.EDITABLE, null )
-						.build() );
-		this.declaringType = declaringType;
-	}
+  private AddUnmanagedPoseFieldComposite(NamedUserType declaringType) {
+    super(UUID.fromString("882dc293-d176-48c6-9b42-abc15c734779"), new FieldDetailsBuilder().isFinal(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true).valueComponentType(ApplicabilityStatus.DISPLAYED, JavaType.getInstance(Pose.class)).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false).initializer(ApplicabilityStatus.EDITABLE, null).build());
+    this.declaringType = declaringType;
+  }
 
-	@Override
-	protected boolean isNullAllowedForInitializer() {
-		return IsNullAllowedForFieldInitializers.getInstance().getValue();
-	}
+  @Override
+  protected boolean isNullAllowedForInitializer() {
+    return IsNullAllowedForFieldInitializers.getInstance().getValue();
+  }
 
-	@Override
-	public NamedUserType getDeclaringType() {
-		return this.declaringType;
-	}
+  @Override
+  public NamedUserType getDeclaringType() {
+    return this.declaringType;
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return this.initializerInitialValue;
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return this.initializerInitialValue;
+  }
 
-	public void setInitializerInitialValue( Expression initializerInitialValue ) {
-		this.initializerInitialValue = initializerInitialValue;
-	}
+  public void setInitializerInitialValue(Expression initializerInitialValue) {
+    this.initializerInitialValue = initializerInitialValue;
+  }
 
-	@Override
-	protected boolean isFieldFinal() {
-		return this.getIsFinalState().getValue();
-	}
+  @Override
+  protected boolean isFieldFinal() {
+    return this.getIsFinalState().getValue();
+  }
 
-	@Override
-	protected ManagementLevel getManagementLevel() {
-		return ManagementLevel.NONE;
-	}
+  @Override
+  protected ManagementLevel getManagementLevel() {
+    return ManagementLevel.NONE;
+  }
 
-	@Override
-	protected DeclareFieldEdit createEdit( UserActivity step, UserType<?> declaringType, UserField field ) {
-		return new DeclareNonGalleryFieldEdit( step, declaringType, field );
-	}
+  @Override
+  protected DeclareFieldEdit createEdit(UserActivity step, UserType<?> declaringType, UserField field) {
+    return new DeclareNonGalleryFieldEdit(step, declaringType, field);
+  }
 
-	@Override
-	protected AddFieldView createView() {
-		return new AddFieldView( this );
-	}
+  @Override
+  protected AddFieldView createView() {
+    return new AddFieldView(this);
+  }
 
-	private final NamedUserType declaringType;
-	private Expression initializerInitialValue;
+  private final NamedUserType declaringType;
+  private Expression initializerInitialValue;
 }

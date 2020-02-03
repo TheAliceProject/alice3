@@ -64,107 +64,107 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SingleSelectTableRowState<T> extends ItemState<T> implements Iterable<T> {
-	public class SwingModel {
-		private final TableModel tableModel;
-		private final ListSelectionModel listSelectionModel;
-		private final TableColumnModel tableColumnModel;
+  public class SwingModel {
+    private final TableModel tableModel;
+    private final ListSelectionModel listSelectionModel;
+    private final TableColumnModel tableColumnModel;
 
-		private SwingModel( TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel ) {
-			this.tableModel = tableModel;
-			this.tableColumnModel = tableColumnModel;
-			this.listSelectionModel = listSelectionModel;
-		}
+    private SwingModel(TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel) {
+      this.tableModel = tableModel;
+      this.tableColumnModel = tableColumnModel;
+      this.listSelectionModel = listSelectionModel;
+    }
 
-		public TableModel getTableModel() {
-			return this.tableModel;
-		}
+    public TableModel getTableModel() {
+      return this.tableModel;
+    }
 
-		public TableColumnModel getTableColumnModel() {
-			return this.tableColumnModel;
-		}
+    public TableColumnModel getTableColumnModel() {
+      return this.tableColumnModel;
+    }
 
-		public ListSelectionModel getListSelectionModel() {
-			return this.listSelectionModel;
-		}
-	}
+    public ListSelectionModel getListSelectionModel() {
+      return this.listSelectionModel;
+    }
+  }
 
-	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
-		@Override
-		public void valueChanged( ListSelectionEvent e ) {
-			handleListSelectionChanged( e );
-		}
-	};
-	private final SwingModel swingModel;
+  private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      handleListSelectionChanged(e);
+    }
+  };
+  private final SwingModel swingModel;
 
-	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel ) {
-		super( group, migrationId, initialValue, itemCodec );
-		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
-		this.swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
-	}
+  public SingleSelectTableRowState(Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel) {
+    super(group, migrationId, initialValue, itemCodec);
+    this.swingModel = new SwingModel(tableModel, tableColumnModel, listSelectionModel);
+    this.swingModel.getListSelectionModel().addListSelectionListener(this.listSelectionListener);
+  }
 
-	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel ) {
-		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new DefaultListSelectionModel() );
-	}
+  public SingleSelectTableRowState(Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel) {
+    this(group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new DefaultListSelectionModel());
+  }
 
-	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel ) {
-		this( group, migrationId, initialValue, itemCodec, tableModel, null ); //new javax.swing.table.DefaultTableColumnModel() );
-	}
+  public SingleSelectTableRowState(Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel) {
+    this(group, migrationId, initialValue, itemCodec, tableModel, null); //new javax.swing.table.DefaultTableColumnModel() );
+  }
 
-	private void handleListSelectionChanged( ListSelectionEvent e ) {
-		changingValueFromSwing( getSwingValue(), e.getValueIsAdjusting(), null );
-	}
+  private void handleListSelectionChanged(ListSelectionEvent e) {
+    changingValueFromSwing(getSwingValue(), e.getValueIsAdjusting(), null);
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public abstract T getItemAt( int index );
+  public abstract T getItemAt(int index);
 
-	public int getItemCount() {
-		return this.swingModel.tableModel.getRowCount();
-	}
+  public int getItemCount() {
+    return this.swingModel.tableModel.getRowCount();
+  }
 
-	public Collection<T> getItems() {
-		final int N = this.getItemCount();
-		List<T> rv = Lists.newArrayListWithInitialCapacity( N );
-		for( int i = 0; i < N; i++ ) {
-			rv.add( this.getItemAt( i ) );
-		}
-		return rv;
-	}
+  public Collection<T> getItems() {
+    final int N = this.getItemCount();
+    List<T> rv = Lists.newArrayListWithInitialCapacity(N);
+    for (int i = 0; i < N; i++) {
+      rv.add(this.getItemAt(i));
+    }
+    return rv;
+  }
 
-	@Override
-	public Iterator<T> iterator() {
-		return this.getItems().iterator();
-	}
+  @Override
+  public Iterator<T> iterator() {
+    return this.getItems().iterator();
+  }
 
-	@Override
-	protected final T getSwingValue() {
-		ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
-		int selectionIndex = listSelectionModel.getLeadSelectionIndex();
-		if( selectionIndex < 0 ) {
-			return null;
-		} else {
-			final int N = this.swingModel.getTableModel().getRowCount();
-			if( selectionIndex < N ) {
-				return this.getItemAt( selectionIndex );
-			} else {
-				Logger.severe( selectionIndex, N, this );
-				return null;
-			}
-		}
-	}
+  @Override
+  protected final T getSwingValue() {
+    ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
+    int selectionIndex = listSelectionModel.getLeadSelectionIndex();
+    if (selectionIndex < 0) {
+      return null;
+    } else {
+      final int N = this.swingModel.getTableModel().getRowCount();
+      if (selectionIndex < N) {
+        return this.getItemAt(selectionIndex);
+      } else {
+        Logger.severe(selectionIndex, N, this);
+        return null;
+      }
+    }
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	public Table<T> createTable() {
-		return new Table<T>( this );
-	}
+  public Table<T> createTable() {
+    return new Table<T>(this);
+  }
 }

@@ -49,35 +49,37 @@ import org.lgna.story.implementation.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public class AsSeenBy implements
-		//Turnable
-		Turn.Detail, Roll.Detail, IsAbove.Detail, IsBelow.Detail, IsBehind.Detail, IsInFrontOf.Detail, IsToTheRightOf.Detail, IsToTheLeftOf.Detail, GetDistanceAbove.Detail, GetDistanceBehind.Detail, GetDistanceBelow.Detail, GetDistanceInFrontOf.Detail, GetDistanceToTheLeftOf.Detail, GetDistanceToTheRightOf.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, Place.Detail {
+                      //Turnable
+                          Turn.Detail, Roll.Detail, IsAbove.Detail, IsBelow.Detail, IsBehind.Detail, IsInFrontOf.Detail, IsToTheRightOf.Detail, IsToTheLeftOf.Detail, GetDistanceAbove.Detail, GetDistanceBehind.Detail, GetDistanceBelow.Detail, GetDistanceInFrontOf.Detail, GetDistanceToTheLeftOf.Detail, GetDistanceToTheRightOf.Detail,
+                          //MoveableTurnable
+                          Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, Place.Detail {
 
-	private final SThing value;
+  private final SThing value;
 
-	public AsSeenBy( SThing value ) {
-		this.value = value;
-	}
+  public AsSeenBy(SThing value) {
+    this.value = value;
+  }
 
-	/* package-private */static SThing getValue( Object[] details, SThing defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof AsSeenBy ) {
-				AsSeenBy asSeenBy = (AsSeenBy)detail;
-				return asSeenBy.value;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static SThing getValue(Object[] details, SThing defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof AsSeenBy) {
+        AsSeenBy asSeenBy = (AsSeenBy) detail;
+        return asSeenBy.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static ReferenceFrame getImplementation( Object[] details, ReferenceFrame defaultValue ) {
-		SThing entity = getValue( details, null );
-		return entity != null ? entity.getImplementation() : defaultValue;
-	}
+  /* package-private */
+  static ReferenceFrame getImplementation(Object[] details, ReferenceFrame defaultValue) {
+    SThing entity = getValue(details, null);
+    return entity != null ? entity.getImplementation() : defaultValue;
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static AsSeenBy make( SThing value ) {
-		return new AsSeenBy( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static AsSeenBy make(SThing value) {
+    return new AsSeenBy(value);
+  }
 
 }

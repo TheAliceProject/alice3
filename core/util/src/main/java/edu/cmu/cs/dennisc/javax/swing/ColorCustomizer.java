@@ -48,5 +48,5 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public interface ColorCustomizer {
-	public Color changeColorIfAppropriate( Color defaultColor );
+  public Color changeColorIfAppropriate(Color defaultColor);
 }

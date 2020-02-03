@@ -50,44 +50,42 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public enum FieldModifierFinalVolatileOrNeither {
-	//1.6
-	//	FINAL( javax.lang.model.element.Modifier.FINAL ),
-	//	VOLATILE( javax.lang.model.element.Modifier.VOLATILE ),
-	//	NEITHER();
-	//	private javax.lang.model.element.Modifier[] m_modifiers;
-	//	FieldModifierFinalVolatileOrNeither( javax.lang.model.element.Modifier... modifiers ) {
-	//		m_modifiers = modifiers;
-	//	}
-	//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
-	//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
-	//			rv.add( modifier );
-	//		}
-	//		return rv;
-	//	}
-	FINAL( Modifier.FINAL ),
-	VOLATILE( Modifier.VOLATILE ),
-	NEITHER();
-	private int[] m_modifiers;
+  //1.6
+  //  FINAL( javax.lang.model.element.Modifier.FINAL ),
+  //  VOLATILE( javax.lang.model.element.Modifier.VOLATILE ),
+  //  NEITHER();
+  //  private javax.lang.model.element.Modifier[] m_modifiers;
+  //  FieldModifierFinalVolatileOrNeither( javax.lang.model.element.Modifier... modifiers ) {
+  //    m_modifiers = modifiers;
+  //  }
+  //  public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
+  //    for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
+  //      rv.add( modifier );
+  //    }
+  //    return rv;
+  //  }
+  FINAL(Modifier.FINAL), VOLATILE(Modifier.VOLATILE), NEITHER();
+  private int[] m_modifiers;
 
-	FieldModifierFinalVolatileOrNeither( int... modifiers ) {
-		m_modifiers = modifiers;
-	}
+  FieldModifierFinalVolatileOrNeither(int... modifiers) {
+    m_modifiers = modifiers;
+  }
 
-	public Set<Integer> updateModifiers( Set<Integer> rv ) {
-		for( int modifier : m_modifiers ) {
-			rv.add( modifier );
-		}
-		return rv;
-	}
+  public Set<Integer> updateModifiers(Set<Integer> rv) {
+    for (int modifier : m_modifiers) {
+      rv.add(modifier);
+    }
+    return rv;
+  }
 
-	//todo: rename
-	public static FieldModifierFinalVolatileOrNeither get( int modifiers ) {
-		if( Modifier.isFinal( modifiers ) ) {
-			return FieldModifierFinalVolatileOrNeither.FINAL;
-		} else if( Modifier.isVolatile( modifiers ) ) {
-			return FieldModifierFinalVolatileOrNeither.VOLATILE;
-		} else {
-			return FieldModifierFinalVolatileOrNeither.NEITHER;
-		}
-	}
+  //todo: rename
+  public static FieldModifierFinalVolatileOrNeither get(int modifiers) {
+    if (Modifier.isFinal(modifiers)) {
+      return FieldModifierFinalVolatileOrNeither.FINAL;
+    } else if (Modifier.isVolatile(modifiers)) {
+      return FieldModifierFinalVolatileOrNeither.VOLATILE;
+    } else {
+      return FieldModifierFinalVolatileOrNeither.NEITHER;
+    }
+  }
 }

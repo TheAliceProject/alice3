@@ -64,107 +64,104 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<UserParameter> {
-	private static InitializingIfAbsentMap<UserCode, AddParameterComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<UserCode, AddParameterComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddParameterComposite getInstance( UserCode code ) {
-		return map.getInitializingIfAbsent( code, new InitializingIfAbsentMap.Initializer<UserCode, AddParameterComposite>() {
-			@Override
-			public AddParameterComposite initialize( UserCode key ) {
-				return new AddParameterComposite( key );
-			}
-		} );
-	}
+  public static AddParameterComposite getInstance(UserCode code) {
+    return map.getInitializingIfAbsent(code, new InitializingIfAbsentMap.Initializer<UserCode, AddParameterComposite>() {
+      @Override
+      public AddParameterComposite initialize(UserCode key) {
+        return new AddParameterComposite(key);
+      }
+    });
+  }
 
-	private final BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( "isRequirementToUpdateInvocationsUnderstoodState", false );
-	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( "hasNotAgreedToUpdateInvocationsStatus" );
-	private final UserCode code;
-	//todo: remove
-	private final ParameterNameValidator parameterNameValidator;
+  private final BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState("isRequirementToUpdateInvocationsUnderstoodState", false);
+  private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus("hasNotAgreedToUpdateInvocationsStatus");
+  private final UserCode code;
+  //todo: remove
+  private final ParameterNameValidator parameterNameValidator;
 
-	private AddParameterComposite( UserCode code ) {
-		super( UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
-				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-				.name( ApplicabilityStatus.EDITABLE ) );
-		this.code = code;
-		this.parameterNameValidator = new ParameterNameValidator( code );
-	}
+  private AddParameterComposite(UserCode code) {
+    super(UUID.fromString("628f8e97-84b5-480c-8f05-d69749a4203e"), new Details().valueComponentType(ApplicabilityStatus.EDITABLE, null).valueIsArrayType(ApplicabilityStatus.EDITABLE, false).name(ApplicabilityStatus.EDITABLE));
+    this.code = code;
+    this.parameterNameValidator = new ParameterNameValidator(code);
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return null;
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return null;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		//todo
-		String codeText;
-		if( code instanceof AbstractMethod ) {
-			AbstractMethod method = (AbstractMethod)code;
-			if( method.isProcedure() ) {
-				codeText = "procedure";
-			} else {
-				codeText = "function";
-			}
-		} else {
-			codeText = "constructor";
-		}
-		String text = "I understand that I need to update the invocations to this " + codeText + ".";
-		this.isRequirementToUpdateInvocationsUnderstoodState.setTextForBothTrueAndFalse( text );
+  @Override
+  protected void localize() {
+    super.localize();
+    //todo
+    String codeText;
+    if (code instanceof AbstractMethod) {
+      AbstractMethod method = (AbstractMethod) code;
+      if (method.isProcedure()) {
+        codeText = "procedure";
+      } else {
+        codeText = "function";
+      }
+    } else {
+      codeText = "constructor";
+    }
+    String text = "I understand that I need to update the invocations to this " + codeText + ".";
+    this.isRequirementToUpdateInvocationsUnderstoodState.setTextForBothTrueAndFalse(text);
 
-		this.hasNotAgreedToUpdateInvocationsStatus.setText( "You must agree to update the invocations." );
-	}
+    this.hasNotAgreedToUpdateInvocationsStatus.setText("You must agree to update the invocations.");
+  }
 
-	public BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
-		return this.isRequirementToUpdateInvocationsUnderstoodState;
-	}
+  public BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
+    return this.isRequirementToUpdateInvocationsUnderstoodState;
+  }
 
-	public UserCode getCode() {
-		return this.code;
-	}
+  public UserCode getCode() {
+    return this.code;
+  }
 
-	@Override
-	protected AddParameterView createView() {
-		return new AddParameterView( this );
-	}
+  @Override
+  protected AddParameterView createView() {
+    return new AddParameterView(this);
+  }
 
-	private UserParameter createParameter() {
-		return new UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
-	}
+  private UserParameter createParameter() {
+    return new UserParameter(this.getDeclarationLikeSubstanceName(), this.getValueType());
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		Status rv = super.getStatusPreRejectorCheck();
-		if( rv == IS_GOOD_TO_GO_STATUS ) {
-			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
-				//pass
-			} else {
-				return this.hasNotAgreedToUpdateInvocationsStatus;
-			}
-		}
-		return rv;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    Status rv = super.getStatusPreRejectorCheck();
+    if (rv == IS_GOOD_TO_GO_STATUS) {
+      if (this.isRequirementToUpdateInvocationsUnderstoodState.getValue()) {
+        //pass
+      } else {
+        return this.hasNotAgreedToUpdateInvocationsStatus;
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public UserParameter getPreviewValue() {
-		return this.createParameter();
-	}
+  @Override
+  public UserParameter getPreviewValue() {
+    return this.createParameter();
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new AddParameterEdit( userActivity, this.code, this.createParameter() );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return new AddParameterEdit(userActivity, this.code, this.createParameter());
+  }
 
-	@Override
-	public void handlePreActivation() {
-		List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists( code );
-		this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly( argumentLists.size() == 0 );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists(code);
+    this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly(argumentLists.size() == 0);
+    super.handlePreActivation();
+  }
 
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.parameterNameValidator.isNameAvailable( name );
-	}
+  @Override
+  protected boolean isNameAvailable(String name) {
+    return this.parameterNameValidator.isNameAvailable(name);
+  }
 }

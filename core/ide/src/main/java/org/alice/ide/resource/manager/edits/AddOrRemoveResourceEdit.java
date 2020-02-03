@@ -53,36 +53,36 @@ import org.lgna.project.Project;
  * @author Dennis Cosgrove
  */
 public abstract class AddOrRemoveResourceEdit extends AbstractEdit {
-	private final Resource resource;
+  private final Resource resource;
 
-	public AddOrRemoveResourceEdit( UserActivity userActivity, Resource resource ) {
-		super( userActivity );
-		this.resource = resource;
-	}
+  public AddOrRemoveResourceEdit(UserActivity userActivity, Resource resource) {
+    super(userActivity);
+    this.resource = resource;
+  }
 
-	public Resource getResource() {
-		return this.resource;
-	}
+  public Resource getResource() {
+    return this.resource;
+  }
 
-	protected void addResource() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			Project project = ide.getProject();
-			if( project != null ) {
-				project.addResource( this.resource );
-				//ResourceManagerPane.this.resetModel();
-			}
-		}
-	}
+  protected void addResource() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      Project project = ide.getProject();
+      if (project != null) {
+        project.addResource(this.resource);
+        //ResourceManagerPane.this.resetModel();
+      }
+    }
+  }
 
-	protected void removeResource() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			Project project = ide.getProject();
-			if( project != null ) {
-				project.removeResource( this.resource );
-				//ResourceManagerPane.this.resetModel();
-			}
-		}
-	}
+  protected void removeResource() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      Project project = ide.getProject();
+      if (project != null) {
+        project.removeResource(this.resource);
+        //ResourceManagerPane.this.resetModel();
+      }
+    }
+  }
 }

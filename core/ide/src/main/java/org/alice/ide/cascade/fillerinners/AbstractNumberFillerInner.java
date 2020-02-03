@@ -60,30 +60,30 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
-	public AbstractNumberFillerInner( AbstractType<?, ?, ?> type ) {
-		super( type );
-	}
+  public AbstractNumberFillerInner(AbstractType<?, ?, ?> type) {
+    super(type);
+  }
 
-	public AbstractNumberFillerInner( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public AbstractNumberFillerInner(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		if( isTop && ( prevExpression != null ) ) {
-			if( prevExpression instanceof ArithmeticInfixExpression ) {
-				ArithmeticInfixExpression previousArithmeticInfixExpression = (ArithmeticInfixExpression)prevExpression;
-				ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
-				for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-					if( operator != prevOperator ) {
-						items.add( ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
-					}
-				}
-				items.add( CascadeLineSeparator.getInstance() );
-				items.add( ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				items.add( ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				items.add( CascadeLineSeparator.getInstance() );
-			}
-		}
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    if (isTop && (prevExpression != null)) {
+      if (prevExpression instanceof ArithmeticInfixExpression) {
+        ArithmeticInfixExpression previousArithmeticInfixExpression = (ArithmeticInfixExpression) prevExpression;
+        ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
+        for (ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS) {
+          if (operator != prevOperator) {
+            items.add(ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance(operator));
+          }
+        }
+        items.add(CascadeLineSeparator.getInstance());
+        items.add(ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance());
+        items.add(ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance());
+        items.add(CascadeLineSeparator.getInstance());
+      }
+    }
+  }
 }

@@ -52,16 +52,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableCascadeFillIn<F, B> extends CascadeFillIn<F, B> {
-	private final List<CascadeBlank<B>> blanks;
+  private final List<CascadeBlank<B>> blanks;
 
-	public ImmutableCascadeFillIn( UUID id, CascadeBlank<B>... blanks ) {
-		super( id );
-		this.blanks = Collections.unmodifiableList( Lists.newArrayList( blanks ) );
-	}
+  public ImmutableCascadeFillIn(UUID id, CascadeBlank<B>... blanks) {
+    super(id);
+    this.blanks = Collections.unmodifiableList(Lists.newArrayList(blanks));
+  }
 
-	//todo: make final
-	@Override
-	public/* final */List<CascadeBlank<B>> getBlanks() {
-		return this.blanks;
-	}
+  //todo: make final
+  @Override
+  public/* final */List<CascadeBlank<B>> getBlanks() {
+    return this.blanks;
+  }
 }

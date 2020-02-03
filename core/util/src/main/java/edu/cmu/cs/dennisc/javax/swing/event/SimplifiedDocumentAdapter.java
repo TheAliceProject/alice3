@@ -49,20 +49,20 @@ import javax.swing.event.DocumentListener;
  * @author Dennis Cosgrove
  */
 public abstract class SimplifiedDocumentAdapter implements DocumentListener {
-	protected abstract void updated( DocumentEvent e );
+  protected abstract void updated(DocumentEvent e);
 
-	@Override
-	public void changedUpdate( DocumentEvent e ) {
-		this.updated( e );
-	}
+  @Override
+  public void changedUpdate(DocumentEvent e) {
+    this.updated(e);
+  }
 
-	@Override
-	public void insertUpdate( DocumentEvent e ) {
-		this.updated( e );
-	}
+  @Override
+  public void insertUpdate(DocumentEvent e) {
+    this.updated(e);
+  }
 
-	@Override
-	public void removeUpdate( DocumentEvent e ) {
-		this.updated( e );
-	}
+  @Override
+  public void removeUpdate(DocumentEvent e) {
+    this.updated(e);
+  }
 }

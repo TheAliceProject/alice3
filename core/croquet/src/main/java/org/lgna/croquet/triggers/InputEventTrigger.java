@@ -53,22 +53,22 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class InputEventTrigger extends ComponentEventTrigger<InputEvent> {
-	public static UserActivity createUserActivity( InputEvent inputEvent ) {
-		return new InputEventTrigger( inputEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(InputEvent inputEvent) {
+    return new InputEventTrigger(inputEvent).getUserActivity();
+  }
 
-	private InputEventTrigger( InputEvent inputEvent ) {
-		super( null, inputEvent );
-	}
+  private InputEventTrigger(InputEvent inputEvent) {
+    super(null, inputEvent);
+  }
 
-	@Override
-	protected Point getPoint() {
-		InputEvent inputEvent = this.getEvent();
-		if( inputEvent instanceof MouseEvent ) {
-			MouseEvent mouseEvent = (MouseEvent)inputEvent;
-			return mouseEvent.getPoint();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Point getPoint() {
+    InputEvent inputEvent = this.getEvent();
+    if (inputEvent instanceof MouseEvent) {
+      MouseEvent mouseEvent = (MouseEvent) inputEvent;
+      return mouseEvent.getPoint();
+    } else {
+      return null;
+    }
+  }
 }

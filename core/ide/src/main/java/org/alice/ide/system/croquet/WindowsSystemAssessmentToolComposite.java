@@ -68,121 +68,116 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WindowsSystemAssessmentToolComposite extends SimpleOperationUnadornedDialogCoreComposite<WindowsSystemAssessmentToolPane> {
-	private static class SingletonHolder {
-		private static WindowsSystemAssessmentToolComposite instance = new WindowsSystemAssessmentToolComposite();
-	}
+  private static class SingletonHolder {
+    private static WindowsSystemAssessmentToolComposite instance = new WindowsSystemAssessmentToolComposite();
+  }
 
-	public static WindowsSystemAssessmentToolComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static WindowsSystemAssessmentToolComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final PlainStringValue header = this.createStringValue( "header" );
-	private final StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
-	private final Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			boolean isAbleToRunWinsatDirectly;
-			try {
-				StringBuilder sb = new StringBuilder();
-				int result = ProcessUtilities.startAndDrainStandardOutAndStandardError( new ProcessBuilder( "winsat", "-?" ), sb );
-				Logger.outln( "result:", result );
-				Logger.outln( sb.toString() );
-				isAbleToRunWinsatDirectly = result == 0;
-			} catch( ProcessStartException pse ) {
-				//User Account Control?
-				pse.printStackTrace();
-				isAbleToRunWinsatDirectly = false;
-			} catch( IOException ioe ) {
-				ioe.printStackTrace();
-				isAbleToRunWinsatDirectly = false;
-			}
+  private final PlainStringValue header = this.createStringValue("header");
+  private final StringState stardardOutAndStandardErrorState = this.createStringState("stardardOutAndStandardErrorState");
+  private final Operation executeWinsatOperation = this.createActionOperation("executeWinsatOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      boolean isAbleToRunWinsatDirectly;
+      try {
+        StringBuilder sb = new StringBuilder();
+        int result = ProcessUtilities.startAndDrainStandardOutAndStandardError(new ProcessBuilder("winsat", "-?"), sb);
+        Logger.outln("result:", result);
+        Logger.outln(sb.toString());
+        isAbleToRunWinsatDirectly = result == 0;
+      } catch (ProcessStartException pse) {
+        //User Account Control?
+        pse.printStackTrace();
+        isAbleToRunWinsatDirectly = false;
+      } catch (IOException ioe) {
+        ioe.printStackTrace();
+        isAbleToRunWinsatDirectly = false;
+      }
 
-			//isAbleToRunWinsatDirectly = false;
-			ProcessBuilder[] processBuilders;
-			if( isAbleToRunWinsatDirectly ) {
-				processBuilders = new ProcessBuilder[] {
-						new ProcessBuilder( "winsat", "dwm" ),
-						new ProcessBuilder( "winsat", "d3d" )
-				};
-			} else {
-				//				try {
-				//					java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
-				//					tempFile.deleteOnExit();
-				//					StringBuilder sb = new StringBuilder();
-				//					sb.append( "winsat dwm\n" );
-				//					sb.append( "winsat d3d\n" );
-				//					edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
-				//					processBuilders = new ProcessBuilder[] {
-				//						new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() )
-				//					};
-				//				} catch( java.io.IOException ioe ) {
-				//					throw new RuntimeException( "cannot create temp file", ioe );
-				//				}
-				processBuilders = new ProcessBuilder[] {
-						new ProcessBuilder( "cmd", "/c", "winsat.exe dwm & winsat.exe d3d" )
-				};
-			}
-			final AttributeSet attributeSet = null;
-			ProcessWorker processWorker = new ProcessWorker( processBuilders ) {
-				private void appendText( String s ) {
-					Document document = stardardOutAndStandardErrorState.getSwingModel().getDocument();
-					try {
-						document.insertString( document.getLength(), s, attributeSet );
-					} catch( BadLocationException ble ) {
-						ble.printStackTrace();
-					}
-				}
+      //isAbleToRunWinsatDirectly = false;
+      ProcessBuilder[] processBuilders;
+      if (isAbleToRunWinsatDirectly) {
+        processBuilders = new ProcessBuilder[] {new ProcessBuilder("winsat", "dwm"), new ProcessBuilder("winsat", "d3d")};
+      } else {
+        //        try {
+        //          java.io.File tempFile = java.io.File.createTempFile( "fixGraphics", ".bat" );
+        //          tempFile.deleteOnExit();
+        //          StringBuilder sb = new StringBuilder();
+        //          sb.append( "winsat dwm\n" );
+        //          sb.append( "winsat d3d\n" );
+        //          edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tempFile, sb.toString() );
+        //          processBuilders = new ProcessBuilder[] {
+        //            new ProcessBuilder( "cmd", "/C", "start", tempFile.getAbsolutePath() )
+        //          };
+        //        } catch( java.io.IOException ioe ) {
+        //          throw new RuntimeException( "cannot create temp file", ioe );
+        //        }
+        processBuilders = new ProcessBuilder[] {new ProcessBuilder("cmd", "/c", "winsat.exe dwm & winsat.exe d3d")};
+      }
+      final AttributeSet attributeSet = null;
+      ProcessWorker processWorker = new ProcessWorker(processBuilders) {
+        private void appendText(String s) {
+          Document document = stardardOutAndStandardErrorState.getSwingModel().getDocument();
+          try {
+            document.insertString(document.getLength(), s, attributeSet);
+          } catch (BadLocationException ble) {
+            ble.printStackTrace();
+          }
+        }
 
-				@Override
-				protected void handleStart_onEventDispatchThread() {
-					//this.appendText( "start\n" );
-				}
+        @Override
+        protected void handleStart_onEventDispatchThread() {
+          //this.appendText( "start\n" );
+        }
 
-				@Override
-				protected void handleStartProcess_onEventDispatchThread( int i ) {
-					this.appendText( "start process " + this.getProcessBuilders()[ i ].command() + "\n" );
-				}
+        @Override
+        protected void handleStartProcess_onEventDispatchThread(int i) {
+          this.appendText("start process " + this.getProcessBuilders()[i].command() + "\n");
+        }
 
-				@Override
-				protected void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s ) {
-					this.appendText( s );
-				}
+        @Override
+        protected void handleProcessStandardOutAndStandardError_onEventDispatchThread(String s) {
+          this.appendText(s);
+        }
 
-				@Override
-				protected void handleDone_onEventDispatchThread( Integer value ) {
-					this.appendText( "done." );
-				}
-			};
-			processWorker.execute();
-			return null;
-		}
-	} );
+        @Override
+        protected void handleDone_onEventDispatchThread(Integer value) {
+          this.appendText("done.");
+        }
+      };
+      processWorker.execute();
+      return null;
+    }
+  });
 
-	private WindowsSystemAssessmentToolComposite() {
-		super( UUID.fromString( "3c659189-6425-4741-9e30-4f4b3bde2b23" ), Application.APPLICATION_UI_GROUP );
-	}
+  private WindowsSystemAssessmentToolComposite() {
+    super(UUID.fromString("3c659189-6425-4741-9e30-4f4b3bde2b23"), Application.APPLICATION_UI_GROUP);
+  }
 
-	public PlainStringValue getHeader() {
-		return this.header;
-	}
+  public PlainStringValue getHeader() {
+    return this.header;
+  }
 
-	public StringState getStardardOutAndStandardErrorState() {
-		return this.stardardOutAndStandardErrorState;
-	}
+  public StringState getStardardOutAndStandardErrorState() {
+    return this.stardardOutAndStandardErrorState;
+  }
 
-	public Operation getExecuteWinsatOperation() {
-		return this.executeWinsatOperation;
-	}
+  public Operation getExecuteWinsatOperation() {
+    return this.executeWinsatOperation;
+  }
 
-	@Override
-	protected WindowsSystemAssessmentToolPane createView() {
-		return new WindowsSystemAssessmentToolPane( this );
-	}
+  @Override
+  protected WindowsSystemAssessmentToolPane createView() {
+    return new WindowsSystemAssessmentToolPane(this);
+  }
 
-	public static void main( String[] args ) throws Exception {
-		UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		SimpleApplication app = new SimpleApplication();
-		WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+  public static void main(String[] args) throws Exception {
+    UIManagerUtilities.setLookAndFeel("Nimbus");
+    SimpleApplication app = new SimpleApplication();
+    WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().fire();
+    System.exit(0);
+  }
 }

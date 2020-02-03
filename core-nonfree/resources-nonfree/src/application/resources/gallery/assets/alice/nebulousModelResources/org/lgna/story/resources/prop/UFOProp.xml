@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" deprecated="TRUE" name="UFOProp">
+    <BoundingBox>
+        <Min x="-3.0865488052368164" y="0.0" z="-3.4722001552581787"/>
+        <Max x="3.0865488052368164" y="3.3987083435058594" z="3.4722001552581787"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>ufo</Tag>
+        <Tag>alien</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="UFOProp" resourceName="U_F_O_PROP" textureName="U_F_O_PROP"/>
+</AliceModel>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Ethan Gagorik" name="PricklyPearCactus">
+    <BoundingBox>
+        <Min x="-0.3565883934497833" y="-0.03052700124680996" z="-0.38176003098487854"/>
+        <Max x="0.3871552646160126" y="0.9432172179222107" z="0.3403564393520355"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>plant</Tag>
+        <Tag>cactus</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Small" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.1900109499692917" y="-0.020498208701610565" z="-0.23488076031208038"/>
+            <Max x="0.21302641928195953" y="0.41632577776908875" z="0.21160617470741272"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Medium" resourceName="MEDIUM" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.30812254548072815" y="-0.014537587761878967" z="-0.24057888984680176"/>
+            <Max x="0.22890181839466095" y="0.625736653804779" z="0.32988181710243225"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="MediumWithFruit" resourceName="MEDIUM_WITH_FRUIT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.30812254548072815" y="-0.014537587761878967" z="-0.24802623689174652"/>
+            <Max x="0.25629106163978577" y="0.6645535826683044" z="0.3403564393520355"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.32759395241737366" y="-0.03052700124680996" z="-0.3430279493331909"/>
+            <Max x="0.3871552646160126" y="0.9165779948234558" z="0.28314292430877686"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LargeWithFruit" resourceName="LARGE_WITH_FRUIT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.3565883934497833" y="-0.03052700124680996" z="-0.38176003098487854"/>
+            <Max x="0.3871552646160126" y="0.9432172179222107" z="0.31055280566215515"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

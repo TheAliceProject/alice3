@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class ClippingPlane extends Affector {
-	//todo: add inFrontAsOpposedToBehind?
+  //todo: add inFrontAsOpposedToBehind?
 }

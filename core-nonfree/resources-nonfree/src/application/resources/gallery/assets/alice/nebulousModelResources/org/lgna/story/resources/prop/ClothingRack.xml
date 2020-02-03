@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="ClothingRack">
+    <BoundingBox>
+        <Min x="-0.45463091135025024" y="0.0" z="-0.244159534573555"/>
+        <Max x="0.45463091135025024" y="1.4192888736724854" z="0.244159534573555"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>rack</Tag>
+        <Tag>hanger</Tag>
+        <Tag>clothing</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bedroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bedroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Value" resourceName="VALUE_CLOTHES1" textureName="CLOTHES1">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.24061866104602814"/>
+            <Max x="0.45463091135025024" y="1.4192888736724854" z="0.24061866104602814"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_CLOTHES2" textureName="CLOTHES2">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.24061866104602814"/>
+            <Max x="0.45463091135025024" y="1.4192888736724854" z="0.24061866104602814"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_CLOTHES3" textureName="CLOTHES3">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.24061866104602814"/>
+            <Max x="0.45463091135025024" y="1.4192888736724854" z="0.24061866104602814"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.244159534573555"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.244159534573555"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.244159534573555"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.244159534573555"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Expensive" resourceName="EXPENSIVE_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.244159534573555"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.244159534573555"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ValueDresses" resourceName="VALUE_DRESSES_DRESSES1" textureName="DRESSES1">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.21775156259536743"/>
+            <Max x="0.45463091135025024" y="1.4097580909729004" z="0.21775156259536743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ValueDresses" resourceName="VALUE_DRESSES_DRESSES2" textureName="DRESSES2">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.21775156259536743"/>
+            <Max x="0.45463091135025024" y="1.4097580909729004" z="0.21775156259536743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ValueDresses" resourceName="VALUE_DRESSES_DRESSES3" textureName="DRESSES3">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.21775156259536743"/>
+            <Max x="0.45463091135025024" y="1.4097580909729004" z="0.21775156259536743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ValueDresses" resourceName="VALUE_DRESSES_DRESSES4" textureName="DRESSES4">
+        <BoundingBox>
+            <Min x="-0.45463091135025024" y="0.0" z="-0.21775156259536743"/>
+            <Max x="0.45463091135025024" y="1.4097580909729004" z="0.21775156259536743"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ExpensiveDresses" resourceName="EXPENSIVE_DRESSES_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.21944856643676758"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.21944856643676758"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ExpensiveDresses" resourceName="EXPENSIVE_DRESSES_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.21944856643676758"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.21944856643676758"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ExpensiveDresses" resourceName="EXPENSIVE_DRESSES_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.21944856643676758"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.21944856643676758"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ExpensiveDresses" resourceName="EXPENSIVE_DRESSES_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.3792513608932495" y="0.0" z="-0.21944856643676758"/>
+            <Max x="0.3792513608932495" y="1.4102760553359985" z="0.21944856643676758"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

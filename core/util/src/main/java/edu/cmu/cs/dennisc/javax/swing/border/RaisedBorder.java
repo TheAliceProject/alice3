@@ -48,11 +48,11 @@ import java.awt.Insets;
  * @author Dennis Cosgrove
  */
 public class RaisedBorder extends BevelBorder {
-	public RaisedBorder( Insets insets ) {
-		super( insets, true );
-	}
+  public RaisedBorder(Insets insets) {
+    super(insets, true);
+  }
 
-	public RaisedBorder( int top, int left, int bottom, int right ) {
-		super( top, left, bottom, right, true );
-	}
+  public RaisedBorder(int top, int left, int bottom, int right) {
+    super(top, left, bottom, right, true);
+  }
 }

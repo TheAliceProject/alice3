@@ -54,20 +54,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class InsertEachInComposite<S extends Statement> extends InsertStatementComposite<S> {
-	public InsertEachInComposite( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( migrationId, new Details()
-				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-				.name( ApplicabilityStatus.EDITABLE )
-				.initializer( ApplicabilityStatus.EDITABLE, null ),
-				blockStatementIndexPair, isEnveloping );
-	}
+  public InsertEachInComposite(UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(migrationId, new Details().valueComponentType(ApplicabilityStatus.EDITABLE, null).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true).name(ApplicabilityStatus.EDITABLE).initializer(ApplicabilityStatus.EDITABLE, null), blockStatementIndexPair, isEnveloping);
+  }
 
-	protected abstract S createStatement( UserLocal item, Expression initializer );
+  protected abstract S createStatement(UserLocal item, Expression initializer);
 
-	@Override
-	protected final S createStatement() {
-		UserLocal item = new UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
-		return this.createStatement( item, this.getInitializer() );
-	}
+  @Override
+  protected final S createStatement() {
+    UserLocal item = new UserLocal(this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true);
+    return this.createStatement(item, this.getInitializer());
+  }
 }

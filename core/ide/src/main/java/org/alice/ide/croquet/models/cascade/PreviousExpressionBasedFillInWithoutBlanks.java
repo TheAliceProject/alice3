@@ -53,53 +53,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends Expression> extends ExpressionFillInWithoutBlanks<F> {
-	public PreviousExpressionBasedFillInWithoutBlanks( UUID id ) {
-		super( id );
-	}
+  public PreviousExpressionBasedFillInWithoutBlanks(UUID id) {
+    super(id);
+  }
 
-	private Expression getPreviousExpression() {
-		return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-	}
+  private Expression getPreviousExpression() {
+    return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+  }
 
-	private Expression createCopyOfPreviousExpression() {
-		Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return IDE.getActiveInstance().createCopy( prevExpression );
-		} else {
-			return null;
-		}
-	}
+  private Expression createCopyOfPreviousExpression() {
+    Expression prevExpression = this.getPreviousExpression();
+    if (prevExpression != null) {
+      return IDE.getActiveInstance().createCopy(prevExpression);
+    } else {
+      return null;
+    }
+  }
 
-	//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
-	//	@Override
-	//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
-	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-	//	}
-	private Expression cleanExpression;
+  //  protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
+  //  @Override
+  //  public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
+  //    org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+  //    return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+  //  }
+  private Expression cleanExpression;
 
-	@Override
-	protected void markClean() {
-		super.markClean();
-		this.cleanExpression = this.getPreviousExpression();
-	}
+  @Override
+  protected void markClean() {
+    super.markClean();
+    this.cleanExpression = this.getPreviousExpression();
+  }
 
-	@Override
-	protected boolean isDirty() {
-		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
-		return super.isDirty() || isPrevExpressionChanged;
-	}
+  @Override
+  protected boolean isDirty() {
+    boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
+    return super.isDirty() || isPrevExpressionChanged;
+  }
 
-	protected abstract F createValue( Expression previousExpression );
+  protected abstract F createValue(Expression previousExpression);
 
-	@Override
-	public final F createValue( ItemNode<? super F, Void> node ) {
-		return this.createValue( this.createCopyOfPreviousExpression() );
-	}
+  @Override
+  public final F createValue(ItemNode<? super F, Void> node) {
+    return this.createValue(this.createCopyOfPreviousExpression());
+  }
 
-	@Override
-	public final F getTransientValue( ItemNode<? super F, Void> node ) {
-		//todo?
-		return this.createValue( this.createCopyOfPreviousExpression() );
-	}
+  @Override
+  public final F getTransientValue(ItemNode<? super F, Void> node) {
+    //todo?
+    return this.createValue(this.createCopyOfPreviousExpression());
+  }
 }

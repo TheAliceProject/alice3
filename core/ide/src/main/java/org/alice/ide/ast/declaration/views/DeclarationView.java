@@ -49,7 +49,7 @@ import org.lgna.project.ast.Declaration;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationView<N extends Declaration> extends DeclarationLikeSubstanceView {
-	public DeclarationView( DeclarationLikeSubstanceComposite<N> composite ) {
-		super( composite );
-	}
+  public DeclarationView(DeclarationLikeSubstanceComposite<N> composite) {
+    super(composite);
+  }
 }

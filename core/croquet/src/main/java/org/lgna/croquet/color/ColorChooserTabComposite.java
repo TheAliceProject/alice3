@@ -52,37 +52,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ColorChooserTabComposite<V extends ColorChooserTabView> extends AbstractComposite<V> {
-	private String name;
-	private Icon largeDisplayIcon;
-	private Icon smallDisplayIcon;
+  private String name;
+  private Icon largeDisplayIcon;
+  private Icon smallDisplayIcon;
 
-	public ColorChooserTabComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ColorChooserTabComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.name = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.name = this.findDefaultLocalizedText();
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public Icon getSmallDisplayIcon() {
-		return this.smallDisplayIcon;
-	}
+  public Icon getSmallDisplayIcon() {
+    return this.smallDisplayIcon;
+  }
 
-	public void setSmallDisplayIcon( Icon smallDisplayIcon ) {
-		this.smallDisplayIcon = smallDisplayIcon;
-	}
+  public void setSmallDisplayIcon(Icon smallDisplayIcon) {
+    this.smallDisplayIcon = smallDisplayIcon;
+  }
 
-	public Icon getLargeDisplayIcon() {
-		return this.largeDisplayIcon;
-	}
+  public Icon getLargeDisplayIcon() {
+    return this.largeDisplayIcon;
+  }
 
-	public void setLargeDisplayIcon( Icon largeDisplayIcon ) {
-		this.largeDisplayIcon = largeDisplayIcon;
-	}
+  public void setLargeDisplayIcon(Icon largeDisplayIcon) {
+    this.largeDisplayIcon = largeDisplayIcon;
+  }
 }

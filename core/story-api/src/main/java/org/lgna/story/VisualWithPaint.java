@@ -46,7 +46,7 @@ package org.lgna.story;
  * @author dculyba
  */
 public interface VisualWithPaint extends Visual {
-	public Paint getPaint();
+  public Paint getPaint();
 
-	public void setPaint( Paint paint, SetPaint.Detail... details );
+  public void setPaint(Paint paint, SetPaint.Detail... details);
 }

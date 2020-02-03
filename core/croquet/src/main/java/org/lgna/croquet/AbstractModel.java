@@ -54,76 +54,76 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractModel extends AbstractElement implements Model {
-	private static int getMnemonicKey( Action action ) {
-		Object rv = action.getValue( Action.MNEMONIC_KEY );
-		return rv != null ? Integer.class.cast( rv ) : 0;
-	}
+  private static int getMnemonicKey(Action action) {
+    Object rv = action.getValue(Action.MNEMONIC_KEY);
+    return rv != null ? Integer.class.cast(rv) : 0;
+  }
 
-	protected static void safeSetNameAndMnemonic( Action action, String nextName, int nextMnemonicKey ) {
-		int index;
-		if( nextMnemonicKey != 0 ) {
-			char mnemonicChar = (char)nextMnemonicKey;
+  protected static void safeSetNameAndMnemonic(Action action, String nextName, int nextMnemonicKey) {
+    int index;
+    if (nextMnemonicKey != 0) {
+      char mnemonicChar = (char) nextMnemonicKey;
 
-			int upperCaseIndex = nextName.indexOf( Character.toUpperCase( mnemonicChar ) );
-			int lowerCaseIndex = nextName.indexOf( Character.toLowerCase( mnemonicChar ) );
+      int upperCaseIndex = nextName.indexOf(Character.toUpperCase(mnemonicChar));
+      int lowerCaseIndex = nextName.indexOf(Character.toLowerCase(mnemonicChar));
 
-			if( upperCaseIndex == -1 ) {
-				index = lowerCaseIndex;
-			} else if( lowerCaseIndex == -1 ) {
-				index = upperCaseIndex;
-			} else {
-				if( lowerCaseIndex < upperCaseIndex ) {
-					index = lowerCaseIndex;
-				} else {
-					index = upperCaseIndex;
-				}
-			}
-		} else {
-			index = -1;
-		}
+      if (upperCaseIndex == -1) {
+        index = lowerCaseIndex;
+      } else if (lowerCaseIndex == -1) {
+        index = upperCaseIndex;
+      } else {
+        if (lowerCaseIndex < upperCaseIndex) {
+          index = lowerCaseIndex;
+        } else {
+          index = upperCaseIndex;
+        }
+      }
+    } else {
+      index = -1;
+    }
 
-		int prevMnemonicKey = getMnemonicKey( action );
-		if( prevMnemonicKey != 0 ) { // True if locale was just changed
-			action.putValue( Action.MNEMONIC_KEY, 0 );
-		}
-		action.putValue( Action.NAME, nextName );
-		if( index != -1 ) {
-			action.putValue( Action.MNEMONIC_KEY, nextMnemonicKey );
-		}
-	}
+    int prevMnemonicKey = getMnemonicKey(action);
+    if (prevMnemonicKey != 0) { // True if locale was just changed
+      action.putValue(Action.MNEMONIC_KEY, 0);
+    }
+    action.putValue(Action.NAME, nextName);
+    if (index != -1) {
+      action.putValue(Action.MNEMONIC_KEY, nextMnemonicKey);
+    }
+  }
 
-	protected AbstractModel( UUID id ) {
-		super( id );
-		this.migrationId = id;
-	}
+  protected AbstractModel(UUID id) {
+    super(id);
+    this.migrationId = id;
+  }
 
-	private final UUID migrationId;
+  private final UUID migrationId;
 
-	@Override
-	public UUID getMigrationId() {
-		return this.migrationId;
-	}
+  @Override
+  public UUID getMigrationId() {
+    return this.migrationId;
+  }
 
-	@Override
-	public final void relocalize() {
-		this.localize();
-	}
+  @Override
+  public final void relocalize() {
+    this.localize();
+  }
 
-	private boolean isEnabled = true;
+  private boolean isEnabled = true;
 
-	@Override
-	public boolean isEnabled() {
-		return this.isEnabled;
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.isEnabled;
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		if( this.isEnabled != isEnabled ) {
-			this.isEnabled = isEnabled;
-			Logger.outln( "todo: override setEnabled", this, isEnabled );
-			for( SwingComponentView<?> component : ComponentManager.getComponents( this ) ) {
-				component.getAwtComponent().setEnabled( this.isEnabled );
-			}
-		}
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    if (this.isEnabled != isEnabled) {
+      this.isEnabled = isEnabled;
+      Logger.outln("todo: override setEnabled", this, isEnabled);
+      for (SwingComponentView<?> component : ComponentManager.getComponents(this)) {
+        component.getAwtComponent().setEnabled(this.isEnabled);
+      }
+    }
+  }
 }

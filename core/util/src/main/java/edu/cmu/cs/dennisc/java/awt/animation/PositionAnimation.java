@@ -53,100 +53,100 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class PositionAnimation extends SubjectAsSeenByAnimation {
-	public static final Point2f USE_EXISTING_VALUE_AT_RUN_TIME = null;
+  public static final Point2f USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private Point2f m_posBegin = new Point2f();
-	private Point2f m_posEnd = new Point2f();
+  private Point2f m_posBegin = new Point2f();
+  private Point2f m_posEnd = new Point2f();
 
-	private Point2f m_posBeginUsedAtRuntime = new Point2f();
+  private Point2f m_posBeginUsedAtRuntime = new Point2f();
 
-	private Point2f m_posRuntime = new Point2f();
+  private Point2f m_posRuntime = new Point2f();
 
-	public PositionAnimation() {
-		m_posBeginUsedAtRuntime.setNaN();
-		m_posBegin.setNaN();
-		m_posEnd.setNaN();
-	}
+  public PositionAnimation() {
+    m_posBeginUsedAtRuntime.setNaN();
+    m_posBegin.setNaN();
+    m_posEnd.setNaN();
+  }
 
-	public PositionAnimation( Component awtSubject, Component awtAsSeenBy, Point2f posBegin, Point2f posEnd ) {
-		super( awtSubject, awtAsSeenBy );
-		m_posBeginUsedAtRuntime.setNaN();
-		setPositionBegin( posBegin );
-		setPositionEnd( posEnd );
-	}
+  public PositionAnimation(Component awtSubject, Component awtAsSeenBy, Point2f posBegin, Point2f posEnd) {
+    super(awtSubject, awtAsSeenBy);
+    m_posBeginUsedAtRuntime.setNaN();
+    setPositionBegin(posBegin);
+    setPositionEnd(posEnd);
+  }
 
-	public Point2f accessPositionBeginUsedAtRuntime() {
-		return m_posBeginUsedAtRuntime;
-	}
+  public Point2f accessPositionBeginUsedAtRuntime() {
+    return m_posBeginUsedAtRuntime;
+  }
 
-	public Point2f getPositionBeginUsedAtRuntime( Point2f rv ) {
-		rv.set( m_posBeginUsedAtRuntime );
-		return rv;
-	}
+  public Point2f getPositionBeginUsedAtRuntime(Point2f rv) {
+    rv.set(m_posBeginUsedAtRuntime);
+    return rv;
+  }
 
-	public Point2f getPositionBeginUsedAtRuntime() {
-		return getPositionBeginUsedAtRuntime( new Point2f() );
-	}
+  public Point2f getPositionBeginUsedAtRuntime() {
+    return getPositionBeginUsedAtRuntime(new Point2f());
+  }
 
-	public Point2f accessPositionBegin() {
-		return m_posBegin;
-	}
+  public Point2f accessPositionBegin() {
+    return m_posBegin;
+  }
 
-	public Point2f getPositionBegin( Point2f rv ) {
-		rv.set( m_posBegin );
-		return rv;
-	}
+  public Point2f getPositionBegin(Point2f rv) {
+    rv.set(m_posBegin);
+    return rv;
+  }
 
-	public Point2f getPositionBegin() {
-		return getPositionBegin( new Point2f() );
-	}
+  public Point2f getPositionBegin() {
+    return getPositionBegin(new Point2f());
+  }
 
-	public void setPositionBegin( Point2f posBegin ) {
-		if( posBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
-			m_posBegin.set( posBegin );
-		} else {
-			m_posBegin.setNaN();
-		}
-	}
+  public void setPositionBegin(Point2f posBegin) {
+    if (posBegin != USE_EXISTING_VALUE_AT_RUN_TIME) {
+      m_posBegin.set(posBegin);
+    } else {
+      m_posBegin.setNaN();
+    }
+  }
 
-	public Point2f accessPositionEnd() {
-		return m_posEnd;
-	}
+  public Point2f accessPositionEnd() {
+    return m_posEnd;
+  }
 
-	public Point2f getPositionEnd( Point2f rv ) {
-		rv.set( m_posEnd );
-		return rv;
-	}
+  public Point2f getPositionEnd(Point2f rv) {
+    rv.set(m_posEnd);
+    return rv;
+  }
 
-	public Point2f getPositionEnd() {
-		return getPositionEnd( new Point2f() );
-	}
+  public Point2f getPositionEnd() {
+    return getPositionEnd(new Point2f());
+  }
 
-	public void setPositionEnd( Point2f posEnd ) {
-		m_posEnd.set( posEnd );
-	}
+  public void setPositionEnd(Point2f posEnd) {
+    m_posEnd.set(posEnd);
+  }
 
-	@Override
-	public void prologue() {
-		if( m_posBegin.isNaN() ) {
-			Point p = SwingUtilities.convertPoint( getSubject().getParent(), getSubject().getX(), getSubject().getY(), getAsSeenBy() );
-			m_posBeginUsedAtRuntime.set( p.x, p.y );
-		} else {
-			m_posBeginUsedAtRuntime.set( m_posBegin );
-		}
-	}
+  @Override
+  public void prologue() {
+    if (m_posBegin.isNaN()) {
+      Point p = SwingUtilities.convertPoint(getSubject().getParent(), getSubject().getX(), getSubject().getY(), getAsSeenBy());
+      m_posBeginUsedAtRuntime.set(p.x, p.y);
+    } else {
+      m_posBeginUsedAtRuntime.set(m_posBegin);
+    }
+  }
 
-	@Override
-	public void setPortion( double portion ) {
-		InterpolationUtilities.interpolate( m_posRuntime, m_posBeginUsedAtRuntime, m_posEnd, (float)portion );
-		Point p = SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posRuntime.x, (int)m_posRuntime.y, getSubject().getParent() );
-		getSubject().setLocation( p );
-	}
+  @Override
+  public void setPortion(double portion) {
+    InterpolationUtilities.interpolate(m_posRuntime, m_posBeginUsedAtRuntime, m_posEnd, (float) portion);
+    Point p = SwingUtilities.convertPoint(getAsSeenBy(), (int) m_posRuntime.x, (int) m_posRuntime.y, getSubject().getParent());
+    getSubject().setLocation(p);
+  }
 
-	@Override
-	public void epilogue() {
-		Point p = SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posEnd.x, (int)m_posEnd.y, getSubject().getParent() );
-		getSubject().setLocation( p );
-		m_posBeginUsedAtRuntime.setNaN();
-	}
+  @Override
+  public void epilogue() {
+    Point p = SwingUtilities.convertPoint(getAsSeenBy(), (int) m_posEnd.x, (int) m_posEnd.y, getSubject().getParent());
+    getSubject().setLocation(p);
+    m_posBeginUsedAtRuntime.setNaN();
+  }
 }

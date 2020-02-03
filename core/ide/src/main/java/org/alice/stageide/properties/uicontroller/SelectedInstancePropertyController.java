@@ -66,89 +66,79 @@ import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
 
-public class SelectedInstancePropertyController extends BasicPropertyController<InstanceFactory>
-{
+public class SelectedInstancePropertyController extends BasicPropertyController<InstanceFactory> {
 
-	private Label label;
+  private Label label;
 
-	public SelectedInstancePropertyController( SelectedInstanceAdapter propertyAdapter )
-	{
-		super( propertyAdapter );
-	}
+  public SelectedInstancePropertyController(SelectedInstanceAdapter propertyAdapter) {
+    super(propertyAdapter);
+  }
 
-	@Override
-	protected AwtComponentView<?> createPropertyComponent()
-	{
-		this.label = new Label( "", 1.2f, TextWeight.BOLD )
-		{
+  @Override
+  protected AwtComponentView<?> createPropertyComponent() {
+    this.label = new Label("", 1.2f, TextWeight.BOLD) {
 
-			@Override
-			protected JLabel createAwtComponent()
-			{
-				return new JLabel() {
-					@Override
-					protected void paintComponent( Graphics g ) {
-						g.setColor( this.getBackground() );
-						if( g instanceof Graphics2D )
-						{
-							( (Graphics2D)g ).setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-						}
-						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 12, 12 );
-						super.paintComponent( g );
-					}
-				};
-			}
-		};
-		this.label.setBackgroundColor( ThemeUtilities.getActiveTheme().getSelectedColor() );
-		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+      @Override
+      protected JLabel createAwtComponent() {
+        return new JLabel() {
+          @Override
+          protected void paintComponent(Graphics g) {
+            g.setColor(this.getBackground());
+            if (g instanceof Graphics2D) {
+              ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            }
+            g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 12, 12);
+            super.paintComponent(g);
+          }
+        };
+      }
+    };
+    this.label.setBackgroundColor(ThemeUtilities.getActiveTheme().getSelectedColor());
+    this.label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		AwtComponentView itemSelector = new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
-		GridBagPanel componentPanel = new GridBagPanel();
-		int xIndex = 0;
-		componentPanel.addComponent( itemSelector, new GridBagConstraints(
-				xIndex++, // gridX
-				0, // gridY
-				1, // gridWidth
-				1, // gridHeight
-				0.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.WEST, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, // ipadX
-				0 ) // ipadY
-		);
+    AwtComponentView itemSelector = new InstanceFactoryPopupButton(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState());
+    GridBagPanel componentPanel = new GridBagPanel();
+    int xIndex = 0;
+    componentPanel.addComponent(itemSelector, new GridBagConstraints(xIndex++, // gridX
+                                                                     0, // gridY
+                                                                     1, // gridWidth
+                                                                     1, // gridHeight
+                                                                     0.0, // weightX
+                                                                     0.0, // weightY
+                                                                     GridBagConstraints.WEST, // anchor
+                                                                     GridBagConstraints.HORIZONTAL, // fill
+                                                                     new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                     0, // ipadX
+                                                                     0) // ipadY
+    );
 
-		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
-		SwingComponentView<?> oneShotComponent = OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
-		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
-				xIndex++, // gridX
-				0, // gridY
-				0, // gridWidth
-				1, // gridHeight
-				0.0, // weightX
-				0.0, // weightY
-				GridBagConstraints.WEST, // anchor
-				GridBagConstraints.HORIZONTAL, // fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, // ipadX
-				0 ) // ipadY
-		);
+    InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+    SwingComponentView<?> oneShotComponent = OneShotMenuModel.getInstance(instanceFactory).getPopupPrepModel().createPopupButton();
+    componentPanel.addComponent(oneShotComponent, new GridBagConstraints(xIndex++, // gridX
+                                                                         0, // gridY
+                                                                         0, // gridWidth
+                                                                         1, // gridHeight
+                                                                         0.0, // weightX
+                                                                         0.0, // weightY
+                                                                         GridBagConstraints.WEST, // anchor
+                                                                         GridBagConstraints.HORIZONTAL, // fill
+                                                                         new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
+                                                                         0, // ipadX
+                                                                         0) // ipadY
+    );
 
-		return componentPanel;
-	}
+    return componentPanel;
+  }
 
-	@Override
-	public Class<?> getPropertyType()
-	{
-		return InstanceFactory.class;
-	}
+  @Override
+  public Class<?> getPropertyType() {
+    return InstanceFactory.class;
+  }
 
-	@Override
-	protected void setValueOnUI( InstanceFactory value )
-	{
-		Logger.warning( "NOT SUPPORTED", this, value );
+  @Override
+  protected void setValueOnUI(InstanceFactory value) {
+    Logger.warning("NOT SUPPORTED", this, value);
 
-	}
+  }
 
 }

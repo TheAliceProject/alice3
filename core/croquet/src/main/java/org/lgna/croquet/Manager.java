@@ -54,38 +54,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class Manager {
-	private static final Map<UUID, Set<Model>> mapIdToModels = Maps.newHashMap();
+  private static final Map<UUID, Set<Model>> mapIdToModels = Maps.newHashMap();
 
-	public static void registerModel( Model model ) {
-		UUID id = model.getMigrationId();
-		synchronized( mapIdToModels ) {
-			Set<Model> set = mapIdToModels.computeIfAbsent( id, k -> Sets.newHashSet() );
-			set.add( model );
-		}
-	}
+  public static void registerModel(Model model) {
+    UUID id = model.getMigrationId();
+    synchronized (mapIdToModels) {
+      Set<Model> set = mapIdToModels.computeIfAbsent(id, k -> Sets.newHashSet());
+      set.add(model);
+    }
+  }
 
-	public static void unregisterModel( Model model ) {
-		UUID id = model.getMigrationId();
-		synchronized( mapIdToModels ) {
-			Set<Model> set = mapIdToModels.get( id );
-			if( set != null ) {
-				set.remove( model );
-				if( set.size() == 0 ) {
-					mapIdToModels.remove( id );
-				}
-			} else {
-				Logger.todo( "investigate set == null" );
-			}
-		}
-	}
+  public static void unregisterModel(Model model) {
+    UUID id = model.getMigrationId();
+    synchronized (mapIdToModels) {
+      Set<Model> set = mapIdToModels.get(id);
+      if (set != null) {
+        set.remove(model);
+        if (set.size() == 0) {
+          mapIdToModels.remove(id);
+        }
+      } else {
+        Logger.todo("investigate set == null");
+      }
+    }
+  }
 
-	static void relocalizeAllElements() {
-		synchronized( mapIdToModels ) {
-			for( Set<Model> set : mapIdToModels.values() ) {
-				for( Model model : set ) {
-					model.relocalize();
-				}
-			}
-		}
-	}
+  static void relocalizeAllElements() {
+    synchronized (mapIdToModels) {
+      for (Set<Model> set : mapIdToModels.values()) {
+        for (Model model : set) {
+          model.relocalize();
+        }
+      }
+    }
+  }
 }

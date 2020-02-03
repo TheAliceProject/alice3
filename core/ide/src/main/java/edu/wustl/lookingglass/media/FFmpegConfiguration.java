@@ -53,39 +53,39 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class FFmpegConfiguration {
-	public static void main( String[] args ) throws Exception {
-		System.out.println( SystemUtilities.is32Bit() ? 32 : 64 );
-		ProcessBuilder versionProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-version" );
-		List<String> versionOutList = Lists.newLinkedList();
-		ProcessUtilities.startAndWaitFor( versionProcessBuilder, versionOutList, null );
-		for( String line : versionOutList ) {
-			System.out.println( line );
-		}
+  public static void main(String[] args) throws Exception {
+    System.out.println(SystemUtilities.is32Bit() ? 32 : 64);
+    ProcessBuilder versionProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder("-version");
+    List<String> versionOutList = Lists.newLinkedList();
+    ProcessUtilities.startAndWaitFor(versionProcessBuilder, versionOutList, null);
+    for (String line : versionOutList) {
+      System.out.println(line);
+    }
 
-		ProcessBuilder codecsProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( "-codecs", "-loglevel", "quiet" );
-		List<String> codecsOutList = Lists.newLinkedList();
-		ProcessUtilities.startAndWaitFor( codecsProcessBuilder, codecsOutList, null );
+    ProcessBuilder codecsProcessBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder("-codecs", "-loglevel", "quiet");
+    List<String> codecsOutList = Lists.newLinkedList();
+    ProcessUtilities.startAndWaitFor(codecsProcessBuilder, codecsOutList, null);
 
-		final String SEPARATOR = "-------";
-		boolean hasFoundSeparator = false;
-		List<FFmpegCodec> codecs = Lists.newLinkedList();
-		for( String line : codecsOutList ) {
-			line = line.trim();
-			if( hasFoundSeparator ) {
-				codecs.add( new FFmpegCodec( line ) );
-			} else {
-				if( line.equals( SEPARATOR ) ) {
-					hasFoundSeparator = true;
-				} else {
-					//System.err.println( line );
-				}
-			}
-		}
+    final String SEPARATOR = "-------";
+    boolean hasFoundSeparator = false;
+    List<FFmpegCodec> codecs = Lists.newLinkedList();
+    for (String line : codecsOutList) {
+      line = line.trim();
+      if (hasFoundSeparator) {
+        codecs.add(new FFmpegCodec(line));
+      } else {
+        if (line.equals(SEPARATOR)) {
+          hasFoundSeparator = true;
+        } else {
+          //System.err.println( line );
+        }
+      }
+    }
 
-		for( FFmpegCodec codec : codecs ) {
-			if( codec.isEncodingSupported() && codec.isVideo() && codec.isIntraFrameOnly() && codec.isLossless() ) {
-				Logger.outln( codec );
-			}
-		}
-	}
+    for (FFmpegCodec codec : codecs) {
+      if (codec.isEncodingSupported() && codec.isVideo() && codec.isIntraFrameOnly() && codec.isLossless()) {
+        Logger.outln(codec);
+      }
+    }
+  }
 }

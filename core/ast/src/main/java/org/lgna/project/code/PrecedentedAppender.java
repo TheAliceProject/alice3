@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-
 public interface PrecedentedAppender extends CodeAppender {
-	int getLevelOfPrecedence();
+  int getLevelOfPrecedence();
 }

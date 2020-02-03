@@ -53,5 +53,5 @@ import java.awt.Shape;
  * @author Dennis Cosgrove
  */
 public interface ScrollRenderer {
-	public Shape renderScrollIndicators( Graphics2D g2, ScreenElement root, TrackableShape trackableShape );
+  public Shape renderScrollIndicators(Graphics2D g2, ScreenElement root, TrackableShape trackableShape);
 }

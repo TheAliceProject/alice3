@@ -50,8 +50,6 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ValueTemplate {
-	Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface ValueTemplate {
+  Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
 }

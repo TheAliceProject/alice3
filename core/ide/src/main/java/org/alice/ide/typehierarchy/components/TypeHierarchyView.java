@@ -75,175 +75,175 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 class NamedUserTypeTreeModel extends AbstractTreeModel<Node<NamedUserType>> {
-	@Override
-	public Node<NamedUserType> getChild( Object parent, int index ) {
-		Node<NamedUserType> node = (Node<NamedUserType>)parent;
-		return node.getChildren().get( index );
-	}
+  @Override
+  public Node<NamedUserType> getChild(Object parent, int index) {
+    Node<NamedUserType> node = (Node<NamedUserType>) parent;
+    return node.getChildren().get(index);
+  }
 
-	@Override
-	public int getChildCount( Object parent ) {
-		Node<NamedUserType> node = (Node<NamedUserType>)parent;
-		return node.getChildren().size();
-	}
+  @Override
+  public int getChildCount(Object parent) {
+    Node<NamedUserType> node = (Node<NamedUserType>) parent;
+    return node.getChildren().size();
+  }
 
-	@Override
-	public int getIndexOfChild( Object parent, Object child ) {
-		Node<NamedUserType> node = (Node<NamedUserType>)parent;
-		return node.getChildren().indexOf( child );
-	}
+  @Override
+  public int getIndexOfChild(Object parent, Object child) {
+    Node<NamedUserType> node = (Node<NamedUserType>) parent;
+    return node.getChildren().indexOf(child);
+  }
 
-	@Override
-	public Node<NamedUserType> getRoot() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Node<NamedUserType> getRoot() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public TreePath getTreePath( Node<NamedUserType> e ) {
-		//todo
-		return null;
-	}
+  @Override
+  public TreePath getTreePath(Node<NamedUserType> e) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public boolean isLeaf( Object node ) {
-		return this.getChildCount( node ) == 0;
-	}
+  @Override
+  public boolean isLeaf(Object node) {
+    return this.getChildCount(node) == 0;
+  }
 
-	public void refresh() {
-		if( this.getRoot() != null ) {
-			this.fireTreeStructureChanged( this, new Object[] { this.getRoot() }, null, null );
-		}
-	}
+  public void refresh() {
+    if (this.getRoot() != null) {
+      this.fireTreeStructureChanged(this, new Object[] {this.getRoot()}, null, null);
+    }
+  }
 }
 
 class NamedUserTypeTreeCellRenderer extends TreeCellRenderer<Node<NamedUserType>> {
 
-	@Override
-	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, Node<NamedUserType> node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		rv.setBorder( BorderFactory.createEmptyBorder( 2, 0, 2, 0 ) );
-		rv.setOpaque( false );
-		rv.setIcon( TypeIcon.getInstance( node != null ? node.getValue() : null ) );
-		rv.setText( "" );
-		return rv;
-	}
+  @Override
+  protected JLabel updateListCellRendererComponent(JLabel rv, JTree tree, Node<NamedUserType> node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    rv.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
+    rv.setOpaque(false);
+    rv.setIcon(TypeIcon.getInstance(node != null ? node.getValue() : null));
+    rv.setText("");
+    return rv;
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class TypeHierarchyView extends BorderPanel {
-	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-		@Override
-		public void valueChanged( ValueEvent<NamedUserType> e ) {
-			TypeHierarchyView.this.handleTypeStateChanged( e.getNextValue() );
-		}
-	};
-	private final AstEventManager.TypeHierarchyListener typeHierarchyListener = new AstEventManager.TypeHierarchyListener() {
-		@Override
-		public void typeHierarchyHasPotentiallyChanged() {
-			TypeHierarchyView.this.refreshLater();
-		}
-	};
+  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
+    @Override
+    public void valueChanged(ValueEvent<NamedUserType> e) {
+      TypeHierarchyView.this.handleTypeStateChanged(e.getNextValue());
+    }
+  };
+  private final AstEventManager.TypeHierarchyListener typeHierarchyListener = new AstEventManager.TypeHierarchyListener() {
+    @Override
+    public void typeHierarchyHasPotentiallyChanged() {
+      TypeHierarchyView.this.refreshLater();
+    }
+  };
 
-	private final NamedUserTypeTreeModel treeModel = new NamedUserTypeTreeModel();
-	private final KeyListener keyListener = new KeyListener() {
-		@Override
-		public void keyPressed( KeyEvent e ) {
-			TypeHierarchyView.this.refreshLater();
-		}
+  private final NamedUserTypeTreeModel treeModel = new NamedUserTypeTreeModel();
+  private final KeyListener keyListener = new KeyListener() {
+    @Override
+    public void keyPressed(KeyEvent e) {
+      TypeHierarchyView.this.refreshLater();
+    }
 
-		@Override
-		public void keyReleased( KeyEvent e ) {
-		}
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
-		@Override
-		public void keyTyped( KeyEvent e ) {
-		}
-	};
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+  };
 
-	private boolean isIgnoringChangesToTree = false;
-	private final TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
-		@Override
-		public void valueChanged( TreeSelectionEvent e ) {
-			TreePath treePath = jTree.getSelectionPath();
-			if( treePath != null ) {
-				if( isIgnoringChangesToTree ) {
-					//pass
-				} else {
-					Object last = treePath.getLastPathComponent();
-					if( last instanceof Node ) {
-						Node<NamedUserType> node = (Node<NamedUserType>)last;
-						IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().setValueTransactionlessly( TypeComposite.getInstance( node.getValue() ) );
-					}
-				}
-				jTree.repaint();
-			}
-		}
-	};
-	private final JTree jTree;
+  private boolean isIgnoringChangesToTree = false;
+  private final TreeSelectionListener treeSelectionListener = new TreeSelectionListener() {
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+      TreePath treePath = jTree.getSelectionPath();
+      if (treePath != null) {
+        if (isIgnoringChangesToTree) {
+          //pass
+        } else {
+          Object last = treePath.getLastPathComponent();
+          if (last instanceof Node) {
+            Node<NamedUserType> node = (Node<NamedUserType>) last;
+            IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().setValueTransactionlessly(TypeComposite.getInstance(node.getValue()));
+          }
+        }
+        jTree.repaint();
+      }
+    }
+  };
+  private final JTree jTree;
 
-	public TypeHierarchyView( TypeHierarchyComposite composite ) {
-		super( composite, 0, 4 );
-		Color color = ThemeUtilities.getActiveTheme().getMutedTypeColor();
-		this.jTree = new JTree( this.treeModel );
-		this.jTree.setRootVisible( false );
-		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );
-		this.jTree.setBackground( color );
+  public TypeHierarchyView(TypeHierarchyComposite composite) {
+    super(composite, 0, 4);
+    Color color = ThemeUtilities.getActiveTheme().getMutedTypeColor();
+    this.jTree = new JTree(this.treeModel);
+    this.jTree.setRootVisible(false);
+    this.jTree.setCellRenderer(new NamedUserTypeTreeCellRenderer());
+    this.jTree.setBackground(color);
 
-		SwingComponentView<?> viewportView = new SwingAdapter( this.jTree );
-		ScrollPane scrollPane = new ScrollPane( viewportView );
-		String hierarchyText = ResourceBundleUtilities.getStringForKey( "typeHierarchy", getClass());
-		Label label = new Label( hierarchyText, 1.2f, TextPosture.OBLIQUE, TextWeight.LIGHT );
-		this.setBackgroundColor( color );
-		this.addPageStartComponent( label );
-		this.addCenterComponent( scrollPane );
-	}
+    SwingComponentView<?> viewportView = new SwingAdapter(this.jTree);
+    ScrollPane scrollPane = new ScrollPane(viewportView);
+    String hierarchyText = ResourceBundleUtilities.getStringForKey("typeHierarchy", getClass());
+    Label label = new Label(hierarchyText, 1.2f, TextPosture.OBLIQUE, TextWeight.LIGHT);
+    this.setBackgroundColor(color);
+    this.addPageStartComponent(label);
+    this.addCenterComponent(scrollPane);
+  }
 
-	private void handleTypeStateChanged( NamedUserType nextValue ) {
-		this.refreshLater();
-	}
+  private void handleTypeStateChanged(NamedUserType nextValue) {
+    this.refreshLater();
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		super.handleCompositePreActivation();
-		this.refreshIfNecessary();
-		AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
-		this.jTree.addKeyListener( this.keyListener );
-		this.jTree.addTreeSelectionListener( this.treeSelectionListener );
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    super.handleCompositePreActivation();
+    this.refreshIfNecessary();
+    AstEventManager.addAndInvokeTypeHierarchyListener(this.typeHierarchyListener);
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener(this.typeListener);
+    this.jTree.addKeyListener(this.keyListener);
+    this.jTree.addTreeSelectionListener(this.treeSelectionListener);
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		this.jTree.removeTreeSelectionListener( this.treeSelectionListener );
-		this.jTree.removeKeyListener( this.keyListener );
-		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
-		AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
-		super.handleCompositePostDeactivation();
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    this.jTree.removeTreeSelectionListener(this.treeSelectionListener);
+    this.jTree.removeKeyListener(this.keyListener);
+    IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener(this.typeListener);
+    AstEventManager.removeTypeHierarchyListener(this.typeHierarchyListener);
+    super.handleCompositePostDeactivation();
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.isIgnoringChangesToTree = true;
-		try {
-			this.treeModel.refresh();
-			for( int i = 0; i < this.jTree.getRowCount(); i++ ) {
-				this.jTree.expandRow( i );
-				TreePath treePath = this.jTree.getPathForRow( i );
-				Node<NamedUserType> lastNode = (Node<NamedUserType>)treePath.getLastPathComponent();
-				if( lastNode.getValue() == IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue() ) {
-					this.jTree.setSelectionRow( i );
-				}
-			}
-			this.jTree.repaint();
-		} finally {
-			this.isIgnoringChangesToTree = false;
-		}
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.isIgnoringChangesToTree = true;
+    try {
+      this.treeModel.refresh();
+      for (int i = 0; i < this.jTree.getRowCount(); i++) {
+        this.jTree.expandRow(i);
+        TreePath treePath = this.jTree.getPathForRow(i);
+        Node<NamedUserType> lastNode = (Node<NamedUserType>) treePath.getLastPathComponent();
+        if (lastNode.getValue() == IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue()) {
+          this.jTree.setSelectionRow(i);
+        }
+      }
+      this.jTree.repaint();
+    } finally {
+      this.isIgnoringChangesToTree = false;
+    }
+  }
 }

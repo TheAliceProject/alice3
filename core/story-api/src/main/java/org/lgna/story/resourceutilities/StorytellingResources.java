@@ -70,526 +70,514 @@ import org.lgna.story.resources.ModelResource;
 import javax.swing.JOptionPane;
 
 public enum StorytellingResources {
-	INSTANCE;
+  INSTANCE;
 
-	private static final String ALICE_RESOURCE_DIRECTORY_PREF_KEY = "ALICE_RESOURCE_DIRECTORY_PREF_KEY";
-	static final String GALLERY_DIRECTORY_PREF_KEY = "GALLERY_DIRECTORY_PREF_KEY";
+  private static final String ALICE_RESOURCE_DIRECTORY_PREF_KEY = "ALICE_RESOURCE_DIRECTORY_PREF_KEY";
+  static final String GALLERY_DIRECTORY_PREF_KEY = "GALLERY_DIRECTORY_PREF_KEY";
 
-	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
+  private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private List<File> userGalleryResourceFiles = null;
-	private List<ModelManifest> userGalleryModelManifests = null;
-	private List<Class<? extends ModelResource>> installedAliceClassesLoaded = null;
-	private List<URLClassLoader> resourceClassLoaders;
+  private List<File> userGalleryResourceFiles = null;
+  private List<ModelManifest> userGalleryModelManifests = null;
+  private List<Class<? extends ModelResource>> installedAliceClassesLoaded = null;
+  private List<URLClassLoader> resourceClassLoaders;
 
-	private static final FileFilter DIR_FILE_FILTER = new FileFilter() {
-		@Override
-		public boolean accept( File file ) {
-			return file.isDirectory();
-		}
-	};
+  private static final FileFilter DIR_FILE_FILTER = new FileFilter() {
+    @Override
+    public boolean accept(File file) {
+      return file.isDirectory();
+    }
+  };
 
-	public static File getGalleryDirectory( File dir ) {
-		if( dir.exists() && dir.isDirectory() ) {
-			File[] dirs = FileUtilities.listDescendants( dir, DIR_FILE_FILTER, 4 ); //only search a limited depth to avoid massive spidering
-			for( File subDir : dirs ) {
-				String galleryDir = getGalleryPathFromResourcePath( subDir.getAbsolutePath() );
-				if( galleryDir != null ) {
-					return new File( galleryDir );
-				}
-			}
-		}
-		return null;
-	}
+  public static File getGalleryDirectory(File dir) {
+    if (dir.exists() && dir.isDirectory()) {
+      File[] dirs = FileUtilities.listDescendants(dir, DIR_FILE_FILTER, 4); //only search a limited depth to avoid massive spidering
+      for (File subDir : dirs) {
+        String galleryDir = getGalleryPathFromResourcePath(subDir.getAbsolutePath());
+        if (galleryDir != null) {
+          return new File(galleryDir);
+        }
+      }
+    }
+    return null;
+  }
 
-	public static File getGalleryRootDirectory() {
-		//		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.rootDirectory", "user.dir" }, new String[] { "application/gallery" } );
-		//		if( ( rootGallery != null ) && rootGallery.exists() ) {
-		//			return rootGallery;
-		//		}
-		//		return null;
-		return StoryApiDirectoryUtilities.getModelGalleryDirectory();
-	}
+  public static File getGalleryRootDirectory() {
+    //    File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.rootDirectory", "user.dir" }, new String[] { "application/gallery" } );
+    //    if( ( rootGallery != null ) && rootGallery.exists() ) {
+    //      return rootGallery;
+    //    }
+    //    return null;
+    return StoryApiDirectoryUtilities.getModelGalleryDirectory();
+  }
 
-	//	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
-	//		for( String propertyKey : propertyKeys ) {
-	//			for( String subPath : subPaths ) {
-	//				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
-	//				if( rv.exists() ) {
-	//					return rv;
-	//				}
-	//			}
-	//		}
-	//		return null;
-	//	}
+  //  private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
+  //    for( String propertyKey : propertyKeys ) {
+  //      for( String subPath : subPaths ) {
+  //        java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
+  //        if( rv.exists() ) {
+  //          return rv;
+  //        }
+  //      }
+  //    }
+  //    return null;
+  //  }
 
-	static File findResourcePath( String relativePath ) {
-		File rootGallery = getGalleryRootDirectory();
-		if( ( rootGallery != null ) && rootGallery.exists() ) {
-			File path = new File( rootGallery, relativePath );
-			if( path.exists() ) {
-				return path;
-			}
-		}
-		return null;
-	}
+  static File findResourcePath(String relativePath) {
+    File rootGallery = getGalleryRootDirectory();
+    if ((rootGallery != null) && rootGallery.exists()) {
+      File path = new File(rootGallery, relativePath);
+      if (path.exists()) {
+        return path;
+      }
+    }
+    return null;
+  }
 
-	private static String getGalleryPathFromResourcePath( String resourcePath ) {
-		if( resourcePath != null ) {
-			int resourceIndex = -1;
-			if( NebulousStoryApi.nonfree.getNebulousResourceInstallPath() != null ) {
-				resourceIndex = resourcePath.lastIndexOf( NebulousStoryApi.nonfree.getNebulousResourceInstallPath() );
-			}
-			if( resourceIndex == -1 ) {
-				resourceIndex = resourcePath.lastIndexOf( ALICE_RESOURCE_INSTALL_PATH );
-			}
-			if( resourceIndex != -1 ) {
-				resourcePath = resourcePath.substring( 0, resourceIndex );
-				while( resourcePath.endsWith( "/" ) ) {
-					resourcePath = resourcePath.substring( 0, resourcePath.length() - 1 );
-				}
-				File galleryDir = new File( resourcePath );
-				if( galleryDir.exists() ) {
-					return resourcePath;
-				}
-			}
-		}
-		return null;
-	}
+  private static String getGalleryPathFromResourcePath(String resourcePath) {
+    if (resourcePath != null) {
+      int resourceIndex = -1;
+      if (NebulousStoryApi.nonfree.getNebulousResourceInstallPath() != null) {
+        resourceIndex = resourcePath.lastIndexOf(NebulousStoryApi.nonfree.getNebulousResourceInstallPath());
+      }
+      if (resourceIndex == -1) {
+        resourceIndex = resourcePath.lastIndexOf(ALICE_RESOURCE_INSTALL_PATH);
+      }
+      if (resourceIndex != -1) {
+        resourcePath = resourcePath.substring(0, resourceIndex);
+        while (resourcePath.endsWith("/")) {
+          resourcePath = resourcePath.substring(0, resourcePath.length() - 1);
+        }
+        File galleryDir = new File(resourcePath);
+        if (galleryDir.exists()) {
+          return resourcePath;
+        }
+      }
+    }
+    return null;
+  }
 
-	private static String[] getGalleryPathsFromResourcePath( String resourcePath ) {
-		if( resourcePath != null ) {
+  private static String[] getGalleryPathsFromResourcePath(String resourcePath) {
+    if (resourcePath != null) {
 
-			resourcePath = resourcePath.replace( '\\', '/' );
-			String[] resourcePaths = resourcePath.split( PATH_SEPARATOR );
-			List<String> galleryPaths = new ArrayList<String>( resourcePaths.length );
-			for( String path : resourcePaths ) {
-				String galleryPath = getGalleryPathFromResourcePath( path );
-				if( ( galleryPath != null ) && !galleryPaths.contains( galleryPath ) ) {
-					galleryPaths.add( galleryPath );
-				}
-			}
+      resourcePath = resourcePath.replace('\\', '/');
+      String[] resourcePaths = resourcePath.split(PATH_SEPARATOR);
+      List<String> galleryPaths = new ArrayList<String>(resourcePaths.length);
+      for (String path : resourcePaths) {
+        String galleryPath = getGalleryPathFromResourcePath(path);
+        if ((galleryPath != null) && !galleryPaths.contains(galleryPath)) {
+          galleryPaths.add(galleryPath);
+        }
+      }
 
-			return galleryPaths.toArray( new String[ galleryPaths.size() ] );
-		}
-		return null;
-	}
+      return galleryPaths.toArray(new String[galleryPaths.size()]);
+    }
+    return null;
+  }
 
-	private static String getPreference( String key, String def ) {
-		final boolean IS_IGNORING_PREFERENCES = false;
-		if( IS_IGNORING_PREFERENCES ) {
-			return null;
-		} else {
-			Preferences rv = Preferences.userRoot();
-			return rv.get( key, def );
-		}
-	}
+  private static String getPreference(String key, String def) {
+    final boolean IS_IGNORING_PREFERENCES = false;
+    if (IS_IGNORING_PREFERENCES) {
+      return null;
+    } else {
+      Preferences rv = Preferences.userRoot();
+      return rv.get(key, def);
+    }
+  }
 
-	static File[] getDirsFromPref( String key, String relativeDir ) {
-		String dir = getPreference( key, "" );
-		if( ( dir != null ) && ( dir.length() > 0 ) ) {
-			String[] splitDir = dir.split( PATH_SEPARATOR );
-			File[] fileDirs = new File[ splitDir.length ];
-			for( int i = 0; i < splitDir.length; i++ ) {
-				fileDirs[ i ] = new File( splitDir[ i ] + relativeDir );
-			}
-			return fileDirs;
-		}
-		return null;
-	}
+  static File[] getDirsFromPref(String key, String relativeDir) {
+    String dir = getPreference(key, "");
+    if ((dir != null) && (dir.length() > 0)) {
+      String[] splitDir = dir.split(PATH_SEPARATOR);
+      File[] fileDirs = new File[splitDir.length];
+      for (int i = 0; i < splitDir.length; i++) {
+        fileDirs[i] = new File(splitDir[i] + relativeDir);
+      }
+      return fileDirs;
+    }
+    return null;
+  }
 
-	static String makeDirectoryPreferenceString( String[] dirs ) {
-		StringBuilder sb = new StringBuilder();
-		for( int i = 0; i < dirs.length; i++ ) {
-			if( i != 0 ) {
-				sb.append( PATH_SEPARATOR );
-			}
-			sb.append( dirs[ i ] );
-		}
-		return sb.toString();
-	}
+  static String makeDirectoryPreferenceString(String[] dirs) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < dirs.length; i++) {
+      if (i != 0) {
+        sb.append(PATH_SEPARATOR);
+      }
+      sb.append(dirs[i]);
+    }
+    return sb.toString();
+  }
 
-	private File[] getAliceDirsFromGalleryPref() {
-		return getDirsFromPref( GALLERY_DIRECTORY_PREF_KEY, ALICE_RESOURCE_INSTALL_PATH );
-	}
+  private File[] getAliceDirsFromGalleryPref() {
+    return getDirsFromPref(GALLERY_DIRECTORY_PREF_KEY, ALICE_RESOURCE_INSTALL_PATH);
+  }
 
-	public void setAliceResourceDirs( String[] dirs ) {
-		Preferences rv = Preferences.userRoot();
-		String dirsString = makeDirectoryPreferenceString( dirs );
-		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, dirsString );
-		String[] galleryDir = getGalleryPathsFromResourcePath( dirsString );
-		if( galleryDir != null ) {
-			setGalleryResourceDirs( galleryDir );
-		}
-	}
+  public void setAliceResourceDirs(String[] dirs) {
+    Preferences rv = Preferences.userRoot();
+    String dirsString = makeDirectoryPreferenceString(dirs);
+    rv.put(ALICE_RESOURCE_DIRECTORY_PREF_KEY, dirsString);
+    String[] galleryDir = getGalleryPathsFromResourcePath(dirsString);
+    if (galleryDir != null) {
+      setGalleryResourceDirs(galleryDir);
+    }
+  }
 
-	public File[] getAliceDirsFromPref() {
-		File[] dirs = getDirsFromPref( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
-		if( dirs != null ) {
-			return dirs;
-		} else {
-			return getAliceDirsFromGalleryPref();
-		}
-	}
+  public File[] getAliceDirsFromPref() {
+    File[] dirs = getDirsFromPref(ALICE_RESOURCE_DIRECTORY_PREF_KEY, "");
+    if (dirs != null) {
+      return dirs;
+    } else {
+      return getAliceDirsFromGalleryPref();
+    }
+  }
 
-	public void setGalleryResourceDirs( String[] dirs ) {
-		Preferences rv = Preferences.userRoot();
-		rv.put( GALLERY_DIRECTORY_PREF_KEY, makeDirectoryPreferenceString( dirs ) );
-	}
+  public void setGalleryResourceDirs(String[] dirs) {
+    Preferences rv = Preferences.userRoot();
+    rv.put(GALLERY_DIRECTORY_PREF_KEY, makeDirectoryPreferenceString(dirs));
+  }
 
-	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );
+  private static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
+  private List<File> findAliceResources() {
+    File customResourcesPath = findResourcePath("assets/custom");
+    if (customResourcesPath != null) {
+      ResourcePathManager.addPath(ResourcePathManager.MODEL_RESOURCE_KEY, customResourcesPath);
+    }
 
-	private List<File> findAliceResources() {
-		File customResourcesPath = findResourcePath( "assets/custom" );
-		if( customResourcesPath != null ) {
-			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, customResourcesPath );
-		}
+    File alicePath = findResourcePath(ALICE_RESOURCE_INSTALL_PATH);
+    if (alicePath != null) {
+      ResourcePathManager.addPath(ResourcePathManager.MODEL_RESOURCE_KEY, alicePath);
+      return ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
+    } else {
+      LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
+      File[] resourceDirs = getAliceDirsFromPref();
 
-		File alicePath = findResourcePath( ALICE_RESOURCE_INSTALL_PATH );
-		if( alicePath != null ) {
-			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, alicePath );
-			return ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		} else {
-			LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
-			File[] resourceDirs = getAliceDirsFromPref();
+      if (resourceDirs != null) {
+        Collections.addAll(directoryFromSavedPreference, resourceDirs);
+      }
+      return directoryFromSavedPreference;
+    }
+  }
 
-			if( resourceDirs != null ) {
-				Collections.addAll( directoryFromSavedPreference, resourceDirs );
-			}
-			return directoryFromSavedPreference;
-		}
-	}
+  private StorytellingResources() {
+  }
 
-	private StorytellingResources() {
-	}
+  private static String getAliceResourceClassName(String resourcePath) {
+    String className = resourcePath.replace('/', '.');
+    className = className.replace('\\', '.');
+    int lastDot = className.lastIndexOf(".");
+    String baseName = className.substring(0, lastDot);
+    if (baseName.startsWith(".")) {
+      baseName = baseName.substring(1);
+    }
+    baseName += AliceResourceClassUtilities.RESOURCE_SUFFIX;
+    return baseName;
+  }
 
-	private static String getAliceResourceClassName( String resourcePath ) {
-		String className = resourcePath.replace( '/', '.' );
-		className = className.replace( '\\', '.' );
-		int lastDot = className.lastIndexOf( "." );
-		String baseName = className.substring( 0, lastDot );
-		if( baseName.startsWith( "." ) ) {
-			baseName = baseName.substring( 1 );
-		}
-		baseName += AliceResourceClassUtilities.RESOURCE_SUFFIX;
-		return baseName;
-	}
+  public static Map<File, List<String>> getClassNamesFromResources(File... resourceFiles) {
+    HashMap<File, List<String>> rv = new HashMap<File, List<String>>();
+    for (File resourceFile : resourceFiles) {
+      try {
+        if (resourceFile.isDirectory()) {
+          File[] xmlFiles = FileUtilities.listDescendants(resourceFile, "xml");
+          for (File xmlFile : xmlFiles) {
+            if (!xmlFile.getName().contains("$")) {
+              String relativePath = xmlFile.getAbsolutePath().substring(resourceFile.getAbsolutePath().length());
+              String baseName = getAliceResourceClassName(relativePath);
+              if (!rv.containsKey(resourceFile)) {
+                rv.put(resourceFile, new LinkedList<String>());
+              }
+              rv.get(resourceFile).add(baseName);
+            }
+          }
+        } else {
+          ZipFile zip = new ZipFile(resourceFile);
+          Enumeration<? extends ZipEntry> entries = zip.entries();
+          while (entries.hasMoreElements()) {
+            ZipEntry entry = entries.nextElement();
+            if (entry.getName().endsWith(".xml") && !entry.getName().contains("$")) {
+              String baseName = getAliceResourceClassName(entry.getName());
 
-	public static Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
-		HashMap<File, List<String>> rv = new HashMap<File, List<String>>();
-		for( File resourceFile : resourceFiles ) {
-			try {
-				if( resourceFile.isDirectory() ) {
-					File[] xmlFiles = FileUtilities.listDescendants( resourceFile, "xml" );
-					for( File xmlFile : xmlFiles ) {
-						if( !xmlFile.getName().contains( "$" ) ) {
-							String relativePath = xmlFile.getAbsolutePath().substring( resourceFile.getAbsolutePath().length() );
-							String baseName = getAliceResourceClassName( relativePath );
-							if( !rv.containsKey( resourceFile ) ) {
-								rv.put( resourceFile, new LinkedList<String>() );
-							}
-							rv.get( resourceFile ).add( baseName );
-						}
-					}
-				} else {
-					ZipFile zip = new ZipFile( resourceFile );
-					Enumeration<? extends ZipEntry> entries = zip.entries();
-					while( entries.hasMoreElements() ) {
-						ZipEntry entry = entries.nextElement();
-						if( entry.getName().endsWith( ".xml" ) && !entry.getName().contains( "$" ) ) {
-							String baseName = getAliceResourceClassName( entry.getName() );
+              if (!rv.containsKey(resourceFile)) {
+                rv.put(resourceFile, new LinkedList<String>());
+              }
+              rv.get(resourceFile).add(baseName);
+            } else {
+              if (entry.getName().endsWith(".xml")) {
+                System.out.println("NOT ADDING CLASS: " + entry.getName());
+              }
+            }
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    return rv;
+  }
 
-							if( !rv.containsKey( resourceFile ) ) {
-								rv.put( resourceFile, new LinkedList<String>() );
-							}
-							rv.get( resourceFile ).add( baseName );
-						} else {
-							if( entry.getName().endsWith( ".xml" ) ) {
-								System.out.println( "NOT ADDING CLASS: " + entry.getName() );
-							}
-						}
-					}
-				}
-			} catch( Exception e ) {
-				e.printStackTrace();
-			}
-		}
-		return rv;
-	}
+  public List<File> getDynamicModelFiles(File... directoriesToSearch) {
+    List<File> dynamicModelFiles = new ArrayList<>();
+    for (File directory : directoriesToSearch) {
+      if (directory.isDirectory()) {
+        File[] modelFiles = FileUtilities.listDescendants(directory, "json");
+        dynamicModelFiles.addAll(Arrays.asList(modelFiles));
+      }
+    }
+    return dynamicModelFiles;
+  }
 
-	public List<File> getDynamicModelFiles( File... directoriesToSearch ) {
-		List<File> dynamicModelFiles = new ArrayList<>();
-		for( File directory : directoriesToSearch ) {
-			if (directory.isDirectory()) {
-				File[] modelFiles = FileUtilities.listDescendants(directory, "json");
-				dynamicModelFiles.addAll(Arrays.asList(modelFiles));
-			}
-		}
-		return dynamicModelFiles;
-	}
+  public List<String> getClassNamesFromResourceFiles(File... resourceFiles) {
+    List<String> classNames = new LinkedList<String>();
+    Map<File, List<String>> classNameMap = getClassNamesFromResources(resourceFiles);
+    for (Map.Entry<File, List<String>> entry : classNameMap.entrySet()) {
+      for (String className : entry.getValue()) {
+        classNames.add(className);
+      }
+    }
+    return classNames;
+  }
 
-	public List<String> getClassNamesFromResourceFiles( File... resourceFiles ) {
-		List<String> classNames = new LinkedList<String>();
-		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
-		for( Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
-			for( String className : entry.getValue() ) {
-				classNames.add( className );
-			}
-		}
-		return classNames;
-	}
+  public List<Class<? extends ModelResource>> loadClassesFromResourceFiles(List<String> classNames, File... resourceFiles) {
+    List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
+    try {
+      URL[] urlArray = new URL[resourceFiles.length];
+      for (int i = 0; i < resourceFiles.length; i++) {
+        urlArray[i] = resourceFiles[i].toURI().toURL();
+      }
+      URLClassLoader cl = new URLClassLoader(urlArray, ClassLoader.getSystemClassLoader());
+      for (String className : classNames) {
+        try {
+          Class<?> cls = Class.forName(className);
+          if (ModelResource.class.isAssignableFrom(cls)) {
+            //TEST
+            Field[] fields = cls.getDeclaredFields();
+            Method[] methods = cls.getDeclaredMethods();
 
+            Field[] fields2 = cls.getFields();
+            Method[] methods2 = cls.getMethods();
 
-	public List<Class<? extends ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
-		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
-		try {
-			URL[] urlArray = new URL[ resourceFiles.length ];
-			for( int i = 0; i < resourceFiles.length; i++ ) {
-				urlArray[ i ] = resourceFiles[ i ].toURI().toURL();
-			}
-			URLClassLoader cl = new URLClassLoader( urlArray, ClassLoader.getSystemClassLoader() );
-			for( String className : classNames ) {
-				try {
-					Class<?> cls = cl.loadClass( className );
-					if( ModelResource.class.isAssignableFrom( cls ) ) {
-						//TEST
-						Field[] fields = cls.getDeclaredFields();
-						Method[] methods = cls.getDeclaredMethods();
+            classes.add((Class<? extends ModelResource>) cls);
+          }
+        } catch (Throwable cnfe) {
 
-						Field[] fields2 = cls.getFields();
-						Method[] methods2 = cls.getMethods();
+          try {
+            Class<?> cls = ClassLoader.getSystemClassLoader().loadClass(className);
+            if (ModelResource.class.isAssignableFrom(cls)) {
+              classes.add((Class<? extends ModelResource>) cls);
+            }
+          } catch (ClassNotFoundException cnfe2) {
+            Logger.severe("FAILED TO LOAD GALLERY CLASS: " + className);
+          }
+        }
+      }
+      if (this.resourceClassLoaders == null) {
+        this.resourceClassLoaders = new LinkedList<URLClassLoader>();
+      }
+      this.resourceClassLoaders.add(cl);
 
-						classes.add( (Class<? extends ModelResource>)cls );
-					}
-				} catch( Throwable cnfe ) {
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return classes;
+  }
 
-					try {
-						Class<?> cls = ClassLoader.getSystemClassLoader().loadClass( className );
-						if( ModelResource.class.isAssignableFrom( cls ) ) {
-							classes.add( (Class<? extends ModelResource>)cls );
-						}
-					} catch( ClassNotFoundException cnfe2 ) {
-						Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
-					}
-				}
-			}
-			if( this.resourceClassLoaders == null ) {
-				this.resourceClassLoaders = new LinkedList<URLClassLoader>();
-			}
-			this.resourceClassLoaders.add( cl );
+  public List<Class<? extends ModelResource>> getAndLoadModelResourceClasses(List<File> resourcePaths) {
+    List<File> resourceFiles = new ArrayList<File>();
+    List<Class<? extends ModelResource>> galleryClasses = new LinkedList<Class<? extends ModelResource>>();
+    for (File modelPath : resourcePaths) {
+      if (modelPath.exists()) {
+        if (modelPath.isDirectory()) {
+          Collections.addAll(resourceFiles, FileUtilities.listFiles(modelPath, "jar"));
+          Collections.addAll(resourceFiles, FileUtilities.listDirectories(modelPath));
+        } else {
+          resourceFiles.add(modelPath);
+        }
+      }
+    }
+    File[] resourceFileArray = resourceFiles.toArray(new File[resourceFiles.size()]);
+    List<String> classNames = this.getClassNamesFromResourceFiles(resourceFileArray);
+    galleryClasses = this.loadClassesFromResourceFiles(classNames, resourceFileArray);
+    return galleryClasses;
+  }
 
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-		return classes;
-	}
+  public void getGalleryLocationFromUser() {
+    FindResourcesPanel.getInstance().show(null);
+    if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
+      String userSpecifiedGalleryDir = FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath();
+      String[] dirArray = {userSpecifiedGalleryDir};
+      setGalleryResourceDirs(dirArray);
+    }
+  }
 
-	public List<Class<? extends ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths ) {
-		List<File> resourceFiles = new ArrayList<File>();
-		List<Class<? extends ModelResource>> galleryClasses = new LinkedList<Class<? extends ModelResource>>();
-		for( File modelPath : resourcePaths ) {
-			if( modelPath.exists() ) {
-				if( modelPath.isDirectory() ) {
-					Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
-					Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
-				} else {
-					resourceFiles.add( modelPath );
-				}
-			}
-		}
-		File[] resourceFileArray = resourceFiles.toArray( new File[ resourceFiles.size() ] );
-		List<String> classNames = this.getClassNamesFromResourceFiles( resourceFileArray );
-		galleryClasses = this.loadClassesFromResourceFiles( classNames, resourceFileArray );
-		return galleryClasses;
-	}
+  //  //DEBUG
+  //  static
+  //  {
+  ////    //DEBUG ONLY
+  ////    //CLEAR DIR PREFS
+  //    java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+  //    rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+  //    rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+  //  }
 
-	public void getGalleryLocationFromUser() {
-		FindResourcesPanel.getInstance().show( null );
-		if( FindResourcesPanel.getInstance().getGalleryDir() != null ) {
-			String userSpecifiedGalleryDir = FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath();
-			String[] dirArray = { userSpecifiedGalleryDir };
-			setGalleryResourceDirs( dirArray );
-		}
-	}
+  private void clearAliceResourceInfo() {
+    ResourcePathManager.clearPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
+    Preferences preferences = Preferences.userRoot();
+    preferences.put(ALICE_RESOURCE_DIRECTORY_PREF_KEY, "");
+    preferences.put(GALLERY_DIRECTORY_PREF_KEY, "");
 
-	//	//DEBUG
-	//	static
-	//	{
-	////		//DEBUG ONLY
-	////		//CLEAR DIR PREFS
-	//		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
-	//		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
-	//		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
-	//	}
+  }
 
-	private void clearAliceResourceInfo() {
-		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		Preferences rv = Preferences.userRoot();
-		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
-		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+  List<ModelManifest> findAndLoadUserGalleryResourcesIfNecessary() {
+    if (this.userGalleryModelManifests == null) {
+      this.userGalleryModelManifests = new ArrayList<>();
+      File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+      List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+      for (File modelFile : dynamicModelFiles) {
+        try {
+          String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+          ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+          modelManifest.setRootFile(modelFile.getParentFile());
+          this.userGalleryModelManifests.add(modelManifest);
+        } catch (IOException e) {
+          Logger.warning("Error loading model data from " + modelFile);
+        }
+      }
+    }
+    return this.userGalleryModelManifests;
+  }
 
-	}
+  List<ModelManifest> findNewUserGalleryResources() {
+    if (userGalleryModelManifests != null) {
+      List<ModelManifest> newModelManifests = new ArrayList<>();
+      File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+      List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+      for (File modelFile : dynamicModelFiles) {
+        try {
+          String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+          ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+          modelManifest.setRootFile(modelFile.getParentFile());
+          if (manifestIsNew(modelManifest)) {
+            userGalleryModelManifests.add(modelManifest);
+            newModelManifests.add(modelManifest);
+          }
+        } catch (IOException e) {
+          Logger.warning("Error loading model data from " + modelFile);
+        }
+      }
+      return newModelManifests;
+    }
+    return null;
+  }
 
-	public static boolean initializeModelClassPath() {
-		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
-		if( classesLoaded != null ) {
-			return true;
-		}
-		return false;
-	}
+  private boolean manifestIsNew(ModelManifest newManifest) {
+    for (ModelManifest oldManifest : userGalleryModelManifests) {
+      if (oldManifest.getName().equals(newManifest.getName())) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	List<ModelManifest> findAndLoadUserGalleryResourcesIfNecessary() {
-		if (this.userGalleryModelManifests == null) {
-			this.userGalleryModelManifests = new ArrayList<>();
-			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
-			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
-			for (File modelFile : dynamicModelFiles ) {
-				try {
-					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
-					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
-					modelManifest.setRootFile(modelFile.getParentFile());
-					this.userGalleryModelManifests.add(modelManifest);
-				}
-				catch (IOException e) {
-					Logger.warning("Error loading model data from "+modelFile);
-				}
-			}
-		}
-		return this.userGalleryModelManifests;
-	}
+  List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
+    if (this.installedAliceClassesLoaded == null) {
+      List<File> resourcePaths = ResourcePathManager.getPaths(ResourcePathManager.MODEL_RESOURCE_KEY);
+      if (resourcePaths.size() == 0) {
+        resourcePaths = findAliceResources();
+      }
 
-	List<ModelManifest> findNewUserGalleryResources() {
-		if (userGalleryModelManifests != null) {
-			List<ModelManifest> newModelManifests = new ArrayList<>();
-			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
-			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
-			for (File modelFile : dynamicModelFiles ) {
-				try {
-					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
-					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
-					modelManifest.setRootFile(modelFile.getParentFile());
-					if (manifestIsNew(modelManifest)) {
-						userGalleryModelManifests.add( modelManifest );
-						newModelManifests.add( modelManifest );
-					}
-				}
-				catch (IOException e) {
-					Logger.warning("Error loading model data from "+modelFile);
-				}
-			}
-			return newModelManifests;
-		}
-		return null;
-	}
+      this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
+      if (installedAliceClassesLoaded.size() == 0) {
+        //Clear previously cached info
+        clearAliceResourceInfo();
+        File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+        if (galleryDir == null) {
+          FindResourcesPanel.getInstance().show(null);
+          galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+        }
+        if (galleryDir != null) {
+          //Save the directory to the preference
+          String[] dirArray = {galleryDir.getAbsolutePath()};
+          setGalleryResourceDirs(dirArray);
+          //Try finding the resources again
+          resourcePaths = findAliceResources();
+          this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses(resourcePaths);
+        }
+      }
+      if (this.installedAliceClassesLoaded.size() == 0) {
+        //No resources were found
+        //Clear the cached data and display an error
+        clearAliceResourceInfo();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cannot find the Alice gallery resources.");
+        if ((resourcePaths == null) || (resourcePaths.size() == 0)) {
+          sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+        } else {
+          sb.append("\nFailed to locate the resources in:");
+          String separator = "\n   ";
+          for (File path : resourcePaths) {
+            sb.append(separator + "'" + path + "'");
+          }
+          String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+          sb.append("\nVerify that " + phrase + " and verify that Alice is properly installed.");
+        }
+        JOptionPane.showMessageDialog(null, sb.toString());
+      } else {
+        String[] galleryDirs = new String[resourcePaths.size()];
+        for (int i = 0; i < resourcePaths.size(); i++) {
+          File galleryFile = resourcePaths.get(i);
+          if (galleryFile.isDirectory()) {
+            galleryDirs[i] = galleryFile.getAbsolutePath();
+          } else {
+            galleryDirs[i] = galleryFile.getParentFile().getAbsolutePath();
+          }
+        }
+        setAliceResourceDirs(galleryDirs);
+      }
+    }
+    return this.installedAliceClassesLoaded;
+  }
 
-	private boolean manifestIsNew( ModelManifest newManifest ) {
-		for ( ModelManifest oldManifest: userGalleryModelManifests ) {
-			if ( oldManifest.getName().equals( newManifest.getName() ) ) {
-				return false;
-			}
-		}
-		return true;
-	}
+  public ModelManifest getModelManifest(String modelName) {
+    this.findAndLoadUserGalleryResourcesIfNecessary();
+    for (ModelManifest modelManifest : this.userGalleryModelManifests) {
+      if (modelManifest.getName().equals(modelName)) {
+        return modelManifest;
+      }
+    }
+    return null;
+  }
 
-	/*package-private*/List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
-		if( this.installedAliceClassesLoaded == null ) {
-			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-			if( resourcePaths.size() == 0 ) {
-				resourcePaths = findAliceResources();
-			}
+  public URL getAliceResource(String resourceString) {
+    if (resourceString.contains("ı")) {
+      Logger.severe(resourceString);
+      resourceString = resourceString.replaceAll("ı", "i");
+    }
+    this.findAndLoadInstalledAliceResourcesIfNecessary();
+    assert this.resourceClassLoaders != null;
+    URL foundResource = null;
+    for (URLClassLoader cl : this.resourceClassLoaders) {
+      foundResource = cl.findResource(resourceString);
+      if (foundResource != null) {
+        break;
+      } else {
+        //edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot find resource for:", resourceString );
+      }
+    }
+    return foundResource;
+  }
 
-			this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
-			if( installedAliceClassesLoaded.size() == 0 ) {
-				//Clear previously cached info
-				clearAliceResourceInfo();
-				File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
-				if( galleryDir == null ) {
-					FindResourcesPanel.getInstance().show( null );
-					galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
-				}
-				if( galleryDir != null ) {
-					//Save the directory to the preference
-					String[] dirArray = { galleryDir.getAbsolutePath() };
-					setGalleryResourceDirs( dirArray );
-					//Try finding the resources again
-					resourcePaths = findAliceResources();
-					this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
-				}
-			}
-			if( this.installedAliceClassesLoaded.size() == 0 ) {
-				//No resources were found
-				//Clear the cached data and display an error
-				clearAliceResourceInfo();
-				StringBuilder sb = new StringBuilder();
-				sb.append( "Cannot find the Alice gallery resources." );
-				if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
-					sb.append( "\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once." );
-				} else {
-					sb.append( "\nFailed to locate the resources in:" );
-					String separator = "\n   ";
-					for( File path : resourcePaths ) {
-						sb.append( separator + "'" + path + "'" );
-					}
-					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
-					sb.append( "\nVerify that " + phrase + " and verify that Alice is properly installed." );
-				}
-				JOptionPane.showMessageDialog( null, sb.toString() );
-			} else {
-				String[] galleryDirs = new String[ resourcePaths.size() ];
-				for( int i = 0; i < resourcePaths.size(); i++ ) {
-					File galleryFile = resourcePaths.get( i );
-					if( galleryFile.isDirectory() ) {
-						galleryDirs[ i ] = galleryFile.getAbsolutePath();
-					} else {
-						galleryDirs[ i ] = galleryFile.getParentFile().getAbsolutePath();
-					}
-				}
-				setAliceResourceDirs( galleryDirs );
-			}
-		}
-		return this.installedAliceClassesLoaded;
-	}
-
-	public ModelManifest getModelManifest(String modelName) {
-		this.findAndLoadUserGalleryResourcesIfNecessary();
-		for (ModelManifest modelManifest : this.userGalleryModelManifests) {
-			if (modelManifest.getName().equals(modelName)) {
-				return modelManifest;
-			}
-		}
-		return null;
-	}
-
-	public URL getAliceResource( String resourceString ) {
-		if( resourceString.contains( "ı" ) ) {
-			Logger.severe( resourceString );
-			resourceString = resourceString.replaceAll( "ı", "i" );
-		}
-		this.findAndLoadInstalledAliceResourcesIfNecessary();
-		assert this.resourceClassLoaders != null;
-		URL foundResource = null;
-		for( URLClassLoader cl : this.resourceClassLoaders ) {
-			foundResource = cl.findResource( resourceString );
-			if( foundResource != null ) {
-				break;
-			} else {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot find resource for:", resourceString );
-			}
-		}
-		return foundResource;
-	}
-
-	public InputStream getAliceResourceAsStream( String resourceString ) {
-		this.findAndLoadInstalledAliceResourcesIfNecessary();
-		assert this.resourceClassLoaders != null;
-		InputStream foundResource = null;
-		for( URLClassLoader cl : this.resourceClassLoaders ) {
-			foundResource = cl.getResourceAsStream( resourceString );
-			if( foundResource != null ) {
-				break;
-			}
-		}
-		return foundResource;
-	}
+  public InputStream getAliceResourceAsStream(String resourceString) {
+    this.findAndLoadInstalledAliceResourcesIfNecessary();
+    assert this.resourceClassLoaders != null;
+    InputStream foundResource = null;
+    for (URLClassLoader cl : this.resourceClassLoaders) {
+      foundResource = cl.getResourceAsStream(resourceString);
+      if (foundResource != null) {
+        break;
+      }
+    }
+    return foundResource;
+  }
 }

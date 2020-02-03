@@ -58,100 +58,100 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public class EnumCodec<T extends Enum<T>> implements ItemCodec<T> {
-	public static interface LocalizationCustomizer<T extends Enum<T>> {
-		public String customize( String localization, T value );
-	}
+  public static interface LocalizationCustomizer<T extends Enum<T>> {
+    public String customize(String localization, T value);
+  }
 
-	private static InitializingIfAbsentMap<Class, EnumCodec> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<Class, EnumCodec> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized <T extends Enum<T>> EnumCodec<T> createInstance( Class<T> valueCls, final LocalizationCustomizer<T> localizationCustomizer ) {
-		return new EnumCodec<T>( valueCls, localizationCustomizer );
-	}
+  public static synchronized <T extends Enum<T>> EnumCodec<T> createInstance(Class<T> valueCls, final LocalizationCustomizer<T> localizationCustomizer) {
+    return new EnumCodec<T>(valueCls, localizationCustomizer);
+  }
 
-	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
-		EnumCodec<T> rv = map.getInitializingIfAbsent( (Class)valueCls, new InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
-			@Override
-			public EnumCodec initialize( Class valueCls ) {
-				return new EnumCodec( valueCls, null );
-			}
-		} );
-		return rv;
-	}
+  public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance(Class<T> valueCls) {
+    EnumCodec<T> rv = map.getInitializingIfAbsent((Class) valueCls, new InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
+      @Override
+      public EnumCodec initialize(Class valueCls) {
+        return new EnumCodec(valueCls, null);
+      }
+    });
+    return rv;
+  }
 
-	private final Class<T> valueCls;
-	private final LocalizationCustomizer<T> localizationCustomizer;
-	private Map<T, String> mapValueToLocalization;
+  private final Class<T> valueCls;
+  private final LocalizationCustomizer<T> localizationCustomizer;
+  private Map<T, String> mapValueToLocalization;
 
-	private EnumCodec( Class<T> valueCls, LocalizationCustomizer<T> localizationCustomizer ) {
-		this.valueCls = valueCls;
-		this.localizationCustomizer = localizationCustomizer;
-	}
+  private EnumCodec(Class<T> valueCls, LocalizationCustomizer<T> localizationCustomizer) {
+    this.valueCls = valueCls;
+    this.localizationCustomizer = localizationCustomizer;
+  }
 
-	@Override
-	public Class<T> getValueClass() {
-		return this.valueCls;
-	}
+  @Override
+  public Class<T> getValueClass() {
+    return this.valueCls;
+  }
 
-	public LocalizationCustomizer<T> getLocalizationCustomizer() {
-		return this.localizationCustomizer;
-	}
+  public LocalizationCustomizer<T> getLocalizationCustomizer() {
+    return this.localizationCustomizer;
+  }
 
-	@Override
-	public final T decodeValue( BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeEnum();
-	}
+  @Override
+  public final T decodeValue(BinaryDecoder binaryDecoder) {
+    return binaryDecoder.decodeEnum();
+  }
 
-	@Override
-	public final void encodeValue( BinaryEncoder binaryEncoder, T t ) {
-		binaryEncoder.encode( t );
-	}
+  @Override
+  public final void encodeValue(BinaryEncoder binaryEncoder, T t) {
+    binaryEncoder.encode(t);
+  }
 
-	@Override
-	public final void appendRepresentation( StringBuilder sb, T value ) {
-		if( value != null ) {
-			if( this.mapValueToLocalization != null ) {
-				//pass
-			} else {
-				this.mapValueToLocalization = Maps.newHashMap();
-				String bundleName = this.valueCls.getPackage().getName() + ".croquet";
-				try {
-					ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
-					String clsName = this.valueCls.getSimpleName();
-					for( T enumConstant : this.valueCls.getEnumConstants() ) {
-						String localizationKey = clsName + "." + enumConstant.name();
-						try {
-							String localizationValue = resourceBundle.getString( localizationKey );
-							if( this.localizationCustomizer != null ) {
-								localizationValue = this.localizationCustomizer.customize( localizationValue, enumConstant );
-							}
-							this.mapValueToLocalization.put( enumConstant, localizationValue );
-						} catch( MissingResourceException mre ) {
-							//pass
-						}
-					}
-				} catch( MissingResourceException mre ) {
-					//pass
-				}
-			}
-			String text = this.mapValueToLocalization.get( value );
-			if( text != null ) {
-				//pass
-			} else {
-				text = value.toString();
-			}
-			sb.append( text );
-		} else {
-			sb.append( value );
-		}
-	}
+  @Override
+  public final void appendRepresentation(StringBuilder sb, T value) {
+    if (value != null) {
+      if (this.mapValueToLocalization != null) {
+        //pass
+      } else {
+        this.mapValueToLocalization = Maps.newHashMap();
+        String bundleName = this.valueCls.getPackage().getName() + ".croquet";
+        try {
+          ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, JComponent.getDefaultLocale());
+          String clsName = this.valueCls.getSimpleName();
+          for (T enumConstant : this.valueCls.getEnumConstants()) {
+            String localizationKey = clsName + "." + enumConstant.name();
+            try {
+              String localizationValue = resourceBundle.getString(localizationKey);
+              if (this.localizationCustomizer != null) {
+                localizationValue = this.localizationCustomizer.customize(localizationValue, enumConstant);
+              }
+              this.mapValueToLocalization.put(enumConstant, localizationValue);
+            } catch (MissingResourceException mre) {
+              //pass
+            }
+          }
+        } catch (MissingResourceException mre) {
+          //pass
+        }
+      }
+      String text = this.mapValueToLocalization.get(value);
+      if (text != null) {
+        //pass
+      } else {
+        text = value.toString();
+      }
+      sb.append(text);
+    } else {
+      sb.append(value);
+    }
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.valueCls.getName() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.valueCls.getName());
+    sb.append("]");
+    return sb.toString();
+  }
 }

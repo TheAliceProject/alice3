@@ -49,19 +49,19 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public class SizeValue implements SizeAttribute {
-	private Float m_value;
+  private Float m_value;
 
-	public SizeValue( Float value ) {
-		m_value = value;
-	}
+  public SizeValue(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.SIZE;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.SIZE;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

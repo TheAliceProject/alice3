@@ -64,107 +64,107 @@ import javax.swing.undo.CannotUndoException;
  * @author Dennis Cosgrove
  */
 public final class DeclareMethodEdit extends AbstractEdit<CompletionModel> {
-	private UserType<?> declaringType;
-	private final String methodName;
-	private AbstractType<?, ?, ?> returnType;
-	private BlockStatement body;
+  private UserType<?> declaringType;
+  private final String methodName;
+  private AbstractType<?, ?, ?> returnType;
+  private BlockStatement body;
 
-	private transient UserMethod method;
-	private transient DeclarationComposite prevDeclarationComposite;
+  private transient UserMethod method;
+  private transient DeclarationComposite prevDeclarationComposite;
 
-	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType, BlockStatement body ) {
-		super( userActivity );
-		this.declaringType = declaringType;
-		this.methodName = methodName;
-		this.returnType = returnType;
-		this.body = body;
-	}
+  public DeclareMethodEdit(UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType, BlockStatement body) {
+    super(userActivity);
+    this.declaringType = declaringType;
+    this.methodName = methodName;
+    this.returnType = returnType;
+    this.body = body;
+  }
 
-	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType ) {
-		this( userActivity, declaringType, methodName, returnType, new BlockStatement() );
-	}
+  public DeclareMethodEdit(UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType) {
+    this(userActivity, declaringType, methodName, returnType, new BlockStatement());
+  }
 
-	public DeclareMethodEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.declaringType = NodeCodec.getInstance( UserType.class ).decodeValue( binaryDecoder );
-		this.methodName = binaryDecoder.decodeString();
-		this.returnType = NodeCodec.getInstance( AbstractType.class ).decodeValue( binaryDecoder );
-		this.body = NodeCodec.getInstance( BlockStatement.class ).decodeValue( binaryDecoder );
-	}
+  public DeclareMethodEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.declaringType = NodeCodec.getInstance(UserType.class).decodeValue(binaryDecoder);
+    this.methodName = binaryDecoder.decodeString();
+    this.returnType = NodeCodec.getInstance(AbstractType.class).decodeValue(binaryDecoder);
+    this.body = NodeCodec.getInstance(BlockStatement.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( UserType.class ).encodeValue( binaryEncoder, this.declaringType );
-		binaryEncoder.encode( this.methodName );
-		NodeCodec.getInstance( AbstractType.class ).encodeValue( binaryEncoder, this.returnType );
-		NodeCodec.getInstance( BlockStatement.class ).encodeValue( binaryEncoder, this.body );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(UserType.class).encodeValue(binaryEncoder, this.declaringType);
+    binaryEncoder.encode(this.methodName);
+    NodeCodec.getInstance(AbstractType.class).encodeValue(binaryEncoder, this.returnType);
+    NodeCodec.getInstance(BlockStatement.class).encodeValue(binaryEncoder, this.body);
+  }
 
-	@Override
-	protected void preCopy() {
-		super.preCopy();
-		NodeCodec.addNodeToGlobalMap( this.body );
-	}
+  @Override
+  protected void preCopy() {
+    super.preCopy();
+    NodeCodec.addNodeToGlobalMap(this.body);
+  }
 
-	@Override
-	protected void postCopy( AbstractEdit<?> result ) {
-		NodeCodec.removeNodeFromGlobalMap( this.body );
-		super.postCopy( result );
-	}
+  @Override
+  protected void postCopy(AbstractEdit<?> result) {
+    NodeCodec.removeNodeFromGlobalMap(this.body);
+    super.postCopy(result);
+  }
 
-	public UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
+  public UserType<?> getDeclaringType() {
+    return this.declaringType;
+  }
 
-	public String getMethodName() {
-		return this.methodName;
-	}
+  public String getMethodName() {
+    return this.methodName;
+  }
 
-	public AbstractType<?, ?, ?> getReturnType() {
-		return this.returnType;
-	}
+  public AbstractType<?, ?, ?> getReturnType() {
+    return this.returnType;
+  }
 
-	//	public org.lgna.project.ast.UserMethod getMethod() {
-	//		return this.method;
-	//	}
+  //  public org.lgna.project.ast.UserMethod getMethod() {
+  //    return this.method;
+  //  }
 
-	public void EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod( UserMethod method ) {
-		this.method = method;
-	}
+  public void EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod(UserMethod method) {
+    this.method = method;
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			//todo: create new every time?
-			this.method = new UserMethod( this.methodName, this.returnType, new UserParameter[ 0 ], this.body );
-		}
-		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		this.prevDeclarationComposite = declarationTabState.getValue();
-		this.declaringType.methods.add( this.method );
-		declarationTabState.setValueTransactionlessly( CodeComposite.getInstance( this.method ) );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    if (isDo) {
+      //todo: create new every time?
+      this.method = new UserMethod(this.methodName, this.returnType, new UserParameter[0], this.body);
+    }
+    DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+    this.prevDeclarationComposite = declarationTabState.getValue();
+    this.declaringType.methods.add(this.method);
+    declarationTabState.setValueTransactionlessly(CodeComposite.getInstance(this.method));
+  }
 
-	@Override
-	protected final void undoInternal() {
-		int index = this.declaringType.methods.indexOf( this.method );
-		if( index != -1 ) {
-			this.declaringType.methods.remove( index );
-			DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-			if( this.prevDeclarationComposite != null ) {
-				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
-					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );
-				}
-			}
-			declarationTabState.removeAllOrphans();
-		} else {
-			throw new CannotUndoException();
-		}
-	}
+  @Override
+  protected final void undoInternal() {
+    int index = this.declaringType.methods.indexOf(this.method);
+    if (index != -1) {
+      this.declaringType.methods.remove(index);
+      DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+      if (this.prevDeclarationComposite != null) {
+        if (declarationTabState.containsItem(this.prevDeclarationComposite)) {
+          declarationTabState.setValueTransactionlessly(this.prevDeclarationComposite);
+        }
+      }
+      declarationTabState.removeAllOrphans();
+    } else {
+      throw new CannotUndoException();
+    }
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "declare: " );
-		rv.append( this.methodName );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("declare: ");
+    rv.append(this.methodName);
+  }
 }

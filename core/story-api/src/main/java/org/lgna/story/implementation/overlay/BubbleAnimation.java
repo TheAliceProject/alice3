@@ -44,25 +44,25 @@ package org.lgna.story.implementation.overlay;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class BubbleAnimation extends OpenUpdateCloseOverlayGraphicAnimation {
-	public BubbleAnimation( double openingDuration, double updatingDuration, double closingDuration, BubbleImp bubbleImp ) {
-		super( openingDuration, updatingDuration, closingDuration );
-		this.bubbleImp = bubbleImp;
-	}
+  public BubbleAnimation(double openingDuration, double updatingDuration, double closingDuration, BubbleImp bubbleImp) {
+    super(openingDuration, updatingDuration, closingDuration);
+    this.bubbleImp = bubbleImp;
+  }
 
-	@Override
-	protected void updateStateAndPortion( State state, double portion ) {
-		if( state == State.OPENNING ) {
-			this.bubbleImp.portion.setValue( portion );
-		} else if( state == State.UPDATING ) {
-			this.bubbleImp.portion.setValue( 1.0 );
-		} else {
-			//state == State.CLOSING;
-			this.bubbleImp.portion.setValue( 1.0 - portion );
-		}
-	}
+  @Override
+  protected void updateStateAndPortion(State state, double portion) {
+    if (state == State.OPENNING) {
+      this.bubbleImp.portion.setValue(portion);
+    } else if (state == State.UPDATING) {
+      this.bubbleImp.portion.setValue(1.0);
+    } else {
+      //state == State.CLOSING;
+      this.bubbleImp.portion.setValue(1.0 - portion);
+    }
+  }
 
-	private final BubbleImp bubbleImp;
+  private final BubbleImp bubbleImp;
 }

@@ -50,55 +50,50 @@ import edu.cmu.cs.dennisc.math.Point3;
  * @author Dennis Cosgrove
  */
 public enum SpatialRelationImp {
-	LEFT_OF( new Point3( -1, 0, 0 ) ),
-	RIGHT_OF( new Point3( 1, 0, 0 ) ),
-	ABOVE( new Point3( 0, 1, 0 ) ),
-	BELOW( new Point3( 0, -1, 0 ) ),
-	IN_FRONT_OF( new Point3( 0, 0, -1 ) ),
-	BEHIND( new Point3( 0, 0, 1 ) );
+  LEFT_OF(new Point3(-1, 0, 0)), RIGHT_OF(new Point3(1, 0, 0)), ABOVE(new Point3(0, 1, 0)), BELOW(new Point3(0, -1, 0)), IN_FRONT_OF(new Point3(0, 0, -1)), BEHIND(new Point3(0, 0, 1));
 
-	//	FRONT_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3( 0.7071068, 0, -0.7071068 ) ),
-	//	FRONT_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, -0.7071068 ) ),
-	//	BEHIND_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3(  0.7071068, 0, 0.7071068 ) ),
-	//	BEHIND_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, 0.7071068 ) );
+  //  FRONT_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3( 0.7071068, 0, -0.7071068 ) ),
+  //  FRONT_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, -0.7071068 ) ),
+  //  BEHIND_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3(  0.7071068, 0, 0.7071068 ) ),
+  //  BEHIND_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, 0.7071068 ) );
 
-	//public static final SpatialRelation IN = new SpatialRelation();
-	//public static final SpatialRelation ON = new SpatialRelation();
-	//public static final SpatialRelation AT = new SpatialRelation();
+  //public static final SpatialRelation IN = new SpatialRelation();
+  //public static final SpatialRelation ON = new SpatialRelation();
+  //public static final SpatialRelation AT = new SpatialRelation();
 
-	SpatialRelationImp( Point3 placeAxis ) {
-		this.placeAxis = placeAxis;
-	}
+  SpatialRelationImp(Point3 placeAxis) {
+    this.placeAxis = placeAxis;
+  }
 
-	public Point3 getPlaceLocation( double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox ) {
-		double x = alongAxisOffset * this.placeAxis.x;
-		double y = alongAxisOffset * this.placeAxis.y;
-		double z = alongAxisOffset * this.placeAxis.z;
+  public Point3 getPlaceLocation(double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox) {
+    double x = alongAxisOffset * this.placeAxis.x;
+    double y = alongAxisOffset * this.placeAxis.y;
+    double z = alongAxisOffset * this.placeAxis.z;
 
-		if( this.placeAxis.x > 0 ) {
-			x = objectBoundingBox.getMaximum().x;
-			x -= subjectBoundingBox.getMinimum().x;
-		} else if( this.placeAxis.x < 0 ) {
-			x = objectBoundingBox.getMinimum().x;
-			x -= subjectBoundingBox.getMaximum().x;
-		}
-		if( this.placeAxis.y > 0 ) {
-			y = objectBoundingBox.getMaximum().y;
-			y -= subjectBoundingBox.getMinimum().y;
-		} else if( this.placeAxis.y < 0 ) {
-			y = objectBoundingBox.getMinimum().y;
-			y -= subjectBoundingBox.getMaximum().y;
-		}
-		if( this.placeAxis.z > 0 ) {
-			z = objectBoundingBox.getMaximum().z;
-			z -= subjectBoundingBox.getMinimum().z;
-		} else if( this.placeAxis.z < 0 ) {
-			z = objectBoundingBox.getMinimum().z;
-			z -= subjectBoundingBox.getMaximum().z;
-		}
+    if (this.placeAxis.x > 0) {
+      x = objectBoundingBox.getMaximum().x;
+      x -= subjectBoundingBox.getMinimum().x;
+    } else if (this.placeAxis.x < 0) {
+      x = objectBoundingBox.getMinimum().x;
+      x -= subjectBoundingBox.getMaximum().x;
+    }
+    if (this.placeAxis.y > 0) {
+      y = objectBoundingBox.getMaximum().y;
+      y -= subjectBoundingBox.getMinimum().y;
+    } else if (this.placeAxis.y < 0) {
+      y = objectBoundingBox.getMinimum().y;
+      y -= subjectBoundingBox.getMaximum().y;
+    }
+    if (this.placeAxis.z > 0) {
+      z = objectBoundingBox.getMaximum().z;
+      z -= subjectBoundingBox.getMinimum().z;
+    } else if (this.placeAxis.z < 0) {
+      z = objectBoundingBox.getMinimum().z;
+      z -= subjectBoundingBox.getMaximum().z;
+    }
 
-		return new Point3( x, y, z );
-	}
+    return new Point3(x, y, z);
+  }
 
-	private final Point3 placeAxis;
+  private final Point3 placeAxis;
 }

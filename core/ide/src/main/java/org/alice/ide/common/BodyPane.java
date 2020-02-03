@@ -54,18 +54,18 @@ import java.awt.BorderLayout;
 import java.awt.LayoutManager;
 
 public class BodyPane extends StatementLikeSubstance {
-	public BodyPane( AwtComponentView<?> statementListComponent ) {
-		super( null, DoInOrder.class, BoxLayout.PAGE_AXIS );
+  public BodyPane(AwtComponentView<?> statementListComponent) {
+    super(null, DoInOrder.class, BoxLayout.PAGE_AXIS);
 
-		String doInOrderText = ResourceBundleUtilities.getStringForKey( "DoInOrder", "org.alice.ide.controlflow.Templates");
+    String doInOrderText = ResourceBundleUtilities.getStringForKey("DoInOrder", "org.alice.ide.controlflow.Templates");
 
-		this.addComponent( new Label( doInOrderText ), BorderLayout.NORTH );
-		this.addComponent( statementListComponent, BorderLayout.CENTER );
-		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ), BorderLayout.WEST );
-	}
+    this.addComponent(new Label(doInOrderText), BorderLayout.NORTH);
+    this.addComponent(statementListComponent, BorderLayout.CENTER);
+    this.addComponent(BoxUtilities.createHorizontalSliver(8), BorderLayout.WEST);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jComponent ) {
-		return new BorderLayout();
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jComponent) {
+    return new BorderLayout();
+  }
 }

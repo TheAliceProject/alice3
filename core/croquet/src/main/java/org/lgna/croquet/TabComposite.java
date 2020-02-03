@@ -49,9 +49,9 @@ import org.lgna.croquet.views.CompositeView;
  * @author Dennis Cosgrove
  */
 public interface TabComposite<V extends CompositeView<?, ?>> extends Composite<V> {
-	public boolean isCloseable();
+  public boolean isCloseable();
 
-	public boolean isPotentiallyCloseable();
+  public boolean isPotentiallyCloseable();
 
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button );
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button);
 }

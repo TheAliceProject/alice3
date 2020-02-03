@@ -53,19 +53,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SideToolPalette<V extends CompositeView<?, ?>> extends ToolPaletteCoreComposite<V> {
-	public SideToolPalette( UUID migrationId, boolean initialValue ) {
-		super( migrationId, Application.DOCUMENT_UI_GROUP, initialValue );
-	}
+  public SideToolPalette(UUID migrationId, boolean initialValue) {
+    super(migrationId, Application.DOCUMENT_UI_GROUP, initialValue);
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	//	@Override
-	//	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-	//		super.customizeTitleComponentAppearance( button );
-	//		button.scaleFont( 1.4f );
-	//		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-	//	}
+  //  @Override
+  //  public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+  //    super.customizeTitleComponentAppearance( button );
+  //    button.scaleFont( 1.4f );
+  //    button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+  //  }
 }

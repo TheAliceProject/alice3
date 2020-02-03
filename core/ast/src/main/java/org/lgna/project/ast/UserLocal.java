@@ -50,54 +50,54 @@ import edu.cmu.cs.dennisc.property.StringProperty;
  * @author Dennis Cosgrove
  */
 public class UserLocal extends AbstractTransient {
-	public UserLocal() {
-	}
+  public UserLocal() {
+  }
 
-	public UserLocal( String name, AbstractType<?, ?, ?> valueType, boolean isFinal ) {
-		this.name.setValue( name );
-		this.valueType.setValue( valueType );
-		this.isFinal.setValue( isFinal );
-	}
+  public UserLocal(String name, AbstractType<?, ?, ?> valueType, boolean isFinal) {
+    this.name.setValue(name);
+    this.valueType.setValue(valueType);
+    this.isFinal.setValue(isFinal);
+  }
 
-	public UserLocal( String name, Class<?> valueCls, boolean isFinal ) {
-		this( name, JavaType.getInstance( valueCls ), isFinal );
-	}
+  public UserLocal(String name, Class<?> valueCls, boolean isFinal) {
+    this(name, JavaType.getInstance(valueCls), isFinal);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return this.valueType.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return this.valueType.getValue();
+  }
 
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
+  @Override
+  public String getName() {
+    return name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	private String generateName() {
-		return getParent().generateLocalName(this);
-	}
+  private String generateName() {
+    return getParent().generateLocalName(this);
+  }
 
-	@Override
-	public final String getValidName( Node context ) {
-		return getName() != null ? getName() : generateName();
-	}
+  @Override
+  public final String getValidName(Node context) {
+    return getName() != null ? getName() : generateName();
+  }
 
-	public final StringProperty name = new StringProperty( this, null ) {
-		@Override
-		protected boolean isNullAcceptable() {
-			return true;
-		}
-	};
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
-	public final BooleanProperty isFinal = new BooleanProperty( this, false );
+  public final StringProperty name = new StringProperty(this, null) {
+    @Override
+    protected boolean isNullAcceptable() {
+      return true;
+    }
+  };
+  public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance(this);
+  public final BooleanProperty isFinal = new BooleanProperty(this, false);
 }

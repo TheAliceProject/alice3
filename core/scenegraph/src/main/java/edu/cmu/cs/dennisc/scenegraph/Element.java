@@ -56,80 +56,80 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class Element extends AbstractInstancePropertyOwner {
-	public static final class Key<T> {
-		public static <T> Key<T> createInstance( String repr ) {
-			return new Key<T>( repr );
-		}
+  public static final class Key<T> {
+    public static <T> Key<T> createInstance(String repr) {
+      return new Key<T>(repr);
+    }
 
-		private Key( String repr ) {
-			this.repr = repr;
-		}
+    private Key(String repr) {
+      this.repr = repr;
+    }
 
-		@Override
-		public String toString() {
-			return this.repr;
-		}
+    @Override
+    public String toString() {
+      return this.repr;
+    }
 
-		private final String repr;
-	}
+    private final String repr;
+  }
 
-	public static final Key<StackTraceElement[]> DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
-	private static boolean isCreationStackTraceDesired = SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
+  public static final Key<StackTraceElement[]> DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance("DEBUG_CONSTRUCTION_STACK_TRACE_KEY");
+  private static boolean isCreationStackTraceDesired = SystemUtilities.isPropertyTrue("edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired");
 
-	public Element() {
-		if( isCreationStackTraceDesired ) {
-			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			this.putBonusDataFor( DEBUG_CONSTRUCTION_STACK_TRACE_KEY, stackTrace );
-		}
-	}
+  public Element() {
+    if (isCreationStackTraceDesired) {
+      StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+      this.putBonusDataFor(DEBUG_CONSTRUCTION_STACK_TRACE_KEY, stackTrace);
+    }
+  }
 
-	public <T> boolean containsBonusDataFor( Key<T> key ) {
-		return this.dataMap.containsKey( key );
-	}
+  public <T> boolean containsBonusDataFor(Key<T> key) {
+    return this.dataMap.containsKey(key);
+  }
 
-	public <T> T getBonusDataFor( Key<T> key ) {
-		return (T)this.dataMap.get( key );
-	}
+  public <T> T getBonusDataFor(Key<T> key) {
+    return (T) this.dataMap.get(key);
+  }
 
-	public <T> void putBonusDataFor( Key<T> key, T value ) {
-		this.dataMap.put( key, value );
-	}
+  public <T> void putBonusDataFor(Key<T> key, T value) {
+    this.dataMap.put(key, value);
+  }
 
-	public <T> void removeBonusDataFor( Key<T> key ) {
-		this.dataMap.remove( key );
-	}
+  public <T> void removeBonusDataFor(Key<T> key) {
+    this.dataMap.remove(key);
+  }
 
-	//todo: investigate typing return value with generics
-	//todo: support copying referenced elements?
-	public Element newCopy() {
-		Element rv = ReflectionUtilities.newInstance( this.getClass() );
-		rv.setName( this.getName() );
-		for( InstanceProperty<?> property : this.getProperties() ) {
-			Object value;
-			if( property instanceof CopyableInstanceProperty<?> ) {
-				value = ( (CopyableInstanceProperty<?>)property ).getCopy();
-			} else {
-				value = property.getValue();
-			}
-			InstanceProperty rvProperty = rv.getPropertyNamed( property.getName() );
-			rvProperty.setValue( value );
-		}
-		return rv;
-	}
+  //todo: investigate typing return value with generics
+  //todo: support copying referenced elements?
+  public Element newCopy() {
+    Element rv = ReflectionUtilities.newInstance(this.getClass());
+    rv.setName(this.getName());
+    for (InstanceProperty<?> property : this.getProperties()) {
+      Object value;
+      if (property instanceof CopyableInstanceProperty<?>) {
+        value = ((CopyableInstanceProperty<?>) property).getCopy();
+      } else {
+        value = property.getValue();
+      }
+      InstanceProperty rvProperty = rv.getPropertyNamed(property.getName());
+      rvProperty.setValue(value);
+    }
+    return rv;
+  }
 
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "name=\"" + getName() + "\"" );
-	}
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("name=\"" + getName() + "\"");
+  }
 
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		this.appendRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    this.appendRepr(sb);
+    sb.append("]");
+    return sb.toString();
+  }
 
-	private final Map/*<Key<T>, T>*/dataMap = Maps.newHashMap();
+  private final Map/*<Key<T>, T>*/dataMap = Maps.newHashMap();
 }

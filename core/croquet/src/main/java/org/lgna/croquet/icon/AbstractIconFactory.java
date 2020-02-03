@@ -53,87 +53,86 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIconFactory implements IconFactory {
-	protected static enum IsCachingDesired {
-		TRUE,
-		FALSE;
-	}
+  protected static enum IsCachingDesired {
+    TRUE, FALSE
+  }
 
-	private final Map<Dimension, Icon> map;
+  private final Map<Dimension, Icon> map;
 
-	public AbstractIconFactory( IsCachingDesired isCachingDesired ) {
-		if( isCachingDesired == IsCachingDesired.TRUE ) {
-			this.map = Maps.newHashMap();
-		} else {
-			this.map = null;
-		}
-	}
+  public AbstractIconFactory(IsCachingDesired isCachingDesired) {
+    if (isCachingDesired == IsCachingDesired.TRUE) {
+      this.map = Maps.newHashMap();
+    } else {
+      this.map = null;
+    }
+  }
 
-	//	protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
-	//		return this.map;
-	//	}
+  //  protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
+  //  return this.map;
+  //  }
 
-	protected Collection<Icon> getMapValues() {
-		return this.map.values();
-	}
+  protected Collection<Icon> getMapValues() {
+    return this.map.values();
+  }
 
-	protected abstract Icon createIcon( Dimension size );
+  protected abstract Icon createIcon(Dimension size);
 
-	@Override
-	public final Icon getIcon( Dimension size ) {
-		if( this.map != null ) {
-			Icon rv = this.map.get( size );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = this.createIcon( size );
-				this.map.put( size, rv );
-			}
-			return rv;
-		} else {
-			return this.createIcon( size );
-		}
-	}
+  @Override
+  public final Icon getIcon(Dimension size) {
+    if (this.map != null) {
+      Icon rv = this.map.get(size);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = this.createIcon(size);
+        this.map.put(size, rv);
+      }
+      return rv;
+    } else {
+      return this.createIcon(size);
+    }
+  }
 
-	protected double getDefaultWidthToHeightAspectRatio() {
-		Dimension defaultSize = this.getDefaultSize( null );
-		if( defaultSize != null ) {
-			return defaultSize.width / (double)defaultSize.height;
-		} else {
-			return 4.0 / 3.0;
-		}
-	}
+  protected double getDefaultWidthToHeightAspectRatio() {
+    Dimension defaultSize = this.getDefaultSize(null);
+    if (defaultSize != null) {
+      return defaultSize.width / (double) defaultSize.height;
+    } else {
+      return 4.0 / 3.0;
+    }
+  }
 
-	protected double getTrimmedWidthToHeightAspectRatio() {
-		return this.getDefaultWidthToHeightAspectRatio();
-	}
+  protected double getTrimmedWidthToHeightAspectRatio() {
+    return this.getDefaultWidthToHeightAspectRatio();
+  }
 
-	protected Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
-		int height = (int)Math.round( width / widthToHeigthAspectRatio );
-		return new Dimension( width, height );
-	}
+  protected Dimension createDimensionForWidth(int width, double widthToHeigthAspectRatio) {
+    int height = (int) Math.round(width / widthToHeigthAspectRatio);
+    return new Dimension(width, height);
+  }
 
-	protected Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
-		int width = (int)Math.round( height * widthToHeigthAspectRatio );
-		return new Dimension( width, height );
-	}
+  protected Dimension createDimensionForHeight(int height, double widthToHeigthAspectRatio) {
+    int width = (int) Math.round(height * widthToHeigthAspectRatio);
+    return new Dimension(width, height);
+  }
 
-	@Override
-	public final Dimension getDefaultSizeForWidth( int width ) {
-		return this.createDimensionForWidth( width, this.getDefaultWidthToHeightAspectRatio() );
-	}
+  @Override
+  public final Dimension getDefaultSizeForWidth(int width) {
+    return this.createDimensionForWidth(width, this.getDefaultWidthToHeightAspectRatio());
+  }
 
-	@Override
-	public final Dimension getDefaultSizeForHeight( int height ) {
-		return this.createDimensionForHeight( height, this.getDefaultWidthToHeightAspectRatio() );
-	}
+  @Override
+  public final Dimension getDefaultSizeForHeight(int height) {
+    return this.createDimensionForHeight(height, this.getDefaultWidthToHeightAspectRatio());
+  }
 
-	@Override
-	public Dimension getTrimmedSizeForWidth( int width ) {
-		return this.createDimensionForWidth( width, this.getTrimmedWidthToHeightAspectRatio() );
-	}
+  @Override
+  public Dimension getTrimmedSizeForWidth(int width) {
+    return this.createDimensionForWidth(width, this.getTrimmedWidthToHeightAspectRatio());
+  }
 
-	@Override
-	public Dimension getTrimmedSizeForHeight( int height ) {
-		return this.createDimensionForHeight( height, this.getTrimmedWidthToHeightAspectRatio() );
-	}
+  @Override
+  public Dimension getTrimmedSizeForHeight(int height) {
+    return this.createDimensionForHeight(height, this.getTrimmedWidthToHeightAspectRatio());
+  }
 }

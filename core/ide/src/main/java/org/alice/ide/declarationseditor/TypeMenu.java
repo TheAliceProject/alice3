@@ -81,159 +81,161 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeMenu extends MenuModel {
-	private static final Font TYPE_FONT;
-	private static final Font BONUS_FONT;
-	static {
-		Font defaultFont = UIManager.getFont( "defaultFont" );
-		if( defaultFont != null ) {
-			//pass
-		} else {
-			defaultFont = new Font( "SansSerif", Font.PLAIN, 12 );
-		}
-		TYPE_FONT = defaultFont.deriveFont( 18.0f );
-		BONUS_FONT = defaultFont.deriveFont( Font.ITALIC );
-	}
-	private static Map<NamedUserType, TypeMenu> map = Maps.newHashMap();
+  private static final Font TYPE_FONT;
+  private static final Font BONUS_FONT;
 
-	public static synchronized TypeMenu getInstance( NamedUserType type ) {
-		TypeMenu rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TypeMenu( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  static {
+    Font defaultFont = UIManager.getFont("defaultFont");
+    if (defaultFont != null) {
+      //pass
+    } else {
+      defaultFont = new Font("SansSerif", Font.PLAIN, 12);
+    }
+    TYPE_FONT = defaultFont.deriveFont(18.0f);
+    BONUS_FONT = defaultFont.deriveFont(Font.ITALIC);
+  }
 
-	private final NamedUserType type;
+  private static Map<NamedUserType, TypeMenu> map = Maps.newHashMap();
 
-	private TypeMenu( NamedUserType type ) {
-		super( UUID.fromString( "d4ea32ce-d9d6-452e-8d99-2d8078c01251" ) );
-		this.type = type;
-	}
+  public static synchronized TypeMenu getInstance(NamedUserType type) {
+    TypeMenu rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new TypeMenu(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setSmallIcon( new TypeIcon( this.type, true, TYPE_FONT, BONUS_FONT ) );
-	}
+  private final NamedUserType type;
 
-	@Override
-	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+  private TypeMenu(NamedUserType type) {
+    super(UUID.fromString("d4ea32ce-d9d6-452e-8d99-2d8078c01251"));
+    this.type = type;
+  }
 
-		List<StandardMenuItemPrepModel> procedureModels = Lists.newLinkedList();
-		List<StandardMenuItemPrepModel> functionModels = Lists.newLinkedList();
-		List<StandardMenuItemPrepModel> managedFieldModels = Lists.newLinkedList();
-		List<StandardMenuItemPrepModel> unmanagedFieldModels = Lists.newLinkedList();
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setSmallIcon(new TypeIcon(this.type, true, TYPE_FONT, BONUS_FONT));
+  }
 
-		ListData<DeclarationComposite<?, ?>> data = declarationTabState.getData();
-		final Set<StandardMenuItemPrepModel> set = Sets.newHashSet();
-		for( UserMethod method : this.type.methods ) {
-			if( method.managementLevel.getValue() == ManagementLevel.NONE ) {
-				StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod( method ).getMenuItemPrepModel();
-				if( data.contains( DeclarationComposite.getInstance( method ) ) ) {
-					set.add( model );
-				}
-				if( method.isProcedure() ) {
-					procedureModels.add( model );
-				} else {
-					functionModels.add( model );
-				}
-			}
-		}
+  @Override
+  protected void handleShowing(MenuItemContainer menuItemContainer, PopupMenuEvent e) {
+    DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 
-		final boolean EDIT = false;
-		for( UserField field : this.type.fields ) {
-			if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
-				if( EDIT ) {
-					managedFieldModels.add( ManagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
-				} else {
-					managedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				}
-			} else {
-				if( EDIT ) {
-					unmanagedFieldModels.add( UnmanagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
-				} else {
-					unmanagedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				}
-			}
-		}
+    List<StandardMenuItemPrepModel> procedureModels = Lists.newLinkedList();
+    List<StandardMenuItemPrepModel> functionModels = Lists.newLinkedList();
+    List<StandardMenuItemPrepModel> managedFieldModels = Lists.newLinkedList();
+    List<StandardMenuItemPrepModel> unmanagedFieldModels = Lists.newLinkedList();
 
-		if( procedureModels.size() > 0 ) {
-			procedureModels.add( 0, ProceduresSeparator.getInstance() );
-		}
-		if( functionModels.size() > 0 ) {
-			functionModels.add( 0, FunctionsSeparator.getInstance() );
-		}
+    ListData<DeclarationComposite<?, ?>> data = declarationTabState.getData();
+    final Set<StandardMenuItemPrepModel> set = Sets.newHashSet();
+    for (UserMethod method : this.type.methods) {
+      if (method.managementLevel.getValue() == ManagementLevel.NONE) {
+        StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod(method).getMenuItemPrepModel();
+        if (data.contains(DeclarationComposite.getInstance(method))) {
+          set.add(model);
+        }
+        if (method.isProcedure()) {
+          procedureModels.add(model);
+        } else {
+          functionModels.add(model);
+        }
+      }
+    }
 
-		procedureModels.add( AddProcedureComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
-		functionModels.add( AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
+    final boolean EDIT = false;
+    for (UserField field : this.type.fields) {
+      if (field.managementLevel.getValue() == ManagementLevel.MANAGED) {
+        if (EDIT) {
+          managedFieldModels.add(ManagedEditFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
+        } else {
+          managedFieldModels.add(HighlightFieldOperation.getInstance(field).getMenuItemPrepModel());
+        }
+      } else {
+        if (EDIT) {
+          unmanagedFieldModels.add(UnmanagedEditFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
+        } else {
+          unmanagedFieldModels.add(HighlightFieldOperation.getInstance(field).getMenuItemPrepModel());
+        }
+      }
+    }
 
-		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+    if (procedureModels.size() > 0) {
+      procedureModels.add(0, ProceduresSeparator.getInstance());
+    }
+    if (functionModels.size() > 0) {
+      functionModels.add(0, FunctionsSeparator.getInstance());
+    }
 
-		Operation operation = declarationTabState.getItemSelectionOperationForType( type );
-		operation.setName( type.getName() );
+    procedureModels.add(AddProcedureComposite.getInstance(this.type).getLaunchOperation().getMenuItemPrepModel());
+    functionModels.add(AddFunctionComposite.getInstance(this.type).getLaunchOperation().getMenuItemPrepModel());
 
-		if( data.contains( DeclarationComposite.getInstance( type ) ) ) {
-			set.add( operation.getMenuItemPrepModel() );
-		}
-		models.add( operation.getMenuItemPrepModel() );
+    List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 
-		if( IsIncludingConstructors.getInstance().getValue() ) {
-			models.add( SEPARATOR );
-			for( NamedUserConstructor constructor : type.getDeclaredConstructors() ) {
-				StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
-				if( data.contains( DeclarationComposite.getInstance( constructor ) ) ) {
-					set.add( model );
-				}
-				models.add( model );
-			}
-		}
+    Operation operation = declarationTabState.getItemSelectionOperationForType(type);
+    operation.setName(type.getName());
 
-		models.add( SEPARATOR );
-		models.addAll( procedureModels );
-		models.add( SEPARATOR );
-		models.addAll( functionModels );
+    if (data.contains(DeclarationComposite.getInstance(type))) {
+      set.add(operation.getMenuItemPrepModel());
+    }
+    models.add(operation.getMenuItemPrepModel());
 
-		if( IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-			models.add( SEPARATOR );
-			if( managedFieldModels.size() > 0 ) {
-				models.add( ManagedFieldsSeparator.getInstance() );
-				models.addAll( managedFieldModels );
-			}
-			final boolean IS_SHOW_ME_HOW_PREFERRED = false;
-			if( IS_SHOW_ME_HOW_PREFERRED ) {
-				models.add( ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
-			} else {
-				models.add( AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
-			}
-		}
+    if (IsIncludingConstructors.getInstance().getValue()) {
+      models.add(SEPARATOR);
+      for (NamedUserConstructor constructor : type.getDeclaredConstructors()) {
+        StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor(constructor).getMenuItemPrepModel();
+        if (data.contains(DeclarationComposite.getInstance(constructor))) {
+          set.add(model);
+        }
+        models.add(model);
+      }
+    }
 
-		models.add( SEPARATOR );
-		if( ( unmanagedFieldModels.size() > 0 ) || ( managedFieldModels.size() > 0 ) ) {
-			if( managedFieldModels.size() > 0 ) {
-				models.add( UnmanagedFieldsSeparator.getInstance() );
-			} else {
-				models.add( FieldsSeparator.getInstance() );
-			}
-			models.addAll( unmanagedFieldModels );
-		}
-		models.add( AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
-		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
+    models.add(SEPARATOR);
+    models.addAll(procedureModels);
+    models.add(SEPARATOR);
+    models.addAll(functionModels);
 
-		MenuItemContainerUtilities.MenuElementObserver observer = new MenuItemContainerUtilities.MenuElementObserver() {
-			@Override
-			public void update( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement ) {
-				if( menuElement != null ) {
-					TextWeight textWeight = set.contains( model ) ? TextWeight.BOLD : TextWeight.LIGHT;
-					menuElement.changeFont( textWeight );
-				}
-			}
-		};
-		MenuItemContainerUtilities.setMenuElements( menuItemContainer, models, observer );
+    if (IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields(type)) {
+      models.add(SEPARATOR);
+      if (managedFieldModels.size() > 0) {
+        models.add(ManagedFieldsSeparator.getInstance());
+        models.addAll(managedFieldModels);
+      }
+      final boolean IS_SHOW_ME_HOW_PREFERRED = false;
+      if (IS_SHOW_ME_HOW_PREFERRED) {
+        models.add(ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel());
+      } else {
+        models.add(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel());
+      }
+    }
 
-		super.handleShowing( menuItemContainer, e );
-	}
+    models.add(SEPARATOR);
+    if ((unmanagedFieldModels.size() > 0) || (managedFieldModels.size() > 0)) {
+      if (managedFieldModels.size() > 0) {
+        models.add(UnmanagedFieldsSeparator.getInstance());
+      } else {
+        models.add(FieldsSeparator.getInstance());
+      }
+      models.addAll(unmanagedFieldModels);
+    }
+    models.add(AddUnmanagedFieldComposite.getInstance(type).getLaunchOperation().getMenuItemPrepModel());
+    //    models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
+
+    MenuItemContainerUtilities.MenuElementObserver observer = new MenuItemContainerUtilities.MenuElementObserver() {
+      @Override
+      public void update(MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement) {
+        if (menuElement != null) {
+          TextWeight textWeight = set.contains(model) ? TextWeight.BOLD : TextWeight.LIGHT;
+          menuElement.changeFont(textWeight);
+        }
+      }
+    };
+    MenuItemContainerUtilities.setMenuElements(menuItemContainer, models, observer);
+
+    super.handleShowing(menuItemContainer, e);
+  }
 }

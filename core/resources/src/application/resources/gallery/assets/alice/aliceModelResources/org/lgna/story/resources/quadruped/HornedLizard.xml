@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="HornedLizard">
+    <BoundingBox>
+        <Min x="-0.2555300571637541" y="0.002709982793449056" z="-0.32850028191820024"/>
+        <Max x="0.25553006851569054" y="0.17006250548683094" z="0.3933035363147351"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>desert</Tag>
+        <Tag>lizard</Tag>
+        <Tag>toad</Tag>
+        <Tag>reptile</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="HornedLizard" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

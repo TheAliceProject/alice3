@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph.event;
  * @author Dennis Cosgrove
  */
 public interface GraphicsListener {
-	public void graphicAdded( GraphicAddedEvent e );
+  public void graphicAdded(GraphicAddedEvent e);
 
-	public void graphicRemoved( GraphicRemovedEvent e );
+  public void graphicRemoved(GraphicRemovedEvent e);
 }

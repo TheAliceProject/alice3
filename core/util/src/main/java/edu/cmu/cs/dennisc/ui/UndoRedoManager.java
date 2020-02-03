@@ -52,41 +52,41 @@ import java.util.Stack;
  * @author Dennis Cosgrove
  */
 public abstract class UndoRedoManager {
-	private Stack<Action> m_undoStack = new Stack<Action>();
-	private Stack<Action> m_redoStack = new Stack<Action>();
+  private Stack<Action> m_undoStack = new Stack<Action>();
+  private Stack<Action> m_redoStack = new Stack<Action>();
 
-	protected abstract void handleChange();
+  protected abstract void handleChange();
 
-	public boolean isUndoStackEmpty() {
-		return m_undoStack.isEmpty();
-	}
+  public boolean isUndoStackEmpty() {
+    return m_undoStack.isEmpty();
+  }
 
-	public boolean isRedoStackEmpty() {
-		return m_redoStack.isEmpty();
-	}
+  public boolean isRedoStackEmpty() {
+    return m_redoStack.isEmpty();
+  }
 
-	public void runAndPush( Action action ) {
-		action.run();
-		pushAlreadyRunActionOntoUndoStack( action );
-	}
+  public void runAndPush(Action action) {
+    action.run();
+    pushAlreadyRunActionOntoUndoStack(action);
+  }
 
-	public void pushAlreadyRunActionOntoUndoStack( Action action ) {
-		m_undoStack.push( action );
-		m_redoStack.clear();
-		handleChange();
-	}
+  public void pushAlreadyRunActionOntoUndoStack(Action action) {
+    m_undoStack.push(action);
+    m_redoStack.clear();
+    handleChange();
+  }
 
-	public void undo() {
-		Action action = m_undoStack.pop();
-		m_redoStack.push( action );
-		action.undo();
-		handleChange();
-	}
+  public void undo() {
+    Action action = m_undoStack.pop();
+    m_redoStack.push(action);
+    action.undo();
+    handleChange();
+  }
 
-	public void redo() {
-		Action action = m_redoStack.pop();
-		action.redo();
-		m_undoStack.push( action );
-		handleChange();
-	}
+  public void redo() {
+    Action action = m_redoStack.pop();
+    action.redo();
+    m_undoStack.push(action);
+    handleChange();
+  }
 }

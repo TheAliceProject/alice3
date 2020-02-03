@@ -56,26 +56,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisOperation extends ProjectExpressionPropertyOperation {
-	private static Map<ExpressionProperty, ThisOperation> map = Maps.newHashMap();
+  private static Map<ExpressionProperty, ThisOperation> map = Maps.newHashMap();
 
-	public static synchronized ThisOperation getInstance( ExpressionProperty expressionProperty ) {
-		assert expressionProperty != null;
-		ThisOperation rv = map.get( expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisOperation( expressionProperty );
-			map.put( expressionProperty, rv );
-		}
-		return rv;
-	}
+  public static synchronized ThisOperation getInstance(ExpressionProperty expressionProperty) {
+    assert expressionProperty != null;
+    ThisOperation rv = map.get(expressionProperty);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ThisOperation(expressionProperty);
+      map.put(expressionProperty, rv);
+    }
+    return rv;
+  }
 
-	private ThisOperation( ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "b90478a4-6cfc-457b-be93-dfdde76c9e24" ), expressionProperty );
-	}
+  private ThisOperation(ExpressionProperty expressionProperty) {
+    super(UUID.fromString("b90478a4-6cfc-457b-be93-dfdde76c9e24"), expressionProperty);
+  }
 
-	@Override
-	protected final Expression createExpression() {
-		return new ThisExpression();
-	}
+  @Override
+  protected final Expression createExpression() {
+    return new ThisExpression();
+  }
 }

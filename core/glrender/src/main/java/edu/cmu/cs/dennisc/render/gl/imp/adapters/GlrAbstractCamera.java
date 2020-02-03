@@ -62,108 +62,108 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends AbstractCamera> extends GlrLeaf<T> {
-	public abstract Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport );
+  public abstract Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport);
 
-	protected abstract Rectangle performLetterboxing( Rectangle rv );
+  protected abstract Rectangle performLetterboxing(Rectangle rv);
 
-	public Rectangle getActualViewport( Rectangle rv, int surfaceWidth, int surfaceHeight ) {
-		if( this.specifiedViewport != null ) {
-			rv.setBounds( this.specifiedViewport );
-		} else {
-			rv.setBounds( 0, 0, surfaceWidth, surfaceHeight );
-		}
-		if( this.isLetterboxedAsOpposedToDistorted ) {
-			performLetterboxing( rv );
-		}
-		return rv;
-	}
+  public Rectangle getActualViewport(Rectangle rv, int surfaceWidth, int surfaceHeight) {
+    if (this.specifiedViewport != null) {
+      rv.setBounds(this.specifiedViewport);
+    } else {
+      rv.setBounds(0, 0, surfaceWidth, surfaceHeight);
+    }
+    if (this.isLetterboxedAsOpposedToDistorted) {
+      performLetterboxing(rv);
+    }
+    return rv;
+  }
 
-	public abstract Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport );
+  public abstract Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport);
 
-	public Rectangle getSpecifiedViewport() {
-		if( this.specifiedViewport != null ) {
-			return new Rectangle( this.specifiedViewport );
-		} else {
-			return null;
-		}
-	}
+  public Rectangle getSpecifiedViewport() {
+    if (this.specifiedViewport != null) {
+      return new Rectangle(this.specifiedViewport);
+    } else {
+      return null;
+    }
+  }
 
-	public void setSpecifiedViewport( Rectangle specifiedViewport ) {
-		if( specifiedViewport != null ) {
-			this.specifiedViewport = new Rectangle( specifiedViewport );
-		} else {
-			this.specifiedViewport = null;
-		}
-	}
+  public void setSpecifiedViewport(Rectangle specifiedViewport) {
+    if (specifiedViewport != null) {
+      this.specifiedViewport = new Rectangle(specifiedViewport);
+    } else {
+      this.specifiedViewport = null;
+    }
+  }
 
-	public boolean isLetterboxedAsOpposedToDistorted() {
-		return this.isLetterboxedAsOpposedToDistorted;
-	}
+  public boolean isLetterboxedAsOpposedToDistorted() {
+    return this.isLetterboxedAsOpposedToDistorted;
+  }
 
-	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted ) {
-		this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
-	}
+  public void setIsLetterboxedAsOpposedToDistorted(boolean isLetterboxedAsOpposedToDistorted) {
+    this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
+  }
 
-	protected abstract void setupProjection( Context context, Rectangle actualViewport );
+  protected abstract void setupProjection(Context context, Rectangle actualViewport);
 
-	public void performClearAndRenderOffscreen( RenderContext rc, int surfaceWidth, int surfaceHeight ) {
-		GlrScene sceneAdapter = getGlrScene();
-		if( sceneAdapter != null ) {
-			Rectangle actualViewport = getActualViewport( new Rectangle(), surfaceWidth, surfaceHeight );
-			rc.gl.glMatrixMode( GL_PROJECTION );
-			rc.gl.glLoadIdentity();
-			setupProjection( rc, actualViewport );
-			rc.setViewportAndAddToClearRect( actualViewport );
-			sceneAdapter.renderScene( rc, this, this.glrBackground );
-		}
-	}
+  public void performClearAndRenderOffscreen(RenderContext rc, int surfaceWidth, int surfaceHeight) {
+    GlrScene sceneAdapter = getGlrScene();
+    if (sceneAdapter != null) {
+      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      rc.gl.glMatrixMode(GL_PROJECTION);
+      rc.gl.glLoadIdentity();
+      setupProjection(rc, actualViewport);
+      rc.setViewportAndAddToClearRect(actualViewport);
+      sceneAdapter.renderScene(rc, this, this.glrBackground);
+    }
+  }
 
-	public void postRender( RenderContext rc, int surfaceWidth, int surfaceHeight, RenderTarget renderTarget, Graphics2D g2 ) {
-		if( this.glrLayers != null ) {
-			Rectangle actualViewport = getActualViewport( new Rectangle(), surfaceWidth, surfaceHeight );
-			for( GlrLayer layerAdapter : this.glrLayers ) {
-				layerAdapter.render( g2, renderTarget, actualViewport, this.owner );
-			}
-		}
-	}
+  public void postRender(RenderContext rc, int surfaceWidth, int surfaceHeight, RenderTarget renderTarget, Graphics2D g2) {
+    if (this.glrLayers != null) {
+      Rectangle actualViewport = getActualViewport(new Rectangle(), surfaceWidth, surfaceHeight);
+      for (GlrLayer layerAdapter : this.glrLayers) {
+        layerAdapter.render(g2, renderTarget, actualViewport, this.owner);
+      }
+    }
+  }
 
-	public void performPick( PickContext pc, PickParameters pickParameters, Rectangle actualViewport ) {
-		GlrScene sceneAdapter = getGlrScene();
-		if( sceneAdapter != null ) {
+  public void performPick(PickContext pc, PickParameters pickParameters, Rectangle actualViewport) {
+    GlrScene sceneAdapter = getGlrScene();
+    if (sceneAdapter != null) {
 
-			pc.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
+      pc.gl.glViewport(actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height);
 
-			pc.gl.glMatrixMode( GL_PROJECTION );
-			pc.gl.glLoadIdentity();
+      pc.gl.glMatrixMode(GL_PROJECTION);
+      pc.gl.glLoadIdentity();
 
-			double tx = actualViewport.width - ( 2 * ( pickParameters.getX() - actualViewport.x ) );
-			double ty = actualViewport.height - ( 2 * ( pickParameters.getFlippedY( actualViewport ) - actualViewport.y ) );
-			pc.gl.glTranslated( tx, ty, 0.0 );
-			pc.gl.glScaled( actualViewport.width, actualViewport.height, 1.0 );
-			//			int[] vp = { actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height };
-			//			java.nio.IntBuffer vpBuffer = java.nio.IntBuffer.wrap( vp );
-			//			pc.glu.gluPickMatrix( pickParameters.getX(), pickParameters.getFlippedY( actualViewport ), 1.0, 1.0, vpBuffer );
+      double tx = actualViewport.width - (2 * (pickParameters.getX() - actualViewport.x));
+      double ty = actualViewport.height - (2 * (pickParameters.getFlippedY(actualViewport) - actualViewport.y));
+      pc.gl.glTranslated(tx, ty, 0.0);
+      pc.gl.glScaled(actualViewport.width, actualViewport.height, 1.0);
+      //      int[] vp = { actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height };
+      //      java.nio.IntBuffer vpBuffer = java.nio.IntBuffer.wrap( vp );
+      //      pc.glu.gluPickMatrix( pickParameters.getX(), pickParameters.getFlippedY( actualViewport ), 1.0, 1.0, vpBuffer );
 
-			setupProjection( pc, actualViewport );
+      setupProjection(pc, actualViewport);
 
-			pc.pickScene( this, sceneAdapter, pickParameters );
-		}
-	}
+      pc.pickScene(this, sceneAdapter, pickParameters);
+    }
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.background ) {
-			this.glrBackground = AdapterFactory.getAdapterFor( owner.background.getValue() );
-		} else if( property == owner.postRenderLayers ) {
-			this.glrLayers = AdapterFactory.getAdaptersFor( owner.postRenderLayers.getValue(), GlrLayer.class );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.background) {
+      this.glrBackground = AdapterFactory.getAdapterFor(owner.background.getValue());
+    } else if (property == owner.postRenderLayers) {
+      this.glrLayers = AdapterFactory.getAdaptersFor(owner.postRenderLayers.getValue(), GlrLayer.class);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private GlrBackground glrBackground;
-	private GlrLayer[] glrLayers;
+  private GlrBackground glrBackground;
+  private GlrLayer[] glrLayers;
 
-	private Rectangle specifiedViewport;
-	private boolean isLetterboxedAsOpposedToDistorted = true;
+  private Rectangle specifiedViewport;
+  private boolean isLetterboxedAsOpposedToDistorted = true;
 }

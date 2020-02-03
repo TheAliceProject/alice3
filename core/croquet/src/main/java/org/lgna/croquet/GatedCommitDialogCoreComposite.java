@@ -54,51 +54,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
-	public GatedCommitDialogCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public GatedCommitDialogCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	protected abstract Status getStatusPreRejectorCheck();
+  protected abstract Status getStatusPreRejectorCheck();
 
-	private final Listener listener = new Listener() {
-		@Override
-		public void changed( ActivityEvent e ) {
-			GatedCommitDialogCoreComposite.this.handleFiredEvent( e );
-		}
-	};
+  private final Listener listener = new Listener() {
+    @Override
+    public void changed(ActivityEvent e) {
+      GatedCommitDialogCoreComposite.this.handleFiredEvent(e);
+    }
+  };
 
-	public boolean isStatusLineDesired() {
-		return true;
-	}
+  public boolean isStatusLineDesired() {
+    return true;
+  }
 
-	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
+  protected abstract void updateIsGoodToGo(boolean isGoodToGo);
 
-	protected void refreshStatus() {
-		AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck();
-		boolean isGoodToGo = status == null || status.isGoodToGo();
+  protected void refreshStatus() {
+    AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck();
+    boolean isGoodToGo = status == null || status.isGoodToGo();
 
-		getDialogContentComposite().getView().getStatusLabel().setStatus( status );
-		updateIsGoodToGo( isGoodToGo );
-	}
+    getDialogContentComposite().getView().getStatusLabel().setStatus(status);
+    updateIsGoodToGo(isGoodToGo);
+  }
 
-	protected void handleFiredEvent( ActivityEvent event ) {
-		this.refreshStatus();
-	}
+  protected void handleFiredEvent(ActivityEvent event) {
+    this.refreshStatus();
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		openingActivity.addListener( this.listener );
-		this.refreshStatus();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    openingActivity.addListener(this.listener);
+    this.refreshStatus();
+    super.handlePreShowDialog(dialog);
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		openingActivity.removeListener( this.listener );
-		super.handlePostHideDialog();
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    openingActivity.removeListener(this.listener);
+    super.handlePostHideDialog();
+  }
 
-	protected void cancel( CancelException ce ) {
-		openingActivity.cancel(ce);
-	}
+  protected void cancel(CancelException ce) {
+    openingActivity.cancel(ce);
+  }
 }

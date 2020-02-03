@@ -53,79 +53,79 @@ import java.awt.event.MouseListener;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractHyperlink extends JLabel {
-	private Action action;
-	private Color defaultColor = Color.BLACK;
-	private Color armedColor = Color.BLUE;
+  private Action action;
+  private Color defaultColor = Color.BLACK;
+  private Color armedColor = Color.BLUE;
 
-	public AbstractHyperlink() {
-		this.addMouseListener( new MouseListener() {
-			@Override
-			public void mouseClicked( MouseEvent e ) {
-				assert AbstractHyperlink.this.action != null;
-				AbstractHyperlink.this.action.actionPerformed( null );
-			}
+  public AbstractHyperlink() {
+    this.addMouseListener(new MouseListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        assert AbstractHyperlink.this.action != null;
+        AbstractHyperlink.this.action.actionPerformed(null);
+      }
 
-			@Override
-			public void mouseEntered( MouseEvent e ) {
-				AbstractHyperlink.this.setForeground( armedColor );
-			}
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        AbstractHyperlink.this.setForeground(armedColor);
+      }
 
-			@Override
-			public void mouseExited( MouseEvent e ) {
-				AbstractHyperlink.this.setForeground( defaultColor );
-			}
+      @Override
+      public void mouseExited(MouseEvent e) {
+        AbstractHyperlink.this.setForeground(defaultColor);
+      }
 
-			@Override
-			public void mousePressed( MouseEvent e ) {
-			}
+      @Override
+      public void mousePressed(MouseEvent e) {
+      }
 
-			@Override
-			public void mouseReleased( MouseEvent e ) {
-			}
-		} );
-	}
+      @Override
+      public void mouseReleased(MouseEvent e) {
+      }
+    });
+  }
 
-	@Override
-	public Dimension getMaximumSize() {
-		return this.getPreferredSize();
-	}
+  @Override
+  public Dimension getMaximumSize() {
+    return this.getPreferredSize();
+  }
 
-	public Color getDefaultColor() {
-		return this.defaultColor;
-	}
+  public Color getDefaultColor() {
+    return this.defaultColor;
+  }
 
-	public void setDefaultColor( Color defaultColor ) {
-		this.defaultColor = defaultColor;
-	}
+  public void setDefaultColor(Color defaultColor) {
+    this.defaultColor = defaultColor;
+  }
 
-	public Color getArmedColor() {
-		return this.armedColor;
-	}
+  public Color getArmedColor() {
+    return this.armedColor;
+  }
 
-	public void setArmedColor( Color armedColor ) {
-		this.armedColor = armedColor;
-	}
+  public void setArmedColor(Color armedColor) {
+    this.armedColor = armedColor;
+  }
 
-	public Action getAction() {
-		return this.action;
-	}
+  public Action getAction() {
+    return this.action;
+  }
 
-	public void setAction( Action action ) {
-		assert action != null;
-		this.setContentText( (String)action.getValue( Action.NAME ) );
-		this.action = action;
-	}
+  public void setAction(Action action) {
+    assert action != null;
+    this.setContentText((String) action.getValue(Action.NAME));
+    this.action = action;
+  }
 
-	public void setContentText( String contentText ) {
-		this.setText( "<html><u>" + contentText + "</u></html>" );
-	}
+  public void setContentText(String contentText) {
+    this.setText("<html><u>" + contentText + "</u></html>");
+  }
 
-	//	@Override
-	//	protected void paintComponent( java.awt.Graphics g ) {
-	//		java.awt.Font font = g.getFont();
-	//		java.util.Map< java.awt.font.TextAttribute, Object > attributes = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-	//		attributes.put( java.awt.font.TextAttribute.UNDERLINE, java.awt.font.TextAttribute.UNDERLINE_ON );
-	//		g.setFont( font.deriveFont( attributes ) );
-	//		super.paintComponent( g );
-	//	}
+  //  @Override
+  //  protected void paintComponent( java.awt.Graphics g ) {
+  //    java.awt.Font font = g.getFont();
+  //    java.util.Map< java.awt.font.TextAttribute, Object > attributes = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+  //    attributes.put( java.awt.font.TextAttribute.UNDERLINE, java.awt.font.TextAttribute.UNDERLINE_ON );
+  //    g.setFont( font.deriveFont( attributes ) );
+  //    super.paintComponent( g );
+  //  }
 }

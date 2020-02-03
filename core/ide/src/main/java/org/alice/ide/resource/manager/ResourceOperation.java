@@ -55,26 +55,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceOperation extends ActionOperation {
-	public ResourceOperation( UUID migrationId ) {
-		super( Application.PROJECT_GROUP, migrationId );
-	}
+  public ResourceOperation(UUID migrationId) {
+    super(Application.PROJECT_GROUP, migrationId);
+  }
 
-	protected abstract Edit createEdit( UserActivity userActivity, Resource resource );
+  protected abstract Edit createEdit(UserActivity userActivity, Resource resource);
 
-	protected abstract Resource getResource();
+  protected abstract Resource getResource();
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		Resource resource = this.getResource();
-		if( resource != null ) {
-			Edit edit = this.createEdit( activity, resource );
-			if( edit != null ) {
-				activity.commitAndInvokeDo( edit );
-			} else {
-				activity.cancel();
-			}
-		} else {
-			activity.cancel();
-		}
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    Resource resource = this.getResource();
+    if (resource != null) {
+      Edit edit = this.createEdit(activity, resource);
+      if (edit != null) {
+        activity.commitAndInvokeDo(edit);
+      } else {
+        activity.cancel();
+      }
+    } else {
+      activity.cancel();
+    }
+  }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PineTree">
+    <BoundingBox>
+        <Min x="-2.023919105529785" y="0.0" z="-1.989761233329773"/>
+        <Max x="2.023919105529785" y="6.397526741027832" z="1.989761233329773"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="PineTree" resourceName="PINE_TREE" textureName="PINE_TREE"/>
+</AliceModel>

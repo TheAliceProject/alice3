@@ -51,13 +51,13 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrDirectionalLight extends GlrLight<DirectionalLight> {
-	@Override
-	protected float[] getPosition( float[] rv ) {
-		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
-		rv[ 0 ] = (float)db.get( 8 );
-		rv[ 1 ] = (float)db.get( 9 );
-		rv[ 2 ] = (float)db.get( 10 );
-		rv[ 3 ] = 0.0f;
-		return rv;
-	}
+  @Override
+  protected float[] getPosition(float[] rv) {
+    DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+    rv[0] = (float) db.get(8);
+    rv[1] = (float) db.get(9);
+    rv[2] = (float) db.get(10);
+    rv[3] = 0.0f;
+    return rv;
+  }
 }

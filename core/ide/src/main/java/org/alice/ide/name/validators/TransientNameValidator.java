@@ -53,45 +53,45 @@ import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserParameter;
 
 public abstract class TransientNameValidator extends NodeNameValidator {
-	private final UserCode code;
-	private final BlockStatement block;
+  private final UserCode code;
+  private final BlockStatement block;
 
-	public TransientNameValidator( Node node, UserCode code, BlockStatement block ) {
-		super( node );
-		//		assert code != null;
-		//		assert block != null;
-		this.code = code;
-		this.block = block;
-	}
+  public TransientNameValidator(Node node, UserCode code, BlockStatement block) {
+    super(node);
+    //    assert code != null;
+    //    assert block != null;
+    this.code = code;
+    this.block = block;
+  }
 
-	@Override
-	public boolean isNameAvailable( String name ) {
-		if( this.code != null ) {
-			Node node = this.getNode();
-			for( UserParameter parameter : this.code.getRequiredParamtersProperty() ) {
-				if( parameter == node ) {
-					//pass
-				} else {
-					if( name.equals( parameter.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
-			//			if( this.block != null ) {
-			//				
-			//			}
-			IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance( UserLocal.class );
-			( (AbstractCode)this.code ).crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			for( UserLocal local : crawler.getList() ) {
-				if( local == node ) {
-					//pass
-				} else {
-					if( name.equals( local.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
+  @Override
+  public boolean isNameAvailable(String name) {
+    if (this.code != null) {
+      Node node = this.getNode();
+      for (UserParameter parameter : this.code.getRequiredParamtersProperty()) {
+        if (parameter == node) {
+          //pass
+        } else {
+          if (name.equals(parameter.name.getValue())) {
+            return false;
+          }
+        }
+      }
+      //      if( this.block != null ) {
+      //
+      //      }
+      IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance(UserLocal.class);
+      ((AbstractCode) this.code).crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+      for (UserLocal local : crawler.getList()) {
+        if (local == node) {
+          //pass
+        } else {
+          if (name.equals(local.name.getValue())) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
 }

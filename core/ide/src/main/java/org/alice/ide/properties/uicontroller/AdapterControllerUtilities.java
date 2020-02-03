@@ -54,51 +54,34 @@ import org.alice.stageide.properties.uicontroller.SelectedInstancePropertyContro
 
 import edu.cmu.cs.dennisc.math.Point3;
 
-public class AdapterControllerUtilities
-{
-	//TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
-	public static PropertyAdapterController getValuePanelForPropertyAdapter( AbstractPropertyAdapter<?, ?> propertyAdapter )
-	{
-		Class<?> propertyType = propertyAdapter != null ? propertyAdapter.getPropertyType() : null;
-		if( propertyAdapter instanceof SelectedInstanceAdapter )
-		{
-			return new SelectedInstancePropertyController( (SelectedInstanceAdapter)propertyAdapter );
-		}
-		if( propertyType == null )
-		{
-			return new BlankPropertyController( propertyAdapter );
-		}
-		if( propertyAdapter.getExpressionState() != null )
-		{
-			return new ExpressionBasedPropertyController( propertyAdapter );
-		}
-		//Now check based on desired type
-		if( Color4f.class.isAssignableFrom( propertyType ) )
-		{
-			return new Color4fPropertyController( (AbstractPropertyAdapter<Color4f, ?>)propertyAdapter );
-		}
-		else if( String.class.isAssignableFrom( propertyType ) )
-		{
-			return new StringPropertyController( (AbstractPropertyAdapter<String, ?>)propertyAdapter );
-		}
-		else if( Float.class.isAssignableFrom( propertyType ) )
-		{
-			return new FloatPropertyController( (AbstractPropertyAdapter<Float, ?>)propertyAdapter );
-		}
-		else if( Point3.class.isAssignableFrom( propertyType ) )
-		{
-			return new Point3PropertyController( (AbstractPropertyAdapter<Point3, ?>)propertyAdapter );
-		}
-		else if( propertyAdapter instanceof MutableRiderVehicleAdapter )
-		{
-			return new CompositePropertyController( (MutableRiderVehicleAdapter)propertyAdapter );
-		}
-		else if( propertyAdapter instanceof ModelSizeAdapter )
-		{
-			return new ModelSizePropertyController( (ModelSizeAdapter)propertyAdapter );
-		} else
-		{
-			return new BlankPropertyController( propertyAdapter );
-		}
-	}
+public class AdapterControllerUtilities {
+  //TODO: base this lookup on a (type -> property controller) registration that happens in the IDE
+  public static PropertyAdapterController getValuePanelForPropertyAdapter(AbstractPropertyAdapter<?, ?> propertyAdapter) {
+    Class<?> propertyType = propertyAdapter != null ? propertyAdapter.getPropertyType() : null;
+    if (propertyAdapter instanceof SelectedInstanceAdapter) {
+      return new SelectedInstancePropertyController((SelectedInstanceAdapter) propertyAdapter);
+    }
+    if (propertyType == null) {
+      return new BlankPropertyController(propertyAdapter);
+    }
+    if (propertyAdapter.getExpressionState() != null) {
+      return new ExpressionBasedPropertyController(propertyAdapter);
+    }
+    //Now check based on desired type
+    if (Color4f.class.isAssignableFrom(propertyType)) {
+      return new Color4fPropertyController((AbstractPropertyAdapter<Color4f, ?>) propertyAdapter);
+    } else if (String.class.isAssignableFrom(propertyType)) {
+      return new StringPropertyController((AbstractPropertyAdapter<String, ?>) propertyAdapter);
+    } else if (Float.class.isAssignableFrom(propertyType)) {
+      return new FloatPropertyController((AbstractPropertyAdapter<Float, ?>) propertyAdapter);
+    } else if (Point3.class.isAssignableFrom(propertyType)) {
+      return new Point3PropertyController((AbstractPropertyAdapter<Point3, ?>) propertyAdapter);
+    } else if (propertyAdapter instanceof MutableRiderVehicleAdapter) {
+      return new CompositePropertyController((MutableRiderVehicleAdapter) propertyAdapter);
+    } else if (propertyAdapter instanceof ModelSizeAdapter) {
+      return new ModelSizePropertyController((ModelSizeAdapter) propertyAdapter);
+    } else {
+      return new BlankPropertyController(propertyAdapter);
+    }
+  }
 }

@@ -53,25 +53,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableListUriTab extends ListUriTab {
-	private final RefreshableDataSingleSelectListState<URI> listState;
+  private final RefreshableDataSingleSelectListState<URI> listState;
 
-	public RefreshableListUriTab( UUID migrationId, RefreshableListData<URI> data ) {
-		super( migrationId );
-		this.listState = this.createRefreshableListState( "listState", data, -1 );
-	}
+  public RefreshableListUriTab(UUID migrationId, RefreshableListData<URI> data) {
+    super(migrationId);
+    this.listState = this.createRefreshableListState("listState", data, -1);
+  }
 
-	@Override
-	public final void refresh() {
-		this.listState.getData().refresh();
-	}
+  @Override
+  public final void refresh() {
+    this.listState.getData().refresh();
+  }
 
-	@Override
-	public RefreshableDataSingleSelectListState<URI> getListSelectionState() {
-		return this.listState;
-	}
+  @Override
+  public RefreshableDataSingleSelectListState<URI> getListSelectionState() {
+    return this.listState;
+  }
 
-	@Override
-	protected final RefreshableListContentPanel createView() {
-		return new RefreshableListContentPanel( this );
-	}
+  @Override
+  protected final RefreshableListContentPanel createView() {
+    return new RefreshableListContentPanel(this);
+  }
 }

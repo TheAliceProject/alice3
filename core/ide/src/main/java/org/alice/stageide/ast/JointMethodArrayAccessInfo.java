@@ -48,19 +48,19 @@ import org.lgna.project.ast.AbstractMethod;
  * @author dculyba
  */
 public class JointMethodArrayAccessInfo {
-	private final int index;
-	private final AbstractMethod method;
+  private final int index;
+  private final AbstractMethod method;
 
-	public JointMethodArrayAccessInfo( AbstractMethod method, int index ) {
-		this.method = method;
-		this.index = index;
-	}
+  public JointMethodArrayAccessInfo(AbstractMethod method, int index) {
+    this.method = method;
+    this.index = index;
+  }
 
-	public int getIndex() {
-		return index;
-	}
+  public int getIndex() {
+    return index;
+  }
 
-	public AbstractMethod getMethod() {
-		return this.method;
-	}
+  public AbstractMethod getMethod() {
+    return this.method;
+  }
 }

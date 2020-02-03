@@ -50,18 +50,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class LaunchOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
-	public LaunchOperationWizardDialogCoreComposite( UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
-		super( migrationId, wizardPages );
-		this.imp = new LaunchOperationOwningCompositeImp( this, operationGroup );
-	}
+  public LaunchOperationWizardDialogCoreComposite(UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages) {
+    super(migrationId, wizardPages);
+    this.imp = new LaunchOperationOwningCompositeImp(this, operationGroup);
+  }
 
-	protected LaunchOperationOwningCompositeImp getImp() {
-		return this.imp;
-	}
+  protected LaunchOperationOwningCompositeImp getImp() {
+    return this.imp;
+  }
 
-	public Operation getLaunchOperation( String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
-	}
+  public Operation getLaunchOperation(String subKeyText) {
+    return this.imp.getLaunchOperation(subKeyText);
+  }
 
-	private final LaunchOperationOwningCompositeImp imp;
+  private final LaunchOperationOwningCompositeImp imp;
 }

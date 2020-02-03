@@ -49,28 +49,24 @@ import javax.swing.JOptionPane;
  * @author Dennis Cosgrove
  */
 public enum MessageType {
-	ERROR( JOptionPane.ERROR_MESSAGE ),
-	INFORMATION( JOptionPane.INFORMATION_MESSAGE ),
-	WARNING( JOptionPane.WARNING_MESSAGE ),
-	QUESTION( JOptionPane.QUESTION_MESSAGE ),
-	PLAIN( JOptionPane.PLAIN_MESSAGE );
-	private final int internal;
+  ERROR(JOptionPane.ERROR_MESSAGE), INFORMATION(JOptionPane.INFORMATION_MESSAGE), WARNING(JOptionPane.WARNING_MESSAGE), QUESTION(JOptionPane.QUESTION_MESSAGE), PLAIN(JOptionPane.PLAIN_MESSAGE);
+  private final int internal;
 
-	MessageType( int internal ) {
-		this.internal = internal;
-	}
+  MessageType(int internal) {
+    this.internal = internal;
+  }
 
-	//todo: reduce accessibility
-	public int getInternal() {
-		return this.internal;
-	}
+  //todo: reduce accessibility
+  public int getInternal() {
+    return this.internal;
+  }
 
-	//	/*package-private*/static MessageType getInstance( int internal ) {
-	//		for( MessageType value : MessageType.values() ) {
-	//			if( value.internal == internal ) {
-	//				return value;
-	//			}
-	//		}
-	//		return null;
-	//	}
+  //  /*package-private*/static MessageType getInstance( int internal ) {
+  //    for( MessageType value : MessageType.values() ) {
+  //      if( value.internal == internal ) {
+  //        return value;
+  //      }
+  //    }
+  //    return null;
+  //  }
 }

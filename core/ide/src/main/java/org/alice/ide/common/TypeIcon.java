@@ -68,179 +68,179 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements Icon {
-	private static final int INDENT_PER_DEPTH = 12;
-	private static final int BONUS_GAP = 4;
-	private final AbstractType<?, ?, ?> type;
-	private final TypeBorder border;
-	private final boolean isIndentForDepthAndMemberCountTextDesired;
-	private final Font typeFont;
-	private final Font bonusFont;
+  private static final int INDENT_PER_DEPTH = 12;
+  private static final int BONUS_GAP = 4;
+  private final AbstractType<?, ?, ?> type;
+  private final TypeBorder border;
+  private final boolean isIndentForDepthAndMemberCountTextDesired;
+  private final Font typeFont;
+  private final Font bonusFont;
 
-	public static TypeIcon getInstance( AbstractType<?, ?, ?> type ) {
-		return new TypeIcon( type );
-	}
+  public static TypeIcon getInstance(AbstractType<?, ?, ?> type) {
+    return new TypeIcon(type);
+  }
 
-	public TypeIcon( AbstractType<?, ?, ?> type, boolean isIndentForDepthAndMemberCountTextDesired, Font typeFont, Font bonusFont ) {
-		this.type = type;
-		this.border = TypeBorder.getSingletonFor( type );
-		this.isIndentForDepthAndMemberCountTextDesired = isIndentForDepthAndMemberCountTextDesired;
-		this.typeFont = typeFont;
-		this.bonusFont = bonusFont;
-	}
+  public TypeIcon(AbstractType<?, ?, ?> type, boolean isIndentForDepthAndMemberCountTextDesired, Font typeFont, Font bonusFont) {
+    this.type = type;
+    this.border = TypeBorder.getSingletonFor(type);
+    this.isIndentForDepthAndMemberCountTextDesired = isIndentForDepthAndMemberCountTextDesired;
+    this.typeFont = typeFont;
+    this.bonusFont = bonusFont;
+  }
 
-	public TypeIcon( AbstractType<?, ?, ?> type ) {
-		this( type, false, UIManager.getFont( "defaultFont" ), null );
-	}
+  public TypeIcon(AbstractType<?, ?, ?> type) {
+    this(type, false, UIManager.getFont("defaultFont"), null);
+  }
 
-	protected Font getTypeFont() {
-		return this.typeFont;
-	}
+  protected Font getTypeFont() {
+    return this.typeFont;
+  }
 
-	public Font getBonusFont() {
-		return this.bonusFont;
-	}
+  public Font getBonusFont() {
+    return this.bonusFont;
+  }
 
-	protected Color getTextColor( Component c ) {
-		if( c.isEnabled() ) {
-			return Color.BLACK;
-		} else {
-			return Color.GRAY;
-		}
-	}
+  protected Color getTextColor(Component c) {
+    if (c.isEnabled()) {
+      return Color.BLACK;
+    } else {
+      return Color.GRAY;
+    }
+  }
 
-	private String getTypeText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return formatter.getTextForType( this.type );
-	}
+  private String getTypeText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return formatter.getTextForType(this.type);
+  }
 
-	private String getBonusText() {
-		if( isIndentForDepthAndMemberCountTextDesired ) {
-			if( this.type instanceof NamedUserType ) {
-				NamedUserType userType = (NamedUserType)this.type;
-				int count = 0;
-				for( UserMethod method : userType.methods ) {
-					if( method.getManagementLevel() == ManagementLevel.NONE ) {
-						count += 1;
-					}
-				}
-				count += userType.fields.size();
-				if( count > 0 ) {
-					StringBuilder sb = new StringBuilder();
-					sb.append( "(" );
-					sb.append( count );
-					sb.append( ")" );
-					return sb.toString();
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  private String getBonusText() {
+    if (isIndentForDepthAndMemberCountTextDesired) {
+      if (this.type instanceof NamedUserType) {
+        NamedUserType userType = (NamedUserType) this.type;
+        int count = 0;
+        for (UserMethod method : userType.methods) {
+          if (method.getManagementLevel() == ManagementLevel.NONE) {
+            count += 1;
+          }
+        }
+        count += userType.fields.size();
+        if (count > 0) {
+          StringBuilder sb = new StringBuilder();
+          sb.append("(");
+          sb.append(count);
+          sb.append(")");
+          return sb.toString();
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	private static Rectangle2D getTextBounds( String text, Font font ) {
-		if( text != null ) {
-			Graphics g = GraphicsUtilities.getGraphics();
-			FontMetrics fm;
-			if( font != null ) {
-				fm = g.getFontMetrics( font );
-			} else {
-				fm = g.getFontMetrics();
-			}
-			return fm.getStringBounds( text, g );
-		} else {
-			return new Rectangle2D.Float( 0, 0, 0, 0 );
-		}
-	}
+  private static Rectangle2D getTextBounds(String text, Font font) {
+    if (text != null) {
+      Graphics g = GraphicsUtilities.getGraphics();
+      FontMetrics fm;
+      if (font != null) {
+        fm = g.getFontMetrics(font);
+      } else {
+        fm = g.getFontMetrics();
+      }
+      return fm.getStringBounds(text, g);
+    } else {
+      return new Rectangle2D.Float(0, 0, 0, 0);
+    }
+  }
 
-	private Rectangle2D getTypeTextBounds() {
-		return getTextBounds( this.getTypeText(), this.getTypeFont() );
-	}
+  private Rectangle2D getTypeTextBounds() {
+    return getTextBounds(this.getTypeText(), this.getTypeFont());
+  }
 
-	private Rectangle2D getBonusTextBounds() {
-		return getTextBounds( this.getBonusText(), this.getBonusFont() );
-	}
+  private Rectangle2D getBonusTextBounds() {
+    return getTextBounds(this.getBonusText(), this.getBonusFont());
+  }
 
-	private int getBorderWidth() {
-		Insets insets = this.border.getBorderInsets( null );
-		Rectangle2D typeTextBounds = this.getTypeTextBounds();
-		return insets.left + insets.right + (int)typeTextBounds.getWidth();
-	}
+  private int getBorderWidth() {
+    Insets insets = this.border.getBorderInsets(null);
+    Rectangle2D typeTextBounds = this.getTypeTextBounds();
+    return insets.left + insets.right + (int) typeTextBounds.getWidth();
+  }
 
-	private int getBorderHeight() {
-		Insets insets = this.border.getBorderInsets( null );
-		Rectangle2D bounds = this.getTypeTextBounds();
-		return insets.top + insets.bottom + (int)bounds.getHeight();
-	}
+  private int getBorderHeight() {
+    Insets insets = this.border.getBorderInsets(null);
+    Rectangle2D bounds = this.getTypeTextBounds();
+    return insets.top + insets.bottom + (int) bounds.getHeight();
+  }
 
-	@Override
-	public int getIconWidth() {
-		int rv = this.getBorderWidth();
-		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			int depth = StaticAnalysisUtilities.getUserTypeDepth( type );
-			if( depth > 0 ) {
-				rv += ( depth * INDENT_PER_DEPTH );
-			}
-		}
-		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			rv += BONUS_GAP;
-			Rectangle2D bonusTextBounds = this.getBonusTextBounds();
-			rv += (int)bonusTextBounds.getWidth();
-		}
-		return rv;
-	}
+  @Override
+  public int getIconWidth() {
+    int rv = this.getBorderWidth();
+    if (this.isIndentForDepthAndMemberCountTextDesired) {
+      int depth = StaticAnalysisUtilities.getUserTypeDepth(type);
+      if (depth > 0) {
+        rv += (depth * INDENT_PER_DEPTH);
+      }
+    }
+    if (this.isIndentForDepthAndMemberCountTextDesired) {
+      rv += BONUS_GAP;
+      Rectangle2D bonusTextBounds = this.getBonusTextBounds();
+      rv += (int) bonusTextBounds.getWidth();
+    }
+    return rv;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.getBorderHeight();
-	}
+  @Override
+  public int getIconHeight() {
+    return this.getBorderHeight();
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
 
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		AffineTransform prevTransform = g2.getTransform();
+    Graphics2D g2 = (Graphics2D) g;
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    AffineTransform prevTransform = g2.getTransform();
 
-		//g.setColor( java.awt.Color.BLUE );
-		//g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
+    //g.setColor( java.awt.Color.BLUE );
+    //g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
 
-		int typePlusBonusWidth = this.getIconWidth();
-		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			int depth = StaticAnalysisUtilities.getUserTypeDepth( type );
-			if( depth > 0 ) {
-				int dx = depth * INDENT_PER_DEPTH;
-				g2.translate( dx, 0 );
-				typePlusBonusWidth -= dx;
-				typePlusBonusWidth -= BONUS_GAP;
-			}
-		}
+    int typePlusBonusWidth = this.getIconWidth();
+    if (this.isIndentForDepthAndMemberCountTextDesired) {
+      int depth = StaticAnalysisUtilities.getUserTypeDepth(type);
+      if (depth > 0) {
+        int dx = depth * INDENT_PER_DEPTH;
+        g2.translate(dx, 0);
+        typePlusBonusWidth -= dx;
+        typePlusBonusWidth -= BONUS_GAP;
+      }
+    }
 
-		int w = this.getBorderWidth();
-		int h = this.getBorderHeight();
+    int w = this.getBorderWidth();
+    int h = this.getBorderHeight();
 
-		//g.setColor( java.awt.Color.GREEN );
-		//g.fillRect( x, y, typePlusBonusWidth, this.getIconHeight() );
+    //g.setColor( java.awt.Color.GREEN );
+    //g.fillRect( x, y, typePlusBonusWidth, this.getIconHeight() );
 
-		//g.setColor( java.awt.Color.RED );
-		//g.fillRect( x, y, w, h );
-		this.border.paintBorder( c, g, x, y, w, h );
-		g.setColor( this.getTextColor( c ) );
+    //g.setColor( java.awt.Color.RED );
+    //g.fillRect( x, y, w, h );
+    this.border.paintBorder(c, g, x, y, w, h);
+    g.setColor(this.getTextColor(c));
 
-		Font prevFont = g.getFont();
-		g.setFont( this.getTypeFont() );
-		GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
+    Font prevFont = g.getFont();
+    g.setFont(this.getTypeFont());
+    GraphicsUtilities.drawCenteredText(g, this.getTypeText(), x, y, w, h);
 
-		if( this.isIndentForDepthAndMemberCountTextDesired ) {
-			if( this.bonusFont != null ) {
-				g.setFont( this.bonusFont );
-				GraphicsUtilities.drawCenteredText( g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h );
-			}
-		}
-		g.setFont( prevFont );
-		g2.setTransform( prevTransform );
-	}
+    if (this.isIndentForDepthAndMemberCountTextDesired) {
+      if (this.bonusFont != null) {
+        g.setFont(this.bonusFont);
+        GraphicsUtilities.drawCenteredText(g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h);
+      }
+    }
+    g.setFont(prevFont);
+    g2.setTransform(prevTransform);
+  }
 }

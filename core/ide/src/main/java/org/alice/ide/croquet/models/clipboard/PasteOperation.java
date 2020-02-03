@@ -51,20 +51,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PasteOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static PasteOperation instance = new PasteOperation();
-	}
+  private static class SingletonHolder {
+    private static PasteOperation instance = new PasteOperation();
+  }
 
-	public static PasteOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PasteOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PasteOperation() {
-		super( UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
-	}
+  private PasteOperation() {
+    super(UUID.fromString("b6c8d189-3529-4244-9530-d71701c6e75f"));
+  }
 
-	@Override
-	protected void performInternal() {
-		Dialogs.showInfo( findLocalizedText( "title" ), findLocalizedText( "content" ) );
-	}
+  @Override
+  protected void performInternal() {
+    Dialogs.showInfo(findLocalizedText("title"), findLocalizedText("content"));
+  }
 }

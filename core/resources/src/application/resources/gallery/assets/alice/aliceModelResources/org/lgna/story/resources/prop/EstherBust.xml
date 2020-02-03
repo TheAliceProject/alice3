@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="EstherBust">
+    <BoundingBox>
+        <Min x="-0.21128362417221067" y="-0.019943292117139744" z="-0.1992974446404987"/>
+        <Max x="0.21271289885044095" y="0.8691994628479176" z="0.31562495406139035"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>mausoleum</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>haunted circus busts</Tag>
+        <Tag>statue</Tag>
+        <Tag>esther</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="EstherBust" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

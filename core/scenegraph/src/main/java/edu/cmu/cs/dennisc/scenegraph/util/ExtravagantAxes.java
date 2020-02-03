@@ -59,150 +59,150 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ExtravagantAxes extends Transformable {
-	private static final double CYLINDER_PORTION = 0.8;
-	private static final double CONE_PORTION = 1.0 - CYLINDER_PORTION;
+  private static final double CYLINDER_PORTION = 0.8;
+  private static final double CONE_PORTION = 1.0 - CYLINDER_PORTION;
 
-	private static double getLengthCylinder( double unit, double lengthFactor, double diameterScale ) {
-		return unit * lengthFactor * CYLINDER_PORTION;
-	}
+  private static double getLengthCylinder(double unit, double lengthFactor, double diameterScale) {
+    return unit * lengthFactor * CYLINDER_PORTION;
+  }
 
-	private static double getRadiusCylinder( double unit, double lengthFactor, double diameterScale ) {
-		return unit * 0.025 * diameterScale;
-	}
+  private static double getRadiusCylinder(double unit, double lengthFactor, double diameterScale) {
+    return unit * 0.025 * diameterScale;
+  }
 
-	private static double getLengthCone( double unit, double lengthFactor, double diameterScale ) {
-		return unit * lengthFactor * CONE_PORTION;
-	}
+  private static double getLengthCone(double unit, double lengthFactor, double diameterScale) {
+    return unit * lengthFactor * CONE_PORTION;
+  }
 
-	private static double getRadiusCone( double unit, double lengthFactor, double diameterScale ) {
-		return getRadiusCylinder( unit, lengthFactor, diameterScale ) * 2.0;
-	}
+  private static double getRadiusCone(double unit, double lengthFactor, double diameterScale) {
+    return getRadiusCylinder(unit, lengthFactor, diameterScale) * 2.0;
+  }
 
-	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis, double diameterScale ) {
-		double lengthCylinder = getLengthCylinder( unit, lengthFactor, diameterScale );
-		double radiusCylinder = getRadiusCylinder( unit, lengthFactor, diameterScale );
-		double lengthCone = getLengthCone( unit, lengthFactor, diameterScale );
-		double radiusCone = getRadiusCone( unit, lengthFactor, diameterScale );
-		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, axisToSGAppearanceMap.get( bottomToTopAxis ), false );
-	}
+  private Arrow createArrow(double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis, double diameterScale) {
+    double lengthCylinder = getLengthCylinder(unit, lengthFactor, diameterScale);
+    double radiusCylinder = getRadiusCylinder(unit, lengthFactor, diameterScale);
+    double lengthCone = getLengthCone(unit, lengthFactor, diameterScale);
+    double radiusCone = getRadiusCone(unit, lengthFactor, diameterScale);
+    return new Arrow(lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, axisToSGAppearanceMap.get(bottomToTopAxis), false);
+  }
 
-	public ExtravagantAxes( double unitLength, double forwardFactor, double diameterScale ) {
-		this.initialUnitLength = unitLength;
-		this.initialForwardFactor = forwardFactor;
-		this.initialDiameterScale = diameterScale;
+  public ExtravagantAxes(double unitLength, double forwardFactor, double diameterScale) {
+    this.initialUnitLength = unitLength;
+    this.initialForwardFactor = forwardFactor;
+    this.initialDiameterScale = diameterScale;
 
-		SimpleAppearance sgRedAppearance = new SimpleAppearance();
-		SimpleAppearance sgGreenAppearance = new SimpleAppearance();
-		SimpleAppearance sgBlueAppearance = new SimpleAppearance();
-		SimpleAppearance sgWhiteAppearance = new SimpleAppearance();
+    SimpleAppearance sgRedAppearance = new SimpleAppearance();
+    SimpleAppearance sgGreenAppearance = new SimpleAppearance();
+    SimpleAppearance sgBlueAppearance = new SimpleAppearance();
+    SimpleAppearance sgWhiteAppearance = new SimpleAppearance();
 
-		sgRedAppearance.setDiffuseColor( Color4f.RED );
-		sgGreenAppearance.setDiffuseColor( Color4f.GREEN );
-		sgBlueAppearance.setDiffuseColor( Color4f.BLUE );
-		sgWhiteAppearance.setDiffuseColor( Color4f.WHITE );
+    sgRedAppearance.setDiffuseColor(Color4f.RED);
+    sgGreenAppearance.setDiffuseColor(Color4f.GREEN);
+    sgBlueAppearance.setDiffuseColor(Color4f.BLUE);
+    sgWhiteAppearance.setDiffuseColor(Color4f.WHITE);
 
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance );
-		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
-		sgAppearances[ 0 ] = sgRedAppearance;
-		sgAppearances[ 1 ] = sgGreenAppearance;
-		sgAppearances[ 2 ] = sgBlueAppearance;
-		sgAppearances[ 3 ] = sgWhiteAppearance;
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance);
+    axisToSGAppearanceMap.put(Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance);
+    sgAppearances[0] = sgRedAppearance;
+    sgAppearances[1] = sgGreenAppearance;
+    sgAppearances[2] = sgBlueAppearance;
+    sgAppearances[3] = sgWhiteAppearance;
 
-		this.sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X, diameterScale );
-		this.sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y, diameterScale );
-		this.sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z, diameterScale );
-		this.sgFAxis = createArrow( unitLength, forwardFactor, Cylinder.BottomToTopAxis.NEGATIVE_Z, diameterScale );
+    this.sgXAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X, diameterScale);
+    this.sgYAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y, diameterScale);
+    this.sgZAxis = createArrow(unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z, diameterScale);
+    this.sgFAxis = createArrow(unitLength, forwardFactor, Cylinder.BottomToTopAxis.NEGATIVE_Z, diameterScale);
 
-		sgVisuals = ArrayUtilities.concatArrays( Visual.class, this.sgXAxis.getVisuals(), this.sgYAxis.getVisuals(), this.sgZAxis.getVisuals(), this.sgFAxis.getVisuals() );
+    sgVisuals = ArrayUtilities.concatArrays(Visual.class, this.sgXAxis.getVisuals(), this.sgYAxis.getVisuals(), this.sgZAxis.getVisuals(), this.sgFAxis.getVisuals());
 
-		this.sgXAxis.setParent( this );
-		this.sgYAxis.setParent( this );
-		this.sgZAxis.setParent( this );
-		this.sgFAxis.setParent( this );
-	}
+    this.sgXAxis.setParent(this);
+    this.sgYAxis.setParent(this);
+    this.sgZAxis.setParent(this);
+    this.sgFAxis.setParent(this);
+  }
 
-	public ExtravagantAxes( double unitLength, double forwardFactor ) {
-		this( unitLength, 2.0, 1.0 );
-	}
+  public ExtravagantAxes(double unitLength, double forwardFactor) {
+    this(unitLength, 2.0, 1.0);
+  }
 
-	public ExtravagantAxes( double unitLength ) {
-		this( unitLength, 2.0 );
-	}
+  public ExtravagantAxes(double unitLength) {
+    this(unitLength, 2.0);
+  }
 
-	public void resize( double unitLength, double forwardFactor, double diameterScale ) {
-		double lengthCylinder = getLengthCylinder( unitLength, 1, diameterScale );
-		double radiusCylinder = getRadiusCylinder( unitLength, 1, diameterScale );
-		double lengthCone = getLengthCone( unitLength, 1, diameterScale );
-		double radiusCone = getRadiusCone( unitLength, 1, diameterScale );
+  public void resize(double unitLength, double forwardFactor, double diameterScale) {
+    double lengthCylinder = getLengthCylinder(unitLength, 1, diameterScale);
+    double radiusCylinder = getRadiusCylinder(unitLength, 1, diameterScale);
+    double lengthCone = getLengthCone(unitLength, 1, diameterScale);
+    double radiusCone = getRadiusCone(unitLength, 1, diameterScale);
 
-		this.sgXAxis.resize( lengthCylinder, radiusCylinder, lengthCone, radiusCone );
-		this.sgYAxis.resize( lengthCylinder, radiusCylinder, lengthCone, radiusCone );
-		this.sgZAxis.resize( lengthCylinder, radiusCylinder, lengthCone, radiusCone );
+    this.sgXAxis.resize(lengthCylinder, radiusCylinder, lengthCone, radiusCone);
+    this.sgYAxis.resize(lengthCylinder, radiusCylinder, lengthCone, radiusCone);
+    this.sgZAxis.resize(lengthCylinder, radiusCylinder, lengthCone, radiusCone);
 
-		lengthCylinder = getLengthCylinder( unitLength, forwardFactor, diameterScale );
-		radiusCylinder = getRadiusCylinder( unitLength, forwardFactor, diameterScale );
-		lengthCone = getLengthCone( unitLength, forwardFactor, diameterScale );
-		radiusCone = getRadiusCone( unitLength, forwardFactor, diameterScale );
+    lengthCylinder = getLengthCylinder(unitLength, forwardFactor, diameterScale);
+    radiusCylinder = getRadiusCylinder(unitLength, forwardFactor, diameterScale);
+    lengthCone = getLengthCone(unitLength, forwardFactor, diameterScale);
+    radiusCone = getRadiusCone(unitLength, forwardFactor, diameterScale);
 
-		this.sgFAxis.resize( lengthCylinder, radiusCylinder, lengthCone, radiusCone );
-	}
+    this.sgFAxis.resize(lengthCylinder, radiusCylinder, lengthCone, radiusCone);
+  }
 
-	public void setScale( Matrix3x3 scale ) {
-		this.scale.setValue( scale );
-		double scaleVal = scale.right.x;
-		resize( this.initialUnitLength * scaleVal, this.initialForwardFactor * scaleVal, this.initialDiameterScale * scaleVal );
-	}
+  public void setScale(Matrix3x3 scale) {
+    this.scale.setValue(scale);
+    double scaleVal = scale.right.x;
+    resize(this.initialUnitLength * scaleVal, this.initialForwardFactor * scaleVal, this.initialDiameterScale * scaleVal);
+  }
 
-	public Matrix3x3 getScale() {
-		return this.scale.getValue();
-	}
+  public Matrix3x3 getScale() {
+    return this.scale.getValue();
+  }
 
-	public Matrix3x3Property getScaleProperty() {
-		return this.scale;
-	}
+  public Matrix3x3Property getScaleProperty() {
+    return this.scale;
+  }
 
-	public SimpleAppearance[] getSgOpacityAppearances() {
-		return sgAppearances;
-	}
+  public SimpleAppearance[] getSgOpacityAppearances() {
+    return sgAppearances;
+  }
 
-	public Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
+  public Visual[] getSgVisuals() {
+    return this.sgVisuals;
+  }
 
-	public float getOpacity() {
-		return axisToSGAppearanceMap.values().iterator().next().opacity.getValue();
-	}
+  public float getOpacity() {
+    return axisToSGAppearanceMap.values().iterator().next().opacity.getValue();
+  }
 
-	public void setOpacity( float opacity ) {
-		for( SimpleAppearance appearance : axisToSGAppearanceMap.values() ) {
-			appearance.opacity.setValue( opacity );
-		}
-	}
+  public void setOpacity(float opacity) {
+    for (SimpleAppearance appearance : axisToSGAppearanceMap.values()) {
+      appearance.opacity.setValue(opacity);
+    }
+  }
 
-	public void setIsShowing( boolean isShowing ) {
-		for( Component child : this.getComponents() ) {
-			if( child instanceof Arrow ) {
-				Arrow a = (Arrow)child;
-				for( Visual v : a.getVisuals() ) {
-					v.isShowing.setValue( isShowing );
-				}
-			}
-		}
-	}
+  public void setIsShowing(boolean isShowing) {
+    for (Component child : this.getComponents()) {
+      if (child instanceof Arrow) {
+        Arrow a = (Arrow) child;
+        for (Visual v : a.getVisuals()) {
+          v.isShowing.setValue(isShowing);
+        }
+      }
+    }
+  }
 
-	private final Matrix3x3Property scale = new Matrix3x3Property( this, Matrix3x3.createIdentity() );
+  private final Matrix3x3Property scale = new Matrix3x3Property(this, Matrix3x3.createIdentity());
 
-	private final Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = Maps.newHashMap();
-	private final SimpleAppearance[] sgAppearances = new SimpleAppearance[ 4 ];
-	private final Visual[] sgVisuals;
-	private final Arrow sgXAxis;
-	private final Arrow sgYAxis;
-	private final Arrow sgZAxis;
-	private final Arrow sgFAxis;
+  private final Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = Maps.newHashMap();
+  private final SimpleAppearance[] sgAppearances = new SimpleAppearance[4];
+  private final Visual[] sgVisuals;
+  private final Arrow sgXAxis;
+  private final Arrow sgYAxis;
+  private final Arrow sgZAxis;
+  private final Arrow sgFAxis;
 
-	private final double initialUnitLength;
-	private final double initialForwardFactor;
-	private final double initialDiameterScale;
+  private final double initialUnitLength;
+  private final double initialForwardFactor;
+  private final double initialDiameterScale;
 }

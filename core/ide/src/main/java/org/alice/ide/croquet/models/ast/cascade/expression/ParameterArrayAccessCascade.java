@@ -56,33 +56,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAccessCascade extends ArrayAccessCascade {
-	private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayAccessCascade> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static ParameterArrayAccessCascade getInstance( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayAccessCascade>() {
-			@Override
-			public ParameterArrayAccessCascade initialize( UserParameter parameter, ExpressionProperty expressionProperty ) {
-				return new ParameterArrayAccessCascade( parameter, expressionProperty );
-			}
-		} );
-	}
+  public static ParameterArrayAccessCascade getInstance(UserParameter parameter, ExpressionProperty expressionProperty) {
+    assert parameter != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayAccessCascade>() {
+      @Override
+      public ParameterArrayAccessCascade initialize(UserParameter parameter, ExpressionProperty expressionProperty) {
+        return new ParameterArrayAccessCascade(parameter, expressionProperty);
+      }
+    });
+  }
 
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	private ParameterArrayAccessCascade( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2" ), expressionProperty );
-		this.parameter = parameter;
-	}
+  private ParameterArrayAccessCascade(UserParameter parameter, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("2b84b886-9b1d-4e1b-b0aa-2d35b88a71c2"), expressionProperty);
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new ParameterAccess( this.parameter );
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new ParameterAccess(this.parameter);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getArrayType() {
-		return this.parameter.getValueType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getArrayType() {
+    return this.parameter.getValueType();
+  }
 }

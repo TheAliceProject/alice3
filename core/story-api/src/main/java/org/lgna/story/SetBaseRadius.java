@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetBaseRadius extends DurationAnimationStyleArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetBaseRadius.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetBaseRadius.class) public static interface Detail {
+  }
 
-	private SetBaseRadius() {
-		super();
-	}
+  private SetBaseRadius() {
+    super();
+  }
 }

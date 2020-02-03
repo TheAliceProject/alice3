@@ -57,30 +57,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ChangeResourceMenuModel extends AbstractCascadeMenuModel<InstanceCreation, ResourceNode> {
-	private static class SingletonHolder {
-		private static ChangeResourceMenuModel instance = new ChangeResourceMenuModel();
-	}
+  private static class SingletonHolder {
+    private static ChangeResourceMenuModel instance = new ChangeResourceMenuModel();
+  }
 
-	public static ChangeResourceMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ChangeResourceMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ChangeResourceMenuModel() {
-		super( UUID.fromString( "11f6a90d-0d39-4893-a092-21a68205aaf1" ) );
-	}
+  private ChangeResourceMenuModel() {
+    super(UUID.fromString("11f6a90d-0d39-4893-a092-21a68205aaf1"));
+  }
 
-	@Override
-	protected InstanceCreation convertValue( ResourceNode value ) {
-		return value.getResourceKey().createInstanceCreation();
-	}
+  @Override
+  protected InstanceCreation convertValue(ResourceNode value) {
+    return value.getResourceKey().createInstanceCreation();
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode ) {
-		ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
-		for( ResourceNode child : root.getNodeChildren() ) {
-			CascadeBlankChild blankChild = child.getAddFieldBlankChild();
-			assert blankChild != null : child;
-			blankChildren.add( blankChild );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<ResourceNode> blankNode) {
+    ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
+    for (ResourceNode child : root.getNodeChildren()) {
+      CascadeBlankChild blankChild = child.getAddFieldBlankChild();
+      assert blankChild != null : child;
+      blankChildren.add(blankChild);
+    }
+  }
 }

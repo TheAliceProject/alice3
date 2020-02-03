@@ -55,51 +55,51 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposite {
-	protected static int compareMethodNames( JavaMethod methodA, JavaMethod methodB ) {
-		if( methodA != null ) {
-			if( methodB != null ) {
-				return methodA.getName().compareTo( methodB.getName() );
-			} else {
-				return 1;
-			}
-		} else {
-			if( methodB != null ) {
-				return -1;
-			} else {
-				return 0;
-			}
-		}
-	}
+  protected static int compareMethodNames(JavaMethod methodA, JavaMethod methodB) {
+    if (methodA != null) {
+      if (methodB != null) {
+        return methodA.getName().compareTo(methodB.getName());
+      } else {
+        return 1;
+      }
+    } else {
+      if (methodB != null) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+  }
 
-	private List<JavaMethod> methods = Collections.emptyList();
+  private List<JavaMethod> methods = Collections.emptyList();
 
-	public FilteredJavaMethodsSubComposite( UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
-	}
+  public FilteredJavaMethodsSubComposite(UUID migrationId, boolean isExpandedInitialValue) {
+    super(migrationId, isExpandedInitialValue);
+  }
 
-	public abstract Comparator<JavaMethod> getComparator();
+  public abstract Comparator<JavaMethod> getComparator();
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.findDefaultLocalizedText() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse(this.findDefaultLocalizedText());
+  }
 
-	protected abstract boolean isAcceptingOf( JavaMethod method );
+  protected abstract boolean isAcceptingOf(JavaMethod method);
 
-	@Override
-	public List<? extends AbstractMethod> getMethods() {
-		return this.methods;
-	}
+  @Override
+  public List<? extends AbstractMethod> getMethods() {
+    return this.methods;
+  }
 
-	@Override
-	protected MethodsSubView<FilteredJavaMethodsSubComposite> createView() {
-		return new MethodsSubView<FilteredJavaMethodsSubComposite>( this );
-	}
+  @Override
+  protected MethodsSubView<FilteredJavaMethodsSubComposite> createView() {
+    return new MethodsSubView<FilteredJavaMethodsSubComposite>(this);
+  }
 
-	public void sortAndSetMethods( List<JavaMethod> unsortedMethods ) {
-		Collections.sort( unsortedMethods, this.getComparator() );
-		this.methods = Collections.unmodifiableList( unsortedMethods );
-		this.getView().refreshLater();
-	}
+  public void sortAndSetMethods(List<JavaMethod> unsortedMethods) {
+    Collections.sort(unsortedMethods, this.getComparator());
+    this.methods = Collections.unmodifiableList(unsortedMethods);
+    this.getView().refreshLater();
+  }
 }

@@ -53,15 +53,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class HtmlStringValue extends StringValue {
-	public HtmlStringValue( UUID migrationId ) {
-		super( migrationId, new HTMLDocument() );
-	}
+  public HtmlStringValue(UUID migrationId) {
+    super(migrationId, new HTMLDocument());
+  }
 
-	public ImmutableEditorPane createImmutableEditorPane( float fontScalar, TextAttribute<?>... textAttributes ) {
-		return new ImmutableEditorPane( this, fontScalar, textAttributes );
-	}
+  public ImmutableEditorPane createImmutableEditorPane(float fontScalar, TextAttribute<?>... textAttributes) {
+    return new ImmutableEditorPane(this, fontScalar, textAttributes);
+  }
 
-	public ImmutableEditorPane createImmutableEditorPane( TextAttribute<?>... textAttributes ) {
-		return this.createImmutableEditorPane( 1.0f, textAttributes );
-	}
+  public ImmutableEditorPane createImmutableEditorPane(TextAttribute<?>... textAttributes) {
+    return this.createImmutableEditorPane(1.0f, textAttributes);
+  }
 }

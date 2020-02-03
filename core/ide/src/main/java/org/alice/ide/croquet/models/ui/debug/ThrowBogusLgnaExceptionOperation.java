@@ -51,31 +51,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThrowBogusLgnaExceptionOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static ThrowBogusLgnaExceptionOperation instance = new ThrowBogusLgnaExceptionOperation();
-	}
+  private static class SingletonHolder {
+    private static ThrowBogusLgnaExceptionOperation instance = new ThrowBogusLgnaExceptionOperation();
+  }
 
-	public static ThrowBogusLgnaExceptionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThrowBogusLgnaExceptionOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThrowBogusLgnaExceptionOperation() {
-		super( UUID.fromString( "d43ded9d-baa9-44be-9e90-8dfe2918cc4c" ) );
-	}
+  private ThrowBogusLgnaExceptionOperation() {
+    super(UUID.fromString("d43ded9d-baa9-44be-9e90-8dfe2918cc4c"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Throw Bogus Lgna Exception..." );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Throw Bogus Lgna Exception...");
+  }
 
-	@Override
-	protected void performInternal() {
-		new Thread() {
-			@Override
-			public void run() {
-				throw new LgnaIllegalArgumentException( "DELETE THIS BOGUS LGNA EXCEPTION", 0, null );
-			}
-		}.start();
-	}
+  @Override
+  protected void performInternal() {
+    new Thread() {
+      @Override
+      public void run() {
+        throw new LgnaIllegalArgumentException("DELETE THIS BOGUS LGNA EXCEPTION", 0, null);
+      }
+    }.start();
+  }
 }

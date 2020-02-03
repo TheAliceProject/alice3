@@ -56,16 +56,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeleteStatementOperation extends ActionOperation {
-	private final Statement statement;
+  private final Statement statement;
 
-	public DeleteStatementOperation( Statement statement ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ));
-		this.statement = statement;
-	}
+  public DeleteStatementOperation(Statement statement) {
+    super(Application.PROJECT_GROUP, UUID.fromString("72f66253-976f-48dc-ad52-c5d02aeed5ba"));
+    this.statement = statement;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		Edit edit = new DeleteStatementEdit( activity, statement );
-		activity.commitAndInvokeDo( edit );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    Edit edit = new DeleteStatementEdit(activity, statement);
+    activity.commitAndInvokeDo(edit);
+  }
 }

@@ -49,8 +49,8 @@ import java.util.Locale;
  */
 //todo: move
 public class LocaleDisplayNameListCellRenderer extends LocaleListCellRenderer {
-	@Override
-	protected String getText( Locale value ) {
-		return value.getDisplayName();
-	}
+  @Override
+  protected String getText(Locale value) {
+    return value.getDisplayName();
+  }
 }

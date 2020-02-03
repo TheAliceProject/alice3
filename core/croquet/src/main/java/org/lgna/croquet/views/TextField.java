@@ -53,37 +53,37 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class TextField extends AbstractTextField<JSuggestiveTextField> {
-	public TextField( StringState model, Operation operation ) {
-		super( model, operation );
-	}
+  public TextField(StringState model, Operation operation) {
+    super(model, operation);
+  }
 
-	public TextField( StringState model ) {
-		this( model, null );
-	}
+  public TextField(StringState model) {
+    this(model, null);
+  }
 
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
-	}
+  @Override
+  public void updateTextForBlankCondition(String textForBlankCondition) {
+    this.getAwtComponent().setTextForBlankCondition(textForBlankCondition);
+  }
 
-	@Override
-	protected JSuggestiveTextField createAwtComponent() {
-		JSuggestiveTextField rv = new JSuggestiveTextField() {
-			@Override
-			public Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+  @Override
+  protected JSuggestiveTextField createAwtComponent() {
+    JSuggestiveTextField rv = new JSuggestiveTextField() {
+      @Override
+      public Dimension getPreferredSize() {
+        return constrainPreferredSizeIfNecessary(super.getPreferredSize());
+      }
 
-			@Override
-			public Dimension getMaximumSize() {
-				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
-	}
+      @Override
+      public Dimension getMaximumSize() {
+        if (TextField.this.isMaximumSizeClampedToPreferredSize()) {
+          return this.getPreferredSize();
+        } else {
+          return super.getMaximumSize();
+        }
+      }
+    };
+    rv.setTextForBlankCondition(this.getModel().getTextForBlankCondition());
+    return rv;
+  }
 }

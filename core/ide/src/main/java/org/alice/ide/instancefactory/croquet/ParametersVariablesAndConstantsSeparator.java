@@ -50,19 +50,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ParametersVariablesAndConstantsSeparator extends CascadeLabelSeparator {
-	private String menuItemText;
+  private String menuItemText;
 
-	public ParametersVariablesAndConstantsSeparator() {
-		super( UUID.fromString( "042b6c68-c6c1-4fa8-82f9-c393cf03e2e8" ) );
-	}
+  public ParametersVariablesAndConstantsSeparator() {
+    super(UUID.fromString("042b6c68-c6c1-4fa8-82f9-c393cf03e2e8"));
+  }
 
-	@Override
-	protected String getMenuItemIconProxyText() {
-		return this.menuItemText;
-	}
+  @Override
+  protected String getMenuItemIconProxyText() {
+    return this.menuItemText;
+  }
 
-	public void setMenuItemText( String menuItemText ) {
-		this.menuItemText = menuItemText;
-		this.markDirty();
-	}
+  public void setMenuItemText(String menuItemText) {
+    this.menuItemText = menuItemText;
+    this.markDirty();
+  }
 }

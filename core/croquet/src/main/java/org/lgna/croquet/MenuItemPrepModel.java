@@ -49,7 +49,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MenuItemPrepModel extends AbstractModel implements PrepModel {
-	MenuItemPrepModel( UUID id ) {
-		super( id );
-	}
+  MenuItemPrepModel(UUID id) {
+    super(id);
+  }
 }

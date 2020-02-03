@@ -57,126 +57,127 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class JointImp extends AbstractTransformableImp {
-	public JointImp( JointedModelImp<?, ?> jointedModelImplementation ) {
-		this.jointedModelImplementation = jointedModelImplementation;
-	}
+  public JointImp(JointedModelImp<?, ?> jointedModelImplementation) {
+    this.jointedModelImplementation = jointedModelImplementation;
+  }
 
-	@Override
-	public SceneImp getScene() {
-		return this.jointedModelImplementation.getScene();
-	}
+  @Override
+  public SceneImp getScene() {
+    return this.jointedModelImplementation.getScene();
+  }
 
-	public abstract JointId getJointId();
+  public abstract JointId getJointId();
 
-	@Override
-	public final SJoint getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public final SJoint getAbstraction() {
+    return this.abstraction;
+  }
 
-	public void setAbstraction( SJoint abstraction ) {
-		assert abstraction != null;
-		assert this.abstraction == null : this.abstraction;
-		this.abstraction = abstraction;
-	}
+  public void setAbstraction(SJoint abstraction) {
+    assert abstraction != null;
+    assert this.abstraction == null : this.abstraction;
+    this.abstraction = abstraction;
+  }
 
-	public abstract boolean isFreeInX();
+  public abstract boolean isFreeInX();
 
-	public abstract boolean isFreeInY();
+  public abstract boolean isFreeInY();
 
-	public abstract boolean isFreeInZ();
+  public abstract boolean isFreeInZ();
 
-	@Override
-	protected void postCheckSetVehicle( EntityImp vehicle ) {
-		//note: do not call super
-		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
-	}
+  @Override
+  protected void postCheckSetVehicle(EntityImp vehicle) {
+    //note: do not call super
+    this.setSgVehicle(vehicle != null ? vehicle.getSgComposite() : null);
+  }
 
-	public UnitQuaternion getOriginalOrientation() {
-		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
-	}
+  public UnitQuaternion getOriginalOrientation() {
+    return this.jointedModelImplementation.getOriginalJointOrientation(this.getJointId());
+  }
 
-	public AffineMatrix4x4 getOriginalTransformation() {
-		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
-	}
+  public AffineMatrix4x4 getOriginalTransformation() {
+    return this.jointedModelImplementation.getOriginalJointTransformation(this.getJointId());
+  }
 
-	private ModestAxes getPivot() {
-		if( this.axes != null ) {
-			//pass
-		} else {
-			this.axes = new ModestAxes( 0.1 );
-			putInstance( this.axes );
-		}
-		return this.axes;
-	}
+  private ModestAxes getPivot() {
+    if (this.axes != null) {
+      //pass
+    } else {
+      this.axes = new ModestAxes(0.1);
+      putInstance(this.axes);
+    }
+    return this.axes;
+  }
 
-	public boolean isPivotVisible() {
-		if( this.axes != null ) {
-			return this.axes.getParent() == this.getSgComposite();
-		} else {
-			return false;
-		}
-	}
+  public boolean isPivotVisible() {
+    if (this.axes != null) {
+      return this.axes.getParent() == this.getSgComposite();
+    } else {
+      return false;
+    }
+  }
 
-	public void setPivotVisible( boolean isPivotVisible ) {
-		if( isPivotVisible ) {
-			this.getPivot().setParent( this.getSgComposite() );
-		} else {
-			if( this.axes != null ) {
-				this.axes.setParent( null );
-			}
-		}
-	}
+  public void setPivotVisible(boolean isPivotVisible) {
+    if (isPivotVisible) {
+      this.getPivot().setParent(this.getSgComposite());
+    } else {
+      if (this.axes != null) {
+        this.axes.setParent(null);
+      }
+    }
+  }
 
-	public JointImp getJointParent() {
-		return jointParent;
-	}
+  public JointImp getJointParent() {
+    return jointParent;
+  }
 
-	public List<JointImp> getJointChildren() {
-		return jointChildren;
-	}
+  public List<JointImp> getJointChildren() {
+    return jointChildren;
+  }
 
-	void setJointParent(JointImp jointParent) {
-		if (this.jointParent != null) {
-			this.jointParent.getJointChildren().remove(this);
-		}
-		this.jointParent = jointParent;
-		if (this.jointParent != null) {
-			jointParent.getJointChildren().add(this);
-		}
-	}
+  void setJointParent(JointImp jointParent) {
+    if (this.jointParent != null) {
+      this.jointParent.getJointChildren().remove(this);
+    }
+    this.jointParent = jointParent;
+    if (this.jointParent != null) {
+      jointParent.getJointChildren().add(this);
+    }
+  }
 
-	public JointedModelImp<?, ?> getJointedModelParent() {
-		return this.jointedModelImplementation;
-	}
+  public JointedModelImp<?, ?> getJointedModelParent() {
+    return this.jointedModelImplementation;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getJointId().toString() );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(this.getJointId().toString());
+  }
 
-	public JointedModelImp<?, ?> getJointedModelImplementation() {
-		return jointedModelImplementation;
-}
-	public Dimension3 getSize() {
-		return getAxisAlignedMinimumBoundingBox().getSize();
-	}
+  public JointedModelImp<?, ?> getJointedModelImplementation() {
+    return jointedModelImplementation;
+  }
 
-	public double getWidth() {
-		return this.getSize().x;
-	}
+  public Dimension3 getSize() {
+    return getAxisAlignedMinimumBoundingBox().getSize();
+  }
 
-	public double getHeight() {
-		return this.getSize().y;
-	}
+  public double getWidth() {
+    return this.getSize().x;
+  }
 
-	public double getDepth() {
-		return this.getSize().z;
-	}
+  public double getHeight() {
+    return this.getSize().y;
+  }
 
-	private SJoint abstraction;
-	private final JointedModelImp<?, ?> jointedModelImplementation;
-	private JointImp jointParent;
-	private List<JointImp> jointChildren = new ArrayList<>();
-	private ModestAxes axes;
+  public double getDepth() {
+    return this.getSize().z;
+  }
+
+  private SJoint abstraction;
+  private final JointedModelImp<?, ?> jointedModelImplementation;
+  private JointImp jointParent;
+  private List<JointImp> jointChildren = new ArrayList<>();
+  private ModestAxes axes;
 }

@@ -47,7 +47,7 @@ package org.alice.ide.ast.fieldtree;
  * @author Dennis Cosgrove
  */
 public class RootNode extends TypeNode {
-	public RootNode() {
-		super( null, null, Integer.MAX_VALUE, Integer.MAX_VALUE );
-	}
+  public RootNode() {
+    super(null, null, Integer.MAX_VALUE, Integer.MAX_VALUE);
+  }
 }

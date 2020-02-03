@@ -75,349 +75,340 @@ import java.io.File;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class FindResourcesPanel extends JPanel {
 
-	private static interface FileDialog {
-		public String getFile();
+  private static interface FileDialog {
+    public String getFile();
 
-		public void setFile( String filename );
+    public void setFile(String filename);
 
-		public String getDirectory();
+    public String getDirectory();
 
-		public void setDirectory( String path );
+    public void setDirectory(String path);
 
-		public void show();
-	}
+    public void show();
+  }
 
-	private static class AwtFileDialog implements FileDialog {
-		private final java.awt.FileDialog awtFileDialog;
+  private static class AwtFileDialog implements FileDialog {
+    private final java.awt.FileDialog awtFileDialog;
 
-		public AwtFileDialog( Component root, String title, int mode ) {
-			if( root instanceof Frame ) {
-				awtFileDialog = new java.awt.FileDialog( (Frame)root, title, mode );
-			} else if( root instanceof Dialog ) {
-				awtFileDialog = new java.awt.FileDialog( (Dialog)root, title, mode );
-			} else {
-				awtFileDialog = new java.awt.FileDialog( (Dialog)null, title, mode );
-			}
-		}
+    public AwtFileDialog(Component root, String title, int mode) {
+      if (root instanceof Frame) {
+        awtFileDialog = new java.awt.FileDialog((Frame) root, title, mode);
+      } else if (root instanceof Dialog) {
+        awtFileDialog = new java.awt.FileDialog((Dialog) root, title, mode);
+      } else {
+        awtFileDialog = new java.awt.FileDialog((Dialog) null, title, mode);
+      }
+    }
 
-		@Override
-		public String getFile() {
-			return this.awtFileDialog.getFile();
-		}
+    @Override
+    public String getFile() {
+      return this.awtFileDialog.getFile();
+    }
 
-		@Override
-		public void setFile( String filename ) {
-			this.awtFileDialog.setFile( filename );
-		}
+    @Override
+    public void setFile(String filename) {
+      this.awtFileDialog.setFile(filename);
+    }
 
-		@Override
-		public String getDirectory() {
-			return this.awtFileDialog.getDirectory();
-		}
+    @Override
+    public String getDirectory() {
+      return this.awtFileDialog.getDirectory();
+    }
 
-		@Override
-		public void setDirectory( String path ) {
-			this.awtFileDialog.setDirectory( path );
-		}
+    @Override
+    public void setDirectory(String path) {
+      this.awtFileDialog.setDirectory(path);
+    }
 
-		@Override
-		public void show() {
-			this.awtFileDialog.setVisible( true );
-		}
-	}
+    @Override
+    public void show() {
+      this.awtFileDialog.setVisible(true);
+    }
+  }
 
-	private static class SwingFileDialog implements FileDialog {
-		private final JFileChooser jFileChooser = new JFileChooser();
-		private final Component root;
-		private final String title;
-		private final int mode;
-		private int result = JFileChooser.CANCEL_OPTION;
+  private static class SwingFileDialog implements FileDialog {
+    private final JFileChooser jFileChooser = new JFileChooser();
+    private final Component root;
+    private final String title;
+    private final int mode;
+    private int result = JFileChooser.CANCEL_OPTION;
 
-		public SwingFileDialog( Component root, String title, int mode ) {
-			this.root = root;
-			this.title = title;
-			this.mode = mode;
-			this.jFileChooser.setApproveButtonText( "Select" );
-			this.jFileChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
-		}
+    public SwingFileDialog(Component root, String title, int mode) {
+      this.root = root;
+      this.title = title;
+      this.mode = mode;
+      this.jFileChooser.setApproveButtonText("Select");
+      this.jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    }
 
-		@Override
-		public String getFile() {
-			if( this.result != JFileChooser.CANCEL_OPTION ) {
-				File file = this.jFileChooser.getSelectedFile();
-				if( file != null ) {
-					return file.getName();
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
+    @Override
+    public String getFile() {
+      if (this.result != JFileChooser.CANCEL_OPTION) {
+        File file = this.jFileChooser.getSelectedFile();
+        if (file != null) {
+          return file.getName();
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
 
-		@Override
-		public void setFile( String filename ) {
-			this.jFileChooser.setSelectedFile( new File( filename ) );
-		}
+    @Override
+    public void setFile(String filename) {
+      this.jFileChooser.setSelectedFile(new File(filename));
+    }
 
-		@Override
-		public String getDirectory() {
-			if( this.result != JFileChooser.CANCEL_OPTION ) {
-				File file = this.jFileChooser.getCurrentDirectory();
-				if( file != null ) {
-					return file.getAbsolutePath();
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
+    @Override
+    public String getDirectory() {
+      if (this.result != JFileChooser.CANCEL_OPTION) {
+        File file = this.jFileChooser.getCurrentDirectory();
+        if (file != null) {
+          return file.getAbsolutePath();
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
 
-		@Override
-		public void setDirectory( String path ) {
-			if( path != null ) {
-				this.jFileChooser.setCurrentDirectory( new File( path ) );
-			}
-		}
+    @Override
+    public void setDirectory(String path) {
+      if (path != null) {
+        this.jFileChooser.setCurrentDirectory(new File(path));
+      }
+    }
 
-		@Override
-		public void show() {
-			//todo: use this.title
-			this.result = JFileChooser.CANCEL_OPTION;
-			if( mode == java.awt.FileDialog.LOAD ) {
-				this.result = this.jFileChooser.showOpenDialog( this.root );
-			} else {
-				this.result = this.jFileChooser.showSaveDialog( this.root );
-			}
+    @Override
+    public void show() {
+      //todo: use this.title
+      this.result = JFileChooser.CANCEL_OPTION;
+      if (mode == java.awt.FileDialog.LOAD) {
+        this.result = this.jFileChooser.showOpenDialog(this.root);
+      } else {
+        this.result = this.jFileChooser.showSaveDialog(this.root);
+      }
 
-		}
-	}
+    }
+  }
 
-	class BrowseAction extends AbstractAction {
-		private final FileDialog jFileChooser;
+  class BrowseAction extends AbstractAction {
+    private final FileDialog jFileChooser;
 
-		public BrowseAction() {
-			super( "browse" );
-			String title = "Select gallery directory";
-			if( true || SystemUtilities.isLinux() ) {
-				jFileChooser = new SwingFileDialog( FindResourcesPanel.this, title, java.awt.FileDialog.LOAD );
-			} else {
-				jFileChooser = new AwtFileDialog( FindResourcesPanel.this, title, java.awt.FileDialog.LOAD );
-			}
+    public BrowseAction() {
+      super("browse");
+      String title = "Select gallery directory";
+      if (true || SystemUtilities.isLinux()) {
+        jFileChooser = new SwingFileDialog(FindResourcesPanel.this, title, java.awt.FileDialog.LOAD);
+      } else {
+        jFileChooser = new AwtFileDialog(FindResourcesPanel.this, title, java.awt.FileDialog.LOAD);
+      }
 
-		}
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			jFileChooser.show();
-			if( ( jFileChooser.getDirectory() != null ) && ( jFileChooser.getFile() != null ) ) {
-				setGalleryDir( new File( jFileChooser.getDirectory(), jFileChooser.getFile() ) );
-			}
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      jFileChooser.show();
+      if ((jFileChooser.getDirectory() != null) && (jFileChooser.getFile() != null)) {
+        setGalleryDir(new File(jFileChooser.getDirectory(), jFileChooser.getFile()));
+      }
+    }
+  }
 
-	class OkayAction extends AbstractAction {
-		public OkayAction() {
-			super( "OK" );
-		}
+  class OkayAction extends AbstractAction {
+    public OkayAction() {
+      super("OK");
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			SwingUtilities.getRoot( FindResourcesPanel.this ).setVisible( false );
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      SwingUtilities.getRoot(FindResourcesPanel.this).setVisible(false);
+    }
+  }
 
-	class CancelAction extends AbstractAction {
-		public CancelAction() {
-			super( "Cancel" );
-		}
+  class CancelAction extends AbstractAction {
+    public CancelAction() {
+      super("Cancel");
+    }
 
-		@Override
-		public void actionPerformed( ActionEvent e ) {
-			SwingUtilities.getRoot( FindResourcesPanel.this ).setVisible( false );
-		}
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      SwingUtilities.getRoot(FindResourcesPanel.this).setVisible(false);
+    }
+  }
 
-	private static class SingletonHolder {
-		private static FindResourcesPanel instance = new FindResourcesPanel();
-	}
+  private static class SingletonHolder {
+    private static FindResourcesPanel instance = new FindResourcesPanel();
+  }
 
-	public static FindResourcesPanel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static FindResourcesPanel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private BrowseAction browseAction = new BrowseAction();
-	private JButton browseButton = new JButton( browseAction );
-	private JButton okayButton = new JButton( new OkayAction() );
-	private JButton cancelButton = new JButton( new CancelAction() );
-	private JTextArea textDescription = new JTextArea(
-			"Alice can't find the gallery resources. If you have Alice installed, please use the 'browse' button to navigate to the Alice install directory." );
+  private BrowseAction browseAction = new BrowseAction();
+  private JButton browseButton = new JButton(browseAction);
+  private JButton okayButton = new JButton(new OkayAction());
+  private JButton cancelButton = new JButton(new CancelAction());
+  private JTextArea textDescription = new JTextArea("Alice can't find the gallery resources. If you have Alice installed, please use the 'browse' button to navigate to the Alice install directory.");
 
-	private JTextField installDirectoryField = new JTextField();
-	private JLabel statusLabel = new JLabel();
-	private File galleryDir = null;
+  private JTextField installDirectoryField = new JTextField();
+  private JLabel statusLabel = new JLabel();
+  private File galleryDir = null;
 
-	private FindResourcesPanel() {
-		Font font = this.browseButton.getFont();
-		this.browseButton.setFont( font.deriveFont( font.getSize2D() * 1.2f ) );
-		this.browseButton.setAlignmentX( Component.CENTER_ALIGNMENT );
-		File startingDir = new File( "" );
-		this.browseAction.jFileChooser.setDirectory( startingDir.getAbsolutePath() );
-		this.textDescription.setEditable( false );
-		this.textDescription.setLineWrap( true );
-		this.textDescription.setWrapStyleWord( true );
-		this.textDescription.setBorder( null );
-		this.textDescription.setOpaque( false );
-		this.textDescription.setBackground( new Color( 1, 1, 1, 0 ) );
-		this.installDirectoryField.setText( startingDir.getAbsolutePath() );
-		this.installDirectoryField.getDocument().addDocumentListener( new DocumentListener() {
+  private FindResourcesPanel() {
+    Font font = this.browseButton.getFont();
+    this.browseButton.setFont(font.deriveFont(font.getSize2D() * 1.2f));
+    this.browseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    File startingDir = new File("");
+    this.browseAction.jFileChooser.setDirectory(startingDir.getAbsolutePath());
+    this.textDescription.setEditable(false);
+    this.textDescription.setLineWrap(true);
+    this.textDescription.setWrapStyleWord(true);
+    this.textDescription.setBorder(null);
+    this.textDescription.setOpaque(false);
+    this.textDescription.setBackground(new Color(1, 1, 1, 0));
+    this.installDirectoryField.setText(startingDir.getAbsolutePath());
+    this.installDirectoryField.getDocument().addDocumentListener(new DocumentListener() {
 
-			@Override
-			public void insertUpdate( DocumentEvent e ) {
-				doUpdate();
-			}
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        doUpdate();
+      }
 
-			@Override
-			public void removeUpdate( DocumentEvent e ) {
-				doUpdate();
-			}
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        doUpdate();
+      }
 
-			@Override
-			public void changedUpdate( DocumentEvent e ) {
-				doUpdate();
-			}
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        doUpdate();
+      }
 
-		} );
-		this.doUpdate();
-		this.setLayout( new GridBagLayout() );
+    });
+    this.doUpdate();
+    this.setLayout(new GridBagLayout());
 
-		this.add( textDescription, new GridBagConstraints(
-				0, //gridX
-				0, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 8, 8, 10, 8 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add( installDirectoryField, new GridBagConstraints(
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 4, 2, 2 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add( browseButton, new GridBagConstraints(
-				1, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 4, 2, 4 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add( statusLabel, new GridBagConstraints(
-				0, //gridX
-				2, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.CENTER, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 12, 4, 2, 4 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add( Box.createVerticalGlue(), new GridBagConstraints(
-				0, //gridX
-				3, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor
-				GridBagConstraints.BOTH, //fill
-				new Insets( 0, 0, 0, 0 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout( new FlowLayout( FlowLayout.RIGHT, 8, 4 ) );
-		buttonPanel.add( okayButton );
-		buttonPanel.add( cancelButton );
-		this.add( buttonPanel, new GridBagConstraints(
-				0, //gridX
-				4, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets: top, left, bottom, right
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.setPreferredSize( new Dimension( 500, 250 ) );
-	}
+    this.add(textDescription, new GridBagConstraints(0, //gridX
+                                                     0, //gridY
+                                                     2, //gridWidth
+                                                     1, //gridHeight
+                                                     0.0, //weightX
+                                                     0.0, //weightY
+                                                     GridBagConstraints.CENTER, //anchor
+                                                     GridBagConstraints.HORIZONTAL, //fill
+                                                     new Insets(8, 8, 10, 8), //insets: top, left, bottom, right
+                                                     0, //ipadX
+                                                     0) //ipadY
+    );
+    this.add(installDirectoryField, new GridBagConstraints(0, //gridX
+                                                           1, //gridY
+                                                           1, //gridWidth
+                                                           1, //gridHeight
+                                                           1.0, //weightX
+                                                           0.0, //weightY
+                                                           GridBagConstraints.EAST, //anchor
+                                                           GridBagConstraints.HORIZONTAL, //fill
+                                                           new Insets(2, 4, 2, 2), //insets: top, left, bottom, right
+                                                           0, //ipadX
+                                                           0) //ipadY
+    );
+    this.add(browseButton, new GridBagConstraints(1, //gridX
+                                                  1, //gridY
+                                                  1, //gridWidth
+                                                  1, //gridHeight
+                                                  0.0, //weightX
+                                                  0.0, //weightY
+                                                  GridBagConstraints.WEST, //anchor
+                                                  GridBagConstraints.NONE, //fill
+                                                  new Insets(2, 4, 2, 4), //insets: top, left, bottom, right
+                                                  0, //ipadX
+                                                  0) //ipadY
+    );
+    this.add(statusLabel, new GridBagConstraints(0, //gridX
+                                                 2, //gridY
+                                                 2, //gridWidth
+                                                 1, //gridHeight
+                                                 0.0, //weightX
+                                                 0.0, //weightY
+                                                 GridBagConstraints.CENTER, //anchor
+                                                 GridBagConstraints.NONE, //fill
+                                                 new Insets(12, 4, 2, 4), //insets: top, left, bottom, right
+                                                 0, //ipadX
+                                                 0) //ipadY
+    );
+    this.add(Box.createVerticalGlue(), new GridBagConstraints(0, //gridX
+                                                              3, //gridY
+                                                              2, //gridWidth
+                                                              1, //gridHeight
+                                                              1.0, //weightX
+                                                              1.0, //weightY
+                                                              GridBagConstraints.CENTER, //anchor
+                                                              GridBagConstraints.BOTH, //fill
+                                                              new Insets(0, 0, 0, 0), //insets: top, left, bottom, right
+                                                              0, //ipadX
+                                                              0) //ipadY
+    );
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 8, 4));
+    buttonPanel.add(okayButton);
+    buttonPanel.add(cancelButton);
+    this.add(buttonPanel, new GridBagConstraints(0, //gridX
+                                                 4, //gridY
+                                                 2, //gridWidth
+                                                 1, //gridHeight
+                                                 0.0, //weightX
+                                                 0.0, //weightY
+                                                 GridBagConstraints.EAST, //anchor
+                                                 GridBagConstraints.NONE, //fill
+                                                 new Insets(2, 2, 2, 2), //insets: top, left, bottom, right
+                                                 0, //ipadX
+                                                 0) //ipadY
+    );
+    this.setPreferredSize(new Dimension(500, 250));
+  }
 
-	private void setGalleryDir( final File dir ) {
-		setGalleryDir( dir.getAbsolutePath() );
-	}
+  private void setGalleryDir(final File dir) {
+    setGalleryDir(dir.getAbsolutePath());
+  }
 
-	private void setGalleryDir( final String dir ) {
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				FindResourcesPanel.this.installDirectoryField.setText( dir );
-			}
-		} );
-	}
+  private void setGalleryDir(final String dir) {
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        FindResourcesPanel.this.installDirectoryField.setText(dir);
+      }
+    });
+  }
 
-	private void doUpdate() {
-		String dirText = this.installDirectoryField.getText();
-		this.galleryDir = StorytellingResources.getGalleryDirectory( new File( dirText ) );
-		if( this.galleryDir != null ) {
-			this.statusLabel.setForeground( Color.BLACK );
-			this.statusLabel.setText( "Found gallery at '" + this.galleryDir.getAbsolutePath() + "'" );
-			this.okayButton.setEnabled( true );
-		}
-		else
-		{
-			this.statusLabel.setForeground( Color.RED );
-			this.statusLabel.setText( "Cannot find gallery at '" + this.installDirectoryField.getText() + "'" );
-			this.okayButton.setEnabled( false );
-		}
-	}
+  private void doUpdate() {
+    String dirText = this.installDirectoryField.getText();
+    this.galleryDir = StorytellingResources.getGalleryDirectory(new File(dirText));
+    if (this.galleryDir != null) {
+      this.statusLabel.setForeground(Color.BLACK);
+      this.statusLabel.setText("Found gallery at '" + this.galleryDir.getAbsolutePath() + "'");
+      this.okayButton.setEnabled(true);
+    } else {
+      this.statusLabel.setForeground(Color.RED);
+      this.statusLabel.setText("Cannot find gallery at '" + this.installDirectoryField.getText() + "'");
+      this.okayButton.setEnabled(false);
+    }
+  }
 
-	public File getGalleryDir() {
-		return this.galleryDir;
-	}
+  public File getGalleryDir() {
+    return this.galleryDir;
+  }
 
-	public void show( JRootPane root ) {
-		JDialog dialog = JDialogUtilities.createPackedJDialog( this, root, "Locate Resources", true, WindowConstants.DISPOSE_ON_CLOSE );
-		WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, root );
-		dialog.setVisible( true );
-	}
+  public void show(JRootPane root) {
+    JDialog dialog = JDialogUtilities.createPackedJDialog(this, root, "Locate Resources", true, WindowConstants.DISPOSE_ON_CLOSE);
+    WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, root);
+    dialog.setVisible(true);
+  }
 
 }

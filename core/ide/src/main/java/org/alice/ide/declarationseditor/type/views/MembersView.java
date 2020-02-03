@@ -54,14 +54,14 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class MembersView<T extends UserMember> extends ListDataView<T> {
-	/* package-private */static final float NAME_FONT_SCALE = 1.5f;
+  /* package-private */static final float NAME_FONT_SCALE = 1.5f;
 
-	public MembersView( MembersComposite<T> composite ) {
-		super( composite );
-	}
+  public MembersView(MembersComposite<T> composite) {
+    super(composite);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new BoxLayout(jPanel, BoxLayout.PAGE_AXIS);
+  }
 }

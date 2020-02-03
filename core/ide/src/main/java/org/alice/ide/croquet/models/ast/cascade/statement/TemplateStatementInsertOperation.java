@@ -55,21 +55,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class TemplateStatementInsertOperation extends StatementInsertOperation {
-	private final boolean isEnveloping;
+  private final boolean isEnveloping;
 
-	public TemplateStatementInsertOperation( UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( id, blockStatementIndexPair );
-		this.isEnveloping = isEnveloping;
-	}
+  public TemplateStatementInsertOperation(UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(id, blockStatementIndexPair);
+    this.isEnveloping = isEnveloping;
+  }
 
-	protected abstract Statement createStatement();
+  protected abstract Statement createStatement();
 
-	public boolean isEnveloping() {
-		return this.isEnveloping;
-	}
+  public boolean isEnveloping() {
+    return this.isEnveloping;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new InsertStatementEdit<StatementInsertOperation>( userActivity, this.getBlockStatementIndexPair(), this.createStatement(), new Expression[ 0 ], this.isEnveloping );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return new InsertStatementEdit<StatementInsertOperation>(userActivity, this.getBlockStatementIndexPair(), this.createStatement(), new Expression[0], this.isEnveloping);
+  }
 }

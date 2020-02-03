@@ -57,48 +57,48 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PrintSceneEditorOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
-	}
+  private static class SingletonHolder {
+    private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
+  }
 
-	public static PrintSceneEditorOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PrintSceneEditorOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PrintSceneEditorOperation() {
-		super( UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
-	}
+  private PrintSceneEditorOperation() {
+    super(UUID.fromString("b38997ea-e970-416e-86db-58623d1c3352"));
+  }
 
-	@Override
-	protected Printable getPrintable() {
-		return new Printable() {
-			@Override
-			public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				}
-				if( pageIndex > 0 ) {
-					return NO_SUCH_PAGE;
-				} else {
-					IDE ide = IDE.getActiveInstance();
-					AbstractSceneEditor sceneEditor = ide.getSceneEditor();
-					if( sceneEditor != null ) {
-						Graphics2D g2 = (Graphics2D)g;
-						int width = sceneEditor.getWidth();
-						int height = sceneEditor.getHeight();
-						double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
-						g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-						if( scale > 1.0 ) {
-							g2.scale( 1.0 / scale, 1.0 / scale );
-						}
-						sceneEditor.getAwtComponent().paintAll( g2 );
-						return PAGE_EXISTS;
-					} else {
-						return NO_SUCH_PAGE;
-					}
-				}
-			}
-		};
-	}
+  @Override
+  protected Printable getPrintable() {
+    return new Printable() {
+      @Override
+      public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        if (pageIndex > 0) {
+          return NO_SUCH_PAGE;
+        }
+        if (pageIndex > 0) {
+          return NO_SUCH_PAGE;
+        } else {
+          IDE ide = IDE.getActiveInstance();
+          AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+          if (sceneEditor != null) {
+            Graphics2D g2 = (Graphics2D) g;
+            int width = sceneEditor.getWidth();
+            int height = sceneEditor.getHeight();
+            double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
+            g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+            if (scale > 1.0) {
+              g2.scale(1.0 / scale, 1.0 / scale);
+            }
+            sceneEditor.getAwtComponent().paintAll(g2);
+            return PAGE_EXISTS;
+          } else {
+            return NO_SUCH_PAGE;
+          }
+        }
+      }
+    };
+  }
 
 }

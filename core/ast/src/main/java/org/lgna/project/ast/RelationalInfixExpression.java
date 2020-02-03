@@ -48,325 +48,327 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class RelationalInfixExpression extends InfixExpression<RelationalInfixExpression.Operator> {
-	private static boolean isNumberComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Number ) && ( rightOperand instanceof Number );
-	}
+  private static boolean isNumberComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Number) && (rightOperand instanceof Number);
+  }
 
-	private static boolean isDoubleComparisonDesired( Object leftOperand, Object rightOperand ) {
-		//		if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-		return ( leftOperand instanceof Double ) || ( rightOperand instanceof Double );
-		//		} else {
-		//			return false;
-		//		}
-	}
+  private static boolean isDoubleComparisonDesired(Object leftOperand, Object rightOperand) {
+    //    if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+    return (leftOperand instanceof Double) || (rightOperand instanceof Double);
+    //    } else {
+    //      return false;
+    //    }
+  }
 
-	private static boolean isFloatComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Float ) || ( rightOperand instanceof Float );
-	}
+  private static boolean isFloatComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Float) || (rightOperand instanceof Float);
+  }
 
-	private static boolean isLongComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Long ) || ( rightOperand instanceof Long );
-	}
+  private static boolean isLongComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Long) || (rightOperand instanceof Long);
+  }
 
-	private static boolean isIntegerComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer );
-	}
+  private static boolean isIntegerComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Integer) || (rightOperand instanceof Integer);
+  }
 
-	private static boolean isShortComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Short ) || ( rightOperand instanceof Short );
-	}
+  private static boolean isShortComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Short) || (rightOperand instanceof Short);
+  }
 
-	private static boolean isByteComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte );
-	}
+  private static boolean isByteComparisonDesired(Object leftOperand, Object rightOperand) {
+    return (leftOperand instanceof Byte) || (rightOperand instanceof Byte);
+  }
 
-	private static double doubleValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).doubleValue();
-	}
+  private static double doubleValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).doubleValue();
+  }
 
-	private static float floatValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).floatValue();
-	}
+  private static float floatValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).floatValue();
+  }
 
-	private static long longValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).longValue();
-	}
+  private static long longValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).longValue();
+  }
 
-	private static int intValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).intValue();
-	}
+  private static int intValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).intValue();
+  }
 
-	private static short shortValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).shortValue();
-	}
+  private static short shortValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).shortValue();
+  }
 
-	private static byte byteValue( Object o ) {
-		assert o instanceof Number;
-		return ( (Number)o ).byteValue();
-	}
+  private static byte byteValue(Object o) {
+    assert o instanceof Number;
+    return ((Number) o).byteValue();
+  }
 
-	public static enum Operator implements PrecedentedAppender {
-		LESS() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) < doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) < floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) < longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) < intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) < shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) < byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					throw new RuntimeException();
-				}
-			}
+  public static enum Operator implements PrecedentedAppender {
+    LESS() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) < doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) < floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) < longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) < intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) < shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) < byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '<' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('<');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 9;
-			}
-		},
-		LESS_EQUALS() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) <= doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) <= floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) <= longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) <= intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) <= shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) <= byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 9;
+      }
+    }, LESS_EQUALS() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) <= doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) <= floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) <= longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) <= intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) <= shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) <= byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "<=" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("<=");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 9;
-			}
-		},
-		GREATER() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) > doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) > floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) > longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) > intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) > shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) > byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 9;
+      }
+    }, GREATER() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) > doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) > floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) > longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) > intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) > shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) > byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendChar( '>' );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendChar('>');
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 9;
-			}
-		},
-		GREATER_EQUALS() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) >= doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) >= floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) >= longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) >= intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) >= shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) >= byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 9;
+      }
+    }, GREATER_EQUALS() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) >= doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) >= floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) >= longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) >= intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) >= shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) >= byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( ">=" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString(">=");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 9;
-			}
-		},
-		EQUALS() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) == doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) == floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) == longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) == intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) == shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) == byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					return leftOperand == rightOperand;
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 9;
+      }
+    }, EQUALS() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) == doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) == floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) == longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) == intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) == shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) == byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          return leftOperand == rightOperand;
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "==" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("==");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 8;
-			}
-		},
-		NOT_EQUALS() {
-			@Override
-			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				//todo Character
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-					assert leftOperand != null;
-					assert rightOperand != null;
-					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
-						return doubleValue( leftOperand ) != doubleValue( rightOperand );
-					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
-						return floatValue( leftOperand ) != floatValue( rightOperand );
-					} else if( isLongComparisonDesired( leftOperand, rightOperand ) ) {
-						return longValue( leftOperand ) != longValue( rightOperand );
-					} else if( isIntegerComparisonDesired( leftOperand, rightOperand ) ) {
-						return intValue( leftOperand ) != intValue( rightOperand );
-					} else if( isShortComparisonDesired( leftOperand, rightOperand ) ) {
-						return shortValue( leftOperand ) != shortValue( rightOperand );
-					} else if( isByteComparisonDesired( leftOperand, rightOperand ) ) {
-						return byteValue( leftOperand ) != byteValue( rightOperand );
-					} else {
-						throw new RuntimeException();
-					}
-				} else {
-					return leftOperand != rightOperand;
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 8;
+      }
+    }, NOT_EQUALS() {
+      @Override
+      public Boolean operate(Object leftOperand, Object rightOperand) {
+        //todo Character
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if (isNumberComparisonDesired(leftOperand, rightOperand)) {
+          assert leftOperand != null;
+          assert rightOperand != null;
+          if (isDoubleComparisonDesired(leftOperand, rightOperand)) {
+            return doubleValue(leftOperand) != doubleValue(rightOperand);
+          } else if (isFloatComparisonDesired(leftOperand, rightOperand)) {
+            return floatValue(leftOperand) != floatValue(rightOperand);
+          } else if (isLongComparisonDesired(leftOperand, rightOperand)) {
+            return longValue(leftOperand) != longValue(rightOperand);
+          } else if (isIntegerComparisonDesired(leftOperand, rightOperand)) {
+            return intValue(leftOperand) != intValue(rightOperand);
+          } else if (isShortComparisonDesired(leftOperand, rightOperand)) {
+            return shortValue(leftOperand) != shortValue(rightOperand);
+          } else if (isByteComparisonDesired(leftOperand, rightOperand)) {
+            return byteValue(leftOperand) != byteValue(rightOperand);
+          } else {
+            throw new RuntimeException();
+          }
+        } else {
+          return leftOperand != rightOperand;
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "!=" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("!=");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 8;
-			}
-		};
-		public abstract Boolean operate( Object leftOperand, Object rightOperand );
+      @Override
+      public int getLevelOfPrecedence() {
+        return 8;
+      }
+    };
 
-		@Override
-		public abstract void appendCode( SourceCodeGenerator generator );
-	}
+    public abstract Boolean operate(Object leftOperand, Object rightOperand);
 
-	public RelationalInfixExpression() {
-	}
+    @Override
+    public abstract void appendCode(SourceCodeGenerator generator);
+  }
 
-	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> leftOperandType, AbstractType<?, ?, ?> rightOperandType ) {
-		super( leftOperand, operator, rightOperand );
-		this.leftOperandType.setValue( leftOperandType );
-		this.rightOperandType.setValue( rightOperandType );
-	}
+  public RelationalInfixExpression() {
+  }
 
-	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> leftOperandCls, Class<?> rightOperandCls ) {
-		this( leftOperand, operator, rightOperand, JavaType.getInstance( leftOperandCls ), JavaType.getInstance( rightOperandCls ) );
-	}
+  public RelationalInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> leftOperandType, AbstractType<?, ?, ?> rightOperandType) {
+    super(leftOperand, operator, rightOperand);
+    this.leftOperandType.setValue(leftOperandType);
+    this.rightOperandType.setValue(rightOperandType);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return this.leftOperandType.getValue();
-	}
+  public RelationalInfixExpression(Expression leftOperand, Operator operator, Expression rightOperand, Class<?> leftOperandCls, Class<?> rightOperandCls) {
+    this(leftOperand, operator, rightOperand, JavaType.getInstance(leftOperandCls), JavaType.getInstance(rightOperandCls));
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return this.rightOperandType.getValue();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getLeftOperandType() {
+    return this.leftOperandType.getValue();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getRightOperandType() {
+    return this.rightOperandType.getValue();
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = DeclarationProperty.createReferenceInstance( this );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = DeclarationProperty.createReferenceInstance( this );
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.BOOLEAN_OBJECT_TYPE;
+  }
+
+  public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = DeclarationProperty.createReferenceInstance(this);
+  public final DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = DeclarationProperty.createReferenceInstance(this);
 }

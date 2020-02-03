@@ -54,34 +54,34 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIcon implements Icon {
-	private final Dimension size;
+  private final Dimension size;
 
-	public AbstractIcon( Dimension size ) {
-		this.size = size;
-	}
+  public AbstractIcon(Dimension size) {
+    this.size = size;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.size.width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.size.width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.size.height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.size.height;
+  }
 
-	protected abstract void paintIcon( Component c, Graphics2D g2 );
+  protected abstract void paintIcon(Component c, Graphics2D g2);
 
-	@Override
-	public final void paintIcon( Component c, Graphics g, int x, int y ) {
-		Graphics2D g2 = (Graphics2D)g;
-		Paint prevPaint = g2.getPaint();
-		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-		g2.translate( x, y );
-		this.paintIcon( c, g2 );
-		g2.translate( -x, -y );
-		g2.setPaint( prevPaint );
-		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-	}
+  @Override
+  public final void paintIcon(Component c, Graphics g, int x, int y) {
+    Graphics2D g2 = (Graphics2D) g;
+    Paint prevPaint = g2.getPaint();
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.translate(x, y);
+    this.paintIcon(c, g2);
+    g2.translate(-x, -y);
+    g2.setPaint(prevPaint);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+  }
 }

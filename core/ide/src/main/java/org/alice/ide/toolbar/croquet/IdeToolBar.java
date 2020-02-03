@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class IdeToolBar extends ToolBarComposite {
-	public IdeToolBar( UUID migrationId ) {
-		super( migrationId );
-	}
+  public IdeToolBar(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected ToolBarView createView() {
-		return new IdeToolBarView( this );
-	}
+  @Override
+  protected ToolBarView createView() {
+    return new IdeToolBarView(this);
+  }
 }

@@ -51,42 +51,42 @@ import org.lgna.croquet.State;
  * @author Dennis Cosgrove
  */
 public abstract class ItemDropDown<T, CM extends CustomItemState<T>> extends DropDown<Cascade.InternalRoot.InternalPopupPrepModel<T>> {
-	public ItemDropDown( CM state, SwingComponentView<?> prefixComponent, SwingComponentView<?> mainComponent, SwingComponentView<?> postfixComponent ) {
-		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
-	}
+  public ItemDropDown(CM state, SwingComponentView<?> prefixComponent, SwingComponentView<?> mainComponent, SwingComponentView<?> postfixComponent) {
+    super(state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent);
+  }
 
-	public ItemDropDown( CM model ) {
-		this( model, null, null, null );
-	}
+  public ItemDropDown(CM model) {
+    this(model, null, null, null);
+  }
 
-	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
-		@Override
-		public void changing( State<T> state, T prevValue, T nextValue ) {
-		}
+  private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
+    @Override
+    public void changing(State<T> state, T prevValue, T nextValue) {
+    }
 
-		@Override
-		public void changed( State<T> state, T prevValue, T nextValue ) {
-			ItemDropDown.this.handleChanged( state, prevValue, nextValue );
-		}
-	};
+    @Override
+    public void changed(State<T> state, T prevValue, T nextValue) {
+      ItemDropDown.this.handleChanged(state, prevValue, nextValue);
+    }
+  };
 
-	protected abstract void handleChanged( State<T> state, T prevValue, T nextValue );
+  protected abstract void handleChanged(State<T> state, T prevValue, T nextValue);
 
-	private CustomItemState<T> getState() {
-		Cascade.InternalRoot.InternalPopupPrepModel<T> model = this.getModel();
-		CustomItemState.InternalRoot<T> root = (CustomItemState.InternalRoot<T>)model.getCascadeRoot();
-		return root.getCompletionModel();
-	}
+  private CustomItemState<T> getState() {
+    Cascade.InternalRoot.InternalPopupPrepModel<T> model = this.getModel();
+    CustomItemState.InternalRoot<T> root = (CustomItemState.InternalRoot<T>) model.getCascadeRoot();
+    return root.getCompletionModel();
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		this.getState().addAndInvokeValueListener( this.valueListener );
-		super.handleAddedTo( parent );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    this.getState().addAndInvokeValueListener(this.valueListener);
+    super.handleAddedTo(parent);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		super.handleRemovedFrom( parent );
-		this.getState().removeValueListener( this.valueListener );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    super.handleRemovedFrom(parent);
+    this.getState().removeValueListener(this.valueListener);
+  }
 }

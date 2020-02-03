@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.croquet.ProceduresToolPalette;
  * @author Dennis Cosgrove
  */
 public class ProceduresView extends MethodsView {
-	public ProceduresView( ProceduresToolPalette composite ) {
-		super( composite, ThemeUtilities.getActiveTheme().getProcedureColor() );
-	}
+  public ProceduresView(ProceduresToolPalette composite) {
+    super(composite, ThemeUtilities.getActiveTheme().getProcedureColor());
+  }
 }

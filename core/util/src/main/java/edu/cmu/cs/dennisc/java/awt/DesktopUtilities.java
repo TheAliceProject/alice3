@@ -53,56 +53,56 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class DesktopUtilities {
-	public DesktopUtilities() {
-		throw new AssertionError();
-	}
+  public DesktopUtilities() {
+    throw new AssertionError();
+  }
 
-	private static Desktop getDesktop( Desktop.Action action ) {
-		if( Desktop.isDesktopSupported() ) {
-			Desktop desktop = Desktop.getDesktop();
-			if( desktop.isSupported( action ) ) {
-				return desktop;
-			}
-		}
-		return null;
-	}
+  private static Desktop getDesktop(Desktop.Action action) {
+    if (Desktop.isDesktopSupported()) {
+      Desktop desktop = Desktop.getDesktop();
+      if (desktop.isSupported(action)) {
+        return desktop;
+      }
+    }
+    return null;
+  }
 
-	public static void browse( URI uri ) throws Exception {
-		Desktop desktop = getDesktop( Desktop.Action.BROWSE );
-		if( desktop != null ) {
-			desktop.browse( uri );
-		} else {
-			BrowserUtilities.browse( uri );
-		}
-	}
+  public static void browse(URI uri) throws Exception {
+    Desktop desktop = getDesktop(Desktop.Action.BROWSE);
+    if (desktop != null) {
+      desktop.browse(uri);
+    } else {
+      BrowserUtilities.browse(uri);
+    }
+  }
 
-	public static boolean edit( File file ) {
-		Desktop desktop = getDesktop( Desktop.Action.EDIT );
-		if( desktop != null ) {
-			try {
-				desktop.edit( file );
-				return true;
-			} catch( Throwable t ) {
-				Logger.throwable( t, file );
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  public static boolean edit(File file) {
+    Desktop desktop = getDesktop(Desktop.Action.EDIT);
+    if (desktop != null) {
+      try {
+        desktop.edit(file);
+        return true;
+      } catch (Throwable t) {
+        Logger.throwable(t, file);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-	public static boolean open( File file ) {
-		Desktop desktop = getDesktop( Desktop.Action.OPEN );
-		if( desktop != null ) {
-			try {
-				desktop.open( file );
-				return true;
-			} catch( Throwable t ) {
-				Logger.throwable( t, file );
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  public static boolean open(File file) {
+    Desktop desktop = getDesktop(Desktop.Action.OPEN);
+    if (desktop != null) {
+      try {
+        desktop.open(file);
+        return true;
+      } catch (Throwable t) {
+        Logger.throwable(t, file);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

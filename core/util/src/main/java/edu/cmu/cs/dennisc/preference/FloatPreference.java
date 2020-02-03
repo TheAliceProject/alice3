@@ -48,17 +48,17 @@ import java.util.prefs.Preferences;
  * @author Dennis Cosgrove
  */
 public class FloatPreference extends Preference<Float> {
-	public FloatPreference( Float defaultValue ) {
-		super( defaultValue );
-	}
+  public FloatPreference(Float defaultValue) {
+    super(defaultValue);
+  }
 
-	@Override
-	protected Float getValue( Preferences utilPrefs, String key, Float defaultValue ) {
-		return utilPrefs.getFloat( key, defaultValue );
-	}
+  @Override
+  protected Float getValue(Preferences utilPrefs, String key, Float defaultValue) {
+    return utilPrefs.getFloat(key, defaultValue);
+  }
 
-	@Override
-	protected void setAndCommitValue( Preferences utilPrefs, String key, Float nextValue ) {
-		utilPrefs.putFloat( key, nextValue );
-	}
+  @Override
+  protected void setAndCommitValue(Preferences utilPrefs, String key, Float nextValue) {
+    utilPrefs.putFloat(key, nextValue);
+  }
 }

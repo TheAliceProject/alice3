@@ -48,17 +48,16 @@ import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
- * 
+ *
  */
 //todo: delete
-@Deprecated
-public class ManagedObjectMarkerFieldData extends AbstractManagedFieldData {
-	public ManagedObjectMarkerFieldData( NamedUserType type ) {
-		super( type );
-	}
+@Deprecated public class ManagedObjectMarkerFieldData extends AbstractManagedFieldData {
+  public ManagedObjectMarkerFieldData(NamedUserType type) {
+    super(type);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( SThingMarker.class );
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return super.isAcceptableItem(value) && value.valueType.getValue().isAssignableTo(SThingMarker.class);
+  }
 }

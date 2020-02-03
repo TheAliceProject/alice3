@@ -55,36 +55,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InsertLocalDeclarationStatementComposite extends InsertStatementComposite<LocalDeclarationStatement> {
-	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertLocalDeclarationStatementComposite getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
-			@Override
-			public InsertLocalDeclarationStatementComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
-				return new InsertLocalDeclarationStatementComposite( blockStatementIndexPair );
-			}
-		} );
-	}
+  public static synchronized InsertLocalDeclarationStatementComposite getInstance(BlockStatementIndexPair blockStatementIndexPair) {
+    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
+      @Override
+      public InsertLocalDeclarationStatementComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
+        return new InsertLocalDeclarationStatementComposite(blockStatementIndexPair);
+      }
+    });
+  }
 
-	private InsertLocalDeclarationStatementComposite( BlockStatementIndexPair blockStatementIndexPair ) {
-		super( UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
-				.isFinal( ApplicabilityStatus.EDITABLE, false )
-				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-				.name( ApplicabilityStatus.EDITABLE )
-				.initializer( ApplicabilityStatus.EDITABLE, null )
-				, blockStatementIndexPair, false );
-	}
+  private InsertLocalDeclarationStatementComposite(BlockStatementIndexPair blockStatementIndexPair) {
+    super(UUID.fromString("1c257483-36c6-41d8-9d65-4a49bfa11009"), new Details().isFinal(ApplicabilityStatus.EDITABLE, false).valueComponentType(ApplicabilityStatus.EDITABLE, null).valueIsArrayType(ApplicabilityStatus.EDITABLE, false).name(ApplicabilityStatus.EDITABLE).initializer(ApplicabilityStatus.EDITABLE, null), blockStatementIndexPair, false);
+  }
 
-	@Override
-	protected LocalDeclarationStatement createStatement() {
-		boolean isFinal = this.getIsFinalState().getValue();
-		UserLocal variable = new UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
-		return new LocalDeclarationStatement( variable, this.getInitializer() );
-	}
+  @Override
+  protected LocalDeclarationStatement createStatement() {
+    boolean isFinal = this.getIsFinalState().getValue();
+    UserLocal variable = new UserLocal(this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal);
+    return new LocalDeclarationStatement(variable, this.getInitializer());
+  }
 
-	@Override
-	protected boolean isNullAllowedForInitializer() {
-		return IsNullAllowedForLocalInitializers.getInstance().getValue();
-	}
+  @Override
+  protected boolean isNullAllowedForInitializer() {
+    return IsNullAllowedForLocalInitializers.getInstance().getValue();
+  }
 }

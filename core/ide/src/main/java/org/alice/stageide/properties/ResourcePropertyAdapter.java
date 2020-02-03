@@ -50,45 +50,38 @@ import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ResourcePropertyAdapter extends AbstractPropertyAdapter<JointedModelResource, JointedModelImp<? extends SJointedModel, ? extends JointedModelResource>> {
 
-	public ResourcePropertyAdapter( JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> instance, StandardExpressionState expressionState )
-	{
-		super( "Visual Resource", instance, expressionState );
-	}
+  public ResourcePropertyAdapter(JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> instance, StandardExpressionState expressionState) {
+    super("Visual Resource", instance, expressionState);
+  }
 
-	@Override
-	public void setValue( JointedModelResource value )
-	{
-		super.setValue( value );
-		if( this.instance != null )
-		{
-			this.instance.setNewResource( value );
-		}
-	}
+  @Override
+  public void setValue(JointedModelResource value) {
+    super.setValue(value);
+    if (this.instance != null) {
+      this.instance.setNewResource(value);
+    }
+  }
 
-	@Override
-	public Class<JointedModelResource> getPropertyType()
-	{
-		return JointedModelResource.class;
-	}
+  @Override
+  public Class<JointedModelResource> getPropertyType() {
+    return JointedModelResource.class;
+  }
 
-	@Override
-	public JointedModelResource getValue()
-	{
-		if( this.instance != null )
-		{
-			return this.instance.getResource();
-		}
-		return null;
-	}
+  @Override
+  public JointedModelResource getValue() {
+    if (this.instance != null) {
+      return this.instance.getResource();
+    }
+    return null;
+  }
 
-	@Override
-	public JointedModelResource getValueCopyIfMutable()
-	{
-		return this.getValue();
-	}
+  @Override
+  public JointedModelResource getValueCopyIfMutable() {
+    return this.getValue();
+  }
 
 }

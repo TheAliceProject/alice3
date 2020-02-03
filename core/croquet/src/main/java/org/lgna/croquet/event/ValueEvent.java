@@ -46,63 +46,63 @@ package org.lgna.croquet.event;
  * @author Dennis Cosgrove
  */
 public final class ValueEvent<T> {
-	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue, boolean isAdjusting ) {
-		return new ValueEvent<T>( true, previousValue, nextValue, isAdjusting );
-	}
+  public static <T> ValueEvent<T> createInstance(T previousValue, T nextValue, boolean isAdjusting) {
+    return new ValueEvent<T>(true, previousValue, nextValue, isAdjusting);
+  }
 
-	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue ) {
-		return createInstance( previousValue, nextValue, false );
-	}
+  public static <T> ValueEvent<T> createInstance(T previousValue, T nextValue) {
+    return createInstance(previousValue, nextValue, false);
+  }
 
-	public static <T> ValueEvent<T> createInstance( T nextValue ) {
-		return new ValueEvent<T>( false, null, nextValue, false );
-	}
+  public static <T> ValueEvent<T> createInstance(T nextValue) {
+    return new ValueEvent<T>(false, null, nextValue, false);
+  }
 
-	private ValueEvent( boolean isPreviousValueValid, T previousValue, T nextValue, boolean isAdjusting ) {
-		this.isPreviousValueValid = isPreviousValueValid;
-		this.previousValue = previousValue;
-		this.nextValue = nextValue;
-		this.isAdjusting = isAdjusting;
-	}
+  private ValueEvent(boolean isPreviousValueValid, T previousValue, T nextValue, boolean isAdjusting) {
+    this.isPreviousValueValid = isPreviousValueValid;
+    this.previousValue = previousValue;
+    this.nextValue = nextValue;
+    this.isAdjusting = isAdjusting;
+  }
 
-	public boolean isPreviousValueValid() {
-		return this.isPreviousValueValid;
-	}
+  public boolean isPreviousValueValid() {
+    return this.isPreviousValueValid;
+  }
 
-	public T getPreviousValue() {
-		return this.previousValue;
-	}
+  public T getPreviousValue() {
+    return this.previousValue;
+  }
 
-	public T getNextValue() {
-		return this.nextValue;
-	}
+  public T getNextValue() {
+    return this.nextValue;
+  }
 
-	public boolean isAdjusting() {
-		return this.isAdjusting;
-	}
+  public boolean isAdjusting() {
+    return this.isAdjusting;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		if( this.isPreviousValueValid ) {
-			sb.append( this.previousValue );
-		} else {
-			sb.append( "NOT VALID" );
-		}
-		sb.append( " -> " );
-		sb.append( this.nextValue );
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    if (this.isPreviousValueValid) {
+      sb.append(this.previousValue);
+    } else {
+      sb.append("NOT VALID");
+    }
+    sb.append(" -> ");
+    sb.append(this.nextValue);
 
-		if( this.isAdjusting ) {
-			sb.append( " (isAdjusting=true)" );
-		}
-		sb.append( "]" );
-		return sb.toString();
-	}
+    if (this.isAdjusting) {
+      sb.append(" (isAdjusting=true)");
+    }
+    sb.append("]");
+    return sb.toString();
+  }
 
-	private final boolean isPreviousValueValid;
-	private final T previousValue;
-	private final T nextValue;
-	private final boolean isAdjusting;
+  private final boolean isPreviousValueValid;
+  private final T previousValue;
+  private final T nextValue;
+  private final boolean isAdjusting;
 }

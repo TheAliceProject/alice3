@@ -54,42 +54,43 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperation {
-	private static class SingletonHolder {
-		private static ThingClsUriIteratingOperation instance = new ThingClsUriIteratingOperation();
-	}
+  private static class SingletonHolder {
+    private static ThingClsUriIteratingOperation instance = new ThingClsUriIteratingOperation();
+  }
 
-	/*package-private*/static ThingClsUriIteratingOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  /*package-private*/
+  static ThingClsUriIteratingOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThingClsUriIteratingOperation() {
-		super( UUID.fromString( "b3dcac55-4522-4014-b658-93ac8d516c1a" ) );
-	}
+  private ThingClsUriIteratingOperation() {
+    super(UUID.fromString("b3dcac55-4522-4014-b658-93ac8d516c1a"));
+  }
 
-	@Override
-	protected int getStepCount() {
-		return 2;
-	}
+  @Override
+  protected int getStepCount() {
+    return 2;
+  }
 
-	@Override
-	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
-		if( this.thingCls != null ) {
-			switch( finishedSteps.size() ) {
-			case 0:
-				SetupScenePerspectiveComposite composite = SetupScenePerspectiveComposite.getInstance();
-				GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );
-				if( dragModel != null ) {
-					return dragModel.getLeftButtonClickOperation(null);
-				} else {
-					return null;
-				}
-			case 1:
-				return this.getMergeTypeOperation();
-			default:
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Triggerable getNext(List<UserActivity> finishedSteps) {
+    if (this.thingCls != null) {
+      switch (finishedSteps.size()) {
+      case 0:
+        SetupScenePerspectiveComposite composite = SetupScenePerspectiveComposite.getInstance();
+        GalleryDragModel dragModel = composite.getDragModelForCls(this.thingCls);
+        if (dragModel != null) {
+          return dragModel.getLeftButtonClickOperation(null);
+        } else {
+          return null;
+        }
+      case 1:
+        return this.getMergeTypeOperation();
+      default:
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 }

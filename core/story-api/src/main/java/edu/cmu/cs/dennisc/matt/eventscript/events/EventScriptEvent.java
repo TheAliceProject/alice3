@@ -49,25 +49,25 @@ import java.util.Date;
  * @author Matt May
  */
 public class EventScriptEvent {
-	private final Object event;
-	private final double time;
+  private final Object event;
+  private final double time;
 
-	public EventScriptEvent( double time, Object event ) {
-		this.time = time;
-		this.event = event;
-	}
+  public EventScriptEvent(double time, Object event) {
+    this.time = time;
+    this.event = event;
+  }
 
-	public Object getEvent() {
-		return this.event;
-	}
+  public Object getEvent() {
+    return this.event;
+  }
 
-	public double getTime() {
-		return this.time;
-	}
+  public double getTime() {
+    return this.time;
+  }
 
-	public String getReportForEventType( String eventName ) {
-		Date date = new Date( (long)( time * 1000 ) );
-		String timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
-		return eventName + ": " + timeString;
-	}
+  public String getReportForEventType(String eventName) {
+    Date date = new Date((long) (time * 1000));
+    String timeString = new SimpleDateFormat("mm:ss.SS").format(date);
+    return eventName + ": " + timeString;
+  }
 }

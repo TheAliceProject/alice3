@@ -55,13 +55,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 /* package-private */class MethodPopupMenuModel extends PredeterminedMenuModel {
-	public MethodPopupMenuModel( UserMethod userMethod ) {
-		super(
-				UUID.fromString( "5b1b6ac7-b2f9-453e-9fd9-ab06b621c473" ),
-				RenameMethodComposite.getInstance( userMethod ).getLaunchOperation().getMenuItemPrepModel(),
-				DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel(),
-				IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( userMethod ).getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				DeleteMethodOperation.getInstance( userMethod ).getMenuItemPrepModel() );
-	}
+  public MethodPopupMenuModel(UserMethod userMethod) {
+    super(UUID.fromString("5b1b6ac7-b2f9-453e-9fd9-ab06b621c473"), RenameMethodComposite.getInstance(userMethod).getLaunchOperation().getMenuItemPrepModel(), DeleteMethodOperation.getInstance(userMethod).getMenuItemPrepModel(), IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(userMethod).getMenuItemPrepModel(), MenuModel.SEPARATOR, DeleteMethodOperation.getInstance(userMethod).getMenuItemPrepModel());
+  }
 }

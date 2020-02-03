@@ -55,35 +55,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PrintCurrentCodeOperation extends PrintOperation {
-	private static class SingletonHolder {
-		private static PrintCurrentCodeOperation instance = new PrintCurrentCodeOperation();
-	}
+  private static class SingletonHolder {
+    private static PrintCurrentCodeOperation instance = new PrintCurrentCodeOperation();
+  }
 
-	public static PrintCurrentCodeOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PrintCurrentCodeOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PrintCurrentCodeOperation() {
-		super( UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
-	}
+  private PrintCurrentCodeOperation() {
+    super(UUID.fromString("097b41bf-d1ea-4991-a0d6-0fae51be35ef"));
+  }
 
-	@Override
-	protected Printable getPrintable() {
-		DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-		Printable printable = null;
-		if( declarationComposite != null ) {
-			DeclarationView view = declarationComposite.getView();
-			if( view != null ) {
-				printable = view.getPrintable();
-			}
-		}
-		if( printable != null ) {
-			return printable;
-		} else {
-			Dialogs.showInfo( "Print not supported",
-							  "Print not supported for " + declarationComposite );
-			Logger.todo( "print not supported for:", declarationComposite );
-			return null;
-		}
-	}
+  @Override
+  protected Printable getPrintable() {
+    DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+    Printable printable = null;
+    if (declarationComposite != null) {
+      DeclarationView view = declarationComposite.getView();
+      if (view != null) {
+        printable = view.getPrintable();
+      }
+    }
+    if (printable != null) {
+      return printable;
+    } else {
+      Dialogs.showInfo("Print not supported", "Print not supported for " + declarationComposite);
+      Logger.todo("print not supported for:", declarationComposite);
+      return null;
+    }
+  }
 }

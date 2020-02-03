@@ -49,7 +49,7 @@ import java.nio.Buffer;
  * @author Dennis Cosgrove
  */
 public abstract class PrimitiveBufferProperty<T extends Buffer> extends InstanceProperty<T> {
-	public PrimitiveBufferProperty( InstancePropertyOwner owner, T value ) {
-		super( owner, value );
-	}
+  public PrimitiveBufferProperty(InstancePropertyOwner owner, T value) {
+    super(owner, value);
+  }
 }

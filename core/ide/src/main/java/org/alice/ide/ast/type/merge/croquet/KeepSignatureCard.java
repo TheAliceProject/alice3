@@ -54,18 +54,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class KeepSignatureCard extends SimpleComposite<Panel> {
-	private final DifferentSignature<?> differentSignature;
+  private final DifferentSignature<?> differentSignature;
 
-	public KeepSignatureCard( DifferentSignature<?> differentSignature ) {
-		super( UUID.fromString( "a9a8f5b2-c84e-48c9-a7eb-84a2350e37f5" ) );
-		this.differentSignature = differentSignature;
-	}
+  public KeepSignatureCard(DifferentSignature<?> differentSignature) {
+    super(UUID.fromString("a9a8f5b2-c84e-48c9-a7eb-84a2350e37f5"));
+    this.differentSignature = differentSignature;
+  }
 
-	@Override
-	protected Panel createView() {
-		Member member = this.differentSignature.getProjectHub().getMember();
-		MigPanel rv = new MigPanel( this, "insets 0, fill" );
-		rv.addComponent( MemberViewUtilities.createKeepUniqueMemberLabel( member ) );
-		return rv;
-	}
+  @Override
+  protected Panel createView() {
+    Member member = this.differentSignature.getProjectHub().getMember();
+    MigPanel rv = new MigPanel(this, "insets 0, fill");
+    rv.addComponent(MemberViewUtilities.createKeepUniqueMemberLabel(member));
+    return rv;
+  }
 }

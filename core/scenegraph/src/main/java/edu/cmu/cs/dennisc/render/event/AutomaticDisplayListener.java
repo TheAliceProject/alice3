@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.render.event;
  * @author Dennis Cosgrove
  */
 public interface AutomaticDisplayListener {
-	public void automaticDisplayCompleted( AutomaticDisplayEvent e );
+  public void automaticDisplayCompleted(AutomaticDisplayEvent e);
 }

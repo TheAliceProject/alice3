@@ -46,11 +46,11 @@ package org.alice.ide.preferences;
  * @author Dennis Cosgrove
  */
 public class IsToolBarShowing {
-	private IsToolBarShowing() {
-		throw new Error();
-	}
+  private IsToolBarShowing() {
+    throw new Error();
+  }
 
-	public static boolean getValue() {
-		return false;
-	}
+  public static boolean getValue() {
+    return false;
+  }
 }

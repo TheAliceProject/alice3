@@ -54,20 +54,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ManagedFieldState extends AbstractManagedFieldState {
-	private static Map<NamedUserType, ManagedFieldState> map = Maps.newHashMap();
+  private static Map<NamedUserType, ManagedFieldState> map = Maps.newHashMap();
 
-	public static synchronized ManagedFieldState getInstance( NamedUserType type ) {
-		ManagedFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ManagedFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized ManagedFieldState getInstance(NamedUserType type) {
+    ManagedFieldState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ManagedFieldState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private ManagedFieldState( NamedUserType type ) {
-		super( UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), new ManagedFieldData( type ) );
-	}
+  private ManagedFieldState(NamedUserType type) {
+    super(UUID.fromString("23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe"), new ManagedFieldData(type));
+  }
 }

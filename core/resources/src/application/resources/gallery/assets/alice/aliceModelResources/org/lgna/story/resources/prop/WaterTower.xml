@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="WaterTower">
+    <BoundingBox>
+        <Min x="-2.0598371028900146" y="-0.0028145264368504286" z="-2.222607374191284"/>
+        <Max x="2.0598371028900146" y="7.313458878961683" z="1.9275686740875244"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train track</Tag>
+        <Tag>water tower</Tag>
+        <Tag>northwest</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WaterTower" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

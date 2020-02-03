@@ -53,13 +53,13 @@ import org.lgna.story.event.ProximityEnterListener;
  */
 public class EnterProximityAdapter extends AbstractAdapter implements ProximityEnterListener {
 
-	public EnterProximityAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public EnterProximityAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void proximityEntered( EnterProximityEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void proximityEntered(EnterProximityEvent e) {
+    invokeEntryPoint(e);
+  }
 
 }

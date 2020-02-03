@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MemoryUsageComposite extends FrameComposite<MemoryUsagePanel> {
-	public MemoryUsageComposite() {
-		super( UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ) );
-	}
+  public MemoryUsageComposite() {
+    super(UUID.fromString("1169c7f0-076e-43b8-85ae-41d466969db5"));
+  }
 
-	@Override
-	protected MemoryUsagePanel createView() {
-		return new MemoryUsagePanel();
-	}
+  @Override
+  protected MemoryUsagePanel createView() {
+    return new MemoryUsagePanel();
+  }
 }

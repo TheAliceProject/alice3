@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="NordicHouse">
+    <BoundingBox>
+        <Min x="-3.5451607704162598" y="-1.829999973779195E-6" z="-2.956672191619873"/>
+        <Max x="3.543727397918701" y="7.409972190856934" z="3.2993485927581787"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>house</Tag>
+        <Tag>nordic house</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TwoStory" resourceName="TWO_STORY" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.5451607704162598" y="-4.999999987376214E-7" z="-2.956672191619873"/>
+            <Max x="3.543727397918701" y="6.957603454589844" z="2.956009864807129"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="ThreeStory" resourceName="THREE_STORY" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.215336799621582" y="-4.0597348061055527E-7" z="-1.0191514492034912"/>
+            <Max x="1.1605852842330933" y="7.409972190856934" z="3.2993485927581787"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="OneStory" resourceName="ONE_STORY" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.2957253456115723" y="-1.829999973779195E-6" z="-2.0819714069366455"/>
+            <Max x="3.2957286834716797" y="4.29688024520874" z="2.2442235946655273"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

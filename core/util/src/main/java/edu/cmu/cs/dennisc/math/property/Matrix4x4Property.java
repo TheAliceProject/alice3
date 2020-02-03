@@ -50,37 +50,37 @@ import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
  * @author Dennis Cosgrove
  */
 public class Matrix4x4Property extends CopyableInstanceProperty<Matrix4x4> {
-	public Matrix4x4Property( InstancePropertyOwner owner, Matrix4x4 value ) {
-		super( owner, value );
-	}
+  public Matrix4x4Property(InstancePropertyOwner owner, Matrix4x4 value) {
+    super(owner, value);
+  }
 
-	@Override
-	public void setValue( Matrix4x4 value ) {
-		assert value != null : this;
-		assert value.isNaN() == false : this;
-		super.setValue( value );
-	}
+  @Override
+  public void setValue(Matrix4x4 value) {
+    assert value != null : this;
+    assert value.isNaN() == false : this;
+    super.setValue(value);
+  }
 
-	@Override
-	public Matrix4x4 getCopy( Matrix4x4 rv ) {
-		rv.set( this.getValue() );
-		return rv;
-	}
+  @Override
+  public Matrix4x4 getCopy(Matrix4x4 rv) {
+    rv.set(this.getValue());
+    return rv;
+  }
 
-	@Override
-	public final Matrix4x4 getCopy() {
-		return this.getCopy( Matrix4x4.createNaN() );
-	}
+  @Override
+  public final Matrix4x4 getCopy() {
+    return this.getCopy(Matrix4x4.createNaN());
+  }
 
-	@Override
-	public void setCopy( Matrix4x4 value ) {
-		//todo?
-		this.setValue( new Matrix4x4( value ) );
-	}
+  @Override
+  public void setCopy(Matrix4x4 value) {
+    //todo?
+    this.setValue(new Matrix4x4(value));
+  }
 
-	@Deprecated
-	public void touch() {
-		setValue( this.getValue() );
-	}
+  @Deprecated
+  public void touch() {
+    setValue(this.getValue());
+  }
 
 }

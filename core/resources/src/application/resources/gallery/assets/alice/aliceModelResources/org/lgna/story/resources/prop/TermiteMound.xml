@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Ethan Gagorik" name="TermiteMound">
+    <BoundingBox>
+        <Min x="-1.8503817319869995" y="-0.0048888311721384525" z="-1.505151629447937"/>
+        <Max x="1.8442013263702393" y="4.964378356933594" z="1.4971097707748413"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>savanna</Tag>
+        <Tag>dirt</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TermiteMound" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

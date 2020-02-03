@@ -76,106 +76,106 @@ import java.awt.event.MouseEvent;
  */
 public class PoserAnimatorDragAdapter extends DragAdapter {
 
-	private PoserPicturePlaneInteraction dragAdapter = null;
-	private final AbstractPoserScene poserScene;
-	private ManipulatorConditionSet selectObject;
-	private PoserSceenMouseWheelManipulator manipulator = new PoserSceenMouseWheelManipulator();
-	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
+  private PoserPicturePlaneInteraction dragAdapter = null;
+  private final AbstractPoserScene poserScene;
+  private ManipulatorConditionSet selectObject;
+  private PoserSceenMouseWheelManipulator manipulator = new PoserSceenMouseWheelManipulator();
+  private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
 
-	public PoserAnimatorDragAdapter( AbstractPoserScene poserScene ) {
-		this.poserScene = poserScene;
-		this.setUpControls();
-	}
+  public PoserAnimatorDragAdapter(AbstractPoserScene poserScene) {
+    this.poserScene = poserScene;
+    this.setUpControls();
+  }
 
-	private void setUpControls() {
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+  private void setUpControls() {
+    MouseDragCondition middleMouseAndAnything = new MouseDragCondition(MouseEvent.BUTTON2, new PickCondition(PickHint.getAnythingHint()));
 
-		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( orbiter );
-		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
-		cameraOrbit.addCondition( middleMouseAndAnything );
-		this.manipulators.add( cameraOrbit );
+    ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(orbiter);
+    //    cameraOrbit.addCondition(rightMouseAndNonInteractive);
+    cameraOrbit.addCondition(middleMouseAndAnything);
+    this.manipulators.add(cameraOrbit);
 
-		JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
-		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
-		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
+    JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle(MovementDirection.BACKWARD, Color4f.BLUE);
+    rotateJointAboutZAxis.setManipulation(new ObjectRotateDragManipulator());
+    rotateJointAboutZAxis.addToSet(HandleSet.JOINT_ROTATION_INTERACTION);
+    rotateJointAboutZAxis.addToGroups(HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+    rotateJointAboutZAxis.setDragAdapterAndAddHandle(this);
 
-		JointRotationRingHandle rotateJointAboutYAxis = new JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN );
-		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
-		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
+    JointRotationRingHandle rotateJointAboutYAxis = new JointRotationRingHandle(MovementDirection.UP, Color4f.GREEN);
+    rotateJointAboutYAxis.setManipulation(new ObjectRotateDragManipulator());
+    rotateJointAboutYAxis.addToSet(HandleSet.JOINT_ROTATION_INTERACTION);
+    rotateJointAboutYAxis.addToGroups(HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+    rotateJointAboutYAxis.setDragAdapterAndAddHandle(this);
 
-		JointRotationRingHandle rotateJointAboutXAxis = new JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED );
-		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
-		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
-		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
+    JointRotationRingHandle rotateJointAboutXAxis = new JointRotationRingHandle(MovementDirection.LEFT, Color4f.RED);
+    rotateJointAboutXAxis.setManipulation(new ObjectRotateDragManipulator());
+    rotateJointAboutXAxis.addToSet(HandleSet.JOINT_ROTATION_INTERACTION);
+    rotateJointAboutXAxis.addToGroups(HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT);
+    rotateJointAboutXAxis.setDragAdapterAndAddHandle(this);
 
-		addHandle( rotateJointAboutXAxis );
-		addHandle( rotateJointAboutYAxis );
-		addHandle( rotateJointAboutZAxis );
+    addHandle(rotateJointAboutXAxis);
+    addHandle(rotateJointAboutYAxis);
+    addHandle(rotateJointAboutZAxis);
 
-		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( manipulator );
-		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition( new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
-		this.manipulators.add( mouseWheelCameraZoom );
+    ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet(manipulator);
+    MouseWheelCondition mouseWheelCondition = new MouseWheelCondition(new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    mouseWheelCameraZoom.addCondition(mouseWheelCondition);
+    this.manipulators.add(mouseWheelCameraZoom);
 
-		selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+    selectObject = new ManipulatorConditionSet(new ObjectRotateDragManipulator());
 
-		selectObject.setEnabled( false );
-		selectObject.addCondition( new MousePressCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
-		selectObject.addCondition( new DragAndDropCondition() );
+    selectObject.setEnabled(false);
+    selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
+    selectObject.addCondition(new DragAndDropCondition());
 
-		InteractionGroup group = new InteractionGroup( new InteractionGroup.InteractionInfo( new InteractionGroup.PossibleObjects( ObjectType.JOINT ), HandleSet.JOINT_ROTATION_INTERACTION, selectObject, PickType.JOINT ) );
-		this.mapHandleStyleToInteractionGroup.put( HandleStyle.ROTATION, group );
-		setInteractionState( HandleStyle.ROTATION );
+    InteractionGroup group = new InteractionGroup(new InteractionGroup.InteractionInfo(new InteractionGroup.PossibleObjects(ObjectType.JOINT), HandleSet.JOINT_ROTATION_INTERACTION, selectObject, PickType.JOINT));
+    this.mapHandleStyleToInteractionGroup.put(HandleStyle.ROTATION, group);
+    setInteractionState(HandleStyle.ROTATION);
 
-		this.manipulators.add( selectObject );
+    this.manipulators.add(selectObject);
 
-		for( int i = 0; i < this.manipulators.size(); i++ ) {
-			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
-		}
-	}
+    for (int i = 0; i < this.manipulators.size(); i++) {
+      this.manipulators.get(i).getManipulator().setDragAdapter(this);
+    }
+  }
 
-	@Override
-	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-	}
+  @Override
+  protected void updateHandleSelection(AbstractTransformableImp selected) {
+  }
 
-	@Override
-	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
-	}
+  @Override
+  public void undoRedoEndManipulation(AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation) {
+  }
 
-	public final void setTarget( SModel model ) {
-		orbiter.setTarget( model );
-		manipulator.setModel( (ModelImp)EmployeesOnly.getImplementation( model ) );
-	}
+  public final void setTarget(SModel model) {
+    orbiter.setTarget(model);
+    manipulator.setModel((ModelImp) EmployeesOnly.getImplementation(model));
+  }
 
-	@Override
-	public void setOnscreenRenderTarget( OnscreenRenderTarget<?> onscreenRenderTarget ) {
-		super.setOnscreenRenderTarget( onscreenRenderTarget );
-		initDragAdapter( onscreenRenderTarget );
-	}
+  @Override
+  public void setOnscreenRenderTarget(OnscreenRenderTarget<?> onscreenRenderTarget) {
+    super.setOnscreenRenderTarget(onscreenRenderTarget);
+    initDragAdapter(onscreenRenderTarget);
+  }
 
-	private void initDragAdapter( OnscreenRenderTarget<?> onscreenRenderTarget ) {
-		dragAdapter = new PoserPicturePlaneInteraction( onscreenRenderTarget, poserScene );
-		dragAdapter.startUp();
-	}
+  private void initDragAdapter(OnscreenRenderTarget<?> onscreenRenderTarget) {
+    dragAdapter = new PoserPicturePlaneInteraction(onscreenRenderTarget, poserScene);
+    dragAdapter.startUp();
+  }
 
-	public void addSphereDragListener( PoserSphereManipulatorListener sphereDragListener ) {
-		try {
-			dragAdapter.addListener( sphereDragListener );
-		} catch( NullPointerException e ) {
-			Logger.severe( "Drag Adapter cannot be initialized until OnscreenLookingGlass is set" );
-			Thread.dumpStack();
-		}
-	}
+  public void addSphereDragListener(PoserSphereManipulatorListener sphereDragListener) {
+    try {
+      dragAdapter.addListener(sphereDragListener);
+    } catch (NullPointerException e) {
+      Logger.severe("Drag Adapter cannot be initialized until OnscreenLookingGlass is set");
+      Thread.dumpStack();
+    }
+  }
 
-	@Override
-	public void setHandleVisibility( boolean isVisible ) {
-		super.setHandleVisibility( isVisible );
-		selectObject.setEnabled( isVisible );
-	}
+  @Override
+  public void setHandleVisibility(boolean isVisible) {
+    super.setHandleVisibility(isVisible);
+    selectObject.setEnabled(isVisible);
+  }
 
 }

@@ -55,64 +55,64 @@ import org.lgna.story.SSphere;
  * @author Dennis Cosgrove
  */
 public class SphereImp extends ShapeImp {
-	public SphereImp( SSphere abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgSphere } );
-	}
+  public SphereImp(SSphere abstraction) {
+    this.abstraction = abstraction;
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgSphere});
+  }
 
-	@Override
-	public SSphere getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SSphere getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected InstanceProperty[] getScaleProperties() {
-		return new InstanceProperty[] { this.sgSphere.radius };
-	}
+  @Override
+  protected InstanceProperty[] getScaleProperties() {
+    return new InstanceProperty[] {this.sgSphere.radius};
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.UNIFORM };
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {Resizer.UNIFORM};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.UNIFORM ) {
-			return this.radius.getValue();
-		} else {
-			assert false : resizer;
-			return Double.NaN;
-		}
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    if (resizer == Resizer.UNIFORM) {
+      return this.radius.getValue();
+    } else {
+      assert false : resizer;
+      return Double.NaN;
+    }
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.UNIFORM ) {
-			this.radius.setValue( value );
-		} else {
-			assert false : resizer;
-		}
-	}
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    if (resizer == Resizer.UNIFORM) {
+      this.radius.setValue(value);
+    } else {
+      assert false : resizer;
+    }
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		if( ( size.x != size.y ) || ( size.y != size.z ) ) {
-			Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
-		}
-		this.radius.setValue( size.x * .5 );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    if ((size.x != size.y) || (size.y != size.z)) {
+      Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
+    }
+    this.radius.setValue(size.x * .5);
+  }
 
-	private final SSphere abstraction;
-	private final Sphere sgSphere = new Sphere();
-	public final DoubleProperty radius = new DoubleProperty( SphereImp.this ) {
-		@Override
-		public Double getValue() {
-			return SphereImp.this.sgSphere.radius.getValue();
-		}
+  private final SSphere abstraction;
+  private final Sphere sgSphere = new Sphere();
+  public final DoubleProperty radius = new DoubleProperty(SphereImp.this) {
+    @Override
+    public Double getValue() {
+      return SphereImp.this.sgSphere.radius.getValue();
+    }
 
-		@Override
-		protected void handleSetValue( Double value ) {
-			SphereImp.this.sgSphere.radius.setValue( value );
-		}
-	};
+    @Override
+    protected void handleSetValue(Double value) {
+      SphereImp.this.sgSphere.radius.setValue(value);
+    }
+  };
 }

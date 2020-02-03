@@ -47,34 +47,34 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public final class ForEachInArrayLoop extends AbstractForEachLoop implements EachInArrayStatement {
-	public ForEachInArrayLoop() {
-	}
+  public ForEachInArrayLoop() {
+  }
 
-	public ForEachInArrayLoop( UserLocal item, Expression array, BlockStatement body ) {
-		super( item, body );
-		this.array.setValue( array );
-	}
+  public ForEachInArrayLoop(UserLocal item, Expression array, BlockStatement body) {
+    super(item, body);
+    this.array.setValue(array);
+  }
 
-	@Override
-	public ExpressionProperty getArrayProperty() {
-		return this.array;
-	}
+  @Override
+  public ExpressionProperty getArrayProperty() {
+    return this.array;
+  }
 
-	@Override
-	protected ExpressionProperty getArrayOrIterableProperty() {
-		return this.getArrayProperty();
-	}
+  @Override
+  protected ExpressionProperty getArrayOrIterableProperty() {
+    return this.getArrayProperty();
+  }
 
-	public final ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			UserLocal item = ForEachInArrayLoop.this.item.getValue();
-			AbstractType<?, ?, ?> type = item.valueType.getValue();
-			if( type != null ) {
-				return type.getArrayType();
-			} else {
-				return null;
-			}
-		}
-	};
+  public final ExpressionProperty array = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      UserLocal item = ForEachInArrayLoop.this.item.getValue();
+      AbstractType<?, ?, ?> type = item.valueType.getValue();
+      if (type != null) {
+        return type.getArrayType();
+      } else {
+        return null;
+      }
+    }
+  };
 }

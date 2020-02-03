@@ -57,25 +57,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AudioResourceImporter extends Importer<AudioResource> {
-	private static class SingletonHolder {
-		private static AudioResourceImporter instance = new AudioResourceImporter();
-	}
+  private static class SingletonHolder {
+    private static AudioResourceImporter instance = new AudioResourceImporter();
+  }
 
-	public static AudioResourceImporter getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AudioResourceImporter getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AudioResourceImporter() {
-		super(
-				UUID.randomUUID(),
-				StoryApiDirectoryUtilities.getSoundGalleryDirectory(),
-				SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
-				AudioResource.createFilenameFilter( true ),
-				"mp3", "wav", "au" );
-	}
+  private AudioResourceImporter() {
+    super(UUID.randomUUID(), StoryApiDirectoryUtilities.getSoundGalleryDirectory(), SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null, AudioResource.createFilenameFilter(true), "mp3", "wav", "au");
+  }
 
-	@Override
-	protected AudioResource createFromFile( File file ) throws IOException {
-		return MediaFactory.getSingleton().createAudioResource( file );
-	}
+  @Override
+  protected AudioResource createFromFile(File file) throws IOException {
+    return MediaFactory.getSingleton().createAudioResource(file);
+  }
 }

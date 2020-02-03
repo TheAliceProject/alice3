@@ -62,82 +62,82 @@ import java.awt.*;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	private final AstI18nFactory factory;
-	private final UserMethod userMethod;
+  private final AstI18nFactory factory;
+  private final UserMethod userMethod;
 
-	public MethodHeaderPane( AstI18nFactory factory, UserMethod userMethod, boolean isPreview ) {
-		super( isPreview );
-		this.factory = factory;
-		this.userMethod = userMethod;
-	}
+  public MethodHeaderPane(AstI18nFactory factory, UserMethod userMethod, boolean isPreview) {
+    super(isPreview);
+    this.factory = factory;
+    this.userMethod = userMethod;
+  }
 
-	protected SwingComponentView<?> createNameLabel() {
-		return factory.createNameView( userMethod );
-	}
+  protected SwingComponentView<?> createNameLabel() {
+    return factory.createNameView(userMethod);
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		forgetAndRemoveAllComponents();
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    forgetAndRemoveAllComponents();
 
-		if( FormatterState.isJava() ) {
-			addComponent( TypeComponent.createInstance( userMethod.getReturnType() ) );
-		} else {
-			addComponent( getDeclareLabel() );
-			StringBuilder sb = new StringBuilder();
-			if( userMethod.isStatic() ) {
-				sb.append( "*" );
-				sb.append( localize("static" ) );
-				sb.append( "* " );
-			}
-			if( userMethod.isProcedure() ) {
-				sb.append( localize("procedure" ) );
-				sb.append( " " );
-			} else {
-				addComponent( TypeComponent.createInstance( userMethod.getReturnType() ) );
-				sb.append( " " );
-				sb.append( localize("function" ) );
-				sb.append( " " );
-			}
-			addComponent( new Label( sb.toString(), TextPosture.OBLIQUE ) );
-		}
+    if (FormatterState.isJava()) {
+      addComponent(TypeComponent.createInstance(userMethod.getReturnType()));
+    } else {
+      addComponent(getDeclareLabel());
+      StringBuilder sb = new StringBuilder();
+      if (userMethod.isStatic()) {
+        sb.append("*");
+        sb.append(localize("static"));
+        sb.append("* ");
+      }
+      if (userMethod.isProcedure()) {
+        sb.append(localize("procedure"));
+        sb.append(" ");
+      } else {
+        addComponent(TypeComponent.createInstance(userMethod.getReturnType()));
+        sb.append(" ");
+        sb.append(localize("function"));
+        sb.append(" ");
+      }
+      addComponent(new Label(sb.toString(), TextPosture.OBLIQUE));
+    }
 
-		SwingComponentView<?> nameLabel = createNameLabel();
-		nameLabel.scaleFont( NAME_SCALE );
+    SwingComponentView<?> nameLabel = createNameLabel();
+    nameLabel.scaleFont(NAME_SCALE);
 
-		if( userMethod.isSignatureLocked.getValue() ) {
-			addComponent( nameLabel );
-		} else {
-			addComponent( new PopupPanel( nameLabel, MethodHeaderMenuModel.getInstance( userMethod ).getPopupPrepModel() ) );
-		}
+    if (userMethod.isSignatureLocked.getValue()) {
+      addComponent(nameLabel);
+    } else {
+      addComponent(new PopupPanel(nameLabel, MethodHeaderMenuModel.getInstance(userMethod).getPopupPrepModel()));
+    }
 
-		if( !isPreview() || ( userMethod.requiredParameters.size() > 0 ) ) {
-			addComponent( new ParametersPane( factory, userMethod ) );
-		}
-	}
+    if (!isPreview() || (userMethod.requiredParameters.size() > 0)) {
+      addComponent(new ParametersPane(factory, userMethod));
+    }
+  }
 
-	class PopupPanel extends ViewController<JPanel, Model> {
-		private AwtComponentView<?> centerComponent;
+  class PopupPanel extends ViewController<JPanel, Model> {
+    private AwtComponentView<?> centerComponent;
 
-		PopupPanel( AwtComponentView<?> component, MenuModel.InternalPopupPrepModel popupMenuOperation ) {
-			super( null );
-			centerComponent = component;
-			setPopupPrepModel( popupMenuOperation );
-		}
+    PopupPanel(AwtComponentView<?> component, MenuModel.InternalPopupPrepModel popupMenuOperation) {
+      super(null);
+      centerComponent = component;
+      setPopupPrepModel(popupMenuOperation);
+    }
 
-		@Override
-		protected JPanel createAwtComponent() {
-			JPanel rv = new JPanel() {
-				@Override
-				public Dimension getMaximumSize() {
-					return getPreferredSize();
-				}
-			};
-			rv.setBackground( null );
-			rv.setOpaque( false );
-			rv.setLayout( new BorderLayout() );
-			rv.add( centerComponent.getAwtComponent(), BorderLayout.CENTER );
-			return rv;
-		}
-	}
+    @Override
+    protected JPanel createAwtComponent() {
+      JPanel rv = new JPanel() {
+        @Override
+        public Dimension getMaximumSize() {
+          return getPreferredSize();
+        }
+      };
+      rv.setBackground(null);
+      rv.setOpaque(false);
+      rv.setLayout(new BorderLayout());
+      rv.add(centerComponent.getAwtComponent(), BorderLayout.CENTER);
+      return rv;
+    }
+  }
 }

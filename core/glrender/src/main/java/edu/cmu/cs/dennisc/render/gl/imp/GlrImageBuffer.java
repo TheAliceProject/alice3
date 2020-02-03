@@ -52,81 +52,81 @@ import java.nio.FloatBuffer;
  * @author Dennis Cosgrove
  */
 public final class GlrImageBuffer implements ImageBuffer {
-	public GlrImageBuffer( Color4f backgroundColor ) {
-		this.backgroundColor = backgroundColor;
-	}
+  public GlrImageBuffer(Color4f backgroundColor) {
+    this.backgroundColor = backgroundColor;
+  }
 
-	@Override
-	public Object getImageLock() {
-		return this.imageLock;
-	}
+  @Override
+  public Object getImageLock() {
+    return this.imageLock;
+  }
 
-	@Override
-	public Color4f getBackgroundColor() {
-		return this.backgroundColor;
-	}
+  @Override
+  public Color4f getBackgroundColor() {
+    return this.backgroundColor;
+  }
 
-	private boolean isAlphaRequired() {
-		return this.backgroundColor == null;
-	}
+  private boolean isAlphaRequired() {
+    return this.backgroundColor == null;
+  }
 
-	/*package-private*/BufferedImage acquireImage( int width, int height ) {
-		//TODO
-		//int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_4BYTE_ABGR : java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
-		int imageType = BufferedImage.TYPE_4BYTE_ABGR;
-		if( this.image != null ) {
-			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
-				//pass
-			} else {
-				this.image = null;
-			}
-		}
-		if( this.image != null ) {
-			//pass
-		} else {
-			this.image = new BufferedImage( width, height, imageType );
-		}
-		return this.image;
-	}
+  /*package-private*/BufferedImage acquireImage(int width, int height) {
+    //TODO
+    //int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_4BYTE_ABGR : java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
+    int imageType = BufferedImage.TYPE_4BYTE_ABGR;
+    if (this.image != null) {
+      if ((this.image.getWidth() == width) && (this.image.getHeight() == height) && (this.image.getType() == imageType)) {
+        //pass
+      } else {
+        this.image = null;
+      }
+    }
+    if (this.image != null) {
+      //pass
+    } else {
+      this.image = new BufferedImage(width, height, imageType);
+    }
+    return this.image;
+  }
 
-	/*package-private*/void releaseImageAndFloatBuffer( boolean isRightSideUp ) {
-		this.isRightSideUp = true;
-	}
+  /*package-private*/void releaseImageAndFloatBuffer(boolean isRightSideUp) {
+    this.isRightSideUp = true;
+  }
 
-	/*package-private*/FloatBuffer acquireFloatBuffer( int width, int height ) {
-		if( this.isAlphaRequired() ) {
-			int capacity = width * height;
-			if( this.depthBuffer != null ) {
-				if( this.depthBuffer.capacity() == capacity ) {
-					//pass
-				} else {
-					this.depthBuffer = null;
-				}
-			}
-			if( this.depthBuffer != null ) {
-				//pass
-			} else {
-				this.depthBuffer = FloatBuffer.allocate( capacity );
-			}
-			return this.depthBuffer;
-		} else {
-			return null;
-		}
-	}
+  /*package-private*/FloatBuffer acquireFloatBuffer(int width, int height) {
+    if (this.isAlphaRequired()) {
+      int capacity = width * height;
+      if (this.depthBuffer != null) {
+        if (this.depthBuffer.capacity() == capacity) {
+          //pass
+        } else {
+          this.depthBuffer = null;
+        }
+      }
+      if (this.depthBuffer != null) {
+        //pass
+      } else {
+        this.depthBuffer = FloatBuffer.allocate(capacity);
+      }
+      return this.depthBuffer;
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public BufferedImage getImage() {
-		return this.image;
-	}
+  @Override
+  public BufferedImage getImage() {
+    return this.image;
+  }
 
-	@Override
-	public boolean isRightSideUp() {
-		return this.isRightSideUp;
-	}
+  @Override
+  public boolean isRightSideUp() {
+    return this.isRightSideUp;
+  }
 
-	private final Object imageLock = "imageLock";
-	private final Color4f backgroundColor;
-	private BufferedImage image;
-	private boolean isRightSideUp;
-	private FloatBuffer depthBuffer;
+  private final Object imageLock = "imageLock";
+  private final Color4f backgroundColor;
+  private BufferedImage image;
+  private boolean isRightSideUp;
+  private FloatBuffer depthBuffer;
 }

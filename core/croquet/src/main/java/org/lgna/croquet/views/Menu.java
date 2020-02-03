@@ -52,42 +52,42 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public class Menu extends AbstractMenu<AbstractMenuModel> {
-	public Menu( AbstractMenuModel model ) {
-		super( model );
-	}
+  public Menu(AbstractMenuModel model) {
+    super(model);
+  }
 
-	@Override
-	protected boolean areIconsDisplayedInMenus() {
-		return SystemUtilities.areIconsDisplayedInMenus();
-	}
+  @Override
+  protected boolean areIconsDisplayedInMenus() {
+    return SystemUtilities.areIconsDisplayedInMenus();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addPopupMenuListener( this );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getModel().addPopupMenuListener(this);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removePopupMenuListener( this );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().removePopupMenuListener(this);
+    super.handleUndisplayable();
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		this.getAwtComponent().setAction( this.getModel().getAction() );
-		super.handleAddedTo( parent );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    this.getAwtComponent().setAction(this.getModel().getAction());
+    super.handleAddedTo(parent);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		super.handleRemovedFrom( parent );
-		this.getAwtComponent().setAction( null );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    super.handleRemovedFrom(parent);
+    this.getAwtComponent().setAction(null);
+  }
 
-	@Override
-	public UserActivity getActivity() {
-		// TODO Build menus with the root application or project activity and hold onto it?
-		return Application.getActiveInstance().getOpenActivity();
-	}
+  @Override
+  public UserActivity getActivity() {
+    // TODO Build menus with the root application or project activity and hold onto it?
+    return Application.getActiveInstance().getOpenActivity();
+  }
 }

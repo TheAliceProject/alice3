@@ -58,35 +58,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddBoxManagedFieldComposite instance = new AddBoxManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddBoxManagedFieldComposite instance = new AddBoxManagedFieldComposite();
+  }
 
-	public static AddBoxManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddBoxManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> widthState = this.createInitialPropertyValueExpressionState( "widthState", 1.0, SModel.class, "setWidth", Number.class, SetWidth.Detail[].class );
-	private final CustomItemState<Expression> heightState = this.createInitialPropertyValueExpressionState( "heightState", 1.0, SModel.class, "setHeight", Number.class, SetHeight.Detail[].class );
-	private final CustomItemState<Expression> depthState = this.createInitialPropertyValueExpressionState( "depthState", 1.0, SModel.class, "setDepth", Number.class, SetDepth.Detail[].class );
+  private final CustomItemState<Expression> widthState = this.createInitialPropertyValueExpressionState("widthState", 1.0, SModel.class, "setWidth", Number.class, SetWidth.Detail[].class);
+  private final CustomItemState<Expression> heightState = this.createInitialPropertyValueExpressionState("heightState", 1.0, SModel.class, "setHeight", Number.class, SetHeight.Detail[].class);
+  private final CustomItemState<Expression> depthState = this.createInitialPropertyValueExpressionState("depthState", 1.0, SModel.class, "setDepth", Number.class, SetDepth.Detail[].class);
 
-	private AddBoxManagedFieldComposite() {
-		super( UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ), SBox.class );
-	}
+  private AddBoxManagedFieldComposite() {
+    super(UUID.fromString("c2f02836-1016-4477-abe2-9ab63e530db6"), SBox.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return BoxDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return BoxDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getWidthState() {
-		return this.widthState;
-	}
+  public CustomItemState<Expression> getWidthState() {
+    return this.widthState;
+  }
 
-	public CustomItemState<Expression> getHeightState() {
-		return this.heightState;
-	}
+  public CustomItemState<Expression> getHeightState() {
+    return this.heightState;
+  }
 
-	public CustomItemState<Expression> getDepthState() {
-		return this.depthState;
-	}
+  public CustomItemState<Expression> getDepthState() {
+    return this.depthState;
+  }
 }

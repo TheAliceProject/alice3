@@ -53,31 +53,31 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/class FieldIconFactory extends AbstractIconFactory {
-	public FieldIconFactory( UserField field, IconFactory fallbackIconFactory ) {
-		super( IsCachingDesired.TRUE );
-		this.field = field;
-		this.fallbackIconFactory = fallbackIconFactory;
-	}
+  public FieldIconFactory(UserField field, IconFactory fallbackIconFactory) {
+    super(IsCachingDesired.TRUE);
+    this.field = field;
+    this.fallbackIconFactory = fallbackIconFactory;
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new FieldIcon( this.field, this.fallbackIconFactory.getIcon( size ) );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new FieldIcon(this.field, this.fallbackIconFactory.getIcon(size));
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    return sizeIfResolutionIndependent;
+  }
 
-	public void markAllIconsDirty() {
-		for( Icon icon : this.getMapValues() ) {
-			if( icon instanceof FieldIcon ) {
-				FieldIcon fieldIcon = (FieldIcon)icon;
-				fieldIcon.markDirty();
-			}
-		}
-	}
+  public void markAllIconsDirty() {
+    for (Icon icon : this.getMapValues()) {
+      if (icon instanceof FieldIcon) {
+        FieldIcon fieldIcon = (FieldIcon) icon;
+        fieldIcon.markDirty();
+      }
+    }
+  }
 
-	private final UserField field;
-	private final IconFactory fallbackIconFactory;
+  private final UserField field;
+  private final IconFactory fallbackIconFactory;
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="WackAMoleHammer">
+    <BoundingBox>
+        <Min x="-0.11220797151327133" y="-0.04690419137477875" z="-0.08852563798427582"/>
+        <Max x="0.11663294583559036" y="0.3513067662715912" z="0.08813849836587906"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>wack a mole</Tag>
+        <Tag>carnival</Tag>
+        <Tag>booth</Tag>
+        <Tag>hammer</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WackAMoleHammer" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

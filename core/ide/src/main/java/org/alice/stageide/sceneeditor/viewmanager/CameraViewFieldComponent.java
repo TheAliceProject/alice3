@@ -51,21 +51,20 @@ import org.lgna.project.ast.FieldAccess;
 //todo
 public class CameraViewFieldComponent extends GetterTemplate {
 
-	protected AbstractField field;
+  protected AbstractField field;
 
-	public CameraViewFieldComponent( AbstractField field ) {
-		super( field );
-		this.field = field;
-	}
+  public CameraViewFieldComponent(AbstractField field) {
+    super(field);
+    this.field = field;
+  }
 
-	public AbstractField getField()
-	{
-		return field;
-	}
+  public AbstractField getField() {
+    return field;
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		return new FieldAccess(field);
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    return new FieldAccess(field);
+  }
 
 }

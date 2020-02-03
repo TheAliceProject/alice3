@@ -49,27 +49,27 @@ import org.lgna.project.ast.NamedUserType;
  * @author Dennis Cosgrove
  */
 public abstract class TypeKey {
-	public final NamedUserType createType() {
-		NamedUserType rv = new NamedUserType();
-		//todo
-		return rv;
-	}
+  public final NamedUserType createType() {
+    NamedUserType rv = new NamedUserType();
+    //todo
+    return rv;
+  }
 
-	@Override
-	public abstract int hashCode();
+  @Override
+  public abstract int hashCode();
 
-	protected abstract boolean contentEquals( TypeKey other );
+  protected abstract boolean contentEquals(TypeKey other);
 
-	@Override
-	public final boolean equals( Object other ) {
-		if( other != null ) {
-			if( this.getClass() == other.getClass() ) {
-				return this.contentEquals( (TypeKey)other );
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public final boolean equals(Object other) {
+    if (other != null) {
+      if (this.getClass() == other.getClass()) {
+        return this.contentEquals((TypeKey) other);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

@@ -46,24 +46,24 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class LgnaVmClassCastException extends LgnaVmException {
-	private final Class<?> expectedCls;
-	private final Class<?> actualCls;
+  private final Class<?> expectedCls;
+  private final Class<?> actualCls;
 
-	public LgnaVmClassCastException( VirtualMachine vm, Class<?> expectedCls, Class<?> actualCls ) {
-		super( vm );
-		this.expectedCls = expectedCls;
-		this.actualCls = actualCls;
-	}
+  public LgnaVmClassCastException(VirtualMachine vm, Class<?> expectedCls, Class<?> actualCls) {
+    super(vm);
+    this.expectedCls = expectedCls;
+    this.actualCls = actualCls;
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		String message = this.getMessage();
-		if( message != null ) {
-			sb.append( message );
-		}
-		sb.append( "expected: " );
-		sb.append( this.expectedCls.getName() );
-		sb.append( "actual: " );
-		sb.append( this.actualCls.getName() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    String message = this.getMessage();
+    if (message != null) {
+      sb.append(message);
+    }
+    sb.append("expected: ");
+    sb.append(this.expectedCls.getName());
+    sb.append("actual: ");
+    sb.append(this.actualCls.getName());
+  }
 }

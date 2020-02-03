@@ -53,12 +53,12 @@ import org.lgna.story.event.SceneActivationListener;
  * @author Dennis Cosgrove
  */
 public class SceneActivationAdapter extends AbstractAdapter implements SceneActivationListener {
-	public SceneActivationAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public SceneActivationAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void sceneActivated( SceneActivationEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void sceneActivated(SceneActivationEvent e) {
+    invokeEntryPoint(e);
+  }
 }

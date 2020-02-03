@@ -59,27 +59,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SgDebugFrame extends DebugFrame<Component> {
-	public static ZTreeNode.Builder<Component> createBuilder( Component sgComponent ) {
-		ZTreeNode.Builder<Component> rv = new ZTreeNode.Builder<Component>( sgComponent, sgComponent instanceof Leaf );
-		if( sgComponent instanceof Composite ) {
-			Composite sgComposite = (Composite)sgComponent;
-			for( Component sgChild : sgComposite.getComponents() ) {
-				rv.addChildBuilder( createBuilder( sgChild ) );
-			}
-		}
-		return rv;
-	}
+  public static ZTreeNode.Builder<Component> createBuilder(Component sgComponent) {
+    ZTreeNode.Builder<Component> rv = new ZTreeNode.Builder<Component>(sgComponent, sgComponent instanceof Leaf);
+    if (sgComponent instanceof Composite) {
+      Composite sgComposite = (Composite) sgComponent;
+      for (Component sgChild : sgComposite.getComponents()) {
+        rv.addChildBuilder(createBuilder(sgChild));
+      }
+    }
+    return rv;
+  }
 
-	public SgDebugFrame() {
-		super( UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
-	}
+  public SgDebugFrame() {
+    super(UUID.fromString("8d282704-d6b6-4455-bd1d-80b6a529a19d"));
+  }
 
-	@Override
-	protected ZTreeNode.Builder<Component> capture() {
-		UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-		SScene scene = sceneUserInstance.getJavaInstance( SScene.class );
-		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
-		Scene sgScene = sceneImp.getSgComposite();
-		return createBuilder( sgScene );
-	}
+  @Override
+  protected ZTreeNode.Builder<Component> capture() {
+    UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
+    SScene scene = sceneUserInstance.getJavaInstance(SScene.class);
+    SceneImp sceneImp = EmployeesOnly.getImplementation(scene);
+    Scene sgScene = sceneImp.getSgComposite();
+    return createBuilder(sgScene);
+  }
 }

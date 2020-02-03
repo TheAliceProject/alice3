@@ -57,66 +57,66 @@ import java.lang.annotation.Annotation;
  * @author Dennis Cosgrove
  */
 public class JavaConstructorParameter extends JavaParameter {
-	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
-		String rv = null;
-		try {
-			ClassInfo classInfo = ClassInfoManager.getInstance( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
-			if( classInfo != null ) {
-				ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
-				if( constructorInfo != null ) {
-					String[] parameterNames = constructorInfo.getParameterNames();
-					if( parameterNames != null ) {
-						rv = parameterNames[ index ];
-					}
-				}
-			}
-		} catch( Throwable t ) {
-			Logger.throwable( t, constructorReflectionProxy, index );
-		}
-		return rv;
-	}
+  private static String getParameterNameFor(ConstructorReflectionProxy constructorReflectionProxy, int index) {
+    String rv = null;
+    try {
+      ClassInfo classInfo = ClassInfoManager.getInstance(constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification());
+      if (classInfo != null) {
+        ConstructorInfo constructorInfo = classInfo.lookupInfo(constructorReflectionProxy.getReification());
+        if (constructorInfo != null) {
+          String[] parameterNames = constructorInfo.getParameterNames();
+          if (parameterNames != null) {
+            rv = parameterNames[index];
+          }
+        }
+      }
+    } catch (Throwable t) {
+      Logger.throwable(t, constructorReflectionProxy, index);
+    }
+    return rv;
+  }
 
-	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, Annotation[] annotations ) {
-		super( annotations );
-		this.constructor = constructor;
-		this.index = index;
-		ConstructorReflectionProxy constructorReflectionProxy = constructor.getConstructorReflectionProxy();
-		this.name = getParameterNameFor( constructorReflectionProxy, this.index );
-		this.valueType = JavaType.getInstance( constructorReflectionProxy.getParameterClassReflectionProxies()[ this.index ] );
-		assert this.valueType != null;
-	}
+  /* package-private */JavaConstructorParameter(JavaConstructor constructor, int index, Annotation[] annotations) {
+    super(annotations);
+    this.constructor = constructor;
+    this.index = index;
+    ConstructorReflectionProxy constructorReflectionProxy = constructor.getConstructorReflectionProxy();
+    this.name = getParameterNameFor(constructorReflectionProxy, this.index);
+    this.valueType = JavaType.getInstance(constructorReflectionProxy.getParameterClassReflectionProxies()[this.index]);
+    assert this.valueType != null;
+  }
 
-	@Override
-	public JavaConstructor getCode() {
-		return this.constructor;
-	}
+  @Override
+  public JavaConstructor getCode() {
+    return this.constructor;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public JavaType getValueType() {
-		return this.valueType;
-	}
+  @Override
+  public JavaType getValueType() {
+    return this.valueType;
+  }
 
-	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof JavaConstructorParameter ) {
-			JavaConstructorParameter otherJCP = (JavaConstructorParameter)other;
-			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && Objects.equals( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isEquivalentTo(Object other) {
+    if (other instanceof JavaConstructorParameter) {
+      JavaConstructorParameter otherJCP = (JavaConstructorParameter) other;
+      return this.constructor.equals(otherJCP.constructor) && (this.index == otherJCP.index) && Objects.equals(this.name, otherJCP.name) && this.valueType.equals(otherJCP.valueType);
+    } else {
+      return false;
+    }
+  }
 
-	private final JavaConstructor constructor;
-	private final int index;
-	private final String name;
-	private final JavaType valueType;
+  private final JavaConstructor constructor;
+  private final int index;
+  private final String name;
+  private final JavaType valueType;
 }

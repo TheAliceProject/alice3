@@ -50,94 +50,94 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class DimensionUtilities {
-	public static Dimension constrainToMinimumWidth( Dimension rv, int minimumWidth ) {
-		if( rv != null ) {
-			rv.width = Math.max( rv.width, minimumWidth );
-		} else {
-			rv = new Dimension( minimumWidth, 0 );
-		}
-		return rv;
-	}
+  public static Dimension constrainToMinimumWidth(Dimension rv, int minimumWidth) {
+    if (rv != null) {
+      rv.width = Math.max(rv.width, minimumWidth);
+    } else {
+      rv = new Dimension(minimumWidth, 0);
+    }
+    return rv;
+  }
 
-	public static Dimension constrainToMinimumHeight( Dimension rv, int minimumHeight ) {
-		if( rv != null ) {
-			rv.height = Math.max( rv.height, minimumHeight );
-		} else {
-			rv = new Dimension( 0, minimumHeight );
-		}
-		return rv;
-	}
+  public static Dimension constrainToMinimumHeight(Dimension rv, int minimumHeight) {
+    if (rv != null) {
+      rv.height = Math.max(rv.height, minimumHeight);
+    } else {
+      rv = new Dimension(0, minimumHeight);
+    }
+    return rv;
+  }
 
-	public static Dimension constrainToMinimumSize( Dimension rv, int minimumWidth, int minimumHeight ) {
-		rv = constrainToMinimumWidth( rv, minimumWidth );
-		rv = constrainToMinimumHeight( rv, minimumHeight );
-		return rv;
-	}
+  public static Dimension constrainToMinimumSize(Dimension rv, int minimumWidth, int minimumHeight) {
+    rv = constrainToMinimumWidth(rv, minimumWidth);
+    rv = constrainToMinimumHeight(rv, minimumHeight);
+    return rv;
+  }
 
-	public static Dimension constrainToMaximumWidth( Dimension rv, int maximumWidth ) {
-		rv.width = Math.min( rv.width, maximumWidth );
-		return rv;
-	}
+  public static Dimension constrainToMaximumWidth(Dimension rv, int maximumWidth) {
+    rv.width = Math.min(rv.width, maximumWidth);
+    return rv;
+  }
 
-	public static Dimension constrainToMaximumHeight( Dimension rv, int maximumHeight ) {
-		rv.height = Math.min( rv.height, maximumHeight );
-		return rv;
-	}
+  public static Dimension constrainToMaximumHeight(Dimension rv, int maximumHeight) {
+    rv.height = Math.min(rv.height, maximumHeight);
+    return rv;
+  }
 
-	public static Dimension constrainToMaximumSize( Dimension rv, int maximumWidth, int maximumHeight ) {
-		rv = constrainToMaximumWidth( rv, maximumWidth );
-		rv = constrainToMaximumHeight( rv, maximumHeight );
-		return rv;
-	}
+  public static Dimension constrainToMaximumSize(Dimension rv, int maximumWidth, int maximumHeight) {
+    rv = constrainToMaximumWidth(rv, maximumWidth);
+    rv = constrainToMaximumHeight(rv, maximumHeight);
+    return rv;
+  }
 
-	public static Dimension constrainToWidth( Dimension rv, int width ) {
-		rv.width = width;
-		return rv;
-	}
+  public static Dimension constrainToWidth(Dimension rv, int width) {
+    rv.width = width;
+    return rv;
+  }
 
-	public static Dimension constrainToHeight( Dimension rv, int height ) {
-		rv.height = height;
-		return rv;
-	}
+  public static Dimension constrainToHeight(Dimension rv, int height) {
+    rv.height = height;
+    return rv;
+  }
 
-	private static Dimension calculateWidthBasedSize( Dimension size, double widthToHeightAspectRatio ) {
-		return new Dimension( size.width, (int)( size.width / widthToHeightAspectRatio ) );
-	}
+  private static Dimension calculateWidthBasedSize(Dimension size, double widthToHeightAspectRatio) {
+    return new Dimension(size.width, (int) (size.width / widthToHeightAspectRatio));
+  }
 
-	private static Dimension calculateHeightBasedSize( Dimension size, double widthToHeightAspectRatio ) {
-		return new Dimension( (int)( size.height * widthToHeightAspectRatio ), size.height );
-	}
+  private static Dimension calculateHeightBasedSize(Dimension size, double widthToHeightAspectRatio) {
+    return new Dimension((int) (size.height * widthToHeightAspectRatio), size.height);
+  }
 
-	public static Dimension calculateBestFittingSize( Dimension size, double widthToHeightAspectRatio ) {
-		Dimension widthBasedSize = calculateWidthBasedSize( size, widthToHeightAspectRatio );
-		Dimension heightBasedSize = calculateHeightBasedSize( size, widthToHeightAspectRatio );
-		if( widthBasedSize.height > size.height ) {
-			return heightBasedSize;
-		} else if( heightBasedSize.width > size.width ) {
-			return widthBasedSize;
-		} else {
-			if( ( widthBasedSize.width * widthBasedSize.height ) > ( heightBasedSize.width * heightBasedSize.height ) ) {
-				return widthBasedSize;
-			} else {
-				return heightBasedSize;
-			}
-		}
-	}
+  public static Dimension calculateBestFittingSize(Dimension size, double widthToHeightAspectRatio) {
+    Dimension widthBasedSize = calculateWidthBasedSize(size, widthToHeightAspectRatio);
+    Dimension heightBasedSize = calculateHeightBasedSize(size, widthToHeightAspectRatio);
+    if (widthBasedSize.height > size.height) {
+      return heightBasedSize;
+    } else if (heightBasedSize.width > size.width) {
+      return widthBasedSize;
+    } else {
+      if ((widthBasedSize.width * widthBasedSize.height) > (heightBasedSize.width * heightBasedSize.height)) {
+        return widthBasedSize;
+      } else {
+        return heightBasedSize;
+      }
+    }
+  }
 
-	public static Dimension createWiderGoldenRatioSizeFromWidth( int width ) {
-		return new Dimension( width, GoldenRatio.getShorterSideLength( width ) );
-	}
+  public static Dimension createWiderGoldenRatioSizeFromWidth(int width) {
+    return new Dimension(width, GoldenRatio.getShorterSideLength(width));
+  }
 
-	public static Dimension createWiderGoldenRatioSizeFromHeight( int height ) {
-		return new Dimension( GoldenRatio.getLongerSideLength( height ), height );
-	}
+  public static Dimension createWiderGoldenRatioSizeFromHeight(int height) {
+    return new Dimension(GoldenRatio.getLongerSideLength(height), height);
+  }
 
-	public static Dimension createTallerGoldenRatioSizeFromWidth( int width ) {
-		return new Dimension( width, GoldenRatio.getLongerSideLength( width ) );
-	}
+  public static Dimension createTallerGoldenRatioSizeFromWidth(int width) {
+    return new Dimension(width, GoldenRatio.getLongerSideLength(width));
+  }
 
-	public static Dimension createTallerGoldenRatioSizeFromHeight( int height ) {
-		return new Dimension( GoldenRatio.getShorterSideLength( height ), height );
-	}
+  public static Dimension createTallerGoldenRatioSizeFromHeight(int height) {
+    return new Dimension(GoldenRatio.getShorterSideLength(height), height);
+  }
 
 }

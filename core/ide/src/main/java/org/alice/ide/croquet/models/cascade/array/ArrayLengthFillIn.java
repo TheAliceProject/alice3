@@ -54,30 +54,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayLengthFillIn extends ExpressionFillInWithoutBlanks<ArrayLength> {
-	private ArrayLength transientValue;
+  private ArrayLength transientValue;
 
-	public ArrayLengthFillIn( UUID id ) {
-		super( id );
-	}
+  public ArrayLengthFillIn(UUID id) {
+    super(id);
+  }
 
-	protected abstract Expression createAccessExpression();
+  protected abstract Expression createAccessExpression();
 
-	private ArrayLength createValue() {
-		return new ArrayLength( this.createAccessExpression() );
-	}
+  private ArrayLength createValue() {
+    return new ArrayLength(this.createAccessExpression());
+  }
 
-	@Override
-	public ArrayLength createValue( ItemNode<? super ArrayLength, Void> node ) {
-		return this.createValue();
-	}
+  @Override
+  public ArrayLength createValue(ItemNode<? super ArrayLength, Void> node) {
+    return this.createValue();
+  }
 
-	@Override
-	public ArrayLength getTransientValue( ItemNode<? super ArrayLength, Void> node ) {
-		if( this.transientValue != null ) {
-			//pass
-		} else {
-			this.transientValue = this.createValue();
-		}
-		return this.transientValue;
-	}
+  @Override
+  public ArrayLength getTransientValue(ItemNode<? super ArrayLength, Void> node) {
+    if (this.transientValue != null) {
+      //pass
+    } else {
+      this.transientValue = this.createValue();
+    }
+    return this.transientValue;
+  }
 }

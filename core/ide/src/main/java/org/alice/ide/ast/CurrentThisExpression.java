@@ -50,11 +50,11 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public class CurrentThisExpression extends IdeExpression {
-	public CurrentThisExpression() {
-	}
+  public CurrentThisExpression() {
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+  }
 }

@@ -79,132 +79,132 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends CascadeBlank<MethodInvocationEditFactory> {
-	private static Map<InstanceFactory, MethodInvocationBlank> map = Maps.newHashMap();
+  private static Map<InstanceFactory, MethodInvocationBlank> map = Maps.newHashMap();
 
-	public static MethodInvocationBlank getInstance( InstanceFactory value ) {
-		synchronized( map ) {
-			MethodInvocationBlank rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new MethodInvocationBlank( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static MethodInvocationBlank getInstance(InstanceFactory value) {
+    synchronized (map) {
+      MethodInvocationBlank rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new MethodInvocationBlank(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final InstanceFactory instanceFactory;
+  private final InstanceFactory instanceFactory;
 
-	private MethodInvocationBlank( InstanceFactory instanceFactory ) {
-		this.instanceFactory = instanceFactory;
-	}
+  private MethodInvocationBlank(InstanceFactory instanceFactory) {
+    this.instanceFactory = instanceFactory;
+  }
 
-	@Override
-	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<MethodInvocationEditFactory> blankNode ) {
-		JavaType turnableType = JavaType.getInstance( STurnable.class );
-		JavaType movableTurnableType = JavaType.getInstance( SMovableTurnable.class );
-		JavaType jointedModelType = JavaType.getInstance( SJointedModel.class );
-		JavaType flyerType = JavaType.getInstance( SFlyer.class );
-		JavaType cameraType = JavaType.getInstance( SCamera.class );
-		JavaType groundType = JavaType.getInstance( SGround.class );
-		JavaType modelType = JavaType.getInstance( SModel.class );
+  @Override
+  protected void updateChildren(List<CascadeBlankChild> children, BlankNode<MethodInvocationEditFactory> blankNode) {
+    JavaType turnableType = JavaType.getInstance(STurnable.class);
+    JavaType movableTurnableType = JavaType.getInstance(SMovableTurnable.class);
+    JavaType jointedModelType = JavaType.getInstance(SJointedModel.class);
+    JavaType flyerType = JavaType.getInstance(SFlyer.class);
+    JavaType cameraType = JavaType.getInstance(SCamera.class);
+    JavaType groundType = JavaType.getInstance(SGround.class);
+    JavaType modelType = JavaType.getInstance(SModel.class);
 
-		AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
-		List<JavaMethod> methods = Lists.newLinkedList();
-		Map<MethodInvocation, List<SimpleArgument>> poseMethods = Maps.newHashMap();
-		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.TURN_METHOD );
-			methods.add( OneShotSorter.ROLL_METHOD );
-			methods.add( OneShotSorter.TURN_TO_FACE_METHOD );
-			methods.add( OneShotSorter.POINT_AT_METHOD );
-			methods.add( OneShotSorter.ORIENT_TO_METHOD );
-			methods.add( OneShotSorter.ORIENT_TO_UPRIGHT_METHOD );
-		}
-		if( movableTurnableType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.MOVE_METHOD );
-			methods.add( OneShotSorter.MOVE_TOWARD_METHOD );
-			methods.add( OneShotSorter.MOVE_AWAY_FROM_METHOD );
-			methods.add( OneShotSorter.MOVE_TO_METHOD );
-			methods.add( OneShotSorter.MOVE_AND_ORIENT_TO_METHOD );
-			methods.add( OneShotSorter.PLACE_METHOD );
-		}
+    AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
+    List<JavaMethod> methods = Lists.newLinkedList();
+    Map<MethodInvocation, List<SimpleArgument>> poseMethods = Maps.newHashMap();
+    if (turnableType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.TURN_METHOD);
+      methods.add(OneShotSorter.ROLL_METHOD);
+      methods.add(OneShotSorter.TURN_TO_FACE_METHOD);
+      methods.add(OneShotSorter.POINT_AT_METHOD);
+      methods.add(OneShotSorter.ORIENT_TO_METHOD);
+      methods.add(OneShotSorter.ORIENT_TO_UPRIGHT_METHOD);
+    }
+    if (movableTurnableType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.MOVE_METHOD);
+      methods.add(OneShotSorter.MOVE_TOWARD_METHOD);
+      methods.add(OneShotSorter.MOVE_AWAY_FROM_METHOD);
+      methods.add(OneShotSorter.MOVE_TO_METHOD);
+      methods.add(OneShotSorter.MOVE_AND_ORIENT_TO_METHOD);
+      methods.add(OneShotSorter.PLACE_METHOD);
+    }
 
-		if( jointedModelType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD );
+    if (jointedModelType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD);
 
-			if( flyerType.isAssignableFrom( instanceFactoryValueType ) ) {
-				methods.add( OneShotSorter.SPREAD_WINGS_METHOD );
-				methods.add( OneShotSorter.FOLD_WINGS_METHOD );
-			}
+      if (flyerType.isAssignableFrom(instanceFactoryValueType)) {
+        methods.add(OneShotSorter.SPREAD_WINGS_METHOD);
+        methods.add(OneShotSorter.FOLD_WINGS_METHOD);
+      }
 
-			//Search the UserMethods on the type looking for generated pose animations
-			//Grab the java method invocation (strikePose) inside the pose animation and add it to the methodInvocations list
-			List<AbstractMethod> declaredMethods = AstUtilities.getAllMethods( instanceFactoryValueType );
-			for( AbstractMethod method : declaredMethods ) {
-				if( method instanceof UserMethod ) {
-					UserMethod userMethod = (UserMethod)method;
-					//Pose animations are GENERATED and have no return value
-					if( ( userMethod.managementLevel.getValue() == ManagementLevel.GENERATED ) && ( userMethod.getReturnType() == JavaType.VOID_TYPE ) ) {
-						//UserMethod pose animations contain a single JavaMethod in their body called "strikePose"
-						//Grab the first statement in the body and check to see if it's actually a pose call
-						Statement poseStatement = userMethod.body.getValue().statements.get( 0 );
-						if( poseStatement instanceof ExpressionStatement ) {
-							ExpressionStatement expressionStatement = (ExpressionStatement)poseStatement;
-							Expression expression = expressionStatement.expression.getValue();
-							if( expression instanceof MethodInvocation ) {
-								MethodInvocation poseInvocation = (MethodInvocation)expression;
-								if( "strikePose".equals( poseInvocation.method.getValue().getName() ) ) {
-									if( poseInvocation.method.getValue() instanceof JavaMethod ) {
-										List<SimpleArgument> arguments = poseInvocation.requiredArguments.getValue();
-										poseMethods.put( poseInvocation, arguments );
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+      //Search the UserMethods on the type looking for generated pose animations
+      //Grab the java method invocation (strikePose) inside the pose animation and add it to the methodInvocations list
+      List<AbstractMethod> declaredMethods = AstUtilities.getAllMethods(instanceFactoryValueType);
+      for (AbstractMethod method : declaredMethods) {
+        if (method instanceof UserMethod) {
+          UserMethod userMethod = (UserMethod) method;
+          //Pose animations are GENERATED and have no return value
+          if ((userMethod.managementLevel.getValue() == ManagementLevel.GENERATED) && (userMethod.getReturnType() == JavaType.VOID_TYPE)) {
+            //UserMethod pose animations contain a single JavaMethod in their body called "strikePose"
+            //Grab the first statement in the body and check to see if it's actually a pose call
+            Statement poseStatement = userMethod.body.getValue().statements.get(0);
+            if (poseStatement instanceof ExpressionStatement) {
+              ExpressionStatement expressionStatement = (ExpressionStatement) poseStatement;
+              Expression expression = expressionStatement.expression.getValue();
+              if (expression instanceof MethodInvocation) {
+                MethodInvocation poseInvocation = (MethodInvocation) expression;
+                if ("strikePose".equals(poseInvocation.method.getValue().getName())) {
+                  if (poseInvocation.method.getValue() instanceof JavaMethod) {
+                    List<SimpleArgument> arguments = poseInvocation.requiredArguments.getValue();
+                    poseMethods.put(poseInvocation, arguments);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
 
-		}
-		if( cameraType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD );
-		}
+    }
+    if (cameraType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD);
+    }
 
-		if( groundType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.GROUND_SET_PAINT_METHOD );
-			methods.add( OneShotSorter.GROUND_SET_OPACITY_METHOD );
-		}
-		NebulousIde.nonfree.addRoomMethods( instanceFactoryValueType, methods );
-		if( modelType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( OneShotSorter.MODEL_SET_PAINT_METHOD );
-			methods.add( OneShotSorter.MODEL_SET_OPACITY_METHOD );
-		}
+    if (groundType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.GROUND_SET_PAINT_METHOD);
+      methods.add(OneShotSorter.GROUND_SET_OPACITY_METHOD);
+    }
+    NebulousIde.nonfree.addRoomMethods(instanceFactoryValueType, methods);
+    if (modelType.isAssignableFrom(instanceFactoryValueType)) {
+      methods.add(OneShotSorter.MODEL_SET_PAINT_METHOD);
+      methods.add(OneShotSorter.MODEL_SET_OPACITY_METHOD);
+    }
 
-		List<JavaMethod> sortedMethods = OneShotSorter.SINGLETON.createSortedList( methods );
-		for( JavaMethod method : sortedMethods ) {
-			if( method != null ) {
-				CascadeBlankChild<?> roomFillin = NebulousIde.nonfree.getRoomFillIns( method, this.instanceFactory );
-				//todo
-				if( method == OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
-					children.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( "setPaint".equals( method.getName() ) ) {
-					children.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( roomFillin != null ) {
-					children.add( roomFillin );
-				} else if( "setOpacity".equals( method.getName() ) ) {
-					children.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( "foldWings".equals( method.getName() ) || "spreadWings".equals( method.getName() ) ) {
-					children.add( JavaDefinedStrikePoseMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else {
-					children.add( LocalTransformationMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				}
-			} else {
-				children.add( CascadeLineSeparator.getInstance() );
-			}
-		}
-		for( Map.Entry<MethodInvocation, List<SimpleArgument>> poseMethodEntry : poseMethods.entrySet() ) {
-			children.add( StrikePoseMethodInvocationFillIn.getInstance( this.instanceFactory, (JavaMethod)poseMethodEntry.getKey().method.getValue(), poseMethodEntry.getValue() ) );
-		}
-	}
+    List<JavaMethod> sortedMethods = OneShotSorter.SINGLETON.createSortedList(methods);
+    for (JavaMethod method : sortedMethods) {
+      if (method != null) {
+        CascadeBlankChild<?> roomFillin = NebulousIde.nonfree.getRoomFillIns(method, this.instanceFactory);
+        //todo
+        if (method == OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD) {
+          children.add(AllJointLocalTransformationsMethodInvocationFillIn.getInstance(this.instanceFactory, method));
+        } else if ("setPaint".equals(method.getName())) {
+          children.add(SetPaintMethodInvocationFillIn.getInstance(this.instanceFactory, method));
+        } else if (roomFillin != null) {
+          children.add(roomFillin);
+        } else if ("setOpacity".equals(method.getName())) {
+          children.add(SetOpacityMethodInvocationFillIn.getInstance(this.instanceFactory, method));
+        } else if ("foldWings".equals(method.getName()) || "spreadWings".equals(method.getName())) {
+          children.add(JavaDefinedStrikePoseMethodInvocationFillIn.getInstance(this.instanceFactory, method));
+        } else {
+          children.add(LocalTransformationMethodInvocationFillIn.getInstance(this.instanceFactory, method));
+        }
+      } else {
+        children.add(CascadeLineSeparator.getInstance());
+      }
+    }
+    for (Map.Entry<MethodInvocation, List<SimpleArgument>> poseMethodEntry : poseMethods.entrySet()) {
+      children.add(StrikePoseMethodInvocationFillIn.getInstance(this.instanceFactory, (JavaMethod) poseMethodEntry.getKey().method.getValue(), poseMethodEntry.getValue()));
+    }
+  }
 }

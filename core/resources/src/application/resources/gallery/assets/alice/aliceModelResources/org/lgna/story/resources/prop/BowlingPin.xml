@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="BowlingPin">
+    <BoundingBox>
+        <Min x="-0.0682414099574089" y="6.059169536456466E-4" z="-0.0682414248585701"/>
+        <Max x="0.0682414099574089" y="0.3980923295021057" z="0.0682414248585701"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bowling</Tag>
+        <Tag>pin</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BowlingPin" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -53,24 +53,23 @@ import java.awt.Graphics2D;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public final class UriGalleryIcon extends AbstractIcon {
-	private final Icon base;
+@Deprecated public final class UriGalleryIcon extends AbstractIcon {
+  private final Icon base;
 
-	public UriGalleryIcon( Dimension size, Icon base ) {
-		super( size );
-		this.base = base;
-	}
+  public UriGalleryIcon(Dimension size, Icon base) {
+    super(size);
+    this.base = base;
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2 ) {
-		Icon icon;
-		if( this.base instanceof TrimmedIcon ) {
-			TrimmedIcon trimmedIcon = (TrimmedIcon)this.base;
-			icon = trimmedIcon.getImageIcon();
-		} else {
-			icon = this.base;
-		}
-		icon.paintIcon( c, g2, 0, 0 );
-	}
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2) {
+    Icon icon;
+    if (this.base instanceof TrimmedIcon) {
+      TrimmedIcon trimmedIcon = (TrimmedIcon) this.base;
+      icon = trimmedIcon.getImageIcon();
+    } else {
+      icon = this.base;
+    }
+    icon.paintIcon(c, g2, 0, 0);
+  }
 }

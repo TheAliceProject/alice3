@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-
 import java.io.File;
 import java.util.UUID;
 
@@ -52,7 +50,7 @@ import java.util.UUID;
  */
 abstract class DirectoryUriListTab extends RefreshableListUriTab {
 
-	DirectoryUriListTab( UUID migrationId, File directory ) {
-		super( migrationId, new DirectoryUriListData( directory ) );
-	}
+  DirectoryUriListTab(UUID migrationId, File directory) {
+    super(migrationId, new DirectoryUriListData(directory));
+  }
 }

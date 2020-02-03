@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class VariablesSeparatorModel extends CascadeLabelSeparator {
-	private static class SingletonHolder {
-		private static VariablesSeparatorModel instance = new VariablesSeparatorModel();
-	}
+  private static class SingletonHolder {
+    private static VariablesSeparatorModel instance = new VariablesSeparatorModel();
+  }
 
-	public static VariablesSeparatorModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static VariablesSeparatorModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private VariablesSeparatorModel() {
-		super( UUID.fromString( "79d62ce6-1a1c-4477-b0ae-bceb4c067d2c" ) );
-	}
+  private VariablesSeparatorModel() {
+    super(UUID.fromString("79d62ce6-1a1c-4477-b0ae-bceb4c067d2c"));
+  }
 }

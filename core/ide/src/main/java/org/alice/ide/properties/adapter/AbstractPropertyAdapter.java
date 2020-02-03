@@ -56,167 +56,167 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 public abstract class AbstractPropertyAdapter<P, O> {
-	public static interface ValueChangeObserver<P> {
-		public void valueChanged( P newValue );
-	}
+  public static interface ValueChangeObserver<P> {
+    public void valueChanged(P newValue);
+  }
 
-	protected O instance;
-	protected String repr;
-	protected String reprKey;
-	protected P lastSetValue;
-	private boolean isExpressionSet = false;
-	protected StandardExpressionState expressionState;
+  protected O instance;
+  protected String repr;
+  protected String reprKey;
+  protected P lastSetValue;
+  private boolean isExpressionSet = false;
+  protected StandardExpressionState expressionState;
 
-	public static String getLocalizedString( String key ) {
-		ResourceBundle resourceBundle = ResourceBundle.getBundle( AbstractPropertyAdapter.class.getPackage().getName() + ".propertyNames" );
-		if( key != null ) {
-			try {
-				key = resourceBundle.getString( key );
-			} catch( MissingResourceException e ) {
-				e.printStackTrace();
-			}
-		}
-		return key;
-	}
+  public static String getLocalizedString(String key) {
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(AbstractPropertyAdapter.class.getPackage().getName() + ".propertyNames");
+    if (key != null) {
+      try {
+        key = resourceBundle.getString(key);
+      } catch (MissingResourceException e) {
+        e.printStackTrace();
+      }
+    }
+    return key;
+  }
 
-	protected String getCurrentValueLabelString() {
-		String val = getLocalizedString( "currentValue" );
-		return " (" + val + ")";
-	}
+  protected String getCurrentValueLabelString() {
+    String val = getLocalizedString("currentValue");
+    return " (" + val + ")";
+  }
 
-	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
+  protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
 
-	public AbstractPropertyAdapter( String repr, O instance, StandardExpressionState expressionState ) {
-		this.repr = repr;
-		this.reprKey = this.repr.replaceAll( "\\s+", "" ); // emove all the spaces from the repr to make a valid key for localization
-		this.expressionState = expressionState;
-		this.setInstance( instance );
-		this.initializeExpressionState();
-	}
+  public AbstractPropertyAdapter(String repr, O instance, StandardExpressionState expressionState) {
+    this.repr = repr;
+    this.reprKey = this.repr.replaceAll("\\s+", ""); // emove all the spaces from the repr to make a valid key for localization
+    this.expressionState = expressionState;
+    this.setInstance(instance);
+    this.initializeExpressionState();
+  }
 
-	public String getLocalizedRepr() {
-		String val = getLocalizedString( this.reprKey );
-		return val;
-	}
+  public String getLocalizedRepr() {
+    String val = getLocalizedString(this.reprKey);
+    return val;
+  }
 
-	public String getRepr() {
-		return this.repr;
-	}
+  public String getRepr() {
+    return this.repr;
+  }
 
-	public String getUndoRedoDescription() {
-		return getRepr();
-	}
+  public String getUndoRedoDescription() {
+    return getRepr();
+  }
 
-	public void setInstance( O instance ) {
-		if( this.instance != null ) {
-			this.stopListening();
-		}
-		this.instance = instance;
-		this.startListening();
-	}
+  public void setInstance(O instance) {
+    if (this.instance != null) {
+      this.stopListening();
+    }
+    this.instance = instance;
+    this.startListening();
+  }
 
-	public O getInstance() {
-		return this.instance;
-	}
+  public O getInstance() {
+    return this.instance;
+  }
 
-	public void setValue( P newValue ) {
-		this.lastSetValue = newValue;
-	}
+  public void setValue(P newValue) {
+    this.lastSetValue = newValue;
+  }
 
-	public P getLastSetValue() {
-		return this.lastSetValue;
-	}
+  public P getLastSetValue() {
+    return this.lastSetValue;
+  }
 
-	public abstract P getValue();
+  public abstract P getValue();
 
-	public abstract Class<P> getPropertyType();
+  public abstract Class<P> getPropertyType();
 
-	public abstract P getValueCopyIfMutable();
+  public abstract P getValueCopyIfMutable();
 
-	public void addValueChangeObserver( ValueChangeObserver<P> observer ) {
-		synchronized( this.valueChangeObservers ) {
-			if( !this.valueChangeObservers.contains( observer ) ) {
-				this.valueChangeObservers.add( observer );
-			}
-		}
-	}
+  public void addValueChangeObserver(ValueChangeObserver<P> observer) {
+    synchronized (this.valueChangeObservers) {
+      if (!this.valueChangeObservers.contains(observer)) {
+        this.valueChangeObservers.add(observer);
+      }
+    }
+  }
 
-	public void addAndInvokeValueChangeObserver( ValueChangeObserver<P> observer ) {
-		this.addValueChangeObserver( observer );
-		observer.valueChanged( this.getValue() );
-	}
+  public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer) {
+    this.addValueChangeObserver(observer);
+    observer.valueChanged(this.getValue());
+  }
 
-	public void removeValueChangeObserver( ValueChangeObserver<P> observer ) {
-		synchronized( this.valueChangeObservers ) {
-			this.valueChangeObservers.remove( observer );
-		}
-	}
+  public void removeValueChangeObserver(ValueChangeObserver<P> observer) {
+    synchronized (this.valueChangeObservers) {
+      this.valueChangeObservers.remove(observer);
+    }
+  }
 
-	public void setExpressionState( StandardExpressionState expressionState ) {
-		this.expressionState = expressionState;
-		this.setExpressionValue( this.getValue() );
-	}
+  public void setExpressionState(StandardExpressionState expressionState) {
+    this.expressionState = expressionState;
+    this.setExpressionValue(this.getValue());
+  }
 
-	public void clearListeners() {
-		synchronized( this.valueChangeObservers ) {
-			this.valueChangeObservers.clear();
-		}
-	}
+  public void clearListeners() {
+    synchronized (this.valueChangeObservers) {
+      this.valueChangeObservers.clear();
+    }
+  }
 
-	public StandardExpressionState getExpressionState() {
-		return this.expressionState;
-	}
+  public StandardExpressionState getExpressionState() {
+    return this.expressionState;
+  }
 
-	public void startListening() {
-		startPropertyListening();
-	}
+  public void startListening() {
+    startPropertyListening();
+  }
 
-	public void stopListening() {
-		stopPropertyListening();
-	}
+  public void stopListening() {
+    stopPropertyListening();
+  }
 
-	protected void startPropertyListening() {
-	}
+  protected void startPropertyListening() {
+  }
 
-	protected void stopPropertyListening() {
-	}
+  protected void stopPropertyListening() {
+  }
 
-	protected void initializeExpressionState() {
-		this.setExpressionValue( this.getValue() );
-	}
+  protected void initializeExpressionState() {
+    this.setExpressionValue(this.getValue());
+  }
 
-	protected void setExpressionValue( P value ) {
-		if( this.expressionState != null ) {
-			try {
-				Expression expressionValue = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
-				this.expressionState.setValueTransactionlessly( expressionValue );
+  protected void setExpressionValue(P value) {
+    if (this.expressionState != null) {
+      try {
+        Expression expressionValue = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(this.getValue());
+        this.expressionState.setValueTransactionlessly(expressionValue);
 
-			} catch( CannotCreateExpressionException e ) {
-				this.expressionState = null;
-			}
-		}
-	}
+      } catch (CannotCreateExpressionException e) {
+        this.expressionState = null;
+      }
+    }
+  }
 
-	protected void intermediateSetValue( Object value ) {
-		this.setValue( (P)value );
-	}
+  protected void intermediateSetValue(Object value) {
+    this.setValue((P) value);
+  }
 
-	protected Object evaluateExpression( Expression expression ) {
-		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-		Object[] values = vm.ENTRY_POINT_evaluate( null, new Expression[] { expression } );
-		assert values.length == 1;
-		return values[ 0 ];
-	}
+  protected Object evaluateExpression(Expression expression) {
+    VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+    Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
+    assert values.length == 1;
+    return values[0];
+  }
 
-	protected void notifyValueObservers( P newValue ) {
-		if( !isExpressionSet ) {
-			this.setExpressionValue( newValue );
-		}
-		synchronized( this.valueChangeObservers ) {
-			for( ValueChangeObserver<P> observer : this.valueChangeObservers ) {
-				observer.valueChanged( newValue );
-			}
-		}
-	}
+  protected void notifyValueObservers(P newValue) {
+    if (!isExpressionSet) {
+      this.setExpressionValue(newValue);
+    }
+    synchronized (this.valueChangeObservers) {
+      for (ValueChangeObserver<P> observer : this.valueChangeObservers) {
+        observer.valueChanged(newValue);
+      }
+    }
+  }
 
 }

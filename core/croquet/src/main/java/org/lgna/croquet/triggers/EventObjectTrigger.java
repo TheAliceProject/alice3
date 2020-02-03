@@ -57,70 +57,70 @@ import java.util.EventObject;
  * @author Dennis Cosgrove
  */
 public abstract class EventObjectTrigger<E extends EventObject> extends Trigger {
-	private final transient ViewController<?, ?> viewController;
-	private final transient E event;
+  private final transient ViewController<?, ?> viewController;
+  private final transient E event;
 
-	public EventObjectTrigger( UserActivity userActivity, ViewController<?, ?> viewController, E event ) {
-		super(userActivity);
-		this.viewController = viewController;
-		this.event = event;
-	}
+  public EventObjectTrigger(UserActivity userActivity, ViewController<?, ?> viewController, E event) {
+    super(userActivity);
+    this.viewController = viewController;
+    this.event = event;
+  }
 
-	public EventObjectTrigger( ViewController<?, ?> viewController, E event ) {
-		this.viewController = viewController;
-		this.event = event;
-	}
+  public EventObjectTrigger(ViewController<?, ?> viewController, E event) {
+    this.viewController = viewController;
+    this.event = event;
+  }
 
-	public E getEvent() {
-		return this.event;
-	}
+  public E getEvent() {
+    return this.event;
+  }
 
-	protected Point getPoint() {
-		return null;
-	}
+  protected Point getPoint() {
+    return null;
+  }
 
-	@Override
-	public ViewController<?, ?> getViewController() {
-		if( this.viewController != null ) {
-			return this.viewController;
-		} else {
-			Object source = this.event != null ? this.event.getSource() : null;
-			if( source instanceof Component ) {
-				Component awtComponent = (Component)source;
-				AwtComponentView<?> component = AwtComponentView.lookup( awtComponent );
-				if( component instanceof ViewController ) {
-					return (ViewController<?, ?>)component;
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}
+  @Override
+  public ViewController<?, ?> getViewController() {
+    if (this.viewController != null) {
+      return this.viewController;
+    } else {
+      Object source = this.event != null ? this.event.getSource() : null;
+      if (source instanceof Component) {
+        Component awtComponent = (Component) source;
+        AwtComponentView<?> component = AwtComponentView.lookup(awtComponent);
+        if (component instanceof ViewController) {
+          return (ViewController<?, ?>) component;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+  }
 
-	protected Component getComponent() {
-		if( this.viewController != null ) {
-			return this.viewController.getAwtComponent();
-		} else {
-			Object source = this.event.getSource();
-			if( source instanceof Component ) {
-				return (Component)source;
-			} else {
-				return null;
-			}
-		}
-	}
+  protected Component getComponent() {
+    if (this.viewController != null) {
+      return this.viewController.getAwtComponent();
+    } else {
+      Object source = this.event.getSource();
+      if (source instanceof Component) {
+        return (Component) source;
+      } else {
+        return null;
+      }
+    }
+  }
 
-	@Override
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		Point pt = this.getPoint();
-		Component invoker = this.getComponent();
-		if( invoker.isShowing() ) {
-			//pass
-		} else {
-			invoker = null;
-		}
-		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, pt );
-	}
+  @Override
+  public void showPopupMenu(PopupMenu popupMenu) {
+    Point pt = this.getPoint();
+    Component invoker = this.getComponent();
+    if (invoker.isShowing()) {
+      //pass
+    } else {
+      invoker = null;
+    }
+    PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), invoker, pt);
+  }
 }

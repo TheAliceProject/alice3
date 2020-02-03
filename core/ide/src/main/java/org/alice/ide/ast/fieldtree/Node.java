@@ -49,42 +49,42 @@ import org.lgna.project.ast.AbstractDeclaration;
  * @author Dennis Cosgrove
  */
 public abstract class Node<N extends AbstractDeclaration> implements Comparable<Node<N>> {
-	private final TypeNode parent;
-	private final N declaration;
+  private final TypeNode parent;
+  private final N declaration;
 
-	public Node( TypeNode parent, N declaration ) {
-		this.parent = parent;
-		this.declaration = declaration;
-	}
+  public Node(TypeNode parent, N declaration) {
+    this.parent = parent;
+    this.declaration = declaration;
+  }
 
-	public TypeNode getParent() {
-		return this.parent;
-	}
+  public TypeNode getParent() {
+    return this.parent;
+  }
 
-	public N getDeclaration() {
-		return this.declaration;
-	}
+  public N getDeclaration() {
+    return this.declaration;
+  }
 
-	protected void append( StringBuilder sb, int depth ) {
-		for( int i = 0; i < depth; i++ ) {
-			sb.append( "\t" );
-		}
-		sb.append( this.declaration );
-		sb.append( "\n" );
-	}
+  protected void append(StringBuilder sb, int depth) {
+    for (int i = 0; i < depth; i++) {
+      sb.append("\t");
+    }
+    sb.append(this.declaration);
+    sb.append("\n");
+  }
 
-	@Override
-	public int compareTo( Node<N> other ) {
-		return this.getDeclaration().getName().toLowerCase().compareTo( other.getDeclaration().getName().toLowerCase() );
-	}
+  @Override
+  public int compareTo(Node<N> other) {
+    return this.getDeclaration().getName().toLowerCase().compareTo(other.getDeclaration().getName().toLowerCase());
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( declaration == null ? " - " : declaration.getName() );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(declaration == null ? " - " : declaration.getName());
+    sb.append("]");
+    return sb.toString();
+  }
 }

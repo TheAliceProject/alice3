@@ -53,44 +53,44 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMutableListData<T> extends ListData<T> {
-	private final List<ListDataListener> listeners = Lists.newCopyOnWriteArrayList();
+  private final List<ListDataListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public AbstractMutableListData( ItemCodec<T> itemCodec ) {
-		super( itemCodec );
-	}
+  public AbstractMutableListData(ItemCodec<T> itemCodec) {
+    super(itemCodec);
+  }
 
-	@Override
-	public final void addListener( ListDataListener listener ) {
-		this.listeners.add( listener );
-	}
+  @Override
+  public final void addListener(ListDataListener listener) {
+    this.listeners.add(listener);
+  }
 
-	@Override
-	public final void removeListener( ListDataListener listener ) {
-		this.listeners.remove( listener );
-	}
+  @Override
+  public final void removeListener(ListDataListener listener) {
+    this.listeners.remove(listener);
+  }
 
-	private void fireIntervalAdded( int indexA, int indexB ) {
-		ListDataEvent e = new ListDataEvent( this, ListDataEvent.INTERVAL_ADDED, indexA, indexB );
-		for( ListDataListener listener : this.listeners ) {
-			listener.intervalAdded( e );
-		}
-	}
+  private void fireIntervalAdded(int indexA, int indexB) {
+    ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, indexA, indexB);
+    for (ListDataListener listener : this.listeners) {
+      listener.intervalAdded(e);
+    }
+  }
 
-	private void fireIntervalRemoved( int indexA, int indexB ) {
-		ListDataEvent e = new ListDataEvent( this, ListDataEvent.INTERVAL_REMOVED, indexA, indexB );
-		for( ListDataListener listener : this.listeners ) {
-			listener.intervalRemoved( e );
-		}
-	}
+  private void fireIntervalRemoved(int indexA, int indexB) {
+    ListDataEvent e = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, indexA, indexB);
+    for (ListDataListener listener : this.listeners) {
+      listener.intervalRemoved(e);
+    }
+  }
 
-	private void fireContentsChanged( int indexA, int indexB ) {
-		ListDataEvent e = new ListDataEvent( this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
-		for( ListDataListener listener : this.listeners ) {
-			listener.contentsChanged( e );
-		}
-	}
+  private void fireContentsChanged(int indexA, int indexB) {
+    ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB);
+    for (ListDataListener listener : this.listeners) {
+      listener.contentsChanged(e);
+    }
+  }
 
-	protected final void fireContentsChanged() {
-		this.fireContentsChanged( 0, this.getItemCount() - 1 );
-	}
+  protected final void fireContentsChanged() {
+    this.fireContentsChanged(0, this.getItemCount() - 1);
+  }
 }

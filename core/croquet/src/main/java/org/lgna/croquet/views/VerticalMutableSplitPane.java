@@ -50,7 +50,7 @@ import javax.swing.JSplitPane;
  * @author Dennis Cosgrove
  */
 public class VerticalMutableSplitPane extends MutableSplitPane {
-	public VerticalMutableSplitPane( MutableSplitComposite splitComposite ) {
-		super( splitComposite, JSplitPane.VERTICAL_SPLIT );
-	}
+  public VerticalMutableSplitPane(MutableSplitComposite splitComposite) {
+    super(splitComposite, JSplitPane.VERTICAL_SPLIT);
+  }
 }

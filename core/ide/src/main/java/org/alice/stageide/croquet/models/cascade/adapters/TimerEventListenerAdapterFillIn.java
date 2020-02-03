@@ -51,15 +51,15 @@ import java.util.UUID;
  */
 public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn {
 
-	private static class SingletonHolder {
-		private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
+  }
 
-	public static TimerEventListenerAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TimerEventListenerAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public TimerEventListenerAdapterFillIn() {
-		super( UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ), TimeListener.class );
-	}
+  public TimerEventListenerAdapterFillIn() {
+    super(UUID.fromString("0c3b6e28-affd-43a6-b646-acf28adf7cbe"), TimeListener.class);
+  }
 }

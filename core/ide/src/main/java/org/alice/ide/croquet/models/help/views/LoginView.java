@@ -57,44 +57,44 @@ import org.lgna.croquet.views.TextField;
  * @author Matt May
  */
 public class LoginView extends FormPanel {
-	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			passwordField.setExposed( e.getNextValue() );
-		}
-	};
-	private final TextField userNameField;
-	private final PasswordField passwordField;
+  private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      passwordField.setExposed(e.getNextValue());
+    }
+  };
+  private final TextField userNameField;
+  private final PasswordField passwordField;
 
-	public LoginView( AbstractLoginComposite bugLoginComposite ) {
-		super( bugLoginComposite );
-		this.userNameField = bugLoginComposite.getUserNameState().createTextField();
-		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
-		this.setMinimumPreferredHeight( 240 );
-	}
+  public LoginView(AbstractLoginComposite bugLoginComposite) {
+    super(bugLoginComposite);
+    this.userNameField = bugLoginComposite.getUserNameState().createTextField();
+    this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
+    this.setMinimumPreferredHeight(240);
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		AbstractLoginComposite loginComposite = (AbstractLoginComposite)this.getComposite();
-		rows.add( new LabeledFormRow( loginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
-		rows.add( new LabeledFormRow( loginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
-		rows.add( new LabeledFormRow( null, loginComposite.getDisplayPasswordValue().createCheckBox() ) );
-		rows.add( new LabeledFormRow( null, new Label() ) );
-		rows.add( new LabeledFormRow( null, loginComposite.getIsRememberingState().createCheckBox() ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    AbstractLoginComposite loginComposite = (AbstractLoginComposite) this.getComposite();
+    rows.add(new LabeledFormRow(loginComposite.getUserNameState().getSidekickLabel(), this.userNameField));
+    rows.add(new LabeledFormRow(loginComposite.getPasswordState().getSidekickLabel(), this.passwordField));
+    rows.add(new LabeledFormRow(null, loginComposite.getDisplayPasswordValue().createCheckBox()));
+    rows.add(new LabeledFormRow(null, new Label()));
+    rows.add(new LabeledFormRow(null, loginComposite.getIsRememberingState().createCheckBox()));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		AbstractLoginComposite bugLoginComposite = (AbstractLoginComposite)this.getComposite();
-		bugLoginComposite.getDisplayPasswordValue().addAndInvokeNewSchoolValueListener( this.isPasswordExposedListener );
-		this.userNameField.requestFocus();
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    AbstractLoginComposite bugLoginComposite = (AbstractLoginComposite) this.getComposite();
+    bugLoginComposite.getDisplayPasswordValue().addAndInvokeNewSchoolValueListener(this.isPasswordExposedListener);
+    this.userNameField.requestFocus();
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		AbstractLoginComposite loginComposite = (AbstractLoginComposite)this.getComposite();
-		loginComposite.getDisplayPasswordValue().removeNewSchoolValueListener( this.isPasswordExposedListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    AbstractLoginComposite loginComposite = (AbstractLoginComposite) this.getComposite();
+    loginComposite.getDisplayPasswordValue().removeNewSchoolValueListener(this.isPasswordExposedListener);
+  }
 }

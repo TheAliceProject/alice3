@@ -59,31 +59,31 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceFillerInner<R extends Resource> extends ExpressionFillerInner {
-	public ResourceFillerInner( Class<R> cls ) {
-		super( cls );
-	}
+  public ResourceFillerInner(Class<R> cls) {
+    super(cls);
+  }
 
-	protected abstract CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( R resource );
+  protected abstract CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn(R resource);
 
-	protected abstract CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn();
+  protected abstract CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn();
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		if( project != null ) {
-			Set<Resource> resources = project.getResources();
-			if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
-				synchronized( resources ) {
-					for( Resource resource : resources ) {
-						if( this.getType().isAssignableFrom( resource.getClass() ) ) {
-							items.add( this.getResourceExpressionFillIn( (R)resource ) );
-						}
-					}
-				}
-				items.add( CascadeLineSeparator.getInstance() );
-			}
-		}
-		items.add( this.getImportNewResourceFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    if (project != null) {
+      Set<Resource> resources = project.getResources();
+      if ((resources != null) && (resources.isEmpty() == false)) {
+        synchronized (resources) {
+          for (Resource resource : resources) {
+            if (this.getType().isAssignableFrom(resource.getClass())) {
+              items.add(this.getResourceExpressionFillIn((R) resource));
+            }
+          }
+        }
+        items.add(CascadeLineSeparator.getInstance());
+      }
+    }
+    items.add(this.getImportNewResourceFillIn());
+  }
 }

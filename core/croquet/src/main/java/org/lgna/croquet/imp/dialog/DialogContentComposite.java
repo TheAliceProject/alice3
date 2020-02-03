@@ -52,26 +52,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DialogContentComposite<V extends DialogContentPane> extends SimpleComposite<V> {
-	private final AdornedDialogCoreComposite<?, ?> coreComposite;
+  private final AdornedDialogCoreComposite<?, ?> coreComposite;
 
-	public DialogContentComposite( UUID migrationId, AdornedDialogCoreComposite<?, ?> coreComposite ) {
-		super( migrationId );
-		this.coreComposite = coreComposite;
-	}
+  public DialogContentComposite(UUID migrationId, AdornedDialogCoreComposite<?, ?> coreComposite) {
+    super(migrationId);
+    this.coreComposite = coreComposite;
+  }
 
-	public AdornedDialogCoreComposite<?, ?> getCoreComposite() {
-		return this.coreComposite;
-	}
+  public AdornedDialogCoreComposite<?, ?> getCoreComposite() {
+    return this.coreComposite;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.coreComposite.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.coreComposite.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.coreComposite.handlePostDeactivation();
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.coreComposite.handlePostDeactivation();
+    super.handlePostDeactivation();
+  }
 }

@@ -48,28 +48,28 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class NumberProperty extends InstanceProperty<Number> {
-	public NumberProperty( InstancePropertyOwner owner, Number value, boolean isNaNAcceptable ) {
-		super( owner, value );
-		this.isNaNAcceptable = isNaNAcceptable;
-	}
+  public NumberProperty(InstancePropertyOwner owner, Number value, boolean isNaNAcceptable) {
+    super(owner, value);
+    this.isNaNAcceptable = isNaNAcceptable;
+  }
 
-	public NumberProperty( InstancePropertyOwner owner, Number value ) {
-		this( owner, value, false );
-	}
+  public NumberProperty(InstancePropertyOwner owner, Number value) {
+    this(owner, value, false);
+  }
 
-	@Override
-	public void setValue( Number value ) {
-		assert value != null : this;
-		if( value instanceof Float ) {
-			assert ( Float.isNaN( (Float)value ) == false ) || this.isNaNAcceptable : this;
-		}
-		if( value instanceof Double ) {
-			assert ( Double.isNaN( (Double)value ) == false ) || this.isNaNAcceptable : this;
-		}
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(Number value) {
+    assert value != null : this;
+    if (value instanceof Float) {
+      assert (Float.isNaN((Float) value) == false) || this.isNaNAcceptable : this;
+    }
+    if (value instanceof Double) {
+      assert (Double.isNaN((Double) value) == false) || this.isNaNAcceptable : this;
+    }
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 
-	private final boolean isNaNAcceptable;
+  private final boolean isNaNAcceptable;
 }

@@ -69,97 +69,93 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class LocalizeReviewFrameView extends BorderPanel {
-	public LocalizeReviewFrameView( LocalizeReviewFrame composite ) {
-		super( composite );
-		ComboBox<Locale> comboBox = composite.getLocaleState().getPrepModel().createComboBox();
-		comboBox.setRenderer( new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-				Locale locale = (Locale)value;
-				this.setText( locale.getDisplayName( locale ) + " (" + locale.getDisplayName( Locale.US ) + ")" );
-				return this;
-			}
-		} );
+  public LocalizeReviewFrameView(LocalizeReviewFrame composite) {
+    super(composite);
+    ComboBox<Locale> comboBox = composite.getLocaleState().getPrepModel().createComboBox();
+    comboBox.setRenderer(new DefaultListCellRenderer() {
+      @Override
+      public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        Locale locale = (Locale) value;
+        this.setText(locale.getDisplayName(locale) + " (" + locale.getDisplayName(Locale.US) + ")");
+        return this;
+      }
+    });
 
-		this.addPageStartComponent( new LineAxisPanel(
-				composite.getLocaleState().getSidekickLabel().createLabel(),
-				comboBox,
-				composite.getIsIncludingUntranslatedState().createCheckBox()
-				) );
-		jTable = new JTable( composite.getTableModel() );
-		TableColumnModel tableColumnModel = jTable.getColumnModel();
-		TableColumn columnIndex = tableColumnModel.getColumn( 0 );
-		columnIndex.setHeaderValue( "index" );
-		columnIndex.setMaxWidth( 64 );
-		TableColumn columnContext = tableColumnModel.getColumn( 1 );
-		columnContext.setHeaderValue( "Context" );
-		TableColumn columnOriginal = tableColumnModel.getColumn( 2 );
-		columnOriginal.setHeaderValue( "Original text" );
-		TableColumn columnTranslated = tableColumnModel.getColumn( 3 );
-		columnTranslated.setHeaderValue( "Translated text" );
+    this.addPageStartComponent(new LineAxisPanel(composite.getLocaleState().getSidekickLabel().createLabel(), comboBox, composite.getIsIncludingUntranslatedState().createCheckBox()));
+    jTable = new JTable(composite.getTableModel());
+    TableColumnModel tableColumnModel = jTable.getColumnModel();
+    TableColumn columnIndex = tableColumnModel.getColumn(0);
+    columnIndex.setHeaderValue("index");
+    columnIndex.setMaxWidth(64);
+    TableColumn columnContext = tableColumnModel.getColumn(1);
+    columnContext.setHeaderValue("Context");
+    TableColumn columnOriginal = tableColumnModel.getColumn(2);
+    columnOriginal.setHeaderValue("Original text");
+    TableColumn columnTranslated = tableColumnModel.getColumn(3);
+    columnTranslated.setHeaderValue("Translated text");
 
-		TableColumn columnReview = tableColumnModel.getColumn( 4 );
-		columnReview.setHeaderValue( "Review" );
+    TableColumn columnReview = tableColumnModel.getColumn(4);
+    columnReview.setHeaderValue("Review");
 
-		final JLabel label = new JLabel( "<html><a href=\"\">review</a> [web]</html>" );
-		columnReview.setCellRenderer( new TableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
-				return label;
-			}
-		} );
-		JScrollPane jScrollPane = new JScrollPane( jTable );
-		this.getAwtComponent().add( jScrollPane, BorderLayout.CENTER );
-	}
+    final JLabel label = new JLabel("<html><a href=\"\">review</a> [web]</html>");
+    columnReview.setCellRenderer(new TableCellRenderer() {
+      @Override
+      public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        return label;
+      }
+    });
+    JScrollPane jScrollPane = new JScrollPane(jTable);
+    this.getAwtComponent().add(jScrollPane, BorderLayout.CENTER);
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		this.jTable.addMouseListener( this.mouseListener );
-		super.handleCompositePreActivation();
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    this.jTable.addMouseListener(this.mouseListener);
+    super.handleCompositePreActivation();
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		super.handleCompositePostDeactivation();
-		this.jTable.removeMouseListener( this.mouseListener );
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    super.handleCompositePostDeactivation();
+    this.jTable.removeMouseListener(this.mouseListener);
+  }
 
-	private final JTable jTable;
-	private final MouseListener mouseListener = new MouseListener() {
-		@Override
-		public void mousePressed( MouseEvent e ) {
-		}
+  private final JTable jTable;
+  private final MouseListener mouseListener = new MouseListener() {
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseReleased( MouseEvent e ) {
-			Point pt = e.getPoint();
-			int columnIndex = jTable.columnAtPoint( pt );
-			if( columnIndex == 4 ) {
-				int rowIndex = jTable.rowAtPoint( pt );
-				if( rowIndex >= 0 ) {
-					LocalizeReviewFrame composite = (LocalizeReviewFrame)getComposite();
-					URI uri = composite.createUri( rowIndex );
-					try {
-						DesktopUtilities.browse( uri );
-					} catch( Exception exc ) {
-						throw new RuntimeException( exc );
-					}
-				}
-				Logger.outln( rowIndex, columnIndex, jTable.getModel().getValueAt( rowIndex, columnIndex ) );
-			}
-		}
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      Point pt = e.getPoint();
+      int columnIndex = jTable.columnAtPoint(pt);
+      if (columnIndex == 4) {
+        int rowIndex = jTable.rowAtPoint(pt);
+        if (rowIndex >= 0) {
+          LocalizeReviewFrame composite = (LocalizeReviewFrame) getComposite();
+          URI uri = composite.createUri(rowIndex);
+          try {
+            DesktopUtilities.browse(uri);
+          } catch (Exception exc) {
+            throw new RuntimeException(exc);
+          }
+        }
+        Logger.outln(rowIndex, columnIndex, jTable.getModel().getValueAt(rowIndex, columnIndex));
+      }
+    }
 
-		@Override
-		public void mouseClicked( MouseEvent e ) {
-		}
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseEntered( MouseEvent e ) {
-		}
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		@Override
-		public void mouseExited( MouseEvent e ) {
-		}
-	};
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+  };
 }

@@ -52,37 +52,37 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropReceptor implements DropReceptor {
-	private final List<DropRejector> dropRejectors = Lists.newCopyOnWriteArrayList();
+  private final List<DropRejector> dropRejectors = Lists.newCopyOnWriteArrayList();
 
-	@Override
-	public void addDropRejector( DropRejector dropRejector ) {
-		this.dropRejectors.add( dropRejector );
-	}
+  @Override
+  public void addDropRejector(DropRejector dropRejector) {
+    this.dropRejectors.add(dropRejector);
+  }
 
-	@Override
-	public void removeDropRejector( DropRejector dropRejector ) {
-		this.dropRejectors.remove( dropRejector );
-	}
+  @Override
+  public void removeDropRejector(DropRejector dropRejector) {
+    this.dropRejectors.remove(dropRejector);
+  }
 
-	@Override
-	public void clearDropRejectors() {
-		this.dropRejectors.clear();
-	}
+  @Override
+  public void clearDropRejectors() {
+    this.dropRejectors.clear();
+  }
 
-	@Override
-	public List<DropRejector> getDropRejectors() {
-		return Collections.unmodifiableList( this.dropRejectors );
-	}
+  @Override
+  public List<DropRejector> getDropRejectors() {
+    return Collections.unmodifiableList(this.dropRejectors);
+  }
 
-	protected abstract Triggerable dragDroppedPostRejectorCheck( DragStep step );
+  protected abstract Triggerable dragDroppedPostRejectorCheck(DragStep step);
 
-	@Override
-	public final Triggerable dragDropped( DragStep step ) {
-		for( DropRejector rejector : this.dropRejectors ) {
-			if( rejector.isRejected( step ) ) {
-				return null;
-			}
-		}
-		return this.dragDroppedPostRejectorCheck( step );
-	}
+  @Override
+  public final Triggerable dragDropped(DragStep step) {
+    for (DropRejector rejector : this.dropRejectors) {
+      if (rejector.isRejected(step)) {
+        return null;
+      }
+    }
+    return this.dragDroppedPostRejectorCheck(step);
+  }
 }

@@ -49,15 +49,15 @@ import java.nio.CharBuffer;
  * @author Dennis Cosgrove
  */
 public class CharBufferProperty extends PrimitiveBufferProperty<CharBuffer> {
-	public CharBufferProperty( InstancePropertyOwner owner, CharBuffer value ) {
-		super( owner, value );
-	}
+  public CharBufferProperty(InstancePropertyOwner owner, CharBuffer value) {
+    super(owner, value);
+  }
 
-	public CharBufferProperty( InstancePropertyOwner owner, char[] value ) {
-		super( owner, CharBuffer.wrap( value ) );
-	}
+  public CharBufferProperty(InstancePropertyOwner owner, char[] value) {
+    super(owner, CharBuffer.wrap(value));
+  }
 
-	public final void setValue( char[] value ) {
-		this.setValue( CharBuffer.wrap( value ) );
-	}
+  public final void setValue(char[] value) {
+    this.setValue(CharBuffer.wrap(value));
+  }
 }

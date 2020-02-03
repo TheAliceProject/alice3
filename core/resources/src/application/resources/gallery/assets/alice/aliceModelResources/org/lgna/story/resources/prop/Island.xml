@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Island">
+    <BoundingBox>
+        <Min x="-7.404661655426025" y="-0.025155792012810707" z="-6.821689128875732"/>
+        <Max x="7.404661655426025" y="3.7719976902008057" z="5.561487197875977"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>island</Tag>
+        <Tag>nordic island</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Flat" resourceName="FLAT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-7.404661655426025" y="-0.025155792012810707" z="-5.561485290527344"/>
+            <Max x="7.404661655426025" y="1.5336376428604126" z="5.561487197875977"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.4453930854797363" y="0.0" z="-2.5645484924316406"/>
+            <Max x="3.2816953659057617" y="3.7719976902008057" z="2.3113162517547607"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Curved" resourceName="CURVED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.13570237159729" y="0.0" z="-6.821689128875732"/>
+            <Max x="3.185122013092041" y="3.770066499710083" z="1.751843810081482"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

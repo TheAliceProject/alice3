@@ -50,41 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LettersKeyCascadeMenu extends AbstractKeyCascadeMenu {
-	private static class SingletonHolder {
-		private static LettersKeyCascadeMenu instance = new LettersKeyCascadeMenu();
-	}
+  private static class SingletonHolder {
+    private static LettersKeyCascadeMenu instance = new LettersKeyCascadeMenu();
+  }
 
-	public static LettersKeyCascadeMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static LettersKeyCascadeMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private LettersKeyCascadeMenu() {
-		super( UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ),
-				Key.A,
-				Key.B,
-				Key.C,
-				Key.D,
-				Key.E,
-				Key.F,
-				Key.G,
-				Key.H,
-				Key.I,
-				Key.J,
-				Key.K,
-				Key.L,
-				Key.M,
-				Key.N,
-				Key.O,
-				Key.P,
-				Key.Q,
-				Key.R,
-				Key.S,
-				Key.T,
-				Key.U,
-				Key.V,
-				Key.W,
-				Key.X,
-				Key.Y,
-				Key.Z );
-	}
+  private LettersKeyCascadeMenu() {
+    super(UUID.fromString("7acafa54-f6ed-4c69-b5fe-b00e68c549a6"), Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J, Key.K, Key.L, Key.M, Key.N, Key.O, Key.P, Key.Q, Key.R, Key.S, Key.T, Key.U, Key.V, Key.W, Key.X, Key.Y, Key.Z);
+  }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="IceBlockHalf">
+    <BoundingBox>
+        <Min x="-0.6891905665397644" y="-0.03115735948085785" z="-0.7303032279014587"/>
+        <Max x="0.6891905665397644" y="2.3195712566375732" z="0.7906445860862732"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>ice block</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Front" resourceName="FRONT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6885696053504944" y="-0.027087707072496414" z="-0.1848117560148239"/>
+            <Max x="0.6885696053504944" y="2.3195712566375732" z="0.7906445860862732"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Back" resourceName="BACK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6891905665397644" y="-0.03115735948085785" z="-0.7303032279014587"/>
+            <Max x="0.6891905665397644" y="2.07712721824646" z="0.28760460019111633"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

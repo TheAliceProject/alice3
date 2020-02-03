@@ -50,43 +50,43 @@ import java.lang.reflect.Constructor;
  * @author Dennis Cosgrove
  */
 public class ConstructorReflectionProxy extends InvocableReflectionProxy<Constructor<?>> {
-	private final boolean isVarArgs;
+  private final boolean isVarArgs;
 
-	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
-		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
-		this.isVarArgs = isVarArgs;
-	}
+  public ConstructorReflectionProxy(ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs) {
+    super(declaringClassReflectionProxy, parameterClassReflectionProxies);
+    this.isVarArgs = isVarArgs;
+  }
 
-	public ConstructorReflectionProxy( Constructor<?> cnstrctr ) {
-		super( cnstrctr, cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
-		this.isVarArgs = cnstrctr.isVarArgs();
-	}
+  public ConstructorReflectionProxy(Constructor<?> cnstrctr) {
+    super(cnstrctr, cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes());
+    this.isVarArgs = cnstrctr.isVarArgs();
+  }
 
-	public boolean isVarArgs() {
-		return this.isVarArgs;
-	}
+  public boolean isVarArgs() {
+    return this.isVarArgs;
+  }
 
-	@Override
-	protected Constructor<?> reify() {
-		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
-		if( cls != null ) {
-			try {
-				return cls.getConstructor( ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
-			} catch( NoSuchMethodException nsme ) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Constructor<?> reify() {
+    Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
+    if (cls != null) {
+      try {
+        return cls.getConstructor(ClassReflectionProxy.getReifications(this.parameterClassReflectionProxies));
+      } catch (NoSuchMethodException nsme) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	protected Annotation[][] getReifiedParameterAnnotations() {
-		Constructor<?> cnstrctr = this.getReification();
-		if( cnstrctr != null ) {
-			return cnstrctr.getParameterAnnotations();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  protected Annotation[][] getReifiedParameterAnnotations() {
+    Constructor<?> cnstrctr = this.getReification();
+    if (cnstrctr != null) {
+      return cnstrctr.getParameterAnnotations();
+    } else {
+      return null;
+    }
+  }
 }

@@ -52,12 +52,12 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public class MethodPreviewPane extends MemberPreviewPane<UserMethod> {
-	public MethodPreviewPane( MemberHub<UserMethod> methodHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
-		super( methodHub, isAlphaDesiredWhenSelectionIsRequired );
-		UserMethod method = methodHub.getMember();
-		this.addComponent( new MethodHubHeaderView( methodHub ), "wrap" );
-		this.addComponent( PreviewAstI18nFactory.getInstance().createComponent( method.getBodyProperty().getValue() ), "wrap" );
-		Theme theme = ThemeUtilities.getActiveTheme();
-		this.setBackgroundColor( method.isProcedure() ? theme.getProcedureColor() : theme.getFunctionColor() );
-	}
+  public MethodPreviewPane(MemberHub<UserMethod> methodHub, boolean isAlphaDesiredWhenSelectionIsRequired) {
+    super(methodHub, isAlphaDesiredWhenSelectionIsRequired);
+    UserMethod method = methodHub.getMember();
+    this.addComponent(new MethodHubHeaderView(methodHub), "wrap");
+    this.addComponent(PreviewAstI18nFactory.getInstance().createComponent(method.getBodyProperty().getValue()), "wrap");
+    Theme theme = ThemeUtilities.getActiveTheme();
+    this.setBackgroundColor(method.isProcedure() ? theme.getProcedureColor() : theme.getFunctionColor());
+  }
 }

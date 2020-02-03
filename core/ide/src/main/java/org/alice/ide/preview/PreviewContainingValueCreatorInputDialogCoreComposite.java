@@ -54,23 +54,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends PanelWithPreview, T> extends SingleValueCreatorInputDialogCoreComposite<V, T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( UUID id ) {
-		super( id );
-	}
+  public PreviewContainingValueCreatorInputDialogCoreComposite(UUID id) {
+    super(id);
+  }
 
-	public T getPreviewValue() {
-		return this.createValue();
-	}
+  public T getPreviewValue() {
+    return this.createValue();
+  }
 
-	@Override
-	protected void handleFiredEvent( ActivityEvent event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
+  @Override
+  protected void handleFiredEvent(ActivityEvent event) {
+    super.handleFiredEvent(event);
+    this.getView().updatePreview();
+  }
 
-	@Override
-	protected void handlePreShowDialog( Dialog dialog ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( dialog );
-	}
+  @Override
+  protected void handlePreShowDialog(Dialog dialog) {
+    this.getView().updatePreview();
+    super.handlePreShowDialog(dialog);
+  }
 }

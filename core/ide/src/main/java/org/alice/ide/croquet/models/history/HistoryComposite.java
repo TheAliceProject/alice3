@@ -56,17 +56,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryComposite extends FrameCompositeWithInternalIsShowingState {
-	private final Group historyGroup;
+  private final Group historyGroup;
 
-	public HistoryComposite( UUID id, Group historyGroup ) {
-		super( id, ProjectApplication.INFORMATION_GROUP );
-		this.historyGroup = historyGroup;
-	}
+  public HistoryComposite(UUID id, Group historyGroup) {
+    super(id, ProjectApplication.INFORMATION_GROUP);
+    this.historyGroup = historyGroup;
+  }
 
-	@Override
-	protected final CompositeView createView() {
-		BorderPanel rv = new BorderPanel();
-		rv.getAwtComponent().add( new HistoryPane( this.historyGroup ), BorderLayout.CENTER );
-		return rv;
-	}
+  @Override
+  protected final CompositeView createView() {
+    BorderPanel rv = new BorderPanel();
+    rv.getAwtComponent().add(new HistoryPane(this.historyGroup), BorderLayout.CENTER);
+    return rv;
+  }
 }

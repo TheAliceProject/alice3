@@ -50,19 +50,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SingleValueCreatorInputDialogCoreComposite<V extends CompositeView<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
-	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
+  private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>(this);
 
-	public SingleValueCreatorInputDialogCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public SingleValueCreatorInputDialogCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public ValueCreator<T> getValueCreator() {
-		return this.valueCreator;
-	}
+  public ValueCreator<T> getValueCreator() {
+    return this.valueCreator;
+  }
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.valueCreator.initializeIfNecessary();
-	}
+  @Override
+  protected void initialize() {
+    super.initialize();
+    this.valueCreator.initializeIfNecessary();
+  }
 }

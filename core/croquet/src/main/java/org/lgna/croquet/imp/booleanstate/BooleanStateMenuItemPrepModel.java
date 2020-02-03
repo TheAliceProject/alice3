@@ -53,36 +53,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
-	private final BooleanState booleanState;
+  private final BooleanState booleanState;
 
-	/*package-private*/BooleanStateMenuItemPrepModel( BooleanState booleanState ) {
-		super( UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
-		assert booleanState != null;
-		this.booleanState = booleanState;
-	}
+  /*package-private*/BooleanStateMenuItemPrepModel(BooleanState booleanState) {
+    super(UUID.fromString("1395490e-a04f-4447-93c5-892a1e1bd899"));
+    assert booleanState != null;
+    this.booleanState = booleanState;
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	public BooleanState getBooleanState() {
-		return this.booleanState;
-	}
+  public BooleanState getBooleanState() {
+    return this.booleanState;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return this.booleanState.isEnabled();
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.booleanState.isEnabled();
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		this.booleanState.setEnabled( isEnabled );
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    this.booleanState.setEnabled(isEnabled);
+  }
 
-	@Override
-	public CheckBoxMenuItem createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
-		CheckBoxMenuItem checkBoxMenuItem = new CheckBoxMenuItem( this.getBooleanState() );
-		menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
-		return checkBoxMenuItem;
-	}
+  @Override
+  public CheckBoxMenuItem createMenuItemAndAddTo(MenuItemContainer menuItemContainer) {
+    CheckBoxMenuItem checkBoxMenuItem = new CheckBoxMenuItem(this.getBooleanState());
+    menuItemContainer.addCheckBoxMenuItem(checkBoxMenuItem);
+    return checkBoxMenuItem;
+  }
 }

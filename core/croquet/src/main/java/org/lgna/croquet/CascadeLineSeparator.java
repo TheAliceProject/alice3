@@ -52,20 +52,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CascadeLineSeparator extends CascadeSeparator {
-	private static class SingletonHolder {
-		private static CascadeLineSeparator instance = new CascadeLineSeparator();
-	}
+  private static class SingletonHolder {
+    private static CascadeLineSeparator instance = new CascadeLineSeparator();
+  }
 
-	public static CascadeLineSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CascadeLineSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CascadeLineSeparator() {
-		super( UUID.fromString( "5103f9f4-b85d-4c49-b384-5a9785d1d2ac" ) );
-	}
+  private CascadeLineSeparator() {
+    super(UUID.fromString("5103f9f4-b85d-4c49-b384-5a9785d1d2ac"));
+  }
 
-	@Override
-	protected JComponent createMenuItemIconProxy( ItemNode<? super Void, Void> step ) {
-		return null;
-	}
+  @Override
+  protected JComponent createMenuItemIconProxy(ItemNode<? super Void, Void> step) {
+    return null;
+  }
 }

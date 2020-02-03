@@ -51,15 +51,15 @@ import org.lgna.project.ast.UserField;
 import java.util.UUID;
 
 public class ObjectMarkerFieldState extends MutableDataSingleSelectListState<UserField> {
-	private static class SingletonHolder {
-		private static ObjectMarkerFieldState instance = new ObjectMarkerFieldState();
-	}
+  private static class SingletonHolder {
+    private static ObjectMarkerFieldState instance = new ObjectMarkerFieldState();
+  }
 
-	public static ObjectMarkerFieldState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ObjectMarkerFieldState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ObjectMarkerFieldState() {
-		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), NodeCodec.getInstance( UserField.class ) );
-	}
+  private ObjectMarkerFieldState() {
+    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("35ba71ac-34f5-46ec-9bf4-3b8127717366"), NodeCodec.getInstance(UserField.class));
+  }
 }

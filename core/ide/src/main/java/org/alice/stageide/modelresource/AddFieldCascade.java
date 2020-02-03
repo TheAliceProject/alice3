@@ -54,16 +54,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddFieldCascade extends ImmutableCascade<ResourceNode> {
-	private final DropSite dropSite;
+  private final DropSite dropSite;
 
-	public AddFieldCascade( ResourceGalleryDragModel dragModel, DropSite dropSite ) {
-		super( Application.INHERIT_GROUP, UUID.fromString( "41c8f508-9d7a-44d2-ba52-2943029caf6f" ), ResourceNode.class, new ResourceBlank( dragModel ) );
-		this.dropSite = dropSite;
-	}
+  public AddFieldCascade(ResourceGalleryDragModel dragModel, DropSite dropSite) {
+    super(Application.INHERIT_GROUP, UUID.fromString("41c8f508-9d7a-44d2-ba52-2943029caf6f"), ResourceNode.class, new ResourceBlank(dragModel));
+    this.dropSite = dropSite;
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, ResourceNode[] values ) {
-		values[ 0 ].getDropOperation( null, this.dropSite ).fire( userActivity );
-		return null;
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, ResourceNode[] values) {
+    values[0].getDropOperation(null, this.dropSite).fire(userActivity);
+    return null;
+  }
 }

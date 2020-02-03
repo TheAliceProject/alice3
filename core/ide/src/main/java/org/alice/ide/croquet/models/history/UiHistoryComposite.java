@@ -51,22 +51,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UiHistoryComposite extends HistoryComposite {
-	private static class SingletonHolder {
-		private static UiHistoryComposite instance = new UiHistoryComposite();
-	}
+  private static class SingletonHolder {
+    private static UiHistoryComposite instance = new UiHistoryComposite();
+  }
 
-	public static UiHistoryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static UiHistoryComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private UiHistoryComposite() {
-		super( UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), Application.DOCUMENT_UI_GROUP );
-	}
+  private UiHistoryComposite() {
+    super(UUID.fromString("778fce77-1417-4461-ad89-84a7c139ceff"), Application.DOCUMENT_UI_GROUP);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "UI History" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    // do not want to bother localizers with this composite
+    this.getIsFrameShowingState().setTextForBothTrueAndFalse("UI History");
+  }
 }

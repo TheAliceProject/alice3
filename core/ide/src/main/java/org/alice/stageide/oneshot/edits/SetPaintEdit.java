@@ -53,12 +53,12 @@ import org.lgna.story.implementation.PaintProperty;
  * @author Dennis Cosgrove
  */
 public class SetPaintEdit extends AbstractSetPaintEdit<ModelImp> {
-	public SetPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( userActivity, instanceFactory, method, argumentExpressions );
-	}
+  public SetPaintEdit(UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    super(userActivity, instanceFactory, method, argumentExpressions);
+  }
 
-	@Override
-	protected PaintProperty getPaintProperty( ModelImp modelImp ) {
-		return modelImp.paint;
-	}
+  @Override
+  protected PaintProperty getPaintProperty(ModelImp modelImp) {
+    return modelImp.paint;
+  }
 }

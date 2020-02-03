@@ -58,33 +58,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryResourceMenu extends CascadeMenuModel<Expression> {
-	private static Map<AbstractType<?, ?, ?>, GalleryResourceMenu> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, GalleryResourceMenu> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceMenu getInstance( AbstractType<?, ?, ?> type ) {
-		GalleryResourceMenu rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new GalleryResourceMenu( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized GalleryResourceMenu getInstance(AbstractType<?, ?, ?> type) {
+    GalleryResourceMenu rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new GalleryResourceMenu(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private GalleryResourceMenu( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
-		this.type = type;
-	}
+  private GalleryResourceMenu(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("10f4d191-6bdd-4333-a8c9-0d617fa8ea64"));
+    this.type = type;
+  }
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		return this.type.getName();
-	}
+  @Override
+  protected String findDefaultLocalizedText() {
+    return this.type.getName();
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-		GalleryResourceUtilities.updateChildren( blankChildren, blankNode, this.type );
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+    GalleryResourceUtilities.updateChildren(blankChildren, blankNode, this.type);
+  }
 }

@@ -59,35 +59,35 @@ import org.lgna.project.migration.AstMigration;
  * @author Dennis Cosgrove
  */
 public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigration {
-	public RemoveGetMySceneMethodFromProgramTypeAstMigration( Version minimumVersion, Version resultVersion ) {
-		super( minimumVersion, resultVersion );
-	}
+  public RemoveGetMySceneMethodFromProgramTypeAstMigration(Version minimumVersion, Version resultVersion) {
+    super(minimumVersion, resultVersion);
+  }
 
-	@Override
-	public void migrate( Node node, Project projectIfApplicable ) {
-		if( node instanceof NamedUserType ) {
-			NamedUserType type = (NamedUserType)node;
-			UserMethod mainMethod = type.getDeclaredMethod( "main", String[].class );
-			if( mainMethod != null ) {
-				final UserField mySceneField = type.getDeclaredField( "myScene" );
-				final UserMethod getMySceneMethod = type.getDeclaredMethod( "getMyScene" );
-				if( ( mySceneField != null ) && ( getMySceneMethod != null ) ) {
-					node.crawl( new Crawler() {
-						@Override
-						public void visit( Crawlable crawlable ) {
-							if( crawlable instanceof MethodInvocation ) {
-								MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-								if( methodInvocation.method.getValue() == getMySceneMethod ) {
-									methodInvocation.method.setValue( mySceneField.getGetter() );
-									Logger.outln( "replacing", getMySceneMethod, "with", mySceneField.getGetter() );
-								}
-							}
-						}
-					}, CrawlPolicy.COMPLETE, null );
-					type.methods.remove( type.methods.indexOf( getMySceneMethod ) );
-					Logger.outln( "removing", getMySceneMethod );
-				}
-			}
-		}
-	}
+  @Override
+  public void migrate(Node node, Project projectIfApplicable) {
+    if (node instanceof NamedUserType) {
+      NamedUserType type = (NamedUserType) node;
+      UserMethod mainMethod = type.getDeclaredMethod("main", String[].class);
+      if (mainMethod != null) {
+        final UserField mySceneField = type.getDeclaredField("myScene");
+        final UserMethod getMySceneMethod = type.getDeclaredMethod("getMyScene");
+        if ((mySceneField != null) && (getMySceneMethod != null)) {
+          node.crawl(new Crawler() {
+            @Override
+            public void visit(Crawlable crawlable) {
+              if (crawlable instanceof MethodInvocation) {
+                MethodInvocation methodInvocation = (MethodInvocation) crawlable;
+                if (methodInvocation.method.getValue() == getMySceneMethod) {
+                  methodInvocation.method.setValue(mySceneField.getGetter());
+                  Logger.outln("replacing", getMySceneMethod, "with", mySceneField.getGetter());
+                }
+              }
+            }
+          }, CrawlPolicy.COMPLETE, null);
+          type.methods.remove(type.methods.indexOf(getMySceneMethod));
+          Logger.outln("removing", getMySceneMethod);
+        }
+      }
+    }
+  }
 }

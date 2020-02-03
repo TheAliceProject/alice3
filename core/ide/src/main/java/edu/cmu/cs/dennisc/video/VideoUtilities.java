@@ -49,19 +49,19 @@ import edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities;
  * @author Dennis Cosgrove
  */
 public class VideoUtilities {
-	public static VideoPlayer createVideoPlayer() {
-		VideoPlayer rv = null;
-		try {
-			rv = VlcjUtilities.createVideoPlayer();
-		} catch( Throwable t ) {
-			t.printStackTrace();
-			rv = null;
-		}
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new NilVideoPlayer();
-		}
-		return rv;
-	}
+  public static VideoPlayer createVideoPlayer() {
+    VideoPlayer rv = null;
+    try {
+      rv = VlcjUtilities.createVideoPlayer();
+    } catch (Throwable t) {
+      t.printStackTrace();
+      rv = null;
+    }
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new NilVideoPlayer();
+    }
+    return rv;
+  }
 }

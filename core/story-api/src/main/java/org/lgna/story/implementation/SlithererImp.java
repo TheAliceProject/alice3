@@ -44,24 +44,23 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.Vector4;
 import org.lgna.story.SSlitherer;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.SlithererResource;
 
 /**
  * @author dculyba
  */
 public final class SlithererImp extends JointedModelImp<SSlitherer, SlithererResource> {
-	public SlithererImp( SSlitherer abstraction, JointImplementationAndVisualDataFactory<SlithererResource> factory ) {
-		super( abstraction, factory );
-	}
+  public SlithererImp(SSlitherer abstraction, JointImplementationAndVisualDataFactory<SlithererResource> factory) {
+    super(abstraction, factory);
+  }
 
-	@Override
-	protected Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( SlithererResource.HEAD ) );
-	}
+  @Override
+  protected Vector4 getThoughtBubbleOffset() {
+    return this.getTopOffsetForJoint(this.getJointImplementation(SlithererResource.HEAD));
+  }
 
-	@Override
-	protected Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( SlithererResource.MOUTH ) );
-	}
+  @Override
+  protected Vector4 getSpeechBubbleOffset() {
+    return this.getFrontOffsetForJoint(this.getJointImplementation(SlithererResource.MOUTH));
+  }
 }

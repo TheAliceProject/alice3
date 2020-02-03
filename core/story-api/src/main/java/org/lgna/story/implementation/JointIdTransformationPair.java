@@ -55,57 +55,57 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  * @author dculyba
  */
 public class JointIdTransformationPair {
-	private final JointId id;
-	private final AffineMatrix4x4 transformation;
-	private final boolean affectsTranslation;
+  private final JointId id;
+  private final AffineMatrix4x4 transformation;
+  private final boolean affectsTranslation;
 
-	public JointIdTransformationPair( JointId id, AffineMatrix4x4 transformation, boolean affectsTranslation ) {
-		this.id = id;
-		this.transformation = transformation;
-		this.affectsTranslation = affectsTranslation;
-	}
+  public JointIdTransformationPair(JointId id, AffineMatrix4x4 transformation, boolean affectsTranslation) {
+    this.id = id;
+    this.transformation = transformation;
+    this.affectsTranslation = affectsTranslation;
+  }
 
-	public JointIdTransformationPair( JointId id, AffineMatrix4x4 transformation ) {
-		this( id, transformation, true );
-	}
+  public JointIdTransformationPair(JointId id, AffineMatrix4x4 transformation) {
+    this(id, transformation, true);
+  }
 
-	public JointIdTransformationPair( JointId id, UnitQuaternion quaternion, Point3 translation ) {
-		this( id, new AffineMatrix4x4( quaternion, translation ) );
-	}
+  public JointIdTransformationPair(JointId id, UnitQuaternion quaternion, Point3 translation) {
+    this(id, new AffineMatrix4x4(quaternion, translation));
+  }
 
-	public JointIdTransformationPair( JointId id, UnitQuaternion quaternion, Point3 translation, boolean affectsTranslation ) {
-		this( id, new AffineMatrix4x4( quaternion, translation ), affectsTranslation );
-	}
+  public JointIdTransformationPair(JointId id, UnitQuaternion quaternion, Point3 translation, boolean affectsTranslation) {
+    this(id, new AffineMatrix4x4(quaternion, translation), affectsTranslation);
+  }
 
-	public JointIdTransformationPair( JointId id, UnitQuaternion quaternion ) {
-		this( id, quaternion, Point3.createZero(), false );
-	}
+  public JointIdTransformationPair(JointId id, UnitQuaternion quaternion) {
+    this(id, quaternion, Point3.createZero(), false);
+  }
 
-	public JointIdTransformationPair( JointId id, Orientation orientation ) {
-		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion() );
-	}
+  public JointIdTransformationPair(JointId id, Orientation orientation) {
+    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion());
+  }
 
-	public JointIdTransformationPair( JointId id, Orientation orientation, Point3 point3 ) {
-		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion(), point3 );
-	}
+  public JointIdTransformationPair(JointId id, Orientation orientation, Point3 point3) {
+    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion(), point3);
+  }
 
-	public JointIdTransformationPair( JointId id, Orientation orientation, Position position ) {
-		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion(), new Point3( position.getRight(), position.getUp(), position.getBackward() ) );
-	}
+  public JointIdTransformationPair(JointId id, Orientation orientation, Position position) {
+    this(id, EmployeesOnly.getOrthogonalMatrix3x3(orientation).createUnitQuaternion(), new Point3(position.getRight(), position.getUp(), position.getBackward()));
+  }
 
-	public boolean affectsTranslation() {
-		return this.affectsTranslation;
-	}
+  public boolean affectsTranslation() {
+    return this.affectsTranslation;
+  }
 
-	public boolean orientationOnly() {
-		return !this.affectsTranslation;
-	}
+  public boolean orientationOnly() {
+    return !this.affectsTranslation;
+  }
 
-	public JointId getJointId() {
-		return id;
-	}
+  public JointId getJointId() {
+    return id;
+  }
 
-	public AffineMatrix4x4 getTransformation() {
-		return this.transformation;
-	}
+  public AffineMatrix4x4 getTransformation() {
+    return this.transformation;
+  }
 }

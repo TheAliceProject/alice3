@@ -63,278 +63,276 @@ import java.util.Properties;
  * @author Dennis Cosgrove
  */
 public class SystemUtilities {
-	private SystemUtilities() {
-		throw new AssertionError();
-	}
+  private SystemUtilities() {
+    throw new AssertionError();
+  }
 
-	public static boolean isPropertyTrue( String propertyName ) {
-		return "true".equals( System.getProperty( propertyName ) );
-	}
+  public static boolean isPropertyTrue(String propertyName) {
+    return "true".equals(System.getProperty(propertyName));
+  }
 
-	public static boolean isPropertyFalse( String propertyName ) {
-		return "false".equals( System.getProperty( propertyName ) );
-	}
+  public static boolean isPropertyFalse(String propertyName) {
+    return "false".equals(System.getProperty(propertyName));
+  }
 
-	public static boolean getBooleanProperty( String propertyName, boolean defaultValue ) {
-		String textValue = System.getProperty( propertyName );
-		if( textValue != null ) {
-			return Boolean.parseBoolean( textValue );
-		} else {
-			return defaultValue;
-		}
-	}
+  public static boolean getBooleanProperty(String propertyName, boolean defaultValue) {
+    String textValue = System.getProperty(propertyName);
+    if (textValue != null) {
+      return Boolean.parseBoolean(textValue);
+    } else {
+      return defaultValue;
+    }
+  }
 
-	private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		List<SystemProperty> properties = getSortedPropertyList();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		Document xmlDocument = XMLUtilities.createDocument();
-		Element xmlRootElement = xmlDocument.createElement( "systemProperties" );
-		xmlDocument.appendChild( xmlRootElement );
-		for( SystemProperty property : properties ) {
-			Element xmlProperty = xmlDocument.createElement( "property" );
-			xmlProperty.setAttribute( "key", property.getKey() );
-			xmlProperty.appendChild( xmlDocument.createTextNode( property.getValue() ) );
-			xmlRootElement.appendChild( xmlProperty );
-		}
-		XMLUtilities.write( xmlDocument, baos );
-		try {
-			baos.flush();
-		} catch( IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-		return baos;
-	}
+  private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
+    List<SystemProperty> properties = getSortedPropertyList();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Document xmlDocument = XMLUtilities.createDocument();
+    Element xmlRootElement = xmlDocument.createElement("systemProperties");
+    xmlDocument.appendChild(xmlRootElement);
+    for (SystemProperty property : properties) {
+      Element xmlProperty = xmlDocument.createElement("property");
+      xmlProperty.setAttribute("key", property.getKey());
+      xmlProperty.appendChild(xmlDocument.createTextNode(property.getValue()));
+      xmlRootElement.appendChild(xmlProperty);
+    }
+    XMLUtilities.write(xmlDocument, baos);
+    try {
+      baos.flush();
+    } catch (IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
+    return baos;
+  }
 
-	public static byte[] getPropertiesAsXMLByteArray() {
-		return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
-	}
+  public static byte[] getPropertiesAsXMLByteArray() {
+    return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
+  }
 
-	public static String getPropertiesAsXMLString() {
-		return getPropertiesAsXMLByteArrayOutputStream().toString();
-	}
+  public static String getPropertiesAsXMLString() {
+    return getPropertiesAsXMLByteArrayOutputStream().toString();
+  }
 
-	public static List<SystemProperty> getPropertyList() {
-		List<SystemProperty> rv = Lists.newLinkedList();
-		Properties systemProperties = System.getProperties();
-		for( Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
-			Object key = entry.getKey();
-			Object value = entry.getValue();
-			if( ( key instanceof String ) && ( value instanceof String ) ) {
-				rv.add( new SystemProperty( (String)key, (String)value ) );
-			} else {
-				Logger.severe( key, value );
-			}
-		}
-		return rv;
-	}
+  public static List<SystemProperty> getPropertyList() {
+    List<SystemProperty> rv = Lists.newLinkedList();
+    Properties systemProperties = System.getProperties();
+    for (Map.Entry<Object, Object> entry : systemProperties.entrySet()) {
+      Object key = entry.getKey();
+      Object value = entry.getValue();
+      if ((key instanceof String) && (value instanceof String)) {
+        rv.add(new SystemProperty((String) key, (String) value));
+      } else {
+        Logger.severe(key, value);
+      }
+    }
+    return rv;
+  }
 
-	public static List<SystemProperty> getSortedPropertyList() {
-		List<SystemProperty> rv = getPropertyList();
-		Collections.sort( rv );
-		return rv;
-	}
+  public static List<SystemProperty> getSortedPropertyList() {
+    List<SystemProperty> rv = getPropertyList();
+    Collections.sort(rv);
+    return rv;
+  }
 
-	private enum Platform {
-		WINDOWS,
-		OSX,
-		LINUX
-	}
+  private enum Platform {
+    WINDOWS, OSX, LINUX
+  }
 
-	private static Platform platform;
+  private static Platform platform;
 
-	static {
-		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase( Locale.ENGLISH );
-		if( lowercaseOSName.contains( "windows" ) ) {
-			platform = Platform.WINDOWS;
-		} else if( lowercaseOSName.startsWith( "mac os x" ) ) {
-			platform = Platform.OSX;
-		} else if( lowercaseOSName.startsWith( "linux" ) ) {
-			platform = Platform.LINUX;
-		} else {
-			//todo
-			platform = null;
-		}
-	}
+  static {
+    String lowercaseOSName = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+    if (lowercaseOSName.contains("windows")) {
+      platform = Platform.WINDOWS;
+    } else if (lowercaseOSName.startsWith("mac os x")) {
+      platform = Platform.OSX;
+    } else if (lowercaseOSName.startsWith("linux")) {
+      platform = Platform.LINUX;
+    } else {
+      //todo
+      platform = null;
+    }
+  }
 
-	public static boolean isLinux() {
-		return SystemUtilities.platform == Platform.LINUX;
-	}
+  public static boolean isLinux() {
+    return SystemUtilities.platform == Platform.LINUX;
+  }
 
-	public static boolean isMac() {
-		return SystemUtilities.platform == Platform.OSX;
-	}
+  public static boolean isMac() {
+    return SystemUtilities.platform == Platform.OSX;
+  }
 
-	public static boolean isWindows() {
-		return SystemUtilities.platform == Platform.WINDOWS;
-	}
+  public static boolean isWindows() {
+    return SystemUtilities.platform == Platform.WINDOWS;
+  }
 
-	public static Integer getBitCount() {
-		String bitCountText = System.getProperty( "sun.arch.data.model" );
-		if( bitCountText != null ) {
-			try {
-				return Integer.parseInt( bitCountText );
-			} catch( NumberFormatException nfe ) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static Integer getBitCount() {
+    String bitCountText = System.getProperty("sun.arch.data.model");
+    if (bitCountText != null) {
+      try {
+        return Integer.parseInt(bitCountText);
+      } catch (NumberFormatException nfe) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static boolean is64Bit() {
-		Integer bitCount = getBitCount();
-		return ( bitCount != null ) && ( bitCount == 64 );
-	}
+  public static boolean is64Bit() {
+    Integer bitCount = getBitCount();
+    return (bitCount != null) && (bitCount == 64);
+  }
 
-	public static boolean is32Bit() {
-		Integer bitCount = getBitCount();
-		return ( bitCount != null ) && ( bitCount == 32 );
-	}
+  public static boolean is32Bit() {
+    Integer bitCount = getBitCount();
+    return (bitCount != null) && (bitCount == 32);
+  }
 
-	public static double getJavaVersionAsDouble() {
-		try {
-			String javaVersionText = System.getProperty( "java.version" );
-			int i = javaVersionText.indexOf( '.' );
-			if( i > 0 ) {
-				return Double.parseDouble( javaVersionText.substring( 0, i + 2 ) );
-			} else {
-				throw new RuntimeException();
-			}
-		} catch( Throwable t ) {
-			return Double.NaN;
-		}
-	}
+  public static double getJavaVersionAsDouble() {
+    try {
+      String javaVersionText = System.getProperty("java.version");
+      int i = javaVersionText.indexOf('.');
+      if (i > 0) {
+        return Double.parseDouble(javaVersionText.substring(0, i + 2));
+      } else {
+        throw new RuntimeException();
+      }
+    } catch (Throwable t) {
+      return Double.NaN;
+    }
+  }
 
-	public static boolean isPlatformSpecificLibraryLoadingDesired() {
-		return true;
-	}
+  public static boolean isPlatformSpecificLibraryLoadingDesired() {
+    return true;
+  }
 
-	public static void loadLibrary( String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle ) {
-		File directory = new File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
-		if( libDirectoryName.equalsIgnoreCase( "jogl" ) ) {
-			directory = new File( directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory() );
-		}
-		String filename = System.mapLibraryName( libraryName );
-		if( isMac() ) {
-			//todo
-			final String DYLIB_EXT = "dylib";
-			if( filename.endsWith( DYLIB_EXT ) ) {
-				final String JNILIB_EXT = "jnilib";
-				filename = filename.substring( 0, filename.length() - DYLIB_EXT.length() ) + JNILIB_EXT;
-			}
-		}
-		File file = new File( directory, filename );
-		if( file.exists() ) {
-			System.load( file.getAbsolutePath() );
-		} else {
-			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find:", file );
-			//			edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( libName );
-			System.loadLibrary( libraryName );
-		}
-	}
+  public static void loadLibrary(String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle) {
+    File directory = new File(ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName);
+    if (libDirectoryName.equalsIgnoreCase("jogl")) {
+      directory = new File(directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory());
+    }
+    String filename = System.mapLibraryName(libraryName);
+    if (isMac()) {
+      //todo
+      final String DYLIB_EXT = "dylib";
+      if (filename.endsWith(DYLIB_EXT)) {
+        final String JNILIB_EXT = "jnilib";
+        filename = filename.substring(0, filename.length() - DYLIB_EXT.length()) + JNILIB_EXT;
+      }
+    }
+    File file = new File(directory, filename);
+    if (file.exists()) {
+      System.load(file.getAbsolutePath());
+    } else {
+      //      edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "could not find:", file );
+      //      edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadPlatformSpecific( libName );
+      System.loadLibrary(libraryName);
+    }
+  }
 
-	//	@Deprecated
-	//	public static void loadPlatformSpecific( String libraryName ) {
-	//		String postfix;
-	//		StringBuilder sb = new StringBuilder();
-	//		if( isMac() ) {
-	//			sb.append( "macosx-universal/lib" );
-	//			postfix = ".jnilib";
-	//		} else {
-	//			Integer bitCount = getBitCount();
-	//			if( bitCount != null ) {
-	//				String bitCountText;
-	//				switch( bitCount ) {
-	//				case 32:
-	//					bitCountText = "i586/";
-	//					break;
-	//				case 64:
-	//					bitCountText = "amd64/";
-	//					break;
-	//				default:
-	//					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-	//				}
-	//
-	//				if( isWindows() ) {
-	//					sb.append( "windows-" );
-	//					sb.append( bitCountText );
-	//					postfix = ".dll";
-	//				} else if( isLinux() ) {
-	//					sb.append( "linux-" );
-	//					sb.append( bitCountText );
-	//					sb.append( "lib" );
-	//					postfix = ".so";
-	//				} else {
-	//					throw new RuntimeException( System.getProperty( "os.name" ) );
-	//				}
-	//			} else {
-	//				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-	//			}
-	//		}
-	//		sb.append( libraryName );
-	//		sb.append( postfix );
-	//		String subpath = sb.toString();
-	//		String[] libraryDirectoryPaths = getLibraryPath();
-	//		for( String libraryDirectoryPath : libraryDirectoryPaths ) {
-	//			java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
-	//			java.io.File file = new java.io.File( libraryDirectory, subpath );
-	//			if( file.exists() ) {
-	//				System.load( file.getAbsolutePath() );
-	//				return;
-	//			}
-	//		}
-	//		System.loadLibrary( libraryName );
-	//	}
+  //  @Deprecated
+  //  public static void loadPlatformSpecific( String libraryName ) {
+  //    String postfix;
+  //    StringBuilder sb = new StringBuilder();
+  //    if( isMac() ) {
+  //      sb.append( "macosx-universal/lib" );
+  //      postfix = ".jnilib";
+  //    } else {
+  //      Integer bitCount = getBitCount();
+  //      if( bitCount != null ) {
+  //        String bitCountText;
+  //        switch( bitCount ) {
+  //        case 32:
+  //          bitCountText = "i586/";
+  //          break;
+  //        case 64:
+  //          bitCountText = "amd64/";
+  //          break;
+  //        default:
+  //          throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+  //        }
+  //
+  //        if( isWindows() ) {
+  //          sb.append( "windows-" );
+  //          sb.append( bitCountText );
+  //          postfix = ".dll";
+  //        } else if( isLinux() ) {
+  //          sb.append( "linux-" );
+  //          sb.append( bitCountText );
+  //          sb.append( "lib" );
+  //          postfix = ".so";
+  //        } else {
+  //          throw new RuntimeException( System.getProperty( "os.name" ) );
+  //        }
+  //      } else {
+  //        throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+  //      }
+  //    }
+  //    sb.append( libraryName );
+  //    sb.append( postfix );
+  //    String subpath = sb.toString();
+  //    String[] libraryDirectoryPaths = getLibraryPath();
+  //    for( String libraryDirectoryPath : libraryDirectoryPaths ) {
+  //      java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
+  //      java.io.File file = new java.io.File( libraryDirectory, subpath );
+  //      if( file.exists() ) {
+  //        System.load( file.getAbsolutePath() );
+  //        return;
+  //      }
+  //    }
+  //    System.loadLibrary( libraryName );
+  //  }
 
-	public static boolean areIconsDisplayedInMenus() {
-		return true;
-	}
+  public static boolean areIconsDisplayedInMenus() {
+    return true;
+  }
 
-	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
-		return rv;
-	}
+  public static <E> E[] returnArray(Class<E> componentType, E... rv) {
+    return rv;
+  }
 
-	public static <E> E[] createArray( Class<E> componentType, E[]... arrays ) {
-		int n = 0;
-		for( E[] array : arrays ) {
-			if( array != null ) {
-				n += array.length;
-			}
-		}
-		E[] rv = ReflectionUtilities.newTypedArrayInstance( componentType, n );
-		int offset = 0;
-		for( E[] array : arrays ) {
-			if( array != null ) {
-				System.arraycopy( array, 0, rv, offset, array.length );
-				offset += array.length;
-			}
-		}
-		return rv;
-	}
+  public static <E> E[] createArray(Class<E> componentType, E[]... arrays) {
+    int n = 0;
+    for (E[] array : arrays) {
+      if (array != null) {
+        n += array.length;
+      }
+    }
+    E[] rv = ReflectionUtilities.newTypedArrayInstance(componentType, n);
+    int offset = 0;
+    for (E[] array : arrays) {
+      if (array != null) {
+        System.arraycopy(array, 0, rv, offset, array.length);
+        offset += array.length;
+      }
+    }
+    return rv;
+  }
 
-	public static final String PATH_SEPARATOR = System.getProperty( "path.separator" );
+  public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
-	private static String[] parsePath( String propertyName ) {
-		String value = System.getProperty( propertyName );
-		assert value != null;
-		return value.split( PATH_SEPARATOR );
-	}
+  private static String[] parsePath(String propertyName) {
+    String value = System.getProperty(propertyName);
+    assert value != null;
+    return value.split(PATH_SEPARATOR);
+  }
 
-	public static String[] getClassPath() {
-		return parsePath( "java.class.path" );
-	}
+  public static String[] getClassPath() {
+    return parsePath("java.class.path");
+  }
 
-	public static String[] getLibraryPath() {
-		return parsePath( "java.library.path" );
-	}
+  public static String[] getLibraryPath() {
+    return parsePath("java.library.path");
+  }
 
-	public static File getEnvironmentVariableDirectory( String name ) {
-		String env = System.getenv( name );
-		assert env != null : name;
+  public static File getEnvironmentVariableDirectory(String name) {
+    String env = System.getenv(name);
+    assert env != null : name;
 
-		File dir = new File( env );
-		assert dir.exists() : dir;
-		assert dir.isDirectory() : dir;
-		return dir;
-	}
+    File dir = new File(env);
+    assert dir.exists() : dir;
+    assert dir.isDirectory() : dir;
+    return dir;
+  }
 }

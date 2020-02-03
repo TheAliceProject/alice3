@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillInWithoutBlanks<F extends Expression> extends ExpressionFillIn<F, Void> {
-	public ExpressionFillInWithoutBlanks( UUID id ) {
-		super( id );
-	}
+  public ExpressionFillInWithoutBlanks(UUID id) {
+    super(id);
+  }
 }

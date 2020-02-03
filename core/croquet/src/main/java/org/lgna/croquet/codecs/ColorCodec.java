@@ -52,40 +52,41 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public enum ColorCodec implements ItemCodec<Color> {
-	SINGLETON;
-	@Override
-	public Class<Color> getValueClass() {
-		return Color.class;
-	}
+  SINGLETON;
 
-	@Override
-	public Color decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			int r = binaryDecoder.decodeInt();
-			int g = binaryDecoder.decodeInt();
-			int b = binaryDecoder.decodeInt();
-			int a = binaryDecoder.decodeInt();
-			return new Color( r, g, b, a );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public Class<Color> getValueClass() {
+    return Color.class;
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Color value ) {
-		boolean isNotNull = value != null;
-		binaryEncoder.encode( isNotNull );
-		if( isNotNull ) {
-			binaryEncoder.encode( value.getRed() );
-			binaryEncoder.encode( value.getGreen() );
-			binaryEncoder.encode( value.getBlue() );
-			binaryEncoder.encode( value.getAlpha() );
-		}
-	}
+  @Override
+  public Color decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      int r = binaryDecoder.decodeInt();
+      int g = binaryDecoder.decodeInt();
+      int b = binaryDecoder.decodeInt();
+      int a = binaryDecoder.decodeInt();
+      return new Color(r, g, b, a);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, Color value ) {
-		sb.append( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Color value) {
+    boolean isNotNull = value != null;
+    binaryEncoder.encode(isNotNull);
+    if (isNotNull) {
+      binaryEncoder.encode(value.getRed());
+      binaryEncoder.encode(value.getGreen());
+      binaryEncoder.encode(value.getBlue());
+      binaryEncoder.encode(value.getAlpha());
+    }
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, Color value) {
+    sb.append(value);
+  }
 }

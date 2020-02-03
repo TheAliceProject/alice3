@@ -64,104 +64,105 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SideComposite extends SimpleComposite<SideView> {
-	//todo
-	@Deprecated
-	public static SideComposite getInstance() {
-		return (SideComposite)SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
-	}
+  //todo
+  @Deprecated
+  public static SideComposite getInstance() {
+    return (SideComposite) SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
+  }
 
-	//todo: remove and migrate handle.properties to croquet.properties
-	private static enum HandleStyleCodec implements ItemCodec<HandleStyle> {
-		INSTANCE;
-		@Override
-		public void encodeValue( BinaryEncoder binaryEncoder, HandleStyle value ) {
-			binaryEncoder.encode( value );
-		}
+  //todo: remove and migrate handle.properties to croquet.properties
+  private static enum HandleStyleCodec implements ItemCodec<HandleStyle> {
+    INSTANCE;
 
-		@Override
-		public HandleStyle decodeValue( BinaryDecoder binaryDecoder ) {
-			return binaryDecoder.decodeEnum();
-		}
+    @Override
+    public void encodeValue(BinaryEncoder binaryEncoder, HandleStyle value) {
+      binaryEncoder.encode(value);
+    }
 
-		@Override
-		public Class<HandleStyle> getValueClass() {
-			return HandleStyle.class;
-		}
+    @Override
+    public HandleStyle decodeValue(BinaryDecoder binaryDecoder) {
+      return binaryDecoder.decodeEnum();
+    }
 
-		@Override
-		public void appendRepresentation( StringBuilder sb, HandleStyle value ) {
-			String bundleName = HandleStyle.class.getPackage().getName() + ".handle";
-			String key = value.name().toLowerCase( Locale.ENGLISH );
-			try {
-				Locale locale = JComponent.getDefaultLocale();
-				ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
-				sb.append( resourceBundle.getString( key ) );
-			} catch( MissingResourceException mre ) {
-				Logger.throwable( mre, bundleName, key );
-				sb.append( key );
-			}
-		}
-	}
+    @Override
+    public Class<HandleStyle> getValueClass() {
+      return HandleStyle.class;
+    }
 
-	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
-	private final ObjectPropertiesToolPalette objectPropertiesTab = new ObjectPropertiesToolPalette();
-	private final ObjectMarkersToolPalette objectMarkersTab = new ObjectMarkersToolPalette();
-	private final CameraMarkersToolPalette cameraMarkersTab = new CameraMarkersToolPalette();
-	private final ImmutableDataSingleSelectListState<HandleStyle> handleStyleState = this.createImmutableListState( "handleStyleState", HandleStyle.class, HandleStyleCodec.INSTANCE, 0, HandleStyle.values() );
+    @Override
+    public void appendRepresentation(StringBuilder sb, HandleStyle value) {
+      String bundleName = HandleStyle.class.getPackage().getName() + ".handle";
+      String key = value.name().toLowerCase(Locale.ENGLISH);
+      try {
+        Locale locale = JComponent.getDefaultLocale();
+        ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, locale);
+        sb.append(resourceBundle.getString(key));
+      } catch (MissingResourceException mre) {
+        Logger.throwable(mre, bundleName, key);
+        sb.append(key);
+      }
+    }
+  }
 
-	private final BooleanState isSnapEnabledState = this.createBooleanState( "isSnapEnabledState", false );
+  private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
+  private final ObjectPropertiesToolPalette objectPropertiesTab = new ObjectPropertiesToolPalette();
+  private final ObjectMarkersToolPalette objectMarkersTab = new ObjectMarkersToolPalette();
+  private final CameraMarkersToolPalette cameraMarkersTab = new CameraMarkersToolPalette();
+  private final ImmutableDataSingleSelectListState<HandleStyle> handleStyleState = this.createImmutableListState("handleStyleState", HandleStyle.class, HandleStyleCodec.INSTANCE, 0, HandleStyle.values());
 
-	private final BooleanState areJointsShowingState = this.createBooleanState( "areJointsShowingState", false );
+  private final BooleanState isSnapEnabledState = this.createBooleanState("isSnapEnabledState", false);
 
-	public SideComposite() {
-		super( UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
-	}
+  private final BooleanState areJointsShowingState = this.createBooleanState("areJointsShowingState", false);
 
-	@Override
-	protected void localize() {
-		super.localize();
-		for( HandleStyle handleStyle : HandleStyle.values() ) {
-			BooleanState booleanState = this.handleStyleState.getItemSelectedState( handleStyle );
-			booleanState.setIconForBothTrueAndFalse( handleStyle.getIcon() );
-			booleanState.setToolTipText( handleStyle.getToolTipText() );
-		}
-		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
+  public SideComposite() {
+    super(UUID.fromString("3adc7b8a-f317-467d-8c8a-807086fffaea"));
+  }
 
-		this.registerSubComposite( this.objectPropertiesTab );
-		this.registerSubComposite( this.objectMarkersTab );
-		this.registerSubComposite( this.cameraMarkersTab );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    for (HandleStyle handleStyle : HandleStyle.values()) {
+      BooleanState booleanState = this.handleStyleState.getItemSelectedState(handleStyle);
+      booleanState.setIconForBothTrueAndFalse(handleStyle.getIcon());
+      booleanState.setToolTipText(handleStyle.getToolTipText());
+    }
+    this.registerSubComposite(snapDetailsToolPaletteCoreComposite.getOuterComposite());
 
-	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
-		return this.snapDetailsToolPaletteCoreComposite;
-	}
+    this.registerSubComposite(this.objectPropertiesTab);
+    this.registerSubComposite(this.objectMarkersTab);
+    this.registerSubComposite(this.cameraMarkersTab);
+  }
 
-	public ObjectPropertiesToolPalette getObjectPropertiesTab() {
-		return this.objectPropertiesTab;
-	}
+  public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+    return this.snapDetailsToolPaletteCoreComposite;
+  }
 
-	public CameraMarkersToolPalette getCameraMarkersTab() {
-		return this.cameraMarkersTab;
-	}
+  public ObjectPropertiesToolPalette getObjectPropertiesTab() {
+    return this.objectPropertiesTab;
+  }
 
-	public ObjectMarkersToolPalette getObjectMarkersTab() {
-		return this.objectMarkersTab;
-	}
+  public CameraMarkersToolPalette getCameraMarkersTab() {
+    return this.cameraMarkersTab;
+  }
 
-	public BooleanState getAreJointsShowingState() {
-		return this.areJointsShowingState;
-	}
+  public ObjectMarkersToolPalette getObjectMarkersTab() {
+    return this.objectMarkersTab;
+  }
 
-	public BooleanState getIsSnapEnabledState() {
-		return this.isSnapEnabledState;
-	}
+  public BooleanState getAreJointsShowingState() {
+    return this.areJointsShowingState;
+  }
 
-	public ImmutableDataSingleSelectListState<HandleStyle> getHandleStyleState() {
-		return this.handleStyleState;
-	}
+  public BooleanState getIsSnapEnabledState() {
+    return this.isSnapEnabledState;
+  }
 
-	@Override
-	protected SideView createView() {
-		return new SideView( this );
-	}
+  public ImmutableDataSingleSelectListState<HandleStyle> getHandleStyleState() {
+    return this.handleStyleState;
+  }
+
+  @Override
+  protected SideView createView() {
+    return new SideView(this);
+  }
 }

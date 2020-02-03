@@ -49,8 +49,8 @@ import org.lgna.story.SThingMarker;
  * @author Dennis Cosgrove
  */
 public class ObjectMarkerFieldData extends MarkerFieldData {
-	@Override
-	protected boolean isAcceptableItem( UserField value ) {
-		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( SThingMarker.class );
-	}
+  @Override
+  protected boolean isAcceptableItem(UserField value) {
+    return super.isAcceptableItem(value) && value.valueType.getValue().isAssignableTo(SThingMarker.class);
+  }
 }

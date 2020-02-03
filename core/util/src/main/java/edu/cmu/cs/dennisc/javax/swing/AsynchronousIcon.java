@@ -55,73 +55,73 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AsynchronousIcon implements Icon {
-	protected static Component getComponentToRepaint( Component c ) {
-		Container parent = c.getParent();
-		if( parent instanceof CellRendererPane ) {
-			Container grandparent = parent.getParent();
-			return grandparent;
-		} else {
-			return c;
-		}
-	}
+  protected static Component getComponentToRepaint(Component c) {
+    Container parent = c.getParent();
+    if (parent instanceof CellRendererPane) {
+      Container grandparent = parent.getParent();
+      return grandparent;
+    } else {
+      return c;
+    }
+  }
 
-	protected abstract int getIconWidthFallback();
+  protected abstract int getIconWidthFallback();
 
-	protected abstract int getIconHeightFallback();
+  protected abstract int getIconHeightFallback();
 
-	protected abstract void paintIconFallback( Component c, Graphics g, int x, int y );
+  protected abstract void paintIconFallback(Component c, Graphics g, int x, int y);
 
-	protected abstract Icon getResult( boolean isPaint );
+  protected abstract Icon getResult(boolean isPaint);
 
-	@Override
-	public final int getIconWidth() {
-		Icon icon = this.getResult( false );
-		if( icon != null ) {
-			return icon.getIconWidth();
-		} else {
-			return this.getIconWidthFallback();
-		}
-	}
+  @Override
+  public final int getIconWidth() {
+    Icon icon = this.getResult(false);
+    if (icon != null) {
+      return icon.getIconWidth();
+    } else {
+      return this.getIconWidthFallback();
+    }
+  }
 
-	@Override
-	public final int getIconHeight() {
-		Icon icon = this.getResult( false );
-		if( icon != null ) {
-			return icon.getIconHeight();
-		} else {
-			return this.getIconHeightFallback();
-		}
-	}
+  @Override
+  public final int getIconHeight() {
+    Icon icon = this.getResult(false);
+    if (icon != null) {
+      return icon.getIconHeight();
+    } else {
+      return this.getIconHeightFallback();
+    }
+  }
 
-	@Override
-	public final void paintIcon( Component c, Graphics g, int x, int y ) {
-		Icon icon = this.getResult( true );
-		if( icon != null ) {
-			icon.paintIcon( c, g, x, y );
-		} else {
-			Component componentToRepaint = getComponentToRepaint( c );
-			if( this.componentsToRepaint != null ) {
-				if( this.componentsToRepaint.contains( componentToRepaint ) ) {
-					//pass
-				} else {
-					this.componentsToRepaint.add( componentToRepaint );
-				}
-			} else {
-				this.componentsToRepaint = Lists.newLinkedList( componentToRepaint );
-				//this.worker.execute();
-			}
-			this.paintIconFallback( c, g, x, y );
-		}
-	}
+  @Override
+  public final void paintIcon(Component c, Graphics g, int x, int y) {
+    Icon icon = this.getResult(true);
+    if (icon != null) {
+      icon.paintIcon(c, g, x, y);
+    } else {
+      Component componentToRepaint = getComponentToRepaint(c);
+      if (this.componentsToRepaint != null) {
+        if (this.componentsToRepaint.contains(componentToRepaint)) {
+          //pass
+        } else {
+          this.componentsToRepaint.add(componentToRepaint);
+        }
+      } else {
+        this.componentsToRepaint = Lists.newLinkedList(componentToRepaint);
+        //this.worker.execute();
+      }
+      this.paintIconFallback(c, g, x, y);
+    }
+  }
 
-	protected void repaintComponentsIfNecessary() {
-		if( this.componentsToRepaint != null ) {
-			for( Component component : this.componentsToRepaint ) {
-				component.repaint();
-			}
-			this.componentsToRepaint = null;
-		}
-	}
+  protected void repaintComponentsIfNecessary() {
+    if (this.componentsToRepaint != null) {
+      for (Component component : this.componentsToRepaint) {
+        component.repaint();
+      }
+      this.componentsToRepaint = null;
+    }
+  }
 
-	private List<Component> componentsToRepaint;
+  private List<Component> componentsToRepaint;
 }

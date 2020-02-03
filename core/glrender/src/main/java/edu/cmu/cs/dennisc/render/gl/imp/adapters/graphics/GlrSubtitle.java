@@ -49,11 +49,11 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 public class GlrSubtitle extends GlrTitle<Subtitle> {
-	@Override
-	protected Rectangle2D.Float getFillBounds( Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize ) {
-		rv.setFrame( actualViewport );
-		rv.height = (float)multilineTextSize.getHeight() + VERTICAL_MARGIN_TIMES_2;
-		rv.y = actualViewport.height - rv.height;
-		return rv;
-	}
+  @Override
+  protected Rectangle2D.Float getFillBounds(Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize) {
+    rv.setFrame(actualViewport);
+    rv.height = (float) multilineTextSize.getHeight() + VERTICAL_MARGIN_TIMES_2;
+    rv.y = actualViewport.height - rv.height;
+    return rv;
+  }
 }

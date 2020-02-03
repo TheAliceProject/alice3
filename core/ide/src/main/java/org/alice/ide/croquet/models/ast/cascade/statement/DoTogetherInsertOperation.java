@@ -55,28 +55,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoTogetherInsertOperation extends TemplateStatementInsertOperation {
-	private static Map<BlockStatementIndexPair, DoTogetherInsertOperation> mapEnveloping = Maps.newHashMap();
-	private static Map<BlockStatementIndexPair, DoTogetherInsertOperation> mapInsert = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, DoTogetherInsertOperation> mapEnveloping = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, DoTogetherInsertOperation> mapInsert = Maps.newHashMap();
 
-	public static synchronized DoTogetherInsertOperation getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		Map<BlockStatementIndexPair, DoTogetherInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
-		assert blockStatementIndexPair != null;
-		DoTogetherInsertOperation rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DoTogetherInsertOperation( blockStatementIndexPair, isEnveloping );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized DoTogetherInsertOperation getInstance(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    Map<BlockStatementIndexPair, DoTogetherInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
+    assert blockStatementIndexPair != null;
+    DoTogetherInsertOperation rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DoTogetherInsertOperation(blockStatementIndexPair, isEnveloping);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private DoTogetherInsertOperation( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "e808bf50-d3bd-4256-a416-453542eff619" ), blockStatementIndexPair, isEnveloping );
-	}
+  private DoTogetherInsertOperation(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("e808bf50-d3bd-4256-a416-453542eff619"), blockStatementIndexPair, isEnveloping);
+  }
 
-	@Override
-	protected final Statement createStatement() {
-		return AstUtilities.createDoTogether();
-	}
+  @Override
+  protected final Statement createStatement() {
+    return AstUtilities.createDoTogether();
+  }
 }

@@ -52,17 +52,17 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public abstract class CameraUtilities {
-	//todo: better name
-	public static AffineMatrix4x4 calculateGoodLookAt( AffineMatrix4x4 rv, Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy ) {
-		sgTarget.getTransformation( rv, sgAsSeenBy );
-		double thetaInRadians = smallerViewingAngle.getAsRadians();
-		double distance = sphere.radius / Math.sin( thetaInRadians / 2.0 );
-		rv.applyTranslationAlongZAxis( distance );
-		return rv;
-	}
+  //todo: better name
+  public static AffineMatrix4x4 calculateGoodLookAt(AffineMatrix4x4 rv, Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy) {
+    sgTarget.getTransformation(rv, sgAsSeenBy);
+    double thetaInRadians = smallerViewingAngle.getAsRadians();
+    double distance = sphere.radius / Math.sin(thetaInRadians / 2.0);
+    rv.applyTranslationAlongZAxis(distance);
+    return rv;
+  }
 
-	//todo: better name
-	public static AffineMatrix4x4 calculateGoodLookAt( Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy ) {
-		return calculateGoodLookAt( AffineMatrix4x4.createNaN(), smallerViewingAngle, sgTarget, sphere, sgAsSeenBy );
-	}
+  //todo: better name
+  public static AffineMatrix4x4 calculateGoodLookAt(Angle smallerViewingAngle, Component sgTarget, Sphere sphere, ReferenceFrame sgAsSeenBy) {
+    return calculateGoodLookAt(AffineMatrix4x4.createNaN(), smallerViewingAngle, sgTarget, sphere, sgAsSeenBy);
+  }
 }

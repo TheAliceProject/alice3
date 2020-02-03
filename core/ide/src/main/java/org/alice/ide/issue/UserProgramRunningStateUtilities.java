@@ -46,18 +46,18 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class UserProgramRunningStateUtilities {
-	private UserProgramRunningStateUtilities() {
-		throw new AssertionError();
-	}
+  private UserProgramRunningStateUtilities() {
+    throw new AssertionError();
+  }
 
-	private static boolean isUserProgramRunning;
+  private static boolean isUserProgramRunning;
 
-	public static boolean isUserProgramRunning() {
-		return isUserProgramRunning;
-	}
+  public static boolean isUserProgramRunning() {
+    return isUserProgramRunning;
+  }
 
-	public static void setUserProgramRunning( boolean isUserProgramRunning ) {
-		UserProgramRunningStateUtilities.isUserProgramRunning = isUserProgramRunning;
-	}
+  public static void setUserProgramRunning(boolean isUserProgramRunning) {
+    UserProgramRunningStateUtilities.isUserProgramRunning = isUserProgramRunning;
+  }
 
 }

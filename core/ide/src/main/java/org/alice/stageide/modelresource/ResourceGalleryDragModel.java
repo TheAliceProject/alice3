@@ -51,9 +51,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceGalleryDragModel extends GalleryDragModel {
-	public ResourceGalleryDragModel( UUID migrationId ) {
-		super( migrationId );
-	}
+  public ResourceGalleryDragModel(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public abstract List<ResourceNode> getNodeChildren();
+  public abstract List<ResourceNode> getNodeChildren();
 }

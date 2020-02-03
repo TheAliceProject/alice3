@@ -54,26 +54,26 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class PreviousValueExpressionPane extends BorderPanel {
-	private final AstI18nFactory factory;
-	private final PreviousValueExpression expression;
+  private final AstI18nFactory factory;
+  private final PreviousValueExpression expression;
 
-	public PreviousValueExpressionPane( AstI18nFactory factory, PreviousValueExpression expression ) {
-		this.factory = factory;
-		this.expression = expression;
-	}
+  public PreviousValueExpressionPane(AstI18nFactory factory, PreviousValueExpression expression) {
+    this.factory = factory;
+    this.expression = expression;
+  }
 
-	@Override
-	protected void handleAddedTo( AwtComponentView<?> parent ) {
-		super.handleAddedTo( parent );
-		Expression previousExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-		SwingComponentView<?> component = this.factory.createExpressionPane( previousExpression );
-		component.getAwtComponent().doLayout();
-		this.addCenterComponent( component );
-	}
+  @Override
+  protected void handleAddedTo(AwtComponentView<?> parent) {
+    super.handleAddedTo(parent);
+    Expression previousExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+    SwingComponentView<?> component = this.factory.createExpressionPane(previousExpression);
+    component.getAwtComponent().doLayout();
+    this.addCenterComponent(component);
+  }
 
-	@Override
-	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
-		this.forgetAndRemoveAllComponents();
-		super.handleRemovedFrom( parent );
-	}
+  @Override
+  protected void handleRemovedFrom(AwtComponentView<?> parent) {
+    this.forgetAndRemoveAllComponents();
+    super.handleRemovedFrom(parent);
+  }
 }

@@ -51,19 +51,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CaptureMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static CaptureMenuModel instance = new CaptureMenuModel();
-	}
+  private static class SingletonHolder {
+    private static CaptureMenuModel instance = new CaptureMenuModel();
+  }
 
-	public static CaptureMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CaptureMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CaptureMenuModel() {
-		super( UUID.fromString( "e21b65a4-1989-4b66-a5c8-81795cac3fba" ),
-				//org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
-				ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(),
-				SEPARATOR,
-				ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-	}
+  private CaptureMenuModel() {
+    super(UUID.fromString("e21b65a4-1989-4b66-a5c8-81795cac3fba"),
+          //org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
+          ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(), SEPARATOR, ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel());
+  }
 }

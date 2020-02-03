@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BathSink">
+    <BoundingBox>
+        <Min x="-0.3600711524486542" y="2.0559852487167518E-8" z="-0.30767807364463806"/>
+        <Max x="0.3600710928440094" y="0.9717774987220764" z="0.30767810344696045"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>sink</Tag>
+        <Tag>bathroom</Tag>
+        <Tag>washing</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bathroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bathroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BathSink" resourceName="WHITE" textureName="WHITE"/>
+    <Resource modelName="BathSink" resourceName="PINK" textureName="PINK"/>
+    <Resource modelName="BathSink" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="BathSink" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

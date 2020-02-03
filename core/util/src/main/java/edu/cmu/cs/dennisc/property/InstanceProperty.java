@@ -58,120 +58,120 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class InstanceProperty<T> {
-	public InstanceProperty( InstancePropertyOwner owner, T value ) {
-		this.owner = owner;
-		this.value = value;
-	}
+  public InstanceProperty(InstancePropertyOwner owner, T value) {
+    this.owner = owner;
+    this.value = value;
+  }
 
-	public String getName() {
-		if( this.name != null ) {
-			//pass
-		} else {
-			this.name = this.owner.lookupNameFor( this );
-		}
-		return this.name;
-	}
+  public String getName() {
+    if (this.name != null) {
+      //pass
+    } else {
+      this.name = this.owner.lookupNameFor(this);
+    }
+    return this.name;
+  }
 
-	public void addPropertyListener( PropertyListener propertyListener ) {
-		assert propertyListener != null : this;
-		this.propertyListeners.add( propertyListener );
-	}
+  public void addPropertyListener(PropertyListener propertyListener) {
+    assert propertyListener != null : this;
+    this.propertyListeners.add(propertyListener);
+  }
 
-	public void removePropertyListener( PropertyListener propertyListener ) {
-		this.propertyListeners.remove( propertyListener );
-	}
+  public void removePropertyListener(PropertyListener propertyListener) {
+    this.propertyListeners.remove(propertyListener);
+  }
 
-	public Collection<PropertyListener> getPropertyListeners() {
-		return Collections.unmodifiableCollection( this.propertyListeners );
-	}
+  public Collection<PropertyListener> getPropertyListeners() {
+    return Collections.unmodifiableCollection(this.propertyListeners);
+  }
 
-	private void firePropertyChanging( PropertyEvent e ) {
-		for( PropertyListener propertyListener : this.propertyListeners ) {
-			propertyListener.propertyChanging( e );
-		}
-		InstancePropertyOwner owner = this.getOwner();
-		if( owner != null ) {
-			owner.firePropertyChanging( e );
-		}
-	}
+  private void firePropertyChanging(PropertyEvent e) {
+    for (PropertyListener propertyListener : this.propertyListeners) {
+      propertyListener.propertyChanging(e);
+    }
+    InstancePropertyOwner owner = this.getOwner();
+    if (owner != null) {
+      owner.firePropertyChanging(e);
+    }
+  }
 
-	private void firePropertyChanged( PropertyEvent e ) {
-		for( PropertyListener propertyListener : this.propertyListeners ) {
-			propertyListener.propertyChanged( e );
-		}
-		InstancePropertyOwner owner = this.getOwner();
-		if( owner != null ) {
-			owner.firePropertyChanged( e );
-		}
-	}
+  private void firePropertyChanged(PropertyEvent e) {
+    for (PropertyListener propertyListener : this.propertyListeners) {
+      propertyListener.propertyChanged(e);
+    }
+    InstancePropertyOwner owner = this.getOwner();
+    if (owner != null) {
+      owner.firePropertyChanged(e);
+    }
+  }
 
-	public InstancePropertyOwner getOwner() {
-		return this.owner;
-	}
+  public InstancePropertyOwner getOwner() {
+    return this.owner;
+  }
 
-	public final T getValue() {
-		return this.value;
-	}
+  public final T getValue() {
+    return this.value;
+  }
 
-	public void setValue( T value ) {
-		PropertyEvent e = new PropertyEvent( this, this.owner, value );
-		firePropertyChanging( e );
-		this.value = value;
-		firePropertyChanged( e );
-	}
+  public void setValue(T value) {
+    PropertyEvent e = new PropertyEvent(this, this.owner, value);
+    firePropertyChanging(e);
+    this.value = value;
+    firePropertyChanged(e);
+  }
 
-	protected void writeValue( ObjectOutputStream oos ) throws IOException {
-		assert ( this.value == null ) || ( this.value instanceof Serializable );
-		oos.writeObject( this.value );
-	}
+  protected void writeValue(ObjectOutputStream oos) throws IOException {
+    assert (this.value == null) || (this.value instanceof Serializable);
+    oos.writeObject(this.value);
+  }
 
-	protected void readValue( ObjectInputStream ois ) throws IOException, ClassNotFoundException {
-		this.value = (T)ois.readObject();
-	}
+  protected void readValue(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+    this.value = (T) ois.readObject();
+  }
 
-	private void writeObject( ObjectOutputStream oos ) throws IOException {
-		oos.defaultWriteObject();
-		writeValue( oos );
-	}
+  private void writeObject(ObjectOutputStream oos) throws IOException {
+    oos.defaultWriteObject();
+    writeValue(oos);
+  }
 
-	private void readObject( ObjectInputStream ois ) throws IOException, ClassNotFoundException {
-		ois.defaultReadObject();
-		readValue( ois );
-	}
+  private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+    ois.defaultReadObject();
+    readValue(ois);
+  }
 
-	protected boolean isToBeIgnored( InstanceProperty<T> other, PropertyFilter filter ) {
-		return ( filter != null ) && filter.isToBeIgnored( this, other );
-	}
+  protected boolean isToBeIgnored(InstanceProperty<T> other, PropertyFilter filter) {
+    return (filter != null) && filter.isToBeIgnored(this, other);
+  }
 
-	public boolean valueEquals( InstanceProperty<T> other, PropertyFilter filter ) {
-		if( this.isToBeIgnored( other, filter ) ) {
-			return true;
-		} else {
-			T thisValue = this.getValue();
-			T otherValue = other.getValue();
-			if( thisValue != null ) {
-				if( otherValue != null ) {
-					return thisValue.equals( otherValue );
-				} else {
-					return false;
-				}
-			} else {
-				if( otherValue != null ) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-		}
-	}
+  public boolean valueEquals(InstanceProperty<T> other, PropertyFilter filter) {
+    if (this.isToBeIgnored(other, filter)) {
+      return true;
+    } else {
+      T thisValue = this.getValue();
+      T otherValue = other.getValue();
+      if (thisValue != null) {
+        if (otherValue != null) {
+          return thisValue.equals(otherValue);
+        } else {
+          return false;
+        }
+      } else {
+        if (otherValue != null) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+  }
 
-	@Override
-	public String toString() {
-		return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";
-	}
+  @Override
+  public String toString() {
+    return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";
+  }
 
-	private final List<PropertyListener> propertyListeners = Lists.newCopyOnWriteArrayList();
-	private final InstancePropertyOwner owner;
-	private T value;
-	private String name;
+  private final List<PropertyListener> propertyListeners = Lists.newCopyOnWriteArrayList();
+  private final InstancePropertyOwner owner;
+  private T value;
+  private String name;
 }

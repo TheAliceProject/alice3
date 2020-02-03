@@ -58,41 +58,41 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
  * @author Dennis Cosgrove
  */
 public class GlrStickFigure extends GlrAdornment<StickFigure> {
-	private static final int TRANSLATION_X_INDEX = 12;
-	private static final int TRANSLATION_Y_INDEX = 13;
-	private static final int TRANSLATION_Z_INDEX = 14;
-	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
+  private static final int TRANSLATION_X_INDEX = 12;
+  private static final int TRANSLATION_Y_INDEX = 13;
+  private static final int TRANSLATION_Z_INDEX = 14;
+  private static final float[] COLOR = {1.0f, 1.0f, 0.0f, 1.0f};
 
-	private static void glStickFigure( GL2 gl, DoubleBuffer ltParent, GlrComposite<?> glrParent ) {
-		gl.glPushMatrix();
-		try {
-			gl.glMultMatrixd( ltParent );
-			Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
-			synchronized( glrChildren ) {
-				for( GlrComponent<?> glrChild : glrChildren ) {
-					if( glrChild instanceof GlrTransformable<?> ) {
-						GlrTransformable<?> glrTransformable = (GlrTransformable<?>)glrChild;
-						DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
-						gl.glBegin( GL_LINES );
-						try {
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( ltChild.get( TRANSLATION_X_INDEX ), ltChild.get( TRANSLATION_Y_INDEX ), ltChild.get( TRANSLATION_Z_INDEX ) );
-						} finally {
-							gl.glEnd();
-						}
-						glStickFigure( gl, ltChild, glrTransformable );
-					}
-				}
-			}
-		} finally {
-			gl.glPopMatrix();
-		}
-	}
+  private static void glStickFigure(GL2 gl, DoubleBuffer ltParent, GlrComposite<?> glrParent) {
+    gl.glPushMatrix();
+    try {
+      gl.glMultMatrixd(ltParent);
+      Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
+      synchronized (glrChildren) {
+        for (GlrComponent<?> glrChild : glrChildren) {
+          if (glrChild instanceof GlrTransformable<?>) {
+            GlrTransformable<?> glrTransformable = (GlrTransformable<?>) glrChild;
+            DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
+            gl.glBegin(GL_LINES);
+            try {
+              gl.glVertex3d(0, 0, 0);
+              gl.glVertex3d(ltChild.get(TRANSLATION_X_INDEX), ltChild.get(TRANSLATION_Y_INDEX), ltChild.get(TRANSLATION_Z_INDEX));
+            } finally {
+              gl.glEnd();
+            }
+            glStickFigure(gl, ltChild, glrTransformable);
+          }
+        }
+      }
+    } finally {
+      gl.glPopMatrix();
+    }
+  }
 
-	@Override
-	protected void actuallyRender( RenderContext rc, GlrComposite<?> glrAdornmentRoot ) {
-		rc.gl.glDisable( GL_LIGHTING );
-		rc.setColor( COLOR, 1.0f );
-		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot );
-	}
+  @Override
+  protected void actuallyRender(RenderContext rc, GlrComposite<?> glrAdornmentRoot) {
+    rc.gl.glDisable(GL_LIGHTING);
+    rc.setColor(COLOR, 1.0f);
+    glStickFigure(rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot);
+  }
 }

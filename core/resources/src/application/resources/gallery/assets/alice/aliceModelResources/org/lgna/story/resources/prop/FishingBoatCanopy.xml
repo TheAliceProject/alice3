@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingBoatCanopy">
+    <BoundingBox>
+        <Min x="-0.801311194896698" y="0.32551872730255127" z="-1.6947529315948486"/>
+        <Max x="0.801311194896698" y="1.2768139839172363" z="-0.4622481167316437"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>boat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat accessories</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat accessories</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingBoatCanopy" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

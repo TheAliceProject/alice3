@@ -51,18 +51,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PopupCoreComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
-	private final HoverPopupElement hoverPopupElement = new HoverPopupElement( this );
+  private final HoverPopupElement hoverPopupElement = new HoverPopupElement(this);
 
-	public PopupCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public PopupCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	public HoverPopupElement getHoverPopupElement() {
-		return this.hoverPopupElement;
-	}
+  public HoverPopupElement getHoverPopupElement() {
+    return this.hoverPopupElement;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

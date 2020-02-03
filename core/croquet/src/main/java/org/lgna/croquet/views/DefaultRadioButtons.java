@@ -55,71 +55,73 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
-	private static final GridBagConstraints GBC_VERTICAL;
-	private static final GridBagConstraints GBC_HORIZONTAL;
-	static {
-		GBC_VERTICAL = new GridBagConstraints();
-		GBC_VERTICAL.fill = GridBagConstraints.BOTH;
-		GBC_VERTICAL.gridwidth = GridBagConstraints.REMAINDER;
-		GBC_VERTICAL.weightx = 1.0f;
-		GBC_VERTICAL.weighty = 0.0f;
+  private static final GridBagConstraints GBC_VERTICAL;
+  private static final GridBagConstraints GBC_HORIZONTAL;
 
-		GBC_HORIZONTAL = new GridBagConstraints();
-		GBC_HORIZONTAL.fill = GridBagConstraints.VERTICAL;
-		GBC_HORIZONTAL.anchor = GridBagConstraints.NORTHWEST;
-		GBC_HORIZONTAL.weightx = 0.0f;
-	}
-	private final boolean isVertical;
+  static {
+    GBC_VERTICAL = new GridBagConstraints();
+    GBC_VERTICAL.fill = GridBagConstraints.BOTH;
+    GBC_VERTICAL.gridwidth = GridBagConstraints.REMAINDER;
+    GBC_VERTICAL.weightx = 1.0f;
+    GBC_VERTICAL.weighty = 0.0f;
 
-	public DefaultRadioButtons( SingleSelectListState<E, ?> model, boolean isVertical ) {
-		super( model );
-		this.isVertical = isVertical;
-		this.setMaximumSizeClampedToPreferredSize( true );
-	}
+    GBC_HORIZONTAL = new GridBagConstraints();
+    GBC_HORIZONTAL.fill = GridBagConstraints.VERTICAL;
+    GBC_HORIZONTAL.anchor = GridBagConstraints.NORTHWEST;
+    GBC_HORIZONTAL.weightx = 0.0f;
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new GridBagLayout();
-	}
+  private final boolean isVertical;
 
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( E item, BooleanState itemSelectedState ) {
-		//booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return itemSelectedState.createRadioButton();
-	}
+  public DefaultRadioButtons(SingleSelectListState<E, ?> model, boolean isVertical) {
+    super(model);
+    this.isVertical = isVertical;
+    this.setMaximumSizeClampedToPreferredSize(true);
+  }
 
-	@Override
-	protected void removeAllDetails() {
-		this.internalRemoveAllComponents();
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new GridBagLayout();
+  }
 
-	private GridBagConstraints getGridBagConstraints() {
-		if( isVertical ) {
-			return GBC_VERTICAL;
-		} else {
-			return GBC_HORIZONTAL;
-		}
-	}
+  @Override
+  protected BooleanStateButton<?> createButtonForItemSelectedState(E item, BooleanState itemSelectedState) {
+    //booleanState.setTextForBothTrueAndFalse( item.toString() );
+    return itemSelectedState.createRadioButton();
+  }
 
-	@Override
-	protected void addPrologue( int count ) {
-	}
+  @Override
+  protected void removeAllDetails() {
+    this.internalRemoveAllComponents();
+  }
 
-	@Override
-	protected void addItem( E item, BooleanStateButton<?> button ) {
-		this.internalAddComponent( button, this.getGridBagConstraints() );
-	}
+  private GridBagConstraints getGridBagConstraints() {
+    if (isVertical) {
+      return GBC_VERTICAL;
+    } else {
+      return GBC_HORIZONTAL;
+    }
+  }
 
-	@Override
-	protected void addEpilogue() {
-		if( this.isVertical ) {
-			//pass
-		} else {
-			GBC_HORIZONTAL.gridwidth = GridBagConstraints.REMAINDER;
-			GBC_HORIZONTAL.weightx = 1.0f;
-			this.internalAddComponent( BoxUtilities.createHorizontalGlue(), this.getGridBagConstraints() );
-			GBC_HORIZONTAL.gridwidth = GridBagConstraints.RELATIVE;
-			GBC_HORIZONTAL.weightx = 0.0f;
-		}
-	}
+  @Override
+  protected void addPrologue(int count) {
+  }
+
+  @Override
+  protected void addItem(E item, BooleanStateButton<?> button) {
+    this.internalAddComponent(button, this.getGridBagConstraints());
+  }
+
+  @Override
+  protected void addEpilogue() {
+    if (this.isVertical) {
+      //pass
+    } else {
+      GBC_HORIZONTAL.gridwidth = GridBagConstraints.REMAINDER;
+      GBC_HORIZONTAL.weightx = 1.0f;
+      this.internalAddComponent(BoxUtilities.createHorizontalGlue(), this.getGridBagConstraints());
+      GBC_HORIZONTAL.gridwidth = GridBagConstraints.RELATIVE;
+      GBC_HORIZONTAL.weightx = 0.0f;
+    }
+  }
 }

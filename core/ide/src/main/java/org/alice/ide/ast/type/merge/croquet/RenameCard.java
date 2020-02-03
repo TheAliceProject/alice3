@@ -54,21 +54,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class RenameCard extends SimpleComposite<Panel> {
-	private final MemberHubWithNameState<?> memberHubWithNameState;
-	private final ColorCustomizer foregroundCustomizer;
+  private final MemberHubWithNameState<?> memberHubWithNameState;
+  private final ColorCustomizer foregroundCustomizer;
 
-	public RenameCard( MemberHubWithNameState<?> memberHubWithNameState, ColorCustomizer foregroundCustomizer ) {
-		super( UUID.fromString( "6551b6a3-b2be-43dd-a7fc-78e397765344" ) );
-		this.memberHubWithNameState = memberHubWithNameState;
-		this.foregroundCustomizer = foregroundCustomizer;
-	}
+  public RenameCard(MemberHubWithNameState<?> memberHubWithNameState, ColorCustomizer foregroundCustomizer) {
+    super(UUID.fromString("6551b6a3-b2be-43dd-a7fc-78e397765344"));
+    this.memberHubWithNameState = memberHubWithNameState;
+    this.foregroundCustomizer = foregroundCustomizer;
+  }
 
-	@Override
-	protected Panel createView() {
-		MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
+  @Override
+  protected Panel createView() {
+    MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
 
-		MigPanel rv = new MigPanel( this, "fill, insets 0", "[grow,shrink]" );
-		rv.addComponent( MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
-		return rv;
-	}
+    MigPanel rv = new MigPanel(this, "fill, insets 0", "[grow,shrink]");
+    rv.addComponent(MemberViewUtilities.createTextField(nameState, this.foregroundCustomizer));
+    return rv;
+  }
 }

@@ -49,14 +49,14 @@ import javax.swing.Icon;
  * @author Dennis Cosgrove
  */
 public class DefaultCompositeIcon extends AbstractCompositeIcon {
-	private final Icon[] componentIcons;
+  private final Icon[] componentIcons;
 
-	public DefaultCompositeIcon( Icon... componentIcons ) {
-		this.componentIcons = componentIcons;
-	}
+  public DefaultCompositeIcon(Icon... componentIcons) {
+    this.componentIcons = componentIcons;
+  }
 
-	@Override
-	protected Icon[] getComponentIcons() {
-		return this.componentIcons;
-	}
+  @Override
+  protected Icon[] getComponentIcons() {
+    return this.componentIcons;
+  }
 }

@@ -57,31 +57,25 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ShowSystemPropertiesView extends FormPanel {
-	public ShowSystemPropertiesView( ShowSystemPropertiesComposite composite ) {
-		super( composite );
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+  public ShowSystemPropertiesView(ShowSystemPropertiesComposite composite) {
+    super(composite);
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 
-	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		String[] propertyNames = { "java.version", "os.name", "os.version", "os.arch", "sun.arch.data.model" };
-		for( String propertyName : propertyNames ) {
-			String value = System.getProperty( propertyName );
-			rows.add( LabeledFormRow.createFromLabel( new Label( propertyName + ":" ), new Label( value ) ) );
-		}
-		rows.add( new LabeledFormRow( null, BoxUtilities.createVerticalSliver( 8 ) ) );
-		ShowPathPropertyComposite[] showPathPropertyComposites = {
-				IdeApp.INSTANCE.getShowClassPathPropertyComposite(),
-				IdeApp.INSTANCE.getShowLibraryPathPropertyComposite()
-		};
-		for( ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites ) {
-			String propertyName = showPathPropertyComposite.getPropertyName();
-			rows.add( LabeledFormRow.createFromLabel(
-					new Label( propertyName + ":" ),
-					showPathPropertyComposite.getLaunchOperation().createHyperlink()
-					) );
-		}
-		rows.add( new LabeledFormRow( null, BoxUtilities.createVerticalSliver( 8 ) ) );
-		rows.add( new LabeledFormRow( null, IdeApp.INSTANCE.getShowAllSystemPropertiesComposite().getLaunchOperation().createHyperlink() ) );
-	}
+  @Override
+  protected void appendRows(List<LabeledFormRow> rows) {
+    String[] propertyNames = {"java.version", "os.name", "os.version", "os.arch", "sun.arch.data.model"};
+    for (String propertyName : propertyNames) {
+      String value = System.getProperty(propertyName);
+      rows.add(LabeledFormRow.createFromLabel(new Label(propertyName + ":"), new Label(value)));
+    }
+    rows.add(new LabeledFormRow(null, BoxUtilities.createVerticalSliver(8)));
+    ShowPathPropertyComposite[] showPathPropertyComposites = {IdeApp.INSTANCE.getShowClassPathPropertyComposite(), IdeApp.INSTANCE.getShowLibraryPathPropertyComposite()};
+    for (ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites) {
+      String propertyName = showPathPropertyComposite.getPropertyName();
+      rows.add(LabeledFormRow.createFromLabel(new Label(propertyName + ":"), showPathPropertyComposite.getLaunchOperation().createHyperlink()));
+    }
+    rows.add(new LabeledFormRow(null, BoxUtilities.createVerticalSliver(8)));
+    rows.add(new LabeledFormRow(null, IdeApp.INSTANCE.getShowAllSystemPropertiesComposite().getLaunchOperation().createHyperlink()));
+  }
 }

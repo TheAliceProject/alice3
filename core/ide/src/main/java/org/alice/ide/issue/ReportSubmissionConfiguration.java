@@ -49,43 +49,44 @@ import java.net.URI;
 import java.net.URL;
 
 public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration {
-	public static final String JIRA_URL = "http://bugs.alice.org:8080/";
-	private static final String JIRA_RPC_URL = JIRA_URL + "rpc/xmlrpc";
-	public static final String JIRA_SOAP_URL = JIRA_URL + "rpc/soap/jirasoapservice-v2";
+  public static final String JIRA_URL = "http://bugs.alice.org:8080/";
+  private static final String JIRA_RPC_URL = JIRA_URL + "rpc/xmlrpc";
+  public static final String JIRA_SOAP_URL = JIRA_URL + "rpc/soap/jirasoapservice-v2";
 
-	@Override public URI getJIRAViaRestServer() {
-		return URI.create( JIRA_URL );
-	}
+  @Override
+  public URI getJIRAViaRestServer() {
+    return URI.create(JIRA_URL);
+  }
 
-	@Override
-	public URL getJIRAViaRPCServer() throws MalformedURLException {
-		return new URL( JIRA_RPC_URL );
-	}
+  @Override
+  public URL getJIRAViaRPCServer() throws MalformedURLException {
+    return new URL(JIRA_RPC_URL);
+  }
 
-	@Override
-	public URL getJIRAViaSOAPServer() throws MalformedURLException {
-		return new URL( JIRA_SOAP_URL );
-	}
+  @Override
+  public URL getJIRAViaSOAPServer() throws MalformedURLException {
+    return new URL(JIRA_SOAP_URL);
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-		return new org.alice.ide.issue.jira.rpc.Authenticator();
-	}
+  @Override
+  public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
+    return new org.alice.ide.issue.jira.rpc.Authenticator();
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-		return new Authenticator();
-	}
+  @Override
+  public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
+    return new Authenticator();
+  }
 
-	//	public String getMailServer() {
-	//		return "haru.pc.cc.cmu.edu";
-	//	}
-	//
-	//	public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator() {
-	//		return new org.alice.ide.issue.mail.Authenticator();
-	//	}
-	//
-	//	public String getMailRecipient() {
-	//		return "alice.bugs.3.beta.xxxx@gmail.com";
-	//	}
+  //  public String getMailServer() {
+  //    return "haru.pc.cc.cmu.edu";
+  //  }
+  //
+  //  public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator() {
+  //    return new org.alice.ide.issue.mail.Authenticator();
+  //  }
+  //
+  //  public String getMailRecipient() {
+  //    return "alice.bugs.3.beta.xxxx@gmail.com";
+  //  }
 }

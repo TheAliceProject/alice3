@@ -54,19 +54,19 @@ import org.lgna.project.ast.UserField;
  */
 //todo: reduce visibility
 public class GetterTemplate extends ExpressionTemplate {
-	private AbstractField field;
+  private AbstractField field;
 
-	protected GetterTemplate( AbstractField field ) {
-		super( FieldAccessDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof UserField ) {
-			UserField userField = (UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
-	}
+  protected GetterTemplate(AbstractField field) {
+    super(FieldAccessDragModel.getInstance(field));
+    this.field = field;
+    if (this.field instanceof UserField) {
+      UserField userField = (UserField) this.field;
+      this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
+    }
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		return IncompleteAstUtilities.createIncompleteFieldAccess( field );
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    return IncompleteAstUtilities.createIncompleteFieldAccess(field);
+  }
 }

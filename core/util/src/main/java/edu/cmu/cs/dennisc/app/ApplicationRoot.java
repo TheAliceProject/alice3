@@ -51,129 +51,129 @@ import java.io.File;
  * @author Dennis Cosgrove
  */
 public class ApplicationRoot {
-	private static final String DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY = "org.alice.ide.rootDirectory";
-	private static final String DEFAULT_APPLICATION_NAME = "Alice";
+  private static final String DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY = "org.alice.ide.rootDirectory";
+  private static final String DEFAULT_APPLICATION_NAME = "Alice";
 
-	private static File rootDirectory;
+  private static File rootDirectory;
 
-	public static void initializeIfNecessary() {
-		if( rootDirectory != null ) {
-			//pass
-		} else {
-			String rootDirectoryPath = System.getProperty( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
-			//todo: fallback to System.getProperty( "user.dir" ) ???
-			if( rootDirectoryPath != null ) {
-				rootDirectory = new File( rootDirectoryPath );
-				if( rootDirectory.exists() ) {
-					//pass
-				} else {
-					StringBuilder sb = new StringBuilder();
-					sb.append( "system property: " );
-					sb.append( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
-					sb.append( " is incorrectly set.\n" );
-					sb.append( rootDirectory );
-					sb.append( " does not exist.\n" );
-					sb.append( DEFAULT_APPLICATION_NAME );
-					sb.append( " will not work until this is addressed." );
-					JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE );
-					System.exit( -1 );
-				}
-			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "system property: " );
-				sb.append( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
-				sb.append( " is not set.\n" );
-				sb.append( DEFAULT_APPLICATION_NAME );
-				sb.append( " will not work until this is addressed." );
-				JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE );
-				rootDirectory = null;
-				System.exit( -1 );
-			}
-		}
-	}
+  public static void initializeIfNecessary() {
+    if (rootDirectory != null) {
+      //pass
+    } else {
+      String rootDirectoryPath = System.getProperty(DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY);
+      //todo: fallback to System.getProperty( "user.dir" ) ???
+      if (rootDirectoryPath != null) {
+        rootDirectory = new File(rootDirectoryPath);
+        if (rootDirectory.exists()) {
+          //pass
+        } else {
+          StringBuilder sb = new StringBuilder();
+          sb.append("system property: ");
+          sb.append(DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY);
+          sb.append(" is incorrectly set.\n");
+          sb.append(rootDirectory);
+          sb.append(" does not exist.\n");
+          sb.append(DEFAULT_APPLICATION_NAME);
+          sb.append(" will not work until this is addressed.");
+          JOptionPane.showMessageDialog(null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE);
+          System.exit(-1);
+        }
+      } else {
+        StringBuilder sb = new StringBuilder();
+        sb.append("system property: ");
+        sb.append(DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY);
+        sb.append(" is not set.\n");
+        sb.append(DEFAULT_APPLICATION_NAME);
+        sb.append(" will not work until this is addressed.");
+        JOptionPane.showMessageDialog(null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE);
+        rootDirectory = null;
+        System.exit(-1);
+      }
+    }
+  }
 
-	private ApplicationRoot() {
-		throw new AssertionError();
-	}
+  private ApplicationRoot() {
+    throw new AssertionError();
+  }
 
-	public static File getRootDirectory() {
-		initializeIfNecessary();
-		return rootDirectory;
-	}
+  public static File getRootDirectory() {
+    initializeIfNecessary();
+    return rootDirectory;
+  }
 
-	public static File getPlatformDirectory() {
-		return new File( getRootDirectory(), "platform" );
-	}
+  public static File getPlatformDirectory() {
+    return new File(getRootDirectory(), "platform");
+  }
 
-	public static String getArchitectureSpecificJoglSubDirectory() {
-		StringBuilder sb = new StringBuilder( "natives/" );
-		if( SystemUtilities.isMac() ) {
-			sb.append( "macosx-universal/" );
-		} else {
-			Integer bitCount = SystemUtilities.getBitCount();
-			if( bitCount != null ) {
-				if( SystemUtilities.isWindows() ) {
-					sb.append( "windows-" );
-				} else if( SystemUtilities.isLinux() ) {
-					sb.append( "linux-" );
-				} else {
-					throw new RuntimeException( System.getProperty( "os.name" ) );
-				}
-				switch( bitCount ) {
-				case 32:
-					sb.append( "i586/" );
-					break;
-				case 64:
-					sb.append( "amd64/" );
-					break;
-				default:
-					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-				}
+  public static String getArchitectureSpecificJoglSubDirectory() {
+    StringBuilder sb = new StringBuilder("natives/");
+    if (SystemUtilities.isMac()) {
+      sb.append("macosx-universal/");
+    } else {
+      Integer bitCount = SystemUtilities.getBitCount();
+      if (bitCount != null) {
+        if (SystemUtilities.isWindows()) {
+          sb.append("windows-");
+        } else if (SystemUtilities.isLinux()) {
+          sb.append("linux-");
+        } else {
+          throw new RuntimeException(System.getProperty("os.name"));
+        }
+        switch (bitCount) {
+        case 32:
+          sb.append("i586/");
+          break;
+        case 64:
+          sb.append("amd64/");
+          break;
+        default:
+          throw new RuntimeException(System.getProperty("sun.arch.data.model"));
+        }
 
-			} else {
-				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-			}
-		}
-		return sb.toString();
-	}
+      } else {
+        throw new RuntimeException(System.getProperty("sun.arch.data.model"));
+      }
+    }
+    return sb.toString();
+  }
 
-	public static File getArchitectureSpecificDirectory() {
-		StringBuilder sb = new StringBuilder();
-		if( SystemUtilities.isMac() ) {
-			sb.append( "macosx" );
-		} else {
-			Integer bitCount = SystemUtilities.getBitCount();
-			if( bitCount != null ) {
-				if( SystemUtilities.isWindows() ) {
-					sb.append( "win" );
-					sb.append( bitCount );
-				} else if( SystemUtilities.isLinux() ) {
-					sb.append( "linux-" );
-					switch( bitCount ) {
-					case 32:
-						sb.append( "i586/" );
-						break;
-					case 64:
-						sb.append( "amd64/" );
-						break;
-					default:
-						throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-					}
-				} else {
-					throw new RuntimeException( System.getProperty( "os.name" ) );
-				}
-			} else {
-				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-			}
-		}
-		return new File( getPlatformDirectory(), sb.toString() );
-	}
-	//	public static java.io.File getCommand( String subPath ) {
-	//		StringBuilder sb = new StringBuilder();
-	//		sb.append( subPath );
-	//		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-	//			sb.append( ".exe" );
-	//		}
-	//		return new java.io.File( this.getArchitectureSpecificDirectory(), sb.toString() );
-	//	}
+  public static File getArchitectureSpecificDirectory() {
+    StringBuilder sb = new StringBuilder();
+    if (SystemUtilities.isMac()) {
+      sb.append("macosx");
+    } else {
+      Integer bitCount = SystemUtilities.getBitCount();
+      if (bitCount != null) {
+        if (SystemUtilities.isWindows()) {
+          sb.append("win");
+          sb.append(bitCount);
+        } else if (SystemUtilities.isLinux()) {
+          sb.append("linux-");
+          switch (bitCount) {
+          case 32:
+            sb.append("i586/");
+            break;
+          case 64:
+            sb.append("amd64/");
+            break;
+          default:
+            throw new RuntimeException(System.getProperty("sun.arch.data.model"));
+          }
+        } else {
+          throw new RuntimeException(System.getProperty("os.name"));
+        }
+      } else {
+        throw new RuntimeException(System.getProperty("sun.arch.data.model"));
+      }
+    }
+    return new File(getPlatformDirectory(), sb.toString());
+  }
+  //  public static java.io.File getCommand( String subPath ) {
+  //    StringBuilder sb = new StringBuilder();
+  //    sb.append( subPath );
+  //    if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+  //      sb.append( ".exe" );
+  //    }
+  //    return new java.io.File( this.getArchitectureSpecificDirectory(), sb.toString() );
+  //  }
 }

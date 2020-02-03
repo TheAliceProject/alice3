@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="IceRamp">
+    <BoundingBox>
+        <Min x="-1.9220685958862305" y="0.0" z="-1.7662551403045654"/>
+        <Max x="1.589150309562683" y="1.7168267965316772" z="2.102471113204956"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>iceberg</Tag>
+        <Tag>ramp</Tag>
+        <Tag>slope</Tag>
+        <Tag>ice slope</Tag>
+        <Tag>snow slope</Tag>
+        <Tag>ski slope</Tag>
+        <Tag>snowboard</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="IceRamp" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

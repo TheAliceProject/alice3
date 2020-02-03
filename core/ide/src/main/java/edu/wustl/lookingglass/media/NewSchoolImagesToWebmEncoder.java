@@ -58,143 +58,143 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class NewSchoolImagesToWebmEncoder {
-	private static final String WEBM_EXTENSION = "webm";
+  private static final String WEBM_EXTENSION = "webm";
 
-	private final int frameRate;
-	private final Dimension size;
-	private final boolean isUpsideDown;
+  private final int frameRate;
+  private final Dimension size;
+  private final boolean isUpsideDown;
 
-	private File encodedVideoFile = null;
-	private ProcessBuilder processBuilder;
-	private Process process;
+  private File encodedVideoFile = null;
+  private ProcessBuilder processBuilder;
+  private Process process;
 
-	private final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-	private final ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream stderr = new ByteArrayOutputStream();
 
-	public NewSchoolImagesToWebmEncoder( int frameRate, Dimension size, boolean isUpsideDown ) {
-		this.frameRate = frameRate;
-		this.size = size;
-		this.isUpsideDown = isUpsideDown;
+  public NewSchoolImagesToWebmEncoder(int frameRate, Dimension size, boolean isUpsideDown) {
+    this.frameRate = frameRate;
+    this.size = size;
+    this.isUpsideDown = isUpsideDown;
 
-		assert ( this.size.width % 2 ) == 0 : "ffmpeg requires dimensions that are divisble by two " + this.size.width;
-		assert ( this.size.height % 2 ) == 0 : "ffmpeg requires dimensions that are divisble by two " + this.size.height;
-	}
+    assert (this.size.width % 2) == 0 : "ffmpeg requires dimensions that are divisble by two " + this.size.width;
+    assert (this.size.height % 2) == 0 : "ffmpeg requires dimensions that are divisble by two " + this.size.height;
+  }
 
-	public void start() throws Exception {
-		ImageIO.setUseCache( false );
+  public void start() throws Exception {
+    ImageIO.setUseCache(false);
 
-		this.encodedVideoFile = File.createTempFile( "project", "." + WEBM_EXTENSION );
-		this.encodedVideoFile.deleteOnExit();
+    this.encodedVideoFile = File.createTempFile("project", "." + WEBM_EXTENSION);
+    this.encodedVideoFile.deleteOnExit();
 
-		List<String> args = Lists.newLinkedList();
+    List<String> args = Lists.newLinkedList();
 
-		// overwrite output files without asking
-		args.add( "-y" );
+    // overwrite output files without asking
+    args.add("-y");
 
-		// set frame rate
-		args.add( "-r" );
-		args.add( Integer.toString( this.frameRate ) );
+    // set frame rate
+    args.add("-r");
+    args.add(Integer.toString(this.frameRate));
 
-		//
-		args.add( "-f" );
-		args.add( "image2pipe" );
+    //
+    args.add("-f");
+    args.add("image2pipe");
 
-		// set video codec for input (ppm)
-		args.add( "-vcodec" );
-		args.add( "ppm" );
+    // set video codec for input (ppm)
+    args.add("-vcodec");
+    args.add("ppm");
 
-		// use stdin
-		args.add( "-i" );
-		args.add( "-" );
+    // use stdin
+    args.add("-i");
+    args.add("-");
 
-		if( this.isUpsideDown ) {
-			// flip vertically
-			args.add( "-vf" );
-			args.add( "vflip" );
-		}
+    if (this.isUpsideDown) {
+      // flip vertically
+      args.add("-vf");
+      args.add("vflip");
+    }
 
-		//set video codec output (webm)
-		args.add( "-vcodec" );
-		args.add( "libvpx" );
+    //set video codec output (webm)
+    args.add("-vcodec");
+    args.add("libvpx");
 
-		// libvpx option: quality (best, good, realtime) 
-		args.add( "-quality" );
-		args.add( "good" );
+    // libvpx option: quality (best, good, realtime)
+    args.add("-quality");
+    args.add("good");
 
-		// libvpx option: (0-5) lower values use more cpu
-		args.add( "-cpu-used" );
-		args.add( "0" );
+    // libvpx option: (0-5) lower values use more cpu
+    args.add("-cpu-used");
+    args.add("0");
 
-		// libvpx option: variable bit rate 
-		args.add( "-b:v" );
-		args.add( "500k" );
+    // libvpx option: variable bit rate
+    args.add("-b:v");
+    args.add("500k");
 
-		// libvpx option: minimum quantizer (0-63)
-		args.add( "-qmin" );
-		args.add( "10" );
+    // libvpx option: minimum quantizer (0-63)
+    args.add("-qmin");
+    args.add("10");
 
-		// libvpx option: maximum quantizer (0-63)
-		args.add( "-qmax" );
-		args.add( "42" );
+    // libvpx option: maximum quantizer (0-63)
+    args.add("-qmax");
+    args.add("42");
 
-		// libvpx option: maxrate
-		args.add( "-maxrate" );
-		args.add( "500k" );
+    // libvpx option: maxrate
+    args.add("-maxrate");
+    args.add("500k");
 
-		// libvpx option: buffer size
-		args.add( "-bufsize" );
-		args.add( "1000k" );
+    // libvpx option: buffer size
+    args.add("-bufsize");
+    args.add("1000k");
 
-		// pixel format
-		args.add( "-pix_fmt" );
-		args.add( "yuv420p" );
+    // pixel format
+    args.add("-pix_fmt");
+    args.add("yuv420p");
 
-		// output file
-		args.add( this.encodedVideoFile.getAbsolutePath() );
+    // output file
+    args.add(this.encodedVideoFile.getAbsolutePath());
 
-		this.processBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder( args );
-		this.process = this.processBuilder.start();
-	}
+    this.processBuilder = FFmpegProcessBuilderUtilities.createFFmpegProcessBuilder(args);
+    this.process = this.processBuilder.start();
+  }
 
-	public File getEncodedVideoFile() {
-		return this.encodedVideoFile;
-	}
+  public File getEncodedVideoFile() {
+    return this.encodedVideoFile;
+  }
 
-	private void drainInputStreams() throws Exception {
-		InputStream isOut = this.process.getInputStream();
-		InputStream isErr = this.process.getErrorStream();
-		InputStreamUtilities.drain( isOut, this.stdout );
-		InputStreamUtilities.drain( isErr, this.stderr );
-	}
+  private void drainInputStreams() throws Exception {
+    InputStream isOut = this.process.getInputStream();
+    InputStream isErr = this.process.getErrorStream();
+    InputStreamUtilities.drain(isOut, this.stdout);
+    InputStreamUtilities.drain(isErr, this.stderr);
+  }
 
-	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) throws Exception {
-		assert image != null;
-		assert image.getWidth() == this.size.getWidth();
-		assert image.getHeight() == this.size.getHeight();
-		assert isUpsideDown == this.isUpsideDown;
+  public void addBufferedImage(BufferedImage image, boolean isUpsideDown) throws Exception {
+    assert image != null;
+    assert image.getWidth() == this.size.getWidth();
+    assert image.getHeight() == this.size.getHeight();
+    assert isUpsideDown == this.isUpsideDown;
 
-		this.drainInputStreams();
-		OutputStream os = this.process.getOutputStream();
-		ImageIO.write( image, "ppm", os );
-	}
+    this.drainInputStreams();
+    OutputStream os = this.process.getOutputStream();
+    ImageIO.write(image, "ppm", os);
+  }
 
-	public int stop() throws Exception {
-		this.drainInputStreams();
-		OutputStream os = this.process.getOutputStream();
-		os.flush();
-		os.close();
-		this.drainInputStreams();
-		int status = this.process.waitFor();
-		this.drainInputStreams();
-		ImageIO.setUseCache( true );
-		return status;
-	}
+  public int stop() throws Exception {
+    this.drainInputStreams();
+    OutputStream os = this.process.getOutputStream();
+    os.flush();
+    os.close();
+    this.drainInputStreams();
+    int status = this.process.waitFor();
+    this.drainInputStreams();
+    ImageIO.setUseCache(true);
+    return status;
+  }
 
-	public ByteArrayOutputStream getStdout() {
-		return this.stdout;
-	}
+  public ByteArrayOutputStream getStdout() {
+    return this.stdout;
+  }
 
-	public ByteArrayOutputStream getStderr() {
-		return this.stderr;
-	}
+  public ByteArrayOutputStream getStderr() {
+    return this.stderr;
+  }
 }

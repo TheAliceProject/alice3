@@ -77,117 +77,117 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  */
 public class NebulousIde {
 
-	public static final NebulousIde nonfree;
+  public static final NebulousIde nonfree;
 
-	private static final String NONFREE_IDE_CLASSNAME = "org.alice.nonfree.IdeNonfree";
+  private static final String NONFREE_IDE_CLASSNAME = "org.alice.nonfree.IdeNonfree";
 
-	static {
-		NebulousIde nonfreeInstance = null;
-		try {
-			Class<?> nonfreeClass = ClassUtilities.forName( NONFREE_IDE_CLASSNAME );
-			nonfreeInstance = (NebulousIde)ReflectionUtilities.newInstance( nonfreeClass );
-		} catch( Throwable t ) {
-			Logger.warning( "unable to initialize ide-nonfree library", t );
-			nonfreeInstance = new NebulousIde();
-		}
-		nonfree = nonfreeInstance;
-	}
+  static {
+    NebulousIde nonfreeInstance = null;
+    try {
+      Class<?> nonfreeClass = ClassUtilities.forName(NONFREE_IDE_CLASSNAME);
+      nonfreeInstance = (NebulousIde) ReflectionUtilities.newInstance(nonfreeClass);
+    } catch (Throwable t) {
+      Logger.warning("unable to initialize ide-nonfree library", t);
+      nonfreeInstance = new NebulousIde();
+    }
+    nonfree = nonfreeInstance;
+  }
 
-	protected NebulousIde() {
-	}
+  protected NebulousIde() {
+  }
 
-	public boolean isNonFreeEnabled() {
-		return false;
-	}
+  public boolean isNonFreeEnabled() {
+    return false;
+  }
 
-	public void promptForLicenseAgreements( String licenseKey ) throws LicenseRejectedException {
-	}
+  public void promptForLicenseAgreements(String licenseKey) throws LicenseRejectedException {
+  }
 
-	public Operation newSimsArtEulaDialogLaunchOperation() {
-		return null;
-	}
+  public Operation newSimsArtEulaDialogLaunchOperation() {
+    return null;
+  }
 
-	public NamedUserType createProgramType( TemplateUriState.Template template ) {
-		return null;
-	}
+  public NamedUserType createProgramType(TemplateUriState.Template template) {
+    return null;
+  }
 
-	public AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( JavaMethod setter, StandardExpressionState state, EntityImp entityImp ) {
-		return null;
-	}
+  public AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter(JavaMethod setter, StandardExpressionState state, EntityImp entityImp) {
+    return null;
+  }
 
-	public void addBipedResourceResourceNodes( List<ResourceNode> childNodes, List<ResourceNode> emptyList ) {
-	}
+  public void addBipedResourceResourceNodes(List<ResourceNode> childNodes, List<ResourceNode> emptyList) {
+  }
 
-	public void unloadNebulousModelData() {
-	}
+  public void unloadNebulousModelData() {
+  }
 
-	public void unloadPerson() {
-	}
+  public void unloadPerson() {
+  }
 
-	public IconFactory createIconFactory( ModelResource instance ) {
-		return null;
-	}
+  public IconFactory createIconFactory(ModelResource instance) {
+    return null;
+  }
 
-	public double setOneShotSortValues( Map<JavaMethod, Double> map, double value, final double INCREMENT ) {
-		return value;
-	}
+  public double setOneShotSortValues(Map<JavaMethod, Double> map, double value, final double INCREMENT) {
+    return value;
+  }
 
-	public boolean isInstanceOfPersonResourceKey( ResourceKey resourceKey ) {
-		return false;
-	}
+  public boolean isInstanceOfPersonResourceKey(ResourceKey resourceKey) {
+    return false;
+  }
 
-	public Triggerable getPersonResourceDropOperation( ResourceKey resourceKey ) {
-		return null;
-	}
+  public Triggerable getPersonResourceDropOperation(ResourceKey resourceKey) {
+    return null;
+  }
 
-	public void addRoomMethods( AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods ) {
-	}
+  public void addRoomMethods(AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods) {
+  }
 
-	public CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
-		return null;
-	}
+  public CascadeBlankChild<?> getRoomFillIns(JavaMethod method, InstanceFactory instanceFactory) {
+    return null;
+  }
 
-	public ResourceKeyUriIteratingOperation getPersonResourceKeyUriIteratingOperation() {
-		return null;
-	}
+  public ResourceKeyUriIteratingOperation getPersonResourceKeyUriIteratingOperation() {
+    return null;
+  }
 
-	public ExpressionCascadeManager newExpressionCascadeManager() {
-		return new ExpressionCascadeManager();
-	}
+  public ExpressionCascadeManager newExpressionCascadeManager() {
+    return new ExpressionCascadeManager();
+  }
 
-	public StoryApiConfigurationManager newStoryApiConfigurationManager() {
-		return new StoryApiConfigurationManager();
-	}
+  public StoryApiConfigurationManager newStoryApiConfigurationManager() {
+    return new StoryApiConfigurationManager();
+  }
 
-	public boolean isAssignableToPersonResource( AbstractType<?, ?, ?> type ) {
-		return false;
-	}
+  public boolean isAssignableToPersonResource(AbstractType<?, ?, ?> type) {
+    return false;
+  }
 
-	public Paint getFloorApperanceRedwood() {
-		return null;
-	}
+  public Paint getFloorApperanceRedwood() {
+    return null;
+  }
 
-	public Paint getWallApperanceYellow() {
-		return null;
-	}
+  public Paint getWallApperanceYellow() {
+    return null;
+  }
 
-	public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( AbstractType<?, ?, ?> type ) {
-		return null;
-	}
+  public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance(AbstractType<?, ?, ?> type) {
+    return null;
+  }
 
-	public boolean isPersonResourceAssignableFrom( Class<?> cls ) {
-		return false;
-	}
+  public boolean isPersonResourceAssignableFrom(Class<?> cls) {
+    return false;
+  }
 
-	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends ModelResource> resourceCls ) {
-		return null;
-	}
+  public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass(Class<? extends ModelResource> resourceCls) {
+    return null;
+  }
 
-	public ExpressionCreator newExpressionCreator() {
-		return new ExpressionCreator();
-	}
+  public ExpressionCreator newExpressionCreator() {
+    return new ExpressionCreator();
+  }
 
-	public boolean isPersonResourceTypeAssingleFrom( AbstractType<?, ?, ?> type ) {
-		return false;
-	}
+  public boolean isPersonResourceTypeAssingleFrom(AbstractType<?, ?, ?> type) {
+    return false;
+  }
 }

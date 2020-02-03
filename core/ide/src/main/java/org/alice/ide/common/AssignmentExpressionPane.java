@@ -65,85 +65,85 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class AssignmentExpressionPane extends LineAxisPanel {
-	private AssignmentExpression assignmentExpression;
+  private AssignmentExpression assignmentExpression;
 
-	public AssignmentExpressionPane( AstI18nFactory factory, AssignmentExpression assignmentExpression ) {
-		this.assignmentExpression = assignmentExpression;
-		Expression left = this.assignmentExpression.leftHandSide.getValue();
+  public AssignmentExpressionPane(AstI18nFactory factory, AssignmentExpression assignmentExpression) {
+    this.assignmentExpression = assignmentExpression;
+    Expression left = this.assignmentExpression.leftHandSide.getValue();
 
-		Expression expression;
-		AxisPanel parent;
-		if( left instanceof ArrayAccess ) {
-			ArrayAccess arrayAccess = (ArrayAccess)left;
-			parent = new LineAxisPanel();
-			expression = arrayAccess.array.getValue();
-			this.addComponent( parent );
-		} else {
-			parent = this;
-			expression = left;
-		}
+    Expression expression;
+    AxisPanel parent;
+    if (left instanceof ArrayAccess) {
+      ArrayAccess arrayAccess = (ArrayAccess) left;
+      parent = new LineAxisPanel();
+      expression = arrayAccess.array.getValue();
+      this.addComponent(parent);
+    } else {
+      parent = this;
+      expression = left;
+    }
 
-		boolean isSetter = false;
-		if( expression != null ) {
-			if( expression instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)expression;
-				DeclarationNameLabel nameLabel = new DeclarationNameLabel( fieldAccess.field.getValue() );
-				//			nameLabel.setFontToScaledFont( 1.5f );
-				AbstractField field = fieldAccess.field.getValue();
-				IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
-				isSetter = accessorAndMutatorDisplayStyle == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-				parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, field.getDeclaringType() ) );
-				if( FormatterState.isJava() ) {
-					parent.addComponent( new Label( " . " ) );
-				} else {
-					parent.addComponent( new Label( " " ) );
-				}
-				if( isSetter ) {
-					parent.addComponent( new Label( "set" ) );
-				}
-				parent.addComponent( nameLabel );
-				if( isSetter ) {
-					if( FormatterState.isJava() ) {
-						parent.addComponent( new Label( "( " ) );
-					}
-				}
-			} else if( expression instanceof LocalAccess ) {
-				LocalAccess localAccess = (LocalAccess)expression;
-				UserLocal local = localAccess.local.getValue();
-				parent.addComponent( new LocalPane( local, factory.isLocalDraggableAndMutable( local ) ) );
-			} else if( expression instanceof ParameterAccess ) {
-				ParameterAccess parameterAccess = (ParameterAccess)expression;
-				AbstractParameter parameter = parameterAccess.parameter.getValue();
-				parent.addComponent( new ParameterPane( null, (UserParameter)parameter ) );
-			} else {
-				parent.addComponent( new Label( "TODO" ) );
-			}
-		} else {
-			parent.addComponent( new Label( "???" ) );
-		}
+    boolean isSetter = false;
+    if (expression != null) {
+      if (expression instanceof FieldAccess) {
+        FieldAccess fieldAccess = (FieldAccess) expression;
+        DeclarationNameLabel nameLabel = new DeclarationNameLabel(fieldAccess.field.getValue());
+        //      nameLabel.setFontToScaledFont( 1.5f );
+        AbstractField field = fieldAccess.field.getValue();
+        IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle(field);
+        isSetter = accessorAndMutatorDisplayStyle == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+        parent.addComponent(factory.createExpressionPropertyPane(fieldAccess.expression, field.getDeclaringType()));
+        if (FormatterState.isJava()) {
+          parent.addComponent(new Label(" . "));
+        } else {
+          parent.addComponent(new Label(" "));
+        }
+        if (isSetter) {
+          parent.addComponent(new Label("set"));
+        }
+        parent.addComponent(nameLabel);
+        if (isSetter) {
+          if (FormatterState.isJava()) {
+            parent.addComponent(new Label("( "));
+          }
+        }
+      } else if (expression instanceof LocalAccess) {
+        LocalAccess localAccess = (LocalAccess) expression;
+        UserLocal local = localAccess.local.getValue();
+        parent.addComponent(new LocalPane(local, factory.isLocalDraggableAndMutable(local)));
+      } else if (expression instanceof ParameterAccess) {
+        ParameterAccess parameterAccess = (ParameterAccess) expression;
+        AbstractParameter parameter = parameterAccess.parameter.getValue();
+        parent.addComponent(new ParameterPane(null, (UserParameter) parameter));
+      } else {
+        parent.addComponent(new Label("TODO"));
+      }
+    } else {
+      parent.addComponent(new Label("???"));
+    }
 
-		if( left instanceof ArrayAccess ) {
-			ArrayAccess arrayAccess = (ArrayAccess)left;
-			parent.addComponent( new Label( "[ " ) );
-			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index ) );
-			parent.addComponent( new Label( " ]" ) );
-		}
+    if (left instanceof ArrayAccess) {
+      ArrayAccess arrayAccess = (ArrayAccess) left;
+      parent.addComponent(new Label("[ "));
+      parent.addComponent(factory.createExpressionPropertyPane(arrayAccess.index));
+      parent.addComponent(new Label(" ]"));
+    }
 
-		if( isSetter ) {
-			//pass
-		} else {
-			if( FormatterState.isJava() ) {
-				parent.addComponent( new Label( " = " ) );
-			} else {
-				parent.addComponent( new GetsPane( true ) );
-			}
-		}
-		AbstractType<?, ?, ?> rightHandValueType = this.assignmentExpression.expressionType.getValue();
-		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, rightHandValueType ) );
-		if( isSetter ) {
-			if( FormatterState.isJava() ) {
-				parent.addComponent( new Label( " )" ) );
-			}
-		}
-	}
+    if (isSetter) {
+      //pass
+    } else {
+      if (FormatterState.isJava()) {
+        parent.addComponent(new Label(" = "));
+      } else {
+        parent.addComponent(new GetsPane(true));
+      }
+    }
+    AbstractType<?, ?, ?> rightHandValueType = this.assignmentExpression.expressionType.getValue();
+    parent.addComponent(factory.createExpressionPropertyPane(this.assignmentExpression.rightHandSide, rightHandValueType));
+    if (isSetter) {
+      if (FormatterState.isJava()) {
+        parent.addComponent(new Label(" )"));
+      }
+    }
+  }
 }

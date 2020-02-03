@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConstructorState extends FilteredMemberState<NamedUserConstructor> {
-	private static Map<NamedUserType, ConstructorState> map = Maps.newHashMap();
+  private static Map<NamedUserType, ConstructorState> map = Maps.newHashMap();
 
-	public static synchronized ConstructorState getInstance( NamedUserType type ) {
-		ConstructorState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ConstructorState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized ConstructorState getInstance(NamedUserType type) {
+    ConstructorState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ConstructorState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private ConstructorState( NamedUserType type ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), new ConstructorData( type ) );
-	}
+  private ConstructorState(NamedUserType type) {
+    super(Application.PROJECT_GROUP, UUID.fromString("53fca6d4-e24f-4662-844e-1e2be690dd45"), new ConstructorData(type));
+  }
 }

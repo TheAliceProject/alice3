@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="ShrineLantern">
+    <BoundingBox>
+        <Min x="-0.09271970391273499" y="0.0" z="-0.0927719697356224"/>
+        <Max x="0.09254313260316849" y="0.3668125867843628" z="0.0927719697356224"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>lantern</Tag>
+        <Tag>shrine</Tag>
+        <Tag>temple</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ShrineLantern" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

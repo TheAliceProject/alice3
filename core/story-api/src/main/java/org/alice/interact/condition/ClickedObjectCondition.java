@@ -50,65 +50,65 @@ import org.alice.interact.ModifierMask;
  */
 public class ClickedObjectCondition extends MousePickBasedCondition {
 
-	public static final double MAX_MOUSE_MOVE = 2.0d;
-	public static final long MAX_CLICK_TIME = 300;
+  public static final double MAX_MOUSE_MOVE = 2.0d;
+  public static final long MAX_CLICK_TIME = 300;
 
-	public ClickedObjectCondition( int mouseButton, PickCondition pickCondition ) {
-		this( mouseButton, pickCondition, null );
-	}
+  public ClickedObjectCondition(int mouseButton, PickCondition pickCondition) {
+    this(mouseButton, pickCondition, null);
+  }
 
-	public ClickedObjectCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask ) {
-		super( mouseButton, pickCondition, modifierMask );
-	}
+  public ClickedObjectCondition(int mouseButton, PickCondition pickCondition, ModifierMask modifierMask) {
+    super(mouseButton, pickCondition, modifierMask);
+  }
 
-	protected boolean wasMouseDown( InputState currentState, InputState previousState ) {
-		return !testMouse( previousState ) && testInputsAndPick( currentState );
-	}
+  protected boolean wasMouseDown(InputState currentState, InputState previousState) {
+    return !testMouse(previousState) && testInputsAndPick(currentState);
+  }
 
-	protected boolean wasMouseUp( InputState currentState, InputState previousState ) {
-		//If the previous input state was wholly valid and we just let up the mouse button
-		return testInputsAndPick( previousState ) && !testMouse( currentState );
-	}
+  protected boolean wasMouseUp(InputState currentState, InputState previousState) {
+    //If the previous input state was wholly valid and we just let up the mouse button
+    return testInputsAndPick(previousState) && !testMouse(currentState);
+  }
 
-	@Override
-	protected void update( InputState currentState, InputState previousState ) {
-		if( wasMouseDown( currentState, previousState ) ) {
-			mouseDownState = new InputState( currentState );
-		}
-	}
+  @Override
+  protected void update(InputState currentState, InputState previousState) {
+    if (wasMouseDown(currentState, previousState)) {
+      mouseDownState = new InputState(currentState);
+    }
+  }
 
-	@Override
-	public boolean isRunning( InputState currentState, InputState previousState ) {
-		return false;
-	}
+  @Override
+  public boolean isRunning(InputState currentState, InputState previousState) {
+    return false;
+  }
 
-	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) {
-		return false;
-	}
+  @Override
+  public boolean justEnded(InputState currentState, InputState previousState) {
+    return false;
+  }
 
-	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		return false;
-	}
+  @Override
+  public boolean justStarted(InputState currentState, InputState previousState) {
+    return false;
+  }
 
-	protected boolean wasValidClick( InputState currentState, InputState previousState ) {
-		boolean wasClicked = false;
-		if( wasMouseUp( currentState, previousState ) && ( mouseDownState != null ) ) {
-			long elapseTime = currentState.getTimeCaptured() - mouseDownState.getTimeCaptured();
-			double mouseDistance = currentState.getMouseLocation().distance( mouseDownState.getMouseLocation() );
-			if( ( elapseTime <= MAX_CLICK_TIME ) && ( mouseDistance <= MAX_MOUSE_MOVE ) ) {
-				wasClicked = true;
-			}
-			mouseDownState = null;
-		}
-		return wasClicked;
-	}
+  protected boolean wasValidClick(InputState currentState, InputState previousState) {
+    boolean wasClicked = false;
+    if (wasMouseUp(currentState, previousState) && (mouseDownState != null)) {
+      long elapseTime = currentState.getTimeCaptured() - mouseDownState.getTimeCaptured();
+      double mouseDistance = currentState.getMouseLocation().distance(mouseDownState.getMouseLocation());
+      if ((elapseTime <= MAX_CLICK_TIME) && (mouseDistance <= MAX_MOUSE_MOVE)) {
+        wasClicked = true;
+      }
+      mouseDownState = null;
+    }
+    return wasClicked;
+  }
 
-	@Override
-	public boolean clicked( InputState currentState, InputState previousState ) {
-		return wasValidClick( currentState, previousState );
-	}
+  @Override
+  public boolean clicked(InputState currentState, InputState previousState) {
+    return wasValidClick(currentState, previousState);
+  }
 
-	private InputState mouseDownState = null;
+  private InputState mouseDownState = null;
 }

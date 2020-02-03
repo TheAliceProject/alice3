@@ -57,62 +57,62 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
  * @author Dennis Cosgrove
  */
 public class GlrSphere extends GlrShape<Sphere> {
-	//todo: add scenegraph hint
-	private static final int STACK_COUNT = 50;
-	private static final int SLICE_COUNT = 50;
+  //todo: add scenegraph hint
+  private static final int STACK_COUNT = 50;
+  private static final int SLICE_COUNT = 50;
 
-	private void glSphere( Context c ) {
-		c.glu.gluSphere( c.getQuadric(), this.radius, SLICE_COUNT, STACK_COUNT );
-	}
+  private void glSphere(Context c) {
+    c.glu.gluSphere(c.getQuadric(), this.radius, SLICE_COUNT, STACK_COUNT);
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		//Required for quadric shapes like spheres, discs, and cylinders
-		boolean isTextureEnabled = rc.isTextureEnabled();
-		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
-		glSphere( rc );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    //Required for quadric shapes like spheres, discs, and cylinders
+    boolean isTextureEnabled = rc.isTextureEnabled();
+    rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
+    glSphere(rc);
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		//assuming ray unit length
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    //assuming ray unit length
 
-		Point3 origin = new Point3( 0, 0, 0 );
-		Vector3 dst = Vector3.createSubtraction( ray.accessOrigin(), origin );
-		double b = Vector3.calculateDotProduct( dst, ray.accessDirection() );
-		double c = Vector3.calculateDotProduct( dst, dst ) - this.radius;
-		double d = ( b * b ) - c;
-		if( d > 0 ) {
-			double t = -b - Math.sqrt( d );
-			ray.getPointAlong( rv, t );
-		} else {
-			rv.setNaN();
-		}
-		return rv;
-	}
+    Point3 origin = new Point3(0, 0, 0);
+    Vector3 dst = Vector3.createSubtraction(ray.accessOrigin(), origin);
+    double b = Vector3.calculateDotProduct(dst, ray.accessDirection());
+    double c = Vector3.calculateDotProduct(dst, dst) - this.radius;
+    double d = (b * b) - c;
+    if (d > 0) {
+      double t = -b - Math.sqrt(d);
+      ray.getPointAlong(rv, t);
+    } else {
+      rv.setNaN();
+    }
+    return rv;
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		int name;
-		if( isSubElementRequired ) {
-			name = 0;
-		} else {
-			name = -1;
-		}
-		pc.gl.glPushName( name );
-		glSphere( pc );
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    int name;
+    if (isSubElementRequired) {
+      name = 0;
+    } else {
+      name = -1;
+    }
+    pc.gl.glPushName(name);
+    glSphere(pc);
+    pc.gl.glPopName();
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.radius ) {
-			this.radius = owner.radius.getValue();
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.radius) {
+      this.radius = owner.radius.getValue();
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private double radius;
+  private double radius;
 }

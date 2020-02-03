@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusPost">
+    <BoundingBox>
+        <Min x="-0.1328807920217514" y="0.0" z="-0.1248258575797081"/>
+        <Max x="0.12004461139440536" y="6.819999694824219" z="0.12287841737270355"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>circus tent</Tag>
+        <Tag>circus poster</Tag>
+        <Tag>poster</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusPost" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

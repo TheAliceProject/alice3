@@ -64,64 +64,64 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class KeyState extends SimpleItemState<Key> {
-	private static class SingletonHolder {
-		private static KeyState instance = new KeyState();
-	}
+  private static class SingletonHolder {
+    private static KeyState instance = new KeyState();
+  }
 
-	public static KeyState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static KeyState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private Key value;
+  private Key value;
 
-	private KeyState() {
-		super( Application.INHERIT_GROUP, UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, KeyCodec.SINGLETON );
-	}
+  private KeyState() {
+    super(Application.INHERIT_GROUP, UUID.fromString("2af70d3f-d130-4649-9272-e28c5ca5bc15"), null, KeyCodec.SINGLETON);
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected Key getSwingValue() {
-		return this.value;
-	}
+  @Override
+  protected Key getSwingValue() {
+    return this.value;
+  }
 
-	private void updateViewControllers() {
-		String text;
-		if( this.value != null ) {
-			text = this.value.toString();
-		} else {
-			text = null;
-		}
-		for( AwtComponentView<?> component : ComponentManager.getComponents( this ) ) {
-			if( component instanceof KeyViewController ) {
-				KeyViewController keyViewController = (KeyViewController)component;
-				keyViewController.getAwtComponent().setText( text );
-			}
-		}
-	}
+  private void updateViewControllers() {
+    String text;
+    if (this.value != null) {
+      text = this.value.toString();
+    } else {
+      text = null;
+    }
+    for (AwtComponentView<?> component : ComponentManager.getComponents(this)) {
+      if (component instanceof KeyViewController) {
+        KeyViewController keyViewController = (KeyViewController) component;
+        keyViewController.getAwtComponent().setText(text);
+      }
+    }
+  }
 
-	@Override
-	protected void setSwingValue( Key nextValue ) {
-		this.value = nextValue;
-		this.updateViewControllers();
-	}
+  @Override
+  protected void setSwingValue(Key nextValue) {
+    this.value = nextValue;
+    this.updateViewControllers();
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	public void handleKeyPressed( KeyViewController viewController, KeyEvent e ) {
-		Key nextValue = EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
-		UserActivity activity = KeyEventTrigger.createUserActivity( viewController, e );
-		this.value = nextValue;
-		this.changeValueFromSwing( this.value, activity );
-		this.updateViewControllers();
-	}
+  public void handleKeyPressed(KeyViewController viewController, KeyEvent e) {
+    Key nextValue = EmployeesOnly.getKeyFromKeyCode(e.getKeyCode());
+    UserActivity activity = KeyEventTrigger.createUserActivity(viewController, e);
+    this.value = nextValue;
+    this.changeValueFromSwing(this.value, activity);
+    this.updateViewControllers();
+  }
 
-	public KeyViewController createViewController() {
-		return new KeyViewController( this );
-	}
+  public KeyViewController createViewController() {
+    return new KeyViewController(this);
+  }
 }

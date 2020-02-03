@@ -55,53 +55,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class FindComposite extends AbstractFindComposite {
-	//todo: listen to name changes
-	private class FindMemberReferencesOperation extends ActionOperation {
-		private final Member member;
+  //todo: listen to name changes
+  private class FindMemberReferencesOperation extends ActionOperation {
+    private final Member member;
 
-		public FindMemberReferencesOperation( Member member ) {
-			super( FIND_COMPOSITE_GROUP, UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
-			this.member = member;
-		}
+    public FindMemberReferencesOperation(Member member) {
+      super(FIND_COMPOSITE_GROUP, UUID.fromString("eabf3c72-4565-46a8-9ce0-49afc1980209"));
+      this.member = member;
+    }
 
-		@Override
-		protected Class<? extends Element> getClassUsedForLocalization() {
-			return FindComposite.this.getClassUsedForLocalization();
-		}
+    @Override
+    protected Class<? extends Element> getClassUsedForLocalization() {
+      return FindComposite.this.getClassUsedForLocalization();
+    }
 
-		@Override
-		protected String getSubKeyForLocalization() {
-			return "memberReferencesOperation";
-		}
+    @Override
+    protected String getSubKeyForLocalization() {
+      return "memberReferencesOperation";
+    }
 
-		@Override
-		protected String modifyNameIfNecessary( String text ) {
-			String rv = super.modifyNameIfNecessary( text );
-			rv = rv.replace( "</name/>", this.member.getName() );
-			return rv;
-		}
+    @Override
+    protected String modifyNameIfNecessary(String text) {
+      String rv = super.modifyNameIfNecessary(text);
+      rv = rv.replace("</name/>", this.member.getName());
+      return rv;
+    }
 
-		@Override
-		protected void perform( UserActivity activity ) {
-			getIsFrameShowingState().setValueTransactionlessly( true );
-			String name = member.getName();
+    @Override
+    protected void perform(UserActivity activity) {
+      getIsFrameShowingState().setValueTransactionlessly(true);
+      String name = member.getName();
 
-			//todo: ensure member is selected
+      //todo: ensure member is selected
 
-			getSearchState().setValueTransactionlessly( name != null ? name : "" );
-			activity.finish();
-		}
-	};
+      getSearchState().setValueTransactionlessly(name != null ? name : "");
+      activity.finish();
+    }
+  }
 
-	public FindComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public FindComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("c454dba4-80ac-4873-b899-67ea3cd726e9"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	public Operation getMemberReferencesOperationInstance( Member member ) {
-		//todo: cache
-		return new FindMemberReferencesOperation( member );
-	}
+  public Operation getMemberReferencesOperationInstance(Member member) {
+    //todo: cache
+    return new FindMemberReferencesOperation(member);
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
+  private final ProjectDocumentFrame projectDocumentFrame;
 }

@@ -56,82 +56,82 @@ import java.awt.event.KeyListener;
  * @author Dennis Cosgrove
  */
 public class JDragProxy extends JProxy {
-	private KeyListener keyAdapter = new KeyListener() {
-		@Override
-		public void keyPressed( KeyEvent e ) {
-		}
+  private KeyListener keyAdapter = new KeyListener() {
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
 
-		@Override
-		public void keyReleased( KeyEvent e ) {
-			if( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
-				JDragProxy.this.getDragComponent().handleCancel( e );
-			}
-		}
+    @Override
+    public void keyReleased(KeyEvent e) {
+      if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        JDragProxy.this.getDragComponent().handleCancel(e);
+      }
+    }
 
-		@Override
-		public void keyTyped( KeyEvent e ) {
-		}
-	};
-	private boolean isAlphaDesiredWhenOverDropReceptor;
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+  };
+  private boolean isAlphaDesiredWhenOverDropReceptor;
 
-	public JDragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
-		super( dragComponent );
-		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
-	}
+  public JDragProxy(DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor) {
+    super(dragComponent);
+    this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
+  }
 
-	private final int DROP_SHADOW_SIZE = 6;
+  private static final int DROP_SHADOW_SIZE = 6;
 
-	@Override
-	public Dimension getProxySize() {
-		Dimension rv = super.getProxySize();
-		rv.width += DROP_SHADOW_SIZE;
-		rv.height += DROP_SHADOW_SIZE;
-		return rv;
-	}
+  @Override
+  public Dimension getProxySize() {
+    Dimension rv = super.getProxySize();
+    rv.width += DROP_SHADOW_SIZE;
+    rv.height += DROP_SHADOW_SIZE;
+    return rv;
+  }
 
-	@Override
-	protected float getAlpha() {
-		if( this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor() ) {
-			return 0.6f;
-		} else {
-			return 1.0f;
-		}
-	}
+  @Override
+  protected float getAlpha() {
+    if (this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor()) {
+      return 0.6f;
+    } else {
+      return 1.0f;
+    }
+  }
 
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addKeyListener( this.keyAdapter );
-		this.requestFocus();
-	}
+  @Override
+  public void addNotify() {
+    super.addNotify();
+    this.addKeyListener(this.keyAdapter);
+    this.requestFocus();
+  }
 
-	@Override
-	public void removeNotify() {
-		this.transferFocus();
-		this.removeKeyListener( this.keyAdapter );
-		super.removeNotify();
-	}
+  @Override
+  public void removeNotify() {
+    this.transferFocus();
+    this.removeKeyListener(this.keyAdapter);
+    super.removeNotify();
+  }
 
-	@Override
-	protected void paintProxy( Graphics2D g2 ) {
-		Paint prevPaint = g2.getPaint();
-		g2.setPaint( new Color( 0, 0, 0, 64 ) );
-		//todo?
-		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
-		fillBounds( g2 );
-		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
-		g2.setPaint( prevPaint );
-		this.getSubject().getAwtComponent().print( g2 );
+  @Override
+  protected void paintProxy(Graphics2D g2) {
+    Paint prevPaint = g2.getPaint();
+    g2.setPaint(new Color(0, 0, 0, 64));
+    //todo?
+    g2.translate(DROP_SHADOW_SIZE, DROP_SHADOW_SIZE);
+    fillBounds(g2);
+    g2.translate(-DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE);
+    g2.setPaint(prevPaint);
+    this.getSubject().getAwtComponent().print(g2);
 
-		//		if( isOverDragAccepter ) {
-		//			//pass
-		//		} else {
-		//			g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
-		//			this.createBoundsShape().fill( g2 );
-		//		}
-		if( this.isCopyDesired() ) {
-			g2.setPaint( PaintUtilities.getCopyTexturePaint() );
-			fillBounds( g2 );
-		}
-	}
+    //  if( isOverDragAccepter ) {
+    //    //pass
+    //  } else {
+    //    g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
+    //    this.createBoundsShape().fill( g2 );
+    //  }
+    if (this.isCopyDesired()) {
+      g2.setPaint(PaintUtilities.getCopyTexturePaint());
+      fillBounds(g2);
+    }
+  }
 }

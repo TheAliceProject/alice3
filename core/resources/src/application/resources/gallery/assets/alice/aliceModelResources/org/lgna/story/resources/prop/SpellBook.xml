@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="SpellBook">
+    <BoundingBox>
+        <Min x="-5.138090975881401E-4" y="-0.031714797019958496" z="-0.19065388288754814"/>
+        <Max x="0.330195158180988" y="0.07506853385520958" z="0.18894766346284184"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>book</Tag>
+        <Tag>spell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SpellBook" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

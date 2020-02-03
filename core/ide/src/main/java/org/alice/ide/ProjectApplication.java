@@ -80,349 +80,346 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends PerspectiveApplication<ProjectDocumentFrame> {
-	public static final Group HISTORY_GROUP = Group.getInstance( UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
-	public static final Group URI_GROUP = Group.getInstance( UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+  public static final Group HISTORY_GROUP = Group.getInstance(UUID.fromString("303e94ca-64ef-4e3a-b95c-038468c68438"), "HISTORY_GROUP");
+  public static final Group URI_GROUP = Group.getInstance(UUID.fromString("79bf8341-61a4-4395-9469-0448e66d9ac6"), "URI_GROUP");
 
-	private UserActivity projectActivity;
+  private UserActivity projectActivity;
 
-	public static ProjectApplication getActiveInstance() {
-		return ClassUtilities.getInstance( PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
-	}
+  public static ProjectApplication getActiveInstance() {
+    return ClassUtilities.getInstance(PerspectiveApplication.getActiveInstance(), ProjectApplication.class);
+  }
 
-	private HistoryListener projectHistoryListener;
+  private HistoryListener projectHistoryListener;
 
-	public ProjectApplication( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
-		this.projectFileUtilities = new ProjectFileUtilities(this);
-		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
-		this.projectHistoryListener = new HistoryListener() {
-			@Override
-			public void operationPushing( HistoryPushEvent e ) {
-			}
+  public ProjectApplication(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager) {
+    this.projectFileUtilities = new ProjectFileUtilities(this);
+    this.projectDocumentFrame = new ProjectDocumentFrame(ideConfiguration, apiConfigurationManager);
+    this.projectHistoryListener = new HistoryListener() {
+      @Override
+      public void operationPushing(HistoryPushEvent e) {
+      }
 
-			@Override
-			public void operationPushed( HistoryPushEvent e ) {
-			}
+      @Override
+      public void operationPushed(HistoryPushEvent e) {
+      }
 
-			@Override
-			public void insertionIndexChanging( HistoryInsertionIndexEvent e ) {
-			}
+      @Override
+      public void insertionIndexChanging(HistoryInsertionIndexEvent e) {
+      }
 
-			@Override
-			public void insertionIndexChanged( HistoryInsertionIndexEvent e ) {
-				ProjectApplication.this.handleInsertionIndexChanged( e );
-			}
+      @Override
+      public void insertionIndexChanged(HistoryInsertionIndexEvent e) {
+        ProjectApplication.this.handleInsertionIndexChanged(e);
+      }
 
-			@Override
-			public void clearing( HistoryClearEvent e ) {
-			}
+      @Override
+      public void clearing(HistoryClearEvent e) {
+      }
 
-			@Override
-			public void cleared( HistoryClearEvent e ) {
-			}
-		};
-		this.updateTitle();
-	}
+      @Override
+      public void cleared(HistoryClearEvent e) {
+      }
+    };
+    this.updateTitle();
+  }
 
-	@Override
-	public ProjectDocumentFrame getDocumentFrame() {
-		return this.projectDocumentFrame;
-	}
+  @Override
+  public ProjectDocumentFrame getDocumentFrame() {
+    return this.projectDocumentFrame;
+  }
 
-	private void updateUndoRedoEnabled() {
-		UndoHistory historyManager = this.getProjectHistory( Application.PROJECT_GROUP );
-		boolean isUndoEnabled;
-		boolean isRedoEnabled;
-		if( historyManager != null ) {
-			int index = historyManager.getInsertionIndex();
-			int size = historyManager.getStack().size();
-			isUndoEnabled = index > 0;
-			isRedoEnabled = index < size;
-		} else {
-			isUndoEnabled = false;
-			isRedoEnabled = false;
-		}
+  private void updateUndoRedoEnabled() {
+    UndoHistory historyManager = this.getProjectHistory(Application.PROJECT_GROUP);
+    boolean isUndoEnabled;
+    boolean isRedoEnabled;
+    if (historyManager != null) {
+      int index = historyManager.getInsertionIndex();
+      int size = historyManager.getStack().size();
+      isUndoEnabled = index > 0;
+      isRedoEnabled = index < size;
+    } else {
+      isUndoEnabled = false;
+      isRedoEnabled = false;
+    }
 
-		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
-		documentFrame.getUndoOperation().setEnabled( isUndoEnabled );
-		documentFrame.getRedoOperation().setEnabled( isRedoEnabled );
-	}
+    ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+    documentFrame.getUndoOperation().setEnabled(isUndoEnabled);
+    documentFrame.getRedoOperation().setEnabled(isRedoEnabled);
+  }
 
-	protected void handleInsertionIndexChanged( HistoryInsertionIndexEvent e ) {
-		this.updateTitle();
-		UndoHistory source = e.getTypedSource();
-		if( source.getGroup() == PROJECT_GROUP ) {
-			this.updateUndoRedoEnabled();
-		}
-	}
+  protected void handleInsertionIndexChanged(HistoryInsertionIndexEvent e) {
+    this.updateTitle();
+    UndoHistory source = e.getTypedSource();
+    if (source.getGroup() == PROJECT_GROUP) {
+      this.updateUndoRedoEnabled();
+    }
+  }
 
-	public static String getApplicationName() {
-		return "Alice";
-	}
+  public static String getApplicationName() {
+    return "Alice";
+  }
 
-	public static String getVersionText() {
-		return ProjectVersion.getCurrentVersionText();
-	}
+  public static String getVersionText() {
+    return ProjectVersion.getCurrentVersionText();
+  }
 
-	public static String getVersionAdornment() {
-		return ProjectVersion.getCurrentVersion().getMajorAndMinor();
-	}
+  public static String getVersionAdornment() {
+    return ProjectVersion.getCurrentVersion().getMajorAndMinor();
+  }
 
-	@Override
-	public String getApplicationSubPath() {
-		String rv = getApplicationName();
-		if( "Alice".equals( rv ) ) {
-			rv = "Alice3";
-		}
-		return rv.replaceAll( " ", "" );
-	}
+  @Override
+  public String getApplicationSubPath() {
+    String rv = getApplicationName();
+    if ("Alice".equals(rv)) {
+      rv = "Alice3";
+    }
+    return rv.replaceAll(" ", "");
+  }
 
-	public void handleVersionNotSupported( File file, VersionNotSupportedException vnse ) {
-		Dialogs.showUnableToOpenFileDialog(
-			file, String.format(
-				"%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)",
-				getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
-	}
+  public void handleVersionNotSupported(File file, VersionNotSupportedException vnse) {
+    Dialogs.showUnableToOpenFileDialog(file, String.format("%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)", getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
+  }
 
-	private UriProjectLoader uriProjectLoader;
+  private UriProjectLoader uriProjectLoader;
 
-	public final URI getUri() {
-		return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
-	}
+  public final URI getUri() {
+    return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
+  }
 
-	@Deprecated
-	private final UndoHistory getProjectHistory() {
-		return this.getProjectHistory( PROJECT_GROUP );
-	}
+  @Deprecated
+  private final UndoHistory getProjectHistory() {
+    return this.getProjectHistory(PROJECT_GROUP);
+  }
 
-	@Deprecated
-	private final UndoHistory getProjectHistory( Group group ) {
-		if( this.getDocument() == null ) {
-			return null;
-		} else {
-			return this.getDocument().getUndoHistory( group );
-		}
-	}
+  @Deprecated
+  private final UndoHistory getProjectHistory(Group group) {
+    if (this.getDocument() == null) {
+      return null;
+    } else {
+      return this.getDocument().getUndoHistory(group);
+    }
+  }
 
-	//todo: investigate
-	private static final int PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL = 0;
+  //todo: investigate
+  private static final int PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL = 0;
 
-	private int projectHistoryIndexFile = 0;
-	private int projectHistoryIndexSceneSetUp = 0;
+  private int projectHistoryIndexFile = 0;
+  private int projectHistoryIndexSceneSetUp = 0;
 
-	public boolean isProjectUpToDateWithFile() {
-		UndoHistory history = this.getProjectHistory();
-		if( history == null ) {
-			return true;
-		} else {
-			return this.projectHistoryIndexFile == history.getInsertionIndex();
-		}
-	}
+  public boolean isProjectUpToDateWithFile() {
+    UndoHistory history = this.getProjectHistory();
+    if (history == null) {
+      return true;
+    } else {
+      return this.projectHistoryIndexFile == history.getInsertionIndex();
+    }
+  }
 
-	protected boolean isProjectUpToDateWithSceneSetUp() {
-		UndoHistory history = this.getProjectHistory();
-		if( history == null ) {
-			return true;
-		} else {
-			return this.projectHistoryIndexSceneSetUp == history.getInsertionIndex();
-		}
-	}
+  protected boolean isProjectUpToDateWithSceneSetUp() {
+    UndoHistory history = this.getProjectHistory();
+    if (history == null) {
+      return true;
+    } else {
+      return this.projectHistoryIndexSceneSetUp == history.getInsertionIndex();
+    }
+  }
 
-	private void updateHistoryIndexFileSync() {
-		UndoHistory history = this.getProjectHistory();
-		if( history != null ) {
-			this.projectHistoryIndexFile = history.getInsertionIndex();
-		} else {
-			this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
-		}
-		this.updateHistoryIndexSceneSetUpSync();
-		this.updateTitle();
-	}
+  private void updateHistoryIndexFileSync() {
+    UndoHistory history = this.getProjectHistory();
+    if (history != null) {
+      this.projectHistoryIndexFile = history.getInsertionIndex();
+    } else {
+      this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+    }
+    this.updateHistoryIndexSceneSetUpSync();
+    this.updateTitle();
+  }
 
-	protected void updateHistoryIndexSceneSetUpSync() {
-		UndoHistory history = this.getProjectHistory();
-		if( history != null ) {
-			this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
-		} else {
-			this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
-		}
-	}
+  protected void updateHistoryIndexSceneSetUpSync() {
+    UndoHistory history = this.getProjectHistory();
+    if (history != null) {
+      this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
+    } else {
+      this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+    }
+  }
 
-	private IdeFrameTitleGenerator frameTitleGenerator;
+  private IdeFrameTitleGenerator frameTitleGenerator;
 
-	protected abstract IdeFrameTitleGenerator createFrameTitleGenerator();
+  protected abstract IdeFrameTitleGenerator createFrameTitleGenerator();
 
-	protected final void updateTitle() {
-		if( frameTitleGenerator != null ) {
-			//pass
-		} else {
-			this.frameTitleGenerator = this.createFrameTitleGenerator();
-		}
-		this.getDocumentFrame().getFrame().setTitle( this.frameTitleGenerator.generateTitle( this.getUri(), this.isProjectUpToDateWithFile() ) );
-	}
+  protected final void updateTitle() {
+    if (frameTitleGenerator != null) {
+      //pass
+    } else {
+      this.frameTitleGenerator = this.createFrameTitleGenerator();
+    }
+    this.getDocumentFrame().getFrame().setTitle(this.frameTitleGenerator.generateTitle(this.getUri(), this.isProjectUpToDateWithFile()));
+  }
 
-	private ProjectDocument getDocument() {
-		return ProjectDocumentState.getInstance().getValue();
-	}
+  private ProjectDocument getDocument() {
+    return ProjectDocumentState.getInstance().getValue();
+  }
 
-	private void setDocument( ProjectDocument document ) {
-		ProjectDocumentState.getInstance().setValueTransactionlessly( document );
-	}
+  private void setDocument(ProjectDocument document) {
+    ProjectDocumentState.getInstance().setValueTransactionlessly(document);
+  }
 
-	public Project getProject() {
-		ProjectDocument document = this.getDocument();
-		return document != null ? document.getProject() : null;
-	}
+  public Project getProject() {
+    ProjectDocument document = this.getDocument();
+    return document != null ? document.getProject() : null;
+  }
 
-	public void setProject( Project project ) {
-		StringBuilder sb = new StringBuilder();
-		Set<NamedUserType> types = project.getNamedUserTypes();
-		for( NamedUserType type : types ) {
-			boolean wasNullMethodRemoved = false;
-			ListIterator<UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
-			while( methodIterator.hasNext() ) {
-				UserMethod method = methodIterator.next();
-				if( method != null ) {
-					//pass
-				} else {
-					methodIterator.remove();
-					wasNullMethodRemoved = true;
-				}
-			}
-			boolean wasNullFieldRemoved = false;
-			ListIterator<UserField> fieldIterator = type.getDeclaredFields().listIterator();
-			while( fieldIterator.hasNext() ) {
-				UserField field = fieldIterator.next();
-				if( field != null ) {
-					//pass
-				} else {
-					fieldIterator.remove();
-					wasNullFieldRemoved = true;
-				}
-			}
-			if( wasNullMethodRemoved ) {
-				if( sb.length() > 0 ) {
-					sb.append( "\n" );
-				}
-				sb.append( "null method was removed from " );
-				sb.append( type.getName() );
-				sb.append( "." );
-			}
-			if( wasNullFieldRemoved ) {
-				if( sb.length() > 0 ) {
-					sb.append( "\n" );
-				}
-				sb.append( "null field was removed from " );
-				sb.append( type.getName() );
-				sb.append( "." );
-			}
-		}
-		if( sb.length() > 0 ) {
-			Dialogs.showWarning( "A Problem With Your Project Has Been Fixed", sb.toString() );
-		}
-		ProgramTypeUtilities.sanityCheckAllTypes( project );
-		this.setDocument( new ProjectDocument( project, newProjectActivity() ) );
-	}
+  public void setProject(Project project) {
+    StringBuilder sb = new StringBuilder();
+    Set<NamedUserType> types = project.getNamedUserTypes();
+    for (NamedUserType type : types) {
+      boolean wasNullMethodRemoved = false;
+      ListIterator<UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
+      while (methodIterator.hasNext()) {
+        UserMethod method = methodIterator.next();
+        if (method != null) {
+          //pass
+        } else {
+          methodIterator.remove();
+          wasNullMethodRemoved = true;
+        }
+      }
+      boolean wasNullFieldRemoved = false;
+      ListIterator<UserField> fieldIterator = type.getDeclaredFields().listIterator();
+      while (fieldIterator.hasNext()) {
+        UserField field = fieldIterator.next();
+        if (field != null) {
+          //pass
+        } else {
+          fieldIterator.remove();
+          wasNullFieldRemoved = true;
+        }
+      }
+      if (wasNullMethodRemoved) {
+        if (sb.length() > 0) {
+          sb.append("\n");
+        }
+        sb.append("null method was removed from ");
+        sb.append(type.getName());
+        sb.append(".");
+      }
+      if (wasNullFieldRemoved) {
+        if (sb.length() > 0) {
+          sb.append("\n");
+        }
+        sb.append("null field was removed from ");
+        sb.append(type.getName());
+        sb.append(".");
+      }
+    }
+    if (sb.length() > 0) {
+      Dialogs.showWarning("A Problem With Your Project Has Been Fixed", sb.toString());
+    }
+    ProgramTypeUtilities.sanityCheckAllTypes(project);
+    this.setDocument(new ProjectDocument(project, newProjectActivity()));
+  }
 
-	private UserActivity newProjectActivity() {
-		// If present, this is the activity of opening or creating a project
-		UserActivity openChild = getOpenActivity();
-		if ( openChild != null ) {
-			openChild.finish();
-		}
-		// If there was a project the new one replaces it.
-		if (projectActivity != null) {
-			projectActivity.finish();
-		}
-		// Create a new project activity under the top level user activity
-		projectActivity = getOverallUserActivity().newChildActivity();
-		return projectActivity;
-	}
+  private UserActivity newProjectActivity() {
+    // If present, this is the activity of opening or creating a project
+    UserActivity openChild = getOpenActivity();
+    if (openChild != null) {
+      openChild.finish();
+    }
+    // If there was a project the new one replaces it.
+    if (projectActivity != null) {
+      projectActivity.finish();
+    }
+    // Create a new project activity under the top level user activity
+    projectActivity = getOverallUserActivity().newChildActivity();
+    return projectActivity;
+  }
 
-	public UserActivity getProjectUserActivity() {
-		return getDocument().getUserActivity();
-	}
+  public UserActivity getProjectUserActivity() {
+    return getDocument().getUserActivity();
+  }
 
-	//Look for an open child, if any. Otherwise return null.
-	@Override
-	public UserActivity getOpenActivity() {
-		UserActivity latest = super.getOpenActivity();
-		return latest == projectActivity ? null : latest;
-	}
+  //Look for an open child, if any. Otherwise return null.
+  @Override
+  public UserActivity getOpenActivity() {
+    UserActivity latest = super.getOpenActivity();
+    return latest == projectActivity ? null : latest;
+  }
 
-	public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader ) {
-		this.uriProjectLoader = uriProjectLoader;
-		if ( uriProjectLoader != null ) {
-			uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj));
-		}
-	}
+  public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader) {
+    this.uriProjectLoader = uriProjectLoader;
+    if (uriProjectLoader != null) {
+      uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj));
+    }
+  }
 
-	private void projectLoaded(UserActivity activity, Project project) {
-		if( project == null ) {
-			uriProjectLoader = null;
-			activity.cancel();
-		} else {
-			updateInterface(project);
-		}
-	}
+  private void projectLoaded(UserActivity activity, Project project) {
+    if (project == null) {
+      uriProjectLoader = null;
+      activity.cancel();
+    } else {
+      updateInterface(project);
+    }
+  }
 
-	private void updateInterface(Project project) {
-		// Remove the old project history listener, so the old project can be cleaned up
-		if( ( getProject() != null ) && ( getProjectHistory() != null ) ) {
-			getProjectHistory().removeHistoryListener( projectHistoryListener );
-		}
-		setProject( project );
-		getProjectHistory().addHistoryListener( projectHistoryListener );
-		URI uri = uriProjectLoader.getUri();
-		File file = UriUtilities.getFile(uri );
-		try {
-			if( ( file != null ) && file.canWrite() ) {
-				RecentProjectsListData.getInstance().handleOpen(file );
-			}
-		} catch( Throwable throwable ) {
-			throwable.printStackTrace();
-		}
+  private void updateInterface(Project project) {
+    // Remove the old project history listener, so the old project can be cleaned up
+    if ((getProject() != null) && (getProjectHistory() != null)) {
+      getProjectHistory().removeHistoryListener(projectHistoryListener);
+    }
+    setProject(project);
+    getProjectHistory().addHistoryListener(projectHistoryListener);
+    URI uri = uriProjectLoader.getUri();
+    File file = UriUtilities.getFile(uri);
+    try {
+      if ((file != null) && file.canWrite()) {
+        RecentProjectsListData.getInstance().handleOpen(file);
+      }
+    } catch (Throwable throwable) {
+      throwable.printStackTrace();
+    }
 
-		updateHistoryIndexFileSync();
-		updateUndoRedoEnabled();
-		projectFileUtilities.startAutoSaving();
-	}
+    updateHistoryIndexFileSync();
+    updateUndoRedoEnabled();
+    projectFileUtilities.startAutoSaving();
+  }
 
-	protected abstract BufferedImage createThumbnail() throws Throwable;
+  protected abstract BufferedImage createThumbnail() throws Throwable;
 
-	public final void saveProjectTo( File file ) throws IOException {
-		RecentProjectsListData.getInstance().handleSave( file );
-		uriProjectLoader = new FileProjectLoader( file );
+  public final void saveProjectTo(File file) throws IOException {
+    RecentProjectsListData.getInstance().handleSave(file);
+    uriProjectLoader = new FileProjectLoader(file);
 
-		//		long startTime = System.currentTimeMillis();
+    //    long startTime = System.currentTimeMillis();
 
-		projectFileUtilities.saveProjectTo( file);
+    projectFileUtilities.saveProjectTo(file);
 
-		//		long endTime = System.currentTimeMillis();
-		//		double saveTime = ( endTime - startTime ) * .001;
-		//		System.out.println( "Save time: " + saveTime );
+    //    long endTime = System.currentTimeMillis();
+    //    double saveTime = ( endTime - startTime ) * .001;
+    //    System.out.println( "Save time: " + saveTime );
 
-		this.updateHistoryIndexFileSync();
-	}
+    this.updateHistoryIndexFileSync();
+  }
 
-	public final void exportProjectTo( File file ) throws IOException {
-		projectFileUtilities.exportCopyOfProjectTo( file );
-	}
+  public final void exportProjectTo(File file) throws IOException {
+    projectFileUtilities.exportCopyOfProjectTo(file);
+  }
 
-	public final Project getUpToDateProject() {
-		this.ensureProjectCodeUpToDate();
-		return this.getProject();
-	}
+  public final Project getUpToDateProject() {
+    this.ensureProjectCodeUpToDate();
+    return this.getProject();
+  }
 
-	public abstract void ensureProjectCodeUpToDate();
+  public abstract void ensureProjectCodeUpToDate();
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final ProjectFileUtilities projectFileUtilities;
+  private final ProjectDocumentFrame projectDocumentFrame;
+  private final ProjectFileUtilities projectFileUtilities;
 
-	public String getAuthorName() {
-		return getPreferencesManager().getValue("authorName", System.getProperty( "user.name" ));
-	}
+  public String getAuthorName() {
+    return getPreferencesManager().getValue("authorName", System.getProperty("user.name"));
+  }
 
-	public void setAuthorName(String newName) {
-		getPreferencesManager().setValue("authorName", newName);
-	}
+  public void setAuthorName(String newName) {
+    getPreferencesManager().setValue("authorName", newName);
+  }
 }

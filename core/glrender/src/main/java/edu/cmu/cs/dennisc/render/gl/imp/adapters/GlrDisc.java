@@ -56,71 +56,71 @@ import edu.cmu.cs.dennisc.scenegraph.Disc;
  * @author Dennis Cosgrove
  */
 public class GlrDisc extends GlrShape<Disc> {
-	//todo: add scenegraph hint
-	private static final int SLICE_COUNT = 50;
-	private static final int LOOP_COUNT = 1;
+  //todo: add scenegraph hint
+  private static final int SLICE_COUNT = 50;
+  private static final int LOOP_COUNT = 1;
 
-	private void glDisc( Context c ) {
-		double innerRadius = owner.innerRadius.getValue();
-		double outerRadius = owner.outerRadius.getValue();
-		c.gl.glPushMatrix();
-		try {
-			Disc.Axis axis = owner.axis.getValue();
-			if( axis == Disc.Axis.X ) {
-				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
-			} else if( axis == Disc.Axis.Y ) {
-				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
-			}
-			if( owner.isFrontFaceVisible.getValue() ) {
-				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
-			}
-			if( owner.isBackFaceVisible.getValue() ) {
-				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
-				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
-			}
-		} finally {
-			c.gl.glPopMatrix();
-		}
-	}
+  private void glDisc(Context c) {
+    double innerRadius = owner.innerRadius.getValue();
+    double outerRadius = owner.outerRadius.getValue();
+    c.gl.glPushMatrix();
+    try {
+      Disc.Axis axis = owner.axis.getValue();
+      if (axis == Disc.Axis.X) {
+        c.gl.glRotated(90.0, 0.0, 1.0, 0.0);
+      } else if (axis == Disc.Axis.Y) {
+        c.gl.glRotated(90.0, 1.0, 0.0, 0.0);
+      }
+      if (owner.isFrontFaceVisible.getValue()) {
+        c.glu.gluDisk(c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT);
+      }
+      if (owner.isBackFaceVisible.getValue()) {
+        c.gl.glRotated(180.0, 0.0, 1.0, 0.0);
+        c.glu.gluDisk(c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT);
+      }
+    } finally {
+      c.gl.glPopMatrix();
+    }
+  }
 
-	@Override
-	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		//Required for quadric shapes like spheres, discs, and cylinders
-		boolean isTextureEnabled = rc.isTextureEnabled();
-		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
-		glDisc( rc );
-	}
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    //Required for quadric shapes like spheres, discs, and cylinders
+    boolean isTextureEnabled = rc.isTextureEnabled();
+    rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
+    glDisc(rc);
+  }
 
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		int name;
-		if( isSubElementRequired ) {
-			name = 0;
-		} else {
-			name = -1;
-		}
-		pc.gl.glPushName( name );
-		glDisc( pc );
-		pc.gl.glPopName();
-	}
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    int name;
+    if (isSubElementRequired) {
+      name = 0;
+    } else {
+      name = -1;
+    }
+    pc.gl.glPushName(name);
+    glDisc(pc);
+    pc.gl.glPopName();
+  }
 
-	@Override
-	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
-		return GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, 0, 1, 0 );
-	}
+  @Override
+  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+    return GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, 0, 1, 0);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.innerRadius ) {
-			setIsGeometryChanged( true );
-		} else if( property == owner.outerRadius ) {
-			setIsGeometryChanged( true );
-		} else if( property == owner.isFrontFaceVisible ) {
-			setIsGeometryChanged( true );
-		} else if( property == owner.isBackFaceVisible ) {
-			setIsGeometryChanged( true );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.innerRadius) {
+      setIsGeometryChanged(true);
+    } else if (property == owner.outerRadius) {
+      setIsGeometryChanged(true);
+    } else if (property == owner.isFrontFaceVisible) {
+      setIsGeometryChanged(true);
+    } else if (property == owner.isBackFaceVisible) {
+      setIsGeometryChanged(true);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 }

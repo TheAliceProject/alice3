@@ -53,72 +53,72 @@ import java.util.prefs.Preferences;
 
 public class PreferencesManager {
 
-	static final String ORG_ALICE_CLEAR_ALL_PREFERENCES = "org.alice.clearAllPreferences";
-	private static final String KEY = "${user_application_documents}";
+  static final String ORG_ALICE_CLEAR_ALL_PREFERENCES = "org.alice.clearAllPreferences";
+  private static final String KEY = "${user_application_documents}";
 
-	public PreferencesManager( Application application ) {
-		this.application = application;
-	}
+  public PreferencesManager(Application application) {
+    this.application = application;
+  }
 
-	private Preferences getUserPreferences() {
-		Preferences prefs = Preferences.userNodeForPackage( application.getClass() );
-		if ( SystemUtilities.isPropertyTrue( ORG_ALICE_CLEAR_ALL_PREFERENCES ) ) {
-			try {
-				prefs.clear();
-			} catch (BackingStoreException bse) {
-				throw new RuntimeException( bse );
-			}
-		}
-		return prefs;
-	}
+  private Preferences getUserPreferences() {
+    Preferences prefs = Preferences.userNodeForPackage(application.getClass());
+    if (SystemUtilities.isPropertyTrue(ORG_ALICE_CLEAR_ALL_PREFERENCES)) {
+      try {
+        prefs.clear();
+      } catch (BackingStoreException bse) {
+        throw new RuntimeException(bse);
+      }
+    }
+    return prefs;
+  }
 
-	private String getInitialUserDirectory() {
-		File defaultDirectory = FileUtilities.getDefaultDirectory();
-		File directory = new File( defaultDirectory, application.getApplicationSubPath() );
-		return directory.toURI().toString();
-	}
+  private String getInitialUserDirectory() {
+    File defaultDirectory = FileUtilities.getDefaultDirectory();
+    File directory = new File(defaultDirectory, application.getApplicationSubPath());
+    return directory.toURI().toString();
+  }
 
-	private String getUserDirectory() {
-		return getUserPreferences().get( "5f80de2f-5119-4131-96d0-c0b80919a589", getInitialUserDirectory() );
-	}
+  private String getUserDirectory() {
+    return getUserPreferences().get("5f80de2f-5119-4131-96d0-c0b80919a589", getInitialUserDirectory());
+  }
 
-	public File getUserDirectory( String key, String defaultLeafDirectory ) {
-		// Group g = Application.DOCUMENT_UI_GROUP;
-		final String userDirName = getUserDirectory();
-		File userDirectory = getDirectory( userDirName );
-		String path = getUserPreferences().get( key, userDirectory.toPath().resolve(defaultLeafDirectory ).toString() );
+  public File getUserDirectory(String key, String defaultLeafDirectory) {
+    // Group g = Application.DOCUMENT_UI_GROUP;
+    final String userDirName = getUserDirectory();
+    File userDirectory = getDirectory(userDirName);
+    String path = getUserPreferences().get(key, userDirectory.toPath().resolve(defaultLeafDirectory).toString());
 
-		File dir = getDirectory( substituteKeyIfNecessary( path, userDirName ) );
-		if ( !dir.exists() && !dir.mkdirs() ) {
-			System.err.println( "Unable to create user directory: " + dir );
-		}
-		return dir;
-	}
+    File dir = getDirectory(substituteKeyIfNecessary(path, userDirName));
+    if (!dir.exists() && !dir.mkdirs()) {
+      System.err.println("Unable to create user directory: " + dir);
+    }
+    return dir;
+  }
 
-	private String substituteKeyIfNecessary( String path, String userParentDirectory ) {
-		if ( path.startsWith( KEY ) ) {
-			return userParentDirectory + path.substring( KEY.length() );
-		}
-		return path;
-	}
+  private String substituteKeyIfNecessary(String path, String userParentDirectory) {
+    if (path.startsWith(KEY)) {
+      return userParentDirectory + path.substring(KEY.length());
+    }
+    return path;
+  }
 
-	private static File getDirectory( String path ) {
-		try {
-			URI uri = new URI( path );
-			return new File( uri );
-		} catch (Exception urise) {
-			// It did not read as a URI. Treat it as a system path.
-			return new File( path );
-		}
-	}
+  private static File getDirectory(String path) {
+    try {
+      URI uri = new URI(path);
+      return new File(uri);
+    } catch (Exception urise) {
+      // It did not read as a URI. Treat it as a system path.
+      return new File(path);
+    }
+  }
 
-	private Application application;
+  private Application application;
 
-	public String getValue( String propertyName, String defaultValue ) {
-		return getUserPreferences().get( propertyName, defaultValue );
-	}
+  public String getValue(String propertyName, String defaultValue) {
+    return getUserPreferences().get(propertyName, defaultValue);
+  }
 
-	public void setValue( String propertyName, String newValue ) {
-		getUserPreferences().put( propertyName, newValue );
-	}
+  public void setValue(String propertyName, String newValue) {
+    getUserPreferences().put(propertyName, newValue);
+  }
 }

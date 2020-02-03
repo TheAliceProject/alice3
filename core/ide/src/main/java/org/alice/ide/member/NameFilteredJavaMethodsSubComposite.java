@@ -53,38 +53,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMethodsSubComposite {
-	private final Map<String, Integer> map = Maps.newHashMap();
-	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-		@Override
-		public int compare( JavaMethod methodA, JavaMethod methodB ) {
-			Integer valueA = map.get( methodA.getName() );
-			Integer valueB = map.get( methodB.getName() );
-			if( ( valueA != null ) && ( valueB != null ) ) {
-				int rv = ( valueA < valueB ) ? -1 : ( ( valueA == valueB ) ? 0 : 1 );
-				if( rv == 0 ) {
-					rv = compareMethodNames( methodA, methodB );
-				}
-				return rv;
-			} else {
-				return compareMethodNames( methodA, methodB );
-			}
-		}
-	};
+  private final Map<String, Integer> map = Maps.newHashMap();
+  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
+    @Override
+    public int compare(JavaMethod methodA, JavaMethod methodB) {
+      Integer valueA = map.get(methodA.getName());
+      Integer valueB = map.get(methodB.getName());
+      if ((valueA != null) && (valueB != null)) {
+        int rv = (valueA < valueB) ? -1 : ((valueA == valueB) ? 0 : 1);
+        if (rv == 0) {
+          rv = compareMethodNames(methodA, methodB);
+        }
+        return rv;
+      } else {
+        return compareMethodNames(methodA, methodB);
+      }
+    }
+  };
 
-	public NameFilteredJavaMethodsSubComposite( UUID migrationId, String... methodNames ) {
-		super( migrationId, true );
-		for( int i = 0; i < methodNames.length; i++ ) {
-			this.map.put( methodNames[ i ], i );
-		}
-	}
+  public NameFilteredJavaMethodsSubComposite(UUID migrationId, String... methodNames) {
+    super(migrationId, true);
+    for (int i = 0; i < methodNames.length; i++) {
+      this.map.put(methodNames[i], i);
+    }
+  }
 
-	@Override
-	public Comparator<JavaMethod> getComparator() {
-		return this.comparator;
-	}
+  @Override
+  public Comparator<JavaMethod> getComparator() {
+    return this.comparator;
+  }
 
-	@Override
-	protected boolean isAcceptingOf( JavaMethod method ) {
-		return this.map.keySet().contains( method.getName() );
-	}
+  @Override
+  protected boolean isAcceptingOf(JavaMethod method) {
+    return this.map.keySet().contains(method.getName());
+  }
 }

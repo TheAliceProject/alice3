@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProceduresSeparator extends LabelMenuSeparatorModel {
-	private static class SingletonHolder {
-		private static ProceduresSeparator instance = new ProceduresSeparator();
-	}
+  private static class SingletonHolder {
+    private static ProceduresSeparator instance = new ProceduresSeparator();
+  }
 
-	public static ProceduresSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ProceduresSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ProceduresSeparator() {
-		super( UUID.fromString( "eac11370-3415-4b12-b917-df62be7bec19" ) );
-	}
+  private ProceduresSeparator() {
+    super(UUID.fromString("eac11370-3415-4b12-b917-df62be7bec19"));
+  }
 }

@@ -74,194 +74,194 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class IdeHighlightStencil extends HighlightStencil {
-	public IdeHighlightStencil( AbstractWindow<?> window, Integer layerId ) {
-		super( window, layerId );
-	}
+  public IdeHighlightStencil(AbstractWindow<?> window, Integer layerId) {
+    super(window, layerId);
+  }
 
-	public void showHighlightOverField( final UserField field, String noteText ) {
-		if( field != null ) {
-			this.show( new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-					if( declarationComposite != null ) {
-						DeclarationView view = declarationComposite.getView();
-						if( view instanceof TypeDeclarationView ) {
-							List<JPanel> jPanels = ComponentUtilities.findAllMatches( view.getAwtComponent(), JPanel.class );
-							for( JPanel jPanel : jPanels ) {
-								AwtComponentView<?> component = AwtComponentView.lookup( jPanel );
-								if( component instanceof FieldDeclarationPane ) {
-									FieldDeclarationPane fieldDeclarationPane = (FieldDeclarationPane)component;
-									UserField candidate = fieldDeclarationPane.getField();
-									if( candidate == field ) {
-										return fieldDeclarationPane;
-									}
-								}
-							}
-						}
-					}
-					return null;
-				}
-			}, null, noteText );
-		} else {
-			Logger.severe( "field is null", noteText );
-		}
-	}
+  public void showHighlightOverField(final UserField field, String noteText) {
+    if (field != null) {
+      this.show(new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+          if (declarationComposite != null) {
+            DeclarationView view = declarationComposite.getView();
+            if (view instanceof TypeDeclarationView) {
+              List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+              for (JPanel jPanel : jPanels) {
+                AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+                if (component instanceof FieldDeclarationPane) {
+                  FieldDeclarationPane fieldDeclarationPane = (FieldDeclarationPane) component;
+                  UserField candidate = fieldDeclarationPane.getField();
+                  if (candidate == field) {
+                    return fieldDeclarationPane;
+                  }
+                }
+              }
+            }
+          }
+          return null;
+        }
+      }, null, noteText);
+    } else {
+      Logger.severe("field is null", noteText);
+    }
+  }
 
-	public void showHighlightOverExpression( final Expression expression, String noteText ) {
-		if( expression != null ) {
-			this.show( new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-					if( declarationComposite != null ) {
-						DeclarationView view = declarationComposite.getView();
+  public void showHighlightOverExpression(final Expression expression, String noteText) {
+    if (expression != null) {
+      this.show(new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+          if (declarationComposite != null) {
+            DeclarationView view = declarationComposite.getView();
 
-						List<AbstractButton> jButtons = ComponentUtilities.findAllMatches( view.getAwtComponent(), AbstractButton.class );
-						for( AbstractButton jButton : jButtons ) {
-							Expression candidate = null;
-							AwtComponentView<?> component = AwtComponentView.lookup( jButton );
-							if( component instanceof ExpressionPropertyDropDownPane ) {
-								ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (ExpressionPropertyDropDownPane)component;
-								candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
-							} else if( component instanceof ExpressionDropDown ) {
-								ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>)component;
-								CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
-								if( completionModel instanceof CustomItemState ) {
-									CustomItemState<Expression> state = (CustomItemState<Expression>)completionModel;
-									candidate = state.getValue();
-								}
-							} else if( component instanceof AbstractExpressionView ) {
-								AbstractExpressionView expressionView = (AbstractExpressionView)component;
-								candidate = expressionView.getExpression();
-							}
-							if( candidate == expression ) {
-								return component;
-								//							} else {
-								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-							}
-						}
-					}
-					return null;
-				}
-			}, null, noteText );
-		} else {
-			Logger.severe( noteText );
-		}
-	}
+            List<AbstractButton> jButtons = ComponentUtilities.findAllMatches(view.getAwtComponent(), AbstractButton.class);
+            for (AbstractButton jButton : jButtons) {
+              Expression candidate = null;
+              AwtComponentView<?> component = AwtComponentView.lookup(jButton);
+              if (component instanceof ExpressionPropertyDropDownPane) {
+                ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (ExpressionPropertyDropDownPane) component;
+                candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
+              } else if (component instanceof ExpressionDropDown) {
+                ExpressionDropDown<Expression> expressionDropDown = (ExpressionDropDown<Expression>) component;
+                CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
+                if (completionModel instanceof CustomItemState) {
+                  CustomItemState<Expression> state = (CustomItemState<Expression>) completionModel;
+                  candidate = state.getValue();
+                }
+              } else if (component instanceof AbstractExpressionView) {
+                AbstractExpressionView expressionView = (AbstractExpressionView) component;
+                candidate = expressionView.getExpression();
+              }
+              if (candidate == expression) {
+                return component;
+                //              } else {
+                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+              }
+            }
+          }
+          return null;
+        }
+      }, null, noteText);
+    } else {
+      Logger.severe(noteText);
+    }
+  }
 
-	public void showHighlightOverStatement( final Statement statement, String message ) {
-		if( statement != null ) {
-			this.show( new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-					if( declarationComposite != null ) {
-						DeclarationView view = declarationComposite.getView();
-						List<JPanel> jPanels = ComponentUtilities.findAllMatches( view.getAwtComponent(), JPanel.class );
-						for( JPanel jPanel : jPanels ) {
-							Statement candidate = null;
-							AwtComponentView<?> component = AwtComponentView.lookup( jPanel );
-							if( component instanceof AbstractStatementPane ) {
-								AbstractStatementPane statementPane = (AbstractStatementPane)component;
-								candidate = statementPane.getStatement();
-							}
-							if( candidate == statement ) {
-								return component;
-								//							} else {
-								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-							}
-						}
-					}
-					return null;
-				}
-			}, null, message );
-		} else {
-			Logger.severe();
-		}
-	}
+  public void showHighlightOverStatement(final Statement statement, String message) {
+    if (statement != null) {
+      this.show(new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+          if (declarationComposite != null) {
+            DeclarationView view = declarationComposite.getView();
+            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+            for (JPanel jPanel : jPanels) {
+              Statement candidate = null;
+              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+              if (component instanceof AbstractStatementPane) {
+                AbstractStatementPane statementPane = (AbstractStatementPane) component;
+                candidate = statementPane.getStatement();
+              }
+              if (candidate == statement) {
+                return component;
+                //              } else {
+                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+              }
+            }
+          }
+          return null;
+        }
+      }, null, message);
+    } else {
+      Logger.severe();
+    }
+  }
 
-	public void showHighlightOverCroquetViewController( final Model model, String noteText ) {
-		if( model != null ) {
-			this.show( new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					AwtComponentView<?> component = ComponentManager.getFirstComponent( model );
-					if( component != null ) {
-						//pass
-					} else {
-						Logger.errln( "cannot resolve first component for", model );
-					}
-					return component;
-				}
-			}, null, noteText );
-		} else {
-			Logger.severe( noteText );
-		}
-	}
+  public void showHighlightOverCroquetViewController(final Model model, String noteText) {
+    if (model != null) {
+      this.show(new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
+          if (component != null) {
+            //pass
+          } else {
+            Logger.errln("cannot resolve first component for", model);
+          }
+          return component;
+        }
+      }, null, noteText);
+    } else {
+      Logger.severe(noteText);
+    }
+  }
 
-	private TrackableShape getRenderWindow() {
-		ProjectPerspective perspective = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().getValue();
-		if( perspective != null ) {
-			return perspective.getRenderWindow();
-		} else {
-			return null;
-		}
-	}
+  private TrackableShape getRenderWindow() {
+    ProjectPerspective perspective = IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().getValue();
+    if (perspective != null) {
+      return perspective.getRenderWindow();
+    } else {
+      return null;
+    }
+  }
 
-	public void showHighlightOverStatementAndRenderWindow( final Statement statement ) {
-		if( statement != null ) {
-			this.show( new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
-					if( declarationComposite != null ) {
-						DeclarationView view = declarationComposite.getView();
-						List<JPanel> jPanels = ComponentUtilities.findAllMatches( view.getAwtComponent(), JPanel.class );
-						for( JPanel jPanel : jPanels ) {
-							Statement candidate = null;
-							AwtComponentView<?> component = AwtComponentView.lookup( jPanel );
-							if( component instanceof AbstractStatementPane ) {
-								AbstractStatementPane statementPane = (AbstractStatementPane)component;
-								candidate = statementPane.getStatement();
-							}
-							if( candidate == statement ) {
-								return component;
-								//							} else {
-								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
-							}
-						}
-					}
-					return null;
-				}
-			}, new RuntimeResolver<TrackableShape>() {
-				@Override
-				public TrackableShape getResolved() {
-					return getRenderWindow();
-				}
-			}, "" );
-		} else {
-			Logger.severe();
-		}
-	}
+  public void showHighlightOverStatementAndRenderWindow(final Statement statement) {
+    if (statement != null) {
+      this.show(new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          DeclarationComposite<?, ?> declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+          if (declarationComposite != null) {
+            DeclarationView view = declarationComposite.getView();
+            List<JPanel> jPanels = ComponentUtilities.findAllMatches(view.getAwtComponent(), JPanel.class);
+            for (JPanel jPanel : jPanels) {
+              Statement candidate = null;
+              AwtComponentView<?> component = AwtComponentView.lookup(jPanel);
+              if (component instanceof AbstractStatementPane) {
+                AbstractStatementPane statementPane = (AbstractStatementPane) component;
+                candidate = statementPane.getStatement();
+              }
+              if (candidate == statement) {
+                return component;
+                //              } else {
+                //                edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+              }
+            }
+          }
+          return null;
+        }
+      }, new RuntimeResolver<TrackableShape>() {
+        @Override
+        public TrackableShape getResolved() {
+          return getRenderWindow();
+        }
+      }, "");
+    } else {
+      Logger.severe();
+    }
+  }
 
-	public void showHighlightOverCroquetViewControllerAndRenderWindow( final Model model ) {
-		this.show( new RuntimeResolver<TrackableShape>() {
-			@Override
-			public TrackableShape getResolved() {
-				AwtComponentView<?> component = ComponentManager.getFirstComponent( model );
-				if( component != null ) {
-					//pass
-				} else {
-					Logger.errln( "cannot resolve first component for", model );
-				}
-				return component;
-			}
-		}, new RuntimeResolver<TrackableShape>() {
-			@Override
-			public TrackableShape getResolved() {
-				return getRenderWindow();
-			}
-		}, "" );
-	}
+  public void showHighlightOverCroquetViewControllerAndRenderWindow(final Model model) {
+    this.show(new RuntimeResolver<TrackableShape>() {
+      @Override
+      public TrackableShape getResolved() {
+        AwtComponentView<?> component = ComponentManager.getFirstComponent(model);
+        if (component != null) {
+          //pass
+        } else {
+          Logger.errln("cannot resolve first component for", model);
+        }
+        return component;
+      }
+    }, new RuntimeResolver<TrackableShape>() {
+      @Override
+      public TrackableShape getResolved() {
+        return getRenderWindow();
+      }
+    }, "");
+  }
 }

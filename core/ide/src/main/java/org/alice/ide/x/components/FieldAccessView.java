@@ -60,90 +60,90 @@ import org.lgna.project.ast.TypeExpression;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends AbstractExpressionView<FieldAccess> {
-	private final SwingComponentView<?> replacement;
+  private final SwingComponentView<?> replacement;
 
-	public FieldAccessView( AstI18nFactory factory, FieldAccess fieldAccess ) {
-		super( factory, fieldAccess );
-		IDE ide = IDE.getActiveInstance();
-		AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
-		if( prefixPane != null ) {
-			this.addComponent( prefixPane );
-		}
+  public FieldAccessView(AstI18nFactory factory, FieldAccess fieldAccess) {
+    super(factory, fieldAccess);
+    IDE ide = IDE.getActiveInstance();
+    AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate(fieldAccess) : null;
+    if (prefixPane != null) {
+      this.addComponent(prefixPane);
+    }
 
-		ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		this.replacement = apiConfigurationManager.createReplacementForFieldAccessIfAppropriate( fieldAccess );
-		if( this.replacement != null ) {
-			this.addComponent( this.replacement );
-		} else {
-			boolean isExpressionDesired;
+    ApiConfigurationManager apiConfigurationManager = StoryApiConfigurationManager.EPIC_HACK_getActiveInstance();
+    this.replacement = apiConfigurationManager.createReplacementForFieldAccessIfAppropriate(fieldAccess);
+    if (this.replacement != null) {
+      this.addComponent(this.replacement);
+    } else {
+      boolean isExpressionDesired;
 
-			if( fieldAccess.expression.getValue() instanceof TypeExpression ) {
-				isExpressionDesired = FormatterState.getInstance().getValue().isTypeExpressionDesired();
-			} else {
-				isExpressionDesired = true;
-			}
+      if (fieldAccess.expression.getValue() instanceof TypeExpression) {
+        isExpressionDesired = FormatterState.getInstance().getValue().isTypeExpressionDesired();
+      } else {
+        isExpressionDesired = true;
+      }
 
-			if( isExpressionDesired ) {
-				this.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression ) );
-				if( FormatterState.isJava() ) {
-					//pass
-				} else {
-					this.addComponent( new Label( "." ) );
-				}
-			}
-			AbstractField field = fieldAccess.field.getValue();
-			DeclarationNameLabel nodeNameLabel = new DeclarationNameLabel( field );
-			//nodeNameLabel.scaleFont( 1.2f );
-			//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-			boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle( field ) == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
-			if( isExpressionDesired ) {
-				if( isGetter ) {
-					Label getLabel = new Label( "get" );
-					//getLabel.scaleFont( 1.2f );
-					//getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-					this.addComponent( getLabel );
-				}
-			}
-			this.addComponent( nodeNameLabel );
-			if( isExpressionDesired ) {
-				if( isGetter ) {
-					if( FormatterState.isJava() ) {
-						this.addComponent( new Label( "()" ) );
-					}
-				}
-			}
-		}
-	}
+      if (isExpressionDesired) {
+        this.addComponent(factory.createExpressionPropertyPane(fieldAccess.expression));
+        if (FormatterState.isJava()) {
+          //pass
+        } else {
+          this.addComponent(new Label("."));
+        }
+      }
+      AbstractField field = fieldAccess.field.getValue();
+      DeclarationNameLabel nodeNameLabel = new DeclarationNameLabel(field);
+      //nodeNameLabel.scaleFont( 1.2f );
+      //nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+      boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle(field) == IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
+      if (isExpressionDesired) {
+        if (isGetter) {
+          Label getLabel = new Label("get");
+          //getLabel.scaleFont( 1.2f );
+          //getLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+          this.addComponent(getLabel);
+        }
+      }
+      this.addComponent(nodeNameLabel);
+      if (isExpressionDesired) {
+        if (isGetter) {
+          if (FormatterState.isJava()) {
+            this.addComponent(new Label("()"));
+          }
+        }
+      }
+    }
+  }
 
-	@Override
-	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.replacement != null ) {
-			return true;
-		} else {
-			FieldAccess fieldAccess = this.getExpression();
-			if( fieldAccess != null ) {
-				if( fieldAccess.expression.getValue() instanceof TypeExpression ) {
-					return super.isExpressionTypeFeedbackDesired();
-				} else {
-					if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( fieldAccess ) ) {
-						return false;
-					} else {
-						return super.isExpressionTypeFeedbackDesired();
-					}
-				}
-			} else {
-				return true;
-			}
-		}
-	}
+  @Override
+  protected boolean isExpressionTypeFeedbackDesired() {
+    if (this.replacement != null) {
+      return true;
+    } else {
+      FieldAccess fieldAccess = this.getExpression();
+      if (fieldAccess != null) {
+        if (fieldAccess.expression.getValue() instanceof TypeExpression) {
+          return super.isExpressionTypeFeedbackDesired();
+        } else {
+          if (isExpressionTypeFeedbackSurpressedBasedOnParentClass(fieldAccess)) {
+            return false;
+          } else {
+            return super.isExpressionTypeFeedbackDesired();
+          }
+        }
+      } else {
+        return true;
+      }
+    }
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getExpressionType() {
-		FieldAccess fieldAccess = this.getExpression();
-		if( fieldAccess != null ) {
-			return fieldAccess.getType();
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getExpressionType() {
+    FieldAccess fieldAccess = this.getExpression();
+    if (fieldAccess != null) {
+      return fieldAccess.getType();
+    } else {
+      return null;
+    }
+  }
 }

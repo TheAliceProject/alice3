@@ -49,42 +49,43 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class LogicalComplement extends Expression implements PrecedentedAppender {
-	public LogicalComplement() {
-	}
+  public LogicalComplement() {
+  }
 
-	public LogicalComplement( Expression operand ) {
-		this.operand.setValue( operand );
-	}
+  public LogicalComplement(Expression operand) {
+    this.operand.setValue(operand);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return JavaType.BOOLEAN_OBJECT_TYPE;
+  }
 
-	@Override
-	public boolean isValid() {
-		Expression operand = this.operand.getValue();
-		if( operand != null ) {
-			AbstractType<?, ?, ?> operandType = operand.getType();
-			return JavaType.BOOLEAN_OBJECT_TYPE.isAssignableFrom( operandType );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isValid() {
+    Expression operand = this.operand.getValue();
+    if (operand != null) {
+      AbstractType<?, ?, ?> operandType = operand.getType();
+      return JavaType.BOOLEAN_OBJECT_TYPE.isAssignableFrom(operandType);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendLogicalComplement(this);
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendLogicalComplement(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 14;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 14;
+  }
 
-	public final ExpressionProperty operand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return JavaType.BOOLEAN_OBJECT_TYPE;
-		}
-	};
+  public final ExpressionProperty operand = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      return JavaType.BOOLEAN_OBJECT_TYPE;
+    }
+  };
 }

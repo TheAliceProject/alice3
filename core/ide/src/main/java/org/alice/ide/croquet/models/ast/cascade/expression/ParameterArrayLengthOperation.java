@@ -55,28 +55,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayLengthOperation extends ArrayLengthOperation {
-	private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayLengthOperation> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static ParameterArrayLengthOperation getInstance( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayLengthOperation>() {
-			@Override
-			public ParameterArrayLengthOperation initialize( UserParameter parameter, ExpressionProperty expressionProperty ) {
-				return new ParameterArrayLengthOperation( parameter, expressionProperty );
-			}
-		} );
-	}
+  public static ParameterArrayLengthOperation getInstance(UserParameter parameter, ExpressionProperty expressionProperty) {
+    assert parameter != null;
+    assert expressionProperty != null;
+    return mapToMap.getInitializingIfAbsent(parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayLengthOperation>() {
+      @Override
+      public ParameterArrayLengthOperation initialize(UserParameter parameter, ExpressionProperty expressionProperty) {
+        return new ParameterArrayLengthOperation(parameter, expressionProperty);
+      }
+    });
+  }
 
-	private final UserParameter parameter;
+  private final UserParameter parameter;
 
-	private ParameterArrayLengthOperation( UserParameter parameter, ExpressionProperty expressionProperty ) {
-		super( UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
-		this.parameter = parameter;
-	}
+  private ParameterArrayLengthOperation(UserParameter parameter, ExpressionProperty expressionProperty) {
+    super(UUID.fromString("becb523c-7af9-433d-8c63-3cda63a45680"), expressionProperty);
+    this.parameter = parameter;
+  }
 
-	@Override
-	protected Expression createAccessExpression() {
-		return new ParameterAccess( this.parameter );
-	}
+  @Override
+  protected Expression createAccessExpression() {
+    return new ParameterAccess(this.parameter);
+  }
 }

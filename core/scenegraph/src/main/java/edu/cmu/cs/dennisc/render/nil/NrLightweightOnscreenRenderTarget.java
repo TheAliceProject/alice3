@@ -51,7 +51,7 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrLightweightOnscreenRenderTarget extends NrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
-	public NrLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
-		super( requestedCapabilities, new JPanel() );
-	}
+  public NrLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities) {
+    super(requestedCapabilities, new JPanel());
+  }
 }

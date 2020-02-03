@@ -53,34 +53,34 @@ import javax.swing.JMenuItem;
  * @author Dennis Cosgrove
  */
 public class MenuItem extends OperationButton<JMenuItem, Operation> {
-	public MenuItem( Operation model ) {
-		super( model, "MenuItem" );
-	}
+  public MenuItem(Operation model) {
+    super(model, "MenuItem");
+  }
 
-	@Override
-	protected final JMenuItem createAwtComponent() {
-		return new JMenuItem() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
+  @Override
+  protected final JMenuItem createAwtComponent() {
+    return new JMenuItem() {
+      @Override
+      public String getText() {
+        if (isTextClobbered()) {
+          return getClobberText();
+        } else {
+          return super.getText();
+        }
+      }
 
-			@Override
-			public Icon getIcon() {
-				if( SystemUtilities.areIconsDisplayedInMenus() ) {
-					if( MenuItem.this.isIconClobbered() ) {
-						return MenuItem.this.getClobberIcon();
-					} else {
-						return super.getIcon();
-					}
-				} else {
-					return null;
-				}
-			}
-		};
-	}
+      @Override
+      public Icon getIcon() {
+        if (SystemUtilities.areIconsDisplayedInMenus()) {
+          if (MenuItem.this.isIconClobbered()) {
+            return MenuItem.this.getClobberIcon();
+          } else {
+            return super.getIcon();
+          }
+        } else {
+          return null;
+        }
+      }
+    };
+  }
 }

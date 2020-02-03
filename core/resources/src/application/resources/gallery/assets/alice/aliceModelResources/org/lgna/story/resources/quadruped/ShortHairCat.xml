@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="ShortHairCat">
+    <BoundingBox>
+        <Min x="-0.19155203841947246" y="0.0013861935570943468" z="-0.4967880986163372"/>
+        <Max x="0.1915520381951437" y="0.8074147762635024" z="0.733413465927891"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="ShortHairCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -57,38 +57,38 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class UserProceduresSubComposite extends UserMethodsSubComposite {
-	private static Map<NamedUserType, UserProceduresSubComposite> map = Maps.newHashMap();
+  private static Map<NamedUserType, UserProceduresSubComposite> map = Maps.newHashMap();
 
-	public static synchronized UserProceduresSubComposite getInstance( NamedUserType type ) {
-		assert type != null;
-		UserProceduresSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserProceduresSubComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized UserProceduresSubComposite getInstance(NamedUserType type) {
+    assert type != null;
+    UserProceduresSubComposite rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new UserProceduresSubComposite(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private UserProceduresSubComposite( NamedUserType type ) {
-		super( UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ), type, AddProcedureComposite.getInstance( type ).getLaunchOperation() );
-		String titleText = this.findLocalizedText( "editableProceduresTitle" );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( titleText );
-	}
+  private UserProceduresSubComposite(NamedUserType type) {
+    super(UUID.fromString("55b386bf-a97b-452e-94c7-13160c27ac8c"), type, AddProcedureComposite.getInstance(type).getLaunchOperation());
+    String titleText = this.findLocalizedText("editableProceduresTitle");
+    this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse(titleText);
+  }
 
-	@Override
-	protected boolean isAcceptable( AbstractMethod method ) {
-		if( method.isStatic() ) {
-			if( "main".equals( method.getName() ) ) {
-				return false;
-			}
-		}
-		return method.isProcedure();
-	}
+  @Override
+  protected boolean isAcceptable(AbstractMethod method) {
+    if (method.isStatic()) {
+      if ("main".equals(method.getName())) {
+        return false;
+      }
+    }
+    return method.isProcedure();
+  }
 
-	@Override
-	protected List<? extends AbstractMethod> getGettersOrSetters( UserField field ) {
-		return field.getSetters();
-	}
+  @Override
+  protected List<? extends AbstractMethod> getGettersOrSetters(UserField field) {
+    return field.getSetters();
+  }
 }

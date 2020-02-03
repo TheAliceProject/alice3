@@ -52,24 +52,25 @@ import org.lgna.croquet.ItemCodec;
  * @author Dennis Cosgrove
  */
 public enum ProjectDocumentCodec implements ItemCodec<ProjectDocument> {
-	SINGLETON;
-	@Override
-	public ProjectDocument decodeValue( BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
+  SINGLETON;
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, ProjectDocument value ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public ProjectDocument decodeValue(BinaryDecoder binaryDecoder) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public Class<ProjectDocument> getValueClass() {
-		return ProjectDocument.class;
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, ProjectDocument value) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, ProjectDocument value ) {
-		sb.append( value );
-	}
+  @Override
+  public Class<ProjectDocument> getValueClass() {
+    return ProjectDocument.class;
+  }
+
+  @Override
+  public void appendRepresentation(StringBuilder sb, ProjectDocument value) {
+    sb.append(value);
+  }
 }

@@ -52,14 +52,14 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableAstI18nFactory extends IdeAstI18nFactory {
-	@Override
-	protected final SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( this, argumentListProperty );
-	}
+  @Override
+  protected final SwingComponentView<?> createSimpleArgumentListPropertyPane(SimpleArgumentListProperty argumentListProperty) {
+    return new ArgumentListPropertyPane(this, argumentListProperty);
+  }
 
-	@Override
-	protected final SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty ) {
-		//todo
-		return new Label();
-	}
+  @Override
+  protected final SwingComponentView<?> createKeyedArgumentListPropertyPane(KeyedArgumentListProperty argumentListProperty) {
+    //todo
+    return new Label();
+  }
 }

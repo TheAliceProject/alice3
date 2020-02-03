@@ -50,7 +50,7 @@ import org.lgna.croquet.undo.UndoHistory;
  * @author Dennis Cosgrove
  */
 public interface Document {
-	public UserActivity getUserActivity();
+  public UserActivity getUserActivity();
 
-	public UndoHistory getUndoHistory( Group group );
+  public UndoHistory getUndoHistory(Group group);
 }

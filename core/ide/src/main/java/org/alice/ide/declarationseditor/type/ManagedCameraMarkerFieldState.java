@@ -51,23 +51,23 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
-	private static Map<NamedUserType, ManagedCameraMarkerFieldState> map = Maps.newHashMap();
+  private static Map<NamedUserType, ManagedCameraMarkerFieldState> map = Maps.newHashMap();
 
-	public static synchronized ManagedCameraMarkerFieldState getInstance( NamedUserType type ) {
-		ManagedCameraMarkerFieldState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ManagedCameraMarkerFieldState( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
+  public static synchronized ManagedCameraMarkerFieldState getInstance(NamedUserType type) {
+    ManagedCameraMarkerFieldState rv = map.get(type);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ManagedCameraMarkerFieldState(type);
+      map.put(type, rv);
+    }
+    return rv;
+  }
 
-	private ManagedCameraMarkerFieldState( NamedUserType type ) {
-		super( UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), new ManagedCameraMarkerFieldData( type ) );
-	}
+  private ManagedCameraMarkerFieldState(NamedUserType type) {
+    super(UUID.fromString("47af4b71-b8db-458f-a698-e3550c921c14"), new ManagedCameraMarkerFieldData(type));
+  }
 }

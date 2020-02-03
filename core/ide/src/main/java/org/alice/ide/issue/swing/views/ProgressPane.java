@@ -64,68 +64,68 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ProgressPane extends JPanel {
-	private JTextPane console = new JTextPane();
-	private IssueReportWorker issueReportWorker;
-	private boolean isDone = false;
-	private boolean isSuccessful = false;
-	private URL urlResult = null;
+  private JTextPane console = new JTextPane();
+  private IssueReportWorker issueReportWorker;
+  private boolean isDone = false;
+  private boolean isSuccessful = false;
+  private URL urlResult = null;
 
-	public ProgressPane() {
-		this.console.setPreferredSize( new Dimension( 400, 240 ) );
-		this.setLayout( new BorderLayout() );
-		this.add( new JScrollPane( this.console ), BorderLayout.CENTER );
-	}
+  public ProgressPane() {
+    this.console.setPreferredSize(new Dimension(400, 240));
+    this.setLayout(new BorderLayout());
+    this.add(new JScrollPane(this.console), BorderLayout.CENTER);
+  }
 
-	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
-		this.issueReportWorker = new IssueReportWorker( new WorkerListener() {
-			@Override
-			public void process( List<String> chunks ) {
-				handleProcess( chunks );
-			}
+  public void initializeAndExecuteWorker(ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration) {
+    this.issueReportWorker = new IssueReportWorker(new WorkerListener() {
+      @Override
+      public void process(List<String> chunks) {
+        handleProcess(chunks);
+      }
 
-			@Override
-			public void done( boolean isSuccessful, URL urlResult ) {
-				handleDone( isSuccessful, urlResult );
-			}
-		}, issueReportGenerator, reportSubmissionConfiguration );
-		this.issueReportWorker.execute();
-	}
+      @Override
+      public void done(boolean isSuccessful, URL urlResult) {
+        handleDone(isSuccessful, urlResult);
+      }
+    }, issueReportGenerator, reportSubmissionConfiguration);
+    this.issueReportWorker.execute();
+  }
 
-	private void hideRoot() {
-		Component root = SwingUtilities.getRoot( this );
-		if( root != null ) {
-			root.setVisible( false );
-		}
-	}
+  private void hideRoot() {
+    Component root = SwingUtilities.getRoot(this);
+    if (root != null) {
+      root.setVisible(false);
+    }
+  }
 
-	public void handleProcess( List<String> chunks ) {
-		for( String chunk : chunks ) {
-			Document document = ProgressPane.this.console.getDocument();
-			try {
-				document.insertString( document.getLength(), chunk, null );
-			} catch( BadLocationException ble ) {
-				throw new RuntimeException( ble );
-			}
-			System.out.print( chunk );
-		}
-	}
+  public void handleProcess(List<String> chunks) {
+    for (String chunk : chunks) {
+      Document document = ProgressPane.this.console.getDocument();
+      try {
+        document.insertString(document.getLength(), chunk, null);
+      } catch (BadLocationException ble) {
+        throw new RuntimeException(ble);
+      }
+      System.out.print(chunk);
+    }
+  }
 
-	public void handleDone( boolean isSuccessful, URL urlResult ) {
-		this.isDone = true;
-		this.isSuccessful = isSuccessful;
-		this.urlResult = urlResult;
-		this.hideRoot();
-	}
+  public void handleDone(boolean isSuccessful, URL urlResult) {
+    this.isDone = true;
+    this.isSuccessful = isSuccessful;
+    this.urlResult = urlResult;
+    this.hideRoot();
+  }
 
-	public boolean isDone() {
-		return this.isDone;
-	}
+  public boolean isDone() {
+    return this.isDone;
+  }
 
-	public boolean isSuccessful() {
-		return this.isSuccessful;
-	}
+  public boolean isSuccessful() {
+    return this.isSuccessful;
+  }
 
-	public URL getURLResult() {
-		return this.urlResult;
-	}
+  public URL getURLResult() {
+    return this.urlResult;
+  }
 }

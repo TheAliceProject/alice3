@@ -51,14 +51,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ListDataComposite<T, V extends ListDataView<T>> extends AbstractComposite<V> {
-	private final ListData<T> data;
+  private final ListData<T> data;
 
-	public ListDataComposite( UUID migrationId, ListData<T> data ) {
-		super( migrationId );
-		this.data = data;
-	}
+  public ListDataComposite(UUID migrationId, ListData<T> data) {
+    super(migrationId);
+    this.data = data;
+  }
 
-	public ListData<T> getData() {
-		return this.data;
-	}
+  public ListData<T> getData() {
+    return this.data;
+  }
 }

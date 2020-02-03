@@ -54,49 +54,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MessageDialogComposite<V extends Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final MessageType messageType;
-	private String title;
+  private final MessageType messageType;
+  private String title;
 
-	private final OwnedByCompositeOperation launchOperation;
+  private final OwnedByCompositeOperation launchOperation;
 
-	public MessageDialogComposite( UUID migrationId, MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		String text = null;
-		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this, text );
-		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey, null );
-	}
+  public MessageDialogComposite(UUID migrationId, MessageType messageType) {
+    super(migrationId);
+    this.messageType = messageType;
+    String text = null;
+    OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey(this, text);
+    this.launchOperation = new OwnedByCompositeOperation(Application.INFORMATION_GROUP, this, subKey, null);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.title = this.findLocalizedText("title");
+  }
 
-	public Operation getLaunchOperation( String subKeyText ) {
-		if( subKeyText != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.launchOperation;
-		}
-	}
+  public Operation getLaunchOperation(String subKeyText) {
+    if (subKeyText != null) {
+      throw new RuntimeException("todo");
+    } else {
+      return this.launchOperation;
+    }
+  }
 
-	@Deprecated
-	public Operation getLaunchOperation() {
-		return this.launchOperation;
-	}
+  @Deprecated
+  public Operation getLaunchOperation() {
+    return this.launchOperation;
+  }
 
-	@Override
-	public final void perform( UserActivity userActivity ) {
-		Component awtComponent = null; //todo
-		//todo: Icon
-		JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		userActivity.finish();
-	}
+  @Override
+  public final void perform(UserActivity userActivity) {
+    Component awtComponent = null; //todo
+    //todo: Icon
+    JOptionPane.showMessageDialog(awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal());
+    userActivity.finish();
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    return text;
+  }
 
 }

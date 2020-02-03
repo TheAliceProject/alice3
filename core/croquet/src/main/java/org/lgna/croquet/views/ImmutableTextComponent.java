@@ -55,39 +55,39 @@ import java.awt.Container;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableTextComponent<J extends JTextComponent> extends SwingComponentView<J> {
-	protected static Color getDesiredBackgroundColor( Container awtParent ) {
-		if( awtParent != null ) {
-			if( awtParent.isOpaque() ) {
-				return awtParent.getBackground();
-			} else {
-				return getDesiredBackgroundColor( awtParent.getParent() );
-			}
-		} else {
-			return Color.RED;
-		}
-	}
+  protected static Color getDesiredBackgroundColor(Container awtParent) {
+    if (awtParent != null) {
+      if (awtParent.isOpaque()) {
+        return awtParent.getBackground();
+      } else {
+        return getDesiredBackgroundColor(awtParent.getParent());
+      }
+    } else {
+      return Color.RED;
+    }
+  }
 
-	private final StringValue value;
+  private final StringValue value;
 
-	public ImmutableTextComponent( StringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
-		this.value = value;
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
+  public ImmutableTextComponent(StringValue value, float fontScalar, TextAttribute<?>... textAttributes) {
+    this.value = value;
+    this.scaleFont(fontScalar);
+    this.changeFont(textAttributes);
+  }
 
-	public StringValue getValue() {
-		return this.value;
-	}
+  public StringValue getValue() {
+    return this.value;
+  }
 
-	protected void initializeJComponent( JTextComponent component ) {
-		//component.setOpaque( false );
-		component.setEditable( false );
-		component.setCursor( null );
-		component.setFocusable( false );
-		component.setBorder( BorderFactory.createEmptyBorder() );
-		component.setFont( UIManager.getFont( "Label.font" ) );
-		component.setAlignmentX( 0.0f );
-		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
-		component.setDisabledTextColor( UIManager.getColor( disabledColorKey ) );
-	}
+  protected void initializeJComponent(JTextComponent component) {
+    //component.setOpaque( false );
+    component.setEditable(false);
+    component.setCursor(null);
+    component.setFocusable(false);
+    component.setBorder(BorderFactory.createEmptyBorder());
+    component.setFont(UIManager.getFont("Label.font"));
+    component.setAlignmentX(0.0f);
+    String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
+    component.setDisabledTextColor(UIManager.getColor(disabledColorKey));
+  }
 }

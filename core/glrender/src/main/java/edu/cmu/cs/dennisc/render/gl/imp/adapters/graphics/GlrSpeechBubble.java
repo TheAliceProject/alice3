@@ -59,100 +59,88 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 public class GlrSpeechBubble extends GlrBubble<SpeechBubble> {
-	//	protected abstract java.awt.Stroke getStroke();
+  //  protected abstract java.awt.Stroke getStroke();
 
-	private static double sine( double t, double theta0, double theta1 ) {
-		double theta = theta0 + ( t * ( theta1 - theta0 ) );
-		return Math.sin( theta );
-	}
+  private static double sine(double t, double theta0, double theta1) {
+    double theta = theta0 + (t * (theta1 - theta0));
+    return Math.sin(theta);
+  }
 
-	private Area getPortionOfPath( GeneralPath path, double portion ) {
-		Area area = new Area( path );
-		Rectangle2D bounds = area.getBounds2D();
-		double maskBottom = bounds.getY() + bounds.getHeight();
+  private Area getPortionOfPath(GeneralPath path, double portion) {
+    Area area = new Area(path);
+    Rectangle2D bounds = area.getBounds2D();
+    double maskBottom = bounds.getY() + bounds.getHeight();
 
-		double stylizedPathPortion = sine( portion, -Math.PI / 2, 0 ) + 1;
-		stylizedPathPortion *= stylizedPathPortion;
-		double maskHeight = bounds.getHeight() * stylizedPathPortion;
+    double stylizedPathPortion = sine(portion, -Math.PI / 2, 0) + 1;
+    stylizedPathPortion *= stylizedPathPortion;
+    double maskHeight = bounds.getHeight() * stylizedPathPortion;
 
-		Rectangle2D mask = new Rectangle2D.Double( bounds.getX(), maskBottom - maskHeight, bounds.getWidth(), maskHeight );
-		area.intersect( new Area( mask ) );
-		return area;
-	}
+    Rectangle2D mask = new Rectangle2D.Double(bounds.getX(), maskBottom - maskHeight, bounds.getWidth(), maskHeight);
+    area.intersect(new Area(mask));
+    return area;
+  }
 
-	@Override
-	protected void render(
-			Graphics2D g2,
-			RenderTarget renderTarget,
-			Rectangle actualViewport,
-			AbstractCamera camera,
-			MultilineText multilineText,
-			Font font,
-			Color textColor,
-			float wrapWidth,
-			Color fillColor,
-			Color outlineColor,
-			OnscreenBubble bubble,
-			double portion ) {
-		assert bubble != null;
+  @Override
+  protected void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth, Color fillColor, Color outlineColor, OnscreenBubble bubble, double portion) {
+    assert bubble != null;
 
-		g2.setFont( font );
+    g2.setFont(font);
 
-		float targetX = bubble.getEndOfTail().x;
-		float targetY = bubble.getEndOfTail().y;
+    float targetX = bubble.getEndOfTail().x;
+    float targetY = bubble.getEndOfTail().y;
 
-		float originX = (float)bubble.getOriginOfTail().getX();
-		float originY = (float)bubble.getOriginOfTail().getY();
+    float originX = (float) bubble.getOriginOfTail().getX();
+    float originY = (float) bubble.getOriginOfTail().getY();
 
-		float controlX = targetX;
-		float controlY = originY;
-		float tailWidth = 6f;
-		float topOffsetY = -1f;
+    float controlX = targetX;
+    float controlY = originY;
+    float tailWidth = 6f;
+    float topOffsetY = -1f;
 
-		GeneralPath path = new GeneralPath();
-		path.moveTo( originX, originY );
-		path.quadTo( controlX, controlY, targetX + tailWidth, targetY + topOffsetY );
-		path.lineTo( targetX - tailWidth, targetY + topOffsetY );
-		path.quadTo( controlX, controlY, originX, originY );
-		path.closePath();
+    GeneralPath path = new GeneralPath();
+    path.moveTo(originX, originY);
+    path.quadTo(controlX, controlY, targetX + tailWidth, targetY + topOffsetY);
+    path.lineTo(targetX - tailWidth, targetY + topOffsetY);
+    path.quadTo(controlX, controlY, originX, originY);
+    path.closePath();
 
-		Area area;
-		if( portion < 1.0 ) {
-			area = getPortionOfPath( path, portion );
-		} else {
-			area = new Area( path );
-			area.add( new Area( bubble.getBubbleRect() ) );
-		}
+    Area area;
+    if (portion < 1.0) {
+      area = getPortionOfPath(path, portion);
+    } else {
+      area = new Area(path);
+      area.add(new Area(bubble.getBubbleRect()));
+    }
 
-		assert area != null;
-		g2.setTransform( new AffineTransform() );
+    assert area != null;
+    g2.setTransform(new AffineTransform());
 
-		g2.setColor( fillColor );
-		g2.fill( area );
-		g2.setColor( outlineColor );
-		g2.draw( area );
+    g2.setColor(fillColor);
+    g2.fill(area);
+    g2.setColor(outlineColor);
+    g2.draw(area);
 
-		if( portion < 1.0 ) {
-			//pass
-		} else {
-			g2.setColor( textColor );
-			g2.setFont( font );
+    if (portion < 1.0) {
+      //pass
+    } else {
+      g2.setColor(textColor);
+      g2.setFont(font);
 
-			//g2.translate( xT, yT );
-			//			g2.setPaint( java.awt.Color.RED );
-			//			g2.draw( textBounds );
-			//			g2.setPaint( java.awt.Color.BLACK );
-			//			g2.setColor(Color.RED);
-			//			g2.drawRect((int)textBounds.getMinX(), (int)textBounds.getMinX(), (int)textBounds.getWidth(), (int)textBounds.getHeight());
-			multilineText.paint( g2, wrapWidth, TextAlignment.LEADING, bubble.getTextBounds() );
+      //g2.translate( xT, yT );
+      //      g2.setPaint( java.awt.Color.RED );
+      //      g2.draw( textBounds );
+      //      g2.setPaint( java.awt.Color.BLACK );
+      //      g2.setColor(Color.RED);
+      //      g2.drawRect((int)textBounds.getMinX(), (int)textBounds.getMinX(), (int)textBounds.getWidth(), (int)textBounds.getHeight());
+      multilineText.paint(g2, wrapWidth, TextAlignment.LEADING, bubble.getTextBounds());
 
-			//g2.translate( -xT, -yT );
-			//			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
-			//			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
-			//			g2.setColor( textColor );
-			//			g2.drawString( text, xPixel, yPixel );
-		}
+      //g2.translate( -xT, -yT );
+      //      int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
+      //      int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
+      //      g2.setColor( textColor );
+      //      g2.drawString( text, xPixel, yPixel );
+    }
 
-		//		g2.setStroke( stroke );
-	}
+    //    g2.setStroke( stroke );
+  }
 }

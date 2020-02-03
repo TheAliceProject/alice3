@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ForEachInArrayLoopTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static ForEachInArrayLoopTemplateDragModel instance = new ForEachInArrayLoopTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static ForEachInArrayLoopTemplateDragModel instance = new ForEachInArrayLoopTemplateDragModel();
+  }
 
-	public static ForEachInArrayLoopTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ForEachInArrayLoopTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ForEachInArrayLoopTemplateDragModel() {
-		super( UUID.fromString( "1126a2d4-0f95-4e1f-bda1-79727e6f88fd" ), ForEachInArrayLoop.class, IncompleteAstUtilities.createIncompleteForEachInArrayLoop() );
-	}
+  private ForEachInArrayLoopTemplateDragModel() {
+    super(UUID.fromString("1126a2d4-0f95-4e1f-bda1-79727e6f88fd"), ForEachInArrayLoop.class, IncompleteAstUtilities.createIncompleteForEachInArrayLoop());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return InsertForEachInArrayLoopComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return InsertForEachInArrayLoopComposite.getInstance(blockStatementIndexPair, isEnveloping).getLaunchOperation();
+  }
 }

@@ -48,22 +48,22 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public abstract class SubjectAsSeenByAnimation extends SubjectAnimation {
-	private Component m_awtAsSeenBy = null;
+  private Component m_awtAsSeenBy = null;
 
-	public SubjectAsSeenByAnimation() {
-	}
+  public SubjectAsSeenByAnimation() {
+  }
 
-	public SubjectAsSeenByAnimation( Component awtSubject, Component awtAsSeenBy ) {
-		super( awtSubject );
-		setAsSeenBy( awtAsSeenBy );
-	}
+  public SubjectAsSeenByAnimation(Component awtSubject, Component awtAsSeenBy) {
+    super(awtSubject);
+    setAsSeenBy(awtAsSeenBy);
+  }
 
-	public Component getAsSeenBy() {
-		return m_awtAsSeenBy;
-	}
+  public Component getAsSeenBy() {
+    return m_awtAsSeenBy;
+  }
 
-	public void setAsSeenBy( Component awtAsSeenBy ) {
-		assert awtAsSeenBy != null;
-		m_awtAsSeenBy = awtAsSeenBy;
-	}
+  public void setAsSeenBy(Component awtAsSeenBy) {
+    assert awtAsSeenBy != null;
+    m_awtAsSeenBy = awtAsSeenBy;
+  }
 }

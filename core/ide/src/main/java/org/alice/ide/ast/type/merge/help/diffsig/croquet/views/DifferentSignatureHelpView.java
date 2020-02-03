@@ -56,44 +56,44 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class DifferentSignatureHelpView extends PotentialNameChangerHelpView {
-	private final ValueListener<DifferentSignatureChoice> valueListener = new ValueListener<DifferentSignatureChoice>() {
-		@Override
-		public void valueChanged( ValueEvent<DifferentSignatureChoice> e ) {
-			handleTopLevelChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<DifferentSignatureChoice> valueListener = new ValueListener<DifferentSignatureChoice>() {
+    @Override
+    public void valueChanged(ValueEvent<DifferentSignatureChoice> e) {
+      handleTopLevelChanged(e.getNextValue());
+    }
+  };
 
-	public DifferentSignatureHelpView( DifferentSignatureHelpComposite<?> composite ) {
-		super( composite );
-		RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( DifferentSignatureChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
-		RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
+  public DifferentSignatureHelpView(DifferentSignatureHelpComposite<?> composite) {
+    super(composite);
+    RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState(DifferentSignatureChoice.ADD_AND_RETAIN_BOTH).createRadioButton();
+    RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState(DifferentSignatureChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT).createRadioButton();
 
-		MigPanel panel = new MigPanel();
-		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
-		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
-		panel.addComponent( selectOneRadioButton, "gap top 16, wrap" );
-		this.addLineStartComponent( panel );
-	}
+    MigPanel panel = new MigPanel();
+    panel.addComponent(keepBothRadioButton, "gap top 16, wrap");
+    panel.addComponent(this.getKeepBothPanel(), "gap 32, wrap");
+    panel.addComponent(selectOneRadioButton, "gap top 16, wrap");
+    this.addLineStartComponent(panel);
+  }
 
-	@Override
-	public void handleCompositePreActivation() {
-		DifferentSignatureHelpComposite<?> composite = (DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().addAndInvokeNewSchoolValueListener( this.valueListener );
-		super.handleCompositePreActivation();
-	}
+  @Override
+  public void handleCompositePreActivation() {
+    DifferentSignatureHelpComposite<?> composite = (DifferentSignatureHelpComposite<?>) this.getComposite();
+    composite.getChoiceState().addAndInvokeNewSchoolValueListener(this.valueListener);
+    super.handleCompositePreActivation();
+  }
 
-	@Override
-	public void handleCompositePostDeactivation() {
-		super.handleCompositePostDeactivation();
-		DifferentSignatureHelpComposite<?> composite = (DifferentSignatureHelpComposite<?>)this.getComposite();
-		composite.getChoiceState().removeNewSchoolValueListener( this.valueListener );
-	}
+  @Override
+  public void handleCompositePostDeactivation() {
+    super.handleCompositePostDeactivation();
+    DifferentSignatureHelpComposite<?> composite = (DifferentSignatureHelpComposite<?>) this.getComposite();
+    composite.getChoiceState().removeNewSchoolValueListener(this.valueListener);
+  }
 
-	private void handleTopLevelChanged( DifferentSignatureChoice nextValue ) {
-		boolean isKeepBoth = nextValue == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
-		for( Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
-			awtComponent.setEnabled( isKeepBoth );
-		}
-	}
+  private void handleTopLevelChanged(DifferentSignatureChoice nextValue) {
+    boolean isKeepBoth = nextValue == DifferentSignatureChoice.ADD_AND_RETAIN_BOTH;
+    for (Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents()) {
+      awtComponent.setEnabled(isKeepBoth);
+    }
+  }
 
 }

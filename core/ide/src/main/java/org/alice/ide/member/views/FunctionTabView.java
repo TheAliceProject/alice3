@@ -49,8 +49,8 @@ import org.alice.ide.member.FunctionTabComposite;
  * @author Dennis Cosgrove
  */
 public class FunctionTabView extends MemberTabView {
-	public FunctionTabView( FunctionTabComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFunctionColor() );
-	}
+  public FunctionTabView(FunctionTabComposite composite) {
+    super(composite);
+    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getFunctionColor());
+  }
 }

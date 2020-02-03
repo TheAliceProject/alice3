@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = Maps.newHashMap();
-	private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapEnveloping = Maps.newHashMap();
+  private static Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized ConditionalStatementInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
-		assert blockStatementIndexPair != null;
-		ConditionalStatementInsertCascade rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ConditionalStatementInsertCascade( blockStatementIndexPair, isEnveloping );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
+  public static synchronized ConditionalStatementInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+    assert blockStatementIndexPair != null;
+    ConditionalStatementInsertCascade rv = map.get(blockStatementIndexPair);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new ConditionalStatementInsertCascade(blockStatementIndexPair, isEnveloping);
+      map.put(blockStatementIndexPair, rv);
+    }
+    return rv;
+  }
 
-	private ConditionalStatementInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance() );
-	}
+  private ConditionalStatementInsertCascade(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("52743dfb-d19c-455a-a723-0bd3d59b2326"), blockStatementIndexPair, isEnveloping, ConditionBlank.getInstance());
+  }
 
-	@Override
-	protected final Statement createStatement( Expression... expressions ) {
-		return AstUtilities.createConditionalStatement( expressions[ 0 ] );
-	}
+  @Override
+  protected final Statement createStatement(Expression... expressions) {
+    return AstUtilities.createConditionalStatement(expressions[0]);
+  }
 }

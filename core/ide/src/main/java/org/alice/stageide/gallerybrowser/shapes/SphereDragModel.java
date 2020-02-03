@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SphereDragModel extends ShapeDragModel {
-	private static final SSphere sModel = new SSphere();
+  private static final SSphere sModel = new SSphere();
 
-	private static class SingletonHolder {
-		private static SphereDragModel instance = new SphereDragModel();
-	}
+  private static class SingletonHolder {
+    private static SphereDragModel instance = new SphereDragModel();
+  }
 
-	public static SphereDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SphereDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SphereDragModel() {
-		super( UUID.fromString( "cd4d23c2-c4ae-4c07-a402-f8b1cc62991a" ) );
-	}
+  private SphereDragModel() {
+    super(UUID.fromString("cd4d23c2-c4ae-4c07-a402-f8b1cc62991a"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddSphereManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddSphereManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return SphereIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return SphereIconFactory.getInstance();
+  }
 }

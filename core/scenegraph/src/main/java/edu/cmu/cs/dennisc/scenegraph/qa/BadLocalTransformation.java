@@ -51,48 +51,48 @@ import edu.cmu.cs.dennisc.scenegraph.Joint;
  * @author Dennis Cosgrove
  */
 public class BadLocalTransformation implements Problem {
-	private final AbstractTransformable sgTransformable;
-	private final boolean isOrientationMendingRequired;
-	private final boolean isTranslationMendingRequired;
+  private final AbstractTransformable sgTransformable;
+  private final boolean isOrientationMendingRequired;
+  private final boolean isTranslationMendingRequired;
 
-	public BadLocalTransformation( AbstractTransformable sgTransformable, boolean isOrientationMendingRequired, boolean isTranslationMendingRequired ) {
-		this.sgTransformable = sgTransformable;
-		this.isOrientationMendingRequired = isOrientationMendingRequired;
-		this.isTranslationMendingRequired = isTranslationMendingRequired;
-	}
+  public BadLocalTransformation(AbstractTransformable sgTransformable, boolean isOrientationMendingRequired, boolean isTranslationMendingRequired) {
+    this.sgTransformable = sgTransformable;
+    this.isOrientationMendingRequired = isOrientationMendingRequired;
+    this.isTranslationMendingRequired = isTranslationMendingRequired;
+  }
 
-	@Override
-	public void mend( Mender mender ) {
-		AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
-		AffineMatrix4x4 replacement;
-		if( sgTransformable instanceof Joint ) {
-			Joint sgJoint = (Joint)sgTransformable;
-			replacement = mender.getMendTransformationFor( sgJoint );
-			//			if( isOrientationMendingRequired( m ) || isTranslationMendingRequired( m ) ) {
-			//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sgJoint );
-			//				m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-			//			}
-		} else {
-			replacement = AffineMatrix4x4.createIdentity();
-		}
-		if( isOrientationMendingRequired ) {
-			original.orientation.set( replacement.orientation.right, replacement.orientation.up, replacement.orientation.backward );
-		}
-		if( isTranslationMendingRequired ) {
-			original.translation.set( replacement.translation );
-		}
-		sgTransformable.setLocalTransformation( original );
-	}
+  @Override
+  public void mend(Mender mender) {
+    AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
+    AffineMatrix4x4 replacement;
+    if (sgTransformable instanceof Joint) {
+      Joint sgJoint = (Joint) sgTransformable;
+      replacement = mender.getMendTransformationFor(sgJoint);
+      //      if( isOrientationMendingRequired( m ) || isTranslationMendingRequired( m ) ) {
+      //        edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sgJoint );
+      //        m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+      //      }
+    } else {
+      replacement = AffineMatrix4x4.createIdentity();
+    }
+    if (isOrientationMendingRequired) {
+      original.orientation.set(replacement.orientation.right, replacement.orientation.up, replacement.orientation.backward);
+    }
+    if (isTranslationMendingRequired) {
+      original.translation.set(replacement.translation);
+    }
+    sgTransformable.setLocalTransformation(original);
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		sb.append( this.sgTransformable );
-		sb.append( ";" );
-		sb.append( PrintUtilities.append( sb, this.sgTransformable.getLocalTransformation() ) );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[");
+    sb.append(this.sgTransformable);
+    sb.append(";");
+    sb.append(PrintUtilities.append(sb, this.sgTransformable.getLocalTransformation()));
+    sb.append("]");
+    return sb.toString();
+  }
 }

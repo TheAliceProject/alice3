@@ -57,33 +57,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static Map<URI, OpenRecentProjectOperation> map = Maps.newHashMap();
+  private static Map<URI, OpenRecentProjectOperation> map = Maps.newHashMap();
 
-	public static synchronized OpenRecentProjectOperation getInstance( URI uri ) {
-		OpenRecentProjectOperation rv = map.get( uri );
-		if ( rv == null ) {
-			rv = new OpenRecentProjectOperation( uri );
-			map.put( uri, rv );
-		}
-		return rv;
-	}
+  public static synchronized OpenRecentProjectOperation getInstance(URI uri) {
+    OpenRecentProjectOperation rv = map.get(uri);
+    if (rv == null) {
+      rv = new OpenRecentProjectOperation(uri);
+      map.put(uri, rv);
+    }
+    return rv;
+  }
 
-	private OpenRecentProjectOperation( URI uri ) {
-		super( UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
-		this.uri = uri;
-	}
+  private OpenRecentProjectOperation(URI uri) {
+    super(UUID.fromString("f51873eb-06ad-4974-9890-7345adff3ac4"), null);
+    this.uri = uri;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		File file = new File( this.uri );
-		this.setName( file.getAbsolutePath() );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    File file = new File(this.uri);
+    this.setName(file.getAbsolutePath());
+  }
 
-	@Override
-	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
-		return new FileProjectLoader( new File( this.uri ) );
-	}
+  @Override
+  protected UriProjectLoader getUriProjectLoader(List<UserActivity> subSteps) {
+    return new FileProjectLoader(new File(this.uri));
+  }
 
-	private final URI uri;
+  private final URI uri;
 }

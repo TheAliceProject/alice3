@@ -50,11 +50,11 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public interface ImageBuffer {
-	Object getImageLock();
+  Object getImageLock();
 
-	Color4f getBackgroundColor();
+  Color4f getBackgroundColor();
 
-	BufferedImage getImage();
+  BufferedImage getImage();
 
-	boolean isRightSideUp();
+  boolean isRightSideUp();
 }

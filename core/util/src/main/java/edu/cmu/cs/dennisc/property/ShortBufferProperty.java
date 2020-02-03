@@ -49,15 +49,15 @@ import java.nio.ShortBuffer;
  * @author Dennis Cosgrove
  */
 public class ShortBufferProperty extends PrimitiveBufferProperty<ShortBuffer> {
-	public ShortBufferProperty( InstancePropertyOwner owner, ShortBuffer value ) {
-		super( owner, value );
-	}
+  public ShortBufferProperty(InstancePropertyOwner owner, ShortBuffer value) {
+    super(owner, value);
+  }
 
-	public ShortBufferProperty( InstancePropertyOwner owner, short[] value ) {
-		super( owner, ShortBuffer.wrap( value ) );
-	}
+  public ShortBufferProperty(InstancePropertyOwner owner, short[] value) {
+    super(owner, ShortBuffer.wrap(value));
+  }
 
-	public final void setValue( short[] value ) {
-		this.setValue( ShortBuffer.wrap( value ) );
-	}
+  public final void setValue(short[] value) {
+    this.setValue(ShortBuffer.wrap(value));
+  }
 }

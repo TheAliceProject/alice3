@@ -49,54 +49,54 @@ import java.awt.geom.GeneralPath;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArrowIcon implements Icon {
-	protected static enum Heading {
-		EAST() {
-			@Override
-			public GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
-				rv.moveTo( x0, y0 );
-				rv.lineTo( x1, yC );
-				rv.lineTo( x0, y1 );
-				return rv;
-			}
-		},
-		SOUTH() {
-			@Override
-			public GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 ) {
-				rv.moveTo( x0, y0 );
-				rv.lineTo( x1, y0 );
-				rv.lineTo( xC, y1 );
-				return rv;
-			}
-		};
-		protected abstract GeneralPath addPoints( GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1 );
-	}
+  protected static enum Heading {
+    EAST() {
+      @Override
+      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+        rv.moveTo(x0, y0);
+        rv.lineTo(x1, yC);
+        rv.lineTo(x0, y1);
+        return rv;
+      }
+    }, SOUTH() {
+      @Override
+      public GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1) {
+        rv.moveTo(x0, y0);
+        rv.lineTo(x1, y0);
+        rv.lineTo(xC, y1);
+        return rv;
+      }
+    };
 
-	private int size;
+    protected abstract GeneralPath addPoints(GeneralPath rv, float x0, float xC, float x1, float y0, float yC, float y1);
+  }
 
-	public AbstractArrowIcon( int size ) {
-		this.size = size;
-	}
+  private int size;
 
-	@Override
-	public int getIconWidth() {
-		return this.size;
-	}
+  public AbstractArrowIcon(int size) {
+    this.size = size;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.size;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.size;
+  }
 
-	protected GeneralPath createPath( int x, int y, Heading heading ) {
-		float x0 = x;
-		float x1 = ( x + this.size ) - 1;
-		float xC = ( x0 + x1 ) * 0.5f;
-		float y0 = y;
-		float y1 = ( y + this.size ) - 1;
-		float yC = ( y0 + y1 ) * 0.5f;
-		GeneralPath rv = new GeneralPath();
-		heading.addPoints( rv, x0, xC, x1, y0, yC, y1 );
-		rv.closePath();
-		return rv;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.size;
+  }
+
+  protected GeneralPath createPath(int x, int y, Heading heading) {
+    float x0 = x;
+    float x1 = (x + this.size) - 1;
+    float xC = (x0 + x1) * 0.5f;
+    float y0 = y;
+    float y1 = (y + this.size) - 1;
+    float yC = (y0 + y1) * 0.5f;
+    GeneralPath rv = new GeneralPath();
+    heading.addPoints(rv, x0, xC, x1, y0, yC, y1);
+    rv.closePath();
+    return rv;
+  }
 }

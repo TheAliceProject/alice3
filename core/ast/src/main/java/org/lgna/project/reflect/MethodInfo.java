@@ -52,41 +52,41 @@ import java.lang.reflect.Method;
  * @author Dennis Cosgrove
  */
 public class MethodInfo extends MemberWithParametersInfo {
-	private transient Method mthd;
-	private final String name;
+  private transient Method mthd;
+  private final String name;
 
-	public MethodInfo( ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames ) {
-		super( classInfo, parameterClassNames, parameterNames );
-		this.name = name;
-	}
+  public MethodInfo(ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames) {
+    super(classInfo, parameterClassNames, parameterNames);
+    this.name = name;
+  }
 
-	public MethodInfo( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.name = binaryDecoder.decodeString();
-	}
+  public MethodInfo(BinaryDecoder binaryDecoder) {
+    super(binaryDecoder);
+    this.name = binaryDecoder.decodeString();
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.name );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.name);
+  }
 
-	public Method getMthd() {
-		if( this.mthd != null ) {
-			//pass
-		} else {
-			this.mthd = ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
-		}
-		return this.mthd;
-	}
+  public Method getMthd() {
+    if (this.mthd != null) {
+      //pass
+    } else {
+      this.mthd = ReflectionUtilities.getMethod(getDeclaringCls(), this.name, getParameterClses());
+    }
+    return this.mthd;
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		sb.append( "name=" );
-		sb.append( this.name );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    sb.append("name=");
+    sb.append(this.name);
+  }
 }

@@ -56,36 +56,36 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public class GlrProjectionCamera extends GlrAbstractCamera<ProjectionCamera> {
-	@Override
-	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Ray getRayAtPixel(Ray rv, int xPixel, int yPixel, Rectangle actualViewport) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
-		throw new RuntimeException( "todo" );
-	}
+  @Override
+  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, Rectangle actualViewport) {
+    throw new RuntimeException("todo");
+  }
 
-	@Override
-	protected Rectangle performLetterboxing( Rectangle rv ) {
-		//todo
-		return rv;
-	}
+  @Override
+  protected Rectangle performLetterboxing(Rectangle rv) {
+    //todo
+    return rv;
+  }
 
-	@Override
-	protected void setupProjection( Context context, Rectangle actualViewport ) {
-		context.gl.glLoadMatrixd( this.projectionBuffer );
-	}
+  @Override
+  protected void setupProjection(Context context, Rectangle actualViewport) {
+    context.gl.glLoadMatrixd(this.projectionBuffer);
+  }
 
-	@Override
-	protected void propertyChanged( InstanceProperty<?> property ) {
-		if( property == owner.projection ) {
-			owner.projection.getValue().getAsColumnMajorArray16( this.projection );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
+  @Override
+  protected void propertyChanged(InstanceProperty<?> property) {
+    if (property == owner.projection) {
+      owner.projection.getValue().getAsColumnMajorArray16(this.projection);
+    } else {
+      super.propertyChanged(property);
+    }
+  }
 
-	private final double[] projection = new double[ 16 ];
-	private final DoubleBuffer projectionBuffer = DoubleBuffer.wrap( this.projection );
+  private final double[] projection = new double[16];
+  private final DoubleBuffer projectionBuffer = DoubleBuffer.wrap(this.projection);
 }

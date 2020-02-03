@@ -49,7 +49,7 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public final class TypedExpressionBlank extends ExpressionBlank {
-	public TypedExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
-		super( valueType, details );
-	}
+  public TypedExpressionBlank(AbstractType<?, ?, ?> valueType, ValueDetails<?> details) {
+    super(valueType, details);
+  }
 }

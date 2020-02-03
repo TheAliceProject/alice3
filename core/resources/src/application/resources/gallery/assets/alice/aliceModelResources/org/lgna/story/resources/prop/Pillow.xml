@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="Pillow">
+    <BoundingBox>
+        <Min x="-0.26573446393013" y="-0.03768226504325867" z="-0.26835158467292786"/>
+        <Max x="0.26573446393013" y="0.27768218517303467" z="0.26835158467292786"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>pillow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Pillow" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="Pillow" resourceName="RED" textureName="RED"/>
+</AliceModel>

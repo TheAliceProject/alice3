@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AddFunctionMenuModel extends AddMethodMenuModel {
-	public AddFunctionMenuModel() {
-		super( UUID.fromString( "2cc6b6ae-24ea-4e9f-bca7-0c1b537775a1" ) );
-	}
+  public AddFunctionMenuModel() {
+    super(UUID.fromString("2cc6b6ae-24ea-4e9f-bca7-0c1b537775a1"));
+  }
 
-	@Override
-	protected AddMethodComposite getAddMethodComposite( NamedUserType declaringType ) {
-		return AddFunctionComposite.getInstance( declaringType );
-	}
+  @Override
+  protected AddMethodComposite getAddMethodComposite(NamedUserType declaringType) {
+    return AddFunctionComposite.getInstance(declaringType);
+  }
 }

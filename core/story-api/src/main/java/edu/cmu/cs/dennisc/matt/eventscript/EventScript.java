@@ -54,34 +54,34 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptListener;
  */
 public class EventScript {
 
-	private final List<EventScriptListener> listeners = Lists.newCopyOnWriteArrayList();
-	private final List<EventScriptEvent> masterEventList = Lists.newLinkedList();
+  private final List<EventScriptListener> listeners = Lists.newCopyOnWriteArrayList();
+  private final List<EventScriptEvent> masterEventList = Lists.newLinkedList();
 
-	public void record( double currentTime, Object e ) {
-		EventScriptEvent event = new EventScriptEvent( currentTime, e );
-		masterEventList.add( event );
-		fireEventAdded( event );
-	}
+  public void record(double currentTime, Object e) {
+    EventScriptEvent event = new EventScriptEvent(currentTime, e);
+    masterEventList.add(event);
+    fireEventAdded(event);
+  }
 
-	private void fireEventAdded( EventScriptEvent event ) {
-		for( EventScriptListener listener : listeners ) {
-			listener.eventAdded( event );
-		}
-	}
+  private void fireEventAdded(EventScriptEvent event) {
+    for (EventScriptListener listener : listeners) {
+      listener.eventAdded(event);
+    }
+  }
 
-	public void addListener( EventScriptListener listener ) {
-		this.listeners.add( listener );
-	}
+  public void addListener(EventScriptListener listener) {
+    this.listeners.add(listener);
+  }
 
-	public void removeListener( EventScriptListener listener ) {
-		this.listeners.remove( listener );
-	}
+  public void removeListener(EventScriptListener listener) {
+    this.listeners.remove(listener);
+  }
 
-	public List<EventScriptEvent> getEventList() {
-		return Collections.unmodifiableList( this.masterEventList );
-	}
+  public List<EventScriptEvent> getEventList() {
+    return Collections.unmodifiableList(this.masterEventList);
+  }
 
-	public EventScriptIterator createEventScriptIterator() {
-		return new EventScriptIterator( this );
-	}
+  public EventScriptIterator createEventScriptIterator() {
+    return new EventScriptIterator(this);
+  }
 }

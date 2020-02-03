@@ -54,14 +54,14 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayLengthOperation extends ProjectExpressionPropertyOperation {
-	public ArrayLengthOperation( UUID id, ExpressionProperty expressionProperty ) {
-		super( id, expressionProperty );
-	}
+  public ArrayLengthOperation(UUID id, ExpressionProperty expressionProperty) {
+    super(id, expressionProperty);
+  }
 
-	protected abstract Expression createAccessExpression();
+  protected abstract Expression createAccessExpression();
 
-	@Override
-	protected final Expression createExpression() {
-		return new ArrayLength( this.createAccessExpression() );
-	}
+  @Override
+  protected final Expression createExpression() {
+    return new ArrayLength(this.createAccessExpression());
+  }
 }

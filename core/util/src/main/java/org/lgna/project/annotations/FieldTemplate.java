@@ -49,10 +49,8 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface FieldTemplate {
-	Visibility visibility();
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface FieldTemplate {
+  Visibility visibility();
 
-	String methodNameHint() default "";
+  String methodNameHint() default "";
 }

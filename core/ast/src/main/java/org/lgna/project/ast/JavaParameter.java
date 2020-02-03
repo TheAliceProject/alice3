@@ -54,50 +54,50 @@ import java.lang.annotation.Annotation;
  * @author Dennis Cosgrove
  */
 public abstract class JavaParameter extends AbstractParameter {
-	public JavaParameter( Annotation[] annotations ) {
-		this.annotations = annotations;
-		if( this.annotations != null ) {
-			for( Annotation annotation : this.annotations ) {
-				if( annotation instanceof ValueTemplate ) {
-					this.setValueTemplate( (ValueTemplate)annotation );
-				}
-			}
-		}
-	}
+  public JavaParameter(Annotation[] annotations) {
+    this.annotations = annotations;
+    if (this.annotations != null) {
+      for (Annotation annotation : this.annotations) {
+        if (annotation instanceof ValueTemplate) {
+          this.setValueTemplate((ValueTemplate) annotation);
+        }
+      }
+    }
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return false;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return false;
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return null;
+  }
 
-	@Override
-	public boolean isVariableLength() {
-		for( Annotation annotation : this.annotations ) {
-			if( annotation instanceof ParameterAnnotation ) {
-				ParameterAnnotation parameterAnnotation = (ParameterAnnotation)annotation;
-				return parameterAnnotation.isVariable();
-			}
-		}
-		return false;
-	}
+  @Override
+  public boolean isVariableLength() {
+    for (Annotation annotation : this.annotations) {
+      if (annotation instanceof ParameterAnnotation) {
+        ParameterAnnotation parameterAnnotation = (ParameterAnnotation) annotation;
+        return parameterAnnotation.isVariable();
+      }
+    }
+    return false;
+  }
 
-	@Override
-	public ValueDetails<?> getDetails() {
-		return this.details;
-	}
+  @Override
+  public ValueDetails<?> getDetails() {
+    return this.details;
+  }
 
-	/* package-private */void setValueTemplate( ValueTemplate valueTemplate ) {
-		Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls = valueTemplate.detailsEnumCls();
-		Enum<? extends ValueDetails<?>>[] details = detailsEnumCls.getEnumConstants();
-		assert details.length == 1;
-		this.details = (ValueDetails<?>)details[ 0 ];
-	}
+  /* package-private */void setValueTemplate(ValueTemplate valueTemplate) {
+    Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls = valueTemplate.detailsEnumCls();
+    Enum<? extends ValueDetails<?>>[] details = detailsEnumCls.getEnumConstants();
+    assert details.length == 1;
+    this.details = (ValueDetails<?>) details[0];
+  }
 
-	private final Annotation[] annotations;
-	private ValueDetails<?> details;
+  private final Annotation[] annotations;
+  private ValueDetails<?> details;
 }

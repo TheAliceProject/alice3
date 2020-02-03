@@ -49,12 +49,12 @@ import edu.cmu.cs.dennisc.math.Point3;
  * @author Dennis Cosgrove
  */
 public abstract class Point3Animation extends Tuple3Animation<Point3> {
-	public Point3Animation( double duration, Style style, Point3 v0, Point3 v1 ) {
-		super( duration, style, v0, v1 );
-	}
+  public Point3Animation(double duration, Style style, Point3 v0, Point3 v1) {
+    super(duration, style, v0, v1);
+  }
 
-	@Override
-	protected Point3 newE( Point3 other ) {
-		return new Point3( other );
-	}
+  @Override
+  protected Point3 newE(Point3 other) {
+    return new Point3(other);
+  }
 }

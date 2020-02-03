@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="Ostrich">
+    <BoundingBox>
+        <Min x="-0.6097456410824937" y="0.001025438926665673" z="-0.4354601041282269"/>
+        <Max x="0.5948793767681545" y="1.9650591226268002" z="0.5621671577401021"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>emu</Tag>
+        <Tag>rhea</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.4197674612461501" y="0.001025438926665673" z="-0.4354601041282269"/>
+            <Max x="0.42173764817859033" y="1.9650591226268002" z="0.5621671577401021"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tutu" resourceName="TUTU" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6097456410824937" y="0.001025438926665673" z="-0.4354601041282269"/>
+            <Max x="0.5948793767681545" y="1.9650591226268002" z="0.5621671577401021"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>tutu</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

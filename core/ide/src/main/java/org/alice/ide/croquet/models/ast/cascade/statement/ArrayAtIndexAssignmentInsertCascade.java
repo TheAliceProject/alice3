@@ -57,30 +57,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInsertCascade {
-	private final AbstractType<?, ?, ?> arrayType;
+  private final AbstractType<?, ?, ?> arrayType;
 
-	public ArrayAtIndexAssignmentInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, AbstractType<?, ?, ?> arrayType, ValueDetails<?> parameterDetails ) {
-		super( id, blockStatementIndexPair, ExpressionBlank.createBlanks( JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
-		this.arrayType = arrayType;
-	}
+  public ArrayAtIndexAssignmentInsertCascade(UUID id, BlockStatementIndexPair blockStatementIndexPair, AbstractType<?, ?, ?> arrayType, ValueDetails<?> parameterDetails) {
+    super(id, blockStatementIndexPair, ExpressionBlank.createBlanks(JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType()));
+    this.arrayType = arrayType;
+  }
 
-	protected abstract Expression createAccessExpression();
+  protected abstract Expression createAccessExpression();
 
-	@Override
-	protected Expression createLeftHandSide( Expression... expressions ) {
-		return new ArrayAccess(
-				this.arrayType,
-				this.createAccessExpression(),
-				expressions[ 0 ] );
-	}
+  @Override
+  protected Expression createLeftHandSide(Expression... expressions) {
+    return new ArrayAccess(this.arrayType, this.createAccessExpression(), expressions[0]);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueType() {
-		return this.arrayType.getComponentType();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueType() {
+    return this.arrayType.getComponentType();
+  }
 
-	@Override
-	protected int getIndexOfRightHandSide() {
-		return 1;
-	}
+  @Override
+  protected int getIndexOfRightHandSide() {
+    return 1;
+  }
 }

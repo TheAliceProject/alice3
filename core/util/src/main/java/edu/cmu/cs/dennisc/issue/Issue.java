@@ -51,143 +51,143 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class Issue {
-	public static class Builder {
-		public Builder type( IssueType type ) {
-			this.type = type;
-			return this;
-		}
+  public static class Builder {
+    public Builder type(IssueType type) {
+      this.type = type;
+      return this;
+    }
 
-		public Builder summary( String summary ) {
-			this.summary = summary;
-			return this;
-		}
+    public Builder summary(String summary) {
+      this.summary = summary;
+      return this;
+    }
 
-		public Builder description( String description ) {
-			this.description = description;
-			return this;
-		}
+    public Builder description(String description) {
+      this.description = description;
+      return this;
+    }
 
-		public Builder steps( String steps ) {
-			this.steps = steps;
-			return this;
-		}
+    public Builder steps(String steps) {
+      this.steps = steps;
+      return this;
+    }
 
-		public Builder environment( String environment ) {
-			this.environment = environment;
-			return this;
-		}
+    public Builder environment(String environment) {
+      this.environment = environment;
+      return this;
+    }
 
-		public Builder threadAndThrowable( Thread thread, Throwable throwable ) {
-			this.thread = thread;
-			this.throwable = throwable;
-			return this;
-		}
+    public Builder threadAndThrowable(Thread thread, Throwable throwable) {
+      this.thread = thread;
+      this.throwable = throwable;
+      return this;
+    }
 
-		public Builder version( String version ) {
-			this.version = version;
-			return this;
-		}
+    public Builder version(String version) {
+      this.version = version;
+      return this;
+    }
 
-		public Builder reportedBy( String reportedBy ) {
-			this.reportedBy = reportedBy;
-			return this;
-		}
+    public Builder reportedBy(String reportedBy) {
+      this.reportedBy = reportedBy;
+      return this;
+    }
 
-		public Builder emailAddress( String emailAddress ) {
-			this.emailAddress = emailAddress;
-			return this;
-		}
+    public Builder emailAddress(String emailAddress) {
+      this.emailAddress = emailAddress;
+      return this;
+    }
 
-		public Builder addAttachment( Attachment attachment ) {
-			this.attachments.add( attachment );
-			return this;
-		}
+    public Builder addAttachment(Attachment attachment) {
+      this.attachments.add(attachment);
+      return this;
+    }
 
-		public Issue build() {
-			return new Issue( this );
-		}
+    public Issue build() {
+      return new Issue(this);
+    }
 
-		private IssueType type;
-		private String summary;
-		private String description;
-		private String steps;
-		private String environment;
-		private Thread thread;
-		private Throwable throwable;
-		private String version;
-		private String reportedBy;
-		private String emailAddress;
+    private IssueType type;
+    private String summary;
+    private String description;
+    private String steps;
+    private String environment;
+    private Thread thread;
+    private Throwable throwable;
+    private String version;
+    private String reportedBy;
+    private String emailAddress;
 
-		private List<Attachment> attachments = Lists.newLinkedList();
-	}
+    private List<Attachment> attachments = Lists.newLinkedList();
+  }
 
-	private Issue( Builder builder ) {
-		this.type = builder.type;
-		this.summary = builder.summary;
-		this.description = builder.description;
-		this.steps = builder.steps;
-		this.environment = builder.environment;
-		this.thread = builder.thread;
-		this.throwable = builder.throwable;
-		this.version = builder.version;
-		this.reportedBy = builder.reportedBy;
-		this.emailAddress = builder.emailAddress;
-		this.attachments = ArrayUtilities.createArray( builder.attachments, Attachment.class );
-	}
+  private Issue(Builder builder) {
+    this.type = builder.type;
+    this.summary = builder.summary;
+    this.description = builder.description;
+    this.steps = builder.steps;
+    this.environment = builder.environment;
+    this.thread = builder.thread;
+    this.throwable = builder.throwable;
+    this.version = builder.version;
+    this.reportedBy = builder.reportedBy;
+    this.emailAddress = builder.emailAddress;
+    this.attachments = ArrayUtilities.createArray(builder.attachments, Attachment.class);
+  }
 
-	public IssueType getType() {
-		return this.type;
-	}
+  public IssueType getType() {
+    return this.type;
+  }
 
-	public String getSummary() {
-		return this.summary;
-	}
+  public String getSummary() {
+    return this.summary;
+  }
 
-	public String getDescription() {
-		return this.description;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public String getSteps() {
-		return this.steps;
-	}
+  public String getSteps() {
+    return this.steps;
+  }
 
-	public String getEnvironment() {
-		return this.environment;
-	}
+  public String getEnvironment() {
+    return this.environment;
+  }
 
-	public Thread getThread() {
-		return this.thread;
-	}
+  public Thread getThread() {
+    return this.thread;
+  }
 
-	public Throwable getThrowable() {
-		return this.throwable;
-	}
+  public Throwable getThrowable() {
+    return this.throwable;
+  }
 
-	public String getVersion() {
-		return this.version;
-	}
+  public String getVersion() {
+    return this.version;
+  }
 
-	public String getReportedBy() {
-		return this.reportedBy;
-	}
+  public String getReportedBy() {
+    return this.reportedBy;
+  }
 
-	public String getEmailAddress() {
-		return this.emailAddress;
-	}
+  public String getEmailAddress() {
+    return this.emailAddress;
+  }
 
-	public Attachment[] getAttachments() {
-		return this.attachments;
-	}
+  public Attachment[] getAttachments() {
+    return this.attachments;
+  }
 
-	private final IssueType type;
-	private final String summary;
-	private final String description;
-	private final String steps;
-	private final String environment;
-	private final Thread thread;
-	private final Throwable throwable;
-	private final String version;
-	private final String reportedBy;
-	private final String emailAddress;
-	private final Attachment[] attachments;
+  private final IssueType type;
+  private final String summary;
+  private final String description;
+  private final String steps;
+  private final String environment;
+  private final Thread thread;
+  private final Throwable throwable;
+  private final String version;
+  private final String reportedBy;
+  private final String emailAddress;
+  private final Attachment[] attachments;
 }

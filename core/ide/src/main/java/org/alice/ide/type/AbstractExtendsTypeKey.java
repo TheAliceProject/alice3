@@ -49,30 +49,30 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractExtendsTypeKey extends TypeKey {
-	private final AbstractType<?, ?, ?> superType;
+  private final AbstractType<?, ?, ?> superType;
 
-	public AbstractExtendsTypeKey( AbstractType<?, ?, ?> superType ) {
-		assert superType != null;
-		this.superType = superType;
-	}
+  public AbstractExtendsTypeKey(AbstractType<?, ?, ?> superType) {
+    assert superType != null;
+    this.superType = superType;
+  }
 
-	public AbstractType<?, ?, ?> getSuperType() {
-		return this.superType;
-	}
+  public AbstractType<?, ?, ?> getSuperType() {
+    return this.superType;
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		rv = ( 37 * rv ) + this.getSuperType().hashCode();
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    rv = (37 * rv) + this.getSuperType().hashCode();
+    return rv;
+  }
 
-	//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-	//		return userType.superType.getValue() == this.superType;
-	//	}
-	@Override
-	protected boolean contentEquals( TypeKey other ) {
-		// super class's equals methods ensures this.getClass() == other.getClass()
-		return this.superType == ( (AbstractExtendsTypeKey)other ).superType;
-	}
+  //  public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+  //    return userType.superType.getValue() == this.superType;
+  //  }
+  @Override
+  protected boolean contentEquals(TypeKey other) {
+    // super class's equals methods ensures this.getClass() == other.getClass()
+    return this.superType == ((AbstractExtendsTypeKey) other).superType;
+  }
 }

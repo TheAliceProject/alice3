@@ -52,43 +52,44 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public enum LocaleCodec implements ItemCodec<Locale> {
-	SINGLETON;
-	@Override
-	public Class<Locale> getValueClass() {
-		return Locale.class;
-	}
+  SINGLETON;
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, Locale value ) {
-		if( value != null ) {
-			sb.append( value.getDisplayName( value ) );
-		} else {
-			sb.append( value );
-		}
-	}
+  @Override
+  public Class<Locale> getValueClass() {
+    return Locale.class;
+  }
 
-	@Override
-	public Locale decodeValue( BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String language = binaryDecoder.decodeString();
-			String country = binaryDecoder.decodeString();
-			String variant = binaryDecoder.decodeString();
-			return new Locale( language, country, variant );
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, Locale value) {
+    if (value != null) {
+      sb.append(value.getDisplayName(value));
+    } else {
+      sb.append(value);
+    }
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, Locale value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getLanguage() );
-			binaryEncoder.encode( value.getCountry() );
-			binaryEncoder.encode( value.getVariant() );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
+  @Override
+  public Locale decodeValue(BinaryDecoder binaryDecoder) {
+    boolean isNotNull = binaryDecoder.decodeBoolean();
+    if (isNotNull) {
+      String language = binaryDecoder.decodeString();
+      String country = binaryDecoder.decodeString();
+      String variant = binaryDecoder.decodeString();
+      return new Locale(language, country, variant);
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, Locale value) {
+    if (value != null) {
+      binaryEncoder.encode(true);
+      binaryEncoder.encode(value.getLanguage());
+      binaryEncoder.encode(value.getCountry());
+      binaryEncoder.encode(value.getVariant());
+    } else {
+      binaryEncoder.encode(false);
+    }
+  }
 }

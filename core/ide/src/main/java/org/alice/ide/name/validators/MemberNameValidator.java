@@ -47,18 +47,18 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.UserType;
 
 public abstract class MemberNameValidator extends NodeNameValidator {
-	private UserType<?> type;
+  private UserType<?> type;
 
-	public MemberNameValidator( Node node, UserType<?> type ) {
-		super( node );
-		this.type = type;
-	}
+  public MemberNameValidator(Node node, UserType<?> type) {
+    super(node);
+    this.type = type;
+  }
 
-	public UserType<?> getType() {
-		return this.type;
-	}
+  public UserType<?> getType() {
+    return this.type;
+  }
 
-	public void setType( UserType<?> type ) {
-		this.type = type;
-	}
+  public void setType(UserType<?> type) {
+    this.type = type;
+  }
 }

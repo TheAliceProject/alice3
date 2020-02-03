@@ -53,58 +53,54 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class TypeTreeState extends CustomSingleSelectTreeState<TypeNode> {
-	private TypeNode root;
+  private TypeNode root;
 
-	public TypeTreeState() {
-		super(
-				Application.INHERIT_GROUP,
-				UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
-				null,
-				DefaultItemCodec.createInstance( TypeNode.class ) );
-	}
+  public TypeTreeState() {
+    super(Application.INHERIT_GROUP, UUID.fromString("92bfc306-c2f0-4d86-8198-d0b832bd2200"), null, DefaultItemCodec.createInstance(TypeNode.class));
+  }
 
-	@Override
-	protected int getChildCount( TypeNode parent ) {
-		return parent.getChildCount();
-	}
+  @Override
+  protected int getChildCount(TypeNode parent) {
+    return parent.getChildCount();
+  }
 
-	@Override
-	protected TypeNode getChild( TypeNode parent, int index ) {
-		return (TypeNode)parent.getChildAt( index );
-	}
+  @Override
+  protected TypeNode getChild(TypeNode parent, int index) {
+    return (TypeNode) parent.getChildAt(index);
+  }
 
-	@Override
-	protected int getIndexOfChild( TypeNode parent, TypeNode child ) {
-		return parent.getIndex( child );
-	}
+  @Override
+  protected int getIndexOfChild(TypeNode parent, TypeNode child) {
+    return parent.getIndex(child);
+  }
 
-	@Override
-	public TypeNode getParent( TypeNode node ) {
-		return (TypeNode)node.getParent();
-	}
+  @Override
+  public TypeNode getParent(TypeNode node) {
+    return (TypeNode) node.getParent();
+  }
 
-	@Override
-	protected TypeNode getRoot() {
-		return this.root;
-	}
+  @Override
+  protected TypeNode getRoot() {
+    return this.root;
+  }
 
-	public void setRoot( TypeNode root ) {
-		this.root = root;
-		this.refresh( this.root );
-	}
+  public void setRoot(TypeNode root) {
+    this.root = root;
+    this.refresh(this.root);
+  }
 
-	@Override
-	public boolean isLeaf( TypeNode node ) {
-		return node.isLeaf();
-	}
+  @Override
+  public boolean isLeaf(TypeNode node) {
+    return node.isLeaf();
+  }
 
-	@Override
-	protected String getTextForNode( TypeNode node ) {
-		return node.getType().getName();
-	}
+  @Override
+  protected String getTextForNode(TypeNode node) {
+    return node.getType().getName();
+  }
 
-	@Override
-	protected Icon getIconForNode( TypeNode node ) {
-		return null;
-	}
+  @Override
+  protected Icon getIconForNode(TypeNode node) {
+    return null;
+  }
 }

@@ -68,140 +68,140 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class AnomalousSituationComposite extends AbstractIssueComposite<AnomalousSitutationView> {
-	public static AnomalousSituationComposite createInstance( String message, String description ) {
-		try {
-			throw new RuntimeException( message );
-		} catch( RuntimeException re ) {
-			return new AnomalousSituationComposite( re, description );
-		}
-	}
+  public static AnomalousSituationComposite createInstance(String message, String description) {
+    try {
+      throw new RuntimeException(message);
+    } catch (RuntimeException re) {
+      return new AnomalousSituationComposite(re, description);
+    }
+  }
 
-	private final Thread thread;
-	private final Throwable throwable;
-	private final BufferedImage applicationContentPanelImage;
+  private final Thread thread;
+  private final Throwable throwable;
+  private final BufferedImage applicationContentPanelImage;
 
-	private final BooleanState areProjectAndImageAttachmentsDesired = this.createBooleanState( "areProjectAndImageAttachmentsDesired", true );
-	private final Operation showApplicationContentPanelImageOperation = new ShowImageComposite( UUID.fromString( "f8455aee-e131-417c-b539-b8a9ad7bdc73" ) ) {
-		@Override
-		public Image getImage() {
-			return applicationContentPanelImage;
-		}
-	}.getLaunchOperation();
+  private final BooleanState areProjectAndImageAttachmentsDesired = this.createBooleanState("areProjectAndImageAttachmentsDesired", true);
+  private final Operation showApplicationContentPanelImageOperation = new ShowImageComposite(UUID.fromString("f8455aee-e131-417c-b539-b8a9ad7bdc73")) {
+    @Override
+    public Image getImage() {
+      return applicationContentPanelImage;
+    }
+  }.getLaunchOperation();
 
-	private final String description;
+  private final String description;
 
-	private AnomalousSituationComposite( Throwable throwable, String description ) {
-		super( UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), IsModal.TRUE );
-		this.thread = Thread.currentThread();
-		this.throwable = throwable;
-		this.description = description;
+  private AnomalousSituationComposite(Throwable throwable, String description) {
+    super(UUID.fromString("f6516c45-2ed6-4d7b-a12d-97726f655bab"), IsModal.TRUE);
+    this.thread = Thread.currentThread();
+    this.throwable = throwable;
+    this.description = description;
 
-		Application app = Application.getActiveInstance();
-		DocumentFrame documentFrame = app.getDocumentFrame();
-		Frame frame = documentFrame.getFrame();
-		ContentPane contentPane = frame.getContentPane();
+    Application app = Application.getActiveInstance();
+    DocumentFrame documentFrame = app.getDocumentFrame();
+    Frame frame = documentFrame.getFrame();
+    ContentPane contentPane = frame.getContentPane();
 
-		this.applicationContentPanelImage = new BufferedImage( contentPane.getWidth(), contentPane.getHeight(), BufferedImage.TYPE_INT_RGB );
-		Graphics g = applicationContentPanelImage.getGraphics();
-		g.setColor( contentPane.getBackgroundColor() );
-		g.fillRect( 0, 0, this.applicationContentPanelImage.getWidth(), this.applicationContentPanelImage.getHeight() );
-		contentPane.getAwtComponent().printAll( g );
-		g.dispose();
-		this.getImp().createAndRegisterNullKeyLaunchOperation();
-	}
+    this.applicationContentPanelImage = new BufferedImage(contentPane.getWidth(), contentPane.getHeight(), BufferedImage.TYPE_INT_RGB);
+    Graphics g = applicationContentPanelImage.getGraphics();
+    g.setColor(contentPane.getBackgroundColor());
+    g.fillRect(0, 0, this.applicationContentPanelImage.getWidth(), this.applicationContentPanelImage.getHeight());
+    contentPane.getAwtComponent().printAll(g);
+    g.dispose();
+    this.getImp().createAndRegisterNullKeyLaunchOperation();
+  }
 
-	@Override
-	protected String getDefaultTitleText() {
-		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getImp().getName() : null;
-	}
+  @Override
+  protected String getDefaultTitleText() {
+    Operation launchOperation = this.getLaunchOperation();
+    return launchOperation != null ? launchOperation.getImp().getName() : null;
+  }
 
-	public Operation getLaunchOperation() {
-		return this.getImp().getLaunchOperation( null );
-	}
+  public Operation getLaunchOperation() {
+    return this.getImp().getLaunchOperation(null);
+  }
 
-	@Override
-	protected Thread getThread() {
-		return this.thread;
-	}
+  @Override
+  protected Thread getThread() {
+    return this.thread;
+  }
 
-	@Override
-	public Throwable getThrowable() {
-		return this.throwable;
-	}
+  @Override
+  public Throwable getThrowable() {
+    return this.throwable;
+  }
 
-	@Override
-	protected boolean isPublic() {
-		return false;
-	}
+  @Override
+  protected boolean isPublic() {
+    return false;
+  }
 
-	@Override
-	protected IssueType getReportType() {
-		return IssueType.BUG;
-	}
+  @Override
+  protected IssueType getReportType() {
+    return IssueType.BUG;
+  }
 
-	@Override
-	protected String getSummaryText() {
-		return this.throwable.getMessage();
-	}
+  @Override
+  protected String getSummaryText() {
+    return this.throwable.getMessage();
+  }
 
-	@Override
-	protected String getDescriptionText() {
-		return this.description;
-	}
+  @Override
+  protected String getDescriptionText() {
+    return this.description;
+  }
 
-	public BooleanState getAreProjectAndImageAttachmentsDesired() {
-		return this.areProjectAndImageAttachmentsDesired;
-	}
+  public BooleanState getAreProjectAndImageAttachmentsDesired() {
+    return this.areProjectAndImageAttachmentsDesired;
+  }
 
-	@Override
-	protected boolean isProjectAttachmentDesired() {
-		return this.areProjectAndImageAttachmentsDesired.getValue();
-	}
+  @Override
+  protected boolean isProjectAttachmentDesired() {
+    return this.areProjectAndImageAttachmentsDesired.getValue();
+  }
 
-	public Operation getShowApplicationContentPanelImageOperation() {
-		return this.showApplicationContentPanelImageOperation;
-	}
+  public Operation getShowApplicationContentPanelImageOperation() {
+    return this.showApplicationContentPanelImageOperation;
+  }
 
-	@Override
-	protected AnomalousSitutationView createView() {
-		return new AnomalousSitutationView( this );
-	}
+  @Override
+  protected AnomalousSitutationView createView() {
+    return new AnomalousSitutationView(this);
+  }
 
-	@Override
-	protected boolean isClearedToSubmitBug() {
-		return true;
-	}
+  @Override
+  protected boolean isClearedToSubmitBug() {
+    return true;
+  }
 
-	@Override
-	protected void addAttachments( JIRAReport report ) {
-		super.addAttachments( report );
-		if( this.areProjectAndImageAttachmentsDesired.getValue() ) {
-			try {
-				ImageAttachment imageAttachment = new ImageAttachment( this.applicationContentPanelImage, "snapshot" );
-				report.addAttachment( imageAttachment );
-			} catch( IOException ioe ) {
-				Logger.throwable( ioe, this.applicationContentPanelImage );
-			}
-		}
-	}
+  @Override
+  protected void addAttachments(JIRAReport report) {
+    super.addAttachments(report);
+    if (this.areProjectAndImageAttachmentsDesired.getValue()) {
+      try {
+        ImageAttachment imageAttachment = new ImageAttachment(this.applicationContentPanelImage, "snapshot");
+        report.addAttachment(imageAttachment);
+      } catch (IOException ioe) {
+        Logger.throwable(ioe, this.applicationContentPanelImage);
+      }
+    }
+  }
 
-	public static void main( String[] args ) throws Exception {
-		SimpleApplication app = new SimpleApplication();
-		app.initialize( args );
-		DocumentFrame documentFrame = app.getDocumentFrame();
-		Frame frame = documentFrame.getFrame();
-		frame.getContentPane().addCenterComponent( new Label( "hello" ) );
-		frame.pack();
-		frame.setVisible( true );
-		Thread.sleep( 1000 );
-		final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" );
-		SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				composite.getLaunchOperation().fire();
-				//System.exit( 0 );
-			}
-		} );
-	}
+  public static void main(String[] args) throws Exception {
+    SimpleApplication app = new SimpleApplication();
+    app.initialize(args);
+    DocumentFrame documentFrame = app.getDocumentFrame();
+    Frame frame = documentFrame.getFrame();
+    frame.getContentPane().addCenterComponent(new Label("hello"));
+    frame.pack();
+    frame.setVisible(true);
+    Thread.sleep(1000);
+    final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance("A popup menu has been requested for a statement without a parent.", "description");
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        composite.getLaunchOperation().fire();
+        //System.exit( 0 );
+      }
+    });
+  }
 }

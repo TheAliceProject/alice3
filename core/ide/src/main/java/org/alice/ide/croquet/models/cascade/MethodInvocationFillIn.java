@@ -61,49 +61,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
-	//
-	//
-	//
-	// todo: since a user method's signature can change, this should not inherit from ImmutableCascadeFillIn 
-	// extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> {
-	//
-	//
-	//
-	private final MethodInvocation transientValue;
-	private final List<CascadeBlank<Expression>> lockedBlanks;
+  //
+  //
+  //
+  // todo: since a user method's signature can change, this should not inherit from ImmutableCascadeFillIn
+  // extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> {
+  //
+  //
+  //
+  private final MethodInvocation transientValue;
+  private final List<CascadeBlank<Expression>> lockedBlanks;
 
-	private static List<CascadeBlank<Expression>> createBlanks( AbstractMethod method ) {
-		return (List)Collections.unmodifiableList( Lists.newArrayList( MethodUtilities.createParameterBlanks( method ) ) );
-	}
+  private static List<CascadeBlank<Expression>> createBlanks(AbstractMethod method) {
+    return (List) Collections.unmodifiableList(Lists.newArrayList(MethodUtilities.createParameterBlanks(method)));
+  }
 
-	public MethodInvocationFillIn( UUID id, Expression transientValueExpression, AbstractMethod method ) {
-		super( id );
-		if( method.isSignatureLocked() ) {
-			this.lockedBlanks = createBlanks( method );
-		} else {
-			this.lockedBlanks = null;
-		}
-		this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
-	}
+  public MethodInvocationFillIn(UUID id, Expression transientValueExpression, AbstractMethod method) {
+    super(id);
+    if (method.isSignatureLocked()) {
+      this.lockedBlanks = createBlanks(method);
+    } else {
+      this.lockedBlanks = null;
+    }
+    this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation(transientValueExpression, method);
+  }
 
-	protected abstract Expression createExpression( Expression transientValueExpression );
+  protected abstract Expression createExpression(Expression transientValueExpression);
 
-	@Override
-	public List<CascadeBlank<Expression>> getBlanks() {
-		if( this.lockedBlanks != null ) {
-			return this.lockedBlanks;
-		} else {
-			return createBlanks( this.transientValue.method.getValue() );
-		}
-	}
+  @Override
+  public List<CascadeBlank<Expression>> getBlanks() {
+    if (this.lockedBlanks != null) {
+      return this.lockedBlanks;
+    } else {
+      return createBlanks(this.transientValue.method.getValue());
+    }
+  }
 
-	@Override
-	protected MethodInvocation createValue( Expression[] expressions ) {
-		return AstUtilities.createMethodInvocation( this.createExpression( this.transientValue.expression.getValue() ), this.transientValue.method.getValue(), expressions );
-	}
+  @Override
+  protected MethodInvocation createValue(Expression[] expressions) {
+    return AstUtilities.createMethodInvocation(this.createExpression(this.transientValue.expression.getValue()), this.transientValue.method.getValue(), expressions);
+  }
 
-	@Override
-	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
-		return this.transientValue;
-	}
+  @Override
+  public MethodInvocation getTransientValue(ItemNode<? super MethodInvocation, Expression> step) {
+    return this.transientValue;
+  }
 }

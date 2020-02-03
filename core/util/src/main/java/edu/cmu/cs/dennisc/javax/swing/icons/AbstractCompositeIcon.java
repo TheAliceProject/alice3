@@ -50,30 +50,30 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCompositeIcon implements Icon {
-	protected abstract Icon[] getComponentIcons();
+  protected abstract Icon[] getComponentIcons();
 
-	@Override
-	public int getIconWidth() {
-		int rv = 0;
-		for( Icon icon : this.getComponentIcons() ) {
-			rv = Math.max( rv, icon.getIconWidth() );
-		}
-		return rv;
-	}
+  @Override
+  public int getIconWidth() {
+    int rv = 0;
+    for (Icon icon : this.getComponentIcons()) {
+      rv = Math.max(rv, icon.getIconWidth());
+    }
+    return rv;
+  }
 
-	@Override
-	public int getIconHeight() {
-		int rv = 0;
-		for( Icon icon : this.getComponentIcons() ) {
-			rv = Math.max( rv, icon.getIconHeight() );
-		}
-		return rv;
-	}
+  @Override
+  public int getIconHeight() {
+    int rv = 0;
+    for (Icon icon : this.getComponentIcons()) {
+      rv = Math.max(rv, icon.getIconHeight());
+    }
+    return rv;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		for( Icon icon : this.getComponentIcons() ) {
-			icon.paintIcon( c, g, x, y );
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    for (Icon icon : this.getComponentIcons()) {
+      icon.paintIcon(c, g, x, y);
+    }
+  }
 }

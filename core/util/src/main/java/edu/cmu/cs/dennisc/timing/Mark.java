@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.timing;
  * @author Dennis Cosgrove
  */
 /*package-private*/class Mark {
-	private final Object object;
-	private final long time;
+  private final Object object;
+  private final long time;
 
-	public Mark( Object object ) {
-		this.object = object;
-		this.time = System.currentTimeMillis();
-	}
+  public Mark(Object object) {
+    this.object = object;
+    this.time = System.currentTimeMillis();
+  }
 
-	public Object getObject() {
-		return this.object;
-	}
+  public Object getObject() {
+    return this.object;
+  }
 
-	public long getTime() {
-		return this.time;
-	}
+  public long getTime() {
+    return this.time;
+  }
 }

@@ -75,167 +75,167 @@ import java.awt.RenderingHints;
  * @author Dennis Cosgrove
  */
 public class ClipboardDragComponent extends DragComponent<DragModel> {
-	private class ClipboardDropReceptor extends AbstractDropReceptor {
-		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+  private class ClipboardDropReceptor extends AbstractDropReceptor {
+    private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
-		@Override
-		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
-			return dragModel instanceof StatementDragModel;
-		}
+    @Override
+    public boolean isPotentiallyAcceptingOf(DragModel dragModel) {
+      return dragModel instanceof StatementDragModel;
+    }
 
-		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
-			this.dragReceptorState = dragReceptorState;
-			ClipboardDragComponent.this.repaint();
-		}
+    private void setDragReceptorState(DragReceptorState dragReceptorState) {
+      this.dragReceptorState = dragReceptorState;
+      ClipboardDragComponent.this.repaint();
+    }
 
-		@Override
-		public void dragStarted( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.STARTED );
-		}
+    @Override
+    public void dragStarted(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.STARTED);
+    }
 
-		@Override
-		public void dragEntered( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.ENTERED );
-			//			step.getDragSource().hideDragProxy();
-		}
+    @Override
+    public void dragEntered(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.ENTERED);
+      //      step.getDragSource().hideDragProxy();
+    }
 
-		@Override
-		public DropSite dragUpdated( DragStep step ) {
-			return Clipboard.SINGLETON.getDropSite();
-		}
+    @Override
+    public DropSite dragUpdated(DragStep step) {
+      return Clipboard.SINGLETON.getDropSite();
+    }
 
-		@Override
-		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
-			DragModel dragModel = step.getModel();
-			if( dragModel instanceof StatementDragModel ) {
-				StatementDragModel statementDragModel = (StatementDragModel)dragModel;
-				Statement statement = statementDragModel.getStatement();
-				boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
-				if( isCopy ) {
-					return CopyToClipboardOperation.getInstance( statement );
-				} else {
-					return CutToClipboardOperation.getInstance( statement );
-				}
-			} else {
-				return null;
-			}
-		}
+    @Override
+    protected Triggerable dragDroppedPostRejectorCheck(DragStep step) {
+      DragModel dragModel = step.getModel();
+      if (dragModel instanceof StatementDragModel) {
+        StatementDragModel statementDragModel = (StatementDragModel) dragModel;
+        Statement statement = statementDragModel.getStatement();
+        boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown(step.getLatestMouseEvent());
+        if (isCopy) {
+          return CopyToClipboardOperation.getInstance(statement);
+        } else {
+          return CutToClipboardOperation.getInstance(statement);
+        }
+      } else {
+        return null;
+      }
+    }
 
-		@Override
-		public void dragExited( DragStep step, boolean isDropRecipient ) {
-			//			step.getDragSource().showDragProxy();
-			this.setDragReceptorState( DragReceptorState.STARTED );
-		}
+    @Override
+    public void dragExited(DragStep step, boolean isDropRecipient) {
+      //      step.getDragSource().showDragProxy();
+      this.setDragReceptorState(DragReceptorState.STARTED);
+    }
 
-		@Override
-		public void dragStopped( DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.IDLE );
-		}
+    @Override
+    public void dragStopped(DragStep step) {
+      this.setDragReceptorState(DragReceptorState.IDLE);
+    }
 
-		@Override
-		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
-			return ClipboardDragComponent.this;
-		}
+    @Override
+    public TrackableShape getTrackableShape(DropSite potentialDropSite) {
+      return ClipboardDragComponent.this;
+    }
 
-		@Override
-		public SwingComponentView<?> getViewController() {
-			return ClipboardDragComponent.this;
-		}
-	}
+    @Override
+    public SwingComponentView<?> getViewController() {
+      return ClipboardDragComponent.this;
+    }
+  }
 
-	private final ClipboardDropReceptor dropReceptor = new ClipboardDropReceptor();
-	private final FlowPanel subject = new FlowPanel();
+  private final ClipboardDropReceptor dropReceptor = new ClipboardDropReceptor();
+  private final FlowPanel subject = new FlowPanel();
 
-	public ClipboardDragComponent( DragModel dragModel ) {
-		super( dragModel, true );
-	}
+  public ClipboardDragComponent(DragModel dragModel) {
+    super(dragModel, true);
+  }
 
-	@Override
-	protected boolean isClickAndClackAppropriate() {
-		return true;
-	}
+  @Override
+  protected boolean isClickAndClackAppropriate() {
+    return true;
+  }
 
-	public DropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
+  public DropReceptor getDropReceptor() {
+    return this.dropReceptor;
+  }
 
-	@Override
-	public DragModel getModel() {
-		if( Clipboard.SINGLETON.isStackEmpty() ) {
-			return null;
-		} else {
-			return super.getModel();
-		}
-	}
+  @Override
+  public DragModel getModel() {
+    if (Clipboard.SINGLETON.isStackEmpty()) {
+      return null;
+    } else {
+      return super.getModel();
+    }
+  }
 
-	public void refresh() {
-		this.subject.forgetAndRemoveAllComponents();
-		if( Clipboard.SINGLETON.isStackEmpty() ) {
-			this.setToolTipText( null );
-		} else {
-			this.setToolTipText( "" );
-			Node node = Clipboard.SINGLETON.peek();
-			if( node instanceof Statement ) {
-				Statement statement = (Statement)node;
-				subject.addComponent( PreviewAstI18nFactory.getInstance().createStatementPane( statement ) );
-				subject.revalidateAndRepaint();
-			}
-		}
-		this.repaint();
-	}
+  public void refresh() {
+    this.subject.forgetAndRemoveAllComponents();
+    if (Clipboard.SINGLETON.isStackEmpty()) {
+      this.setToolTipText(null);
+    } else {
+      this.setToolTipText("");
+      Node node = Clipboard.SINGLETON.peek();
+      if (node instanceof Statement) {
+        Statement statement = (Statement) node;
+        subject.addComponent(PreviewAstI18nFactory.getInstance().createStatementPane(statement));
+        subject.revalidateAndRepaint();
+      }
+    }
+    this.repaint();
+  }
 
-	@Override
-	public SwingComponentView<?> getSubject() {
-		return this.subject;
-	}
+  @Override
+  public SwingComponentView<?> getSubject() {
+    return this.subject;
+  }
 
-	private static final ClipboardIcon ICON = new ClipboardIcon();
+  private static final ClipboardIcon ICON = new ClipboardIcon();
 
-	@Override
-	protected JDragView createAwtComponent() {
-		JDragView rv = new JDragView() {
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );
-			}
+  @Override
+  protected JDragView createAwtComponent() {
+    JDragView rv = new JDragView() {
+      @Override
+      public Dimension getPreferredSize() {
+        return new Dimension((ICON.getOrigWidth() * 4) / 5, (ICON.getOrigHeight() * 4) / 5);
+      }
 
-			@Override
-			public javax.swing.JToolTip createToolTip() {
-				return new JToolTip( ClipboardDragComponent.this.subject.getAwtComponent() );
-			}
+      @Override
+      public javax.swing.JToolTip createToolTip() {
+        return new JToolTip(ClipboardDragComponent.this.subject.getAwtComponent());
+      }
 
-			@Override
-			public void paint( Graphics g ) {
-				super.paint( g );
-				synchronized( ICON ) {
-					ICON.setDimension( this.getSize() );
-					ICON.setFull( Clipboard.SINGLETON.isStackEmpty() == false );
-					ICON.setDragReceptorState( dropReceptor.dragReceptorState );
-					ICON.paintIcon( this, g, 0, 0 );
-				}
-				if( Clipboard.SINGLETON.getStackSize() > 1 ) {
-					Graphics2D g2 = (Graphics2D)g;
-					Object prevTextAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
-					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-					GraphicsUtilities.drawCenteredText( g, Integer.toString( Clipboard.SINGLETON.getStackSize() ), this.getSize() );
-					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
-				}
-			}
-		};
-		rv.setOpaque( false );
-		return rv;
-	}
+      @Override
+      public void paint(Graphics g) {
+        super.paint(g);
+        synchronized (ICON) {
+          ICON.setDimension(this.getSize());
+          ICON.setFull(Clipboard.SINGLETON.isStackEmpty() == false);
+          ICON.setDragReceptorState(dropReceptor.dragReceptorState);
+          ICON.paintIcon(this, g, 0, 0);
+        }
+        if (Clipboard.SINGLETON.getStackSize() > 1) {
+          Graphics2D g2 = (Graphics2D) g;
+          Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          GraphicsUtilities.drawCenteredText(g, Integer.toString(Clipboard.SINGLETON.getStackSize()), this.getSize());
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+        }
+      }
+    };
+    rv.setOpaque(false);
+    return rv;
+  }
 
-	@Override
-	protected void fillBounds( Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRect( x, y, width, height );
-	}
+  @Override
+  protected void fillBounds(Graphics2D g2, int x, int y, int width, int height) {
+    g2.fillRect(x, y, width, height);
+  }
 
-	@Override
-	protected void paintPrologue( Graphics2D g2, int x, int y, int width, int height ) {
-	}
+  @Override
+  protected void paintPrologue(Graphics2D g2, int x, int y, int width, int height) {
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2, int x, int y, int width, int height) {
+  }
 }

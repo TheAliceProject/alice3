@@ -68,202 +68,202 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-	private final class DocumentListener implements javax.swing.event.DocumentListener {
-		private void handleUpdate( DocumentEvent e ) {
-			if( this.ignoreCount == 0 ) {
-				try {
-					javax.swing.text.Document document = e.getDocument();
-					String nextValue = document.getText( 0, document.getLength() );
-					StringState.this.changeValueFromSwing( nextValue, DocumentEventTrigger.createUserInstance( e ).getUserActivity() );
-				} catch( BadLocationException ble ) {
-					throw new RuntimeException( ble );
-				}
-			} else {
-				if( this.ignoreCount < 0 ) {
-					Logger.severe( StringState.this );
-				}
-			}
-		}
+  private final class DocumentListener implements javax.swing.event.DocumentListener {
+    private void handleUpdate(DocumentEvent e) {
+      if (this.ignoreCount == 0) {
+        try {
+          javax.swing.text.Document document = e.getDocument();
+          String nextValue = document.getText(0, document.getLength());
+          StringState.this.changeValueFromSwing(nextValue, DocumentEventTrigger.createUserInstance(e).getUserActivity());
+        } catch (BadLocationException ble) {
+          throw new RuntimeException(ble);
+        }
+      } else {
+        if (this.ignoreCount < 0) {
+          Logger.severe(StringState.this);
+        }
+      }
+    }
 
-		private int ignoreCount = 0;
+    private int ignoreCount = 0;
 
-		public void pushIgnore() {
-			this.ignoreCount++;
-		}
+    public void pushIgnore() {
+      this.ignoreCount++;
+    }
 
-		public void popIgnore() {
-			this.ignoreCount--;
-		}
+    public void popIgnore() {
+      this.ignoreCount--;
+    }
 
-		@Override
-		public void changedUpdate( DocumentEvent e ) {
-			this.handleUpdate( e );
-		}
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+      this.handleUpdate(e);
+    }
 
-		@Override
-		public void insertUpdate( DocumentEvent e ) {
-			this.handleUpdate( e );
-		}
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+      this.handleUpdate(e);
+    }
 
-		@Override
-		public void removeUpdate( DocumentEvent e ) {
-			this.handleUpdate( e );
-		}
-	};
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+      this.handleUpdate(e);
+    }
+  }
 
-	private final DocumentListener documentListener = new DocumentListener();
+  private final DocumentListener documentListener = new DocumentListener();
 
-	public static class SwingModel {
-		private final List<TextComponent<?>> textComponents = Lists.newCopyOnWriteArrayList();
-		private final javax.swing.text.Document document = new PlainDocument();
+  public static class SwingModel {
+    private final List<TextComponent<?>> textComponents = Lists.newCopyOnWriteArrayList();
+    private final javax.swing.text.Document document = new PlainDocument();
 
-		private SwingModel() {
-		}
+    private SwingModel() {
+    }
 
-		public void install( TextComponent<?> textComponent ) {
-			this.textComponents.add( textComponent );
-			textComponent.getAwtComponent().setDocument( this.document );
-		}
+    public void install(TextComponent<?> textComponent) {
+      this.textComponents.add(textComponent);
+      textComponent.getAwtComponent().setDocument(this.document);
+    }
 
-		public Iterable<TextComponent<?>> getTextComponents() {
-			return this.textComponents;
-		}
+    public Iterable<TextComponent<?>> getTextComponents() {
+      return this.textComponents;
+    }
 
-		public javax.swing.text.Document getDocument() {
-			return this.document;
-		}
-	}
+    public javax.swing.text.Document getDocument() {
+      return this.document;
+    }
+  }
 
-	private final SwingModel swingModel = new SwingModel();
+  private final SwingModel swingModel = new SwingModel();
 
-	private String textForBlankCondition;
+  private String textForBlankCondition;
 
-	public StringState( Group group, UUID id, String initialValue ) {
-		super( group, id, initialValue );
-		try {
-			this.swingModel.document.insertString( 0, initialValue, null );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-		this.swingModel.document.addDocumentListener( this.documentListener );
-	}
+  public StringState(Group group, UUID id, String initialValue) {
+    super(group, id, initialValue);
+    try {
+      this.swingModel.document.insertString(0, initialValue, null);
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+    this.swingModel.document.addDocumentListener(this.documentListener);
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, String value ) {
-		sb.append( value );
-	}
+  @Override
+  public void appendRepresentation(StringBuilder sb, String value) {
+    sb.append(value);
+  }
 
-	@Override
-	public String decodeValue( BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeString();
-	}
+  @Override
+  public String decodeValue(BinaryDecoder binaryDecoder) {
+    return binaryDecoder.decodeString();
+  }
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, String value ) {
-		binaryEncoder.encode( value );
-	}
+  @Override
+  public void encodeValue(BinaryEncoder binaryEncoder, String value) {
+    binaryEncoder.encode(value);
+  }
 
-	private boolean isEnabled = true;
+  private boolean isEnabled = true;
 
-	@Override
-	public boolean isEnabled() {
-		return this.isEnabled;
-	}
+  @Override
+  public boolean isEnabled() {
+    return this.isEnabled;
+  }
 
-	@Override
-	public void setEnabled( boolean isEnabled ) {
-		if( this.isEnabled != isEnabled ) {
-			this.isEnabled = isEnabled;
-			for( TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
-				textComponent.getAwtComponent().setEnabled( this.isEnabled );
-			}
-		}
-	}
+  @Override
+  public void setEnabled(boolean isEnabled) {
+    if (this.isEnabled != isEnabled) {
+      this.isEnabled = isEnabled;
+      for (TextComponent<?> textComponent : this.swingModel.getTextComponents()) {
+        textComponent.getAwtComponent().setEnabled(this.isEnabled);
+      }
+    }
+  }
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public SwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	@Override
-	protected void setSwingValue( String nextValue ) {
-		this.documentListener.pushIgnore();
-		try {
-			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
-			this.swingModel.document.insertString( 0, nextValue, null );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		} finally {
-			this.documentListener.popIgnore();
-		}
-	}
+  @Override
+  protected void setSwingValue(String nextValue) {
+    this.documentListener.pushIgnore();
+    try {
+      this.swingModel.document.remove(0, this.swingModel.document.getLength());
+      this.swingModel.document.insertString(0, nextValue, null);
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    } finally {
+      this.documentListener.popIgnore();
+    }
+  }
 
-	@Override
-	protected void localize() {
-		this.textForBlankCondition = this.findLocalizedText( "textForBlankCondition" );
-	}
+  @Override
+  protected void localize() {
+    this.textForBlankCondition = this.findLocalizedText("textForBlankCondition");
+  }
 
-	public String getTextForBlankCondition() {
-		return this.textForBlankCondition;
-	}
+  public String getTextForBlankCondition() {
+    return this.textForBlankCondition;
+  }
 
-	public void setTextForBlankCondition( String textForBlankCondition ) {
-		this.textForBlankCondition = textForBlankCondition;
-		for( SwingComponentView<?> component : ComponentManager.getComponents( this ) ) {
-			if( component instanceof TextComponent<?> ) {
-				TextComponent<?> textComponent = (TextComponent<?>)component;
-				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
-			}
-		}
-	}
+  public void setTextForBlankCondition(String textForBlankCondition) {
+    this.textForBlankCondition = textForBlankCondition;
+    for (SwingComponentView<?> component : ComponentManager.getComponents(this)) {
+      if (component instanceof TextComponent<?>) {
+        TextComponent<?> textComponent = (TextComponent<?>) component;
+        textComponent.updateTextForBlankCondition(this.textForBlankCondition);
+      }
+    }
+  }
 
-	@Override
-	protected String getSwingValue() {
-		try {
-			return this.swingModel.document.getText( 0, this.swingModel.document.getLength() );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  @Override
+  protected String getSwingValue() {
+    try {
+      return this.swingModel.document.getText(0, this.swingModel.document.getLength());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 
-	public TextField createTextField() {
-		return this.createTextField( null );
-	}
+  public TextField createTextField() {
+    return this.createTextField(null);
+  }
 
-	public PasswordField createPasswordField() {
-		return this.createPasswordField( null );
-	}
+  public PasswordField createPasswordField() {
+    return this.createPasswordField(null);
+  }
 
-	public TextField createTextField( Operation operation ) {
-		return new TextField( this, operation );
-	}
+  public TextField createTextField(Operation operation) {
+    return new TextField(this, operation);
+  }
 
-	public PasswordField createPasswordField( Operation operation ) {
-		return new PasswordField( this, operation );
-	}
+  public PasswordField createPasswordField(Operation operation) {
+    return new PasswordField(this, operation);
+  }
 
-	public SubduedTextField createSubduedTextField() {
-		return new SubduedTextField( this );
-	}
+  public SubduedTextField createSubduedTextField() {
+    return new SubduedTextField(this);
+  }
 
-	public TextArea createTextArea() {
-		return new TextArea( this );
-	}
+  public TextArea createTextArea() {
+    return new TextArea(this);
+  }
 
-	public void selectAll() {
-		for( TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
-			textComponent.selectAll();
-		}
-	}
+  public void selectAll() {
+    for (TextComponent<?> textComponent : this.swingModel.getTextComponents()) {
+      textComponent.selectAll();
+    }
+  }
 
-	public void requestFocus() {
-		for( AwtComponentView<?> component : ComponentManager.getComponents( this ) ) {
-			//todo: find the most appropriate candidate?
-			component.requestFocus();
-		}
-	}
+  public void requestFocus() {
+    for (AwtComponentView<?> component : ComponentManager.getComponents(this)) {
+      //todo: find the most appropriate candidate?
+      component.requestFocus();
+    }
+  }
 }

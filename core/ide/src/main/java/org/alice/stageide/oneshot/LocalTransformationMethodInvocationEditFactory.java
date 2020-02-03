@@ -54,18 +54,18 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final InstanceFactory instanceFactory;
-	private final AbstractMethod method;
-	private final Expression[] argumentExpressions;
+  private final InstanceFactory instanceFactory;
+  private final AbstractMethod method;
+  private final Expression[] argumentExpressions;
 
-	public LocalTransformationMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
-	}
+  public LocalTransformationMethodInvocationEditFactory(InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions) {
+    this.instanceFactory = instanceFactory;
+    this.method = method;
+    this.argumentExpressions = argumentExpressions;
+  }
 
-	@Override
-	public Edit createEdit( UserActivity userActivity ) {
-		return new LocalTransformationEdit( userActivity, this.instanceFactory, this.method, this.argumentExpressions );
-	}
+  @Override
+  public Edit createEdit(UserActivity userActivity) {
+    return new LocalTransformationEdit(userActivity, this.instanceFactory, this.method, this.argumentExpressions);
+  }
 }

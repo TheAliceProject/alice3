@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Gregory Mirles" name="Biplane">
+    <BoundingBox>
+        <Min x="-7.178626193670289" y="-2.5652541643855358" z="-5.379515541727784"/>
+        <Max x="7.178625717640941" y="3.2511012084325914" z="5.430108279145009"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>airplane</Tag>
+        <Tag>biplane</Tag>
+        <Tag>aircraft</Tag>
+        <Tag>plane</Tag>
+        <Tag>vehicle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Biplane" resourceName="PLANE2" textureName="PLANE2"/>
+    <Resource modelName="Biplane" resourceName="PLANE3" textureName="PLANE3"/>
+    <Resource modelName="Biplane" resourceName="PLANE1" textureName="PLANE1"/>
+    <Resource modelName="Biplane" resourceName="PLANE4" textureName="PLANE4"/>
+    <Resource modelName="Biplane" resourceName="PLANE5" textureName="PLANE5"/>
+</AliceModel>

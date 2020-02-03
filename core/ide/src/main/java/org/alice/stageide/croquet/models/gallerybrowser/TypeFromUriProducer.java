@@ -63,85 +63,84 @@ import java.util.zip.ZipFile;
  * @author Dennis Cosgrove
  */
 public class TypeFromUriProducer extends UriCreator<NamedUserType> {
-	private static class SingletonHolder {
-		private static TypeFromUriProducer instance = new TypeFromUriProducer();
-	}
+  private static class SingletonHolder {
+    private static TypeFromUriProducer instance = new TypeFromUriProducer();
+  }
 
-	public static TypeFromUriProducer getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TypeFromUriProducer getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private TypeFromUriProducer() {
-		super( UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
-	}
+  private TypeFromUriProducer() {
+    super(UUID.fromString("4ab159a0-7fee-4c0f-8b71-25591fda2b0d"));
+  }
 
-	@Override
-	protected String getExtension() {
-		return IoUtilities.TYPE_EXTENSION;
-	}
+  @Override
+  protected String getExtension() {
+    return IoUtilities.TYPE_EXTENSION;
+  }
 
-	private static void showMessageDialog( File file, boolean isValidZip ) {
-		String applicationName = IDE.getApplicationName();
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Unable to create instance from file " );
-		sb.append( FileUtilities.getCanonicalPathIfPossible( file ) );
-		sb.append( ".\n\n" );
-		sb.append( applicationName );
-		sb.append( " is able to create instances from class files saved by " );
-		sb.append( applicationName );
-		sb.append( ".\n\nLook for files with an " );
-		sb.append( IoUtilities.TYPE_EXTENSION );
-		sb.append( " extension." );
-		Dialogs.showError( "Cannot read file", sb.toString() );
-	}
+  private static void showMessageDialog(File file, boolean isValidZip) {
+    String applicationName = IDE.getApplicationName();
+    StringBuffer sb = new StringBuffer();
+    sb.append("Unable to create instance from file ");
+    sb.append(FileUtilities.getCanonicalPathIfPossible(file));
+    sb.append(".\n\n");
+    sb.append(applicationName);
+    sb.append(" is able to create instances from class files saved by ");
+    sb.append(applicationName);
+    sb.append(".\n\nLook for files with an ");
+    sb.append(IoUtilities.TYPE_EXTENSION);
+    sb.append(" extension.");
+    Dialogs.showError("Cannot read file", sb.toString());
+  }
 
-	@Override
-	protected NamedUserType internalGetValueFrom( File file ) {
-		final Locale locale = Locale.ENGLISH;
-		String lcName = file.getName().toLowerCase( locale );
-		if( lcName.endsWith( ".a2c" ) ) {
-			Dialogs.showError( "Incorrect File Type", "Alice3 does not load Alice2 characters" );
-		} else if( lcName.endsWith( IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) ) ) {
-			Dialogs.showError( "Incorrect File Type",
-							   file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension."  );
-		} else {
-			boolean isWorthyOfException = lcName.endsWith( IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) );
-			ZipFile zipFile;
-			try {
-				zipFile = new ZipFile( file );
-			} catch( IOException ioe ) {
-				if( isWorthyOfException ) {
-					throw new RuntimeException( file.getAbsolutePath(), ioe );
-				} else {
-					showMessageDialog( file, false );
-					zipFile = null;
-				}
-			}
-			if( zipFile != null ) {
-				NamedUserType type;
-				try {
-					TypeResourcesPair typeResourcesPair = IoUtilities.readType( zipFile );
-					type = typeResourcesPair.getType();
-					PrintUtilities.println( "TODO: add in resources" );
-				} catch( VersionNotSupportedException vnse ) {
-					type = null;
-					ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
-				} catch( IOException ioe ) {
-					if( isWorthyOfException ) {
-						throw new RuntimeException( file.getAbsolutePath(), ioe );
-					} else {
-						showMessageDialog( file, true );
-						type = null;
-					}
-				}
-				return type;
-			}
-		}
-		return null;
-	}
+  @Override
+  protected NamedUserType internalGetValueFrom(File file) {
+    final Locale locale = Locale.ENGLISH;
+    String lcName = file.getName().toLowerCase(locale);
+    if (lcName.endsWith(".a2c")) {
+      Dialogs.showError("Incorrect File Type", "Alice3 does not load Alice2 characters");
+    } else if (lcName.endsWith(IoUtilities.PROJECT_EXTENSION.toLowerCase(locale))) {
+      Dialogs.showError("Incorrect File Type", file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension.");
+    } else {
+      boolean isWorthyOfException = lcName.endsWith(IoUtilities.TYPE_EXTENSION.toLowerCase(locale));
+      ZipFile zipFile;
+      try {
+        zipFile = new ZipFile(file);
+      } catch (IOException ioe) {
+        if (isWorthyOfException) {
+          throw new RuntimeException(file.getAbsolutePath(), ioe);
+        } else {
+          showMessageDialog(file, false);
+          zipFile = null;
+        }
+      }
+      if (zipFile != null) {
+        NamedUserType type;
+        try {
+          TypeResourcesPair typeResourcesPair = IoUtilities.readType(zipFile);
+          type = typeResourcesPair.getType();
+          PrintUtilities.println("TODO: add in resources");
+        } catch (VersionNotSupportedException vnse) {
+          type = null;
+          ProjectApplication.getActiveInstance().handleVersionNotSupported(file, vnse);
+        } catch (IOException ioe) {
+          if (isWorthyOfException) {
+            throw new RuntimeException(file.getAbsolutePath(), ioe);
+          } else {
+            showMessageDialog(file, true);
+            type = null;
+          }
+        }
+        return type;
+      }
+    }
+    return null;
+  }
 
-	@Override
-	protected File getInitialDirectory() {
-		return StageIDE.getActiveInstance().getTypesDirectory();
-	}
+  @Override
+  protected File getInitialDirectory() {
+    return StageIDE.getActiveInstance().getTypesDirectory();
+  }
 }

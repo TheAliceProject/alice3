@@ -51,21 +51,21 @@ import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
  * @author Dennis Cosgrove
  */
 public class SCamera extends SMovableTurnable implements MutableRider {
-	private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp( this );
+  private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp(this);
 
-	@Override
-	public void setVehicle( SThing vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
+  @Override
+  public void setVehicle(SThing vehicle) {
+    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
+  }
 
-	@Override
-	/* package-private */SymmetricPerspectiveCameraImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */SymmetricPerspectiveCameraImp getImplementation() {
+    return this.implementation;
+  }
 
-	@MethodTemplate( )
-	public void moveAndOrientToAGoodVantagePointOf( SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
-		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void moveAndOrientToAGoodVantagePointOf(SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
+    this.implementation.animateSetTransformationToAGoodVantagePointOf(entity.getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 }

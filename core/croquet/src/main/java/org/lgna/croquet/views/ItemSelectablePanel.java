@@ -61,157 +61,157 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class ItemSelectablePanel<E> extends ItemSelectable<JPanel, E, SingleSelectListState<E, ?>> {
-	private final Map<E, BooleanStateButton<?>> mapItemToButton = Maps.newHashMap();
+  private final Map<E, BooleanStateButton<?>> mapItemToButton = Maps.newHashMap();
 
-	private E[] prevItems;
-	private final ListDataListener listDataListener = new ListDataListener() {
-		@Override
-		public void intervalAdded( ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
+  private E[] prevItems;
+  private final ListDataListener listDataListener = new ListDataListener() {
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+      ItemSelectablePanel.this.handleListDataChanged();
+    }
 
-		@Override
-		public void intervalRemoved( ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
+      ItemSelectablePanel.this.handleListDataChanged();
+    }
 
-		@Override
-		public void contentsChanged( ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
-	};
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+      ItemSelectablePanel.this.handleListDataChanged();
+    }
+  };
 
-	public ItemSelectablePanel( SingleSelectListState<E, ?> model ) {
-		super( model );
-	}
+  public ItemSelectablePanel(SingleSelectListState<E, ?> model) {
+    super(model);
+  }
 
-	private boolean isInitialized = false;
+  private boolean isInitialized = false;
 
-	@Override
-	protected void handleDisplayable() {
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			this.getModel().getData().addListener( this.listDataListener );
-			this.handleListDataChanged();
-			this.isInitialized = true;
-		}
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    if (this.isInitialized) {
+      //pass
+    } else {
+      this.getModel().getData().addListener(this.listDataListener);
+      this.handleListDataChanged();
+      this.isInitialized = true;
+    }
+    super.handleDisplayable();
+  }
 
-	protected abstract LayoutManager createLayoutManager( JPanel jPanel );
+  protected abstract LayoutManager createLayoutManager(JPanel jPanel);
 
-	protected class JItemSelectablePanel extends JPanel {
-		public JItemSelectablePanel() {
-			this.setOpaque( false );
-			this.setAlignmentX( Component.LEFT_ALIGNMENT );
-			this.setAlignmentY( Component.CENTER_ALIGNMENT );
-		}
+  protected class JItemSelectablePanel extends JPanel {
+    public JItemSelectablePanel() {
+      this.setOpaque(false);
+      this.setAlignmentX(Component.LEFT_ALIGNMENT);
+      this.setAlignmentY(Component.CENTER_ALIGNMENT);
+    }
 
-		@Override
-		public Dimension getPreferredSize() {
-			return ItemSelectablePanel.this.constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-		}
+    @Override
+    public Dimension getPreferredSize() {
+      return ItemSelectablePanel.this.constrainPreferredSizeIfNecessary(super.getPreferredSize());
+    }
 
-		@Override
-		public Dimension getMaximumSize() {
-			Dimension rv = super.getMaximumSize();
-			if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
-				rv.setSize( this.getPreferredSize() );
-			}
-			return rv;
-		}
-	}
+    @Override
+    public Dimension getMaximumSize() {
+      Dimension rv = super.getMaximumSize();
+      if (ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize()) {
+        rv.setSize(this.getPreferredSize());
+      }
+      return rv;
+    }
+  }
 
-	protected JPanel createJPanel() {
-		return new JItemSelectablePanel();
-	}
+  protected JPanel createJPanel() {
+    return new JItemSelectablePanel();
+  }
 
-	@Override
-	protected JPanel createAwtComponent() {
-		JPanel rv = this.createJPanel();
-		LayoutManager layoutManager = this.createLayoutManager( rv );
-		rv.setLayout( layoutManager );
-		return rv;
-	}
+  @Override
+  protected JPanel createAwtComponent() {
+    JPanel rv = this.createJPanel();
+    LayoutManager layoutManager = this.createLayoutManager(rv);
+    rv.setLayout(layoutManager);
+    return rv;
+  }
 
-	protected BooleanStateButton<?> getItemDetails( E item ) {
-		return this.mapItemToButton.get( item );
-	}
+  protected BooleanStateButton<?> getItemDetails(E item) {
+    return this.mapItemToButton.get(item);
+  }
 
-	protected Collection<BooleanStateButton<?>> getAllButtons() {
-		return this.mapItemToButton.values();
-	}
+  protected Collection<BooleanStateButton<?>> getAllButtons() {
+    return this.mapItemToButton.values();
+  }
 
-	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, BooleanState itemSelectedState );
+  protected abstract BooleanStateButton<?> createButtonForItemSelectedState(E item, BooleanState itemSelectedState);
 
-	protected abstract void removeAllDetails();
+  protected abstract void removeAllDetails();
 
-	protected abstract void addPrologue( int count );
+  protected abstract void addPrologue(int count);
 
-	protected abstract void addItem( E item, BooleanStateButton<?> button );
+  protected abstract void addItem(E item, BooleanStateButton<?> button);
 
-	protected void addSeparator() {
-	}
+  protected void addSeparator() {
+  }
 
-	protected abstract void addEpilogue();
+  protected abstract void addEpilogue();
 
-	private void handleListDataChanged() {
-		ListData<E> data = this.getModel().getData();
-		synchronized( data ) {
-			final int N = data.getItemCount();
+  private void handleListDataChanged() {
+    ListData<E> data = this.getModel().getData();
+    synchronized (data) {
+      final int N = data.getItemCount();
 
-			boolean isActuallyChanged;
-			if( ( prevItems != null ) && ( N == prevItems.length ) ) {
-				isActuallyChanged = false;
-				for( int i = 0; i < N; i++ ) {
-					E item = data.getItemAt( i );
-					if( item == prevItems[ i ] ) {
-						//pass
-					} else {
-						isActuallyChanged = true;
-						break;
-					}
-				}
-			} else {
-				isActuallyChanged = true;
-			}
+      boolean isActuallyChanged;
+      if ((prevItems != null) && (N == prevItems.length)) {
+        isActuallyChanged = false;
+        for (int i = 0; i < N; i++) {
+          E item = data.getItemAt(i);
+          if (item == prevItems[i]) {
+            //pass
+          } else {
+            isActuallyChanged = true;
+            break;
+          }
+        }
+      } else {
+        isActuallyChanged = true;
+      }
 
-			if( isActuallyChanged ) {
-				synchronized( this.getTreeLock() ) {
+      if (isActuallyChanged) {
+        synchronized (this.getTreeLock()) {
 
-					this.removeAllDetails();
-					this.prevItems = data.toArray();
-					this.addPrologue( N );
-					for( int i = 0; i < N; i++ ) {
-						E item = data.getItemAt( i );
-						if( item != null ) {
-							BooleanStateButton<?> button = this.mapItemToButton.get( item );
-							if( button != null ) {
-								//pass
-							} else {
-								button = this.createButtonForItemSelectedState( item, this.getModel().getItemSelectedState( item ) );
-								this.mapItemToButton.put( item, button );
-							}
-							this.addItem( item, button );
-						} else {
-							this.addSeparator();
-						}
-					}
-					this.addEpilogue();
-				}
-			}
+          this.removeAllDetails();
+          this.prevItems = data.toArray();
+          this.addPrologue(N);
+          for (int i = 0; i < N; i++) {
+            E item = data.getItemAt(i);
+            if (item != null) {
+              BooleanStateButton<?> button = this.mapItemToButton.get(item);
+              if (button != null) {
+                //pass
+              } else {
+                button = this.createButtonForItemSelectedState(item, this.getModel().getItemSelectedState(item));
+                this.mapItemToButton.put(item, button);
+              }
+              this.addItem(item, button);
+            } else {
+              this.addSeparator();
+            }
+          }
+          this.addEpilogue();
+        }
+      }
 
-			//			int i = this.listSelectionModel.getLeadSelectionIndex();
-			//			E selectedItem;
-			//			if( i > 0 ) {
-			//				selectedItem = (E)this.model.getElementAt( i );
-			//			} else {
-			//				selectedItem = null;
-			//			}
-			//			this.handleItemSelected( selectedItem );
-		}
-		this.revalidateAndRepaint();
-	}
+      //    int i = this.listSelectionModel.getLeadSelectionIndex();
+      //    E selectedItem;
+      //    if( i > 0 ) {
+      //      selectedItem = (E)this.model.getElementAt( i );
+      //    } else {
+      //      selectedItem = null;
+      //    }
+      //    this.handleItemSelected( selectedItem );
+    }
+    this.revalidateAndRepaint();
+  }
 
 }

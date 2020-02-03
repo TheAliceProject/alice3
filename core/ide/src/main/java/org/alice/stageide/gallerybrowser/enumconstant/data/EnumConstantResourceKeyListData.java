@@ -56,33 +56,33 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class EnumConstantResourceKeyListData extends RefreshableListData<EnumConstantResourceKey> {
-	private ClassResourceKey classResourceKey;
+  private ClassResourceKey classResourceKey;
 
-	public EnumConstantResourceKeyListData() {
-		super( EnumConstantResourceKeyCodec.SINGLETON );
-	}
+  public EnumConstantResourceKeyListData() {
+    super(EnumConstantResourceKeyCodec.SINGLETON);
+  }
 
-	@Override
-	protected List<EnumConstantResourceKey> createValues() {
-		if( this.classResourceKey != null ) {
-			Class<? extends ModelResource> cls = this.classResourceKey.getModelResourceCls();
-			if( cls.isEnum() ) {
-				List<EnumConstantResourceKey> rv = Lists.newLinkedList();
-				for( ModelResource e : cls.getEnumConstants() ) {
-					rv.add( new EnumConstantResourceKey( (Enum)e ) );
-				}
-				return rv;
-			} else {
-				//todo
-				return Collections.emptyList();
-			}
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  protected List<EnumConstantResourceKey> createValues() {
+    if (this.classResourceKey != null) {
+      Class<? extends ModelResource> cls = this.classResourceKey.getModelResourceCls();
+      if (cls.isEnum()) {
+        List<EnumConstantResourceKey> rv = Lists.newLinkedList();
+        for (ModelResource e : cls.getEnumConstants()) {
+          rv.add(new EnumConstantResourceKey((Enum) e));
+        }
+        return rv;
+      } else {
+        //todo
+        return Collections.emptyList();
+      }
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	public void setClassResourceKey( ClassResourceKey classResourceKey ) {
-		this.classResourceKey = classResourceKey;
-		this.refresh();
-	}
+  public void setClassResourceKey(ClassResourceKey classResourceKey) {
+    this.classResourceKey = classResourceKey;
+    this.refresh();
+  }
 }

@@ -51,19 +51,19 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public final class TypeResourcesPair {
-	public TypeResourcesPair( NamedUserType type, Set<Resource> resources ) {
-		this.type = type;
-		this.resources = resources;
-	}
+  public TypeResourcesPair(NamedUserType type, Set<Resource> resources) {
+    this.type = type;
+    this.resources = resources;
+  }
 
-	public NamedUserType getType() {
-		return this.type;
-	}
+  public NamedUserType getType() {
+    return this.type;
+  }
 
-	public Set<Resource> getResources() {
-		return this.resources;
-	}
+  public Set<Resource> getResources() {
+    return this.resources;
+  }
 
-	private final NamedUserType type;
-	private final Set<Resource> resources;
+  private final NamedUserType type;
+  private final Set<Resource> resources;
 }

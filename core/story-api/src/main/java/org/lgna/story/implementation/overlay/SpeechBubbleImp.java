@@ -53,7 +53,7 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public class SpeechBubbleImp extends BubbleImp {
-	public SpeechBubbleImp( EntityImp imp, Bubble.Originator originator, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
-		super( imp, new SpeechBubble( originator, positionPreference ), text, font, textColor, fillColor, outlineColor );
-	}
+  public SpeechBubbleImp(EntityImp imp, Bubble.Originator originator, String text, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference) {
+    super(imp, new SpeechBubble(originator, positionPreference), text, font, textColor, fillColor, outlineColor);
+  }
 }

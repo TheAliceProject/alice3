@@ -48,16 +48,16 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public abstract class ResolutionIndependantIconFactory extends AbstractIconFactory {
-	public ResolutionIndependantIconFactory( IsCachingDesired isCachingDesired ) {
-		super( isCachingDesired );
-	}
+  public ResolutionIndependantIconFactory(IsCachingDesired isCachingDesired) {
+    super(isCachingDesired);
+  }
 
-	public ResolutionIndependantIconFactory() {
-		this( IsCachingDesired.FALSE );
-	}
+  public ResolutionIndependantIconFactory() {
+    this(IsCachingDesired.FALSE);
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    return sizeIfResolutionIndependent;
+  }
 }

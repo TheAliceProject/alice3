@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="RibCage">
+    <BoundingBox>
+        <Min x="-0.15604211502548768" y="-0.08409460633993149" z="-0.16074796708009814"/>
+        <Max x="0.1560794967850288" y="0.6525391442329068" z="0.14252883667461336"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>skeleton</Tag>
+        <Tag>bones</Tag>
+        <Tag>pile of bones</Tag>
+        <Tag>rib cage</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted:bones</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RibCage" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

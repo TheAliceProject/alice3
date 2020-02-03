@@ -43,14 +43,14 @@
 package org.lgna.project.virtualmachine;
 
 public class ExceptionDetailUtilities {
-	//todo
-	private static String PREFIX = "Alice has caught an exception: ";
+  //todo
+  private static String PREFIX = "Alice has caught an exception: ";
 
-	public static String createExceptionDetail( String detail ) {
-		return PREFIX + detail;
-	}
+  public static String createExceptionDetail(String detail) {
+    return PREFIX + detail;
+  }
 
-	public static String createExceptionDetail() {
-		return createExceptionDetail( "details not provided." );
-	}
+  public static String createExceptionDetail() {
+    return createExceptionDetail("details not provided.");
+  }
 }

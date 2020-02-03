@@ -44,5 +44,5 @@ package org.lgna.story.event;
 
 public interface TimeListener {
 
-	public void timeElapsed( TimeEvent event );
+  public void timeElapsed(TimeEvent event);
 }

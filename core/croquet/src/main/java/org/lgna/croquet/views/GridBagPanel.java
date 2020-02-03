@@ -54,20 +54,20 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class GridBagPanel extends Panel {
-	public GridBagPanel() {
-		this( null );
-	}
+  public GridBagPanel() {
+    this(null);
+  }
 
-	public GridBagPanel( Composite composite ) {
-		super( composite );
-	}
+  public GridBagPanel(Composite composite) {
+    super(composite);
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new GridBagLayout();
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    return new GridBagLayout();
+  }
 
-	public void addComponent( AwtComponentView<?> component, GridBagConstraints gbc ) {
-		this.internalAddComponent( component, gbc );
-	}
+  public void addComponent(AwtComponentView<?> component, GridBagConstraints gbc) {
+    this.internalAddComponent(component, gbc);
+  }
 }

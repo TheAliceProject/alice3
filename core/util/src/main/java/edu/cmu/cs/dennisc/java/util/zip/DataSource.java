@@ -49,20 +49,20 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public abstract class DataSource {
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof DataSource) {
-			return this.getName().equals(((DataSource) obj).getName());
-		}
-		return super.equals(obj);
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof DataSource) {
+      return this.getName().equals(((DataSource) obj).getName());
+    }
+    return super.equals(obj);
+  }
 
-	@Override
-	public int hashCode() {
-		return getName().hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return getName().hashCode();
+  }
 
-	public abstract String getName();
+  public abstract String getName();
 
-	public abstract void write(OutputStream os) throws IOException;
+  public abstract void write(OutputStream os) throws IOException;
 }

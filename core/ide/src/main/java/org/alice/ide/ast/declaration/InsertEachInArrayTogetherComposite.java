@@ -56,28 +56,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite<EachInArrayTogether> {
-	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
-	private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapEnveloping = Maps.newInitializingIfAbsentHashMap();
+  private static InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> mapInsert = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized InsertEachInArrayTogetherComposite getInstance( BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping ) {
-		InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
-		return map.getInitializingIfAbsent( blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
-			@Override
-			public InsertEachInArrayTogetherComposite initialize( BlockStatementIndexPair blockStatementIndexPair ) {
-				return new InsertEachInArrayTogetherComposite( blockStatementIndexPair, isEnveloping );
-			}
-		} );
-	}
+  public static synchronized InsertEachInArrayTogetherComposite getInstance(BlockStatementIndexPair blockStatementIndexPair, final boolean isEnveloping) {
+    InitializingIfAbsentMap<BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = isEnveloping ? mapEnveloping : mapInsert;
+    return map.getInitializingIfAbsent(blockStatementIndexPair, new InitializingIfAbsentMap.Initializer<BlockStatementIndexPair, InsertEachInArrayTogetherComposite>() {
+      @Override
+      public InsertEachInArrayTogetherComposite initialize(BlockStatementIndexPair blockStatementIndexPair) {
+        return new InsertEachInArrayTogetherComposite(blockStatementIndexPair, isEnveloping);
+      }
+    });
+  }
 
-	private InsertEachInArrayTogetherComposite( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair, isEnveloping );
-	}
+  private InsertEachInArrayTogetherComposite(BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    super(UUID.fromString("314ebbd9-b810-49aa-9832-39825d54082a"), blockStatementIndexPair, isEnveloping);
+  }
 
-	@Override
-	protected EachInArrayTogether createStatement( UserLocal item, Expression initializer ) {
-		return new EachInArrayTogether(
-				item,
-				initializer,
-				new BlockStatement() );
-	}
+  @Override
+  protected EachInArrayTogether createStatement(UserLocal item, Expression initializer) {
+    return new EachInArrayTogether(item, initializer, new BlockStatement());
+  }
 }

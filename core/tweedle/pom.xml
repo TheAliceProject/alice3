@@ -7,9 +7,9 @@
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
     <version>5.0.1-SNAPSHOT</version>
-    <relativePath>../../core</relativePath>
   </parent>
 
+  <name>Tweedle Language</name>
   <artifactId>tweedle</artifactId>
   <packaging>jar</packaging>
 
@@ -60,6 +60,14 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <sourceDirectory>../../tweedle-lang/Grammar</sourceDirectory>
+          <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/alice/tweedle</outputDirectory>
+          <arguments>
+            <argument>-package</argument>
+            <argument>org.alice.tweedle</argument>
+          </arguments>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

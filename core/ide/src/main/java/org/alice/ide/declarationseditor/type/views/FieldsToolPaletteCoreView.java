@@ -55,27 +55,27 @@ import org.lgna.project.ast.NamedUserType;
  * @author Dennis Cosgrove
  */
 public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public FieldsToolPaletteCoreView( FieldsToolPaletteCoreComposite composite ) {
-		super( composite );
-		ManagedFieldsComposite managedFieldsComposite = composite.getManagedFieldsComposite();
+  public FieldsToolPaletteCoreView(FieldsToolPaletteCoreComposite composite) {
+    super(composite);
+    ManagedFieldsComposite managedFieldsComposite = composite.getManagedFieldsComposite();
 
-		NamedUserType type = composite.getMembersComposite().getType();
-		if( managedFieldsComposite != null ) {
-			this.addComponent( composite.getManagedLabel().createLabel( 1.2f, TextPosture.OBLIQUE ) );
-			this.addComponent( managedFieldsComposite.getView() );
-			this.addComponent( AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().createButton() );
-			this.addComponent( BoxUtilities.createVerticalStrut( 24 ) );
-			this.addComponent( composite.getUnmanagedLabel().createLabel( 1.2f, TextPosture.OBLIQUE ) );
-		}
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().createButton() );
+    NamedUserType type = composite.getMembersComposite().getType();
+    if (managedFieldsComposite != null) {
+      this.addComponent(composite.getManagedLabel().createLabel(1.2f, TextPosture.OBLIQUE));
+      this.addComponent(managedFieldsComposite.getView());
+      this.addComponent(AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().createButton());
+      this.addComponent(BoxUtilities.createVerticalStrut(24));
+      this.addComponent(composite.getUnmanagedLabel().createLabel(1.2f, TextPosture.OBLIQUE));
+    }
+    this.addComponent(composite.getMembersComposite().getView());
+    this.addComponent(AddUnmanagedFieldComposite.getInstance(type).getLaunchOperation().createButton());
 
-		final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
-		if( IS_POSER_READY_FOR_PRIME_TIME ) {
-			DeclarePoseFieldOperation declarePoseFieldOperation = DeclarePoseFieldOperation.getInstance( type );
-			if( declarePoseFieldOperation != null ) {
-				this.addComponent( declarePoseFieldOperation.createButton() );
-			}
-		}
-	}
+    final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
+    if (IS_POSER_READY_FOR_PRIME_TIME) {
+      DeclarePoseFieldOperation declarePoseFieldOperation = DeclarePoseFieldOperation.getInstance(type);
+      if (declarePoseFieldOperation != null) {
+        this.addComponent(declarePoseFieldOperation.createButton());
+      }
+    }
+  }
 }

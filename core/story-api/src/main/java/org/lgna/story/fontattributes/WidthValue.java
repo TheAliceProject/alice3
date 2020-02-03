@@ -49,19 +49,19 @@ import java.awt.font.TextAttribute;
  * @author Dennis Cosgrove
  */
 public class WidthValue implements WidthAttribute {
-	private Float m_value;
+  private Float m_value;
 
-	public WidthValue( Float value ) {
-		m_value = value;
-	}
+  public WidthValue(Float value) {
+    m_value = value;
+  }
 
-	@Override
-	public TextAttribute getKey() {
-		return TextAttribute.WIDTH;
-	}
+  @Override
+  public TextAttribute getKey() {
+    return TextAttribute.WIDTH;
+  }
 
-	@Override
-	public Float getValue() {
-		return m_value;
-	}
+  @Override
+  public Float getValue() {
+    return m_value;
+  }
 }

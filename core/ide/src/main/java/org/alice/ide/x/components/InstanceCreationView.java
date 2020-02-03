@@ -51,13 +51,13 @@ import org.lgna.project.ast.InstanceCreation;
  * @author Dennis Cosgrove
  */
 public class InstanceCreationView extends AbstractExpressionView<InstanceCreation> {
-	public InstanceCreationView( AstI18nFactory factory, InstanceCreation instanceCreation ) {
-		super( factory, instanceCreation );
-		IDE ide = IDE.getActiveInstance();
-		AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation ) : null;
-		if( prefixPane != null ) {
-			this.addComponent( prefixPane );
-		}
-		this.addComponent( factory.createComponent( instanceCreation ) );
-	}
+  public InstanceCreationView(AstI18nFactory factory, InstanceCreation instanceCreation) {
+    super(factory, instanceCreation);
+    IDE ide = IDE.getActiveInstance();
+    AwtComponentView<?> prefixPane = ide != null ? ide.getPrefixPaneForInstanceCreationIfAppropriate(instanceCreation) : null;
+    if (prefixPane != null) {
+      this.addComponent(prefixPane);
+    }
+    this.addComponent(factory.createComponent(instanceCreation));
+  }
 }

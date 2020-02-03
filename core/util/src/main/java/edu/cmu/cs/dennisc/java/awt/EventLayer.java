@@ -48,5 +48,5 @@ import java.util.EventObject;
  * @author Dennis Cosgrove
  */
 public interface EventLayer {
-	public boolean isEventIntercepted( EventObject e );
+  public boolean isEventIntercepted(EventObject e);
 }

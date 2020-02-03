@@ -63,87 +63,87 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class BlockStatementIndexPair implements DropSite {
-	private final BlockStatement blockStatement;
-	private final int index;
+  private final BlockStatement blockStatement;
+  private final int index;
 
-	public static BlockStatementIndexPair createInstanceFromChildStatement( Statement statement ) {
-		assert statement != null;
-		Node parent = statement.getParent();
-		assert parent instanceof BlockStatement : parent;
-		BlockStatement blockStatement = (BlockStatement)parent;
-		int index = blockStatement.statements.indexOf( statement );
-		return new BlockStatementIndexPair( blockStatement, index );
-	}
+  public static BlockStatementIndexPair createInstanceFromChildStatement(Statement statement) {
+    assert statement != null;
+    Node parent = statement.getParent();
+    assert parent instanceof BlockStatement : parent;
+    BlockStatement blockStatement = (BlockStatement) parent;
+    int index = blockStatement.statements.indexOf(statement);
+    return new BlockStatementIndexPair(blockStatement, index);
+  }
 
-	public BlockStatementIndexPair( BlockStatement blockStatement, int index ) {
-		assert blockStatement != null;
-		assert index >= 0 : index + " " + blockStatement;
-		this.blockStatement = blockStatement;
-		this.index = index;
-	}
+  public BlockStatementIndexPair(BlockStatement blockStatement, int index) {
+    assert blockStatement != null;
+    assert index >= 0 : index + " " + blockStatement;
+    this.blockStatement = blockStatement;
+    this.index = index;
+  }
 
-	public BlockStatementIndexPair( BinaryDecoder binaryDecoder ) {
-		Project project = ProjectStack.peekProject();
-		UUID id = binaryDecoder.decodeId();
-		this.blockStatement = ProgramTypeUtilities.lookupNode( project, id );
-		assert this.blockStatement != null;
-		this.index = binaryDecoder.decodeInt();
-	}
+  public BlockStatementIndexPair(BinaryDecoder binaryDecoder) {
+    Project project = ProjectStack.peekProject();
+    UUID id = binaryDecoder.decodeId();
+    this.blockStatement = ProgramTypeUtilities.lookupNode(project, id);
+    assert this.blockStatement != null;
+    this.index = binaryDecoder.decodeInt();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getId() );
-		binaryEncoder.encode( this.index );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.blockStatement.getId());
+    binaryEncoder.encode(this.index);
+  }
 
-	public BlockStatement getBlockStatement() {
-		return this.blockStatement;
-	}
+  public BlockStatement getBlockStatement() {
+    return this.blockStatement;
+  }
 
-	public int getIndex() {
-		return this.index;
-	}
+  public int getIndex() {
+    return this.index;
+  }
 
-	@Override
-	public DropReceptor getOwningDropReceptor() {
-		AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( AbstractCode.class );
-		return CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
-	}
+  @Override
+  public DropReceptor getOwningDropReceptor() {
+    AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo(AbstractCode.class);
+    return CodeComposite.getInstance(code).getView().getCodePanelWithDropReceptor().getDropReceptor();
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( o instanceof BlockStatementIndexPair ) {
-			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
-			return Objects.equals( this.blockStatement, bsip.blockStatement ) && ( this.index == bsip.index );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (o instanceof BlockStatementIndexPair) {
+      BlockStatementIndexPair bsip = (BlockStatementIndexPair) o;
+      return Objects.equals(this.blockStatement, bsip.blockStatement) && (this.index == bsip.index);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.blockStatement != null ) {
-			rv = ( 37 * rv ) + this.blockStatement.hashCode();
-		}
-		rv = ( 37 * rv ) + this.index;
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.blockStatement != null) {
+      rv = (37 * rv) + this.blockStatement.hashCode();
+    }
+    rv = (37 * rv) + this.index;
+    return rv;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[blockStatement=" );
-		sb.append( this.blockStatement );
-		sb.append( ";index=" );
-		sb.append( this.index );
-		sb.append( ";parent=" );
-		sb.append( this.blockStatement != null ? this.blockStatement.getParent() : null );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[blockStatement=");
+    sb.append(this.blockStatement);
+    sb.append(";index=");
+    sb.append(this.index);
+    sb.append(";parent=");
+    sb.append(this.blockStatement != null ? this.blockStatement.getParent() : null);
+    sb.append("]");
+    return sb.toString();
+  }
 }

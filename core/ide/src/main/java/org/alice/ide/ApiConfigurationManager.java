@@ -81,188 +81,188 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class ApiConfigurationManager {
-	@Deprecated
-	public static ApiConfigurationManager EPIC_HACK_getActiveInstance() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getApiConfigurationManager();
-		} else {
-			Logger.todo( "remove epic hack" );
-			return StoryApiConfigurationManager.getInstance();
-		}
-	}
+  @Deprecated
+  public static ApiConfigurationManager EPIC_HACK_getActiveInstance() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getApiConfigurationManager();
+    } else {
+      Logger.todo("remove epic hack");
+      return StoryApiConfigurationManager.getInstance();
+    }
+  }
 
-	public abstract Comparator<AbstractType<?, ?, ?>> getTypeComparator();
+  public abstract Comparator<AbstractType<?, ?, ?>> getTypeComparator();
 
-	public abstract List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
+  public abstract List<FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
 
-	public abstract List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
+  public abstract List<FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
 
-	public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
+  public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
 
-	public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
+  public abstract List<FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
 
-	//override to create user types if desired
-	public AbstractType<?, ?, ?> getTypeFor( AbstractType<?, ?, ?> type ) {
-		return type;
-	}
+  //override to create user types if desired
+  public AbstractType<?, ?, ?> getTypeFor(AbstractType<?, ?, ?> type) {
+    return type;
+  }
 
-	public final AbstractType<?, ?, ?> getTypeFor( Class<?> cls ) {
-		return this.getTypeFor( JavaType.getInstance( cls ) );
-	}
+  public final AbstractType<?, ?, ?> getTypeFor(Class<?> cls) {
+    return this.getTypeFor(JavaType.getInstance(cls));
+  }
 
-	private final DefaultNode<NamedUserType> getNamedUserTypesAsTree() {
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		if( project != null ) {
-			return ProgramTypeUtilities.getNamedUserTypesAsTree( project );
-		} else {
-			return null;
-		}
-	}
+  private final DefaultNode<NamedUserType> getNamedUserTypesAsTree() {
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    if (project != null) {
+      return ProgramTypeUtilities.getNamedUserTypesAsTree(project);
+    } else {
+      return null;
+    }
+  }
 
-	protected abstract boolean isNamedUserTypesAcceptableForSelection( NamedUserType type );
+  protected abstract boolean isNamedUserTypesAcceptableForSelection(NamedUserType type);
 
-	public final Node<NamedUserType> getNamedUserTypesAsTreeFilteredForSelection() {
-		DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
-		if( rv != null ) {
-			for( DefaultNode<NamedUserType> child : rv.getChildren() ) {
-				if( this.isNamedUserTypesAcceptableForSelection( child.getValue() ) ) {
-					//pass
-				} else {
-					rv.removeChild( child );
-				}
-			}
-		}
-		return rv;
-	}
+  public final Node<NamedUserType> getNamedUserTypesAsTreeFilteredForSelection() {
+    DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
+    if (rv != null) {
+      for (DefaultNode<NamedUserType> child : rv.getChildren()) {
+        if (this.isNamedUserTypesAcceptableForSelection(child.getValue())) {
+          //pass
+        } else {
+          rv.removeChild(child);
+        }
+      }
+    }
+    return rv;
+  }
 
-	protected abstract boolean isNamedUserTypesAcceptableForGallery( NamedUserType type );
+  protected abstract boolean isNamedUserTypesAcceptableForGallery(NamedUserType type);
 
-	public final DefaultNode<NamedUserType> getNamedUserTypesAsTreeFilteredForGallery() {
-		DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
-		if( rv != null ) {
-			for( DefaultNode<NamedUserType> child : rv.getChildren() ) {
-				if( this.isNamedUserTypesAcceptableForGallery( child.getValue() ) ) {
-					//pass
-				} else {
-					rv.removeChild( child );
-				}
-			}
-		}
-		return rv;
-	}
+  public final DefaultNode<NamedUserType> getNamedUserTypesAsTreeFilteredForGallery() {
+    DefaultNode<NamedUserType> rv = getNamedUserTypesAsTree();
+    if (rv != null) {
+      for (DefaultNode<NamedUserType> child : rv.getChildren()) {
+        if (this.isNamedUserTypesAcceptableForGallery(child.getValue())) {
+          //pass
+        } else {
+          rv.removeChild(child);
+        }
+      }
+    }
+    return rv;
+  }
 
-	public final List<JavaType> getPrimeTimeSelectableJavaTypes() {
-		List<JavaType> rv = Lists.newLinkedList();
-		this.addPrimeTimeJavaTypes( rv );
-		return rv;
-	}
+  public final List<JavaType> getPrimeTimeSelectableJavaTypes() {
+    List<JavaType> rv = Lists.newLinkedList();
+    this.addPrimeTimeJavaTypes(rv);
+    return rv;
+  }
 
-	public final List<JavaType> getSecondarySelectableJavaTypes() {
-		List<JavaType> rv = Lists.newLinkedList();
-		this.addSecondaryJavaTypes( rv );
-		return rv;
-	}
+  public final List<JavaType> getSecondarySelectableJavaTypes() {
+    List<JavaType> rv = Lists.newLinkedList();
+    this.addSecondaryJavaTypes(rv);
+    return rv;
+  }
 
-	//	public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
-	//		java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//		this.addAliceTypes( rv, true );
-	//		return rv;
-	//	}
-	protected List<? super JavaType> addPrimeTimeJavaTypes( List<? super JavaType> rv ) {
-		rv.add( JavaType.DOUBLE_OBJECT_TYPE );
-		rv.add( JavaType.INTEGER_OBJECT_TYPE );
-		rv.add( JavaType.BOOLEAN_OBJECT_TYPE );
-		rv.add( JavaType.STRING_TYPE );
-		return rv;
-	}
+  //  public final java.util.List< org.lgna.project.ast.NamedUserType > getTypesDeclaredInAlice() {
+  //    java.util.List< org.lgna.project.ast.NamedUserType > rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+  //    this.addAliceTypes( rv, true );
+  //    return rv;
+  //  }
+  protected List<? super JavaType> addPrimeTimeJavaTypes(List<? super JavaType> rv) {
+    rv.add(JavaType.DOUBLE_OBJECT_TYPE);
+    rv.add(JavaType.INTEGER_OBJECT_TYPE);
+    rv.add(JavaType.BOOLEAN_OBJECT_TYPE);
+    rv.add(JavaType.STRING_TYPE);
+    return rv;
+  }
 
-	protected List<? super JavaType> addSecondaryJavaTypes( List<? super JavaType> rv ) {
-		return rv;
-	}
+  protected List<? super JavaType> addSecondaryJavaTypes(List<? super JavaType> rv) {
+    return rv;
+  }
 
-	protected boolean isInclusionOfTypeDesired( UserType<?> userType ) {
-		return true;
-		//return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
-	}
+  protected boolean isInclusionOfTypeDesired(UserType<?> userType) {
+    return true;
+    //return valueTypeInAlice.methods.size() > 0 || valueTypeInAlice.fields.size() > 0;
+  }
 
-	//	protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
-	//		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-	//		if( sceneType != null ) {
-	//			rv.add( sceneType );
-	//			for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-	//				org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
-	//				if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
-	//					org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
-	//					if( rv.contains( valueType ) ) {
-	//						//pass
-	//					} else {
-	//						if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
-	//							rv.add( valueTypeInAlice );
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//		return rv;
-	//	}
+  //  protected java.util.List< ? super org.lgna.project.ast.NamedUserType > addAliceTypes( java.util.List< ? super org.lgna.project.ast.NamedUserType > rv, boolean isInclusionOfTypesWithoutMembersDesired ) {
+  //    org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
+  //    if( sceneType != null ) {
+  //      rv.add( sceneType );
+  //      for( org.lgna.project.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+  //        org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = field.getValueType();
+  //        if( valueType instanceof org.lgna.project.ast.NamedUserType ) {
+  //          org.lgna.project.ast.NamedUserType valueTypeInAlice = (org.lgna.project.ast.NamedUserType)valueType;
+  //          if( rv.contains( valueType ) ) {
+  //            //pass
+  //          } else {
+  //            if( isInclusionOfTypesWithoutMembersDesired || isInclusionOfTypeDesired( valueTypeInAlice ) ) {
+  //              rv.add( valueTypeInAlice );
+  //            }
+  //          }
+  //        }
+  //      }
+  //    }
+  //    return rv;
+  //  }
 
-	private final Map<AbstractType<?, ?, ?>, String> mapTypeToText = Maps.newHashMap();
+  private final Map<AbstractType<?, ?, ?>, String> mapTypeToText = Maps.newHashMap();
 
-	private static String createExampleText( String examples ) {
-		return "<html><em>examples:</em> " + examples + "</html>";
-	}
+  private static String createExampleText(String examples) {
+    return "<html><em>examples:</em> " + examples + "</html>";
+  }
 
-	public String getMenuTextForType( AbstractType<?, ?, ?> type ) {
-		if( this.mapTypeToText.size() == 0 ) {
-			this.mapTypeToText.put( JavaType.DOUBLE_OBJECT_TYPE, createExampleText( "0.25, 1.0, 3.14, 98.6" ) );
-			this.mapTypeToText.put( JavaType.INTEGER_OBJECT_TYPE, createExampleText( "1, 2, 42, 100" ) );
-			this.mapTypeToText.put( JavaType.BOOLEAN_OBJECT_TYPE, createExampleText( "true, false" ) );
-			this.mapTypeToText.put( JavaType.STRING_TYPE, createExampleText( "\"hello\", \"goodbye\"" ) );
-		}
-		return this.mapTypeToText.get( type );
-	}
+  public String getMenuTextForType(AbstractType<?, ?, ?> type) {
+    if (this.mapTypeToText.size() == 0) {
+      this.mapTypeToText.put(JavaType.DOUBLE_OBJECT_TYPE, createExampleText("0.25, 1.0, 3.14, 98.6"));
+      this.mapTypeToText.put(JavaType.INTEGER_OBJECT_TYPE, createExampleText("1, 2, 42, 100"));
+      this.mapTypeToText.put(JavaType.BOOLEAN_OBJECT_TYPE, createExampleText("true, false"));
+      this.mapTypeToText.put(JavaType.STRING_TYPE, createExampleText("\"hello\", \"goodbye\""));
+    }
+    return this.mapTypeToText.get(type);
+  }
 
-	public boolean isSignatureLocked( Code code ) {
-		return code.isSignatureLocked();
-	}
+  public boolean isSignatureLocked(Code code) {
+    return code.isSignatureLocked();
+  }
 
-	public abstract boolean isDeclaringTypeForManagedFields( UserType<?> type );
+  public abstract boolean isDeclaringTypeForManagedFields(UserType<?> type);
 
-	public final boolean isSelectable( AbstractType<?, ?, ?> type ) {
-		return this.isInstanceFactoryDesiredForType( type );
-	}
+  public final boolean isSelectable(AbstractType<?, ?, ?> type) {
+    return this.isInstanceFactoryDesiredForType(type);
+  }
 
-	public abstract boolean isInstanceFactoryDesiredForType( AbstractType<?, ?, ?> type );
+  public abstract boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type);
 
-	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThis( AbstractType<?, ?, ?> type );
+  public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThis(AbstractType<?, ?, ?> type);
 
-	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess( UserField field );
+  public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess(UserField field);
 
-	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccess( UserParameter parameter );
+  public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccess(UserParameter parameter);
 
-	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForLocalAccess( UserLocal local );
+  public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForLocalAccess(UserLocal local);
 
-	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( UserParameter parameter, AbstractMethod method );
+  public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation(UserParameter parameter, AbstractMethod method);
 
-	public abstract JavaType getGalleryResourceParentFor( JavaType type );
+  public abstract JavaType getGalleryResourceParentFor(JavaType type);
 
-	public abstract List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type );
+  public abstract List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type);
 
-	public abstract AbstractConstructor getGalleryResourceConstructorFor( AbstractType<?, ?, ?> argumentType );
+  public abstract AbstractConstructor getGalleryResourceConstructorFor(AbstractType<?, ?, ?> argumentType);
 
-	public abstract SwingComponentView<?> createReplacementForFieldAccessIfAppropriate( FieldAccess fieldAccess );
+  public abstract SwingComponentView<?> createReplacementForFieldAccessIfAppropriate(FieldAccess fieldAccess);
 
-	public abstract CascadeItem<?, ?> getCustomFillInFor( ValueDetails<?> valueDetails );
+  public abstract CascadeItem<?, ?> getCustomFillInFor(ValueDetails<?> valueDetails);
 
-	public abstract ExpressionCreator getExpressionCreator();
+  public abstract ExpressionCreator getExpressionCreator();
 
-	public abstract UserType<?> augmentTypeIfNecessary( UserType<?> rv );
+  public abstract UserType<?> augmentTypeIfNecessary(UserType<?> rv);
 
-	public abstract boolean isTabClosable( AbstractCode code );
+  public abstract boolean isTabClosable(AbstractCode code);
 
-	public abstract boolean isExportTypeDesiredFor( NamedUserType type );
+  public abstract boolean isExportTypeDesiredFor(NamedUserType type);
 
-	public abstract IconFactoryManager createIconFactoryManager();
+  public abstract IconFactoryManager createIconFactoryManager();
 }

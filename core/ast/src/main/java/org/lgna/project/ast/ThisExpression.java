@@ -49,44 +49,44 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class ThisExpression extends Expression {
-	public static ThisExpression createInstanceThatCanExistWithoutAnAncestorType( AbstractType<?, ?, ?> typeForNoAncestorTypeCondition ) {
-		return new ThisExpression( typeForNoAncestorTypeCondition );
-	}
+  public static ThisExpression createInstanceThatCanExistWithoutAnAncestorType(AbstractType<?, ?, ?> typeForNoAncestorTypeCondition) {
+    return new ThisExpression(typeForNoAncestorTypeCondition);
+  }
 
-	public ThisExpression() {
-		this( null );
-	}
+  public ThisExpression() {
+    this(null);
+  }
 
-	private ThisExpression( AbstractType<?, ?, ?> typeForNoAncestorTypeCondition ) {
-		this.typeForNoAncestorTypeCondition = typeForNoAncestorTypeCondition;
-	}
+  private ThisExpression(AbstractType<?, ?, ?> typeForNoAncestorTypeCondition) {
+    this.typeForNoAncestorTypeCondition = typeForNoAncestorTypeCondition;
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		AbstractType<?, ?, ?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.typeForNoAncestorTypeCondition;
-		}
-		return rv;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    AbstractType<?, ?, ?> rv = this.getFirstAncestorAssignableTo(AbstractType.class);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = this.typeForNoAncestorTypeCondition;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendThis();
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendThis();
+  }
 
-	@Override
-	public boolean isValid() {
-		//todo
-		return true;
-	}
+  @Override
+  public boolean isValid() {
+    //todo
+    return true;
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendThisReference();
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendThisReference();
+  }
 
-	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;
+  private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;
 }

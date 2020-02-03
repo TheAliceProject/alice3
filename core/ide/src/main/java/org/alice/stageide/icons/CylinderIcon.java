@@ -54,29 +54,29 @@ import java.awt.geom.Rectangle2D;
  * @author Dennis Cosgrove
  */
 public class CylinderIcon extends ShapeIcon {
-	public CylinderIcon( Dimension size ) {
-		super( size );
-	}
+  public CylinderIcon(Dimension size) {
+    super(size);
+  }
 
-	@Override
-	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
-		float capHeight = height * 0.2f;
-		float x = 0.1f * width;
-		float w = 0.8f * width;
-		Ellipse2D topCap = new Ellipse2D.Float( x, 0, w, capHeight );
-		Ellipse2D bottomCap = new Ellipse2D.Float( x, height - capHeight, w, capHeight );
-		Rectangle2D core = new Rectangle2D.Float( x, capHeight * 0.5f, w, height - capHeight );
-		Area area = new Area( core );
-		area.add( new Area( bottomCap ) );
+  @Override
+  protected void paintIcon(Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint) {
+    float capHeight = height * 0.2f;
+    float x = 0.1f * width;
+    float w = 0.8f * width;
+    Ellipse2D topCap = new Ellipse2D.Float(x, 0, w, capHeight);
+    Ellipse2D bottomCap = new Ellipse2D.Float(x, height - capHeight, w, capHeight);
+    Rectangle2D core = new Rectangle2D.Float(x, capHeight * 0.5f, w, height - capHeight);
+    Area area = new Area(core);
+    area.add(new Area(bottomCap));
 
-		g2.setPaint( fillPaint );
-		g2.fill( area );
-		g2.setPaint( drawPaint );
-		g2.draw( area );
+    g2.setPaint(fillPaint);
+    g2.fill(area);
+    g2.setPaint(drawPaint);
+    g2.draw(area);
 
-		g2.setPaint( fillPaint );
-		g2.fill( topCap );
-		g2.setPaint( drawPaint );
-		g2.draw( topCap );
-	}
+    g2.setPaint(fillPaint);
+    g2.fill(topCap);
+    g2.setPaint(drawPaint);
+    g2.draw(topCap);
+  }
 }

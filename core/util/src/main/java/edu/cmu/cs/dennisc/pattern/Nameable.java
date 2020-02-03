@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public interface Nameable {
-	public String getName();
+  public String getName();
 
-	public void setName( String name );
+  public void setName(String name);
 }

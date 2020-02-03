@@ -52,28 +52,27 @@ import java.net.URI;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class UriGalleryIconFactory extends AbstractIconFactory {
-	private final URI uri;
-	private final IconFactory base;
-	private final Dimension baseIconSize;
-	private final Dimension defaultSize;
+@Deprecated public class UriGalleryIconFactory extends AbstractIconFactory {
+  private final URI uri;
+  private final IconFactory base;
+  private final Dimension baseIconSize;
+  private final Dimension defaultSize;
 
-	public UriGalleryIconFactory( URI uri, IconFactory base, Dimension baseIconSize, Dimension defaultSize ) {
-		super( IsCachingDesired.TRUE );
-		this.uri = uri;
-		this.base = base;
-		this.baseIconSize = baseIconSize;
-		this.defaultSize = defaultSize;
-	}
+  public UriGalleryIconFactory(URI uri, IconFactory base, Dimension baseIconSize, Dimension defaultSize) {
+    super(IsCachingDesired.TRUE);
+    this.uri = uri;
+    this.base = base;
+    this.baseIconSize = baseIconSize;
+    this.defaultSize = defaultSize;
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new UriGalleryIcon( size, this.base.getIcon( this.baseIconSize ) );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new UriGalleryIcon(size, this.base.getIcon(this.baseIconSize));
+  }
 
-	@Override
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
-		return this.defaultSize;
-	}
+  @Override
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+    return this.defaultSize;
+  }
 }

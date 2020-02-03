@@ -112,453 +112,452 @@ import java.util.prefs.BackingStoreException;
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends ProjectApplication {
-	public static final Group RUN_GROUP = Group.getInstance( UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
-	public static final Group EXPORT_GROUP = Group.getInstance( UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
-
-	private static DefaultExceptionHandler exceptionHandler;
-
-	static {
-		IDE.exceptionHandler = new DefaultExceptionHandler();
-
-		if( SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
-			//pass
-		} else {
-			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
-		}
-	}
-
-	public static IDE getActiveInstance() {
-		return ClassUtilities.getInstance( Application.getActiveInstance(), IDE.class );
-	}
-
-	private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
-			IDE.this.setPerspective( e.getNextValue() );
-		}
-	};
-
-	private PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
-
-	private File projectFileToLoadOnWindowOpened;
-
-	private final IdeConfiguration ideConfiguration;
-	private final CrashDetector crashDetector;
-
-	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, CrashDetector crashDetector ) {
-		super( ideConfiguration, apiConfigurationManager );
-		this.ideConfiguration = ideConfiguration;
-		this.crashDetector = crashDetector;
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Please Submit Bug Report: " );
-		sb.append( getApplicationName() );
-		IDE.exceptionHandler.setTitle( sb.toString() );
-		IDE.exceptionHandler.setApplicationName( getApplicationName() );
-		//initialize locale
-		//Checks the org.alice.ide.locale property to see if there is a specified locale to initialize Alice to
-		//If so, it sets that locale and adds the locale listener to the locale state
-		//If not, it adds and invokes the listener on the locale state which has been initialized based on saved preferences
-
-		ValueListener<Locale> localeListener = new ValueListener<Locale>() {
-			@Override
-			public void valueChanged( ValueEvent<Locale> e ) {
-				setLocale( e.getNextValue() );
-			}
-		};
-		String forcedLocaleString = System.getProperty( "org.alice.ide.locale" );
-		Locale forcedLocale = null;
-		if( forcedLocaleString != null ) {
-			forcedLocale = new Locale( forcedLocaleString );
-		}
-		if( forcedLocale != null ) {
-			Application.getActiveInstance().setLocale( forcedLocale );
-			LocaleState.getInstance().addNewSchoolValueListener( localeListener );
-
-		} else {
-			LocaleState.getInstance().addAndInvokeNewSchoolValueListener( localeListener );
-		}
-
-	}
-
-	public IdeConfiguration getIdeConfiguration() {
-		return this.ideConfiguration;
-	}
-
-	public final ApiConfigurationManager getApiConfigurationManager() {
-		return this.getDocumentFrame().getApiConfigurationManager();
-	}
-
-	@Override
-	public void initialize( String[] args ) {
-		super.initialize( args );
-		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
-		documentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		documentFrame.initialize();
-	}
-
-	public abstract AbstractSceneEditor getSceneEditor();
-
-	private Theme theme;
-
-	protected Theme createTheme() {
-		return new DefaultTheme();
-	}
-
-	public final Theme getTheme() {
-		if( this.theme != null ) {
-			//pass
-		} else {
-			this.theme = this.createTheme();
-		}
-		return this.theme;
-	}
-
-	@Override
-	public Operation getPreferencesOperation() {
-		return null;
-	}
-
-	public enum AccessorAndMutatorDisplayStyle {
-		GETTER_AND_SETTER,
-		ACCESS_AND_ASSIGNMENT
-	}
-
-	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( AbstractField field ) {
-		if( field != null ) {
-			AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-			if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
-				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
-			} else {
-				//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
-				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
-			}
-		} else {
-			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
-		}
-	}
-
-	public abstract UserMethod getPerformEditorGeneratedSetUpMethod();
-
-	protected abstract Criterion<Declaration> getDeclarationFilter();
-
-	public void crawlFilteredProgramType( Crawler crawler ) {
-		NamedUserType programType = this.getProgramType();
-		if( programType != null ) {
-			programType.crawl( crawler, CrawlPolicy.COMPLETE, this.getDeclarationFilter() );
-		}
-	}
-
-	private static class UnacceptableFieldAccessCrawler extends IsInstanceCrawler<FieldAccess> {
-		private final Set<UserField> unacceptableFields;
-
-		public UnacceptableFieldAccessCrawler( Set<UserField> unacceptableFields ) {
-			super( FieldAccess.class );
-			this.unacceptableFields = unacceptableFields;
-		}
-
-		@Override
-		protected boolean isAcceptable( FieldAccess fieldAccess ) {
-			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
-		}
-	}
-
-	private String reorganizeTypeFieldsIfNecessary( NamedUserType namedUserType, int startIndex, Set<UserField> alreadyMovedFields ) {
-		List<UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
-		Set<UserField> unacceptableFields = Sets.newHashSet( fields );
-		UserField fieldToMoveToTheEnd = null;
-		List<FieldAccess> accessesForFieldToMoveToTheEnd = null;
-		for( UserField field : fields ) {
-			Expression initializer = field.initializer.getValue();
-			UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler( unacceptableFields );
-			initializer.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			List<FieldAccess> fieldAccesses = crawler.getList();
-			if( fieldAccesses.size() > 0 ) {
-				fieldToMoveToTheEnd = field;
-				accessesForFieldToMoveToTheEnd = fieldAccesses;
-				break;
-			}
-			unacceptableFields.remove( field );
-		}
-		if( fieldToMoveToTheEnd != null ) {
-			if( alreadyMovedFields.contains( fieldToMoveToTheEnd ) ) {
-				//todo: better cycle detection?
-				StringBuilder sb = new StringBuilder();
-				sb.append( "<html>Possible cycle detected.<br>The field <strong>\"" );
-				sb.append( fieldToMoveToTheEnd.getName() );
-				sb.append( "\"</strong> on type <strong>\"" );
-				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
-				sb.append( "\"</strong> is referencing: " );
-				String prefix = "<strong>\"";
-				for( FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
-					AbstractField accessedField = fieldAccess.field.getValue();
-					sb.append( prefix );
-					sb.append( accessedField.getName() );
-					prefix = "\"</strong>, <strong>\"";
-				}
-				sb.append( "\"</strong><br>" );
-				sb.append( getApplicationName() );
-				sb.append( " already attempted to move it once." );
-				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
-				return sb.toString();
-			} else {
-				for( FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
-					AbstractField accessedField = fieldAccess.field.getValue();
-					if( accessedField == fieldToMoveToTheEnd ) {
-						StringBuilder sb = new StringBuilder();
-						sb.append( "<html>The field <strong>\"" );
-						sb.append( fieldToMoveToTheEnd.getName() );
-						sb.append( "\"</strong> on type <strong>\"" );
-						sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
-						sb.append( "\"</strong> is referencing <strong>itself</strong>." );
-						sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
-						return sb.toString();
-					}
-				}
-				int prevIndex = namedUserType.fields.indexOf( fieldToMoveToTheEnd );
-				int nextIndex = namedUserType.fields.size() - 1;
-				namedUserType.fields.slide( prevIndex, nextIndex );
-				alreadyMovedFields.add( fieldToMoveToTheEnd );
-				return this.reorganizeTypeFieldsIfNecessary( namedUserType, prevIndex, alreadyMovedFields );
-			}
-		} else {
-			return null;
-		}
-	}
-
-	private void reorganizeFieldsIfNecessary() {
-		Project project = this.getProject();
-		if( project != null ) {
-			for( NamedUserType namedUserType : project.getNamedUserTypes() ) {
-				Set<UserField> alreadyMovedFields = Sets.newHashSet();
-				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
-				if( message != null ) {
-					Dialogs.showError( "Unable to Recover", message );
-				}
-			}
-		}
-	}
-
-	@Override
-	public void ensureProjectCodeUpToDate() {
-		Project project = this.getProject();
-		if( project != null ) {
-			if( this.isProjectUpToDateWithSceneSetUp() == false ) {
-				synchronized( project.getLock() ) {
-					this.generateCodeForSceneSetUp();
-					this.reorganizeFieldsIfNecessary();
-					this.updateHistoryIndexSceneSetUpSync();
-				}
-			}
-		}
-	}
-
-	public NamedUserType getUpToDateProgramType() {
-		Project project = this.getUpToDateProject();
-		if( project != null ) {
-			return project.getProgramType();
-		} else {
-			return null;
-		}
-	}
-
-	public List<FieldAccess> getFieldAccesses( final AbstractField field ) {
-		return ProgramTypeUtilities.getFieldAccesses( this.getProgramType(), field, this.getDeclarationFilter() );
-	}
-
-	public List<MethodInvocation> getMethodInvocations( final AbstractMethod method ) {
-		return ProgramTypeUtilities.getMethodInvocations( this.getProgramType(), method, this.getDeclarationFilter() );
-	}
-
-	public List<SimpleArgumentListProperty> getArgumentLists( final UserCode code ) {
-		return ProgramTypeUtilities.getArgumentLists( this.getProgramType(), code, this.getDeclarationFilter() );
-	}
-
-	public boolean isDropDownDesiredFor( Expression expression ) {
-		if( AstUtilities.isKeywordExpression( expression ) ) {
-			return false;
-		}
-		return ( ( expression instanceof TypeExpression ) || ( expression instanceof ResourceExpression ) ) == false;
-	}
-
-	public abstract ExpressionCascadeManager getExpressionCascadeManager();
-
-	public PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
-		if( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new PotentialDropReceptorsFeedbackView( this.getDocumentFrame().getFrame() );
-		}
-		return this.potentialDropReceptorsStencil;
-	}
-
-	public void showDropReceptorsStencilOver( DragComponent potentialDragSource, final AbstractType<?, ?, ?> type ) {
-		this.getPotentialDropReceptorsFeedbackView().showStencilOver( potentialDragSource, type );
-	}
-
-	public void hideDropReceptorsStencil() {
-		this.getPotentialDropReceptorsFeedbackView().hideStencil();
-	}
-
-	protected boolean isAccessibleDesired( Accessible accessible ) {
-		return accessible.getValueType().isArray() == false;
-	}
-
-	@Override
-	public void setProject( Project project ) {
-		boolean isScenePerspectiveDesiredByDefault = SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
-		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
-		ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
-		documentFrame.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
-		super.setProject( project );
-		Perspective perspective = this.getPerspective();
-		if( ( perspective == null ) || ( perspective == documentFrame.getNoProjectPerspective() ) ) {
-			this.setPerspective( documentFrame.getPerspectiveState().getValue() );
-		}
-	}
-
-	public <N extends AbstractNode & CodeAppender> N createCopy( N original ) {
-		NamedUserType root = this.getProgramType();
-		return AstUtilities.createCopy( original, root );
-	}
-
-	private Comment commentThatWantsFocus = null;
-
-	public Comment getCommentThatWantsFocus() {
-		return this.commentThatWantsFocus;
-	}
-
-	public void setCommentThatWantsFocus( Comment commentThatWantsFocus ) {
-		this.commentThatWantsFocus = commentThatWantsFocus;
-	}
-
-	protected abstract void promptForLicenseAgreements();
-
-	public void setProjectFileToLoadOnWindowOpened( File projectFileToLoadOnWindowOpened ) {
-		this.projectFileToLoadOnWindowOpened = projectFileToLoadOnWindowOpened;
-	}
-
-	@Override
-	protected void handleWindowOpened( WindowEvent e ) {
-		promptForLicenseAgreements();
-		UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
-		if( projectFileToLoadOnWindowOpened != null ) {
-			this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened) );
-			projectFileToLoadOnWindowOpened = null;
-		}
-		if ( getUri() == null ) {
-			setPerspective( getDocumentFrame().getNoProjectPerspective() );
-			WindowEventTrigger.setOnUserActivity( activity, e );
-			getDocumentFrame().getNewProjectOperation().fire( activity );
-		}
-	}
-
-	@Override
-	protected void handleOpenFiles( List<File> files ) {
-		if (files != null && !files.isEmpty()) {
-			File file = files.get( 0 );
-			if( file.exists() ) {
-				UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
-				new OpenProjectFromOsOperation( file ).fire( activity );
-			}
-		}
-	}
-
-	protected void preservePreferences() {
-		try {
-			PreferenceManager.preservePreferences();
-		} catch( BackingStoreException bse ) {
-			bse.printStackTrace();
-		}
-	}
-
-	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation();
-
-	@Override
-	public final void handleQuit( UserActivity activity ) {
-		this.preservePreferences();
-		if( this.crashDetector != null ) {
-			this.crashDetector.close();
-		}
-		clearanceCheckingExitOperation.fire( activity );
-	}
-
-	protected VirtualMachine createVirtualMachineForSceneEditor() {
-		return new ReleaseVirtualMachine();
-	}
-
-	protected abstract void registerAdaptersForSceneEditorVm( VirtualMachine vm );
-
-	public final VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
-		VirtualMachine vm = this.createVirtualMachineForSceneEditor();
-		this.registerAdaptersForSceneEditorVm( vm );
-		return vm;
-	}
-
-	protected abstract String getInnerCommentForMethodName( String methodName );
-
-	private void generateCodeForSceneSetUp() {
-		UserMethod userMethod = this.getPerformEditorGeneratedSetUpMethod();
-		StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
-		bodyStatementsProperty.clear();
-		String innerComment = getInnerCommentForMethodName( userMethod.getName() );
-		if( innerComment != null ) {
-			bodyStatementsProperty.add( new Comment( innerComment ) );
-		}
-		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
-	}
-
-	public NamedUserType getProgramType() {
-		Project project = this.getProject();
-		if( project != null ) {
-			return project.getProgramType();
-		} else {
-			return null;
-		}
-	}
-
-	public String getInstanceTextForAccessible( Accessible accessible ) {
-		String text;
-		if( accessible != null ) {
-			if( accessible instanceof AbstractField ) {
-				AbstractField field = (AbstractField)accessible;
-				text = field.getName();
-				AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
-				if( focusedCode != null ) {
-					AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
-					if( field.getValueType() == scopeType ) {
-						text = "this";
-					} else if( field.getDeclaringType() == scopeType ) {
-						if( IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
-							text = "this." + text;
-						}
-					}
-				}
-			} else {
-				text = accessible.getValidName();
-			}
-		} else {
-			text = null;
-		}
-		return text;
-	}
-
-	protected static <E extends Node> E getAncestor( Node node, Class<E> cls ) {
-		Node ancestor = node.getParent();
-		while( ancestor != null ) {
-			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
-				break;
-			} else {
-				ancestor = ancestor.getParent();
-			}
-		}
-		return (E)ancestor;
-	}
-
-	public AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( FieldAccess fieldAccess ) {
-		return null;
-	}
-
-	public AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate( InstanceCreation instanceCreation ) {
-		return null;
-	}
-
-	public abstract boolean isInstanceCreationAllowableFor( NamedUserType userType );
+  public static final Group RUN_GROUP = Group.getInstance(UUID.fromString("f7a87645-567c-42c6-bf5f-ab218d93a226"), "RUN_GROUP");
+  public static final Group EXPORT_GROUP = Group.getInstance(UUID.fromString("624d4db6-2e1a-43c2-b1df-c0bfd6407b35"), "EXPORT_GROUP");
+
+  private static DefaultExceptionHandler exceptionHandler;
+
+  static {
+    IDE.exceptionHandler = new DefaultExceptionHandler();
+
+    if (SystemUtilities.isPropertyTrue("org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired")) {
+      //pass
+    } else {
+      Thread.setDefaultUncaughtExceptionHandler(IDE.exceptionHandler);
+    }
+  }
+
+  public static IDE getActiveInstance() {
+    return ClassUtilities.getInstance(Application.getActiveInstance(), IDE.class);
+  }
+
+  private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectPerspective> e) {
+      IDE.this.setPerspective(e.getNextValue());
+    }
+  };
+
+  private PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
+
+  private File projectFileToLoadOnWindowOpened;
+
+  private final IdeConfiguration ideConfiguration;
+  private final CrashDetector crashDetector;
+
+  public IDE(IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, CrashDetector crashDetector) {
+    super(ideConfiguration, apiConfigurationManager);
+    this.ideConfiguration = ideConfiguration;
+    this.crashDetector = crashDetector;
+    StringBuffer sb = new StringBuffer();
+    sb.append("Please Submit Bug Report: ");
+    sb.append(getApplicationName());
+    IDE.exceptionHandler.setTitle(sb.toString());
+    IDE.exceptionHandler.setApplicationName(getApplicationName());
+    //initialize locale
+    //Checks the org.alice.ide.locale property to see if there is a specified locale to initialize Alice to
+    //If so, it sets that locale and adds the locale listener to the locale state
+    //If not, it adds and invokes the listener on the locale state which has been initialized based on saved preferences
+
+    ValueListener<Locale> localeListener = new ValueListener<Locale>() {
+      @Override
+      public void valueChanged(ValueEvent<Locale> e) {
+        setLocale(e.getNextValue());
+      }
+    };
+    String forcedLocaleString = System.getProperty("org.alice.ide.locale");
+    Locale forcedLocale = null;
+    if (forcedLocaleString != null) {
+      forcedLocale = new Locale(forcedLocaleString);
+    }
+    if (forcedLocale != null) {
+      Application.getActiveInstance().setLocale(forcedLocale);
+      LocaleState.getInstance().addNewSchoolValueListener(localeListener);
+
+    } else {
+      LocaleState.getInstance().addAndInvokeNewSchoolValueListener(localeListener);
+    }
+
+  }
+
+  public IdeConfiguration getIdeConfiguration() {
+    return this.ideConfiguration;
+  }
+
+  public final ApiConfigurationManager getApiConfigurationManager() {
+    return this.getDocumentFrame().getApiConfigurationManager();
+  }
+
+  @Override
+  public void initialize(String[] args) {
+    super.initialize(args);
+    ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+    documentFrame.getPerspectiveState().addNewSchoolValueListener(this.perspectiveListener);
+    documentFrame.initialize();
+  }
+
+  public abstract AbstractSceneEditor getSceneEditor();
+
+  private Theme theme;
+
+  protected Theme createTheme() {
+    return new DefaultTheme();
+  }
+
+  public final Theme getTheme() {
+    if (this.theme != null) {
+      //pass
+    } else {
+      this.theme = this.createTheme();
+    }
+    return this.theme;
+  }
+
+  @Override
+  public Operation getPreferencesOperation() {
+    return null;
+  }
+
+  public enum AccessorAndMutatorDisplayStyle {
+    GETTER_AND_SETTER, ACCESS_AND_ASSIGNMENT
+  }
+
+  public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle(AbstractField field) {
+    if (field != null) {
+      AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+      if ((declaringType != null) && declaringType.isUserAuthored()) {
+        return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+      } else {
+        //return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+        return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+      }
+    } else {
+      return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+    }
+  }
+
+  public abstract UserMethod getPerformEditorGeneratedSetUpMethod();
+
+  protected abstract Criterion<Declaration> getDeclarationFilter();
+
+  public void crawlFilteredProgramType(Crawler crawler) {
+    NamedUserType programType = this.getProgramType();
+    if (programType != null) {
+      programType.crawl(crawler, CrawlPolicy.COMPLETE, this.getDeclarationFilter());
+    }
+  }
+
+  private static class UnacceptableFieldAccessCrawler extends IsInstanceCrawler<FieldAccess> {
+    private final Set<UserField> unacceptableFields;
+
+    public UnacceptableFieldAccessCrawler(Set<UserField> unacceptableFields) {
+      super(FieldAccess.class);
+      this.unacceptableFields = unacceptableFields;
+    }
+
+    @Override
+    protected boolean isAcceptable(FieldAccess fieldAccess) {
+      return this.unacceptableFields.contains(fieldAccess.field.getValue());
+    }
+  }
+
+  private String reorganizeTypeFieldsIfNecessary(NamedUserType namedUserType, int startIndex, Set<UserField> alreadyMovedFields) {
+    List<UserField> fields = namedUserType.fields.getValue().subList(startIndex, namedUserType.fields.size());
+    Set<UserField> unacceptableFields = Sets.newHashSet(fields);
+    UserField fieldToMoveToTheEnd = null;
+    List<FieldAccess> accessesForFieldToMoveToTheEnd = null;
+    for (UserField field : fields) {
+      Expression initializer = field.initializer.getValue();
+      UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler(unacceptableFields);
+      initializer.crawl(crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
+      List<FieldAccess> fieldAccesses = crawler.getList();
+      if (fieldAccesses.size() > 0) {
+        fieldToMoveToTheEnd = field;
+        accessesForFieldToMoveToTheEnd = fieldAccesses;
+        break;
+      }
+      unacceptableFields.remove(field);
+    }
+    if (fieldToMoveToTheEnd != null) {
+      if (alreadyMovedFields.contains(fieldToMoveToTheEnd)) {
+        //todo: better cycle detection?
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>Possible cycle detected.<br>The field <strong>\"");
+        sb.append(fieldToMoveToTheEnd.getName());
+        sb.append("\"</strong> on type <strong>\"");
+        sb.append(fieldToMoveToTheEnd.getDeclaringType().getName());
+        sb.append("\"</strong> is referencing: ");
+        String prefix = "<strong>\"";
+        for (FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd) {
+          AbstractField accessedField = fieldAccess.field.getValue();
+          sb.append(prefix);
+          sb.append(accessedField.getName());
+          prefix = "\"</strong>, <strong>\"";
+        }
+        sb.append("\"</strong><br>");
+        sb.append(getApplicationName());
+        sb.append(" already attempted to move it once.");
+        sb.append("<br><br><strong>Your program may fail.</strong></html>");
+        return sb.toString();
+      } else {
+        for (FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd) {
+          AbstractField accessedField = fieldAccess.field.getValue();
+          if (accessedField == fieldToMoveToTheEnd) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html>The field <strong>\"");
+            sb.append(fieldToMoveToTheEnd.getName());
+            sb.append("\"</strong> on type <strong>\"");
+            sb.append(fieldToMoveToTheEnd.getDeclaringType().getName());
+            sb.append("\"</strong> is referencing <strong>itself</strong>.");
+            sb.append("<br><br><strong>Your program may fail.</strong></html>");
+            return sb.toString();
+          }
+        }
+        int prevIndex = namedUserType.fields.indexOf(fieldToMoveToTheEnd);
+        int nextIndex = namedUserType.fields.size() - 1;
+        namedUserType.fields.slide(prevIndex, nextIndex);
+        alreadyMovedFields.add(fieldToMoveToTheEnd);
+        return this.reorganizeTypeFieldsIfNecessary(namedUserType, prevIndex, alreadyMovedFields);
+      }
+    } else {
+      return null;
+    }
+  }
+
+  private void reorganizeFieldsIfNecessary() {
+    Project project = this.getProject();
+    if (project != null) {
+      for (NamedUserType namedUserType : project.getNamedUserTypes()) {
+        Set<UserField> alreadyMovedFields = Sets.newHashSet();
+        String message = this.reorganizeTypeFieldsIfNecessary(namedUserType, 0, alreadyMovedFields);
+        if (message != null) {
+          Dialogs.showError("Unable to Recover", message);
+        }
+      }
+    }
+  }
+
+  @Override
+  public void ensureProjectCodeUpToDate() {
+    Project project = this.getProject();
+    if (project != null) {
+      if (this.isProjectUpToDateWithSceneSetUp() == false) {
+        synchronized (project.getLock()) {
+          this.generateCodeForSceneSetUp();
+          this.reorganizeFieldsIfNecessary();
+          this.updateHistoryIndexSceneSetUpSync();
+        }
+      }
+    }
+  }
+
+  public NamedUserType getUpToDateProgramType() {
+    Project project = this.getUpToDateProject();
+    if (project != null) {
+      return project.getProgramType();
+    } else {
+      return null;
+    }
+  }
+
+  public List<FieldAccess> getFieldAccesses(final AbstractField field) {
+    return ProgramTypeUtilities.getFieldAccesses(this.getProgramType(), field, this.getDeclarationFilter());
+  }
+
+  public List<MethodInvocation> getMethodInvocations(final AbstractMethod method) {
+    return ProgramTypeUtilities.getMethodInvocations(this.getProgramType(), method, this.getDeclarationFilter());
+  }
+
+  public List<SimpleArgumentListProperty> getArgumentLists(final UserCode code) {
+    return ProgramTypeUtilities.getArgumentLists(this.getProgramType(), code, this.getDeclarationFilter());
+  }
+
+  public boolean isDropDownDesiredFor(Expression expression) {
+    if (AstUtilities.isKeywordExpression(expression)) {
+      return false;
+    }
+    return ((expression instanceof TypeExpression) || (expression instanceof ResourceExpression)) == false;
+  }
+
+  public abstract ExpressionCascadeManager getExpressionCascadeManager();
+
+  public PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
+    if (this.potentialDropReceptorsStencil == null) {
+      this.potentialDropReceptorsStencil = new PotentialDropReceptorsFeedbackView(this.getDocumentFrame().getFrame());
+    }
+    return this.potentialDropReceptorsStencil;
+  }
+
+  public void showDropReceptorsStencilOver(DragComponent potentialDragSource, final AbstractType<?, ?, ?> type) {
+    this.getPotentialDropReceptorsFeedbackView().showStencilOver(potentialDragSource, type);
+  }
+
+  public void hideDropReceptorsStencil() {
+    this.getPotentialDropReceptorsFeedbackView().hideStencil();
+  }
+
+  protected boolean isAccessibleDesired(Accessible accessible) {
+    return accessible.getValueType().isArray() == false;
+  }
+
+  @Override
+  public void setProject(Project project) {
+    boolean isScenePerspectiveDesiredByDefault = SystemUtilities.getBooleanProperty("org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false);
+    ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+    ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
+    documentFrame.getPerspectiveState().setValueTransactionlessly(defaultPerspective);
+    super.setProject(project);
+    Perspective perspective = this.getPerspective();
+    if ((perspective == null) || (perspective == documentFrame.getNoProjectPerspective())) {
+      this.setPerspective(documentFrame.getPerspectiveState().getValue());
+    }
+  }
+
+  public <N extends AbstractNode & CodeAppender> N createCopy(N original) {
+    NamedUserType root = this.getProgramType();
+    return AstUtilities.createCopy(original, root);
+  }
+
+  private Comment commentThatWantsFocus = null;
+
+  public Comment getCommentThatWantsFocus() {
+    return this.commentThatWantsFocus;
+  }
+
+  public void setCommentThatWantsFocus(Comment commentThatWantsFocus) {
+    this.commentThatWantsFocus = commentThatWantsFocus;
+  }
+
+  protected abstract void promptForLicenseAgreements();
+
+  public void setProjectFileToLoadOnWindowOpened(File projectFileToLoadOnWindowOpened) {
+    this.projectFileToLoadOnWindowOpened = projectFileToLoadOnWindowOpened;
+  }
+
+  @Override
+  protected void handleWindowOpened(WindowEvent e) {
+    promptForLicenseAgreements();
+    UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
+    if (projectFileToLoadOnWindowOpened != null) {
+      this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened));
+      projectFileToLoadOnWindowOpened = null;
+    }
+    if (getUri() == null) {
+      setPerspective(getDocumentFrame().getNoProjectPerspective());
+      WindowEventTrigger.setOnUserActivity(activity, e);
+      getDocumentFrame().getNewProjectOperation().fire(activity);
+    }
+  }
+
+  @Override
+  protected void handleOpenFiles(List<File> files) {
+    if (files != null && !files.isEmpty()) {
+      File file = files.get(0);
+      if (file.exists()) {
+        UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
+        new OpenProjectFromOsOperation(file).fire(activity);
+      }
+    }
+  }
+
+  protected void preservePreferences() {
+    try {
+      PreferenceManager.preservePreferences();
+    } catch (BackingStoreException bse) {
+      bse.printStackTrace();
+    }
+  }
+
+  private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation();
+
+  @Override
+  public final void handleQuit(UserActivity activity) {
+    this.preservePreferences();
+    if (this.crashDetector != null) {
+      this.crashDetector.close();
+    }
+    clearanceCheckingExitOperation.fire(activity);
+  }
+
+  protected VirtualMachine createVirtualMachineForSceneEditor() {
+    return new ReleaseVirtualMachine();
+  }
+
+  protected abstract void registerAdaptersForSceneEditorVm(VirtualMachine vm);
+
+  public final VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
+    VirtualMachine vm = this.createVirtualMachineForSceneEditor();
+    this.registerAdaptersForSceneEditorVm(vm);
+    return vm;
+  }
+
+  protected abstract String getInnerCommentForMethodName(String methodName);
+
+  private void generateCodeForSceneSetUp() {
+    UserMethod userMethod = this.getPerformEditorGeneratedSetUpMethod();
+    StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
+    bodyStatementsProperty.clear();
+    String innerComment = getInnerCommentForMethodName(userMethod.getName());
+    if (innerComment != null) {
+      bodyStatementsProperty.add(new Comment(innerComment));
+    }
+    this.getSceneEditor().generateCodeForSetUp(bodyStatementsProperty);
+  }
+
+  public NamedUserType getProgramType() {
+    Project project = this.getProject();
+    if (project != null) {
+      return project.getProgramType();
+    } else {
+      return null;
+    }
+  }
+
+  public String getInstanceTextForAccessible(Accessible accessible) {
+    String text;
+    if (accessible != null) {
+      if (accessible instanceof AbstractField) {
+        AbstractField field = (AbstractField) accessible;
+        text = field.getName();
+        AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
+        if (focusedCode != null) {
+          AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
+          if (field.getValueType() == scopeType) {
+            text = "this";
+          } else if (field.getDeclaringType() == scopeType) {
+            if (IsIncludingThisForFieldAccessesState.getInstance().getValue()) {
+              text = "this." + text;
+            }
+          }
+        }
+      } else {
+        text = accessible.getValidName();
+      }
+    } else {
+      text = null;
+    }
+    return text;
+  }
+
+  protected static <E extends Node> E getAncestor(Node node, Class<E> cls) {
+    Node ancestor = node.getParent();
+    while (ancestor != null) {
+      if (cls.isAssignableFrom(ancestor.getClass())) {
+        break;
+      } else {
+        ancestor = ancestor.getParent();
+      }
+    }
+    return (E) ancestor;
+  }
+
+  public AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate(FieldAccess fieldAccess) {
+    return null;
+  }
+
+  public AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate(InstanceCreation instanceCreation) {
+    return null;
+  }
+
+  public abstract boolean isInstanceCreationAllowableFor(NamedUserType userType);
 }

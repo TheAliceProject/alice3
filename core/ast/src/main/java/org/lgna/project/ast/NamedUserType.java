@@ -55,95 +55,96 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator {
-	public NamedUserType() {
-	}
+  public NamedUserType() {
+  }
 
-	public NamedUserType( String name, UserPackage _package, AbstractType<?, ?, ?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
-		super( superType, methods, fields );
-		this.name.setValue( name );
-		this._package.setValue( _package );
-		this.constructors.add( constructors );
-	}
+  public NamedUserType(String name, UserPackage _package, AbstractType<?, ?, ?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields) {
+    super(superType, methods, fields);
+    this.name.setValue(name);
+    this._package.setValue(_package);
+    this.constructors.add(constructors);
+  }
 
-	public NamedUserType( String name, UserPackage _package, Class<?> superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
-		this( name, _package, JavaType.getInstance( superCls ), constructors, methods, fields );
-	}
+  public NamedUserType(String name, UserPackage _package, Class<?> superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields) {
+    this(name, _package, JavaType.getInstance(superCls), constructors, methods, fields);
+  }
 
-	@Override
-	public String getName() {
-		return name.getValue();
-	}
+  @Override
+  public String getName() {
+    return name.getValue();
+  }
 
-	@Override
-	public StringProperty getNamePropertyIfItExists() {
-		return this.name;
-	}
+  @Override
+  public StringProperty getNamePropertyIfItExists() {
+    return this.name;
+  }
 
-	@Override
-	public AbstractPackage getPackage() {
-		return _package.getValue();
-	}
+  @Override
+  public AbstractPackage getPackage() {
+    return _package.getValue();
+  }
 
-	@Override
-	public List<NamedUserConstructor> getDeclaredConstructors() {
-		return constructors.getValue();
-	}
+  @Override
+  public List<NamedUserConstructor> getDeclaredConstructors() {
+    return constructors.getValue();
+  }
 
-	@Override
-	public AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
-	}
+  @Override
+  public AccessLevel getAccessLevel() {
+    return this.accessLevel.getValue();
+  }
 
-	@Override
-	public boolean isStatic() {
-		return false;
-		//return this.isStatic.getValue();
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+    //return this.isStatic.getValue();
+  }
 
-	@Override
-	public boolean isAbstract() {
-		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.ABSTRACT;
-	}
+  @Override
+  public boolean isAbstract() {
+    return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.ABSTRACT;
+  }
 
-	@Override
-	public boolean isFinal() {
-		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.FINAL;
-	}
+  @Override
+  public boolean isFinal() {
+    return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.FINAL;
+  }
 
-	@Override
-	public boolean isStrictFloatingPoint() {
-		return this.isStrictFloatingPoint.getValue();
-	}
+  @Override
+  public boolean isStrictFloatingPoint() {
+    return this.isStrictFloatingPoint.getValue();
+  }
 
-	@Override public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendClass( getCodeOrganizer( generator ), this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendClass(getCodeOrganizer(generator), this);
+  }
 
-	private CodeOrganizer getCodeOrganizer( SourceCodeGenerator generator ) {
-		CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName( this.getName() );
-		for( NamedUserConstructor constructor : this.constructors ) {
-			codeOrganizer.addConstructor( constructor );
-		}
+  private CodeOrganizer getCodeOrganizer(SourceCodeGenerator generator) {
+    CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName(this.getName());
+    for (NamedUserConstructor constructor : this.constructors) {
+      codeOrganizer.addConstructor(constructor);
+    }
 
-		for( UserMethod method : this.methods) {
-			if( method.isStatic() ) {
-				codeOrganizer.addStaticMethod( method );
-			} else {
-				codeOrganizer.addNonStaticMethod( method );
-			}
-		}
+    for (UserMethod method : this.methods) {
+      if (method.isStatic()) {
+        codeOrganizer.addStaticMethod(method);
+      } else {
+        codeOrganizer.addNonStaticMethod(method);
+      }
+    }
 
-		for( UserField field : this.fields ) {
-			field.addToOrganizer( codeOrganizer, generator.isPublicStaticFinalFieldGetterDesired() );
-		}
+    for (UserField field : this.fields) {
+      field.addToOrganizer(codeOrganizer, generator.isPublicStaticFinalFieldGetterDesired());
+    }
 
-		return codeOrganizer;
-	}
+    return codeOrganizer;
+  }
 
-	public final StringProperty name = new StringProperty( this, null );
-	public final DeclarationProperty<UserPackage> _package = DeclarationProperty.createReferenceInstance( this );
-	public final NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>( this );
-	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new EnumProperty<TypeModifierFinalAbstractOrNeither>( this, TypeModifierFinalAbstractOrNeither.NEITHER );
-	public final BooleanProperty isStrictFloatingPoint = new BooleanProperty( this, Boolean.FALSE );
+  public final StringProperty name = new StringProperty(this, null);
+  public final DeclarationProperty<UserPackage> _package = DeclarationProperty.createReferenceInstance(this);
+  public final NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>(this);
+  public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>(this, AccessLevel.PUBLIC);
+  public final EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new EnumProperty<TypeModifierFinalAbstractOrNeither>(this, TypeModifierFinalAbstractOrNeither.NEITHER);
+  public final BooleanProperty isStrictFloatingPoint = new BooleanProperty(this, Boolean.FALSE);
 }

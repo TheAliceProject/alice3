@@ -55,38 +55,38 @@ import java.awt.Stroke;
  * @author Dennis Cosgrove
  */
 public class BasicPainter implements Painter {
-	private final BasicStroke stroke;
-	private final Paint paint;
+  private final BasicStroke stroke;
+  private final Paint paint;
 
-	public BasicPainter( BasicStroke stroke, Paint paint ) {
-		this.stroke = stroke;
-		this.paint = paint;
-	}
+  public BasicPainter(BasicStroke stroke, Paint paint) {
+    this.stroke = stroke;
+    this.paint = paint;
+  }
 
-	@Override
-	public Rectangle getBounds( Shape shape ) {
-		Rectangle bounds = shape.getBounds();
-		//todo?
-		int pad = (int)( this.stroke.getLineWidth() * 0.5 ) + 1;
-		RectangleUtilities.grow( bounds, pad );
-		return bounds;
-	}
+  @Override
+  public Rectangle getBounds(Shape shape) {
+    Rectangle bounds = shape.getBounds();
+    //todo?
+    int pad = (int) (this.stroke.getLineWidth() * 0.5) + 1;
+    RectangleUtilities.grow(bounds, pad);
+    return bounds;
+  }
 
-	@Override
-	public void paint( Graphics2D g2, Shape shape ) {
-		Stroke prevStroke = g2.getStroke();
-		Paint prevPaint = g2.getPaint();
+  @Override
+  public void paint(Graphics2D g2, Shape shape) {
+    Stroke prevStroke = g2.getStroke();
+    Paint prevPaint = g2.getPaint();
 
-		try {
-			g2.setStroke( this.stroke );
-			g2.setPaint( this.paint );
+    try {
+      g2.setStroke(this.stroke);
+      g2.setPaint(this.paint);
 
-			g2.draw( shape );
+      g2.draw(shape);
 
-		} finally {
-			g2.setPaint( prevPaint );
-			g2.setStroke( prevStroke );
-		}
+    } finally {
+      g2.setPaint(prevPaint);
+      g2.setStroke(prevStroke);
+    }
 
-	}
+  }
 }

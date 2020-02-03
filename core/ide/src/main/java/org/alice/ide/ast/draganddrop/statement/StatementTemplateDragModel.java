@@ -55,34 +55,34 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
-	private final Class<? extends Statement> statementCls;
-	private final Statement possiblyIncompleteStatement;
+  private final Class<? extends Statement> statementCls;
+  private final Statement possiblyIncompleteStatement;
 
-	public StatementTemplateDragModel( UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement ) {
-		super( id );
-		this.statementCls = statementCls;
-		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
-	}
+  public StatementTemplateDragModel(UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement) {
+    super(id);
+    this.statementCls = statementCls;
+    this.possiblyIncompleteStatement = possiblyIncompleteStatement;
+  }
 
-	public Statement getPossiblyIncompleteStatement() {
-		return this.possiblyIncompleteStatement;
-	}
+  public Statement getPossiblyIncompleteStatement() {
+    return this.possiblyIncompleteStatement;
+  }
 
-	@Override
-	public boolean isAddEventListenerLikeSubstance() {
-		return false;
-	}
+  @Override
+  public boolean isAddEventListenerLikeSubstance() {
+    return false;
+  }
 
-	protected abstract Triggerable getDropOperation( DragStep step, BlockStatementIndexPair dropSite );
+  protected abstract Triggerable getDropOperation(DragStep step, BlockStatementIndexPair dropSite);
 
-	@Override
-	public final Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		assert dropSite instanceof BlockStatementIndexPair;
-		BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)dropSite;
-		return this.getDropOperation( step, blockStatementIndexPair );
-	}
+  @Override
+  public final Triggerable getDropOperation(DragStep step, DropSite dropSite) {
+    assert dropSite instanceof BlockStatementIndexPair;
+    BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair) dropSite;
+    return this.getDropOperation(step, blockStatementIndexPair);
+  }
 
-	public Class<? extends Statement> getStatementCls() {
-		return this.statementCls;
-	}
+  public Class<? extends Statement> getStatementCls() {
+    return this.statementCls;
+  }
 }

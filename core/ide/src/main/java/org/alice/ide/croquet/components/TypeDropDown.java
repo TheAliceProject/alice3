@@ -58,23 +58,23 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class TypeDropDown<M extends CustomItemState<AbstractType>> extends ItemDropDown<AbstractType, M> {
-	public TypeDropDown( M model ) {
-		super( model );
-		this.update( model.getValue() );
-		this.getAwtComponent().setHorizontalAlignment( SwingConstants.LEADING );
-	}
+  public TypeDropDown(M model) {
+    super(model);
+    this.update(model.getValue());
+    this.getAwtComponent().setHorizontalAlignment(SwingConstants.LEADING);
+  }
 
-	private void update( AbstractType type ) {
-		this.getAwtComponent().getAction().putValue( Action.SMALL_ICON, new TypeIcon( type ) {
-			@Override
-			protected Color getTextColor( Component c ) {
-				return super.getTextColor( TypeDropDown.this.getAwtComponent() );
-			}
-		} );
-	}
+  private void update(AbstractType type) {
+    this.getAwtComponent().getAction().putValue(Action.SMALL_ICON, new TypeIcon(type) {
+      @Override
+      protected Color getTextColor(Component c) {
+        return super.getTextColor(TypeDropDown.this.getAwtComponent());
+      }
+    });
+  }
 
-	@Override
-	protected void handleChanged( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
-		this.update( nextValue );
-	}
-};
+  @Override
+  protected void handleChanged(State<AbstractType> state, AbstractType prevValue, AbstractType nextValue) {
+    this.update(nextValue);
+  }
+}

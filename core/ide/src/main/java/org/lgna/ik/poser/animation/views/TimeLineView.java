@@ -69,198 +69,198 @@ import org.lgna.story.Pose;
 
 public class TimeLineView extends Panel {
 
-	private JTimeLineView jView;
-	private final Map<KeyFrameData, JTimeLinePoseMarker> map = Maps.newConcurrentHashMap();
+  private JTimeLineView jView;
+  private final Map<KeyFrameData, JTimeLinePoseMarker> map = Maps.newConcurrentHashMap();
 
-	public TimeLineView( TimeLineComposite composite ) {
-		super( composite );
-		composite.getTimeLine().addListener( listener );
-	}
+  public TimeLineView(TimeLineComposite composite) {
+    super(composite);
+    composite.getTimeLine().addListener(listener);
+  }
 
-	private TimeLineListener listener = new TimeLineListener() {
+  private TimeLineListener listener = new TimeLineListener() {
 
-		private ActionListener actionListener = new ActionListener() {
+    private ActionListener actionListener = new ActionListener() {
 
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				select( ( (JTimeLinePoseMarker)e.getSource() ).getKeyFrameData() );
-				JTimeLinePoseMarker source = (JTimeLinePoseMarker)e.getSource();
-				KeyFrameData data = source.getKeyFrameData();
-				if( ( (TimeLineComposite)getComposite() ).getSelectedKeyFrame() == data ) {
-					// do nothing
-				} else {
-					( (TimeLineComposite)getComposite() ).selectKeyFrame( data );
-				}
-			}
-		};
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        select(((JTimeLinePoseMarker) e.getSource()).getKeyFrameData());
+        JTimeLinePoseMarker source = (JTimeLinePoseMarker) e.getSource();
+        KeyFrameData data = source.getKeyFrameData();
+        if (((TimeLineComposite) getComposite()).getSelectedKeyFrame() == data) {
+          // do nothing
+        } else {
+          ((TimeLineComposite) getComposite()).selectKeyFrame(data);
+        }
+      }
+    };
 
-		@Override
-		public void selectedKeyFrameChanged( KeyFrameData event ) {
-			select( event );
-			revalidateAndRepaint();
-		}
+    @Override
+    public void selectedKeyFrameChanged(KeyFrameData event) {
+      select(event);
+      revalidateAndRepaint();
+    }
 
-		@Override
-		public void keyFrameModified( KeyFrameData event ) {
-			revalidateAndRepaint();
-		}
+    @Override
+    public void keyFrameModified(KeyFrameData event) {
+      revalidateAndRepaint();
+    }
 
-		@Override
-		public void keyFrameDeleted( KeyFrameData event ) {
-			jView.remove( map.get( event ) );
-			revalidateAndRepaint();
-		}
+    @Override
+    public void keyFrameDeleted(KeyFrameData event) {
+      jView.remove(map.get(event));
+      revalidateAndRepaint();
+    }
 
-		@Override
-		public void keyFrameAdded( KeyFrameData event ) {
-			JTimeLinePoseMarker comp = new JTimeLinePoseMarker( event, jView );
-			comp.addActionListener( actionListener );
-			map.put( event, comp );
-			jView.add( comp );
-			revalidateAndRepaint();
-		}
+    @Override
+    public void keyFrameAdded(KeyFrameData event) {
+      JTimeLinePoseMarker comp = new JTimeLinePoseMarker(event, jView);
+      comp.addActionListener(actionListener);
+      map.put(event, comp);
+      jView.add(comp);
+      revalidateAndRepaint();
+    }
 
-		@Override
-		public void endTimeChanged( double endTime ) {
-			revalidateAndRepaint();
-		}
+    @Override
+    public void endTimeChanged(double endTime) {
+      revalidateAndRepaint();
+    }
 
-		@Override
-		public void currentTimeChanged( double currentTime, Pose pose ) {
-			revalidateAndRepaint();
-		}
-	};
+    @Override
+    public void currentTimeChanged(double currentTime, Pose pose) {
+      revalidateAndRepaint();
+    }
+  };
 
-	private void select( KeyFrameData selected ) {
+  private void select(KeyFrameData selected) {
 
-		List<KeyFrameData> keyFrames = ( (TimeLineComposite)getComposite() ).getTimeLine().getKeyFrames();
-		for( KeyFrameData data : keyFrames ) {
-			JTimeLinePoseMarker button = map.get( data );
-			if( button != null ) {
-				if( button.getKeyFrameData() != selected ) {
-					button.setSelected( false );
-				} else {
-					button.setSelected( true );
-				}
-			}
-		}
-	}
+    List<KeyFrameData> keyFrames = ((TimeLineComposite) getComposite()).getTimeLine().getKeyFrames();
+    for (KeyFrameData data : keyFrames) {
+      JTimeLinePoseMarker button = map.get(data);
+      if (button != null) {
+        if (button.getKeyFrameData() != selected) {
+          button.setSelected(false);
+        } else {
+          button.setSelected(true);
+        }
+      }
+    }
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new TimeLineLayout( (TimeLineComposite)getComposite() );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new TimeLineLayout((TimeLineComposite) getComposite());
+  }
 
-	@Override
-	protected JPanel createJPanel() {
-		jView = new JTimeLineView( this );
-		return jView;
-	}
+  @Override
+  protected JPanel createJPanel() {
+    jView = new JTimeLineView(this);
+    return jView;
+  }
 
-	public void deselect( KeyFrameData selected ) {
-		( (AbstractButton)map.get( selected ) ).setSelected( false );
-	}
+  public void deselect(KeyFrameData selected) {
+    ((AbstractButton) map.get(selected)).setSelected(false);
+  }
 
-	@Override
-	public void revalidateAndRepaint() {
-		super.revalidateAndRepaint();
-		jView.revalidate();
-		jView.repaint();
-	}
+  @Override
+  public void revalidateAndRepaint() {
+    super.revalidateAndRepaint();
+    jView.revalidate();
+    jView.repaint();
+  }
 }
 
 class TimeLineLayout implements LayoutManager {
-	private final TimeLineComposite composite;
+  private final TimeLineComposite composite;
 
-	public TimeLineLayout( TimeLineComposite masterComposite ) {
-		this.composite = masterComposite;
-	}
+  public TimeLineLayout(TimeLineComposite masterComposite) {
+    this.composite = masterComposite;
+  }
 
-	public static int calculateMinX( Container parent ) {
-		Insets insets = parent.getInsets();
-		return insets.left + ( JTimeLinePoseMarker.SIZE.width / 2 );
-	}
+  public static int calculateMinX(Container parent) {
+    Insets insets = parent.getInsets();
+    return insets.left + (JTimeLinePoseMarker.SIZE.width / 2);
+  }
 
-	public static int calculateMaxX( Container parent ) {
-		Insets insets = parent.getInsets();
-		return parent.getWidth() - insets.right - ( JTimeLinePoseMarker.SIZE.width / 2 );
-	}
+  public static int calculateMaxX(Container parent) {
+    Insets insets = parent.getInsets();
+    return parent.getWidth() - insets.right - (JTimeLinePoseMarker.SIZE.width / 2);
+  }
 
-	public static int calculateCenterXForJTimeLinePoseMarker( Container parent, double portion ) {
-		int minX = calculateMinX( parent );
-		int maxX = calculateMaxX( parent );
+  public static int calculateCenterXForJTimeLinePoseMarker(Container parent, double portion) {
+    int minX = calculateMinX(parent);
+    int maxX = calculateMaxX(parent);
 
-		double x = ( ( maxX - minX ) * portion ) + minX;
+    double x = ((maxX - minX) * portion) + minX;
 
-		return (int)Math.round( x );
-	}
+    return (int) Math.round(x);
+  }
 
-	public double calculateTimeForX( int x, Container parent ) {
-		double xActual = x;
-		double xMin = calculateMinX( parent );
-		double xMax = calculateMaxX( parent );
-		double rv = ( ( xActual - xMin ) / ( xMax - xMin ) ) * composite.getTimeLine().getEndTime();
-		return rv;
-	}
+  public double calculateTimeForX(int x, Container parent) {
+    double xActual = x;
+    double xMin = calculateMinX(parent);
+    double xMax = calculateMaxX(parent);
+    double rv = ((xActual - xMin) / (xMax - xMin)) * composite.getTimeLine().getEndTime();
+    return rv;
+  }
 
-	public static int calculateLeftXForJTimeLinePoseMarker( Container parent, double portion ) {
-		return calculateCenterXForJTimeLinePoseMarker( parent, portion ) - ( JTimeLinePoseMarker.SIZE.width / 2 );
-	}
+  public static int calculateLeftXForJTimeLinePoseMarker(Container parent, double portion) {
+    return calculateCenterXForJTimeLinePoseMarker(parent, portion) - (JTimeLinePoseMarker.SIZE.width / 2);
+  }
 
-	@Override
-	public void layoutContainer( Container parent ) {
-		assert parent instanceof JTimeLineView;
-		for( Component child : parent.getComponents() ) {
-			if( child instanceof JTimeLinePoseMarker ) {
-				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
-				double time = jMarker.getKeyFrameData().getEventTime();
-				int x = calculateLeftXForJTimeLinePoseMarker( parent, time / composite.getTimeLine().getEndTime() );
-				child.setLocation( x, 0 );
-				child.setSize( child.getPreferredSize() );
-			} else {
-				Logger.severe( child );
-			}
-		}
-	}
+  @Override
+  public void layoutContainer(Container parent) {
+    assert parent instanceof JTimeLineView;
+    for (Component child : parent.getComponents()) {
+      if (child instanceof JTimeLinePoseMarker) {
+        JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker) child;
+        double time = jMarker.getKeyFrameData().getEventTime();
+        int x = calculateLeftXForJTimeLinePoseMarker(parent, time / composite.getTimeLine().getEndTime());
+        child.setLocation(x, 0);
+        child.setSize(child.getPreferredSize());
+      } else {
+        Logger.severe(child);
+      }
+    }
+  }
 
-	@Override
-	public Dimension minimumLayoutSize( Container parent ) {
-		Component[] children = parent.getComponents();
-		int width = 0;
-		int height = 0;
-		for( Component component : children ) {
-			if( component.getMinimumSize().width > width ) {
-				width = component.getMinimumSize().width;
-			}
-			if( component.getMinimumSize().height > height ) {
-				height = component.getMinimumSize().height;
-			}
-		}
-		return new Dimension( width, height );
-	}
+  @Override
+  public Dimension minimumLayoutSize(Container parent) {
+    Component[] children = parent.getComponents();
+    int width = 0;
+    int height = 0;
+    for (Component component : children) {
+      if (component.getMinimumSize().width > width) {
+        width = component.getMinimumSize().width;
+      }
+      if (component.getMinimumSize().height > height) {
+        height = component.getMinimumSize().height;
+      }
+    }
+    return new Dimension(width, height);
+  }
 
-	@Override
-	public Dimension preferredLayoutSize( Container parent ) {
-		Component[] children = parent.getComponents();
-		int width = 0;
-		int height = 0;
-		for( Component component : children ) {
-			if( component.getPreferredSize().width > width ) {
-				width = component.getPreferredSize().width;
-			}
-			if( component.getPreferredSize().height > height ) {
-				height = component.getPreferredSize().height;
-			}
-		}
-		return new Dimension( width, height );
-	}
+  @Override
+  public Dimension preferredLayoutSize(Container parent) {
+    Component[] children = parent.getComponents();
+    int width = 0;
+    int height = 0;
+    for (Component component : children) {
+      if (component.getPreferredSize().width > width) {
+        width = component.getPreferredSize().width;
+      }
+      if (component.getPreferredSize().height > height) {
+        height = component.getPreferredSize().height;
+      }
+    }
+    return new Dimension(width, height);
+  }
 
-	@Override
-	public void removeLayoutComponent( Component comp ) {
-	}
+  @Override
+  public void removeLayoutComponent(Component comp) {
+  }
 
-	@Override
-	public void addLayoutComponent( String name, Component comp ) {
-	}
+  @Override
+  public void addLayoutComponent(String name, Component comp) {
+  }
 
 }

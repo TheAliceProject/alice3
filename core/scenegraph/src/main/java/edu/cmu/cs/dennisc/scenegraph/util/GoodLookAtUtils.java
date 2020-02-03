@@ -54,110 +54,110 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class GoodLookAtUtils {
-	private static AffineMatrix4x4 createLookAtMatrix( double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ ) {
-		Vector3 f = new Vector3( centerX - eyeX, centerY - eyeY, centerZ - eyeZ );
-		f.normalize();
+  private static AffineMatrix4x4 createLookAtMatrix(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+    Vector3 f = new Vector3(centerX - eyeX, centerY - eyeY, centerZ - eyeZ);
+    f.normalize();
 
-		Vector3 up = new Vector3( upX, upY, upZ );
-		up.normalize();
+    Vector3 up = new Vector3(upX, upY, upZ);
+    up.normalize();
 
-		Vector3 s = Vector3.createCrossProduct( f, up );
+    Vector3 s = Vector3.createCrossProduct(f, up);
 
-		Vector3 u = Vector3.createCrossProduct( s, f );
+    Vector3 u = Vector3.createCrossProduct(s, f);
 
-		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-		m.orientation.right.set( s );
-		m.orientation.up.set( u );
-		m.orientation.right.set( -f.x, -f.y, -f.z );
+    AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
+    m.orientation.right.set(s);
+    m.orientation.up.set(u);
+    m.orientation.right.set(-f.x, -f.y, -f.z);
 
-		m.applyTranslation( -eyeX, -eyeY, -eyeZ );
+    m.applyTranslation(-eyeX, -eyeY, -eyeZ);
 
-		return m;
-	}
+    return m;
+  }
 
-	private static AffineMatrix4x4 createLookAtMatrix( Point3 eye, Point3 center, Vector3 up ) {
-		return createLookAtMatrix( eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z );
-	}
+  private static AffineMatrix4x4 createLookAtMatrix(Point3 eye, Point3 center, Vector3 up) {
+    return createLookAtMatrix(eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z);
+  }
 
-	public static double calculateGoodLookAtDistance( AxisAlignedBox axisAlignedBox, AffineMatrix4x4 visualAbsoluteTransform, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera ) {
-		final double THRESHOLD = 100.0;
-		if( axisAlignedBox.getWidth() > THRESHOLD ) {
-			return Double.NaN;
-		} else {
-			Point3[] localPoints = axisAlignedBox.getPoints();
-			Point3[] transformedPoints = new Point3[ localPoints.length ];
-			for( int i = 0; i < localPoints.length; i++ ) {
-				transformedPoints[ i ] = visualAbsoluteTransform.createTransformed( localPoints[ i ] );
-			}
+  public static double calculateGoodLookAtDistance(AxisAlignedBox axisAlignedBox, AffineMatrix4x4 visualAbsoluteTransform, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera) {
+    final double THRESHOLD = 100.0;
+    if (axisAlignedBox.getWidth() > THRESHOLD) {
+      return Double.NaN;
+    } else {
+      Point3[] localPoints = axisAlignedBox.getPoints();
+      Point3[] transformedPoints = new Point3[localPoints.length];
+      for (int i = 0; i < localPoints.length; i++) {
+        transformedPoints[i] = visualAbsoluteTransform.createTransformed(localPoints[i]);
+      }
 
-			Point3 averageAbsolutePoint = Point3.createZero();
-			for( Point3 absolutePoint : transformedPoints ) {
-				averageAbsolutePoint.add( absolutePoint );
-			}
-			averageAbsolutePoint.divide( transformedPoints.length );
+      Point3 averageAbsolutePoint = Point3.createZero();
+      for (Point3 absolutePoint : transformedPoints) {
+        averageAbsolutePoint.add(absolutePoint);
+      }
+      averageAbsolutePoint.divide(transformedPoints.length);
 
-			for( Point3 absolutePoint : transformedPoints ) {
-				absolutePoint.subtract( averageAbsolutePoint );
-			}
+      for (Point3 absolutePoint : transformedPoints) {
+        absolutePoint.subtract(averageAbsolutePoint);
+      }
 
-			AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-			final boolean IS_STRAIGHT_ON_VIEWING_DESIRED = true;
-			if( IS_STRAIGHT_ON_VIEWING_DESIRED ) {
-				//pass
-			} else {
+      AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
+      final boolean IS_STRAIGHT_ON_VIEWING_DESIRED = true;
+      if (IS_STRAIGHT_ON_VIEWING_DESIRED) {
+        //pass
+      } else {
 
-				//todo: investigate
-				AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
+        //todo: investigate
+        AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
 
-				m = createLookAtMatrix( cameraAbsolute.translation, visualAbsoluteTransform.translation, cameraAbsolute.orientation.up );
+        m = createLookAtMatrix(cameraAbsolute.translation, visualAbsoluteTransform.translation, cameraAbsolute.orientation.up);
 
-				for( int i = 0; i < localPoints.length; i++ ) {
-					transformedPoints[ i ] = m.createTransformed( transformedPoints[ i ] );
-				}
-			}
+        for (int i = 0; i < localPoints.length; i++) {
+          transformedPoints[i] = m.createTransformed(transformedPoints[i]);
+        }
+      }
 
-			double halfVerticalInRadians = verticalViewingAngle.getAsRadians() * 0.5;
+      double halfVerticalInRadians = verticalViewingAngle.getAsRadians() * 0.5;
 
-			double maxValue = Double.MIN_VALUE;
-			double sineVertical = Math.sin( halfVerticalInRadians );
-			double cosineVertical = Math.cos( halfVerticalInRadians );
+      double maxValue = Double.MIN_VALUE;
+      double sineVertical = Math.sin(halfVerticalInRadians);
+      double cosineVertical = Math.cos(halfVerticalInRadians);
 
-			for( Point3 p : transformedPoints ) {
-				double opposite = p.y;
-				double hypotenuse = opposite / sineVertical;
-				double adjacent = hypotenuse * cosineVertical;
-				double value = adjacent - p.z;
-				maxValue = Math.max( maxValue, value );
-			}
+      for (Point3 p : transformedPoints) {
+        double opposite = p.y;
+        double hypotenuse = opposite / sineVertical;
+        double adjacent = hypotenuse * cosineVertical;
+        double value = adjacent - p.z;
+        maxValue = Math.max(maxValue, value);
+      }
 
-			double halfHorizontalInRadians = halfVerticalInRadians * aspectRatio;
-			double sineHorizontal = Math.sin( halfHorizontalInRadians );
-			double cosineHorizontal = Math.cos( halfHorizontalInRadians );
+      double halfHorizontalInRadians = halfVerticalInRadians * aspectRatio;
+      double sineHorizontal = Math.sin(halfHorizontalInRadians);
+      double cosineHorizontal = Math.cos(halfHorizontalInRadians);
 
-			for( Point3 p : transformedPoints ) {
-				double opposite = p.x;
-				double hypotenuse = opposite / sineHorizontal;
-				double adjacent = hypotenuse * cosineHorizontal;
-				double value = adjacent - p.z;
-				maxValue = Math.max( maxValue, value );
-			}
+      for (Point3 p : transformedPoints) {
+        double opposite = p.x;
+        double hypotenuse = opposite / sineHorizontal;
+        double adjacent = hypotenuse * cosineHorizontal;
+        double value = adjacent - p.z;
+        maxValue = Math.max(maxValue, value);
+      }
 
-			//			m.translation.set( averageAbsolutePoint );
-			//			m.applyTranslation( 0, 0, maxValue );
-			//
-			//			m.invert();
-			//
-			//			return m;
-			//lookAtM.translation.set( 0, 0, 0 );
-			//lookAtM.applyTranslation( 0, 0, -maxValue );
-			return maxValue;
-		}
-	}
+      //      m.translation.set( averageAbsolutePoint );
+      //      m.applyTranslation( 0, 0, maxValue );
+      //
+      //      m.invert();
+      //
+      //      return m;
+      //lookAtM.translation.set( 0, 0, 0 );
+      //lookAtM.applyTranslation( 0, 0, -maxValue );
+      return maxValue;
+    }
+  }
 
-	public static double calculateGoodLookAtDistance( Visual sgVisual, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera ) {
-		AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
-		AffineMatrix4x4 visualAbsolute = sgVisual.getAbsoluteTransformation();
-		return calculateGoodLookAtDistance( axisAlignedBox, visualAbsolute, verticalViewingAngle, aspectRatio, sgCamera );
-	}
+  public static double calculateGoodLookAtDistance(Visual sgVisual, Angle verticalViewingAngle, double aspectRatio, AbstractCamera sgCamera) {
+    AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
+    AffineMatrix4x4 visualAbsolute = sgVisual.getAbsoluteTransformation();
+    return calculateGoodLookAtDistance(axisAlignedBox, visualAbsolute, verticalViewingAngle, aspectRatio, sgCamera);
+  }
 
 }

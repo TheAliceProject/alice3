@@ -53,18 +53,18 @@ import org.lgna.project.ast.UserCode;
  * @author Dennis Cosgrove
  */
 class InstanceLine extends LineAxisPanel {
-	public InstanceLine( UserCode code ) {
-		//		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
-		//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		//		this.add( a );
-		//		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
-		//		zoot.ZLabel b = zoot.ZLabel.acquire( " is referred to as: " );
-		//		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		//		this.add( b );
+  public InstanceLine(UserCode code) {
+    //    zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
+    //    a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+    //    this.add( a );
+    //    this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
+    //    zoot.ZLabel b = zoot.ZLabel.acquire( " is referred to as: " );
+    //    b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+    //    this.add( b );
 
-		this.addComponent( new Label( "current instance: ", TextPosture.OBLIQUE, TextWeight.LIGHT ) );
-		ThisPane thisPane = new ThisPane();
-		//		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
-		this.addComponent( thisPane );
-	}
+    this.addComponent(new Label("current instance: ", TextPosture.OBLIQUE, TextWeight.LIGHT));
+    ThisPane thisPane = new ThisPane();
+    //    thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
+    this.addComponent(thisPane);
+  }
 }

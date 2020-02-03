@@ -71,119 +71,119 @@ import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
  * @author Dennis Cosgrove
  */
 public final class ImageCaptureDisplayTask extends DisplayTask {
-	public ImageCaptureDisplayTask( RenderTask renderTask, Rectangle viewport, GlrImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
-		this.renderTask = renderTask;
-		this.viewport = viewport;
-		this.imageBuffer = imageBuffer;
-		this.imageOrientationRequirement = imageOrientationRequirement;
-		this.observer = observer;
-	}
+  public ImageCaptureDisplayTask(RenderTask renderTask, Rectangle viewport, GlrImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer) {
+    this.renderTask = renderTask;
+    this.viewport = viewport;
+    this.imageBuffer = imageBuffer;
+    this.imageOrientationRequirement = imageOrientationRequirement;
+    this.observer = observer;
+  }
 
-	@Override
-	/*package-private*/IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl ) {
-		synchronized( this.imageBuffer.getImageLock() ) {
+  @Override
+    /*package-private*/IsFrameBufferIntact handleDisplay(RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl) {
+    synchronized (this.imageBuffer.getImageLock()) {
 
-			if( this.renderTask != null ) {
-				this.renderTask.render( new GlrRenderContext( this.viewport, drawable ) );
-			}
-			gl.glFlush();
+      if (this.renderTask != null) {
+        this.renderTask.render(new GlrRenderContext(this.viewport, drawable));
+      }
+      gl.glFlush();
 
-			int x;
-			int y;
-			int width;
-			int height;
+      int x;
+      int y;
+      int width;
+      int height;
 
-			if( this.viewport != null ) {
-				x = viewport.x;
-				y = viewport.y;
-				width = viewport.width;
-				height = viewport.height;
-			} else {
-				x = 0;
-				y = 0;
-				Dimension surfaceSize = rtImp.getRenderTarget().getSurfaceSize();
-				width = surfaceSize.width;
-				height = surfaceSize.height;
-			}
+      if (this.viewport != null) {
+        x = viewport.x;
+        y = viewport.y;
+        width = viewport.width;
+        height = viewport.height;
+      } else {
+        x = 0;
+        y = 0;
+        Dimension surfaceSize = rtImp.getRenderTarget().getSurfaceSize();
+        width = surfaceSize.width;
+        height = surfaceSize.height;
+      }
 
-			BufferedImage rvImage = this.imageBuffer.acquireImage( width, height );
-			FloatBuffer rvDepth = this.imageBuffer.acquireFloatBuffer( width, height );
-			boolean[] atIsRightSideUp = new boolean[ 1 ];
-			try {
-				DataBuffer dataBuffer = rvImage.getRaster().getDataBuffer();
-				if( rvDepth != null ) {
-					byte[] color = ( (DataBufferByte)dataBuffer ).getData();
-					ByteBuffer buffer = ByteBuffer.wrap( color );
-					gl.glReadPixels( x, y, width, height, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer );
+      BufferedImage rvImage = this.imageBuffer.acquireImage(width, height);
+      FloatBuffer rvDepth = this.imageBuffer.acquireFloatBuffer(width, height);
+      boolean[] atIsRightSideUp = new boolean[1];
+      try {
+        DataBuffer dataBuffer = rvImage.getRaster().getDataBuffer();
+        if (rvDepth != null) {
+          byte[] color = ((DataBufferByte) dataBuffer).getData();
+          ByteBuffer buffer = ByteBuffer.wrap(color);
+          gl.glReadPixels(x, y, width, height, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer);
 
-					gl.glReadPixels( x, y, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, rvDepth );
+          gl.glReadPixels(x, y, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, rvDepth);
 
-					final byte ON = (byte)0;
-					final byte OFF = (byte)255;
-					int i = 0;
-					while( rvDepth.hasRemaining() ) {
-						if( rvDepth.get() == 1.0f ) {
-							color[ i ] = ON;
-						} else {
-							color[ i ] = OFF;
-						}
-						i += 4;
-					}
-					rvDepth.rewind();
+          final byte ON = (byte) 0;
+          final byte OFF = (byte) 255;
+          int i = 0;
+          while (rvDepth.hasRemaining()) {
+            if (rvDepth.get() == 1.0f) {
+              color[i] = ON;
+            } else {
+              color[i] = OFF;
+            }
+            i += 4;
+          }
+          rvDepth.rewind();
 
-				} else {
-					//java.nio.IntBuffer buffer = java.nio.IntBuffer.wrap( ((java.awt.image.DataBufferInt)dataBuffer).getData() );
-					ByteBuffer buffer = ByteBuffer.wrap( ( (DataBufferByte)dataBuffer ).getData() );
+        } else {
+          //java.nio.IntBuffer buffer = java.nio.IntBuffer.wrap( ((java.awt.image.DataBufferInt)dataBuffer).getData() );
+          ByteBuffer buffer = ByteBuffer.wrap(((DataBufferByte) dataBuffer).getData());
 
-					//clear error buffer if necessary
-					while( gl.glGetError() != GL_NO_ERROR ) {
-					}
+          //clear error buffer if necessary
+          while (gl.glGetError() != GL_NO_ERROR) {
+          }
 
-					//int format = GL_RGB;
-					//int format = GL_RGBA;
-					int format = GL_ABGR_EXT;
-					//int format = GL_BGRA;
+          //int format = GL_RGB;
+          //int format = GL_RGBA;
+          int format = GL_ABGR_EXT;
+          //int format = GL_BGRA;
 
-					//int type = GL_UNSIGNED_INT;
-					int type = GL_UNSIGNED_BYTE;
+          //int type = GL_UNSIGNED_INT;
+          int type = GL_UNSIGNED_BYTE;
 
-					gl.glReadPixels( x, y, width, height, format, type, buffer );
+          gl.glReadPixels(x, y, width, height, format, type, buffer);
 
-					List<Integer> errors = null;
-					while( true ) {
-						int error = gl.glGetError();
-						if( error == GL_NO_ERROR ) {
-							break;
-						} else {
-							if( errors != null ) {
-								//pass
-							} else {
-								errors = new LinkedList<Integer>();
-							}
-							errors.add( error );
-						}
-					}
-					if( errors != null ) {
-						GLU glu = new GLU();
-						String description = glu.gluErrorString( errors.get( 0 ) );
-						Logger.severe( "unable to capture back buffer:", description );
-					}
-				}
-				atIsRightSideUp[ 0 ] = imageOrientationRequirement == ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
-				if( atIsRightSideUp[ 0 ] ) {
-					ImageUtil.flipImageVertically( rvImage );
-				}
-			} finally {
-				this.imageBuffer.releaseImageAndFloatBuffer( atIsRightSideUp[ 0 ] );
-			}
-			this.observer.done( this.imageBuffer );
-		}
-		return IsFrameBufferIntact.FALSE;
-	}
+          List<Integer> errors = null;
+          while (true) {
+            int error = gl.glGetError();
+            if (error == GL_NO_ERROR) {
+              break;
+            } else {
+              if (errors != null) {
+                //pass
+              } else {
+                errors = new LinkedList<Integer>();
+              }
+              errors.add(error);
+            }
+          }
+          if (errors != null) {
+            GLU glu = new GLU();
+            String description = glu.gluErrorString(errors.get(0));
+            Logger.severe("unable to capture back buffer:", description);
+          }
+        }
+        atIsRightSideUp[0] = imageOrientationRequirement == ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
+        if (atIsRightSideUp[0]) {
+          ImageUtil.flipImageVertically(rvImage);
+        }
+      } finally {
+        this.imageBuffer.releaseImageAndFloatBuffer(atIsRightSideUp[0]);
+      }
+      this.observer.done(this.imageBuffer);
+    }
+    return IsFrameBufferIntact.FALSE;
+  }
 
-	private final RenderTask renderTask;
-	private final Rectangle viewport;
-	private final GlrImageBuffer imageBuffer;
-	private final ImageOrientationRequirement imageOrientationRequirement;
-	private final ImageCaptureObserver observer;
+  private final RenderTask renderTask;
+  private final Rectangle viewport;
+  private final GlrImageBuffer imageBuffer;
+  private final ImageOrientationRequirement imageOrientationRequirement;
+  private final ImageCaptureObserver observer;
 }

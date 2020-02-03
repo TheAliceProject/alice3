@@ -63,27 +63,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExportToPovRayOperation extends ActionOperation {
-	private static class SingletonHolder {
-		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
-	}
+  private static class SingletonHolder {
+    private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
+  }
 
-	public static ExportToPovRayOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ExportToPovRayOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ExportToPovRayOperation() {
-		super( IDE.EXPORT_GROUP, UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
-	}
+  private ExportToPovRayOperation() {
+    super(IDE.EXPORT_GROUP, UUID.fromString("7f14ddfc-d090-4ef5-b47d-4d5036f6d784"));
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
-		UserField sceneField = sceneEditor.getActiveSceneField();
-		AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
-		SCamera camera = (SCamera)sceneEditor.getInstanceInJavaVMForField( cameraField );
-		SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation( camera );
-		SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
-		POVRayUtilities.export( new PrintWriter( System.out ), sgCamera );
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
+    UserField sceneField = sceneEditor.getActiveSceneField();
+    AbstractField cameraField = sceneField.getValueType().getDeclaredField("camera");
+    SCamera camera = (SCamera) sceneEditor.getInstanceInJavaVMForField(cameraField);
+    SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation(camera);
+    SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
+    POVRayUtilities.export(new PrintWriter(System.out), sgCamera);
+    activity.finish();
+  }
 }

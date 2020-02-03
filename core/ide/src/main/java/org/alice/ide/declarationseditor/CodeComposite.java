@@ -54,7 +54,6 @@ import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.StaticAnalysisUtilities;
 import org.lgna.project.ast.UserMethod;
 
 import java.util.Map;
@@ -64,104 +63,104 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CodeComposite extends DeclarationComposite<AbstractCode, AbstractCodeDeclarationView> {
-	private static Map<AbstractCode, CodeComposite> map = Maps.newHashMap();
+  private static Map<AbstractCode, CodeComposite> map = Maps.newHashMap();
 
-	public static synchronized CodeComposite getInstance( AbstractCode code ) {
-		if( code != null ) {
-			CodeComposite rv = map.get( code );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new CodeComposite( code );
-				map.put( code, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static synchronized CodeComposite getInstance(AbstractCode code) {
+    if (code != null) {
+      CodeComposite rv = map.get(code);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new CodeComposite(code);
+        map.put(code, rv);
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	private CodeComposite( AbstractCode code ) {
-		super( UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, AbstractCode.class );
-		if( code instanceof UserMethod ) {
-			UserMethod method = (UserMethod)code;
-			if( method.isFunction() ) {
-				this.userFunctionStatusComposite = new UserFunctionStatusComposite( method );
-			} else {
-				this.userFunctionStatusComposite = null;
-			}
-		} else {
-			this.userFunctionStatusComposite = null;
-		}
-		this.handleAstChangeThatCouldBeOfInterest();
-	}
+  private CodeComposite(AbstractCode code) {
+    super(UUID.fromString("b8043e06-495b-4f24-9cfb-0e447d97cc7c"), code, AbstractCode.class);
+    if (code instanceof UserMethod) {
+      UserMethod method = (UserMethod) code;
+      if (method.isFunction()) {
+        this.userFunctionStatusComposite = new UserFunctionStatusComposite(method);
+      } else {
+        this.userFunctionStatusComposite = null;
+      }
+    } else {
+      this.userFunctionStatusComposite = null;
+    }
+    this.handleAstChangeThatCouldBeOfInterest();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.getDeclaration().getDeclaringType();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.getDeclaration().getDeclaringType();
+  }
 
-	public UserFunctionStatusComposite getUserFunctionStatusComposite() {
-		return this.userFunctionStatusComposite;
-	}
+  public UserFunctionStatusComposite getUserFunctionStatusComposite() {
+    return this.userFunctionStatusComposite;
+  }
 
-	@Override
-	public boolean isValid() {
-		return this.getDeclaration().isValid();
-	}
+  @Override
+  public boolean isValid() {
+    return this.getDeclaration().isValid();
+  }
 
-	@Override
-	public boolean isCloseable() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getApiConfigurationManager().isTabClosable( this.getDeclaration() );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean isCloseable() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getApiConfigurationManager().isTabClosable(this.getDeclaration());
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.2f );
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    super.customizeTitleComponentAppearance(button);
+    button.scaleFont(1.2f);
+  }
 
-	@Override
-	protected AbstractCodeDeclarationView createView() {
-		if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {
-			return new EventListenersView( this );
-		} else {
-			return new CodeDeclarationView( this );
-		}
-	}
+  @Override
+  protected AbstractCodeDeclarationView createView() {
+    if (StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals(this.getDeclaration().getName())) {
+      return new EventListenersView(this);
+    } else {
+      return new CodeDeclarationView(this);
+    }
+  }
 
-	public void handleAstChangeThatCouldBeOfInterest() {
-		if( this.userFunctionStatusComposite != null ) {
-			AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
+  public void handleAstChangeThatCouldBeOfInterest() {
+    if (this.userFunctionStatusComposite != null) {
+      AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
 
-			AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
-			AbstractCode code = this.getDeclaration();
-			UserMethod method = (UserMethod)code;
-			BlockStatement methodBody = method.body.getValue();
-			if( methodBody.containsUnreachableCode() ) {
-				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
-			} else {
-				if( methodBody.containsAtLeastOneEnabledReturnStatement() ) {
-					if( methodBody.containsAReturnForEveryPath() ) {
-						nextErrorStatus = null;
-					} else {
-						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
-					}
-				} else {
-					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
-				}
-			}
-			if( prevErrorStatus != nextErrorStatus ) {
-				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
-				this.getView().revalidateAndRepaint();
-			}
-		}
-	}
+      AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
+      AbstractCode code = this.getDeclaration();
+      UserMethod method = (UserMethod) code;
+      BlockStatement methodBody = method.body.getValue();
+      if (methodBody.containsUnreachableCode()) {
+        nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
+      } else {
+        if (methodBody.containsAtLeastOneEnabledReturnStatement()) {
+          if (methodBody.containsAReturnForEveryPath()) {
+            nextErrorStatus = null;
+          } else {
+            nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
+          }
+        } else {
+          nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
+        }
+      }
+      if (prevErrorStatus != nextErrorStatus) {
+        this.userFunctionStatusComposite.setErrorStatus(nextErrorStatus);
+        this.getView().revalidateAndRepaint();
+      }
+    }
+  }
 
-	private final UserFunctionStatusComposite userFunctionStatusComposite;
+  private final UserFunctionStatusComposite userFunctionStatusComposite;
 }

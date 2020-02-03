@@ -54,16 +54,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
-	public SelectUriTab( UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-	}
+  public SelectUriTab(UUID migrationId) {
+    super(migrationId, IsCloseable.FALSE);
+  }
 
-	public abstract UriProjectLoader getSelectedUri();
+  public abstract UriProjectLoader getSelectedUri();
 
-	protected abstract void refresh();
+  protected abstract void refresh();
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 }

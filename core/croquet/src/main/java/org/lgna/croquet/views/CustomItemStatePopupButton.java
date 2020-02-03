@@ -50,38 +50,38 @@ import org.lgna.croquet.State;
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemStatePopupButton<T> extends FauxComboBoxPopupButton<T> {
-	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
-		@Override
-		public void changing( State<T> state, T prevValue, T nextValue ) {
-		}
+  private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
+    @Override
+    public void changing(State<T> state, T prevValue, T nextValue) {
+    }
 
-		@Override
-		public void changed( State<T> state, T prevValue, T nextValue ) {
-			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue );
-		}
-	};
+    @Override
+    public void changed(State<T> state, T prevValue, T nextValue) {
+      CustomItemStatePopupButton.this.handleChanged(state, prevValue, nextValue);
+    }
+  };
 
-	public CustomItemStatePopupButton( CustomItemState<T> itemState ) {
-		super( itemState.getCascadeRoot().getPopupPrepModel() );
-	}
+  public CustomItemStatePopupButton(CustomItemState<T> itemState) {
+    super(itemState.getCascadeRoot().getPopupPrepModel());
+  }
 
-	public CustomItemState<T> getCustomItemState() {
-		CascadeRoot.InternalPopupPrepModel<T> model = (CascadeRoot.InternalPopupPrepModel<T>)this.getModel();
-		CustomItemState.InternalRoot<T> root = (CustomItemState.InternalRoot<T>)model.getCascadeRoot();
-		return root.getCompletionModel();
-	}
+  public CustomItemState<T> getCustomItemState() {
+    CascadeRoot.InternalPopupPrepModel<T> model = (CascadeRoot.InternalPopupPrepModel<T>) this.getModel();
+    CustomItemState.InternalRoot<T> root = (CustomItemState.InternalRoot<T>) model.getCascadeRoot();
+    return root.getCompletionModel();
+  }
 
-	protected abstract void handleChanged( State<T> state, T prevValue, T nextValue );
+  protected abstract void handleChanged(State<T> state, T prevValue, T nextValue);
 
-	@Override
-	protected void handleDisplayable() {
-		this.getCustomItemState().addAndInvokeValueListener( this.valueListener );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    this.getCustomItemState().addAndInvokeValueListener(this.valueListener);
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getCustomItemState().removeValueListener( this.valueListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    this.getCustomItemState().removeValueListener(this.valueListener);
+  }
 }

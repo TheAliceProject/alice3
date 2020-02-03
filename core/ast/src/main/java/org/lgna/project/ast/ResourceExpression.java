@@ -48,28 +48,28 @@ import org.lgna.common.Resource;
  * @author Dennis Cosgrove
  */
 public final class ResourceExpression extends Expression {
-	public ResourceExpression() {
-	}
+  public ResourceExpression() {
+  }
 
-	public ResourceExpression( AbstractType<?, ?, ?> type, Resource resource ) {
-		this.type.setValue( type );
-		this.resource.setValue( resource );
-	}
+  public ResourceExpression(AbstractType<?, ?, ?> type, Resource resource) {
+    this.type.setValue(type);
+    this.resource.setValue(resource);
+  }
 
-	public <T extends Resource> ResourceExpression( Class<T> cls, T resource ) {
-		this( JavaType.getInstance( cls ), resource );
-	}
+  public <T extends Resource> ResourceExpression(Class<T> cls, T resource) {
+    this(JavaType.getInstance(cls), resource);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return type.getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return type.getValue();
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendResourceExpression( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendResourceExpression(this);
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
-	public final ResourceProperty resource = new ResourceProperty( this );
+  public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance(this);
+  public final ResourceProperty resource = new ResourceProperty(this);
 }

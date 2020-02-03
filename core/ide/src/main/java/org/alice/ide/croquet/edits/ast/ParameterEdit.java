@@ -65,64 +65,64 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class ParameterEdit extends AbstractEdit<CompletionModel> {
-	private final UserCode code;
-	private final UserParameter parameter;
-	private transient Map<SimpleArgumentListProperty, SimpleArgument> map = Maps.newHashMap();
+  private final UserCode code;
+  private final UserParameter parameter;
+  private transient Map<SimpleArgumentListProperty, SimpleArgument> map = Maps.newHashMap();
 
-	public ParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
-		super( userActivity );
-		this.code = code;
-		this.parameter = parameter;
-	}
+  public ParameterEdit(UserActivity userActivity, UserCode code, UserParameter parameter) {
+    super(userActivity);
+    this.code = code;
+    this.parameter = parameter;
+  }
 
-	public ParameterEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.code = NodeCodec.getInstance( UserCode.class ).decodeValue( binaryDecoder );
-		this.parameter = NodeCodec.getInstance( UserParameter.class ).decodeValue( binaryDecoder );
-	}
+  public ParameterEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.code = NodeCodec.getInstance(UserCode.class).decodeValue(binaryDecoder);
+    this.parameter = NodeCodec.getInstance(UserParameter.class).decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		NodeCodec.getInstance( UserCode.class ).encodeValue( binaryEncoder, this.code );
-		NodeCodec.getInstance( UserParameter.class ).encodeValue( binaryEncoder, this.parameter );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    NodeCodec.getInstance(UserCode.class).encodeValue(binaryEncoder, this.code);
+    NodeCodec.getInstance(UserParameter.class).encodeValue(binaryEncoder, this.parameter);
+  }
 
-	public UserCode getCode() {
-		return this.code;
-	}
+  public UserCode getCode() {
+    return this.code;
+  }
 
-	public UserParameter getParameter() {
-		return this.parameter;
-	}
+  public UserParameter getParameter() {
+    return this.parameter;
+  }
 
-	protected final NodeListProperty<UserParameter> getParametersProperty() {
-		return this.code.getRequiredParamtersProperty();
-	}
+  protected final NodeListProperty<UserParameter> getParametersProperty() {
+    return this.code.getRequiredParamtersProperty();
+  }
 
-	protected void addParameter( int index ) {
-		NodeListProperty<UserParameter> parametersProperty = this.getParametersProperty();
-		//todo
-		UserCode code = (UserCode)parametersProperty.getOwner();
-		AstUtilities.addParameter( this.map, parametersProperty, this.parameter, index, IDE.getActiveInstance().getArgumentLists( code ) );
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  protected void addParameter(int index) {
+    NodeListProperty<UserParameter> parametersProperty = this.getParametersProperty();
+    //todo
+    UserCode code = (UserCode) parametersProperty.getOwner();
+    AstUtilities.addParameter(this.map, parametersProperty, this.parameter, index, IDE.getActiveInstance().getArgumentLists(code));
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	protected void removeParameter( int index ) {
-		NodeListProperty<UserParameter> parametersProperty = this.getParametersProperty();
-		//todo
-		UserCode code = (UserCode)parametersProperty.getOwner();
-		AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, index, IDE.getActiveInstance().getArgumentLists( code ) );
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  protected void removeParameter(int index) {
+    NodeListProperty<UserParameter> parametersProperty = this.getParametersProperty();
+    //todo
+    UserCode code = (UserCode) parametersProperty.getOwner();
+    AstUtilities.removeParameter(this.map, parametersProperty, this.parameter, index, IDE.getActiveInstance().getArgumentLists(code));
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	public boolean canUndo() {
-		return true;
-	}
+  @Override
+  public boolean canUndo() {
+    return true;
+  }
 
-	@Override
-	public boolean canRedo() {
-		return true;
-	}
+  @Override
+  public boolean canRedo() {
+    return true;
+  }
 }

@@ -50,24 +50,24 @@ import org.lgna.project.ast.localizer.AstLocalizer;
  * @author Dennis Cosgrove
  */
 public final class SuperExpression extends Expression {
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		AbstractType<?, ?, ?> type = this.getFirstAncestorAssignableTo( AbstractType.class );
-		if( type != null ) {
-			return type.getSuperType();
-		} else {
-			Logger.warning( "SuperExpression cannot find type" );
-			return null;
-		}
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    AbstractType<?, ?, ?> type = this.getFirstAncestorAssignableTo(AbstractType.class);
+    if (type != null) {
+      return type.getSuperType();
+    } else {
+      Logger.warning("SuperExpression cannot find type");
+      return null;
+    }
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		localizer.appendText( "super" );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    localizer.appendText("super");
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendSuperReference();
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendSuperReference();
+  }
 }

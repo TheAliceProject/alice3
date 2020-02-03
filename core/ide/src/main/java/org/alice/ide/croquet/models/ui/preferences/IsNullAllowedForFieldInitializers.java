@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsNullAllowedForFieldInitializers extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsNullAllowedForFieldInitializers instance = new IsNullAllowedForFieldInitializers();
-	}
+  private static class SingletonHolder {
+    private static IsNullAllowedForFieldInitializers instance = new IsNullAllowedForFieldInitializers();
+  }
 
-	public static IsNullAllowedForFieldInitializers getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsNullAllowedForFieldInitializers getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsNullAllowedForFieldInitializers() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "bc1fc1d8-eebf-48d7-80ed-771d0f365229" ), false );
-	}
+  private IsNullAllowedForFieldInitializers() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("bc1fc1d8-eebf-48d7-80ed-771d0f365229"), false);
+  }
 }

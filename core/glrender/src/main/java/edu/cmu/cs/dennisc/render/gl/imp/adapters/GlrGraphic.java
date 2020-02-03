@@ -54,7 +54,7 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public abstract class GlrGraphic<T extends Graphic> extends GlrElement<T> {
-	protected abstract void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera );
+  protected abstract void render(Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera);
 
-	protected abstract void forget( Graphics2D g2 );
+  protected abstract void forget(Graphics2D g2);
 }

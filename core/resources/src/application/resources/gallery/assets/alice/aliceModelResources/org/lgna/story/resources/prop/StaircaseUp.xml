@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="StaircaseUp">
+    <BoundingBox>
+        <Min x="-0.3200009763240814" y="-0.0702754186684406" z="2.3750304605816894E-4"/>
+        <Max x="0.3200007677078247" y="2.091314073545232" z="2.482103044798981"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>ghost</Tag>
+        <Tag>haunted house</Tag>
+        <Tag>train</Tag>
+        <Tag>train car</Tag>
+        <Tag>prenderghast circus</Tag>
+        <Tag>haunted circus</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>staircase</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="StaircaseUp" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -51,12 +51,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WarningDialogComposite extends LazyOperationUnadornedDialogCoreComposite<WarningView> {
-	public WarningDialogComposite() {
-		super( UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ) );
-	}
+  public WarningDialogComposite() {
+    super(UUID.fromString("741c9139-a58d-46d6-ba0e-9a8e51f27980"));
+  }
 
-	@Override
-	protected WarningView createView() {
-		return new WarningView( this );
-	}
+  @Override
+  protected WarningView createView() {
+    return new WarningView(this);
+  }
 }

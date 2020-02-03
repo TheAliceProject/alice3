@@ -49,13 +49,13 @@ import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBu
  * @author Dennis Cosgrove
  */
 public class HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane extends ScrollPane {
-	public HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane( AwtComponentView<?> view ) {
-		super( view );
-		this.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.ALWAYS );
-	}
+  public HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane(AwtComponentView<?> view) {
+    super(view);
+    this.setHorizontalScrollbarPolicy(HorizontalScrollbarPolicy.ALWAYS);
+  }
 
-	@Override
-	protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-		return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-	}
+  @Override
+  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+    return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+  }
 }

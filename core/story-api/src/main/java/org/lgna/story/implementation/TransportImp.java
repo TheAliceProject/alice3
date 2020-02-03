@@ -43,12 +43,11 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.STransport;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.TransportResource;
 
 public final class TransportImp extends JointedModelImp<STransport, TransportResource> {
-	public TransportImp( STransport abstraction, JointImplementationAndVisualDataFactory<TransportResource> factory ) {
-		super( abstraction, factory );
-	}
+  public TransportImp(STransport abstraction, JointImplementationAndVisualDataFactory<TransportResource> factory) {
+    super(abstraction, factory);
+  }
 
 }

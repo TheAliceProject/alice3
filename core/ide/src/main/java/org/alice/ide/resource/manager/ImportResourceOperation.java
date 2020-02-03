@@ -55,20 +55,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ImportResourceOperation<R extends Resource> extends ResourceOperation {
-	private final Importer<R> importer;
+  private final Importer<R> importer;
 
-	public ImportResourceOperation( UUID migrationId, Importer<R> importer ) {
-		super( migrationId );
-		this.importer = importer;
-	}
+  public ImportResourceOperation(UUID migrationId, Importer<R> importer) {
+    super(migrationId);
+    this.importer = importer;
+  }
 
-	@Override
-	protected R getResource() {
-		return this.importer.createValue( this.getImp().getName() );
-	}
+  @Override
+  protected R getResource() {
+    return this.importer.createValue(this.getImp().getName());
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, Resource resource ) {
-		return new AddResourceEdit( userActivity, resource );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, Resource resource) {
+    return new AddResourceEdit(userActivity, resource);
+  }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Odin">
+    <BoundingBox>
+        <Min x="-0.419663909112584" y="-0.011449342306942422" z="-0.23246795920300295"/>
+        <Max x="0.40599527493011933" y="1.8988200328237534" z="0.26992002079150523"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>odin</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Odin" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

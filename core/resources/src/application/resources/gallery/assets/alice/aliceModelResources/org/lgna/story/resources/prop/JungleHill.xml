@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="JungleHill">
+    <BoundingBox>
+        <Min x="-2.146054744720459" y="-0.27829310297966003" z="-3.4836366176605225"/>
+        <Max x="2.3805811405181885" y="2.608405590057373" z="2.591353178024292"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>river</Tag>
+        <Tag>bridge</Tag>
+        <Tag>rock</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hill1" resourceName="HILL1_LOG_BRIDGE" textureName="LOG_BRIDGE">
+        <BoundingBox>
+            <Min x="-2.07643461227417" y="-0.27829310297966003" z="-2.8235628604888916"/>
+            <Max x="1.9739643335342407" y="2.608405590057373" z="2.2122066020965576"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill1" resourceName="HILL1_LOG_BRIDGE1_DIFFUSE_ORIGINAL" textureName="LOG_BRIDGE1_DIFFUSE_ORIGINAL">
+        <BoundingBox>
+            <Min x="-2.07643461227417" y="-0.27829310297966003" z="-2.8235628604888916"/>
+            <Max x="1.9739643335342407" y="2.608405590057373" z="2.2122066020965576"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill2" resourceName="HILL2_LOGBRIDGE_2" textureName="LOGBRIDGE_2">
+        <BoundingBox>
+            <Min x="-2.146054744720459" y="-0.1289166659116745" z="-3.4836366176605225"/>
+            <Max x="2.3805811405181885" y="2.1492903232574463" z="2.591353178024292"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill2" resourceName="HILL2_LOGBRIDGE_2_DIFFUSE_ORIGINAL" textureName="LOGBRIDGE_2_DIFFUSE_ORIGINAL">
+        <BoundingBox>
+            <Min x="-2.146054744720459" y="-0.1289166659116745" z="-3.4836366176605225"/>
+            <Max x="2.3805811405181885" y="2.1492903232574463" z="2.591353178024292"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

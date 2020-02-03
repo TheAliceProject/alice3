@@ -71,141 +71,121 @@ import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
  * @author Dennis Cosgrove
  */
 public enum IdeApp {
-	INSTANCE;
+  INSTANCE;
 
-	public BooleanState getMemoryUsageFrameIsShowingState() {
-		return this.memoryUsageFrameIsShowingState;
-	}
+  public BooleanState getMemoryUsageFrameIsShowingState() {
+    return this.memoryUsageFrameIsShowingState;
+  }
 
-	public BooleanState getLocalizeReviewIsShowingState() {
-		return this.localizeReviewIsShowingState;
-	}
+  public BooleanState getLocalizeReviewIsShowingState() {
+    return this.localizeReviewIsShowingState;
+  }
 
-	public Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
-		return this.isRecursionAllowedPreferenceDialogLaunchOperation;
-	}
+  public Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
+    return this.isRecursionAllowedPreferenceDialogLaunchOperation;
+  }
 
-	public MenuModel getContributorMenuModel() {
-		return this.contributorMenuModel;
-	}
+  public MenuModel getContributorMenuModel() {
+    return this.contributorMenuModel;
+  }
 
-	public Operation getHelpDialogLaunchOperation() {
-		return this.helpDialogLaunchOperation;
-	}
+  public Operation getHelpDialogLaunchOperation() {
+    return this.helpDialogLaunchOperation;
+  }
 
-	public Operation getGraphicsHelpDialogLaunchOperation() {
-		return this.graphicsHelpDialogLaunchOperation;
-	}
+  public Operation getGraphicsHelpDialogLaunchOperation() {
+    return this.graphicsHelpDialogLaunchOperation;
+  }
 
-	public Operation getReportBugLaunchOperation() {
-		return this.reportIssueComposite.getReportBugLaunchOperation();
-	}
+  public Operation getReportBugLaunchOperation() {
+    return this.reportIssueComposite.getReportBugLaunchOperation();
+  }
 
-	public Operation getRequestNewFeatureLaunchOperation() {
-		return this.reportIssueComposite.getRequestNewFeatureLaunchOperation();
-	}
+  public Operation getRequestNewFeatureLaunchOperation() {
+    return this.reportIssueComposite.getRequestNewFeatureLaunchOperation();
+  }
 
-	public Operation getSuggestImprovementLaunchOperation() {
-		return this.reportIssueComposite.getSuggestImprovementLaunchOperation();
-	}
+  public Operation getSuggestImprovementLaunchOperation() {
+    return this.reportIssueComposite.getSuggestImprovementLaunchOperation();
+  }
 
-	public Operation getWarningDialogLaunchOperation() {
-		return this.warningDialogLaunchOperation;
-	}
+  public Operation getWarningDialogLaunchOperation() {
+    return this.warningDialogLaunchOperation;
+  }
 
-	public ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
-		return this.showClassPathPropertyComposite;
-	}
+  public ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
+    return this.showClassPathPropertyComposite;
+  }
 
-	public ShowLibraryPathPropertyComposite getShowLibraryPathPropertyComposite() {
-		return this.showLibraryPathPropertyComposite;
-	}
+  public ShowLibraryPathPropertyComposite getShowLibraryPathPropertyComposite() {
+    return this.showLibraryPathPropertyComposite;
+  }
 
-	public ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
-		return this.showAllSystemPropertiesComposite;
-	}
+  public ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
+    return this.showAllSystemPropertiesComposite;
+  }
 
-	public Operation getShowSystemPropertiesDialogLaunchOperation() {
-		return this.showSystemPropertiesDialogLaunchOperation;
-	}
+  public Operation getShowSystemPropertiesDialogLaunchOperation() {
+    return this.showSystemPropertiesDialogLaunchOperation;
+  }
 
-	public Operation getBrowseReleaseNotesOperation() {
-		return this.browseReleaseNotesOperation;
-	}
+  public Operation getBrowseReleaseNotesOperation() {
+    return this.browseReleaseNotesOperation;
+  }
 
-	public Operation getSystemEulaDialogLaunchOperation() {
-		return this.systemEulaDialogLaunchOperation;
-	}
+  public Operation getSystemEulaDialogLaunchOperation() {
+    return this.systemEulaDialogLaunchOperation;
+  }
 
-	public Operation getSimsArtEulaDialogLaunchOperation() {
-		return this.simsArtEulaDialogLaunchOperation;
-	}
+  public Operation getSimsArtEulaDialogLaunchOperation() {
+    return this.simsArtEulaDialogLaunchOperation;
+  }
 
-	public Operation getCreditsDialogLaunchOperation() {
-		return this.creditsDialogLaunchOperation;
-	}
+  public Operation getCreditsDialogLaunchOperation() {
+    return this.creditsDialogLaunchOperation;
+  }
 
-	public Operation getAboutDialogLaunchOperation() {
-		return this.aboutDialogLaunchOperation;
-	}
+  public Operation getAboutDialogLaunchOperation() {
+    return this.aboutDialogLaunchOperation;
+  }
 
-	public HelpMenuModel getHelpMenu() {
-		return this.helpMenu;
-	}
+  public HelpMenuModel getHelpMenu() {
+    return this.helpMenu;
+  }
 
-	private final BooleanState memoryUsageFrameIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-			Application.INFORMATION_GROUP,
-			MemoryUsageComposite.class );
+  private final BooleanState memoryUsageFrameIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, MemoryUsageComposite.class);
 
-	private final BooleanState localizeReviewIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-			Application.INFORMATION_GROUP,
-			LocalizeReviewFrame.class );
+  private final BooleanState localizeReviewIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, LocalizeReviewFrame.class);
 
-	private final Operation isRecursionAllowedPreferenceDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			IsRecursionAllowedPreferenceDialogComposite.class,
-			Application.APPLICATION_UI_GROUP ).getLaunchOperation();
+  private final Operation isRecursionAllowedPreferenceDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(IsRecursionAllowedPreferenceDialogComposite.class, Application.APPLICATION_UI_GROUP).getLaunchOperation();
 
-	private final MenuModel contributorMenuModel = new ContributorMenuModel( localizeReviewIsShowingState );
+  private final MenuModel contributorMenuModel = new ContributorMenuModel(localizeReviewIsShowingState);
 
-	private final Operation helpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			HelpComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation helpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(HelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final Operation graphicsHelpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			GraphicsHelpComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation graphicsHelpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(GraphicsHelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final ReportIssueComposite reportIssueComposite = new ReportIssueComposite();
+  private final ReportIssueComposite reportIssueComposite = new ReportIssueComposite();
 
-	private final Operation warningDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			WarningDialogComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation warningDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(WarningDialogComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final ShowClassPathPropertyComposite showClassPathPropertyComposite = new ShowClassPathPropertyComposite();
+  private final ShowClassPathPropertyComposite showClassPathPropertyComposite = new ShowClassPathPropertyComposite();
 
-	private final ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new ShowLibraryPathPropertyComposite();
+  private final ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new ShowLibraryPathPropertyComposite();
 
-	private final ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new ShowAllSystemPropertiesComposite();
+  private final ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new ShowAllSystemPropertiesComposite();
 
-	private final Operation showSystemPropertiesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			ShowSystemPropertiesComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation showSystemPropertiesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(ShowSystemPropertiesComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final BrowseReleaseNotesOperation browseReleaseNotesOperation = new BrowseReleaseNotesOperation();
+  private final BrowseReleaseNotesOperation browseReleaseNotesOperation = new BrowseReleaseNotesOperation();
 
-	private final Operation systemEulaDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			SystemEulaComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation systemEulaDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(SystemEulaComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final Operation simsArtEulaDialogLaunchOperation = NebulousIde.nonfree.newSimsArtEulaDialogLaunchOperation();
+  private final Operation simsArtEulaDialogLaunchOperation = NebulousIde.nonfree.newSimsArtEulaDialogLaunchOperation();
 
-	private final Operation creditsDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			CreditsComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation creditsDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(CreditsComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final Operation aboutDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			AboutComposite.class,
-			Application.INFORMATION_GROUP ).getLaunchOperation();
+  private final Operation aboutDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(AboutComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-	private final HelpMenuModel helpMenu = new HelpMenuModel( this );
+  private final HelpMenuModel helpMenu = new HelpMenuModel(this);
 }

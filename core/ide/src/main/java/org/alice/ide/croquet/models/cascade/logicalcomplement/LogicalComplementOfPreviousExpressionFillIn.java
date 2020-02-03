@@ -53,24 +53,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class LogicalComplementOfPreviousExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<LogicalComplement> {
-	private static class SingletonHolder {
-		private static LogicalComplementOfPreviousExpressionFillIn instance = new LogicalComplementOfPreviousExpressionFillIn();
-	}
+  private static class SingletonHolder {
+    private static LogicalComplementOfPreviousExpressionFillIn instance = new LogicalComplementOfPreviousExpressionFillIn();
+  }
 
-	public static LogicalComplementOfPreviousExpressionFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static LogicalComplementOfPreviousExpressionFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private LogicalComplementOfPreviousExpressionFillIn() {
-		super( UUID.fromString( "53574545-8136-40f3-83cc-1483522dfd73" ) );
-	}
+  private LogicalComplementOfPreviousExpressionFillIn() {
+    super(UUID.fromString("53574545-8136-40f3-83cc-1483522dfd73"));
+  }
 
-	//	@Override
-	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep context, org.lgna.project.ast.Expression previousExpression ) {
-	//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
-	//	}
-	@Override
-	protected LogicalComplement createValue( Expression previousExpression ) {
-		return new LogicalComplement( previousExpression );
-	}
+  //  @Override
+  //  protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep context, org.lgna.project.ast.Expression previousExpression ) {
+  //    return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+  //  }
+  @Override
+  protected LogicalComplement createValue(Expression previousExpression) {
+    return new LogicalComplement(previousExpression);
+  }
 }

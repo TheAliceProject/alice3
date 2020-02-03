@@ -54,88 +54,88 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author Dennis Cosgrove
  */
 public class DefaultNode<T> implements Node<T> {
-	private final T value;
-	private final List<DefaultNode<T>> children;
+  private final T value;
+  private final List<DefaultNode<T>> children;
 
-	public static <T> DefaultNode<T> createUnsafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode<T>( value, false );
-	}
+  public static <T> DefaultNode<T> createUnsafeInstance(T value, Class<T> cls) {
+    return new DefaultNode<T>(value, false);
+  }
 
-	public static <T> DefaultNode<T> createSafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode<T>( value, true );
-	}
+  public static <T> DefaultNode<T> createSafeInstance(T value, Class<T> cls) {
+    return new DefaultNode<T>(value, true);
+  }
 
-	private DefaultNode( T value, boolean isCopyOnWrite ) {
-		this.value = value;
-		if( isCopyOnWrite ) {
-			this.children = Lists.newCopyOnWriteArrayList();
-		} else {
-			this.children = Lists.newLinkedList();
-		}
-	}
+  private DefaultNode(T value, boolean isCopyOnWrite) {
+    this.value = value;
+    if (isCopyOnWrite) {
+      this.children = Lists.newCopyOnWriteArrayList();
+    } else {
+      this.children = Lists.newLinkedList();
+    }
+  }
 
-	public void addChild( DefaultNode<T> node ) {
-		this.children.add( node );
-	}
+  public void addChild(DefaultNode<T> node) {
+    this.children.add(node);
+  }
 
-	public DefaultNode<T> addChild( T child ) {
-		DefaultNode<T> rv = new DefaultNode<T>( child, this.children instanceof CopyOnWriteArrayList );
-		this.addChild( rv );
-		return rv;
-	}
+  public DefaultNode<T> addChild(T child) {
+    DefaultNode<T> rv = new DefaultNode<T>(child, this.children instanceof CopyOnWriteArrayList);
+    this.addChild(rv);
+    return rv;
+  }
 
-	public void removeChild( DefaultNode<T> node ) {
-		this.children.remove( node );
-	}
+  public void removeChild(DefaultNode<T> node) {
+    this.children.remove(node);
+  }
 
-	public DefaultNode<T> removeChild( T child ) {
-		ListIterator<DefaultNode<T>> listIterator = this.children.listIterator();
-		while( listIterator.hasNext() ) {
-			DefaultNode<T> node = listIterator.next();
-			if( node.getValue().equals( child ) ) {
-				listIterator.remove();
-				return node;
-			}
-		}
-		return null;
-	}
+  public DefaultNode<T> removeChild(T child) {
+    ListIterator<DefaultNode<T>> listIterator = this.children.listIterator();
+    while (listIterator.hasNext()) {
+      DefaultNode<T> node = listIterator.next();
+      if (node.getValue().equals(child)) {
+        listIterator.remove();
+        return node;
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public T getValue() {
-		return this.value;
-	}
+  @Override
+  public T getValue() {
+    return this.value;
+  }
 
-	@Override
-	public List<DefaultNode<T>> getChildren() {
-		return this.children;
-	}
+  @Override
+  public List<DefaultNode<T>> getChildren() {
+    return this.children;
+  }
 
-	@Override
-	public boolean contains( T value ) {
-		return get( value ) != null;
-	}
+  @Override
+  public boolean contains(T value) {
+    return get(value) != null;
+  }
 
-	@Override
-	public DefaultNode<T> get( T value ) {
-		if( Objects.equals( this.value, value ) ) {
-			return this;
-		} else {
-			for( DefaultNode<T> child : this.children ) {
-				DefaultNode<T> rv = child.get( value );
-				if( rv != null ) {
-					return rv;
-				}
-			}
-			return null;
-		}
-	}
+  @Override
+  public DefaultNode<T> get(T value) {
+    if (Objects.equals(this.value, value)) {
+      return this;
+    } else {
+      for (DefaultNode<T> child : this.children) {
+        DefaultNode<T> rv = child.get(value);
+        if (rv != null) {
+          return rv;
+        }
+      }
+      return null;
+    }
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "DefaultNode[" );
-		sb.append( this.value != null ? this.value.toString() : null );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("DefaultNode[");
+    sb.append(this.value != null ? this.value.toString() : null);
+    sb.append("]");
+    return sb.toString();
+  }
 }

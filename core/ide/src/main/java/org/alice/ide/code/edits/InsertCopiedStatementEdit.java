@@ -57,36 +57,36 @@ import javax.swing.undo.CannotUndoException;
  * @author Dennis Cosgrove
  */
 public final class InsertCopiedStatementEdit extends AbstractEdit<InsertCopiedStatementOperation> {
-	public InsertCopiedStatementEdit( UserActivity userActivity, BlockStatement blockStatement, int index, Statement statement ) {
-		super( userActivity );
-		this.blockStatement = blockStatement;
-		this.index = index;
-		this.statement = statement;
-	}
+  public InsertCopiedStatementEdit(UserActivity userActivity, BlockStatement blockStatement, int index, Statement statement) {
+    super(userActivity);
+    this.blockStatement = blockStatement;
+    this.index = index;
+    this.statement = statement;
+  }
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		this.blockStatement.statements.add( this.index, this.statement );
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    this.blockStatement.statements.add(this.index, this.statement);
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	public void undoInternal() {
-		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
-			this.blockStatement.statements.remove( this.index );
-			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		} else {
-			throw new CannotUndoException();
-		}
-	}
+  @Override
+  public void undoInternal() {
+    if (this.blockStatement.statements.get(this.index) == this.statement) {
+      this.blockStatement.statements.remove(this.index);
+      ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+    } else {
+      throw new CannotUndoException();
+    }
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "copy: " );
-		NodeUtilities.safeAppendRepr( rv, this.statement, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("copy: ");
+    NodeUtilities.safeAppendRepr(rv, this.statement, Application.getLocale());
+  }
 
-	private final BlockStatement blockStatement;
-	private final int index;
-	private final Statement statement;
+  private final BlockStatement blockStatement;
+  private final int index;
+  private final Statement statement;
 }

@@ -54,24 +54,24 @@ import java.util.UUID;
  * @author Matt May
  */
 public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
-	//todo: move
-	public static final Integer TOP_SIZE = 250;
-	public static final Integer BOTTOM_SIZE = 100;
+  //todo: move
+  public static final Integer TOP_SIZE = 250;
+  public static final Integer BOTTOM_SIZE = 100;
 
-	public StatisticsFrameComposite( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
-	}
+  public StatisticsFrameComposite(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("d17d2d7c-ecae-4869-98e6-cc2d4c2fe517"));
+  }
 
-	@Override
-	protected StatisticsFrameView createView() {
-		return new StatisticsFrameView( this );
-	}
+  @Override
+  protected StatisticsFrameView createView() {
+    return new StatisticsFrameView(this);
+  }
 
-	public ImmutableDataTabState<SimpleTabComposite<?>> getTabState() {
-		return this.tabState;
-	}
+  public ImmutableDataTabState<SimpleTabComposite<?>> getTabState() {
+    return this.tabState;
+  }
 
-	private final StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
-	private final StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-	private final ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
+  private final StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
+  private final StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
+  private final ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState("tabState", 0, flowControlFrequencyTab, methodTab);
 }

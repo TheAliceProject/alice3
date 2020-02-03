@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsIncludingTypeFeedbackForExpressionsState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsIncludingTypeFeedbackForExpressionsState instance = new IsIncludingTypeFeedbackForExpressionsState();
-	}
+  private static class SingletonHolder {
+    private static IsIncludingTypeFeedbackForExpressionsState instance = new IsIncludingTypeFeedbackForExpressionsState();
+  }
 
-	public static IsIncludingTypeFeedbackForExpressionsState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsIncludingTypeFeedbackForExpressionsState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsIncludingTypeFeedbackForExpressionsState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
-	}
+  private IsIncludingTypeFeedbackForExpressionsState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("e80adbfe-9e1a-408f-8067-ddbd30d0ffb9"), true);
+  }
 }

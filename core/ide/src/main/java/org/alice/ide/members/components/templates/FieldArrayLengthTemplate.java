@@ -54,19 +54,19 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 /* package-private */class FieldArrayLengthTemplate extends ExpressionTemplate {
-	private AbstractField field;
+  private AbstractField field;
 
-	public FieldArrayLengthTemplate( AbstractField field ) {
-		super( FieldArrayLengthDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof UserField ) {
-			UserField userField = (UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
-	}
+  public FieldArrayLengthTemplate(AbstractField field) {
+    super(FieldArrayLengthDragModel.getInstance(field));
+    this.field = field;
+    if (this.field instanceof UserField) {
+      UserField userField = (UserField) this.field;
+      this.setPopupPrepModel(new FieldMenu(userField).getPopupPrepModel());
+    }
+  }
 
-	@Override
-	protected Expression createIncompleteExpression() {
-		return new ArrayLength( IncompleteAstUtilities.createIncompleteFieldAccess( field ) );
-	}
+  @Override
+  protected Expression createIncompleteExpression() {
+    return new ArrayLength(IncompleteAstUtilities.createIncompleteFieldAccess(field));
+  }
 }

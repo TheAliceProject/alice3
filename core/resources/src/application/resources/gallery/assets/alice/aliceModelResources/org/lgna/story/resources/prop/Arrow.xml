@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Laura Paoletti" name="Arrow">
+    <BoundingBox>
+        <Min x="-0.022297972813248634" y="-0.02440032921731472" z="-1.0034295320510864"/>
+        <Max x="0.03256290405988693" y="0.03268493711948395" z="0.010000810027122498"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>skadi</Tag>
+        <Tag>arctic</Tag>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>hunting</Tag>
+        <Tag>arrow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*norse</ThemeTag>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Arrow" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

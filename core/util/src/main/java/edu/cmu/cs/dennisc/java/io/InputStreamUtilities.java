@@ -53,75 +53,75 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class InputStreamUtilities {
-	public static boolean drain( InputStream is, OutputStream os ) throws IOException {
-		while( is.available() > 0 ) {
-			int v = is.read();
-			if( v != -1 ) {
-				if( os != null ) {
-					os.write( v );
-				}
-			} else {
-				return false;
-			}
-		}
-		return true;
-	}
+  public static boolean drain(InputStream is, OutputStream os) throws IOException {
+    while (is.available() > 0) {
+      int v = is.read();
+      if (v != -1) {
+        if (os != null) {
+          os.write(v);
+        }
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 
-	public static boolean drain( InputStream is ) throws IOException {
-		return drain( is, null );
-	}
+  public static boolean drain(InputStream is) throws IOException {
+    return drain(is, null);
+  }
 
-	public static byte[] getBytes( InputStream is ) throws IOException {
-		byte[] buffer = null;
-		ByteArrayOutputStream baos = null;
-		while( true ) {
-			int n = is.available();
-			if( buffer != null ) {
-				// handle the previous iteration
-				if( baos != null ) {
-					//pass
-				} else {
-					// it is the second iteration
-					if( n > 0 ) {
-						// more than one buffer so we use a ByteArrayOutputStream
-						baos = new ByteArrayOutputStream();
-					} else {
-						// there is one and only one buffer, so simply return it
-						return buffer;
-					}
-				}
-				// will only get here if there are 2 or more buffers
-				baos.write( buffer );
-			}
-			if( n > 0 ) {
-				buffer = new byte[ n ];
-				int offset = 0;
-				while( offset < n ) {
-					offset += is.read( buffer, offset, n - offset );
-				}
-				assert offset == n;
-			} else {
-				break;
-			}
-		}
-		return baos.toByteArray();
-	}
+  public static byte[] getBytes(InputStream is) throws IOException {
+    byte[] buffer = null;
+    ByteArrayOutputStream baos = null;
+    while (true) {
+      int n = is.available();
+      if (buffer != null) {
+        // handle the previous iteration
+        if (baos != null) {
+          //pass
+        } else {
+          // it is the second iteration
+          if (n > 0) {
+            // more than one buffer so we use a ByteArrayOutputStream
+            baos = new ByteArrayOutputStream();
+          } else {
+            // there is one and only one buffer, so simply return it
+            return buffer;
+          }
+        }
+        // will only get here if there are 2 or more buffers
+        baos.write(buffer);
+      }
+      if (n > 0) {
+        buffer = new byte[n];
+        int offset = 0;
+        while (offset < n) {
+          offset += is.read(buffer, offset, n - offset);
+        }
+        assert offset == n;
+      } else {
+        break;
+      }
+    }
+    return baos.toByteArray();
+  }
 
-	public static byte[] getBytes( File file ) throws IOException {
-		FileInputStream fis = new FileInputStream( file );
-		try {
-			return getBytes( fis );
-		} finally {
-			fis.close();
-		}
-	}
+  public static byte[] getBytes(File file) throws IOException {
+    FileInputStream fis = new FileInputStream(file);
+    try {
+      return getBytes(fis);
+    } finally {
+      fis.close();
+    }
+  }
 
-	public static byte[] getBytes( Class<?> cls, String resourceName ) throws IOException {
-		InputStream is = cls.getResourceAsStream( resourceName );
-		try {
-			return getBytes( is );
-		} finally {
-			is.close();
-		}
-	}
+  public static byte[] getBytes(Class<?> cls, String resourceName) throws IOException {
+    InputStream is = cls.getResourceAsStream(resourceName);
+    try {
+      return getBytes(is);
+    } finally {
+      is.close();
+    }
+  }
 }

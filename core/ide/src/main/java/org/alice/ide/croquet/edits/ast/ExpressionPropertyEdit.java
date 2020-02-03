@@ -62,62 +62,62 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyEdit extends AbstractEdit {
-	private final ExpressionProperty expressionProperty;
-	private final Expression nextExpression;
-	private final Expression prevExpression;
+  private final ExpressionProperty expressionProperty;
+  private final Expression nextExpression;
+  private final Expression prevExpression;
 
-	public ExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
-		super( userActivity );
-		this.expressionProperty = expressionProperty;
-		this.prevExpression = prevExpression;
-		this.nextExpression = nextExpression;
-	}
+  public ExpressionPropertyEdit(UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression) {
+    super(userActivity);
+    this.expressionProperty = expressionProperty;
+    this.prevExpression = prevExpression;
+    this.nextExpression = nextExpression;
+  }
 
-	public ExpressionPropertyEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		UUID expressionPropertyNodeId = binaryDecoder.decodeId();
-		String propertyName = binaryDecoder.decodeString();
-		UUID prevExpressionId = binaryDecoder.decodeId();
-		UUID nextExpressionId = binaryDecoder.decodeId();
+  public ExpressionPropertyEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    UUID expressionPropertyNodeId = binaryDecoder.decodeId();
+    String propertyName = binaryDecoder.decodeString();
+    UUID prevExpressionId = binaryDecoder.decodeId();
+    UUID nextExpressionId = binaryDecoder.decodeId();
 
-		IDE ide = IDE.getActiveInstance();
-		Project project = ide.getProject();
-		AbstractNode node = ProgramTypeUtilities.lookupNode( project, expressionPropertyNodeId );
-		this.expressionProperty = (ExpressionProperty)node.getPropertyNamed( propertyName );
-		this.prevExpression = ProgramTypeUtilities.lookupNode( project, prevExpressionId );
-		this.nextExpression = ProgramTypeUtilities.lookupNode( project, nextExpressionId );
-	}
+    IDE ide = IDE.getActiveInstance();
+    Project project = ide.getProject();
+    AbstractNode node = ProgramTypeUtilities.lookupNode(project, expressionPropertyNodeId);
+    this.expressionProperty = (ExpressionProperty) node.getPropertyNamed(propertyName);
+    this.prevExpression = ProgramTypeUtilities.lookupNode(project, prevExpressionId);
+    this.nextExpression = ProgramTypeUtilities.lookupNode(project, nextExpressionId);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		Node node = (Node)this.expressionProperty.getOwner();
-		binaryEncoder.encode( node.getId() );
-		binaryEncoder.encode( this.expressionProperty.getName() );
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    Node node = (Node) this.expressionProperty.getOwner();
+    binaryEncoder.encode(node.getId());
+    binaryEncoder.encode(this.expressionProperty.getName());
 
-		binaryEncoder.encode( this.prevExpression.getId() );
-		binaryEncoder.encode( this.nextExpression.getId() );
-	}
+    binaryEncoder.encode(this.prevExpression.getId());
+    binaryEncoder.encode(this.nextExpression.getId());
+  }
 
-	protected void setValue( Expression expression ) {
-		this.expressionProperty.setValue( expression );
-	}
+  protected void setValue(Expression expression) {
+    this.expressionProperty.setValue(expression);
+  }
 
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.setValue( this.nextExpression );
-	}
+  @Override
+  protected final void doOrRedoInternal(boolean isDo) {
+    this.setValue(this.nextExpression);
+  }
 
-	@Override
-	protected final void undoInternal() {
-		this.setValue( this.prevExpression );
-	}
+  @Override
+  protected final void undoInternal() {
+    this.setValue(this.prevExpression);
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "set: " );
-		NodeUtilities.safeAppendRepr( rv, this.prevExpression, Application.getLocale() );
-		rv.append( " ===> " );
-		NodeUtilities.safeAppendRepr( rv, this.nextExpression, Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("set: ");
+    NodeUtilities.safeAppendRepr(rv, this.prevExpression, Application.getLocale());
+    rv.append(" ===> ");
+    NodeUtilities.safeAppendRepr(rv, this.nextExpression, Application.getLocale());
+  }
 }

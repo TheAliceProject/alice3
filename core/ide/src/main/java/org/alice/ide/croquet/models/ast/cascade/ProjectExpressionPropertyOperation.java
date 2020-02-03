@@ -56,26 +56,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectExpressionPropertyOperation extends ActionOperation {
-	private final ExpressionProperty expressionProperty;
+  private final ExpressionProperty expressionProperty;
 
-	public ProjectExpressionPropertyOperation( UUID id, ExpressionProperty expressionProperty ) {
-		super( Application.PROJECT_GROUP, id );
-		this.expressionProperty = expressionProperty;
-	}
+  public ProjectExpressionPropertyOperation(UUID id, ExpressionProperty expressionProperty) {
+    super(Application.PROJECT_GROUP, id);
+    this.expressionProperty = expressionProperty;
+  }
 
-	public final ExpressionProperty getExpressionProperty() {
-		return this.expressionProperty;
-	}
+  public final ExpressionProperty getExpressionProperty() {
+    return this.expressionProperty;
+  }
 
-	private Expression getPreviousExpression() {
-		return this.expressionProperty.getValue();
-	}
+  private Expression getPreviousExpression() {
+    return this.expressionProperty.getValue();
+  }
 
-	protected abstract Expression createExpression();
+  protected abstract Expression createExpression();
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		Expression value = this.createExpression();
-		activity.commitAndInvokeDo( new ExpressionPropertyEdit( activity, this.expressionProperty, this.getPreviousExpression(), value ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    Expression value = this.createExpression();
+    activity.commitAndInvokeDo(new ExpressionPropertyEdit(activity, this.expressionProperty, this.getPreviousExpression(), value));
+  }
 }

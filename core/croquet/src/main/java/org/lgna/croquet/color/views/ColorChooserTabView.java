@@ -52,25 +52,25 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
  * @author Dennis Cosgrove
  */
 public abstract class ColorChooserTabView extends CompositeView<AbstractColorChooserPanel, ColorChooserTabComposite<?>> {
-	protected abstract class JColorChooserPanel extends AbstractColorChooserPanel {
-		@Override
-		public String getDisplayName() {
-			return ColorChooserTabView.this.getComposite().getName();
-		}
+  protected abstract class JColorChooserPanel extends AbstractColorChooserPanel {
+    @Override
+    public String getDisplayName() {
+      return ColorChooserTabView.this.getComposite().getName();
+    }
 
-		@Override
-		public Icon getLargeDisplayIcon() {
-			return ColorChooserTabView.this.getComposite().getLargeDisplayIcon();
-		}
+    @Override
+    public Icon getLargeDisplayIcon() {
+      return ColorChooserTabView.this.getComposite().getLargeDisplayIcon();
+    }
 
-		@Override
-		public Icon getSmallDisplayIcon() {
-			return ColorChooserTabView.this.getComposite().getSmallDisplayIcon();
-		}
+    @Override
+    public Icon getSmallDisplayIcon() {
+      return ColorChooserTabView.this.getComposite().getSmallDisplayIcon();
+    }
 
-	}
+  }
 
-	public ColorChooserTabView( ColorChooserTabComposite<?> composite ) {
-		super( composite );
-	}
+  public ColorChooserTabView(ColorChooserTabComposite<?> composite) {
+    super(composite);
+  }
 }

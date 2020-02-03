@@ -60,19 +60,19 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class ColorFillerInner extends ExpressionFillerInner {
-	public ColorFillerInner() {
-		super( Color.class );
-	}
+  public ColorFillerInner() {
+    super(Color.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		AbstractType<?, ?, ?> type = this.getType();
-		for( AbstractField field : type.getDeclaredFields() ) {
-			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				items.add( StaticFieldAccessFillIn.getInstance( field ) );
-			}
-		}
-		items.add( CascadeLineSeparator.getInstance() );
-		items.add( ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    AbstractType<?, ?, ?> type = this.getType();
+    for (AbstractField field : type.getDeclaredFields()) {
+      if (field.isPublicAccess() && field.isStatic() && field.isFinal()) {
+        items.add(StaticFieldAccessFillIn.getInstance(field));
+      }
+    }
+    items.add(CascadeLineSeparator.getInstance());
+    items.add(ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn());
+  }
 }

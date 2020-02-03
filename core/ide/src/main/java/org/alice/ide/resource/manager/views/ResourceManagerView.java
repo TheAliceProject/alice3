@@ -68,132 +68,121 @@ import java.awt.event.MouseEvent;
 
 abstract class ResourceTableCellRenderer<E> extends TableCellRenderer<E> {
 
-	static final String BUNDLE_NAME = "org.alice.ide.resource.manager.croquet";
+  static final String BUNDLE_NAME = "org.alice.ide.resource.manager.croquet";
 
-	@Override
-	protected JLabel getTableCellRendererComponent( JLabel rv, JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv.setHorizontalAlignment( SwingConstants.CENTER );
-		rv.setBorder( null );
-		return rv;
-	}
+  @Override
+  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column) {
+    rv.setHorizontalAlignment(SwingConstants.CENTER);
+    rv.setBorder(null);
+    return rv;
+  }
 
-	protected Color getForegroundColor( boolean isGoodToGo, boolean isSelected ) {
-		if( isGoodToGo ) {
-			if( isSelected ) {
-				return Color.WHITE;
-			} else {
-				return Color.BLACK;
-			}
-		} else {
-			if( isSelected ) {
-				return new Color( 255, 127, 127 );
-			} else {
-				return Color.RED.darker();
-			}
-		}
-	}
+  protected Color getForegroundColor(boolean isGoodToGo, boolean isSelected) {
+    if (isGoodToGo) {
+      if (isSelected) {
+        return Color.WHITE;
+      } else {
+        return Color.BLACK;
+      }
+    } else {
+      if (isSelected) {
+        return new Color(255, 127, 127);
+      } else {
+        return Color.RED.darker();
+      }
+    }
+  }
 }
 
 class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Boolean> {
-	@Override
-	protected JLabel getTableCellRendererComponent( JLabel rv, JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String key = value ? "yes" : "no";
-		rv.setText( ResourceBundleUtilities.getStringForKey( key, BUNDLE_NAME ) );
-		rv.setForeground( this.getForegroundColor( value, isSelected ) );
-		return rv;
-	}
+  @Override
+  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column) {
+    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
+    String key = value ? "yes" : "no";
+    rv.setText(ResourceBundleUtilities.getStringForKey(key, BUNDLE_NAME));
+    rv.setForeground(this.getForegroundColor(value, isSelected));
+    return rv;
+  }
 }
 
 class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? extends Resource>> {
-	@Override
-	protected JLabel getTableCellRendererComponent( JLabel rv, JTable table, Class<? extends Resource> value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text = value != null ?
-						ResourceBundleUtilities.getStringForKey( value.getSimpleName(), BUNDLE_NAME ) :
-						"ERROR";
-		rv.setText( text );
-		rv.setForeground( this.getForegroundColor( value != null, isSelected ) );
-		return rv;
-	}
+  @Override
+  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Class<? extends Resource> value, boolean isSelected, boolean hasFocus, int row, int column) {
+    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
+    String text = value != null ? ResourceBundleUtilities.getStringForKey(value.getSimpleName(), BUNDLE_NAME) : "ERROR";
+    rv.setText(text);
+    rv.setForeground(this.getForegroundColor(value != null, isSelected));
+    return rv;
+  }
 }
 
 class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<Resource> {
-	@Override
-	protected JLabel getTableCellRendererComponent( JLabel rv, JTable table, Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		if( value != null ) {
-			text = value.getName();
-		} else {
-			text = "ERROR";
-		}
-		rv.setText( text );
-		rv.setForeground( this.getForegroundColor( value != null, isSelected ) );
-		return rv;
-	}
+  @Override
+  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Resource value, boolean isSelected, boolean hasFocus, int row, int column) {
+    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
+    String text;
+    if (value != null) {
+      text = value.getName();
+    } else {
+      text = "ERROR";
+    }
+    rv.setText(text);
+    rv.setForeground(this.getForegroundColor(value != null, isSelected));
+    return rv;
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public class ResourceManagerView extends BorderPanel {
-	public ResourceManagerView( ResourceManagerComposite composite ) {
-		super( composite, 8, 8 );
+  public ResourceManagerView(ResourceManagerComposite composite) {
+    super(composite, 8, 8);
 
-		this.table = composite.getResourcesState().createTable();
-		JTable jTable = this.table.getAwtComponent();
-		JTableHeader tableHeader = jTable.getTableHeader();
-		tableHeader.setReorderingAllowed( false );
-		jTable.getColumn( jTable.getColumnName( ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
-		jTable.getColumn( jTable.getColumnName( ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX ) ).setCellRenderer( new ResourceNameTableCellRenderer() );
-		jTable.getColumn( jTable.getColumnName( ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
+    this.table = composite.getResourcesState().createTable();
+    JTable jTable = this.table.getAwtComponent();
+    JTableHeader tableHeader = jTable.getTableHeader();
+    tableHeader.setReorderingAllowed(false);
+    jTable.getColumn(jTable.getColumnName(ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX)).setCellRenderer(new ResourceIsReferencedTableCellRenderer());
+    jTable.getColumn(jTable.getColumnName(ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX)).setCellRenderer(new ResourceNameTableCellRenderer());
+    jTable.getColumn(jTable.getColumnName(ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX)).setCellRenderer(new ResourceTypeTableCellRenderer());
 
-		ScrollPane scrollPane = new ScrollPane( this.table );
-		this.addCenterComponent( scrollPane );
+    ScrollPane scrollPane = new ScrollPane(this.table);
+    this.addCenterComponent(scrollPane);
 
-		Panel lineEndPanel = GridPanel.createSingleColumnGridPane(
-				composite.getImportAudioResourceOperation().createButton(),
-				composite.getImportImageResourceOperation().createButton(),
-				composite.getRemoveResourceOperation().createButton(),
-				new Label(),
-				composite.getRenameResourceComposite().getLaunchOperation().createButton(),
-				composite.getReloadContentOperation().createButton()
-				);
-		this.addLineEndComponent( new BorderPanel.Builder()
-				.pageStart( lineEndPanel )
-				.build() );
+    Panel lineEndPanel = GridPanel.createSingleColumnGridPane(composite.getImportAudioResourceOperation().createButton(), composite.getImportImageResourceOperation().createButton(), composite.getRemoveResourceOperation().createButton(), new Label(), composite.getRenameResourceComposite().getLaunchOperation().createButton(), composite.getReloadContentOperation().createButton());
+    this.addLineEndComponent(new BorderPanel.Builder().pageStart(lineEndPanel).build());
 
-		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
+    this.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.table.addMouseListener( this.mouseAdapter );
-		this.table.addMouseMotionListener( this.mouseAdapter );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.table.addMouseListener(this.mouseAdapter);
+    this.table.addMouseMotionListener(this.mouseAdapter);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.table.removeMouseMotionListener( this.mouseAdapter );
-		this.table.removeMouseListener( this.mouseAdapter );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.table.removeMouseMotionListener(this.mouseAdapter);
+    this.table.removeMouseListener(this.mouseAdapter);
+    super.handleUndisplayable();
+  }
 
-	private LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickUnquoteCount ) {
-			if( quoteClickUnquoteCount == 2 ) {
-				ResourceManagerComposite composite = (ResourceManagerComposite)getComposite();
-				if( composite.getResourcesState().getValue() != null ) {
-					final UserActivity activity = composite.getOpeningActivity().newChildActivity();
-					MouseEventTrigger.setOnUserActivity( activity, e );
-					composite.getRenameResourceComposite().getLaunchOperation().fire( activity );
-				}
-			}
-		}
-	};
+  private LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {
+    @Override
+    protected void mouseQuoteClickedUnquote(MouseEvent e, int quoteClickUnquoteCount) {
+      if (quoteClickUnquoteCount == 2) {
+        ResourceManagerComposite composite = (ResourceManagerComposite) getComposite();
+        if (composite.getResourcesState().getValue() != null) {
+          final UserActivity activity = composite.getOpeningActivity().newChildActivity();
+          MouseEventTrigger.setOnUserActivity(activity, e);
+          composite.getRenameResourceComposite().getLaunchOperation().fire(activity);
+        }
+      }
+    }
+  };
 
-	private final Table<Resource> table;
+  private final Table<Resource> table;
 }

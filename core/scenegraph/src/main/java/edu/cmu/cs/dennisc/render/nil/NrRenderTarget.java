@@ -73,266 +73,266 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class NrRenderTarget implements RenderTarget {
-	public NrRenderTarget( RenderCapabilities requestedCapabilities ) {
-		this.requestedCapabilities = requestedCapabilities;
-		this.actualCapabilities = new RenderCapabilities.Builder().build();
-	}
+  public NrRenderTarget(RenderCapabilities requestedCapabilities) {
+    this.requestedCapabilities = requestedCapabilities;
+    this.actualCapabilities = new RenderCapabilities.Builder().build();
+  }
 
-	@Override
-	public RenderCapabilities getRequestedCapabilities() {
-		return null;
-	}
+  @Override
+  public RenderCapabilities getRequestedCapabilities() {
+    return null;
+  }
 
-	@Override
-	public RenderCapabilities getActualCapabilities() {
-		return null;
-	}
+  @Override
+  public RenderCapabilities getActualCapabilities() {
+    return null;
+  }
 
-	@Override
-	public RenderFactory getRenderFactory() {
-		return NilRenderFactory.INSTANCE;
-	}
+  @Override
+  public RenderFactory getRenderFactory() {
+    return NilRenderFactory.INSTANCE;
+  }
 
-	@Override
-	public int getSurfaceWidth() {
-		return this.getSurfaceSize().width;
-	}
+  @Override
+  public int getSurfaceWidth() {
+    return this.getSurfaceSize().width;
+  }
 
-	@Override
-	public int getSurfaceHeight() {
-		return this.getSurfaceSize().height;
-	}
+  @Override
+  public int getSurfaceHeight() {
+    return this.getSurfaceSize().height;
+  }
 
-	@Override
-	public int getDrawableWidth() {
-		return this.getDrawableSize().width;
-	}
+  @Override
+  public int getDrawableWidth() {
+    return this.getDrawableSize().width;
+  }
 
-	@Override
-	public int getDrawableHeight() {
-		return this.getDrawableSize().height;
-	}
+  @Override
+  public int getDrawableHeight() {
+    return this.getDrawableSize().height;
+  }
 
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
+  @Override
+  public String getDescription() {
+    return this.description;
+  }
 
-	@Override
-	public void setDescription( String description ) {
-		this.description = description;
-	}
+  @Override
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	@Override
-	public void addSgCamera( AbstractCamera sgCamera ) {
-		this.sgCameras.add( sgCamera );
-	}
+  @Override
+  public void addSgCamera(AbstractCamera sgCamera) {
+    this.sgCameras.add(sgCamera);
+  }
 
-	@Override
-	public void removeSgCamera( AbstractCamera sgCamera ) {
-		this.sgCameras.remove( sgCamera );
-	}
+  @Override
+  public void removeSgCamera(AbstractCamera sgCamera) {
+    this.sgCameras.remove(sgCamera);
+  }
 
-	@Override
-	public void clearSgCameras() {
-		this.sgCameras.clear();
-	}
+  @Override
+  public void clearSgCameras() {
+    this.sgCameras.clear();
+  }
 
-	@Override
-	public List<AbstractCamera> getSgCameras() {
-		return Collections.unmodifiableList( this.sgCameras );
-	}
+  @Override
+  public List<AbstractCamera> getSgCameras() {
+    return Collections.unmodifiableList(this.sgCameras);
+  }
 
-	@Override
-	public AbstractCamera getSgCameraAt( int index ) {
-		return this.sgCameras.get( index );
-	}
+  @Override
+  public AbstractCamera getSgCameraAt(int index) {
+    return this.sgCameras.get(index);
+  }
 
-	@Override
-	public int getSgCameraCount() {
-		return this.sgCameras.size();
-	}
+  @Override
+  public int getSgCameraCount() {
+    return this.sgCameras.size();
+  }
 
-	@Override
-	public void addRenderTargetListener( RenderTargetListener listener ) {
-		this.renderTargetListeners.add( listener );
-	}
+  @Override
+  public void addRenderTargetListener(RenderTargetListener listener) {
+    this.renderTargetListeners.add(listener);
+  }
 
-	@Override
-	public void removeRenderTargetListener( RenderTargetListener listener ) {
-		this.renderTargetListeners.remove( listener );
-	}
+  @Override
+  public void removeRenderTargetListener(RenderTargetListener listener) {
+    this.renderTargetListeners.remove(listener);
+  }
 
-	@Override
-	public List<RenderTargetListener> getRenderTargetListeners() {
-		return Collections.unmodifiableList( this.renderTargetListeners );
-	}
+  @Override
+  public List<RenderTargetListener> getRenderTargetListeners() {
+    return Collections.unmodifiableList(this.renderTargetListeners);
+  }
 
-	@Override
-	public boolean isRenderingEnabled() {
-		return this.isRenderingEnabled;
-	}
+  @Override
+  public boolean isRenderingEnabled() {
+    return this.isRenderingEnabled;
+  }
 
-	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-		this.isRenderingEnabled = isRenderingEnabled;
-	}
+  @Override
+  public void setRenderingEnabled(boolean isRenderingEnabled) {
+    this.isRenderingEnabled = isRenderingEnabled;
+  }
 
-	@Override
-	public SynchronousPicker getSynchronousPicker() {
-		return this.synchronousPicker;
-	}
+  @Override
+  public SynchronousPicker getSynchronousPicker() {
+    return this.synchronousPicker;
+  }
 
-	@Override
-	public AsynchronousPicker getAsynchronousPicker() {
-		return this.asynchronousPicker;
-	}
+  @Override
+  public AsynchronousPicker getAsynchronousPicker() {
+    return this.asynchronousPicker;
+  }
 
-	@Override
-	public SynchronousImageCapturer getSynchronousImageCapturer() {
-		return this.synchronousImageCapturer;
-	}
+  @Override
+  public SynchronousImageCapturer getSynchronousImageCapturer() {
+    return this.synchronousImageCapturer;
+  }
 
-	@Override
-	public AsynchronousImageCapturer getAsynchronousImageCapturer() {
-		return this.asynchronousImageCapturer;
-	}
+  @Override
+  public AsynchronousImageCapturer getAsynchronousImageCapturer() {
+    return this.asynchronousImageCapturer;
+  }
 
-	@Override
-	public MRectangleI getActualViewport( AbstractCamera sgCamera ) {
-		return RectangleUtilities.toMRectangleI( this.getActualViewportAsAwtRectangle( sgCamera ) );
-	}
+  @Override
+  public MRectangleI getActualViewport(AbstractCamera sgCamera) {
+    return RectangleUtilities.toMRectangleI(this.getActualViewportAsAwtRectangle(sgCamera));
+  }
 
-	@Override
-	public MRectangleI getSpecifiedViewport( AbstractCamera sgCamera ) {
-		return RectangleUtilities.toMRectangleI( this.getSpecifiedViewportAsAwtRectangle( sgCamera ) );
-	}
+  @Override
+  public MRectangleI getSpecifiedViewport(AbstractCamera sgCamera) {
+    return RectangleUtilities.toMRectangleI(this.getSpecifiedViewportAsAwtRectangle(sgCamera));
+  }
 
-	@Override
-	public void setSpecifiedViewport( AbstractCamera sgCamera, MRectangleI viewport ) {
-		this.setSpecifiedViewportAsAwtRectangle( sgCamera, RectangleUtilities.toAwtRectangle( viewport ) );
-	}
+  @Override
+  public void setSpecifiedViewport(AbstractCamera sgCamera, MRectangleI viewport) {
+    this.setSpecifiedViewportAsAwtRectangle(sgCamera, RectangleUtilities.toAwtRectangle(viewport));
+  }
 
-	@Override
-	public Rectangle getActualViewportAsAwtRectangle( Rectangle rv, AbstractCamera sgCamera ) {
-		Rectangle viewport = this.getSpecifiedViewportAsAwtRectangle( sgCamera );
-		if( viewport != null ) {
-			rv.setBounds( viewport );
-		} else {
-			Dimension surfaceSize = this.getSurfaceSize();
-			//todo: isLetterboxedAsOpposedToDistorted?
-			rv.setBounds( 0, 0, surfaceSize.width, surfaceSize.height );
-		}
-		return rv;
-	}
+  @Override
+  public Rectangle getActualViewportAsAwtRectangle(Rectangle rv, AbstractCamera sgCamera) {
+    Rectangle viewport = this.getSpecifiedViewportAsAwtRectangle(sgCamera);
+    if (viewport != null) {
+      rv.setBounds(viewport);
+    } else {
+      Dimension surfaceSize = this.getSurfaceSize();
+      //todo: isLetterboxedAsOpposedToDistorted?
+      rv.setBounds(0, 0, surfaceSize.width, surfaceSize.height);
+    }
+    return rv;
+  }
 
-	@Override
-	public final Rectangle getActualViewportAsAwtRectangle( AbstractCamera sgCamera ) {
-		return this.getActualViewportAsAwtRectangle( new Rectangle(), sgCamera );
-	}
+  @Override
+  public final Rectangle getActualViewportAsAwtRectangle(AbstractCamera sgCamera) {
+    return this.getActualViewportAsAwtRectangle(new Rectangle(), sgCamera);
+  }
 
-	@Override
-	public Rectangle getSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera ) {
-		return this.mapCameraToViewport.get( sgCamera );
-	}
+  @Override
+  public Rectangle getSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera) {
+    return this.mapCameraToViewport.get(sgCamera);
+  }
 
-	@Override
-	public void setSpecifiedViewportAsAwtRectangle( AbstractCamera sgCamera, Rectangle viewport ) {
-		this.mapCameraToViewport.put( sgCamera, viewport );
-	}
+  @Override
+  public void setSpecifiedViewportAsAwtRectangle(AbstractCamera sgCamera, Rectangle viewport) {
+    this.mapCameraToViewport.put(sgCamera, viewport);
+  }
 
-	@Override
-	public boolean isLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera ) {
-		Boolean rv = this.mapCameraToIsLetterboxed.get( sgCamera );
-		if( rv != null ) {
-			return rv;
-		} else {
-			return true;
-		}
-	}
+  @Override
+  public boolean isLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera) {
+    Boolean rv = this.mapCameraToIsLetterboxed.get(sgCamera);
+    if (rv != null) {
+      return rv;
+    } else {
+      return true;
+    }
+  }
 
-	@Override
-	public void setLetterboxedAsOpposedToDistorted( AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
-		this.mapCameraToIsLetterboxed.put( sgCamera, isLetterboxedAsOpposedToDistorted );
-	}
+  @Override
+  public void setLetterboxedAsOpposedToDistorted(AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted) {
+    this.mapCameraToIsLetterboxed.put(sgCamera, isLetterboxedAsOpposedToDistorted);
+  }
 
-	@Override
-	public AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
-		//todo
-		return null;
-	}
+  @Override
+  public AbstractCamera getCameraAtPixel(int xPixel, int yPixel) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public Ray getRayAtPixel( int xPixel, int yPixel, AbstractCamera sgCamera ) {
-		//todo
-		return null;
-	}
+  @Override
+  public Ray getRayAtPixel(int xPixel, int yPixel, AbstractCamera sgCamera) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public final Ray getRayAtPixel( int xPixel, int yPixel ) {
-		return this.getRayAtPixel( xPixel, yPixel, this.getCameraAtPixel( xPixel, yPixel ) );
-	}
+  @Override
+  public final Ray getRayAtPixel(int xPixel, int yPixel) {
+    return this.getRayAtPixel(xPixel, yPixel, this.getCameraAtPixel(xPixel, yPixel));
+  }
 
-	@Override
-	public ClippedZPlane getActualPicturePlane( OrthographicCamera sgOrthographicCamera ) {
-		//todo
-		return null;
-	}
+  @Override
+  public ClippedZPlane getActualPicturePlane(OrthographicCamera sgOrthographicCamera) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public ClippedZPlane getActualPicturePlane( FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
-		//todo
-		return null;
-	}
+  @Override
+  public ClippedZPlane getActualPicturePlane(FrustumPerspectiveCamera sgFrustumPerspectiveCamera) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public Angle getActualHorizontalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		//todo
-		return null;
-	}
+  @Override
+  public Angle getActualHorizontalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public Angle getActualVerticalViewingAngle( SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		//todo
-		return null;
-	}
+  @Override
+  public Angle getActualVerticalViewingAngle(SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
+    //todo
+    return null;
+  }
 
-	@Override
-	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, AbstractCamera sgCamera ) {
-		//todo
-		return rv;
-	}
+  @Override
+  public Matrix4x4 getActualProjectionMatrix(Matrix4x4 rv, AbstractCamera sgCamera) {
+    //todo
+    return rv;
+  }
 
-	@Override
-	public final Matrix4x4 getActualProjectionMatrix( AbstractCamera sgCamera ) {
-		return this.getActualProjectionMatrix( Matrix4x4.createNaN(), sgCamera );
-	}
+  @Override
+  public final Matrix4x4 getActualProjectionMatrix(AbstractCamera sgCamera) {
+    return this.getActualProjectionMatrix(Matrix4x4.createNaN(), sgCamera);
+  }
 
-	@Override
-	public void forgetAllCachedItems() {
-	}
+  @Override
+  public void forgetAllCachedItems() {
+  }
 
-	@Override
-	public void clearUnusedTextures() {
-	}
+  @Override
+  public void clearUnusedTextures() {
+  }
 
-	@Override
-	public void release() {
-	}
+  @Override
+  public void release() {
+  }
 
-	private final RenderCapabilities requestedCapabilities;
-	private final RenderCapabilities actualCapabilities;
+  private final RenderCapabilities requestedCapabilities;
+  private final RenderCapabilities actualCapabilities;
 
-	private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
-	private final List<RenderTargetListener> renderTargetListeners = Lists.newCopyOnWriteArrayList();
+  private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
+  private final List<RenderTargetListener> renderTargetListeners = Lists.newCopyOnWriteArrayList();
 
-	private final Map<AbstractCamera, Boolean> mapCameraToIsLetterboxed = Maps.newHashMap();
-	private final Map<AbstractCamera, Rectangle> mapCameraToViewport = Maps.newHashMap();
+  private final Map<AbstractCamera, Boolean> mapCameraToIsLetterboxed = Maps.newHashMap();
+  private final Map<AbstractCamera, Rectangle> mapCameraToViewport = Maps.newHashMap();
 
-	private final NrSynchronousPicker synchronousPicker = new NrSynchronousPicker();
-	private final NrAsynchronousPicker asynchronousPicker = new NrAsynchronousPicker();
-	private final NrSynchronousImageCapturer synchronousImageCapturer = new NrSynchronousImageCapturer();
-	private final NrAsynchronousImageCapturer asynchronousImageCapturer = new NrAsynchronousImageCapturer();
-	private String description;
-	private boolean isRenderingEnabled = true;
+  private final NrSynchronousPicker synchronousPicker = new NrSynchronousPicker();
+  private final NrAsynchronousPicker asynchronousPicker = new NrAsynchronousPicker();
+  private final NrSynchronousImageCapturer synchronousImageCapturer = new NrSynchronousImageCapturer();
+  private final NrAsynchronousImageCapturer asynchronousImageCapturer = new NrAsynchronousImageCapturer();
+  private String description;
+  private boolean isRenderingEnabled = true;
 }

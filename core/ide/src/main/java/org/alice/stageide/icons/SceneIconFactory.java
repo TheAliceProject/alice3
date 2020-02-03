@@ -51,29 +51,29 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class SceneIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static SceneIconFactory instance = new SceneIconFactory();
-	}
+  private static class SingletonHolder {
+    private static SceneIconFactory instance = new SceneIconFactory();
+  }
 
-	public static SceneIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SceneIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SceneIconFactory() {
-		super( IsCachingDesired.TRUE );
-	}
+  private SceneIconFactory() {
+    super(IsCachingDesired.TRUE);
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new SceneIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new SceneIcon(size);
+  }
 
-	public void markAllIconsDirty() {
-		for( Icon icon : this.getMapValues() ) {
-			if( icon instanceof SceneIcon ) {
-				SceneIcon sceneIcon = (SceneIcon)icon;
-				sceneIcon.markDirty();
-			}
-		}
-	}
+  public void markAllIconsDirty() {
+    for (Icon icon : this.getMapValues()) {
+      if (icon instanceof SceneIcon) {
+        SceneIcon sceneIcon = (SceneIcon) icon;
+        sceneIcon.markDirty();
+      }
+    }
+  }
 }

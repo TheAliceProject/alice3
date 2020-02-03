@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="SportsCar">
+    <BoundingBox>
+        <Min x="-1.2652122974395752" y="0.0" z="-2.5533056259155273"/>
+        <Max x="1.2652124166488647" y="1.4436609745025635" z="2.5533053874969482"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>luxury</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>car</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Super" resourceName="SUPER" textureName="SUPER">
+        <BoundingBox>
+            <Min x="-1.2652122974395752" y="1.3986293900813962E-8" z="-2.5533056259155273"/>
+            <Max x="1.2652124166488647" y="1.4436609745025635" z="2.5533053874969482"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Moderate" resourceName="MODERATE" textureName="MODERATE">
+        <BoundingBox>
+            <Min x="-1.066051721572876" y="7.272872970531807E-9" z="-2.019162654876709"/>
+            <Max x="1.066051721572876" y="1.304408073425293" z="2.019162893295288"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Used" resourceName="USED" textureName="USED">
+        <BoundingBox>
+            <Min x="-0.9413315057754517" y="0.0" z="-1.9866780042648315"/>
+            <Max x="0.9413315057754517" y="1.327358603477478" z="1.986677885055542"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

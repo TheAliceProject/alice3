@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="ClownFish" placeOnGround="TRUE">
+    <BoundingBox>
+        <Min x="-0.14733089830868912" y="-0.13050385226842726" z="-0.2749092620470248"/>
+        <Max x="0.14733089182378847" y="0.1560613138496115" z="0.2932193976754351"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>fish</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ClownFish" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

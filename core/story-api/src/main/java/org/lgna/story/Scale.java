@@ -49,53 +49,55 @@ import edu.cmu.cs.dennisc.math.Dimension3;
  * @author Dennis Cosgrove
  */
 public final class Scale {
-	public static final Scale IDENTITY = new Scale( new Dimension3( 1.0, 1.0, 1.0 ) );
-	private final Dimension3 internal;
+  public static final Scale IDENTITY = new Scale(new Dimension3(1.0, 1.0, 1.0));
+  private final Dimension3 internal;
 
-	private Scale( Dimension3 internal ) {
-		this.internal = internal;
-	}
+  private Scale(Dimension3 internal) {
+    this.internal = internal;
+  }
 
-	public Scale( Number leftToRight, Number bottomToTop, Number frontToBack ) {
-		this( new Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
-	}
+  public Scale(Number leftToRight, Number bottomToTop, Number frontToBack) {
+    this(new Dimension3(leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue()));
+  }
 
-	/* package-private */static Scale createInstance( Dimension3 internal ) {
-		return internal != null ? new Scale( internal ) : null;
-	}
+  /* package-private */
+  static Scale createInstance(Dimension3 internal) {
+    return internal != null ? new Scale(internal) : null;
+  }
 
-	/* package-private */Dimension3 getInternal() {
-		return this.internal;
-	}
+  /* package-private */Dimension3 getInternal() {
+    return this.internal;
+  }
 
-	/* package-private */static Dimension3 getInternal( Scale scale ) {
-		return scale != null ? scale.internal : null;
-	}
+  /* package-private */
+  static Dimension3 getInternal(Scale scale) {
+    return scale != null ? scale.internal : null;
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Scale ) {
-			Scale other = (Scale)obj;
-			return this.internal.equals( other.internal );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Scale) {
+      Scale other = (Scale) obj;
+      return this.internal.equals(other.internal);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		return this.internal.hashCode();
-	}
+  @Override
+  public int hashCode() {
+    return this.internal.hashCode();
+  }
 
-	public Double getLeftToRight() {
-		return this.internal.x;
-	}
+  public Double getLeftToRight() {
+    return this.internal.x;
+  }
 
-	public Double getBottomToTop() {
-		return this.internal.y;
-	}
+  public Double getBottomToTop() {
+    return this.internal.y;
+  }
 
-	public Double getFrontToBack() {
-		return this.internal.z;
-	}
+  public Double getFrontToBack() {
+    return this.internal.z;
+  }
 }

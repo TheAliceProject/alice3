@@ -54,21 +54,21 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class RecycleBinView extends SwingComponentView<JComponent> {
-	private static final Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
+  private static final Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
 
-	@Override
-	protected JComponent createAwtComponent() {
-		return new JComponent() {
-			@Override
-			protected void paintComponent( Graphics g ) {
-				super.paintComponent( g );
-				EMPTY_ICON.paintIcon( this, g, 0, 0 );
-			}
+  @Override
+  protected JComponent createAwtComponent() {
+    return new JComponent() {
+      @Override
+      protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        EMPTY_ICON.paintIcon(this, g, 0, 0);
+      }
 
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension( EMPTY_ICON.getIconWidth(), EMPTY_ICON.getIconHeight() );
-			}
-		};
-	}
+      @Override
+      public Dimension getPreferredSize() {
+        return new Dimension(EMPTY_ICON.getIconWidth(), EMPTY_ICON.getIconHeight());
+      }
+    };
+  }
 }

@@ -56,25 +56,25 @@ import org.lgna.project.ast.UserMethod;
  * @author Dennis Cosgrove
  */
 public abstract class MethodData extends FilteredMemberData<UserMethod> {
-	public MethodData( NamedUserType type ) {
-		super( UserMethod.class, type, type.methods );
-	}
+  public MethodData(NamedUserType type) {
+    super(UserMethod.class, type, type.methods);
+  }
 
-	@Override
-	protected boolean isAcceptableItem( UserMethod value ) {
-		if( ( value.managementLevel.getValue() == ManagementLevel.NONE ) || IsIncludingManagedUserMethods.getInstance().getValue() ) {
-			AccessLevel accessLevel = value.getAccessLevel();
-			if( accessLevel == AccessLevel.PRIVATE ) {
-				return IsIncludingPrivateUserMethods.getInstance().getValue();
-			} else if( accessLevel == AccessLevel.PROTECTED ) {
-				return IsIncludingProtectedUserMethods.getInstance().getValue();
-			} else if( accessLevel == AccessLevel.PACKAGE ) {
-				return IsIncludingPackagePrivateUserMethods.getInstance().getValue();
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  protected boolean isAcceptableItem(UserMethod value) {
+    if ((value.managementLevel.getValue() == ManagementLevel.NONE) || IsIncludingManagedUserMethods.getInstance().getValue()) {
+      AccessLevel accessLevel = value.getAccessLevel();
+      if (accessLevel == AccessLevel.PRIVATE) {
+        return IsIncludingPrivateUserMethods.getInstance().getValue();
+      } else if (accessLevel == AccessLevel.PROTECTED) {
+        return IsIncludingProtectedUserMethods.getInstance().getValue();
+      } else if (accessLevel == AccessLevel.PACKAGE) {
+        return IsIncludingPackagePrivateUserMethods.getInstance().getValue();
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

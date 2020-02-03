@@ -58,36 +58,36 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProjectDocumentState extends ItemState<ProjectDocument> {
-	private static class SingletonHolder {
-		private static ProjectDocumentState instance = new ProjectDocumentState();
-	}
+  private static class SingletonHolder {
+    private static ProjectDocumentState instance = new ProjectDocumentState();
+  }
 
-	public static ProjectDocumentState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ProjectDocumentState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ProjectDocument value;
+  private ProjectDocument value;
 
-	private ProjectDocumentState() {
-		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, ProjectDocumentCodec.SINGLETON );
-	}
+  private ProjectDocumentState() {
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("2ba8f0e1-d572-425b-b7f2-7e8136fb9d85"), null, ProjectDocumentCodec.SINGLETON);
+  }
 
-	@Override
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		return Collections.emptyList();
-	}
+  @Override
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    return Collections.emptyList();
+  }
 
-	@Override
-	protected void localize() {
-	}
+  @Override
+  protected void localize() {
+  }
 
-	@Override
-	protected void setSwingValue( ProjectDocument nextValue ) {
-		this.value = nextValue;
-	}
+  @Override
+  protected void setSwingValue(ProjectDocument nextValue) {
+    this.value = nextValue;
+  }
 
-	@Override
-	protected ProjectDocument getSwingValue() {
-		return this.value;
-	}
+  @Override
+  protected ProjectDocument getSwingValue() {
+    return this.value;
+  }
 }

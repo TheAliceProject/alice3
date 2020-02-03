@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Desk">
+    <BoundingBox>
+        <Min x="-0.8299919366836548" y="0.0" z="-0.38237154483795166"/>
+        <Max x="0.82999187707901" y="0.7208481431007385" z="0.38237154483795166"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>desk</Tag>
+        <Tag>study</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:study</ThemeTag>
+        <ThemeTag>household:furniture</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_REDWOOD" textureName="REDWOOD">
+        <BoundingBox>
+            <Min x="-0.8094052672386169" y="0.0" z="-0.38237154483795166"/>
+            <Max x="0.8094052672386169" y="0.7208481431007385" z="0.38237154483795166"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_BLACK" textureName="BLACK">
+        <BoundingBox>
+            <Min x="-0.8094052672386169" y="0.0" z="-0.38237154483795166"/>
+            <Max x="0.8094052672386169" y="0.7208481431007385" z="0.38237154483795166"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8094052672386169" y="0.0" z="-0.38237154483795166"/>
+            <Max x="0.8094052672386169" y="0.7208481431007385" z="0.38237154483795166"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CentralAsian" resourceName="CENTRAL_ASIAN_WALNUT" textureName="WALNUT">
+        <BoundingBox>
+            <Min x="-0.8094052672386169" y="0.0" z="-0.38237154483795166"/>
+            <Max x="0.8094052672386169" y="0.7208481431007385" z="0.38237154483795166"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Club" resourceName="CLUB_ASH" textureName="ASH">
+        <BoundingBox>
+            <Min x="-0.8229468464851379" y="0.0" z="-0.3751155436038971"/>
+            <Max x="0.8229468464851379" y="0.7207993268966675" z="0.3751155436038971"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Club" resourceName="CLUB_DARK_WOOD" textureName="DARK_WOOD">
+        <BoundingBox>
+            <Min x="-0.8229468464851379" y="0.0" z="-0.3751155436038971"/>
+            <Max x="0.8229468464851379" y="0.7207993268966675" z="0.3751155436038971"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Club" resourceName="CLUB_REDWOOD" textureName="REDWOOD">
+        <BoundingBox>
+            <Min x="-0.8229468464851379" y="0.0" z="-0.3751155436038971"/>
+            <Max x="0.8229468464851379" y="0.7207993268966675" z="0.3751155436038971"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_BLUE" textureName="BLUE">
+        <BoundingBox>
+            <Min x="-0.8299919366836548" y="0.0" z="-0.3806365132331848"/>
+            <Max x="0.82999187707901" y="0.7175675630569458" z="0.3806365132331848"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_WHITE" textureName="WHITE">
+        <BoundingBox>
+            <Min x="-0.8299919366836548" y="0.0" z="-0.3806365132331848"/>
+            <Max x="0.82999187707901" y="0.7175675630569458" z="0.3806365132331848"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8299919366836548" y="0.0" z="-0.3806365132331848"/>
+            <Max x="0.82999187707901" y="0.7175675630569458" z="0.3806365132331848"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Quaint" resourceName="QUAINT_GREEN" textureName="GREEN">
+        <BoundingBox>
+            <Min x="-0.8299919366836548" y="0.0" z="-0.3806365132331848"/>
+            <Max x="0.82999187707901" y="0.7175675630569458" z="0.3806365132331848"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_MAPLE" textureName="MAPLE">
+        <BoundingBox>
+            <Min x="-0.8212003111839294" y="0.0" z="-0.37790000438690186"/>
+            <Max x="0.8212003707885742" y="0.7202454209327698" z="0.37790000438690186"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_METAL" textureName="METAL">
+        <BoundingBox>
+            <Min x="-0.8212003111839294" y="0.0" z="-0.37790000438690186"/>
+            <Max x="0.8212003707885742" y="0.7202454209327698" z="0.37790000438690186"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8212003111839294" y="0.0" z="-0.37790000438690186"/>
+            <Max x="0.8212003707885742" y="0.7202454209327698" z="0.37790000438690186"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE_LIGHT_WOOD" textureName="LIGHT_WOOD">
+        <BoundingBox>
+            <Min x="-0.8212003111839294" y="0.0" z="-0.37790000438690186"/>
+            <Max x="0.8212003707885742" y="0.7202454209327698" z="0.37790000438690186"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

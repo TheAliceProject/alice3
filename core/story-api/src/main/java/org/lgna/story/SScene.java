@@ -77,253 +77,238 @@ import org.lgna.story.implementation.SceneImp;
  * @author Dennis Cosgrove
  */
 public abstract class SScene extends SThing {
-	private final SceneImp implementation = new SceneImp( this );
+  private final SceneImp implementation = new SceneImp(this);
 
-	@Override
-			/* package-private */SceneImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */SceneImp getImplementation() {
+    return this.implementation;
+  }
 
-	protected abstract void handleActiveChanged( Boolean isActive, Integer activationCount );
+  protected abstract void handleActiveChanged(Boolean isActive, Integer activationCount);
 
-	protected void preserveStateAndEventListeners() {
-		this.implementation.preserveStateAndEventListeners();
-	}
+  protected void preserveStateAndEventListeners() {
+    this.implementation.preserveStateAndEventListeners();
+  }
 
-	protected void restoreStateAndEventListeners() {
-		this.implementation.restoreStateAndEventListeners();
-	}
+  protected void restoreStateAndEventListeners() {
+    this.implementation.restoreStateAndEventListeners();
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Color getAtmosphereColor() {
-		return this.implementation.atmosphereColor.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Color getAtmosphereColor() {
+    return this.implementation.atmosphereColor.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
-		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setAtmosphereColor(Color color, SetAtmosphereColor.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(color, 0);
+    this.implementation.atmosphereColor.animateValue(color, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = false )
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@Deprecated
-	public Color getAmbientLightColor() {
-		return this.implementation.fromAboveLightColor.getValue();
-	}
+  @GetterTemplate(isPersistent = false)
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @Deprecated
+  public Color getAmbientLightColor() {
+    return this.implementation.fromAboveLightColor.getValue();
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@Deprecated
-	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
-		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @Deprecated
+  public void setAmbientLightColor(Color color, SetAmbientLightColor.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(color, 0);
+    this.implementation.fromAboveLightColor.animateValue(color, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Color getFromAboveLightColor() {
-		return this.implementation.fromAboveLightColor.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Color getFromAboveLightColor() {
+    return this.implementation.fromAboveLightColor.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
-		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setFromAboveLightColor(Color color, SetFromAboveLightColor.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(color, 0);
+    this.implementation.fromAboveLightColor.animateValue(color, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@GetterTemplate( isPersistent = true )
-	@MethodTemplate( )
-	public Color getFromBelowLightColor() {
-		return this.implementation.fromBelowLightColor.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Color getFromBelowLightColor() {
+    return this.implementation.fromBelowLightColor.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( color, 0 );
-		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setFromBelowLightColor(Color color, SetFromBelowLightColor.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(color, 0);
+    this.implementation.fromBelowLightColor.animateValue(color, Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	@MethodTemplate( )
-	@GetterTemplate( isPersistent = true )
-	@ValueTemplate( detailsEnumCls = PortionDetails.class )
-	public Double getFogDensity() {
-		return (double)this.getImplementation().fogDensity.getValue();
-	}
+  @MethodTemplate()
+  @GetterTemplate(isPersistent = true)
+  @ValueTemplate(detailsEnumCls = PortionDetails.class)
+  public Double getFogDensity() {
+    return (double) this.getImplementation().fogDensity.getValue();
+  }
 
-	@MethodTemplate( )
-	public void setFogDensity( Number density, SetFogDensity.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( density, 0 );
-		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
+  @MethodTemplate()
+  public void setFogDensity(Number density, SetFogDensity.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(density, 0);
+    this.getImplementation().fogDensity.animateValue(density.floatValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
+  }
 
-	//Mouse
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, AddMouseClickOnScreenListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
-	}
+  //Mouse
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addMouseClickOnScreenListener(MouseClickOnScreenListener listener, AddMouseClickOnScreenListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.implementation.getEventManager().addMouseClickOnScreenListener(listener, MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, AddMouseClickOnObjectListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addMouseClickOnObjectListener(MouseClickOnObjectListener listener, AddMouseClickOnObjectListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.implementation.getEventManager().addMouseClickOnObjectListener(listener, MultipleEventPolicy.getValue(details), SetOfVisuals.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addDefaultModelManipulation() {
-		this.getImplementation().getEventManager().addDragAdapter();
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addDefaultModelManipulation() {
+    this.getImplementation().getEventManager().addDragAdapter();
+  }
 
-	//time/Scene
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addTimeListener( TimeListener listener, Number frequency, AddTimeListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( frequency, 1 );
-		this.getImplementation().getEventManager().addTimerEventListener( listener, frequency, MultipleEventPolicy.getValue( details ) );
-	}
+  //time/Scene
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addTimeListener(TimeListener listener, Number frequency, AddTimeListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(frequency, 1);
+    this.getImplementation().getEventManager().addTimerEventListener(listener, frequency, MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addSceneActivationListener( SceneActivationListener listener ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.implementation.addSceneActivationListener( listener );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addSceneActivationListener(SceneActivationListener listener) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.implementation.addSceneActivationListener(listener);
+  }
 
-	//keyListeners
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addKeyPressListener( KeyPressListener listener, AddKeyPressListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.implementation.getEventManager().addKeyListener( listener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
-	}
+  //keyListeners
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addKeyPressListener(KeyPressListener listener, AddKeyPressListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.implementation.getEventManager().addKeyListener(listener, MultipleEventPolicy.getValue(details), HeldKeyPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addArrowKeyPressListener( ArrowKeyPressListener listener, AddKeyPressListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.getImplementation().getEventManager().addArrowKeyListener( listener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addArrowKeyPressListener(ArrowKeyPressListener listener, AddKeyPressListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.getImplementation().getEventManager().addArrowKeyListener(listener, MultipleEventPolicy.getValue(details), HeldKeyPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addNumberKeyPressListener( NumberKeyPressListener listener, AddKeyPressListener.Detail... details ) {
-		LgnaIllegalArgumentException.checkArgumentIsNotNull( listener, 0 );
-		this.getImplementation().getEventManager().addNumberKeyListener( listener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addNumberKeyPressListener(NumberKeyPressListener listener, AddKeyPressListener.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(listener, 0);
+    this.getImplementation().getEventManager().addNumberKeyListener(listener, MultipleEventPolicy.getValue(details), HeldKeyPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addObjectMoverFor( SMovableTurnable thing ) {
-		this.implementation.getEventManager().moveWithArrows( thing, 2.5 );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addObjectMoverFor(SMovableTurnable thing) {
+    this.implementation.getEventManager().moveWithArrows(thing, 2.5);
+  }
 
-	//TransformationListeners
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addPointOfViewChangeListener( PointOfViewChangeListener listener, SThing[] set ) {
-		this.getImplementation().getEventManager().addTransformationListener( listener, set );
-	}
+  //TransformationListeners
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addPointOfViewChangeListener(PointOfViewChangeListener listener, SThing[] set) {
+    this.getImplementation().getEventManager().addTransformationListener(listener, set);
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addCollisionStartListener( CollisionStartListener listener, SThing[] setA, SThing[] setB, AddCollisionStartListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addCollisionStartListener(CollisionStartListener listener, SThing[] setA, SThing[] setB, AddCollisionStartListener.Detail... details) {
+    this.getImplementation().getEventManager().addCollisionListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@AddEventListenerTemplate( )
-	public void addWhileCollisionListener( WhileCollisionListener listener, SThing[] setA, SThing[] setB, AddTimeListener.Detail... details ) {
-		this.getImplementation()
-				.getEventManager()
-				.addWhileCollisionListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), TimerFrequency.getValue( details ).getFrequency(),
-						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @AddEventListenerTemplate()
+  public void addWhileCollisionListener(WhileCollisionListener listener, SThing[] setA, SThing[] setB, AddTimeListener.Detail... details) {
+    this.getImplementation().getEventManager().addWhileCollisionListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details, MultipleEventPolicy.IGNORE));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addCollisionEndListener( CollisionEndListener listener, SThing[] setA, SThing[] setB, AddCollisionEndListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addCollisionEndListener(CollisionEndListener listener, SThing[] setA, SThing[] setB, AddCollisionEndListener.Detail... details) {
+    this.getImplementation().getEventManager().addCollisionListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addProximityEnterListener( ProximityEnterListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityEnterListener.Detail... details ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), distance, MultipleEventPolicy.getValue( details ) );// AddEnterProximityEventListener.getDist( details ));
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addProximityEnterListener(ProximityEnterListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityEnterListener.Detail... details) {
+    this.getImplementation().getEventManager().addProximityEventListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), distance, MultipleEventPolicy.getValue(details)); // AddEnterProximityEventListener.getDist( details ));
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@AddEventListenerTemplate( )
-	public void addWhileProximityListener( WhileProximityListener listener, SThing[] setA, SThing[] setB, Number distance, AddTimeListener.Detail... details ) {
-		this.getImplementation().getEventManager().addWhileProximityListener(
-				listener,
-				Lists.newArrayList( setA ),
-				Lists.newArrayList( setB ),
-				distance,
-				TimerFrequency.getValue( details ).getFrequency(),
-				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @AddEventListenerTemplate()
+  public void addWhileProximityListener(WhileProximityListener listener, SThing[] setA, SThing[] setB, Number distance, AddTimeListener.Detail... details) {
+    this.getImplementation().getEventManager().addWhileProximityListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), distance, TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details, MultipleEventPolicy.IGNORE));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addProximityExitListener( ProximityExitListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityExitListener.Detail... details ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), distance, MultipleEventPolicy.getValue( details ) );// AddExitProximityEventListener.getDist( details ));
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addProximityExitListener(ProximityExitListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityExitListener.Detail... details) {
+    this.getImplementation().getEventManager().addProximityEventListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), distance, MultipleEventPolicy.getValue(details)); // AddExitProximityEventListener.getDist( details ));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addViewEnterListener( ViewEnterListener listener, SModel[] set, AddViewEnterListener.Detail... details ) {
-		this.implementation.getEventManager().addComesIntoViewEventListener( listener, set, MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addViewEnterListener(ViewEnterListener listener, SModel[] set, AddViewEnterListener.Detail... details) {
+    this.implementation.getEventManager().addComesIntoViewEventListener(listener, set, MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@AddEventListenerTemplate( )
-	public void addWhileInViewListener( WhileInViewListener listener, SModel[] set, AddTimeListener.Detail... details ) {
-		this.implementation.getEventManager().addWhileInViewListener( listener, Lists.newArrayList( set ), TimerFrequency.getValue( details ).getFrequency(),
-				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @AddEventListenerTemplate()
+  public void addWhileInViewListener(WhileInViewListener listener, SModel[] set, AddTimeListener.Detail... details) {
+    this.implementation.getEventManager().addWhileInViewListener(listener, Lists.newArrayList(set), TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details, MultipleEventPolicy.IGNORE));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addViewExitListener( ViewExitListener listener, SModel[] set, AddViewExitListener.Detail... details ) {
-		this.implementation.getEventManager().addLeavesViewEventListener( listener, set, MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addViewExitListener(ViewExitListener listener, SModel[] set, AddViewExitListener.Detail... details) {
+    this.implementation.getEventManager().addLeavesViewEventListener(listener, set, MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addOcclusionStartListener( OcclusionStartListener listener, SModel[] setA, SModel[] setB, AddOcclusionStartListener.Detail... details ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addOcclusionStartListener(OcclusionStartListener listener, SModel[] setA, SModel[] setB, AddOcclusionStartListener.Detail... details) {
+    this.getImplementation().getEventManager().addOcclusionEventListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), MultipleEventPolicy.getValue(details));
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	@AddEventListenerTemplate( )
-	public void addWhileOcclusionListener( WhileOcclusionListener listener, SModel[] setA, SModel[] setB, AddTimeListener.Detail... details ) {
-		this.getImplementation().getEventManager().addWhileOcclusionListener(
-				listener,
-				Lists.newArrayList( setA ),
-				Lists.newArrayList( setB ),
-				TimerFrequency.getValue( details ).getFrequency(),
-				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  @AddEventListenerTemplate()
+  public void addWhileOcclusionListener(WhileOcclusionListener listener, SModel[] setA, SModel[] setB, AddTimeListener.Detail... details) {
+    this.getImplementation().getEventManager().addWhileOcclusionListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), TimerFrequency.getValue(details).getFrequency(), MultipleEventPolicy.getValue(details, MultipleEventPolicy.IGNORE));
+  }
 
-	@MethodTemplate( visibility = Visibility.PRIME_TIME )
-	@AddEventListenerTemplate( )
-	public void addOcclusionEndListener( OcclusionEndListener listener, SModel[] setA, SModel[] setB, AddOcclusionEndListener.Detail... details ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, Lists.newArrayList( setA ), Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
-	}
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  @AddEventListenerTemplate()
+  public void addOcclusionEndListener(OcclusionEndListener listener, SModel[] setA, SModel[] setB, AddOcclusionEndListener.Detail... details) {
+    this.getImplementation().getEventManager().addOcclusionEventListener(listener, Lists.newArrayList(setA), Lists.newArrayList(setB), MultipleEventPolicy.getValue(details));
+  }
 
-	//remove
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public void removeKeyListener( KeyPressListener listener ) {
-		this.implementation.getEventManager().removeKeyListener( listener );
-	}
+  //remove
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public void removeKeyListener(KeyPressListener listener) {
+    this.implementation.getEventManager().removeKeyListener(listener);
+  }
 
-	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public void removeSceneActivationListener( SceneActivationListener listener ) {
-		this.implementation.removeSceneActivationListener( listener );
-	}
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public void removeSceneActivationListener(SceneActivationListener listener) {
+    this.implementation.removeSceneActivationListener(listener);
+  }
 }

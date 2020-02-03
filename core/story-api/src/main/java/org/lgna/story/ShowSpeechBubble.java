@@ -44,27 +44,28 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class ShowSpeechBubble implements SayOutLoud.Detail {
-	private final boolean value;
+  private final boolean value;
 
-	public ShowSpeechBubble( boolean value ) {
-		this.value = value;
-	}
+  public ShowSpeechBubble(boolean value) {
+    this.value = value;
+  }
 
-	/* package-private */static boolean getValue( Object[] details, boolean defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof ShowSpeechBubble ) {
-				ShowSpeechBubble showSpeechBubble = (ShowSpeechBubble)detail;
-				return showSpeechBubble.value;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static boolean getValue(Object[] details, boolean defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof ShowSpeechBubble) {
+        ShowSpeechBubble showSpeechBubble = (ShowSpeechBubble) detail;
+        return showSpeechBubble.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static ShowSpeechBubble make( Boolean value ) {
-		return new ShowSpeechBubble( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static ShowSpeechBubble make(Boolean value) {
+    return new ShowSpeechBubble(value);
+  }
 }

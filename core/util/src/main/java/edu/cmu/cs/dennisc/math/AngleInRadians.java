@@ -49,98 +49,98 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public class AngleInRadians implements Angle {
-	private double m_radians;
+  private double m_radians;
 
-	public AngleInRadians( double radians ) {
-		m_radians = radians;
-	}
+  public AngleInRadians(double radians) {
+    m_radians = radians;
+  }
 
-	public AngleInRadians( Angle other ) {
-		this( other.getAsRadians() );
-	}
+  public AngleInRadians(Angle other) {
+    this(other.getAsRadians());
+  }
 
-	@Override
-	public void decode( BinaryDecoder binaryDecoder ) {
-		m_radians = binaryDecoder.decodeDouble();
-	}
+  @Override
+  public void decode(BinaryDecoder binaryDecoder) {
+    m_radians = binaryDecoder.decodeDouble();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_radians );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(m_radians);
+  }
 
-	@Override
-	public boolean equals( Object obj ) {
-		if( obj instanceof Angle ) {
-			Angle a = (Angle)obj;
-			return m_radians == a.getAsRadians();
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Angle) {
+      Angle a = (Angle) obj;
+      return m_radians == a.getAsRadians();
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public boolean isNaN() {
-		return Double.isNaN( m_radians );
-	}
+  @Override
+  public boolean isNaN() {
+    return Double.isNaN(m_radians);
+  }
 
-	@Override
-	public void setNaN() {
-		m_radians = Double.NaN;
-	}
+  @Override
+  public void setNaN() {
+    m_radians = Double.NaN;
+  }
 
-	@Override
-	public double getAsRadians() {
-		return m_radians;
-	}
+  @Override
+  public double getAsRadians() {
+    return m_radians;
+  }
 
-	@Override
-	public double getAsDegrees() {
-		return AngleUtilities.radiansToDegrees( m_radians );
-	}
+  @Override
+  public double getAsDegrees() {
+    return AngleUtilities.radiansToDegrees(m_radians);
+  }
 
-	@Override
-	public double getAsRevolutions() {
-		return AngleUtilities.radiansToRevolutions( m_radians );
-	}
+  @Override
+  public double getAsRevolutions() {
+    return AngleUtilities.radiansToRevolutions(m_radians);
+  }
 
-	@Override
-	public void setAsRadians( double radians ) {
-		m_radians = radians;
-	}
+  @Override
+  public void setAsRadians(double radians) {
+    m_radians = radians;
+  }
 
-	@Override
-	public void setAsDegrees( double degrees ) {
-		m_radians = AngleUtilities.degreesToRadians( degrees );
-	}
+  @Override
+  public void setAsDegrees(double degrees) {
+    m_radians = AngleUtilities.degreesToRadians(degrees);
+  }
 
-	@Override
-	public void setAsRevolutions( double revolutions ) {
-		m_radians = AngleUtilities.revolutionsToRadians( revolutions );
-	}
+  @Override
+  public void setAsRevolutions(double revolutions) {
+    m_radians = AngleUtilities.revolutionsToRadians(revolutions);
+  }
 
-	@Override
-	public Angle createCopy() {
-		return new AngleInRadians( this );
-	}
+  @Override
+  public Angle createCopy() {
+    return new AngleInRadians(this);
+  }
 
-	@Override
-	public void set( Angle other ) {
-		setAsRadians( other.getAsRadians() );
-	}
+  @Override
+  public void set(Angle other) {
+    setAsRadians(other.getAsRadians());
+  }
 
-	@Override
-	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
-		setAsRadians( InterpolationUtilities.interpolate( a0.getAsRadians(), a1.getAsRadians(), portion ) );
-	}
+  @Override
+  public void setToInterpolation(Angle a0, Angle a1, double portion) {
+    setAsRadians(InterpolationUtilities.interpolate(a0.getAsRadians(), a1.getAsRadians(), portion));
+  }
 
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( getClass().getName() );
-		sb.append( "[" );
-		sb.append( m_radians );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(getClass().getName());
+    sb.append("[");
+    sb.append(m_radians);
+    sb.append("]");
+    return sb.toString();
+  }
 }

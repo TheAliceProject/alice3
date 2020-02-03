@@ -50,64 +50,64 @@ import java.util.Iterator;
  * @author Dennis Cosgrove
  */
 public class FileZipTreeNode extends ZipTreeNode {
-	private byte[] bytes;
+  private byte[] bytes;
 
-	public FileZipTreeNode( String path, byte[] bytes ) {
-		super( path );
-		this.bytes = bytes;
-	}
+  public FileZipTreeNode(String path, byte[] bytes) {
+    super(path);
+    this.bytes = bytes;
+  }
 
-	@Override
-	public Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
-		return new Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
-			@Override
-			public boolean hasNext() {
-				return false;
-			}
+  @Override
+  public Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
+    return new Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
+      @Override
+      public boolean hasNext() {
+        return false;
+      }
 
-			@Override
-			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> next() {
-				return null;
-			}
+      @Override
+      public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> next() {
+        return null;
+      }
 
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException( "remove" );
-			}
-		};
-	}
+      @Override
+      public void remove() {
+        throw new UnsupportedOperationException("remove");
+      }
+    };
+  }
 
-	@Override
-	public boolean getAllowsChildren() {
-		return false;
-	}
+  @Override
+  public boolean getAllowsChildren() {
+    return false;
+  }
 
-	@Override
-	public Enumeration<ZipTreeNode> children() {
-		return null;
-	}
+  @Override
+  public Enumeration<ZipTreeNode> children() {
+    return null;
+  }
 
-	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt( int childIndex ) {
-		return null;
-	}
+  @Override
+  public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
+    return null;
+  }
 
-	@Override
-	public int getChildCount() {
-		return 0;
-	}
+  @Override
+  public int getChildCount() {
+    return 0;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
+  @Override
+  public boolean isLeaf() {
+    return true;
+  }
 
-	@Override
-	public int getIndex( TreeNode node ) {
-		return -1;
-	}
+  @Override
+  public int getIndex(TreeNode node) {
+    return -1;
+  }
 
-	public byte[] getBytes() {
-		return this.bytes;
-	}
+  public byte[] getBytes() {
+    return this.bytes;
+  }
 }

@@ -49,13 +49,13 @@ import edu.cmu.cs.dennisc.javax.swing.components.VerticalScrollBarPaintOmittingW
  * @author Dennis Cosgrove
  */
 public class VerticalScrollBarPaintOmittingWhenAppropriateScrollPane extends ScrollPane {
-	public VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( AwtComponentView<?> view ) {
-		super( view );
-		this.setVerticalScrollbarPolicy( VerticalScrollbarPolicy.ALWAYS );
-	}
+  public VerticalScrollBarPaintOmittingWhenAppropriateScrollPane(AwtComponentView<?> view) {
+    super(view);
+    this.setVerticalScrollbarPolicy(VerticalScrollbarPolicy.ALWAYS);
+  }
 
-	@Override
-	protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-		return new VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-	}
+  @Override
+  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+    return new VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+  }
 }

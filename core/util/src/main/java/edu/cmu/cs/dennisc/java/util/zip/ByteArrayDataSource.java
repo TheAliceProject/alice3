@@ -49,33 +49,33 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class ByteArrayDataSource extends DataSource {
-	private String name;
-	private byte[] data;
+  private String name;
+  private byte[] data;
 
-	public ByteArrayDataSource( String name, byte[] data ) {
-		this.setName( name );
-		this.setData( data );
-	}
+  public ByteArrayDataSource(String name, byte[] data) {
+    this.setName(name);
+    this.setData(data);
+  }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
-	public void setName( String name ) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public byte[] getData() {
-		return this.data;
-	}
+  public byte[] getData() {
+    return this.data;
+  }
 
-	public void setData( byte[] data ) {
-		this.data = data;
-	}
+  public void setData(byte[] data) {
+    this.data = data;
+  }
 
-	@Override
-	public void write( OutputStream os ) throws IOException {
-		os.write( this.data );
-	}
+  @Override
+  public void write(OutputStream os) throws IOException {
+    os.write(this.data);
+  }
 }

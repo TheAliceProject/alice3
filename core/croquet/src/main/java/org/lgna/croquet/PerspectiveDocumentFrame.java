@@ -48,31 +48,31 @@ import org.lgna.croquet.views.Frame;
  * @author Dennis Cosgrove
  */
 public abstract class PerspectiveDocumentFrame extends DocumentFrame {
-	private Perspective perspective;
+  private Perspective perspective;
 
-	public Perspective getPerspective() {
-		return this.perspective;
-	}
+  public Perspective getPerspective() {
+    return this.perspective;
+  }
 
-	public void setPerspective( Perspective perspective ) {
-		if( this.perspective != perspective ) {
-			this.perspective = perspective;
-			MenuBarComposite menuBarComposite;
-			ToolBarComposite toolBarComposite;
-			Composite<?> mainComposite;
-			if( this.perspective != null ) {
-				menuBarComposite = this.perspective.getMenuBarComposite();
-				toolBarComposite = this.perspective.getToolBarComposite();
-				mainComposite = this.perspective.getMainComposite();
-			} else {
-				menuBarComposite = null;
-				toolBarComposite = null;
-				mainComposite = null;
-			}
-			Frame frame = this.getFrame();
-			frame.setMenuBarComposite( menuBarComposite );
-			frame.setToolBarComposite( toolBarComposite );
-			frame.setMainComposite( mainComposite );
-		}
-	}
+  public void setPerspective(Perspective perspective) {
+    if (this.perspective != perspective) {
+      this.perspective = perspective;
+      MenuBarComposite menuBarComposite;
+      ToolBarComposite toolBarComposite;
+      Composite<?> mainComposite;
+      if (this.perspective != null) {
+        menuBarComposite = this.perspective.getMenuBarComposite();
+        toolBarComposite = this.perspective.getToolBarComposite();
+        mainComposite = this.perspective.getMainComposite();
+      } else {
+        menuBarComposite = null;
+        toolBarComposite = null;
+        mainComposite = null;
+      }
+      Frame frame = this.getFrame();
+      frame.setMenuBarComposite(menuBarComposite);
+      frame.setToolBarComposite(toolBarComposite);
+      frame.setMainComposite(mainComposite);
+    }
+  }
 }

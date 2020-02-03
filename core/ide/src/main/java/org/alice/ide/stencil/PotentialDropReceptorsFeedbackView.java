@@ -68,134 +68,133 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PotentialDropReceptorsFeedbackView extends CustomView {
-	private static final Integer LAYER_ID = JLayeredPane.POPUP_LAYER - 1;
-	private static final Stroke THIN_STROKE = new BasicStroke( 1.0f );
-	private static final Stroke THICK_STROKE = new BasicStroke( 3.0f );
+  private static final Integer LAYER_ID = JLayeredPane.POPUP_LAYER - 1;
+  private static final Stroke THIN_STROKE = new BasicStroke(1.0f);
+  private static final Stroke THICK_STROKE = new BasicStroke(3.0f);
 
-	private List<DropReceptor> holes = null;
-	private DragComponent<?> potentialDragSource;
+  private List<DropReceptor> holes = null;
+  private DragComponent<?> potentialDragSource;
 
-	private final AbstractWindow<?> window;
+  private final AbstractWindow<?> window;
 
-	public PotentialDropReceptorsFeedbackView( AbstractWindow<?> window ) {
-		this.window = window;
-	}
+  public PotentialDropReceptorsFeedbackView(AbstractWindow<?> window) {
+    this.window = window;
+  }
 
-	public void showStencilOver( DragComponent<?> potentialDragSource, final AbstractType<?, ?, ?> type ) {
-		IDE ide = IDE.getActiveInstance();
-		ProjectPerspective idePerspective = (ProjectPerspective)ide.getPerspective();
-		List<DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors( (IdeDragModel)potentialDragSource.getModel() );
-		if( dropReceptors.size() > 0 ) {
-			this.holes = dropReceptors;
-			this.potentialDragSource = potentialDragSource;
-			this.window.getRootPane().getLayeredPane().getLayer( LAYER_ID ).setComponent( this );
-		}
-	}
+  public void showStencilOver(DragComponent<?> potentialDragSource, final AbstractType<?, ?, ?> type) {
+    IDE ide = IDE.getActiveInstance();
+    ProjectPerspective idePerspective = (ProjectPerspective) ide.getPerspective();
+    List<DropReceptor> dropReceptors = idePerspective.createListOfPotentialDropReceptors((IdeDragModel) potentialDragSource.getModel());
+    if (dropReceptors.size() > 0) {
+      this.holes = dropReceptors;
+      this.potentialDragSource = potentialDragSource;
+      this.window.getRootPane().getLayeredPane().getLayer(LAYER_ID).setComponent(this);
+    }
+  }
 
-	public void hideStencil() {
-		this.window.getRootPane().getLayeredPane().getLayer( LAYER_ID ).setComponent( null );
-		this.holes = null;
-		this.potentialDragSource = null;
-	}
+  public void hideStencil() {
+    this.window.getRootPane().getLayeredPane().getLayer(LAYER_ID).setComponent(null);
+    this.holes = null;
+    this.potentialDragSource = null;
+  }
 
-	public void handleDragStarted() {
-		this.potentialDragSource = null;
-		if( this.holes != null ) {
-			this.repaint();
-		}
-	}
+  public void handleDragStarted() {
+    this.potentialDragSource = null;
+    if (this.holes != null) {
+      this.repaint();
+    }
+  }
 
-	public void handleDragEnteredDropReceptor() {
-	}
+  public void handleDragEnteredDropReceptor() {
+  }
 
-	public void handleDragExitedDropReceptor() {
-		if( this.holes != null ) {
-			this.repaint();
-		}
-	}
+  public void handleDragExitedDropReceptor() {
+    if (this.holes != null) {
+      this.repaint();
+    }
+  }
 
-	public void handleDragStopped() {
-	}
+  public void handleDragStopped() {
+  }
 
-	private boolean isFauxStencilDesired() {
-		return IDE.getActiveInstance().isDragInProgress();
-	}
+  private boolean isFauxStencilDesired() {
+    return IDE.getActiveInstance().isDragInProgress();
+  }
 
-	@Override
-	protected boolean contains( int x, int y, boolean superContains ) {
-		return false;
-	}
+  @Override
+  protected boolean contains(int x, int y, boolean superContains) {
+    return false;
+  }
 
-	@Override
-	protected void paintComponentPrologue( Graphics2D g2 ) {
-		if( this.holes != null ) {
-			synchronized( this.holes ) {
-				Area area = new Area( new Rectangle( 0, 0, getWidth(), getHeight() ) );
-				g2.setPaint( new Color( 0, 0, 127, 127 ) );
+  @Override
+  protected void paintComponentPrologue(Graphics2D g2) {
+    if (this.holes != null) {
+      synchronized (this.holes) {
+        Area area = new Area(new Rectangle(0, 0, getWidth(), getHeight()));
+        g2.setPaint(new Color(0, 0, 127, 127));
 
-				Rectangle potentialDragSourceBounds;
-				if( this.potentialDragSource != null ) {
-					AwtContainerView<?> parent = this.potentialDragSource.getParent();
-					if( parent != null ) {
-						potentialDragSourceBounds = SwingUtilities.convertRectangle( parent.getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent() );
-					} else {
-						Logger.severe( this.potentialDragSource );
-						potentialDragSourceBounds = null;
-					}
-				} else {
-					potentialDragSourceBounds = null;
-				}
+        Rectangle potentialDragSourceBounds;
+        if (this.potentialDragSource != null) {
+          AwtContainerView<?> parent = this.potentialDragSource.getParent();
+          if (parent != null) {
+            potentialDragSourceBounds = SwingUtilities.convertRectangle(parent.getAwtComponent(), this.potentialDragSource.getBounds(), this.getAwtComponent());
+          } else {
+            Logger.severe(this.potentialDragSource);
+            potentialDragSourceBounds = null;
+          }
+        } else {
+          potentialDragSourceBounds = null;
+        }
 
-				if( isFauxStencilDesired() ) {
-					for( DropReceptor dropReceptor : this.holes ) {
-						SwingComponentView<?> component = dropReceptor.getViewController();
-						if (component != null && component.getParent() != null) {
-							Rectangle holeBounds = SwingUtilities
-								.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent());
-							area.subtract(new Area(holeBounds));
-						}
-					}
+        if (isFauxStencilDesired()) {
+          for (DropReceptor dropReceptor : this.holes) {
+            SwingComponentView<?> component = dropReceptor.getViewController();
+            if (component != null && component.getParent() != null) {
+              Rectangle holeBounds = SwingUtilities.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent());
+              area.subtract(new Area(holeBounds));
+            }
+          }
 
-					if( potentialDragSourceBounds != null ) {
-						area.subtract( new Area( potentialDragSourceBounds ) );
-					}
-					g2.fill( area );
-				}
+          if (potentialDragSourceBounds != null) {
+            area.subtract(new Area(potentialDragSourceBounds));
+          }
+          g2.fill(area);
+        }
 
-				g2.setStroke( THICK_STROKE );
-				final int BUFFER = 6;
-				for( DropReceptor dropReceptor : this.holes ) {
-					SwingComponentView<?> component = dropReceptor.getViewController();
-					if( component != null ) {
-						Container awtContainer = component.getAwtComponent().getParent();
-						if( awtContainer != null ) {
-							Rectangle holeBounds = SwingUtilities.convertRectangle( awtContainer, component.getBounds(), this.getAwtComponent() );
-							holeBounds.x -= BUFFER;
-							holeBounds.y -= BUFFER;
-							holeBounds.width += 2 * BUFFER;
-							holeBounds.height += 2 * BUFFER;
+        g2.setStroke(THICK_STROKE);
+        final int BUFFER = 6;
+        for (DropReceptor dropReceptor : this.holes) {
+          SwingComponentView<?> component = dropReceptor.getViewController();
+          if (component != null) {
+            Container awtContainer = component.getAwtComponent().getParent();
+            if (awtContainer != null) {
+              Rectangle holeBounds = SwingUtilities.convertRectangle(awtContainer, component.getBounds(), this.getAwtComponent());
+              holeBounds.x -= BUFFER;
+              holeBounds.y -= BUFFER;
+              holeBounds.width += 2 * BUFFER;
+              holeBounds.height += 2 * BUFFER;
 
-							g2.setColor( new Color( 0, 0, 0 ) );
-							g2.draw( holeBounds );
-						} else {
-							Logger.severe( dropReceptor );
-						}
-					} else {
-						Logger.severe( dropReceptor );
-					}
-				}
-			}
-		} else {
-			Logger.severe( this );
-		}
-	}
+              g2.setColor(new Color(0, 0, 0));
+              g2.draw(holeBounds);
+            } else {
+              Logger.severe(dropReceptor);
+            }
+          } else {
+            Logger.severe(dropReceptor);
+          }
+        }
+      }
+    } else {
+      Logger.severe(this);
+    }
+  }
 
-	@Override
-	protected void paintComponentEpilogue( Graphics2D g2 ) {
-	}
+  @Override
+  protected void paintComponentEpilogue(Graphics2D g2) {
+  }
 
-	@Override
-	protected void paintEpilogue( Graphics2D g2 ) {
-	}
+  @Override
+  protected void paintEpilogue(Graphics2D g2) {
+  }
 
 }

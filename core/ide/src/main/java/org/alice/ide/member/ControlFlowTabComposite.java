@@ -51,53 +51,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabComposite extends MemberOrControlFlowTabComposite<ControlFlowTabView> {
-	private final PlainStringValue doInOrderHeader = this.createStringValue( "doInOrderHeader" );
-	private final PlainStringValue doTogetherHeader = this.createStringValue( "doTogetherHeader" );
-	private final PlainStringValue loopHeader = this.createStringValue( "loopHeader" );
-	private final PlainStringValue ifThenHeader = this.createStringValue( "ifThenHeader" );
-	private final PlainStringValue eachInTogetherHeader = this.createStringValue( "eachInTogetherHeader" );
-	private final PlainStringValue commentHeader = this.createStringValue( "commentHeader" );
-	private final PlainStringValue localHeader = this.createStringValue( "localHeader" );
-	private final PlainStringValue returnHeader = this.createStringValue( "returnHeader" );
+  private final PlainStringValue doInOrderHeader = this.createStringValue("doInOrderHeader");
+  private final PlainStringValue doTogetherHeader = this.createStringValue("doTogetherHeader");
+  private final PlainStringValue loopHeader = this.createStringValue("loopHeader");
+  private final PlainStringValue ifThenHeader = this.createStringValue("ifThenHeader");
+  private final PlainStringValue eachInTogetherHeader = this.createStringValue("eachInTogetherHeader");
+  private final PlainStringValue commentHeader = this.createStringValue("commentHeader");
+  private final PlainStringValue localHeader = this.createStringValue("localHeader");
+  private final PlainStringValue returnHeader = this.createStringValue("returnHeader");
 
-	public ControlFlowTabComposite() {
-		super( UUID.fromString( "80073c5b-1308-4c32-9081-edf8e4573ab3" ) );
-	}
+  public ControlFlowTabComposite() {
+    super(UUID.fromString("80073c5b-1308-4c32-9081-edf8e4573ab3"));
+  }
 
-	public PlainStringValue getDoInOrderHeader() {
-		return this.doInOrderHeader;
-	}
+  public PlainStringValue getDoInOrderHeader() {
+    return this.doInOrderHeader;
+  }
 
-	public PlainStringValue getDoTogetherHeader() {
-		return this.doTogetherHeader;
-	}
+  public PlainStringValue getDoTogetherHeader() {
+    return this.doTogetherHeader;
+  }
 
-	public PlainStringValue getLoopHeader() {
-		return this.loopHeader;
-	}
+  public PlainStringValue getLoopHeader() {
+    return this.loopHeader;
+  }
 
-	public PlainStringValue getIfThenHeader() {
-		return this.ifThenHeader;
-	}
+  public PlainStringValue getIfThenHeader() {
+    return this.ifThenHeader;
+  }
 
-	public PlainStringValue getEachInTogetherHeader() {
-		return this.eachInTogetherHeader;
-	}
+  public PlainStringValue getEachInTogetherHeader() {
+    return this.eachInTogetherHeader;
+  }
 
-	public PlainStringValue getCommentHeader() {
-		return this.commentHeader;
-	}
+  public PlainStringValue getCommentHeader() {
+    return this.commentHeader;
+  }
 
-	public PlainStringValue getLocalHeader() {
-		return this.localHeader;
-	}
+  public PlainStringValue getLocalHeader() {
+    return this.localHeader;
+  }
 
-	public PlainStringValue getReturnHeader() {
-		return this.returnHeader;
-	}
+  public PlainStringValue getReturnHeader() {
+    return this.returnHeader;
+  }
 
-	@Override
-	protected ControlFlowTabView createView() {
-		return new ControlFlowTabView( this );
-	}
+  @Override
+  protected ControlFlowTabView createView() {
+    return new ControlFlowTabView(this);
+  }
 }

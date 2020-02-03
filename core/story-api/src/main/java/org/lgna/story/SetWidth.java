@@ -49,11 +49,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author Dennis Cosgrove
  */
 public class SetWidth extends DurationAnimationStyleSetDimensionPolicyArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = SetWidth.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = SetWidth.class) public static interface Detail {
+  }
 
-	private SetWidth() {
-		super();
-	}
+  private SetWidth() {
+    super();
+  }
 }

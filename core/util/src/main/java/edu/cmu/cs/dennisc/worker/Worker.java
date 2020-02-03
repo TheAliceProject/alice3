@@ -48,10 +48,10 @@ import javax.swing.SwingWorker;
  * @author Dennis Cosgrove
  */
 public abstract class Worker<T> extends AbstractWorker<T, Void> {
-	private final InternalSwingWorker swingWorker = new InternalSwingWorker();
+  private final InternalSwingWorker swingWorker = new InternalSwingWorker();
 
-	@Override
-	protected SwingWorker<T, Void> getSwingWorker() {
-		return this.swingWorker;
-	}
+  @Override
+  protected SwingWorker<T, Void> getSwingWorker() {
+    return this.swingWorker;
+  }
 }

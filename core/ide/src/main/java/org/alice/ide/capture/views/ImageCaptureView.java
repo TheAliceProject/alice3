@@ -53,26 +53,26 @@ import java.awt.Toolkit;
  * @author Dennis Cosgrove
  */
 public class ImageCaptureView extends MigPanel {
-	public ImageCaptureView( ImageCaptureComposite composite ) {
-		super( composite );
+  public ImageCaptureView(ImageCaptureComposite composite) {
+    super(composite);
 
-		Toolkit toolkit = this.getAwtComponent().getToolkit();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "(screen dpi: " );
-		sb.append( toolkit.getScreenResolution() );
-		sb.append( ")" );
-		Label screenDpiLabel = new Label( sb.toString() );
+    Toolkit toolkit = this.getAwtComponent().getToolkit();
+    StringBuilder sb = new StringBuilder();
+    sb.append("(screen dpi: ");
+    sb.append(toolkit.getScreenResolution());
+    sb.append(")");
+    Label screenDpiLabel = new Label(sb.toString());
 
-		this.addComponent( composite.getOperationsHeader().createLabel(), "wrap" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "span 2, grow, shrink, wrap" );
-		this.addComponent( composite.getCaptureEntireWindowOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getCaptureEntireContentPaneOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getCaptureRectangleOperation().createButton(), "skip, wrap" );
-		this.addComponent( composite.getPropertiesHeader().createLabel(), "top 32, wrap" );
-		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "span 2, grow, shrink, wrap" );
-		this.addComponent( composite.getDpiState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getDpiState().createSpinner(), "split 2" );
-		this.addComponent( screenDpiLabel, "wrap" );
-		this.addComponent( composite.getIsAlphaChannelState().createCheckBox(), "skip, wrap" );
-	}
+    this.addComponent(composite.getOperationsHeader().createLabel(), "wrap");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "span 2, grow, shrink, wrap");
+    this.addComponent(composite.getCaptureEntireWindowOperation().createButton(), "skip, wrap");
+    this.addComponent(composite.getCaptureEntireContentPaneOperation().createButton(), "skip, wrap");
+    this.addComponent(composite.getCaptureRectangleOperation().createButton(), "skip, wrap");
+    this.addComponent(composite.getPropertiesHeader().createLabel(), "top 32, wrap");
+    this.addComponent(Separator.createInstanceSeparatingTopFromBottom(), "span 2, grow, shrink, wrap");
+    this.addComponent(composite.getDpiState().getSidekickLabel().createLabel(), "align right");
+    this.addComponent(composite.getDpiState().createSpinner(), "split 2");
+    this.addComponent(screenDpiLabel, "wrap");
+    this.addComponent(composite.getIsAlphaChannelState().createCheckBox(), "skip, wrap");
+  }
 }

@@ -65,125 +65,125 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  */
 public class CollisionHandler extends AbstractBinaryEventHandler<Object, CollisionEvent> {
 
-	protected final CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
+  protected final CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
-		registerIsFiringMap( collisionListener );
-		registerPolicyMap( collisionListener, policy );
-		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
-		allObserving.addAll( groupTwo );
-		for( SThing m : allObserving ) {
-			if( !getModelList().contains( m ) ) {
-				getModelList().add( m );
-				EmployeesOnly.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-			}
-		}
-		collisionEventHandler.register( collisionListener, groupOne, groupTwo );
-	}
+  public void addCollisionListener(Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy) {
+    registerIsFiringMap(collisionListener);
+    registerPolicyMap(collisionListener, policy);
+    List<SThing> allObserving = Lists.newCopyOnWriteArrayList(groupOne);
+    allObserving.addAll(groupTwo);
+    for (SThing m : allObserving) {
+      if (!getModelList().contains(m)) {
+        getModelList().add(m);
+        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
+      }
+    }
+    collisionEventHandler.register(collisionListener, groupOne, groupTwo);
+  }
 
-	@Override
-	protected void check( SThing changedEntity ) {
-		collisionEventHandler.check( changedEntity );
-	}
+  @Override
+  protected void check(SThing changedEntity) {
+    collisionEventHandler.check(changedEntity);
+  }
 
-	@Override
-	protected void fire( Object listener, CollisionEvent event ) {
-		if( listener instanceof CollisionStartListener ) {
-			CollisionStartListener startCollisionEvent = (CollisionStartListener)listener;
-			startCollisionEvent.collisionStarted( (StartCollisionEvent)event );
-		} else if( listener instanceof CollisionEndListener ) {
-			CollisionEndListener endCollisionEvent = (CollisionEndListener)listener;
-			endCollisionEvent.collisionEnded( (EndCollisionEvent)event );
-		}
-	}
+  @Override
+  protected void fire(Object listener, CollisionEvent event) {
+    if (listener instanceof CollisionStartListener) {
+      CollisionStartListener startCollisionEvent = (CollisionStartListener) listener;
+      startCollisionEvent.collisionStarted((StartCollisionEvent) event);
+    } else if (listener instanceof CollisionEndListener) {
+      CollisionEndListener endCollisionEvent = (CollisionEndListener) listener;
+      endCollisionEvent.collisionEnded((EndCollisionEvent) event);
+    }
+  }
 
-	private class CollisionEventHandler {
+  private class CollisionEventHandler {
 
-		private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
-		private final Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
-		private final Map<SThing, Map<SThing, Boolean>> wereTouchingMap = Maps.newConcurrentHashMap();
-		private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
+    private final Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = Maps.newConcurrentHashMap();
+    private final Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
+    private final Map<SThing, Map<SThing, Boolean>> wereTouchingMap = Maps.newConcurrentHashMap();
+    private final Map<Object, List<SThing>> listenerToGroupAMap = Maps.newConcurrentHashMap();
 
-		public void check( SThing changedEntity ) {
-			for( SThing m : checkMap.get( changedEntity ) ) {
-				CopyOnWriteArrayList<Object> listenerList = eventMap.get( changedEntity ).get( m );
-				if( ( listenerList == null ) || ( listenerList.size() == 0 ) ) {
-					return;
-				}
-				for( Object colList : listenerList ) {
-					if( check( colList, m, changedEntity ) ) {
-						if( colList instanceof CollisionStartListener ) {
-							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
-								fireEvent( colList, new StartCollisionEvent( m, changedEntity ), m, changedEntity );
-							} else {
-								fireEvent( colList, new StartCollisionEvent( changedEntity, m ), changedEntity, m );
-							}
-						} else if( colList instanceof CollisionEndListener ) {
-							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
-								fireEvent( colList, new EndCollisionEvent( m, changedEntity ), m, changedEntity );
-							} else {
-								fireEvent( colList, new EndCollisionEvent( changedEntity, m ), changedEntity, m );
-							}
-						}
-					}
-				}
-				boolean doTheseCollide = AabbCollisionDetector.doTheseCollide( m, changedEntity );
-				wereTouchingMap.get( m ).put( changedEntity, doTheseCollide );
-				wereTouchingMap.get( changedEntity ).put( m, doTheseCollide );
-			}
-		}
+    public void check(SThing changedEntity) {
+      for (SThing m : checkMap.get(changedEntity)) {
+        CopyOnWriteArrayList<Object> listenerList = eventMap.get(changedEntity).get(m);
+        if ((listenerList == null) || (listenerList.size() == 0)) {
+          return;
+        }
+        for (Object colList : listenerList) {
+          if (check(colList, m, changedEntity)) {
+            if (colList instanceof CollisionStartListener) {
+              if (listenerToGroupAMap.get(colList).contains(m)) {
+                fireEvent(colList, new StartCollisionEvent(m, changedEntity), m, changedEntity);
+              } else {
+                fireEvent(colList, new StartCollisionEvent(changedEntity, m), changedEntity, m);
+              }
+            } else if (colList instanceof CollisionEndListener) {
+              if (listenerToGroupAMap.get(colList).contains(m)) {
+                fireEvent(colList, new EndCollisionEvent(m, changedEntity), m, changedEntity);
+              } else {
+                fireEvent(colList, new EndCollisionEvent(changedEntity, m), changedEntity, m);
+              }
+            }
+          }
+        }
+        boolean doTheseCollide = AabbCollisionDetector.doTheseCollide(m, changedEntity);
+        wereTouchingMap.get(m).put(changedEntity, doTheseCollide);
+        wereTouchingMap.get(changedEntity).put(m, doTheseCollide);
+      }
+    }
 
-		private boolean check( Object colList, SThing m, SThing changedEntity ) {
-			if( colList instanceof CollisionStartListener ) {
-				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );
-			} else if( colList instanceof CollisionEndListener ) {
-				return wereTouchingMap.get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity );
-			}
-			Logger.errln( "UNHANDLED CollisionListener TYPE", colList.getClass() );
-			return false;
-		}
+    private boolean check(Object colList, SThing m, SThing changedEntity) {
+      if (colList instanceof CollisionStartListener) {
+        return !wereTouchingMap.get(m).get(changedEntity) && AabbCollisionDetector.doTheseCollide(m, changedEntity);
+      } else if (colList instanceof CollisionEndListener) {
+        return wereTouchingMap.get(m).get(changedEntity) && !AabbCollisionDetector.doTheseCollide(m, changedEntity);
+      }
+      Logger.errln("UNHANDLED CollisionListener TYPE", colList.getClass());
+      return false;
+    }
 
-		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
-			listenerToGroupAMap.put( collisionListener, groupOne );
-			for( SThing m : groupOne ) {
-				if( eventMap.get( m ) == null ) {
+    public void register(Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo) {
+      listenerToGroupAMap.put(collisionListener, groupOne);
+      for (SThing m : groupOne) {
+        if (eventMap.get(m) == null) {
 
-					eventMap.put( m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>() );
-					wereTouchingMap.put( m, new ConcurrentHashMap<SThing, Boolean>() );
-					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
-				}
-				for( SThing t : groupTwo ) {
-					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
-					}
-					if( !m.equals( t ) ) {
-						eventMap.get( m ).get( t ).add( collisionListener );
-						wereTouchingMap.get( m ).put( t, false );
-						if( !checkMap.get( m ).contains( t ) ) {
-							checkMap.get( m ).add( t );
-						}
-					}
-				}
-			}
-			for( SThing m : groupTwo ) {
-				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>() );
-					wereTouchingMap.put( m, new ConcurrentHashMap<SThing, Boolean>() );
-					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
-				}
-				for( SThing t : groupOne ) {
-					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
-					}
-					if( !m.equals( t ) ) {
-						eventMap.get( m ).get( t ).add( collisionListener );
-						wereTouchingMap.get( m ).put( t, AabbCollisionDetector.doTheseCollide( m, t ) );
-						if( !checkMap.get( m ).contains( t ) ) {
-							checkMap.get( m ).add( t );
-						}
-					}
-				}
-			}
-		}
-	}
+          eventMap.put(m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>());
+          wereTouchingMap.put(m, new ConcurrentHashMap<SThing, Boolean>());
+          checkMap.put(m, new CopyOnWriteArrayList<SThing>());
+        }
+        for (SThing t : groupTwo) {
+          if (eventMap.get(m).get(t) == null) {
+            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
+          }
+          if (!m.equals(t)) {
+            eventMap.get(m).get(t).add(collisionListener);
+            wereTouchingMap.get(m).put(t, false);
+            if (!checkMap.get(m).contains(t)) {
+              checkMap.get(m).add(t);
+            }
+          }
+        }
+      }
+      for (SThing m : groupTwo) {
+        if (eventMap.get(m) == null) {
+          eventMap.put(m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>());
+          wereTouchingMap.put(m, new ConcurrentHashMap<SThing, Boolean>());
+          checkMap.put(m, new CopyOnWriteArrayList<SThing>());
+        }
+        for (SThing t : groupOne) {
+          if (eventMap.get(m).get(t) == null) {
+            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
+          }
+          if (!m.equals(t)) {
+            eventMap.get(m).get(t).add(collisionListener);
+            wereTouchingMap.get(m).put(t, AabbCollisionDetector.doTheseCollide(m, t));
+            if (!checkMap.get(m).contains(t)) {
+              checkMap.get(m).add(t);
+            }
+          }
+        }
+      }
+    }
+  }
 }

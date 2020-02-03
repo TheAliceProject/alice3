@@ -48,15 +48,15 @@ import java.util.UUID;
 
 public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
 
-	private static class SingletonHolder {
-		private static TransformationEventAdapterFillIn instance = new TransformationEventAdapterFillIn();
-	}
+  private static class SingletonHolder {
+    private static TransformationEventAdapterFillIn instance = new TransformationEventAdapterFillIn();
+  }
 
-	public static TransformationEventAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static TransformationEventAdapterFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	public TransformationEventAdapterFillIn() {
-		super( UUID.fromString( "486848e6-16a4-4697-bd69-c04f4d0e05ee" ), PointOfViewChangeListener.class );
-	}
+  public TransformationEventAdapterFillIn() {
+    super(UUID.fromString("486848e6-16a4-4697-bd69-c04f4d0e05ee"), PointOfViewChangeListener.class);
+  }
 }

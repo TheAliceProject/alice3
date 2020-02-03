@@ -50,25 +50,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class YesNoConfirmDialogComposite<V extends Panel> extends SingleValueCreatorInputDialogCoreComposite<V, Boolean> {
-	private String title;
+  private String title;
 
-	public YesNoConfirmDialogComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public YesNoConfirmDialogComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.title = this.findLocalizedText("title");
+  }
 
-	@Override
-	protected Boolean createValue() {
-		return null;
-	}
+  @Override
+  protected Boolean createValue() {
+    return null;
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return null;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return null;
+  }
 }

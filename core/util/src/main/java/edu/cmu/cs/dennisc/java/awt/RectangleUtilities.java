@@ -54,92 +54,92 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class RectangleUtilities {
-	public static Rectangle createCenteredRectangle( Rectangle bound, int width, int height ) {
-		int x0 = bound.x;
-		int x1 = ( bound.x + bound.width ) - 1;
-		int xC = ( x0 + x1 ) / 2;
+  public static Rectangle createCenteredRectangle(Rectangle bound, int width, int height) {
+    int x0 = bound.x;
+    int x1 = (bound.x + bound.width) - 1;
+    int xC = (x0 + x1) / 2;
 
-		int y0 = bound.y;
-		int y1 = ( bound.y + bound.height ) - 1;
-		int yC = ( y0 + y1 ) / 2;
+    int y0 = bound.y;
+    int y1 = (bound.y + bound.height) - 1;
+    int yC = (y0 + y1) / 2;
 
-		return new Rectangle( xC - ( width / 2 ), yC - ( height / 2 ), width, height );
-	}
+    return new Rectangle(xC - (width / 2), yC - (height / 2), width, height);
+  }
 
-	public static Rectangle createCenteredRectangle( Rectangle bound, Dimension size ) {
-		return createCenteredRectangle( bound, size.width, size.height );
-	}
+  public static Rectangle createCenteredRectangle(Rectangle bound, Dimension size) {
+    return createCenteredRectangle(bound, size.width, size.height);
+  }
 
-	public static Rectangle grow( Rectangle rv, int xPad, int yPad ) {
-		rv.x -= xPad;
-		rv.y -= yPad;
-		rv.width += xPad + xPad;
-		rv.height += yPad + yPad;
-		return rv;
-	}
+  public static Rectangle grow(Rectangle rv, int xPad, int yPad) {
+    rv.x -= xPad;
+    rv.y -= yPad;
+    rv.width += xPad + xPad;
+    rv.height += yPad + yPad;
+    return rv;
+  }
 
-	public static Rectangle grow( Rectangle rv, int pad ) {
-		return grow( rv, pad, pad );
-	}
+  public static Rectangle grow(Rectangle rv, int pad) {
+    return grow(rv, pad, pad);
+  }
 
-	public static Point getPoint( Rectangle rect, int xConstraint, int yConstraint ) {
-		Point rv = new Point();
-		switch( xConstraint ) {
-		case SwingConstants.LEADING:
-			rv.x = rect.x;
-			break;
-		case SwingConstants.TRAILING:
-			rv.x = rect.x + rect.width;
-			break;
-		case SwingConstants.CENTER:
-			rv.x = rect.x + ( rect.width / 2 );
-			break;
-		default:
-			assert false : xConstraint;
-		}
-		switch( yConstraint ) {
-		case SwingConstants.LEADING:
-			rv.y = rect.y;
-			break;
-		case SwingConstants.TRAILING:
-			rv.y = rect.y + rect.height;
-			break;
-		case SwingConstants.CENTER:
-			rv.y = rect.y + ( rect.height / 2 );
-			break;
-		default:
-			assert false : xConstraint;
-		}
-		return rv;
-	}
+  public static Point getPoint(Rectangle rect, int xConstraint, int yConstraint) {
+    Point rv = new Point();
+    switch (xConstraint) {
+    case SwingConstants.LEADING:
+      rv.x = rect.x;
+      break;
+    case SwingConstants.TRAILING:
+      rv.x = rect.x + rect.width;
+      break;
+    case SwingConstants.CENTER:
+      rv.x = rect.x + (rect.width / 2);
+      break;
+    default:
+      assert false : xConstraint;
+    }
+    switch (yConstraint) {
+    case SwingConstants.LEADING:
+      rv.y = rect.y;
+      break;
+    case SwingConstants.TRAILING:
+      rv.y = rect.y + rect.height;
+      break;
+    case SwingConstants.CENTER:
+      rv.y = rect.y + (rect.height / 2);
+      break;
+    default:
+      assert false : xConstraint;
+    }
+    return rv;
+  }
 
-	public static Rectangle inset( Rectangle rv, Insets insets ) {
-		if( insets != null ) {
-			if( rv != null ) {
-				rv.x -= insets.left;
-				rv.y -= insets.top;
-				rv.width += insets.left + insets.right;
-				rv.height += insets.top + insets.bottom;
-			} else {
-				//todo?
-				//				throw new NullPointerException();
-			}
-		}
-		return rv;
-	}
+  public static Rectangle inset(Rectangle rv, Insets insets) {
+    if (insets != null) {
+      if (rv != null) {
+        rv.x -= insets.left;
+        rv.y -= insets.top;
+        rv.width += insets.left + insets.right;
+        rv.height += insets.top + insets.bottom;
+      } else {
+        //todo?
+        //        throw new NullPointerException();
+      }
+    }
+    return rv;
+  }
 
-	public static void setBounds( Rectangle hole, int xA, int yA, int xB, int yB ) {
-		hole.x = Math.min( xA, xB );
-		hole.y = Math.min( yA, yB );
-		hole.width = Math.abs( xB - xA );
-		hole.height = Math.abs( yB - yA );
-	}
+  public static void setBounds(Rectangle hole, int xA, int yA, int xB, int yB) {
+    hole.x = Math.min(xA, xB);
+    hole.y = Math.min(yA, yB);
+    hole.width = Math.abs(xB - xA);
+    hole.height = Math.abs(yB - yA);
+  }
 
-	public static Rectangle toAwtRectangle( MRectangleI rectangle ) {
-		return rectangle != null ? new Rectangle( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
-	}
+  public static Rectangle toAwtRectangle(MRectangleI rectangle) {
+    return rectangle != null ? new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height) : null;
+  }
 
-	public static MRectangleI toMRectangleI( Rectangle rectangle ) {
-		return rectangle != null ? new MRectangleI( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
-	}
+  public static MRectangleI toMRectangleI(Rectangle rectangle) {
+    return rectangle != null ? new MRectangleI(rectangle.x, rectangle.y, rectangle.width, rectangle.height) : null;
+  }
 }

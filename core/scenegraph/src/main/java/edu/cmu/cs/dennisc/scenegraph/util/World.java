@@ -56,66 +56,66 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public class World extends Scene {
-	public World() {
-		this.sgBackground.color.setValue( new Color4f( 0.5f, 0.5f, 1, 1 ) );
-		background.setValue( this.sgBackground );
+  public World() {
+    this.sgBackground.color.setValue(new Color4f(0.5f, 0.5f, 1, 1));
+    background.setValue(this.sgBackground);
 
-		this.sgAmbientLight.setParent( this );
-		this.sgAmbientLight.color.setValue( new Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
+    this.sgAmbientLight.setParent(this);
+    this.sgAmbientLight.color.setValue(new Color4f(0.2f, 0.2f, 0.2f, 1));
 
-		this.sgSunVehicle.setParent( this );
-		this.sgSunVehicle.setLocalTransformation( AffineMatrix4x4.createRotationAboutXAxis( new AngleInRadians( -Math.PI / 2 ) ) );
+    this.sgSunVehicle.setParent(this);
+    this.sgSunVehicle.setLocalTransformation(AffineMatrix4x4.createRotationAboutXAxis(new AngleInRadians(-Math.PI / 2)));
 
-		this.sgSunLight.color.setValue( new Color4f( 1, 1, 1, 1 ) );
-		this.sgSunLight.setParent( this.sgSunVehicle );
+    this.sgSunLight.color.setValue(new Color4f(1, 1, 1, 1));
+    this.sgSunLight.setParent(this.sgSunVehicle);
 
-		this.sgCameraVehicle.setParent( this );
+    this.sgCameraVehicle.setParent(this);
 
-		this.sgCameraVehicle.setLocalTransformation( AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
+    this.sgCameraVehicle.setLocalTransformation(AffineMatrix4x4.createTranslation(0, 0, 32));
 
-		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
-		this.sgCamera.setParent( this.sgCameraVehicle );
-	}
+    this.sgCamera.farClippingPlaneDistance.setValue(1000.0);
+    this.sgCamera.setParent(this.sgCameraVehicle);
+  }
 
-	public Background getSGBackground() {
-		return this.sgBackground;
-	}
+  public Background getSGBackground() {
+    return this.sgBackground;
+  }
 
-	public AmbientLight getSGAmbientLight() {
-		return this.sgAmbientLight;
-	}
+  public AmbientLight getSGAmbientLight() {
+    return this.sgAmbientLight;
+  }
 
-	public Transformable getSGSunVehicle() {
-		return this.sgSunVehicle;
-	}
+  public Transformable getSGSunVehicle() {
+    return this.sgSunVehicle;
+  }
 
-	public DirectionalLight getSGSunLight() {
-		return this.sgSunLight;
-	}
+  public DirectionalLight getSGSunLight() {
+    return this.sgSunLight;
+  }
 
-	public Transformable getSGCameraVehicle() {
-		return this.sgCameraVehicle;
-	}
+  public Transformable getSGCameraVehicle() {
+    return this.sgCameraVehicle;
+  }
 
-	public SymmetricPerspectiveCamera getSGCamera() {
-		return this.sgCamera;
-	}
+  public SymmetricPerspectiveCamera getSGCamera() {
+    return this.sgCamera;
+  }
 
-	@Override
-	public void setName( String name ) {
-		super.setName( name );
-		this.sgBackground.setName( name + ".sgBackground" );
-		this.sgAmbientLight.setName( name + ".sgAmbientLight" );
-		this.sgSunVehicle.setName( name + ".sgSunVehicle" );
-		this.sgSunLight.setName( name + ".sgSunLight" );
-		this.sgCameraVehicle.setName( name + ".sgCameraVehicle" );
-		this.sgCamera.setName( name + ".sgCamera" );
-	}
+  @Override
+  public void setName(String name) {
+    super.setName(name);
+    this.sgBackground.setName(name + ".sgBackground");
+    this.sgAmbientLight.setName(name + ".sgAmbientLight");
+    this.sgSunVehicle.setName(name + ".sgSunVehicle");
+    this.sgSunLight.setName(name + ".sgSunLight");
+    this.sgCameraVehicle.setName(name + ".sgCameraVehicle");
+    this.sgCamera.setName(name + ".sgCamera");
+  }
 
-	private final Background sgBackground = new Background();
-	private final AmbientLight sgAmbientLight = new AmbientLight();
-	private final Transformable sgSunVehicle = new Transformable();
-	private final DirectionalLight sgSunLight = new DirectionalLight();
-	private final Transformable sgCameraVehicle = new Transformable();
-	private final SymmetricPerspectiveCamera sgCamera = new SymmetricPerspectiveCamera();
+  private final Background sgBackground = new Background();
+  private final AmbientLight sgAmbientLight = new AmbientLight();
+  private final Transformable sgSunVehicle = new Transformable();
+  private final DirectionalLight sgSunLight = new DirectionalLight();
+  private final Transformable sgCameraVehicle = new Transformable();
+  private final SymmetricPerspectiveCamera sgCamera = new SymmetricPerspectiveCamera();
 }

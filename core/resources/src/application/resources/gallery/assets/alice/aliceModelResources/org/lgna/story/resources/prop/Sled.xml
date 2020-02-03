@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Sled">
+    <BoundingBox>
+        <Min x="-0.17085860669612885" y="-0.002584751695394516" z="-0.5582102388143539"/>
+        <Max x="0.17085862159729004" y="0.25894835591316223" z="0.296792209148407"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>sled</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Sled" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

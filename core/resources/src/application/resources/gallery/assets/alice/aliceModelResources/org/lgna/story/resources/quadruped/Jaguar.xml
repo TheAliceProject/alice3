@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Jaguar">
+    <BoundingBox>
+        <Min x="-0.2126447186233996" y="0.011392602374749152" z="-0.9252368343069153"/>
+        <Max x="0.21264537427451632" y="0.7995216663691237" z="1.2996972162125306"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>feline</Tag>
+        <Tag>cat</Tag>
+        <Tag>panther</Tag>
+        <Tag>leopard</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Jaguar" resourceName="SPOTTED" textureName="SPOTTED"/>
+    <Resource modelName="Jaguar" resourceName="BLACK" textureName="BLACK"/>
+</AliceModel>

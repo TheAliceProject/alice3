@@ -55,34 +55,34 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class ContentsCachingListCellRenderer<E> extends JLineAxisPane implements javax.swing.ListCellRenderer {
-	private static Color selectionBackground = UIManager.getColor( "List.selectionBackground" );
-	private Map<E, Component> map = Maps.newHashMap();
+  private static Color selectionBackground = UIManager.getColor("List.selectionBackground");
+  private Map<E, Component> map = Maps.newHashMap();
 
-	protected abstract void update( Component contents, int index, boolean isSelected, boolean cellHasFocus );
+  protected abstract void update(Component contents, int index, boolean isSelected, boolean cellHasFocus);
 
-	protected abstract Component createComponent( E e );
+  protected abstract Component createComponent(E e);
 
-	public ContentsCachingListCellRenderer() {
-		this.setBackground( selectionBackground );
-		this.setAlignmentX( Component.LEFT_ALIGNMENT );
-	}
+  public ContentsCachingListCellRenderer() {
+    this.setBackground(selectionBackground);
+    this.setAlignmentX(Component.LEFT_ALIGNMENT);
+  }
 
-	private Component getComponent( E e ) {
-		Component rv = this.map.get( e );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = createComponent( e );
-			this.map.put( e, rv );
-		}
-		return rv;
-	}
+  private Component getComponent(E e) {
+    Component rv = this.map.get(e);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = createComponent(e);
+      this.map.put(e, rv);
+    }
+    return rv;
+  }
 
-	@Override
-	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		Component component = this.getComponent( (E)value );
-		this.update( component, index, isSelected, cellHasFocus );
-		this.revalidate();
-		return this;
-	}
+  @Override
+  public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    Component component = this.getComponent((E) value);
+    this.update(component, index, isSelected, cellHasFocus);
+    this.revalidate();
+    return this;
+  }
 }

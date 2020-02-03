@@ -61,84 +61,84 @@ import java.lang.reflect.Modifier;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreator {
-	public static final int MILLI_DECIMAL_PLACES = 3;
-	public static final int MICRO_DECIMAL_PLACES = 6;
-	public static final int DEFAULT_DECIMAL_PLACES = MICRO_DECIMAL_PLACES;
+  public static final int MILLI_DECIMAL_PLACES = 3;
+  public static final int MICRO_DECIMAL_PLACES = 6;
+  public static final int DEFAULT_DECIMAL_PLACES = MICRO_DECIMAL_PLACES;
 
-	public static final class CannotCreateExpressionException extends Exception {
-		private final Object value;
+  public static final class CannotCreateExpressionException extends Exception {
+    private final Object value;
 
-		public CannotCreateExpressionException( Object value ) {
-			this.value = value;
-		}
+    public CannotCreateExpressionException(Object value) {
+      this.value = value;
+    }
 
-		public Object getValue() {
-			return this.value;
-		}
-	}
+    public Object getValue() {
+      return this.value;
+    }
+  }
 
-	protected FieldAccess createPublicStaticFieldAccess( Field fld ) {
-		int modifiers = fld.getModifiers();
-		if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
-			TypeExpression typeExpression = new TypeExpression( fld.getDeclaringClass() );
-			JavaField field = JavaField.getInstance( fld );
-			return new FieldAccess( typeExpression, field );
-		} else {
-			throw new RuntimeException( fld.toGenericString() );
-		}
-	}
+  protected FieldAccess createPublicStaticFieldAccess(Field fld) {
+    int modifiers = fld.getModifiers();
+    if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
+      TypeExpression typeExpression = new TypeExpression(fld.getDeclaringClass());
+      JavaField field = JavaField.getInstance(fld);
+      return new FieldAccess(typeExpression, field);
+    } else {
+      throw new RuntimeException(fld.toGenericString());
+    }
+  }
 
-	protected final Expression createDoubleExpression( Double value, int decimalPlaces ) {
-		value = DoubleUtilities.round( value, decimalPlaces );
-		return new DoubleLiteral( value );
-	}
+  protected final Expression createDoubleExpression(Double value, int decimalPlaces) {
+    value = DoubleUtilities.round(value, decimalPlaces);
+    return new DoubleLiteral(value);
+  }
 
-	protected final Expression createDoubleExpression( Double value ) {
-		return this.createDoubleExpression( value, DEFAULT_DECIMAL_PLACES );
-	}
+  protected final Expression createDoubleExpression(Double value) {
+    return this.createDoubleExpression(value, DEFAULT_DECIMAL_PLACES);
+  }
 
-	protected final Expression createIntegerExpression( Integer value ) {
-		return new IntegerLiteral( value );
-	}
+  protected final Expression createIntegerExpression(Integer value) {
+    return new IntegerLiteral(value);
+  }
 
-	//todo:
-	public final Expression createStringExpression( String value ) {
-		if( value != null ) {
-			return new StringLiteral( value );
-		} else {
-			return new NullLiteral();
-		}
-	}
+  //todo:
+  public final Expression createStringExpression(String value) {
+    if (value != null) {
+      return new StringLiteral(value);
+    } else {
+      return new NullLiteral();
+    }
+  }
 
-	//todo:
-	public final Expression createEnumExpression( Enum<?> value ) {
-		if( value != null ) {
-			return this.createPublicStaticFieldAccess( EnumUtilities.getFld( value ) );
-			//			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
-			//			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, value.name() );
-			//			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
-		} else {
-			return new NullLiteral();
-		}
-	}
+  //todo:
+  public final Expression createEnumExpression(Enum<?> value) {
+    if (value != null) {
+      return this.createPublicStaticFieldAccess(EnumUtilities.getFld(value));
+      //      org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
+      //      org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, value.name() );
+      //      return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+    } else {
+      return new NullLiteral();
+    }
+  }
 
-	protected abstract Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
+  protected abstract Expression createCustomExpression(Object value) throws CannotCreateExpressionException;
 
-	public Expression createExpression( Object value ) throws CannotCreateExpressionException {
-		if( value != null ) {
-			if( value instanceof Double ) {
-				return this.createDoubleExpression( (Double)value );
-			} else if( value instanceof Integer ) {
-				return this.createIntegerExpression( (Integer)value );
-			} else if( value instanceof String ) {
-				return this.createStringExpression( (String)value );
-			} else if( value instanceof Enum<?> ) {
-				return this.createEnumExpression( (Enum<?>)value );
-			} else {
-				return this.createCustomExpression( value );
-			}
-		} else {
-			return new NullLiteral();
-		}
-	}
+  public Expression createExpression(Object value) throws CannotCreateExpressionException {
+    if (value != null) {
+      if (value instanceof Double) {
+        return this.createDoubleExpression((Double) value);
+      } else if (value instanceof Integer) {
+        return this.createIntegerExpression((Integer) value);
+      } else if (value instanceof String) {
+        return this.createStringExpression((String) value);
+      } else if (value instanceof Enum<?>) {
+        return this.createEnumExpression((Enum<?>) value);
+      } else {
+        return this.createCustomExpression(value);
+      }
+    } else {
+      return new NullLiteral();
+    }
+  }
 }

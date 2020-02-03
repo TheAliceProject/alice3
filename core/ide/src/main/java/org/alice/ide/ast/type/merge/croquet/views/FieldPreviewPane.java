@@ -51,11 +51,11 @@ import org.lgna.project.ast.UserField;
  * @author Dennis Cosgrove
  */
 public class FieldPreviewPane extends MemberPreviewPane<UserField> {
-	public FieldPreviewPane( MemberHub<UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
-		super( fieldHub, isAlphaDesiredWhenSelectionIsRequired );
-		UserField field = fieldHub.getMember();
-		Theme theme = ThemeUtilities.getActiveTheme();
-		this.addComponent( new FieldHubDeclarationView( fieldHub ), "wrap" );
-		this.setBackgroundColor( theme.getFieldColor() );
-	}
+  public FieldPreviewPane(MemberHub<UserField> fieldHub, boolean isAlphaDesiredWhenSelectionIsRequired) {
+    super(fieldHub, isAlphaDesiredWhenSelectionIsRequired);
+    UserField field = fieldHub.getMember();
+    Theme theme = ThemeUtilities.getActiveTheme();
+    this.addComponent(new FieldHubDeclarationView(fieldHub), "wrap");
+    this.setBackgroundColor(theme.getFieldColor());
+  }
 }

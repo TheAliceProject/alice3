@@ -48,26 +48,26 @@ import org.alice.interact.InputState;
  * @author David Culyba
  */
 public class MousePressCondition extends MouseDragCondition {
-	public MousePressCondition( int mouseButton, PickCondition pickCondition ) {
-		super( mouseButton, pickCondition );
-	}
+  public MousePressCondition(int mouseButton, PickCondition pickCondition) {
+    super(mouseButton, pickCondition);
+  }
 
-	@Override
-	protected boolean testState( InputState state ) {
-		return this.testInputs( state );
-	}
+  @Override
+  protected boolean testState(InputState state) {
+    return this.testInputs(state);
+  }
 
-	@Override
-	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		return this.testState( currentState ) != this.testState( previousState );
-	}
+  @Override
+  public boolean stateChanged(InputState currentState, InputState previousState) {
+    return this.testState(currentState) != this.testState(previousState);
+  }
 
-	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if( testState( currentState ) && !testState( previousState ) ) {
-			this.hasStarted = true;
-			return true;
-		}
-		return false;
-	}
+  @Override
+  public boolean justStarted(InputState currentState, InputState previousState) {
+    if (testState(currentState) && !testState(previousState)) {
+      this.hasStarted = true;
+      return true;
+    }
+    return false;
+  }
 }

@@ -50,11 +50,11 @@ import org.lgna.croquet.CompletionModel;
  * @author Dennis Cosgrove
  */
 public class RootNode<T, M extends CompletionModel> extends BlankOwnerNode<T[], T, CascadeRoot<T, M>> {
-	public static <T, M extends CompletionModel> RootNode<T, M> createInstance( CascadeRoot<T, M> model ) {
-		return new RootNode<T, M>( model );
-	}
+  public static <T, M extends CompletionModel> RootNode<T, M> createInstance(CascadeRoot<T, M> model) {
+    return new RootNode<T, M>(model);
+  }
 
-	private RootNode( CascadeRoot<T, M> model ) {
-		super( model );
-	}
+  private RootNode(CascadeRoot<T, M> model) {
+    super(model);
+  }
 }

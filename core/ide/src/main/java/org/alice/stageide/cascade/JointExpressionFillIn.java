@@ -55,23 +55,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JointExpressionFillIn extends MethodInvocationFillIn {
-	private static MapToMap<Expression, AbstractMethod, JointExpressionFillIn> mapToMap = MapToMap.newInstance();
+  private static MapToMap<Expression, AbstractMethod, JointExpressionFillIn> mapToMap = MapToMap.newInstance();
 
-	public static JointExpressionFillIn getInstance( Expression expression, AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( expression, method, new MapToMap.Initializer<Expression, AbstractMethod, JointExpressionFillIn>() {
-			@Override
-			public JointExpressionFillIn initialize( Expression expression, AbstractMethod method ) {
-				return new JointExpressionFillIn( expression, method );
-			}
-		} );
-	}
+  public static JointExpressionFillIn getInstance(Expression expression, AbstractMethod method) {
+    return mapToMap.getInitializingIfAbsent(expression, method, new MapToMap.Initializer<Expression, AbstractMethod, JointExpressionFillIn>() {
+      @Override
+      public JointExpressionFillIn initialize(Expression expression, AbstractMethod method) {
+        return new JointExpressionFillIn(expression, method);
+      }
+    });
+  }
 
-	private JointExpressionFillIn( Expression expression, AbstractMethod method ) {
-		super( UUID.fromString( "0a118b23-0dde-4a8e-a769-9f967d16f2e9" ), expression, method );
-	}
+  private JointExpressionFillIn(Expression expression, AbstractMethod method) {
+    super(UUID.fromString("0a118b23-0dde-4a8e-a769-9f967d16f2e9"), expression, method);
+  }
 
-	@Override
-	protected Expression createExpression( Expression transientValueExpression ) {
-		return IDE.getActiveInstance().createCopy( transientValueExpression );
-	}
+  @Override
+  protected Expression createExpression(Expression transientValueExpression) {
+    return IDE.getActiveInstance().createCopy(transientValueExpression);
+  }
 }

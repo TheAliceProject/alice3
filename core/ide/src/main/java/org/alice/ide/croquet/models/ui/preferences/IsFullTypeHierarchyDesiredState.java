@@ -52,15 +52,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class IsFullTypeHierarchyDesiredState extends PreferenceBooleanState {
-	private static class SingletonHolder {
-		private static IsFullTypeHierarchyDesiredState instance = new IsFullTypeHierarchyDesiredState();
-	}
+  private static class SingletonHolder {
+    private static IsFullTypeHierarchyDesiredState instance = new IsFullTypeHierarchyDesiredState();
+  }
 
-	public static IsFullTypeHierarchyDesiredState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsFullTypeHierarchyDesiredState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsFullTypeHierarchyDesiredState() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "b389ea56-2b42-4354-a54e-3467846f0c06" ), false );
-	}
+  private IsFullTypeHierarchyDesiredState() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("b389ea56-2b42-4354-a54e-3467846f0c06"), false);
+  }
 }

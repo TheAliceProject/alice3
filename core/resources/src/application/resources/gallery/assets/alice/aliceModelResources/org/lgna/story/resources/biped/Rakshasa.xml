@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Rakshasa">
+    <BoundingBox>
+        <Min x="-0.31974406063343896" y="0.0038548363535368733" z="-0.24179770729541422"/>
+        <Max x="0.31938357497146164" y="1.6025422524440114" z="0.13423138436483378"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>demon</Tag>
+        <Tag>spirit</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Rakshasa" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

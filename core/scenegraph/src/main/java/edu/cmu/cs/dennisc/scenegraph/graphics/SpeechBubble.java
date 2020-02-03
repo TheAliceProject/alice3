@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
  * @author Dennis Cosgrove
  */
 public class SpeechBubble extends Bubble {
-	public SpeechBubble( Originator originator ) {
-		super( originator );
-	}
+  public SpeechBubble(Originator originator) {
+    super(originator);
+  }
 
-	public SpeechBubble( Originator originator, Bubble.PositionPreference positionPreference ) {
-		super( originator, positionPreference );
-	}
+  public SpeechBubble(Originator originator, Bubble.PositionPreference positionPreference) {
+    super(originator, positionPreference);
+  }
 }

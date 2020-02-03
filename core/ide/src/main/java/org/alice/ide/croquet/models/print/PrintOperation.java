@@ -58,39 +58,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PrintOperation extends InconsequentialActionOperation {
-	public PrintOperation( UUID individualId ) {
-		super( individualId );
-	}
+  public PrintOperation(UUID individualId) {
+    super(individualId);
+  }
 
-	protected abstract Printable getPrintable();
+  protected abstract Printable getPrintable();
 
-	@Override
-	protected final void performInternal() {
-		PrinterJob job = PrinterJob.getPrinterJob();
-		Printable printable = this.getPrintable();
-		if( printable != null ) {
-			job.setPrintable( printable );
+  @Override
+  protected final void performInternal() {
+    PrinterJob job = PrinterJob.getPrinterJob();
+    Printable printable = this.getPrintable();
+    if (printable != null) {
+      job.setPrintable(printable);
 
-			int mm = Size2DSyntax.MM;
-			MediaSize mediaSize = MediaSize.ISO.A4;
+      int mm = Size2DSyntax.MM;
+      MediaSize mediaSize = MediaSize.ISO.A4;
 
-			float mediaWidth = mediaSize.getX( mm );
-			float mediaHeight = mediaSize.getY( mm );
-			float margin = mediaWidth / 50.0f;
+      float mediaWidth = mediaSize.getX(mm);
+      float mediaHeight = mediaSize.getY(mm);
+      float margin = mediaWidth / 50.0f;
 
-			PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
-			set.add( mediaSize.getMediaSizeName() );
-			set.add( new MediaPrintableArea( margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm ) );
-			if( job.printDialog( set ) ) {
-				try {
-					job.print( set );
-				} catch( PrinterException pe ) {
-					//todo
-					pe.printStackTrace();
-				}
-			}
-		} else {
-			//todo
-		}
-	}
+      PrintRequestAttributeSet set = new HashPrintRequestAttributeSet();
+      set.add(mediaSize.getMediaSizeName());
+      set.add(new MediaPrintableArea(margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm));
+      if (job.printDialog(set)) {
+        try {
+          job.print(set);
+        } catch (PrinterException pe) {
+          //todo
+          pe.printStackTrace();
+        }
+      }
+    } else {
+      //todo
+    }
+  }
 }

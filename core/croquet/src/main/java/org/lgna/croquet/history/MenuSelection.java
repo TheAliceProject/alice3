@@ -68,116 +68,116 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MenuSelection {
-	private static boolean isCroquetMenuSelection( MenuElement[] menuElements ) {
-		for( MenuElement menuElement : menuElements ) {
-			AwtComponentView<?> component = AwtComponentView.lookup( menuElement.getComponent() );
-			if( ( component instanceof MenuBar ) || ( component instanceof MenuItem ) || ( component instanceof Menu ) || ( component instanceof PopupMenu ) || ( component instanceof MenuTextSeparator ) ) {
-				return true;
-			}
-		}
-		return menuElements.length == 0;
-	}
+  private static boolean isCroquetMenuSelection(MenuElement[] menuElements) {
+    for (MenuElement menuElement : menuElements) {
+      AwtComponentView<?> component = AwtComponentView.lookup(menuElement.getComponent());
+      if ((component instanceof MenuBar) || (component instanceof MenuItem) || (component instanceof Menu) || (component instanceof PopupMenu) || (component instanceof MenuTextSeparator)) {
+        return true;
+      }
+    }
+    return menuElements.length == 0;
+  }
 
-	private static JMenuBar getJMenuBarOrigin( MenuElement[] menuElements ) {
-		if( menuElements.length > 0 ) {
-			MenuElement menuElement0 = menuElements[ 0 ];
-			if( menuElement0 instanceof JMenuBar ) {
-				return (JMenuBar)menuElement0;
-			}
-		}
-		return null;
-	}
+  private static JMenuBar getJMenuBarOrigin(MenuElement[] menuElements) {
+    if (menuElements.length > 0) {
+      MenuElement menuElement0 = menuElements[0];
+      if (menuElement0 instanceof JMenuBar) {
+        return (JMenuBar) menuElement0;
+      }
+    }
+    return null;
+  }
 
-	private static MenuBar getMenuBarOrigin( MenuElement[] menuElements ) {
-		JMenuBar jMenuBar = getJMenuBarOrigin( menuElements );
-		if( jMenuBar != null ) {
-			return (MenuBar)AwtComponentView.lookup( jMenuBar );
-		} else {
-			return null;
-		}
-	}
+  private static MenuBar getMenuBarOrigin(MenuElement[] menuElements) {
+    JMenuBar jMenuBar = getJMenuBarOrigin(menuElements);
+    if (jMenuBar != null) {
+      return (MenuBar) AwtComponentView.lookup(jMenuBar);
+    } else {
+      return null;
+    }
+  }
 
-	private static MenuBarComposite getMenuBarComposite( MenuElement[] menuElements ) {
-		MenuBar menuBar = getMenuBarOrigin( menuElements );
-		if( menuBar != null ) {
-			return menuBar.getComposite();
-		} else {
-			return null;
-		}
-	}
+  private static MenuBarComposite getMenuBarComposite(MenuElement[] menuElements) {
+    MenuBar menuBar = getMenuBarOrigin(menuElements);
+    if (menuBar != null) {
+      return menuBar.getComposite();
+    } else {
+      return null;
+    }
+  }
 
-	private final MenuBarComposite menuBarComposite;
-	private final MenuItemPrepModel[] menuItemPrepModels;
+  private final MenuBarComposite menuBarComposite;
+  private final MenuItemPrepModel[] menuItemPrepModels;
 
-	public MenuSelection() {
-		MenuElement[] selectedPath = MenuSelectionManager.defaultManager().getSelectedPath();
-		if( isCroquetMenuSelection( selectedPath ) ) {
-			menuBarComposite = getMenuBarComposite( selectedPath );
-			List<MenuItemPrepModel> list = Lists.newLinkedList();
-			int i0;
-			if( menuBarComposite != null ) {
-				i0 = 1;
-			} else {
-				i0 = 0;
-			}
-			final int N = selectedPath.length;
-			for( int i = i0; i < N; i++ ) {
-				MenuElement menuElementI = selectedPath[ i ];
-				if ( menuElementI instanceof JMenuItem ) {
-					JMenuItem jMenuItem = (JMenuItem) menuElementI;
-					AwtComponentView<?> component = AwtComponentView.lookup( jMenuItem );
-					if ( component instanceof ViewController<?, ?> ) {
-						ViewController<?, ?> viewController = (ViewController<?, ?>) component;
-						Model model = viewController.getModel();
-						if ( model != null ) {
-							MenuItemPrepModel menuItemPrepModel;
-							if ( model instanceof MenuItemPrepModel ) {
-								menuItemPrepModel = (MenuItemPrepModel) model;
-							} else if ( model instanceof Operation ) {
-								menuItemPrepModel = ( (Operation) model ).getMenuItemPrepModel();
-							} else if ( model instanceof BooleanState ) {
-								menuItemPrepModel = ( (BooleanState) model ).getMenuItemPrepModel();
-							} else {
-								throw new RuntimeException( model.toString() );
-							}
-							list.add( menuItemPrepModel );
-						} else {
-							throw new NullPointerException();
-						}
-					}
-				}
-			}
-			menuItemPrepModels = ArrayUtilities.createArray( list, MenuItemPrepModel.class );
-		} else {
-			menuBarComposite = null;
-			menuItemPrepModels = new MenuItemPrepModel[ 0 ];
-		}
-	}
+  public MenuSelection() {
+    MenuElement[] selectedPath = MenuSelectionManager.defaultManager().getSelectedPath();
+    if (isCroquetMenuSelection(selectedPath)) {
+      menuBarComposite = getMenuBarComposite(selectedPath);
+      List<MenuItemPrepModel> list = Lists.newLinkedList();
+      int i0;
+      if (menuBarComposite != null) {
+        i0 = 1;
+      } else {
+        i0 = 0;
+      }
+      final int N = selectedPath.length;
+      for (int i = i0; i < N; i++) {
+        MenuElement menuElementI = selectedPath[i];
+        if (menuElementI instanceof JMenuItem) {
+          JMenuItem jMenuItem = (JMenuItem) menuElementI;
+          AwtComponentView<?> component = AwtComponentView.lookup(jMenuItem);
+          if (component instanceof ViewController<?, ?>) {
+            ViewController<?, ?> viewController = (ViewController<?, ?>) component;
+            Model model = viewController.getModel();
+            if (model != null) {
+              MenuItemPrepModel menuItemPrepModel;
+              if (model instanceof MenuItemPrepModel) {
+                menuItemPrepModel = (MenuItemPrepModel) model;
+              } else if (model instanceof Operation) {
+                menuItemPrepModel = ((Operation) model).getMenuItemPrepModel();
+              } else if (model instanceof BooleanState) {
+                menuItemPrepModel = ((BooleanState) model).getMenuItemPrepModel();
+              } else {
+                throw new RuntimeException(model.toString());
+              }
+              list.add(menuItemPrepModel);
+            } else {
+              throw new NullPointerException();
+            }
+          }
+        }
+      }
+      menuItemPrepModels = ArrayUtilities.createArray(list, MenuItemPrepModel.class);
+    } else {
+      menuBarComposite = null;
+      menuItemPrepModels = new MenuItemPrepModel[0];
+    }
+  }
 
-	public boolean isValid() {
-		return ( this.menuBarComposite != null ) || ( this.menuItemPrepModels.length > 0 );
-	}
+  public boolean isValid() {
+    return (this.menuBarComposite != null) || (this.menuItemPrepModels.length > 0);
+  }
 
-	MenuItemPrepModel getLastMenuItemPrepModel() {
-		if( this.menuItemPrepModels.length > 0 ) {
-			return this.menuItemPrepModels[ this.menuItemPrepModels.length - 1 ];
-		} else {
-			return null;
-		}
-	}
+  MenuItemPrepModel getLastMenuItemPrepModel() {
+    if (this.menuItemPrepModels.length > 0) {
+      return this.menuItemPrepModels[this.menuItemPrepModels.length - 1];
+    } else {
+      return null;
+    }
+  }
 
-	boolean isPrevious( MenuSelection selection ) {
-		if( this.menuBarComposite == selection.menuBarComposite ) {
-			if( this.menuItemPrepModels.length == ( selection.menuItemPrepModels.length + 1 ) ) {
-				final int N = selection.menuItemPrepModels.length;
-				for( int i = 0; i < N; i++ ) {
-					if ( this.menuItemPrepModels[i] != selection.menuItemPrepModels[i] ) {
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-		return false;
-	}
+  boolean isPrevious(MenuSelection selection) {
+    if (this.menuBarComposite == selection.menuBarComposite) {
+      if (this.menuItemPrepModels.length == (selection.menuItemPrepModels.length + 1)) {
+        final int N = selection.menuItemPrepModels.length;
+        for (int i = 0; i < N; i++) {
+          if (this.menuItemPrepModels[i] != selection.menuItemPrepModels[i]) {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
 }

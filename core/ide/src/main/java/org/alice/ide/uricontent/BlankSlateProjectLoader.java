@@ -54,25 +54,25 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class BlankSlateProjectLoader extends UriProjectLoader {
-	private final TemplateUriState.Template template;
+  private final TemplateUriState.Template template;
 
-	public BlankSlateProjectLoader( TemplateUriState.Template template ) {
-		this.template = template;
-	}
+  public BlankSlateProjectLoader(TemplateUriState.Template template) {
+    this.template = template;
+  }
 
-	@Override
-	public URI getUri() {
-		return this.template.getUri();
-	}
+  @Override
+  public URI getUri() {
+    return this.template.getUri();
+  }
 
-	@Override
-	protected Project load() {
-		NamedUserType programType;
-		if( template.isRoom() ) {
-			programType = NebulousIde.nonfree.createProgramType( this.template );
-		} else {
-			programType = BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
-		}
-		return new Project( programType );
-	}
+  @Override
+  protected Project load() {
+    NamedUserType programType;
+    if (template.isRoom()) {
+      programType = NebulousIde.nonfree.createProgramType(this.template);
+    } else {
+      programType = BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+    }
+    return new Project(programType);
+  }
 }

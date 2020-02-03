@@ -57,66 +57,66 @@ import java.util.List;
  */
 public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object> {
 
-	private UserActivity root;
+  private UserActivity root;
 
-	TransactionHistoryTreeModel( UserActivity root ) {
-		this.root = root;
-	}
+  TransactionHistoryTreeModel(UserActivity root) {
+    this.root = root;
+  }
 
-	@Override
-	public UserActivity getRoot() {
-		return this.root;
-	}
+  @Override
+  public UserActivity getRoot() {
+    return this.root;
+  }
 
-	@Override
-	public boolean isLeaf( Object node ) {
-		return node instanceof PrepStep;
-	}
+  @Override
+  public boolean isLeaf(Object node) {
+    return node instanceof PrepStep;
+  }
 
-	@Override
-	public int getChildCount( Object parent ) {
-		if( parent instanceof UserActivity ) {
-			UserActivity activity = (UserActivity) parent;
-			return activity.getChildStepCount();
-		}
-		return 0;
-	}
+  @Override
+  public int getChildCount(Object parent) {
+    if (parent instanceof UserActivity) {
+      UserActivity activity = (UserActivity) parent;
+      return activity.getChildStepCount();
+    }
+    return 0;
+  }
 
-	@Override
-	public Object getChild( Object parent, int index ) {
-		if( parent instanceof UserActivity ) {
-			UserActivity activity = (UserActivity)parent;
-			return activity.getChildAt( index );
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
-	}
+  @Override
+  public Object getChild(Object parent, int index) {
+    if (parent instanceof UserActivity) {
+      UserActivity activity = (UserActivity) parent;
+      return activity.getChildAt(index);
+    } else {
+      throw new IndexOutOfBoundsException();
+    }
+  }
 
-	@Override
-	public int getIndexOfChild( Object parent, Object child ) {
-		if( parent instanceof UserActivity ) {
-			UserActivity transaction = (UserActivity)parent;
-			if( child instanceof PrepStep<?> ) {
-				return transaction.getIndexOfPrepStep( (PrepStep<?>)child );
-			} else {
-				return -1;
-			}
-		} else {
-			throw new IndexOutOfBoundsException();
-		}
-	}
+  @Override
+  public int getIndexOfChild(Object parent, Object child) {
+    if (parent instanceof UserActivity) {
+      UserActivity transaction = (UserActivity) parent;
+      if (child instanceof PrepStep<?>) {
+        return transaction.getIndexOfPrepStep((PrepStep<?>) child);
+      } else {
+        return -1;
+      }
+    } else {
+      throw new IndexOutOfBoundsException();
+    }
+  }
 
-	private void updatePath( List<Object> path, ActivityNode node ) {
-		if( node != null ) {
-			updatePath( path, node.getOwner() );
-			path.add( node );
-		}
-	}
+  private void updatePath(List<Object> path, ActivityNode node) {
+    if (node != null) {
+      updatePath(path, node.getOwner());
+      path.add(node);
+    }
+  }
 
-	@Override
-	public TreePath getTreePath( Object node ) {
-		List<Object> list = Lists.newLinkedList();
-		updatePath( list, (ActivityNode) node );
-		return new TreePath( list.toArray() );
-	}
+  @Override
+  public TreePath getTreePath(Object node) {
+    List<Object> list = Lists.newLinkedList();
+    updatePath(list, (ActivityNode) node);
+    return new TreePath(list.toArray());
+  }
 }

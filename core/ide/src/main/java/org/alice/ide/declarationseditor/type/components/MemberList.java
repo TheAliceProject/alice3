@@ -70,125 +70,121 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public abstract class MemberList<E> extends ItemSelectablePanel<E> {
-	protected final float NAME_FONT_SCALE = 1.5f;
+  protected final float NAME_FONT_SCALE = 1.5f;
 
-	protected class MemberButton extends BooleanStateButton<AbstractButton> {
-		public MemberButton( BooleanState booleanState, SwingComponentView<?> lineStart, SwingComponentView<?> center, SwingComponentView<?> lineEnd ) {
-			super( booleanState );
-			if( lineStart != null ) {
-				this.addComponent( lineStart, BorderPanel.Constraint.LINE_START );
-			}
-			if( center != null ) {
-				this.addComponent( center, BorderPanel.Constraint.CENTER );
-			}
-			if( lineEnd != null ) {
-				this.addComponent( lineEnd, BorderPanel.Constraint.LINE_END );
-			}
+  protected class MemberButton extends BooleanStateButton<AbstractButton> {
+    public MemberButton(BooleanState booleanState, SwingComponentView<?> lineStart, SwingComponentView<?> center, SwingComponentView<?> lineEnd) {
+      super(booleanState);
+      if (lineStart != null) {
+        this.addComponent(lineStart, BorderPanel.Constraint.LINE_START);
+      }
+      if (center != null) {
+        this.addComponent(center, BorderPanel.Constraint.CENTER);
+      }
+      if (lineEnd != null) {
+        this.addComponent(lineEnd, BorderPanel.Constraint.LINE_END);
+      }
 
-		}
+    }
 
-		@Override
-		protected AbstractButton createAwtComponent() {
-			JToggleButton rv = new JToggleButton() {
-				@Override
-				public Dimension getMaximumSize() {
-					Dimension rv = super.getPreferredSize();
-					rv.width = Short.MAX_VALUE;
-					return rv;
-				}
+    @Override
+    protected AbstractButton createAwtComponent() {
+      JToggleButton rv = new JToggleButton() {
+        @Override
+        public Dimension getMaximumSize() {
+          Dimension rv = super.getPreferredSize();
+          rv.width = Short.MAX_VALUE;
+          return rv;
+        }
 
-				@Override
-				protected void paintComponent( Graphics g ) {
-					//super.paintComponent(g);
-					GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
-					gc.pushAndSetAntialiasing( true );
-					try {
-						Color color;
-						color = MemberList.this.getBackgroundColor();
-						if( this.getModel().isSelected() ) {
-							color = color.darker();
-						}
-						g.setColor( color );
-						g.fillRoundRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8 );
-						if( this.getModel().isRollover() ) {
-							color = Color.DARK_GRAY;
-						} else {
-							color = MemberList.this.getBackgroundColor().darker();
-						}
-						g.setColor( color );
-						KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
-						g.drawRoundRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8 );
-					} finally {
-						gc.popAll();
-					}
-				}
-			};
-			rv.setOpaque( false );
-			rv.setLayout( new BorderLayout( 8, 0 ) );
-			rv.setRolloverEnabled( true );
-			return rv;
-		}
+        @Override
+        protected void paintComponent(Graphics g) {
+          //super.paintComponent(g);
+          GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics(g);
+          gc.pushAndSetAntialiasing(true);
+          try {
+            Color color;
+            color = MemberList.this.getBackgroundColor();
+            if (this.getModel().isSelected()) {
+              color = color.darker();
+            }
+            g.setColor(color);
+            g.fillRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8);
+            if (this.getModel().isRollover()) {
+              color = Color.DARK_GRAY;
+            } else {
+              color = MemberList.this.getBackgroundColor().darker();
+            }
+            g.setColor(color);
+            KnurlUtilities.paintKnurl5(g, 2, 2, 6, this.getHeight() - 5);
+            g.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8);
+          } finally {
+            gc.popAll();
+          }
+        }
+      };
+      rv.setOpaque(false);
+      rv.setLayout(new BorderLayout(8, 0));
+      rv.setRolloverEnabled(true);
+      return rv;
+    }
 
-		public void addComponent( AwtComponentView<?> component, BorderPanel.Constraint constraint ) {
-			this.internalAddComponent( component, constraint.getInternal() );
-		}
-	}
+    public void addComponent(AwtComponentView<?> component, BorderPanel.Constraint constraint) {
+      this.internalAddComponent(component, constraint.getInternal());
+    }
+  }
 
-	private PageAxisPanel pageAxisPanel = new PageAxisPanel();
+  private PageAxisPanel pageAxisPanel = new PageAxisPanel();
 
-	public MemberList( SingleSelectListState<E, ?> model, Operation... operations ) {
-		super( model );
-		this.internalAddComponent( pageAxisPanel );
-		for( Operation operation : operations ) {
-			if( operation != null ) {
-				this.internalAddComponent( BoxUtilities.createVerticalSliver( 4 ) );
-				this.internalAddComponent( operation.createButton() );
-			}
-		}
-	}
+  public MemberList(SingleSelectListState<E, ?> model, Operation... operations) {
+    super(model);
+    this.internalAddComponent(pageAxisPanel);
+    for (Operation operation : operations) {
+      if (operation != null) {
+        this.internalAddComponent(BoxUtilities.createVerticalSliver(4));
+        this.internalAddComponent(operation.createButton());
+      }
+    }
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    return new BoxLayout(jPanel, BoxLayout.PAGE_AXIS);
+  }
 
-	protected abstract SwingComponentView<?> createButtonLineStart( E item );
+  protected abstract SwingComponentView<?> createButtonLineStart(E item);
 
-	protected abstract SwingComponentView<?> createButtonCenter( E item );
+  protected abstract SwingComponentView<?> createButtonCenter(E item);
 
-	protected abstract SwingComponentView<?> createButtonLineEnd( E item );
+  protected abstract SwingComponentView<?> createButtonLineEnd(E item);
 
-	@Override
-	protected BooleanStateButton<?> createButtonForItemSelectedState( E item, BooleanState itemSelectedState ) {
-		MemberButton memberButton = new MemberButton( itemSelectedState,
-				this.createButtonLineStart( item ),
-				this.createButtonCenter( item ),
-				this.createButtonLineEnd( item )
-				);
-		return memberButton;
-	}
+  @Override
+  protected BooleanStateButton<?> createButtonForItemSelectedState(E item, BooleanState itemSelectedState) {
+    MemberButton memberButton = new MemberButton(itemSelectedState, this.createButtonLineStart(item), this.createButtonCenter(item), this.createButtonLineEnd(item));
+    return memberButton;
+  }
 
-	@Override
-	protected void removeAllDetails() {
-		for( BooleanStateButton<?> button : this.getAllButtons() ) {
-			button.setVisible( false );
-		}
-	}
+  @Override
+  protected void removeAllDetails() {
+    for (BooleanStateButton<?> button : this.getAllButtons()) {
+      button.setVisible(false);
+    }
+  }
 
-	@Override
-	protected void addPrologue( int count ) {
-		//this.pageAxisPanel.internalRemoveAllComponents();
-		for( BooleanStateButton<?> button : this.getAllButtons() ) {
-			button.setVisible( false );
-		}
-	}
+  @Override
+  protected void addPrologue(int count) {
+    //this.pageAxisPanel.internalRemoveAllComponents();
+    for (BooleanStateButton<?> button : this.getAllButtons()) {
+      button.setVisible(false);
+    }
+  }
 
-	@Override
-	protected void addItem( E item, BooleanStateButton<?> button ) {
-		button.setVisible( true );
-	}
+  @Override
+  protected void addItem(E item, BooleanStateButton<?> button) {
+    button.setVisible(true);
+  }
 
-	@Override
-	protected void addEpilogue() {
-	}
+  @Override
+  protected void addEpilogue() {
+  }
 }

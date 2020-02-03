@@ -52,70 +52,70 @@ import java.util.concurrent.TimeoutException;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractWorker<T, V> {
-	protected class InternalSwingWorker extends SwingWorker<T, V> {
-		@Override
-		protected final T doInBackground() throws Exception {
-			return AbstractWorker.this.do_onBackgroundThread();
-		}
+  protected class InternalSwingWorker extends SwingWorker<T, V> {
+    @Override
+    protected final T doInBackground() throws Exception {
+      return AbstractWorker.this.do_onBackgroundThread();
+    }
 
-		@Override
-		protected final void done() {
-			super.done();
-			if( this.isCancelled() ) {
-				//pass
-			} else {
-				T value;
-				try {
-					value = this.get();
-				} catch( InterruptedException ie ) {
-					throw new RuntimeException( ie );
-				} catch( ExecutionException ee ) {
-					throw new RuntimeException( ee );
-				}
-				AbstractWorker.this.handleDone_onEventDispatchThread( value );
-			}
-		}
-	}
+    @Override
+    protected final void done() {
+      super.done();
+      if (this.isCancelled()) {
+        //pass
+      } else {
+        T value;
+        try {
+          value = this.get();
+        } catch (InterruptedException ie) {
+          throw new RuntimeException(ie);
+        } catch (ExecutionException ee) {
+          throw new RuntimeException(ee);
+        }
+        AbstractWorker.this.handleDone_onEventDispatchThread(value);
+      }
+    }
+  }
 
-	protected abstract SwingWorker<T, V> getSwingWorker();
+  protected abstract SwingWorker<T, V> getSwingWorker();
 
-	public final void addPropertyChangeListener( PropertyChangeListener listener ) {
-		this.getSwingWorker().addPropertyChangeListener( listener );
-	}
+  public final void addPropertyChangeListener(PropertyChangeListener listener) {
+    this.getSwingWorker().addPropertyChangeListener(listener);
+  }
 
-	public final void removePropertyChangeListener( PropertyChangeListener listener ) {
-		this.getSwingWorker().removePropertyChangeListener( listener );
-	}
+  public final void removePropertyChangeListener(PropertyChangeListener listener) {
+    this.getSwingWorker().removePropertyChangeListener(listener);
+  }
 
-	protected abstract T do_onBackgroundThread() throws Exception;
+  protected abstract T do_onBackgroundThread() throws Exception;
 
-	protected abstract void handleDone_onEventDispatchThread( T value );
+  protected abstract void handleDone_onEventDispatchThread(T value);
 
-	public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, ExecutionException {
-		return this.getSwingWorker().get();
-	}
+  public final T get_obviouslyLockingCurrentThreadUntilDone() throws InterruptedException, ExecutionException {
+    return this.getSwingWorker().get();
+  }
 
-	public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut( int timeout, TimeUnit timeUnit ) throws InterruptedException, ExecutionException, TimeoutException {
-		return this.getSwingWorker().get( timeout, timeUnit );
-	}
+  public final T get_obviouslyLockingCurrentThreadUntilDoneOrTimedOut(int timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+    return this.getSwingWorker().get(timeout, timeUnit);
+  }
 
-	public final SwingWorker.StateValue getState() {
-		return this.getSwingWorker().getState();
-	}
+  public final SwingWorker.StateValue getState() {
+    return this.getSwingWorker().getState();
+  }
 
-	public final boolean isDone() {
-		return this.getSwingWorker().isDone();
-	}
+  public final boolean isDone() {
+    return this.getSwingWorker().isDone();
+  }
 
-	public final boolean isCancelled() {
-		return this.getSwingWorker().isCancelled();
-	}
+  public final boolean isCancelled() {
+    return this.getSwingWorker().isCancelled();
+  }
 
-	public final boolean cancel( boolean mayInterruptIfRunning ) {
-		return this.getSwingWorker().cancel( mayInterruptIfRunning );
-	}
+  public final boolean cancel(boolean mayInterruptIfRunning) {
+    return this.getSwingWorker().cancel(mayInterruptIfRunning);
+  }
 
-	public final void execute() {
-		this.getSwingWorker().execute();
-	}
+  public final void execute() {
+    this.getSwingWorker().execute();
+  }
 }

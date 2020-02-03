@@ -56,67 +56,67 @@ import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class VertexGeometry extends Geometry {
-	public static class VerticesProperty extends CopyableArrayProperty<Vertex> {
-		public VerticesProperty( InstancePropertyOwner owner, Vertex... vertices ) {
-			super( owner, vertices );
-		}
+  public static class VerticesProperty extends CopyableArrayProperty<Vertex> {
+    public VerticesProperty(InstancePropertyOwner owner, Vertex... vertices) {
+      super(owner, vertices);
+    }
 
-		@Override
-		protected Vertex[] createArray( int length ) {
-			return new Vertex[ length ];
-		}
+    @Override
+    protected Vertex[] createArray(int length) {
+      return new Vertex[length];
+    }
 
-		@Override
-		protected Vertex createCopy( Vertex src ) {
-			return new Vertex( src );
-		}
+    @Override
+    protected Vertex createCopy(Vertex src) {
+      return new Vertex(src);
+    }
 
-		@Deprecated
-		public void touch() {
-			setValue( getValue() );
-		}
-	}
+    @Deprecated
+    public void touch() {
+      setValue(getValue());
+    }
+  }
 
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		BoundUtilities.getBoundingBox( boundingBox, vertices.getValue() );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    BoundUtilities.getBoundingBox(boundingBox, vertices.getValue());
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		BoundUtilities.getBoundingSphere( boundingSphere, vertices.getValue() );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    BoundUtilities.getBoundingSphere(boundingSphere, vertices.getValue());
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		Point3 point0;
-		Point3 point1;
-		Vector3f normal;
-		Vertex[] vertices = this.vertices.getValue();
-		assert vertices.length >= 2;
-		point0 = vertices[ 0 ].position;
-		point1 = vertices[ 1 ].position;
-		normal = vertices[ 0 ].normal;
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    Point3 point0;
+    Point3 point1;
+    Vector3f normal;
+    Vertex[] vertices = this.vertices.getValue();
+    assert vertices.length >= 2;
+    point0 = vertices[0].position;
+    point1 = vertices[1].position;
+    normal = vertices[0].normal;
 
-		forward.set( normal.x, normal.y, normal.z );
-		forward.normalize();
-		forward.negate();
+    forward.set(normal.x, normal.y, normal.z);
+    forward.normalize();
+    forward.negate();
 
-		upGuide.set( point0 );
-		upGuide.subtract( point1 );
-		upGuide.normalize();
+    upGuide.set(point0);
+    upGuide.subtract(point1);
+    upGuide.normalize();
 
-		translation.set( point0 );
-	}
+    translation.set(point0);
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		//todo: does not seem to work
-		for( Vertex vertex : vertices.getValue() ) {
-			vertex.transform( trans );
-		}
-		vertices.touch();
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    //todo: does not seem to work
+    for (Vertex vertex : vertices.getValue()) {
+      vertex.transform(trans);
+    }
+    vertices.touch();
+  }
 
-	public final VerticesProperty vertices = new VerticesProperty( this );
+  public final VerticesProperty vertices = new VerticesProperty(this);
 }

@@ -52,23 +52,23 @@ import org.lgna.story.SThing;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GetAGoodLookAtEdit extends LocalTransformationEdit {
-	private final SCamera camera;
-	private final SThing toLookAt;
+  private final SCamera camera;
+  private final SThing toLookAt;
 
-	public GetAGoodLookAtEdit( UserActivity userActivity, InstanceFactory cameraInstanceFactory, AbstractMethod method, Expression[] argumentExpressions, SCamera camera, SThing toLookAt ) {
-		super( userActivity, cameraInstanceFactory, method, argumentExpressions );
-		this.camera = camera;
-		this.toLookAt = toLookAt;
-	}
+  public GetAGoodLookAtEdit(UserActivity userActivity, InstanceFactory cameraInstanceFactory, AbstractMethod method, Expression[] argumentExpressions, SCamera camera, SThing toLookAt) {
+    super(userActivity, cameraInstanceFactory, method, argumentExpressions);
+    this.camera = camera;
+    this.toLookAt = toLookAt;
+  }
 
-	public SCamera getCamera() {
-		return this.camera;
-	}
+  public SCamera getCamera() {
+    return this.camera;
+  }
 
-	public SThing getTarget() {
-		return this.toLookAt;
-	}
+  public SThing getTarget() {
+    return this.toLookAt;
+  }
 }

@@ -49,7 +49,7 @@ import org.lgna.project.ast.NamedUserType;
  * @author Dennis Cosgrove
  */
 public class ManagedFieldData extends AbstractManagedFieldData {
-	public ManagedFieldData( NamedUserType type ) {
-		super( type );
-	}
+  public ManagedFieldData(NamedUserType type) {
+    super(type);
+  }
 }

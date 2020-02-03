@@ -56,100 +56,97 @@ import java.awt.Container;
  * @author Dennis Cosgrove
  */
 public final class Frame extends AbstractWindow<JFrame> {
-	/**
-	 * @author Dennis Cosgrove
-	 */
-	public enum DefaultCloseOperation {
-		DO_NOTHING( WindowConstants.DO_NOTHING_ON_CLOSE ),
-		HIDE( WindowConstants.HIDE_ON_CLOSE ),
-		DISPOSE( WindowConstants.DISPOSE_ON_CLOSE ),
-		EXIT( WindowConstants.EXIT_ON_CLOSE );
-		private int internal;
+  /**
+   * @author Dennis Cosgrove
+   */
+  public enum DefaultCloseOperation {
+    DO_NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), EXIT(WindowConstants.EXIT_ON_CLOSE);
+    private int internal;
 
-		private DefaultCloseOperation( int internal ) {
-			this.internal = internal;
-		}
+    private DefaultCloseOperation(int internal) {
+      this.internal = internal;
+    }
 
-		public static DefaultCloseOperation valueOf( int windowConstant ) {
-			for( DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values() ) {
-				if( defaultCloseOperation.internal == windowConstant ) {
-					return defaultCloseOperation;
-				}
-			}
-			return null;
-		}
-	}
+    public static DefaultCloseOperation valueOf(int windowConstant) {
+      for (DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values()) {
+        if (defaultCloseOperation.internal == windowConstant) {
+          return defaultCloseOperation;
+        }
+      }
+      return null;
+    }
+  }
 
-	private static final Frame applicationRootFrame = new Frame( WindowStack.getRootFrame() );
+  private static final Frame applicationRootFrame = new Frame(WindowStack.getRootFrame());
 
-	public static Frame getApplicationRootFrame() {
-		return applicationRootFrame;
-	}
+  public static Frame getApplicationRootFrame() {
+    return applicationRootFrame;
+  }
 
-	public Frame() {
-		this( new JFrame() );
-	}
+  public Frame() {
+    this(new JFrame());
+  }
 
-	private Frame( JFrame jFrame ) {
-		super( jFrame );
-	}
+  private Frame(JFrame jFrame) {
+    super(jFrame);
+  }
 
-	@Override
-	/* package-private */Container getAwtContentPane() {
-		return this.getAwtComponent().getContentPane();
-	}
+  @Override
+    /* package-private */Container getAwtContentPane() {
+    return this.getAwtComponent().getContentPane();
+  }
 
-	@Override
-	/* package-private */JRootPane getJRootPane() {
-		return this.getAwtComponent().getRootPane();
-	}
+  @Override
+    /* package-private */JRootPane getJRootPane() {
+    return this.getAwtComponent().getRootPane();
+  }
 
-	public DefaultCloseOperation getDefaultCloseOperation() {
-		return DefaultCloseOperation.valueOf( this.getAwtComponent().getDefaultCloseOperation() );
-	}
+  public DefaultCloseOperation getDefaultCloseOperation() {
+    return DefaultCloseOperation.valueOf(this.getAwtComponent().getDefaultCloseOperation());
+  }
 
-	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
-		this.getAwtComponent().setDefaultCloseOperation( defaultCloseOperation.internal );
-	}
+  public void setDefaultCloseOperation(DefaultCloseOperation defaultCloseOperation) {
+    this.getAwtComponent().setDefaultCloseOperation(defaultCloseOperation.internal);
+  }
 
-	public String getTitle() {
-		return this.getAwtComponent().getTitle();
-	}
+  public String getTitle() {
+    return this.getAwtComponent().getTitle();
+  }
 
-	public void setTitle( String title ) {
-		this.getAwtComponent().setTitle( title );
-	}
+  public void setTitle(String title) {
+    this.getAwtComponent().setTitle(title);
+  }
 
-	public boolean isUndecorated() {
-		return this.getAwtComponent().isUndecorated();
-	}
+  public boolean isUndecorated() {
+    return this.getAwtComponent().isUndecorated();
+  }
 
-	public void setUndecorated( boolean isUndecorated ) {
-		if( isUndecorated != this.isUndecorated() ) {
-			if( this.getAwtComponent().isDisplayable() ) {
-				final Container contentPane = this.getAwtComponent().getContentPane();
-				this.getAwtComponent().dispose();
-				this.getAwtComponent().setUndecorated( this.getAwtComponent().isUndecorated() == false );
-				SwingUtilities.invokeLater( new Runnable() {
-					@Override
-					public void run() {
-						getAwtComponent().setContentPane( contentPane );
-						pack();
-						setVisible( true );
-					}
-				} );
-			} else {
-				this.getAwtComponent().setUndecorated( isUndecorated );
-			}
-		}
-	}
+  public void setUndecorated(boolean isUndecorated) {
+    if (isUndecorated != this.isUndecorated()) {
+      if (this.getAwtComponent().isDisplayable()) {
+        final Container contentPane = this.getAwtComponent().getContentPane();
+        this.getAwtComponent().dispose();
+        this.getAwtComponent().setUndecorated(this.getAwtComponent().isUndecorated() == false);
+        SwingUtilities.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            getAwtComponent().setContentPane(contentPane);
+            pack();
+            setVisible(true);
+          }
+        });
+      } else {
+        this.getAwtComponent().setUndecorated(isUndecorated);
+      }
+    }
+  }
 
-	public void maximize() {
-		this.getAwtComponent().setExtendedState( this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
-	}
+  public void maximize() {
+    this.getAwtComponent().setExtendedState(this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH);
+  }
 
-	@Override
-	protected void setJMenuBar( JMenuBar jMenuBar ) {
-		this.getAwtComponent().setJMenuBar( jMenuBar );
-	}
+  @Override
+  protected void setJMenuBar(JMenuBar jMenuBar) {
+    this.getAwtComponent().setJMenuBar(jMenuBar);
+  }
 }

@@ -49,15 +49,15 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public interface IconFactory {
-	public Icon getIcon( Dimension size );
+  public Icon getIcon(Dimension size);
 
-	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent );
+  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent);
 
-	public Dimension getDefaultSizeForWidth( int width );
+  public Dimension getDefaultSizeForWidth(int width);
 
-	public Dimension getDefaultSizeForHeight( int height );
+  public Dimension getDefaultSizeForHeight(int height);
 
-	public Dimension getTrimmedSizeForWidth( int width );
+  public Dimension getTrimmedSizeForWidth(int width);
 
-	public Dimension getTrimmedSizeForHeight( int height );
+  public Dimension getTrimmedSizeForHeight(int height);
 }

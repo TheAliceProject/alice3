@@ -49,12 +49,12 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JFrameUtilities {
-	public static JFrame createPackedJFrame( Component content, String title, int closeOperation ) {
-		JFrame rv = new JFrame();
-		rv.setTitle( title );
-		rv.getContentPane().add( content );
-		rv.pack();
-		rv.setDefaultCloseOperation( closeOperation );
-		return rv;
-	}
+  public static JFrame createPackedJFrame(Component content, String title, int closeOperation) {
+    JFrame rv = new JFrame();
+    rv.setTitle(title);
+    rv.getContentPane().add(content);
+    rv.pack();
+    rv.setDefaultCloseOperation(closeOperation);
+    return rv;
+  }
 }

@@ -47,37 +47,37 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public class DefaultNameable implements Nameable {
-	private String m_name = null;
+  private String m_name = null;
 
-	public DefaultNameable() {
-	}
+  public DefaultNameable() {
+  }
 
-	public DefaultNameable( String name ) {
-		setName( name );
-	}
+  public DefaultNameable(String name) {
+    setName(name);
+  }
 
-	@Override
-	public String getName() {
-		return m_name;
-	}
+  @Override
+  public String getName() {
+    return m_name;
+  }
 
-	@Override
-	public void setName( String name ) {
-		m_name = name;
-	}
+  @Override
+  public void setName(String name) {
+    m_name = name;
+  }
 
-	@Override
-	public String toString() {
-		String name = getName();
-		if( name != null ) {
-			StringBuffer sb = new StringBuffer();
-			sb.append( getClass().getName() );
-			sb.append( "[name=\"" );
-			sb.append( name );
-			sb.append( "\"]" );
-			return sb.toString();
-		} else {
-			return super.toString();
-		}
-	}
+  @Override
+  public String toString() {
+    String name = getName();
+    if (name != null) {
+      StringBuffer sb = new StringBuffer();
+      sb.append(getClass().getName());
+      sb.append("[name=\"");
+      sb.append(name);
+      sb.append("\"]");
+      return sb.toString();
+    } else {
+      return super.toString();
+    }
+  }
 }

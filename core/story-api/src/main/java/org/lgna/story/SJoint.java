@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.DynamicJointId;
 import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 
@@ -56,105 +55,109 @@ import org.lgna.story.resources.JointId;
  */
 public class SJoint extends SMovableTurnable {
 
-	private static final MapToMap<SJointedModel, JointId, SJoint> mapToJointIdJointMap = MapToMap.newInstance();
-	private static final MapToMap<SJointedModel, String, SJoint> mapToJointNameJointMap = MapToMap.newInstance();
+  private static final MapToMap<SJointedModel, JointId, SJoint> mapToJointIdJointMap = MapToMap.newInstance();
+  private static final MapToMap<SJointedModel, String, SJoint> mapToJointNameJointMap = MapToMap.newInstance();
 
-	private static final MapToMap<SJointedModel, JointId[], SJoint[]> mapToArrayMap = MapToMap.newInstance();
+  private static final MapToMap<SJointedModel, JointId[], SJoint[]> mapToArrayMap = MapToMap.newInstance();
 
-	private static final MapToMap<SJointedModel, JointArrayId, SJoint[]> mapToArrayIdMap = MapToMap.newInstance();
+  private static final MapToMap<SJointedModel, JointArrayId, SJoint[]> mapToArrayIdMap = MapToMap.newInstance();
 
-	/* package-private */static SJoint getJoint( SJointedModel jointedModel, JointId jointId ) {
-		return mapToJointIdJointMap.getInitializingIfAbsent( jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
-			@Override
-			public SJoint initialize( SJointedModel jointedModel, JointId jointId ) {
-				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
-				return SJoint.getInstance( jointedModelImplementation, jointId );
-			}
-		} );
-	}
+  /* package-private */
+  static SJoint getJoint(SJointedModel jointedModel, JointId jointId) {
+    return mapToJointIdJointMap.getInitializingIfAbsent(jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
+      @Override
+      public SJoint initialize(SJointedModel jointedModel, JointId jointId) {
+        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        return SJoint.getInstance(jointedModelImplementation, jointId);
+      }
+    });
+  }
 
-	/* package-private */static SJoint getJoint( SJointedModel jointedModel, String jointName ) {
-		return mapToJointNameJointMap.getInitializingIfAbsent( jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
-			@Override
-			public SJoint initialize( SJointedModel jointedModel, String jointName ) {
-				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
-				return SJoint.getInstance( jointedModelImplementation, jointName);
-			}
-		} );
-	}
+  /* package-private */
+  static SJoint getJoint(SJointedModel jointedModel, String jointName) {
+    return mapToJointNameJointMap.getInitializingIfAbsent(jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
+      @Override
+      public SJoint initialize(SJointedModel jointedModel, String jointName) {
+        JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+        return SJoint.getInstance(jointedModelImplementation, jointName);
+      }
+    });
+  }
 
-	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, JointId[] jointIdArray ) {
-		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new MapToMap.Initializer<SJointedModel, JointId[], SJoint[]>() {
-			@Override
-			public SJoint[] initialize( SJointedModel jointedModel, JointId[] jointIdArray ) {
-				SJoint[] jointArray = new SJoint[ jointIdArray.length ];
-				for( int i = 0; i < jointIdArray.length; i++ ) {
-					jointArray[ i ] = getJoint( jointedModel, jointIdArray[ i ] );
-				}
-				return jointArray;
-			}
-		} );
-	}
+  /* package-private */
+  static SJoint[] getJointArray(SJointedModel jointedModel, JointId[] jointIdArray) {
+    return mapToArrayMap.getInitializingIfAbsent(jointedModel, jointIdArray, new MapToMap.Initializer<SJointedModel, JointId[], SJoint[]>() {
+      @Override
+      public SJoint[] initialize(SJointedModel jointedModel, JointId[] jointIdArray) {
+        SJoint[] jointArray = new SJoint[jointIdArray.length];
+        for (int i = 0; i < jointIdArray.length; i++) {
+          jointArray[i] = getJoint(jointedModel, jointIdArray[i]);
+        }
+        return jointArray;
+      }
+    });
+  }
 
-	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, JointArrayId jointArrayId ) {
-		JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
-		return getJointArray( jointedModel, jointedModelImplementation.getJointIdArray( jointArrayId ) );
-	}
+  /* package-private */
+  static SJoint[] getJointArray(SJointedModel jointedModel, JointArrayId jointArrayId) {
+    JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation(jointedModel);
+    return getJointArray(jointedModel, jointedModelImplementation.getJointIdArray(jointArrayId));
+  }
 
-	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointId jointId ) {
-		JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
-		return getInstance(jointedModelImplementation, implementation);
-	}
+  private static SJoint getInstance(JointedModelImp jointedModelImplementation, JointId jointId) {
+    JointImp implementation = jointedModelImplementation.getJointImplementation(jointId);
+    return getInstance(jointedModelImplementation, implementation);
+  }
 
-	//String based lookup for DynamicJointIds
-	private static SJoint getInstance( JointedModelImp jointedModelImplementation, String jointName ) {
-		JointImp implementation = jointedModelImplementation.getJointImplementation( jointName );
-		return getInstance(jointedModelImplementation, implementation);
-	}
+  //String based lookup for DynamicJointIds
+  private static SJoint getInstance(JointedModelImp jointedModelImplementation, String jointName) {
+    JointImp implementation = jointedModelImplementation.getJointImplementation(jointName);
+    return getInstance(jointedModelImplementation, implementation);
+  }
 
-	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointImp jointImp ) {
-		SJoint rv = jointImp.getAbstraction();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SJoint( jointImp );
-			jointImp.setAbstraction( rv );
-		}
-		return rv;
-	}
+  private static SJoint getInstance(JointedModelImp jointedModelImplementation, JointImp jointImp) {
+    SJoint rv = jointImp.getAbstraction();
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new SJoint(jointImp);
+      jointImp.setAbstraction(rv);
+    }
+    return rv;
+  }
 
-	private final JointImp implementation;
+  private final JointImp implementation;
 
-	private SJoint( JointImp implementation ) {
-		this.implementation = implementation;
-	}
+  private SJoint(JointImp implementation) {
+    this.implementation = implementation;
+  }
 
-	@Override
-			/* package-private */JointImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */JointImp getImplementation() {
+    return this.implementation;
+  }
 
-	public Boolean isPivotVisible() {
-		return this.implementation.isPivotVisible();
-	}
+  public Boolean isPivotVisible() {
+    return this.implementation.isPivotVisible();
+  }
 
-	public void setPivotVisible( Boolean isPivotVisible ) {
-		this.implementation.setPivotVisible( isPivotVisible );
-	}
+  public void setPivotVisible(Boolean isPivotVisible) {
+    this.implementation.setPivotVisible(isPivotVisible);
+  }
 
-	@MethodTemplate( )
-	public Double getWidth() {
-		return this.getImplementation().getSize().x;
-	}
+  @MethodTemplate()
+  public Double getWidth() {
+    return this.getImplementation().getSize().x;
+  }
 
-	@MethodTemplate( )
-	public Double getHeight() {
-		return this.getImplementation().getSize().y;
-	}
+  @MethodTemplate()
+  public Double getHeight() {
+    return this.getImplementation().getSize().y;
+  }
 
-	@MethodTemplate( )
-	public Double getDepth() {
-		return this.getImplementation().getSize().z;
-	}
+  @MethodTemplate()
+  public Double getDepth() {
+    return this.getImplementation().getSize().z;
+  }
 
 }

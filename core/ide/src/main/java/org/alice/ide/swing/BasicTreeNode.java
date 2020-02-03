@@ -51,170 +51,130 @@ import edu.cmu.cs.dennisc.color.Color4f;
 
 /*package-private*/class BasicTreeNode extends DefaultMutableTreeNode implements Comparable {
 
-	public static enum Difference
-	{
-		NONE,
-		NEW_NODE,
-		ATTRIBUTES
-	}
+  public static enum Difference {
+    NONE, NEW_NODE, ATTRIBUTES
+  }
 
-	public Difference difference = Difference.NONE;
+  public Difference difference = Difference.NONE;
 
-	public String name;
-	public String className;
-	private String trimmedClassName;
-	public int hashCode;
-	public Color4f color = null;
+  public String name;
+  public String className;
+  private String trimmedClassName;
+  public int hashCode;
+  public Color4f color = null;
 
-	public boolean hasExtras = false;
+  public boolean hasExtras = false;
 
-	@Override
-	public boolean equals( Object obj )
-	{
-		if( obj instanceof BasicTreeNode )
-		{
-			return this.hashCode == ( (BasicTreeNode)obj ).hashCode;
-		}
-		return super.equals( obj );
-	}
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof BasicTreeNode) {
+      return this.hashCode == ((BasicTreeNode) obj).hashCode;
+    }
+    return super.equals(obj);
+  }
 
-	protected void setData( Object object )
-	{
-		this.difference = Difference.NONE;
-		this.className = object.getClass().getName();
-		this.hashCode = object.hashCode();
-		String[] splitClassName = this.className.split( "\\." );
-		if( splitClassName.length > 0 )
-		{
-			this.trimmedClassName = splitClassName[ splitClassName.length - 1 ];
-			this.name = this.trimmedClassName + ":" + this.hashCode;
-		}
-	}
+  protected void setData(Object object) {
+    this.difference = Difference.NONE;
+    this.className = object.getClass().getName();
+    this.hashCode = object.hashCode();
+    String[] splitClassName = this.className.split("\\.");
+    if (splitClassName.length > 0) {
+      this.trimmedClassName = splitClassName[splitClassName.length - 1];
+      this.name = this.trimmedClassName + ":" + this.hashCode;
+    }
+  }
 
-	public BasicTreeNode( Object object )
-	{
-		super();
-		setData( object );
-	}
+  public BasicTreeNode(Object object) {
+    super();
+    setData(object);
+  }
 
-	public boolean hasDifferentChild()
-	{
-		for( int i = 0; i < this.getChildCount(); i++ )
-		{
-			BasicTreeNode child = (BasicTreeNode)this.getChildAt( i );
-			if( child.isDifferent() )
-			{
-				return true;
-			}
-			else
-			{
-				if( child.hasDifferentChild() )
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+  public boolean hasDifferentChild() {
+    for (int i = 0; i < this.getChildCount(); i++) {
+      BasicTreeNode child = (BasicTreeNode) this.getChildAt(i);
+      if (child.isDifferent()) {
+        return true;
+      } else {
+        if (child.hasDifferentChild()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
-	public Color getAWTColor()
-	{
-		if( this.color == null )
-		{
-			return null;
-		}
-		return new Color( (int)( this.color.red * 255 ), (int)( this.color.green * 255 ), (int)( this.color.blue * 255 ) );
-	}
+  public Color getAWTColor() {
+    if (this.color == null) {
+      return null;
+    }
+    return new Color((int) (this.color.red * 255), (int) (this.color.green * 255), (int) (this.color.blue * 255));
+  }
 
-	public boolean isDifferent()
-	{
-		return this.difference != Difference.NONE;
-	}
+  public boolean isDifferent() {
+    return this.difference != Difference.NONE;
+  }
 
-	public void markDifferent( Difference difference )
-	{
-		this.difference = difference;
-	}
+  public void markDifferent(Difference difference) {
+    this.difference = difference;
+  }
 
-	@Override
-	public String toString()
-	{
-		if( ( this.name == null ) || ( this.name.length() == 0 ) )
-		{
-			return this.trimmedClassName;
-		}
-		return this.name;
-	}
+  @Override
+  public String toString() {
+    if ((this.name == null) || (this.name.length() == 0)) {
+      return this.trimmedClassName;
+    }
+    return this.name;
+  }
 
-	public BasicTreeNode getMatchingNode( int hashCode )
-	{
-		if( this.hashCode == hashCode )
-		{
-			return this;
-		}
-		else
-		{
-			for( int i = 0; i < this.getChildCount(); i++ )
-			{
-				BasicTreeNode child = (BasicTreeNode)this.getChildAt( i );
-				BasicTreeNode found = child.getMatchingNode( hashCode );
-				if( found != null )
-				{
-					return found;
-				}
-			}
-			return null;
-		}
-	}
+  public BasicTreeNode getMatchingNode(int hashCode) {
+    if (this.hashCode == hashCode) {
+      return this;
+    } else {
+      for (int i = 0; i < this.getChildCount(); i++) {
+        BasicTreeNode child = (BasicTreeNode) this.getChildAt(i);
+        BasicTreeNode found = child.getMatchingNode(hashCode);
+        if (found != null) {
+          return found;
+        }
+      }
+      return null;
+    }
+  }
 
-	public BasicTreeNode getMatchingNode( BasicTreeNode toMatch )
-	{
-		if( this.compareTo( toMatch ) == 0 )
-		{
-			return this;
-		}
-		else
-		{
-			for( int i = 0; i < this.getChildCount(); i++ )
-			{
-				BasicTreeNode child = (BasicTreeNode)this.getChildAt( i );
-				BasicTreeNode found = child.getMatchingNode( toMatch );
-				if( found != null )
-				{
-					return found;
-				}
-			}
-			return null;
-		}
-	}
+  public BasicTreeNode getMatchingNode(BasicTreeNode toMatch) {
+    if (this.compareTo(toMatch) == 0) {
+      return this;
+    } else {
+      for (int i = 0; i < this.getChildCount(); i++) {
+        BasicTreeNode child = (BasicTreeNode) this.getChildAt(i);
+        BasicTreeNode found = child.getMatchingNode(toMatch);
+        if (found != null) {
+          return found;
+        }
+      }
+      return null;
+    }
+  }
 
-	public boolean isDifferent( BasicTreeNode other )
-	{
-		if( other.hashCode != this.hashCode )
-		{
-			return true;
-		}
-		return false;
-	}
+  public boolean isDifferent(BasicTreeNode other) {
+    if (other.hashCode != this.hashCode) {
+      return true;
+    }
+    return false;
+  }
 
-	@Override
-	public int compareTo( Object o ) {
-		if( o instanceof BasicTreeNode )
-		{
-			BasicTreeNode other = (BasicTreeNode)o;
-			if( this.hashCode < other.hashCode )
-			{
-				return -1;
-			}
-			else if( this.hashCode == other.hashCode )
-			{
-				return 0;
-			}
-			else
-			{
-				return 1;
-			}
-		}
-		return 0;
-	}
+  @Override
+  public int compareTo(Object o) {
+    if (o instanceof BasicTreeNode) {
+      BasicTreeNode other = (BasicTreeNode) o;
+      if (this.hashCode < other.hashCode) {
+        return -1;
+      } else if (this.hashCode == other.hashCode) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+    return 0;
+  }
 }

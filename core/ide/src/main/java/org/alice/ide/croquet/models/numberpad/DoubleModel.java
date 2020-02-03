@@ -51,30 +51,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoubleModel extends NumberModel<DoubleLiteral> {
-	private static class SingletonHolder {
-		private static DoubleModel instance = new DoubleModel();
-	}
+  private static class SingletonHolder {
+    private static DoubleModel instance = new DoubleModel();
+  }
 
-	public static DoubleModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DoubleModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private DoubleModel() {
-		super( NUMBER_PAD_GROUP, UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
-	}
+  private DoubleModel() {
+    super(NUMBER_PAD_GROUP, UUID.fromString("034bda41-f608-4c03-8090-f7c8b8e0bf1a"));
+  }
 
-	@Override
-	public boolean isDecimalPointSupported() {
-		return true;
-	}
+  @Override
+  public boolean isDecimalPointSupported() {
+    return true;
+  }
 
-	@Override
-	protected DoubleLiteral valueOf( String s ) {
-		double d = DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
-		if( Double.isNaN( d ) ) {
-			return null;
-		} else {
-			return new DoubleLiteral( d );
-		}
-	}
+  @Override
+  protected DoubleLiteral valueOf(String s) {
+    double d = DoubleUtilities.parseDoubleInCurrentDefaultLocale(s);
+    if (Double.isNaN(d)) {
+      return null;
+    } else {
+      return new DoubleLiteral(d);
+    }
+  }
 }

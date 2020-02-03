@@ -61,94 +61,94 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredListPropertyData<E> extends RefreshableListData<E> {
-	private final ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
-		@Override
-		public void adding( AddListPropertyEvent<E> e ) {
-		}
+  private final ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
+    @Override
+    public void adding(AddListPropertyEvent<E> e) {
+    }
 
-		@Override
-		public void added( AddListPropertyEvent<E> e ) {
-			FilteredListPropertyData.this.refresh();
-		}
+    @Override
+    public void added(AddListPropertyEvent<E> e) {
+      FilteredListPropertyData.this.refresh();
+    }
 
-		@Override
-		public void clearing( ClearListPropertyEvent<E> e ) {
-		}
+    @Override
+    public void clearing(ClearListPropertyEvent<E> e) {
+    }
 
-		@Override
-		public void cleared( ClearListPropertyEvent<E> e ) {
-			FilteredListPropertyData.this.refresh();
-		}
+    @Override
+    public void cleared(ClearListPropertyEvent<E> e) {
+      FilteredListPropertyData.this.refresh();
+    }
 
-		@Override
-		public void removing( RemoveListPropertyEvent<E> e ) {
-		}
+    @Override
+    public void removing(RemoveListPropertyEvent<E> e) {
+    }
 
-		@Override
-		public void removed( RemoveListPropertyEvent<E> e ) {
-			FilteredListPropertyData.this.refresh();
-		}
+    @Override
+    public void removed(RemoveListPropertyEvent<E> e) {
+      FilteredListPropertyData.this.refresh();
+    }
 
-		@Override
-		public void setting( SetListPropertyEvent<E> e ) {
-		}
+    @Override
+    public void setting(SetListPropertyEvent<E> e) {
+    }
 
-		@Override
-		public void set( SetListPropertyEvent<E> e ) {
-			FilteredListPropertyData.this.refresh();
-		}
-	};
+    @Override
+    public void set(SetListPropertyEvent<E> e) {
+      FilteredListPropertyData.this.refresh();
+    }
+  };
 
-	private final PropertyListener propertyListener = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private final PropertyListener propertyListener = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			FilteredListPropertyData.this.refresh();
-		}
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      FilteredListPropertyData.this.refresh();
+    }
+  };
 
-	private ListProperty<E> listProperty;
+  private ListProperty<E> listProperty;
 
-	public FilteredListPropertyData( ItemCodec<E> itemCodec ) {
-		super( itemCodec );
-	}
+  public FilteredListPropertyData(ItemCodec<E> itemCodec) {
+    super(itemCodec);
+  }
 
-	protected abstract boolean isAcceptableItem( E item );
+  protected abstract boolean isAcceptableItem(E item);
 
-	@Override
-	protected List<E> createValues() {
-		if( this.listProperty != null ) {
-			List<E> list = Lists.newLinkedList();
+  @Override
+  protected List<E> createValues() {
+    if (this.listProperty != null) {
+      List<E> list = Lists.newLinkedList();
 
-			for( E item : this.listProperty ) {
-				if( this.isAcceptableItem( item ) ) {
-					list.add( item );
-				}
-			}
+      for (E item : this.listProperty) {
+        if (this.isAcceptableItem(item)) {
+          list.add(item);
+        }
+      }
 
-			return list;
-		} else {
-			return Collections.emptyList();
-		}
-	}
+      return list;
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	protected ListProperty<E> getListProperty() {
-		return this.listProperty;
-	}
+  protected ListProperty<E> getListProperty() {
+    return this.listProperty;
+  }
 
-	public void setListProperty( ListProperty<E> listProperty ) {
-		if( this.listProperty != null ) {
-			this.listProperty.removePropertyListener( this.propertyListener );
-			this.listProperty.removeListPropertyListener( this.listPropertyListener );
-		}
-		this.listProperty = listProperty;
-		if( this.listProperty != null ) {
-			this.listProperty.addPropertyListener( this.propertyListener );
-			this.listProperty.addListPropertyListener( this.listPropertyListener );
-			this.refresh();
-		}
-	}
+  public void setListProperty(ListProperty<E> listProperty) {
+    if (this.listProperty != null) {
+      this.listProperty.removePropertyListener(this.propertyListener);
+      this.listProperty.removeListPropertyListener(this.listPropertyListener);
+    }
+    this.listProperty = listProperty;
+    if (this.listProperty != null) {
+      this.listProperty.addPropertyListener(this.propertyListener);
+      this.listProperty.addListPropertyListener(this.listPropertyListener);
+      this.refresh();
+    }
+  }
 }

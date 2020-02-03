@@ -48,34 +48,32 @@ import org.lgna.croquet.history.event.PopupMenuResizedEvent;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.PopupMenu;
 
-import java.awt.event.ComponentEvent;
-
 /**
  * @author Dennis Cosgrove
  */
 public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
-	private transient PopupMenu popupMenu;
+  private transient PopupMenu popupMenu;
 
-	public static PopupPrepStep createAndAddToActivity( PopupPrepModel model, UserActivity activity ) {
-		return new PopupPrepStep( activity, model, activity.getTrigger() );
-	}
+  public static PopupPrepStep createAndAddToActivity(PopupPrepModel model, UserActivity activity) {
+    return new PopupPrepStep(activity, model, activity.getTrigger());
+  }
 
-	private PopupPrepStep( UserActivity parent, PopupPrepModel model, Trigger trigger ) {
-		super( parent, model, trigger );
-	}
+  private PopupPrepStep(UserActivity parent, PopupPrepModel model, Trigger trigger) {
+    super(parent, model, trigger);
+  }
 
-	public void showPopupMenu( PopupMenu popupMenu ) {
-		Trigger trigger = this.getTrigger();
-		this.popupMenu = popupMenu;
-		trigger.showPopupMenu( popupMenu );
-		this.popupMenu = null;
-	}
+  public void showPopupMenu(PopupMenu popupMenu) {
+    Trigger trigger = this.getTrigger();
+    this.popupMenu = popupMenu;
+    trigger.showPopupMenu(popupMenu);
+    this.popupMenu = null;
+  }
 
-	public void firePopupMenuResized() {
-		fireChanged( new PopupMenuResizedEvent() );
-	}
+  public void firePopupMenuResized() {
+    fireChanged(new PopupMenuResizedEvent());
+  }
 
-	public PopupMenu getPopupMenu() {
-		return this.popupMenu;
-	}
+  public PopupMenu getPopupMenu() {
+    return this.popupMenu;
+  }
 }

@@ -46,15 +46,15 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public class Strings {
-	private Strings() {
-		throw new Error();
-	}
+  private Strings() {
+    throw new Error();
+  }
 
-	public static boolean equalsIgnoreCase( String a, String b ) {
-		if( a != null ) {
-			return a.equalsIgnoreCase( b );
-		} else {
-			return b == null;
-		}
-	}
+  public static boolean equalsIgnoreCase(String a, String b) {
+    if (a != null) {
+      return a.equalsIgnoreCase(b);
+    } else {
+      return b == null;
+    }
+  }
 }

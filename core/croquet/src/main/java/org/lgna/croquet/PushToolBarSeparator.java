@@ -48,15 +48,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PushToolBarSeparator extends ToolBarSeparator {
-	private static class SingletonHolder {
-		private static PushToolBarSeparator instance = new PushToolBarSeparator();
-	}
+  private static class SingletonHolder {
+    private static PushToolBarSeparator instance = new PushToolBarSeparator();
+  }
 
-	public static PushToolBarSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PushToolBarSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PushToolBarSeparator() {
-		super( UUID.fromString( "fb4d8be6-a808-47f4-9dfb-0e0555d9369f" ) );
-	}
+  private PushToolBarSeparator() {
+    super(UUID.fromString("fb4d8be6-a808-47f4-9dfb-0e0555d9369f"));
+  }
 }

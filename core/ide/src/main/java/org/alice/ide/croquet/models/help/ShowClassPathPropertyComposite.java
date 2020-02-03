@@ -48,7 +48,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ShowClassPathPropertyComposite extends ShowPathPropertyComposite {
-	public ShowClassPathPropertyComposite() {
-		super( UUID.fromString( "2783c62b-cae1-4366-bf73-7ed359cdd10d" ), "java.class.path" );
-	}
+  public ShowClassPathPropertyComposite() {
+    super(UUID.fromString("2783c62b-cae1-4366-bf73-7ed359cdd10d"), "java.class.path");
+  }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="CircusTrampoline">
+    <BoundingBox>
+        <Min x="-0.9744312763214111" y="0.0018476485274732113" z="-0.9744314551353455"/>
+        <Max x="0.9744312763214111" y="0.29676029086112976" z="0.9744312763214111"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>train</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>circus</Tag>
+        <Tag>trampoline</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CircusTrampoline" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

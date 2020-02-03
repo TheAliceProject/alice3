@@ -58,54 +58,54 @@ import javax.swing.BorderFactory;
  */
 
 public class LocalDeclarationPane extends TypedDeclarationPane {
-	private UserLocal userLocal;
-	private Label finalLabel = new Label();
+  private UserLocal userLocal;
+  private Label finalLabel = new Label();
 
-	public LocalDeclarationPane( UserLocal userLocal, AwtComponentView<?> component ) {
-		this.userLocal = userLocal;
-		if( IsExposingReassignableStatusState.getInstance().getValue() ) {
-			this.addComponent( finalLabel );
-		}
-		this.addComponent( TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
-		this.addComponent( component );
-		this.setBorder( BorderFactory.createEmptyBorder() );
-	}
+  public LocalDeclarationPane(UserLocal userLocal, AwtComponentView<?> component) {
+    this.userLocal = userLocal;
+    if (IsExposingReassignableStatusState.getInstance().getValue()) {
+      this.addComponent(finalLabel);
+    }
+    this.addComponent(TypeComponent.createInstance(this.userLocal.valueType.getValue()));
+    this.addComponent(component);
+    this.setBorder(BorderFactory.createEmptyBorder());
+  }
 
-	private void updateFinalLabel() {
-		String text;
-		if( userLocal.isFinal.getValue() ) {
-			if( userLocal.getParent() instanceof EachInStatement ) {
-				text = "";
-			} else {
-				text = FormatterState.getInstance().getValue().getFinalText() + " ";
-			}
-		} else {
-			text = "";
-		}
-		this.finalLabel.setText( text );
-	}
+  private void updateFinalLabel() {
+    String text;
+    if (userLocal.isFinal.getValue()) {
+      if (userLocal.getParent() instanceof EachInStatement) {
+        text = "";
+      } else {
+        text = FormatterState.getInstance().getValue().getFinalText() + " ";
+      }
+    } else {
+      text = "";
+    }
+    this.finalLabel.setText(text);
+  }
 
-	private PropertyListener propertyListener = new PropertyListener() {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private PropertyListener propertyListener = new PropertyListener() {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			updateFinalLabel();
-		}
-	};
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      updateFinalLabel();
+    }
+  };
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.updateFinalLabel();
-		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.updateFinalLabel();
+    this.userLocal.isFinal.addPropertyListener(this.propertyListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.userLocal.isFinal.addPropertyListener(this.propertyListener);
+    super.handleUndisplayable();
+  }
 }

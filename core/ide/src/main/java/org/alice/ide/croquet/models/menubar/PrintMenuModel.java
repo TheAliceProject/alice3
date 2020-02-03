@@ -53,18 +53,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PrintMenuModel extends PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static PrintMenuModel instance = new PrintMenuModel();
-	}
+  private static class SingletonHolder {
+    private static PrintMenuModel instance = new PrintMenuModel();
+  }
 
-	public static PrintMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static PrintMenuModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private PrintMenuModel() {
-		super( UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ),
-				PrintAllOperation.getInstance().getMenuItemPrepModel(),
-				PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
-				PrintSceneEditorOperation.getInstance().getMenuItemPrepModel() );
-	}
+  private PrintMenuModel() {
+    super(UUID.fromString("115844c7-064f-4070-b9c2-3e503a43e271"), PrintAllOperation.getInstance().getMenuItemPrepModel(), PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(), PrintSceneEditorOperation.getInstance().getMenuItemPrepModel());
+  }
 }

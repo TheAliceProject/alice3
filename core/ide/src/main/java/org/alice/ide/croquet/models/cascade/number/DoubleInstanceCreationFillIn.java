@@ -51,16 +51,16 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DoubleInstanceCreationFillIn extends AbstractInstanceCreationFillIn {
-	private static class SingletonHolder {
-		private static DoubleInstanceCreationFillIn instance = new DoubleInstanceCreationFillIn();
-	}
+  private static class SingletonHolder {
+    private static DoubleInstanceCreationFillIn instance = new DoubleInstanceCreationFillIn();
+  }
 
-	public static DoubleInstanceCreationFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static DoubleInstanceCreationFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	//note: we would like to fill in an Integer for double parameter, hence the semi-madness below 
-	private DoubleInstanceCreationFillIn() {
-		super( UUID.fromString( "f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce" ), JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor( Double.TYPE ), IntegerBlank.getInstance() );
-	}
+  //note: we would like to fill in an Integer for double parameter, hence the semi-madness below
+  private DoubleInstanceCreationFillIn() {
+    super(UUID.fromString("f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce"), JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor(Double.TYPE), IntegerBlank.getInstance());
+  }
 }

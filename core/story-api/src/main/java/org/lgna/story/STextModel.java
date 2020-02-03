@@ -49,81 +49,81 @@ import org.lgna.story.implementation.TextModelImp;
  * @author Dennis Cosgrove
  */
 public class STextModel extends SModel {
-	private final TextModelImp implementation = new TextModelImp( this );
+  private final TextModelImp implementation = new TextModelImp(this);
 
-	@Override
-	/* package-private */TextModelImp getImplementation() {
-		return this.implementation;
-	}
+  @Override
+    /* package-private */TextModelImp getImplementation() {
+    return this.implementation;
+  }
 
-	@GetterTemplate( isPersistent = true )
-	public String getValue() {
-		return this.implementation.getValue();
-	}
+  @GetterTemplate(isPersistent = true)
+  public String getValue() {
+    return this.implementation.getValue();
+  }
 
-	public void setValue( String text ) {
-		this.implementation.setValue( text );
-	}
+  public void setValue(String text) {
+    this.implementation.setValue(text);
+  }
 
-	//	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	//	public Font getFont() {
-	//		return new Font( this.implementation.getFont() );
-	//	}
-	//	public void setFont( Font font ) {
-	//		this.implementation.setFont( font.getAsAWTFont() );
-	//	}
+  //  @org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+  //  public Font getFont() {
+  //    return new Font( this.implementation.getFont() );
+  //  }
+  //  public void setFont( Font font ) {
+  //    this.implementation.setFont( font.getAsAWTFont() );
+  //  }
 
-	public void append( Object value ) {
-		this.implementation.append( value );
-	}
+  public void append(Object value) {
+    this.implementation.append(value);
+  }
 
-	public Character charAt( Integer index ) {
-		return this.implementation.charAt( index );
-	}
+  public Character charAt(Integer index) {
+    return this.implementation.charAt(index);
+  }
 
-	public void delete( Integer start, Integer end ) {
-		this.implementation.delete( start, end );
-	}
+  public void delete(Integer start, Integer end) {
+    this.implementation.delete(start, end);
+  }
 
-	public void deleteCharAt( Integer index ) {
-		this.implementation.deleteCharAt( index );
-	}
+  public void deleteCharAt(Integer index) {
+    this.implementation.deleteCharAt(index);
+  }
 
-	public Integer indexOf( String s ) {
-		return this.implementation.indexOf( s );
-	}
+  public Integer indexOf(String s) {
+    return this.implementation.indexOf(s);
+  }
 
-	public Integer indexOf( String s, Integer fromIndex ) {
-		return this.implementation.indexOf( s, fromIndex );
-	}
+  public Integer indexOf(String s, Integer fromIndex) {
+    return this.implementation.indexOf(s, fromIndex);
+  }
 
-	public void insert( Integer offset, Object value ) {
-		this.implementation.insert( offset, value );
-	}
+  public void insert(Integer offset, Object value) {
+    this.implementation.insert(offset, value);
+  }
 
-	public Integer lastIndexOf( String s ) {
-		return this.implementation.lastIndexOf( s );
-	}
+  public Integer lastIndexOf(String s) {
+    return this.implementation.lastIndexOf(s);
+  }
 
-	public Integer lastIndexOf( String s, Integer fromIndex ) {
-		return this.implementation.lastIndexOf( s, fromIndex );
-	}
+  public Integer lastIndexOf(String s, Integer fromIndex) {
+    return this.implementation.lastIndexOf(s, fromIndex);
+  }
 
-	//todo: rename length?
-	public Integer getLength() {
-		return this.implementation.getLength();
-	}
+  //todo: rename length?
+  public Integer getLength() {
+    return this.implementation.getLength();
+  }
 
-	public void replace( Integer start, Integer end, String s ) {
-		this.implementation.replace( start, end, s );
-	}
+  public void replace(Integer start, Integer end, String s) {
+    this.implementation.replace(start, end, s);
+  }
 
-	public void setCharAt( Integer index, Character c ) {
-		this.implementation.setCharAt( index, c );
-	}
+  public void setCharAt(Integer index, Character c) {
+    this.implementation.setCharAt(index, c);
+  }
 
-	//	public void setLength( Integer length ) {
-	//		m_sb.setLength( length );
-	//		updateSGText();
-	//	}
+  //  public void setLength( Integer length ) {
+  //    m_sb.setLength( length );
+  //    updateSGText();
+  //  }
 }

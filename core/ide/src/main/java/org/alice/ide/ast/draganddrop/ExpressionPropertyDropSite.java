@@ -58,63 +58,63 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyDropSite implements DropSite {
-	private final ExpressionProperty expressionProperty;
+  private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropSite( ExpressionProperty expressionProperty ) {
-		this.expressionProperty = expressionProperty;
-	}
+  public ExpressionPropertyDropSite(ExpressionProperty expressionProperty) {
+    this.expressionProperty = expressionProperty;
+  }
 
-	public ExpressionPropertyDropSite( BinaryDecoder binaryDecoder ) {
-		PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance( ExpressionProperty.class );
-		this.expressionProperty = codec.decodeValue( binaryDecoder );
-	}
+  public ExpressionPropertyDropSite(BinaryDecoder binaryDecoder) {
+    PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance(ExpressionProperty.class);
+    this.expressionProperty = codec.decodeValue(binaryDecoder);
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance( ExpressionProperty.class );
-		codec.encodeValue( binaryEncoder, this.expressionProperty );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance(ExpressionProperty.class);
+    codec.encodeValue(binaryEncoder, this.expressionProperty);
+  }
 
-	public ExpressionProperty getExpressionProperty() {
-		return this.expressionProperty;
-	}
+  public ExpressionProperty getExpressionProperty() {
+    return this.expressionProperty;
+  }
 
-	@Override
-	public DropReceptor getOwningDropReceptor() {
-		Node node = (Node)this.expressionProperty.getOwner();
-		AbstractCode code = node.getFirstAncestorAssignableTo( AbstractCode.class );
-		return CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
-	}
+  @Override
+  public DropReceptor getOwningDropReceptor() {
+    Node node = (Node) this.expressionProperty.getOwner();
+    AbstractCode code = node.getFirstAncestorAssignableTo(AbstractCode.class);
+    return CodeComposite.getInstance(code).getView().getCodePanelWithDropReceptor().getDropReceptor();
+  }
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		}
-		if( o instanceof ExpressionPropertyDropSite ) {
-			ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite)o;
-			return Objects.equals( this.expressionProperty, epds.expressionProperty );
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (o == this) {
+      return true;
+    }
+    if (o instanceof ExpressionPropertyDropSite) {
+      ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite) o;
+      return Objects.equals(this.expressionProperty, epds.expressionProperty);
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public int hashCode() {
-		int rv = 17;
-		if( this.expressionProperty != null ) {
-			rv = ( 37 * rv ) + this.expressionProperty.hashCode();
-		}
-		return rv;
-	}
+  @Override
+  public int hashCode() {
+    int rv = 17;
+    if (this.expressionProperty != null) {
+      rv = (37 * rv) + this.expressionProperty.hashCode();
+    }
+    return rv;
+  }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getName() );
-		sb.append( "[expressionProperty=" );
-		sb.append( this.expressionProperty );
-		sb.append( "]" );
-		return sb.toString();
-	}
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(this.getClass().getName());
+    sb.append("[expressionProperty=");
+    sb.append(this.expressionProperty);
+    sb.append("]");
+    return sb.toString();
+  }
 }

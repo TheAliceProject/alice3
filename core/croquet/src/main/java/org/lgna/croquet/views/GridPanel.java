@@ -53,112 +53,112 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class GridPanel extends Panel {
-	private final int rowCount;
-	private final int columnCount;
-	private final int hgap;
-	private final int vgap;
+  private final int rowCount;
+  private final int columnCount;
+  private final int hgap;
+  private final int vgap;
 
-	public static class Details {
-		private Composite<?> composite;
-		private int rowCount;
-		private int columnCount;
-		private int hgap;
-		private int vgap;
+  public static class Details {
+    private Composite<?> composite;
+    private int rowCount;
+    private int columnCount;
+    private int hgap;
+    private int vgap;
 
-		public Details() {
-		}
+    public Details() {
+    }
 
-		public Details composite( Composite<?> composite ) {
-			this.composite = composite;
-			return this;
-		}
+    public Details composite(Composite<?> composite) {
+      this.composite = composite;
+      return this;
+    }
 
-		public Details rowCount( int rowCount ) {
-			this.rowCount = rowCount;
-			return this;
-		}
+    public Details rowCount(int rowCount) {
+      this.rowCount = rowCount;
+      return this;
+    }
 
-		public Details columnCount( int columnCount ) {
-			this.columnCount = columnCount;
-			return this;
-		}
+    public Details columnCount(int columnCount) {
+      this.columnCount = columnCount;
+      return this;
+    }
 
-		public Details hgap( int hgap ) {
-			this.hgap = hgap;
-			return this;
-		}
+    public Details hgap(int hgap) {
+      this.hgap = hgap;
+      return this;
+    }
 
-		public Details vgap( int vgap ) {
-			this.vgap = vgap;
-			return this;
-		}
-	}
+    public Details vgap(int vgap) {
+      this.vgap = vgap;
+      return this;
+    }
+  }
 
-	public GridPanel( Details details, AwtComponentView<?>... components ) {
-		super( details.composite );
-		this.rowCount = details.rowCount;
-		this.columnCount = details.columnCount;
-		this.hgap = details.hgap;
-		this.vgap = details.vgap;
-		for( AwtComponentView<?> component : components ) {
-			this.addComponent( component );
-		}
-	}
+  public GridPanel(Details details, AwtComponentView<?>... components) {
+    super(details.composite);
+    this.rowCount = details.rowCount;
+    this.columnCount = details.columnCount;
+    this.hgap = details.hgap;
+    this.vgap = details.vgap;
+    for (AwtComponentView<?> component : components) {
+      this.addComponent(component);
+    }
+  }
 
-	public static GridPanel createSingleRowGridPane( Composite<?> composite, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( 1 ), components );
-	}
+  public static GridPanel createSingleRowGridPane(Composite<?> composite, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).rowCount(1), components);
+  }
 
-	public static GridPanel createSingleRowGridPane( Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).hgap( hgap ).vgap( vgap ), components );
-	}
+  public static GridPanel createSingleRowGridPane(Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).rowCount(1).hgap(hgap).vgap(vgap), components);
+  }
 
-	public static GridPanel createSingleColumnGridPane( Composite<?> composite, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).columnCount( 1 ), components );
-	}
+  public static GridPanel createSingleColumnGridPane(Composite<?> composite, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).columnCount(1), components);
+  }
 
-	public static GridPanel createSingleColumnGridPane( Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
-	}
+  public static GridPanel createSingleColumnGridPane(Composite<?> composite, int hgap, int vgap, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).columnCount(1).hgap(hgap).vgap(vgap), components);
+  }
 
-	public static GridPanel createGridPane( Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ).hgap( hgap ).vgap( vgap ), components );
-	}
+  public static GridPanel createGridPane(Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).rowCount(rowCount).columnCount(columnCount).hgap(hgap).vgap(vgap), components);
+  }
 
-	public static GridPanel createGridPane( Composite<?> composite, int rowCount, int columnCount, AwtComponentView<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ), components );
-	}
+  public static GridPanel createGridPane(Composite<?> composite, int rowCount, int columnCount, AwtComponentView<?>... components) {
+    return new GridPanel(new Details().composite(composite).rowCount(rowCount).columnCount(columnCount), components);
+  }
 
-	public static GridPanel createSingleRowGridPane( AwtComponentView<?>... components ) {
-		return createSingleRowGridPane( null, components );
-	}
+  public static GridPanel createSingleRowGridPane(AwtComponentView<?>... components) {
+    return createSingleRowGridPane(null, components);
+  }
 
-	public static GridPanel createSingleRowGridPane( int hgap, int vgap, AwtComponentView<?>... components ) {
-		return createSingleRowGridPane( null, hgap, vgap, components );
-	}
+  public static GridPanel createSingleRowGridPane(int hgap, int vgap, AwtComponentView<?>... components) {
+    return createSingleRowGridPane(null, hgap, vgap, components);
+  }
 
-	public static GridPanel createSingleColumnGridPane( AwtComponentView<?>... components ) {
-		return createSingleColumnGridPane( null, components );
-	}
+  public static GridPanel createSingleColumnGridPane(AwtComponentView<?>... components) {
+    return createSingleColumnGridPane(null, components);
+  }
 
-	public static GridPanel createSingleColumnGridPane( int hgap, int vgap, AwtComponentView<?>... components ) {
-		return createSingleColumnGridPane( null, hgap, vgap, components );
-	}
+  public static GridPanel createSingleColumnGridPane(int hgap, int vgap, AwtComponentView<?>... components) {
+    return createSingleColumnGridPane(null, hgap, vgap, components);
+  }
 
-	public static GridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components ) {
-		return createGridPane( null, rowCount, columnCount, hgap, vgap, components );
-	}
+  public static GridPanel createGridPane(int rowCount, int columnCount, int hgap, int vgap, AwtComponentView<?>... components) {
+    return createGridPane(null, rowCount, columnCount, hgap, vgap, components);
+  }
 
-	public static GridPanel createGridPane( int rowCount, int columnCount, AwtComponentView<?>... components ) {
-		return createGridPane( null, rowCount, columnCount, components );
-	}
+  public static GridPanel createGridPane(int rowCount, int columnCount, AwtComponentView<?>... components) {
+    return createGridPane(null, rowCount, columnCount, components);
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		return new GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    return new GridLayout(this.rowCount, this.columnCount, this.hgap, this.vgap);
+  }
 
-	public void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  public void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 }

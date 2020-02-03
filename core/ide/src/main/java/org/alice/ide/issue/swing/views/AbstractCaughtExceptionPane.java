@@ -69,272 +69,272 @@ import java.util.LinkedList;
 import java.util.List;
 
 class ExceptionPane extends JPanel {
-	private Thread thread;
-	private Throwable throwable;
+  private Thread thread;
+  private Throwable throwable;
 
-	protected Thread getThread() {
-		return this.thread;
-	}
+  protected Thread getThread() {
+    return this.thread;
+  }
 
-	protected Throwable getThrowable() {
-		return this.throwable;
-	}
+  protected Throwable getThrowable() {
+    return this.throwable;
+  }
 
-	public void setThreadAndThrowable( final Thread thread, final Throwable throwable ) {
-		assert thread != null;
-		assert throwable != null;
-		this.thread = thread;
-		this.throwable = throwable;
-		this.removeAll();
-		this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
-		JFauxHyperlink vcShowStackTrace = new JFauxHyperlink( new AbstractAction( "show complete stack trace..." ) {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", JOptionPane.INFORMATION_MESSAGE );
-			}
-		} );
+  public void setThreadAndThrowable(final Thread thread, final Throwable throwable) {
+    assert thread != null;
+    assert throwable != null;
+    this.thread = thread;
+    this.throwable = throwable;
+    this.removeAll();
+    this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    JFauxHyperlink vcShowStackTrace = new JFauxHyperlink(new AbstractAction("show complete stack trace...") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        JOptionPaneUtilities.showMessageDialogInScrollableUneditableTextArea(ExceptionPane.this, ThrowableUtilities.getStackTraceAsString(throwable), "Stack Trace", JOptionPane.INFORMATION_MESSAGE);
+      }
+    });
 
-		StringBuffer sb = new StringBuffer();
-		sb.append( throwable.getClass().getSimpleName() );
-		String message = throwable.getLocalizedMessage();
-		if( ( message != null ) && ( message.length() > 0 ) ) {
-			sb.append( "[" );
-			sb.append( message );
-			sb.append( "]" );
-		}
-		sb.append( " in " );
-		sb.append( thread.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( thread.getName() );
-		sb.append( "]" );
+    StringBuffer sb = new StringBuffer();
+    sb.append(throwable.getClass().getSimpleName());
+    String message = throwable.getLocalizedMessage();
+    if ((message != null) && (message.length() > 0)) {
+      sb.append("[");
+      sb.append(message);
+      sb.append("]");
+    }
+    sb.append(" in ");
+    sb.append(thread.getClass().getSimpleName());
+    sb.append("[");
+    sb.append(thread.getName());
+    sb.append("]");
 
-		this.add( new JLabel( sb.toString() ) );
-		StackTraceElement[] elements = throwable.getStackTrace();
-		if( elements.length > 0 ) {
-			StackTraceElement e0 = elements[ 0 ];
-			this.add( new JLabel( "class: " + e0.getClassName() ) );
-			this.add( new JLabel( "method: " + e0.getMethodName() ) );
-			this.add( new JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
-		}
-		this.add( vcShowStackTrace );
-	}
+    this.add(new JLabel(sb.toString()));
+    StackTraceElement[] elements = throwable.getStackTrace();
+    if (elements.length > 0) {
+      StackTraceElement e0 = elements[0];
+      this.add(new JLabel("class: " + e0.getClassName()));
+      this.add(new JLabel("method: " + e0.getMethodName()));
+      this.add(new JLabel("in file " + e0.getFileName() + " at line number " + e0.getLineNumber()));
+    }
+    this.add(vcShowStackTrace);
+  }
 }
 
 public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
-	private static JLabel createSystemPropertyLabel( String propertyName ) {
-		return new JLabel( propertyName + ": " + System.getProperty( propertyName ) );
-	}
+  private static JLabel createSystemPropertyLabel(String propertyName) {
+    return new JLabel(propertyName + ": " + System.getProperty(propertyName));
+  }
 
-	class SystemPropertiesPane extends JPanel {
-		class ShowAllSystemPropertiesAction extends AbstractAction {
-			public ShowAllSystemPropertiesAction() {
-				super( "show all system properties..." );
-			}
+  class SystemPropertiesPane extends JPanel {
+    class ShowAllSystemPropertiesAction extends AbstractAction {
+      public ShowAllSystemPropertiesAction() {
+        super("show all system properties...");
+      }
 
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
-				StringBuilder sb = new StringBuilder();
-				sb.append( "<html>" );
-				sb.append( "<body>" );
-				for( SystemProperty property : propertyList ) {
-					sb.append( "<strong> " );
-					sb.append( property.getKey() );
-					sb.append( ":</strong> " );
-					sb.append( property.getValue() );
-					sb.append( "<br>" );
-				}
-				sb.append( "</body>" );
-				sb.append( "</html>" );
-				JEditorPane editorPane = new JEditorPane();
-				editorPane.setEditable( false );
-				editorPane.setContentType( "text/html" );
-				editorPane.setText( sb.toString() );
-				JOptionPane.showMessageDialog( AbstractCaughtExceptionPane.this, new JScrollPane( editorPane ) {
-					@Override
-					public Dimension getPreferredSize() {
-						Dimension rv = super.getPreferredSize();
-						rv.width = Math.min( rv.width, 640 );
-						rv.height = Math.min( rv.height, 480 );
-						return rv;
-					}
-				}, "System Properties", JOptionPane.INFORMATION_MESSAGE );
-			}
-		}
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append("<body>");
+        for (SystemProperty property : propertyList) {
+          sb.append("<strong> ");
+          sb.append(property.getKey());
+          sb.append(":</strong> ");
+          sb.append(property.getValue());
+          sb.append("<br>");
+        }
+        sb.append("</body>");
+        sb.append("</html>");
+        JEditorPane editorPane = new JEditorPane();
+        editorPane.setEditable(false);
+        editorPane.setContentType("text/html");
+        editorPane.setText(sb.toString());
+        JOptionPane.showMessageDialog(AbstractCaughtExceptionPane.this, new JScrollPane(editorPane) {
+          @Override
+          public Dimension getPreferredSize() {
+            Dimension rv = super.getPreferredSize();
+            rv.width = Math.min(rv.width, 640);
+            rv.height = Math.min(rv.height, 480);
+            return rv;
+          }
+        }, "System Properties", JOptionPane.INFORMATION_MESSAGE);
+      }
+    }
 
-		private JFauxHyperlink vcShowAllSystemProperties = new JFauxHyperlink( new ShowAllSystemPropertiesAction() );
+    private JFauxHyperlink vcShowAllSystemProperties = new JFauxHyperlink(new ShowAllSystemPropertiesAction());
 
-		public SystemPropertiesPane() {
-			this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
-			for( String propertyName : getSystemPropertiesForEnvironmentField() ) {
-				this.add( createSystemPropertyLabel( propertyName ) );
-			}
-			this.add( this.vcShowAllSystemProperties );
-		}
-	}
+    public SystemPropertiesPane() {
+      this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+      for (String propertyName : getSystemPropertiesForEnvironmentField()) {
+        this.add(createSystemPropertyLabel(propertyName));
+      }
+      this.add(this.vcShowAllSystemProperties);
+    }
+  }
 
-	private JLabel labelException = createLabelForMultiLine( "exception:" );
-	private ExceptionPane paneException = new ExceptionPane();
-	private Component[] rowException = SpringUtilities.createRow( labelException, paneException );
+  private JLabel labelException = createLabelForMultiLine("exception:");
+  private ExceptionPane paneException = new ExceptionPane();
+  private Component[] rowException = SpringUtilities.createRow(labelException, paneException);
 
-	private JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
-	private SystemPropertiesPane paneEnvironment = new SystemPropertiesPane();
-	private Component[] rowEnvironment = SpringUtilities.createRow( labelEnvironment, paneEnvironment );
+  private JLabel labelEnvironment = createLabelForMultiLine("environment:");
+  private SystemPropertiesPane paneEnvironment = new SystemPropertiesPane();
+  private Component[] rowEnvironment = SpringUtilities.createRow(labelEnvironment, paneEnvironment);
 
-	private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
-	private JLabel labelName = createLabelForSingleLine( "reported by:" );
-	private JSuggestiveTextField textReporterName = new JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
-	private Component[] rowName = SpringUtilities.createRow( labelName, textReporterName );
+  private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
+  private JLabel labelName = createLabelForSingleLine("reported by:");
+  private JSuggestiveTextField textReporterName = new JSuggestiveTextField("", NAME_SUGGESTIVE_TEXT);
+  private Component[] rowName = SpringUtilities.createRow(labelName, textReporterName);
 
-	private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
-	private JLabel labelAddress = createLabelForSingleLine( "e-mail address:" );
-	private JSuggestiveTextField textReporterEMailAddress = new JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
-	private Component[] rowAddress = SpringUtilities.createRow( labelAddress, textReporterEMailAddress );
+  private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
+  private JLabel labelAddress = createLabelForSingleLine("e-mail address:");
+  private JSuggestiveTextField textReporterEMailAddress = new JSuggestiveTextField("", EMAIL_SUGGESTIVE_TEXT);
+  private Component[] rowAddress = SpringUtilities.createRow(labelAddress, textReporterEMailAddress);
 
-	class MyExpandPane extends JExpandPane {
-		@Override
-		protected JComponent createCenterPane() {
-			JPanel rv = new JPanel();
-			rv.setBorder( BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
-			List<Component[]> rows = new LinkedList<Component[]>();
-			rows.add( rowSummary );
-			rows.add( rowDescription );
-			rows.add( rowSteps );
-			rows.add( rowException );
-			rows.add( rowEnvironment );
-			rows.add( rowName );
-			rows.add( rowAddress );
-			SpringUtilities.springItUpANotch( rv, rows, 8, 4 );
-			return rv;
-		}
+  class MyExpandPane extends JExpandPane {
+    @Override
+    protected JComponent createCenterPane() {
+      JPanel rv = new JPanel();
+      rv.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
+      List<Component[]> rows = new LinkedList<Component[]>();
+      rows.add(rowSummary);
+      rows.add(rowDescription);
+      rows.add(rowSteps);
+      rows.add(rowException);
+      rows.add(rowEnvironment);
+      rows.add(rowName);
+      rows.add(rowAddress);
+      SpringUtilities.springItUpANotch(rv, rows, 8, 4);
+      return rv;
+    }
 
-		@Override
-		protected String getCollapsedButtonText() {
-			return "yes >>>";
-		}
+    @Override
+    protected String getCollapsedButtonText() {
+      return "yes >>>";
+    }
 
-		@Override
-		protected String getCollapsedLabelText() {
-			return "Can you provide insight into this problem?";
-		}
+    @Override
+    protected String getCollapsedLabelText() {
+      return "Can you provide insight into this problem?";
+    }
 
-		@Override
-		protected String getExpandedLabelText() {
-			return "Please provide insight:";
-		}
-	}
+    @Override
+    protected String getExpandedLabelText() {
+      return "Please provide insight:";
+    }
+  }
 
-	private MyExpandPane expandPane = new MyExpandPane();
+  private MyExpandPane expandPane = new MyExpandPane();
 
-	public AbstractCaughtExceptionPane() {
-		expandPane.setBorder( BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
-		this.add( expandPane, BorderLayout.CENTER );
-	}
+  public AbstractCaughtExceptionPane() {
+    expandPane.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+    this.add(expandPane, BorderLayout.CENTER);
+  }
 
-	@Override
-	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
-		return true;
-	}
+  @Override
+  protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
+    return true;
+  }
 
-	@Override
-	protected String getSummaryText() {
-		String rv = super.getSummaryText();
-		if( ( rv != null ) && ( rv.length() > 0 ) ) {
-			//pass
-		} else {
-			StringBuffer sb = new StringBuffer();
-			//			sb.append( "summary: unspecified; " );
-			Throwable throwable = this.getThrowable();
-			if( throwable != null ) {
-				//				sb.append( "exception: " );
-				sb.append( throwable.getClass().getName() );
-				sb.append( "; " );
-				String message = throwable.getMessage();
-				if( message != null ) {
-					sb.append( "message: " );
-					sb.append( message );
-					sb.append( "; " );
-				}
-				StackTraceElement[] stackTraceElements = throwable.getStackTrace();
-				if( ( stackTraceElements != null ) && ( stackTraceElements.length > 0 ) && ( stackTraceElements[ 0 ] != null ) ) {
-					sb.append( "stack[0]: " );
-					sb.append( stackTraceElements[ 0 ].toString() );
-					sb.append( "; " );
-				}
-				//			}
-			}
-			rv = sb.toString();
-		}
-		return rv;
-	}
+  @Override
+  protected String getSummaryText() {
+    String rv = super.getSummaryText();
+    if ((rv != null) && (rv.length() > 0)) {
+      //pass
+    } else {
+      StringBuffer sb = new StringBuffer();
+      //      sb.append( "summary: unspecified; " );
+      Throwable throwable = this.getThrowable();
+      if (throwable != null) {
+        //        sb.append( "exception: " );
+        sb.append(throwable.getClass().getName());
+        sb.append("; ");
+        String message = throwable.getMessage();
+        if (message != null) {
+          sb.append("message: ");
+          sb.append(message);
+          sb.append("; ");
+        }
+        StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+        if ((stackTraceElements != null) && (stackTraceElements.length > 0) && (stackTraceElements[0] != null)) {
+          sb.append("stack[0]: ");
+          sb.append(stackTraceElements[0].toString());
+          sb.append("; ");
+        }
+        //      }
+      }
+      rv = sb.toString();
+    }
+    return rv;
+  }
 
-	@Override
-	protected IssueType getIssueType() {
-		return IssueType.BUG;
-	}
+  @Override
+  protected IssueType getIssueType() {
+    return IssueType.BUG;
+  }
 
-	@Override
-	protected String getSMTPReplyToPersonal() {
-		return this.textReporterName.getText();
-	}
+  @Override
+  protected String getSMTPReplyToPersonal() {
+    return this.textReporterName.getText();
+  }
 
-	@Override
-	protected String getSMTPReplyTo() {
-		return this.textReporterEMailAddress.getText();
-	}
+  @Override
+  protected String getSMTPReplyTo() {
+    return this.textReporterEMailAddress.getText();
+  }
 
-	@Override
-	protected String getEnvironmentText() {
-		return getEnvironmentShortDescription();
-	}
+  @Override
+  protected String getEnvironmentText() {
+    return getEnvironmentShortDescription();
+  }
 
-	@Override
-	protected Throwable getThrowable() {
-		return this.paneException.getThrowable();
-	}
+  @Override
+  protected Throwable getThrowable() {
+    return this.paneException.getThrowable();
+  }
 
-	@Override
-	protected Thread getThread() {
-		return this.paneException.getThread();
-	}
+  @Override
+  protected Thread getThread() {
+    return this.paneException.getThread();
+  }
 
-	@Override
-	protected int getPreferredDescriptionHeight() {
-		return 64;
-	}
+  @Override
+  protected int getPreferredDescriptionHeight() {
+    return 64;
+  }
 
-	@Override
-	protected int getPreferredStepsHeight() {
-		return 64;
-	}
+  @Override
+  protected int getPreferredStepsHeight() {
+    return 64;
+  }
 
-	@Override
-	protected boolean isSummaryRequired() {
-		return false;
-	}
+  @Override
+  protected boolean isSummaryRequired() {
+    return false;
+  }
 
-	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		assert this.paneException != null;
-		this.paneException.setThreadAndThrowable( thread, throwable );
-		this.revalidate();
-	}
-	//	private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
-	//		rv.append( issue.getAffectsVersionText() );
-	//		rv.append( ": " );
-	//		String summary = issue.getSummary();
-	//		if( summary != null && summary.length() > 0 ) {
-	//			rv.append( summary );
-	//		} else {
-	//			rv.append( this.getSubSummary( issue ) );
-	//		}
-	//		return rv;
-	//	}
-	//	protected final String getMailSubject( Issue issue ) {
-	//		StringBuffer sb = new StringBuffer();
-	//		updateMailSubject( sb, issue );
-	//		return sb.toString();
-	//	}
-	//	protected final String getMailBody( Issue issue ) {
-	//		return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
-	//	}
+  public void setThreadAndThrowable(Thread thread, Throwable throwable) {
+    assert this.paneException != null;
+    this.paneException.setThreadAndThrowable(thread, throwable);
+    this.revalidate();
+  }
+  //  private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
+  //    rv.append( issue.getAffectsVersionText() );
+  //    rv.append( ": " );
+  //    String summary = issue.getSummary();
+  //    if( summary != null && summary.length() > 0 ) {
+  //      rv.append( summary );
+  //    } else {
+  //      rv.append( this.getSubSummary( issue ) );
+  //    }
+  //    return rv;
+  //  }
+  //  protected final String getMailSubject( Issue issue ) {
+  //    StringBuffer sb = new StringBuffer();
+  //    updateMailSubject( sb, issue );
+  //    return sb.toString();
+  //  }
+  //  protected final String getMailBody( Issue issue ) {
+  //    return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
+  //  }
 }

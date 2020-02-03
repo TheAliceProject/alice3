@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.math.rungekutta;
  * @author Dennis Cosgrove
  */
 public interface Function<E extends Derivative> extends Cloneable {
-	public E evaluate( double t );
+  public E evaluate(double t);
 
-	public E evaluate( double t, double dt, E derivative );
+  public E evaluate(double t, double dt, E derivative);
 
-	public void update( E a, E b, E c, E d, double dt );
+  public void update(E a, E b, E c, E d, double dt);
 
-	public void update();
+  public void update();
 }

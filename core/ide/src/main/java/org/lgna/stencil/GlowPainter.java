@@ -55,75 +55,76 @@ import java.awt.geom.Area;
  * @author Dennis Cosgrove
  */
 public class GlowPainter implements Painter {
-	//	private static final int PAD = 4;
-	//	private static final int BOUNDS_PAD = PAD + 64;
-	//	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
-	//	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
-	private static final int HOLE_BEVEL_THICKNESS = 2;
-	//private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
-	private static final Stroke[] HIGHLIGHT_STROKES;
-	static {
-		final int N = 8;
-		HIGHLIGHT_STROKES = new Stroke[ N ];
-		for( int i = 0; i < N; i++ ) {
-			HIGHLIGHT_STROKES[ i ] = new BasicStroke( ( i + 1 ) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-		}
-	};
+  //  private static final int PAD = 4;
+  //  private static final int BOUNDS_PAD = PAD + 64;
+  //  private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
+  //  private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
+  private static final int HOLE_BEVEL_THICKNESS = 2;
+  //private static final java.awt.Stroke HOLE_BEVEL_STROKE = new java.awt.BasicStroke(2.0f);
+  private static final Stroke[] HIGHLIGHT_STROKES;
 
-	private final Paint paint;
+  static {
+    final int N = 8;
+    HIGHLIGHT_STROKES = new Stroke[N];
+    for (int i = 0; i < N; i++) {
+      HIGHLIGHT_STROKES[i] = new BasicStroke((i + 1) * 5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    }
+  }
 
-	public GlowPainter( Paint paint ) {
-		this.paint = paint;
-	}
+  private final Paint paint;
 
-	@Override
-	public void paint( Graphics2D g2, Shape shape ) {
-		Paint prevPaint = g2.getPaint();
-		Stroke prevStroke = g2.getStroke();
-		try {
-			Shape prevClip = g2.getClip();
-			Area area = new Area( prevClip );
-			area.subtract( new Area( shape ) );
-			try {
-				g2.setClip( area );
-				g2.setPaint( paint );
-				for( Stroke stroke : HIGHLIGHT_STROKES ) {
-					g2.setStroke( stroke );
-					g2.draw( shape );
-				}
+  public GlowPainter(Paint paint) {
+    this.paint = paint;
+  }
 
-			} finally {
-				g2.setClip( prevClip );
-			}
+  @Override
+  public void paint(Graphics2D g2, Shape shape) {
+    Paint prevPaint = g2.getPaint();
+    Stroke prevStroke = g2.getStroke();
+    try {
+      Shape prevClip = g2.getClip();
+      Area area = new Area(prevClip);
+      area.subtract(new Area(shape));
+      try {
+        g2.setClip(area);
+        g2.setPaint(paint);
+        for (Stroke stroke : HIGHLIGHT_STROKES) {
+          g2.setStroke(stroke);
+          g2.draw(shape);
+        }
 
-			if( shape instanceof Rectangle ) {
-				Rectangle rect = (Rectangle)shape;
+      } finally {
+        g2.setClip(prevClip);
+      }
 
-				// g2.setPaint( java.awt.Color.GRAY );
-				// g2.draw3DRect(componentBounds.x, componentBounds.y,
-				// componentBounds.width, componentBounds.height, false);
+      if (shape instanceof Rectangle) {
+        Rectangle rect = (Rectangle) shape;
 
-				int x0 = rect.x;
-				int y0 = rect.y;
-				int x1 = ( rect.x + rect.width ) - HOLE_BEVEL_THICKNESS;
-				int y1 = ( rect.y + rect.height ) - HOLE_BEVEL_THICKNESS;
-				g2.setPaint( Color.DARK_GRAY );
-				g2.fillRect( x0, y0, HOLE_BEVEL_THICKNESS, rect.height );
-				g2.fillRect( x0, y0, rect.width, HOLE_BEVEL_THICKNESS );
-				g2.setPaint( Color.WHITE );
-				g2.fillRect( x1, y0, HOLE_BEVEL_THICKNESS, rect.height );
-				g2.fillRect( x0, y1, rect.width, HOLE_BEVEL_THICKNESS );
-			}
-		} finally {
-			g2.setStroke( prevStroke );
-			g2.setPaint( prevPaint );
-		}
-	}
+        // g2.setPaint( java.awt.Color.GRAY );
+        // g2.draw3DRect(componentBounds.x, componentBounds.y,
+        // componentBounds.width, componentBounds.height, false);
 
-	@Override
-	public Rectangle getBounds( Shape shape ) {
-		Rectangle bounds = shape.getBounds();
-		//todo
-		return bounds;
-	}
+        int x0 = rect.x;
+        int y0 = rect.y;
+        int x1 = (rect.x + rect.width) - HOLE_BEVEL_THICKNESS;
+        int y1 = (rect.y + rect.height) - HOLE_BEVEL_THICKNESS;
+        g2.setPaint(Color.DARK_GRAY);
+        g2.fillRect(x0, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y0, rect.width, HOLE_BEVEL_THICKNESS);
+        g2.setPaint(Color.WHITE);
+        g2.fillRect(x1, y0, HOLE_BEVEL_THICKNESS, rect.height);
+        g2.fillRect(x0, y1, rect.width, HOLE_BEVEL_THICKNESS);
+      }
+    } finally {
+      g2.setStroke(prevStroke);
+      g2.setPaint(prevPaint);
+    }
+  }
+
+  @Override
+  public Rectangle getBounds(Shape shape) {
+    Rectangle bounds = shape.getBounds();
+    //todo
+    return bounds;
+  }
 }

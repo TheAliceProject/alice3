@@ -53,55 +53,55 @@ import java.util.Iterator;
  * @author Dennis Cosgrove
  */
 public abstract class ListData<T> implements Iterable<T> {
-	private final ItemCodec<T> itemCodec;
+  private final ItemCodec<T> itemCodec;
 
-	public ListData( ItemCodec<T> itemCodec ) {
-		this.itemCodec = itemCodec;
-	}
+  public ListData(ItemCodec<T> itemCodec) {
+    this.itemCodec = itemCodec;
+  }
 
-	public String getPreferenceKey() {
-		//todo
-		return this.getClass().getName();
-	}
+  public String getPreferenceKey() {
+    //todo
+    return this.getClass().getName();
+  }
 
-	public abstract void addListener( ListDataListener listener );
+  public abstract void addListener(ListDataListener listener);
 
-	public abstract void removeListener( ListDataListener listener );
+  public abstract void removeListener(ListDataListener listener);
 
-	public final ItemCodec<T> getItemCodec() {
-		return this.itemCodec;
-	}
+  public final ItemCodec<T> getItemCodec() {
+    return this.itemCodec;
+  }
 
-	public abstract boolean contains( T item );
+  public abstract boolean contains(T item);
 
-	public abstract T getItemAt( int index );
+  public abstract T getItemAt(int index);
 
-	public abstract int getItemCount();
+  public abstract int getItemCount();
 
-	public abstract int indexOf( T item );
+  public abstract int indexOf(T item);
 
-	public abstract void internalAddItem( int index, T item );
+  public abstract void internalAddItem(int index, T item);
 
-	public final void internalAddItem( T item ) {
-		this.internalAddItem( this.getItemCount(), item );
-	}
+  public final void internalAddItem(T item) {
+    this.internalAddItem(this.getItemCount(), item);
+  }
 
-	public abstract void internalRemoveItem( T item );
+  public abstract void internalRemoveItem(T item);
 
-	public abstract void internalSetAllItems( Collection<T> items );
+  public abstract void internalSetAllItems(Collection<T> items);
 
-	public final void internalSetAllItems( T[] items ) {
-		this.internalSetAllItems( Lists.newArrayList( items ) );
-	}
+  public final void internalSetAllItems(T[] items) {
+    this.internalSetAllItems(Lists.newArrayList(items));
+  }
 
-	public abstract void internalSetItemAt( int index, T item );
+  public abstract void internalSetItemAt(int index, T item);
 
-	@Override
-	public abstract Iterator<T> iterator();
+  @Override
+  public abstract Iterator<T> iterator();
 
-	protected abstract T[] toArray( Class<T> componentType );
+  protected abstract T[] toArray(Class<T> componentType);
 
-	public T[] toArray() {
-		return this.toArray( this.itemCodec.getValueClass() );
-	}
+  public T[] toArray() {
+    return this.toArray(this.itemCodec.getValueClass());
+  }
 }

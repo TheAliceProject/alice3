@@ -49,13 +49,13 @@ import org.lgna.croquet.history.ActivityNode;
  * @author Dennis Cosgrove
  */
 public class ChangeEvent<T extends ActivityNode> implements ActivityEvent {
-	private final T node;
+  private final T node;
 
-	public ChangeEvent( T node ) {
-		this.node = node;
-	}
+  public ChangeEvent(T node) {
+    this.node = node;
+  }
 
-	public T getNode() {
-		return this.node;
-	}
+  public T getNode() {
+    return this.node;
+  }
 }

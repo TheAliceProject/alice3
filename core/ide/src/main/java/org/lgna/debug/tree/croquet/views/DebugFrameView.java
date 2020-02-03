@@ -60,44 +60,44 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class DebugFrameView<T> extends BorderPanel {
-	private static Panel createPanel( Operation operation, BooleanState isPruneDesiredState, JTree jTree ) {
-		BorderPanel rv = new BorderPanel();
-		if( isPruneDesiredState != null ) {
-			rv.addPageStartComponent( new FlowPanel( operation.createButton(), isPruneDesiredState.createCheckBox() ) );
-		} else {
-			rv.addPageStartComponent( operation.createButton() );
-		}
-		jTree.setCellRenderer( new ZTreeNodeRenderer() );
-		rv.getAwtComponent().add( new JScrollPane( jTree ), BorderLayout.CENTER );
-		return rv;
-	}
+  private static Panel createPanel(Operation operation, BooleanState isPruneDesiredState, JTree jTree) {
+    BorderPanel rv = new BorderPanel();
+    if (isPruneDesiredState != null) {
+      rv.addPageStartComponent(new FlowPanel(operation.createButton(), isPruneDesiredState.createCheckBox()));
+    } else {
+      rv.addPageStartComponent(operation.createButton());
+    }
+    jTree.setCellRenderer(new ZTreeNodeRenderer());
+    rv.getAwtComponent().add(new JScrollPane(jTree), BorderLayout.CENTER);
+    return rv;
+  }
 
-	public DebugFrameView( DebugFrame<T> composite ) {
-		super( composite );
+  public DebugFrameView(DebugFrame<T> composite) {
+    super(composite);
 
-		this.jMarkTree = new JTree( composite.getMarkTreeModel() );
-		this.jCurrentTree = new JTree( composite.getCurrentTreeModel() );
+    this.jMarkTree = new JTree(composite.getMarkTreeModel());
+    this.jCurrentTree = new JTree(composite.getCurrentTreeModel());
 
-		Panel markPanel = createPanel( composite.getMarkOperation(), null, this.jMarkTree );
-		Panel currentPanel = createPanel( composite.getRefreshOperation(), composite.getIsPruningDesiredState(), this.jCurrentTree );
+    Panel markPanel = createPanel(composite.getMarkOperation(), null, this.jMarkTree);
+    Panel currentPanel = createPanel(composite.getRefreshOperation(), composite.getIsPruningDesiredState(), this.jCurrentTree);
 
-		JSplitPane jSplitPane = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, markPanel.getAwtComponent(), currentPanel.getAwtComponent() );
-		jSplitPane.setDividerLocation( 0.5 );
-		this.getAwtComponent().add( jSplitPane, BorderLayout.CENTER );
-	}
+    JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, markPanel.getAwtComponent(), currentPanel.getAwtComponent());
+    jSplitPane.setDividerLocation(0.5);
+    this.getAwtComponent().add(jSplitPane, BorderLayout.CENTER);
+  }
 
-	public void expandAllRowsAndUpdateCurrentTreeRenderer( Set<T> set ) {
-		ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
-		currentSgTreeNodeRenderer.setValuesToMute( set );
+  public void expandAllRowsAndUpdateCurrentTreeRenderer(Set<T> set) {
+    ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (ZTreeNodeRenderer<T>) this.jCurrentTree.getCellRenderer();
+    currentSgTreeNodeRenderer.setValuesToMute(set);
 
-		for( JTree jTree : new JTree[] { this.jMarkTree, this.jCurrentTree } ) {
-			for( int i = 0; i < jTree.getRowCount(); i++ ) {
-				jTree.expandRow( i );
-			}
-		}
-		this.repaint();
-	}
+    for (JTree jTree : new JTree[] {this.jMarkTree, this.jCurrentTree}) {
+      for (int i = 0; i < jTree.getRowCount(); i++) {
+        jTree.expandRow(i);
+      }
+    }
+    this.repaint();
+  }
 
-	private final JTree jMarkTree;
-	private final JTree jCurrentTree;
+  private final JTree jMarkTree;
+  private final JTree jCurrentTree;
 }

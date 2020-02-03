@@ -53,33 +53,33 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
-	private static final class InternalBlank<T> extends CascadeBlank<T> {
-		private final CascadeWithInternalBlank<T> cascade;
+  private static final class InternalBlank<T> extends CascadeBlank<T> {
+    private final CascadeWithInternalBlank<T> cascade;
 
-		private InternalBlank( CascadeWithInternalBlank<T> cascade ) {
-			this.cascade = cascade;
-		}
+    private InternalBlank(CascadeWithInternalBlank<T> cascade) {
+      this.cascade = cascade;
+    }
 
-		@Override
-		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<T> blankNode ) {
-			this.cascade.updateBlankChildren( children, blankNode );
-		}
-	}
+    @Override
+    protected void updateChildren(List<CascadeBlankChild> children, BlankNode<T> blankNode) {
+      this.cascade.updateBlankChildren(children, blankNode);
+    }
+  }
 
-	private final List<InternalBlank<T>> blanks = Collections.unmodifiableList( Lists.newArrayList( new InternalBlank<T>( this ) ) );
+  private final List<InternalBlank<T>> blanks = Collections.unmodifiableList(Lists.newArrayList(new InternalBlank<T>(this)));
 
-	public CascadeWithInternalBlank( Group group, UUID id, Class<T> componentType ) {
-		super( group, id, componentType );
-	}
+  public CascadeWithInternalBlank(Group group, UUID id, Class<T> componentType) {
+    super(group, id, componentType);
+  }
 
-	@Override
-	protected List<? extends CascadeBlank<T>> getBlanks() {
-		return this.blanks;
-	}
+  @Override
+  protected List<? extends CascadeBlank<T>> getBlanks() {
+    return this.blanks;
+  }
 
-	protected abstract List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
+  protected abstract List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<T> blankNode);
 
-	private InternalBlank<T> getInternalBlank() {
-		return this.blanks.get( 0 );
-	}
+  private InternalBlank<T> getInternalBlank() {
+    return this.blanks.get(0);
+  }
 }

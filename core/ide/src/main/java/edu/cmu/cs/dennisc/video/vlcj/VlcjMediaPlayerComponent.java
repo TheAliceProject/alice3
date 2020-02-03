@@ -53,15 +53,15 @@ import java.awt.Component;
  */
 /* package-private */interface VlcjMediaPlayerComponent {
 
-	public static final String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
+  public static final String[] CUSTOM_FACTORY_ARGS = {"--no-osd"};
 
-	public MediaPlayer getMediaPlayer();
+  public MediaPlayer getMediaPlayer();
 
-	public Component getVideoSurface();
+  public Component getVideoSurface();
 
-	public Painter<VideoPlayer> getPainter();
+  public Painter<VideoPlayer> getPainter();
 
-	public void setPainter( Painter<VideoPlayer> painter );
+  public void setPainter(Painter<VideoPlayer> painter);
 
-	public void release();
+  public void release();
 }

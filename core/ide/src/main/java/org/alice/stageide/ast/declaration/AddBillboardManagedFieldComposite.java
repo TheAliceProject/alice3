@@ -59,30 +59,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddBillboardManagedFieldComposite extends AddModelManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddBillboardManagedFieldComposite instance = new AddBillboardManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddBillboardManagedFieldComposite instance = new AddBillboardManagedFieldComposite();
+  }
 
-	public static AddBillboardManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddBillboardManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final CustomItemState<Expression> backPaintState = this.createInitialPropertyValueExpressionState( "backPaintState", null, SBillboard.class, "setBackPaint", Paint.class, SetBackPaint.Detail[].class );
+  private final CustomItemState<Expression> backPaintState = this.createInitialPropertyValueExpressionState("backPaintState", null, SBillboard.class, "setBackPaint", Paint.class, SetBackPaint.Detail[].class);
 
-	private AddBillboardManagedFieldComposite() {
-		super( UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ), SBillboard.class );
-	}
+  private AddBillboardManagedFieldComposite() {
+    super(UUID.fromString("bba3fc83-4db4-4be4-87d4-5111dbda4f60"), SBillboard.class);
+  }
 
-	@Override protected ShapeDragModel getDragModel() {
-		return BillboardDragModel.getInstance();
-	}
+  @Override
+  protected ShapeDragModel getDragModel() {
+    return BillboardDragModel.getInstance();
+  }
 
-	public CustomItemState<Expression> getBackPaintState() {
-		return this.backPaintState;
-	}
+  public CustomItemState<Expression> getBackPaintState() {
+    return this.backPaintState;
+  }
 
-	@Override
-	protected AddManagedFieldView createView() {
-		return new AddBillboardManagedFieldView( this );
-	}
+  @Override
+  protected AddManagedFieldView createView() {
+    return new AddBillboardManagedFieldView(this);
+  }
 }

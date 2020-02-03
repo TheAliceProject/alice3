@@ -52,46 +52,46 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class MutableSplitComposite extends AbstractSplitComposite<MutableSplitPane> {
-	private Composite<?> leadingComposite;
-	private Composite<?> trailingComposite;
+  private Composite<?> leadingComposite;
+  private Composite<?> trailingComposite;
 
-	public MutableSplitComposite( UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
-		super( id );
-		this.setLeadingComposite( leadingComposite );
-		this.setTrailingComposite( trailingComposite );
-	}
+  public MutableSplitComposite(UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite) {
+    super(id);
+    this.setLeadingComposite(leadingComposite);
+    this.setTrailingComposite(trailingComposite);
+  }
 
-	@Override
-	public Composite<?> getLeadingComposite() {
-		return this.leadingComposite;
-	}
+  @Override
+  public Composite<?> getLeadingComposite() {
+    return this.leadingComposite;
+  }
 
-	@Override
-	public Composite<?> getTrailingComposite() {
-		return this.trailingComposite;
-	}
+  @Override
+  public Composite<?> getTrailingComposite() {
+    return this.trailingComposite;
+  }
 
-	public void setLeadingComposite( Composite<?> leadingComposite ) {
-		if( this.leadingComposite != leadingComposite ) {
-			this.leadingComposite = leadingComposite;
-			this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getRootComponent() : null );
-		}
-	}
+  public void setLeadingComposite(Composite<?> leadingComposite) {
+    if (this.leadingComposite != leadingComposite) {
+      this.leadingComposite = leadingComposite;
+      this.getView().setLeadingComponent(this.leadingComposite != null ? this.leadingComposite.getRootComponent() : null);
+    }
+  }
 
-	public void setTrailingComposite( Composite<?> trailingComposite ) {
-		if( this.trailingComposite != trailingComposite ) {
-			this.trailingComposite = trailingComposite;
-			this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getRootComponent() : null );
-		}
-	}
+  public void setTrailingComposite(Composite<?> trailingComposite) {
+    if (this.trailingComposite != trailingComposite) {
+      this.trailingComposite = trailingComposite;
+      this.getView().setTrailingComponent(this.trailingComposite != null ? this.trailingComposite.getRootComponent() : null);
+    }
+  }
 
-	@Override
-	protected HorizontalMutableSplitPane createHorizontalSplitPane() {
-		return new HorizontalMutableSplitPane( this );
-	}
+  @Override
+  protected HorizontalMutableSplitPane createHorizontalSplitPane() {
+    return new HorizontalMutableSplitPane(this);
+  }
 
-	@Override
-	protected VerticalMutableSplitPane createVerticalSplitPane() {
-		return new VerticalMutableSplitPane( this );
-	}
+  @Override
+  protected VerticalMutableSplitPane createVerticalSplitPane() {
+    return new VerticalMutableSplitPane(this);
+  }
 }

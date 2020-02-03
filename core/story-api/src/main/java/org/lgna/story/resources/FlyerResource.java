@@ -53,61 +53,60 @@ import org.lgna.story.implementation.FlyerImp;
  * @author dculyba
  *
  */
-@ResourceTemplate( modelClass = SFlyer.class )
-public interface FlyerResource extends JointedModelResource {
-	public static final JointId ROOT = new JointId( null, FlyerResource.class );
-	public static final JointId SPINE_BASE = new JointId( ROOT, FlyerResource.class );
-	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, FlyerResource.class );
-	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, FlyerResource.class );
+@ResourceTemplate(modelClass = SFlyer.class) public interface FlyerResource extends JointedModelResource {
+  public static final JointId ROOT = new JointId(null, FlyerResource.class);
+  public static final JointId SPINE_BASE = new JointId(ROOT, FlyerResource.class);
+  public static final JointId SPINE_MIDDLE = new JointId(SPINE_BASE, FlyerResource.class);
+  public static final JointId SPINE_UPPER = new JointId(SPINE_MIDDLE, FlyerResource.class);
 
-	//Necks are now included as arrays access
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId NECK_0 = new JointId( SPINE_UPPER, FlyerResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId NECK_1 = new JointId( NECK_0, FlyerResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId[] DEFAULT_NECK = { NECK_0, NECK_1 };
+  //Necks are now included as arrays access
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId NECK_0 = new JointId(SPINE_UPPER, FlyerResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId NECK_1 = new JointId(NECK_0, FlyerResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] DEFAULT_NECK = {NECK_0, NECK_1};
 
-	public static final JointId HEAD = new JointId( NECK_1, FlyerResource.class );
-	public static final JointId MOUTH = new JointId( HEAD, FlyerResource.class );
-	public static final JointId LOWER_LIP = new JointId( MOUTH, FlyerResource.class );
-	public static final JointId LEFT_EYE = new JointId( HEAD, FlyerResource.class );
-	public static final JointId RIGHT_EYE = new JointId( HEAD, FlyerResource.class );
-	public static final JointId LEFT_EYELID = new JointId( HEAD, FlyerResource.class );
-	public static final JointId RIGHT_EYELID = new JointId( HEAD, FlyerResource.class );
-	public static final JointId LEFT_WING_SHOULDER = new JointId( SPINE_UPPER, FlyerResource.class );
-	public static final JointId LEFT_WING_ELBOW = new JointId( LEFT_WING_SHOULDER, FlyerResource.class );
-	public static final JointId LEFT_WING_WRIST = new JointId( LEFT_WING_ELBOW, FlyerResource.class );
-	public static final JointId LEFT_WING_TIP = new JointId( LEFT_WING_WRIST, FlyerResource.class );
-	public static final JointId RIGHT_WING_SHOULDER = new JointId( SPINE_UPPER, FlyerResource.class );
-	public static final JointId RIGHT_WING_ELBOW = new JointId( RIGHT_WING_SHOULDER, FlyerResource.class );
-	public static final JointId RIGHT_WING_WRIST = new JointId( RIGHT_WING_ELBOW, FlyerResource.class );
-	public static final JointId RIGHT_WING_TIP = new JointId( RIGHT_WING_WRIST, FlyerResource.class );
-	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, FlyerResource.class );
+  public static final JointId HEAD = new JointId(NECK_1, FlyerResource.class);
+  public static final JointId MOUTH = new JointId(HEAD, FlyerResource.class);
+  public static final JointId LOWER_LIP = new JointId(MOUTH, FlyerResource.class);
+  public static final JointId LEFT_EYE = new JointId(HEAD, FlyerResource.class);
+  public static final JointId RIGHT_EYE = new JointId(HEAD, FlyerResource.class);
+  public static final JointId LEFT_EYELID = new JointId(HEAD, FlyerResource.class);
+  public static final JointId RIGHT_EYELID = new JointId(HEAD, FlyerResource.class);
+  public static final JointId LEFT_WING_SHOULDER = new JointId(SPINE_UPPER, FlyerResource.class);
+  public static final JointId LEFT_WING_ELBOW = new JointId(LEFT_WING_SHOULDER, FlyerResource.class);
+  public static final JointId LEFT_WING_WRIST = new JointId(LEFT_WING_ELBOW, FlyerResource.class);
+  public static final JointId LEFT_WING_TIP = new JointId(LEFT_WING_WRIST, FlyerResource.class);
+  public static final JointId RIGHT_WING_SHOULDER = new JointId(SPINE_UPPER, FlyerResource.class);
+  public static final JointId RIGHT_WING_ELBOW = new JointId(RIGHT_WING_SHOULDER, FlyerResource.class);
+  public static final JointId RIGHT_WING_WRIST = new JointId(RIGHT_WING_ELBOW, FlyerResource.class);
+  public static final JointId RIGHT_WING_TIP = new JointId(RIGHT_WING_WRIST, FlyerResource.class);
+  public static final JointId PELVIS_LOWER_BODY = new JointId(ROOT, FlyerResource.class);
 
-	//Tails are now included as arrays access
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, FlyerResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_1 = new JointId( TAIL_0, FlyerResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_2 = new JointId( TAIL_1, FlyerResource.class );
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId[] DEFAULT_TAIL = { TAIL_0, TAIL_1, TAIL_2 };
+  //Tails are now included as arrays access
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_0 = new JointId(PELVIS_LOWER_BODY, FlyerResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_1 = new JointId(TAIL_0, FlyerResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId TAIL_2 = new JointId(TAIL_1, FlyerResource.class);
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] DEFAULT_TAIL = {TAIL_0, TAIL_1, TAIL_2};
 
-	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, FlyerResource.class );
-	public static final JointId LEFT_KNEE = new JointId( LEFT_HIP, FlyerResource.class );
-	public static final JointId LEFT_ANKLE = new JointId( LEFT_KNEE, FlyerResource.class );
-	public static final JointId LEFT_FOOT = new JointId( LEFT_ANKLE, FlyerResource.class );
-	//	public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_BALL, FlyerResource.class );
-	public static final JointId RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, FlyerResource.class );
-	public static final JointId RIGHT_KNEE = new JointId( RIGHT_HIP, FlyerResource.class );
-	public static final JointId RIGHT_ANKLE = new JointId( RIGHT_KNEE, FlyerResource.class );
-	public static final JointId RIGHT_FOOT = new JointId( RIGHT_ANKLE, FlyerResource.class );
-	//	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
+  public static final JointId LEFT_HIP = new JointId(PELVIS_LOWER_BODY, FlyerResource.class);
+  public static final JointId LEFT_KNEE = new JointId(LEFT_HIP, FlyerResource.class);
+  public static final JointId LEFT_ANKLE = new JointId(LEFT_KNEE, FlyerResource.class);
+  public static final JointId LEFT_FOOT = new JointId(LEFT_ANKLE, FlyerResource.class);
+  //  public static final org.lgna.story.resources.JointId LEFT_TOE = new org.lgna.story.resources.JointId( LEFT_BALL, FlyerResource.class );
+  public static final JointId RIGHT_HIP = new JointId(PELVIS_LOWER_BODY, FlyerResource.class);
+  public static final JointId RIGHT_KNEE = new JointId(RIGHT_HIP, FlyerResource.class);
+  public static final JointId RIGHT_ANKLE = new JointId(RIGHT_KNEE, FlyerResource.class);
+  public static final JointId RIGHT_FOOT = new JointId(RIGHT_ANKLE, FlyerResource.class);
+  //  public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
-	public JointId[] getTailArray();
+  public JointId[] getTailArray();
 
-	public JointId[] getNeckArray();
+  public JointId[] getNeckArray();
 
-	public JointedModelPose getSpreadWingsPose();
+  public JointedModelPose getSpreadWingsPose();
 
-	public JointedModelPose getFoldWingsPose();
+  public JointedModelPose getFoldWingsPose();
 
-	public FlyerImp createImplementation( SFlyer abstraction );
+  public FlyerImp createImplementation(SFlyer abstraction);
 }

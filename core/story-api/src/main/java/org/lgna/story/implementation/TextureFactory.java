@@ -57,68 +57,68 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static Map<ImageResource, BufferedImageTexture> resourceToTextureMap = Maps.newHashMap();
-	private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
-		@Override
-		public void contentChanging( ResourceContentEvent e ) {
-		}
+  private static Map<ImageResource, BufferedImageTexture> resourceToTextureMap = Maps.newHashMap();
+  private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
+    @Override
+    public void contentChanging(ResourceContentEvent e) {
+    }
 
-		@Override
-		public void contentChanged( ResourceContentEvent e ) {
-			Resource resource = e.getTypedSource();
-			if( resource instanceof ImageResource ) {
-				ImageResource imageResource = (ImageResource)resource;
-				BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
-				if( bufferedImage != null ) {
-					Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
-					if( texture instanceof BufferedImageTexture ) {
-						BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
-						TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
-					} else {
-						//todo
-					}
-				} else {
-					//todo
-				}
-			} else {
-				//todo
-			}
-		}
-	};
+    @Override
+    public void contentChanged(ResourceContentEvent e) {
+      Resource resource = e.getTypedSource();
+      if (resource instanceof ImageResource) {
+        ImageResource imageResource = (ImageResource) resource;
+        BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
+        if (bufferedImage != null) {
+          Texture texture = TextureFactory.resourceToTextureMap.get(e.getTypedSource());
+          if (texture instanceof BufferedImageTexture) {
+            BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+            TextureFactory.updateBufferedImageTexture(bufferedImageTexture, bufferedImage);
+          } else {
+            //todo
+          }
+        } else {
+          //todo
+        }
+      } else {
+        //todo
+      }
+    }
+  };
 
-	private TextureFactory() {
-	}
+  private TextureFactory() {
+  }
 
-	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, BufferedImage bufferedImage ) {
-		bufferedImageTexture.setBufferedImage( bufferedImage );
+  private static void updateBufferedImageTexture(BufferedImageTexture bufferedImageTexture, BufferedImage bufferedImage) {
+    bufferedImageTexture.setBufferedImage(bufferedImage);
 
-		//todo: handle java.awt.image.BufferedImage.BITMASK? 
-		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == BufferedImage.TRANSLUCENT;
-		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
-	}
+    //todo: handle java.awt.image.BufferedImage.BITMASK?
+    boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == BufferedImage.TRANSLUCENT;
+    bufferedImageTexture.setPotentiallyAlphaBlended(isPotenentiallyAlphaBlended);
+  }
 
-	public static BufferedImageTexture getTexture( ImageResource imageResource, boolean isMipMappingDesired ) {
-		assert imageResource != null;
-		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
-		if( rv != null ) {
-			//pass
-		} else {
-			BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
-			if( bufferedImage != null ) {
-				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
-				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
-				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
-				rv = bufferedImageTexture;
+  public static BufferedImageTexture getTexture(ImageResource imageResource, boolean isMipMappingDesired) {
+    assert imageResource != null;
+    BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get(imageResource);
+    if (rv != null) {
+      //pass
+    } else {
+      BufferedImage bufferedImage = ImageFactory.getBufferedImage(imageResource);
+      if (bufferedImage != null) {
+        BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
+        bufferedImageTexture.setMipMappingDesired(isMipMappingDesired);
+        TextureFactory.updateBufferedImageTexture(bufferedImageTexture, bufferedImage);
+        rv = bufferedImageTexture;
 
-				//todo: address order dependency w/ ImageFactory 
-				imageResource.addContentListener( TextureFactory.resourceContentListener );
+        //todo: address order dependency w/ ImageFactory
+        imageResource.addContentListener(TextureFactory.resourceContentListener);
 
-				TextureFactory.resourceToTextureMap.put( imageResource, rv );
-			} else {
-				//todo: warning texture
-				rv = null;
-			}
-		}
-		return rv;
-	}
+        TextureFactory.resourceToTextureMap.put(imageResource, rv);
+      } else {
+        //todo: warning texture
+        rv = null;
+      }
+    }
+    return rv;
+  }
 }

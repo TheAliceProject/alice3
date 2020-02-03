@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 abstract class UriActionOperation extends ActionOperation {
-	UriActionOperation( UUID individualUUID ) {
-		super( ProjectApplication.URI_GROUP, individualUUID );
-	}
+  UriActionOperation(UUID individualUUID) {
+    super(ProjectApplication.URI_GROUP, individualUUID);
+  }
 }

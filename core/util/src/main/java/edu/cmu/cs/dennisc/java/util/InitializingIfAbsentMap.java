@@ -48,9 +48,9 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public interface InitializingIfAbsentMap<K, V> extends Map<K, V> {
-	public static interface Initializer<K, V> {
-		public V initialize( K key );
-	}
+  public static interface Initializer<K, V> {
+    public V initialize(K key);
+  }
 
-	public V getInitializingIfAbsent( K key, Initializer<K, V> initializer );
+  public V getInitializingIfAbsent(K key, Initializer<K, V> initializer);
 }

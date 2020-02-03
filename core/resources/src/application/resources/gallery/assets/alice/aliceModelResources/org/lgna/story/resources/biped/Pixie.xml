@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Pixie">
+    <BoundingBox>
+        <Min x="-0.6599927301055615" y="-0.026815575374286332" z="-0.18554471893700514"/>
+        <Max x="0.6815285662432375" y="1.055101800317005" z="0.6833847769895305"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>fairy</Tag>
+        <Tag>pixy</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Pixie" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="Pixie" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="Pixie" resourceName="PINK" textureName="PINK"/>
+</AliceModel>

@@ -49,8 +49,8 @@ import org.lgna.story.SThing;
  */
 public class ProximityEvent extends AbstractBinarySThingEvent {
 
-	public ProximityEvent( SThing a, SThing b ) {
-		super( a, b );
-	}
+  public ProximityEvent(SThing a, SThing b) {
+    super(a, b);
+  }
 
 }

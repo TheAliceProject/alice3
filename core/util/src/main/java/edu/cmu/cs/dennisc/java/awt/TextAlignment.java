@@ -46,7 +46,5 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public enum TextAlignment {
-	LEADING,
-	CENTER,
-	TRAILING
+  LEADING, CENTER, TRAILING
 }

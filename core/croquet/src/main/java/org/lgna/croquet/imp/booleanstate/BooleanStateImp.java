@@ -58,94 +58,94 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class BooleanStateImp {
-	public BooleanStateImp( BooleanState state, boolean initialValue, ButtonModel buttonModel ) {
-		this.state = state;
-		this.swingModel = new BooleanStateSwingModel( state, buttonModel, initialValue );
-	}
+  public BooleanStateImp(BooleanState state, boolean initialValue, ButtonModel buttonModel) {
+    this.state = state;
+    this.swingModel = new BooleanStateSwingModel(state, buttonModel, initialValue);
+  }
 
-	public BooleanStateSwingModel getSwingModel() {
-		return this.swingModel;
-	}
+  public BooleanStateSwingModel getSwingModel() {
+    return this.swingModel;
+  }
 
-	public boolean isEnabled() {
-		return this.swingModel.getAction().isEnabled();
-	}
+  public boolean isEnabled() {
+    return this.swingModel.getAction().isEnabled();
+  }
 
-	public void setEnabled( boolean isEnabled ) {
-		this.swingModel.getAction().setEnabled( isEnabled );
-	}
+  public void setEnabled(boolean isEnabled) {
+    this.swingModel.getAction().setEnabled(isEnabled);
+  }
 
-	public void updateNameAndIcon( boolean value, String trueText, Icon trueIcon, String falseText, Icon falseIcon ) {
-		String name;
-		Icon icon;
-		if( value ) {
-			name = trueText;
-			icon = trueIcon;
-		} else {
-			name = falseText;
-			icon = falseIcon;
-		}
-		this.swingModel.getAction().putValue( Action.NAME, name );
-		this.swingModel.getAction().putValue( Action.SMALL_ICON, icon );
+  public void updateNameAndIcon(boolean value, String trueText, Icon trueIcon, String falseText, Icon falseIcon) {
+    String name;
+    Icon icon;
+    if (value) {
+      name = trueText;
+      icon = trueIcon;
+    } else {
+      name = falseText;
+      icon = falseIcon;
+    }
+    this.swingModel.getAction().putValue(Action.NAME, name);
+    this.swingModel.getAction().putValue(Action.SMALL_ICON, icon);
 
-		if( this.trueOperation != null ) {
-			this.trueOperation.setName( trueText );
-			this.trueOperation.setButtonIcon( trueIcon );
-		}
-		if( this.falseOperation != null ) {
-			this.falseOperation.setName( falseText );
-			this.falseOperation.setButtonIcon( falseIcon );
-		}
-	}
+    if (this.trueOperation != null) {
+      this.trueOperation.setName(trueText);
+      this.trueOperation.setButtonIcon(trueIcon);
+    }
+    if (this.falseOperation != null) {
+      this.falseOperation.setName(falseText);
+      this.falseOperation.setButtonIcon(falseIcon);
+    }
+  }
 
-	public synchronized Operation getSetToTrueOperation() {
-		if( this.trueOperation != null ) {
-			//pass
-		} else {
-			this.trueOperation = new BooleanStateSetToValueOperation( this.state, true );
-		}
-		return this.trueOperation;
-	}
+  public synchronized Operation getSetToTrueOperation() {
+    if (this.trueOperation != null) {
+      //pass
+    } else {
+      this.trueOperation = new BooleanStateSetToValueOperation(this.state, true);
+    }
+    return this.trueOperation;
+  }
 
-	public synchronized Operation getSetToFalseOperation() {
-		if( this.falseOperation != null ) {
-			//pass
-		} else {
-			this.falseOperation = new BooleanStateSetToValueOperation( this.state, false );
-		}
-		return this.falseOperation;
-	}
+  public synchronized Operation getSetToFalseOperation() {
+    if (this.falseOperation != null) {
+      //pass
+    } else {
+      this.falseOperation = new BooleanStateSetToValueOperation(this.state, false);
+    }
+    return this.falseOperation;
+  }
 
-	public synchronized BooleanStateMenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new BooleanStateMenuModel( this.state );
-		}
-		return this.menuModel;
-	}
+  public synchronized BooleanStateMenuModel getMenuModel() {
+    if (this.menuModel != null) {
+      //pass
+    } else {
+      this.menuModel = new BooleanStateMenuModel(this.state);
+    }
+    return this.menuModel;
+  }
 
-	public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
-		if( this.menuPrepModel != null ) {
-			//pass
-		} else {
-			this.menuPrepModel = new BooleanStateMenuItemPrepModel( this.state );
-		}
-		return this.menuPrepModel;
-	}
+  public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
+    if (this.menuPrepModel != null) {
+      //pass
+    } else {
+      this.menuPrepModel = new BooleanStateMenuItemPrepModel(this.state);
+    }
+    return this.menuPrepModel;
+  }
 
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
-		if( this.menuPrepModel != null ) {
-			return Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  public List<List<PrepModel>> getPotentialPrepModelPaths(Edit edit) {
+    if (this.menuPrepModel != null) {
+      return Lists.newArrayListOfSingleArrayList(this.menuPrepModel);
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	private final BooleanStateSwingModel swingModel;
-	private final BooleanState state;
-	private Operation trueOperation;
-	private Operation falseOperation;
-	private BooleanStateMenuModel menuModel;
-	private BooleanStateMenuItemPrepModel menuPrepModel;
+  private final BooleanStateSwingModel swingModel;
+  private final BooleanState state;
+  private Operation trueOperation;
+  private Operation falseOperation;
+  private BooleanStateMenuModel menuModel;
+  private BooleanStateMenuItemPrepModel menuPrepModel;
 }

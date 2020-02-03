@@ -48,131 +48,130 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class ShiftInfixExpression extends InfixExpression<ShiftInfixExpression.Operator> {
-	public static enum Operator implements PrecedentedAppender {
-		LEFT_SHIFT() {
-			@Override
-			public Object operate( Object leftOperand, Object rightOperand ) {
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return (Long)leftOperand << (Long)rightOperand;
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return (Integer)leftOperand << (Integer)rightOperand;
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return (Short)leftOperand << (Short)rightOperand;
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return (Byte)leftOperand << (Byte)rightOperand;
-				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
-					return (Character)leftOperand << (Character)rightOperand;
-				} else {
-					throw new RuntimeException();
-				}
-			}
+  public static enum Operator implements PrecedentedAppender {
+    LEFT_SHIFT() {
+      @Override
+      public Object operate(Object leftOperand, Object rightOperand) {
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return (Long) leftOperand << (Long) rightOperand;
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return (Integer) leftOperand << (Integer) rightOperand;
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return (Short) leftOperand << (Short) rightOperand;
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return (Byte) leftOperand << (Byte) rightOperand;
+        } else if ((leftOperand instanceof Character) || (rightOperand instanceof Character)) {
+          return (Character) leftOperand << (Character) rightOperand;
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( "<<" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString("<<");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 10;
-			}
-		},
-		RIGHT_SHIFT_SIGNED() {
-			@Override
-			public Object operate( Object leftOperand, Object rightOperand ) {
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return (Long)leftOperand >> (Long)rightOperand;
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return (Integer)leftOperand >> (Integer)rightOperand;
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return (Short)leftOperand >> (Short)rightOperand;
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return (Byte)leftOperand >> (Byte)rightOperand;
-				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
-					return (Character)leftOperand >> (Character)rightOperand;
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 10;
+      }
+    }, RIGHT_SHIFT_SIGNED() {
+      @Override
+      public Object operate(Object leftOperand, Object rightOperand) {
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return (Long) leftOperand >> (Long) rightOperand;
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return (Integer) leftOperand >> (Integer) rightOperand;
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return (Short) leftOperand >> (Short) rightOperand;
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return (Byte) leftOperand >> (Byte) rightOperand;
+        } else if ((leftOperand instanceof Character) || (rightOperand instanceof Character)) {
+          return (Character) leftOperand >> (Character) rightOperand;
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( ">>" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString(">>");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 10;
-			}
-		},
-		RIGHT_SHIFT_UNSIGNED() {
-			@Override
-			public Object operate( Object leftOperand, Object rightOperand ) {
-				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
-					return (Long)leftOperand >>> (Long)rightOperand;
-				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
-					return (Integer)leftOperand >>> (Integer)rightOperand;
-				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
-					return (Short)leftOperand >>> (Short)rightOperand;
-				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
-					return (Byte)leftOperand >>> (Byte)rightOperand;
-				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
-					return (Character)leftOperand >>> (Character)rightOperand;
-				} else {
-					throw new RuntimeException();
-				}
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 10;
+      }
+    }, RIGHT_SHIFT_UNSIGNED() {
+      @Override
+      public Object operate(Object leftOperand, Object rightOperand) {
+        //todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
+        if ((leftOperand instanceof Long) || (rightOperand instanceof Long)) {
+          return (Long) leftOperand >>> (Long) rightOperand;
+        } else if ((leftOperand instanceof Integer) || (rightOperand instanceof Integer)) {
+          return (Integer) leftOperand >>> (Integer) rightOperand;
+        } else if ((leftOperand instanceof Short) || (rightOperand instanceof Short)) {
+          return (Short) leftOperand >>> (Short) rightOperand;
+        } else if ((leftOperand instanceof Byte) || (rightOperand instanceof Byte)) {
+          return (Byte) leftOperand >>> (Byte) rightOperand;
+        } else if ((leftOperand instanceof Character) || (rightOperand instanceof Character)) {
+          return (Character) leftOperand >>> (Character) rightOperand;
+        } else {
+          throw new RuntimeException();
+        }
+      }
 
-			@Override
-			public void appendCode( SourceCodeGenerator generator ) {
-				generator.appendString( ">>>" );
-			}
+      @Override
+      public void appendCode(SourceCodeGenerator generator) {
+        generator.appendString(">>>");
+      }
 
-			@Override public int getLevelOfPrecedence() {
-				return 10;
-			}
+      @Override
+      public int getLevelOfPrecedence() {
+        return 10;
+      }
 
-		};
-		public abstract Object operate( Object leftOperand, Object rightOperand );
+    };
 
-		@Override
-		public abstract void appendCode( SourceCodeGenerator generator );
-	}
+    public abstract Object operate(Object leftOperand, Object rightOperand);
 
-	public ShiftInfixExpression() {
-	}
+    @Override
+    public abstract void appendCode(SourceCodeGenerator generator);
+  }
 
-	public ShiftInfixExpression( AbstractType<?, ?, ?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
-		assert JavaType.getInstance( Long.class ).isAssignableFrom( expressionType ) ||
-		JavaType.getInstance( Integer.class ).isAssignableFrom( expressionType ) ||
-		JavaType.getInstance( Short.class ).isAssignableFrom( expressionType ) ||
-		JavaType.getInstance( Byte.class ).isAssignableFrom( expressionType ) ||
-		JavaType.getInstance( Character.class ).isAssignableFrom( expressionType );
-		this.expressionType.setValue( expressionType );
-		this.leftOperand.setValue( leftOperand );
-		this.operator.setValue( operator );
-		this.rightOperand.setValue( rightOperand );
-	}
+  public ShiftInfixExpression() {
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return operator.getValue().getLevelOfPrecedence();
-	}
+  public ShiftInfixExpression(AbstractType<?, ?, ?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand) {
+    assert JavaType.getInstance(Long.class).isAssignableFrom(expressionType) || JavaType.getInstance(Integer.class).isAssignableFrom(expressionType) || JavaType.getInstance(Short.class).isAssignableFrom(expressionType) || JavaType.getInstance(Byte.class).isAssignableFrom(expressionType) || JavaType.getInstance(Character.class).isAssignableFrom(expressionType);
+    this.expressionType.setValue(expressionType);
+    this.leftOperand.setValue(leftOperand);
+    this.operator.setValue(operator);
+    this.rightOperand.setValue(rightOperand);
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return this.expressionType.getValue();
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return operator.getValue().getLevelOfPrecedence();
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return this.expressionType.getValue();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getLeftOperandType() {
+    return this.expressionType.getValue();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.expressionType.getValue();
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getRightOperandType() {
+    return this.expressionType.getValue();
+  }
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.expressionType.getValue();
+  }
+
+  public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance(this);
 }

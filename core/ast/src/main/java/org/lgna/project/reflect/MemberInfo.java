@@ -50,22 +50,22 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  * @author Dennis Cosgrove
  */
 public abstract class MemberInfo implements BinaryEncodableAndDecodable {
-	private final ClassInfo declaringClassInfo;
+  private final ClassInfo declaringClassInfo;
 
-	public MemberInfo( ClassInfo declaringClassInfo ) {
-		this.declaringClassInfo = declaringClassInfo;
-	}
+  public MemberInfo(ClassInfo declaringClassInfo) {
+    this.declaringClassInfo = declaringClassInfo;
+  }
 
-	public MemberInfo( BinaryDecoder binaryDecoder ) {
-		this.declaringClassInfo = ClassInfo.forName( binaryDecoder.decodeString() );
-	}
+  public MemberInfo(BinaryDecoder binaryDecoder) {
+    this.declaringClassInfo = ClassInfo.forName(binaryDecoder.decodeString());
+  }
 
-	protected Class<?> getDeclaringCls() {
-		return this.declaringClassInfo.getCls();
-	}
+  protected Class<?> getDeclaringCls() {
+    return this.declaringClassInfo.getCls();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.declaringClassInfo.getClsName() );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    binaryEncoder.encode(this.declaringClassInfo.getClsName());
+  }
 }

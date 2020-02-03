@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Ethan Gagorik" name="Rhino">
+    <BoundingBox>
+        <Min x="-0.7198969468728058" y="-0.0013855712162275506" z="-3.128353438721145"/>
+        <Max x="0.7221835520921522" y="2.1461688856296783" z="0.5877214856846118"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>savanna</Tag>
+        <Tag>rhino</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Rhino" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="Grill">
+    <BoundingBox>
+        <Min x="-0.28178519010543823" y="0.0" z="-0.29903751611709595"/>
+        <Max x="0.28178516030311584" y="1.1202685832977295" z="0.29903751611709595"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>grill</Tag>
+        <Tag>bbq</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:yard</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:yard</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Grill" resourceName="GREEN_LIT" textureName="GREEN_LIT"/>
+    <Resource modelName="Grill" resourceName="GREEN_UNLIT" textureName="GREEN_UNLIT"/>
+    <Resource modelName="Grill" resourceName="BLACK_LIT" textureName="BLACK_LIT"/>
+    <Resource modelName="Grill" resourceName="BLACK_UNLIT" textureName="BLACK_UNLIT"/>
+    <Resource modelName="Grill" resourceName="YELLOW_LIT" textureName="YELLOW_LIT"/>
+    <Resource modelName="Grill" resourceName="YELLOW_UNLIT" textureName="YELLOW_UNLIT"/>
+    <Resource modelName="Grill" resourceName="RED_LIT" textureName="RED_LIT"/>
+    <Resource modelName="Grill" resourceName="RED_UNLIT" textureName="RED_UNLIT"/>
+    <Resource modelName="Grill" resourceName="BLUE_LIT" textureName="BLUE_LIT"/>
+    <Resource modelName="Grill" resourceName="BLUE_UNLIT" textureName="BLUE_UNLIT"/>
+</AliceModel>

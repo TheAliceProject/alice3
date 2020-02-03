@@ -46,14 +46,13 @@ import org.lgna.project.annotations.ClassTemplate;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class Say extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = Say.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = Say.class) public static interface Detail {
+  }
 
-	private Say() {
-		super();
-	}
+  private Say() {
+    super();
+  }
 }

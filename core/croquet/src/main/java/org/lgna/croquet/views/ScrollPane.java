@@ -59,145 +59,141 @@ import java.awt.Rectangle;
  * @author Dennis Cosgrove
  */
 public class ScrollPane extends SwingComponentView<JScrollPane> {
-	public enum VerticalScrollbarPolicy {
-		NEVER( JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		private int internal;
+  public enum VerticalScrollbarPolicy {
+    NEVER(JScrollPane.VERTICAL_SCROLLBAR_NEVER), AS_NEEDED(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED), ALWAYS(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    private int internal;
 
-		private VerticalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private VerticalScrollbarPolicy(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	public enum HorizontalScrollbarPolicy {
-		NEVER( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
-		private int internal;
+  public enum HorizontalScrollbarPolicy {
+    NEVER(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), AS_NEEDED(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), ALWAYS(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    private int internal;
 
-		private HorizontalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private HorizontalScrollbarPolicy(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	public ScrollPane() {
-		this( null, null, null );
-	}
+  public ScrollPane() {
+    this(null, null, null);
+  }
 
-	public ScrollPane( AwtComponentView<?> viewportView ) {
-		this( viewportView, null, null );
-	}
+  public ScrollPane(AwtComponentView<?> viewportView) {
+    this(viewportView, null, null);
+  }
 
-	public ScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this( null, verticalScrollbarPolicy, horizontalScrollbarPolicy );
-	}
+  public ScrollPane(VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy) {
+    this(null, verticalScrollbarPolicy, horizontalScrollbarPolicy);
+  }
 
-	public ScrollPane( AwtComponentView<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		if( viewportView != null ) {
-			this.setViewportView( viewportView );
-		}
-		if( verticalScrollbarPolicy != null ) {
-			this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		}
-		if( horizontalScrollbarPolicy != null ) {
-			this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
-		}
-	}
+  public ScrollPane(AwtComponentView<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy) {
+    if (viewportView != null) {
+      this.setViewportView(viewportView);
+    }
+    if (verticalScrollbarPolicy != null) {
+      this.setVerticalScrollbarPolicy(verticalScrollbarPolicy);
+    }
+    if (horizontalScrollbarPolicy != null) {
+      this.setHorizontalScrollbarPolicy(horizontalScrollbarPolicy);
+    }
+  }
 
-	private static class RightToLeftFixScrollPanelLayout extends ScrollPaneLayout {
-		@Override
-		public void layoutContainer( Container parent ) {
-			super.layoutContainer( parent );
-			JScrollPane scrollPane = (JScrollPane)parent;
-			if( scrollPane.getComponentOrientation().isLeftToRight() ) {
-				//pass
-			} else {
-				//todo?
-				JViewport viewport = scrollPane.getViewport();
-				Rectangle viewportBounds = viewport.getBounds();
-				Component view = viewport.getView();
-				if( view != null ) {
-					Rectangle viewBounds = view.getBounds();
-					if( viewBounds.width < viewportBounds.width ) {
-						viewBounds.x = 0;
-						viewBounds.width = viewportBounds.width;
-						scrollPane.getViewport().getView().setBounds( viewBounds );
-					}
-				}
-			}
-		}
-	}
+  private static class RightToLeftFixScrollPanelLayout extends ScrollPaneLayout {
+    @Override
+    public void layoutContainer(Container parent) {
+      super.layoutContainer(parent);
+      JScrollPane scrollPane = (JScrollPane) parent;
+      if (scrollPane.getComponentOrientation().isLeftToRight()) {
+        //pass
+      } else {
+        //todo?
+        JViewport viewport = scrollPane.getViewport();
+        Rectangle viewportBounds = viewport.getBounds();
+        Component view = viewport.getView();
+        if (view != null) {
+          Rectangle viewBounds = view.getBounds();
+          if (viewBounds.width < viewportBounds.width) {
+            viewBounds.x = 0;
+            viewBounds.width = viewportBounds.width;
+            scrollPane.getViewport().getView().setBounds(viewBounds);
+          }
+        }
+      }
+    }
+  }
 
-	protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-		JScrollPaneCoveringLinuxPaintBug rv = new JScrollPaneCoveringLinuxPaintBug() {
-			@Override
-			public Dimension getPreferredSize() {
-				Dimension rv = super.getPreferredSize();
-				return constrainPreferredSizeIfNecessary( rv );
-			}
-		};
-		return rv;
-	}
+  protected JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+    JScrollPaneCoveringLinuxPaintBug rv = new JScrollPaneCoveringLinuxPaintBug() {
+      @Override
+      public Dimension getPreferredSize() {
+        Dimension rv = super.getPreferredSize();
+        return constrainPreferredSizeIfNecessary(rv);
+      }
+    };
+    return rv;
+  }
 
-	@Override
-	protected final JScrollPane createAwtComponent() {
-		JScrollPane rv = this.createJScrollPane();
-		rv.setOpaque( true );
-		rv.setBorder( null );
-		rv.setLayout( new RightToLeftFixScrollPanelLayout() );
-		return rv;
-	}
+  @Override
+  protected final JScrollPane createAwtComponent() {
+    JScrollPane rv = this.createJScrollPane();
+    rv.setOpaque(true);
+    rv.setBorder(null);
+    rv.setLayout(new RightToLeftFixScrollPanelLayout());
+    return rv;
+  }
 
-	public AwtComponentView<?> getViewportView() {
-		return AwtComponentView.lookup( this.getAwtComponent().getViewport().getView() );
-	}
+  public AwtComponentView<?> getViewportView() {
+    return AwtComponentView.lookup(this.getAwtComponent().getViewport().getView());
+  }
 
-	public void setViewportView( AwtComponentView<?> view ) {
-		JScrollPane jScrollPane = this.getAwtComponent();
-		if( view != null ) {
-			final boolean IS_SCROLLABLE_HEEDED = false;
-			if( IS_SCROLLABLE_HEEDED && ( view.getAwtComponent() instanceof Scrollable ) ) {
-				//pass
-			} else {
-				if( jScrollPane.getHorizontalScrollBar().getUnitIncrement() == 1 ) {
-					this.setBothScrollBarIncrements( 12, 24 );
-				}
-			}
-			jScrollPane.setViewportView( view.getAwtComponent() );
-		} else {
-			jScrollPane.setViewportView( null );
-		}
-	}
+  public void setViewportView(AwtComponentView<?> view) {
+    JScrollPane jScrollPane = this.getAwtComponent();
+    if (view != null) {
+      final boolean IS_SCROLLABLE_HEEDED = false;
+      if (IS_SCROLLABLE_HEEDED && (view.getAwtComponent() instanceof Scrollable)) {
+        //pass
+      } else {
+        if (jScrollPane.getHorizontalScrollBar().getUnitIncrement() == 1) {
+          this.setBothScrollBarIncrements(12, 24);
+        }
+      }
+      jScrollPane.setViewportView(view.getAwtComponent());
+    } else {
+      jScrollPane.setViewportView(null);
+    }
+  }
 
-	public void setVerticalScrollbarPolicy( VerticalScrollbarPolicy verticalScrollbarPolicy ) {
-		assert verticalScrollbarPolicy != null : this;
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
-	}
+  public void setVerticalScrollbarPolicy(VerticalScrollbarPolicy verticalScrollbarPolicy) {
+    assert verticalScrollbarPolicy != null : this;
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setVerticalScrollBarPolicy(verticalScrollbarPolicy.internal);
+  }
 
-	public void setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		assert horizontalScrollbarPolicy != null : this;
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
-	}
+  public void setHorizontalScrollbarPolicy(HorizontalScrollbarPolicy horizontalScrollbarPolicy) {
+    assert horizontalScrollbarPolicy != null : this;
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setHorizontalScrollBarPolicy(horizontalScrollbarPolicy.internal);
+  }
 
-	private void setScrollBarIncrements( JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
-		this.checkEventDispatchThread();
-		scrollBar.setUnitIncrement( unitIncrement );
-		scrollBar.setBlockIncrement( blockIncrement );
-	}
+  private void setScrollBarIncrements(JScrollBar scrollBar, int unitIncrement, int blockIncrement) {
+    this.checkEventDispatchThread();
+    scrollBar.setUnitIncrement(unitIncrement);
+    scrollBar.setBlockIncrement(blockIncrement);
+  }
 
-	public void setVerticalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
-		this.setScrollBarIncrements( this.getAwtComponent().getVerticalScrollBar(), unitIncrement, blockIncrement );
-	}
+  public void setVerticalScrollBarIncrements(int unitIncrement, int blockIncrement) {
+    this.setScrollBarIncrements(this.getAwtComponent().getVerticalScrollBar(), unitIncrement, blockIncrement);
+  }
 
-	public void setHorizontalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
-		this.setScrollBarIncrements( this.getAwtComponent().getHorizontalScrollBar(), unitIncrement, blockIncrement );
-	}
+  public void setHorizontalScrollBarIncrements(int unitIncrement, int blockIncrement) {
+    this.setScrollBarIncrements(this.getAwtComponent().getHorizontalScrollBar(), unitIncrement, blockIncrement);
+  }
 
-	public void setBothScrollBarIncrements( int unitIncrement, int blockIncrement ) {
-		this.setHorizontalScrollBarIncrements( unitIncrement, blockIncrement );
-		this.setVerticalScrollBarIncrements( unitIncrement, blockIncrement );
-	}
+  public void setBothScrollBarIncrements(int unitIncrement, int blockIncrement) {
+    this.setHorizontalScrollBarIncrements(unitIncrement, blockIncrement);
+    this.setVerticalScrollBarIncrements(unitIncrement, blockIncrement);
+  }
 }

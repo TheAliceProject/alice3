@@ -48,19 +48,19 @@ import org.lgna.project.ast.UserLocal;
  * @author Dennis Cosgrove
  */
 public abstract class LgnaVmIllegalLocalException extends LgnaVmException {
-	private final UserLocal local;
+  private final UserLocal local;
 
-	public LgnaVmIllegalLocalException( VirtualMachine vm, UserLocal local ) {
-		super( vm );
-		this.local = local;
-	}
+  public LgnaVmIllegalLocalException(VirtualMachine vm, UserLocal local) {
+    super(vm);
+    this.local = local;
+  }
 
-	public final UserLocal getLocal() {
-		return this.local;
-	}
+  public final UserLocal getLocal() {
+    return this.local;
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		sb.append( this.local != null ? this.local.getName() : "null" );
-	}
+  @Override
+  protected void appendDescription(StringBuilder sb) {
+    sb.append(this.local != null ? this.local.getName() : "null");
+  }
 }

@@ -54,30 +54,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillInWithoutBlanks<Expression> {
-	private static Map<AbstractType<?, ?, ?>, PreviousExpressionItselfFillIn> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, PreviousExpressionItselfFillIn> map = Maps.newHashMap();
 
-	public static PreviousExpressionItselfFillIn getInstance( AbstractType<?, ?, ?> type ) {
-		synchronized( map ) {
-			PreviousExpressionItselfFillIn rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new PreviousExpressionItselfFillIn( type );
-				map.put( type, rv );
-			}
-			return rv;
-		}
-	}
+  public static PreviousExpressionItselfFillIn getInstance(AbstractType<?, ?, ?> type) {
+    synchronized (map) {
+      PreviousExpressionItselfFillIn rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new PreviousExpressionItselfFillIn(type);
+        map.put(type, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 
-	private PreviousExpressionItselfFillIn( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "a15cbb4f-f955-498a-9291-60bf23007c34" ) );
-		this.type = type;
-	}
+  private PreviousExpressionItselfFillIn(AbstractType<?, ?, ?> type) {
+    super(UUID.fromString("a15cbb4f-f955-498a-9291-60bf23007c34"));
+    this.type = type;
+  }
 
-	@Override
-	protected Expression createValue( Expression previousExpression ) {
-		return previousExpression;
-	}
+  @Override
+  protected Expression createValue(Expression previousExpression) {
+    return previousExpression;
+  }
 }

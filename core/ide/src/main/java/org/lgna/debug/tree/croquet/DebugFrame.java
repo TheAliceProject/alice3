@@ -66,137 +66,137 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class DebugFrame<T> extends FrameComposite<DebugFrameView<T>> {
-	public DebugFrame( UUID migrationId ) {
-		super( migrationId );
-		this.markOperation.setName( "mark" );
-		this.refreshOperation.setName( "refresh" );
-		this.isPruningDesiredState.setTextForBothTrueAndFalse( "prune?" );
-	}
+  public DebugFrame(UUID migrationId) {
+    super(migrationId);
+    this.markOperation.setName("mark");
+    this.refreshOperation.setName("refresh");
+    this.isPruningDesiredState.setTextForBothTrueAndFalse("prune?");
+  }
 
-	public Operation getMarkOperation() {
-		return this.markOperation;
-	}
+  public Operation getMarkOperation() {
+    return this.markOperation;
+  }
 
-	public Operation getRefreshOperation() {
-		return this.refreshOperation;
-	}
+  public Operation getRefreshOperation() {
+    return this.refreshOperation;
+  }
 
-	public BooleanState getIsPruningDesiredState() {
-		return this.isPruningDesiredState;
-	}
+  public BooleanState getIsPruningDesiredState() {
+    return this.isPruningDesiredState;
+  }
 
-	public TreeModel getMarkTreeModel() {
-		return this.markTreeModel;
-	}
+  public TreeModel getMarkTreeModel() {
+    return this.markTreeModel;
+  }
 
-	public TreeModel getCurrentTreeModel() {
-		return this.currentTreeModel;
-	}
+  public TreeModel getCurrentTreeModel() {
+    return this.currentTreeModel;
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.markOperation.fire();
-		this.refreshOperation.fire();
-		this.isPruningDesiredState.addNewSchoolValueListener( this.isPruningDesiredListener );
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    this.markOperation.fire();
+    this.refreshOperation.fire();
+    this.isPruningDesiredState.addNewSchoolValueListener(this.isPruningDesiredListener);
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.isPruningDesiredState.removeNewSchoolValueListener( this.isPruningDesiredListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.isPruningDesiredState.removeNewSchoolValueListener(this.isPruningDesiredListener);
+    super.handlePostDeactivation();
+  }
 
-	@Override
-	protected DebugFrameView<T> createView() {
-		return new DebugFrameView<T>( this );
-	}
+  @Override
+  protected DebugFrameView<T> createView() {
+    return new DebugFrameView<T>(this);
+  }
 
-	protected abstract ZTreeNode.Builder<T> capture();
+  protected abstract ZTreeNode.Builder<T> capture();
 
-	private static <T> void updateValuesToMute( Set<T> set, ZTreeNode<T> zTreeNode ) {
-		set.add( zTreeNode.getValue() );
-		if( zTreeNode.isLeaf() ) {
-			//pass
-		} else {
-			Enumeration<ZTreeNode<T>> e = zTreeNode.children();
-			while( e.hasMoreElements() ) {
-				updateValuesToMute( set, e.nextElement() );
-			}
-		}
-	}
+  private static <T> void updateValuesToMute(Set<T> set, ZTreeNode<T> zTreeNode) {
+    set.add(zTreeNode.getValue());
+    if (zTreeNode.isLeaf()) {
+      //pass
+    } else {
+      Enumeration<ZTreeNode<T>> e = zTreeNode.children();
+      while (e.hasMoreElements()) {
+        updateValuesToMute(set, e.nextElement());
+      }
+    }
+  }
 
-	private static <T> Set<T> createValuesToMute( ZTreeNode<T> markRoot ) {
-		Set<T> valuesToMute = Sets.newHashSet();
-		updateValuesToMute( valuesToMute, markRoot );
-		return Collections.unmodifiableSet( valuesToMute );
-	}
+  private static <T> Set<T> createValuesToMute(ZTreeNode<T> markRoot) {
+    Set<T> valuesToMute = Sets.newHashSet();
+    updateValuesToMute(valuesToMute, markRoot);
+    return Collections.unmodifiableSet(valuesToMute);
+  }
 
-	private static <T> void prune( ZTreeNode.Builder<T> builder, Set<T> valuesToMute ) {
-		Iterator<ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
-		while( iterator.hasNext() ) {
-			ZTreeNode.Builder<T> childBuilder = iterator.next();
-			prune( childBuilder, valuesToMute );
-			T childValue = childBuilder.getValue();
-			if( childBuilder.isEmpty() && valuesToMute.contains( childValue ) ) {
-				iterator.remove();
-			}
-		}
-	}
+  private static <T> void prune(ZTreeNode.Builder<T> builder, Set<T> valuesToMute) {
+    Iterator<ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
+    while (iterator.hasNext()) {
+      ZTreeNode.Builder<T> childBuilder = iterator.next();
+      prune(childBuilder, valuesToMute);
+      T childValue = childBuilder.getValue();
+      if (childBuilder.isEmpty() && valuesToMute.contains(childValue)) {
+        iterator.remove();
+      }
+    }
+  }
 
-	private final Operation markOperation = this.createActionOperation( "markOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			ZTreeNode.Builder<T> builder = capture();
-			ZTreeNode<T> markRoot = builder.build();
-			markTreeModel.setRoot( markRoot );
-			Set<T> valuesToMute;
-			if( isPruningDesiredState.getValue() ) {
-				currentTreeModel.setRoot( null );
-				valuesToMute = null;
-			} else {
-				currentTreeModel.setRoot( markRoot );
-				valuesToMute = createValuesToMute( markRoot );
-			}
-			getView().expandAllRowsAndUpdateCurrentTreeRenderer( valuesToMute );
-			return null;
-		}
-	} );
-	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			ZTreeNode<T> markRoot = (ZTreeNode<T>)markTreeModel.getRoot();
-			Set<T> valuesToMute = createValuesToMute( markRoot );
+  private final Operation markOperation = this.createActionOperation("markOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      ZTreeNode.Builder<T> builder = capture();
+      ZTreeNode<T> markRoot = builder.build();
+      markTreeModel.setRoot(markRoot);
+      Set<T> valuesToMute;
+      if (isPruningDesiredState.getValue()) {
+        currentTreeModel.setRoot(null);
+        valuesToMute = null;
+      } else {
+        currentTreeModel.setRoot(markRoot);
+        valuesToMute = createValuesToMute(markRoot);
+      }
+      getView().expandAllRowsAndUpdateCurrentTreeRenderer(valuesToMute);
+      return null;
+    }
+  });
+  private final Operation refreshOperation = this.createActionOperation("refreshOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      ZTreeNode<T> markRoot = (ZTreeNode<T>) markTreeModel.getRoot();
+      Set<T> valuesToMute = createValuesToMute(markRoot);
 
-			ZTreeNode.Builder<T> builder = capture();
+      ZTreeNode.Builder<T> builder = capture();
 
-			ZTreeNode<T> currentRoot;
-			if( isPruningDesiredState.getValue() ) {
-				prune( builder, valuesToMute );
-				if( builder.isEmpty() && valuesToMute.contains( builder.getValue() ) ) {
-					currentRoot = null;
-				} else {
-					currentRoot = builder.build();
-				}
-			} else {
-				currentRoot = builder.build();
-			}
+      ZTreeNode<T> currentRoot;
+      if (isPruningDesiredState.getValue()) {
+        prune(builder, valuesToMute);
+        if (builder.isEmpty() && valuesToMute.contains(builder.getValue())) {
+          currentRoot = null;
+        } else {
+          currentRoot = builder.build();
+        }
+      } else {
+        currentRoot = builder.build();
+      }
 
-			currentTreeModel.setRoot( currentRoot );
-			getView().expandAllRowsAndUpdateCurrentTreeRenderer( valuesToMute );
-			return null;
-		}
-	} );
+      currentTreeModel.setRoot(currentRoot);
+      getView().expandAllRowsAndUpdateCurrentTreeRenderer(valuesToMute);
+      return null;
+    }
+  });
 
-	private final ValueListener<Boolean> isPruningDesiredListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			refreshOperation.fire();
-		}
-	};
+  private final ValueListener<Boolean> isPruningDesiredListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      refreshOperation.fire();
+    }
+  };
 
-	private final BooleanState isPruningDesiredState = this.createBooleanState( "isPruningDesiredState", true );
+  private final BooleanState isPruningDesiredState = this.createBooleanState("isPruningDesiredState", true);
 
-	private final DefaultTreeModel markTreeModel = new DefaultTreeModel( null );
-	private final DefaultTreeModel currentTreeModel = new DefaultTreeModel( null );
+  private final DefaultTreeModel markTreeModel = new DefaultTreeModel(null);
+  private final DefaultTreeModel currentTreeModel = new DefaultTreeModel(null);
 }

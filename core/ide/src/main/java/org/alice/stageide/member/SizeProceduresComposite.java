@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SizeProceduresComposite extends NameFilteredJavaProceduresComposite {
-	private static class SingletonHolder {
-		private static SizeProceduresComposite instance = new SizeProceduresComposite();
-	}
+  private static class SingletonHolder {
+    private static SizeProceduresComposite instance = new SizeProceduresComposite();
+  }
 
-	public static SizeProceduresComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SizeProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private SizeProceduresComposite() {
-		super( UUID.fromString( "167f609c-43cb-40e8-8d6b-2f171e4d0e98" ), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "resize", "resizeWidth", "resizeHeight", "resizeDepth" );
-	}
+  private SizeProceduresComposite() {
+    super(UUID.fromString("167f609c-43cb-40e8-8d6b-2f171e4d0e98"), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "resize", "resizeWidth", "resizeHeight", "resizeDepth");
+  }
 }

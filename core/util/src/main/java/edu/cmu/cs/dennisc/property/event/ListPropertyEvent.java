@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.property.ListProperty;
  * @author Dennis Cosgrove
  */
 public abstract class ListPropertyEvent<E> extends Event<ListProperty<E>> {
-	public ListPropertyEvent( ListProperty<E> source ) {
-		super( source );
-	}
+  public ListPropertyEvent(ListProperty<E> source) {
+    super(source);
+  }
 }

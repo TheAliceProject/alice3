@@ -50,12 +50,12 @@ import org.lgna.story.event.OcclusionEndListener;
 
 public class EndOcclusionEventAdapter extends AbstractAdapter implements OcclusionEndListener {
 
-	public EndOcclusionEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public EndOcclusionEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void occlusionEnded( EndOcclusionEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void occlusionEnded(EndOcclusionEvent e) {
+    invokeEntryPoint(e);
+  }
 }

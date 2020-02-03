@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Pei Hong Tan" name="Freya">
+    <BoundingBox>
+        <Min x="-0.20713774098187132" y="0.001091701135715366" z="-0.1402538961040694"/>
+        <Max x="0.2108360182012079" y="1.4831891062592504" z="0.19546074605485897"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>freya</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Freya" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

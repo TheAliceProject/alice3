@@ -51,29 +51,29 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogCoreComposite<V extends CompositeView<?, ?>> extends GatedCommitDialogCoreComposite<V, InputDialogContentComposite> {
-	private final InputDialogContentComposite contentComposite = new InputDialogContentComposite( this );
+  private final InputDialogContentComposite contentComposite = new InputDialogContentComposite(this);
 
-	public InputDialogCoreComposite( UUID migrationId ) {
-		super( migrationId );
-	}
+  public InputDialogCoreComposite(UUID migrationId) {
+    super(migrationId);
+  }
 
-	@Override
-	protected InputDialogContentComposite getDialogContentComposite() {
-		return this.contentComposite;
-	}
+  @Override
+  protected InputDialogContentComposite getDialogContentComposite() {
+    return this.contentComposite;
+  }
 
-	@Override
-	protected String getCommitUiKey() {
-		return "OptionPane.okButtonText";
-	}
+  @Override
+  protected String getCommitUiKey() {
+    return "OptionPane.okButtonText";
+  }
 
-	@Override
-	protected String getDefaultCommitText() {
-		return "OK";
-	}
+  @Override
+  protected String getDefaultCommitText() {
+    return "OK";
+  }
 
-	@Override
-	protected void updateIsGoodToGo( boolean isGoodToGo ) {
-		this.getCommitOperation().setEnabled( isGoodToGo );
-	}
+  @Override
+  protected void updateIsGoodToGo(boolean isGoodToGo) {
+    this.getCommitOperation().setEnabled(isGoodToGo);
+  }
 }

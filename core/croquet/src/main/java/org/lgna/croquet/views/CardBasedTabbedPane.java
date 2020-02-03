@@ -54,73 +54,73 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class CardBasedTabbedPane<E extends TabComposite<?>> extends TabbedPane<E> {
-	private static final class FolderTabbedPaneCardOwner extends CardOwnerComposite {
-		public FolderTabbedPaneCardOwner() {
-			super( UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
-		}
-	}
+  private static final class FolderTabbedPaneCardOwner extends CardOwnerComposite {
+    public FolderTabbedPaneCardOwner() {
+      super(UUID.fromString("31cf52f4-80ea-49f9-9875-7ea942d241e7"));
+    }
+  }
 
-	private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
+  private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
 
-	public CardBasedTabbedPane( TabState<E, ?> model ) {
-		super( model );
-		for( TabComposite<?> card : model ) {
-			if( card != null ) {
-				this.cardOwner.addCard( card );
-			}
-		}
-	}
+  public CardBasedTabbedPane(TabState<E, ?> model) {
+    super(model);
+    for (TabComposite<?> card : model) {
+      if (card != null) {
+        this.cardOwner.addCard(card);
+      }
+    }
+  }
 
-	public CardOwnerComposite getCardOwner() {
-		return this.cardOwner;
-	}
+  public CardOwnerComposite getCardOwner() {
+    return this.cardOwner;
+  }
 
-	@Override
-	protected void handleValueChanged( final E card ) {
-		if( this.cardOwner.getShowingCard() == card ) {
-			//pass
-		} else {
-			if( this.cardOwner.getCards().contains( card ) ) {
-				this.cardOwner.showCardRefrainingFromActivation( card );
-				this.repaint();
-			} else {
-				if( card != null ) {
-					this.cardOwner.addCard( card );
-					Logger.outln( "note invoke later showCard", card );
-					SwingUtilities.invokeLater( new Runnable() {
-						@Override
-						public void run() {
-							cardOwner.showCardRefrainingFromActivation( card );
-							repaint();
-						}
-					} );
-				}
-			}
-		}
-		if( card != null ) {
-			BooleanStateButton<?> button = this.getItemDetails( card );
-			if( button != null ) {
-				button.scrollToVisible();
-			}
-		}
-	}
+  @Override
+  protected void handleValueChanged(final E card) {
+    if (this.cardOwner.getShowingCard() == card) {
+      //pass
+    } else {
+      if (this.cardOwner.getCards().contains(card)) {
+        this.cardOwner.showCardRefrainingFromActivation(card);
+        this.repaint();
+      } else {
+        if (card != null) {
+          this.cardOwner.addCard(card);
+          Logger.outln("note invoke later showCard", card);
+          SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              cardOwner.showCardRefrainingFromActivation(card);
+              repaint();
+            }
+          });
+        }
+      }
+    }
+    if (card != null) {
+      BooleanStateButton<?> button = this.getItemDetails(card);
+      if (button != null) {
+        button.scrollToVisible();
+      }
+    }
+  }
 
-	@Override
-	protected void removeAllDetails() {
-		this.cardOwner.getView().removeAllComponents();
-	}
+  @Override
+  protected void removeAllDetails() {
+    this.cardOwner.getView().removeAllComponents();
+  }
 
-	@Override
-	protected void addPrologue( int count ) {
-	}
+  @Override
+  protected void addPrologue(int count) {
+  }
 
-	@Override
-	protected void addItem( E item, BooleanStateButton<?> button ) {
-		this.cardOwner.getView().addComposite( item );
-	}
+  @Override
+  protected void addItem(E item, BooleanStateButton<?> button) {
+    this.cardOwner.getView().addComposite(item);
+  }
 
-	@Override
-	protected void addEpilogue() {
-		this.cardOwner.showCardRefrainingFromActivation( this.cardOwner.getShowingCard() );
-	}
+  @Override
+  protected void addEpilogue() {
+    this.cardOwner.showCardRefrainingFromActivation(this.cardOwner.getShowingCard());
+  }
 }

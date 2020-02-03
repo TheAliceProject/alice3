@@ -50,7 +50,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class EnumConstantState<T extends Enum<T>> extends ImmutableDataSingleSelectListState<T> {
-	public EnumConstantState( Group group, UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, selectionIndex, EnumCodec.getInstance( cls ), cls.getEnumConstants() );
-	}
+  public EnumConstantState(Group group, UUID id, int selectionIndex, Class<T> cls) {
+    super(group, id, selectionIndex, EnumCodec.getInstance(cls), cls.getEnumConstants());
+  }
 }

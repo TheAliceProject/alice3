@@ -52,26 +52,26 @@ import java.awt.Font;
  * @author Dennis Cosgrove
  */
 public class TypeComponent extends SwingComponentView<JLabel> {
-	public static TypeComponent createInstance( AbstractType<?, ?, ?> type ) {
-		return new TypeComponent( type );
-	}
+  public static TypeComponent createInstance(AbstractType<?, ?, ?> type) {
+    return new TypeComponent(type);
+  }
 
-	private AbstractType<?, ?, ?> type;
+  private AbstractType<?, ?, ?> type;
 
-	private TypeComponent( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  private TypeComponent(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	@Override
-	protected JLabel createAwtComponent() {
-		final JLabel rv = new JLabel();
-		final TypeIcon typeIcon = new TypeIcon( type ) {
-			@Override
-			protected Font getTypeFont() {
-				return rv.getFont();
-			}
-		};
-		rv.setIcon( typeIcon );
-		return rv;
-	}
+  @Override
+  protected JLabel createAwtComponent() {
+    final JLabel rv = new JLabel();
+    final TypeIcon typeIcon = new TypeIcon(type) {
+      @Override
+      protected Font getTypeFont() {
+        return rv.getFont();
+      }
+    };
+    rv.setIcon(typeIcon);
+    return rv;
+  }
 }

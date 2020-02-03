@@ -67,185 +67,185 @@ import java.awt.geom.RoundRectangle2D;
  * @author Dennis Cosgrove
  */
 public class StatementListBorder implements Border {
-	private static final String TEXT = "drop statement here";
-	private static final String[] TEXTS = { null, null };
-	private static final int LONGER_INDEX = 1;
-	private static final Stroke SOLID_STROKE = new BasicStroke( 2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
-	private static final Color HIGHLIGHT_COLOR = new Color( 255, 255, 220 );
-	private static final Color SHADOW_COLOR = new Color( 63, 63, 63 );
-	private static final Color TOP_COLOR = new Color( 0, 0, 0, 63 );
-	private static final Color BOTTOM_COLOR = new Color( 191, 191, 191, 63 );
+  private static final String TEXT = "drop statement here";
+  private static final String[] TEXTS = {null, null};
+  private static final int LONGER_INDEX = 1;
+  private static final Stroke SOLID_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+  private static final Color HIGHLIGHT_COLOR = new Color(255, 255, 220);
+  private static final Color SHADOW_COLOR = new Color(63, 63, 63);
+  private static final Color TOP_COLOR = new Color(0, 0, 0, 63);
+  private static final Color BOTTOM_COLOR = new Color(191, 191, 191, 63);
 
-	private static final Stroke DASHED_STROKE = new BasicStroke( 1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0 );
+  private static final Stroke DASHED_STROKE = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {9.0f, 3.0f}, 0);
 
-	private static final int EMPTY_INSET_TOP = 3;
-	private static final int EMPTY_INSET_BOTTOM = 16;
-	private static final int EMPTY_INSET_LEADING = 12;
-	private static final int EMPTY_INSET_TRAILING = 64;
+  private static final int EMPTY_INSET_TOP = 3;
+  private static final int EMPTY_INSET_BOTTOM = 16;
+  private static final int EMPTY_INSET_LEADING = 12;
+  private static final int EMPTY_INSET_TRAILING = 64;
 
-	//private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
+  //private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
 
-	private static Insets createEmptyInsets( ComponentOrientation componentOrientation ) {
-		if( componentOrientation.isLeftToRight() ) {
-			return new Insets( EMPTY_INSET_TOP, EMPTY_INSET_LEADING, EMPTY_INSET_BOTTOM, EMPTY_INSET_TRAILING );
-		} else {
-			return new Insets( EMPTY_INSET_TOP, EMPTY_INSET_TRAILING, EMPTY_INSET_BOTTOM, EMPTY_INSET_LEADING );
-		}
-	}
+  private static Insets createEmptyInsets(ComponentOrientation componentOrientation) {
+    if (componentOrientation.isLeftToRight()) {
+      return new Insets(EMPTY_INSET_TOP, EMPTY_INSET_LEADING, EMPTY_INSET_BOTTOM, EMPTY_INSET_TRAILING);
+    } else {
+      return new Insets(EMPTY_INSET_TOP, EMPTY_INSET_TRAILING, EMPTY_INSET_BOTTOM, EMPTY_INSET_LEADING);
+    }
+  }
 
-	private final boolean isMutable;
-	private final StatementListProperty alternateListProperty;
+  private final boolean isMutable;
+  private final StatementListProperty alternateListProperty;
 
-	private final Insets normalInsets;
-	private final int minimum;
+  private final Insets normalInsets;
+  private final int minimum;
 
-	private boolean isDrawingDesired = true;
+  private boolean isDrawingDesired = true;
 
-	public StatementListBorder( boolean isMutable, StatementListProperty alternateListProperty, Insets normalInsets, int minimum ) {
-		this.isMutable = isMutable;
-		this.alternateListProperty = alternateListProperty;
-		this.normalInsets = normalInsets;
-		this.minimum = minimum;
-	}
+  public StatementListBorder(boolean isMutable, StatementListProperty alternateListProperty, Insets normalInsets, int minimum) {
+    this.isMutable = isMutable;
+    this.alternateListProperty = alternateListProperty;
+    this.normalInsets = normalInsets;
+    this.minimum = minimum;
+  }
 
-	private static void initializeTextIfNecessary() {
-		if( TEXTS[ 0 ] == null ) {
-			String localizedText = ResourceBundleUtilities.getStringForKey( "dropStatementHere", "org.alice.ide.codeeditor.CodeEditor");
-			for( int i = 0; i < TEXTS.length; i++ ) {
-				TEXTS[ i ] = localizedText;
-			}
-		}
-	}
+  private static void initializeTextIfNecessary() {
+    if (TEXTS[0] == null) {
+      String localizedText = ResourceBundleUtilities.getStringForKey("dropStatementHere", "org.alice.ide.codeeditor.CodeEditor");
+      for (int i = 0; i < TEXTS.length; i++) {
+        TEXTS[i] = localizedText;
+      }
+    }
+  }
 
-	private static Rectangle2D getStringBounds( Component c, Graphics g, int index ) {
-		FontMetrics fontMetrics = c.getFontMetrics( c.getFont() );
-		if( fontMetrics != null ) {
-			initializeTextIfNecessary();
-			return fontMetrics.getStringBounds( TEXTS[ index ], g );
-		} else {
-			return null;
-		}
-	}
+  private static Rectangle2D getStringBounds(Component c, Graphics g, int index) {
+    FontMetrics fontMetrics = c.getFontMetrics(c.getFont());
+    if (fontMetrics != null) {
+      initializeTextIfNecessary();
+      return fontMetrics.getStringBounds(TEXTS[index], g);
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public Insets getBorderInsets( Component c ) {
-		Container container = (Container)c;
-		if( this.isVirtuallyEmpty( container ) ) {
-			Graphics g = c.getGraphics();
-			Rectangle2D bounds = getStringBounds( c, g, LONGER_INDEX );
-			if( g != null ) {
-				g.dispose();
-			}
-			Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
-			if( bounds != null ) {
-				int left = EMPTY_INSETS.left;
-				int right = EMPTY_INSETS.right;
-				if( this.isCompletelyEmpty( container ) ) {
-					int textWidth = (int)Math.ceil( bounds.getWidth() );
-					if( container.getComponentOrientation().isLeftToRight() ) {
-						right += textWidth;
-					} else {
-						left += textWidth;
-					}
-				}
-				return new Insets( EMPTY_INSETS.top, left, EMPTY_INSETS.bottom + (int)bounds.getHeight(), right );
-			} else {
-				return EMPTY_INSETS;
-			}
-		} else {
-			return this.normalInsets;
-		}
-	}
+  @Override
+  public Insets getBorderInsets(Component c) {
+    Container container = (Container) c;
+    if (this.isVirtuallyEmpty(container)) {
+      Graphics g = c.getGraphics();
+      Rectangle2D bounds = getStringBounds(c, g, LONGER_INDEX);
+      if (g != null) {
+        g.dispose();
+      }
+      Insets EMPTY_INSETS = createEmptyInsets(container.getComponentOrientation());
+      if (bounds != null) {
+        int left = EMPTY_INSETS.left;
+        int right = EMPTY_INSETS.right;
+        if (this.isCompletelyEmpty(container)) {
+          int textWidth = (int) Math.ceil(bounds.getWidth());
+          if (container.getComponentOrientation().isLeftToRight()) {
+            right += textWidth;
+          } else {
+            left += textWidth;
+          }
+        }
+        return new Insets(EMPTY_INSETS.top, left, EMPTY_INSETS.bottom + (int) bounds.getHeight(), right);
+      } else {
+        return EMPTY_INSETS;
+      }
+    } else {
+      return this.normalInsets;
+    }
+  }
 
-	public int getMinimum() {
-		return this.minimum;
-	}
+  public int getMinimum() {
+    return this.minimum;
+  }
 
-	private boolean isCompletelyEmpty( Container container ) {
-		return container.getComponentCount() == 0;
-	}
+  private boolean isCompletelyEmpty(Container container) {
+    return container.getComponentCount() == 0;
+  }
 
-	public boolean isVirtuallyEmpty( Container container ) {
-		return container.getComponentCount() <= this.minimum;
-	}
+  public boolean isVirtuallyEmpty(Container container) {
+    return container.getComponentCount() <= this.minimum;
+  }
 
-	@Override
-	public boolean isBorderOpaque() {
-		return false;
-	}
+  @Override
+  public boolean isBorderOpaque() {
+    return false;
+  }
 
-	private boolean isDashed() {
-		return ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 );
-	}
+  private boolean isDashed() {
+    return (alternateListProperty != null) && (alternateListProperty.size() > 0);
+  }
 
-	@Override
-	public void paintBorder( Component c, Graphics g, int x, int y, int w, int h ) {
-		Container container = (Container)c;
-		if( this.isVirtuallyEmpty( container ) ) {
-			if( this.isDrawingDesired() ) {
-				int textIndex = container.getComponentCount();
-				Rectangle2D bounds = getStringBounds( c, g, textIndex );
+  @Override
+  public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+    Container container = (Container) c;
+    if (this.isVirtuallyEmpty(container)) {
+      if (this.isDrawingDesired()) {
+        int textIndex = container.getComponentCount();
+        Rectangle2D bounds = getStringBounds(c, g, textIndex);
 
-				Insets EMPTY_INSETS = createEmptyInsets( container.getComponentOrientation() );
-				final int PADDING = 24;
-				int width = ( EMPTY_INSET_LEADING + (int)bounds.getWidth() ) + PADDING;
-				int height = ( EMPTY_INSET_BOTTOM + (int)bounds.getHeight() ) - 4;
-				int dx;
-				if( c.getComponentOrientation().isLeftToRight() ) {
-					dx = x + EMPTY_INSET_LEADING;
-				} else {
-					dx = w - EMPTY_INSET_LEADING - (int)Math.ceil( bounds.getWidth() ) - PADDING - 12;
-				}
-				int dy;
-				if( container.getComponentCount() == 0 ) {
-					dy = y + EMPTY_INSETS.top + 2;
-				} else {
-					dy = ( y + h ) - height - 2;
-				}
-				g.translate( dx, dy );
-				Graphics2D g2 = (Graphics2D)g;
-				if( this.isMutable ) {
-					if( this.isDashed() ) {
-						g2.setColor( Color.GRAY );
-						g2.setStroke( DASHED_STROKE );
-						RoundRectangle2D.Float rr = new RoundRectangle2D.Float( 1, 1, width - 3, height - 3, 8, 8 );
-						g2.draw( rr );
-					} else {
+        Insets EMPTY_INSETS = createEmptyInsets(container.getComponentOrientation());
+        final int PADDING = 24;
+        int width = (EMPTY_INSET_LEADING + (int) bounds.getWidth()) + PADDING;
+        int height = (EMPTY_INSET_BOTTOM + (int) bounds.getHeight()) - 4;
+        int dx;
+        if (c.getComponentOrientation().isLeftToRight()) {
+          dx = x + EMPTY_INSET_LEADING;
+        } else {
+          dx = w - EMPTY_INSET_LEADING - (int) Math.ceil(bounds.getWidth()) - PADDING - 12;
+        }
+        int dy;
+        if (container.getComponentCount() == 0) {
+          dy = y + EMPTY_INSETS.top + 2;
+        } else {
+          dy = (y + h) - height - 2;
+        }
+        g.translate(dx, dy);
+        Graphics2D g2 = (Graphics2D) g;
+        if (this.isMutable) {
+          if (this.isDashed()) {
+            g2.setColor(Color.GRAY);
+            g2.setStroke(DASHED_STROKE);
+            RoundRectangle2D.Float rr = new RoundRectangle2D.Float(1, 1, width - 3, height - 3, 8, 8);
+            g2.draw(rr);
+          } else {
 
-						RoundRectangle2D.Float rr = new RoundRectangle2D.Float( 0, 0, width - 1, height - 1, 8, 8 );
-						g2.setPaint( new GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR ) );
-						g2.fill( rr );
+            RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
+            g2.setPaint(new GradientPaint(0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR));
+            g2.fill(rr);
 
-						GraphicsUtilities.draw3DRoundRectangle( g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE );
-					}
-					g.setColor( Color.BLACK );
-					Object prevTextAntialiasing = g2.getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING );
-					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+            GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
+          }
+          g.setColor(Color.BLACK);
+          Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-					int xText = 6;
-					if( c.getComponentOrientation().isLeftToRight() ) {
-						//pass
-					} else {
-						xText += PADDING;
-					}
-					initializeTextIfNecessary();
-					GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], xText, 0, (int)bounds.getWidth(), height );
-					g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
-				} else {
-					RoundRectangle2D.Float rr = new RoundRectangle2D.Float( 0, 0, width - 1, height - 1, 8, 8 );
-					g2.setPaint( BOTTOM_COLOR );
-					g2.fill( rr );
-				}
-				g.translate( -dx, -dy );
-			}
-		}
-	}
+          int xText = 6;
+          if (c.getComponentOrientation().isLeftToRight()) {
+            //pass
+          } else {
+            xText += PADDING;
+          }
+          initializeTextIfNecessary();
+          GraphicsUtilities.drawCenteredText(g, TEXTS[textIndex], xText, 0, (int) bounds.getWidth(), height);
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+        } else {
+          RoundRectangle2D.Float rr = new RoundRectangle2D.Float(0, 0, width - 1, height - 1, 8, 8);
+          g2.setPaint(BOTTOM_COLOR);
+          g2.fill(rr);
+        }
+        g.translate(-dx, -dy);
+      }
+    }
+  }
 
-	public boolean isDrawingDesired() {
-		return this.isDrawingDesired && ( StatementInsertCascade.EPIC_HACK_isActive() == false );
-	}
+  public boolean isDrawingDesired() {
+    return this.isDrawingDesired && (StatementInsertCascade.EPIC_HACK_isActive() == false);
+  }
 
-	public void setDrawingDesired( boolean isDrawingDesired ) {
-		this.isDrawingDesired = isDrawingDesired;
-	}
+  public void setDrawingDesired(boolean isDrawingDesired) {
+    this.isDrawingDesired = isDrawingDesired;
+  }
 }

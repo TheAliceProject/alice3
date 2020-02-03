@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Matt Kline" name="Cloud">
+    <BoundingBox>
+        <Min x="-4.1876959800720215" y="-0.5329776406288147" z="-5.2692718505859375"/>
+        <Max x="4.18769645690918" y="3.8329052925109863" z="5.269272327423096"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>norse</Tag>
+        <Tag>norway</Tag>
+        <Tag>viking</Tag>
+        <Tag>cloud</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>norse</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Cumulus" resourceName="CUMULUS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-4.1876959800720215" y="-0.5329776406288147" z="-5.2692718505859375"/>
+            <Max x="4.18769645690918" y="3.8329052925109863" z="5.269272327423096"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Nimbus" resourceName="NIMBUS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.436041831970215" y="-0.19064727425575256" z="-2.5059218406677246"/>
+            <Max x="2.436041831970215" y="2.7149085998535156" z="2.5059218406677246"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Stratus" resourceName="STRATUS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6763676404953003" y="-0.0903901755809784" z="-0.8855594396591187"/>
+            <Max x="0.6763676404953003" y="0.9536558389663696" z="0.8855602145195007"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Cirrus" resourceName="CIRRUS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.0434138774871826" y="-0.008962857536971569" z="-1.0616635084152222"/>
+            <Max x="1.9540177583694458" y="1.6079230308532715" z="0.8235499858856201"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="CirrusSmall" resourceName="CIRRUS_SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9494348168373108" y="-0.0631442591547966" z="-0.48883241415023804"/>
+            <Max x="0.9494348168373108" y="0.9443356394767761" z="0.48883238434791565"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

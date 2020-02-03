@@ -52,99 +52,99 @@ import java.beans.PropertyChangeListener;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSplitPane<SC extends AbstractSplitComposite<?>> extends CompositeView<JSplitPane, SC> {
-	private static final Dimension MINIMUM_SIZE = new Dimension( 24, 24 );
-	private final int orientation;
+  private static final Dimension MINIMUM_SIZE = new Dimension(24, 24);
+  private final int orientation;
 
-	protected AbstractSplitPane( SC splitComposite, int orientation ) {
-		super( splitComposite );
-		this.orientation = orientation;
-	}
+  protected AbstractSplitPane(SC splitComposite, int orientation) {
+    super(splitComposite);
+    this.orientation = orientation;
+  }
 
-	protected abstract JSplitPane createJSplitPane( int orientation );
+  protected abstract JSplitPane createJSplitPane(int orientation);
 
-	@Override
-	protected final JSplitPane createAwtComponent() {
-		JSplitPane rv = this.createJSplitPane( this.orientation );
-		rv.getLeftComponent().setMinimumSize( MINIMUM_SIZE );
-		rv.getRightComponent().setMinimumSize( MINIMUM_SIZE );
-		return rv;
-	}
+  @Override
+  protected final JSplitPane createAwtComponent() {
+    JSplitPane rv = this.createJSplitPane(this.orientation);
+    rv.getLeftComponent().setMinimumSize(MINIMUM_SIZE);
+    rv.getRightComponent().setMinimumSize(MINIMUM_SIZE);
+    return rv;
+  }
 
-	public void addDividerLocationChangeListener( PropertyChangeListener changeListener ) {
-		this.getAwtComponent().addPropertyChangeListener( "dividerLocation", changeListener );
-	}
+  public void addDividerLocationChangeListener(PropertyChangeListener changeListener) {
+    this.getAwtComponent().addPropertyChangeListener("dividerLocation", changeListener);
+  }
 
-	public void removeDividerLocationChangeListener( PropertyChangeListener changeListener ) {
-		this.getAwtComponent().removePropertyChangeListener( "dividerLocation", changeListener );
-	}
+  public void removeDividerLocationChangeListener(PropertyChangeListener changeListener) {
+    this.getAwtComponent().removePropertyChangeListener("dividerLocation", changeListener);
+  }
 
-	//	this.getAwtComponent().setOrientation( orientation );
-	//	if( splitComposite != null ) {
-	//		org.lgna.croquet.Composite< ? > leadingComposite = splitComposite.getLeadingComposite();
-	//		org.lgna.croquet.Composite< ? > trailingComposite = splitComposite.getTrailingComposite();
-	//		this.setLeadingComponent( leadingComposite != null ? leadingComposite.getView() : null );
-	//		this.setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
-	//	}
-	//	public Component<?> getLeadingComponent() {
-	//		return Component.lookup( this.getAwtComponent().getLeftComponent() );
-	//	}
-	//	public Component<?> getTailingComponent() {
-	//		return Component.lookup( this.getAwtComponent().getRightComponent() );
-	//	}
-	//	protected abstract void internalSetLeadingComponent( JComponent<?> component );
-	//	protected abstract void internalSetTrailingComponent( JComponent<?> component );
-	//	public void setLeadingComponent( JComponent<?> component ) {
-	//		javax.swing.JComponent jComponent;
-	//		if( component != null ) {
-	//			jComponent = component.getAwtComponent();
-	//			jComponent.setMinimumSize( MINIMUM_SIZE );
-	//		} else {
-	//			jComponent = null;
-	//		}
-	//		if( this.getAwtComponent().getLeftComponent() != jComponent ) {
-	//			this.internalSetLeadingComponent( component );
-	//			this.revalidateAndRepaint();
-	//		}
-	//	}
-	//	public void setTrailingComponent( JComponent<?> component ) {
-	//		javax.swing.JComponent jComponent;
-	//		if( component != null ) {
-	//			jComponent = component.getAwtComponent();
-	//			jComponent.setMinimumSize( MINIMUM_SIZE );
-	//		} else {
-	//			jComponent = null;
-	//		}
-	//		if( this.getAwtComponent().getRightComponent() != jComponent ) {
-	//			this.internalSetTrailingComponent( component );
-	//			this.revalidateAndRepaint();
-	//		}
-	//	}
+  //  this.getAwtComponent().setOrientation( orientation );
+  //  if( splitComposite != null ) {
+  //  org.lgna.croquet.Composite< ? > leadingComposite = splitComposite.getLeadingComposite();
+  //  org.lgna.croquet.Composite< ? > trailingComposite = splitComposite.getTrailingComposite();
+  //  this.setLeadingComponent( leadingComposite != null ? leadingComposite.getView() : null );
+  //  this.setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
+  //  }
+  //  public Component<?> getLeadingComponent() {
+  //  return Component.lookup( this.getAwtComponent().getLeftComponent() );
+  //  }
+  //  public Component<?> getTailingComponent() {
+  //  return Component.lookup( this.getAwtComponent().getRightComponent() );
+  //  }
+  //  protected abstract void internalSetLeadingComponent( JComponent<?> component );
+  //  protected abstract void internalSetTrailingComponent( JComponent<?> component );
+  //  public void setLeadingComponent( JComponent<?> component ) {
+  //  javax.swing.JComponent jComponent;
+  //  if( component != null ) {
+  //    jComponent = component.getAwtComponent();
+  //    jComponent.setMinimumSize( MINIMUM_SIZE );
+  //  } else {
+  //    jComponent = null;
+  //  }
+  //  if( this.getAwtComponent().getLeftComponent() != jComponent ) {
+  //    this.internalSetLeadingComponent( component );
+  //    this.revalidateAndRepaint();
+  //  }
+  //  }
+  //  public void setTrailingComponent( JComponent<?> component ) {
+  //  javax.swing.JComponent jComponent;
+  //  if( component != null ) {
+  //    jComponent = component.getAwtComponent();
+  //    jComponent.setMinimumSize( MINIMUM_SIZE );
+  //  } else {
+  //    jComponent = null;
+  //  }
+  //  if( this.getAwtComponent().getRightComponent() != jComponent ) {
+  //    this.internalSetTrailingComponent( component );
+  //    this.revalidateAndRepaint();
+  //  }
+  //  }
 
-	public double getResizeWeight() {
-		return this.getAwtComponent().getResizeWeight();
-	}
+  public double getResizeWeight() {
+    return this.getAwtComponent().getResizeWeight();
+  }
 
-	public void setResizeWeight( double resizeWeight ) {
-		this.getAwtComponent().setResizeWeight( resizeWeight );
-	}
+  public void setResizeWeight(double resizeWeight) {
+    this.getAwtComponent().setResizeWeight(resizeWeight);
+  }
 
-	public int getDividerSize() {
-		return this.getAwtComponent().getDividerSize();
-	}
+  public int getDividerSize() {
+    return this.getAwtComponent().getDividerSize();
+  }
 
-	public void setDividerSize( int dividerSize ) {
-		this.getAwtComponent().setDividerSize( dividerSize );
-	}
+  public void setDividerSize(int dividerSize) {
+    this.getAwtComponent().setDividerSize(dividerSize);
+  }
 
-	public int getDividerLocation() {
-		return this.getAwtComponent().getDividerLocation();
-	}
+  public int getDividerLocation() {
+    return this.getAwtComponent().getDividerLocation();
+  }
 
-	public void setDividerLocation( int dividerLocation ) {
-		this.getAwtComponent().setDividerLocation( dividerLocation );
-	}
+  public void setDividerLocation(int dividerLocation) {
+    this.getAwtComponent().setDividerLocation(dividerLocation);
+  }
 
-	public void setDividerProportionalLocation( double proportionalLocation ) {
-		this.getAwtComponent().setDividerLocation( proportionalLocation );
-	}
+  public void setDividerProportionalLocation(double proportionalLocation) {
+    this.getAwtComponent().setDividerLocation(proportionalLocation);
+  }
 }

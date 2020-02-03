@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2014" creator="Laura Paoletti" name="Shovel">
+    <BoundingBox>
+        <Min x="-0.15949003398418427" y="-0.2198510766029358" z="-0.11351411044597626"/>
+        <Max x="0.15611308813095093" y="1.029029130935669" z="0.005260489881038666"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>haunted</Tag>
+        <Tag>fire</Tag>
+        <Tag>train</Tag>
+        <Tag>coal</Tag>
+        <Tag>railroad</Tag>
+        <Tag>ghost town</Tag>
+        <Tag>grave</Tag>
+        <Tag>graveyard</Tag>
+        <Tag>shovel</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*haunted</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shovel" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -50,19 +50,19 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class IconToolTip extends javax.swing.JToolTip {
-	private Icon icon;
+  private Icon icon;
 
-	public IconToolTip( Icon icon ) {
-		this.icon = icon;
-	}
+  public IconToolTip(Icon icon) {
+    this.icon = icon;
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension( this.icon.getIconWidth(), this.icon.getIconHeight() );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    return new Dimension(this.icon.getIconWidth(), this.icon.getIconHeight());
+  }
 
-	@Override
-	protected void paintComponent( Graphics g ) {
-		this.icon.paintIcon( this, g, 0, 0 );
-	}
+  @Override
+  protected void paintComponent(Graphics g) {
+    this.icon.paintIcon(this, g, 0, 0);
+  }
 }

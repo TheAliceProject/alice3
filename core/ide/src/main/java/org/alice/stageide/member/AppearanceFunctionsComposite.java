@@ -50,15 +50,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AppearanceFunctionsComposite extends NameFilteredJavaFunctionsComposite {
-	private static class SingletonHolder {
-		private static AppearanceFunctionsComposite instance = new AppearanceFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static AppearanceFunctionsComposite instance = new AppearanceFunctionsComposite();
+  }
 
-	public static AppearanceFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AppearanceFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AppearanceFunctionsComposite() {
-		super( UUID.fromString( "7909d450-b4f3-4107-ae56-a6a372e53238" ), "getPaint", "getBackPaint", "getFloorPaint", "getWallPaint", "getCeilingPaint", "getOpacity" );
-	}
+  private AppearanceFunctionsComposite() {
+    super(UUID.fromString("7909d450-b4f3-4107-ae56-a6a372e53238"), "getPaint", "getBackPaint", "getFloorPaint", "getWallPaint", "getCeilingPaint", "getOpacity");
+  }
 }

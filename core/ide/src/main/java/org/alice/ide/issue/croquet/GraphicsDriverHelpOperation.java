@@ -52,31 +52,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GraphicsDriverHelpOperation extends ImmutableBrowserOperation {
-	private static class SingletonHolder {
-		private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
-	}
+  private static class SingletonHolder {
+    private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
+  }
 
-	public static GraphicsDriverHelpOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static GraphicsDriverHelpOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static String getSpec() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( HelpBrowserOperation.HELP_URL_SPEC );
-		sb.append( "w/page/" );
-		if( SystemUtilities.isWindows() ) {
-			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
-		} else if( SystemUtilities.isMac() ) {
-			sb.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
-		} else if( SystemUtilities.isLinux() ) {
-			sb.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
-		} else {
-			sb.append( "54959364/Updating%20Video%20Drivers" );
-		}
-		return sb.toString();
-	}
+  private static String getSpec() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(HelpBrowserOperation.HELP_URL_SPEC);
+    sb.append("w/page/");
+    if (SystemUtilities.isWindows()) {
+      sb.append("59839091/Updating%20Video%20Drivers%20for%20Windows");
+    } else if (SystemUtilities.isMac()) {
+      sb.append("59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X");
+    } else if (SystemUtilities.isLinux()) {
+      sb.append("59839254/Updating%20Video%20Drivers%20for%20Linux");
+    } else {
+      sb.append("54959364/Updating%20Video%20Drivers");
+    }
+    return sb.toString();
+  }
 
-	private GraphicsDriverHelpOperation() {
-		super( UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
-	}
+  private GraphicsDriverHelpOperation() {
+    super(UUID.fromString("652d34f0-7f39-4b63-a15c-d95090d0b3e9"), getSpec());
+  }
 }

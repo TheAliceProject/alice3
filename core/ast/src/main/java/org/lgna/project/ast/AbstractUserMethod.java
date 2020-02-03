@@ -53,107 +53,107 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUserMethod extends AbstractMethod implements UserCode {
-	public AbstractUserMethod() {
-	}
+  public AbstractUserMethod() {
+  }
 
-	public AbstractUserMethod( AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
-		this.returnType.setValue( returnType );
-		this.requiredParameters.add( requiredParameters );
-		this.body.setValue( body );
-	}
+  public AbstractUserMethod(AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body) {
+    this.returnType.setValue(returnType);
+    this.requiredParameters.add(requiredParameters);
+    this.body.setValue(body);
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return (UserType<?>)super.getDeclaringType();
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return (UserType<?>) super.getDeclaringType();
+  }
 
-	@Override
-	public final Visibility getVisibility() {
-		return Visibility.PRIME_TIME;
-	}
+  @Override
+  public final Visibility getVisibility() {
+    return Visibility.PRIME_TIME;
+  }
 
-	@Override
-	public final ManagementLevel getManagementLevel() {
-		return this.managementLevel.getValue();
-	}
+  @Override
+  public final ManagementLevel getManagementLevel() {
+    return this.managementLevel.getValue();
+  }
 
-	@Override
-	public final NodeProperty<BlockStatement> getBodyProperty() {
-		return this.body;
-	}
+  @Override
+  public final NodeProperty<BlockStatement> getBodyProperty() {
+    return this.body;
+  }
 
-	@Override
-	public final NodeListProperty<UserParameter> getRequiredParamtersProperty() {
-		return this.requiredParameters;
-	}
+  @Override
+  public final NodeListProperty<UserParameter> getRequiredParamtersProperty() {
+    return this.requiredParameters;
+  }
 
-	@Override
-	public final AbstractType<?, ?, ?> getReturnType() {
-		return this.returnType.getValue();
-	}
+  @Override
+  public final AbstractType<?, ?, ?> getReturnType() {
+    return this.returnType.getValue();
+  }
 
-	@Override
-	public final List<UserParameter> getRequiredParameters() {
-		return this.requiredParameters.getValue();
-	}
+  @Override
+  public final List<UserParameter> getRequiredParameters() {
+    return this.requiredParameters.getValue();
+  }
 
-	@Override
-	public final AbstractParameter getVariableLengthParameter() {
-		return null;
-	}
+  @Override
+  public final AbstractParameter getVariableLengthParameter() {
+    return null;
+  }
 
-	@Override
-	public final AbstractParameter getKeyedParameter() {
-		return null;
-	}
+  @Override
+  public final AbstractParameter getKeyedParameter() {
+    return null;
+  }
 
-	@Override
-	public final AbstractCode getNextLongerInChain() {
-		return null;
-	}
+  @Override
+  public final AbstractCode getNextLongerInChain() {
+    return null;
+  }
 
-	@Override
-	public final AbstractCode getNextShorterInChain() {
-		return null;
-	}
+  @Override
+  public final AbstractCode getNextShorterInChain() {
+    return null;
+  }
 
-	@Override
-	public final boolean isSignatureLocked() {
-		return this.isSignatureLocked.getValue();
-	}
+  @Override
+  public final boolean isSignatureLocked() {
+    return this.isSignatureLocked.getValue();
+  }
 
-	@Override
-	public final AccessLevel getAccessLevel() {
-		return this.accessLevel.getValue();
-	}
+  @Override
+  public final AccessLevel getAccessLevel() {
+    return this.accessLevel.getValue();
+  }
 
-	@Override
-	public final boolean isNative() {
-		return false;
-	}
+  @Override
+  public final boolean isNative() {
+    return false;
+  }
 
-	@Override
-	public final boolean isSynchronized() {
-		return this.isSynchronized.getValue();
-	}
+  @Override
+  public final boolean isSynchronized() {
+    return this.isSynchronized.getValue();
+  }
 
-	@Override
-	public final boolean isStrictFloatingPoint() {
-		return this.isStrictFloatingPoint.getValue();
-	}
+  @Override
+  public final boolean isStrictFloatingPoint() {
+    return this.isStrictFloatingPoint.getValue();
+  }
 
-	@Override
-	public boolean isUserAuthored() {
-		return true;
-	}
+  @Override
+  public boolean isUserAuthored() {
+    return true;
+  }
 
-	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final BooleanProperty isSynchronized = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isStrictFloatingPoint = new BooleanProperty( this, Boolean.FALSE );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = DeclarationProperty.createReferenceInstance( this );
-	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
-	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
-	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final BooleanProperty isSignatureLocked = new BooleanProperty( this, Boolean.FALSE );
-	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.TRUE );
+  public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>(this, AccessLevel.PUBLIC);
+  public final BooleanProperty isSynchronized = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isStrictFloatingPoint = new BooleanProperty(this, Boolean.FALSE);
+  public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = DeclarationProperty.createReferenceInstance(this);
+  public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>(this);
+  public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>(this);
+  public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>(this, ManagementLevel.NONE);
+  public final BooleanProperty isSignatureLocked = new BooleanProperty(this, Boolean.FALSE);
+  public final BooleanProperty isDeletionAllowed = new BooleanProperty(this, Boolean.TRUE);
 }

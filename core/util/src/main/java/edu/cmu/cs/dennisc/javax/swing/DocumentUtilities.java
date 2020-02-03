@@ -49,23 +49,23 @@ import javax.swing.text.Document;
  * @author Dennis Cosgrove
  */
 public class DocumentUtilities {
-	private DocumentUtilities() {
-		throw new AssertionError();
-	}
+  private DocumentUtilities() {
+    throw new AssertionError();
+  }
 
-	public static String getText( Document document ) {
-		try {
-			return document.getText( 0, document.getLength() );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  public static String getText(Document document) {
+    try {
+      return document.getText(0, document.getLength());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 
-	public static void appendString( Document document, String s ) {
-		try {
-			document.insertString( document.getLength(), s, null );
-		} catch( BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
+  public static void appendString(Document document, String s) {
+    try {
+      document.insertString(document.getLength(), s, null);
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
+    }
+  }
 }

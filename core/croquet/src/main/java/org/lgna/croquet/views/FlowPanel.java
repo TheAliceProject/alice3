@@ -53,84 +53,82 @@ import java.awt.LayoutManager;
  * @author Dennis Cosgrove
  */
 public class FlowPanel extends Panel {
-	public enum Alignment {
-		CENTER( FlowLayout.CENTER ),
+  public enum Alignment {
+    CENTER(FlowLayout.CENTER),
 
-		LEFT( FlowLayout.LEFT ),
-		LEADING( FlowLayout.LEADING ),
+    LEFT(FlowLayout.LEFT), LEADING(FlowLayout.LEADING),
 
-		RIGHT( FlowLayout.RIGHT ),
-		TRAILING( FlowLayout.TRAILING );
+    RIGHT(FlowLayout.RIGHT), TRAILING(FlowLayout.TRAILING);
 
-		private int internal;
+    private int internal;
 
-		private Alignment( int internal ) {
-			this.internal = internal;
-		}
-	}
+    private Alignment(int internal) {
+      this.internal = internal;
+    }
+  }
 
-	private final Alignment alignment;
-	private final int hgap;
-	private final int vgap;
+  private final Alignment alignment;
+  private final int hgap;
+  private final int vgap;
 
-	public FlowPanel( AwtComponentView<?>... components ) {
-		this( (Composite)null, components );
-	}
+  public FlowPanel(AwtComponentView<?>... components) {
+    this((Composite) null, components);
+  }
 
-	public FlowPanel( Alignment alignment, AwtComponentView<?>... components ) {
-		this( null, alignment, components );
-	}
+  public FlowPanel(Alignment alignment, AwtComponentView<?>... components) {
+    this(null, alignment, components);
+  }
 
-	public FlowPanel( Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
-		this( null, alignment, hgap, vgap, components );
-	}
+  public FlowPanel(Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components) {
+    this(null, alignment, hgap, vgap, components);
+  }
 
-	public FlowPanel( Composite composite, AwtComponentView<?>... components ) {
-		this( composite, Alignment.CENTER, components );
-	}
+  public FlowPanel(Composite composite, AwtComponentView<?>... components) {
+    this(composite, Alignment.CENTER, components);
+  }
 
-	public FlowPanel( Composite composite, Alignment alignment, AwtComponentView<?>... components ) {
-		this( composite, alignment, 0, 0, components );
-	}
+  public FlowPanel(Composite composite, Alignment alignment, AwtComponentView<?>... components) {
+    this(composite, alignment, 0, 0, components);
+  }
 
-	public FlowPanel( Composite composite, Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components ) {
-		super( composite );
-		this.alignment = alignment;
-		this.hgap = hgap;
-		this.vgap = vgap;
-		for( AwtComponentView<?> component : components ) {
-			this.addComponent( component );
-		}
-	}
+  public FlowPanel(Composite composite, Alignment alignment, int hgap, int vgap, AwtComponentView<?>... components) {
+    super(composite);
+    this.alignment = alignment;
+    this.hgap = hgap;
+    this.vgap = vgap;
+    for (AwtComponentView<?> component : components) {
+      this.addComponent(component);
+    }
+  }
 
-	//	@Override
-	//	protected javax.swing.JPanel createJPanel() {
-	//		class FlowJPanel extends DefaultJPanel {
-	////			@Override
-	////			public java.awt.Dimension getPreferredSize() {
-	////				java.awt.Dimension rv = super.getPreferredSize();
-	////				rv.width = this.getWidth();
-	////				return rv;
-	////			}
-	//			@Override
-	//			public java.awt.Dimension getMaximumSize() {
-	//				return this.getPreferredSize();
-	//			}
-	//		};
-	//		FlowJPanel rv = new FlowJPanel();
-	////		rv.setPreferredSize( new java.awt.Dimension( 256, 1 ) );
-	//		return rv;
-	//	}
-	protected FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
-		return new FlowLayout( alignment, hgap, vgap );
-	}
+  //  @Override
+  //  protected javax.swing.JPanel createJPanel() {
+  //  class FlowJPanel extends DefaultJPanel {
+  ////    @Override
+  ////    public java.awt.Dimension getPreferredSize() {
+  ////      java.awt.Dimension rv = super.getPreferredSize();
+  ////      rv.width = this.getWidth();
+  ////      return rv;
+  ////    }
+  //    @Override
+  //    public java.awt.Dimension getMaximumSize() {
+  //      return this.getPreferredSize();
+  //    }
+  //  };
+  //  FlowJPanel rv = new FlowJPanel();
+  ////  rv.setPreferredSize( new java.awt.Dimension( 256, 1 ) );
+  //  return rv;
+  //  }
+  protected FlowLayout createFlowLayout(int alignment, int hgap, int vgap) {
+    return new FlowLayout(alignment, hgap, vgap);
+  }
 
-	@Override
-	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
-		return this.createFlowLayout( this.alignment.internal, this.hgap, this.vgap );
-	}
+  @Override
+  protected final LayoutManager createLayoutManager(JPanel jPanel) {
+    return this.createFlowLayout(this.alignment.internal, this.hgap, this.vgap);
+  }
 
-	public void addComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component );
-	}
+  public void addComponent(AwtComponentView<?> component) {
+    this.internalAddComponent(component);
+  }
 }

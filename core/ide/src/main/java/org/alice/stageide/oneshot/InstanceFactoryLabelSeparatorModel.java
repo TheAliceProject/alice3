@@ -54,30 +54,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryLabelSeparatorModel extends LabelMenuSeparatorModel {
-	private static Map<InstanceFactory, InstanceFactoryLabelSeparatorModel> map = Maps.newHashMap();
+  private static Map<InstanceFactory, InstanceFactoryLabelSeparatorModel> map = Maps.newHashMap();
 
-	public static InstanceFactoryLabelSeparatorModel getInstance( InstanceFactory value ) {
-		synchronized( map ) {
-			InstanceFactoryLabelSeparatorModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InstanceFactoryLabelSeparatorModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static InstanceFactoryLabelSeparatorModel getInstance(InstanceFactory value) {
+    synchronized (map) {
+      InstanceFactoryLabelSeparatorModel rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new InstanceFactoryLabelSeparatorModel(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final InstanceFactory instanceFactory;
+  private final InstanceFactory instanceFactory;
 
-	private InstanceFactoryLabelSeparatorModel( InstanceFactory instanceFactory ) {
-		super( UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
-		this.instanceFactory = instanceFactory;
-	}
+  private InstanceFactoryLabelSeparatorModel(InstanceFactory instanceFactory) {
+    super(UUID.fromString("9a7e4f27-4e46-42a4-ab64-7702deefb5a1"));
+    this.instanceFactory = instanceFactory;
+  }
 
-	@Override
-	public String getName() {
-		return this.instanceFactory.getRepr();
-	}
+  @Override
+  public String getName() {
+    return this.instanceFactory.getRepr();
+  }
 }

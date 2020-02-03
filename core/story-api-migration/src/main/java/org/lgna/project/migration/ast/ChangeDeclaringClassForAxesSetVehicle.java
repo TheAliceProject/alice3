@@ -59,21 +59,21 @@ import org.lgna.story.SThing;
  */
 public class ChangeDeclaringClassForAxesSetVehicle extends MethodInvocationAstMigration {
 
-	public ChangeDeclaringClassForAxesSetVehicle( Version minimumVersion, Version maximumVersion ) {
-		super( minimumVersion, maximumVersion );
-	}
+  public ChangeDeclaringClassForAxesSetVehicle(Version minimumVersion, Version maximumVersion) {
+    super(minimumVersion, maximumVersion);
+  }
 
-	@Override
-	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
-		AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof JavaMethod ) {
-			JavaMethod javaMethod = (JavaMethod)method;
-			if( ( javaMethod.getDeclaringType() == JavaType.getInstance( SAxes.class ) ) && javaMethod.getName().equals( "setVehicle" ) ) {
-				AbstractMethod replacementMethod = AstUtilities.lookupMethod( MutableRider.class, "setVehicle", SThing.class );
-				methodInvocation.method.setValue( replacementMethod );
-				Logger.outln( "updating setVehicle method on Axes object" );
-			}
-		}
-	}
+  @Override
+  protected void migrate(MethodInvocation methodInvocation, Project projectIfApplicable) {
+    AbstractMethod method = methodInvocation.method.getValue();
+    if (method instanceof JavaMethod) {
+      JavaMethod javaMethod = (JavaMethod) method;
+      if ((javaMethod.getDeclaringType() == JavaType.getInstance(SAxes.class)) && javaMethod.getName().equals("setVehicle")) {
+        AbstractMethod replacementMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", SThing.class);
+        methodInvocation.method.setValue(replacementMethod);
+        Logger.outln("updating setVehicle method on Axes object");
+      }
+    }
+  }
 
 }

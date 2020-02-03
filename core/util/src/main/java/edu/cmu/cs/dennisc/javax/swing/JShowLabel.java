@@ -49,22 +49,22 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class JShowLabel extends JLabel {
-	private boolean isShowing = true;
+  private boolean isShowing = true;
 
-	@Override
-	public boolean isShowing() {
-		return super.isShowing();
-	}
+  @Override
+  public boolean isShowing() {
+    return super.isShowing();
+  }
 
-	public void setShowing( boolean isShowing ) {
-		this.isShowing = isShowing;
-		this.repaint();
-	}
+  public void setShowing(boolean isShowing) {
+    this.isShowing = isShowing;
+    this.repaint();
+  }
 
-	@Override
-	public void paint( Graphics g ) {
-		if( this.isShowing ) {
-			super.paint( g );
-		}
-	}
+  @Override
+  public void paint(Graphics g) {
+    if (this.isShowing) {
+      super.paint(g);
+    }
+  }
 }

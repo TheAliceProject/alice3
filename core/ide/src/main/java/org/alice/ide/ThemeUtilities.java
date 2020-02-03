@@ -46,23 +46,23 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class ThemeUtilities {
-	private ThemeUtilities() {
-		throw new AssertionError();
-	}
+  private ThemeUtilities() {
+    throw new AssertionError();
+  }
 
-	private static Theme fallbackTheme;
+  private static Theme fallbackTheme;
 
-	public static synchronized Theme getActiveTheme() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getTheme();
-		} else {
-			if( fallbackTheme != null ) {
-				//pass
-			} else {
-				fallbackTheme = new DefaultTheme();
-			}
-			return fallbackTheme;
-		}
-	}
+  public static synchronized Theme getActiveTheme() {
+    IDE ide = IDE.getActiveInstance();
+    if (ide != null) {
+      return ide.getTheme();
+    } else {
+      if (fallbackTheme != null) {
+        //pass
+      } else {
+        fallbackTheme = new DefaultTheme();
+      }
+      return fallbackTheme;
+    }
+  }
 }

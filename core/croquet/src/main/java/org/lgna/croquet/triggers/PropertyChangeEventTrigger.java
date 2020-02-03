@@ -51,11 +51,11 @@ import java.beans.PropertyChangeEvent;
  * @author Dennis Cosgrove
  */
 public class PropertyChangeEventTrigger extends EventObjectTrigger<PropertyChangeEvent> {
-	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
-		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent ).getUserActivity();
-	}
+  public static UserActivity createUserActivity(ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent) {
+    return new PropertyChangeEventTrigger(viewController, propertyChangeEvent).getUserActivity();
+  }
 
-	private PropertyChangeEventTrigger( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
-		super( viewController, propertyChangeEvent );
-	}
+  private PropertyChangeEventTrigger(ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent) {
+    super(viewController, propertyChangeEvent);
+  }
 }

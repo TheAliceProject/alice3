@@ -59,58 +59,58 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ContainsTab extends SimpleTabComposite<Panel> {
-	private final StringState filterState = this.createStringState( "filterState" );
-	private final MemberListData memberListData = new MemberListData( this.filterState );
-	private final RefreshableDataSingleSelectListState<Member> memberListState = this.createRefreshableListState( "memberListState", this.memberListData, -1 );
+  private final StringState filterState = this.createStringState("filterState");
+  private final MemberListData memberListData = new MemberListData(this.filterState);
+  private final RefreshableDataSingleSelectListState<Member> memberListState = this.createRefreshableListState("memberListState", this.memberListData, -1);
 
-	private final ValueListener<Member> memberListener = new ValueListener<Member>() {
-		@Override
-		public void valueChanged( ValueEvent<Member> e ) {
-			Member nextValue = e.getNextValue();
-			if( nextValue != null ) {
-				dialog.getTypeTreeState().setValueTransactionlessly( dialog.getTypeNodeFor( nextValue.getDeclaringType() ) );
-			}
-		}
-	};
+  private final ValueListener<Member> memberListener = new ValueListener<Member>() {
+    @Override
+    public void valueChanged(ValueEvent<Member> e) {
+      Member nextValue = e.getNextValue();
+      if (nextValue != null) {
+        dialog.getTypeTreeState().setValueTransactionlessly(dialog.getTypeNodeFor(nextValue.getDeclaringType()));
+      }
+    }
+  };
 
-	private final OtherTypeDialog dialog;
+  private final OtherTypeDialog dialog;
 
-	public ContainsTab( OtherTypeDialog dialog ) {
-		super( UUID.fromString( "f002ad52-4053-4f30-8460-752ad7394044" ), IsCloseable.FALSE );
-		this.dialog = dialog;
-	}
+  public ContainsTab(OtherTypeDialog dialog) {
+    super(UUID.fromString("f002ad52-4053-4f30-8460-752ad7394044"), IsCloseable.FALSE);
+    this.dialog = dialog;
+  }
 
-	public StringState getFilterState() {
-		return this.filterState;
-	}
+  public StringState getFilterState() {
+    return this.filterState;
+  }
 
-	public MemberListData getMemberListData() {
-		return this.memberListData;
-	}
+  public MemberListData getMemberListData() {
+    return this.memberListData;
+  }
 
-	public RefreshableDataSingleSelectListState<Member> getMemberListState() {
-		return this.memberListState;
-	}
+  public RefreshableDataSingleSelectListState<Member> getMemberListState() {
+    return this.memberListState;
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new ContainsTabPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new ContainsTabPane(this);
+  }
 
-	@Override
-	public void handlePreActivation() {
-		this.memberListState.addAndInvokeNewSchoolValueListener( this.memberListener );
-		super.handlePreActivation();
-	}
+  @Override
+  public void handlePreActivation() {
+    this.memberListState.addAndInvokeNewSchoolValueListener(this.memberListener);
+    super.handlePreActivation();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-		this.memberListState.removeNewSchoolValueListener( this.memberListener );
-	}
+  @Override
+  public void handlePostDeactivation() {
+    super.handlePostDeactivation();
+    this.memberListState.removeNewSchoolValueListener(this.memberListener);
+  }
 }

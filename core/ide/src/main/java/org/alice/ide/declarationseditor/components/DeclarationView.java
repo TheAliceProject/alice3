@@ -62,69 +62,69 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationView extends BorderPanel {
-	public DeclarationView( DeclarationComposite composite ) {
-		super( composite );
-		this.javaCodeView = new JavaCodeView( composite.getDeclaration() );
-		this.sideBySideScrollPane.setBackgroundColor( this.getBackgroundColor() );
-		this.sideBySideScrollPane.setBorder( BorderFactory.createEmptyBorder( 2, 0, 0, 0 ) );
-	}
+  public DeclarationView(DeclarationComposite composite) {
+    super(composite);
+    this.javaCodeView = new JavaCodeView(composite.getDeclaration());
+    this.sideBySideScrollPane.setBackgroundColor(this.getBackgroundColor());
+    this.sideBySideScrollPane.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+  }
 
-	public abstract Printable getPrintable();
+  public abstract Printable getPrintable();
 
-	public abstract void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel );
+  public abstract void addPotentialDropReceptors(List<DropReceptor> out, IdeDragModel dragModel);
 
-	protected void setJavaCodeOnTheSide( boolean value, boolean isFirstTime ) {
-		AwtComponentView<?> mainComponent = this.getMainComponent();
-		if( value ) {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.removeComponent( mainComponent );
-			}
-			this.sideBySideScrollPane.setLeadingView( mainComponent );
-			this.sideBySideScrollPane.setTrailingView( this.javaCodeView );
-			this.addCenterComponent( sideBySideScrollPane );
-		} else {
-			if( isFirstTime ) {
-				//pass
-			} else {
-				this.removeComponent( this.sideBySideScrollPane );
-			}
-			this.sideBySideScrollPane.setLeadingView( null );
-			this.sideBySideScrollPane.setTrailingView( null );
-			this.addCenterComponent( mainComponent );
-		}
-	}
+  protected void setJavaCodeOnTheSide(boolean value, boolean isFirstTime) {
+    AwtComponentView<?> mainComponent = this.getMainComponent();
+    if (value) {
+      if (isFirstTime) {
+        //pass
+      } else {
+        this.removeComponent(mainComponent);
+      }
+      this.sideBySideScrollPane.setLeadingView(mainComponent);
+      this.sideBySideScrollPane.setTrailingView(this.javaCodeView);
+      this.addCenterComponent(sideBySideScrollPane);
+    } else {
+      if (isFirstTime) {
+        //pass
+      } else {
+        this.removeComponent(this.sideBySideScrollPane);
+      }
+      this.sideBySideScrollPane.setLeadingView(null);
+      this.sideBySideScrollPane.setTrailingView(null);
+      this.addCenterComponent(mainComponent);
+    }
+  }
 
-	private final ValueListener<Boolean> isJavaCodeOnTheSideListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			synchronized( getTreeLock() ) {
-				boolean isFirstTime = getCenterComponent() == null;
-				setJavaCodeOnTheSide( e.getNextValue(), isFirstTime );
-				revalidateAndRepaint();
-			}
-		}
-	};
+  private final ValueListener<Boolean> isJavaCodeOnTheSideListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      synchronized (getTreeLock()) {
+        boolean isFirstTime = getCenterComponent() == null;
+        setJavaCodeOnTheSide(e.getNextValue(), isFirstTime);
+        revalidateAndRepaint();
+      }
+    }
+  };
 
-	@Override
-	protected void handleDisplayable() {
-		IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    IsJavaCodeOnTheSideState.getInstance().addAndInvokeNewSchoolValueListener(this.isJavaCodeOnTheSideListener);
+    super.handleDisplayable();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener( this.isJavaCodeOnTheSideListener );
-	}
+  @Override
+  protected void handleUndisplayable() {
+    super.handleUndisplayable();
+    IsJavaCodeOnTheSideState.getInstance().removeNewSchoolValueListener(this.isJavaCodeOnTheSideListener);
+  }
 
-	public SideBySideScrollPane getSideBySideScrollPane() {
-		return this.sideBySideScrollPane;
-	}
+  public SideBySideScrollPane getSideBySideScrollPane() {
+    return this.sideBySideScrollPane;
+  }
 
-	protected abstract AwtComponentView<?> getMainComponent();
+  protected abstract AwtComponentView<?> getMainComponent();
 
-	private final SideBySideScrollPane sideBySideScrollPane = new SideBySideScrollPane();
-	private final JavaCodeView javaCodeView;
+  private final SideBySideScrollPane sideBySideScrollPane = new SideBySideScrollPane();
+  private final JavaCodeView javaCodeView;
 }

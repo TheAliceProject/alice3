@@ -64,94 +64,94 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MoreCascade extends ImmutableCascade<Expression> {
-	private static Map<MethodInvocation, MoreCascade> map = Maps.newHashMap();
+  private static Map<MethodInvocation, MoreCascade> map = Maps.newHashMap();
 
-	public static synchronized MoreCascade getInstance( MethodInvocation methodInvocation ) {
-		MoreCascade rv = map.get( methodInvocation );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MoreCascade( methodInvocation );
-			map.put( methodInvocation, rv );
-		}
-		return rv;
-	}
+  public static synchronized MoreCascade getInstance(MethodInvocation methodInvocation) {
+    MoreCascade rv = map.get(methodInvocation);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new MoreCascade(methodInvocation);
+      map.put(methodInvocation, rv);
+    }
+    return rv;
+  }
 
-	private static AbstractParameter getNextParameter( MethodInvocation methodInvocation ) {
-		AbstractMethod method = methodInvocation.method.getValue();
-		AbstractMethod nextMethod = (AbstractMethod)method.getNextLongerInChain();
-		List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
-		return parameters.get( parameters.size() - 1 );
-	}
+  private static AbstractParameter getNextParameter(MethodInvocation methodInvocation) {
+    AbstractMethod method = methodInvocation.method.getValue();
+    AbstractMethod nextMethod = (AbstractMethod) method.getNextLongerInChain();
+    List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
+    return parameters.get(parameters.size() - 1);
+  }
 
-	private final MethodInvocation methodInvocation;
-	private final ExpressionStatement expressionStatement;
-	private final MethodInvocation nextMethodInvocation;
+  private final MethodInvocation methodInvocation;
+  private final ExpressionStatement expressionStatement;
+  private final MethodInvocation nextMethodInvocation;
 
-	private MoreCascade( MethodInvocation methodInvocation ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), Expression.class, ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
-		assert methodInvocation != null;
-		this.methodInvocation = methodInvocation;
-		this.expressionStatement = (ExpressionStatement)this.methodInvocation.getParent();
-		assert this.expressionStatement != null : ( (JavaMethod)this.methodInvocation.method.getValue() ).getMethodReflectionProxy().getReification();
+  private MoreCascade(MethodInvocation methodInvocation) {
+    super(Application.PROJECT_GROUP, UUID.fromString("7ed06ae1-3704-4745-afd2-47dc21366412"), Expression.class, ParameterBlank.getInstance(getNextParameter(methodInvocation)));
+    assert methodInvocation != null;
+    this.methodInvocation = methodInvocation;
+    this.expressionStatement = (ExpressionStatement) this.methodInvocation.getParent();
+    assert this.expressionStatement != null : ((JavaMethod) this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
 
-		AbstractMethod method = this.methodInvocation.method.getValue();
-		AbstractMethod nextMethod = (AbstractMethod)method.getNextLongerInChain();
-		this.nextMethodInvocation = new MethodInvocation();
-		this.nextMethodInvocation.method.setValue( nextMethod );
-		for( AbstractParameter parameter : nextMethod.getRequiredParameters() ) {
-			SimpleArgument argument = new SimpleArgument( parameter, null );
-			this.nextMethodInvocation.requiredArguments.add( argument );
-		}
-		//		this.updateToolTipText();
-	}
+    AbstractMethod method = this.methodInvocation.method.getValue();
+    AbstractMethod nextMethod = (AbstractMethod) method.getNextLongerInChain();
+    this.nextMethodInvocation = new MethodInvocation();
+    this.nextMethodInvocation.method.setValue(nextMethod);
+    for (AbstractParameter parameter : nextMethod.getRequiredParameters()) {
+      SimpleArgument argument = new SimpleArgument(parameter, null);
+      this.nextMethodInvocation.requiredArguments.add(argument);
+    }
+    //    this.updateToolTipText();
+  }
 
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-	//		return org.lgna.croquet.Application.PROJECT_GROUP;
-	//	}
+  //  @Override
+  //  protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+  //    return org.lgna.croquet.Application.PROJECT_GROUP;
+  //  }
 
-	public ExpressionStatement getExpressionStatement() {
-		return this.expressionStatement;
-	}
+  public ExpressionStatement getExpressionStatement() {
+    return this.expressionStatement;
+  }
 
-	public MethodInvocation getPrevMethodInvocation() {
-		return this.methodInvocation;
-	}
+  public MethodInvocation getPrevMethodInvocation() {
+    return this.methodInvocation;
+  }
 
-	public MethodInvocation getNextMethodInvocation() {
-		return this.nextMethodInvocation;
-	}
+  public MethodInvocation getNextMethodInvocation() {
+    return this.nextMethodInvocation;
+  }
 
-	//	@Override
-	//	public org.lgna.project.ast.Expression getPreviousExpression() {
-	//		return null;
-	//	}
-	//	@Override
-	//	protected org.lgna.project.ast.Statement getStatement() {
-	//		return this.expressionStatement;
-	//	}
-	//	
-	//	private org.lgna.project.ast.AbstractParameter getLastParameter() {
-	//		org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
-	//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
-	//		return parameters.get( parameters.size()-1 );
-	//	}
-	//
-	//	@Override
-	//	protected String getTitle() {
-	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
-	//		return lastParameter.getName();
-	//	}
-	//	
-	//	
-	//	@Override
-	//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
-	//		return lastParameter.getDesiredValueType();
-	//	}
-	@Override
-	protected FillInMoreEdit createEdit( UserActivity userActivity, Expression[] values ) {
-		return new FillInMoreEdit( userActivity, values[ 0 ] );
-	}
+  //  @Override
+  //  public org.lgna.project.ast.Expression getPreviousExpression() {
+  //    return null;
+  //  }
+  //  @Override
+  //  protected org.lgna.project.ast.Statement getStatement() {
+  //    return this.expressionStatement;
+  //  }
+  //
+  //  private org.lgna.project.ast.AbstractParameter getLastParameter() {
+  //    org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
+  //    java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+  //    return parameters.get( parameters.size()-1 );
+  //  }
+  //
+  //  @Override
+  //  protected String getTitle() {
+  //    org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
+  //    return lastParameter.getName();
+  //  }
+  //
+  //
+  //  @Override
+  //  protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+  //    org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
+  //    return lastParameter.getDesiredValueType();
+  //  }
+  @Override
+  protected FillInMoreEdit createEdit(UserActivity userActivity, Expression[] values) {
+    return new FillInMoreEdit(userActivity, values[0]);
+  }
 }

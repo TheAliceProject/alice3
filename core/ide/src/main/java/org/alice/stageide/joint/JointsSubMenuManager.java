@@ -57,37 +57,38 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JointsSubMenuManager {
-	private static final Map<JavaType, Class<? extends JointsSubMenu>[]> map = Maps.newHashMap();
-	static {
-		addToMap( SBiped.class, OtherSBipedJointsSubMenu.class );
-		addToMap( SQuadruped.class, OtherSQuadrupedJointsSubMenu.class );
-		addToMap( SFlyer.class, OtherSFlyerJointsSubMenu.class );
-	}
+  private static final Map<JavaType, Class<? extends JointsSubMenu>[]> map = Maps.newHashMap();
 
-	private static void addToMap( Class<? extends SJointedModel> cls, Class<? extends JointsSubMenu>... subMenuClses ) {
-		map.put( JavaType.getInstance( cls ), subMenuClses );
-	}
+  static {
+    addToMap(SBiped.class, OtherSBipedJointsSubMenu.class);
+    addToMap(SQuadruped.class, OtherSQuadrupedJointsSubMenu.class);
+    addToMap(SFlyer.class, OtherSFlyerJointsSubMenu.class);
+  }
 
-	private JointsSubMenuManager() {
-		throw new AssertionError();
-	}
+  private static void addToMap(Class<? extends SJointedModel> cls, Class<? extends JointsSubMenu>... subMenuClses) {
+    map.put(JavaType.getInstance(cls), subMenuClses);
+  }
 
-	public static <FB> JointsSubMenu<FB>[] getSubMenusForType( AbstractType<?, ?, ?> type ) {
-		Class<? extends JointsSubMenu>[] subMenuClses = map.get( type );
-		if( subMenuClses != null ) {
-			JointsSubMenu[] rv = new JointsSubMenu[ subMenuClses.length ];
-			for( int i = 0; i < rv.length; i++ ) {
-				try {
-					rv[ i ] = subMenuClses[ i ].newInstance();
-				} catch( InstantiationException ie ) {
-					throw new RuntimeException( subMenuClses[ i ].getName(), ie );
-				} catch( IllegalAccessException iae ) {
-					throw new RuntimeException( subMenuClses[ i ].getName(), iae );
-				}
-			}
-			return rv;
-		} else {
-			return new JointsSubMenu[ 0 ];
-		}
-	}
+  private JointsSubMenuManager() {
+    throw new AssertionError();
+  }
+
+  public static <FB> JointsSubMenu<FB>[] getSubMenusForType(AbstractType<?, ?, ?> type) {
+    Class<? extends JointsSubMenu>[] subMenuClses = map.get(type);
+    if (subMenuClses != null) {
+      JointsSubMenu[] rv = new JointsSubMenu[subMenuClses.length];
+      for (int i = 0; i < rv.length; i++) {
+        try {
+          rv[i] = subMenuClses[i].newInstance();
+        } catch (InstantiationException ie) {
+          throw new RuntimeException(subMenuClses[i].getName(), ie);
+        } catch (IllegalAccessException iae) {
+          throw new RuntimeException(subMenuClses[i].getName(), iae);
+        }
+      }
+      return rv;
+    } else {
+      return new JointsSubMenu[0];
+    }
+  }
 }

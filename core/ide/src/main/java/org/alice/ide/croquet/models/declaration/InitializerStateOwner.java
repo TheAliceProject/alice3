@@ -48,5 +48,5 @@ import org.lgna.project.ast.AbstractType;
  * @author Dennis Cosgrove
  */
 public interface InitializerStateOwner {
-	public AbstractType<?, ?, ?> getValueType();
+  public AbstractType<?, ?, ?> getValueType();
 }

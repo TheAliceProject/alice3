@@ -52,12 +52,12 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import java.util.List;
 
 public class ArrowKeyListenerFillerInner extends ExpressionFillerInner {
-	public ArrowKeyListenerFillerInner() {
-		super( ArrowKeyPressListener.class );
-	}
+  public ArrowKeyListenerFillerInner() {
+    super(ArrowKeyPressListener.class);
+  }
 
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		items.add( ArrowKeyAdapterFillIn.getInstance() );
-	}
+  @Override
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    items.add(ArrowKeyAdapterFillIn.getInstance());
+  }
 }

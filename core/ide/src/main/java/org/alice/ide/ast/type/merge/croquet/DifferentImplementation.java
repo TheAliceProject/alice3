@@ -55,144 +55,135 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public final class DifferentImplementation<M extends Member> extends PotentialNameChanger<M> {
-	private final MemberHubWithNameState<M> importHub;
-	private final MemberHubWithNameState<M> projectHub;
+  private final MemberHubWithNameState<M> importHub;
+  private final MemberHubWithNameState<M> projectHub;
 
-	private final DifferentImplementationCardOwner importCardOwner;
-	private final DifferentImplementationCardOwner projectCardOwner;
+  private final DifferentImplementationCardOwner importCardOwner;
+  private final DifferentImplementationCardOwner projectCardOwner;
 
-	private final DifferentImplementationHelpComposite<M> helpComposite;
+  private final DifferentImplementationHelpComposite<M> helpComposite;
 
-	public DifferentImplementation( URI uriForDescriptionPurposesOnly, M importMember, M projectMember ) {
-		super( uriForDescriptionPurposesOnly );
-		this.importHub = new MemberHubWithNameState<M>( importMember, false ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				if( importHub.getIsDesiredState().getValue() ) {
-					if( projectHub.getIsDesiredState().getValue() ) {
-						if( isRenameRequired() ) {
-							return ActionStatus.RENAME_REQUIRED;
-						} else {
-							return ActionStatus.ADD_AND_RENAME;
-						}
-					} else {
-						return ActionStatus.REPLACE_OVER_ORIGINAL;
-					}
-				} else {
-					if( projectHub.getIsDesiredState().getValue() ) {
-						return ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL;
-					} else {
-						return ActionStatus.SELECTION_REQUIRED;
-					}
-				}
-			}
-		};
+  public DifferentImplementation(URI uriForDescriptionPurposesOnly, M importMember, M projectMember) {
+    super(uriForDescriptionPurposesOnly);
+    this.importHub = new MemberHubWithNameState<M>(importMember, false) {
+      @Override
+      public ActionStatus getActionStatus() {
+        if (importHub.getIsDesiredState().getValue()) {
+          if (projectHub.getIsDesiredState().getValue()) {
+            if (isRenameRequired()) {
+              return ActionStatus.RENAME_REQUIRED;
+            } else {
+              return ActionStatus.ADD_AND_RENAME;
+            }
+          } else {
+            return ActionStatus.REPLACE_OVER_ORIGINAL;
+          }
+        } else {
+          if (projectHub.getIsDesiredState().getValue()) {
+            return ActionStatus.OMIT_IN_FAVOR_OF_ORIGINAL;
+          } else {
+            return ActionStatus.SELECTION_REQUIRED;
+          }
+        }
+      }
+    };
 
-		this.projectHub = new MemberHubWithNameState<M>( projectMember, false ) {
-			@Override
-			public ActionStatus getActionStatus() {
-				if( importHub.getIsDesiredState().getValue() ) {
-					if( projectHub.getIsDesiredState().getValue() ) {
-						if( isRenameRequired() ) {
-							return ActionStatus.RENAME_REQUIRED;
-						} else {
-							return ActionStatus.KEEP_AND_RENAME;
-						}
-					} else {
-						return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
-					}
-				} else {
-					if( projectHub.getIsDesiredState().getValue() ) {
-						return ActionStatus.KEEP_AND_RENAME;
-					} else {
-						return ActionStatus.SELECTION_REQUIRED;
-					}
-				}
-			}
-		};
+    this.projectHub = new MemberHubWithNameState<M>(projectMember, false) {
+      @Override
+      public ActionStatus getActionStatus() {
+        if (importHub.getIsDesiredState().getValue()) {
+          if (projectHub.getIsDesiredState().getValue()) {
+            if (isRenameRequired()) {
+              return ActionStatus.RENAME_REQUIRED;
+            } else {
+              return ActionStatus.KEEP_AND_RENAME;
+            }
+          } else {
+            return ActionStatus.DELETE_IN_FAVOR_OF_REPLACEMENT;
+          }
+        } else {
+          if (projectHub.getIsDesiredState().getValue()) {
+            return ActionStatus.KEEP_AND_RENAME;
+          } else {
+            return ActionStatus.SELECTION_REQUIRED;
+          }
+        }
+      }
+    };
 
-		this.importHub.setOtherIsDesiredState( this.projectHub.getIsDesiredState() );
-		this.projectHub.setOtherIsDesiredState( this.importHub.getIsDesiredState() );
+    this.importHub.setOtherIsDesiredState(this.projectHub.getIsDesiredState());
+    this.projectHub.setOtherIsDesiredState(this.importHub.getIsDesiredState());
 
-		this.importCardOwner = new DifferentImplementationCardOwner.Builder( this )
-				.neither( new ActionMustBeTakenCard( this ) )
-				.replace( new ReplacePositiveImplementationCard( this ) )
-				.rename( new RenameCard( this.importHub, this.getForegroundCustomizer() ) )
-				.build();
-		this.projectCardOwner = new DifferentImplementationCardOwner.Builder( this )
-				.neither( new ActionMustBeTakenCard( this ) )
-				.keep( new KeepImplementationCard( this ) )
-				.replace( new ReplaceNegativeImplementationCard( this ) )
-				.rename( new RenameCard( this.projectHub, this.getForegroundCustomizer() ) )
-				.build();
+    this.importCardOwner = new DifferentImplementationCardOwner.Builder(this).neither(new ActionMustBeTakenCard(this)).replace(new ReplacePositiveImplementationCard(this)).rename(new RenameCard(this.importHub, this.getForegroundCustomizer())).build();
+    this.projectCardOwner = new DifferentImplementationCardOwner.Builder(this).neither(new ActionMustBeTakenCard(this)).keep(new KeepImplementationCard(this)).replace(new ReplaceNegativeImplementationCard(this)).rename(new RenameCard(this.projectHub, this.getForegroundCustomizer())).build();
 
-		//todo
-		if( importMember instanceof UserMethod ) {
-			this.helpComposite = (DifferentImplementationHelpComposite<M>)new MethodDifferentImplementationHelpComposite( (DifferentImplementation<UserMethod>)this );
-		} else if( importMember instanceof UserField ) {
-			this.helpComposite = (DifferentImplementationHelpComposite<M>)new FieldDifferentImplementationHelpComposite( (DifferentImplementation<UserField>)this );
-		} else {
-			//todo
-			this.helpComposite = null;
-		}
-	}
+    //todo
+    if (importMember instanceof UserMethod) {
+      this.helpComposite = (DifferentImplementationHelpComposite<M>) new MethodDifferentImplementationHelpComposite((DifferentImplementation<UserMethod>) this);
+    } else if (importMember instanceof UserField) {
+      this.helpComposite = (DifferentImplementationHelpComposite<M>) new FieldDifferentImplementationHelpComposite((DifferentImplementation<UserField>) this);
+    } else {
+      //todo
+      this.helpComposite = null;
+    }
+  }
 
-	@Override
-	public MemberHubWithNameState<M> getImportHub() {
-		return this.importHub;
-	}
+  @Override
+  public MemberHubWithNameState<M> getImportHub() {
+    return this.importHub;
+  }
 
-	@Override
-	public MemberHubWithNameState<M> getProjectHub() {
-		return this.projectHub;
-	}
+  @Override
+  public MemberHubWithNameState<M> getProjectHub() {
+    return this.projectHub;
+  }
 
-	public DifferentImplementationCardOwner getImportCardOwner() {
-		return this.importCardOwner;
-	}
+  public DifferentImplementationCardOwner getImportCardOwner() {
+    return this.importCardOwner;
+  }
 
-	public DifferentImplementationCardOwner getProjectCardOwner() {
-		return this.projectCardOwner;
-	}
+  public DifferentImplementationCardOwner getProjectCardOwner() {
+    return this.projectCardOwner;
+  }
 
-	public DifferentImplementationHelpComposite<M> getHelpComposite() {
-		return this.helpComposite;
-	}
+  public DifferentImplementationHelpComposite<M> getHelpComposite() {
+    return this.helpComposite;
+  }
 
-	@Override
-	protected boolean isRenameRequired() {
-		if( this.importHub.getIsDesiredState().getValue() ) {
-			if( this.projectHub.getIsDesiredState().getValue() ) {
-				//todo
-				return this.projectHub.getNameState().getValue().contentEquals( this.importHub.getNameState().getValue() );
-			}
-		}
-		return false;
-	}
+  @Override
+  protected boolean isRenameRequired() {
+    if (this.importHub.getIsDesiredState().getValue()) {
+      if (this.projectHub.getIsDesiredState().getValue()) {
+        //todo
+        return this.projectHub.getNameState().getValue().contentEquals(this.importHub.getNameState().getValue());
+      }
+    }
+    return false;
+  }
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
-		boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
-		boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
-		if( isAddDesired ) {
-			if( isKeepDesired ) {
-				if( this.isRenameRequired() ) {
-					sb.append( "must not have same name: \"" );
-					sb.append( this.getImportHub().getMember().getName() );
-					sb.append( "\"." );
-				} else {
-					//pass
-				}
-			} else {
-				//pass
-			}
-		} else {
-			if( isKeepDesired ) {
-				//pass
-			} else {
-				sb.append( "must take action on \"" );
-				sb.append( this.getImportHub().getMember().getName() );
-				sb.append( "\" (replace, keep, or add-and-keep-with-rename)." );
-			}
-		}
-	}
+  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+    boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
+    boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
+    if (isAddDesired) {
+      if (isKeepDesired) {
+        if (this.isRenameRequired()) {
+          sb.append("must not have same name: \"");
+          sb.append(this.getImportHub().getMember().getName());
+          sb.append("\".");
+        } else {
+          //pass
+        }
+      } else {
+        //pass
+      }
+    } else {
+      if (isKeepDesired) {
+        //pass
+      } else {
+        sb.append("must take action on \"");
+        sb.append(this.getImportHub().getMember().getName());
+        sb.append("\" (replace, keep, or add-and-keep-with-rename).");
+      }
+    }
+  }
 }

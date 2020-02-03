@@ -54,79 +54,79 @@ import java.util.Set;
  * @author Dennis Cosgrove
  */
 public class RendererNativeLibraryLoader {
-	private RendererNativeLibraryLoader() {
-		throw new AssertionError();
-	}
+  private RendererNativeLibraryLoader() {
+    throw new AssertionError();
+  }
 
-	private static boolean isInitializationAttempted;
+  private static boolean isInitializationAttempted;
 
-	public static synchronized void initializeIfNecessary() {
-		if( isInitializationAttempted ) {
-			//pass
-		} else {
-			try {
-				JNILibLoaderBase.setLoadingAction( new JNILibLoaderBase.LoaderAction() {
-					private final Set<String> loaded = Sets.newHashSet();
+  public static synchronized void initializeIfNecessary() {
+    if (isInitializationAttempted) {
+      //pass
+    } else {
+      try {
+        JNILibLoaderBase.setLoadingAction(new JNILibLoaderBase.LoaderAction() {
+          private final Set<String> loaded = Sets.newHashSet();
 
-					private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
-						LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? LoadLibraryReportStyle.SILENT : LoadLibraryReportStyle.EXCEPTION;
-						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( libraryName, loadLibraryReportStyle );
-						try {
-							SystemUtilities.loadLibrary( "jogl", libraryName, loadLibraryReportStyle );
-						} catch( UnsatisfiedLinkError ule ) {
-							String message = ule.getMessage();
-							if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
-								return false;
-							} else {
-								System.err.println( libraryName );
-								throw ule;
-							}
-						}
-						return true;
-					}
+          private boolean loadLibrary(String libraryName, boolean isIgnoringError) {
+            LoadLibraryReportStyle loadLibraryReportStyle = isIgnoringError ? LoadLibraryReportStyle.SILENT : LoadLibraryReportStyle.EXCEPTION;
+            //edu.cmu.cs.dennisc.java.util.logging.Logger.outln( libraryName, loadLibraryReportStyle );
+            try {
+              SystemUtilities.loadLibrary("jogl", libraryName, loadLibraryReportStyle);
+            } catch (UnsatisfiedLinkError ule) {
+              String message = ule.getMessage();
+              if (isIgnoringError || ((message != null) && message.contains("already loaded"))) {
+                return false;
+              } else {
+                System.err.println(libraryName);
+                throw ule;
+              }
+            }
+            return true;
+          }
 
-					private boolean loadLibrary( String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst ) {
-						boolean isSuccessful;
-						synchronized( this.loaded ) {
-							if( this.loaded.contains( libraryName ) ) {
-								isSuccessful = true;
-							} else {
-								isSuccessful = this.loadLibrary( libraryName, isIgnoringError );
-								if( isSuccessful ) {
-									this.loaded.add( libraryName );
-								}
-							}
-						}
-						return isSuccessful;
-					}
+          private boolean loadLibrary(String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst) {
+            boolean isSuccessful;
+            synchronized (this.loaded) {
+              if (this.loaded.contains(libraryName)) {
+                isSuccessful = true;
+              } else {
+                isSuccessful = this.loadLibrary(libraryName, isIgnoringError);
+                if (isSuccessful) {
+                  this.loaded.add(libraryName);
+                }
+              }
+            }
+            return isSuccessful;
+          }
 
-					@Override
-					public boolean loadLibrary( String libname, boolean isIgnoringError, ClassLoader classLoader ) {
-						return this.loadLibrary( libname, isIgnoringError, true );
-					}
+          @Override
+          public boolean loadLibrary(String libname, boolean isIgnoringError, ClassLoader classLoader) {
+            return this.loadLibrary(libname, isIgnoringError, true);
+          }
 
-					@Override
-					public void loadLibrary( String libname, String[] preloadLibraryNames, boolean isIgnoringError, ClassLoader classLoader ) {
-						if( preloadLibraryNames != null ) {
-							for( String preloadLibraryName : preloadLibraryNames ) {
-								this.loadLibrary( preloadLibraryName, isIgnoringError, false );
-							}
-						}
-						this.loadLibrary( libname, isIgnoringError, true );
-					}
-				} );
+          @Override
+          public void loadLibrary(String libname, String[] preloadLibraryNames, boolean isIgnoringError, ClassLoader classLoader) {
+            if (preloadLibraryNames != null) {
+              for (String preloadLibraryName : preloadLibraryNames) {
+                this.loadLibrary(preloadLibraryName, isIgnoringError, false);
+              }
+            }
+            this.loadLibrary(libname, isIgnoringError, true);
+          }
+        });
 
-				//edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
-				//timer.start();
-				GLProfile.initSingleton();
-				//timer.stopAndPrintResults();
-			} finally {
-				isInitializationAttempted = true;
-			}
-		}
-	}
+        //edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "initialize jogl" );
+        //timer.start();
+        GLProfile.initSingleton();
+        //timer.stopAndPrintResults();
+      } finally {
+        isInitializationAttempted = true;
+      }
+    }
+  }
 
-	public static void main( String[] args ) {
-		initializeIfNecessary();
-	}
+  public static void main(String[] args) {
+    initializeIfNecessary();
+  }
 }

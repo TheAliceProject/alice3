@@ -46,17 +46,17 @@ package org.lgna.story.event;
  * @author Dennis Cosgrove
  */
 public class KeyEvent extends AbstractKeyEvent {
-	public KeyEvent( java.awt.event.KeyEvent e ) {
-		super( e );
-	}
+  public KeyEvent(java.awt.event.KeyEvent e) {
+    super(e);
+  }
 
-	public Boolean isLetter() {
-		char ch = this.getKeyChar();
-		return Character.isLetter( ch );
-	}
+  public Boolean isLetter() {
+    char ch = this.getKeyChar();
+    return Character.isLetter(ch);
+  }
 
-	public Boolean isDigit() {
-		char ch = this.getKeyChar();
-		return Character.isDigit( ch );
-	}
+  public Boolean isDigit() {
+    char ch = this.getKeyChar();
+    return Character.isDigit(ch);
+  }
 }

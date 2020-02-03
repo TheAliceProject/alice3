@@ -61,74 +61,74 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class ImportTab extends GalleryTab {
-	private final PlainStringValue notDirectoryText = this.createStringValue( "notDirectoryText" );
-	private final PlainStringValue noFilesText = this.createStringValue( "noFilesText" );
-	private final StringState directoryState = this.createStringState( "directoryState" );
-	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			File directory = new File( directoryState.getValue() );
-			FileDialogValueCreator fileOp = new FileDialogValueCreator( null, directory, IoUtilities.TYPE_EXTENSION );
+  private final PlainStringValue notDirectoryText = this.createStringValue("notDirectoryText");
+  private final PlainStringValue noFilesText = this.createStringValue("noFilesText");
+  private final StringState directoryState = this.createStringState("directoryState");
+  private final Operation browseOperation = this.createActionOperation("browseOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      File directory = new File(directoryState.getValue());
+      FileDialogValueCreator fileOp = new FileDialogValueCreator(null, directory, IoUtilities.TYPE_EXTENSION);
 
-			final UserActivity fileActivity = userActivity.newChildActivity();
-			fileOp.fire( fileActivity );
+      final UserActivity fileActivity = userActivity.newChildActivity();
+      fileOp.fire(fileActivity);
 
-			if (fileActivity.isCanceled() || fileActivity.getProducedValue() == null) {
-				throw new CancelException();
-			}
+      if (fileActivity.isCanceled() || fileActivity.getProducedValue() == null) {
+        throw new CancelException();
+      }
 
-			File file = (File) fileActivity.getProducedValue();
-			if( file.isFile() ) {
-				file = file.getParentFile();
-			}
-			directoryState.setValueTransactionlessly( file.getAbsolutePath() );
-			return null;
-		}
-	} );
-	private final Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			restoreToDefault();
-			return null;
-		}
-	} );
+      File file = (File) fileActivity.getProducedValue();
+      if (file.isFile()) {
+        file = file.getParentFile();
+      }
+      directoryState.setValueTransactionlessly(file.getAbsolutePath());
+      return null;
+    }
+  });
+  private final Operation restoreToDefaultOperation = this.createActionOperation("restoreToDefaultOperation", new Action() {
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      restoreToDefault();
+      return null;
+    }
+  });
 
-	public ImportTab() {
-		super( UUID.fromString( "89ae8138-80a3-40e8-a8e6-e2f9b47ac452" ) );
-		this.restoreToDefault();
-		this.browseOperation.setButtonIcon( Icons.FOLDER_ICON_SMALL );
-	}
+  public ImportTab() {
+    super(UUID.fromString("89ae8138-80a3-40e8-a8e6-e2f9b47ac452"));
+    this.restoreToDefault();
+    this.browseOperation.setButtonIcon(Icons.FOLDER_ICON_SMALL);
+  }
 
-	public boolean isDirectoryStateSetToDefault() {
-		return StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath().contentEquals( this.directoryState.getValue() );
-	}
+  public boolean isDirectoryStateSetToDefault() {
+    return StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath().contentEquals(this.directoryState.getValue());
+  }
 
-	private void restoreToDefault() {
-		this.directoryState.setValueTransactionlessly( StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath() );
-	}
+  private void restoreToDefault() {
+    this.directoryState.setValueTransactionlessly(StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath());
+  }
 
-	public PlainStringValue getNotDirectoryText() {
-		return this.notDirectoryText;
-	}
+  public PlainStringValue getNotDirectoryText() {
+    return this.notDirectoryText;
+  }
 
-	public PlainStringValue getNoFilesText() {
-		return this.noFilesText;
-	}
+  public PlainStringValue getNoFilesText() {
+    return this.noFilesText;
+  }
 
-	public StringState getDirectoryState() {
-		return this.directoryState;
-	}
+  public StringState getDirectoryState() {
+    return this.directoryState;
+  }
 
-	public Operation getBrowseOperation() {
-		return this.browseOperation;
-	}
+  public Operation getBrowseOperation() {
+    return this.browseOperation;
+  }
 
-	public Operation getRestoreToDefaultOperation() {
-		return this.restoreToDefaultOperation;
-	}
+  public Operation getRestoreToDefaultOperation() {
+    return this.restoreToDefaultOperation;
+  }
 
-	@Override
-	protected ImportTabView createView() {
-		return new ImportTabView( this );
-	}
+  @Override
+  protected ImportTabView createView() {
+    return new ImportTabView(this);
+  }
 }

@@ -50,60 +50,60 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 
 public class ColorIcon implements Icon {
-	public static final int DEFAULT_SIZE = 15;
-	private Color fillColor;
-	private Color outlineColor;
-	private int width;
-	private int height;
+  public static final int DEFAULT_SIZE = 15;
+  private Color fillColor;
+  private Color outlineColor;
+  private int width;
+  private int height;
 
-	public ColorIcon( Color color ) {
-		this( color, DEFAULT_SIZE );
-	}
+  public ColorIcon(Color color) {
+    this(color, DEFAULT_SIZE);
+  }
 
-	public ColorIcon( Color color, int size ) {
-		this( color, size, size );
-	}
+  public ColorIcon(Color color, int size) {
+    this(color, size, size);
+  }
 
-	public ColorIcon( Color color, Dimension size ) {
-		this( color, size.width, size.height );
-	}
+  public ColorIcon(Color color, Dimension size) {
+    this(color, size.width, size.height);
+  }
 
-	public ColorIcon( Color color, int width, int height ) {
-		this.fillColor = color;
-		this.width = width;
-		this.height = height;
-		float[] hsb = new float[ 3 ];
-		//todo
-		Color.RGBtoHSB( this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb );
-		if( hsb[ 2 ] > 0.9f ) {
-			this.outlineColor = Color.GRAY;
-		} else {
-			this.outlineColor = null;
-		}
-	}
+  public ColorIcon(Color color, int width, int height) {
+    this.fillColor = color;
+    this.width = width;
+    this.height = height;
+    float[] hsb = new float[3];
+    //todo
+    Color.RGBtoHSB(this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb);
+    if (hsb[2] > 0.9f) {
+      this.outlineColor = Color.GRAY;
+    } else {
+      this.outlineColor = null;
+    }
+  }
 
-	public Color getFillColor() {
-		return this.fillColor;
-	}
+  public Color getFillColor() {
+    return this.fillColor;
+  }
 
-	@Override
-	public int getIconWidth() {
-		return this.width;
-	}
+  @Override
+  public int getIconWidth() {
+    return this.width;
+  }
 
-	@Override
-	public int getIconHeight() {
-		return this.height;
-	}
+  @Override
+  public int getIconHeight() {
+    return this.height;
+  }
 
-	@Override
-	public void paintIcon( Component arg0, Graphics g, int x, int y ) {
-		g.setColor( this.fillColor );
-		g.fillRect( x, y, this.width, this.height );
-		if( this.outlineColor != null ) {
-			g.setColor( this.outlineColor );
-			g.drawRect( x, y, this.width, this.height );
-		}
-	}
+  @Override
+  public void paintIcon(Component arg0, Graphics g, int x, int y) {
+    g.setColor(this.fillColor);
+    g.fillRect(x, y, this.width, this.height);
+    if (this.outlineColor != null) {
+      g.setColor(this.outlineColor);
+      g.drawRect(x, y, this.width, this.height);
+    }
+  }
 
 }

@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class SimpleArgumentListProperty extends ArgumentListProperty<SimpleArgument> {
-	public SimpleArgumentListProperty( ArgumentOwner owner ) {
-		super( owner );
-	}
+  public SimpleArgumentListProperty(ArgumentOwner owner) {
+    super(owner);
+  }
 }

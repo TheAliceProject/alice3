@@ -48,19 +48,19 @@ import edu.cmu.cs.dennisc.java.util.Objects;
  * @author Dennis Cosgrove
  */
 public class StringProperty extends InstanceProperty<String> {
-	public StringProperty( InstancePropertyOwner owner, String value ) {
-		super( owner, value );
-	}
+  public StringProperty(InstancePropertyOwner owner, String value) {
+    super(owner, value);
+  }
 
-	protected boolean isNullAcceptable() {
-		return false;
-	}
+  protected boolean isNullAcceptable() {
+    return false;
+  }
 
-	@Override
-	public void setValue( String value ) {
-		assert ( value != null ) || isNullAcceptable() : this;
-		if( Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( value );
-		}
-	}
+  @Override
+  public void setValue(String value) {
+    assert (value != null) || isNullAcceptable() : this;
+    if (Objects.notEquals(value, this.getValue())) {
+      super.setValue(value);
+    }
+  }
 }

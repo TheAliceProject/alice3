@@ -47,7 +47,7 @@ package org.lgna.common.event;
  * @author Dennis Cosgrove
  */
 public interface ResourceContentListener {
-	public void contentChanging( ResourceContentEvent e );
+  public void contentChanging(ResourceContentEvent e);
 
-	public void contentChanged( ResourceContentEvent e );
+  public void contentChanged(ResourceContentEvent e);
 }

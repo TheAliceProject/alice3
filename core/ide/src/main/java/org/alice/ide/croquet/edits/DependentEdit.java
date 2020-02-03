@@ -53,35 +53,35 @@ import org.lgna.croquet.history.UserActivity;
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends CompletionModel> extends AbstractEdit<M> {
-	public DependentEdit( UserActivity userActivity ) {
-		super( userActivity );
-	}
+  public DependentEdit(UserActivity userActivity) {
+    super(userActivity);
+  }
 
-	public DependentEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
+  public DependentEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+  }
 
-	private ResponsibleModel getResponsibleModel() {
-		CompletionModel model = getModel();
-		if( model instanceof ResponsibleModel ) {
-			return (ResponsibleModel)model;
-		} else {
-			throw new RuntimeException();
-		}
-	}
+  private ResponsibleModel getResponsibleModel() {
+    CompletionModel model = getModel();
+    if (model instanceof ResponsibleModel) {
+      return (ResponsibleModel) model;
+    } else {
+      throw new RuntimeException();
+    }
+  }
 
-	@Override
-	protected void doOrRedoInternal( boolean isDo ) {
-		this.getResponsibleModel().doOrRedoInternal( isDo );
-	}
+  @Override
+  protected void doOrRedoInternal(boolean isDo) {
+    this.getResponsibleModel().doOrRedoInternal(isDo);
+  }
 
-	@Override
-	protected void undoInternal() {
-		this.getResponsibleModel().undoInternal();
-	}
+  @Override
+  protected void undoInternal() {
+    this.getResponsibleModel().undoInternal();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		this.getResponsibleModel().appendDescription( rv, descriptionStyle.isDetailed() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    this.getResponsibleModel().appendDescription(rv, descriptionStyle.isDetailed());
+  }
 }

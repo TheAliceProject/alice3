@@ -64,80 +64,80 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class PngUtilities {
-	private static IIOMetadataNode getFirstPhysNodeCreatingAndAddingIfNecessary( IIOMetadataNode parentNode ) {
-		final String NAME = "pHYs";
-		IIOMetadataNode rv;
-		NodeList nodeList = parentNode.getElementsByTagName( NAME );
-		switch( nodeList.getLength() ) {
-		case 0:
-			rv = new IIOMetadataNode( NAME );
-			parentNode.appendChild( rv );
-			break;
-		default:
-			rv = (IIOMetadataNode)nodeList.item( 0 );
-		}
-		return rv;
-	}
+  private static IIOMetadataNode getFirstPhysNodeCreatingAndAddingIfNecessary(IIOMetadataNode parentNode) {
+    final String NAME = "pHYs";
+    IIOMetadataNode rv;
+    NodeList nodeList = parentNode.getElementsByTagName(NAME);
+    switch (nodeList.getLength()) {
+    case 0:
+      rv = new IIOMetadataNode(NAME);
+      parentNode.appendChild(rv);
+      break;
+    default:
+      rv = (IIOMetadataNode) nodeList.item(0);
+    }
+    return rv;
+  }
 
-	public static void write( RenderedImage image, int dpi, ImageOutputStream ios ) throws IOException {
-		ImageTypeSpecifier imageTypeSpecifier = ImageTypeSpecifier.createFromRenderedImage( image );
+  public static void write(RenderedImage image, int dpi, ImageOutputStream ios) throws IOException {
+    ImageTypeSpecifier imageTypeSpecifier = ImageTypeSpecifier.createFromRenderedImage(image);
 
-		int pixelsPerMeter = (int)Math.round( dpi / 0.0254 );
-		String pixelsPerMeterText = Integer.toString( pixelsPerMeter );
-		Iterator<ImageWriter> imageWriterIter = ImageIO.getImageWritersByFormatName( "png" );
-		//todo: convert to while loop?
-		if( imageWriterIter.hasNext() ) {
-			ImageWriter imageWriter = imageWriterIter.next();
-			ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
+    int pixelsPerMeter = (int) Math.round(dpi / 0.0254);
+    String pixelsPerMeterText = Integer.toString(pixelsPerMeter);
+    Iterator<ImageWriter> imageWriterIter = ImageIO.getImageWritersByFormatName("png");
+    //todo: convert to while loop?
+    if (imageWriterIter.hasNext()) {
+      ImageWriter imageWriter = imageWriterIter.next();
+      ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
 
-			//seems to create new metadata
-			IIOMetadata metadata = imageWriter.getDefaultImageMetadata( imageTypeSpecifier, imageWriteParam );
+      //seems to create new metadata
+      IIOMetadata metadata = imageWriter.getDefaultImageMetadata(imageTypeSpecifier, imageWriteParam);
 
-			//access restricted
-			//if( metadata instanceof com.sun.imageio.plugins.png.PNGMetadata ) {
-			//	com.sun.imageio.plugins.png.PNGMetadata pngMetadata = (com.sun.imageio.plugins.png.PNGMetadata)metadata;
-			//	pngMetadata.pHYs_present = true;
-			//	pngMetadata.pHYs_pixelsPerUnitXAxis = dotsPerMeter;
-			//	pngMetadata.pHYs_pixelsPerUnitYAxis = dotsPerMeter;
-			//	pngMetadata.pHYs_unitSpecifier = 1; //meter
-			//}
+      //access restricted
+      //if( metadata instanceof com.sun.imageio.plugins.png.PNGMetadata ) {
+      //  com.sun.imageio.plugins.png.PNGMetadata pngMetadata = (com.sun.imageio.plugins.png.PNGMetadata)metadata;
+      //  pngMetadata.pHYs_present = true;
+      //  pngMetadata.pHYs_pixelsPerUnitXAxis = dotsPerMeter;
+      //  pngMetadata.pHYs_pixelsPerUnitYAxis = dotsPerMeter;
+      //  pngMetadata.pHYs_unitSpecifier = 1; //meter
+      //}
 
-			String formatName = metadata.getNativeMetadataFormatName();
-			IIOMetadataNode root = (IIOMetadataNode)metadata.getAsTree( formatName );
-			IIOMetadataNode physNode = getFirstPhysNodeCreatingAndAddingIfNecessary( root );
-			physNode.setAttribute( "pixelsPerUnitXAxis", pixelsPerMeterText );
-			physNode.setAttribute( "pixelsPerUnitYAxis", pixelsPerMeterText );
-			physNode.setAttribute( "unitSpecifier", "meter" );
-			metadata.setFromTree( formatName, root );
+      String formatName = metadata.getNativeMetadataFormatName();
+      IIOMetadataNode root = (IIOMetadataNode) metadata.getAsTree(formatName);
+      IIOMetadataNode physNode = getFirstPhysNodeCreatingAndAddingIfNecessary(root);
+      physNode.setAttribute("pixelsPerUnitXAxis", pixelsPerMeterText);
+      physNode.setAttribute("pixelsPerUnitYAxis", pixelsPerMeterText);
+      physNode.setAttribute("unitSpecifier", "meter");
+      metadata.setFromTree(formatName, root);
 
-			List<BufferedImage> thumbnails = null;
-			IIOImage iioImage = new IIOImage( image, thumbnails, metadata );
-			imageWriter.setOutput( ios );
-			imageWriter.write( iioImage );
-			ios.flush();
-			imageWriter.setOutput( null );
-		} else {
-			throw new RuntimeException( "no image writers for png" );
-		}
-	}
+      List<BufferedImage> thumbnails = null;
+      IIOImage iioImage = new IIOImage(image, thumbnails, metadata);
+      imageWriter.setOutput(ios);
+      imageWriter.write(iioImage);
+      ios.flush();
+      imageWriter.setOutput(null);
+    } else {
+      throw new RuntimeException("no image writers for png");
+    }
+  }
 
-	public static void write( RenderedImage image, int dpi, File file ) throws IOException {
-		ImageOutputStream ios = ImageIO.createImageOutputStream( file );
-		try {
-			write( image, dpi, ios );
-		} finally {
-			ios.close();
-		}
-	}
+  public static void write(RenderedImage image, int dpi, File file) throws IOException {
+    ImageOutputStream ios = ImageIO.createImageOutputStream(file);
+    try {
+      write(image, dpi, ios);
+    } finally {
+      ios.close();
+    }
+  }
 
-	public static void main( String[] args ) throws IOException {
-		File normalFile = new File( FileUtilities.getDefaultDirectory(), "test.png" );
-		File dpiFile = new File( FileUtilities.getDefaultDirectory(), "test300.png" );
-		BufferedImage image = new BufferedImage( 1200, 600, BufferedImage.TYPE_INT_RGB );
+  public static void main(String[] args) throws IOException {
+    File normalFile = new File(FileUtilities.getDefaultDirectory(), "test.png");
+    File dpiFile = new File(FileUtilities.getDefaultDirectory(), "test300.png");
+    BufferedImage image = new BufferedImage(1200, 600, BufferedImage.TYPE_INT_RGB);
 
-		//test to make sure not messing up future image io writes
-		write( image, 300, dpiFile );
-		ImageIO.write( image, "png", normalFile );
+    //test to make sure not messing up future image io writes
+    write(image, 300, dpiFile);
+    ImageIO.write(image, "png", normalFile);
 
-	}
+  }
 }

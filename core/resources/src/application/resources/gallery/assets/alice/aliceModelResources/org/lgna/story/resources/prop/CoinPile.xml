@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="CoinPile">
+    <BoundingBox>
+        <Min x="-0.7459572553634644" y="-0.003076219465583563" z="-0.897852897644043"/>
+        <Max x="0.7459573149681091" y="0.1445554941892624" z="0.8978527784347534"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coin pile</Tag>
+        <Tag>coin stack</Tag>
+        <Tag>treasure</Tag>
+        <Tag>treasure chest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Square" resourceName="SQUARE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6239801645278931" y="-9.53674295089968E-9" z="-0.897852897644043"/>
+            <Max x="0.6239801645278931" y="0.1445554941892624" z="0.8978527784347534"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Trapezoid" resourceName="TRAPEZOID" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.7459572553634644" y="-9.53674295089968E-9" z="-0.8902000784873962"/>
+            <Max x="0.7459573149681091" y="0.1445554941892624" z="0.8902000188827515"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Circle" resourceName="CIRCLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.5044701099395752" y="-0.003076219465583563" z="-0.5002418160438538"/>
+            <Max x="0.5044702291488647" y="0.12680043280124664" z="0.5002416968345642"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

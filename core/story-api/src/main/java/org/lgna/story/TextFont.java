@@ -44,29 +44,27 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public enum TextFont implements Say.Detail, Think.Detail {
 
-	DEFAULT( null ),
-	SERIF( java.awt.Font.SERIF ),
-	SANS_SERIF( java.awt.Font.SANS_SERIF ),
-	MONOSPACED( java.awt.Font.MONOSPACED );
+  DEFAULT(null), SERIF(java.awt.Font.SERIF), SANS_SERIF(java.awt.Font.SANS_SERIF), MONOSPACED(java.awt.Font.MONOSPACED);
 
-	private final String value;
+  private final String value;
 
-	TextFont( String value ) {
-		this.value = value;
-	}
+  TextFont(String value) {
+    this.value = value;
+  }
 
-	/* package-private */static Font getValue( Object[] details, String defaultName, int style, int size ) {
-		for( Object detail : details ) {
-			if( detail instanceof TextFont ) {
-				TextFont textFont = (TextFont)detail;
-				return new Font( new java.awt.Font( textFont.value, style, size ) );
-			}
-		}
-		return new Font( new java.awt.Font( defaultName, style, size ) );
-	}
+  /* package-private */
+  static Font getValue(Object[] details, String defaultName, int style, int size) {
+    for (Object detail : details) {
+      if (detail instanceof TextFont) {
+        TextFont textFont = (TextFont) detail;
+        return new Font(new java.awt.Font(textFont.value, style, size));
+      }
+    }
+    return new Font(new java.awt.Font(defaultName, style, size));
+  }
 
 }

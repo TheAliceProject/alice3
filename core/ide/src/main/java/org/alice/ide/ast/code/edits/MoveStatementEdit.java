@@ -63,116 +63,116 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class MoveStatementEdit extends StatementEdit<MoveStatementOperation> {
-	private BlockStatementIndexPair fromLocation;
-	private BlockStatementIndexPair toLocation;
-	private final boolean isMultiple;
-	private transient int count;
+  private BlockStatementIndexPair fromLocation;
+  private BlockStatementIndexPair toLocation;
+  private final boolean isMultiple;
+  private transient int count;
 
-	public MoveStatementEdit( UserActivity userActivity, BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( userActivity, statement );
-		this.fromLocation = fromLocation;
-		this.toLocation = toLocation;
-		this.isMultiple = isMultiple;
-	}
+  public MoveStatementEdit(UserActivity userActivity, BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple) {
+    super(userActivity, statement);
+    this.fromLocation = fromLocation;
+    this.toLocation = toLocation;
+    this.isMultiple = isMultiple;
+  }
 
-	public MoveStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.isMultiple = binaryDecoder.decodeBoolean();
-	}
+  public MoveStatementEdit(BinaryDecoder binaryDecoder, Object step) {
+    super(binaryDecoder, step);
+    this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+    this.isMultiple = binaryDecoder.decodeBoolean();
+  }
 
-	@Override
-	public void encode( BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.fromLocation );
-		binaryEncoder.encode( this.toLocation );
-		binaryEncoder.encode( this.isMultiple );
-	}
+  @Override
+  public void encode(BinaryEncoder binaryEncoder) {
+    super.encode(binaryEncoder);
+    binaryEncoder.encode(this.fromLocation);
+    binaryEncoder.encode(this.toLocation);
+    binaryEncoder.encode(this.isMultiple);
+  }
 
-	private int getToDelta() {
-		int toDelta;
-		if( this.fromLocation.getBlockStatement() == this.toLocation.getBlockStatement() ) {
-			if( this.fromLocation.getIndex() < this.toLocation.getIndex() ) {
-				toDelta = -1;
-			} else {
-				toDelta = 0;
-			}
-		} else {
-			toDelta = 0;
-		}
-		return toDelta;
-	}
+  private int getToDelta() {
+    int toDelta;
+    if (this.fromLocation.getBlockStatement() == this.toLocation.getBlockStatement()) {
+      if (this.fromLocation.getIndex() < this.toLocation.getIndex()) {
+        toDelta = -1;
+      } else {
+        toDelta = 0;
+      }
+    } else {
+      toDelta = 0;
+    }
+    return toDelta;
+  }
 
-	private static void move( StatementListProperty remove, int removeIndex, StatementListProperty add, int addIndex ) {
-		Statement statement = remove.get( removeIndex );
-		remove.remove( removeIndex );
-		add.add( addIndex, statement );
-	}
+  private static void move(StatementListProperty remove, int removeIndex, StatementListProperty add, int addIndex) {
+    Statement statement = remove.get(removeIndex);
+    remove.remove(removeIndex);
+    add.add(addIndex, statement);
+  }
 
-	private int getCount() {
-		if( this.isMultiple ) {
-			return ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
-		} else {
-			return 1;
-		}
-	}
+  private int getCount() {
+    if (this.isMultiple) {
+      return ShiftDragStatementUtilities.calculateShiftMoveCount(fromLocation, toLocation);
+    } else {
+      return 1;
+    }
+  }
 
-	@Override
-	public void doOrRedoInternal( boolean isDo ) {
-		int toDelta = this.getToDelta();
-		StatementListProperty from = this.fromLocation.getBlockStatement().statements;
-		StatementListProperty to = this.toLocation.getBlockStatement().statements;
-		int fromIndex = this.fromLocation.getIndex();
-		int toIndex = this.toLocation.getIndex() + toDelta;
+  @Override
+  public void doOrRedoInternal(boolean isDo) {
+    int toDelta = this.getToDelta();
+    StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+    StatementListProperty to = this.toLocation.getBlockStatement().statements;
+    int fromIndex = this.fromLocation.getIndex();
+    int toIndex = this.toLocation.getIndex() + toDelta;
 
-		this.count = this.getCount();
-		if( ( this.count > 1 ) && ( from == to ) ) {
-			StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
-			if( fromIndex > toIndex ) {
-				List<Statement> l = Lists.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
-				statementListProperty.removeExclusive( fromIndex, fromIndex + count );
-				statementListProperty.addAll( toIndex, l );
-			} else {
-				throw new UnsupportedOperationException( fromIndex + " " + toIndex );
-			}
-		} else {
-			for( int i = 0; i < this.count; i++ ) {
-				move( from, fromIndex, to, toIndex + i );
-			}
-		}
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    this.count = this.getCount();
+    if ((this.count > 1) && (from == to)) {
+      StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
+      if (fromIndex > toIndex) {
+        List<Statement> l = Lists.newArrayList(statementListProperty.subList(fromIndex, fromIndex + count));
+        statementListProperty.removeExclusive(fromIndex, fromIndex + count);
+        statementListProperty.addAll(toIndex, l);
+      } else {
+        throw new UnsupportedOperationException(fromIndex + " " + toIndex);
+      }
+    } else {
+      for (int i = 0; i < this.count; i++) {
+        move(from, fromIndex, to, toIndex + i);
+      }
+    }
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	public void undoInternal() {
-		int toDelta = this.getToDelta();
+  @Override
+  public void undoInternal() {
+    int toDelta = this.getToDelta();
 
-		StatementListProperty from = this.fromLocation.getBlockStatement().statements;
-		StatementListProperty to = this.toLocation.getBlockStatement().statements;
-		int fromIndex = this.fromLocation.getIndex();
-		int toIndex = this.toLocation.getIndex() + toDelta;
+    StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+    StatementListProperty to = this.toLocation.getBlockStatement().statements;
+    int fromIndex = this.fromLocation.getIndex();
+    int toIndex = this.toLocation.getIndex() + toDelta;
 
-		if( ( this.count > 1 ) && ( from == to ) ) {
-			StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
-			if( fromIndex > toIndex ) {
-				List<Statement> l = Lists.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
-				statementListProperty.removeExclusive( toIndex, toIndex + count );
-				statementListProperty.addAll( fromIndex, l );
-			} else {
-				throw new UnsupportedOperationException( fromIndex + " " + toIndex );
-			}
-		} else {
-			for( int i = 0; i < this.count; i++ ) {
-				move( to, toIndex, from, fromIndex + i );
-			}
-		}
-		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-	}
+    if ((this.count > 1) && (from == to)) {
+      StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
+      if (fromIndex > toIndex) {
+        List<Statement> l = Lists.newArrayList(statementListProperty.subList(toIndex, toIndex + count));
+        statementListProperty.removeExclusive(toIndex, toIndex + count);
+        statementListProperty.addAll(fromIndex, l);
+      } else {
+        throw new UnsupportedOperationException(fromIndex + " " + toIndex);
+      }
+    } else {
+      for (int i = 0; i < this.count; i++) {
+        move(to, toIndex, from, fromIndex + i);
+      }
+    }
+    ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+  }
 
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "move: " );
-		NodeUtilities.safeAppendRepr( rv, this.getStatement(), Application.getLocale() );
-	}
+  @Override
+  protected void appendDescription(StringBuilder rv, DescriptionStyle descriptionStyle) {
+    rv.append("move: ");
+    NodeUtilities.safeAppendRepr(rv, this.getStatement(), Application.getLocale());
+  }
 }

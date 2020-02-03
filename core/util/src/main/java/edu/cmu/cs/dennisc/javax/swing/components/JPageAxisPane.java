@@ -49,10 +49,10 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class JPageAxisPane extends JBoxPane {
-	public JPageAxisPane( Component... components ) {
-		super( BoxLayout.PAGE_AXIS );
-		for( Component component : components ) {
-			this.add( component );
-		}
-	}
+  public JPageAxisPane(Component... components) {
+    super(BoxLayout.PAGE_AXIS);
+    for (Component component : components) {
+      this.add(component);
+    }
+  }
 }

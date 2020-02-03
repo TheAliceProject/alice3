@@ -53,21 +53,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class RenameMethodComposite extends RenameDeclarationComposite<UserMethod> {
-	private static Map<UserMethod, RenameMethodComposite> map = Maps.newHashMap();
+  private static Map<UserMethod, RenameMethodComposite> map = Maps.newHashMap();
 
-	public static synchronized RenameMethodComposite getInstance( UserMethod method ) {
-		assert method != null;
-		RenameMethodComposite rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameMethodComposite( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized RenameMethodComposite getInstance(UserMethod method) {
+    assert method != null;
+    RenameMethodComposite rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RenameMethodComposite(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private RenameMethodComposite( UserMethod method ) {
-		super( UUID.fromString( "5ce5b309-8163-437b-b5ed-c1fbdd6cd763" ), new MethodNameValidator( method ), method );
-	}
+  private RenameMethodComposite(UserMethod method) {
+    super(UUID.fromString("5ce5b309-8163-437b-b5ed-c1fbdd6cd763"), new MethodNameValidator(method), method);
+  }
 }

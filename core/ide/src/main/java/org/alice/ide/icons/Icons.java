@@ -54,29 +54,29 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class Icons {
-	private Icons() {
-		throw new AssertionError();
-	}
+  private Icons() {
+    throw new AssertionError();
+  }
 
-	public static final int SMALL_WIDTH = 24;
-	public static final int SMALL_HEIGHT = 24;
+  public static final int SMALL_WIDTH = 24;
+  public static final int SMALL_HEIGHT = 24;
 
-	public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon( 0, SMALL_HEIGHT );
-	public static final Icon BOOKMARK_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) );
-	public static final Icon BOOKMARK_ICON_SMALL = new ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT );
+  public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon(0, SMALL_HEIGHT);
+  public static final Icon BOOKMARK_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/256x256/bookmark.png"));
+  public static final Icon BOOKMARK_ICON_SMALL = new ScaledIcon(BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT);
 
-	public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) );
-	public static final Icon FOLDER_BACK_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) );
-	public static final Icon FOLDER_FRONT_ICON_LARGE = IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) );
+  public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/folder.png"));
+  public static final Icon FOLDER_BACK_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderBack.png"));
+  public static final Icon FOLDER_FRONT_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderFront.png"));
 
-	public static final Dimension FOLDER_ICON_LARGE_SIZE = new Dimension( FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight() );
+  public static final Dimension FOLDER_ICON_LARGE_SIZE = new Dimension(FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight());
 
-	public static final Icon NEXT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
-	public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
+  public static final Icon NEXT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/go-next.png"));
+  public static final Icon PREVIOUS_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/go-previous.png"));
 
-	public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-open.png" ) );
-	public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/document-save.png" ) );
+  public static final Icon OPEN_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/document-open.png"));
+  public static final Icon SAVE_DOCUMENT_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/document-save.png"));
 
-	public static final Icon TRASH_CAN_FULL_ICON = IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
-	public static final Icon TRASH_CAN_EMPTY_ICON = IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
+  public static final Icon TRASH_CAN_FULL_ICON = IconUtilities.createImageIcon(Icons.class.getResource("images/32x40/fulltrash.png"));
+  public static final Icon TRASH_CAN_EMPTY_ICON = IconUtilities.createImageIcon(Icons.class.getResource("images/32x40/emptytrash.png"));
 }

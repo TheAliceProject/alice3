@@ -46,6 +46,5 @@ package edu.cmu.cs.dennisc.render.gl.imp;
  * @author Dennis Cosgrove
  */
 /*package-private*/enum IsFrameBufferIntact {
-	TRUE,
-	FALSE;
+  TRUE, FALSE
 }

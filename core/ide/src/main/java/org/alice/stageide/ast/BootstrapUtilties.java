@@ -107,236 +107,235 @@ import java.util.ArrayList;
  * @author Dennis Cosgrove
  */
 public class BootstrapUtilties {
-	private static NamedUserType createType( String name, AbstractType<?, ?, ?> superType ) {
-		NamedUserType rv = new NamedUserType();
-		rv.name.setValue( name );
-		rv.superType.setValue( superType );
-		NamedUserConstructor constructor = new NamedUserConstructor();
-		ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement();
-		SuperConstructorInvocationStatement superConstructorInvocationStatement = new SuperConstructorInvocationStatement();
-		superConstructorInvocationStatement.constructor.setValue( superType.getDeclaredConstructor() );
-		constructorBlockStatement.constructorInvocationStatement.setValue( superConstructorInvocationStatement );
-		constructor.body.setValue( constructorBlockStatement );
-		rv.constructors.add( constructor );
-		return rv;
-	}
+  private static NamedUserType createType(String name, AbstractType<?, ?, ?> superType) {
+    NamedUserType rv = new NamedUserType();
+    rv.name.setValue(name);
+    rv.superType.setValue(superType);
+    NamedUserConstructor constructor = new NamedUserConstructor();
+    ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement();
+    SuperConstructorInvocationStatement superConstructorInvocationStatement = new SuperConstructorInvocationStatement();
+    superConstructorInvocationStatement.constructor.setValue(superType.getDeclaredConstructor());
+    constructorBlockStatement.constructorInvocationStatement.setValue(superConstructorInvocationStatement);
+    constructor.body.setValue(constructorBlockStatement);
+    rv.constructors.add(constructor);
+    return rv;
+  }
 
-	private static NamedUserType createType( String name, Class<?> superCls ) {
-		return createType( name, JavaType.getInstance( superCls ) );
-	}
+  private static NamedUserType createType(String name, Class<?> superCls) {
+    return createType(name, JavaType.getInstance(superCls));
+  }
 
-	private static UserField createPrivateFinalField( AbstractType<?, ?, ?> valueType, String name ) {
-		UserField rv = new UserField();
-		rv.accessLevel.setValue( AccessLevel.PRIVATE );
-		rv.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
-		rv.valueType.setValue( valueType );
-		rv.name.setValue( name );
-		rv.initializer.setValue( AstUtilities.createInstanceCreation( valueType ) );
-		return rv;
-	}
+  private static UserField createPrivateFinalField(AbstractType<?, ?, ?> valueType, String name) {
+    UserField rv = new UserField();
+    rv.accessLevel.setValue(AccessLevel.PRIVATE);
+    rv.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
+    rv.valueType.setValue(valueType);
+    rv.name.setValue(name);
+    rv.initializer.setValue(AstUtilities.createInstanceCreation(valueType));
+    return rv;
+  }
 
-	static UserField createPrivateFinalField(Class<?> cls, String name) {
-		return createPrivateFinalField( JavaType.getInstance( cls ), name );
-	}
+  static UserField createPrivateFinalField(Class<?> cls, String name) {
+    return createPrivateFinalField(JavaType.getInstance(cls), name);
+  }
 
-	private static void addCommentIfNecessaryToMethod(UserMethod userMethod ) {
-		String innerComment = StoryApiSpecificAstUtilities.getInnerCommentForMethodName( userMethod.getDeclaringType(), userMethod.getName() );
-		if( innerComment != null ) {
-			StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
-			bodyStatementsProperty.add( 0, new Comment( innerComment ) );
-		}
-	}
+  private static void addCommentIfNecessaryToMethod(UserMethod userMethod) {
+    String innerComment = StoryApiSpecificAstUtilities.getInnerCommentForMethodName(userMethod.getDeclaringType(), userMethod.getName());
+    if (innerComment != null) {
+      StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
+      bodyStatementsProperty.add(0, new Comment(innerComment));
+    }
+  }
 
-	private static UserMethod createProcedure(AccessLevel access, String name) {
-		UserMethod rv = new UserMethod();
-		rv.accessLevel.setValue( access );
-		rv.returnType.setValue( JavaType.getInstance(Void.TYPE) );
-		rv.name.setValue( name );
-		rv.body.setValue( new BlockStatement() );
-		return rv;
-	}
+  private static UserMethod createProcedure(AccessLevel access, String name) {
+    UserMethod rv = new UserMethod();
+    rv.accessLevel.setValue(access);
+    rv.returnType.setValue(JavaType.getInstance(Void.TYPE));
+    rv.name.setValue(name);
+    rv.body.setValue(new BlockStatement());
+    return rv;
+  }
 
-	static ExpressionStatement createMethodInvocationStatement(Expression expression, AbstractMethod method, Expression... argumentExpressions) {
-		return AstUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
-	}
+  static ExpressionStatement createMethodInvocationStatement(Expression expression, AbstractMethod method, Expression... argumentExpressions) {
+    return AstUtilities.createMethodInvocationStatement(expression, method, argumentExpressions);
+  }
 
-	private static LocalDeclarationStatement createStoryDeclaration(AbstractType<?, ?, ?> type) {
-		UserLocal local = new UserLocal("story", type, true);
-		return AstUtilities.createLocalDeclarationStatement( local, new InstanceCreation( type.getDeclaredConstructor() ) );
-	}
+  private static LocalDeclarationStatement createStoryDeclaration(AbstractType<?, ?, ?> type) {
+    UserLocal local = new UserLocal("story", type, true);
+    return AstUtilities.createLocalDeclarationStatement(local, new InstanceCreation(type.getDeclaredConstructor()));
+  }
 
-	static FieldAccess createFieldAccess(Enum<?> value) {
-		return AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
-	}
+  static FieldAccess createFieldAccess(Enum<?> value) {
+    return AstUtilities.createStaticFieldAccess(value.getClass(), value.name());
+  }
 
-	//todo
-	public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
+  //todo
+  public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
 
-	static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
-		UserField cameraField = createPrivateFinalField( SCamera.class, "camera" );
-		cameraField.isDeletionAllowed.setValue( false );
-		cameraField.managementLevel.setValue( ManagementLevel.MANAGED );
+  static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
+    UserField cameraField = createPrivateFinalField(SCamera.class, "camera");
+    cameraField.isDeletionAllowed.setValue(false);
+    cameraField.managementLevel.setValue(ManagementLevel.MANAGED);
 
-		UserMethod myFirstMethod = createProcedure(AccessLevel.PUBLIC, MY_FIRST_PROCEDURE_NAME );
+    UserMethod myFirstMethod = createProcedure(AccessLevel.PUBLIC, MY_FIRST_PROCEDURE_NAME);
 
-		UserMethod performGeneratedSetupMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
-		performGeneratedSetupMethod.managementLevel.setValue( ManagementLevel.MANAGED );
-		BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
+    UserMethod performGeneratedSetupMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME);
+    performGeneratedSetupMethod.managementLevel.setValue(ManagementLevel.MANAGED);
+    BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 
-		UserMethod initializeEventListenersMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+    UserMethod initializeEventListenersMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
 
-		UserLambda sceneActivationListener = AstUtilities.createUserLambda( SceneActivationListener.class );
-		LambdaExpression sceneActivationListenerExpression = new LambdaExpression( sceneActivationListener );
+    UserLambda sceneActivationListener = AstUtilities.createUserLambda(SceneActivationListener.class);
+    LambdaExpression sceneActivationListenerExpression = new LambdaExpression(sceneActivationListener);
 
-		JavaMethod addSceneActivationListenerMethod = JavaMethod.getInstance( SScene.class, "addSceneActivationListener", SceneActivationListener.class );
+    JavaMethod addSceneActivationListenerMethod = JavaMethod.getInstance(SScene.class, "addSceneActivationListener", SceneActivationListener.class);
 
-		initializeEventListenersMethod.body.getValue().statements.add( AstUtilities.createMethodInvocationStatement( new ThisExpression(), addSceneActivationListenerMethod, sceneActivationListenerExpression ) );
+    initializeEventListenersMethod.body.getValue().statements.add(AstUtilities.createMethodInvocationStatement(new ThisExpression(), addSceneActivationListenerMethod, sceneActivationListenerExpression));
 
-		UserField[] fields = new UserField[ modelFields.length + 1 ];
-		System.arraycopy( modelFields, 0, fields, 0, modelFields.length );
-		fields[ modelFields.length ] = cameraField;
+    UserField[] fields = new UserField[modelFields.length + 1];
+    System.arraycopy(modelFields, 0, fields, 0, modelFields.length);
+    fields[modelFields.length] = cameraField;
 
-		for( UserField field : fields ) {
-			AbstractMethod method = field.getValueType().findMethod( "setVehicle", SThing.class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new FieldAccess(field), method, new ThisExpression() ) );
-		}
+    for (UserField field : fields) {
+      AbstractMethod method = field.getValueType().findMethod("setVehicle", SThing.class);
+      performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new FieldAccess(field), method, new ThisExpression()));
+    }
 
-		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-		m.applyRotationAboutYAxis( new AngleInRadians( Math.PI ) );
-		m.applyRotationAboutXAxis( new AngleInRadians( -Math.PI / 16.0 ) );
-		m.applyTranslationAlongZAxis( 8 );
+    AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
+    m.applyRotationAboutYAxis(new AngleInRadians(Math.PI));
+    m.applyRotationAboutXAxis(new AngleInRadians(-Math.PI / 16.0));
+    m.applyTranslationAlongZAxis(8);
 
-		UnitQuaternion quat = new UnitQuaternion( m.orientation );
-		try {
-			performGeneratedSetupBody.statements.add( SetUpMethodGenerator.createOrientationStatement( false, cameraField, new Orientation( quat.x, quat.y, quat.z, quat.w ) ) );
-			performGeneratedSetupBody.statements.add( SetUpMethodGenerator.createPositionStatement( false, cameraField, new Position( m.translation.x, m.translation.y, m.translation.z ) ) );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			throw new RuntimeException( ccee );
-		}
-		if( atmosphereColor != null ) {
-			JavaMethod setAtmosphereColorMethod = JavaMethod.getInstance( SScene.class, "setAtmosphereColor", Color.class, SetAtmosphereColor.Detail[].class );
-			try {
-				Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( atmosphereColor );
-				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new ThisExpression(), setAtmosphereColorMethod, colorExpression ) );
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e ) {
-				Logger.severe( "This exception should not occure: " + e );
-			}
-		}
-		if (!Double.isNaN(fogDensity)) {
-			JavaMethod setFogDensityMethod = JavaMethod.getInstance( SScene.class, "setFogDensity", Number.class, SetFogDensity.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new ThisExpression(), setFogDensityMethod, new DoubleLiteral( fogDensity ) ) );
-		}
-		if( aboveLightColor != null ) {
-			JavaMethod setAboveLightColorMethod = JavaMethod.getInstance( SScene.class, "setFromAboveLightColor", Color.class, SetFromAboveLightColor.Detail[].class );
-			try {
-				Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( aboveLightColor );
-				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new ThisExpression(), setAboveLightColorMethod, colorExpression ) );
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e ) {
-				Logger.severe( "This exception should not occure: " + e );
-			}
-		}
-		if( belowLightColor != null ) {
-			JavaMethod setBelowLightColorMethod = JavaMethod.getInstance( SScene.class, "setFromBelowLightColor", Color.class, SetFromBelowLightColor.Detail[].class );
-			try {
-				Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( belowLightColor );
-				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new ThisExpression(), setBelowLightColorMethod, colorExpression ) );
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e ) {
-				Logger.severe( "This exception should not occure: " + e );
-			}
-		}
-		performGeneratedSetupBody.statements.add( setupStatements );
+    UnitQuaternion quat = new UnitQuaternion(m.orientation);
+    try {
+      performGeneratedSetupBody.statements.add(SetUpMethodGenerator.createOrientationStatement(false, cameraField, new Orientation(quat.x, quat.y, quat.z, quat.w)));
+      performGeneratedSetupBody.statements.add(SetUpMethodGenerator.createPositionStatement(false, cameraField, new Position(m.translation.x, m.translation.y, m.translation.z)));
+    } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
+      throw new RuntimeException(ccee);
+    }
+    if (atmosphereColor != null) {
+      JavaMethod setAtmosphereColorMethod = JavaMethod.getInstance(SScene.class, "setAtmosphereColor", Color.class, SetAtmosphereColor.Detail[].class);
+      try {
+        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
+        performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setAtmosphereColorMethod, colorExpression));
+      } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
+        Logger.severe("This exception should not occure: " + e);
+      }
+    }
+    if (!Double.isNaN(fogDensity)) {
+      JavaMethod setFogDensityMethod = JavaMethod.getInstance(SScene.class, "setFogDensity", Number.class, SetFogDensity.Detail[].class);
+      performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setFogDensityMethod, new DoubleLiteral(fogDensity)));
+    }
+    if (aboveLightColor != null) {
+      JavaMethod setAboveLightColorMethod = JavaMethod.getInstance(SScene.class, "setFromAboveLightColor", Color.class, SetFromAboveLightColor.Detail[].class);
+      try {
+        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(aboveLightColor);
+        performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setAboveLightColorMethod, colorExpression));
+      } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
+        Logger.severe("This exception should not occure: " + e);
+      }
+    }
+    if (belowLightColor != null) {
+      JavaMethod setBelowLightColorMethod = JavaMethod.getInstance(SScene.class, "setFromBelowLightColor", Color.class, SetFromBelowLightColor.Detail[].class);
+      try {
+        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(belowLightColor);
+        performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setBelowLightColorMethod, colorExpression));
+      } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
+        Logger.severe("This exception should not occure: " + e);
+      }
+    }
+    performGeneratedSetupBody.statements.add(setupStatements);
 
-		UserMethod performCustomSetupMethod = createProcedure(AccessLevel.PRIVATE, "performCustomSetup" );
+    UserMethod performCustomSetupMethod = createProcedure(AccessLevel.PRIVATE, "performCustomSetup");
 
-		UserMethod handleActiveChangedMethod = createProcedure(AccessLevel.PROTECTED, "handleActiveChanged" );
-		UserParameter isActiveParameter = new UserParameter( "isActive", Boolean.class );
-		UserParameter activeCountParameter = new UserParameter( "activationCount", Integer.class );
-		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
-		handleActiveChangedMethod.requiredParameters.add( activeCountParameter );
-		handleActiveChangedMethod.isSignatureLocked.setValue( true );
-		handleActiveChangedMethod.managementLevel.setValue( ManagementLevel.GENERATED );
+    UserMethod handleActiveChangedMethod = createProcedure(AccessLevel.PROTECTED, "handleActiveChanged");
+    UserParameter isActiveParameter = new UserParameter("isActive", Boolean.class);
+    UserParameter activeCountParameter = new UserParameter("activationCount", Integer.class);
+    handleActiveChangedMethod.requiredParameters.add(isActiveParameter);
+    handleActiveChangedMethod.requiredParameters.add(activeCountParameter);
+    handleActiveChangedMethod.isSignatureLocked.setValue(true);
+    handleActiveChangedMethod.managementLevel.setValue(ManagementLevel.GENERATED);
 
-		BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
+    BlockStatement handleActiveChangedBody = handleActiveChangedMethod.body.getValue();
 
-		ConditionalStatement ifOuter = AstUtilities.createConditionalStatement( new ParameterAccess( isActiveParameter ) );
-		ConditionalStatement ifInner = AstUtilities.createConditionalStatement( new RelationalInfixExpression( new ParameterAccess( activeCountParameter ), RelationalInfixExpression.Operator.EQUALS, new IntegerLiteral( 1 ), Integer.class, Integer.class ) );
-		BlockStatement ifOuterTrueBody = ifOuter.booleanExpressionBodyPairs.get( 0 ).body.getValue();
-		BlockStatement ifInnerTrueBody = ifInner.booleanExpressionBodyPairs.get( 0 ).body.getValue();
-		BlockStatement ifInnerFalseBody = ifInner.elseBody.getValue();
-		BlockStatement ifOuterFalseBody = ifOuter.elseBody.getValue();
+    ConditionalStatement ifOuter = AstUtilities.createConditionalStatement(new ParameterAccess(isActiveParameter));
+    ConditionalStatement ifInner = AstUtilities.createConditionalStatement(new RelationalInfixExpression(new ParameterAccess(activeCountParameter), RelationalInfixExpression.Operator.EQUALS, new IntegerLiteral(1), Integer.class, Integer.class));
+    BlockStatement ifOuterTrueBody = ifOuter.booleanExpressionBodyPairs.get(0).body.getValue();
+    BlockStatement ifInnerTrueBody = ifInner.booleanExpressionBodyPairs.get(0).body.getValue();
+    BlockStatement ifInnerFalseBody = ifInner.elseBody.getValue();
+    BlockStatement ifOuterFalseBody = ifOuter.elseBody.getValue();
 
-		ifOuterTrueBody.statements.add( ifInner );
+    ifOuterTrueBody.statements.add(ifInner);
 
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new ThisExpression(), performGeneratedSetupMethod ) );
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new ThisExpression(), performCustomSetupMethod ) );
-		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new ThisExpression(), initializeEventListenersMethod ) );
+    ifInnerTrueBody.statements.add(createMethodInvocationStatement(new ThisExpression(), performGeneratedSetupMethod));
+    ifInnerTrueBody.statements.add(createMethodInvocationStatement(new ThisExpression(), performCustomSetupMethod));
+    ifInnerTrueBody.statements.add(createMethodInvocationStatement(new ThisExpression(), initializeEventListenersMethod));
 
-		Class<?> sceneCls = SScene.class;
+    Class<?> sceneCls = SScene.class;
 
-		JavaMethod preserveVehiclesAndVantagePointsMethod = JavaMethod.getInstance( sceneCls, "preserveStateAndEventListeners" );
-		JavaMethod restoreVehiclesAndVantagePointsMethod = JavaMethod.getInstance( sceneCls, "restoreStateAndEventListeners" );
-		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
-		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
+    JavaMethod preserveVehiclesAndVantagePointsMethod = JavaMethod.getInstance(sceneCls, "preserveStateAndEventListeners");
+    JavaMethod restoreVehiclesAndVantagePointsMethod = JavaMethod.getInstance(sceneCls, "restoreStateAndEventListeners");
+    ifInnerFalseBody.statements.add(createMethodInvocationStatement(new ThisExpression(), restoreVehiclesAndVantagePointsMethod));
+    ifOuterFalseBody.statements.add(createMethodInvocationStatement(new ThisExpression(), preserveVehiclesAndVantagePointsMethod));
 
-		handleActiveChangedBody.statements.add( ifOuter );
+    handleActiveChangedBody.statements.add(ifOuter);
 
-		NamedUserType sceneType = createType( "Scene", SScene.class );
-		sceneType.fields.add( fields );
-		sceneType.methods.add( performCustomSetupMethod );
-		sceneType.methods.add( performGeneratedSetupMethod );
-		sceneType.methods.add( initializeEventListenersMethod );
-		sceneType.methods.add( handleActiveChangedMethod );
-		sceneType.methods.add( myFirstMethod );
+    NamedUserType sceneType = createType("Scene", SScene.class);
+    sceneType.fields.add(fields);
+    sceneType.methods.add(performCustomSetupMethod);
+    sceneType.methods.add(performGeneratedSetupMethod);
+    sceneType.methods.add(initializeEventListenersMethod);
+    sceneType.methods.add(handleActiveChangedMethod);
+    sceneType.methods.add(myFirstMethod);
 
-		//Go through all the generated methods and add comments to the body if there is a comment defined in the CodeComments.properties file
-		for( UserMethod method : sceneType.methods.getValue() ) {
-			addCommentIfNecessaryToMethod( method );
-		}
+    //Go through all the generated methods and add comments to the body if there is a comment defined in the CodeComments.properties file
+    for (UserMethod method : sceneType.methods.getValue()) {
+      addCommentIfNecessaryToMethod(method);
+    }
 
-		UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-		sceneActivationListener.body.getValue().statements.add( createMethodInvocationStatement( new ThisExpression(), myFirstMethod ) );
+    UserField sceneField = createPrivateFinalField(sceneType, "myScene");
+    sceneActivationListener.body.getValue().statements.add(createMethodInvocationStatement(new ThisExpression(), myFirstMethod));
 
-		NamedUserType rv = createType( "Program", SProgram.class );
-		rv.fields.add( sceneField );
+    NamedUserType rv = createType("Program", SProgram.class);
+    rv.fields.add(sceneField);
 
-		UserParameter argsParameter = new UserParameter( "args", String[].class );
-		UserMethod mainMethod = createProcedure(AccessLevel.PUBLIC, "main" );
-		mainMethod.requiredParameters.add( argsParameter );
-		BlockStatement mainBody = mainMethod.body.getValue();
+    UserParameter argsParameter = new UserParameter("args", String[].class);
+    UserMethod mainMethod = createProcedure(AccessLevel.PUBLIC, "main");
+    mainMethod.requiredParameters.add(argsParameter);
+    BlockStatement mainBody = mainMethod.body.getValue();
 
-		mainMethod.isStatic.setValue( true );
-		mainMethod.isSignatureLocked.setValue( true );
+    mainMethod.isStatic.setValue(true);
+    mainMethod.isSignatureLocked.setValue(true);
 
-		LocalDeclarationStatement storyDeclaration = createStoryDeclaration(rv);
-		UserLocal storyLocal = storyDeclaration.local.getValue();
-		mainBody.statements.add( storyDeclaration );
-		mainBody.statements.add( createMethodInvocationStatement( new LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new LocalAccess( storyLocal ), StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, new MethodInvocation( new LocalAccess( storyLocal ), sceneField.getGetter() ) ) );
+    LocalDeclarationStatement storyDeclaration = createStoryDeclaration(rv);
+    UserLocal storyLocal = storyDeclaration.local.getValue();
+    mainBody.statements.add(storyDeclaration);
+    mainBody.statements.add(createMethodInvocationStatement(new LocalAccess(storyLocal), rv.findMethod("initializeInFrame", String[].class), new ParameterAccess(argsParameter)));
+    mainBody.statements.add(createMethodInvocationStatement(new LocalAccess(storyLocal), StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, new MethodInvocation(new LocalAccess(storyLocal), sceneField.getGetter())));
 
-		rv.methods.add( mainMethod );
-		addCommentIfNecessaryToMethod( mainMethod );
+    rv.methods.add(mainMethod);
+    addCommentIfNecessaryToMethod(mainMethod);
 
-		return rv;
-	}
+    return rv;
+  }
 
-	public static NamedUserType createProgramType( SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity ) {
+  public static NamedUserType createProgramType(SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
 
-		UserField groundField = createPrivateFinalField( SGround.class, "ground" );
+    UserField groundField = createPrivateFinalField(SGround.class, "ground");
 
-		groundField.managementLevel.setValue( ManagementLevel.MANAGED );
+    groundField.managementLevel.setValue(ManagementLevel.MANAGED);
 
-		UserField[] modelFields = { groundField
-		};
-		ArrayList<ExpressionStatement> setupStatements = new ArrayList<>();
+    UserField[] modelFields = {groundField};
+    ArrayList<ExpressionStatement> setupStatements = new ArrayList<>();
 
-		JavaMethod setPaintMethod = JavaMethod.getInstance( SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setPaintMethod, createFieldAccess(appearance ) ) );
+    JavaMethod setPaintMethod = JavaMethod.getInstance(SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class);
+    setupStatements.add(createMethodInvocationStatement(new FieldAccess(groundField), setPaintMethod, createFieldAccess(appearance)));
 
-		if( groundOpacity != 1 ) {
-			JavaMethod setGroundOpacityMethod = JavaMethod.getInstance( SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
-			setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity ) ) );
-		}
+    if (groundOpacity != 1) {
+      JavaMethod setGroundOpacityMethod = JavaMethod.getInstance(SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class);
+      setupStatements.add(createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity)));
+    }
 
-		return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
-	}
+    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);
+  }
 }

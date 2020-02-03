@@ -46,5 +46,5 @@ package org.lgna.croquet.event;
  * @author Dennis Cosgrove
  */
 public interface ValueListener<T> {
-	public void valueChanged( ValueEvent<T> e );
+  public void valueChanged(ValueEvent<T> e);
 }

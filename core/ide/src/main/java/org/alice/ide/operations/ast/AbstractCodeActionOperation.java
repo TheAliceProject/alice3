@@ -52,9 +52,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeActionOperation extends ActionOperation {
-	public AbstractCodeActionOperation( UUID individualId ) {
-		super( Application.PROJECT_GROUP, individualId );
-	}
+  public AbstractCodeActionOperation(UUID individualId) {
+    super(Application.PROJECT_GROUP, individualId);
+  }
 
-	protected abstract UserCode getCode();
+  protected abstract UserCode getCode();
 }

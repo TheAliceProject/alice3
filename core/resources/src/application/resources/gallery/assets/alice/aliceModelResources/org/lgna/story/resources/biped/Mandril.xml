@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Mandril">
+    <BoundingBox>
+        <Min x="-0.4302499870393756" y="-0.011208849593224544" z="-0.34967165216886564"/>
+        <Max x="0.4302518011491564" y="1.4344605990812267" z="0.5084893126920311"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>savanna</Tag>
+        <Tag>monkey</Tag>
+        <Tag>ape</Tag>
+        <Tag>rafiki</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Mandril" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2015" creator="Laura Paoletti" name="SoccerGoal">
+    <BoundingBox>
+        <Min x="-1.2022407054901123" y="-0.0075330352410674095" z="-0.19146400690078735"/>
+        <Max x="1.1535707712173462" y="1.527251124382019" z="1.306656002998352"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>soccer</Tag>
+        <Tag>soccer goal</Tag>
+        <Tag>goal</Tag>
+        <Tag>net</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="SoccerGoal" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

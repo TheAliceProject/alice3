@@ -53,53 +53,53 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
-	private String titleText;
+  private String titleText;
 
-	public AbstractTabComposite( UUID id ) {
-		super( id );
-	}
+  public AbstractTabComposite(UUID id) {
+    super(id);
+  }
 
-	@Override
-	public boolean isPotentiallyCloseable() {
-		return this.isCloseable();
-	}
+  @Override
+  public boolean isPotentiallyCloseable() {
+    return this.isCloseable();
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		ScrollPane rv = new ScrollPane();
-		return rv;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    ScrollPane rv = new ScrollPane();
+    return rv;
+  }
 
-	@Override
-	protected final void localize() {
-		super.localize();
-		this.titleText = this.findDefaultLocalizedText();
-	}
+  @Override
+  protected final void localize() {
+    super.localize();
+    this.titleText = this.findDefaultLocalizedText();
+  }
 
-	@Override
-	public void appendUserRepr( StringBuilder userRepr ) {
-		if( this.titleText != null ) {
-			//pass
-		} else {
-			this.initializeIfNecessary();
-		}
-		userRepr.append( this.titleText );
-	}
+  @Override
+  public void appendUserRepr(StringBuilder userRepr) {
+    if (this.titleText != null) {
+      //pass
+    } else {
+      this.initializeIfNecessary();
+    }
+    userRepr.append(this.titleText);
+  }
 
-	@Override
-	protected final void appendRepr( StringBuilder repr ) {
-		this.appendUserRepr( repr );
-	}
+  @Override
+  protected final void appendRepr(StringBuilder repr) {
+    this.appendUserRepr(repr);
+  }
 
-	@Override
-	protected String createRepr() {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb );
-		return sb.toString();
-	}
+  @Override
+  protected String createRepr() {
+    StringBuilder sb = new StringBuilder();
+    this.appendRepr(sb);
+    return sb.toString();
+  }
 
-	@Override
-	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
-		button.setBackgroundColor( this.getView().getBackgroundColor() );
-	}
+  @Override
+  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
+    button.setBackgroundColor(this.getView().getBackgroundColor());
+  }
 }

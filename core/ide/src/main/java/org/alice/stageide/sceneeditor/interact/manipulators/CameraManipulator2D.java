@@ -49,9 +49,9 @@ import org.alice.interact.manipulator.CameraManipulator;
  * @author David Culyba
  */
 public abstract class CameraManipulator2D extends CameraManipulator {
-	public CameraManipulator2D( ManipulationHandle2D handle ) {
-		this.handle = handle;
-	}
+  public CameraManipulator2D(ManipulationHandle2D handle) {
+    this.handle = handle;
+  }
 
-	protected final ManipulationHandle2D handle;
+  protected final ManipulationHandle2D handle;
 }

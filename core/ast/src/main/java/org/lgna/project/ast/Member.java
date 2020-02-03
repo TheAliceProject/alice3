@@ -47,5 +47,5 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface Member extends Declaration {
-	public AbstractType<?, ?, ?> getDeclaringType();
+  public AbstractType<?, ?, ?> getDeclaringType();
 }

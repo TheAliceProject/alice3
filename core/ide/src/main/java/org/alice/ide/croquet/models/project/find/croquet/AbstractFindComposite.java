@@ -85,165 +85,165 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
  * @author Matt May
  */
 public abstract class AbstractFindComposite extends FrameCompositeWithInternalIsShowingState<FindView> {
-	public static final Group FIND_COMPOSITE_GROUP = Group.getInstance( UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
+  public static final Group FIND_COMPOSITE_GROUP = Group.getInstance(UUID.fromString("609c0bf5-73c3-4987-a2b5-8225c19f7886"));
 
-	private final FindContentManager manager = new FindContentManager();
-	private final StringState searchState = createStringState( "searchState" );
-	private final BooleanState isNavigationEnabledState = createBooleanState( "isNavigationEnabledState", true );
-	private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
-	private boolean isActive;
-	private boolean showGenerated = false;
+  private final FindContentManager manager = new FindContentManager();
+  private final StringState searchState = createStringState("searchState");
+  private final BooleanState isNavigationEnabledState = createBooleanState("isNavigationEnabledState", true);
+  private final FindReferencesTreeState referenceTreeState = new FindReferencesTreeState();
+  private boolean isActive;
+  private boolean showGenerated = false;
 
-	protected AbstractFindComposite( UUID migrationID ) {
-		super( migrationID, FIND_COMPOSITE_GROUP );
-	}
+  protected AbstractFindComposite(UUID migrationID) {
+    super(migrationID, FIND_COMPOSITE_GROUP);
+  }
 
-	private final ValueListener<String> searchStateListener = new ValueListener<String>() {
-		@Override
-		public void valueChanged( ValueEvent<String> e ) {
-			data.refresh();
-			referenceTreeState.refreshWith( searchResultsState.getValue() );
-			if( data.getItemCount() == 1 ) {
-				searchResultsState.setSelectedIndex( 0 );
-			}
-			getView().revalidateAndRepaint();
-		}
-	};
+  private final ValueListener<String> searchStateListener = new ValueListener<String>() {
+    @Override
+    public void valueChanged(ValueEvent<String> e) {
+      data.refresh();
+      referenceTreeState.refreshWith(searchResultsState.getValue());
+      if (data.getItemCount() == 1) {
+        searchResultsState.setSelectedIndex(0);
+      }
+      getView().revalidateAndRepaint();
+    }
+  };
 
-	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			refresh();
-		}
-	};
+  private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
+    @Override
+    public void projectChanged() {
+      refresh();
+    }
+  };
 
-	private final ValueListener<ProjectDocument> projectDocumentChangeListener = new ValueListener<ProjectDocument>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectDocument> e ) {
-			refresh();
-		}
-	};
+  private final ValueListener<ProjectDocument> projectDocumentChangeListener = new ValueListener<ProjectDocument>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectDocument> e) {
+      refresh();
+    }
+  };
 
-	private final ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
-		@Override
-		public void valueChanged( ValueEvent<SearchResult> e ) {
-			referenceTreeState.refreshWith( e.getNextValue() );
-		}
-	};
+  private final ValueListener<SearchResult> searchResultsListener = new ValueListener<SearchResult>() {
+    @Override
+    public void valueChanged(ValueEvent<SearchResult> e) {
+      referenceTreeState.refreshWith(e.getNextValue());
+    }
+  };
 
-	private final ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
-		@Override
-		public void valueChanged( ValueEvent<SearchTreeNode> e ) {
-			SearchTreeNode nextValue = e.getNextValue();
-			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
-				if( nextValue.getValue() instanceof Expression ) {
-					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					SearchResult searchResults = searchResultsState.getValue();
-					if (searchResults != null) {
-						searchResults.stencilHighlightForReference( (Expression) nextValue.getValue() );
-					}
-				} else {
-					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
-				}
-			}
-		}
-	};
+  private final ValueListener<SearchTreeNode> referenceTreeListener = new ValueListener<SearchTreeNode>() {
+    @Override
+    public void valueChanged(ValueEvent<SearchTreeNode> e) {
+      SearchTreeNode nextValue = e.getNextValue();
+      if (isNavigationEnabledState.getValue() && (nextValue != null)) {
+        if (nextValue.getValue() instanceof Expression) {
+          IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite(DeclarationComposite.getInstance(((Expression) nextValue.getValue()).getFirstAncestorAssignableTo(UserMethod.class)));
+          SearchResult searchResults = searchResultsState.getValue();
+          if (searchResults != null) {
+            searchResults.stencilHighlightForReference((Expression) nextValue.getValue());
+          }
+        } else {
+          IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite(DeclarationComposite.getInstance(((Expression) nextValue.getChildren().get(0).getValue()).getFirstAncestorAssignableTo(UserMethod.class)));
+          IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
+        }
+      }
+    }
+  };
 
-	private static final ItemCodec<SearchResult> SEARCH_RESULT_CODEC = DefaultItemCodec.createInstance( SearchResult.class );
-	private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>( SEARCH_RESULT_CODEC ) {
+  private static final ItemCodec<SearchResult> SEARCH_RESULT_CODEC = DefaultItemCodec.createInstance(SearchResult.class);
+  private final RefreshableListData<SearchResult> data = new RefreshableListData<SearchResult>(SEARCH_RESULT_CODEC) {
 
-		@Override
-		protected List createValues() {
-			return setSearchResults();
-		}
+    @Override
+    protected List createValues() {
+      return setSearchResults();
+    }
 
-	};
-	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
+  };
+  private final ActionOperation howToAddOperation = createActionOperation("howToAdd", new Action() {
 
-		@Override
-		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
-			//needs work
-			if( searchResultsState.getValue() != null ) {
-				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
-				AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo( AbstractMethod.class );
-				if( searchObject instanceof AbstractMethod ) {
-					AbstractType<?, ?, ?> declaringType = ( (AbstractMethod)searchObject ).getDeclaringType();
-					IDE.getActiveInstance().getMethodInvocations( (AbstractMethod)searchObject );
-				}
-			}
-			return null;
-		}
+    @Override
+    public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
+      //needs work
+      if (searchResultsState.getValue() != null) {
+        AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();
+        AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo(AbstractMethod.class);
+        if (searchObject instanceof AbstractMethod) {
+          AbstractType<?, ?, ?> declaringType = ((AbstractMethod) searchObject).getDeclaringType();
+          IDE.getActiveInstance().getMethodInvocations((AbstractMethod) searchObject);
+        }
+      }
+      return null;
+    }
 
-	} );
-	private final RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState( "searchResultsState", data, -1 );
+  });
+  private final RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState("searchResultsState", data, -1);
 
-	private void refresh() {
-		if( this.isActive ) {
-			manager.refresh( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
-			data.refresh();
-		}
-	}
+  private void refresh() {
+    if (this.isActive) {
+      manager.refresh((UserType) IDE.getActiveInstance().getProgramType().fields.get(0).getValueType(), getCriteria());
+      data.refresh();
+    }
+  }
 
-	protected List<SearchResult> setSearchResults() {
-		return manager.getResultsForString( searchState.getValue() );
-	}
+  protected List<SearchResult> setSearchResults() {
+    return manager.getResultsForString(searchState.getValue());
+  }
 
-	@Override
-	protected FindView createView() {
-		return new FindView( this );
-	}
+  @Override
+  protected FindView createView() {
+    return new FindView(this);
+  }
 
-	@SuppressWarnings( "rawtypes" )
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		searchState.addNewSchoolValueListener( searchStateListener );
-		searchResultsState.addNewSchoolValueListener( searchResultsListener );
-		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectDocumentChangeListener );
-		referenceTreeState.addNewSchoolValueListener( referenceTreeListener );
-		this.isActive = true;
-		//		manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
-		refresh();
-	}
+  @SuppressWarnings("rawtypes")
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    searchState.addNewSchoolValueListener(searchStateListener);
+    searchResultsState.addNewSchoolValueListener(searchResultsListener);
+    ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+    ProjectDocumentState.getInstance().addNewSchoolValueListener(this.projectDocumentChangeListener);
+    referenceTreeState.addNewSchoolValueListener(referenceTreeListener);
+    this.isActive = true;
+    //    manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType(), getCriteria() );
+    refresh();
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		this.isActive = false;
-		searchState.removeNewSchoolValueListener( searchStateListener );
-		searchResultsState.removeNewSchoolValueListener( searchResultsListener );
-		ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
-		ProjectDocumentState.getInstance().removeNewSchoolValueListener( this.projectDocumentChangeListener );
-		referenceTreeState.removeNewSchoolValueListener( referenceTreeListener );
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    this.isActive = false;
+    searchState.removeNewSchoolValueListener(searchStateListener);
+    searchResultsState.removeNewSchoolValueListener(searchResultsListener);
+    ProjectChangeOfInterestManager.SINGLETON.removeProjectChangeOfInterestListener(this.projectChangeOfInterestListener);
+    ProjectDocumentState.getInstance().removeNewSchoolValueListener(this.projectDocumentChangeListener);
+    referenceTreeState.removeNewSchoolValueListener(referenceTreeListener);
+    super.handlePostDeactivation();
+  }
 
-	public StringState getSearchState() {
-		return this.searchState;
-	}
+  public StringState getSearchState() {
+    return this.searchState;
+  }
 
-	public RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
-		return this.searchResultsState;
-	}
+  public RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
+    return this.searchResultsState;
+  }
 
-	public FindReferencesTreeState getReferenceResults() {
-		return this.referenceTreeState;
-	}
+  public FindReferencesTreeState getReferenceResults() {
+    return this.referenceTreeState;
+  }
 
-	public ActionOperation getHowToAddOperation() {
-		return this.howToAddOperation;
-	}
+  public ActionOperation getHowToAddOperation() {
+    return this.howToAddOperation;
+  }
 
-	public FindContentManager getManager() {
-		return this.manager;
-	}
+  public FindContentManager getManager() {
+    return this.manager;
+  }
 
-	public List<Criterion> getCriteria() {
-		List<Criterion> rv = Lists.newArrayList();
-		if( !showGenerated ) {
-			rv.add( AcceptIfNotGenerated.getInstance() );
-		}
-		return rv;
-	}
+  public List<Criterion> getCriteria() {
+    List<Criterion> rv = Lists.newArrayList();
+    if (!showGenerated) {
+      rv.add(AcceptIfNotGenerated.getInstance());
+    }
+    return rv;
+  }
 }

@@ -44,7 +44,6 @@
 package org.lgna.croquet.triggers;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.ChangeEvent;
 
@@ -52,11 +51,11 @@ import javax.swing.event.ChangeEvent;
  * @author Dennis Cosgrove
  */
 public class ChangeEventTrigger extends EventObjectTrigger<ChangeEvent> {
-	public static ChangeEventTrigger createUserInstance( UserActivity userActivity, ChangeEvent changeEvent ) {
-		return new ChangeEventTrigger( userActivity, changeEvent );
-	}
+  public static ChangeEventTrigger createUserInstance(UserActivity userActivity, ChangeEvent changeEvent) {
+    return new ChangeEventTrigger(userActivity, changeEvent);
+  }
 
-	private ChangeEventTrigger( UserActivity userActivity, ChangeEvent changeEvent ) {
-		super( userActivity, null, changeEvent );
-	}
+  private ChangeEventTrigger(UserActivity userActivity, ChangeEvent changeEvent) {
+    super(userActivity, null, changeEvent);
+  }
 }

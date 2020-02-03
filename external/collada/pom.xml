@@ -3,23 +3,21 @@
 
   <groupId>com.dddviewr</groupId>
   <artifactId>collada</artifactId>
-  <name>Collada</name>
+  <name>dae4j COLLADA Java Library</name>
   <description>Library for 3DViewr collada modeling</description>
   <version>1.0</version>
   <packaging>jar</packaging>
-
-  <build>
-    <sourceDirectory>src/dae4j/src</sourceDirectory>
-  </build>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License (LGPL), Version 2.1</name>
+      <url>http://www.fsf.org/licensing/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <parent>
-  	<groupId>org.alice.external</groupId>
-  	<artifactId>external</artifactId>
-  	<version>1.0</version>
-  	<relativePath>../</relativePath>
+    <groupId>org.alice.external</groupId>
+    <artifactId>external</artifactId>
+    <version>1.0</version>
   </parent>
-
-  <!-- Deploy Command -->
-  <!-- mvn deploy -->
-
 </project>

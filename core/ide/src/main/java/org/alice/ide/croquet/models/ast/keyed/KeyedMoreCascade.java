@@ -58,30 +58,30 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class KeyedMoreCascade extends ImmutableCascade<JavaKeyedArgument> {
-	private static Map<ArgumentOwner, KeyedMoreCascade> map = Maps.newHashMap();
+  private static Map<ArgumentOwner, KeyedMoreCascade> map = Maps.newHashMap();
 
-	public static synchronized KeyedMoreCascade getInstance( ArgumentOwner argumentOwner ) {
-		KeyedMoreCascade rv = map.get( argumentOwner );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new KeyedMoreCascade( argumentOwner );
-			map.put( argumentOwner, rv );
-		}
-		return rv;
-	}
+  public static synchronized KeyedMoreCascade getInstance(ArgumentOwner argumentOwner) {
+    KeyedMoreCascade rv = map.get(argumentOwner);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new KeyedMoreCascade(argumentOwner);
+      map.put(argumentOwner, rv);
+    }
+    return rv;
+  }
 
-	private final ArgumentOwner argumentOwner;
+  private final ArgumentOwner argumentOwner;
 
-	private KeyedMoreCascade( ArgumentOwner argumentOwner ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
-		this.argumentOwner = argumentOwner;
-	}
+  private KeyedMoreCascade(ArgumentOwner argumentOwner) {
+    super(Application.PROJECT_GROUP, UUID.fromString("bd6e2ff6-f27a-4197-88a2-af25111eab40"), JavaKeyedArgument.class, KeyedBlank.getInstance(argumentOwner.getKeyedArgumentsProperty()));
+    this.argumentOwner = argumentOwner;
+  }
 
-	@Override
-	protected AddKeyedArgumentEdit createEdit( UserActivity userActivity, JavaKeyedArgument[] values ) {
-		JavaKeyedArgument javaKeyedArgument = values[ 0 ];
-		javaKeyedArgument.parameter.setValue( this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter() );
-		return new AddKeyedArgumentEdit( userActivity, this.argumentOwner, javaKeyedArgument );
-	}
+  @Override
+  protected AddKeyedArgumentEdit createEdit(UserActivity userActivity, JavaKeyedArgument[] values) {
+    JavaKeyedArgument javaKeyedArgument = values[0];
+    javaKeyedArgument.parameter.setValue(this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter());
+    return new AddKeyedArgumentEdit(userActivity, this.argumentOwner, javaKeyedArgument);
+  }
 }

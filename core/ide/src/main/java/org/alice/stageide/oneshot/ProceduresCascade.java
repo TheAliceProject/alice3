@@ -57,28 +57,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProceduresCascade extends ImmutableCascade<MethodInvocationEditFactory> {
-	private static Map<InstanceFactory, ProceduresCascade> map = Maps.newHashMap();
+  private static Map<InstanceFactory, ProceduresCascade> map = Maps.newHashMap();
 
-	public static ProceduresCascade getInstance( InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			ProceduresCascade rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ProceduresCascade( instanceFactory );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
-	}
+  public static ProceduresCascade getInstance(InstanceFactory instanceFactory) {
+    synchronized (map) {
+      ProceduresCascade rv = map.get(instanceFactory);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ProceduresCascade(instanceFactory);
+        map.put(instanceFactory, rv);
+      }
+      return rv;
+    }
+  }
 
-	private ProceduresCascade( InstanceFactory instanceFactory ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
-	}
+  private ProceduresCascade(InstanceFactory instanceFactory) {
+    super(Application.PROJECT_GROUP, UUID.fromString("5ebba3cc-cb89-4bb8-85fe-da513b76cb51"), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance(instanceFactory));
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity, MethodInvocationEditFactory[] values ) {
-		assert values.length == 1;
-		return values[ 0 ].createEdit( userActivity );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity, MethodInvocationEditFactory[] values) {
+    assert values.length == 1;
+    return values[0].createEdit(userActivity);
+  }
 }

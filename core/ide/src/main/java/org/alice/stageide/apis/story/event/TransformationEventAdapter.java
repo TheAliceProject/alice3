@@ -50,12 +50,12 @@ import org.lgna.story.event.PointOfViewEvent;
 
 public class TransformationEventAdapter extends AbstractAdapter implements PointOfViewChangeListener {
 
-	public TransformationEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
-		super( context, lambda, userInstance );
-	}
+  public TransformationEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+    super(context, lambda, userInstance);
+  }
 
-	@Override
-	public void pointOfViewChanged( PointOfViewEvent e ) {
-		invokeEntryPoint( e );
-	}
+  @Override
+  public void pointOfViewChanged(PointOfViewEvent e) {
+    invokeEntryPoint(e);
+  }
 }

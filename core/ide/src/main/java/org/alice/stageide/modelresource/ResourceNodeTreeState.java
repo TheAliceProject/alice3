@@ -62,99 +62,100 @@ import java.util.concurrent.Callable;
  */
 public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
 
-	//todo
-	private static final Icon EMPTY_ICON = new EmptyIcon( 0, Theme.DEFAULT_SMALL_ICON_SIZE.height );
+  //todo
+  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.DEFAULT_SMALL_ICON_SIZE.height);
 
-	private static final Dimension BUTTON_ICON_SIZE = new Dimension( 24, 18 );
-	private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon( 0, BUTTON_ICON_SIZE.height );
-	//
+  private static final Dimension BUTTON_ICON_SIZE = new Dimension(24, 18);
+  private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, BUTTON_ICON_SIZE.height);
+  //
 
-	private final ResourceNode root;
+  private final ResourceNode root;
 
-	ResourceNodeTreeState( ResourceNode root ) {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "34592791-1b96-429c-aa2a-a4dd706732bc" ), root, ResourceNodeCodec.SINGLETON );
-		this.root = root;
-	}
+  ResourceNodeTreeState(ResourceNode root) {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("34592791-1b96-429c-aa2a-a4dd706732bc"), root, ResourceNodeCodec.SINGLETON);
+    this.root = root;
+  }
 
-	@Override
-	public Operation getItemSelectionOperation( Callable<ResourceNode> itemCallable ) {
-		Operation rv = super.getItemSelectionOperation( itemCallable );
-		ResourceNode resourceNode;
-		try {
-			resourceNode = itemCallable.call();
-		} catch( Exception e ) {
-			Logger.throwable( e, this, itemCallable );
-			rv.setButtonIcon( EMPTY_BUTTON_ICON );
-			return rv;
-		}
-		if (resourceNode.isBreadcrumbButtonIconDesired())
-			rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
-		return rv;
-	}
+  @Override
+  public Operation getItemSelectionOperation(Callable<ResourceNode> itemCallable) {
+    Operation rv = super.getItemSelectionOperation(itemCallable);
+    ResourceNode resourceNode;
+    try {
+      resourceNode = itemCallable.call();
+    } catch (Exception e) {
+      Logger.throwable(e, this, itemCallable);
+      rv.setButtonIcon(EMPTY_BUTTON_ICON);
+      return rv;
+    }
+    if (resourceNode.isBreadcrumbButtonIconDesired()) {
+      rv.setButtonIcon(this.getIconForNode(resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON));
+    }
+    return rv;
+  }
 
-	@Override
-	protected void setCurrentTruthAndBeautyValue( ResourceNode nextValue ) {
-		super.setCurrentTruthAndBeautyValue( nextValue );
-		if( nextValue != null && nextValue.getResourceKey().isLeaf() ) {
-			Triggerable model = nextValue.getLeftButtonClickOperation(this);
-			if( model != null ) {
-				model.fire( NullTrigger.createUserActivity() );
-			}
-		}
-	}
+  @Override
+  protected void setCurrentTruthAndBeautyValue(ResourceNode nextValue) {
+    super.setCurrentTruthAndBeautyValue(nextValue);
+    if (nextValue != null && nextValue.getResourceKey().isLeaf()) {
+      Triggerable model = nextValue.getLeftButtonClickOperation(this);
+      if (model != null) {
+        model.fire(NullTrigger.createUserActivity());
+      }
+    }
+  }
 
-	private Icon getIconForNode( ResourceNode node, Dimension size, Icon emptyIcon ) {
-		if( node != null ) {
-			IconFactory iconFactory = node.getResourceKey().getIconFactory();
-			return iconFactory != null ? iconFactory.getIcon( size ) : emptyIcon;
-		} else {
-			return emptyIcon;
-		}
-	}
+  private Icon getIconForNode(ResourceNode node, Dimension size, Icon emptyIcon) {
+    if (node != null) {
+      IconFactory iconFactory = node.getResourceKey().getIconFactory();
+      return iconFactory != null ? iconFactory.getIcon(size) : emptyIcon;
+    } else {
+      return emptyIcon;
+    }
+  }
 
-	@Override
-	protected Icon getIconForNode( ResourceNode node ) {
-		return this.getIconForNode( node, Theme.DEFAULT_SMALL_ICON_SIZE, EMPTY_ICON );
-	}
+  @Override
+  protected Icon getIconForNode(ResourceNode node) {
+    return this.getIconForNode(node, Theme.DEFAULT_SMALL_ICON_SIZE, EMPTY_ICON);
+  }
 
-	@Override
-	protected String getTextForNode( ResourceNode node ) {
-		return node.getResourceKey().getLocalizedDisplayText();
-	}
+  @Override
+  protected String getTextForNode(ResourceNode node) {
+    return node.getResourceKey().getLocalizedDisplayText();
+  }
 
-	@Override
-	protected int getChildCount( ResourceNode parent ) {
-		if( this.isLeaf( parent ) ) {
-			return 0;
-		} else {
-			return parent.getNodeChildren().size();
-		}
-	}
+  @Override
+  protected int getChildCount(ResourceNode parent) {
+    if (this.isLeaf(parent)) {
+      return 0;
+    } else {
+      return parent.getNodeChildren().size();
+    }
+  }
 
-	@Override
-	protected ResourceNode getChild( ResourceNode parent, int index ) {
-		return parent.getNodeChildren().get( index );
-	}
+  @Override
+  protected ResourceNode getChild(ResourceNode parent, int index) {
+    return parent.getNodeChildren().get(index);
+  }
 
-	@Override
-	protected int getIndexOfChild( ResourceNode parent, ResourceNode child ) {
-		return parent.getNodeChildren().indexOf( child );
-	}
+  @Override
+  protected int getIndexOfChild(ResourceNode parent, ResourceNode child) {
+    return parent.getNodeChildren().indexOf(child);
+  }
 
-	@Override
-	public ResourceNode getParent( ResourceNode node ) {
-		return node.getParent();
-	}
+  @Override
+  public ResourceNode getParent(ResourceNode node) {
+    return node.getParent();
+  }
 
-	@Override
-	protected ResourceNode getRoot() {
-		return this.root;
-	}
+  @Override
+  protected ResourceNode getRoot() {
+    return this.root;
+  }
 
-	@Override
-	public boolean isLeaf( ResourceNode node ) {
-		assert node != null : this;
-		assert node.getResourceKey() != null : node;
-		return node.getResourceKey().isLeaf();
-	}
+  @Override
+  public boolean isLeaf(ResourceNode node) {
+    assert node != null : this;
+    assert node.getResourceKey() != null : node;
+    return node.getResourceKey().isLeaf();
+  }
 }

@@ -62,114 +62,114 @@ import java.awt.print.PrinterException;
  * @author Dennis Cosgrove
  */
 public class PrintableBorderPanelWithCenterScrollPane extends BorderPanel implements Printable {
-	public PrintableBorderPanelWithCenterScrollPane( Composite<?> composite ) {
-		super( composite );
-		this.addCenterComponent( new ScrollPane() );
-	}
+  public PrintableBorderPanelWithCenterScrollPane(Composite<?> composite) {
+    super(composite);
+    this.addCenterComponent(new ScrollPane());
+  }
 
-	public PrintableBorderPanelWithCenterScrollPane() {
-		this( null );
-	}
+  public PrintableBorderPanelWithCenterScrollPane() {
+    this(null);
+  }
 
-	public ScrollPane getScrollPane() {
-		return (ScrollPane)this.getCenterComponent();
-	}
+  public ScrollPane getScrollPane() {
+    return (ScrollPane) this.getCenterComponent();
+  }
 
-	@Override
-	public void addComponent( AwtComponentView<?> child, BorderPanel.Constraint constraint ) {
-		if( constraint == Constraint.CENTER ) {
-			assert child instanceof ScrollPane : child;
-		}
-		super.addComponent( child, constraint );
-	}
+  @Override
+  public void addComponent(AwtComponentView<?> child, BorderPanel.Constraint constraint) {
+    if (constraint == Constraint.CENTER) {
+      assert child instanceof ScrollPane : child;
+    }
+    super.addComponent(child, constraint);
+  }
 
-	@Override
-	public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
-		if( pageIndex > 0 ) {
-			return NO_SUCH_PAGE;
-		} else {
-			ScrollPane scrollPane = this.getScrollPane();
-			AwtComponentView<?> lineStart = this.getLineStartComponent();
-			AwtComponentView<?> lineEnd = this.getLineEndComponent();
-			AwtComponentView<?> pageStart = this.getPageStartComponent();
-			AwtComponentView<?> pageEnd = this.getPageEndComponent();
+  @Override
+  public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+    if (pageIndex > 0) {
+      return NO_SUCH_PAGE;
+    } else {
+      ScrollPane scrollPane = this.getScrollPane();
+      AwtComponentView<?> lineStart = this.getLineStartComponent();
+      AwtComponentView<?> lineEnd = this.getLineEndComponent();
+      AwtComponentView<?> pageStart = this.getPageStartComponent();
+      AwtComponentView<?> pageEnd = this.getPageEndComponent();
 
-			//todo: this code will not suffice in the limit
-			Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
-			int width = scrollSize.width;
-			int height = scrollSize.height;
-			for( AwtComponentView<?> component : new AwtComponentView[] { lineStart, lineEnd } ) {
-				if( component != null ) {
-					Dimension componentSize = component.getAwtComponent().getPreferredSize();
-					width += componentSize.width;
-					height = Math.max( height, componentSize.height );
-				}
-			}
-			for( AwtComponentView<?> component : new AwtComponentView[] { pageStart, pageEnd } ) {
-				if( component != null ) {
-					Dimension componentSize = component.getAwtComponent().getPreferredSize();
-					width = Math.max( width, componentSize.width );
-					height += componentSize.height;
-				}
-			}
+      //todo: this code will not suffice in the limit
+      Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
+      int width = scrollSize.width;
+      int height = scrollSize.height;
+      for (AwtComponentView<?> component : new AwtComponentView[] {lineStart, lineEnd}) {
+        if (component != null) {
+          Dimension componentSize = component.getAwtComponent().getPreferredSize();
+          width += componentSize.width;
+          height = Math.max(height, componentSize.height);
+        }
+      }
+      for (AwtComponentView<?> component : new AwtComponentView[] {pageStart, pageEnd}) {
+        if (component != null) {
+          Dimension componentSize = component.getAwtComponent().getPreferredSize();
+          width = Math.max(width, componentSize.width);
+          height += componentSize.height;
+        }
+      }
 
-			Insets insets = this.getInsets();
-			width += insets.left + insets.right;
-			height += insets.top + insets.bottom;
+      Insets insets = this.getInsets();
+      width += insets.left + insets.right;
+      height += insets.top + insets.bottom;
 
-			Graphics2D g2 = (Graphics2D)g;
-			AffineTransform prevTransform = g2.getTransform();
-			try {
-				double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				if( scale > 1.0 ) {
-					g2.scale( 1.0 / scale, 1.0 / scale );
-				}
+      Graphics2D g2 = (Graphics2D) g;
+      AffineTransform prevTransform = g2.getTransform();
+      try {
+        double scale = PageFormatUtilities.calculateScale(pageFormat, width, height);
+        g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+        if (scale > 1.0) {
+          g2.scale(1.0 / scale, 1.0 / scale);
+        }
 
-				g2.setPaint( this.getBackgroundColor() );
-				g2.fillRect( 0, 0, width, height );
+        g2.setPaint(this.getBackgroundColor());
+        g2.fillRect(0, 0, width, height);
 
-				if( pageStart != null ) {
-					int x = pageStart.getX();
-					int y = pageStart.getY();
-					g2.translate( x, y );
-					try {
-						pageStart.getAwtComponent().printAll( g2 );
-					} finally {
-						g2.translate( -x, -y );
-					}
-				}
-				if( lineStart != null ) {
-					int x = lineStart.getX();
-					int y = lineStart.getY();
-					g2.translate( x, y );
-					try {
-						lineStart.getAwtComponent().printAll( g2 );
-					} finally {
-						g2.translate( -x, -y );
-					}
-				}
-				int x = scrollPane.getX();
-				int y = scrollPane.getY();
-				g2.translate( x, y );
-				try {
-					scrollPane.getViewportView().getAwtComponent().printAll( g2 );
-				} finally {
-					g2.translate( -x, -y );
-				}
+        if (pageStart != null) {
+          int x = pageStart.getX();
+          int y = pageStart.getY();
+          g2.translate(x, y);
+          try {
+            pageStart.getAwtComponent().printAll(g2);
+          } finally {
+            g2.translate(-x, -y);
+          }
+        }
+        if (lineStart != null) {
+          int x = lineStart.getX();
+          int y = lineStart.getY();
+          g2.translate(x, y);
+          try {
+            lineStart.getAwtComponent().printAll(g2);
+          } finally {
+            g2.translate(-x, -y);
+          }
+        }
+        int x = scrollPane.getX();
+        int y = scrollPane.getY();
+        g2.translate(x, y);
+        try {
+          scrollPane.getViewportView().getAwtComponent().printAll(g2);
+        } finally {
+          g2.translate(-x, -y);
+        }
 
-				if( lineEnd != null ) {
-					Logger.todo( lineEnd );
-				}
+        if (lineEnd != null) {
+          Logger.todo(lineEnd);
+        }
 
-				if( pageEnd != null ) {
-					Logger.todo( pageEnd );
-				}
+        if (pageEnd != null) {
+          Logger.todo(pageEnd);
+        }
 
-			} finally {
-				g2.setTransform( prevTransform );
-			}
-			return PAGE_EXISTS;
-		}
-	}
+      } finally {
+        g2.setTransform(prevTransform);
+      }
+      return PAGE_EXISTS;
+    }
+  }
 }

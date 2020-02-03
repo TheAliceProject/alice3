@@ -48,15 +48,15 @@ import java.io.File;
  * @author Dennis Cosgrove
  */
 public class FileSystemUtils {
-	private FileSystemUtils() {
-		throw new AssertionError();
-	}
+  private FileSystemUtils() {
+    throw new AssertionError();
+  }
 
-	public static void deleteIfExists( File file ) {
-		if( file.exists() ) {
-			boolean isSuccessful = file.delete();
-			assert isSuccessful : file;
-			assert file.exists() == false : file;
-		}
-	}
+  public static void deleteIfExists(File file) {
+    if (file.exists()) {
+      boolean isSuccessful = file.delete();
+      assert isSuccessful : file;
+      assert file.exists() == false : file;
+    }
+  }
 }

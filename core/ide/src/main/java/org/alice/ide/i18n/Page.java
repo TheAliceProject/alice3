@@ -45,18 +45,18 @@ package org.alice.ide.i18n;
 import java.util.regex.Pattern;
 
 public class Page {
-	private static final Pattern NEW_LINE_PATTERN = Pattern.compile( "\n" );
-	private Line[] lines = null;
+  private static final Pattern NEW_LINE_PATTERN = Pattern.compile("\n");
+  private Line[] lines = null;
 
-	public Page( String s ) {
-		String[] array = NEW_LINE_PATTERN.split( s );
-		this.lines = new Line[ array.length ];
-		for( int i = 0; i < array.length; i++ ) {
-			this.lines[ i ] = new Line( array[ i ] );
-		}
-	}
+  public Page(String s) {
+    String[] array = NEW_LINE_PATTERN.split(s);
+    this.lines = new Line[array.length];
+    for (int i = 0; i < array.length; i++) {
+      this.lines[i] = new Line(array[i]);
+    }
+  }
 
-	public Line[] getLines() {
-		return this.lines;
-	}
+  public Line[] getLines() {
+    return this.lines;
+  }
 }

@@ -53,21 +53,21 @@ import java.io.OutputStream;
 
 public interface ProjectIo {
 
-	String METADATA_ENTRY_NAME = "metadata.json";
-	String VERSION_ENTRY_NAME = "version.txt";
-	String PROPERTIES_ENTRY_NAME = "properties.bin";
+  String METADATA_ENTRY_NAME = "metadata.json";
+  String VERSION_ENTRY_NAME = "version.txt";
+  String PROPERTIES_ENTRY_NAME = "properties.bin";
 
-	interface ProjectReader {
-		Project readProject() throws IOException, VersionNotSupportedException;
+  interface ProjectReader {
+    Project readProject() throws IOException, VersionNotSupportedException;
 
-		TypeResourcesPair readType() throws IOException, VersionNotSupportedException;
+    TypeResourcesPair readType() throws IOException, VersionNotSupportedException;
 
-		Version checkForFutureVersion() throws IOException;
-	}
+    Version checkForFutureVersion() throws IOException;
+  }
 
-	interface ProjectWriter {
-		void writeProject(OutputStream os, Project project, DataSource[] dataSources) throws IOException;
+  interface ProjectWriter {
+    void writeProject(OutputStream os, Project project, DataSource[] dataSources) throws IOException;
 
-		void writeType(OutputStream os, NamedUserType type, DataSource[] dataSources) throws IOException;
-	}
+    void writeType(OutputStream os, NamedUserType type, DataSource[] dataSources) throws IOException;
+  }
 }

@@ -54,37 +54,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class SetupScenePerspectiveComposite extends SimpleComposite<SetupScenePerspectiveView> {
-	private static class SingletonHolder {
-		private static SetupScenePerspectiveComposite instance = new SetupScenePerspectiveComposite();
-	}
+  private static class SingletonHolder {
+    private static SetupScenePerspectiveComposite instance = new SetupScenePerspectiveComposite();
+  }
 
-	public static SetupScenePerspectiveComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static SetupScenePerspectiveComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final SceneLayoutComposite sceneLayoutComposite;
-	private final GalleryComposite galleryComposite;
+  private final SceneLayoutComposite sceneLayoutComposite;
+  private final GalleryComposite galleryComposite;
 
-	private SetupScenePerspectiveComposite() {
-		super( UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ) );
-		this.sceneLayoutComposite = this.registerSubComposite( new SceneLayoutComposite() );
-		this.galleryComposite = this.registerSubComposite( new GalleryComposite() );
-	}
+  private SetupScenePerspectiveComposite() {
+    super(UUID.fromString("aa47fc0f-0500-4e9a-b710-b481b802f8c5"));
+    this.sceneLayoutComposite = this.registerSubComposite(new SceneLayoutComposite());
+    this.galleryComposite = this.registerSubComposite(new GalleryComposite());
+  }
 
-	public SceneLayoutComposite getSceneLayoutComposite() {
-		return this.sceneLayoutComposite;
-	}
+  public SceneLayoutComposite getSceneLayoutComposite() {
+    return this.sceneLayoutComposite;
+  }
 
-	public GalleryComposite getGalleryComposite() {
-		return this.galleryComposite;
-	}
+  public GalleryComposite getGalleryComposite() {
+    return this.galleryComposite;
+  }
 
-	@Override
-	protected SetupScenePerspectiveView createView() {
-		return new SetupScenePerspectiveView( this );
-	}
+  @Override
+  protected SetupScenePerspectiveView createView() {
+    return new SetupScenePerspectiveView(this);
+  }
 
-	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
-		return this.galleryComposite.getDragModelForCls( cls );
-	}
+  public GalleryDragModel getDragModelForCls(Class<?> cls) {
+    return this.galleryComposite.getDragModelForCls(cls);
+  }
 }

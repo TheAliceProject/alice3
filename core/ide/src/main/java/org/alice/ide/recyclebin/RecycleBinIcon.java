@@ -57,49 +57,49 @@ import java.awt.geom.Ellipse2D;
  * @author Dennis Cosgrove
  */
 public enum RecycleBinIcon implements Icon {
-	SINGLETON;
+  SINGLETON;
 
-	private static final Icon[] ICONS = { Icons.TRASH_CAN_EMPTY_ICON, Icons.TRASH_CAN_FULL_ICON };
+  private static final Icon[] ICONS = {Icons.TRASH_CAN_EMPTY_ICON, Icons.TRASH_CAN_FULL_ICON};
 
-	@Override
-	public int getIconWidth() {
-		int rv = 0;
-		for( Icon icon : ICONS ) {
-			rv = Math.max( rv, icon.getIconWidth() );
-		}
-		return rv;
-	}
+  @Override
+  public int getIconWidth() {
+    int rv = 0;
+    for (Icon icon : ICONS) {
+      rv = Math.max(rv, icon.getIconWidth());
+    }
+    return rv;
+  }
 
-	@Override
-	public int getIconHeight() {
-		int rv = 0;
-		for( Icon icon : ICONS ) {
-			rv = Math.max( rv, icon.getIconHeight() );
-		}
-		return rv;
-	}
+  @Override
+  public int getIconHeight() {
+    int rv = 0;
+    for (Icon icon : ICONS) {
+      rv = Math.max(rv, icon.getIconHeight());
+    }
+    return rv;
+  }
 
-	@Override
-	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
-		Paint paint;
-		final int ALPHA = 15;
-		if( Application.getActiveInstance().isDragInProgress() ) {
-			paint = new Color( 255, 255, 0, ALPHA );
-		} else {
-			//paint = new java.awt.Color( 0, 255, 0, ALPHA );
-			paint = null;
-		}
-		if( paint != null ) {
-			Graphics2D g2 = (Graphics2D)g;
-			Paint prevPaint = g2.getPaint();
-			g2.setPaint( paint );
-			float xCenter = x + ( this.getIconWidth() * 0.5f );
-			float yCenter = y + ( this.getIconHeight() * 0.5f );
-			for( float radius = 4.0f; radius <= 16.0f; radius += 1.0f ) {
-				g2.fill( new Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
-			}
-			g2.setPaint( prevPaint );
-		}
-	}
+  @Override
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    Icons.TRASH_CAN_EMPTY_ICON.paintIcon(c, g, x, y);
+    Paint paint;
+    final int ALPHA = 15;
+    if (Application.getActiveInstance().isDragInProgress()) {
+      paint = new Color(255, 255, 0, ALPHA);
+    } else {
+      //paint = new java.awt.Color( 0, 255, 0, ALPHA );
+      paint = null;
+    }
+    if (paint != null) {
+      Graphics2D g2 = (Graphics2D) g;
+      Paint prevPaint = g2.getPaint();
+      g2.setPaint(paint);
+      float xCenter = x + (this.getIconWidth() * 0.5f);
+      float yCenter = y + (this.getIconHeight() * 0.5f);
+      for (float radius = 4.0f; radius <= 16.0f; radius += 1.0f) {
+        g2.fill(new Ellipse2D.Float(xCenter - radius, yCenter - radius, radius + radius, radius + radius));
+      }
+      g2.setPaint(prevPaint);
+    }
+  }
 }

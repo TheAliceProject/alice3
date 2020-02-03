@@ -50,12 +50,11 @@ import org.lgna.project.annotations.Visibility;
  */
 //@org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.STrain.class, isTopLevelResource = false )
 public interface TrainResource extends TransportResource {
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId ROOT = new JointId( null, TrainResource.class );
-	public static final JointId NEXT_CAR_LOCATION = new JointId( ROOT, TrainResource.class );
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId ROOT = new JointId(null, TrainResource.class);
+  public static final JointId NEXT_CAR_LOCATION = new JointId(ROOT, TrainResource.class);
 
-	public static final JointArrayId WHEELS_ARRAY = new JointArrayId( "WHEELS", ROOT, TrainResource.class );
+  public static final JointArrayId WHEELS_ARRAY = new JointArrayId("WHEELS", ROOT, TrainResource.class);
 
-	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+  @FieldTemplate(visibility = Visibility.COMPLETELY_HIDDEN) public static final JointId[] JOINT_ID_ROOTS = {ROOT};
 
 }

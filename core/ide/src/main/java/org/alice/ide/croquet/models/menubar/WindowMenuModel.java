@@ -62,35 +62,35 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class WindowMenuModel extends StaticMenuModel {
-	private static List<StandardMenuItemPrepModel> createModels( ItemState<ProjectPerspective> perspectiveState ) {
-		List<StandardMenuItemPrepModel> rv = Lists.newLinkedList();
-		if( perspectiveState instanceof SingleSelectListState ) {
-			rv.add( ( (SingleSelectListState)perspectiveState ).getMenuModel() );
-			rv.add( MenuModel.SEPARATOR );
-		}
-		rv.add( ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel() );
-		rv.add( MenuModel.SEPARATOR );
-		rv.add( PreferencesMenuModel.getInstance() );
-		rv.add( MenuModel.SEPARATOR );
-		rv.add( IdeApp.INSTANCE.getContributorMenuModel() );
-		if( SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-			rv.add( MenuModel.SEPARATOR );
-			rv.add( InternalTestingMenuModel.getInstance() );
-		}
-		return rv;
-	}
+  private static List<StandardMenuItemPrepModel> createModels(ItemState<ProjectPerspective> perspectiveState) {
+    List<StandardMenuItemPrepModel> rv = Lists.newLinkedList();
+    if (perspectiveState instanceof SingleSelectListState) {
+      rv.add(((SingleSelectListState) perspectiveState).getMenuModel());
+      rv.add(MenuModel.SEPARATOR);
+    }
+    rv.add(ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel());
+    rv.add(IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel());
+    rv.add(MenuModel.SEPARATOR);
+    rv.add(PreferencesMenuModel.getInstance());
+    rv.add(MenuModel.SEPARATOR);
+    rv.add(IdeApp.INSTANCE.getContributorMenuModel());
+    if (SystemUtilities.isPropertyTrue("org.alice.ide.internalTesting")) {
+      rv.add(MenuModel.SEPARATOR);
+      rv.add(InternalTestingMenuModel.getInstance());
+    }
+    return rv;
+  }
 
-	public WindowMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
-	}
+  public WindowMenuModel(ProjectDocumentFrame projectDocumentFrame) {
+    super(UUID.fromString("58a7297b-a5f8-499a-abd1-db6fca4083c8"));
+    this.projectDocumentFrame = projectDocumentFrame;
+  }
 
-	@Override
-	protected StandardMenuItemPrepModel[] createModels() {
-		ItemState<ProjectPerspective> perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
-		return ArrayUtilities.createArray( createModels( perspectiveState ), StandardMenuItemPrepModel.class );
-	}
+  @Override
+  protected StandardMenuItemPrepModel[] createModels() {
+    ItemState<ProjectPerspective> perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
+    return ArrayUtilities.createArray(createModels(perspectiveState), StandardMenuItemPrepModel.class);
+  }
 
-	private final ProjectDocumentFrame projectDocumentFrame;
+  private final ProjectDocumentFrame projectDocumentFrame;
 }

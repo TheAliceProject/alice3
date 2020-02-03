@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="Matt Kline" name="Seashell">
+    <BoundingBox>
+        <Min x="-0.025151081383228302" y="-3.6140441079623997E-4" z="-0.024417685344815254"/>
+        <Max x="0.025147737935185432" y="0.01097150333225727" z="0.024417685344815254"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>shell</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Seashell" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

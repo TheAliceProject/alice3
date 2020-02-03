@@ -51,89 +51,90 @@ import org.lgna.project.code.PrecedentedAppender;
  * @author Dennis Cosgrove
  */
 public final class FieldAccess extends Expression implements PrecedentedAppender {
-	public FieldAccess() {
-	}
+  public FieldAccess() {
+  }
 
-	public FieldAccess( Expression expression, AbstractField field ) {
-		this.expression.setValue( expression );
-		this.field.setValue( field );
-	}
+  public FieldAccess(Expression expression, AbstractField field) {
+    this.expression.setValue(expression);
+    this.field.setValue(field);
+  }
 
-	public FieldAccess(AbstractField field ) {
-		this( ThisExpression.createInstanceThatCanExistWithoutAnAncestorType(field.getFirstAncestorAssignableTo(AbstractType.class)), field );
-	}
+  public FieldAccess(AbstractField field) {
+    this(ThisExpression.createInstanceThatCanExistWithoutAnAncestorType(field.getFirstAncestorAssignableTo(AbstractType.class)), field);
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		AbstractField fieldValue = this.field.getValue();
-		return fieldValue != null ? fieldValue.getValueType() : null;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    AbstractField fieldValue = this.field.getValue();
+    return fieldValue != null ? fieldValue.getValueType() : null;
+  }
 
-	@Override
-	public boolean isValid() {
-		boolean rv;
-		Expression e = expression.getValue();
-		AbstractField f = field.getValue();
-		if( ( e != null ) && ( f != null ) ) {
-			if( f.isValid() ) {
-				if( f.isStatic() ) {
-					//todo
-					rv = true;
-				} else {
-					AbstractType<?, ?, ?> declaringType = f.getDeclaringType();
-					AbstractType<?, ?, ?> expressionType = e.getType();
-					if( expressionType instanceof AnonymousUserType ) {
-						//todo
-						rv = true;
-					} else {
-						if( ( declaringType != null ) && ( expressionType != null ) ) {
-							rv = declaringType.isAssignableFrom( expressionType );
-						} else {
-							rv = false;
-						}
-					}
-				}
-			} else {
-				rv = false;
-			}
-		} else {
-			rv = false;
-		}
-		return rv;
-	}
+  @Override
+  public boolean isValid() {
+    boolean rv;
+    Expression e = expression.getValue();
+    AbstractField f = field.getValue();
+    if ((e != null) && (f != null)) {
+      if (f.isValid()) {
+        if (f.isStatic()) {
+          //todo
+          rv = true;
+        } else {
+          AbstractType<?, ?, ?> declaringType = f.getDeclaringType();
+          AbstractType<?, ?, ?> expressionType = e.getType();
+          if (expressionType instanceof AnonymousUserType) {
+            //todo
+            rv = true;
+          } else {
+            if ((declaringType != null) && (expressionType != null)) {
+              rv = declaringType.isAssignableFrom(expressionType);
+            } else {
+              rv = false;
+            }
+          }
+        }
+      } else {
+        rv = false;
+      }
+    } else {
+      rv = false;
+    }
+    return rv;
+  }
 
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-		localizer.appendDot();
-		safeAppendRepr( localizer, this.field.getValue() );
-	}
+  @Override
+  protected void appendRepr(AstLocalizer localizer) {
+    safeAppendRepr(localizer, this.expression.getValue());
+    localizer.appendDot();
+    safeAppendRepr(localizer, this.field.getValue());
+  }
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendFieldAccess( this );
-	}
+  @Override
+  public void appendCode(SourceCodeGenerator generator) {
+    generator.appendFieldAccess(this);
+  }
 
-	@Override public int getLevelOfPrecedence() {
-		return 16;
-	}
+  @Override
+  public int getLevelOfPrecedence() {
+    return 16;
+  }
 
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			AbstractField f = field.getValue();
-			if( f != null ) {
-				return f.getDeclaringType();
-			} else {
-				Logger.warning( "field.getValue() == null", field );
-				return JavaType.OBJECT_TYPE;
-			}
-		}
-	};
-	public final DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
+  public final ExpressionProperty expression = new ExpressionProperty(this) {
+    @Override
+    public AbstractType<?, ?, ?> getExpressionType() {
+      AbstractField f = field.getValue();
+      if (f != null) {
+        return f.getDeclaringType();
+      } else {
+        Logger.warning("field.getValue() == null", field);
+        return JavaType.OBJECT_TYPE;
+      }
+    }
+  };
+  public final DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>(this) {
+    @Override
+    public boolean isReference() {
+      return true;
+    }
+  };
 }

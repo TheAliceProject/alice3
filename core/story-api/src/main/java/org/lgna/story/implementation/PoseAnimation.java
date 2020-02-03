@@ -58,83 +58,83 @@ import java.util.List;
  * @author Matt May
  */
 public class PoseAnimation extends DurationBasedAnimation {
-	private final JointedModelImp<?, ?> jointedModel;
-	private final Pose<?> pose;
-	private transient List<JointInfo> jointInfos = Lists.newLinkedList();
+  private final JointedModelImp<?, ?> jointedModel;
+  private final Pose<?> pose;
+  private transient List<JointInfo> jointInfos = Lists.newLinkedList();
 
-	private static class JointInfo {
-		private final JointImp jointImp;
+  private static class JointInfo {
+    private final JointImp jointImp;
 
-		private UnitQuaternion m_q0;
-		private UnitQuaternion m_q1;
-		private UnitQuaternion m_qBuffer;
-		private AffineMatrix4x4 m_m0;
-		private AffineMatrix4x4 m_m1;
-		private AffineMatrix4x4 m_mBuffer;
+    private UnitQuaternion m_q0;
+    private UnitQuaternion m_q1;
+    private UnitQuaternion m_qBuffer;
+    private AffineMatrix4x4 m_m0;
+    private AffineMatrix4x4 m_m1;
+    private AffineMatrix4x4 m_mBuffer;
 
-		public JointInfo( JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
-			this.jointImp = jointedModel.getJointImplementation( jtPair.getJointId() );
+    public JointInfo(JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair) {
+      this.jointImp = jointedModel.getJointImplementation(jtPair.getJointId());
 
-			m_q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
-			m_q1 = jtPair.getTransformation().orientation.createUnitQuaternion();
-			m_qBuffer = UnitQuaternion.createNaN();
+      m_q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
+      m_q1 = jtPair.getTransformation().orientation.createUnitQuaternion();
+      m_qBuffer = UnitQuaternion.createNaN();
 
-			m_m0 = this.jointImp.getLocalTransformation();
-			//If the pose affects the translation of the joint, use the supplied translation as the target
-			// Otherwise, use the current translation as the target
-			if( jtPair.affectsTranslation() ) {
-				m_m1 = new AffineMatrix4x4( jtPair.getTransformation() );
-			} else {
-				m_m1 = this.jointImp.getLocalTransformation();
-			}
-			m_mBuffer = AffineMatrix4x4.createNaN();
-		}
+      m_m0 = this.jointImp.getLocalTransformation();
+      //If the pose affects the translation of the joint, use the supplied translation as the target
+      // Otherwise, use the current translation as the target
+      if (jtPair.affectsTranslation()) {
+        m_m1 = new AffineMatrix4x4(jtPair.getTransformation());
+      } else {
+        m_m1 = this.jointImp.getLocalTransformation();
+      }
+      m_mBuffer = AffineMatrix4x4.createNaN();
+    }
 
-		public void setPortion( double portion ) {
-			//Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
-			m_mBuffer.translation.setToInterpolation( m_m0.translation, Point3.createMultiplication( m_m1.translation, this.jointImp.getJointedModelImplementation().getScale() ), portion );
-			m_qBuffer.setToInterpolation( m_q0, m_q1, portion );
-			m_mBuffer.orientation.setValue( m_qBuffer );
+    public void setPortion(double portion) {
+      //Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
+      m_mBuffer.translation.setToInterpolation(m_m0.translation, Point3.createMultiplication(m_m1.translation, this.jointImp.getJointedModelImplementation().getScale()), portion);
+      m_qBuffer.setToInterpolation(m_q0, m_q1, portion);
+      m_mBuffer.orientation.setValue(m_qBuffer);
 
-			jointImp.setLocalTransformation( m_mBuffer );
-		}
+      jointImp.setLocalTransformation(m_mBuffer);
+    }
 
-		public void epilogue() {
-			//Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
-			jointImp.setLocalTransformation( new AffineMatrix4x4( m_q1, Point3.createMultiplication( m_m1.translation, this.jointImp.getJointedModelImplementation().getScale() ) ) );
-		}
-	}
+    public void epilogue() {
+      //Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
+      jointImp.setLocalTransformation(new AffineMatrix4x4(m_q1, Point3.createMultiplication(m_m1.translation, this.jointImp.getJointedModelImplementation().getScale())));
+    }
+  }
 
-	public PoseAnimation( double duration, Style style, JointedModelImp<?, ?> jointedModel, Pose pose ) {
-		super( duration, style );
-		this.jointedModel = jointedModel;
-		this.pose = pose;
-	}
+  public PoseAnimation(double duration, Style style, JointedModelImp<?, ?> jointedModel, Pose pose) {
+    super(duration, style);
+    this.jointedModel = jointedModel;
+    this.pose = pose;
+  }
 
-	@Override
-	protected void prologue() {
-		this.jointInfos.clear();
-		for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( this.pose ) ) {
-			appendJointInfos( this.jointInfos, this.jointedModel, jtPair );
-		}
-	}
+  @Override
+  protected void prologue() {
+    this.jointInfos.clear();
+    for (JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs(this.pose)) {
+      appendJointInfos(this.jointInfos, this.jointedModel, jtPair);
+    }
+  }
 
-	private static void appendJointInfos( List<JointInfo> jointInfos, JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair ) {
-		jointInfos.add( new JointInfo( jointedModel, jtPair ) );
-	}
+  private static void appendJointInfos(List<JointInfo> jointInfos, JointedModelImp<?, ?> jointedModel, JointIdTransformationPair jtPair) {
+    jointInfos.add(new JointInfo(jointedModel, jtPair));
+  }
 
-	@Override
-	protected void setPortion( double portion ) {
-		for( JointInfo jointInfo : this.jointInfos ) {
-			jointInfo.setPortion( portion );
-		}
-	}
+  @Override
+  protected void setPortion(double portion) {
+    for (JointInfo jointInfo : this.jointInfos) {
+      jointInfo.setPortion(portion);
+    }
+  }
 
-	@Override
-	protected void epilogue() {
-		for( JointInfo jointInfo : this.jointInfos ) {
-			jointInfo.epilogue();
-		}
-	}
+  @Override
+  protected void epilogue() {
+    for (JointInfo jointInfo : this.jointInfos) {
+      jointInfo.epilogue();
+    }
+  }
 
 }

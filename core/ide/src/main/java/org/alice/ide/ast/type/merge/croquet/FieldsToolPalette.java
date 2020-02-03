@@ -53,12 +53,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldsToolPalette extends MembersToolPalette<FieldsView, UserField> {
-	public FieldsToolPalette( URI uriForDescriptionPurposesOnly, List<UserField> projectFields ) {
-		super( UUID.fromString( "31f9d5d0-77ed-4a1d-9742-20541aab4e7a" ), uriForDescriptionPurposesOnly, projectFields );
-	}
+  public FieldsToolPalette(URI uriForDescriptionPurposesOnly, List<UserField> projectFields) {
+    super(UUID.fromString("31f9d5d0-77ed-4a1d-9742-20541aab4e7a"), uriForDescriptionPurposesOnly, projectFields);
+  }
 
-	@Override
-	protected FieldsView createView() {
-		return new FieldsView( this );
-	}
+  @Override
+  protected FieldsView createView() {
+    return new FieldsView(this);
+  }
 }

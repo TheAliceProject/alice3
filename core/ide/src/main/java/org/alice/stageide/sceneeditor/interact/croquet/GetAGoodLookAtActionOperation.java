@@ -59,37 +59,35 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class GetAGoodLookAtActionOperation extends ActionOperation {
 
-	private final SCamera camera;
-	private final SThing toLookAt;
+  private final SCamera camera;
+  private final SThing toLookAt;
 
-	public GetAGoodLookAtActionOperation( Group group, SCamera camera, SThing toLookAt )
-	{
-		super( group, UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ) );
-		this.camera = camera;
-		this.toLookAt = toLookAt;
-	}
+  public GetAGoodLookAtActionOperation(Group group, SCamera camera, SThing toLookAt) {
+    super(group, UUID.fromString("566dedf3-e612-4eed-8025-a49763feeeb4"));
+    this.camera = camera;
+    this.toLookAt = toLookAt;
+  }
 
-	public static boolean IsValidOperation( SCamera camera, SThing toLookAt )
-	{
-		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( camera );
-		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( toLookAt );
-		if( ( cameraField == null ) || ( toLookAtField == null ) || ( cameraField == toLookAtField ) ) {
-			return false;
-		}
-		return true;
-	}
+  public static boolean IsValidOperation(SCamera camera, SThing toLookAt) {
+    UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(camera);
+    UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(toLookAt);
+    if ((cameraField == null) || (toLookAtField == null) || (cameraField == toLookAtField)) {
+      return false;
+    }
+    return true;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
-		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
-		ThisFieldAccessFactory cameraInstanceFactory = ThisFieldAccessFactory.getInstance( cameraField );
-		Expression[] toLookAtExpressions = { new FieldAccess(toLookAtField) };
-		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit( activity, cameraInstanceFactory, OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
-		activity.commitAndInvokeDo( edit );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.camera);
+    UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.toLookAt);
+    ThisFieldAccessFactory cameraInstanceFactory = ThisFieldAccessFactory.getInstance(cameraField);
+    Expression[] toLookAtExpressions = {new FieldAccess(toLookAtField)};
+    GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit(activity, cameraInstanceFactory, OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt);
+    activity.commitAndInvokeDo(edit);
+  }
 }

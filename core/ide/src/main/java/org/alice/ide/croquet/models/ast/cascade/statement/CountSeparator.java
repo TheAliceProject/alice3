@@ -51,15 +51,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CountSeparator extends CascadeLabelSeparator {
-	private static class SingletonHolder {
-		private static CountSeparator instance = new CountSeparator();
-	}
+  private static class SingletonHolder {
+    private static CountSeparator instance = new CountSeparator();
+  }
 
-	public static CountSeparator getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CountSeparator getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CountSeparator() {
-		super( UUID.fromString( "c94fadf9-c9ac-4b77-9f6a-84631c7fa605" ) );
-	}
+  private CountSeparator() {
+    super(UUID.fromString("c94fadf9-c9ac-4b77-9f6a-84631c7fa605"));
+  }
 }

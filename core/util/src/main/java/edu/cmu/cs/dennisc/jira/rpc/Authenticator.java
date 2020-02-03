@@ -50,5 +50,5 @@ import redstone.xmlrpc.XmlRpcFault;
  * @author Dennis Cosgrove
  */
 public interface Authenticator {
-	public Object login( XmlRpcClient xmlRpcStruct ) throws XmlRpcException, XmlRpcFault;
+  public Object login(XmlRpcClient xmlRpcStruct) throws XmlRpcException, XmlRpcFault;
 }

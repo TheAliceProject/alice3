@@ -52,24 +52,21 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class LogInCard extends SimpleComposite<Panel> {
-	private AbstractLoginComposite loginComposite;
-	private LogInOutComposite parent;
+  private AbstractLoginComposite loginComposite;
+  private LogInOutComposite parent;
 
-	public LogInCard( AbstractLoginComposite composite ) {
-		super( UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
-		this.loginComposite = composite;
-	}
+  public LogInCard(AbstractLoginComposite composite) {
+    super(UUID.fromString("7229bd12-7078-46b6-9bd3-509edd2dc203"));
+    this.loginComposite = composite;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new FlowPanel(
-				this,
-				FlowPanel.Alignment.TRAILING,
-				loginComposite.getLaunchOperation().createButton() );
-	}
+  @Override
+  protected Panel createView() {
+    return new FlowPanel(this, FlowPanel.Alignment.TRAILING, loginComposite.getLaunchOperation().createButton());
+  }
 
-	public void setParent( LogInOutComposite logInOutComposite ) {
-		assert parent == null : "why are we changing a parent? (mmay)";
-		this.parent = logInOutComposite;
-	}
+  public void setParent(LogInOutComposite logInOutComposite) {
+    assert parent == null : "why are we changing a parent? (mmay)";
+    this.parent = logInOutComposite;
+  }
 }

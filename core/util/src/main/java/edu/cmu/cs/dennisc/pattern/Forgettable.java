@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public interface Forgettable {
-	public void forget();
+  public void forget();
 }

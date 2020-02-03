@@ -50,13 +50,13 @@ import edu.cmu.cs.dennisc.scenegraph.Appearance;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAppearance<T extends Appearance> extends GlrElement<T> {
-	public abstract boolean isActuallyShowing();
+  public abstract boolean isActuallyShowing();
 
-	public abstract boolean isAlphaBlended();
+  public abstract boolean isAlphaBlended();
 
-	public abstract boolean isAllAlphaBlended();
+  public abstract boolean isAllAlphaBlended();
 
-	public abstract void setPipelineState( RenderContext rc, int face );
+  public abstract void setPipelineState(RenderContext rc, int face);
 
-	public abstract boolean isEthereal();
+  public abstract boolean isEthereal();
 }

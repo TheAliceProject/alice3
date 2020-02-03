@@ -58,72 +58,72 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
-	private static Map<UserMethod, DeleteMethodOperation> map = Maps.newHashMap();
+  private static Map<UserMethod, DeleteMethodOperation> map = Maps.newHashMap();
 
-	public static synchronized DeleteMethodOperation getInstance( UserMethod method ) {
-		return getInstance( method, method.getDeclaringType() );
-	}
+  public static synchronized DeleteMethodOperation getInstance(UserMethod method) {
+    return getInstance(method, method.getDeclaringType());
+  }
 
-	public static synchronized DeleteMethodOperation getInstance( UserMethod method, UserType<?> declaringType ) {
-		DeleteMethodOperation rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeleteMethodOperation( method, declaringType );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized DeleteMethodOperation getInstance(UserMethod method, UserType<?> declaringType) {
+    DeleteMethodOperation rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new DeleteMethodOperation(method, declaringType);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private DeleteMethodOperation( UserMethod method, UserType<?> declaringType ) {
-		super( UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
-	}
+  private DeleteMethodOperation(UserMethod method, UserType<?> declaringType) {
+    super(UUID.fromString("ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5"), method, declaringType);
+  }
 
-	@Override
-	public Class<UserMethod> getNodeParameterType() {
-		return UserMethod.class;
-	}
+  @Override
+  public Class<UserMethod> getNodeParameterType() {
+    return UserMethod.class;
+  }
 
-	@Override
-	protected NodeListProperty<UserMethod> getNodeListProperty( UserType<?> declaringType ) {
-		return declaringType.methods;
-	}
+  @Override
+  protected NodeListProperty<UserMethod> getNodeListProperty(UserType<?> declaringType) {
+    return declaringType.methods;
+  }
 
-	@Override
-	protected boolean isClearToDelete( UserMethod method ) {
-		List<MethodInvocation> references = IDE.getActiveInstance().getMethodInvocations( method );
-		final int N = references.size();
-		if( N > 0 ) {
-			StringBuffer sb = new StringBuffer();
-			sb.append( "Unable to delete " );
-			if( method.isProcedure() ) {
-				sb.append( "procedure" );
-			} else {
-				sb.append( "function" );
-			}
-			sb.append( " named \"" );
-			sb.append( method.name.getValue() );
-			sb.append( "\" because it has " );
-			if( N == 1 ) {
-				sb.append( "an invocation reference" );
-			} else {
-				sb.append( N );
-				sb.append( " invocation references" );
-			}
-			sb.append( " to it.\nYou must remove " );
-			if( N == 1 ) {
-				sb.append( "this reference" );
-			} else {
-				sb.append( "these references" );
-			}
-			sb.append( " if you want to delete \"" );
-			sb.append( method.name.getValue() );
-			sb.append( "\" ." );
+  @Override
+  protected boolean isClearToDelete(UserMethod method) {
+    List<MethodInvocation> references = IDE.getActiveInstance().getMethodInvocations(method);
+    final int N = references.size();
+    if (N > 0) {
+      StringBuffer sb = new StringBuffer();
+      sb.append("Unable to delete ");
+      if (method.isProcedure()) {
+        sb.append("procedure");
+      } else {
+        sb.append("function");
+      }
+      sb.append(" named \"");
+      sb.append(method.name.getValue());
+      sb.append("\" because it has ");
+      if (N == 1) {
+        sb.append("an invocation reference");
+      } else {
+        sb.append(N);
+        sb.append(" invocation references");
+      }
+      sb.append(" to it.\nYou must remove ");
+      if (N == 1) {
+        sb.append("this reference");
+      } else {
+        sb.append("these references");
+      }
+      sb.append(" if you want to delete \"");
+      sb.append(method.name.getValue());
+      sb.append("\" .");
 
-			Dialogs.showInfo( sb.toString() );
-			return false;
-		} else {
-			return true;
-		}
-	}
+      Dialogs.showInfo(sb.toString());
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

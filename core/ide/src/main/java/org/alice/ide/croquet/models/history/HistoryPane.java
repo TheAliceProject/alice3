@@ -66,132 +66,132 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.Dimension;
 
 class HistoryStackModel extends AbstractListModel {
-	private UndoHistory projectHistory;
+  private UndoHistory projectHistory;
 
-	public HistoryStackModel( UndoHistory historyManager ) {
-		this.projectHistory = historyManager;
-	}
+  public HistoryStackModel(UndoHistory historyManager) {
+    this.projectHistory = historyManager;
+  }
 
-	@Override
-	public int getSize() {
-		return projectHistory.getStack().size() + 1;
-	}
+  @Override
+  public int getSize() {
+    return projectHistory.getStack().size() + 1;
+  }
 
-	@Override
-	public Object getElementAt( int index ) {
-		if( index == 0 ) {
-			return null;
-		} else {
-			return projectHistory.getStack().get( index - 1 );
-		}
-	}
+  @Override
+  public Object getElementAt(int index) {
+    if (index == 0) {
+      return null;
+    } else {
+      return projectHistory.getStack().get(index - 1);
+    }
+  }
 
-	public UndoHistory getHistoryManager() {
-		return this.projectHistory;
-	}
+  public UndoHistory getHistoryManager() {
+    return this.projectHistory;
+  }
 
-	public void refresh() {
-		this.fireContentsChanged( this, 0, this.getSize() );
-	}
-};
+  public void refresh() {
+    this.fireContentsChanged(this, 0, this.getSize());
+  }
+}
 
 class HistoryCellRenderer extends ListCellRenderer<Edit> {
-	@Override
-	protected JLabel getListCellRendererComponent( JLabel rv, JList list, Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( index == 0 ) {
-			rv.setText( "---open project---" );
-		} else {
-			String text = value.getTerseDescription();
-			rv.setText( text );
+  @Override
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, Edit value, int index, boolean isSelected, boolean cellHasFocus) {
+    if (index == 0) {
+      rv.setText("---open project---");
+    } else {
+      String text = value.getTerseDescription();
+      rv.setText(text);
 
-			int selectedIndex = list.getSelectedIndex();
-			if( ( selectedIndex >= 0 ) && ( index > selectedIndex ) ) {
-				rv.setEnabled( false );
-			} else {
-				rv.setEnabled( true );
-			}
-		}
-		return rv;
-	}
+      int selectedIndex = list.getSelectedIndex();
+      if ((selectedIndex >= 0) && (index > selectedIndex)) {
+        rv.setEnabled(false);
+      } else {
+        rv.setEnabled(true);
+      }
+    }
+    return rv;
+  }
 }
 
 public class HistoryPane extends JBorderPane {
-	private HistoryListener historyListener = new HistoryListener() {
-		@Override
-		public void operationPushing( HistoryPushEvent e ) {
-		}
+  private HistoryListener historyListener = new HistoryListener() {
+    @Override
+    public void operationPushing(HistoryPushEvent e) {
+    }
 
-		@Override
-		public void operationPushed( HistoryPushEvent e ) {
-		}
+    @Override
+    public void operationPushed(HistoryPushEvent e) {
+    }
 
-		@Override
-		public void insertionIndexChanging( HistoryInsertionIndexEvent e ) {
-		}
+    @Override
+    public void insertionIndexChanging(HistoryInsertionIndexEvent e) {
+    }
 
-		@Override
-		public void insertionIndexChanged( HistoryInsertionIndexEvent e ) {
-			HistoryPane.this.historyStackModel.refresh();
-			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
-			HistoryPane.this.list.repaint();
-		}
+    @Override
+    public void insertionIndexChanged(HistoryInsertionIndexEvent e) {
+      HistoryPane.this.historyStackModel.refresh();
+      HistoryPane.this.list.setSelectedIndex(e.getNextIndex());
+      HistoryPane.this.list.repaint();
+    }
 
-		@Override
-		public void clearing( HistoryClearEvent e ) {
-		}
+    @Override
+    public void clearing(HistoryClearEvent e) {
+    }
 
-		@Override
-		public void cleared( HistoryClearEvent e ) {
-			HistoryPane.this.historyStackModel.refresh();
-			HistoryPane.this.list.setSelectedIndex( 0 );
-		}
-	};
+    @Override
+    public void cleared(HistoryClearEvent e) {
+      HistoryPane.this.historyStackModel.refresh();
+      HistoryPane.this.list.setSelectedIndex(0);
+    }
+  };
 
-	private Group group;
-	private JList list;
-	private HistoryStackModel historyStackModel;
-	private UndoHistory projectHistory;
-	private ListSelectionListener listSelectionListener = new ListSelectionListener() {
-		@Override
-		public void valueChanged( ListSelectionEvent e ) {
-			if( e.getValueIsAdjusting() ) {
-				//pass
-			} else {
-				projectHistory.setInsertionIndex( list.getSelectedIndex() );
-				HistoryPane.this.list.repaint();
-			}
-		}
-	};
+  private Group group;
+  private JList list;
+  private HistoryStackModel historyStackModel;
+  private UndoHistory projectHistory;
+  private ListSelectionListener listSelectionListener = new ListSelectionListener() {
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+      if (e.getValueIsAdjusting()) {
+        //pass
+      } else {
+        projectHistory.setInsertionIndex(list.getSelectedIndex());
+        HistoryPane.this.list.repaint();
+      }
+    }
+  };
 
-	private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
-		@Override
-		public void valueChanged( ValueEvent<ProjectDocument> e ) {
-			ProjectDocument nextValue = e.getNextValue();
-			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue : null );
-		}
-	};
+  private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
+    @Override
+    public void valueChanged(ValueEvent<ProjectDocument> e) {
+      ProjectDocument nextValue = e.getNextValue();
+      HistoryPane.this.initializeProjectHistory(nextValue != null ? nextValue : null);
+    }
+  };
 
-	public HistoryPane( Group group ) {
-		this.group = group;
-		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
-		this.list = new JList();
-		this.list.setCellRenderer( new HistoryCellRenderer() );
-		this.list.addListSelectionListener( this.listSelectionListener );
-		JScrollPane scrollPane = new JScrollPane( this.list );
-		this.add( scrollPane );
-		this.initializeProjectHistory( IDE.getActiveInstance().getDocumentFrame().getDocument() );
-	}
+  public HistoryPane(Group group) {
+    this.group = group;
+    ProjectDocumentState.getInstance().addNewSchoolValueListener(this.projectListener);
+    this.list = new JList();
+    this.list.setCellRenderer(new HistoryCellRenderer());
+    this.list.addListSelectionListener(this.listSelectionListener);
+    JScrollPane scrollPane = new JScrollPane(this.list);
+    this.add(scrollPane);
+    this.initializeProjectHistory(IDE.getActiveInstance().getDocumentFrame().getDocument());
+  }
 
-	public void initializeProjectHistory( ProjectDocument projectDocument ) {
-		this.projectHistory = projectDocument.getUndoHistory( this.group );
-		this.historyStackModel = new HistoryStackModel( this.projectHistory );
-		this.list.setModel( this.historyStackModel );
-		this.historyStackModel.getHistoryManager().addHistoryListener( this.historyListener );
-		this.list.setSelectedIndex( this.historyStackModel.getHistoryManager().getInsertionIndex() );
-	}
+  public void initializeProjectHistory(ProjectDocument projectDocument) {
+    this.projectHistory = projectDocument.getUndoHistory(this.group);
+    this.historyStackModel = new HistoryStackModel(this.projectHistory);
+    this.list.setModel(this.historyStackModel);
+    this.historyStackModel.getHistoryManager().addHistoryListener(this.historyListener);
+    this.list.setSelectedIndex(this.historyStackModel.getHistoryManager().getInsertionIndex());
+  }
 
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension( 240, 768 );
-	}
+  @Override
+  public Dimension getPreferredSize() {
+    return new Dimension(240, 768);
+  }
 }

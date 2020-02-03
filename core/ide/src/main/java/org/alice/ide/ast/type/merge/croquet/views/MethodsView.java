@@ -51,7 +51,7 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public abstract class MethodsView extends MembersView<Method> {
-	public MethodsView( MethodsToolPalette composite, Color backgroundColor ) {
-		super( composite, backgroundColor );
-	}
+  public MethodsView(MethodsToolPalette composite, Color backgroundColor) {
+    super(composite, backgroundColor);
+  }
 }

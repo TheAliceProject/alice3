@@ -59,86 +59,86 @@ import java.util.Locale;
  * @author Dennis Cosgrove
  */
 public class JointMethodUtilities {
-	private static final JavaType JOINT_TYPE = JavaType.getInstance( SJoint.class );
-	private static final JavaType JOINT_ARRAY_TYPE = JavaType.getInstance( SJoint[].class );
-	private static final String GETTER_PREFIX = "get";
+  private static final JavaType JOINT_TYPE = JavaType.getInstance(SJoint.class);
+  private static final JavaType JOINT_ARRAY_TYPE = JavaType.getInstance(SJoint[].class);
+  private static final String GETTER_PREFIX = "get";
 
-	public static boolean isJointGetter( AbstractMethod method ) {
-		if( method.isPublicAccess() ) {
-			if( method.getReturnType() == JOINT_TYPE ) {
-				if( ( method.getVisibility() == Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
-					if( method.getName().startsWith( GETTER_PREFIX ) ) {
-						if( method instanceof JavaMethod ) {
-							return true; //isNotAnnotatedOtherwise
-						} else if( method instanceof UserMethod ) {
-							UserMethod userMethod = (UserMethod)method;
-							return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
-						} else {
-							//throw new AssertionError();
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+  public static boolean isJointGetter(AbstractMethod method) {
+    if (method.isPublicAccess()) {
+      if (method.getReturnType() == JOINT_TYPE) {
+        if ((method.getVisibility() == Visibility.PRIME_TIME) || (method.getVisibility() == null)) {
+          if (method.getName().startsWith(GETTER_PREFIX)) {
+            if (method instanceof JavaMethod) {
+              return true; //isNotAnnotatedOtherwise
+            } else if (method instanceof UserMethod) {
+              UserMethod userMethod = (UserMethod) method;
+              return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
+            } else {
+              //throw new AssertionError();
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	public static boolean isJointArrayGetter( AbstractMethod method ) {
-		if( method.isPublicAccess() ) {
-			if( method.getReturnType() == JOINT_ARRAY_TYPE ) {
-				if( ( method.getVisibility() == Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
-					if( method.getName().startsWith( GETTER_PREFIX ) ) {
-						if( method instanceof JavaMethod ) {
-							return true; //isNotAnnotatedOtherwise
-						} else if( method instanceof UserMethod ) {
-							UserMethod userMethod = (UserMethod)method;
-							return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
-						} else {
-							//throw new AssertionError();
-							return false;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
+  public static boolean isJointArrayGetter(AbstractMethod method) {
+    if (method.isPublicAccess()) {
+      if (method.getReturnType() == JOINT_ARRAY_TYPE) {
+        if ((method.getVisibility() == Visibility.PRIME_TIME) || (method.getVisibility() == null)) {
+          if (method.getName().startsWith(GETTER_PREFIX)) {
+            if (method instanceof JavaMethod) {
+              return true; //isNotAnnotatedOtherwise
+            } else if (method instanceof UserMethod) {
+              UserMethod userMethod = (UserMethod) method;
+              return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
+            } else {
+              //throw new AssertionError();
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
 
-	public static int getJointArrayLength( AbstractMethod method ) {
-		if( isJointArrayGetter( method ) ) {
-			if( method instanceof JavaMethod ) {
-				Method mthd = ( (JavaMethod)method ).getMethodReflectionProxy().getReification();
-				if( mthd != null ) {
-					if( mthd.isAnnotationPresent( ArrayTemplate.class ) ) {
-						ArrayTemplate arrayTemplate = mthd.getAnnotation( ArrayTemplate.class );
-						return arrayTemplate.length();
-					} else {
-						return -1;
-					}
-				} else {
-					return -1;
-				}
-			} else if( method instanceof UserMethod ) {
-				return -1;
-			} else {
-				return -1;
-			}
-		}
-		return -1;
-	}
+  public static int getJointArrayLength(AbstractMethod method) {
+    if (isJointArrayGetter(method)) {
+      if (method instanceof JavaMethod) {
+        Method mthd = ((JavaMethod) method).getMethodReflectionProxy().getReification();
+        if (mthd != null) {
+          if (mthd.isAnnotationPresent(ArrayTemplate.class)) {
+            ArrayTemplate arrayTemplate = mthd.getAnnotation(ArrayTemplate.class);
+            return arrayTemplate.length();
+          } else {
+            return -1;
+          }
+        } else {
+          return -1;
+        }
+      } else if (method instanceof UserMethod) {
+        return -1;
+      } else {
+        return -1;
+      }
+    }
+    return -1;
+  }
 
-	public static String getJointName( AbstractMethod method, Locale locale ) {
-		String name = method.getName();
-		if( name.startsWith( GETTER_PREFIX ) ) {
-			return name.substring( GETTER_PREFIX.length() );
-		} else {
-			return name;
-		}
-	}
+  public static String getJointName(AbstractMethod method, Locale locale) {
+    String name = method.getName();
+    if (name.startsWith(GETTER_PREFIX)) {
+      return name.substring(GETTER_PREFIX.length());
+    } else {
+      return name;
+    }
+  }
 
-	//	public static org.lgna.project.ast.AbstractMethod getParentMethod( org.lgna.project.ast.AbstractMethod method ) {
-	//		//todo
-	//		return null;
-	//	}
+  //  public static org.lgna.project.ast.AbstractMethod getParentMethod( org.lgna.project.ast.AbstractMethod method ) {
+  //    //todo
+  //    return null;
+  //  }
 }

@@ -54,39 +54,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAccess> {
-	private static Map<AbstractField, ThisFieldAccessFillIn> map = Maps.newHashMap();
+  private static Map<AbstractField, ThisFieldAccessFillIn> map = Maps.newHashMap();
 
-	public static ThisFieldAccessFillIn getInstance( AbstractField value ) {
-		synchronized( map ) {
-			ThisFieldAccessFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
+  public static ThisFieldAccessFillIn getInstance(AbstractField value) {
+    synchronized (map) {
+      ThisFieldAccessFillIn rv = map.get(value);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ThisFieldAccessFillIn(value);
+        map.put(value, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final FieldAccess transientValue;
+  private final FieldAccess transientValue;
 
-	private ThisFieldAccessFillIn( AbstractField field ) {
-		super( UUID.fromString( "dd377543-d7d4-4d40-857c-1c7bf6d9871d" ) );
-		this.transientValue = this.createValue( field );
-	}
+  private ThisFieldAccessFillIn(AbstractField field) {
+    super(UUID.fromString("dd377543-d7d4-4d40-857c-1c7bf6d9871d"));
+    this.transientValue = this.createValue(field);
+  }
 
-	private FieldAccess createValue( AbstractField field ) {
-		return new FieldAccess(field);
-	}
+  private FieldAccess createValue(AbstractField field) {
+    return new FieldAccess(field);
+  }
 
-	@Override
-	public FieldAccess createValue( ItemNode<? super FieldAccess, Void> node ) {
-		return this.createValue( this.transientValue.field.getValue() );
-	}
+  @Override
+  public FieldAccess createValue(ItemNode<? super FieldAccess, Void> node) {
+    return this.createValue(this.transientValue.field.getValue());
+  }
 
-	@Override
-	public FieldAccess getTransientValue( ItemNode<? super FieldAccess, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public FieldAccess getTransientValue(ItemNode<? super FieldAccess, Void> node) {
+    return this.transientValue;
+  }
 }

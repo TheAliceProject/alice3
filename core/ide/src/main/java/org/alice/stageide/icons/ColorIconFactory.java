@@ -53,20 +53,20 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class ColorIconFactory extends ResolutionIndependantIconFactory {
-	private final Color color;
+  private final Color color;
 
-	public ColorIconFactory( Color color ) {
-		super( IsCachingDesired.FALSE );
-		this.color = color;
-	}
+  public ColorIconFactory(Color color) {
+    super(IsCachingDesired.FALSE);
+    this.color = color;
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new ColorIcon( this.color, size.width, size.height );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new ColorIcon(this.color, size.width, size.height);
+  }
 
-	@Override
-	protected double getDefaultWidthToHeightAspectRatio() {
-		return 1.0;
-	}
+  @Override
+  protected double getDefaultWidthToHeightAspectRatio() {
+    return 1.0;
+  }
 }

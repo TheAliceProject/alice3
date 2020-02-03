@@ -60,24 +60,24 @@ import org.lgna.project.ast.ExpressionProperty;
  * @author Dennis Cosgrove
  */
 public abstract class IdeAstI18nFactory extends AstI18nFactory {
-	@Override
-	protected SwingComponentView<?> createIdeExpressionPane( IdeExpression ideExpression ) {
-		if( ideExpression instanceof EmptyExpression ) {
-			return new EmptyExpressionPane( (EmptyExpression)ideExpression );
-		} else if( ideExpression instanceof PreviousValueExpression ) {
-			return new PreviousValueExpressionPane( this, (PreviousValueExpression)ideExpression );
-		} else if( ideExpression instanceof CurrentThisExpression ) {
-			return new ThisExpressionLikeView( this, (CurrentThisExpression)ideExpression );
-		} else if( ideExpression instanceof SelectedInstanceFactoryExpression ) {
-			//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
-			return new SelectedInstanceFactoryExpressionPanel( this );
-		} else {
-			throw new RuntimeException( ideExpression.toString() );
-		}
-	}
+  @Override
+  protected SwingComponentView<?> createIdeExpressionPane(IdeExpression ideExpression) {
+    if (ideExpression instanceof EmptyExpression) {
+      return new EmptyExpressionPane((EmptyExpression) ideExpression);
+    } else if (ideExpression instanceof PreviousValueExpression) {
+      return new PreviousValueExpressionPane(this, (PreviousValueExpression) ideExpression);
+    } else if (ideExpression instanceof CurrentThisExpression) {
+      return new ThisExpressionLikeView(this, (CurrentThisExpression) ideExpression);
+    } else if (ideExpression instanceof SelectedInstanceFactoryExpression) {
+      //rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
+      return new SelectedInstanceFactoryExpressionPanel(this);
+    } else {
+      throw new RuntimeException(ideExpression.toString());
+    }
+  }
 
-	@Override
-	public SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
+  @Override
+  public SwingComponentView<?> createExpressionPropertyPane(ExpressionProperty expressionProperty, AbstractType<?, ?, ?> type) {
+    return this.createExpressionPane(expressionProperty.getValue());
+  }
 }

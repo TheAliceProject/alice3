@@ -49,19 +49,19 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class BlockStatementIndexPairContext implements ExpressionCascadeContext {
-	private final BlockStatementIndexPair blockStatementIndexPair;
+  private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public BlockStatementIndexPairContext( BlockStatementIndexPair blockStatementIndexPair ) {
-		this.blockStatementIndexPair = blockStatementIndexPair;
-	}
+  public BlockStatementIndexPairContext(BlockStatementIndexPair blockStatementIndexPair) {
+    this.blockStatementIndexPair = blockStatementIndexPair;
+  }
 
-	@Override
-	public Expression getPreviousExpression() {
-		return null;
-	}
+  @Override
+  public Expression getPreviousExpression() {
+    return null;
+  }
 
-	@Override
-	public BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
+  @Override
+  public BlockStatementIndexPair getBlockStatementIndexPair() {
+    return this.blockStatementIndexPair;
+  }
 }

@@ -48,18 +48,19 @@ import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
  * @author Dennis Cosgrove
  */
 public class ProjectVersion {
-	private static final String TEXT;
-	private static final Version CURRENT;
-	static {
-		TEXT = TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
-		CURRENT = new Version( TEXT );
-	}
+  private static final String TEXT;
+  private static final Version CURRENT;
 
-	public static String getCurrentVersionText() {
-		return TEXT;
-	}
+  static {
+    TEXT = TextFileUtilities.read(Version.class.getResourceAsStream("Version.txt")).trim();
+    CURRENT = new Version(TEXT);
+  }
 
-	public static Version getCurrentVersion() {
-		return CURRENT;
-	}
+  public static String getCurrentVersionText() {
+    return TEXT;
+  }
+
+  public static Version getCurrentVersion() {
+    return CURRENT;
+  }
 }

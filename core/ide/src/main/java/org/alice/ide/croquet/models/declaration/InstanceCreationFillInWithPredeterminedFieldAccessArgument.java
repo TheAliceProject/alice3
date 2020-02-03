@@ -59,39 +59,39 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends ExpressionFillInWithoutBlanks<InstanceCreation> {
-	private static MapToMap<AbstractConstructor, AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> mapToMap = MapToMap.newInstance();
+  private static MapToMap<AbstractConstructor, AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> mapToMap = MapToMap.newInstance();
 
-	public static synchronized InstanceCreationFillInWithPredeterminedFieldAccessArgument getInstance( AbstractConstructor constructor, AbstractField field ) {
-		return mapToMap.getInitializingIfAbsent( constructor, field, new MapToMap.Initializer<AbstractConstructor, AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument>() {
-			@Override
-			public InstanceCreationFillInWithPredeterminedFieldAccessArgument initialize( AbstractConstructor constructor, AbstractField field ) {
-				return new InstanceCreationFillInWithPredeterminedFieldAccessArgument( constructor, field );
-			}
-		} );
-	}
+  public static synchronized InstanceCreationFillInWithPredeterminedFieldAccessArgument getInstance(AbstractConstructor constructor, AbstractField field) {
+    return mapToMap.getInitializingIfAbsent(constructor, field, new MapToMap.Initializer<AbstractConstructor, AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument>() {
+      @Override
+      public InstanceCreationFillInWithPredeterminedFieldAccessArgument initialize(AbstractConstructor constructor, AbstractField field) {
+        return new InstanceCreationFillInWithPredeterminedFieldAccessArgument(constructor, field);
+      }
+    });
+  }
 
-	private final AbstractField field;
-	private final InstanceCreation transientValue;
+  private final AbstractField field;
+  private final InstanceCreation transientValue;
 
-	private static InstanceCreation createInstanceCreation( AbstractConstructor constructor, AbstractField field ) {
-		InstanceCreation rv = new InstanceCreation( constructor );
-		rv.requiredArguments.add( new SimpleArgument( constructor.getRequiredParameters().get( 0 ), new FieldAccess( new TypeExpression( field.getDeclaringType() ), field ) ) );
-		return rv;
-	}
+  private static InstanceCreation createInstanceCreation(AbstractConstructor constructor, AbstractField field) {
+    InstanceCreation rv = new InstanceCreation(constructor);
+    rv.requiredArguments.add(new SimpleArgument(constructor.getRequiredParameters().get(0), new FieldAccess(new TypeExpression(field.getDeclaringType()), field)));
+    return rv;
+  }
 
-	private InstanceCreationFillInWithPredeterminedFieldAccessArgument( AbstractConstructor constructor, AbstractField field ) {
-		super( UUID.fromString( "72f4ff66-0652-4682-8e2e-84298732128b" ) );
-		this.field = field;
-		this.transientValue = createInstanceCreation( constructor, field );
-	}
+  private InstanceCreationFillInWithPredeterminedFieldAccessArgument(AbstractConstructor constructor, AbstractField field) {
+    super(UUID.fromString("72f4ff66-0652-4682-8e2e-84298732128b"));
+    this.field = field;
+    this.transientValue = createInstanceCreation(constructor, field);
+  }
 
-	@Override
-	public InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node ) {
-		return createInstanceCreation( this.transientValue.constructor.getValue(), this.field );
-	}
+  @Override
+  public InstanceCreation createValue(ItemNode<? super InstanceCreation, Void> node) {
+    return createInstanceCreation(this.transientValue.constructor.getValue(), this.field);
+  }
 
-	@Override
-	public InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public InstanceCreation getTransientValue(ItemNode<? super InstanceCreation, Void> node) {
+    return this.transientValue;
+  }
 }

@@ -48,11 +48,10 @@ import org.lgna.project.annotations.ClassTemplate;
  * @author dculyba
  */
 public class GetDistanceToTheLeftOf extends AsSeenByArgumentFactory {
-	@ClassTemplate( keywordFactoryCls = GetDistanceToTheLeftOf.class )
-	public static interface Detail {
-	}
+  @ClassTemplate(keywordFactoryCls = GetDistanceToTheLeftOf.class) public static interface Detail {
+  }
 
-	private GetDistanceToTheLeftOf() {
-		super();
-	}
+  private GetDistanceToTheLeftOf() {
+    super();
+  }
 }

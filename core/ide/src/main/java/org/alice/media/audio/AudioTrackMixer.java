@@ -61,62 +61,62 @@ import javax.sound.sampled.AudioSystem;
  */
 public class AudioTrackMixer {
 
-	private double trackLength;
-	private List<ScheduledAudioStream> scheduledStreams;
-	private Map<AudioResource, AudioResource> convertedResourceMap;
-	private AudioFormat targetFormat;
+  private double trackLength;
+  private List<ScheduledAudioStream> scheduledStreams;
+  private Map<AudioResource, AudioResource> convertedResourceMap;
+  private AudioFormat targetFormat;
 
-	public AudioTrackMixer( AudioFormat targetFormat, double trackLength ) {
-		this.trackLength = trackLength;
-		this.scheduledStreams = new LinkedList<ScheduledAudioStream>();
-		this.targetFormat = targetFormat;
-		this.convertedResourceMap = new HashMap<AudioResource, AudioResource>();
-	}
+  public AudioTrackMixer(AudioFormat targetFormat, double trackLength) {
+    this.trackLength = trackLength;
+    this.scheduledStreams = new LinkedList<ScheduledAudioStream>();
+    this.targetFormat = targetFormat;
+    this.convertedResourceMap = new HashMap<AudioResource, AudioResource>();
+  }
 
-	private AudioResource convertResourceIfNecessary( AudioResource resource ) {
-		AudioResource convertedResource = null;
-		if( this.convertedResourceMap.containsKey( resource ) ) {
-			convertedResource = this.convertedResourceMap.get( resource );
-		} else {
-			if( AudioResourceConverter.needsConverting( resource, this.targetFormat ) ) {
-				convertedResource = AudioResourceConverter.convert( resource, this.targetFormat );
-			} else {
-				convertedResource = resource;
-			}
-			this.convertedResourceMap.put( resource, convertedResource );
-		}
-		return convertedResource;
-	}
+  private AudioResource convertResourceIfNecessary(AudioResource resource) {
+    AudioResource convertedResource = null;
+    if (this.convertedResourceMap.containsKey(resource)) {
+      convertedResource = this.convertedResourceMap.get(resource);
+    } else {
+      if (AudioResourceConverter.needsConverting(resource, this.targetFormat)) {
+        convertedResource = AudioResourceConverter.convert(resource, this.targetFormat);
+      } else {
+        convertedResource = resource;
+      }
+      this.convertedResourceMap.put(resource, convertedResource);
+    }
+    return convertedResource;
+  }
 
-	public void addAudioResource( AudioResource resource, double startTime, double entryPoint, double endPoint, double volume ) {
-		AudioResource convertedResource = convertResourceIfNecessary( resource );
-		ScheduledAudioStream scheduledStream = new ScheduledAudioStream( convertedResource, startTime, entryPoint, endPoint, volume );
-		addScheduledStream( scheduledStream );
-	}
+  public void addAudioResource(AudioResource resource, double startTime, double entryPoint, double endPoint, double volume) {
+    AudioResource convertedResource = convertResourceIfNecessary(resource);
+    ScheduledAudioStream scheduledStream = new ScheduledAudioStream(convertedResource, startTime, entryPoint, endPoint, volume);
+    addScheduledStream(scheduledStream);
+  }
 
-	public void addScheduledStream( ScheduledAudioStream scheduledStream ) {
-		AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
-		if( convertedResource != scheduledStream.getAudioResource() ) {
-			scheduledStream.setAudioResource( convertedResource );
-		}
-		int index = scheduledStreams.size();
-		for( int i = 0; i < scheduledStreams.size(); i++ ) {
-			if( scheduledStreams.get( i ).compareTo( scheduledStream ) > 0 ) {
-				index = i;
-				break;
-			}
-		}
-		scheduledStreams.add( index, scheduledStream );
-	}
+  public void addScheduledStream(ScheduledAudioStream scheduledStream) {
+    AudioResource convertedResource = convertResourceIfNecessary(scheduledStream.getAudioResource());
+    if (convertedResource != scheduledStream.getAudioResource()) {
+      scheduledStream.setAudioResource(convertedResource);
+    }
+    int index = scheduledStreams.size();
+    for (int i = 0; i < scheduledStreams.size(); i++) {
+      if (scheduledStreams.get(i).compareTo(scheduledStream) > 0) {
+        index = i;
+        break;
+      }
+    }
+    scheduledStreams.add(index, scheduledStream);
+  }
 
-	public AudioInputStream createAudioStream() {
-		AudioInputStream audioInputStream = new MixingFloatAudioInputStream( this.targetFormat, this.scheduledStreams, this.trackLength );
-		return audioInputStream;
-	}
+  public AudioInputStream createAudioStream() {
+    AudioInputStream audioInputStream = new MixingFloatAudioInputStream(this.targetFormat, this.scheduledStreams, this.trackLength);
+    return audioInputStream;
+  }
 
-	public void write( OutputStream out ) throws IOException {
-		AudioInputStream audioInputStream = createAudioStream();
-		AudioSystem.write( audioInputStream, AudioFileFormat.Type.WAVE, out );
-	}
+  public void write(OutputStream out) throws IOException {
+    AudioInputStream audioInputStream = createAudioStream();
+    AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, out);
+  }
 
 }

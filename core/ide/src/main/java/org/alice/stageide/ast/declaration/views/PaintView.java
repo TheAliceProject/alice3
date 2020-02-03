@@ -66,65 +66,65 @@ import java.awt.Graphics;
  * @author Dennis Cosgrove
  */
 public class PaintView extends ViewController<JComponent, CustomItemState<Expression>> {
-	private ValueListener<Expression> valueListener = new ValueListener<Expression>() {
-		@Override
-		public void valueChanged( ValueEvent<Expression> e ) {
-			PaintView.this.repaint();
-		}
-	};
+  private ValueListener<Expression> valueListener = new ValueListener<Expression>() {
+    @Override
+    public void valueChanged(ValueEvent<Expression> e) {
+      PaintView.this.repaint();
+    }
+  };
 
-	public PaintView( CustomItemState<Expression> model ) {
-		super( model );
-	}
+  public PaintView(CustomItemState<Expression> model) {
+    super(model);
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().addNewSchoolValueListener( this.valueListener );
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.getModel().addNewSchoolValueListener(this.valueListener);
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().removeNewSchoolValueListener( this.valueListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    this.getModel().removeNewSchoolValueListener(this.valueListener);
+    super.handleUndisplayable();
+  }
 
-	@Override
-	protected JComponent createAwtComponent() {
-		JComponent rv = new JComponent() {
-			@Override
-			public Dimension getMinimumSize() {
-				return this.getPreferredSize();
-			}
+  @Override
+  protected JComponent createAwtComponent() {
+    JComponent rv = new JComponent() {
+      @Override
+      public Dimension getMinimumSize() {
+        return this.getPreferredSize();
+      }
 
-			@Override
-			protected void paintComponent( Graphics g ) {
-				super.paintComponent( g );
-				Expression expression = PaintView.this.getModel().getValue();
-				if( expression != null ) {
-					VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+      @Override
+      protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Expression expression = PaintView.this.getModel().getValue();
+        if (expression != null) {
+          VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
 
-					Object[] values = vm.ENTRY_POINT_evaluate( null, new Expression[] { expression } );
-					assert values.length == 1;
-					if( values[ 0 ] instanceof Paint ) {
-						Paint paint = (Paint)values[ 0 ];
+          Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
+          assert values.length == 1;
+          if (values[0] instanceof Paint) {
+            Paint paint = (Paint) values[0];
 
-						Color4f color = EmployeesOnly.getColor4f( paint, null );
-						Texture texture = EmployeesOnly.getTexture( paint, null );
+            Color4f color = EmployeesOnly.getColor4f(paint, null);
+            Texture texture = EmployeesOnly.getTexture(paint, null);
 
-						if( color != null ) {
-							g.setColor( ColorUtilities.toAwtColor( color ) );
-							g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-						}
-						if( texture instanceof BufferedImageTexture ) {
-							BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
-							GraphicsUtilities.drawCenteredScaledToFitImage( g, bufferedImageTexture.getBufferedImage(), this );
-						}
-					}
-				}
-			}
-		};
-		rv.setPreferredSize( new Dimension( 128, 128 ) );
-		return rv;
-	}
+            if (color != null) {
+              g.setColor(ColorUtilities.toAwtColor(color));
+              g.fillRect(0, 0, this.getWidth(), this.getHeight());
+            }
+            if (texture instanceof BufferedImageTexture) {
+              BufferedImageTexture bufferedImageTexture = (BufferedImageTexture) texture;
+              GraphicsUtilities.drawCenteredScaledToFitImage(g, bufferedImageTexture.getBufferedImage(), this);
+            }
+          }
+        }
+      }
+    };
+    rv.setPreferredSize(new Dimension(128, 128));
+    return rv;
+  }
 }

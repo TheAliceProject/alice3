@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="ShowerBath">
+    <BoundingBox>
+        <Min x="-0.8999946713447571" y="0.0" z="-0.47256961464881897"/>
+        <Max x="0.8999947309494019" y="2.2467410564422607" z="0.4725695550441742"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bath</Tag>
+        <Tag>bathroom</Tag>
+        <Tag>washing</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>household:bathroom</GroupTag>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:bathroom</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Colonial" resourceName="COLONIAL_LINEN_CEDAR_RIM" textureName="LINEN_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_BAMBOO_CEDAR_RIM" textureName="BAMBOO_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_PALM_TREE_CEDAR_RIM" textureName="PALM_TREE_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_RED_STRIPES_CEDAR_RIM" textureName="RED_STRIPES_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_GREEN_STRIPES_CEDAR_RIM" textureName="GREEN_STRIPES_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Colonial" resourceName="COLONIAL_SOLID_RED_CEDAR_RIM" textureName="SOLID_RED_CEDAR_RIM">
+        <BoundingBox>
+            <Min x="-0.8388305306434631" y="0.0" z="-0.3976570665836334"/>
+            <Max x="0.8388306498527527" y="2.107475996017456" z="0.3976570665836334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Value" resourceName="VALUE" textureName="VALUE">
+        <BoundingBox>
+            <Min x="-0.8999946713447571" y="0.0" z="-0.47256961464881897"/>
+            <Max x="0.8999947309494019" y="2.2467410564422607" z="0.4725695550441742"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

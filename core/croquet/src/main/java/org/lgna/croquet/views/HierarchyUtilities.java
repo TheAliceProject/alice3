@@ -51,174 +51,174 @@ import java.util.LinkedList;
  * @author Dennis Cosgrove
  */
 public class HierarchyUtilities {
-	private HierarchyUtilities() {
-		throw new AssertionError();
-	}
+  private HierarchyUtilities() {
+    throw new AssertionError();
+  }
 
-	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
+  public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-	private static <E extends AwtComponentView<?>> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		assert component != null;
-		E rv = null;
-		boolean isAcceptedByAll;
-		if( isComponentACandidate ) {
-			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
-				isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-			} else {
-				isAcceptedByAll = false;
-			}
-		} else {
-			isAcceptedByAll = false;
-		}
-		if( isAcceptedByAll ) {
-			rv = (E)component;
-		} else {
-			if( isChildACandidate ) {
-				if( component instanceof AwtContainerView<?> ) {
-					AwtContainerView<?> container = (AwtContainerView<?>)component;
-					for( AwtComponentView<?> componentI : container.getComponents() ) {
-						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
-						if( rv != null ) {
-							break;
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+  private static <E extends AwtComponentView<?>> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    assert component != null;
+    E rv = null;
+    boolean isAcceptedByAll;
+    if (isComponentACandidate) {
+      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
+        isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+      } else {
+        isAcceptedByAll = false;
+      }
+    } else {
+      isAcceptedByAll = false;
+    }
+    if (isAcceptedByAll) {
+      rv = (E) component;
+    } else {
+      if (isChildACandidate) {
+        if (component instanceof AwtContainerView<?>) {
+          AwtContainerView<?> container = (AwtContainerView<?>) component;
+          for (AwtComponentView<?> componentI : container.getComponents()) {
+            rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions);
+            if (rv != null) {
+              break;
+            }
+          }
+        }
+      }
+    }
+    return rv;
+  }
 
-	private static <E extends AwtComponentView<?>> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		assert component != null;
+  private static <E extends AwtComponentView<?>> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    assert component != null;
 
-		if( isComponentACandidate ) {
-			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
-				boolean isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-				if( isAcceptedByAll ) {
-					list.add( (E)component );
-				}
-			}
-		}
+    if (isComponentACandidate) {
+      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
+        boolean isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+        if (isAcceptedByAll) {
+          list.add((E) component);
+        }
+      }
+    }
 
-		if( isChildACandidate ) {
-			if( component instanceof AwtContainerView<?> ) {
-				AwtContainerView<?> container = (AwtContainerView<?>)component;
-				for( AwtComponentView<?> componentI : container.getComponents() ) {
-					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
-				}
-			}
-		}
-	}
+    if (isChildACandidate) {
+      if (component instanceof AwtContainerView<?>) {
+        AwtContainerView<?> container = (AwtContainerView<?>) component;
+        for (AwtComponentView<?> componentI : container.getComponents()) {
+          updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
+        }
+      }
+    }
+  }
 
-	private static <E extends AwtComponentView<?>> E getFirstToAccept( HowMuch candidateMask, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		return getFirstToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions );
-	}
+  private static <E extends AwtComponentView<?>> E getFirstToAccept(HowMuch candidateMask, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    return getFirstToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions);
+  }
 
-	private static <E extends AwtComponentView<?>> void updateAllToAccept( HowMuch candidateMask, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		updateAllToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
-	}
+  private static <E extends AwtComponentView<?>> void updateAllToAccept(HowMuch candidateMask, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    updateAllToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions);
+  }
 
-	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
-		return HierarchyUtilities.getFirstToAccept( howMuch, component, cls, criterions );
-	}
+  public static <E extends AwtComponentView<?>> E findFirstMatch(AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
+    return HierarchyUtilities.getFirstToAccept(howMuch, component, cls, criterions);
+  }
 
-	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		return findFirstMatch( component, DEFAULT_HOW_MUCH, cls, criterions );
-	}
+  public static <E extends AwtComponentView<?>> E findFirstMatch(AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    return findFirstMatch(component, DEFAULT_HOW_MUCH, cls, criterions);
+  }
 
-	public static <E extends AwtComponentView<?>> E findFirstMatch( AwtComponentView<?> component, Class<E> cls ) {
-		return findFirstMatch( component, cls, (Criterion<?>[])null );
-	}
+  public static <E extends AwtComponentView<?>> E findFirstMatch(AwtComponentView<?> component, Class<E> cls) {
+    return findFirstMatch(component, cls, (Criterion<?>[]) null);
+  }
 
-	public static AwtComponentView<?> findFirstMatch( AwtComponentView<?> component, Criterion<?>... criterions ) {
-		return findFirstMatch( component, null, criterions );
-	}
+  public static AwtComponentView<?> findFirstMatch(AwtComponentView<?> component, Criterion<?>... criterions) {
+    return findFirstMatch(component, null, criterions);
+  }
 
-	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions ) {
-		java.util.List<E> list = new LinkedList<E>();
-		HierarchyUtilities.updateAllToAccept( howMuch, list, component, cls, criterions );
-		return list;
-	}
+  public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches(AwtComponentView<?> component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
+    java.util.List<E> list = new LinkedList<E>();
+    HierarchyUtilities.updateAllToAccept(howMuch, list, component, cls, criterions);
+    return list;
+  }
 
-	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions ) {
-		return findAllMatches( component, DEFAULT_HOW_MUCH, cls, criterions );
-	}
+  public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches(AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+    return findAllMatches(component, DEFAULT_HOW_MUCH, cls, criterions);
+  }
 
-	public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches( AwtComponentView<?> component, Class<E> cls ) {
-		return findAllMatches( component, cls, (Criterion<?>[])null );
-	}
+  public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches(AwtComponentView<?> component, Class<E> cls) {
+    return findAllMatches(component, cls, (Criterion<?>[]) null);
+  }
 
-	public static java.util.List<AwtComponentView<?>> findAllMatches( AwtComponentView<?> component, Criterion<?>... criterions ) {
-		return findAllMatches( component, null, criterions );
-	}
+  public static java.util.List<AwtComponentView<?>> findAllMatches(AwtComponentView<?> component, Criterion<?>... criterions) {
+    return findAllMatches(component, null, criterions);
+  }
 
-	public static java.util.List<AwtComponentView<?>> findAllMatches( AwtComponentView<?> component ) {
-		return findAllMatches( component, null, (Criterion<?>[])null );
-	}
+  public static java.util.List<AwtComponentView<?>> findAllMatches(AwtComponentView<?> component) {
+    return findAllMatches(component, null, (Criterion<?>[]) null);
+  }
 
-	public static <E extends AwtComponentView<?>> E findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions ) {
-		AwtComponentView<?> c;
-		if( isComponentIncludedInSearch ) {
-			c = component;
-		} else {
-			c = component.getParent();
-		}
-		while( c != null ) {
-			boolean isAcceptedByAll;
-			if( ( cls == null ) || cls.isAssignableFrom( c.getClass() ) ) {
-				isAcceptedByAll = true;
-				if( criterions == null ) {
-					//pass
-				} else {
-					for( Criterion criterion : criterions ) {
-						if( criterion.accept( component ) ) {
-							//pass
-						} else {
-							isAcceptedByAll = false;
-							break;
-						}
-					}
-				}
-			} else {
-				isAcceptedByAll = false;
-			}
-			if( isAcceptedByAll ) {
-				return (E)c;
-			}
-			c = c.getParent();
-		}
-		return null;
-	}
+  public static <E extends AwtComponentView<?>> E findFirstAncestor(AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions) {
+    AwtComponentView<?> c;
+    if (isComponentIncludedInSearch) {
+      c = component;
+    } else {
+      c = component.getParent();
+    }
+    while (c != null) {
+      boolean isAcceptedByAll;
+      if ((cls == null) || cls.isAssignableFrom(c.getClass())) {
+        isAcceptedByAll = true;
+        if (criterions == null) {
+          //pass
+        } else {
+          for (Criterion criterion : criterions) {
+            if (criterion.accept(component)) {
+              //pass
+            } else {
+              isAcceptedByAll = false;
+              break;
+            }
+          }
+        }
+      } else {
+        isAcceptedByAll = false;
+      }
+      if (isAcceptedByAll) {
+        return (E) c;
+      }
+      c = c.getParent();
+    }
+    return null;
+  }
 
-	public static <E extends AwtComponentView<?>> E findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (Criterion<?>[])null );
-	}
+  public static <E extends AwtComponentView<?>> E findFirstAncestor(AwtComponentView<?> component, boolean isComponentIncludedInSearch, Class<E> cls) {
+    return findFirstAncestor(component, isComponentIncludedInSearch, cls, (Criterion<?>[]) null);
+  }
 
-	public static AwtComponentView<?> findFirstAncestor( AwtComponentView<?> component, boolean isComponentIncludedInSearch, Criterion<?>... criterions ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
-	}
+  public static AwtComponentView<?> findFirstAncestor(AwtComponentView<?> component, boolean isComponentIncludedInSearch, Criterion<?>... criterions) {
+    return findFirstAncestor(component, isComponentIncludedInSearch, null, criterions);
+  }
 }

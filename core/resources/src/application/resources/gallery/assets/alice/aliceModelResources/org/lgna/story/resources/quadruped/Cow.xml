@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Yi-Yi" name="Cow">
+    <BoundingBox>
+        <Min x="-0.4043147164045547" y="0.005755848757140751" z="-1.4520118229620866"/>
+        <Max x="0.40353167659380756" y="1.6589589061834196" z="1.1906337257754656"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>farm</Tag>
+        <Tag>cow</Tag>
+        <Tag>bovine</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Cow" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

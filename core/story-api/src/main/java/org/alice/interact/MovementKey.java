@@ -52,37 +52,32 @@ import org.alice.interact.condition.MovementDescription;
  * @author David Culyba
  */
 public class MovementKey {
-	public MovementKey( int keyValue, MovementDescription description ) {
-		this( keyValue, description, 1.0d );
-	}
+  public MovementKey(int keyValue, MovementDescription description) {
+    this(keyValue, description, 1.0d);
+  }
 
-	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier ) {
-		this.keyValue = keyValue;
-		this.movementDescription = description;
-		this.directionMultiplier = directionMultiplier;
-	}
+  public MovementKey(int keyValue, MovementDescription description, double directionMultiplier) {
+    this.keyValue = keyValue;
+    this.movementDescription = description;
+    this.directionMultiplier = directionMultiplier;
+  }
 
-	private final MovementDescription movementDescription;
-	private final double directionMultiplier;
-	public final int keyValue;
+  private final MovementDescription movementDescription;
+  private final double directionMultiplier;
+  public final int keyValue;
 
-	public void applyRotation( AbstractTransformable transformable, double degreesToRotate ) {
-		movementDescription.type.applyRotation( transformable,
-																						movementDescription.direction.getVector(),
-																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
-	}
+  public void applyRotation(AbstractTransformable transformable, double degreesToRotate) {
+    movementDescription.type.applyRotation(transformable, movementDescription.direction.getVector(), new AngleInDegrees(directionMultiplier * degreesToRotate));
+  }
 
-	public void applyTranslation( AbstractTransformable transformable, double distanceToMove ) {
-		Point3 direction = Point3.createMultiplication(
-				movementDescription.direction.getVector(), distanceToMove * directionMultiplier );
-		movementDescription.type.applyTranslation( transformable, direction );
-	}
+  public void applyTranslation(AbstractTransformable transformable, double distanceToMove) {
+    Point3 direction = Point3.createMultiplication(movementDescription.direction.getVector(), distanceToMove * directionMultiplier);
+    movementDescription.type.applyTranslation(transformable, direction);
+  }
 
-	public void applyOrbit( AbstractTransformable transformable, double degreesToRotate ) {
-		Vector3 rotationDirection = new Vector3( movementDescription.direction.getVector() );
-		transformable.getLocalTransformation().orientation.transform( rotationDirection );
-		movementDescription.type.applyRotation( transformable,
-																						rotationDirection,
-																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
-	}
+  public void applyOrbit(AbstractTransformable transformable, double degreesToRotate) {
+    Vector3 rotationDirection = new Vector3(movementDescription.direction.getVector());
+    transformable.getLocalTransformation().orientation.transform(rotationDirection);
+    movementDescription.type.applyRotation(transformable, rotationDirection, new AngleInDegrees(directionMultiplier * degreesToRotate));
+  }
 }

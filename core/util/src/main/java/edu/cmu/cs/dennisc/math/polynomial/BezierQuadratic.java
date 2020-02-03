@@ -50,20 +50,20 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author Dennis Cosgrove
  */
 public class BezierQuadratic extends BasisMatrixQuadratic {
-	private static final Matrix3x3 s_h = new Matrix3x3( 1, -2, 1, -2, 2, 0, 1, 0, 0 );
+  private static final Matrix3x3 s_h = new Matrix3x3(1, -2, 1, -2, 2, 0, 1, 0, 0);
 
-	public BezierQuadratic( Vector3 g ) {
-		super( s_h, g );
-	}
+  public BezierQuadratic(Vector3 g) {
+    super(s_h, g);
+  }
 
-	public BezierQuadratic( double g0, double g1, double g2 ) {
-		this( new Vector3( g0, g1, g2 ) );
-	}
-	//todo: optimize?
-	//public double evaluate( double t ) {
-	//    double b = m_g.z - 2*m_g.y + m_g.x;
-	//    double c = 2*m_g.y - 2*m_g.x;
-	//    double d = m_g.x;
-	//    return b*t*t + c*t + d;
-	//}
+  public BezierQuadratic(double g0, double g1, double g2) {
+    this(new Vector3(g0, g1, g2));
+  }
+  //todo: optimize?
+  //public double evaluate( double t ) {
+  //    double b = m_g.z - 2*m_g.y + m_g.x;
+  //    double c = 2*m_g.y - 2*m_g.x;
+  //    double d = m_g.x;
+  //    return b*t*t + c*t + d;
+  //}
 }

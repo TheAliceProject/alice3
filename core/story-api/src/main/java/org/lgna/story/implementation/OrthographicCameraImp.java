@@ -50,12 +50,12 @@ import org.lgna.story.SThing;
  * @author Dennis Cosgrove
  */
 public class OrthographicCameraImp extends CameraImp<OrthographicCamera> {
-	public OrthographicCameraImp() {
-		super( new OrthographicCamera() );
-	}
+  public OrthographicCameraImp() {
+    super(new OrthographicCamera());
+  }
 
-	@Override
-	public SThing getAbstraction() {
-		return null;
-	}
+  @Override
+  public SThing getAbstraction() {
+    return null;
+  }
 }

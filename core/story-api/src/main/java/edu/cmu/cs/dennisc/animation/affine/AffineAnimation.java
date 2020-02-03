@@ -50,32 +50,32 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author Dennis Cosgrove
  */
 public abstract class AffineAnimation extends DurationBasedAnimation {
-	private AbstractTransformable m_sgSubject = null;
-	private ReferenceFrame m_sgAsSeenBy = null;
+  private AbstractTransformable m_sgSubject = null;
+  private ReferenceFrame m_sgAsSeenBy = null;
 
-	public AffineAnimation() {
-	}
+  public AffineAnimation() {
+  }
 
-	public AffineAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy ) {
-		setSubject( sgSubject );
-		setAsSeenBy( sgAsSeenBy );
-	}
+  public AffineAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy) {
+    setSubject(sgSubject);
+    setAsSeenBy(sgAsSeenBy);
+  }
 
-	public AbstractTransformable getSubject() {
-		return m_sgSubject;
-	}
+  public AbstractTransformable getSubject() {
+    return m_sgSubject;
+  }
 
-	public void setSubject( AbstractTransformable sgSubject ) {
-		assert sgSubject != null;
-		m_sgSubject = sgSubject;
-	}
+  public void setSubject(AbstractTransformable sgSubject) {
+    assert sgSubject != null;
+    m_sgSubject = sgSubject;
+  }
 
-	public ReferenceFrame getAsSeenBy() {
-		return m_sgAsSeenBy;
-	}
+  public ReferenceFrame getAsSeenBy() {
+    return m_sgAsSeenBy;
+  }
 
-	public void setAsSeenBy( ReferenceFrame sgAsSeenBy ) {
-		assert sgAsSeenBy != null;
-		m_sgAsSeenBy = sgAsSeenBy;
-	}
+  public void setAsSeenBy(ReferenceFrame sgAsSeenBy) {
+    assert sgAsSeenBy != null;
+    m_sgAsSeenBy = sgAsSeenBy;
+  }
 }

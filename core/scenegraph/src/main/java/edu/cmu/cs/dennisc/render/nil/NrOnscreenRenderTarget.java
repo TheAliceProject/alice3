@@ -52,30 +52,30 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class NrOnscreenRenderTarget<C extends Component> extends NrRenderTarget implements OnscreenRenderTarget<C> {
-	public NrOnscreenRenderTarget( RenderCapabilities requestedCapabilities, C awtComponent ) {
-		super( requestedCapabilities );
-		this.awtComponent = awtComponent;
-	}
+  public NrOnscreenRenderTarget(RenderCapabilities requestedCapabilities, C awtComponent) {
+    super(requestedCapabilities);
+    this.awtComponent = awtComponent;
+  }
 
-	@Override
-	public C getAwtComponent() {
-		return this.awtComponent;
-	}
+  @Override
+  public C getAwtComponent() {
+    return this.awtComponent;
+  }
 
-	@Override
-	public Dimension getSurfaceSize() {
-		return this.awtComponent.getSize();
-	}
+  @Override
+  public Dimension getSurfaceSize() {
+    return this.awtComponent.getSize();
+  }
 
-	@Override
-	public Dimension getDrawableSize() {
-		return this.awtComponent.getSize();
-	}
+  @Override
+  public Dimension getDrawableSize() {
+    return this.awtComponent.getSize();
+  }
 
-	@Override
-	public void repaint() {
-		this.awtComponent.repaint();
-	}
+  @Override
+  public void repaint() {
+    this.awtComponent.repaint();
+  }
 
-	private final C awtComponent;
+  private final C awtComponent;
 }

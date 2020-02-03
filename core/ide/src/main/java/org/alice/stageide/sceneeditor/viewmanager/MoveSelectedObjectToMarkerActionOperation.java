@@ -52,26 +52,26 @@ import java.util.UUID;
 
 public class MoveSelectedObjectToMarkerActionOperation extends ObjectMarkerMoveActionOperation {
 
-	private static class SingletonHolder {
-		private static MoveSelectedObjectToMarkerActionOperation instance = new MoveSelectedObjectToMarkerActionOperation();
-	}
+  private static class SingletonHolder {
+    private static MoveSelectedObjectToMarkerActionOperation instance = new MoveSelectedObjectToMarkerActionOperation();
+  }
 
-	public static MoveSelectedObjectToMarkerActionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MoveSelectedObjectToMarkerActionOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MoveSelectedObjectToMarkerActionOperation() {
-		super( UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ) );
-	}
+  private MoveSelectedObjectToMarkerActionOperation() {
+    super(UUID.fromString("f7f7c4f7-4b12-472a-9fac-77bed71a7de2"));
+  }
 
-	@Override
-	protected void updateMoveFields( UserField markerField, UserField selectedField ) {
-		IconFactory selectedFieldIconFactory = IconFactoryManager.getIconFactoryForField( selectedField );
-		Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker( markerField );
-		Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		this.setToMoveField( selectedField, selectedFieldIcon );
-		this.setToMoveToField( markerField, markerIcon );
-	}
+  @Override
+  protected void updateMoveFields(UserField markerField, UserField selectedField) {
+    IconFactory selectedFieldIconFactory = IconFactoryManager.getIconFactoryForField(selectedField);
+    Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
+    Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    this.setToMoveField(selectedField, selectedFieldIcon);
+    this.setToMoveToField(markerField, markerIcon);
+  }
 
 }

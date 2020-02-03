@@ -53,37 +53,37 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class NodePropertyValueIsInstanceCrawler<T> extends NodePropertyCrawler {
-	public static <T> NodePropertyValueIsInstanceCrawler<T> createInstance( Class<T> cls ) {
-		return new NodePropertyValueIsInstanceCrawler<T>( cls ) {
-			@Override
-			protected boolean isAcceptable( Node node, InstanceProperty<?> property, T value ) {
-				return true;
-			}
-		};
-	}
+  public static <T> NodePropertyValueIsInstanceCrawler<T> createInstance(Class<T> cls) {
+    return new NodePropertyValueIsInstanceCrawler<T>(cls) {
+      @Override
+      protected boolean isAcceptable(Node node, InstanceProperty<?> property, T value) {
+        return true;
+      }
+    };
+  }
 
-	protected NodePropertyValueIsInstanceCrawler( Class<T> cls ) {
-		this.cls = cls;
-	}
+  protected NodePropertyValueIsInstanceCrawler(Class<T> cls) {
+    this.cls = cls;
+  }
 
-	protected abstract boolean isAcceptable( Node node, InstanceProperty<?> property, T value );
+  protected abstract boolean isAcceptable(Node node, InstanceProperty<?> property, T value);
 
-	@Override
-	protected final void visitNodeProperty( Node node, InstanceProperty<?> property ) {
-		Object value = property.getValue();
-		if( value != null ) {
-			if( this.cls.isAssignableFrom( value.getClass() ) ) {
-				if( this.isAcceptable( node, property, (T)value ) ) {
-					this.list.add( property );
-				}
-			}
-		}
-	}
+  @Override
+  protected final void visitNodeProperty(Node node, InstanceProperty<?> property) {
+    Object value = property.getValue();
+    if (value != null) {
+      if (this.cls.isAssignableFrom(value.getClass())) {
+        if (this.isAcceptable(node, property, (T) value)) {
+          this.list.add(property);
+        }
+      }
+    }
+  }
 
-	public List<InstanceProperty<?>> getList() {
-		return Collections.unmodifiableList( this.list );
-	}
+  public List<InstanceProperty<?>> getList() {
+    return Collections.unmodifiableList(this.list);
+  }
 
-	private final Class<T> cls;
-	private final List<InstanceProperty<?>> list = Lists.newLinkedList();
+  private final Class<T> cls;
+  private final List<InstanceProperty<?>> list = Lists.newLinkedList();
 }

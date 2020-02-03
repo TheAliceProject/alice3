@@ -59,33 +59,33 @@ import org.lgna.project.ast.UserMethod;
  * @author Matt May
  */
 public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
-	@Override
-	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
-		assert value instanceof SearchTreeNode;
-		SearchTreeNode node = (SearchTreeNode)value;
-		if( node.getParent() != null ) {
-			if( node.getIsLeaf() ) {
-				Object astValue = node.getValue();
-				assert astValue != null;
-				assert astValue instanceof Expression : astValue.getClass();
-				//note: creating component every time we render.  not as cell renderers are intended.
-				rv = PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
-			} else {
-				Object astValue = node.getValue();
-				String nameValue = "";
-				if( astValue instanceof UserMethod ) {
-					nameValue = ( (UserMethod)astValue ).name.getValue();
-				} else if( astValue instanceof UserLambda ) {
-					nameValue = ( (UserLambda)astValue ).getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName();
-				} else {
-					assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
-				}
-				assert rv instanceof JLabel;
-				JLabel rvLabel = (JLabel)rv;
-				rvLabel.setText( nameValue + " (" + node.getChildren().size() + ")" );
-			}
-		}
-		return rv;
-	}
+  @Override
+  public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+    Component rv = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+    assert value instanceof SearchTreeNode;
+    SearchTreeNode node = (SearchTreeNode) value;
+    if (node.getParent() != null) {
+      if (node.getIsLeaf()) {
+        Object astValue = node.getValue();
+        assert astValue != null;
+        assert astValue instanceof Expression : astValue.getClass();
+        //note: creating component every time we render.  not as cell renderers are intended.
+        rv = PreviewAstI18nFactory.getInstance().createComponent((Expression) astValue).getAwtComponent();
+      } else {
+        Object astValue = node.getValue();
+        String nameValue = "";
+        if (astValue instanceof UserMethod) {
+          nameValue = ((UserMethod) astValue).name.getValue();
+        } else if (astValue instanceof UserLambda) {
+          nameValue = ((UserLambda) astValue).getFirstAncestorAssignableTo(MethodInvocation.class).method.getValue().getName();
+        } else {
+          assert false : "unhandled AbstractDeclarationType: " + astValue.getClass();
+        }
+        assert rv instanceof JLabel;
+        JLabel rvLabel = (JLabel) rv;
+        rvLabel.setText(nameValue + " (" + node.getChildren().size() + ")");
+      }
+    }
+    return rv;
+  }
 }

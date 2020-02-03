@@ -56,20 +56,20 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementTemplateDragModel extends PotentiallyEnvelopingStatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static ConditionalStatementTemplateDragModel instance = new ConditionalStatementTemplateDragModel();
-	}
+  private static class SingletonHolder {
+    private static ConditionalStatementTemplateDragModel instance = new ConditionalStatementTemplateDragModel();
+  }
 
-	public static ConditionalStatementTemplateDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ConditionalStatementTemplateDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ConditionalStatementTemplateDragModel() {
-		super( UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ), ConditionalStatement.class, IncompleteAstUtilities.createIncompleteConditionalStatement() );
-	}
+  private ConditionalStatementTemplateDragModel() {
+    super(UUID.fromString("b777b20e-9d46-4e42-a980-a155f0604773"), ConditionalStatement.class, IncompleteAstUtilities.createIncompleteConditionalStatement());
+  }
 
-	@Override
-	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
-	}
+  @Override
+  protected Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping) {
+    return ConditionalStatementInsertCascade.getInstance(blockStatementIndexPair, isEnveloping);
+  }
 }

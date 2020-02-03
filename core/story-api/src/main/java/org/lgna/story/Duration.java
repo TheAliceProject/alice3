@@ -47,60 +47,58 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Biped (for now?)
-		StrikePose.Detail,
-		//Flyer
-		UnfoldWings.Detail,
-		//Room
-		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere,Disc
-		SetRadius.Detail,
-		//Torus
-		SetInnerRadius.Detail, SetOuterRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail {
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
+                      //Turnable
+                          Turn.Detail, Roll.Detail, OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
+                          //MoveableTurnable
+                          Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail, Place.Detail,
+                          //Visual
+                          SetPaint.Detail, SetOpacity.Detail,
+                          //Resizable
+                          SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
+                          //JointedModel
+                          StraightenOutJoints.Detail, Say.Detail, Think.Detail,
+                          //Biped (for now?)
+                          StrikePose.Detail,
+                          //Flyer
+                          UnfoldWings.Detail,
+                          //Room
+                          SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
+                          //Billboard
+                          SetBackPaint.Detail,
+                          //Camera,
+                          MoveAndOrientToAGoodVantagePointOf.Detail,
+                          //Scene
+                          SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
+                          //Sphere,Disc
+                          SetRadius.Detail,
+                          //Torus
+                          SetInnerRadius.Detail, SetOuterRadius.Detail,
+                          //Cone
+                          SetBaseRadius.Detail, SetLength.Detail {
+  private static final double DEFAULT_VALUE = 1.0;
+  private final double value;
 
-	public Duration( Number value ) {
-		this.value = value.doubleValue();
-	}
+  public Duration(Number value) {
+    this.value = value.doubleValue();
+  }
 
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
-		}
-		return defaultValue;
-	}
+  private static double getValue(Object[] details, double defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof Duration) {
+        Duration duration = (Duration) detail;
+        return duration.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	/* package-private */static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
-	}
+  /* package-private */
+  static double getValue(Object[] details) {
+    return getValue(details, DEFAULT_VALUE);
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static Duration make( Number value ) {
-		return new Duration( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static Duration make(Number value) {
+    return new Duration(value);
+  }
 }

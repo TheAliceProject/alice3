@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel name="Tiger">
+    <BoundingBox>
+        <Min x="-0.32725306422369543" y="-0.010362218921952875" z="-1.237316386731047"/>
+        <Max x="0.32725306324877595" y="1.0730084779964197" z="1.3113901013341536"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>india</Tag>
+        <Tag>tiger</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>india</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tiger" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

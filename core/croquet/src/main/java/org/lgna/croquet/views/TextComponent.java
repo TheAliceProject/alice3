@@ -58,63 +58,63 @@ import java.awt.event.FocusListener;
  * @author Dennis Cosgrove
  */
 public abstract class TextComponent<J extends JTextComponent> extends ViewController<J, StringState> {
-	private final BevelBorder outsideBorder = new BevelBorder( BevelBorder.LOWERED );
-	private final EmptyBorder insideBorder = new EmptyBorder();
-	private final CompoundBorder border = new CompoundBorder( outsideBorder, insideBorder );
+  private final BevelBorder outsideBorder = new BevelBorder(BevelBorder.LOWERED);
+  private final EmptyBorder insideBorder = new EmptyBorder();
+  private final CompoundBorder border = new CompoundBorder(outsideBorder, insideBorder);
 
-	private final FocusListener selectAllFocusListener = new FocusListener() {
-		@Override
-		public void focusGained( FocusEvent e ) {
-			getAwtComponent().selectAll();
-		}
+  private final FocusListener selectAllFocusListener = new FocusListener() {
+    @Override
+    public void focusGained(FocusEvent e) {
+      getAwtComponent().selectAll();
+    }
 
-		@Override
-		public void focusLost( FocusEvent e ) {
-		}
-	};
+    @Override
+    public void focusLost(FocusEvent e) {
+    }
+  };
 
-	public TextComponent( StringState model ) {
-		super( model );
-		J jTextComponent = this.getAwtComponent();
-		model.getSwingModel().install( this );
-		jTextComponent.setBorder( this.border );
-		jTextComponent.setEnabled( model.isEnabled() );
-		this.setMargin( new Insets( 4, 4, 2, 2 ) );
-		this.setBackgroundColor( new Color( 255, 255, 221 ) );
-	}
+  public TextComponent(StringState model) {
+    super(model);
+    J jTextComponent = this.getAwtComponent();
+    model.getSwingModel().install(this);
+    jTextComponent.setBorder(this.border);
+    jTextComponent.setEnabled(model.isEnabled());
+    this.setMargin(new Insets(4, 4, 2, 2));
+    this.setBackgroundColor(new Color(255, 255, 221));
+  }
 
-	public boolean isEditable() {
-		return this.getAwtComponent().isEditable();
-	}
+  public boolean isEditable() {
+    return this.getAwtComponent().isEditable();
+  }
 
-	public void setEditable( boolean isEditable ) {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().setEditable( isEditable );
-	}
+  public void setEditable(boolean isEditable) {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().setEditable(isEditable);
+  }
 
-	public void enableSelectAllWhenFocusGained() {
-		this.getAwtComponent().addFocusListener( this.selectAllFocusListener );
-	}
+  public void enableSelectAllWhenFocusGained() {
+    this.getAwtComponent().addFocusListener(this.selectAllFocusListener);
+  }
 
-	public void disableSelectAllWhenFocusGained() {
-		this.getAwtComponent().removeFocusListener( this.selectAllFocusListener );
-	}
+  public void disableSelectAllWhenFocusGained() {
+    this.getAwtComponent().removeFocusListener(this.selectAllFocusListener);
+  }
 
-	public Insets getMargin() {
-		//return this.getAwtComponent().getMargin();
-		return this.insideBorder.getBorderInsets();
-	}
+  public Insets getMargin() {
+    //return this.getAwtComponent().getMargin();
+    return this.insideBorder.getBorderInsets();
+  }
 
-	public void setMargin( Insets margin ) {
-		this.checkEventDispatchThread();
-		//this.getAwtComponent().setMargin( margin );
-		this.insideBorder.setBorderInsets( margin );
-	}
+  public void setMargin(Insets margin) {
+    this.checkEventDispatchThread();
+    //this.getAwtComponent().setMargin( margin );
+    this.insideBorder.setBorderInsets(margin);
+  }
 
-	public void selectAll() {
-		this.checkEventDispatchThread();
-		this.getAwtComponent().selectAll();
-	}
+  public void selectAll() {
+    this.checkEventDispatchThread();
+    this.getAwtComponent().selectAll();
+  }
 
-	public abstract void updateTextForBlankCondition( String textForBlankCondition );
+  public abstract void updateTextForBlankCondition(String textForBlankCondition);
 }

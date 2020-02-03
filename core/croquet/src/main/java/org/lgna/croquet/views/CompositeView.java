@@ -51,30 +51,30 @@ import javax.swing.JComponent;
  * @author Dennis Cosgrove
  */
 public abstract class CompositeView<J extends JComponent, C extends Composite<?>> extends SwingComponentView<J> {
-	private final C composite;
+  private final C composite;
 
-	public CompositeView( C composite ) {
-		this.composite = composite;
-		if( this.composite != null ) {
-			this.composite.initializeIfNecessary();
-		}
-	}
+  public CompositeView(C composite) {
+    this.composite = composite;
+    if (this.composite != null) {
+      this.composite.initializeIfNecessary();
+    }
+  }
 
-	public C getComposite() {
-		return composite;
-	}
+  public C getComposite() {
+    return composite;
+  }
 
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "composite=" );
-		rv.append( composite );
-		return rv;
-	}
+  @Override
+  protected StringBuilder appendRepr(StringBuilder rv) {
+    super.appendRepr(rv);
+    rv.append("composite=");
+    rv.append(composite);
+    return rv;
+  }
 
-	public void handleCompositePreActivation() {
-	}
+  public void handleCompositePreActivation() {
+  }
 
-	public void handleCompositePostDeactivation() {
-	}
+  public void handleCompositePostDeactivation() {
+  }
 }

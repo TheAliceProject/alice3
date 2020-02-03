@@ -64,167 +64,168 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
+public class JointImplementationAndVisualDataFactory<R extends JointedModelResource> implements JointedModelImp.JointImplementationAndVisualDataFactory<R> {
 
-	private static class VisualData implements JointedModelImp.VisualData {
-		private TexturedAppearance[] texturedAppearances;
-		private SkeletonVisual sgSkeletonVisual;
+  private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
-		VisualData( JointedModelResource resource ) {
-			assert resource != null;
-			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
-			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
-			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
-			//Set the texture data to be the texture info specified by the resource
-			this.sgSkeletonVisual.textures.setValue( this.texturedAppearances );
-			if( this.sgSkeletonVisual.skeleton.getValue() != null ) {
-				this.sgSkeletonVisual.skeleton.getValue().setParentVisual( this.sgSkeletonVisual );
-			}
-		}
+  private static class VisualData implements JointedModelImp.VisualData {
+    private TexturedAppearance[] texturedAppearances;
+    private SkeletonVisual sgSkeletonVisual;
 
-		@Override
-		public SimpleAppearance[] getSgAppearances() {
-			return new SimpleAppearance[] { (SimpleAppearance)this.sgSkeletonVisual.frontFacingAppearance.getValue() };
-		}
+    VisualData(JointedModelResource resource) {
+      assert resource != null;
+      this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances(resource);
+      //Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
+      this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy(resource);
+      //Set the texture data to be the texture info specified by the resource
+      this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+      if (this.sgSkeletonVisual.skeleton.getValue() != null) {
+        this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
+      }
+    }
 
-		@Override
-		public Visual[] getSgVisuals() {
-			return new Visual[] { this.sgSkeletonVisual };
-		}
+    @Override
+    public SimpleAppearance[] getSgAppearances() {
+      return new SimpleAppearance[] {(SimpleAppearance) this.sgSkeletonVisual.frontFacingAppearance.getValue()};
+    }
 
-		@Override
-		public double getBoundingSphereRadius() {
-			return 1.0;
-		}
+    @Override
+    public Visual[] getSgVisuals() {
+      return new Visual[] {this.sgSkeletonVisual};
+    }
 
-		@Override
-		public void setSGParent( Composite parent ) {
-			sgSkeletonVisual.setParent( parent );
-		}
+    @Override
+    public double getBoundingSphereRadius() {
+      return 1.0;
+    }
 
-		@Override
-		public Composite getSGParent() {
-			return this.sgSkeletonVisual.getParent();
-		}
-	}
+    @Override
+    public void setSGParent(Composite parent) {
+      sgSkeletonVisual.setParent(parent);
+    }
 
-	public static JointImplementationAndVisualDataFactory getInstance( JointedModelResource resource ) {
-		synchronized( map ) {
-			JointImplementationAndVisualDataFactory rv = map.get( resource );
-			if ( rv == null ) {
-				rv = new JointImplementationAndVisualDataFactory( resource );
-				map.put( resource, rv );
-			}
-			return rv;
-		}
-	}
+    @Override
+    public Composite getSGParent() {
+      return this.sgSkeletonVisual.getParent();
+    }
+  }
 
-	private final JointedModelResource resource;
+  public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance(R resource) {
+    synchronized (map) {
+      JointImplementationAndVisualDataFactory<R> rv = map.get(resource);
+      if (rv == null) {
+        rv = new JointImplementationAndVisualDataFactory<>(resource);
+        map.put(resource, rv);
+      }
+      return rv;
+    }
+  }
 
-	private JointImplementationAndVisualDataFactory( JointedModelResource resource ) {
-		this.resource = resource;
-	}
+  private final R resource;
 
-	@Override
-	public JointedModelResource getResource() {
-		return this.resource;
-	}
+  private JointImplementationAndVisualDataFactory(R resource) {
+    this.resource = resource;
+  }
 
-	@Override
-	public JointImp createJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
-		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
-		if( sgSkeletonVisual != null ) {
-			String key = jointId.toString();
-			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			Joint sgJoint = sgSkeletonRoot.getJoint( key );
-			if( sgJoint != null ) {
-				sgJoint.setName( key );
-				return new JointImplementation( jointedModelImplementation, jointId, sgJoint );
-			} else {
-				JointedModelResource resource = jointedModelImplementation.getResource();
-				Logger.severe( jointId, "not found for", resource.getClass(), resource );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public R getResource() {
+    return this.resource;
+  }
 
-	@Override
-	public boolean hasJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
-		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
-		if( sgSkeletonVisual != null ) {
-			String key = jointId.toString();
-			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			Joint sgJoint = sgSkeletonRoot.getJoint( key );
-			if( sgJoint != null ) {
-				return true;
-			} else {
-				JointedModelResource resource = jointedModelImplementation.getResource();
-				Logger.severe( jointId, "not found for", resource.getClass(), resource );
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public JointImp createJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+    if (sgSkeletonVisual != null) {
+      String key = jointId.toString();
+      Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+      Joint sgJoint = sgSkeletonRoot.getJoint(key);
+      if (sgJoint != null) {
+        sgJoint.setName(key);
+        return new JointImplementation(jointedModelImplementation, jointId, sgJoint);
+      } else {
+        JointedModelResource resource = jointedModelImplementation.getResource();
+        Logger.severe(jointId, "not found for", resource.getClass(), resource);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public JointId[] getJointArrayIds( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
-		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
-		if( sgSkeletonVisual != null ) {
-			String key = jointArrayId.getElementNamePattern();
-			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			Joint[] sgJoints = sgSkeletonRoot.getJoints( key );
-			if( sgJoints != null ) {
-				JointId[] jointIds = new JointId[ sgJoints.length ];
-				for( int i = 0; i < sgJoints.length; i++ ) {
-					final String jointName = sgJoints[ i ].jointID.getValue();
-					sgJoints[ i ].setName( jointName );
-					JointId parentJointId;
-					if( i == 0 ) {
-						parentJointId = jointArrayId.getRoot();
-					} else {
-						parentJointId = jointIds[ i - 1 ];
-					}
-					//We're making the joint ids for an implicit array structure
-					//(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
-					//Given this fact, these joint ids need to be tied to the resource rather than the class
-					//Maybe pass parent in as null if the parent joint is the root joint? this seems like a bad idea though...
-					//Update 8/3/2018: Working on removing containing class dependency. Goal is to make joints just know about their id and their parent.
-					JointId jointId = new JointId( parentJointId, jointArrayId.getContainingClass()) {
-						@Override
-						public String toString( ) {
-							return jointName;
-						}
-					};
+  @Override
+  public boolean hasJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+    if (sgSkeletonVisual != null) {
+      String key = jointId.toString();
+      Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+      Joint sgJoint = sgSkeletonRoot.getJoint(key);
+      if (sgJoint != null) {
+        return true;
+      } else {
+        JointedModelResource resource = jointedModelImplementation.getResource();
+        Logger.severe(jointId, "not found for", resource.getClass(), resource);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
-					jointIds[ i ] = jointId;
-				}
-				return jointIds;
-			} else {
-				JointedModelResource resource = jointedModelImplementation.getResource();
-				Logger.severe( jointArrayId, " array not found for ", resource.getClass(), resource );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+    if (sgSkeletonVisual != null) {
+      String key = jointArrayId.getElementNamePattern();
+      Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+      Joint[] sgJoints = sgSkeletonRoot.getJoints(key);
+      if (sgJoints != null) {
+        JointId[] jointIds = new JointId[sgJoints.length];
+        for (int i = 0; i < sgJoints.length; i++) {
+          final String jointName = sgJoints[i].jointID.getValue();
+          sgJoints[i].setName(jointName);
+          JointId parentJointId;
+          if (i == 0) {
+            parentJointId = jointArrayId.getRoot();
+          } else {
+            parentJointId = jointIds[i - 1];
+          }
+          //We're making the joint ids for an implicit array structure
+          //(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
+          //Given this fact, these joint ids need to be tied to the resource rather than the class
+          //Maybe pass parent in as null if the parent joint is the root joint? this seems like a bad idea though...
+          //Update 8/3/2018: Working on removing containing class dependency. Goal is to make joints just know about their id and their parent.
+          JointId jointId = new JointId(parentJointId, jointArrayId.getContainingClass()) {
+            @Override
+            public String toString() {
+              return jointName;
+            }
+          };
 
-	@Override
-	public UnitQuaternion getOriginalJointOrientation( JointId jointId ) {
-		return AliceResourceUtilties.getOriginalJointOrientation( this.resource, jointId );
-	}
+          jointIds[i] = jointId;
+        }
+        return jointIds;
+      } else {
+        JointedModelResource resource = jointedModelImplementation.getResource();
+        Logger.severe(jointArrayId, " array not found for ", resource.getClass(), resource);
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	@Override
-	public AffineMatrix4x4 getOriginalJointTransformation( JointId jointId ) {
-		return AliceResourceUtilties.getOriginalJointTransformation( this.resource, jointId );
-	}
+  @Override
+  public UnitQuaternion getOriginalJointOrientation(JointId jointId) {
+    return AliceResourceUtilties.getOriginalJointOrientation(this.resource, jointId);
+  }
 
-	@Override
-	public JointedModelImp.VisualData createVisualData() {
-		return new VisualData( this.resource );
-	}
+  @Override
+  public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
+    return AliceResourceUtilties.getOriginalJointTransformation(this.resource, jointId);
+  }
+
+  @Override
+  public JointedModelImp.VisualData createVisualData() {
+    return new VisualData(this.resource);
+  }
 }

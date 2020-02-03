@@ -47,22 +47,22 @@ import edu.cmu.cs.dennisc.property.DoubleProperty;
 
 /**
  * linear fog affects visual elements based on their distance from a camera.
- * 
+ *
  * <pre>
  *    z = distance from camera
  *    near = near distance
  *    far = far distance
- * 
+ *
  *         far - z
  *    f = ----------
  *        far - near
  * </pre>
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class LinearFog extends Fog {
-	//todo Double -> Float?
-	public final DoubleProperty nearDistance = new DoubleProperty( this, 1.0 );
-	//todo Double -> Float?
-	public final DoubleProperty farDistance = new DoubleProperty( this, 256.0 );
+  //todo Double -> Float?
+  public final DoubleProperty nearDistance = new DoubleProperty(this, 1.0);
+  //todo Double -> Float?
+  public final DoubleProperty farDistance = new DoubleProperty(this, 256.0);
 }

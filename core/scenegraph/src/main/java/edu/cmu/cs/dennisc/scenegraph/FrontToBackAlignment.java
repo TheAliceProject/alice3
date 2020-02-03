@@ -47,7 +47,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public enum FrontToBackAlignment {
-	ALIGN_FRONT,
-	ALIGN_CENTER_OF_FRONT_AND_BACK,
-	ALIGN_BACK
+  ALIGN_FRONT, ALIGN_CENTER_OF_FRONT_AND_BACK, ALIGN_BACK
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Tortoise">
+    <BoundingBox>
+        <Min x="-0.1988722549255092" y="-0.00315169222530626" z="-0.14304176770699334"/>
+        <Max x="0.20756682984879488" y="0.6474775832363877" z="0.1573231805442549"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>turtle</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tortoise" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

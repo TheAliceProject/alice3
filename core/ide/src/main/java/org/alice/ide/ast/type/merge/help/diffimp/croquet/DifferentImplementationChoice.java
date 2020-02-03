@@ -46,7 +46,5 @@ package org.alice.ide.ast.type.merge.help.diffimp.croquet;
  * @author Dennis Cosgrove
  */
 public enum DifferentImplementationChoice {
-	ADD_AND_RETAIN_BOTH,
-	ONLY_ADD_VERSION_IN_CLASS_FILE,
-	ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT
+  ADD_AND_RETAIN_BOTH, ONLY_ADD_VERSION_IN_CLASS_FILE, ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT
 }

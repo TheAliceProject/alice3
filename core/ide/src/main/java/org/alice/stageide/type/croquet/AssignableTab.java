@@ -56,28 +56,28 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AssignableTab extends SimpleTabComposite<Panel> {
-	private final OtherTypeDialog dialog;
+  private final OtherTypeDialog dialog;
 
-	public AssignableTab( OtherTypeDialog dialog ) {
-		super( UUID.fromString( "4e81305b-226b-411c-b99f-6d2a877bd6f8" ), IsCloseable.FALSE );
-		this.dialog = dialog;
-	}
+  public AssignableTab(OtherTypeDialog dialog) {
+    super(UUID.fromString("4e81305b-226b-411c-b99f-6d2a877bd6f8"), IsCloseable.FALSE);
+    this.dialog = dialog;
+  }
 
-	public MultipleSelectionListState<UserField> getSceneFieldsState() {
-		return this.dialog.getSceneFieldsState();
-	}
+  public MultipleSelectionListState<UserField> getSceneFieldsState() {
+    return this.dialog.getSceneFieldsState();
+  }
 
-	public SingleSelectTreeState<TypeNode> getTypeTreeState() {
-		return this.dialog.getTypeTreeState();
-	}
+  public SingleSelectTreeState<TypeNode> getTypeTreeState() {
+    return this.dialog.getTypeTreeState();
+  }
 
-	@Override
-	protected ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	protected Panel createView() {
-		return new AssignableTabPane( this );
-	}
+  @Override
+  protected Panel createView() {
+    return new AssignableTabPane(this);
+  }
 }

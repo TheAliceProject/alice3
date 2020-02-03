@@ -55,107 +55,107 @@ import org.lgna.story.SBox;
  * @author Dennis Cosgrove
  */
 public class BoxImp extends ShapeImp {
-	public BoxImp( SBox abstraction ) {
-		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgBox } );
-		this.sgBox.yMinimum.setValue( 0.0 );
-		this.sgBox.yMaximum.setValue( 1.0 );
-	}
+  public BoxImp(SBox abstraction) {
+    this.abstraction = abstraction;
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgBox});
+    this.sgBox.yMinimum.setValue(0.0);
+    this.sgBox.yMaximum.setValue(1.0);
+  }
 
-	@Override
-	public SBox getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public SBox getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected InstanceProperty[] getScaleProperties() {
-		return new InstanceProperty[] { this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum };
-	}
+  @Override
+  protected InstanceProperty[] getScaleProperties() {
+    return new InstanceProperty[] {this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum};
+  }
 
-	@Override
-	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS };
-	}
+  @Override
+  public Resizer[] getResizers() {
+    return new Resizer[] {Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS};
+  }
 
-	@Override
-	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.UNIFORM ) {
-			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == Resizer.X_AXIS ) {
-			return this.sgBox.xMaximum.getValue();
-		} else if( resizer == Resizer.Y_AXIS ) {
-			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == Resizer.Z_AXIS ) {
-			return this.sgBox.zMaximum.getValue();
-		} else {
-			assert false : resizer;
-			return Double.NaN;
-		}
-	}
+  @Override
+  public double getValueForResizer(Resizer resizer) {
+    if (resizer == Resizer.UNIFORM) {
+      return this.sgBox.yMaximum.getValue();
+    } else if (resizer == Resizer.X_AXIS) {
+      return this.sgBox.xMaximum.getValue();
+    } else if (resizer == Resizer.Y_AXIS) {
+      return this.sgBox.yMaximum.getValue();
+    } else if (resizer == Resizer.Z_AXIS) {
+      return this.sgBox.zMaximum.getValue();
+    } else {
+      assert false : resizer;
+      return Double.NaN;
+    }
+  }
 
-	@Override
-	public void setValueForResizer( Resizer resizer, double value ) {
-		if( value > 0.0 ) {
-			if( resizer == Resizer.UNIFORM ) {
-				double prevValue = this.sgBox.yMaximum.getValue();
-				double ratio = value / prevValue;
-				double x = this.sgBox.xMaximum.getValue() * ratio;
-				double z = this.sgBox.zMaximum.getValue() * ratio;
+  @Override
+  public void setValueForResizer(Resizer resizer, double value) {
+    if (value > 0.0) {
+      if (resizer == Resizer.UNIFORM) {
+        double prevValue = this.sgBox.yMaximum.getValue();
+        double ratio = value / prevValue;
+        double x = this.sgBox.xMaximum.getValue() * ratio;
+        double z = this.sgBox.zMaximum.getValue() * ratio;
 
-				this.sgBox.yMaximum.setValue( value );
-				this.sgBox.xMaximum.setValue( x );
-				this.sgBox.xMinimum.setValue( -x );
-				this.sgBox.zMaximum.setValue( z );
-				this.sgBox.zMinimum.setValue( -z );
+        this.sgBox.yMaximum.setValue(value);
+        this.sgBox.xMaximum.setValue(x);
+        this.sgBox.xMinimum.setValue(-x);
+        this.sgBox.zMaximum.setValue(z);
+        this.sgBox.zMinimum.setValue(-z);
 
-			} else if( resizer == Resizer.X_AXIS ) {
-				this.sgBox.xMaximum.setValue( value );
-				this.sgBox.xMinimum.setValue( -value );
-			} else if( resizer == Resizer.Y_AXIS ) {
-				this.sgBox.yMaximum.setValue( value );
-			} else if( resizer == Resizer.Z_AXIS ) {
-				this.sgBox.zMaximum.setValue( value );
-				this.sgBox.zMinimum.setValue( -value );
-			} else {
-				assert false : resizer;
-			}
-		} else {
-			Logger.severe( this, value );
-		}
-	}
+      } else if (resizer == Resizer.X_AXIS) {
+        this.sgBox.xMaximum.setValue(value);
+        this.sgBox.xMinimum.setValue(-value);
+      } else if (resizer == Resizer.Y_AXIS) {
+        this.sgBox.yMaximum.setValue(value);
+      } else if (resizer == Resizer.Z_AXIS) {
+        this.sgBox.zMaximum.setValue(value);
+        this.sgBox.zMinimum.setValue(-value);
+      } else {
+        assert false : resizer;
+      }
+    } else {
+      Logger.severe(this, value);
+    }
+  }
 
-	@Override
-	public void setSize( Dimension3 size ) {
-		double x = size.x * 0.5;
-		double z = size.z * 0.5;
-		this.sgBox.xMinimum.setValue( -x );
-		this.sgBox.xMaximum.setValue( +x );
-		this.sgBox.yMaximum.setValue( size.y );
-		this.sgBox.zMinimum.setValue( -z );
-		this.sgBox.zMaximum.setValue( +z );
-	}
+  @Override
+  public void setSize(Dimension3 size) {
+    double x = size.x * 0.5;
+    double z = size.z * 0.5;
+    this.sgBox.xMinimum.setValue(-x);
+    this.sgBox.xMaximum.setValue(+x);
+    this.sgBox.yMaximum.setValue(size.y);
+    this.sgBox.zMinimum.setValue(-z);
+    this.sgBox.zMaximum.setValue(+z);
+  }
 
-	@Override
-	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, Style style ) {
-		Dimension3 newSize = getSize();
-		newSize.multiply( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ) );
-		animateSetSize( newSize, duration, style );
-	}
+  @Override
+  public void animateResizeWidth(double factor, boolean isVolumePreserved, double duration, Style style) {
+    Dimension3 newSize = getSize();
+    newSize.multiply(Dimension.LEFT_TO_RIGHT.getResizeAxis(factor, isVolumePreserved));
+    animateSetSize(newSize, duration, style);
+  }
 
-	@Override
-	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, Style style ) {
-		Dimension3 newSize = getSize();
-		newSize.multiply( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ) );
-		animateSetSize( newSize, duration, style );
-	}
+  @Override
+  public void animateResizeHeight(double factor, boolean isVolumePreserved, double duration, Style style) {
+    Dimension3 newSize = getSize();
+    newSize.multiply(Dimension.TOP_TO_BOTTOM.getResizeAxis(factor, isVolumePreserved));
+    animateSetSize(newSize, duration, style);
+  }
 
-	@Override
-	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, Style style ) {
-		Dimension3 newSize = getSize();
-		newSize.multiply( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ) );
-		animateSetSize( newSize, duration, style );
-	}
+  @Override
+  public void animateResizeDepth(double factor, boolean isVolumePreserved, double duration, Style style) {
+    Dimension3 newSize = getSize();
+    newSize.multiply(Dimension.FRONT_TO_BACK.getResizeAxis(factor, isVolumePreserved));
+    animateSetSize(newSize, duration, style);
+  }
 
-	private final SBox abstraction;
-	private final Box sgBox = new Box();
+  private final SBox abstraction;
+  private final Box sgBox = new Box();
 }

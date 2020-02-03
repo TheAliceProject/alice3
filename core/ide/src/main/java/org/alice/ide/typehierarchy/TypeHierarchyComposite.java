@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class TypeHierarchyComposite extends SimpleComposite<TypeHierarchyView> {
-	public TypeHierarchyComposite() {
-		super( UUID.fromString( "fb9a3554-8ee3-478a-8773-5d73d26e39cf" ) );
-	}
+  public TypeHierarchyComposite() {
+    super(UUID.fromString("fb9a3554-8ee3-478a-8773-5d73d26e39cf"));
+  }
 
-	@Override
-	protected TypeHierarchyView createView() {
-		return new TypeHierarchyView( this );
-	}
+  @Override
+  protected TypeHierarchyView createView() {
+    return new TypeHierarchyView(this);
+  }
 }

@@ -58,37 +58,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AxesDragModel extends ShapeDragModel {
-	private static final SAxes sModel = new SAxes();
+  private static final SAxes sModel = new SAxes();
 
-	private static class SingletonHolder {
-		private static AxesDragModel instance = new AxesDragModel();
-	}
+  private static class SingletonHolder {
+    private static AxesDragModel instance = new AxesDragModel();
+  }
 
-	public static AxesDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AxesDragModel getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private AxesDragModel() {
-		super( UUID.fromString( "7e52792a-351d-4ade-aa1c-8f9647c7eace" ) );
-	}
+  private AxesDragModel() {
+    super(UUID.fromString("7e52792a-351d-4ade-aa1c-8f9647c7eace"));
+  }
 
-	@Override
-	public AxisAlignedBox getBoundingBox() {
-		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
-	}
+  @Override
+  public AxisAlignedBox getBoundingBox() {
+    return EmployeesOnly.getImplementation(sModel).getAxisAlignedMinimumBoundingBox();
+  }
 
-	@Override
-	public boolean placeOnGround() {
-		return true;
-	}
+  @Override
+  public boolean placeOnGround() {
+    return true;
+  }
 
-	@Override
-	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
-		return AddAxesManagedFieldComposite.getInstance().getLaunchOperation();
-	}
+  @Override
+  public Triggerable getLeftButtonClickOperation(SingleSelectTreeState<ResourceNode> controller) {
+    return AddAxesManagedFieldComposite.getInstance().getLaunchOperation();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return AxesIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return AxesIconFactory.getInstance();
+  }
 }

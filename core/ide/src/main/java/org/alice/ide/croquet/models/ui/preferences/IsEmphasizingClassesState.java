@@ -48,20 +48,20 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
  * @author Dennis Cosgrove
  */
 public class IsEmphasizingClassesState {
-	private static boolean value = SystemUtilities.getBooleanProperty( "org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.value", true );
+  private static boolean value = SystemUtilities.getBooleanProperty("org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.value", true);
 
-	private static class SingletonHolder {
-		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
-	}
+  private static class SingletonHolder {
+    private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
+  }
 
-	public static IsEmphasizingClassesState getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static IsEmphasizingClassesState getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private IsEmphasizingClassesState() {
-	}
+  private IsEmphasizingClassesState() {
+  }
 
-	public boolean getValue() {
-		return value;
-	}
+  public boolean getValue() {
+    return value;
+  }
 }

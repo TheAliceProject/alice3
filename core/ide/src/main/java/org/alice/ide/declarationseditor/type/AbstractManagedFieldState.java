@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractManagedFieldState extends FieldState {
-	public AbstractManagedFieldState( UUID id, AbstractManagedFieldData data ) {
-		super( id, data );
-	}
+  public AbstractManagedFieldState(UUID id, AbstractManagedFieldData data) {
+    super(id, data);
+  }
 }

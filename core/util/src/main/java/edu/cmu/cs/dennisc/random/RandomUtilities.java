@@ -49,66 +49,65 @@ import java.util.Random;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class RandomUtilities {
-	private static Random s_random = new Random();
+@Deprecated public class RandomUtilities {
+  private static Random s_random = new Random();
 
-	private static int getRandomIndex( int n ) {
-		return s_random.nextInt( n );
-	}
+  private static int getRandomIndex(int n) {
+    return s_random.nextInt(n);
+  }
 
-	public static void setSeed( long seed ) {
-		s_random.setSeed( seed );
-	}
+  public static void setSeed(long seed) {
+    s_random.setSeed(seed);
+  }
 
-	public static Integer nextIntegerFrom0UpToButExcludingN( Integer n ) {
-		return s_random.nextInt( n );
-	}
+  public static Integer nextIntegerFrom0UpToButExcludingN(Integer n) {
+    return s_random.nextInt(n);
+  }
 
-	public static Integer nextIntFromAUpToButExcludingB( Integer a, Integer b ) {
-		assert a < b;
-		int n = b - a;
-		return a + nextIntegerFrom0UpToButExcludingN( n );
-	}
+  public static Integer nextIntFromAUpToButExcludingB(Integer a, Integer b) {
+    assert a < b;
+    int n = b - a;
+    return a + nextIntegerFrom0UpToButExcludingN(n);
+  }
 
-	public static Integer nextIntFromAUpToAndIncludingB( Integer a, Integer b ) {
-		return nextIntFromAUpToButExcludingB( a, b + 1 );
-	}
+  public static Integer nextIntFromAUpToAndIncludingB(Integer a, Integer b) {
+    return nextIntFromAUpToButExcludingB(a, b + 1);
+  }
 
-	public static boolean nextBoolean() {
-		return s_random.nextBoolean();
-	}
+  public static boolean nextBoolean() {
+    return s_random.nextBoolean();
+  }
 
-	public static Double nextDouble() {
-		return s_random.nextDouble();
-	}
+  public static Double nextDouble() {
+    return s_random.nextDouble();
+  }
 
-	public static Double nextDoubleInRange( Number min, Number max ) {
-		return min.doubleValue() + ( nextDouble() * ( max.doubleValue() - min.doubleValue() ) );
-	}
+  public static Double nextDoubleInRange(Number min, Number max) {
+    return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
+  }
 
-	public static <E> E getRandomValueFrom( E[] array ) {
-		assert array != null;
-		assert array.length > 0;
-		return array[ getRandomIndex( array.length ) ];
-	}
+  public static <E> E getRandomValueFrom(E[] array) {
+    assert array != null;
+    assert array.length > 0;
+    return array[getRandomIndex(array.length)];
+  }
 
-	public static <E> E getRandomValueFrom( List<E> list ) {
-		assert list != null;
-		if( list.size() > 0 ) {
-			return list.get( getRandomIndex( list.size() ) );
-		} else {
-			return null;
-		}
-	}
+  public static <E> E getRandomValueFrom(List<E> list) {
+    assert list != null;
+    if (list.size() > 0) {
+      return list.get(getRandomIndex(list.size()));
+    } else {
+      return null;
+    }
+  }
 
-	public static <E extends Enum<? extends E>> E getRandomEnumConstant( Class<E> cls ) {
-		E[] enumConstants = cls.getEnumConstants();
-		if( enumConstants.length > 0 ) {
-			int index = s_random.nextInt( enumConstants.length );
-			return enumConstants[ index ];
-		} else {
-			return null;
-		}
-	}
+  public static <E extends Enum<? extends E>> E getRandomEnumConstant(Class<E> cls) {
+    E[] enumConstants = cls.getEnumConstants();
+    if (enumConstants.length > 0) {
+      int index = s_random.nextInt(enumConstants.length);
+      return enumConstants[index];
+    } else {
+      return null;
+    }
+  }
 }

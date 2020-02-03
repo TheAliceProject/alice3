@@ -52,30 +52,30 @@ import java.awt.Window;
  * @author Dennis Cosgrove
  */
 public class WindowStack {
-	private WindowStack() {
-		throw new AssertionError();
-	}
+  private WindowStack() {
+    throw new AssertionError();
+  }
 
-	private static final JFrame rootFrame = new JFrame();
-	private static final DStack<Window> stack = Stacks.newStack();
+  private static final JFrame rootFrame = new JFrame();
+  private static final DStack<Window> stack = Stacks.newStack();
 
-	public static JFrame getRootFrame() {
-		return rootFrame;
-	}
+  public static JFrame getRootFrame() {
+    return rootFrame;
+  }
 
-	public static void push( Window window ) {
-		stack.push( window );
-	}
+  public static void push(Window window) {
+    stack.push(window);
+  }
 
-	public static Window peek() {
-		if( stack.size() > 0 ) {
-			return stack.peek();
-		} else {
-			return rootFrame;
-		}
-	}
+  public static Window peek() {
+    if (stack.size() > 0) {
+      return stack.peek();
+    } else {
+      return rootFrame;
+    }
+  }
 
-	public static Window pop() {
-		return stack.pop();
-	}
+  public static Window pop() {
+    return stack.pop();
+  }
 }

@@ -56,27 +56,23 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class MethodTemplateMenuModel extends PredeterminedMenuModel {
-	private static Map<UserMethod, MethodTemplateMenuModel> map = Maps.newHashMap();
+  private static Map<UserMethod, MethodTemplateMenuModel> map = Maps.newHashMap();
 
-	public static synchronized MethodTemplateMenuModel getInstance( UserMethod method ) {
-		MethodTemplateMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodTemplateMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
+  public static synchronized MethodTemplateMenuModel getInstance(UserMethod method) {
+    MethodTemplateMenuModel rv = map.get(method);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new MethodTemplateMenuModel(method);
+      map.put(method, rv);
+    }
+    return rv;
+  }
 
-	private UserMethod method;
+  private UserMethod method;
 
-	private MethodTemplateMenuModel( UserMethod method ) {
-		super( UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
-				RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
-				IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
-				MenuModel.SEPARATOR,
-				DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
-		this.method = method;
-	}
+  private MethodTemplateMenuModel(UserMethod method) {
+    super(UUID.fromString("96831579-1fb6-4c15-a509-ccdcc51458a8"), RenameMethodComposite.getInstance(method).getLaunchOperation().getMenuItemPrepModel(), IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod(method).getMenuItemPrepModel(), MenuModel.SEPARATOR, DeleteMethodOperation.getInstance(method).getMenuItemPrepModel());
+    this.method = method;
+  }
 }

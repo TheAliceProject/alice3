@@ -51,80 +51,80 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSplitComposite<SP extends AbstractSplitPane<?>> extends AbstractComposite<SP> {
-	public AbstractSplitComposite( UUID id ) {
-		super( id );
-	}
+  public AbstractSplitComposite(UUID id) {
+    super(id);
+  }
 
-	public abstract Composite<?> getLeadingComposite();
+  public abstract Composite<?> getLeadingComposite();
 
-	public abstract Composite<?> getTrailingComposite();
+  public abstract Composite<?> getTrailingComposite();
 
-	@Override
-	protected final ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
+  @Override
+  protected final ScrollPane createScrollPaneIfDesired() {
+    return null;
+  }
 
-	@Override
-	public final boolean contains( Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			Composite<?> leadingComposite = this.getLeadingComposite();
-			if( leadingComposite != null ) {
-				if( leadingComposite.contains( model ) ) {
-					return true;
-				}
-			}
-			Composite<?> trailingComposite = this.getTrailingComposite();
-			if( trailingComposite != null ) {
-				if( trailingComposite.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+  @Override
+  public final boolean contains(Model model) {
+    if (super.contains(model)) {
+      return true;
+    } else {
+      Composite<?> leadingComposite = this.getLeadingComposite();
+      if (leadingComposite != null) {
+        if (leadingComposite.contains(model)) {
+          return true;
+        }
+      }
+      Composite<?> trailingComposite = this.getTrailingComposite();
+      if (trailingComposite != null) {
+        if (trailingComposite.contains(model)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
 
-	@Override
-	public void releaseView() {
-		Composite<?> leadingComposite = this.getLeadingComposite();
-		if( leadingComposite != null ) {
-			leadingComposite.releaseView();
-		}
-		Composite<?> trailingComposite = this.getTrailingComposite();
-		if( trailingComposite != null ) {
-			trailingComposite.releaseView();
-		}
-		super.releaseView();
-	}
+  @Override
+  public void releaseView() {
+    Composite<?> leadingComposite = this.getLeadingComposite();
+    if (leadingComposite != null) {
+      leadingComposite.releaseView();
+    }
+    Composite<?> trailingComposite = this.getTrailingComposite();
+    if (trailingComposite != null) {
+      trailingComposite.releaseView();
+    }
+    super.releaseView();
+  }
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		Composite<?> leadingComposite = this.getLeadingComposite();
-		if( leadingComposite != null ) {
-			leadingComposite.handlePreActivation();
-		}
-		Composite<?> trailingComposite = this.getTrailingComposite();
-		if( trailingComposite != null ) {
-			trailingComposite.handlePreActivation();
-		}
-	}
+  @Override
+  public void handlePreActivation() {
+    super.handlePreActivation();
+    Composite<?> leadingComposite = this.getLeadingComposite();
+    if (leadingComposite != null) {
+      leadingComposite.handlePreActivation();
+    }
+    Composite<?> trailingComposite = this.getTrailingComposite();
+    if (trailingComposite != null) {
+      trailingComposite.handlePreActivation();
+    }
+  }
 
-	@Override
-	public void handlePostDeactivation() {
-		Composite<?> leadingComposite = this.getLeadingComposite();
-		if( leadingComposite != null ) {
-			leadingComposite.handlePostDeactivation();
-		}
-		Composite<?> trailingComposite = this.getTrailingComposite();
-		if( trailingComposite != null ) {
-			trailingComposite.handlePostDeactivation();
-		}
-		super.handlePostDeactivation();
-	}
+  @Override
+  public void handlePostDeactivation() {
+    Composite<?> leadingComposite = this.getLeadingComposite();
+    if (leadingComposite != null) {
+      leadingComposite.handlePostDeactivation();
+    }
+    Composite<?> trailingComposite = this.getTrailingComposite();
+    if (trailingComposite != null) {
+      trailingComposite.handlePostDeactivation();
+    }
+    super.handlePostDeactivation();
+  }
 
-	protected abstract SP createHorizontalSplitPane();
+  protected abstract SP createHorizontalSplitPane();
 
-	protected abstract SP createVerticalSplitPane();
+  protected abstract SP createVerticalSplitPane();
 }

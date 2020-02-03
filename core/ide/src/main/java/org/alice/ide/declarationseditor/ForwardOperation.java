@@ -53,22 +53,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ForwardOperation extends ActionOperation {
-	private static class SingletonHolder {
-		private static ForwardOperation instance = new ForwardOperation();
-	}
+  private static class SingletonHolder {
+    private static ForwardOperation instance = new ForwardOperation();
+  }
 
-	public static ForwardOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ForwardOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ForwardOperation() {
-		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
-		this.setButtonIcon( Icons.NEXT_SMALL );
-	}
+  private ForwardOperation() {
+    super(Application.DOCUMENT_UI_GROUP, UUID.fromString("c5885579-bd96-496e-ba79-00a6ed263dc8"));
+    this.setButtonIcon(Icons.NEXT_SMALL);
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		DeclarationCompositeHistory.getInstance().goForward();
-		activity.finish();
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    DeclarationCompositeHistory.getInstance().goForward();
+    activity.finish();
+  }
 }

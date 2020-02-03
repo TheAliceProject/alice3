@@ -62,70 +62,62 @@ import java.util.ResourceBundle;
  * @author Dennis Cosgrove
  */
 public abstract class PanelWithPreview extends BorderPanel {
-	private static final int PAD = 16;
+  private static final int PAD = 16;
 
-	public PanelWithPreview() {
-		this( null );
-	}
+  public PanelWithPreview() {
+    this(null);
+  }
 
-	public PanelWithPreview( Composite<?> composite ) {
-		super( composite );
-		this.setBorder( BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
-		this.setMinimumPreferredWidth( 320 );
-	}
+  public PanelWithPreview(Composite<?> composite) {
+    super(composite);
+    this.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, 0, PAD));
+    this.setMinimumPreferredWidth(320);
+  }
 
-	protected boolean isPreviewDesired() {
-		return true;
-	}
+  protected boolean isPreviewDesired() {
+    return true;
+  }
 
-	private PreviewPanel previewPanel;
+  private PreviewPanel previewPanel;
 
-	public abstract SwingComponentView<?> createPreviewSubComponent();
+  public abstract SwingComponentView<?> createPreviewSubComponent();
 
-	public PreviewPanel getPreviewPanel() {
-		return this.previewPanel;
-	}
+  public PreviewPanel getPreviewPanel() {
+    return this.previewPanel;
+  }
 
-	protected final PreviewPanel createPreviewPanel() {
-		return new PreviewPanel( this );
-	}
+  protected final PreviewPanel createPreviewPanel() {
+    return new PreviewPanel(this);
+  }
 
-	public void updatePreview() {
-		PreviewPanel previewPanel = this.getPreviewPanel();
-		if( previewPanel != null ) {
-			previewPanel.refreshLater();
-		}
-	}
+  public void updatePreview() {
+    PreviewPanel previewPanel = this.getPreviewPanel();
+    if (previewPanel != null) {
+      previewPanel.refreshLater();
+    }
+  }
 
-	protected abstract SwingComponentView<?> createMainComponent();
+  protected abstract SwingComponentView<?> createMainComponent();
 
-	private void initializeIfNecessary() {
-		if( this.previewPanel != null ) {
-			//pass
-		} else {
-			this.addCenterComponent( this.createMainComponent() );
+  private void initializeIfNecessary() {
+    if (this.previewPanel != null) {
+      //pass
+    } else {
+      this.addCenterComponent(this.createMainComponent());
 
-			if( this.isPreviewDesired() ) {
-				this.previewPanel = this.createPreviewPanel();
-				ResourceBundle resourceBundle = ResourceBundle.getBundle( PanelWithPreview.class.getPackage().getName() + ".previewPanel" );
-				String previewText = resourceBundle.getString( "previewTitle" );
-				PageAxisPanel northPanel = new PageAxisPanel(
-						new LineAxisPanel(
-								BoxUtilities.createHorizontalSliver( 16 ),
-								new Label( previewText, TextPosture.OBLIQUE, TextWeight.LIGHT ),
-								BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPanel ),
-						BoxUtilities.createVerticalSliver( 8 ),
-						Separator.createInstanceSeparatingTopFromBottom(),
-						BoxUtilities.createVerticalSliver( 8 ) );
-				this.addPageStartComponent( northPanel );
-			}
-		}
-	}
+      if (this.isPreviewDesired()) {
+        this.previewPanel = this.createPreviewPanel();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(PanelWithPreview.class.getPackage().getName() + ".previewPanel");
+        String previewText = resourceBundle.getString("previewTitle");
+        PageAxisPanel northPanel = new PageAxisPanel(new LineAxisPanel(BoxUtilities.createHorizontalSliver(16), new Label(previewText, TextPosture.OBLIQUE, TextWeight.LIGHT), BoxUtilities.createHorizontalSliver(16), this.previewPanel), BoxUtilities.createVerticalSliver(8), Separator.createInstanceSeparatingTopFromBottom(), BoxUtilities.createVerticalSliver(8));
+        this.addPageStartComponent(northPanel);
+      }
+    }
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.initializeIfNecessary();
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    this.initializeIfNecessary();
+  }
 }

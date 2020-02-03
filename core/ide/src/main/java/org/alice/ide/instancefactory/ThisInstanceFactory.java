@@ -54,46 +54,46 @@ import org.lgna.project.ast.Expression;
  * @author Dennis Cosgrove
  */
 public class ThisInstanceFactory extends AbstractInstanceFactory {
-	private static class SingletonHolder {
-		private static ThisInstanceFactory instance = new ThisInstanceFactory();
-	}
+  private static class SingletonHolder {
+    private static ThisInstanceFactory instance = new ThisInstanceFactory();
+  }
 
-	public static ThisInstanceFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThisInstanceFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThisInstanceFactory() {
-	}
+  private ThisInstanceFactory() {
+  }
 
-	@Override
-	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
-		return type != null;
-	}
+  @Override
+  protected boolean isValid(AbstractType<?, ?, ?> type, AbstractCode code) {
+    return type != null;
+  }
 
-	@Override
-	public Expression createTransientExpression() {
-		return createTransientThisExpression();
-	}
+  @Override
+  public Expression createTransientExpression() {
+    return createTransientThisExpression();
+  }
 
-	@Override
-	public Expression createExpression() {
-		return createThisExpression();
-	}
+  @Override
+  public Expression createExpression() {
+    return createThisExpression();
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getValueType() {
-		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-	}
+  @Override
+  public AbstractType<?, ?, ?> getValueType() {
+    return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+  }
 
-	@Override
-	public IconFactory getIconFactory() {
-		return ThisInstanceIconFactory.getInstance();
-	}
+  @Override
+  public IconFactory getIconFactory() {
+    return ThisInstanceIconFactory.getInstance();
+  }
 
-	@Override
-	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "this" );
-		return sb.toString();
-	}
+  @Override
+  public String getRepr() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("this");
+    return sb.toString();
+  }
 }

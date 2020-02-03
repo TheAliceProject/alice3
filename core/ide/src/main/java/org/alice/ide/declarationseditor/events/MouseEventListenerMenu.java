@@ -52,23 +52,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class MouseEventListenerMenu extends EventListenerMenuModel {
-	private static class SingletonHolder {
-		private static MouseEventListenerMenu instance = new MouseEventListenerMenu();
-	}
+  private static class SingletonHolder {
+    private static MouseEventListenerMenu instance = new MouseEventListenerMenu();
+  }
 
-	public static MouseEventListenerMenu getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static MouseEventListenerMenu getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private MouseEventListenerMenu() {
-		super( UUID.fromString( "632632b7-75f9-4fdc-85a1-e39852f11b71" ) );
-	}
+  private MouseEventListenerMenu() {
+    super(UUID.fromString("632632b7-75f9-4fdc-85a1-e39852f11b71"));
+  }
 
-	@Override
-	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode ) {
-		for( JavaMethod method : EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS ) {
-			blankChildren.add( AddEventListenerMethodInvocationFillIn.getInstance( method ) );
-		}
-	}
+  @Override
+  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> blankNode) {
+    for (JavaMethod method : EventListenerMethodUtilities.ALL_MOUSE_CLICK_EVENT_METHODS) {
+      blankChildren.add(AddEventListenerMethodInvocationFillIn.getInstance(method));
+    }
+  }
 
 }

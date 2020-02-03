@@ -52,12 +52,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class FieldsComposite extends MembersComposite<UserField> {
-	public FieldsComposite( UUID migrationId, FieldData data ) {
-		super( migrationId, data );
-	}
+  public FieldsComposite(UUID migrationId, FieldData data) {
+    super(migrationId, data);
+  }
 
-	@Override
-	protected final FieldsView createView() {
-		return new FieldsView( this );
-	}
+  @Override
+  protected final FieldsView createView() {
+    return new FieldsView(this);
+  }
 }

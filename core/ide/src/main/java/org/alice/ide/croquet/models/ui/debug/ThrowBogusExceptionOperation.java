@@ -50,31 +50,31 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThrowBogusExceptionOperation extends InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
-	}
+  private static class SingletonHolder {
+    private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
+  }
 
-	public static ThrowBogusExceptionOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static ThrowBogusExceptionOperation getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private ThrowBogusExceptionOperation() {
-		super( UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
-	}
+  private ThrowBogusExceptionOperation() {
+    super(UUID.fromString("8c417baa-8be7-42e9-818c-b6ed4ecd8758"));
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( "Throw Bogus Exception..." );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    this.setName("Throw Bogus Exception...");
+  }
 
-	@Override
-	protected void performInternal() {
-		new Thread() {
-			@Override
-			public void run() {
-				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
-			}
-		}.start();
-	}
+  @Override
+  protected void performInternal() {
+    new Thread() {
+      @Override
+      public void run() {
+        throw new RuntimeException("DELETE THIS BOGUS EXCEPTION");
+      }
+    }.start();
+  }
 }

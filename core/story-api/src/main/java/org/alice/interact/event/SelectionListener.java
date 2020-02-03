@@ -46,7 +46,7 @@ package org.alice.interact.event;
  * @author David Culyba
  */
 public interface SelectionListener {
-	public void selecting( SelectionEvent e );
+  public void selecting(SelectionEvent e);
 
-	public void selected( SelectionEvent e );
+  public void selected(SelectionEvent e);
 }

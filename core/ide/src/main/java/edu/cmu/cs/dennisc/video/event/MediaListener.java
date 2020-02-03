@@ -48,25 +48,25 @@ import edu.cmu.cs.dennisc.video.VideoPlayer;
  * @author Dennis Cosgrove
  */
 public interface MediaListener {
-	public void mediaChanged( VideoPlayer videoPlayer );
+  public void mediaChanged(VideoPlayer videoPlayer);
 
-	public void newMedia( VideoPlayer videoPlayer );
+  public void newMedia(VideoPlayer videoPlayer);
 
-	public void videoOutput( VideoPlayer videoPlayer, int count );
+  public void videoOutput(VideoPlayer videoPlayer, int count);
 
-	public void opening( VideoPlayer videoPlayer );
+  public void opening(VideoPlayer videoPlayer);
 
-	public void playing( VideoPlayer videoPlayer );
+  public void playing(VideoPlayer videoPlayer);
 
-	public void paused( VideoPlayer videoPlayer );
+  public void paused(VideoPlayer videoPlayer);
 
-	public void positionChanged( VideoPlayer videoPlayer, float position );
+  public void positionChanged(VideoPlayer videoPlayer, float position);
 
-	public void lengthChanged( VideoPlayer videoPlayer, long lengthInMsec );
+  public void lengthChanged(VideoPlayer videoPlayer, long lengthInMsec);
 
-	public void finished( VideoPlayer videoPlayer );
+  public void finished(VideoPlayer videoPlayer);
 
-	public void stopped( VideoPlayer videoPlayer );
+  public void stopped(VideoPlayer videoPlayer);
 
-	public void error( VideoPlayer videoPlayer );
+  public void error(VideoPlayer videoPlayer);
 }

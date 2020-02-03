@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Matt May
  */
 public class FlyerPose extends Pose<SFlyer> {
-	/*package-private*/ FlyerPose( JointIdTransformationPair... pairs ) {
-		super( SFlyer.class, pairs );
-	}
+  /*package-private*/ FlyerPose(JointIdTransformationPair... pairs) {
+    super(SFlyer.class, pairs);
+  }
 }

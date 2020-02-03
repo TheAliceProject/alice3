@@ -52,27 +52,27 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class NullLiteralFillIn extends ExpressionFillInWithoutBlanks<NullLiteral> {
-	private static class SingletonHolder {
-		private static NullLiteralFillIn instance = new NullLiteralFillIn();
-	}
+  private static class SingletonHolder {
+    private static NullLiteralFillIn instance = new NullLiteralFillIn();
+  }
 
-	public static NullLiteralFillIn getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static NullLiteralFillIn getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final NullLiteral transientValue = new NullLiteral();
+  private final NullLiteral transientValue = new NullLiteral();
 
-	private NullLiteralFillIn() {
-		super( UUID.fromString( "e2cfad91-ac53-441e-8ac8-cb0d1c26520f" ) );
-	}
+  private NullLiteralFillIn() {
+    super(UUID.fromString("e2cfad91-ac53-441e-8ac8-cb0d1c26520f"));
+  }
 
-	@Override
-	public NullLiteral getTransientValue( ItemNode<? super NullLiteral, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public NullLiteral getTransientValue(ItemNode<? super NullLiteral, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public NullLiteral createValue( ItemNode<? super NullLiteral, Void> node ) {
-		return new NullLiteral();
-	}
+  @Override
+  public NullLiteral createValue(ItemNode<? super NullLiteral, Void> node) {
+    return new NullLiteral();
+  }
 }

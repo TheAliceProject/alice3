@@ -60,106 +60,106 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class DeclarationNameLabel extends Label {
-	private AbstractDeclaration declaration;
+  private AbstractDeclaration declaration;
 
-	private class NamePropertyAdapter implements PropertyListener {
-		@Override
-		public void propertyChanging( PropertyEvent e ) {
-		}
+  private class NamePropertyAdapter implements PropertyListener {
+    @Override
+    public void propertyChanging(PropertyEvent e) {
+    }
 
-		@Override
-		public void propertyChanged( PropertyEvent e ) {
-			DeclarationNameLabel.this.updateText();
-		}
-	}
+    @Override
+    public void propertyChanged(PropertyEvent e) {
+      DeclarationNameLabel.this.updateText();
+    }
+  }
 
-	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
+  private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 
-	public DeclarationNameLabel( AbstractDeclaration declaration ) {
-		this.declaration = declaration;
-		this.updateText();
-		this.setForegroundColor( Color.BLACK );
-	}
+  public DeclarationNameLabel(AbstractDeclaration declaration) {
+    this.declaration = declaration;
+    this.updateText();
+    this.setForegroundColor(Color.BLACK);
+  }
 
-	public DeclarationNameLabel( AbstractDeclaration declaration, float fontScaleFactor ) {
-		this( declaration );
-		this.scaleFont( fontScaleFactor );
-	}
+  public DeclarationNameLabel(AbstractDeclaration declaration, float fontScaleFactor) {
+    this(declaration);
+    this.scaleFont(fontScaleFactor);
+  }
 
-	private StringProperty getNamePropertyIfItExistsForListening() {
-		Declaration declarationForNameProperty;
-		if( this.declaration instanceof AbstractMethodContainedByUserField ) {
-			AbstractMethodContainedByUserField methodContainedByUserField = (AbstractMethodContainedByUserField)this.declaration;
-			declarationForNameProperty = methodContainedByUserField.getField();
-		} else {
-			declarationForNameProperty = this.declaration;
-		}
-		return declarationForNameProperty.getNamePropertyIfItExists();
-	}
+  private StringProperty getNamePropertyIfItExistsForListening() {
+    Declaration declarationForNameProperty;
+    if (this.declaration instanceof AbstractMethodContainedByUserField) {
+      AbstractMethodContainedByUserField methodContainedByUserField = (AbstractMethodContainedByUserField) this.declaration;
+      declarationForNameProperty = methodContainedByUserField.getField();
+    } else {
+      declarationForNameProperty = this.declaration;
+    }
+    return declarationForNameProperty.getNamePropertyIfItExists();
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.declaration != null ) {
-			StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
-			if( nameProperty != null ) {
-				nameProperty.addPropertyListener( this.namePropertyAdapter );
-				this.updateText();
-			}
-		}
-	}
+  @Override
+  protected void handleDisplayable() {
+    super.handleDisplayable();
+    if (this.declaration != null) {
+      StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
+      if (nameProperty != null) {
+        nameProperty.addPropertyListener(this.namePropertyAdapter);
+        this.updateText();
+      }
+    }
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.declaration != null ) {
-			StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
-			if( nameProperty != null ) {
-				nameProperty.removePropertyListener( this.namePropertyAdapter );
-			}
-		}
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    if (this.declaration != null) {
+      StringProperty nameProperty = this.getNamePropertyIfItExistsForListening();
+      if (nameProperty != null) {
+        nameProperty.removePropertyListener(this.namePropertyAdapter);
+      }
+    }
+    super.handleUndisplayable();
+  }
 
-	protected AbstractDeclaration getDeclaration() {
-		return this.declaration;
-	}
+  protected AbstractDeclaration getDeclaration() {
+    return this.declaration;
+  }
 
-	protected String getNameText() {
-		Formatter formatter = FormatterState.getInstance().getValue();
-		return formatter.getNameForDeclaration( this.declaration );
-	}
+  protected String getNameText() {
+    Formatter formatter = FormatterState.getInstance().getValue();
+    return formatter.getNameForDeclaration(this.declaration);
+  }
 
-	protected String getTextForNullName() {
-		return FormatterState.getInstance().getValue().getTextForNull();
-	}
+  protected String getTextForNullName() {
+    return FormatterState.getInstance().getValue().getTextForNull();
+  }
 
-	protected final String getTextForBlankName() {
-		// Show "unset", localized for user
-		return "<" + AliceFormatter.getInstance().getTextForNull() + ">";
-	}
+  protected final String getTextForBlankName() {
+    // Show "unset", localized for user
+    return "<" + AliceFormatter.getInstance().getTextForNull() + ">";
+  }
 
-	private void updateText() {
-		String text;
-		if( this.declaration != null ) {
-			text = this.getNameText();
-		} else {
-			text = null;
-		}
-		if( text != null ) {
-			//pass
-		} else {
-			text = this.getTextForNullName();
-		}
-		if( text.length() > 0 ) {
-			//pass
-		} else {
-			text = this.getTextForBlankName();
-		}
-		if( Objects.equals( this.getText(), text ) ) {
-			//pass
-		} else {
-			this.setText( text );
-			this.repaint();
-		}
-	}
+  private void updateText() {
+    String text;
+    if (this.declaration != null) {
+      text = this.getNameText();
+    } else {
+      text = null;
+    }
+    if (text != null) {
+      //pass
+    } else {
+      text = this.getTextForNullName();
+    }
+    if (text.length() > 0) {
+      //pass
+    } else {
+      text = this.getTextForBlankName();
+    }
+    if (Objects.equals(this.getText(), text)) {
+      //pass
+    } else {
+      this.setText(text);
+      this.repaint();
+    }
+  }
 }

@@ -52,26 +52,26 @@ import org.lgna.project.Version;
  * @author Dennis Cosgrove
  */
 public class ProjectAheadView extends BorderPanel {
-	public ProjectAheadView( ProjectAheadDialog composite ) {
-		super( composite );
-		Version projectVersion = composite.getProjectVersion();
-		Version applicationVersion = composite.getApplicationVersion();
+  public ProjectAheadView(ProjectAheadDialog composite) {
+    super(composite);
+    Version projectVersion = composite.getProjectVersion();
+    Version applicationVersion = composite.getApplicationVersion();
 
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "This project appears to have been created with a newer version of " );
-		sb.append( IDE.getApplicationName() );
-		sb.append( " than your installed version:" );
-		sb.append( "<ul>" );
-		sb.append( "<li>project version: " );
-		sb.append( projectVersion );
-		sb.append( "<li>installed version: " );
-		sb.append( applicationVersion );
-		sb.append( "</ul>" );
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>");
+    sb.append("This project appears to have been created with a newer version of ");
+    sb.append(IDE.getApplicationName());
+    sb.append(" than your installed version:");
+    sb.append("<ul>");
+    sb.append("<li>project version: ");
+    sb.append(projectVersion);
+    sb.append("<li>installed version: ");
+    sb.append(applicationVersion);
+    sb.append("</ul>");
 
-		sb.append( "You can attempt to load this project anyway, but we warned there may be problems.<p>" );
-		sb.append( "</html>" );
+    sb.append("You can attempt to load this project anyway, but we warned there may be problems.<p>");
+    sb.append("</html>");
 
-		this.addPageStartComponent( new Label( sb.toString() ) );
-	}
+    this.addPageStartComponent(new Label(sb.toString()));
+  }
 }

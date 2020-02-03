@@ -55,24 +55,24 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class CreditsComposite extends LazyOperationUnadornedDialogCoreComposite<Panel> {
-	public CreditsComposite() {
-		super( UUID.fromString( "05cb2e31-928a-461a-9695-9e2783b651a4" ) );
-	}
+  public CreditsComposite() {
+    super(UUID.fromString("05cb2e31-928a-461a-9695-9e2783b651a4"));
+  }
 
-	@Override
-	protected Panel createView() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Alice 3 is designed and implemented by <strong>Dennis Cosgrove</strong>, <strong>David Culyba</strong>, and <strong>Matt May</strong>.<p>" );
-		sb.append( "It is inspired by many systems that have preceded it, most notably <strong>Caitlin Kelleher</strong>'s dissertation: Storytelling Alice.<p>" );
-		sb.append( "Great thanks are owed to the members of Caitlin Kelleher's Looking Glass Research Group, specifically:<br><strong>Kyle Harms</strong> for his work on the Croquet toolkit and <br><strong>Gazihan Alankus</strong> for his work on inverse kinematics.<p>" );
-		sb.append( "Many have created custom art assets including <strong>Laura Paoletti</strong> and <strong>John DeRiggi</strong>.<p>" );
-		sb.append( "Technical and administrative help provided by <strong>Gabe Yu</strong>, <strong>Cleah Schlueter</strong>, and <strong>5teve Audia</strong>.<p>" );
-		sb.append( "Songs should be written about the instructors who bravely adopted Alice 3 in the alpha and beta stages, specifically <strong>Wanda Dann</strong> and <strong>Don Slater</strong>.<p>" );
-		sb.append( "A special thank you to <strong>Steve Seabolt</strong> and <strong>JoAnn Covington</strong> for faciliating the donation of The Sims <sup>TM</sup> 2 Art Assets.<p>" );
+  @Override
+  protected Panel createView() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Alice 3 is designed and implemented by <strong>Dennis Cosgrove</strong>, <strong>David Culyba</strong>, and <strong>Matt May</strong>.<p>");
+    sb.append("It is inspired by many systems that have preceded it, most notably <strong>Caitlin Kelleher</strong>'s dissertation: Storytelling Alice.<p>");
+    sb.append("Great thanks are owed to the members of Caitlin Kelleher's Looking Glass Research Group, specifically:<br><strong>Kyle Harms</strong> for his work on the Croquet toolkit and <br><strong>Gazihan Alankus</strong> for his work on inverse kinematics.<p>");
+    sb.append("Many have created custom art assets including <strong>Laura Paoletti</strong> and <strong>John DeRiggi</strong>.<p>");
+    sb.append("Technical and administrative help provided by <strong>Gabe Yu</strong>, <strong>Cleah Schlueter</strong>, and <strong>5teve Audia</strong>.<p>");
+    sb.append("Songs should be written about the instructors who bravely adopted Alice 3 in the alpha and beta stages, specifically <strong>Wanda Dann</strong> and <strong>Don Slater</strong>.<p>");
+    sb.append("A special thank you to <strong>Steve Seabolt</strong> and <strong>JoAnn Covington</strong> for faciliating the donation of The Sims <sup>TM</sup> 2 Art Assets.<p>");
 
-		HtmlMultiLineLabel creditsLabel = new HtmlMultiLineLabel( sb.toString() );
-		Panel rv = new BorderPanel.Builder().center( creditsLabel ).build();
-		rv.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-		return rv;
-	}
+    HtmlMultiLineLabel creditsLabel = new HtmlMultiLineLabel(sb.toString());
+    Panel rv = new BorderPanel.Builder().center(creditsLabel).build();
+    rv.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+    return rv;
+  }
 }

@@ -54,34 +54,34 @@ import org.lgna.project.ast.SimpleArgument;
 import java.util.UUID;
 
 public abstract class SourceFillIn<T extends Resource> extends ExpressionFillInWithoutBlanks<InstanceCreation> {
-	private final Class<?> sourceCls;
-	private final T resource;
-	private final Class<T> resourceCls;
-	private final InstanceCreation transientValue;
+  private final Class<?> sourceCls;
+  private final T resource;
+  private final Class<T> resourceCls;
+  private final InstanceCreation transientValue;
 
-	public SourceFillIn( UUID id, Class<?> sourceCls, Class<T> resourceCls, T resource ) {
-		super( UUID.fromString( "c5d40d9e-b7a9-45d7-8784-1a0bdfc05b90" ) );
-		this.sourceCls = sourceCls;
-		this.resourceCls = resourceCls;
-		this.resource = resource;
-		this.transientValue = this.createValue();
-	}
+  public SourceFillIn(UUID id, Class<?> sourceCls, Class<T> resourceCls, T resource) {
+    super(UUID.fromString("c5d40d9e-b7a9-45d7-8784-1a0bdfc05b90"));
+    this.sourceCls = sourceCls;
+    this.resourceCls = resourceCls;
+    this.resource = resource;
+    this.transientValue = this.createValue();
+  }
 
-	private final InstanceCreation createValue() {
-		JavaConstructor constructor = JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
-		ResourceExpression resourceExpression = new ResourceExpression( this.resourceCls, this.resource );
-		AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-		SimpleArgument argument0 = new SimpleArgument( parameter0, resourceExpression );
-		return new InstanceCreation( constructor, argument0 );
-	}
+  private final InstanceCreation createValue() {
+    JavaConstructor constructor = JavaConstructor.getInstance(this.sourceCls, this.resourceCls);
+    ResourceExpression resourceExpression = new ResourceExpression(this.resourceCls, this.resource);
+    AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);
+    SimpleArgument argument0 = new SimpleArgument(parameter0, resourceExpression);
+    return new InstanceCreation(constructor, argument0);
+  }
 
-	@Override
-	public final InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node ) {
-		return this.createValue();
-	}
+  @Override
+  public final InstanceCreation createValue(ItemNode<? super InstanceCreation, Void> node) {
+    return this.createValue();
+  }
 
-	@Override
-	public final InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public final InstanceCreation getTransientValue(ItemNode<? super InstanceCreation, Void> node) {
+    return this.transientValue;
+  }
 }

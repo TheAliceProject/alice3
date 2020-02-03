@@ -52,29 +52,29 @@ import javax.swing.JPanel;
  * @author Dennis Cosgrove
  */
 public class PreviewPanel extends BorderPanel {
-	private final PanelWithPreview panelWithPreview;
+  private final PanelWithPreview panelWithPreview;
 
-	public PreviewPanel( PanelWithPreview panelWithPreview ) {
-		this.panelWithPreview = panelWithPreview;
-	}
+  public PreviewPanel(PanelWithPreview panelWithPreview) {
+    this.panelWithPreview = panelWithPreview;
+  }
 
-	@Override
-	protected JPanel createJPanel() {
-		class PreviewJPanel extends DefaultJPanel {
-			@Override
-			public boolean contains( int x, int y ) {
-				return false;
-			}
-		}
-		PreviewJPanel rv = new PreviewJPanel();
-		rv.setOpaque( false );
-		return rv;
-	}
+  @Override
+  protected JPanel createJPanel() {
+    class PreviewJPanel extends DefaultJPanel {
+      @Override
+      public boolean contains(int x, int y) {
+        return false;
+      }
+    }
+    PreviewJPanel rv = new PreviewJPanel();
+    rv.setOpaque(false);
+    return rv;
+  }
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		this.internalForgetAndRemoveAllComponents();
-		this.addCenterComponent( this.panelWithPreview.createPreviewSubComponent() );
-	}
+  @Override
+  protected void internalRefresh() {
+    super.internalRefresh();
+    this.internalForgetAndRemoveAllComponents();
+    this.addCenterComponent(this.panelWithPreview.createPreviewSubComponent());
+  }
 }

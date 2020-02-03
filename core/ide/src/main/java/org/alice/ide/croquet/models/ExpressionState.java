@@ -57,15 +57,15 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionState extends DefaultCustomItemState<Expression> {
-	public ExpressionState( Group group, UUID id, Expression initialValue ) {
-		super( group, id, NodeCodec.getInstance( Expression.class ), initialValue );
-	}
+  public ExpressionState(Group group, UUID id, Expression initialValue) {
+    super(group, id, NodeCodec.getInstance(Expression.class), initialValue);
+  }
 
-	public SwingComponentView<?> createEditor( AstI18nFactory factory ) {
-		return new ExpressionDropDown( this, factory );
-	}
+  public SwingComponentView<?> createEditor(AstI18nFactory factory) {
+    return new ExpressionDropDown(this, factory);
+  }
 
-	public SwingComponentView<?> createView( AstI18nFactory factory ) {
-		return factory.createExpressionPane( this.getValue() );
-	}
+  public SwingComponentView<?> createView(AstI18nFactory factory) {
+    return factory.createExpressionPane(this.getValue());
+  }
 }

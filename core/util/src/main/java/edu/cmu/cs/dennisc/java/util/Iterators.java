@@ -49,29 +49,30 @@ import java.util.NoSuchElementException;
  * @author Dennis Cosgrove
  */
 public class Iterators {
-	private Iterators() {
-		throw new AssertionError();
-	}
+  private Iterators() {
+    throw new AssertionError();
+  }
 
-	private static enum EmptyIterator implements Iterator<Object> {
-		INSTANCE;
-		@Override
-		public boolean hasNext() {
-			return false;
-		}
+  private static enum EmptyIterator implements Iterator<Object> {
+    INSTANCE;
 
-		@Override
-		public Object next() {
-			throw new NoSuchElementException();
-		}
+    @Override
+    public boolean hasNext() {
+      return false;
+    }
 
-		@Override
-		public void remove() {
-			throw new IllegalStateException();
-		}
-	}
+    @Override
+    public Object next() {
+      throw new NoSuchElementException();
+    }
 
-	public static <T> Iterator<T> emptyIterator() {
-		return (Iterator<T>)EmptyIterator.INSTANCE;
-	}
+    @Override
+    public void remove() {
+      throw new IllegalStateException();
+    }
+  }
+
+  public static <T> Iterator<T> emptyIterator() {
+    return (Iterator<T>) EmptyIterator.INSTANCE;
+  }
 }

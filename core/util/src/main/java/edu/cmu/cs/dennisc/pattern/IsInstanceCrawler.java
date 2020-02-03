@@ -46,37 +46,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class IsInstanceCrawler<T> implements Crawler {
-	public static <T> IsInstanceCrawler<T> createInstance( Class<T> cls ) {
-		return new IsInstanceCrawler<T>( cls ) {
-			@Override
-			protected boolean isAcceptable( T e ) {
-				return true;
-			}
-		};
-	}
+  public static <T> IsInstanceCrawler<T> createInstance(Class<T> cls) {
+    return new IsInstanceCrawler<T>(cls) {
+      @Override
+      protected boolean isAcceptable(T e) {
+        return true;
+      }
+    };
+  }
 
-	protected IsInstanceCrawler( Class<T> cls ) {
-		this.cls = cls;
-	}
+  protected IsInstanceCrawler(Class<T> cls) {
+    this.cls = cls;
+  }
 
-	protected abstract boolean isAcceptable( T e );
+  protected abstract boolean isAcceptable(T e);
 
-	@Override
-	public void visit( Crawlable crawlable ) {
-		if( crawlable != null ) {
-			if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
-				T e = (T)crawlable;
-				if( isAcceptable( e ) ) {
-					this.list.add( e );
-				}
-			}
-		}
-	}
+  @Override
+  public void visit(Crawlable crawlable) {
+    if (crawlable != null) {
+      if (this.cls.isAssignableFrom(crawlable.getClass())) {
+        T e = (T) crawlable;
+        if (isAcceptable(e)) {
+          this.list.add(e);
+        }
+      }
+    }
+  }
 
-	public List<T> getList() {
-		return this.list;
-	}
+  public List<T> getList() {
+    return this.list;
+  }
 
-	private final Class<T> cls;
-	private final List<T> list = new LinkedList<T>();
+  private final Class<T> cls;
+  private final List<T> list = new LinkedList<T>();
 }

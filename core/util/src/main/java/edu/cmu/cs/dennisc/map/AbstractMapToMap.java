@@ -54,53 +54,53 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMapToMap<A, B, V> {
-	private final InitializingIfAbsentMap<A, InitializingIfAbsentMap<B, V>> outerMap = Maps.newInitializingIfAbsentHashMap();
+  private final InitializingIfAbsentMap<A, InitializingIfAbsentMap<B, V>> outerMap = Maps.newInitializingIfAbsentHashMap();
 
-	public static interface Initializer<A, B, V> {
-		public V initialize( A a, B b );
-	}
+  public static interface Initializer<A, B, V> {
+    public V initialize(A a, B b);
+  }
 
-	private final InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>> mapInitializer = new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
-		@Override
-		public InitializingIfAbsentMap<B, V> initialize( A key ) {
-			return Maps.newInitializingIfAbsentHashMap();
-		}
-	};
+  private final InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>> mapInitializer = new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
+    @Override
+    public InitializingIfAbsentMap<B, V> initialize(A key) {
+      return Maps.newInitializingIfAbsentHashMap();
+    }
+  };
 
-	public V get( A a, B b ) {
-		Map<B, V> innerMap = this.outerMap.get( a );
-		if( innerMap != null ) {
-			return innerMap.get( b );
-		} else {
-			return null;
-		}
-	}
+  public V get(A a, B b) {
+    Map<B, V> innerMap = this.outerMap.get(a);
+    if (innerMap != null) {
+      return innerMap.get(b);
+    } else {
+      return null;
+    }
+  }
 
-	public final synchronized V getInitializingIfAbsent( final A a, B b, final Initializer<A, B, V> initializer ) {
-		InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, this.mapInitializer );
-		return innerMap.getInitializingIfAbsent( b, new InitializingIfAbsentMap.Initializer<B, V>() {
-			@Override
-			public V initialize( B key ) {
-				return initializer.initialize( a, key );
-			}
-		} );
-	}
+  public final synchronized V getInitializingIfAbsent(final A a, B b, final Initializer<A, B, V> initializer) {
+    InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent(a, this.mapInitializer);
+    return innerMap.getInitializingIfAbsent(b, new InitializingIfAbsentMap.Initializer<B, V>() {
+      @Override
+      public V initialize(B key) {
+        return initializer.initialize(a, key);
+      }
+    });
+  }
 
-	public final void put( A a, B b, V value ) {
-		Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
-			@Override
-			public InitializingIfAbsentMap<B, V> initialize( A key ) {
-				return Maps.newInitializingIfAbsentHashMap();
-			}
-		} );
-		innerMap.put( b, value );
-	}
+  public final void put(A a, B b, V value) {
+    Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent(a, new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
+      @Override
+      public InitializingIfAbsentMap<B, V> initialize(A key) {
+        return Maps.newInitializingIfAbsentHashMap();
+      }
+    });
+    innerMap.put(b, value);
+  }
 
-	public final Collection<V> values() {
-		List<V> rv = Lists.newLinkedList();
-		for( Map<B, V> innerMap : this.outerMap.values() ) {
-			rv.addAll( innerMap.values() );
-		}
-		return rv;
-	}
+  public final Collection<V> values() {
+    List<V> rv = Lists.newLinkedList();
+    for (Map<B, V> innerMap : this.outerMap.values()) {
+      rv.addAll(innerMap.values());
+    }
+    return rv;
+  }
 }

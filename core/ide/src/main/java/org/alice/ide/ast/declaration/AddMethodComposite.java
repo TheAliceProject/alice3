@@ -59,52 +59,52 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposite<UserMethod> {
-	private final UserType<?> declaringType;
+  private final UserType<?> declaringType;
 
-	AddMethodComposite( UUID migrationId, Details details, UserType<?> declaringType ) {
-		super( migrationId, details );
-		this.declaringType = declaringType;
-	}
+  AddMethodComposite(UUID migrationId, Details details, UserType<?> declaringType) {
+    super(migrationId, details);
+    this.declaringType = declaringType;
+  }
 
-	@Override
-	protected void localize() {
-		super.localize();
-		int size = UIManagerUtilities.getDefaultFontSize() + 4;
-		this.getLaunchOperation().setSmallIcon( PlusIconFactory.getInstance().getIcon( new Dimension( size, size ) ) );
-	}
+  @Override
+  protected void localize() {
+    super.localize();
+    int size = UIManagerUtilities.getDefaultFontSize() + 4;
+    this.getLaunchOperation().setSmallIcon(PlusIconFactory.getInstance().getIcon(new Dimension(size, size)));
+  }
 
-	@Override
-	public String modifyNameIfNecessary( String text ) {
-		text = super.modifyNameIfNecessary( text );
-		if( text != null ) {
-			String declaringTypeName;
-			if( this.declaringType != null ) {
-				declaringTypeName = this.declaringType.getName();
-			} else {
-				declaringTypeName = "";
-			}
-			text = text.replace( "</declaringType/>", declaringTypeName );
-		}
-		return text;
-	}
+  @Override
+  public String modifyNameIfNecessary(String text) {
+    text = super.modifyNameIfNecessary(text);
+    if (text != null) {
+      String declaringTypeName;
+      if (this.declaringType != null) {
+        declaringTypeName = this.declaringType.getName();
+      } else {
+        declaringTypeName = "";
+      }
+      text = text.replace("</declaringType/>", declaringTypeName);
+    }
+    return text;
+  }
 
-	@Override
-	public UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
+  @Override
+  public UserType<?> getDeclaringType() {
+    return this.declaringType;
+  }
 
-	@Override
-	public UserMethod getPreviewValue() {
-		return AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
-	}
+  @Override
+  public UserMethod getPreviewValue() {
+    return AstUtilities.createMethod(this.getDeclarationLikeSubstanceName(), this.getValueType());
+  }
 
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new DeclareMethodEdit( userActivity, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType() );
-	}
+  @Override
+  protected Edit createEdit(UserActivity userActivity) {
+    return new DeclareMethodEdit(userActivity, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType());
+  }
 
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return StaticAnalysisUtilities.isAvailableMethodName( name, this.getDeclaringType() );
-	}
+  @Override
+  protected boolean isNameAvailable(String name) {
+    return StaticAnalysisUtilities.isAvailableMethodName(name, this.getDeclaringType());
+  }
 }

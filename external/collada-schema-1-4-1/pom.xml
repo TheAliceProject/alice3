@@ -1,22 +1,55 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.alice.external</groupId>
-		<artifactId>external</artifactId>
-		<version>1.0</version>
-		<relativePath>../</relativePath>
-	</parent>
+  <parent>
+    <groupId>org.alice.external</groupId>
+    <artifactId>external</artifactId>
+    <version>1.0</version>
+  </parent>
 
-	<artifactId>collada-schema-1-4-1</artifactId>
-	<version>1.0</version>
-	<packaging>jar</packaging>
+  <artifactId>collada-schema-1-4-1</artifactId>
+  <version>1.4.1</version>
+  <packaging>jar</packaging>
 
-	<name>Collada Scheme 1.4.1</name>
-	<url>https://www.khronos.org/files/collada_schema_1_4_1.xsd</url>
+  <name>Collada Schema 1.4.1</name>
+  <url>https://www.khronos.org/files/collada_schema_1_4_1.xsd</url>
 
-	<!-- Deploy Command -->
-	<!-- mvn deploy -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>xjc</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <packageName>org.lgna.story.resourceutilities.exporterutils.collada</packageName>
+          <sources>
+            <source>src/main/resources/collada_schema_1_4_1.xsd</source>
+          </sources>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

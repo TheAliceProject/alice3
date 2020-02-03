@@ -53,37 +53,37 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class JointFunctionsComposite extends FilteredJavaMethodsSubComposite {
-	private static class SingletonHolder {
-		private static JointFunctionsComposite instance = new JointFunctionsComposite();
-	}
+  private static class SingletonHolder {
+    private static JointFunctionsComposite instance = new JointFunctionsComposite();
+  }
 
-	public static JointFunctionsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static JointFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-		@Override
-		public int compare( JavaMethod methodA, JavaMethod methodB ) {
-			return compareMethodNames( methodA, methodB );
-		}
-	};
+  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
+    @Override
+    public int compare(JavaMethod methodA, JavaMethod methodB) {
+      return compareMethodNames(methodA, methodB);
+    }
+  };
 
-	private JointFunctionsComposite() {
-		super( UUID.fromString( "681b12ce-4948-4cc6-a943-985e9caa76bc" ), false );
-	}
+  private JointFunctionsComposite() {
+    super(UUID.fromString("681b12ce-4948-4cc6-a943-985e9caa76bc"), false);
+  }
 
-	@Override
-	public Comparator<JavaMethod> getComparator() {
-		return this.comparator;
-	}
+  @Override
+  public Comparator<JavaMethod> getComparator() {
+    return this.comparator;
+  }
 
-	@Override
-	public boolean isShowingDesired() {
-		return true;
-	}
+  @Override
+  public boolean isShowingDesired() {
+    return true;
+  }
 
-	@Override
-	protected boolean isAcceptingOf( JavaMethod method ) {
-		return method.isFunction() && method.getReturnType().isAssignableTo( SJoint.class ) && method.getName().startsWith( "get" );
-	}
+  @Override
+  protected boolean isAcceptingOf(JavaMethod method) {
+    return method.isFunction() && method.getReturnType().isAssignableTo(SJoint.class) && method.getName().startsWith("get");
+  }
 }

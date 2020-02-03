@@ -60,45 +60,45 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static MapToMap<UserField, Integer, ThisFieldAccessJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
+  private static MapToMap<UserField, Integer, ThisFieldAccessJointedTypeMenuModel> mapToMap = MapToMap.newInstance();
 
-	public static ThisFieldAccessJointedTypeMenuModel getInstance( UserField value ) {
-		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( value.getValueType() );
-		return getInstance( value, jointedTypeInfos, 0 );
-	}
+  public static ThisFieldAccessJointedTypeMenuModel getInstance(UserField value) {
+    List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(value.getValueType());
+    return getInstance(value, jointedTypeInfos, 0);
+  }
 
-	private static ThisFieldAccessJointedTypeMenuModel getInstance( UserField value, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		//todo
-		synchronized( mapToMap ) {
-			ThisFieldAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ThisFieldAccessJointedTypeMenuModel( value, jointedTypeInfos, index );
-				mapToMap.put( value, index, rv );
-			}
-			return rv;
-		}
-	}
+  private static ThisFieldAccessJointedTypeMenuModel getInstance(UserField value, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    //todo
+    synchronized (mapToMap) {
+      ThisFieldAccessJointedTypeMenuModel rv = mapToMap.get(value, index);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new ThisFieldAccessJointedTypeMenuModel(value, jointedTypeInfos, index);
+        mapToMap.put(value, index, rv);
+      }
+      return rv;
+    }
+  }
 
-	private final UserField field;
+  private final UserField field;
 
-	private ThisFieldAccessJointedTypeMenuModel( UserField field, List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfos, index );
-		this.field = field;
-	}
+  private ThisFieldAccessJointedTypeMenuModel(UserField field, List<JointedTypeInfo> jointedTypeInfos, int index) {
+    super(UUID.fromString("bb23e6d5-9eab-4e8d-9aaf-0016f3465634"), jointedTypeInfos, index);
+    this.field = field;
+  }
 
-	@Override
-	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
-		return getInstance( this.field, jointedTypeInfos, index );
-	}
+  @Override
+  protected JointedTypeMenuModel getInstance(List<JointedTypeInfo> jointedTypeInfos, int index) {
+    return getInstance(this.field, jointedTypeInfos, index);
+  }
 
-	@Override
-	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
-		if( method.getReturnType().isArray() ) {
-			return InstanceFactoryFillIn.getInstance( ThisFieldAccessArrayElementMethodInvocationFactory.getInstance( this.field, method ) );
-		} else {
-			return InstanceFactoryFillIn.getInstance( ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
-		}
-	}
+  @Override
+  protected CascadeFillIn<InstanceFactory, ?> getFillIn(AbstractMethod method) {
+    if (method.getReturnType().isArray()) {
+      return InstanceFactoryFillIn.getInstance(ThisFieldAccessArrayElementMethodInvocationFactory.getInstance(this.field, method));
+    } else {
+      return InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(this.field, method));
+    }
+  }
 }

@@ -54,35 +54,35 @@ import java.util.UUID;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class RevertFieldOperation extends ActionOperation {
-	private static Map<UserField, RevertFieldOperation> map = Maps.newHashMap();
+  private static Map<UserField, RevertFieldOperation> map = Maps.newHashMap();
 
-	public static synchronized RevertFieldOperation getInstance( UserField field ) {
-		RevertFieldOperation rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RevertFieldOperation( field );
-			map.put( field, rv );
-		}
-		return rv;
-	}
+  public static synchronized RevertFieldOperation getInstance(UserField field) {
+    RevertFieldOperation rv = map.get(field);
+    if (rv != null) {
+      //pass
+    } else {
+      rv = new RevertFieldOperation(field);
+      map.put(field, rv);
+    }
+    return rv;
+  }
 
-	private UserField field;
+  private UserField field;
 
-	public RevertFieldOperation( UserField field ) {
-		super( Application.PROJECT_GROUP, UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
-		this.field = field;
-	}
+  public RevertFieldOperation(UserField field) {
+    super(Application.PROJECT_GROUP, UUID.fromString("84645a6e-e17f-4d64-b4a1-8182fdc1a546"));
+    this.field = field;
+  }
 
-	public UserField getField() {
-		return this.field;
-	}
+  public UserField getField() {
+    return this.field;
+  }
 
-	@Override
-	protected void perform( UserActivity activity ) {
-		activity.commitAndInvokeDo( new RevertFieldEdit( activity, this.getField() ) );
-	}
+  @Override
+  protected void perform(UserActivity activity) {
+    activity.commitAndInvokeDo(new RevertFieldEdit(activity, this.getField()));
+  }
 }

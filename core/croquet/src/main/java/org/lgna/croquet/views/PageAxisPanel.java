@@ -51,11 +51,11 @@ import javax.swing.BoxLayout;
  * @author Dennis Cosgrove
  */
 public class PageAxisPanel extends AxisPanel {
-	public PageAxisPanel( Composite composite, AwtComponentView<?>... components ) {
-		super( composite, BoxLayout.PAGE_AXIS, components );
-	}
+  public PageAxisPanel(Composite composite, AwtComponentView<?>... components) {
+    super(composite, BoxLayout.PAGE_AXIS, components);
+  }
 
-	public PageAxisPanel( AwtComponentView<?>... components ) {
-		this( null, components );
-	}
+  public PageAxisPanel(AwtComponentView<?>... components) {
+    this(null, components);
+  }
 }

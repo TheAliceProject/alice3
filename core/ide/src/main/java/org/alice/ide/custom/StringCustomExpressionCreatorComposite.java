@@ -54,49 +54,49 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<StringCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
-	}
+  private static class SingletonHolder {
+    private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
+  }
 
-	public static StringCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static StringCustomExpressionCreatorComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private final StringState valueState = this.createStringState( "valueState" );
+  private final StringState valueState = this.createStringState("valueState");
 
-	private StringCustomExpressionCreatorComposite() {
-		super( UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
-	}
+  private StringCustomExpressionCreatorComposite() {
+    super(UUID.fromString("cf6e1f22-d9f7-4027-b7e1-0c514afec0a3"));
+  }
 
-	@Override
-	protected StringCustomExpressionCreatorView createView() {
-		return new StringCustomExpressionCreatorView( this );
-	}
+  @Override
+  protected StringCustomExpressionCreatorView createView() {
+    return new StringCustomExpressionCreatorView(this);
+  }
 
-	public StringState getValueState() {
-		return this.valueState;
-	}
+  public StringState getValueState() {
+    return this.valueState;
+  }
 
-	@Override
-	protected Expression createValue() {
-		return new StringLiteral( this.valueState.getValue() );
-	}
+  @Override
+  protected Expression createValue() {
+    return new StringLiteral(this.valueState.getValue());
+  }
 
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return IS_GOOD_TO_GO_STATUS;
-	}
+  @Override
+  protected Status getStatusPreRejectorCheck() {
+    return IS_GOOD_TO_GO_STATUS;
+  }
 
-	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
-		String value;
-		if( expression instanceof StringLiteral ) {
-			StringLiteral stringLiteral = (StringLiteral)expression;
-			value = stringLiteral.value.getValue();
-		} else {
-			value = "";
-		}
-		this.valueState.setValueTransactionlessly( value );
-		this.valueState.selectAll();
-	}
+  @Override
+  protected void initializeToPreviousExpression(Expression expression) {
+    String value;
+    if (expression instanceof StringLiteral) {
+      StringLiteral stringLiteral = (StringLiteral) expression;
+      value = stringLiteral.value.getValue();
+    } else {
+      value = "";
+    }
+    this.valueState.setValueTransactionlessly(value);
+    this.valueState.selectAll();
+  }
 }

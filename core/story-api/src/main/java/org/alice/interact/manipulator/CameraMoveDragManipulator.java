@@ -59,152 +59,152 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 
 public class CameraMoveDragManipulator extends CameraManipulator implements OnscreenPicturePlaneInformedManipulator {
-	private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
-	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
+  private static final double PIXEL_DISTANCE_FACTOR = 200.0d;
+  private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
-	@Override
-	public OnscreenRenderTarget getOnscreenRenderTarget() {
-		return this.onscreenRenderTarget;
-	}
+  @Override
+  public OnscreenRenderTarget getOnscreenRenderTarget() {
+    return this.onscreenRenderTarget;
+  }
 
-	@Override
-	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
-		this.onscreenRenderTarget = onscreenRenderTarget;
-	}
+  @Override
+  public void setOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
+    this.onscreenRenderTarget = onscreenRenderTarget;
+  }
 
-	@Override
-	public String getUndoRedoDescription() {
-		return "Camera Move";
-	}
+  @Override
+  public String getUndoRedoDescription() {
+    return "Camera Move";
+  }
 
-	@Override
-	public CameraView getDesiredCameraView() {
-		return CameraView.PICK_CAMERA;
-	}
+  @Override
+  public CameraView getDesiredCameraView() {
+    return CameraView.PICK_CAMERA;
+  }
 
-	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		int xChange = currentInput.getMouseLocation().x - originalMousePoint.x;
-		int yChange = currentInput.getMouseLocation().y - originalMousePoint.y;
-		xChange *= -1; //invert X
+  @Override
+  public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+    int xChange = currentInput.getMouseLocation().x - originalMousePoint.x;
+    int yChange = currentInput.getMouseLocation().y - originalMousePoint.y;
+    xChange *= -1; //invert X
 
-		Vector3 translationX = Vector3.createMultiplication( moveXVector, xChange * this.worldUnitsPerPixelX );
-		Vector3 translationY = Vector3.createMultiplication( moveYVector, yChange * this.worldUnitsPerPixelY );
+    Vector3 translationX = Vector3.createMultiplication(moveXVector, xChange * this.worldUnitsPerPixelX);
+    Vector3 translationY = Vector3.createMultiplication(moveYVector, yChange * this.worldUnitsPerPixelY);
 
-		this.manipulatedTransformable.setLocalTransformation( this.originalLocalTransformation );
-		this.manipulatedTransformable.applyTranslation( translationX, AsSeenBy.SCENE );
-		this.manipulatedTransformable.applyTranslation( translationY, AsSeenBy.SCENE );
-	}
+    this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
+    this.manipulatedTransformable.applyTranslation(translationX, AsSeenBy.SCENE);
+    this.manipulatedTransformable.applyTranslation(translationY, AsSeenBy.SCENE);
+  }
 
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-	}
+  @Override
+  public void doEndManipulator(InputState endInput, InputState previousInput) {
+  }
 
-	@Override
-	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
-		//Do nothing
-	}
+  @Override
+  public void doClickManipulator(InputState clickInput, InputState previousInput) {
+    //Do nothing
+  }
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		if( super.doStartManipulator( startInput ) ) {
-			this.originalLocalTransformation = new AffineMatrix4x4( manipulatedTransformable.getLocalTransformation() );
-			this.originalMousePoint = new Point( startInput.getMouseLocation() );
-			AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation();
-			initialCameraDotVertical = Vector3.calculateDotProduct( absoluteTransform.orientation.backward, Vector3.accessPositiveYAxis() );
-			initialCameraDotVertical = Math.abs( initialCameraDotVertical );
-			if( this.camera instanceof OrthographicCamera ) {
-				moveXVector = new Vector3( absoluteTransform.orientation.right );
-				moveYVector = new Vector3( absoluteTransform.orientation.up );
-			} else {
-				if( initialCameraDotVertical > .99999 ) {
-					moveYVector = new Vector3( absoluteTransform.orientation.up );
-				} else {
-					moveYVector = new Vector3( absoluteTransform.orientation.backward );
-					moveYVector.multiply( -1 );
-				}
-				moveXVector = new Vector3( absoluteTransform.orientation.right );
-				moveYVector.y = 0;
-				moveYVector.normalize();
-				moveXVector.y = 0;
-				moveXVector.normalize();
-			}
+  @Override
+  public boolean doStartManipulator(InputState startInput) {
+    if (super.doStartManipulator(startInput)) {
+      this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
+      this.originalMousePoint = new Point(startInput.getMouseLocation());
+      AffineMatrix4x4 absoluteTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+      initialCameraDotVertical = Vector3.calculateDotProduct(absoluteTransform.orientation.backward, Vector3.accessPositiveYAxis());
+      initialCameraDotVertical = Math.abs(initialCameraDotVertical);
+      if (this.camera instanceof OrthographicCamera) {
+        moveXVector = new Vector3(absoluteTransform.orientation.right);
+        moveYVector = new Vector3(absoluteTransform.orientation.up);
+      } else {
+        if (initialCameraDotVertical > .99999) {
+          moveYVector = new Vector3(absoluteTransform.orientation.up);
+        } else {
+          moveYVector = new Vector3(absoluteTransform.orientation.backward);
+          moveYVector.multiply(-1);
+        }
+        moveXVector = new Vector3(absoluteTransform.orientation.right);
+        moveYVector.y = 0;
+        moveYVector.normalize();
+        moveXVector.y = 0;
+        moveXVector.normalize();
+      }
 
-			initialDistanceToGround = Math.abs( absoluteTransform.translation.y );
-			pickDistance = -1;
-			Vector3 cameraForward = new Vector3( absoluteTransform.orientation.backward );
-			cameraForward.multiply( -1.0d );
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
-			if( pickPoint != null ) {
-				pickDistance = Point3.calculateDistanceBetween( pickPoint, absoluteTransform.translation );
-			}
-			calculateMovementFactors( startInput.getMouseLocation() );
-			return true;
-		}
-		return false;
+      initialDistanceToGround = Math.abs(absoluteTransform.translation.y);
+      pickDistance = -1;
+      Vector3 cameraForward = new Vector3(absoluteTransform.orientation.backward);
+      cameraForward.multiply(-1.0d);
+      Point3 pickPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, new Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+      if (pickPoint != null) {
+        pickDistance = Point3.calculateDistanceBetween(pickPoint, absoluteTransform.translation);
+      }
+      calculateMovementFactors(startInput.getMouseLocation());
+      return true;
+    }
+    return false;
 
-	}
+  }
 
-	private void calculateMovementFactors( Point mousePoint ) {
-		Ray centerRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y );
-		Ray oneUp = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1 );
-		Ray oneDown = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1 );
-		Ray oneRight = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x + 1, mousePoint.y );
-		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x - 1, mousePoint.y );
+  private void calculateMovementFactors(Point mousePoint) {
+    Ray centerRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y);
+    Ray oneUp = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1);
+    Ray oneDown = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1);
+    Ray oneRight = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x + 1, mousePoint.y);
+    Ray oneLeft = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mousePoint.x - 1, mousePoint.y);
 
-		double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
-		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
-		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
-		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
-		Point3 centerPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, centerRay );
-		if( centerPoint != null ) {
-			Point3 offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneUp );
-			if( offsetPoint != null ) {
-				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
-					distancePerUpPixel = pixelDistance;
-				}
-			}
-			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneDown );
-			if( offsetPoint != null ) {
-				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
-					distancePerDownPixel = pixelDistance;
-				}
-			}
-			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneRight );
-			if( offsetPoint != null ) {
-				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
-					distancePerRightPixel = pixelDistance;
-				}
-			}
-			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneLeft );
-			if( offsetPoint != null ) {
-				double pixelDistance = Point3.calculateDistanceBetween( centerPoint, offsetPoint );
-				if( pixelDistance < MAX_DISTANCE_PER_PIXEL ) {
-					distancePerLeftPixel = pixelDistance;
-				}
-			}
-		}
+    double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
+    double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
+    double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
+    double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
+    Point3 centerPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, centerRay);
+    if (centerPoint != null) {
+      Point3 offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneUp);
+      if (offsetPoint != null) {
+        double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint);
+        if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
+          distancePerUpPixel = pixelDistance;
+        }
+      }
+      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneDown);
+      if (offsetPoint != null) {
+        double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint);
+        if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
+          distancePerDownPixel = pixelDistance;
+        }
+      }
+      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneRight);
+      if (offsetPoint != null) {
+        double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint);
+        if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
+          distancePerRightPixel = pixelDistance;
+        }
+      }
+      offsetPoint = PlaneUtilities.getPointInPlane(Plane.XZ_PLANE, oneLeft);
+      if (offsetPoint != null) {
+        double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint);
+        if (pixelDistance < MAX_DISTANCE_PER_PIXEL) {
+          distancePerLeftPixel = pixelDistance;
+        }
+      }
+    }
 
-		worldUnitsPerPixelX = ( distancePerLeftPixel + distancePerRightPixel ) / 2.0;
-		worldUnitsPerPixelY = ( distancePerUpPixel + distancePerDownPixel ) / 2.0;
-	}
+    worldUnitsPerPixelX = (distancePerLeftPixel + distancePerRightPixel) / 2.0;
+    worldUnitsPerPixelY = (distancePerUpPixel + distancePerDownPixel) / 2.0;
+  }
 
-	@Override
-	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-	}
+  @Override
+  public void doTimeUpdateManipulator(double time, InputState currentInput) {
+  }
 
-	private Point originalMousePoint;
-	private AffineMatrix4x4 originalLocalTransformation;
-	private Vector3 moveXVector;
-	private Vector3 moveYVector;
-	private double worldUnitsPerPixelX = .01d;
-	private double worldUnitsPerPixelY = .01d;
-	private double initialDistanceToGround;
-	private double initialCameraDotVertical;
-	private double pickDistance;
+  private Point originalMousePoint;
+  private AffineMatrix4x4 originalLocalTransformation;
+  private Vector3 moveXVector;
+  private Vector3 moveYVector;
+  private double worldUnitsPerPixelX = .01d;
+  private double worldUnitsPerPixelY = .01d;
+  private double initialDistanceToGround;
+  private double initialCameraDotVertical;
+  private double pickDistance;
 
-	private OnscreenRenderTarget onscreenRenderTarget;
+  private OnscreenRenderTarget onscreenRenderTarget;
 }

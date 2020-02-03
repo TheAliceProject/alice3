@@ -51,19 +51,19 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public class CylinderIconFactory extends ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static CylinderIconFactory instance = new CylinderIconFactory();
-	}
+  private static class SingletonHolder {
+    private static CylinderIconFactory instance = new CylinderIconFactory();
+  }
 
-	public static CylinderIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static CylinderIconFactory getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private CylinderIconFactory() {
-	}
+  private CylinderIconFactory() {
+  }
 
-	@Override
-	protected Icon createIcon( Dimension size ) {
-		return new CylinderIcon( size );
-	}
+  @Override
+  protected Icon createIcon(Dimension size) {
+    return new CylinderIcon(size);
+  }
 }

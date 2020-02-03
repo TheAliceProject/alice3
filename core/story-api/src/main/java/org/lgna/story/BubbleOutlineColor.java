@@ -44,27 +44,28 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class BubbleOutlineColor implements Say.Detail, Think.Detail {
-	private final Color value;
+  private final Color value;
 
-	public BubbleOutlineColor( Color value ) {
-		this.value = value;
-	}
+  public BubbleOutlineColor(Color value) {
+    this.value = value;
+  }
 
-	/* package-private */static Color getValue( Object[] details, Color defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof BubbleOutlineColor ) {
-				BubbleOutlineColor bubbleOutlineColor = (BubbleOutlineColor)detail;
-				return bubbleOutlineColor.value;
-			}
-		}
-		return defaultValue;
-	}
+  /* package-private */
+  static Color getValue(Object[] details, Color defaultValue) {
+    for (Object detail : details) {
+      if (detail instanceof BubbleOutlineColor) {
+        BubbleOutlineColor bubbleOutlineColor = (BubbleOutlineColor) detail;
+        return bubbleOutlineColor.value;
+      }
+    }
+    return defaultValue;
+  }
 
-	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
-	public static BubbleOutlineColor make( Color value ) {
-		return new BubbleOutlineColor( value );
-	}
+  //Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
+  public static BubbleOutlineColor make(Color value) {
+    return new BubbleOutlineColor(value);
+  }
 }

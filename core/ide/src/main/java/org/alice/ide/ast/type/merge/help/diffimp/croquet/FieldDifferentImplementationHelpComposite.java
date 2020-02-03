@@ -51,7 +51,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class FieldDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<UserField> {
-	public FieldDifferentImplementationHelpComposite( DifferentImplementation<UserField> differentImplementation ) {
-		super( UUID.fromString( "b550ff2b-ac86-408d-b6f8-8ad8ed3365ab" ), differentImplementation, "the same value class", "initializers" );
-	}
+  public FieldDifferentImplementationHelpComposite(DifferentImplementation<UserField> differentImplementation) {
+    super(UUID.fromString("b550ff2b-ac86-408d-b6f8-8ad8ed3365ab"), differentImplementation, "the same value class", "initializers");
+  }
 }

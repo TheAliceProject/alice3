@@ -73,145 +73,140 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddResourceKeyManagedFieldComposite instance = new AddResourceKeyManagedFieldComposite();
-	}
+  private static class SingletonHolder {
+    private static AddResourceKeyManagedFieldComposite instance = new AddResourceKeyManagedFieldComposite();
+  }
 
-	public static AddResourceKeyManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+  public static AddResourceKeyManagedFieldComposite getInstance() {
+    return SingletonHolder.instance;
+  }
 
-	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
-		if( expression instanceof InstanceCreation ) {
-			InstanceCreation instanceCreation = (InstanceCreation)expression;
-			return instanceCreation.constructor.getValue().getDeclaringType();
-		} else {
-			return null;
-		}
-	}
+  private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer(Expression expression) {
+    if (expression instanceof InstanceCreation) {
+      InstanceCreation instanceCreation = (InstanceCreation) expression;
+      return instanceCreation.constructor.getValue().getDeclaringType();
+    } else {
+      return null;
+    }
+  }
 
-	private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
-		@Override
-		public void valueChanged( ValueEvent<Expression> e ) {
-			AddResourceKeyManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
-		}
-	};
+  private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
+    @Override
+    public void valueChanged(ValueEvent<Expression> e) {
+      AddResourceKeyManagedFieldComposite.this.handleInitializerChanged(e.getNextValue());
+    }
+  };
 
-	private InstanceCreatorKey resourceKey;
-	private boolean isChangeResourceAllowed;
+  private InstanceCreatorKey resourceKey;
+  private boolean isChangeResourceAllowed;
 
-	private AddResourceKeyManagedFieldComposite() {
-		super( UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build() );
-		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
-	}
+  private AddResourceKeyManagedFieldComposite() {
+    super(UUID.fromString("ae05629a-0b90-4670-bc20-0279acbbc164"), new FieldDetailsBuilder().valueComponentType(ApplicabilityStatus.DISPLAYED, null).valueIsArrayType(ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false).initializer(ApplicabilityStatus.EDITABLE, null).build());
+    this.getInitializerState().addAndInvokeNewSchoolValueListener(initializerListener);
+  }
 
-	public Operation getLaunchOperationToCreateValue( InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed ) {
-		this.resourceKey = resourceKey;
-		this.isChangeResourceAllowed = isChangeResourceAllowed;
-		return getLaunchOperation();
-	}
+  public Operation getLaunchOperationToCreateValue(InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed) {
+    this.resourceKey = resourceKey;
+    this.isChangeResourceAllowed = isChangeResourceAllowed;
+    return getLaunchOperation();
+  }
 
-	protected InstanceCreatorKey getResourceKey() {
-		return resourceKey;
-	}
+  protected InstanceCreatorKey getResourceKey() {
+    return resourceKey;
+  }
 
-	@Override
-	protected Expression getInitializerInitialValue() {
-		return resourceKey != null ? resourceKey.createInstanceCreation() : null;
-	}
+  @Override
+  protected Expression getInitializerInitialValue() {
+    return resourceKey != null ? resourceKey.createInstanceCreation() : null;
+  }
 
-	@Override
-	protected String generateName() {
-		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromResourceKey( getResourceKey());
-	}
+  @Override
+  protected String generateName() {
+    return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromResourceKey(getResourceKey());
+  }
 
-	@Override
-	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		return getDeclaringTypeFromInitializer( this.getInitializer() );
-	}
+  @Override
+  protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+    return getDeclaringTypeFromInitializer(this.getInitializer());
+  }
 
-	private void handleInitializerChanged( Expression nextValue ) {
-		AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
-		this.getValueComponentTypeState().setValueTransactionlessly( type );
-		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
-		this.refreshStatus();
-		final AbstractWindow<?> root = this.getView().getRoot();
-		if( root != null ) {
-			Dimension preferredSize = root.getAwtComponent().getPreferredSize();
-			Dimension size = root.getSize();
-			if( ( preferredSize.width > size.width ) || ( preferredSize.height > size.height ) ) {
-				root.pack();
-			}
-		}
-	}
+  private void handleInitializerChanged(Expression nextValue) {
+    AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer(nextValue);
+    this.getValueComponentTypeState().setValueTransactionlessly(type);
+    this.getNameState().setValueTransactionlessly(this.getNameInitialValue());
+    this.refreshStatus();
+    final AbstractWindow<?> root = this.getView().getRoot();
+    if (root != null) {
+      Dimension preferredSize = root.getAwtComponent().getPreferredSize();
+      Dimension size = root.getSize();
+      if ((preferredSize.width > size.width) || (preferredSize.height > size.height)) {
+        root.pack();
+      }
+    }
+  }
 
-	private class InitializerContext implements ExpressionCascadeContext {
-		@Override
-		public Expression getPreviousExpression() {
-			//todo: investigate
-			//org.lgna.project.ast.UserField field = getPreviewValue();
-			//return field.initializer.getValue();
-			return getInitializer();
-			//return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
-		}
+  private class InitializerContext implements ExpressionCascadeContext {
+    @Override
+    public Expression getPreviousExpression() {
+      //todo: investigate
+      //org.lgna.project.ast.UserField field = getPreviewValue();
+      //return field.initializer.getValue();
+      return getInitializer();
+      //return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
+    }
 
-		@Override
-		public BlockStatementIndexPair getBlockStatementIndexPair() {
-			return null;
-		}
-	}
+    @Override
+    public BlockStatementIndexPair getBlockStatementIndexPair() {
+      return null;
+    }
+  }
 
-	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
-		private ExpressionCascadeContext pushedContext;
+  private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
+    private ExpressionCascadeContext pushedContext;
 
-		@Override
-		public CascadeFillIn getFillInFor( Expression value ) {
-			return null;
-		}
+    @Override
+    public CascadeFillIn getFillInFor(Expression value) {
+      return null;
+    }
 
-		@Override
-		public void prologue() {
-			this.pushedContext = new InitializerContext();
-			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		}
+    @Override
+    public void prologue() {
+      this.pushedContext = new InitializerContext();
+      IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+    }
 
-		@Override
-		public void epilogue() {
-			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
-			this.pushedContext = null;
-		}
+    @Override
+    public void epilogue() {
+      IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(this.pushedContext);
+      this.pushedContext = null;
+    }
 
-		@Override
-		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
-			Expression initializer = getInitializer();
-			if( initializer instanceof InstanceCreation ) {
-				InstanceCreation instanceCreation = (InstanceCreation)initializer;
-				AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				blankChildren.add( InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
-				blankChildren.add( CascadeLineSeparator.getInstance() );
-			}
-			if( isChangeResourceAllowed ) {
-				blankChildren.add( ChangeResourceMenuModel.getInstance() );
-			}
-		}
-	}
+    @Override
+    public void appendBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
+      Expression initializer = getInitializer();
+      if (initializer instanceof InstanceCreation) {
+        InstanceCreation instanceCreation = (InstanceCreation) initializer;
+        AbstractConstructor constructor = instanceCreation.constructor.getValue();
+        blankChildren.add(InstanceCreationFillInWithGalleryResourceParameter.getInstance(constructor));
+        blankChildren.add(CascadeLineSeparator.getInstance());
+      }
+      if (isChangeResourceAllowed) {
+        blankChildren.add(ChangeResourceMenuModel.getInstance());
+      }
+    }
+  }
 
-	@Override
-	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
-		return new ResourceKeyInitializerCustomizer();
-	}
+  @Override
+  protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
+    return new ResourceKeyInitializerCustomizer();
+  }
 
-	@Override
-	protected void handlePostHideDialog() {
-		super.handlePostHideDialog();
-		if( openingActivity.isCanceledByError() ) {
-			Dialogs.showWarning("Failed to create model",
-								"There was a problem putting that model in the scene.");
-		}
-		this.resourceKey = null;
-	}
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    if (openingActivity.isCanceledByError()) {
+      Dialogs.showWarning("Failed to create model", "There was a problem putting that model in the scene.");
+    }
+    this.resourceKey = null;
+  }
 }

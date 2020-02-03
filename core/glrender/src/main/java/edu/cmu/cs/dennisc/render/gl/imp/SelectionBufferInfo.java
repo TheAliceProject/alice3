@@ -58,120 +58,120 @@ import java.nio.IntBuffer;
  * @author Dennis Cosgrove
  */
 /*package-private*/class SelectionBufferInfo {
-	public SelectionBufferInfo( PickContext pc, IntBuffer intBuffer, int offset ) {
-		int nameCount = intBuffer.get( offset + 0 );
-		int zFrontAsInt = intBuffer.get( offset + 1 );
-		int zBackAsInt = intBuffer.get( offset + 2 );
+  public SelectionBufferInfo(PickContext pc, IntBuffer intBuffer, int offset) {
+    int nameCount = intBuffer.get(offset + 0);
+    int zFrontAsInt = intBuffer.get(offset + 1);
+    int zBackAsInt = intBuffer.get(offset + 2);
 
-		long zFrontAsLong = zFrontAsInt;
-		zFrontAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
+    long zFrontAsLong = zFrontAsInt;
+    zFrontAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 
-		float zFront = (float)zFrontAsLong;
-		zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
-		this.zFront = zFront;
+    float zFront = (float) zFrontAsLong;
+    zFront /= (float) PickContext.MAX_UNSIGNED_INTEGER;
+    this.zFront = zFront;
 
-		long zBackAsLong = zBackAsInt;
-		zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
+    long zBackAsLong = zBackAsInt;
+    zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 
-		//		int[] atDepth = { -1 };
-		//		pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
-		//		int[] atClearValue = { -1 };
-		//		pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
+    //    int[] atDepth = { -1 };
+    //    pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
+    //    int[] atClearValue = { -1 };
+    //    pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
+    //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
-		float zBack = (float)zBackAsLong;
-		zBack /= (float)PickContext.MAX_UNSIGNED_INTEGER;
-		this.zBack = zBack;
+    float zBack = (float) zBackAsLong;
+    zBack /= (float) PickContext.MAX_UNSIGNED_INTEGER;
+    this.zBack = zBack;
 
-		if( nameCount == 4 ) {
-			int key = intBuffer.get( offset + 3 );
-			this.visualAdapter = pc.getPickVisualAdapterForName( key );
-			//			if( visualAdapter != null ) {
-			//				this.sgVisual = visualAdapter.m_element;
-			this.isFrontFacing = intBuffer.get( offset + 4 ) == 1;
-			//				this.sgGeometry = this.sgVisual.geometries.getValue()[ intBuffer.get( offset + 5 ) ];
-			this.geometryIndex = intBuffer.get( offset + 5 );
-			this.subElement = intBuffer.get( offset + 6 );
-			//			}
-		} else {
-			this.visualAdapter = null;
-			this.isFrontFacing = false;
-			this.geometryIndex = -1;
-			this.subElement = -1;
-		}
-	}
+    if (nameCount == 4) {
+      int key = intBuffer.get(offset + 3);
+      this.visualAdapter = pc.getPickVisualAdapterForName(key);
+      //      if( visualAdapter != null ) {
+      //        this.sgVisual = visualAdapter.m_element;
+      this.isFrontFacing = intBuffer.get(offset + 4) == 1;
+      //        this.sgGeometry = this.sgVisual.geometries.getValue()[ intBuffer.get( offset + 5 ) ];
+      this.geometryIndex = intBuffer.get(offset + 5);
+      this.subElement = intBuffer.get(offset + 6);
+      //      }
+    } else {
+      this.visualAdapter = null;
+      this.isFrontFacing = false;
+      this.geometryIndex = -1;
+      this.subElement = -1;
+    }
+  }
 
-	public float getZFront() {
-		return this.zFront;
-	}
+  public float getZFront() {
+    return this.zFront;
+  }
 
-	public float getZBack() {
-		return this.zBack;
-	}
+  public float getZBack() {
+    return this.zBack;
+  }
 
-	public Visual getSgVisual() {
-		if( this.visualAdapter != null ) {
-			return this.visualAdapter.getOwner();
-		} else {
-			return null;
-		}
-	}
+  public Visual getSgVisual() {
+    if (this.visualAdapter != null) {
+      return this.visualAdapter.getOwner();
+    } else {
+      return null;
+    }
+  }
 
-	public boolean isFrontFacing() {
-		return this.isFrontFacing;
-	}
+  public boolean isFrontFacing() {
+    return this.isFrontFacing;
+  }
 
-	public int getGeometryIndex() {
-		return this.geometryIndex;
-	}
+  public int getGeometryIndex() {
+    return this.geometryIndex;
+  }
 
-	public Geometry getSGGeometry() {
-		Visual sgVisual = this.getSgVisual();
-		if( sgVisual != null ) {
-			if( ( 0 <= this.geometryIndex ) && ( this.geometryIndex < sgVisual.getGeometryCount() ) ) {
-				return sgVisual.getGeometryAt( this.geometryIndex );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-		//return this.sgGeometry;
-	}
+  public Geometry getSGGeometry() {
+    Visual sgVisual = this.getSgVisual();
+    if (sgVisual != null) {
+      if ((0 <= this.geometryIndex) && (this.geometryIndex < sgVisual.getGeometryCount())) {
+        return sgVisual.getGeometryAt(this.geometryIndex);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    //return this.sgGeometry;
+  }
 
-	public int getSubElement() {
-		return this.subElement;
-	}
+  public int getSubElement() {
+    return this.subElement;
+  }
 
-	public void updatePointInSource( Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource ) {
-		if( this.visualAdapter != null ) {
-			this.visualAdapter.getIntersectionInSource( this.pointInSource, ray, inverseAbsoluteTransformationOfSource, this.geometryIndex, this.subElement );
-		} else {
-			this.pointInSource.setNaN();
-		}
-	}
+  public void updatePointInSource(Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource) {
+    if (this.visualAdapter != null) {
+      this.visualAdapter.getIntersectionInSource(this.pointInSource, ray, inverseAbsoluteTransformationOfSource, this.geometryIndex, this.subElement);
+    } else {
+      this.pointInSource.setNaN();
+    }
+  }
 
-	public void updatePointInSource( Matrix4x4 m ) {
-		double z = this.zFront;
-		z *= 2;
-		z -= 1;
+  public void updatePointInSource(Matrix4x4 m) {
+    double z = this.zFront;
+    z *= 2;
+    z -= 1;
 
-		Vector4 v = new Vector4( 0, 0, z, 1 );
-		m.transform( v );
+    Vector4 v = new Vector4(0, 0, z, 1);
+    m.transform(v);
 
-		this.pointInSource.set( v.x / v.w, v.y / v.w, v.z / v.w );
-	}
+    this.pointInSource.set(v.x / v.w, v.y / v.w, v.z / v.w);
+  }
 
-	public Point3 getPointInSource() {
-		return this.pointInSource;
-	}
+  public Point3 getPointInSource() {
+    return this.pointInSource;
+  }
 
-	private final float zFront;
-	private final float zBack;
-	private final GlrVisual<? extends Visual> visualAdapter;
-	private final boolean isFrontFacing;
-	private final int geometryIndex;
-	private final int subElement;
+  private final float zFront;
+  private final float zBack;
+  private final GlrVisual<? extends Visual> visualAdapter;
+  private final boolean isFrontFacing;
+  private final int geometryIndex;
+  private final int subElement;
 
-	private Point3 pointInSource = Point3.createNaN();
+  private Point3 pointInSource = Point3.createNaN();
 }

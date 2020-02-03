@@ -52,22 +52,22 @@ import java.awt.BorderLayout;
  * @author Dennis Cosgrove
  */
 public abstract class PanelViewController<M extends Model> extends ViewController<JPanel, M> {
-	private final Panel internalPanel;
+  private final Panel internalPanel;
 
-	public PanelViewController( M model, Panel internalPanel ) {
-		super( model );
-		this.internalPanel = internalPanel;
-	}
+  public PanelViewController(M model, Panel internalPanel) {
+    super(model);
+    this.internalPanel = internalPanel;
+  }
 
-	@Override
-	protected final JPanel createAwtComponent() {
-		JPanel rv = new JPanel();
-		rv.setLayout( new BorderLayout() );
-		rv.add( this.internalPanel.getAwtComponent() );
-		return rv;
-	}
+  @Override
+  protected final JPanel createAwtComponent() {
+    JPanel rv = new JPanel();
+    rv.setLayout(new BorderLayout());
+    rv.add(this.internalPanel.getAwtComponent());
+    return rv;
+  }
 
-	public Panel getInternalPanel() {
-		return this.internalPanel;
-	}
+  public Panel getInternalPanel() {
+    return this.internalPanel;
+  }
 }

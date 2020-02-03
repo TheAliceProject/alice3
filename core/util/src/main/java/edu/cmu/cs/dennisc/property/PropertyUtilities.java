@@ -50,97 +50,97 @@ import java.lang.reflect.Method;
  * @author Dennis Cosgrove
  */
 public final class PropertyUtilities {
-	private PropertyUtilities() {
-	}
+  private PropertyUtilities() {
+  }
 
-	private static Method getGetter( Class<?> cls, String propertyName ) {
-		Class<?>[] parameterTypes = {};
-		String methodName;
-		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
-			methodName = "is" + propertyName.substring( 2 );
-		} else {
-			methodName = "get" + propertyName;
-		}
-		return ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
-	}
+  private static Method getGetter(Class<?> cls, String propertyName) {
+    Class<?>[] parameterTypes = {};
+    String methodName;
+    if (propertyName.startsWith("Is") && Character.isUpperCase(propertyName.charAt(2))) {
+      methodName = "is" + propertyName.substring(2);
+    } else {
+      methodName = "get" + propertyName;
+    }
+    return ReflectionUtilities.getMethod(cls, methodName, parameterTypes);
+  }
 
-	private static Method getSetter( Class<?> cls, String methodName, Class<?>[] parameterTypes ) {
-		Method rv;
-		try {
-			rv = cls.getMethod( methodName, parameterTypes );
-		} catch( NoSuchMethodException nsme ) {
-			rv = null;
-			for( Method mthd : cls.getMethods() ) {
-				if( methodName.equals( mthd.getName() ) ) {
-					if( mthd.isVarArgs() ) {
-						Class<?>[] mthdParameterTypes = mthd.getParameterTypes();
-						if( mthdParameterTypes.length == ( parameterTypes.length + 1 ) ) {
-							boolean isMatch = true;
-							for( int i = 0; i < parameterTypes.length; i++ ) {
-								if (mthdParameterTypes[i] != parameterTypes[i]) {
-									isMatch = false;
-									break;
-								}
-							}
-							if( isMatch ) {
-								rv = mthd;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+  private static Method getSetter(Class<?> cls, String methodName, Class<?>[] parameterTypes) {
+    Method rv;
+    try {
+      rv = cls.getMethod(methodName, parameterTypes);
+    } catch (NoSuchMethodException nsme) {
+      rv = null;
+      for (Method mthd : cls.getMethods()) {
+        if (methodName.equals(mthd.getName())) {
+          if (mthd.isVarArgs()) {
+            Class<?>[] mthdParameterTypes = mthd.getParameterTypes();
+            if (mthdParameterTypes.length == (parameterTypes.length + 1)) {
+              boolean isMatch = true;
+              for (int i = 0; i < parameterTypes.length; i++) {
+                if (mthdParameterTypes[i] != parameterTypes[i]) {
+                  isMatch = false;
+                  break;
+                }
+              }
+              if (isMatch) {
+                rv = mthd;
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    return rv;
+  }
 
-	private static Method getSetter( Class<?> cls, String propertyName ) {
-		Method getter = getGetter( cls, propertyName );
-		Class<?> valueClass = getter.getReturnType();
-		Class<?>[] parameterTypes = { valueClass };
-		String methodName;
-		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
-			methodName = "set" + propertyName.substring( 2 );
-		} else {
-			methodName = "set" + propertyName;
-		}
+  private static Method getSetter(Class<?> cls, String propertyName) {
+    Method getter = getGetter(cls, propertyName);
+    Class<?> valueClass = getter.getReturnType();
+    Class<?>[] parameterTypes = {valueClass};
+    String methodName;
+    if (propertyName.startsWith("Is") && Character.isUpperCase(propertyName.charAt(2))) {
+      methodName = "set" + propertyName.substring(2);
+    } else {
+      methodName = "set" + propertyName;
+    }
 
-		Method rv = getSetter( cls, methodName, parameterTypes );
-		if (rv == null) {
-			if( valueClass.equals( Double.TYPE ) || valueClass.equals( Double.class ) ) {
-				parameterTypes[ 0 ] = Number.class;
-				rv = getSetter( cls, methodName, parameterTypes );
-			}
-		}
-		return rv;
-	}
+    Method rv = getSetter(cls, methodName, parameterTypes);
+    if (rv == null) {
+      if (valueClass.equals(Double.TYPE) || valueClass.equals(Double.class)) {
+        parameterTypes[0] = Number.class;
+        rv = getSetter(cls, methodName, parameterTypes);
+      }
+    }
+    return rv;
+  }
 
-	public static String getPropertyNameForGetter( Method method ) {
-		Class<?> valueClass = method.getReturnType();
-		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
-		String prefix;
-		if( isBoolean ) {
-			prefix = "is";
-		} else {
-			prefix = "get";
-		}
-		String name = method.getName();
-		if( name.startsWith( prefix ) ) {
-			String rv = name.substring( prefix.length() );
-			if( isBoolean ) {
-				rv = "Is" + rv;
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
+  public static String getPropertyNameForGetter(Method method) {
+    Class<?> valueClass = method.getReturnType();
+    boolean isBoolean = valueClass.equals(Boolean.TYPE) || valueClass.equals(Boolean.class);
+    String prefix;
+    if (isBoolean) {
+      prefix = "is";
+    } else {
+      prefix = "get";
+    }
+    String name = method.getName();
+    if (name.startsWith(prefix)) {
+      String rv = name.substring(prefix.length());
+      if (isBoolean) {
+        rv = "Is" + rv;
+      }
+      return rv;
+    } else {
+      return null;
+    }
+  }
 
-	public static Method getSetterForGetter( Method method, Class<?> cls ) {
-		return getSetter( cls, getPropertyNameForGetter( method ) );
-	}
+  public static Method getSetterForGetter(Method method, Class<?> cls) {
+    return getSetter(cls, getPropertyNameForGetter(method));
+  }
 
-	public static Method getSetterForGetter( Method method ) {
-		return getSetterForGetter( method, method.getDeclaringClass() );
-	}
+  public static Method getSetterForGetter(Method method) {
+    return getSetterForGetter(method, method.getDeclaringClass());
+  }
 }

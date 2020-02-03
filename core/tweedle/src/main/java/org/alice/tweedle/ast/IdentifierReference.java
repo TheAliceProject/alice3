@@ -5,20 +5,21 @@ import org.alice.tweedle.run.Frame;
 
 public class IdentifierReference extends TweedleExpression {
 
-	private String name;
+  private String name;
 
-	public IdentifierReference( String name ) {
-		super();
-		this.name = name;
-	}
+  public IdentifierReference(String name) {
+    super();
+    this.name = name;
+  }
 
-	@Override public TweedleValue evaluate( Frame frame ) {
-		return null;
-		// TODO track on execution frame
-		// return frame.getValueFor(this);
-	}
+  @Override
+  public TweedleValue evaluate(Frame frame) {
+    return null;
+    // TODO track on execution frame
+    // return frame.getValueFor(this);
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 }

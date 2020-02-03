@@ -54,45 +54,45 @@ import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
  * @author Dennis Cosgrove
  */
 public class OldMesh extends Geometry {
-	@Override
-	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
-		BoundUtilities.getBoundingBox( boundingBox, xyzs.getValue() );
-	}
+  @Override
+  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
+    BoundUtilities.getBoundingBox(boundingBox, xyzs.getValue());
+  }
 
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		BoundUtilities.getBoundingSphere( boundingSphere, xyzs.getValue() );
-	}
+  @Override
+  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
+    BoundUtilities.getBoundingSphere(boundingSphere, xyzs.getValue());
+  }
 
-	@Override
-	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
-		double[] xyzs = this.xyzs.getValue();
-		float[] ijks = this.ijks.getValue();
-		assert xyzs.length >= 6;
-		assert ijks.length >= 3;
+  @Override
+  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
+    double[] xyzs = this.xyzs.getValue();
+    float[] ijks = this.ijks.getValue();
+    assert xyzs.length >= 6;
+    assert ijks.length >= 3;
 
-		forward.set( ijks[ 0 ], ijks[ 1 ], ijks[ 2 ] );
-		forward.normalize();
-		forward.negate();
+    forward.set(ijks[0], ijks[1], ijks[2]);
+    forward.normalize();
+    forward.negate();
 
-		translation.set( xyzs[ 0 ], xyzs[ 1 ], xyzs[ 2 ] );
-		upGuide.set( translation.x - xyzs[ 3 ], translation.y - xyzs[ 4 ], translation.z - xyzs[ 5 ] );
-		upGuide.normalize();
+    translation.set(xyzs[0], xyzs[1], xyzs[2]);
+    upGuide.set(translation.x - xyzs[3], translation.y - xyzs[4], translation.z - xyzs[5]);
+    upGuide.normalize();
 
-	}
+  }
 
-	@Override
-	public void transform( AbstractMatrix4x4 trans ) {
-		//todo
-	}
+  @Override
+  public void transform(AbstractMatrix4x4 trans) {
+    //todo
+  }
 
-	public final InstanceProperty<double[]> xyzs = new InstanceProperty<double[]>( this, null );
-	public final InstanceProperty<float[]> ijks = new InstanceProperty<float[]>( this, null );
-	public final InstanceProperty<float[]> uvs = new InstanceProperty<float[]>( this, null );
-	public final InstanceProperty<short[]> xyzTriangleIndices = new InstanceProperty<short[]>( this, null );
-	public final InstanceProperty<short[]> ijkTriangleIndices = new InstanceProperty<short[]>( this, null );
-	public final InstanceProperty<short[]> uvTriangleIndices = new InstanceProperty<short[]>( this, null );
-	public final InstanceProperty<short[]> xyzQuadrangleIndices = new InstanceProperty<short[]>( this, null );
-	public final InstanceProperty<short[]> ijkQuadrangleIndices = new InstanceProperty<short[]>( this, null );
-	public final InstanceProperty<short[]> uvQuadrangleIndices = new InstanceProperty<short[]>( this, null );
+  public final InstanceProperty<double[]> xyzs = new InstanceProperty<double[]>(this, null);
+  public final InstanceProperty<float[]> ijks = new InstanceProperty<float[]>(this, null);
+  public final InstanceProperty<float[]> uvs = new InstanceProperty<float[]>(this, null);
+  public final InstanceProperty<short[]> xyzTriangleIndices = new InstanceProperty<short[]>(this, null);
+  public final InstanceProperty<short[]> ijkTriangleIndices = new InstanceProperty<short[]>(this, null);
+  public final InstanceProperty<short[]> uvTriangleIndices = new InstanceProperty<short[]>(this, null);
+  public final InstanceProperty<short[]> xyzQuadrangleIndices = new InstanceProperty<short[]>(this, null);
+  public final InstanceProperty<short[]> ijkQuadrangleIndices = new InstanceProperty<short[]>(this, null);
+  public final InstanceProperty<short[]> uvQuadrangleIndices = new InstanceProperty<short[]>(this, null);
 }

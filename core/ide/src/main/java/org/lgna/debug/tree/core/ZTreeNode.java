@@ -55,116 +55,115 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public final class ZTreeNode<T> implements TreeNode {
-	private static enum IsLeaf {
-		TRUE,
-		FALSE
-	};
+  private static enum IsLeaf {
+    TRUE, FALSE
+  }
 
-	public static class Builder<T> {
-		public Builder( T value, boolean isLeaf ) {
-			this.value = value;
-			if( isLeaf ) {
-				this.childBuilders = null;
-			} else {
-				this.childBuilders = Lists.newLinkedList();
-			}
-		}
+  public static class Builder<T> {
+    public Builder(T value, boolean isLeaf) {
+      this.value = value;
+      if (isLeaf) {
+        this.childBuilders = null;
+      } else {
+        this.childBuilders = Lists.newLinkedList();
+      }
+    }
 
-		public T getValue() {
-			return this.value;
-		}
+    public T getValue() {
+      return this.value;
+    }
 
-		public void addChildBuilder( Builder<T> childBuilder ) {
-			assert this.childBuilders != null : this;
-			this.childBuilders.add( childBuilder );
-		}
+    public void addChildBuilder(Builder<T> childBuilder) {
+      assert this.childBuilders != null : this;
+      this.childBuilders.add(childBuilder);
+    }
 
-		//for pruning
-		public Iterator<Builder<T>> getChildBuildersIterator() {
-			if( this.childBuilders != null ) {
-				return this.childBuilders.iterator();
-			} else {
-				return Iterators.emptyIterator();
-			}
-		}
+    //for pruning
+    public Iterator<Builder<T>> getChildBuildersIterator() {
+      if (this.childBuilders != null) {
+        return this.childBuilders.iterator();
+      } else {
+        return Iterators.emptyIterator();
+      }
+    }
 
-		//for pruning
-		public boolean isEmpty() {
-			return this.childBuilders != null ? this.childBuilders.size() == 0 : true;
-		}
+    //for pruning
+    public boolean isEmpty() {
+      return this.childBuilders != null ? this.childBuilders.size() == 0 : true;
+    }
 
-		public ZTreeNode<T> build() {
-			List<ZTreeNode<T>> children;
-			IsLeaf isLeaf;
-			if( this.childBuilders != null ) {
-				List<ZTreeNode<T>> list = Lists.newArrayListWithInitialCapacity( this.childBuilders.size() );
-				for( Builder<T> childBuilder : this.childBuilders ) {
-					list.add( childBuilder.build() );
-				}
-				children = Collections.unmodifiableList( list );
-				isLeaf = IsLeaf.FALSE;
-			} else {
-				children = Collections.emptyList();
-				isLeaf = IsLeaf.TRUE;
-			}
-			ZTreeNode<T> rv = new ZTreeNode<T>( value, children, isLeaf );
-			for( ZTreeNode<T> child : children ) {
-				child.parent = rv;
-			}
-			return rv;
-		}
+    public ZTreeNode<T> build() {
+      List<ZTreeNode<T>> children;
+      IsLeaf isLeaf;
+      if (this.childBuilders != null) {
+        List<ZTreeNode<T>> list = Lists.newArrayListWithInitialCapacity(this.childBuilders.size());
+        for (Builder<T> childBuilder : this.childBuilders) {
+          list.add(childBuilder.build());
+        }
+        children = Collections.unmodifiableList(list);
+        isLeaf = IsLeaf.FALSE;
+      } else {
+        children = Collections.emptyList();
+        isLeaf = IsLeaf.TRUE;
+      }
+      ZTreeNode<T> rv = new ZTreeNode<T>(value, children, isLeaf);
+      for (ZTreeNode<T> child : children) {
+        child.parent = rv;
+      }
+      return rv;
+    }
 
-		private final T value;
-		private final List<Builder<T>> childBuilders;
-	}
+    private final T value;
+    private final List<Builder<T>> childBuilders;
+  }
 
-	private ZTreeNode( T value, List<ZTreeNode<T>> children, IsLeaf isLeaf ) {
-		this.value = value;
-		this.children = children;
-		this.isLeaf = isLeaf;
-	}
+  private ZTreeNode(T value, List<ZTreeNode<T>> children, IsLeaf isLeaf) {
+    this.value = value;
+    this.children = children;
+    this.isLeaf = isLeaf;
+  }
 
-	public T getValue() {
-		return this.value;
-	}
+  public T getValue() {
+    return this.value;
+  }
 
-	@Override
-	public TreeNode getChildAt( int childIndex ) {
-		return this.children.get( childIndex );
-	}
+  @Override
+  public TreeNode getChildAt(int childIndex) {
+    return this.children.get(childIndex);
+  }
 
-	@Override
-	public int getChildCount() {
-		return this.children.size();
-	}
+  @Override
+  public int getChildCount() {
+    return this.children.size();
+  }
 
-	@Override
-	public TreeNode getParent() {
-		return this.parent;
-	}
+  @Override
+  public TreeNode getParent() {
+    return this.parent;
+  }
 
-	@Override
-	public int getIndex( TreeNode node ) {
-		return this.children.indexOf( node );
-	}
+  @Override
+  public int getIndex(TreeNode node) {
+    return this.children.indexOf(node);
+  }
 
-	@Override
-	public boolean getAllowsChildren() {
-		return this.isLeaf() == false;
-	}
+  @Override
+  public boolean getAllowsChildren() {
+    return this.isLeaf() == false;
+  }
 
-	@Override
-	public boolean isLeaf() {
-		return this.isLeaf == IsLeaf.TRUE;
-	}
+  @Override
+  public boolean isLeaf() {
+    return this.isLeaf == IsLeaf.TRUE;
+  }
 
-	@Override
-	public Enumeration<ZTreeNode<T>> children() {
-		return Collections.enumeration( this.children );
-	}
+  @Override
+  public Enumeration<ZTreeNode<T>> children() {
+    return Collections.enumeration(this.children);
+  }
 
-	private final T value;
-	private final List<ZTreeNode<T>> children;
-	private final IsLeaf isLeaf;
-	private/*pseudo-final*/ZTreeNode<T> parent;
+  private final T value;
+  private final List<ZTreeNode<T>> children;
+  private final IsLeaf isLeaf;
+  private/*pseudo-final*/ ZTreeNode<T> parent;
 }

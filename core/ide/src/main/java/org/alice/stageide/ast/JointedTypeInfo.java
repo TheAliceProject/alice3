@@ -57,106 +57,106 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JointedTypeInfo {
-	private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance( SJointedModel.class );
+  private static final JavaType JOINTED_MODEL_TYPE = JavaType.getInstance(SJointedModel.class);
 
-	private static Map<AbstractType<?, ?, ?>, JointedTypeInfo> map = Maps.newHashMap();
+  private static Map<AbstractType<?, ?, ?>, JointedTypeInfo> map = Maps.newHashMap();
 
-	public static JointedTypeInfo getDeclarationInstance( AbstractType<?, ?, ?> type ) {
-		if( JOINTED_MODEL_TYPE.isAssignableFrom( type ) ) {
-			JointedTypeInfo rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JointedTypeInfo( type );
-				JointedTypeInfo.map.put( type, rv );
-			}
-			if( rv.jointGetters.size() > 0 ) {
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+  public static JointedTypeInfo getDeclarationInstance(AbstractType<?, ?, ?> type) {
+    if (JOINTED_MODEL_TYPE.isAssignableFrom(type)) {
+      JointedTypeInfo rv = map.get(type);
+      if (rv != null) {
+        //pass
+      } else {
+        rv = new JointedTypeInfo(type);
+        JointedTypeInfo.map.put(type, rv);
+      }
+      if (rv.jointGetters.size() > 0) {
+        return rv;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
 
-	public static List<JointedTypeInfo> getInstances( AbstractType<?, ?, ?> type ) {
-		List<JointedTypeInfo> rv = Lists.newLinkedList();
-		AbstractType<?, ?, ?> t = type;
-		while( JOINTED_MODEL_TYPE.isAssignableFrom( t ) ) {
-			JointedTypeInfo jointedTypeInfo = getDeclarationInstance( t );
-			if( jointedTypeInfo != null ) {
-				rv.add( 0, jointedTypeInfo );
-			}
-			t = t.getSuperType();
-		}
-		return rv;
-	}
+  public static List<JointedTypeInfo> getInstances(AbstractType<?, ?, ?> type) {
+    List<JointedTypeInfo> rv = Lists.newLinkedList();
+    AbstractType<?, ?, ?> t = type;
+    while (JOINTED_MODEL_TYPE.isAssignableFrom(t)) {
+      JointedTypeInfo jointedTypeInfo = getDeclarationInstance(t);
+      if (jointedTypeInfo != null) {
+        rv.add(0, jointedTypeInfo);
+      }
+      t = t.getSuperType();
+    }
+    return rv;
+  }
 
-	public static boolean isDeclarationJointed( AbstractType<?, ?, ?> type ) {
-		JointedTypeInfo info = getDeclarationInstance( type );
-		return ( info != null ) && ( info.jointGetters.size() > 0 );
-	}
+  public static boolean isDeclarationJointed(AbstractType<?, ?, ?> type) {
+    JointedTypeInfo info = getDeclarationInstance(type);
+    return (info != null) && (info.jointGetters.size() > 0);
+  }
 
-	public static boolean isJointed( AbstractType<?, ?, ?> type ) {
-		AbstractType<?, ?, ?> t = type;
-		while( JOINTED_MODEL_TYPE.isAssignableFrom( t ) ) {
-			if( isDeclarationJointed( t ) ) {
-				return true;
-			}
-			t = t.getSuperType();
-		}
-		return false;
-	}
+  public static boolean isJointed(AbstractType<?, ?, ?> type) {
+    AbstractType<?, ?, ?> t = type;
+    while (JOINTED_MODEL_TYPE.isAssignableFrom(t)) {
+      if (isDeclarationJointed(t)) {
+        return true;
+      }
+      t = t.getSuperType();
+    }
+    return false;
+  }
 
-	private final AbstractType<?, ?, ?> type;
-	private final List<AbstractMethod> jointGetters = Lists.newLinkedList();
-	private final List<JointMethodArrayAccessInfo> jointArrayAccessGetters = Lists.newLinkedList();
+  private final AbstractType<?, ?, ?> type;
+  private final List<AbstractMethod> jointGetters = Lists.newLinkedList();
+  private final List<JointMethodArrayAccessInfo> jointArrayAccessGetters = Lists.newLinkedList();
 
-	//Can we add in "joint array accessors"?
+  //Can we add in "joint array accessors"?
 
-	private JointedTypeInfo( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-		for( AbstractMethod method : type.getDeclaredMethods() ) {
-			if( JointMethodUtilities.isJointGetter( method ) ) {
-				this.jointGetters.add( method );
-			} else if( JointMethodUtilities.isJointArrayGetter( method ) ) {
-				int length = JointMethodUtilities.getJointArrayLength( method );
-				for( int i = 0; i < length; i++ ) {
-					this.jointArrayAccessGetters.add( new JointMethodArrayAccessInfo( method, i ) );
-				}
-			}
-		}
-	}
+  private JointedTypeInfo(AbstractType<?, ?, ?> type) {
+    this.type = type;
+    for (AbstractMethod method : type.getDeclaredMethods()) {
+      if (JointMethodUtilities.isJointGetter(method)) {
+        this.jointGetters.add(method);
+      } else if (JointMethodUtilities.isJointArrayGetter(method)) {
+        int length = JointMethodUtilities.getJointArrayLength(method);
+        for (int i = 0; i < length; i++) {
+          this.jointArrayAccessGetters.add(new JointMethodArrayAccessInfo(method, i));
+        }
+      }
+    }
+  }
 
-	public AbstractType<?, ?, ?> getType() {
-		return this.type;
-	}
+  public AbstractType<?, ?, ?> getType() {
+    return this.type;
+  }
 
-	public List<AbstractMethod> getJointGetters() {
-		return this.jointGetters;
-	}
+  public List<AbstractMethod> getJointGetters() {
+    return this.jointGetters;
+  }
 
-	public List<JointMethodArrayAccessInfo> getJointArrayAccessGetters() {
-		return this.jointArrayAccessGetters;
-	}
+  public List<JointMethodArrayAccessInfo> getJointArrayAccessGetters() {
+    return this.jointArrayAccessGetters;
+  }
 
-	public static class Node {
-		private final Node parent;
-		private final AbstractMethod method;
-		private final List<Node> children = Lists.newLinkedList();
+  public static class Node {
+    private final Node parent;
+    private final AbstractMethod method;
+    private final List<Node> children = Lists.newLinkedList();
 
-		public static Node createAndAddToParent( Node parent, AbstractMethod method ) {
-			Node rv = new Node( parent, method );
-			if( parent != null ) {
-				parent.children.add( rv );
-			}
-			return rv;
-		}
+    public static Node createAndAddToParent(Node parent, AbstractMethod method) {
+      Node rv = new Node(parent, method);
+      if (parent != null) {
+        parent.children.add(rv);
+      }
+      return rv;
+    }
 
-		private Node( Node parent, AbstractMethod method ) {
-			this.parent = parent;
-			this.method = method;
-		}
-	}
+    private Node(Node parent, AbstractMethod method) {
+      this.parent = parent;
+      this.method = method;
+    }
+  }
 }

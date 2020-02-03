@@ -58,63 +58,63 @@ import edu.cmu.cs.dennisc.math.Point3;
  */
 public class IsInViewDetector {
 
-	public static boolean isThisInView( SThing entity, CameraImp camera ) {
-		EntityImp implementation = EmployeesOnly.getImplementation( entity );
-		Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
-		Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox( camera ).getHexahedron().getPoints();
-		Point[] awtPoints = new Point[ points.length ];
-		for( int i = 0; i < points.length; ++i ) {
-			awtPoints[ i ] = implementation.transformToAwt( points[ i ], camera );
-		}
-		camera.getScene().getProgram().getOnscreenRenderTarget();
-		return isInView( camera, awtPoints, relativeToCamera );
-	}
+  public static boolean isThisInView(SThing entity, CameraImp camera) {
+    EntityImp implementation = EmployeesOnly.getImplementation(entity);
+    Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
+    Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox(camera).getHexahedron().getPoints();
+    Point[] awtPoints = new Point[points.length];
+    for (int i = 0; i < points.length; ++i) {
+      awtPoints[i] = implementation.transformToAwt(points[i], camera);
+    }
+    camera.getScene().getProgram().getOnscreenRenderTarget();
+    return isInView(camera, awtPoints, relativeToCamera);
+  }
 
-	private static boolean isInView( CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera ) {
-		Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
-		boolean leftOf = false;
-		boolean rightOf = false;
-		boolean above = false;
-		boolean below = false;
-		for( int i = 0; i != awtPoints.length; ++i ) {
-			if( ( awtPoints[ i ].x < surfaceSize.width ) && ( awtPoints[ i ].x > 0 ) && ( awtPoints[ i ].y < surfaceSize.height ) && ( awtPoints[ i ].y > 0 ) ) {
-				if( relativeToCamera[ i ].z < 0 ) {
-					return true;
-				}
-			} else {
-				if( awtPoints[ i ].x > surfaceSize.width ) {
-					if( relativeToCamera[ i ].z < 0 ) {
-						rightOf = true;
-					}
-				}
-				if( awtPoints[ i ].x < 0 ) {
-					if( relativeToCamera[ i ].z < 0 ) {
-						leftOf = true;
-					}
-				}
-				if( awtPoints[ i ].y > surfaceSize.height ) {
-					if( relativeToCamera[ i ].z < 0 ) {
-						above = true;
-					}
-				}
-				if( awtPoints[ i ].y < 0 ) {
-					if( relativeToCamera[ i ].z < 0 ) {
-						below = true;
-					}
-				}
-			}
+  private static boolean isInView(CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera) {
+    Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
+    boolean leftOf = false;
+    boolean rightOf = false;
+    boolean above = false;
+    boolean below = false;
+    for (int i = 0; i != awtPoints.length; ++i) {
+      if ((awtPoints[i].x < surfaceSize.width) && (awtPoints[i].x > 0) && (awtPoints[i].y < surfaceSize.height) && (awtPoints[i].y > 0)) {
+        if (relativeToCamera[i].z < 0) {
+          return true;
+        }
+      } else {
+        if (awtPoints[i].x > surfaceSize.width) {
+          if (relativeToCamera[i].z < 0) {
+            rightOf = true;
+          }
+        }
+        if (awtPoints[i].x < 0) {
+          if (relativeToCamera[i].z < 0) {
+            leftOf = true;
+          }
+        }
+        if (awtPoints[i].y > surfaceSize.height) {
+          if (relativeToCamera[i].z < 0) {
+            above = true;
+          }
+        }
+        if (awtPoints[i].y < 0) {
+          if (relativeToCamera[i].z < 0) {
+            below = true;
+          }
+        }
+      }
 
-		}
-		if( leftOf && rightOf && above && below ) {
-			return true;
-		}
-		if( ( leftOf && rightOf ) && ( !above || !below ) ) {
-			return true;
-		}
-		if( ( !leftOf || !rightOf ) && ( above && below ) ) {
-			return true;
-		}
-		return false;
-	}
+    }
+    if (leftOf && rightOf && above && below) {
+      return true;
+    }
+    if ((leftOf && rightOf) && (!above || !below)) {
+      return true;
+    }
+    if ((!leftOf || !rightOf) && (above && below)) {
+      return true;
+    }
+    return false;
+  }
 
 }

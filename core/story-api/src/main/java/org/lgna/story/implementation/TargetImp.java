@@ -51,19 +51,19 @@ import org.lgna.story.STarget;
  * @author Dennis Cosgrove
  */
 public class TargetImp extends TransformableImp {
-	public TargetImp( STarget abstraction ) {
-		this.abstraction = abstraction;
-	}
+  public TargetImp(STarget abstraction) {
+    this.abstraction = abstraction;
+  }
 
-	@Override
-	public STarget getAbstraction() {
-		return this.abstraction;
-	}
+  @Override
+  public STarget getAbstraction() {
+    return this.abstraction;
+  }
 
-	@Override
-	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
-		return rv;
-	}
+  @Override
+  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    return rv;
+  }
 
-	private final STarget abstraction;
+  private final STarget abstraction;
 }

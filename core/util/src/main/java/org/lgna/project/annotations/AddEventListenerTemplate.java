@@ -49,7 +49,5 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author Dennis Cosgrove
  */
-@Documented
-@Retention( RetentionPolicy.RUNTIME )
-public @interface AddEventListenerTemplate {
+@Documented @Retention(RetentionPolicy.RUNTIME) public @interface AddEventListenerTemplate {
 }

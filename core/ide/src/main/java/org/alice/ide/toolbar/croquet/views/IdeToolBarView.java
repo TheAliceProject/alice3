@@ -51,17 +51,17 @@ import org.lgna.croquet.views.ToolBarView;
  * @author Dennis Cosgrove
  */
 public class IdeToolBarView extends ToolBarView {
-	public IdeToolBarView( IdeToolBar composite ) {
-		super( composite );
-	}
+  public IdeToolBarView(IdeToolBar composite) {
+    super(composite);
+  }
 
-	@Override
-	protected String addViewForElement( Element element, String constraints ) {
-		if( element == Clipboard.SINGLETON.getDragModel() ) {
-			this.addComponent( Clipboard.SINGLETON.getDragComponent(), constraints );
-			return "";
-		} else {
-			return super.addViewForElement( element, constraints );
-		}
-	}
+  @Override
+  protected String addViewForElement(Element element, String constraints) {
+    if (element == Clipboard.SINGLETON.getDragModel()) {
+      this.addComponent(Clipboard.SINGLETON.getDragComponent(), constraints);
+      return "";
+    } else {
+      return super.addViewForElement(element, constraints);
+    }
+  }
 }

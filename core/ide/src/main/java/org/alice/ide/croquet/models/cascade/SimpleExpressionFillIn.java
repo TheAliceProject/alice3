@@ -61,56 +61,55 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class SimpleExpressionFillIn<E extends Expression> extends ExpressionFillInWithoutBlanks<E> {
-	private final E transientValue;
-	private final boolean isLeadingIconDesired;
+@Deprecated public class SimpleExpressionFillIn<E extends Expression> extends ExpressionFillInWithoutBlanks<E> {
+  private final E transientValue;
+  private final boolean isLeadingIconDesired;
 
-	public SimpleExpressionFillIn( E value, boolean isLeadingIconDesired ) {
-		super( UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
-		this.transientValue = value;
-		this.isLeadingIconDesired = true;
-	}
+  public SimpleExpressionFillIn(E value, boolean isLeadingIconDesired) {
+    super(UUID.fromString("7479f074-b5f1-4c72-96da-5ebc3c547db5"));
+    this.transientValue = value;
+    this.isLeadingIconDesired = true;
+  }
 
-	@Override
-	public E createValue( ItemNode<? super E, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public E createValue(ItemNode<? super E, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	public E getTransientValue( ItemNode<? super E, Void> node ) {
-		return this.transientValue;
-	}
+  @Override
+  public E getTransientValue(ItemNode<? super E, Void> node) {
+    return this.transientValue;
+  }
 
-	@Override
-	protected Icon getLeadingIcon( ItemNode<? super E, Void> step ) {
-		if( this.isLeadingIconDesired ) {
-			if( this.transientValue instanceof FieldAccess ) {
-				FieldAccess fieldAccess = (FieldAccess)this.transientValue;
-				AbstractField field = fieldAccess.field.getValue();
-				if( field instanceof UserField ) {
-					UserField userField = (UserField)field;
-					AbstractType<?, ?, ?> type = userField.getValueType();
-					if( type != null ) {
-						if( type.isAssignableTo( SThing.class ) ) {
-							Dimension size = new Dimension( 24, 18 );
-							IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( userField );
-							if( iconFactory != null ) {
-								return iconFactory.getIcon( size );
-							} else {
-								return EmptyIconFactory.getInstance().getIcon( size );
-							}
-						}
-					}
-				}
-			}
-		}
-		return super.getLeadingIcon( step );
-	}
+  @Override
+  protected Icon getLeadingIcon(ItemNode<? super E, Void> step) {
+    if (this.isLeadingIconDesired) {
+      if (this.transientValue instanceof FieldAccess) {
+        FieldAccess fieldAccess = (FieldAccess) this.transientValue;
+        AbstractField field = fieldAccess.field.getValue();
+        if (field instanceof UserField) {
+          UserField userField = (UserField) field;
+          AbstractType<?, ?, ?> type = userField.getValueType();
+          if (type != null) {
+            if (type.isAssignableTo(SThing.class)) {
+              Dimension size = new Dimension(24, 18);
+              IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(userField);
+              if (iconFactory != null) {
+                return iconFactory.getIcon(size);
+              } else {
+                return EmptyIconFactory.getInstance().getIcon(size);
+              }
+            }
+          }
+        }
+      }
+    }
+    return super.getLeadingIcon(step);
+  }
 
-	@Override
-	protected void appendRepr( StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.transientValue );
-	}
+  @Override
+  protected void appendRepr(StringBuilder sb) {
+    super.appendRepr(sb);
+    sb.append(this.transientValue);
+  }
 }

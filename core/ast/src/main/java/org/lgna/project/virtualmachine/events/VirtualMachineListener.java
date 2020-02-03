@@ -46,25 +46,25 @@ package org.lgna.project.virtualmachine.events;
  * @author Dennis Cosgrove
  */
 public interface VirtualMachineListener {
-	void statementExecuting( StatementExecutionEvent statementExecutionEvent );
+  void statementExecuting(StatementExecutionEvent statementExecutionEvent);
 
-	void statementExecuted( StatementExecutionEvent statementExecutionEvent );
+  void statementExecuted(StatementExecutionEvent statementExecutionEvent);
 
-	void whileLoopIterating( WhileLoopIterationEvent whileLoopIterationEvent );
+  void whileLoopIterating(WhileLoopIterationEvent whileLoopIterationEvent);
 
-	void whileLoopIterated( WhileLoopIterationEvent whileLoopIterationEvent );
+  void whileLoopIterated(WhileLoopIterationEvent whileLoopIterationEvent);
 
-	void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent );
+  void countLoopIterating(CountLoopIterationEvent countLoopIterationEvent);
 
-	void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent );
+  void countLoopIterated(CountLoopIterationEvent countLoopIterationEvent);
 
-	void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent );
+  void forEachLoopIterating(ForEachLoopIterationEvent forEachLoopIterationEvent);
 
-	void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent );
+  void forEachLoopIterated(ForEachLoopIterationEvent forEachLoopIterationEvent);
 
-	void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent );
+  void eachInTogetherItemExecuting(EachInTogetherItemEvent eachInTogetherItemEvent);
 
-	void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent );
+  void eachInTogetherItemExecuted(EachInTogetherItemEvent eachInTogetherItemEvent);
 
-	void expressionEvaluated( ExpressionEvaluationEvent expressionEvaluationEvent );
+  void expressionEvaluated(ExpressionEvaluationEvent expressionEvaluationEvent);
 }

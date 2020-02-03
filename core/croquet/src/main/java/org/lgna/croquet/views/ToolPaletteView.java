@@ -57,132 +57,132 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 class ToolPaletteLayout implements LayoutManager {
-	private final ButtonModel buttonModel;
-	private Component pageStartComponent;
-	private Component centerComponent;
+  private final ButtonModel buttonModel;
+  private Component pageStartComponent;
+  private Component centerComponent;
 
-	public ToolPaletteLayout( ButtonModel buttonModel ) {
-		this.buttonModel = buttonModel;
-	}
+  public ToolPaletteLayout(ButtonModel buttonModel) {
+    this.buttonModel = buttonModel;
+  }
 
-	@Override
-	public Dimension minimumLayoutSize( Container parent ) {
-		return new Dimension( 0, 0 );
-	}
+  @Override
+  public Dimension minimumLayoutSize(Container parent) {
+    return new Dimension(0, 0);
+  }
 
-	@Override
-	public Dimension preferredLayoutSize( Container parent ) {
-		Dimension rv = new Dimension( 0, 0 );
-		if( this.pageStartComponent != null ) {
-			Dimension size = this.pageStartComponent.getPreferredSize();
-			rv.width = Math.max( rv.width, size.width );
-			rv.height += size.height;
-		}
-		if( this.centerComponent != null ) {
-			if( this.buttonModel.isSelected() ) {
-				Dimension size = this.centerComponent.getPreferredSize();
-				rv.width = Math.max( rv.width, size.width );
-				rv.height += size.height;
-			}
-		}
-		return rv;
-	}
+  @Override
+  public Dimension preferredLayoutSize(Container parent) {
+    Dimension rv = new Dimension(0, 0);
+    if (this.pageStartComponent != null) {
+      Dimension size = this.pageStartComponent.getPreferredSize();
+      rv.width = Math.max(rv.width, size.width);
+      rv.height += size.height;
+    }
+    if (this.centerComponent != null) {
+      if (this.buttonModel.isSelected()) {
+        Dimension size = this.centerComponent.getPreferredSize();
+        rv.width = Math.max(rv.width, size.width);
+        rv.height += size.height;
+      }
+    }
+    return rv;
+  }
 
-	@Override
-	public void layoutContainer( Container parent ) {
-		Dimension parentSize = parent.getSize();
-		int y = 0;
-		if( this.pageStartComponent != null ) {
-			int height = this.pageStartComponent.getPreferredSize().height;
-			this.pageStartComponent.setBounds( 0, y, parentSize.width, height );
-			y += height;
-		}
-		if( this.centerComponent != null ) {
-			if( this.buttonModel.isSelected() ) {
-				this.centerComponent.setBounds( 0, y, parentSize.width, parentSize.height - y );
-			} else {
-				this.centerComponent.setBounds( 0, y, 0, 0 );
-			}
-		}
-	}
+  @Override
+  public void layoutContainer(Container parent) {
+    Dimension parentSize = parent.getSize();
+    int y = 0;
+    if (this.pageStartComponent != null) {
+      int height = this.pageStartComponent.getPreferredSize().height;
+      this.pageStartComponent.setBounds(0, y, parentSize.width, height);
+      y += height;
+    }
+    if (this.centerComponent != null) {
+      if (this.buttonModel.isSelected()) {
+        this.centerComponent.setBounds(0, y, parentSize.width, parentSize.height - y);
+      } else {
+        this.centerComponent.setBounds(0, y, 0, 0);
+      }
+    }
+  }
 
-	@Override
-	public void addLayoutComponent( String name, Component comp ) {
-		if( BorderLayout.PAGE_START.equals( name ) ) {
-			this.pageStartComponent = comp;
-		} else if( BorderLayout.CENTER.equals( name ) ) {
-			this.centerComponent = comp;
-		} else {
-			Logger.severe( name, comp );
-		}
-	}
+  @Override
+  public void addLayoutComponent(String name, Component comp) {
+    if (BorderLayout.PAGE_START.equals(name)) {
+      this.pageStartComponent = comp;
+    } else if (BorderLayout.CENTER.equals(name)) {
+      this.centerComponent = comp;
+    } else {
+      Logger.severe(name, comp);
+    }
+  }
 
-	@Override
-	public void removeLayoutComponent( Component comp ) {
-		if( this.pageStartComponent == comp ) {
-			this.pageStartComponent = null;
-		} else if( this.centerComponent == comp ) {
-			this.centerComponent = null;
-		} else {
-			Logger.severe( comp );
-		}
-	}
+  @Override
+  public void removeLayoutComponent(Component comp) {
+    if (this.pageStartComponent == comp) {
+      this.pageStartComponent = null;
+    } else if (this.centerComponent == comp) {
+      this.centerComponent = null;
+    } else {
+      Logger.severe(comp);
+    }
+  }
 }
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ToolPaletteView extends Panel {
-	private final ValueListener<Boolean> isCoreShowingListener = new ValueListener<Boolean>() {
-		@Override
-		public void valueChanged( ValueEvent<Boolean> e ) {
-			ToolPaletteView.this.revalidateAndRepaint();
-		}
-	};
+  private final ValueListener<Boolean> isCoreShowingListener = new ValueListener<Boolean>() {
+    @Override
+    public void valueChanged(ValueEvent<Boolean> e) {
+      ToolPaletteView.this.revalidateAndRepaint();
+    }
+  };
 
-	private final ToolPaletteTitle title;
+  private final ToolPaletteTitle title;
 
-	public ToolPaletteView( ToolPaletteCoreComposite.OuterComposite composite ) {
-		super( composite );
-		this.title = new ToolPaletteTitle( composite.getIsExpandedState() );
-		this.internalAddComponent( this.title, BorderLayout.PAGE_START );
-		this.internalAddComponent( composite.getCoreComposite().getView(), BorderLayout.CENTER );
-	}
+  public ToolPaletteView(ToolPaletteCoreComposite.OuterComposite composite) {
+    super(composite);
+    this.title = new ToolPaletteTitle(composite.getIsExpandedState());
+    this.internalAddComponent(this.title, BorderLayout.PAGE_START);
+    this.internalAddComponent(composite.getCoreComposite().getView(), BorderLayout.CENTER);
+  }
 
-	@Override
-	protected LayoutManager createLayoutManager( JPanel jPanel ) {
-		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		return new ToolPaletteLayout( composite.getIsExpandedState().getImp().getSwingModel().getButtonModel() );
-	}
+  @Override
+  protected LayoutManager createLayoutManager(JPanel jPanel) {
+    ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite) this.getComposite();
+    return new ToolPaletteLayout(composite.getIsExpandedState().getImp().getSwingModel().getButtonModel());
+  }
 
-	@Override
-	protected void handleDisplayable() {
-		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().addAndInvokeNewSchoolValueListener( this.isCoreShowingListener );
-		super.handleDisplayable();
-	}
+  @Override
+  protected void handleDisplayable() {
+    ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite) this.getComposite();
+    composite.getIsExpandedState().addAndInvokeNewSchoolValueListener(this.isCoreShowingListener);
+    super.handleDisplayable();
+  }
 
-	public ToolPaletteTitle getTitle() {
-		return this.title;
-	}
+  public ToolPaletteTitle getTitle() {
+    return this.title;
+  }
 
-	public CompositeView<?, ?> getCenterView() {
-		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		return composite.getCoreComposite().getView();
-	}
+  public CompositeView<?, ?> getCenterView() {
+    ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite) this.getComposite();
+    return composite.getCoreComposite().getView();
+  }
 
-	@Override
-	protected void handleUndisplayable() {
-		ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().removeNewSchoolValueListener( this.isCoreShowingListener );
-		super.handleUndisplayable();
-	}
+  @Override
+  protected void handleUndisplayable() {
+    ToolPaletteCoreComposite.OuterComposite composite = (ToolPaletteCoreComposite.OuterComposite) this.getComposite();
+    composite.getIsExpandedState().removeNewSchoolValueListener(this.isCoreShowingListener);
+    super.handleUndisplayable();
+  }
 
-	@Override
-	public void setBackgroundColor( Color color ) {
-		super.setBackgroundColor( null );
-		for( AwtComponentView<?> component : this.getComponents() ) {
-			component.setBackgroundColor( color );
-		}
-	}
+  @Override
+  public void setBackgroundColor(Color color) {
+    super.setBackgroundColor(null);
+    for (AwtComponentView<?> component : this.getComponents()) {
+      component.setBackgroundColor(color);
+    }
+  }
 }

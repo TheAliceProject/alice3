@@ -49,18 +49,18 @@ import org.lgna.project.ast.JavaType;
  * @author Dennis Cosgrove
  */
 public class EmptyExpression extends IdeExpression {
-	public EmptyExpression( AbstractType<?, ?, ?> type ) {
-		this.type = type;
-	}
+  public EmptyExpression(AbstractType<?, ?, ?> type) {
+    this.type = type;
+  }
 
-	public EmptyExpression( Class<?> cls ) {
-		this( JavaType.getInstance( cls ) );
-	}
+  public EmptyExpression(Class<?> cls) {
+    this(JavaType.getInstance(cls));
+  }
 
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.type;
-	}
+  @Override
+  public AbstractType<?, ?, ?> getType() {
+    return this.type;
+  }
 
-	private final AbstractType<?, ?, ?> type;
+  private final AbstractType<?, ?, ?> type;
 }
