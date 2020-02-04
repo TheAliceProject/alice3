@@ -78,7 +78,7 @@
     <jogl.version>2.3.2</jogl.version>
 
     <alice.build.version>3.5.0.1</alice.build.version>
-    <alice.build.prerelease>-alpha</alice.build.prerelease>
+    <alice.build.prerelease>-beta</alice.build.prerelease>
     <alice.build.metadata>+export</alice.build.metadata>
 
     <netbeans.version>RELEASE82</netbeans.version>

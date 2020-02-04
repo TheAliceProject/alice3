@@ -126,4 +126,18 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
   public String getCodeIdentifier(Encoder encoder) {
     return encoder.getFieldReference(containingClass.getSimpleName(), fld.getName());
   }
+
+  public int descendantComparison(JointId b) {
+    if (isMyDescendant(b)) {
+      return 1;
+    }
+    if (b.isMyDescendant(this)) {
+      return -1;
+    }
+    return 0;
+  }
+
+  private boolean isMyDescendant(JointId b) {
+    return b != null && (b.parent == this || isMyDescendant(b.parent));
+  }
 }
