@@ -167,6 +167,10 @@ public abstract class Model extends Geometry {
 
   private native float[] getVerticesForMesh(String meshId);
 
+  private native float[] getUnweightedVerticesForMesh(String meshId);
+
+  private native float[] getUnweightedNormalsForMesh(String meshId);
+
   private native float[] getNormalsForMesh(String meshId);
 
   private native float[] getUvsForMesh(String meshId);
@@ -315,8 +319,11 @@ public abstract class Model extends Geometry {
 
   private void initializeMesh(String meshId, Mesh mesh, List<JointId> resourceJointIds, Map<String, Integer> textureNamesToIds) {
     String[] meshTextureIds = getTextureIdsForMesh(meshId);
-    float[] vertices = getVerticesForMesh(meshId);
-    float[] normals = getNormalsForMesh(meshId);
+    //Get the appropriate vertices and normals for the mesh type passed in
+    //If we're building a weighted mesh, just get the vertices and normals directly
+    //If we're building an unweighted mesh, use the specific getForUnweightedMesh call to get values appropriate for an unweighted mesh
+    float[] vertices = (mesh instanceof WeightedMesh) ? getVerticesForMesh(meshId) : getUnweightedVerticesForMesh(meshId);
+    float[] normals = (mesh instanceof WeightedMesh) ? getNormalsForMesh(meshId) : getUnweightedNormalsForMesh(meshId);
     float[] uvs = getUvsForMesh(meshId);
     /*
     Indices have to be unified. Alice uses a single set of indices for vertices, normals, and UVs

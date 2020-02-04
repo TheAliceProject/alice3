@@ -118,7 +118,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
       appendString(prefix);
       appendParameterTypeName(parameter.getValueType());
       appendSpace();
-      String parameterName = parameter.getValidName();
+      String parameterName = identifierName(parameter);
       appendString(parameterName != null ? parameterName : "p" + i);
       prefix = getListSeparator();
       i += 1;
@@ -136,7 +136,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     openBlock();
     appendSingleCodeLine(() -> {
       appendString("return this.");
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
     });
     closeBlock();
   }
@@ -148,7 +148,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     openBlock();
     appendSingleCodeLine(() -> {
       appendString("return this.");
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
       appendString("[index]");
     });
     closeBlock();
@@ -161,9 +161,9 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     openBlock();
     appendSingleCodeLine(() -> {
       appendString("this.");
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
       appendAssignmentOperator();
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
     });
     closeBlock();
   }
@@ -175,7 +175,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     openBlock();
     appendSingleCodeLine(() -> {
       appendString("this.");
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
       appendString("[index]");
       appendAssignmentOperator();
       appendString("value");
@@ -188,7 +188,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     appendSingleCodeLine(() -> {
       processTypeName(field.valueType.getValue());
       appendSpace();
-      appendString(field.name.getValue());
+      processVariableIdentifier(field);
       appendAssignmentOperator();
       processExpression(field.initializer.getValue());
     });
@@ -368,7 +368,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     parenthesize(() -> {
       processTypeName(itemValue.getValueType());
       appendSpace();
-      appendString(itemValue.getValidName());
+      appendString(identifierName(itemValue));
       appendInEachToken();
       processExpression(items);
     });
@@ -543,7 +543,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   public void processFieldAccess(FieldAccess access) {
     // Field access has the highest level of precedence, 16, so it will never need parentheses
     pushPrecedented(access, () -> {
-      appendTargetAndMember(access.expression.getValue(), access.field.getValue().getName(), null);
+      appendTargetAndMember(access.expression.getValue(), identifierName(access.field.getValue()), null);
     });
   }
 
@@ -567,7 +567,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   }
 
   private boolean areParenthesesNeeded(PrecedentedOperation expr) {
-    return !operatorStack.empty() && expr.getLevelOfPrecedence() < operatorStack.peek().getLevelOfPrecedence();
+    return !operatorStack.empty() && expr.getLevelOfPrecedence() <= operatorStack.peek().getLevelOfPrecedence();
   }
 
   // ** Comments **
@@ -714,11 +714,15 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   protected abstract void appendAssignmentOperator();
 
   @Override
-  public void processVariableAccess(String name) {
-    appendString(name);
+  public void processVariableIdentifier(AbstractDeclaration variable) {
+    appendString(identifierName(variable));
   }
 
-  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
+  protected String identifierName(AbstractDeclaration variable) {
+    return variable.getValidName();
+  }
+
+  private void appendParameterTypeName(AbstractType<?, ?, ?> type) {
     processTypeName(type);
   }
 

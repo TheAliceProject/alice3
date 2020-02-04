@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.icons.Icons;
 import org.lgna.project.io.IoUtilities;
@@ -79,12 +77,6 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
 
   @Override
   protected void save(ProjectApplication application, File file) throws IOException {
-    try {
-      application.exportProjectTo(file);
-    } catch (Exception e) {
-      e.printStackTrace();
-      Logger.warning("Unable to export", e);
-      Dialogs.showWarning("Unable to Export", "There was a problem exporting this world");
-    }
+    application.exportProjectTo(file);
   }
 }

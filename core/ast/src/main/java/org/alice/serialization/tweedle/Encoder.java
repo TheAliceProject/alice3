@@ -30,6 +30,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final String INDENTION = "  ";
   private static final String NODE_DISABLE = "*<";
   private static final String NODE_ENABLE = ">*";
+  private static final String USER_PREFIX = "u_";
   private int indent = 0;
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final List<String> angleMembers = new ArrayList<>();
@@ -40,7 +41,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, String> optionalParamsToWrap = new HashMap<>();
   private static final Map<String, String> methodParamsToRelabel = new HashMap<>();
   private static final Map<String, Map<String, String>> constructorsWithRelabeledParams = new HashMap<>();
-  private static final Map<String, String> classesToAddPassThroughConstructorsTo = new HashMap<>();
+  private static final List<String> systemIdentifiers = new ArrayList<>();
 
   static {
     codeOrganizerDefinitionMap.put("Scene", CodeOrganizer.sceneClassCodeOrganizer);
@@ -78,6 +79,11 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("EnterViewEvent", "ViewEvent");
     typesToRename.put("ExitViewEvent", "ViewEvent");
     typesToRename.put("MultipleEventPolicy", "OverlappingEventPolicy");
+    typesToRename.put("ElderPersonResource", "PersonResource");
+    typesToRename.put("AdultPersonResource", "PersonResource");
+    typesToRename.put("TeenPersonResource", "PersonResource");
+    typesToRename.put("ChildPersonResource", "PersonResource");
+    typesToRename.put("ToddlerPersonResource", "PersonResource");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -162,28 +168,18 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> imageParams = new HashMap<>();
     imageParams.put("imageResource", "resource");
     constructorsWithRelabeledParams.put("ImageSource", imageParams);
-    String rootConstructor = "(TextString resource, JointId root) {\n"
-            + "  super(resource: resource, root: root);\n  }\n";
-    classesToAddPassThroughConstructorsTo.put("Prop", rootConstructor);
-    classesToAddPassThroughConstructorsTo.put("Aircraft", rootConstructor);
-    classesToAddPassThroughConstructorsTo.put("Automobile", rootConstructor);
-    classesToAddPassThroughConstructorsTo.put("Train", rootConstructor);
-    classesToAddPassThroughConstructorsTo.put("Transport", rootConstructor);
-    classesToAddPassThroughConstructorsTo.put("Watercraft", rootConstructor);
-    String flyerConstructor = "(TextString resource,\n"
-        + "       JointedModelPose spreadWingsPose,\n"
-        + "       JointedModelPose foldWingsPose,\n"
-        + "       JointId[] tailArray,\n"
-        + "       JointId[] neckArray)  {\n"
-        + "    super(resource: resource,\n"
-        + "          spreadWingsPose: spreadWingsPose,\n"
-        + "          foldWingsPose: foldWingsPose,\n"
-        + "          tailArray: tailArray,\n"
-        + "          neckArray: neckArray);\n  }";
-    classesToAddPassThroughConstructorsTo.put("Flyer", flyerConstructor);
-    String slithererConstructor = "(TextString resource, JointId[] tailArray) {\n"
-        + "    super(resource: resource, tailArray: tailArray);\n  }";
-    classesToAddPassThroughConstructorsTo.put("Slitherer", slithererConstructor);
+
+    systemIdentifiers.add("args");
+    systemIdentifiers.add("index");
+    systemIdentifiers.add("value");
+    systemIdentifiers.add("event");
+    systemIdentifiers.add("resource");
+    systemIdentifiers.add("isActive");
+    systemIdentifiers.add("activationCount");
+    systemIdentifiers.add("myScene");
+    systemIdentifiers.add("story");
+    systemIdentifiers.add("ground");
+    systemIdentifiers.add("camera");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
@@ -206,50 +202,74 @@ public class Encoder extends SourceCodeGenerator {
   /** Class structure **/
 
   @Override
-  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
-    super.appendSection(codeOrganizer, userType, entry);
-    if ("ConstructorSection".equals(entry.getKey())) {
-      appendResources(userType);
-    }
-  }
-
-  private void appendResources(NamedUserType userType) {
-    final String typeName = userType.getName();
-    if (classesToAddPassThroughConstructorsTo.containsKey(typeName)) {
+  public void processResourceType(String jointedModelResource) {
+    try {
+      Class<?> resourceClass = Class.forName(jointedModelResource);
+      final String superclass = resourceClass.getInterfaces().length == 1 ? resourceClass.getInterfaces()[0].getSimpleName() : "JointedModelInterface";
+      getCodeStringBuilder().append("class ").append(resourceClass.getSimpleName()).append(" extends ").append(superclass);
+      openBlock();
+      appendResourceConstructor(superclass, resourceClass);
       appendNewLine();
-      appendString(typeName);
-      appendString(classesToAddPassThroughConstructorsTo.get(typeName));
+      appendResourceFields(superclass, resourceClass);
+      appendNewLine();
+      appendResourceInstances(resourceClass);
+      appendClassFooter();
+    } catch (ClassNotFoundException cnfe) {
+      throw new RuntimeException("Unable to find class " + jointedModelResource + " which should have been the caller type. This should not happen and yet it has.", cnfe);
     }
-    Class resourceClass = getResourceClass(userType);
-    if (resourceClass == null) {
-      return;
-    }
-    appendResourceNames(userType, resourceClass);
-    appendResourceFields(resourceClass);
   }
 
-  private void appendResourceNames(NamedUserType userType, Class resourceClass) {
+  private void appendResourceConstructor(String superclass, Class resourceClass) {
+    final String resourceName = resourceClass.getSimpleName();
+    appendIndent();
+    appendString(resourceName);
+    appendString("(TextString name)");
+    bracketize(() -> {
+      appendIndent();
+      appendString("super(name: name");
+      if ("FlyerResource".equals(superclass)) {
+        appendString(",\n"
+                         + "          spreadWingsPose: " + resourceName + ".SPREAD_WINGS_POSE,\n"
+                         + "          foldWingsPose: " + resourceName + ".FOLD_WINGS_POSE,\n"
+                         + "          tailArray: " + resourceName + ".TAIL_ARRAY,\n"
+                         + "          neckArray: " + resourceName + ".NECK_ARRAY");
+      }
+      if ("SlithererResource".equals(superclass)) {
+        appendString(", tailArray: " + resourceName + ".TAIL_ARRAY");
+      }
+      appendString(");\n");
+    });
+  }
+
+  private void appendResourceInstances(Class resourceClass) {
     if (!resourceClass.isEnum()) {
       return;
     }
+    final String className = resourceClass.getSimpleName();
     final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
     for (String resource: resourceNames) {
       appendNewLine();
       appendIndent();
-      appendString("static TextString ");
+      appendString("static ");
+      appendString(className);
+      appendSpace();
       appendString(resource);
       appendAssignmentOperator();
-      appendEscapedString(tweedleTypeName(userType.getName()) + "/" + resource);
+      appendInstantiation(className, () -> appendArg("name", () -> appendEscapedString(className.substring(0, className.length() - 8) + "/" + resource)));
       appendStatementCompletion();
     }
   }
 
-  private void appendResourceFields(Class resourceClass) {
+  private void appendResourceFields(String superclass, Class resourceClass) {
     Field[] fields = resourceClass.getDeclaredFields();
+    List<String> newJoints = new ArrayList<>();
     for (Field field : fields) {
       try {
         Object value = field.get(resourceClass);
         if (value instanceof InstantiableTweedleNode) {
+          if (field.getType().getSimpleName().equals("JointId")) {
+            newJoints.add(field.getName());
+          }
           appendStaticField(field, () -> ((InstantiableTweedleNode) value).encodeDefinition(this));
         } else {
           if (value.getClass().isArray() && IdentifiableTweedleNode.class.isAssignableFrom(field.getType().getComponentType())) {
@@ -258,7 +278,7 @@ public class Encoder extends SourceCodeGenerator {
               // The new X[] syntax is not required in Java to create an array, but it is in tweedle, for now
               appendString("new ");
               appendString(field.getType().getSimpleName());
-              appendList(values, (v) -> appendString(((IdentifiableTweedleNode) v).getCodeIdentifier(this)));
+              appendList(values, (v) -> appendString(((IdentifiableTweedleNode) v).getCodeIdentifier(this)), getListSeparator());
             });
           } else {
             Logger.info("Export will skip non-generator field " + resourceClass.getSimpleName() + "." + field.getName());
@@ -268,6 +288,31 @@ public class Encoder extends SourceCodeGenerator {
         Logger.info("Export will skip inaccessible field " + resourceClass.getSimpleName() + "." + field.getName());
       }
     }
+    appendAddedJoints(superclass, newJoints);
+  }
+
+  private void appendAddedJoints(String superclass, List<String> newJoints) {
+    if (newJoints.isEmpty()) {
+      return;
+    }
+    appendNewLine();
+    appendSingleCodeLine(() -> {
+      appendString("@CompletelyHidden static JointId[] ADDED_JOINTS");
+      appendAssignmentOperator();
+      appendString("new JointId[]");
+      appendList(newJoints.toArray(), (v) -> appendString((String) v), getListSeparator());
+    });
+    appendSingleCodeLine(() -> {
+      appendString("@CompletelyHidden static JointId[] ALL_JOINTS");
+      appendAssignmentOperator();
+      appendString("concat(a: ");
+      appendString(superclass);
+      appendString(".EXPECTED_JOINTS, b: ADDED_JOINTS)");
+    });
+    appendNewLine();
+    appendIndent();
+    appendString("@CompletelyHidden JointId[] getJointIds() ");
+    bracketize(() -> appendSingleCodeLine(() -> appendString("return ALL_JOINTS")));
   }
 
   private void appendStaticField(Field field, Runnable value) {
@@ -303,10 +348,7 @@ public class Encoder extends SourceCodeGenerator {
   public void appendNewPose(InstantiableTweedleNode[] jointTransformations) {
     appendInstantiation("JointedModelPose", () -> {
       appendString("pairs: new JointIdTransformationPair[]");
-      appendList(jointTransformations, (v) -> {
-        appendNewLine();
-        v.encodeDefinition(this);
-      });
+      appendList(jointTransformations, (v) -> v.encodeDefinition(this), ",\n");
     });
   }
 
@@ -363,46 +405,8 @@ public class Encoder extends SourceCodeGenerator {
   public void processSuperConstructor(SuperConstructorInvocationStatement supCon) {
     processSingleStatement(supCon, () -> {
       processSuperReference();
-      parenthesize(() -> {
-        appendEachArgument(supCon);
-        appendResourceArgs(supCon);
-      });
+      parenthesize(() -> appendEachArgument(supCon));
     });
-  }
-
-  private void appendResourceArgs(SuperConstructorInvocationStatement supCon) {
-    final Node parent = supCon.getParent().getParent();
-    if (parent instanceof NamedUserConstructor) {
-      final AbstractType<?, ?, ?> declaringType = ((NamedUserConstructor) parent).getDeclaringType();
-      if (declaringType instanceof NamedUserType) {
-        final NamedUserType nut = (NamedUserType) declaringType;
-        Class resourceClass = getResourceClass(nut);
-        if (resourceClass != null) {
-          final String superType = declaringType.getSuperType().getName();
-          if ("SBiped".equals(superType) || "SSwimmer".equals(superType) || "SQuadruped".equals(superType)) {
-            return; // Root is defined and determined in those S classes
-          }
-          if ("Flyer".equals(superType)) {
-            appendAnotherArg("spreadWingsPose", nut.getName() + ".SPREAD_WINGS_POSE");
-            appendAnotherArg("foldWingsPose", nut.getName() + ".FOLD_WINGS_POSE");
-            appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
-            appendAnotherArg("neckArray", nut.getName() + ".NECK_ARRAY");
-            return;
-          }
-          if ("Slitherer".equals(superType)) {
-            appendAnotherArg("tailArray", nut.getName() + ".TAIL_ARRAY");
-            return;
-          }
-          if (Arrays.stream(resourceClass.getDeclaredFields()).anyMatch(field -> "ROOT".equals(field.getName()))) {
-            appendAnotherArg("root", nut.getName() + ".ROOT");
-            return;
-          }
-          if ("Biplane".equals(nut.getName())) {
-            appendString(", root: Biplane.BIPLANE_ROOT");
-          }
-        }
-      }
-    }
   }
 
   @Override
@@ -440,36 +444,35 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   public void processInstantiation(InstanceCreation creation) {
-    if (isPersonResourceCreation(creation)) {
-      InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
-      final Object summary = vm.createInstance(creation);
-      if (summary != null) {
-        appendEscapedString("Person/" + summary.toString());
-        return;
+    String className = getDeclaringJavaClassName(creation);
+    if (className != null) {
+      if (className.endsWith("PersonResource")) {
+        InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+        final Object summary = vm.createInstance(creation);
+        if (summary != null) {
+          appendInstantiation("PersonResource", () -> appendArg("name", () -> appendEscapedString("Person/" + summary.toString())));
+          return;
+        }
       }
-    }
-    if (isDecimalFromWholeNumber(creation)) {
-      final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
-      if (requiredArgs.size() == 1) {
-        appendString("$DecimalNumber.from");
-        Expression arg = requiredArgs.get(0).expression.getValue();
-        parenthesize(() -> appendArg("wholeNumber", () -> arg.process(this)));
-        return;
+      if (className.equals("Double")) {
+        final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
+        if (requiredArgs.size() == 1) {
+          appendString("$DecimalNumber.from");
+          Expression arg = requiredArgs.get(0).expression.getValue();
+          parenthesize(() -> appendArg("wholeNumber", () -> arg.process(this)));
+          return;
+        }
       }
     }
     super.processInstantiation(creation);
   }
 
-  private boolean isDecimalFromWholeNumber(InstanceCreation creation) {
+  private String getDeclaringJavaClassName(InstanceCreation creation) {
     final AbstractConstructor constructor = creation.constructor.getValue();
-    return constructor instanceof JavaConstructor
-        && ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getName().equals("java.lang.Double");
-  }
-
-  private boolean isPersonResourceCreation(InstanceCreation creation) {
-    final AbstractConstructor constructor = creation.constructor.getValue();
-    return constructor instanceof JavaConstructor
-        && ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getName().endsWith("PersonResource");
+    if (constructor instanceof JavaConstructor) {
+      return ((JavaConstructor) constructor).getConstructorReflectionProxy().getDeclaringClassReflectionProxy().getSimpleName();
+    }
+    return null;
   }
 
   /** Statements **/
@@ -480,7 +483,7 @@ public class Encoder extends SourceCodeGenerator {
       UserLocal localVar = stmt.local.getValue();
       processTypeName(localVar.getValueType());
       appendSpace();
-      appendString(localVar.getValidName());
+      processVariableIdentifier(localVar);
       appendAssignmentOperator();
       processExpression(stmt.initializer.getValue());
     });
@@ -578,7 +581,7 @@ public class Encoder extends SourceCodeGenerator {
         }
       }
     }
-    String label = parameter.getName();
+    String label = identifierName(parameter);
     if (null != label) {
       return methodParamsToRelabel.getOrDefault(label, label);
     }
@@ -756,18 +759,20 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendConcatenationOperator() {
-    appendString(" .. ");
+  protected String identifierName(AbstractDeclaration variable) {
+    final String nom;
+    final String varName = super.identifierName(variable);
+    if (variable.isUserAuthored() && !systemIdentifiers.contains(varName)) {
+      nom = USER_PREFIX + varName;
+    } else {
+      nom = varName;
+    }
+    return nom;
   }
 
   @Override
-  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
-    final String typeName = type.getName();
-    if (typeName.endsWith("Resource")) {
-      appendString("TextString");
-    } else {
-      super.appendParameterTypeName(type);
-    }
+  protected void appendConcatenationOperator() {
+    appendString(" .. ");
   }
 
   @Override
@@ -776,14 +781,7 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private String tweedleTypeName(String typeName) {
-    String newName = typesToRename.get(typeName);
-    if (newName != null) {
-      return newName;
-    }
-    if (typeName.endsWith("Resource")) {
-      return typeName.substring(0, typeName.length() - 8);
-    }
-    return typeName;
+    return typesToRename.getOrDefault(typeName, typeName);
   }
 
   @Override
@@ -864,14 +862,15 @@ public class Encoder extends SourceCodeGenerator {
     appendArg(label, value);
   }
 
-  private <T> void appendList(T[] values, Consumer<T> appendValue) {
+  private <T> void appendList(T[] values, Consumer<T> appendValue, String separator) {
     bracketize(() -> {
+      appendIndent();
       int i = 0;
       while (i < values.length) {
         appendValue.accept(values[i]);
         i++;
         if (i < values.length) {
-          appendString(getListSeparator());
+          appendString(separator);
         }
       }
     });

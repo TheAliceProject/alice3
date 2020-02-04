@@ -89,7 +89,7 @@ public final class ParameterAccess extends Expression {
 
   @Override
   public void process(AstProcessor processor) {
-    processor.processVariableAccess(parameter.getValue().getName());
+    processor.processVariableIdentifier(parameter.getValue());
   }
 
   public final DeclarationProperty<UserParameter> parameter = DeclarationProperty.createReferenceInstance(this);

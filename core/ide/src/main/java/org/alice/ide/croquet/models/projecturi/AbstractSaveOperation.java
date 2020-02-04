@@ -85,13 +85,15 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
         fileNext = filePrevious;
       }
       isExceptionRaised = false;
-      application.showWaitCursor();
       if (fileNext != null) {
         try {
+          application.showWaitCursor();
           this.save(application, fileNext);
         } catch (IOException ioe) {
           isExceptionRaised = true;
           Dialogs.showError("Unable to save file", ioe.getMessage());
+        } finally {
+          application.hideWaitCursor();
         }
         if (!isExceptionRaised) {
           activity.finish();
@@ -99,7 +101,6 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
       } else {
         activity.cancel();
       }
-      application.hideWaitCursor();
     } while (isExceptionRaised);
   }
 }

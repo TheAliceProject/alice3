@@ -62,6 +62,8 @@ public interface AstProcessor {
 
   void processClass(CodeOrganizer codeOrganizer, NamedUserType userType);
 
+  default void processResourceType(String jointedModelResource) { }
+
   void processConstructor(NamedUserConstructor constructor);
 
   void processMethod(UserMethod method);
@@ -154,5 +156,5 @@ public interface AstProcessor {
 
   void processMultiLineComment(String comment);
 
-  void processVariableAccess(String name);
+  void processVariableIdentifier(AbstractDeclaration variable);
 }

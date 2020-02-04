@@ -120,7 +120,7 @@ public class TextModelImp extends SimpleModelImp {
   }
 
   public void insert(int offset, Object value) {
-    this.sb.append(value);
+    this.sb.insert(offset, value);
     this.updateSGText();
   }
 
