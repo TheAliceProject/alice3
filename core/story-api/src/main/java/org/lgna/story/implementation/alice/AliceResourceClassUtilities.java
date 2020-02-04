@@ -50,6 +50,7 @@ import java.util.Locale;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.apache.commons.lang3.ClassUtils;
 import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.story.SModel;
 import org.lgna.story.resources.JointId;
@@ -219,7 +220,7 @@ public class AliceResourceClassUtilities {
   public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
     List<JointId> baseJoints = new ArrayList<>();
     addJoints(resourceClass, baseJoints);
-    for (Class<?> parent : resourceClass.getInterfaces()) {
+    for (Class<?> parent : ClassUtils.getAllInterfaces(resourceClass)) {
       addJoints(parent, baseJoints);
     }
     return baseJoints;

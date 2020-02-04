@@ -1,0 +1,5659 @@
+[
+  {
+    "clsName": "org.lgna.story.StraightenOutJoints",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SQuadruped",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.QuadrupedResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "walkTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "touch",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "getRoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineBase",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineMiddle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineUpper",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeck",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHead",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEar",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getMouth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEar",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftClavicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftToe",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightClavicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightToe",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getPelvisLowerBody",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTailArray",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail1",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail2",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail3",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail4",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftHock",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackLeftToe",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightHock",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackRightToe",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "strikePose",
+        "parameterClassNames": [
+          "org.lgna.story.QuadrupedPose",
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "pose",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddViewEnterListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.MoveWithArrows",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getPressListener",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getReleaseListener",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.CameraMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleUpAsSeenByArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.OcclusionEndListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "occlusionEnded",
+        "parameterClassNames": [
+          "org.lgna.story.event.EndOcclusionEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SBillboard",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getBackPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setBackPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetBackPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetFromAboveLightColor",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.TurnDirection",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.STurnable",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "isFacing",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "other"
+        ]
+      },
+      {
+        "name": "turn",
+        "parameterClassNames": [
+          "org.lgna.story.TurnDirection",
+          "java.lang.Number",
+          "[Lorg.lgna.story.Turn$Detail;"
+        ],
+        "parameterNames": [
+          "direction",
+          "amount",
+          "details"
+        ]
+      },
+      {
+        "name": "roll",
+        "parameterClassNames": [
+          "org.lgna.story.RollDirection",
+          "java.lang.Number",
+          "[Lorg.lgna.story.Roll$Detail;"
+        ],
+        "parameterNames": [
+          "direction",
+          "amount",
+          "details"
+        ]
+      },
+      {
+        "name": "turnToFace",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.TurnToFace$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "orientToUpright",
+        "parameterClassNames": [
+          "[Lorg.lgna.story.OrientToUpright$Detail;"
+        ],
+        "parameterNames": [
+          "details"
+        ]
+      },
+      {
+        "name": "pointAt",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.PointAt$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "orientTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.OrientTo$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "getOrientationRelativeToVehicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOrientationRelativeToVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation",
+          "[Lorg.lgna.story.SetOrientationRelativeToVehicle$Detail;"
+        ],
+        "parameterNames": [
+          "orientation",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceTo",
+        "parameterClassNames": [
+          "org.lgna.story.STurnable",
+          "[Lorg.lgna.story.GetDistanceTo$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceAbove",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceAbove$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isAbove",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsAbove$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceBelow",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceBelow$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isBelow",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsBelow$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceToTheRightOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceToTheRightOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isToTheRightOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsToTheRightOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceToTheLeftOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceToTheLeftOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isToTheLeftOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsToTheLeftOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceInFrontOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceInFrontOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isInFrontOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsInFrontOf$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "getDistanceBehind",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.GetDistanceBehind$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      },
+      {
+        "name": "isBehind",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.IsBehind$Detail;"
+        ],
+        "parameterNames": [
+          "other",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.CollisionStartListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "collisionStarted",
+        "parameterClassNames": [
+          "org.lgna.story.event.StartCollisionEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.UnfoldWings",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.SceneActivationListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "sceneActivated",
+        "parameterClassNames": [
+          "org.lgna.story.event.SceneActivationEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.ExitProximityEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MoveDirection",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SThing",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getName",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setName",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "name"
+        ]
+      },
+      {
+        "name": "getVehicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getVantagePoint",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "delay",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "duration"
+        ]
+      },
+      {
+        "name": "playAudio",
+        "parameterClassNames": [
+          "org.lgna.story.AudioSource"
+        ],
+        "parameterNames": [
+          "audioSource"
+        ]
+      },
+      {
+        "name": "isCollidingWith",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "other"
+        ]
+      },
+      {
+        "name": "getBooleanFromUser",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "message"
+        ]
+      },
+      {
+        "name": "getStringFromUser",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "message"
+        ]
+      },
+      {
+        "name": "getDoubleFromUser",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "message"
+        ]
+      },
+      {
+        "name": "getIntegerFromUser",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "message"
+        ]
+      },
+      {
+        "name": "toString",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Articulable",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "touch",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "walkTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SRoom",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getFloorPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFloorPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetFloorPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getWallPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setWallPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetWallPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getCeilingPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setCeilingPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetCeilingPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getOpacity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOpacity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOpacity$Detail;"
+        ],
+        "parameterNames": [
+          "opacity",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SGround",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getOpacity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOpacity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOpacity$Detail;"
+        ],
+        "parameterNames": [
+          "opacity",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.IsToTheLeftOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Say",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ProximityEnterListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "proximityEntered",
+        "parameterClassNames": [
+          "org.lgna.story.event.EnterProximityEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.EmployeesOnly",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SScene",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getAtmosphereColor",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setAtmosphereColor",
+        "parameterClassNames": [
+          "org.lgna.story.Color",
+          "[Lorg.lgna.story.SetAtmosphereColor$Detail;"
+        ],
+        "parameterNames": [
+          "color",
+          "details"
+        ]
+      },
+      {
+        "name": "getAmbientLightColor",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setAmbientLightColor",
+        "parameterClassNames": [
+          "org.lgna.story.Color",
+          "[Lorg.lgna.story.SetAmbientLightColor$Detail;"
+        ],
+        "parameterNames": [
+          "color",
+          "details"
+        ]
+      },
+      {
+        "name": "getFromAboveLightColor",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFromAboveLightColor",
+        "parameterClassNames": [
+          "org.lgna.story.Color",
+          "[Lorg.lgna.story.SetFromAboveLightColor$Detail;"
+        ],
+        "parameterNames": [
+          "color",
+          "details"
+        ]
+      },
+      {
+        "name": "getFromBelowLightColor",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFromBelowLightColor",
+        "parameterClassNames": [
+          "org.lgna.story.Color",
+          "[Lorg.lgna.story.SetFromBelowLightColor$Detail;"
+        ],
+        "parameterNames": [
+          "color",
+          "details"
+        ]
+      },
+      {
+        "name": "getFogDensity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFogDensity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetFogDensity$Detail;"
+        ],
+        "parameterNames": [
+          "density",
+          "details"
+        ]
+      },
+      {
+        "name": "addMouseClickOnScreenListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickOnScreenListener",
+          "[Lorg.lgna.story.AddMouseClickOnScreenListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "details"
+        ]
+      },
+      {
+        "name": "addMouseClickOnObjectListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickOnObjectListener",
+          "[Lorg.lgna.story.AddMouseClickOnObjectListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "details"
+        ]
+      },
+      {
+        "name": "addDefaultModelManipulation",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "addTimeListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.TimeListener",
+          "java.lang.Number",
+          "[Lorg.lgna.story.AddTimeListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "frequency",
+          "details"
+        ]
+      },
+      {
+        "name": "addSceneActivationListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.SceneActivationListener"
+        ],
+        "parameterNames": [
+          "listener"
+        ]
+      },
+      {
+        "name": "addKeyPressListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.KeyPressListener",
+          "[Lorg.lgna.story.AddKeyPressListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "details"
+        ]
+      },
+      {
+        "name": "addArrowKeyPressListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.ArrowKeyPressListener",
+          "[Lorg.lgna.story.AddKeyPressListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "details"
+        ]
+      },
+      {
+        "name": "addNumberKeyPressListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.NumberKeyPressListener",
+          "[Lorg.lgna.story.AddKeyPressListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "details"
+        ]
+      },
+      {
+        "name": "addObjectMoverFor",
+        "parameterClassNames": [
+          "org.lgna.story.SMovableTurnable"
+        ],
+        "parameterNames": [
+          "thing"
+        ]
+      },
+      {
+        "name": "addPointOfViewChangeListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.PointOfViewChangeListener",
+          "[Lorg.lgna.story.SThing;"
+        ],
+        "parameterNames": [
+          "listener",
+          "set"
+        ]
+      },
+      {
+        "name": "addCollisionStartListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.CollisionStartListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.AddCollisionStartListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "addWhileCollisionListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.WhileCollisionListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.AddTimeListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "addCollisionEndListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.CollisionEndListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.AddCollisionEndListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "addProximityEnterListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.ProximityEnterListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "java.lang.Number",
+          "[Lorg.lgna.story.AddProximityEnterListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "distance",
+          "details"
+        ]
+      },
+      {
+        "name": "addWhileProximityListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.WhileProximityListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "java.lang.Number",
+          "[Lorg.lgna.story.AddTimeListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "distance",
+          "details"
+        ]
+      },
+      {
+        "name": "addProximityExitListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.ProximityExitListener",
+          "[Lorg.lgna.story.SThing;",
+          "[Lorg.lgna.story.SThing;",
+          "java.lang.Number",
+          "[Lorg.lgna.story.AddProximityExitListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "distance",
+          "details"
+        ]
+      },
+      {
+        "name": "addViewEnterListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.ViewEnterListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddViewEnterListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "set",
+          "details"
+        ]
+      },
+      {
+        "name": "addWhileInViewListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.WhileInViewListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddTimeListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "set",
+          "details"
+        ]
+      },
+      {
+        "name": "addViewExitListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.ViewExitListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddViewExitListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "set",
+          "details"
+        ]
+      },
+      {
+        "name": "addOcclusionStartListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.OcclusionStartListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddOcclusionStartListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "addWhileOcclusionListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.WhileOcclusionListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddTimeListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "addOcclusionEndListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.OcclusionEndListener",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.SModel;",
+          "[Lorg.lgna.story.AddOcclusionEndListener$Detail;"
+        ],
+        "parameterNames": [
+          "listener",
+          "setA",
+          "setB",
+          "details"
+        ]
+      },
+      {
+        "name": "removeKeyListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.KeyPressListener"
+        ],
+        "parameterNames": [
+          "listener"
+        ]
+      },
+      {
+        "name": "removeSceneActivationListener",
+        "parameterClassNames": [
+          "org.lgna.story.event.SceneActivationListener"
+        ],
+        "parameterNames": [
+          "listener"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddCollisionEndListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.OrientToUpright",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetBackPaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SFlyer",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.FlyerResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "walkTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "touch",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "spreadWings",
+        "parameterClassNames": [
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "details"
+        ]
+      },
+      {
+        "name": "foldWings",
+        "parameterClassNames": [
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "details"
+        ]
+      },
+      {
+        "name": "getRoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineBase",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineMiddle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineUpper",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeckArray",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeck",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHead",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getMouth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftWingShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftWingElbow",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftWingWrist",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightWingShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightWingElbow",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightWingWrist",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getPelvisLowerBody",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTailArray",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail2",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail3",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "strikePose",
+        "parameterClassNames": [
+          "org.lgna.story.FlyerPose",
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "pose",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Color",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "red",
+          "green",
+          "blue"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRed",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getGreen",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBlue",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.MoveAwayFrom",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.STextModel",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getValue",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setValue",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "text"
+        ]
+      },
+      {
+        "name": "append",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      },
+      {
+        "name": "charAt",
+        "parameterClassNames": [
+          "java.lang.Integer"
+        ],
+        "parameterNames": [
+          "index"
+        ]
+      },
+      {
+        "name": "delete",
+        "parameterClassNames": [
+          "java.lang.Integer",
+          "java.lang.Integer"
+        ],
+        "parameterNames": [
+          "start",
+          "end"
+        ]
+      },
+      {
+        "name": "deleteCharAt",
+        "parameterClassNames": [
+          "java.lang.Integer"
+        ],
+        "parameterNames": [
+          "index"
+        ]
+      },
+      {
+        "name": "indexOf",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "s"
+        ]
+      },
+      {
+        "name": "indexOf",
+        "parameterClassNames": [
+          "java.lang.String",
+          "java.lang.Integer"
+        ],
+        "parameterNames": [
+          "s",
+          "fromIndex"
+        ]
+      },
+      {
+        "name": "insert",
+        "parameterClassNames": [
+          "java.lang.Integer",
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "offset",
+          "value"
+        ]
+      },
+      {
+        "name": "lastIndexOf",
+        "parameterClassNames": [
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "s"
+        ]
+      },
+      {
+        "name": "lastIndexOf",
+        "parameterClassNames": [
+          "java.lang.String",
+          "java.lang.Integer"
+        ],
+        "parameterNames": [
+          "s",
+          "fromIndex"
+        ]
+      },
+      {
+        "name": "getLength",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "replace",
+        "parameterClassNames": [
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String"
+        ],
+        "parameterNames": [
+          "start",
+          "end",
+          "s"
+        ]
+      },
+      {
+        "name": "setCharAt",
+        "parameterClassNames": [
+          "java.lang.Integer",
+          "java.lang.Character"
+        ],
+        "parameterNames": [
+          "index",
+          "c"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.EnterViewEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "model"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ViewEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "model"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getModel",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickOnScreenEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickEventImp"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.KeyEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.awt.event.KeyEvent"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "isLetter",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "isDigit",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.TextFont",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.BipedPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      },
+      {
+        "name": "rightClavicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightElbow",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightWrist",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftClavicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftElbow",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftWrist",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddSceneActivationListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddOcclusionStartListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.OcclusionStartListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "occlusionStarted",
+        "parameterClassNames": [
+          "org.lgna.story.event.StartOcclusionEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.AbstractEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.STransport",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.TransportResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.BubbleOutlineColor",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.Color"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.CollisionEndListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "collisionEnded",
+        "parameterClassNames": [
+          "org.lgna.story.event.EndCollisionEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetAmbientLightColor",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.NumberKeyEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.awt.event.KeyEvent"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "org.lgna.story.event.AbstractKeyEvent"
+        ],
+        "parameterNames": [
+          "other"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getNumber",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.StrikePose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ExitViewEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "model"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.NumberKeyPressListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "numberKeyPressed",
+        "parameterClassNames": [
+          "org.lgna.story.event.NumberKeyEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.CollisionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceTo",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetFromBelowLightColor",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MultipleEventPolicy",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ArrowKeyEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.awt.event.KeyEvent"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "org.lgna.story.event.AbstractKeyEvent"
+        ],
+        "parameterNames": [
+          "other"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getMoveDirection",
+        "parameterClassNames": [
+          "org.lgna.story.event.ArrowKeyEvent$MoveDirectionPlane"
+        ],
+        "parameterNames": [
+          "plane"
+        ]
+      },
+      {
+        "name": "getTurnDirection",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddMouseClickOnObjectListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickEventImp"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getScreenDistanceFromLeft",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getScreenDistanceFromBottom",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRelativeXYPosition",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetCeilingPaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.TimerFrequency",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "double"
+        ],
+        "parameterNames": [
+          "frequency"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getFrequency",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetPaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SwimmerPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.OrthographicCameraMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.ResizeDepth",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetOpacity",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleSetDimensionPolicyArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.PointOfViewEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getEntity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.TextStyle",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.ImagePaint",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getResource",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickEventImp",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.awt.event.MouseEvent",
+          "org.lgna.story.SScene"
+        ],
+        "parameterNames": [
+          "e",
+          "scene"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getModelAtMouseLocation",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getScreenDistanceFromLeft",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getScreenDistanceFromBottom",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRelativeXYPosition",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getScene",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getEvent",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.ResizeWidth",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MoveAndOrientTo",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddKeyPressListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Scale",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "leftToRight",
+          "bottomToTop",
+          "frontToBack"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftToRight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBottomToTop",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontToBack",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SCamera",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "moveAndOrientToAGoodVantagePointOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.MoveAndOrientToAGoodVantagePointOf$Detail;"
+        ],
+        "parameterNames": [
+          "entity",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.JointedModelPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.JointedModelPose",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "[Lorg.lgna.story.implementation.JointIdTransformationPair;"
+        ],
+        "parameterNames": [
+          "pairs"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickOnObjectListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "mouseClicked",
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickOnObjectEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Size",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "leftToRight",
+          "bottomToTop",
+          "frontToBack"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftToRight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBottomToTop",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontToBack",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.TimeListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "timeElapsed",
+        "parameterClassNames": [
+          "org.lgna.story.event.TimeEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.EndOcclusionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel",
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "foreground",
+          "background"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Key",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.IsVolumePreserved",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Boolean"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickOnObjectEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickEventImp"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getModelAtMouseLocation",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.IsInFrontOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.AbstractBinarySThingEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getSThingFromSetA",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSThingFromSetB",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getModels",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.TextScale",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.TimeEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Double"
+        ],
+        "parameterNames": [
+          "timeElapsed"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getTimeSinceLastFire",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SlithererPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Think",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetWallPaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleAsSeenByArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Duration",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AudioSource",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.common.resources.AudioResource",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "audioResource",
+          "volume",
+          "startTime",
+          "stopTime"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "org.lgna.common.resources.AudioResource",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "audioResource",
+          "volume",
+          "startTime"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "org.lgna.common.resources.AudioResource",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "audioResource",
+          "volume"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "org.lgna.common.resources.AudioResource"
+        ],
+        "parameterNames": [
+          "audioResource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getAudioResource",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getVolume",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getStartTime",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getStopTime",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Move",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SThingMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ViewExitListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "viewExited",
+        "parameterClassNames": [
+          "org.lgna.story.event.ExitViewEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetHeight",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ProximityEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.ImageSource",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.common.resources.ImageResource"
+        ],
+        "parameterNames": [
+          "imageResource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getImageResource",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.SceneActivationEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.BubblePosition",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Font",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "[Lorg.lgna.story.fontattributes.Attribute;"
+        ],
+        "parameterNames": [
+          "attributes"
+        ]
+      },
+      {
+        "parameterClassNames": [
+          "java.awt.Font"
+        ],
+        "parameterNames": [
+          "awtFont"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getAsAWTFont",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "deriveScaledFont",
+        "parameterClassNames": [
+          "float"
+        ],
+        "parameterNames": [
+          "scalar"
+        ]
+      },
+      {
+        "name": "deriveSizeFont",
+        "parameterClassNames": [
+          "float"
+        ],
+        "parameterNames": [
+          "size"
+        ]
+      },
+      {
+        "name": "getFamily",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getWeight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getPosture",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSize",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddMouseClickOnScreenListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceToTheRightOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.MouseClickOnScreenListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "mouseClicked",
+        "parameterClassNames": [
+          "org.lgna.story.event.MouseClickOnScreenEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetFloorPaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetFogDensity",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetDimensionPolicy",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceBehind",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AlongAxisOffset",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Place",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetScale",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.BubbleFillColor",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.Color"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SSlitherer",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.SlithererResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getRoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeck",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHead",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getMouth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineBase",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineMiddle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineUpper",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTailArray",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.QuadrupedPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      },
+      {
+        "name": "frontRightClavicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontRightShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontRightKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontRightAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backRightHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backRightKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backRightAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontLeftClavicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontLeftShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontLeftKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "frontLeftAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backLeftHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backLeftKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "backLeftAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetRadius",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.FlyerPose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SayOutLoud",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetAtmosphereColor",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddProximityEnterListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceToTheLeftOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.ResizeHeight",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceAbove",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SJointedModel",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getJoint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId"
+        ],
+        "parameterNames": [
+          "jointId"
+        ]
+      },
+      {
+        "name": "getJointArray",
+        "parameterClassNames": [
+          "[Lorg.lgna.story.resources.JointId;"
+        ],
+        "parameterNames": [
+          "jointIdArray"
+        ]
+      },
+      {
+        "name": "getJointArray",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointArrayId"
+        ],
+        "parameterNames": [
+          "jointArrayId"
+        ]
+      },
+      {
+        "name": "strikePose",
+        "parameterClassNames": [
+          "org.lgna.story.Pose",
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "pose",
+          "details"
+        ]
+      },
+      {
+        "name": "straightenOutJoints",
+        "parameterClassNames": [
+          "[Lorg.lgna.story.StraightenOutJoints$Detail;"
+        ],
+        "parameterNames": [
+          "details"
+        ]
+      },
+      {
+        "name": "getJointedModelResource",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.RollDirection",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getColorId",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setColorId",
+        "parameterClassNames": [
+          "org.lgna.story.Color"
+        ],
+        "parameterNames": [
+          "color"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetOuterRadius",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.StartOcclusionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel",
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "foreground",
+          "background"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.AbstractKeyEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.awt.event.KeyEvent"
+        ],
+        "parameterNames": [
+          "e"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getKey",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "isKey",
+        "parameterClassNames": [
+          "org.lgna.story.Key"
+        ],
+        "parameterNames": [
+          "key"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SSwimmer",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.SwimmerResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "swimTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "getRoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeck",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHead",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getMouth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontLeftFin",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getFrontRightFin",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineBase",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineMiddle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getTail",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddOcclusionEndListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.PathStyle",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ProximityExitListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "proximityExited",
+        "parameterClassNames": [
+          "org.lgna.story.event.ExitProximityEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Orientation",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SShape",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AsSeenByArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.IsAbove",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MoveAndOrientToAGoodVantagePointOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.PointAt",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Roll",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.ShowSpeechBubble",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "boolean"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Turn",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SlithererPose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SModel",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "say",
+        "parameterClassNames": [
+          "java.lang.String",
+          "[Lorg.lgna.story.Say$Detail;"
+        ],
+        "parameterNames": [
+          "text",
+          "details"
+        ]
+      },
+      {
+        "name": "think",
+        "parameterClassNames": [
+          "java.lang.String",
+          "[Lorg.lgna.story.Think$Detail;"
+        ],
+        "parameterNames": [
+          "text",
+          "details"
+        ]
+      },
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      },
+      {
+        "name": "getOpacity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOpacity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOpacity$Detail;"
+        ],
+        "parameterNames": [
+          "opacity",
+          "details"
+        ]
+      },
+      {
+        "name": "getScale",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setScale",
+        "parameterClassNames": [
+          "org.lgna.story.Scale",
+          "[Lorg.lgna.story.SetScale$Detail;"
+        ],
+        "parameterNames": [
+          "scale",
+          "details"
+        ]
+      },
+      {
+        "name": "getSize",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setSize",
+        "parameterClassNames": [
+          "org.lgna.story.Size",
+          "[Lorg.lgna.story.SetSize$Detail;"
+        ],
+        "parameterNames": [
+          "size",
+          "details"
+        ]
+      },
+      {
+        "name": "getWidth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setWidth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetWidth$Detail;"
+        ],
+        "parameterNames": [
+          "width",
+          "details"
+        ]
+      },
+      {
+        "name": "getHeight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setHeight",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetHeight$Detail;"
+        ],
+        "parameterNames": [
+          "height",
+          "details"
+        ]
+      },
+      {
+        "name": "getDepth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setDepth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetDepth$Detail;"
+        ],
+        "parameterNames": [
+          "depth",
+          "details"
+        ]
+      },
+      {
+        "name": "resize",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.Resize$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeWidth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeWidth$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeHeight",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeHeight$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeDepth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeDepth$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.StartCollisionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddObjectMoverFor",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetWidth",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.STarget",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SpatialRelation",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.PoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "build",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetLength",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleIsVolumePreservedArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.NonfreeTexturePaint",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SDisc",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetRadius$Detail;"
+        ],
+        "parameterNames": [
+          "baseRadius",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.UpAsSeenBy",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetDepth",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SCylinder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetRadius$Detail;"
+        ],
+        "parameterNames": [
+          "radius",
+          "details"
+        ]
+      },
+      {
+        "name": "getLength",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setLength",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetLength$Detail;"
+        ],
+        "parameterNames": [
+          "length",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Resize",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SBox",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.PointOfViewChangeListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "pointOfViewChanged",
+        "parameterClassNames": [
+          "org.lgna.story.event.PointOfViewEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SBiped",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.BipedResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "walkTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "touch",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "entity"
+        ]
+      },
+      {
+        "name": "getRoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getPelvis",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineBase",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineMiddle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getSpineUpper",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNeck",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHead",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getMouth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEye",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightEyelid",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftHip",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftKnee",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftAnkle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftFoot",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightClavicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightElbow",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightWrist",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightThumb",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightThumbKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightIndexFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightIndexFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightMiddleFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightMiddleFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightPinkyFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightPinkyFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftClavicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftShoulder",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftElbow",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftWrist",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftThumb",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftThumbKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftIndexFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftIndexFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftMiddleFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftMiddleFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftPinkyFinger",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getLeftPinkyFingerKnuckle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "strikePose",
+        "parameterClassNames": [
+          "org.lgna.story.BipedPose",
+          "[Lorg.lgna.story.StrikePose$Detail;"
+        ],
+        "parameterNames": [
+          "pose",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AddTimeListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SMovableTurnable",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getPositionRelativeToVehicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "move",
+        "parameterClassNames": [
+          "org.lgna.story.MoveDirection",
+          "java.lang.Number",
+          "[Lorg.lgna.story.Move$Detail;"
+        ],
+        "parameterNames": [
+          "direction",
+          "amount",
+          "details"
+        ]
+      },
+      {
+        "name": "moveToward",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "java.lang.Number",
+          "[Lorg.lgna.story.MoveToward$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "amount",
+          "details"
+        ]
+      },
+      {
+        "name": "moveAwayFrom",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "java.lang.Number",
+          "[Lorg.lgna.story.MoveAwayFrom$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "amount",
+          "details"
+        ]
+      },
+      {
+        "name": "moveTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.MoveTo$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "moveAndOrientTo",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.MoveAndOrientTo$Detail;"
+        ],
+        "parameterNames": [
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "place",
+        "parameterClassNames": [
+          "org.lgna.story.SpatialRelation",
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.Place$Detail;"
+        ],
+        "parameterNames": [
+          "spatialRelation",
+          "target",
+          "details"
+        ]
+      },
+      {
+        "name": "setPositionRelativeToVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.Position",
+          "[Lorg.lgna.story.SetPositionRelativeToVehicle$Detail;"
+        ],
+        "parameterNames": [
+          "position",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.Rider",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getVehicle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SwimmerPose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MutableRider",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetPositionRelativeToVehicle",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MoveToward",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.EnterProximityEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SProp",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.resources.PropResource"
+        ],
+        "parameterNames": [
+          "resource"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SProgram",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getActiveScene",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setActiveScene",
+        "parameterClassNames": [
+          "org.lgna.story.SScene"
+        ],
+        "parameterNames": [
+          "scene"
+        ]
+      },
+      {
+        "name": "getSimulationSpeedFactor",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setSimulationSpeedFactor",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "simulationSpeedFactor"
+        ]
+      },
+      {
+        "name": "initializeInFrame",
+        "parameterClassNames": [
+          "[Ljava.lang.String;"
+        ],
+        "parameterNames": [
+          "args"
+        ]
+      },
+      {
+        "name": "initializeInApplet",
+        "parameterClassNames": [
+          "javax.swing.JApplet"
+        ],
+        "parameterNames": [
+          "applet"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.event.OcclusionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SModel",
+          "org.lgna.story.SModel"
+        ],
+        "parameterNames": [
+          "foreground",
+          "background"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getForegroundModel",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackgroundModel",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.DurationAnimationStyleArgumentFactory",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceBelow",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddCollisionStartListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Position",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "right",
+          "up",
+          "backward"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getUp",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getBackward",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.IsBehind",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ArrowKeyPressListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "arrowKeyPressed",
+        "parameterClassNames": [
+          "org.lgna.story.event.ArrowKeyEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.IsToTheRightOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.BipedPose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.PerspectiveCameraMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Resizable",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getScale",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setScale",
+        "parameterClassNames": [
+          "org.lgna.story.Scale",
+          "[Lorg.lgna.story.SetScale$Detail;"
+        ],
+        "parameterNames": [
+          "size",
+          "details"
+        ]
+      },
+      {
+        "name": "getSize",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setSize",
+        "parameterClassNames": [
+          "org.lgna.story.Size",
+          "[Lorg.lgna.story.SetSize$Detail;"
+        ],
+        "parameterNames": [
+          "size",
+          "details"
+        ]
+      },
+      {
+        "name": "getWidth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setWidth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetWidth$Detail;"
+        ],
+        "parameterNames": [
+          "width",
+          "details"
+        ]
+      },
+      {
+        "name": "getHeight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setHeight",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetHeight$Detail;"
+        ],
+        "parameterNames": [
+          "height",
+          "details"
+        ]
+      },
+      {
+        "name": "getDepth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setDepth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetDepth$Detail;"
+        ],
+        "parameterNames": [
+          "depth",
+          "details"
+        ]
+      },
+      {
+        "name": "resize",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.Resize$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeWidth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeWidth$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeHeight",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeHeight$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      },
+      {
+        "name": "resizeDepth",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.ResizeDepth$Detail;"
+        ],
+        "parameterNames": [
+          "factor",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AsSeenBy",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Pose",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.Class",
+          "[Lorg.lgna.story.implementation.JointIdTransformationPair;"
+        ],
+        "parameterNames": [
+          "modelCls",
+          "pairs"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getJointIdTransformationPairs",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.GetDistanceInFrontOf",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.KeyPressListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "keyPressed",
+        "parameterClassNames": [
+          "org.lgna.story.event.KeyEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SAxes",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.ViewEnterListener",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "viewEntered",
+        "parameterClassNames": [
+          "org.lgna.story.event.EnterViewEvent"
+        ],
+        "parameterNames": [
+          "event"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.HeldKeyPolicy",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.QuadrupedPose",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetSize",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.Visual",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getOpacity",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOpacity",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOpacity$Detail;"
+        ],
+        "parameterNames": [
+          "opacity",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.IsBelow",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.OrientTo",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SCone",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getBaseRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setBaseRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetBaseRadius$Detail;"
+        ],
+        "parameterNames": [
+          "baseRadius",
+          "details"
+        ]
+      },
+      {
+        "name": "getLength",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setLength",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetLength$Detail;"
+        ],
+        "parameterNames": [
+          "length",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.STorus",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getInnerRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setInnerRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetInnerRadius$Detail;"
+        ],
+        "parameterNames": [
+          "innerRadius",
+          "details"
+        ]
+      },
+      {
+        "name": "getOuterRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setOuterRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetOuterRadius$Detail;"
+        ],
+        "parameterNames": [
+          "outerRadius",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.TextColor",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.Color"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetOfVisuals",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "[Lorg.lgna.story.Visual;"
+        ],
+        "parameterNames": [
+          "value"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetOrientationRelativeToVehicle",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SJoint",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "isPivotVisible",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setPivotVisible",
+        "parameterClassNames": [
+          "java.lang.Boolean"
+        ],
+        "parameterNames": [
+          "isPivotVisible"
+        ]
+      },
+      {
+        "name": "getWidth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHeight",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getDepth",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.AnimationStyle",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.event.EndCollisionEvent",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SSphere",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "getRadius",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setRadius",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetRadius$Detail;"
+        ],
+        "parameterNames": [
+          "radius",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.VantagePoint",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "org.lgna.story.Orientation",
+          "org.lgna.story.Position"
+        ],
+        "parameterNames": [
+          "orientation",
+          "position"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "equals",
+        "parameterClassNames": [
+          "java.lang.Object"
+        ],
+        "parameterNames": [
+          "obj"
+        ]
+      },
+      {
+        "name": "hashCode",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getOrientation",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getPosition",
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SCameraMarker",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddViewExitListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SetInnerRadius",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SSun",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.FlyerPoseBuilder",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "jointId",
+          "orientation"
+        ]
+      },
+      {
+        "name": "joint",
+        "parameterClassNames": [
+          "org.lgna.story.resources.JointId",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number",
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "jointId",
+          "x",
+          "y",
+          "z",
+          "w"
+        ]
+      },
+      {
+        "name": "rightWingShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightWingElbow",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightWingWrist",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "rightAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftWingShoulder",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftWingElbow",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftWingWrist",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftHip",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftKnee",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      },
+      {
+        "name": "leftAnkle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation"
+        ],
+        "parameterNames": [
+          "orientation"
+        ]
+      }
+    ]
+  },
+  {
+    "clsName": "org.lgna.story.SetBaseRadius",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.AddProximityExitListener",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.TurnToFace",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.MoveTo",
+    "constructorInfos": [],
+    "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.VisualWithPaint",
+    "constructorInfos": [],
+    "methodInfos": [
+      {
+        "name": "getPaint",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setPaint",
+        "parameterClassNames": [
+          "org.lgna.story.Paint",
+          "[Lorg.lgna.story.SetPaint$Detail;"
+        ],
+        "parameterNames": [
+          "paint",
+          "details"
+        ]
+      }
+    ]
+  }
+]

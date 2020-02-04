@@ -108,16 +108,12 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       Color4f color4f = EmployeesOnly.getColor4f(value, Color4f.WHITE);
       Texture texture = EmployeesOnly.getTexture(value, null);
       for (SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances()) {
-        if (Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
-          //pass
-        } else {
+        if (!Objects.equals(color4f, sgAppearance.diffuseColor.getValue())) {
           sgAppearance.diffuseColor.setValue(color4f);
         }
         if (sgAppearance instanceof TexturedAppearance) {
           TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
-          if (Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
-            //pass
-          } else {
+          if (!Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
             sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
           }
         }
@@ -207,7 +203,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       this.setSize(size);
     } else {
       class SizeAnimation extends Dimension3Animation {
-        public SizeAnimation(double duration, Style style, Dimension3 size0, Dimension3 size1) {
+        private SizeAnimation(double duration, Style style, Dimension3 size0, Dimension3 size1) {
           super(duration, style, size0, size1);
         }
 
@@ -220,12 +216,11 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
     }
   }
 
-  protected Dimension3 getSizeForScale(Dimension3 scale) {
+  private Dimension3 getSizeForScale(Dimension3 scale) {
     Dimension3 prevSize = this.getSize();
     Dimension3 prevScale = this.getScale();
 
-    Dimension3 size = new Dimension3(scale.x * (prevSize.x / prevScale.x), scale.y * (prevSize.y / prevScale.y), scale.z * (prevSize.z / prevScale.z));
-    return size;
+    return new Dimension3(scale.x * (prevSize.x / prevScale.x), scale.y * (prevSize.y / prevScale.y), scale.z * (prevSize.z / prevScale.z));
   }
 
   protected Dimension3 getScaleForSize(Dimension3 size) {
@@ -245,18 +240,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
     return scale;
   }
 
-  //  public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()
-  //  {
-  //    edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = getSgVisuals();
-  //    edu.cmu.cs.dennisc.math.AxisAlignedBox bBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
-  //    for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : sgVisuals ) {
-  //      edu.cmu.cs.dennisc.math.AxisAlignedBox bb = sgVisual.getAxisAlignedMinimumBoundingBox();
-  //      bBox.union( bb );
-  //    }
-  //    assert bBox.isNaN() == false;
-  //    return bBox;
-  //  }
-  //
+  // The projected size in the displayed world. The inner representation's size multiplied by any scale factor
   public Dimension3 getSize() {
     return getAxisAlignedMinimumBoundingBox().getSize();
   }
@@ -274,9 +258,9 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   public void animateSetWidth(double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, Style style) {
-    assert (isVolumePreserved && isAspectRatioPreserved) == false;
+    assert !(isVolumePreserved && isAspectRatioPreserved);
     double prevWidth = this.getWidth();
-    assert Double.isNaN(prevWidth) == false;
+    assert !Double.isNaN(prevWidth);
     assert prevWidth >= 0;
     if (prevWidth > 0.0) {
       double factor = width / prevWidth;
@@ -293,9 +277,9 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   public void animateSetHeight(double height, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, Style style) {
-    assert (isVolumePreserved && isAspectRatioPreserved) == false;
+    assert !(isVolumePreserved && isAspectRatioPreserved);
     double prevHeight = this.getHeight();
-    assert Double.isNaN(prevHeight) == false;
+    assert !Double.isNaN(prevHeight);
     assert prevHeight >= 0;
     if (prevHeight > 0.0) {
       double factor = height / prevHeight;
@@ -312,9 +296,9 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   public void animateSetDepth(double depth, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, Style style) {
-    assert (isVolumePreserved && isAspectRatioPreserved) == false;
+    assert !(isVolumePreserved && isAspectRatioPreserved);
     double prevDepth = this.getDepth();
-    assert Double.isNaN(prevDepth) == false;
+    assert !Double.isNaN(prevDepth);
     assert prevDepth >= 0;
     if (prevDepth > 0.0) {
       double factor = depth / prevDepth;
@@ -337,7 +321,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
     private final boolean isYScaled;
     private final boolean isZScaled;
 
-    private Dimension(boolean isXScaled, boolean isYScaled, boolean isZScaled) {
+    Dimension(boolean isXScaled, boolean isYScaled, boolean isZScaled) {
       this.isXScaled = isXScaled;
       this.isYScaled = isYScaled;
       this.isZScaled = isZScaled;
@@ -485,12 +469,10 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
     };
   }
 
-  protected BoundingBoxDecorator boundingBoxDecorator;
+  private BoundingBoxDecorator boundingBoxDecorator;
 
   protected Leaf getVisualization() {
-    if (this.boundingBoxDecorator != null) {
-      //pass
-    } else {
+    if (this.boundingBoxDecorator == null) {
       this.boundingBoxDecorator = new BoundingBoxDecorator();
       this.boundingBoxDecorator.setBox(this.getAxisAlignedMinimumBoundingBox());
 
@@ -518,21 +500,4 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       this.boundingBoxDecorator.setParent(null);
     }
   }
-
-  //  @Override
-  //  protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
-  //    super.updateCumulativeBound( rv, trans, isOriginIncluded );
-  //    rv.add( this.sgFrontFace, trans );
-  //    rv.add( this.sgBackFace, trans );
-  //    return rv;
-  //  }
-  //
-  //  @Override
-  //  protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
-  //    super.applyScale( axis, isScootDesired );
-  //    edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgFrontFace.scale.getValue();
-  //    edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-  //    sgFrontFace.scale.setValue( scale );
-  //    sgBackFace.scale.setValue( scale );
-  //  }
 }

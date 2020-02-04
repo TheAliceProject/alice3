@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -58,8 +59,28 @@ import edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.*;
 
 public class Mesh extends Geometry {
+
+  public Mesh() {
+    super();
+  }
+
+  public Mesh(Mesh m) {
+    super(m);
+    if (m != null) {
+      useAlphaTest.setValue(m.useAlphaTest.getValue());
+      textureId.setValue(m.textureId.getValue());
+      cullBackfaces.setValue(m.cullBackfaces.getValue());
+      indexBuffer.setValue(BufferUtilities.copyIntBuffer(m.indexBuffer.getValue()));
+      normalBuffer.setValue(BufferUtilities.copyFloatBuffer(m.normalBuffer.getValue()));
+      vertexBuffer.setValue(BufferUtilities.copyDoubleBuffer(m.vertexBuffer.getValue()));
+      textCoordBuffer.setValue(BufferUtilities.copyFloatBuffer(m.textCoordBuffer.getValue()));
+      setName(m.getName());
+    }
+  }
+
   @Override
   protected void updateBoundingBox(AxisAlignedBox boundingBox) {
     BoundUtilities.getBoundingBox(boundingBox, vertexBuffer.getValue());
@@ -94,6 +115,10 @@ public class Mesh extends Geometry {
     //todo
   }
 
+  public Mesh createCopy() {
+    return new Mesh(this);
+  }
+
   public void scale(Vector3 scale) {
     double[] vertices = BufferUtilities.convertDoubleBufferToArray(vertexBuffer.getValue());
     double[] newVertices = new double[vertices.length];
@@ -105,6 +130,42 @@ public class Mesh extends Geometry {
     vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
   }
 
+  public void invertNormals() {
+    float[] normals = BufferUtilities.convertFloatBufferToArray(normalBuffer.getValue());
+    float[] newNormals = new float[normals.length];
+    for (int i = 0; i < normals.length; i += 3) {
+      newNormals[i] = -normals[i];
+      newNormals[i + 1] = -normals[i + 1];
+      newNormals[i + 2] = -normals[i + 2];
+    }
+    normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
+  }
+
+  public void invertIndices() {
+    int[] indices = BufferUtilities.convertIntBufferToArray(indexBuffer.getValue());
+    int[] newIndices = new int[indices.length];
+    for (int i = 0; i < indices.length; i += 3) {
+      newIndices[i] = indices[i];
+      newIndices[i + 1] = indices[i + 2];
+      newIndices[i + 2] = indices[i + 1];
+    }
+    indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
+  }
+
+  public List<Integer> getReferencedTextureIds() {
+    List<Integer> referencedTextureIds = new LinkedList<>();
+    if (textureIdArray.isEmpty()) {
+      referencedTextureIds.add(textureId.getValue());
+    } else {
+      for (Integer textureId : textureIdArray) {
+        if (!referencedTextureIds.contains(textureId)) {
+          referencedTextureIds.add(textureId);
+        }
+      }
+    }
+    return referencedTextureIds;
+  }
+
   public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (DoubleBuffer) null) {
     @Override
     public void setValue(DoubleBuffer value) {
@@ -113,11 +174,22 @@ public class Mesh extends Geometry {
       Mesh.this.fireBoundChanged();
     }
   };
-
   public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (FloatBuffer) null);
   public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (IntBuffer) null);
   public final IntegerProperty textureId = new IntegerProperty(this, -1);
+  //textureIdArray is currently only used for model exporting. Alice rendering does not support multiple textures per mesh
+  public ArrayList<Integer> textureIdArray = new ArrayList<>(); //Similar to vertex buffer and normal buffer, this encodes the textureId for a given index
   public final BooleanProperty cullBackfaces = new BooleanProperty(this, Boolean.TRUE);
   public final BooleanProperty useAlphaTest = new BooleanProperty(this, Boolean.FALSE);
+
+  public Integer getTextureId(int index) {
+    if (textureIdArray.isEmpty()) {
+      return textureId.getValue();
+    }
+    if (!textureIdArray.get(index).equals(textureIdArray.get(index + 1)) || !textureIdArray.get(index).equals(textureIdArray.get(index + 2))) {
+      Logger.severe("Triangle material mapping isn't consistent: " + index + "=" + textureIdArray.get(index) + ", " + (index + 1) + "=" + textureIdArray.get(index + 1) + ", " + (index + 2) + "=" + textureIdArray.get(index + 2));
+    }
+    return textureIdArray.get(index);
+  }
 }

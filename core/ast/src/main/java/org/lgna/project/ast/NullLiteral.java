@@ -65,7 +65,7 @@ public final class NullLiteral extends AbstractLiteral {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendNull();
+  public void process(AstProcessor processor) {
+    processor.processNull();
   }
 }

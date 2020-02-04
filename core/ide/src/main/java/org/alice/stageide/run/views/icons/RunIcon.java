@@ -116,7 +116,7 @@ public class RunIcon implements Icon {
         g2.setColor(Color.DARK_GRAY);
         g2.drawPolygon(xs, ys, 3);
       } finally {
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
         g2.setColor(prevColor);
       }
     }

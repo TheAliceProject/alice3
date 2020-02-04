@@ -44,14 +44,14 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.BooleanProperty;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Statement extends AbstractNode implements CodeAppender {
+public abstract class Statement extends AbstractNode implements ProcessableNode {
   @Override
-  public abstract void appendCode(SourceCodeGenerator generator);
+  public abstract void process(AstProcessor processor);
 
   public final BooleanProperty isEnabled = new BooleanProperty(this, Boolean.TRUE);
 

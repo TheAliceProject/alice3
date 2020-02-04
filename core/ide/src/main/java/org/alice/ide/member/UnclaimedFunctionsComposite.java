@@ -42,28 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
-import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.AbstractMethod;
 
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnclaimedJavaFunctionsComposite extends UnclaimedJavaMethodsComposite {
+public class UnclaimedFunctionsComposite extends UnclaimedMethodsComposite {
   private static class SingletonHolder {
-    private static UnclaimedJavaFunctionsComposite instance = new UnclaimedJavaFunctionsComposite();
+    private static UnclaimedFunctionsComposite instance = new UnclaimedFunctionsComposite();
   }
 
-  public static UnclaimedJavaFunctionsComposite getInstance() {
+  public static UnclaimedFunctionsComposite getInstance() {
     return SingletonHolder.instance;
   }
 
-  private UnclaimedJavaFunctionsComposite() {
+  private UnclaimedFunctionsComposite() {
     super(UUID.fromString("4e96b52d-ddcc-4963-8f6a-b367d3c6b3fa"));
   }
 
   @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
+  protected boolean isAcceptingOf(AbstractMethod method) {
     return method.isFunction();
   }
 }

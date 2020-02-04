@@ -66,8 +66,8 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
   public abstract ExpressionProperty getArrayOrIterableProperty();
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendEachInTogether(this);
+  public void process(AstProcessor processor) {
+    processor.processEachInTogether(this);
   }
 
   public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>(this) {

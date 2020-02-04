@@ -42,10 +42,13 @@
  *******************************************************************************/
 package org.lgna.story.resources;
 
+import org.alice.serialization.tweedle.Encoder;
+import org.lgna.project.code.InstantiableTweedleNode;
+
 /**
  * @author user
  */
-public class JointArrayId {
+public class JointArrayId implements InstantiableTweedleNode {
 
   private final Class<? extends JointedModelResource> containingClass;
   private final String elementPattern;
@@ -79,5 +82,10 @@ public class JointArrayId {
 
   public String getElementNamePattern() {
     return this.elementPattern;
+  }
+
+  @Override
+  public void encodeDefinition(Encoder processor) {
+    processor.appendNewJointArrayId(elementPattern, root.getCodeIdentifier(processor));
   }
 }

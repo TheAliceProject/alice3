@@ -60,7 +60,6 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Ghost;
 import edu.cmu.cs.dennisc.scenegraph.Graphic;
 import edu.cmu.cs.dennisc.scenegraph.Layer;
-import edu.cmu.cs.dennisc.scenegraph.MultipleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ProjectionCamera;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
@@ -240,10 +239,6 @@ public class AdapterFactory {
 
   public static GlrTexturedAppearance getAdapterFor(TexturedAppearance sgSingleAppearance) {
     return (GlrTexturedAppearance) getAdapterForElement(sgSingleAppearance);
-  }
-
-  public static GlrMultipleAppearance getAdapterFor(MultipleAppearance sgMultipleAppearance) {
-    return (GlrMultipleAppearance) getAdapterForElement(sgMultipleAppearance);
   }
 
   public static GlrGeometry<?> getAdapterFor(Geometry sgGeometry) {

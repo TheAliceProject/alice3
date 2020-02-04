@@ -56,8 +56,8 @@ import org.lgna.project.migration.AstMigration;
 public class CompoundMigration extends AstMigration {
   private final NodeMigration[] migrations;
 
-  public CompoundMigration(Version minimumVersion, Version resultVersion, NodeMigration... migrations) {
-    super(minimumVersion, resultVersion);
+  public CompoundMigration(Version resultVersion, NodeMigration... migrations) {
+    super(resultVersion);
     this.migrations = migrations;
   }
 

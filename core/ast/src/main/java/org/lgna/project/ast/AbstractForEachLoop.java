@@ -73,8 +73,8 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendForEach(this);
+  public void process(AstProcessor processor) {
+    processor.processForEach(this);
   }
 
   public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>(this) {

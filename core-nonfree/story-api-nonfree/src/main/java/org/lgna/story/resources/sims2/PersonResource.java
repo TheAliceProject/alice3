@@ -215,4 +215,9 @@ public abstract class PersonResource implements BipedResource {
     rv = (37 * rv) + (int) (lng ^ (lng >>> 32));
     return rv;
   }
+
+  @Override
+  public String toString() {
+    return getLifeStage().name() + '_' + gender.name() + '_' + skinTone + '_' + skinColor.rgbString() + '_' + eyeColor.toString() + '_' + hair.toString()  + '_' + obesityLevel + '_' + outfit.toString() + '_' + face.toString();
+  }
 }

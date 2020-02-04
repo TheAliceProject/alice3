@@ -103,32 +103,6 @@ public class GraphicsUtilities {
     return prevClip;
   }
 
-  public static void drawCenteredImage(Graphics g, Image image, Component component) {
-    int x = (component.getWidth() - image.getWidth(component)) / 2;
-    int y = (component.getHeight() - image.getHeight(component)) / 2;
-    g.drawImage(image, x, y, component);
-  }
-
-  public static void drawCenteredScaledToFitImage(Graphics g, Image image, Component component) {
-    int imageWidth = image.getWidth(component);
-    int imageHeight = image.getHeight(component);
-    int componentWidth = component.getWidth();
-    int componentHeight = component.getHeight();
-    double widthRatio = imageWidth / (double) componentWidth;
-    double heightRatio = imageHeight / (double) componentHeight;
-    int widthFactor = -1;
-    int heightFactor = -1;
-    if ((widthRatio > heightRatio) && (widthRatio > 1.0)) {
-      widthFactor = componentWidth;
-    } else if ((heightRatio > widthRatio) && (heightRatio > 1.0)) {
-      heightFactor = componentHeight;
-    }
-    if ((widthFactor > 0) || (heightFactor > 0)) {
-      image = image.getScaledInstance(widthFactor, heightFactor, Image.SCALE_SMOOTH);
-    }
-    drawCenteredImage(g, image, component);
-  }
-
   //Scales an image to fit a destination image and then draws that image centered in the destination image
   public static void drawCenteredScaledToFitImage(Image image, Image destImage) {
     Graphics g = destImage.getGraphics();
@@ -282,7 +256,7 @@ public class GraphicsUtilities {
     Paint prevPaint = g2.getPaint();
     Stroke prevStroke = g2.getStroke();
     Shape prevClip = g2.getClip();
-    Object antialiasingValue = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+    Object prevAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     g2.setStroke(stroke);
@@ -298,7 +272,7 @@ public class GraphicsUtilities {
     g2.setStroke(prevStroke);
     g2.setPaint(prevPaint);
 
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiasingValue);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 
   public static void draw3DishShape(Graphics g, Shape shape, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke) {

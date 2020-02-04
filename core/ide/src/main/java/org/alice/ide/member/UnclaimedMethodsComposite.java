@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,8 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.code;
+package org.alice.ide.member;
 
-public interface PrecedentedAppender extends CodeAppender {
-  int getLevelOfPrecedence();
+import org.lgna.project.ast.AbstractMethod;
+
+import java.util.Comparator;
+import java.util.UUID;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class UnclaimedMethodsComposite extends FilteredMethodsSubComposite {
+  private final Comparator<AbstractMethod> comparator = FilteredMethodsSubComposite::compareMethodNames;
+
+  public UnclaimedMethodsComposite(UUID migrationId) {
+    super(migrationId, true);
+  }
+
+  @Override
+  public Comparator<AbstractMethod> getComparator() {
+    return this.comparator;
+  }
 }

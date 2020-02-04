@@ -46,11 +46,9 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.nebulous.Model;
 import edu.cmu.cs.dennisc.nebulous.Person;
 import edu.cmu.cs.dennisc.nebulous.Thing;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Dennis Cosgrove
@@ -63,7 +61,7 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   public NebulousVisualData(M nebModel) {
     this.nebModel = nebModel;
     this.nebModel.setVisual(sgVisuals[0]);
-    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.nebModel});
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[]{this.nebModel});
     this.getSgVisuals()[0].frontFacingAppearance.setValue(sgAppearances[0]);
   }
 
@@ -75,6 +73,11 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   @Override
   public Visual[] getSgVisuals() {
     return this.sgVisuals;
+  }
+
+  @Override
+  public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
+    return nebModel.createSkeletonVisualForExporting(resource);
   }
 
   public M getNebModel() {

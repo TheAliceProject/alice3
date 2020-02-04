@@ -19,7 +19,7 @@ public class Manifest {
   private File rootFile;
 
   public String getId() {
-    return metadata.identifier.id;
+    return metadata.identifier.name;
   }
 
   public String getName() {
@@ -41,12 +41,12 @@ public class Manifest {
   }
 
   public static class MetaData {
-    public String formatVersion;
+    public String formatVersion = "0.1";
     public ProjectIdentifier identifier = new ProjectIdentifier();
   }
 
   public static class ProjectIdentifier {
-    public String id;
+    public String name;
     public String version = DEFAULT_VERSION;
     public ProjectType type;
   }

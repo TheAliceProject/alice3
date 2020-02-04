@@ -84,17 +84,17 @@ public final class ProcedureTabComposite extends MemberTabComposite<ProcedureTab
   }
 
   @Override
-  protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+  protected List<FilteredMethodsSubComposite> getPotentialCategorySubComposites() {
     return IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
   }
 
   @Override
-  protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+  protected List<FilteredMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
     return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
   }
 
   @Override
-  protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-    return UnclaimedJavaProceduresComposite.getInstance();
+  protected UnclaimedMethodsComposite getUnclaimedMethodsComposite() {
+    return UnclaimedProceduresComposite.getInstance();
   }
 }

@@ -82,6 +82,6 @@ public abstract class AbstractIcon implements Icon {
     this.paintIcon(c, g2);
     g2.translate(-x, -y);
     g2.setPaint(prevPaint);
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
   }
 }

@@ -58,57 +58,47 @@ public final class GlrImageBuffer implements ImageBuffer {
 
   @Override
   public Object getImageLock() {
-    return this.imageLock;
+    return imageLock;
   }
 
   @Override
   public Color4f getBackgroundColor() {
-    return this.backgroundColor;
+    return backgroundColor;
   }
 
   private boolean isAlphaRequired() {
-    return this.backgroundColor == null;
+    return backgroundColor == null;
   }
 
-  /*package-private*/BufferedImage acquireImage(int width, int height) {
+  BufferedImage acquireImage(int width, int height) {
     //TODO
     //int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_4BYTE_ABGR : java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
     int imageType = BufferedImage.TYPE_4BYTE_ABGR;
-    if (this.image != null) {
-      if ((this.image.getWidth() == width) && (this.image.getHeight() == height) && (this.image.getType() == imageType)) {
-        //pass
-      } else {
-        this.image = null;
+    if (image != null) {
+      if ((image.getWidth() != width) || (image.getHeight() != height) || (image.getType() != imageType)) {
+        image = null;
       }
     }
-    if (this.image != null) {
-      //pass
-    } else {
-      this.image = new BufferedImage(width, height, imageType);
+    if (image == null) {
+      image = new BufferedImage(width, height, imageType);
     }
-    return this.image;
+    return image;
   }
 
-  /*package-private*/void releaseImageAndFloatBuffer(boolean isRightSideUp) {
-    this.isRightSideUp = true;
+  void releaseImageAndFloatBuffer(boolean isRightSideUp) {
+    isRightSideUp = true;
   }
 
-  /*package-private*/FloatBuffer acquireFloatBuffer(int width, int height) {
-    if (this.isAlphaRequired()) {
+  FloatBuffer acquireFloatBuffer(int width, int height) {
+    if (isAlphaRequired()) {
       int capacity = width * height;
-      if (this.depthBuffer != null) {
-        if (this.depthBuffer.capacity() == capacity) {
-          //pass
-        } else {
-          this.depthBuffer = null;
-        }
+      if (depthBuffer != null && depthBuffer.capacity() != capacity) {
+        depthBuffer = null;
       }
-      if (this.depthBuffer != null) {
-        //pass
-      } else {
-        this.depthBuffer = FloatBuffer.allocate(capacity);
+      if (depthBuffer == null) {
+        depthBuffer = FloatBuffer.allocate(capacity);
       }
-      return this.depthBuffer;
+      return depthBuffer;
     } else {
       return null;
     }

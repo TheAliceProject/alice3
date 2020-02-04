@@ -96,7 +96,7 @@ import org.lgna.project.ast.TypeExpression;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
@@ -341,13 +341,25 @@ public abstract class IDE extends ProjectApplication {
   public void ensureProjectCodeUpToDate() {
     Project project = this.getProject();
     if (project != null) {
-      if (this.isProjectUpToDateWithSceneSetUp() == false) {
-        synchronized (project.getLock()) {
-          this.generateCodeForSceneSetUp();
-          this.reorganizeFieldsIfNecessary();
-          this.updateHistoryIndexSceneSetUpSync();
-        }
+      if (!isProjectUpToDateWithSceneSetUp()) {
+        updateProject(project);
       }
+    }
+  }
+
+  @Override
+  public void forceProjectCodeUpToDate() {
+    Project project = getProject();
+    if (project != null) {
+      updateProject(project);
+    }
+  }
+
+  private void updateProject(Project project) {
+    synchronized (project.getLock()) {
+      generateCodeForSceneSetUp();
+      reorganizeFieldsIfNecessary();
+      updateHistoryIndexSceneSetUpSync();
     }
   }
 
@@ -413,7 +425,7 @@ public abstract class IDE extends ProjectApplication {
     }
   }
 
-  public <N extends AbstractNode & CodeAppender> N createCopy(N original) {
+  public <N extends AbstractNode & ProcessableNode> N createCopy(N original) {
     NamedUserType root = this.getProgramType();
     return AstUtilities.createCopy(original, root);
   }

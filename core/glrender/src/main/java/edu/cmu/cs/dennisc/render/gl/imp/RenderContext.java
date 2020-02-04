@@ -76,7 +76,6 @@ import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrMultipleAppearance;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
@@ -131,7 +130,6 @@ public class RenderContext extends Context {
 
   private boolean isShadingEnabled;
 
-  private GlrMultipleAppearance multipleAppearanceAdapter;
   private int face;
 
   private final Rectangle clearRect = new Rectangle();
@@ -275,16 +273,6 @@ public class RenderContext extends Context {
   protected void handleGLChange() {
     //forgetAllTextureAdapters();
     //forgetAllGeometryAdapters();
-  }
-
-  public void setMultipleAppearance(int face, GlrMultipleAppearance multipleAppearanceAdapter) {
-    this.face = face;
-    this.multipleAppearanceAdapter = multipleAppearanceAdapter;
-  }
-
-  @Override
-  public void setAppearanceIndex(int index) {
-    this.multipleAppearanceAdapter.setPipelineState(this, this.face, index);
   }
 
   public void actuallyForgetTexturesIfNecessary() {
@@ -618,13 +606,13 @@ public class RenderContext extends Context {
 
   public void renderVertex(Vertex vertex) {
     if (this.currDiffuseColorTextureAdapter != null) {
-      if (vertex.textureCoordinate0.isNaN() == false) {
+      if (!vertex.textureCoordinate0.isNaN()) {
         float u = this.currDiffuseColorTextureAdapter.mapU(vertex.textureCoordinate0.u);
         float v = this.currDiffuseColorTextureAdapter.mapV(vertex.textureCoordinate0.v);
         gl.glTexCoord2f(u, v);
       }
     }
-    if (vertex.diffuseColor.isNaN() == false) {
+    if (!vertex.diffuseColor.isNaN()) {
       gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue, vertex.diffuseColor.alpha);
     }
     if (this.isShadingEnabled) {

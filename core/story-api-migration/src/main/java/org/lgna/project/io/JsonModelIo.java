@@ -5,11 +5,12 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.tweedle.file.*;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 import org.lgna.story.JointedModelPose;
 import org.lgna.story.Pose;
 import org.lgna.story.implementation.ImageFactory;
@@ -34,9 +35,10 @@ import java.util.*;
 public class JsonModelIo extends DataSourceIo {
 
   private static final boolean NORMALIZE_WEIGHTS = true;
+  private static final boolean GENERATE_BACKFACES = true;
 
   private ModelManifest modelManifest;
-  private List<JointedModelResource> modelResources;
+  private Set<JointedModelResource> modelResources;
   private List<SkeletonVisual> skeletonVisuals;
   private List<BufferedImage> thumbnails;
   private final ExportFormat exportFormat;
@@ -57,7 +59,7 @@ public class JsonModelIo extends DataSourceIo {
     this.exportFormat = exportFormat;
   }
 
-  public JsonModelIo(ModelManifest modelManifest, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
+  JsonModelIo(ModelManifest modelManifest, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
     this(exportFormat);
     this.modelManifest = modelManifest;
     this.skeletonVisuals = new ArrayList<>();
@@ -67,10 +69,41 @@ public class JsonModelIo extends DataSourceIo {
     this.thumbnails.add(thumbnail);
   }
 
-  public JsonModelIo(List<JointedModelResource> modelResources, ExportFormat exportFormat) {
+  JsonModelIo(Set<JointedModelResource> modelResources, ExportFormat exportFormat) {
     this(exportFormat);
     this.modelManifest = createModelManifest(modelResources);
     this.modelResources = modelResources;
+  }
+
+  static JsonModelIo createPersonIo(Set<InstanceCreation> resourceCreations, ExportFormat exportFormat) {
+    final JsonModelIo jsonModelIo = new JsonModelIo(exportFormat);
+    jsonModelIo.initializeFromPersonResources(resourceCreations);
+    return jsonModelIo;
+  }
+
+  private void initializeFromPersonResources(Set<InstanceCreation> resourceCreations) {
+    InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+    modelResources = new HashSet<>();
+    for (InstanceCreation creation : resourceCreations) {
+      final Object instance = vm.createInstance(creation);
+      if (instance instanceof JointedModelResource) {
+        modelResources.add((JointedModelResource) instance);
+      }
+    }
+    ModelResourceInfo modelInfo = personModelInfo("PersonResource", "");
+    for (JointedModelResource resource: modelResources) {
+      modelInfo.addSubResource(personModelInfo(resource.toString(), resource.toString()));
+    }
+    modelManifest = modelInfo.createModelManifest();
+    modelManifest.parentClass = "BipedResource";
+  }
+
+  private ModelResourceInfo personModelInfo(String resourceName, String textureName) {
+    return new ModelResourceInfo(
+        null, resourceName, "EA", 2004,
+        new AxisAlignedBox(0, 0, 0, 1, 1, 1),
+        new String[0], new String[0], new String[0],
+        "Person", textureName, false, true);
   }
 
   //AliceResourcesUtilities.getTextureResourceName returns null for resources that use "default" texture names
@@ -89,7 +122,10 @@ public class JsonModelIo extends DataSourceIo {
     //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
     ModelResource firstResource = modelResources.get(0);
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
+    return copyResourceInfo(modelResources, rootInfo);
+  }
 
+  private static ModelResourceInfo copyResourceInfo(Iterable<JointedModelResource> modelResources, ModelResourceInfo rootInfo) {
     //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
     ModelResourceInfo toReturn = rootInfo.createShallowCopy();
     for (JointedModelResource modelResource : modelResources) {
@@ -99,26 +135,20 @@ public class JsonModelIo extends DataSourceIo {
       ModelResourceInfo newSubResource = subResource.createShallowCopy();
       toReturn.addSubResource(newSubResource);
     }
-
     return toReturn;
   }
 
   //Build a new ModelResourceInfo that includes only the resources in the modelResources list
-  private static ModelManifest createModelManifest(List<JointedModelResource> modelResources) {
-    //Get the ModelResourceInfo from the first resource in the list.
-    //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
-    ModelResource firstResource = modelResources.get(0);
+  private static ModelManifest createModelManifest(Set<JointedModelResource> modelResources) {
+    if (modelResources == null || modelResources.isEmpty()) {
+      return null;
+    }
+    //Get the ModelResourceInfo from the first resource found.
+    //Then get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
+    JointedModelResource firstResource = modelResources.iterator().next();
     ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
-    //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
-    ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
-    for (JointedModelResource modelResource : modelResources) {
-      String visualName = AliceResourceUtilties.getVisualResourceName(modelResource);
-      String textureName = getTextureName(modelResource);
-      ModelResourceInfo subResource = rootInfo.getSubResource(visualName, textureName);
-      ModelResourceInfo newSubResource = subResource.createShallowCopy();
-      modelInfo.addSubResource(newSubResource);
-    }
+    ModelResourceInfo modelInfo = copyResourceInfo(modelResources, rootInfo);
 
     ModelManifest modelManifest = modelInfo.createModelManifest();
     //Alice resources are enums that implement the base resource interfaces. For instance, the Alien implements the BipedResource interface
@@ -126,10 +156,8 @@ public class JsonModelIo extends DataSourceIo {
     String parentClassName = AliceResourceClassUtilities.getAliceClassName(superClass);
     modelManifest.parentClass = parentClassName;
     //If this model is defined by JointedModelResources, then add the model data from that
-    if (modelResources != null && modelResources.size() > 0) {
-      //We use the first resource because the poses are defined on the resource enum, not on each resource instance
-      addModelDataFromResource(modelManifest, modelResources.get(0));
-    }
+    //We use the first resource because the poses are defined on the resource enum, not on each resource instance
+    addModelDataFromResource(modelManifest, firstResource);
 
     return modelManifest;
   }
@@ -232,22 +260,18 @@ public class JsonModelIo extends DataSourceIo {
     return newJointArrayId;
   }
 
-  private static List<String> createRootJoints(Method getRootJointsMethod, JointedModelResource modelResource) {
-    List<String> rootJoints = new ArrayList<>();
-
-    JointId[] rootJointIds = null;
+  private static void addRootJoints(ModelManifest manifest, JointedModelResource modelResource) {
     try {
-      rootJointIds = (JointId[]) getRootJointsMethod.invoke(modelResource);
-    } catch (InvocationTargetException e) {
-      return null;
-    } catch (IllegalAccessException e) {
-      return null;
+      // This handles only BasicResource (Props) where getRootJointIds is defined
+      // TODO Add JOINT_ID_ROOTS, add a common access pattern on JointedModelResource, or replace resources and revisit this code
+      Method rootJointsMethod = modelResource.getClass().getMethod("getRootJointIds");
+      JointId[] rootJointIds = (JointId[]) rootJointsMethod.invoke(modelResource);
+      for (JointId jointId : rootJointIds) {
+        manifest.rootJoints.add(jointId.toString());
+      }
+    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+      Logger.info("No getRootJointIds found on model " + manifest.description.name);
     }
-    for (JointId jointId : rootJointIds) {
-      rootJoints.add(jointId.toString());
-    }
-
-    return rootJoints;
   }
 
   //Add poses, additionalJoints, additionalJointArrays, additionalJointArrayIds, and rootJoints
@@ -265,12 +289,7 @@ public class JsonModelIo extends DataSourceIo {
         manifest.additionalJointArrayIds.add(createJointArrayId(field, modelResource));
       }
     }
-    try {
-      Method rootJointMethod = modelResource.getClass().getMethod("getRootJointIds");
-      manifest.rootJoints.addAll(createRootJoints(rootJointMethod, modelResource));
-    } catch (NoSuchMethodException e) {
-      Logger.warning("No getRootJointIds found on model " + manifest.description.name);
-    }
+    addRootJoints(manifest, modelResource);
   }
 
   private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
@@ -284,6 +303,14 @@ public class JsonModelIo extends DataSourceIo {
     return null;
   }
 
+  private Mesh createFlippedMesh(Mesh toFlip) {
+    Mesh newMesh = toFlip.createCopy();
+    newMesh.invertNormals();
+    newMesh.invertIndices();
+    newMesh.setName(toFlip.getName() + "_flipped");
+    return newMesh;
+  }
+
   private SkeletonVisual getVisualForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (skeletonVisuals != null) {
       for (SkeletonVisual visual : skeletonVisuals) {
@@ -295,29 +322,70 @@ public class JsonModelIo extends DataSourceIo {
       return skeletonVisuals.get(0);
     } else if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory(modelResource).createVisualData();
-      SkeletonVisual sv = (SkeletonVisual) v.getSgVisuals()[0];
-      if (NORMALIZE_WEIGHTS) {
-        sv.normalizeWeightedMeshes();
+      if (modelResource == null) {
+        return null;
       }
-      return sv;
+      final JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> factory = modelResource.getImplementationAndVisualFactory();
+      return getSkeletonVisual(factory.createVisualData(), modelResource);
     }
     return null;
   }
 
-  private BufferedImage getThumbnailImageForSkeletonVisual(SkeletonVisual sv) {
-    if (skeletonVisuals != null) {
-      int index = this.skeletonVisuals.indexOf(sv);
-      return this.thumbnails.get(index);
+
+  private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
+    SkeletonVisual sv = v.getSgVisualForExporting(modelResource);
+    //Make sure meshes have a name
+    int meshCount = 0;
+    for (Geometry g : sv.geometries.getValue()) {
+      if ((g instanceof Mesh) && g.getName() == null) {
+        g.setName("mesh" + meshCount++);
+      }
     }
-    return null;
+    int weightedMeshCount = 0;
+    for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+      if (m.getName() == null) {
+        m.setName("weightedMesh" + weightedMeshCount++);
+      }
+    }
+    if (GENERATE_BACKFACES) {
+      List<Geometry> backfaceMeshes = new LinkedList<>();
+      for (Geometry g : sv.geometries.getValue()) {
+        if ((g instanceof Mesh) && !((Mesh) g).cullBackfaces.getValue()) {
+          backfaceMeshes.add(createFlippedMesh((Mesh) g));
+        }
+      }
+      if (backfaceMeshes.size() > 0) {
+        for (int i = 0; i < sv.geometries.getLength(); i++) {
+          backfaceMeshes.add(i, sv.geometries.getValue()[i]);
+        }
+        sv.geometries.setValue(backfaceMeshes.toArray(new Geometry[backfaceMeshes.size()]));
+      }
+      List<WeightedMesh> backfaceWeightedMeshes = new LinkedList<>();
+      for (WeightedMesh m : sv.weightedMeshes.getValue()) {
+        if (!m.cullBackfaces.getValue()) {
+          backfaceWeightedMeshes.add((WeightedMesh) createFlippedMesh(m));
+        }
+      }
+      if (backfaceWeightedMeshes.size() > 0) {
+        for (int i = 0; i < sv.weightedMeshes.getLength(); i++) {
+          backfaceWeightedMeshes.add(i, sv.weightedMeshes.getValue()[i]);
+        }
+        sv.weightedMeshes.setValue(backfaceWeightedMeshes.toArray(new WeightedMesh[backfaceWeightedMeshes.size()]));
+      }
+
+    }
+    if (NORMALIZE_WEIGHTS) {
+      sv.normalizeWeightedMeshes();
+    }
+    return sv;
   }
 
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
     if (modelResources != null) {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      BufferedImage classThumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass());
-      return classThumbnailImage;
+      if (modelResource != null && !modelResource.getImplementationAndVisualFactory().isSims()) {
+        return AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelVariant.name);
+      }
     }
     return null;
   }
@@ -393,7 +461,7 @@ public class JsonModelIo extends DataSourceIo {
 
     //Get the existing texture set defined by the modelInfo.
     ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
-    //Now that we have a model and exporter, use this to get the id to image map
+    //Now that we have a model and exporter, use this to get the name to image map
     textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
     //Get all the textures from the model as data sources
     List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
@@ -404,7 +472,7 @@ public class JsonModelIo extends DataSourceIo {
         Integer imageId = exporter.getTextureIdForName(imageFileName);
         String imageName = textureSet.idToResourceMap.get(imageId);
         ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
-        //ResourceReference have their id initialized to the filename of the resource.
+        //ResourceReference have their name initialized to the filename of the resource.
         //We need it to be the imageName from the idToResourceMap
         imageReference.name = imageName;
         manifest.resources.add(imageReference);
@@ -420,6 +488,9 @@ public class JsonModelIo extends DataSourceIo {
     String resourcePath = baseModelPath + "/" + getModelName();
     for (ModelManifest.ModelVariant modelVariant : modelManifest.models) {
       SkeletonVisual sv = getVisualForModelVariant(modelVariant);
+      if (sv == null) {
+        break;
+      }
       if (exportFormat == ExportFormat.COLLADA) {
         addColladaDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
       } else if (exportFormat == ExportFormat.ALICE) {
@@ -427,17 +498,14 @@ public class JsonModelIo extends DataSourceIo {
       } else {
         Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
       }
-      //Add DataSources for the thumbnails
-      BufferedImage thumbnailImage;
-      if (this.skeletonVisuals != null) {
-        thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
-      } else {
-        thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
+      //Add DataSources for the thumbnails if possible
+      BufferedImage thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
+      if (thumbnailImage != null) {
+        String thumbnailName = modelVariant.name + ".png";
+        modelVariant.icon = thumbnailName;
+        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
+        dataToWrite.add(thumbnailDataSource);
       }
-      String thumbnailName = modelVariant.name + ".png";
-      modelVariant.icon = thumbnailName;
-      DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
-      dataToWrite.add(thumbnailDataSource);
     }
 
     BufferedImage thumbnailImage;
@@ -446,11 +514,12 @@ public class JsonModelIo extends DataSourceIo {
     } else {
       thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
     }
-    String classIconName = getModelName() + "_cls.png";
-    DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
-    dataToWrite.add(thumbnailDataSource);
-    modelManifest.description.icon = classIconName;
-
+    if (thumbnailImage != null) {
+      String classIconName = getModelName() + "_cls.png";
+      DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
+      dataToWrite.add(thumbnailDataSource);
+      modelManifest.description.icon = classIconName;
+    }
     //The model manifest goes in the base model path directory
     dataToWrite.add(createDataSource(resourcePath + "/" + getModelName() + ".json", ManifestEncoderDecoder.toJson(modelManifest)));
     return dataToWrite;

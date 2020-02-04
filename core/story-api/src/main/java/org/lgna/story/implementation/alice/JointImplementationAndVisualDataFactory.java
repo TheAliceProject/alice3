@@ -95,6 +95,11 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     }
 
     @Override
+    public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
+      return this.sgSkeletonVisual;
+    }
+
+    @Override
     public double getBoundingSphereRadius() {
       return 1.0;
     }
@@ -222,6 +227,11 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   @Override
   public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
     return AliceResourceUtilties.getOriginalJointTransformation(this.resource, jointId);
+  }
+
+  @Override
+  public boolean isSims() {
+    return false;
   }
 
   @Override

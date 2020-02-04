@@ -79,14 +79,12 @@
 
     <alice.build.version>3.5.0.1</alice.build.version>
     <alice.build.prerelease>-beta</alice.build.prerelease>
-    <alice.build.metadata></alice.build.metadata>
-    <nebulous.person.version>2014.08.12</nebulous.person.version>
-    <nebulous.lib.version>2017.05.01</nebulous.lib.version>
+    <alice.build.metadata>+export</alice.build.metadata>
 
     <netbeans.version>RELEASE82</netbeans.version>
     <guava.version>13.0.1</guava.version>
     <commons.discovery.version>0.5</commons.discovery.version>
-
+    <openhtml.version>1.0.0</openhtml.version>
   </properties>
 
   <modules>
@@ -260,6 +258,45 @@
         <artifactId>jai-core</artifactId>
         <version>1.1.3</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-all -->
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-all</artifactId>
+        <version>1.11</version>
+        <type>pom</type>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-svggen -->
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-svggen</artifactId>
+        <version>1.11</version>
+      </dependency>
+
+      <dependency>
+        <!-- ALWAYS required. -->
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-core</artifactId>
+        <version>${openhtml.version}</version>
+      </dependency>
+      <dependency>
+        <!-- Required for PDF output. -->
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-pdfbox</artifactId>
+        <version>${openhtml.version}</version>
+      </dependency>
+      <dependency>
+        <!-- Optional, leave out if you do not need right-to-left or bi-directional text support. -->
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-rtl-support</artifactId>
+        <version>${openhtml.version}</version>
+      </dependency>
+      <dependency>
+        <!-- Optional, leave out if you do not need SVG support. -->
+        <groupId>com.openhtmltopdf</groupId>
+        <artifactId>openhtmltopdf-svg-support</artifactId>
+        <version>${openhtml.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>uk.co.caprica</groupId>
         <artifactId>vlcj</artifactId>

@@ -59,7 +59,7 @@ public final class SuperConstructorInvocationStatement extends ConstructorInvoca
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendSuperConstructor(this);
+  public void process(AstProcessor processor) {
+    processor.processSuperConstructor(this);
   }
 }

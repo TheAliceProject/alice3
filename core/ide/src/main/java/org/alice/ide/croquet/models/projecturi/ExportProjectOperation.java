@@ -42,8 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.icons.Icons;
+import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +55,10 @@ import java.util.UUID;
 public class ExportProjectOperation extends AbstractSaveProjectOperation {
   public ExportProjectOperation() {
     super(UUID.fromString("44ffba8a-ff13-4cb5-9736-55cd93c48e9d"));
+  }
+  @Override
+  protected String getExtension() {
+    return IoUtilities.EXPORT_EXTENSION;
   }
 
   @Override
@@ -72,6 +79,12 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
 
   @Override
   protected void save(ProjectApplication application, File file) throws IOException {
-    application.exportProjectTo(file);
+    try {
+      application.exportProjectTo(file);
+    } catch (Exception e) {
+      e.printStackTrace();
+      Logger.warning("Unable to export", e);
+      Dialogs.showWarning("Unable to Export", "There was a problem exporting this world");
+    }
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.lgna.project.code;
 
-package org.alice.ide.member;
-
-import org.lgna.project.ast.JavaMethod;
-
-import java.util.UUID;
-
-/**
- * @author Dennis Cosgrove
- */
-public class UnclaimedJavaProceduresComposite extends UnclaimedJavaMethodsComposite {
-  private static class SingletonHolder {
-    private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
-  }
-
-  public static UnclaimedJavaProceduresComposite getInstance() {
-    return SingletonHolder.instance;
-  }
-
-  private UnclaimedJavaProceduresComposite() {
-    super(UUID.fromString("1ecd0cc1-1336-4c89-b099-5d17cb381aed"));
-  }
-
-  @Override
-  protected boolean isAcceptingOf(JavaMethod method) {
-    return method.isProcedure();
-  }
+public interface SymbolicOperator extends PrecedentedOperation {
+  String getSymbol();
 }

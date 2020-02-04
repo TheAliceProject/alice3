@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,66 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.member;
+package org.lgna.project.io;
 
-import org.alice.ide.member.views.MethodsSubView;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.JavaMethod;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.lgna.project.ast.*;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.ModelResource;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposite {
-  protected static int compareMethodNames(JavaMethod methodA, JavaMethod methodB) {
-    if (methodA != null) {
-      if (methodB != null) {
-        return methodA.getName().compareTo(methodB.getName());
-      } else {
-        return 1;
-      }
-    } else {
-      if (methodB != null) {
-        return -1;
-      } else {
-        return 0;
+public class ModelResourceCrawler implements Crawler {
+  Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
+  Set<InstanceCreation> personCreations = new HashSet<>();
+
+  @Override
+  public void visit(Crawlable crawlable) {
+    if (crawlable == null) {
+      return;
+    }
+    if (FieldAccess.class.isAssignableFrom(crawlable.getClass())) {
+      addIfResourceEnum((FieldAccess) crawlable);
+    }
+    if (InstanceCreation.class.isAssignableFrom(crawlable.getClass())) {
+      addIfSimsPersonResourceCreation((InstanceCreation) crawlable);
+    }
+  }
+
+  private void addIfResourceEnum(FieldAccess fieldAccess) {
+    AbstractType<?, ?, ?> type = fieldAccess.getType();
+    if (type != null && type.isAssignableTo(JointedModelResource.class)) {
+      JavaField field = (JavaField) fieldAccess.field.getValue();
+      try {
+        JointedModelResource modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
+        final String resourceName = modelResource.getClass().getSimpleName();
+        final String modelName = modelNameForResource(resourceName);
+        Set<JointedModelResource> resources = modelResources.computeIfAbsent(modelName, k -> new HashSet<>());
+        resources.add(modelResource);
+      } catch (IllegalAccessException e) {
+        e.printStackTrace(); //TODO: Log this
       }
     }
   }
 
-  private List<JavaMethod> methods = Collections.emptyList();
-
-  public FilteredJavaMethodsSubComposite(UUID migrationId, boolean isExpandedInitialValue) {
-    super(migrationId, isExpandedInitialValue);
+  private String modelNameForResource(String resourceName) {
+    return resourceName.endsWith("Resource")
+        ? resourceName.substring(0, resourceName.length() - 8)
+        : resourceName;
   }
 
-  public abstract Comparator<JavaMethod> getComparator();
-
-  @Override
-  protected void localize() {
-    super.localize();
-    this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse(this.findDefaultLocalizedText());
-  }
-
-  protected abstract boolean isAcceptingOf(JavaMethod method);
-
-  @Override
-  public List<? extends AbstractMethod> getMethods() {
-    return this.methods;
-  }
-
-  @Override
-  protected MethodsSubView<FilteredJavaMethodsSubComposite> createView() {
-    return new MethodsSubView<FilteredJavaMethodsSubComposite>(this);
-  }
-
-  public void sortAndSetMethods(List<JavaMethod> unsortedMethods) {
-    Collections.sort(unsortedMethods, this.getComparator());
-    this.methods = Collections.unmodifiableList(unsortedMethods);
-    this.getView().refreshLater();
+  private void addIfSimsPersonResourceCreation(InstanceCreation resourceCreation) {
+    AbstractType<?, ?, ?> resourceType = resourceCreation.constructor.getValue().getDeclaringType();
+    final Class<?> resourceClass = resourceType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+    if (ModelResource.class.isAssignableFrom(resourceClass)) {
+      personCreations.add(resourceCreation);
+    }
   }
 }

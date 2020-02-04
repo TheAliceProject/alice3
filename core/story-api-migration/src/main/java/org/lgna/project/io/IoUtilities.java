@@ -65,6 +65,7 @@ public abstract class IoUtilities {
     throw new AssertionError();
   }
 
+  public static final String EXPORT_EXTENSION = "a3w";
   public static final String PROJECT_EXTENSION = "a3p";
   public static final String TYPE_EXTENSION = "a3c";
   public static final String BACKUP_EXTENSION = "bak";

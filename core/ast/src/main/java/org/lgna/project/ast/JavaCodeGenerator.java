@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.java.util.Sets;
 import org.lgna.common.EachInTogetherRunnable;
 import org.lgna.common.Resource;
 import org.lgna.common.ThreadUtilities;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.resource.ResourcesTypeWrapper;
 
@@ -159,8 +159,13 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  boolean isPublicStaticFinalFieldGetterDesired() {
+  public boolean isPublicStaticFinalFieldGetterDesired() {
     return isPublicStaticFinalFieldGetterDesired;
+  }
+
+  @Override
+  protected void appendConcatenationOperator() {
+    appendString(" + ");
   }
 
   @Override
@@ -173,7 +178,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendResourceExpression(ResourceExpression resourceExpression) {
+  public void processResourceExpression(ResourceExpression resourceExpression) {
     Resource resource = resourceExpression.resource.getValue();
     if (resource != null) {
       if (resourcesTypeWrapper != null) {
@@ -194,8 +199,8 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  void appendClass(CodeOrganizer codeOrganizer, NamedUserType userType) {
-    super.appendClass(codeOrganizer, userType);
+  public void processClass(CodeOrganizer codeOrganizer, NamedUserType userType) {
+    super.processClass(codeOrganizer, userType);
     // Prepend Imports
     getCodeStringBuilder().insert(0, getImports());
   }
@@ -203,9 +208,9 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   @Override
   protected void appendClassHeader(NamedUserType userType) {
     appendString("class ");
-    appendTypeName(userType);
+    processTypeName(userType);
     appendString(" extends ");
-    appendTypeName(userType.superType.getValue());
+    processTypeName(userType.superType.getValue());
     appendString("{");
   }
 
@@ -215,7 +220,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<CodeAppender>> entry) {
+  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
     boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection(entry.getKey());
     appendSectionPrefix(userType, entry.getKey(), shouldCollapseSection);
     super.appendSection(codeOrganizer, userType, entry);
@@ -237,17 +242,26 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendConstructor(NamedUserConstructor constructor) {
+  public void processConstructor(NamedUserConstructor constructor) {
     appendMemberPrefix(constructor);
-    constructor.getAccessLevel().appendCode(this);
-    appendTypeName(constructor.getDeclaringType());
+    appendString(constructor.getAccessLevel().getJavaText());
+    processTypeName(constructor.getDeclaringType());
     appendParameters(constructor);
     appendStatement(constructor.body.getValue());
     appendMemberPostfix(constructor);
   }
 
+
   @Override
-  protected void appendTypeName(AbstractType<?, ?, ?> type) {
+  public void processSuperConstructor(SuperConstructorInvocationStatement supCon) {
+    processSingleStatement(supCon, () -> {
+      processSuperReference();
+      appendArguments(supCon);
+    });
+  }
+
+  @Override
+  public void processTypeName(AbstractType<?, ?, ?> type) {
     if (type instanceof JavaType) {
       JavaType javaType = (JavaType) type;
       if (!javaType.isPrimitive()) {
@@ -279,9 +293,9 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendMethod(UserMethod method) {
+  public void processMethod(UserMethod method) {
     appendMemberPrefix(method);
-    super.appendMethod(method);
+    super.processMethod(method);
     appendMemberPostfix(method);
   }
 
@@ -291,53 +305,53 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
     if (overridenMethod != null) {
       appendString("@Override ");
     }
-    method.getAccessLevel().appendCode(this);
+    appendString(method.getAccessLevel().getJavaText());
     if (method.isStatic()) {
       appendString("static ");
     }
-    appendTypeName(method.getReturnType());
+    processTypeName(method.getReturnType());
     appendSpace();
     appendString(method.getName());
     appendParameters(method);
   }
 
   @Override
-  public void appendLocalDeclaration(LocalDeclarationStatement stmt) {
-    appendSingleStatement(stmt, () -> {
+  public void processLocalDeclaration(LocalDeclarationStatement stmt) {
+    processSingleStatement(stmt, () -> {
       UserLocal localVar = stmt.local.getValue();
       if (localVar.isFinal.getValue()) {
         appendString("final ");
       }
-      appendTypeName(localVar.getValueType());
+      processTypeName(localVar.getValueType());
       appendSpace();
       appendString(localVar.getValidName());
       appendAssignmentOperator();
-      appendExpression(stmt.initializer.getValue());
+      processExpression(stmt.initializer.getValue());
     });
   }
 
   @Override
-  protected void appendArgument(AbstractParameter parameter, AbstractArgument argument) {
-    argument.appendCode(this);
+  public void processArgument(AbstractParameter parameter, AbstractArgument argument) {
+    argument.process(this);
   }
 
   @Override
-  protected void appendKeyedArgument(JavaKeyedArgument arg) {
+  public void processKeyedArgument(JavaKeyedArgument arg) {
     Expression expressionValue = arg.expression.getValue();
     if (expressionValue instanceof MethodInvocation) {
       MethodInvocation methodInvocation = (MethodInvocation) expressionValue;
       AbstractMethod method = methodInvocation.method.getValue();
       AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType(arg);
       if (factoryType != null) {
-        appendTypeName(factoryType);
+        processTypeName(factoryType);
         appendChar('.');
         appendString(method.getName());
         appendArguments(methodInvocation);
       } else {
-        appendExpression(expressionValue);
+        processExpression(expressionValue);
       }
     } else {
-      appendExpression(expressionValue);
+      processExpression(expressionValue);
     }
   }
 
@@ -386,7 +400,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendCountLoop(CountLoop loop) {
+  public void processCountLoop(CountLoop loop) {
     appendCodeFlowStatement(loop, () -> {
       String variableName = loop.getVariableName();
       appendString("for(Integer ");
@@ -394,7 +408,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       appendString("=0;");
       appendString(variableName);
       appendString("<");
-      appendExpression(loop.count.getValue());
+      processExpression(loop.count.getValue());
       appendString(";");
       appendString(variableName);
       appendString("++)");
@@ -413,7 +427,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendDoInOrder(DoInOrder doInOrder) {
+  public void processDoInOrder(DoInOrder doInOrder) {
     openBlock();
     try {
       final String doInOrderName = ResourceBundleUtilities.getStringFromSimpleNames(doInOrder.getClass(), "org.alice.ide.controlflow.Templates");
@@ -430,7 +444,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendDoTogether(DoTogether doTogether) {
+  public void processDoTogether(DoTogether doTogether) {
     JavaType threadUtilitiesType = JavaType.getInstance(ThreadUtilities.class);
     JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod("doTogether", Runnable[].class);
     TypeExpression target = new TypeExpression(threadUtilitiesType);
@@ -464,7 +478,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendEachInTogether(AbstractEachInTogether eachInTogether) {
+  public void processEachInTogether(AbstractEachInTogether eachInTogether) {
     JavaType threadUtilitiesType = JavaType.getInstance(ThreadUtilities.class);
     JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod("eachInTogether", EachInTogetherRunnable.class, Object[].class);
     TypeExpression target = new TypeExpression(threadUtilitiesType);
@@ -475,17 +489,17 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
     AbstractType<?, ?, ?> itemType = itemValue.getValueType();
     if (isLambdaSupported()) {
       appendString("(");
-      appendTypeName(itemType);
+      processTypeName(itemType);
       appendSpace();
       appendString(itemValue.getName());
       appendString(")->");
     } else {
       appendString("new ");
-      appendTypeName(JavaType.getInstance(EachInTogetherRunnable.class));
+      processTypeName(JavaType.getInstance(EachInTogetherRunnable.class));
       appendString("<");
-      appendTypeName(itemType);
+      processTypeName(itemType);
       appendString(">() { public void run(");
-      appendTypeName(itemType);
+      processTypeName(itemType);
       appendSpace();
       appendString(itemValue.getName());
       appendString(")");
@@ -499,11 +513,11 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation) arrayOrIterableExpression;
       for (Expression variableLengthExpression : arrayInstanceCreation.expressions) {
         appendString(",");
-        appendExpression(variableLengthExpression);
+        processExpression(variableLengthExpression);
       }
     } else {
       appendString(",");
-      appendExpression(arrayOrIterableExpression);
+      processExpression(arrayOrIterableExpression);
     }
     appendString(");");
   }
@@ -523,9 +537,9 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void formatMultiLineComment(String comment) {
+  public void processMultiLineComment(String comment) {
     appendNewLine();
-    super.formatMultiLineComment(comment);
+    super.processMultiLineComment(comment);
   }
 
   private String formatBlockComment(String commentText) {
@@ -584,37 +598,37 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  public void appendField(UserField field) {
+  public void processField(UserField field) {
     appendMemberPrefix(field);
-    field.getAccessLevel().appendCode(this);
+    appendString(field.getAccessLevel().getJavaText());
     if (field.isStatic()) {
       appendString("static ");
     }
     if (field.isFinal()) {
       appendString("final ");
     }
-    super.appendField(field);
+    super.processField(field);
     appendMemberPostfix(field);
   }
 
   @Override
-  public void appendGetter(Getter getter) {
+  public void processGetter(Getter getter) {
     appendMemberPrefix(getter);
-    super.appendGetter(getter);
+    super.processGetter(getter);
     appendMemberPostfix(getter);
   }
 
   @Override
-  public void appendSetter(Setter setter) {
+  public void processSetter(Setter setter) {
     appendMemberPrefix(setter);
-    super.appendSetter(setter);
+    super.processSetter(setter);
     appendMemberPostfix(setter);
   }
 
   @Override
-  public void appendLambda(UserLambda lambda) {
+  public void processLambda(UserLambda lambda) {
     appendMemberPrefix(lambda);
-    super.appendLambda(lambda);
+    super.processLambda(lambda);
     appendMemberPostfix(lambda);
   }
 

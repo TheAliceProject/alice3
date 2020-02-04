@@ -69,6 +69,15 @@ public abstract class Geometry extends Element {
 
   protected abstract void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation);
 
+  public Geometry() {
+    super();
+  }
+
+  public Geometry(Geometry g) {
+    boundingBox.set(g.boundingBox);
+    boundingSphere.set(g.boundingSphere);
+  }
+
   public AffineMatrix4x4 getPlane(AffineMatrix4x4 rv) {
     Vector3 forward = new Vector3();
     Vector3 upGuide = new Vector3();

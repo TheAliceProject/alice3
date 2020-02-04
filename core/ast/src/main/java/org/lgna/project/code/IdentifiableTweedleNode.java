@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,84 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.lgna.project.code;
 
-package edu.cmu.cs.dennisc.render.gl.imp.adapters;
+import org.alice.serialization.tweedle.Encoder;
 
-import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.scenegraph.MultipleAppearance;
-
-/**
- * @author Dennis Cosgrove
- */
-public class GlrMultipleAppearance extends GlrAppearance<MultipleAppearance> {
-  @Override
-  public boolean isActuallyShowing() {
-    assert this.glrSingleAppearances != null;
-    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
-      assert sao != null;
-      if (sao.isActuallyShowing()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public boolean isAlphaBlended() {
-    assert this.glrSingleAppearances != null;
-    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
-      assert sao != null;
-      if (sao.isAlphaBlended()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
-  public boolean isAllAlphaBlended() {
-    assert this.glrSingleAppearances != null;
-    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
-      assert sao != null;
-      if (!sao.isAllAlphaBlended()) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
-  public boolean isEthereal() {
-    assert this.glrSingleAppearances != null;
-    for (GlrTexturedAppearance sao : this.glrSingleAppearances) {
-      assert sao != null;
-      if (sao.isEthereal()) {
-        //pass
-      } else {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  @Override
-  public void setPipelineState(RenderContext rc, int face) {
-    rc.setMultipleAppearance(face, this);
-  }
-
-  public void setPipelineState(RenderContext rc, int face, int index) {
-    this.glrSingleAppearances[index].setPipelineState(rc, face);
-  }
-
-  @Override
-  protected void propertyChanged(InstanceProperty<?> property) {
-    if (property == owner.singleAppearances) {
-      this.glrSingleAppearances = AdapterFactory.getAdaptersFor(owner.singleAppearances.getValue(), GlrTexturedAppearance.class);
-    } else {
-      super.propertyChanged(property);
-    }
-  }
-
-  private GlrTexturedAppearance[] glrSingleAppearances;
+public interface IdentifiableTweedleNode {
+  String getCodeIdentifier(Encoder processor);
 }

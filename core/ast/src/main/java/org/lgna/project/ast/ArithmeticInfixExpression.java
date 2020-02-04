@@ -42,14 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.SymbolicOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
-  public enum Operator implements PrecedentedAppender {
-    PLUS() {
+  public enum Operator implements SymbolicOperator {
+    PLUS("+", 11) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -71,17 +71,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('+');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 11;
-      }
-    }, MINUS() {
+    }, MINUS("-", 11) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -103,17 +93,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('-');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 11;
-      }
-    }, TIMES() {
+    }, TIMES("*", 12) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -135,17 +115,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('*');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 12;
-      }
-    }, REAL_DIVIDE() {
+    }, REAL_DIVIDE("/", 12) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -167,17 +137,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('/');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 12;
-      }
-    }, INTEGER_DIVIDE() {
+    }, INTEGER_DIVIDE("/", 12) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -199,17 +159,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('/');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 12;
-      }
-    }, REAL_REMAINDER() {
+    }, REAL_REMAINDER("%", 12) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -231,17 +181,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('%');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 12;
-      }
-    }, INTEGER_REMAINDER() {
+    }, INTEGER_REMAINDER("%", 12) {
       @Override
       public Number operate(Number leftOperand, Number rightOperand) {
         assert leftOperand != null : this;
@@ -263,22 +203,27 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
           throw new RuntimeException();
         }
       }
-
-      @Override
-      public void appendCode(SourceCodeGenerator generator) {
-        generator.appendChar('%');
-      }
-
-      @Override
-      public int getLevelOfPrecedence() {
-        return 12;
-      }
     };
+
+    Operator(String symbol, int precedence) {
+      this.symbol = symbol;
+      this.precedence = precedence;
+    }
 
     public abstract Number operate(Number leftOperand, Number rightOperand);
 
     @Override
-    public abstract void appendCode(SourceCodeGenerator generator);
+    public String getSymbol() {
+      return symbol;
+    }
+
+    @Override
+    public int getLevelOfPrecedence() {
+      return precedence;
+    }
+
+    private final String symbol;
+    private final int precedence;
   }
 
   public ArithmeticInfixExpression() {

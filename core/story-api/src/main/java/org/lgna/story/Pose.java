@@ -42,18 +42,20 @@
  */
 package org.lgna.story;
 
+import org.alice.serialization.tweedle.Encoder;
+import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.story.implementation.JointIdTransformationPair;
 
 /**
  * @author Matt May
  */
-public class Pose<M extends SJointedModel> {
+public class Pose<M extends SJointedModel> implements InstantiableTweedleNode {
   public Pose(Class<M> modelCls, JointIdTransformationPair... pairs) {
     this.modelCls = modelCls;
     this.jointTPairs = pairs;
   }
 
-  /*package-private*/Class<M> getModelClass() {
+  Class<M> getModelClass() {
     return this.modelCls;
   }
 
@@ -63,4 +65,9 @@ public class Pose<M extends SJointedModel> {
 
   private final Class<M> modelCls;
   private final JointIdTransformationPair[] jointTPairs;
+
+  @Override
+  public void encodeDefinition(Encoder processor) {
+    processor.appendNewPose(jointTPairs);
+  }
 }

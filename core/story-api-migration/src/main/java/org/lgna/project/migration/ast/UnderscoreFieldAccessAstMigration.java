@@ -56,8 +56,8 @@ import java.lang.reflect.Field;
  * @author Dennis Cosgrove
  */
 public class UnderscoreFieldAccessAstMigration extends FieldAccessAstMigration {
-  public UnderscoreFieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
-    super(minimumVersion, resultVersion);
+  public UnderscoreFieldAccessAstMigration(Version resultVersion) {
+    super(resultVersion);
   }
 
   @Override

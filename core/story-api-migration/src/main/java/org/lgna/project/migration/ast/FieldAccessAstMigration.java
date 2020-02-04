@@ -56,8 +56,8 @@ import org.lgna.project.migration.AstMigration;
  * @deprecated Use CompoundMigration with NodeMigrations going forward
  */
 @Deprecated public abstract class FieldAccessAstMigration extends AstMigration {
-  FieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
-    super(minimumVersion, resultVersion);
+  FieldAccessAstMigration(Version resultVersion) {
+    super(resultVersion);
   }
 
   protected abstract void migrate(FieldAccess fieldAccess);

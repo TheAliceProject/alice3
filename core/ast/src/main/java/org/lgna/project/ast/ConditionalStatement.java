@@ -56,8 +56,8 @@ public final class ConditionalStatement extends Statement {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendConditional(this);
+  public void process(AstProcessor processor) {
+    processor.processConditional(this);
   }
 
   @Override

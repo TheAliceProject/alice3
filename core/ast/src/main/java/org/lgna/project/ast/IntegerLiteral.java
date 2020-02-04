@@ -78,8 +78,8 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendInt(value.getValue());
+  public void process(AstProcessor processor) {
+    processor.processInt(value.getValue());
   }
 
   public final IntegerProperty value = new IntegerProperty(this, 0);

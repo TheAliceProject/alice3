@@ -218,7 +218,7 @@ public class ClipboardDragComponent extends DragComponent<DragModel> {
           Object prevTextAntialiasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
           g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
           GraphicsUtilities.drawCenteredText(g, Integer.toString(Clipboard.SINGLETON.getStackSize()), this.getSize());
-          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing);
+          g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing == null ? RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT : prevTextAntialiasing);
         }
       }
     };

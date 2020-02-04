@@ -85,6 +85,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
         fileNext = filePrevious;
       }
       isExceptionRaised = false;
+      application.showWaitCursor();
       if (fileNext != null) {
         try {
           this.save(application, fileNext);
@@ -98,6 +99,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
       } else {
         activity.cancel();
       }
+      application.hideWaitCursor();
     } while (isExceptionRaised);
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.member;
+package org.lgna.project.code;
 
-import org.lgna.project.ast.JavaMethod;
+import org.alice.serialization.tweedle.Encoder;
 
-import java.util.Comparator;
-import java.util.UUID;
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
-  private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
-    @Override
-    public int compare(JavaMethod methodA, JavaMethod methodB) {
-      return compareMethodNames(methodA, methodB);
-    }
-  };
-
-  public UnclaimedJavaMethodsComposite(UUID migrationId) {
-    super(migrationId, true);
-  }
-
-  @Override
-  public Comparator<JavaMethod> getComparator() {
-    return this.comparator;
-  }
+public interface InstantiableTweedleNode {
+  void encodeDefinition(Encoder processor);
 }

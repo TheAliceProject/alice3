@@ -44,9 +44,9 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.apache.commons.text.StringEscapeUtils;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.code.CodeOrganizer;
-import org.lgna.project.code.PrecedentedAppender;
+import org.lgna.project.code.PrecedentedOperation;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +54,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
-public abstract class SourceCodeGenerator {
+public abstract class SourceCodeGenerator implements AstProcessor {
 
   public SourceCodeGenerator(Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap, CodeOrganizer.CodeOrganizerDefinition defaultCodeDefinitionOrganizer) {
     codeOrganizerDefinitions = Collections.unmodifiableMap(codeOrganizerDefinitionMap);
@@ -71,13 +71,15 @@ public abstract class SourceCodeGenerator {
 
   // ** Class structure **
 
-  CodeOrganizer getNewCodeOrganizerForTypeName(String typeName) {
+  @Override
+  public CodeOrganizer getNewCodeOrganizerForTypeName(String typeName) {
     return new CodeOrganizer(codeOrganizerDefinitions.getOrDefault(typeName, defaultCodeOrganizerDefn));
   }
 
-  void appendClass(CodeOrganizer codeOrganizer, NamedUserType userType) {
+  @Override
+  public void processClass(CodeOrganizer codeOrganizer, NamedUserType userType) {
     appendClassHeader(userType);
-    for (Map.Entry<String, List<CodeAppender>> entry : codeOrganizer.getOrderedSections().entrySet()) {
+    for (Map.Entry<String, List<ProcessableNode>> entry : codeOrganizer.getOrderedSections().entrySet()) {
       if (!entry.getValue().isEmpty()) {
         appendSection(codeOrganizer, userType, entry);
       }
@@ -85,9 +87,9 @@ public abstract class SourceCodeGenerator {
     appendClassFooter();
   }
 
-  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<CodeAppender>> entry) {
-    for (CodeAppender item : entry.getValue()) {
-      item.appendCode(this);
+  protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
+    for (ProcessableNode item : entry.getValue()) {
+      item.process(this);
     }
   }
 
@@ -97,9 +99,8 @@ public abstract class SourceCodeGenerator {
 
   // ** Methods and Fields **
 
-  public abstract void appendConstructor(NamedUserConstructor constructor);
-
-  public void appendMethod(UserMethod method) {
+  @Override
+  public void processMethod(UserMethod method) {
     appendMethodHeader(method);
     appendStatement(method.body.getValue());
   }
@@ -107,26 +108,29 @@ public abstract class SourceCodeGenerator {
   public abstract void appendMethodHeader(AbstractMethod method);
 
   protected void appendParameters(Code code) {
-    openParen();
+    parenthesize(() -> appendParameters(code.getRequiredParameters()));
+  }
+
+  private void appendParameters(List<? extends AbstractParameter> requiredParameters) {
     String prefix = "";
     int i = 0;
-    for (AbstractParameter parameter : code.getRequiredParameters()) {
+    for (AbstractParameter parameter : requiredParameters) {
       appendString(prefix);
-      appendTypeName(parameter.getValueType());
+      appendParameterTypeName(parameter.getValueType());
       appendSpace();
       String parameterName = parameter.getValidName();
       appendString(parameterName != null ? parameterName : "p" + i);
       prefix = getListSeparator();
       i += 1;
     }
-    closeParen();
   }
 
   protected String getListSeparator() {
     return ",";
   }
 
-  public void appendGetter(Getter getter) {
+  @Override
+  public void processGetter(Getter getter) {
     UserField field = getter.getField();
     appendMethodHeader(getter);
     openBlock();
@@ -137,7 +141,8 @@ public abstract class SourceCodeGenerator {
     closeBlock();
   }
 
-  void appendIndexedGetter(ArrayItemGetter getter) {
+  @Override
+  public void processIndexedGetter(ArrayItemGetter getter) {
     UserField field = getter.getField();
     appendMethodHeader(getter);
     openBlock();
@@ -149,7 +154,8 @@ public abstract class SourceCodeGenerator {
     closeBlock();
   }
 
-  public void appendSetter(Setter setter) {
+  @Override
+  public void processSetter(Setter setter) {
     UserField field = setter.getField();
     appendMethodHeader(setter);
     openBlock();
@@ -162,7 +168,8 @@ public abstract class SourceCodeGenerator {
     closeBlock();
   }
 
-  void appendIndexedSetter(ArrayItemSetter setter) {
+  @Override
+  public void processIndexedSetter(ArrayItemSetter setter) {
     UserField field = setter.getField();
     appendMethodHeader(setter);
     openBlock();
@@ -176,13 +183,14 @@ public abstract class SourceCodeGenerator {
     closeBlock();
   }
 
-  public void appendField(UserField field) {
+  @Override
+  public void processField(UserField field) {
     appendSingleCodeLine(() -> {
-      appendTypeName(field.valueType.getValue());
+      processTypeName(field.valueType.getValue());
       appendSpace();
       appendString(field.name.getValue());
       appendAssignmentOperator();
-      appendExpression(field.initializer.getValue());
+      processExpression(field.initializer.getValue());
     });
   }
 
@@ -194,7 +202,7 @@ public abstract class SourceCodeGenerator {
       pushStatementDisabled();
     }
     try {
-      stmt.appendCode(this);
+      stmt.process(this);
     } finally {
       if (isDisabled) {
         popStatementDisabled();
@@ -202,26 +210,28 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  public abstract void appendLocalDeclaration(LocalDeclarationStatement stmt);
-
-  void appendExpressionStatement(ExpressionStatement stmt) {
-    appendSingleStatement(stmt, () -> appendExpression(stmt.expression.getValue()));
+  @Override
+  public void processExpressionStatement(ExpressionStatement stmt) {
+    processSingleStatement(stmt, () -> processExpression(stmt.expression.getValue()));
   }
 
-  void appendReturnStatement(ReturnStatement stmt) {
-    appendSingleStatement(stmt, () -> {
+  @Override
+  public void processReturnStatement(ReturnStatement stmt) {
+    processSingleStatement(stmt, () -> {
       appendString("return ");
-      appendExpression(stmt.expression.getValue());
+      processExpression(stmt.expression.getValue());
     });
   }
 
-  void appendBlock(BlockStatement blockStatement) {
+  @Override
+  public void processBlock(BlockStatement blockStatement) {
     openBlock();
     appendBody(blockStatement);
     closeBlock();
   }
 
-  void appendConstructorBlock(ConstructorBlockStatement constructor) {
+  @Override
+  public void processConstructorBlock(ConstructorBlockStatement constructor) {
     openBlock();
     appendStatement(constructor.constructorInvocationStatement.getValue());
     appendBody(constructor);
@@ -234,22 +244,19 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendSuperConstructor(SuperConstructorInvocationStatement supCon) {
-    appendSingleStatement(supCon, () -> {
-      appendSuperReference();
-      appendArguments(supCon);
-    });
-  }
-
-  void appendThisConstructor(ThisConstructorInvocationStatement thisCon) {
-    appendSingleStatement(thisCon, () -> {
-      appendThisReference();
+  @Override
+  public void processThisConstructor(ThisConstructorInvocationStatement thisCon) {
+    processSingleStatement(thisCon, () -> {
+      processThisReference();
       appendArguments(thisCon);
     });
   }
 
   void appendArguments(ArgumentOwner argumentOwner) {
-    openParen();
+    parenthesize(() -> appendEachArgument(argumentOwner));
+  }
+
+  protected void appendEachArgument(ArgumentOwner argumentOwner) {
     String prefix = "";
     for (SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty()) {
       appendString(prefix);
@@ -266,7 +273,6 @@ public abstract class SourceCodeGenerator {
       appendArgument(argument);
       prefix = getListSeparator();
     }
-    closeParen();
   }
 
   private void appendArgument(SimpleArgument arg) {
@@ -282,17 +288,15 @@ public abstract class SourceCodeGenerator {
     AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType(parameter.getValueType());
     pushTypeForLambda(type);
     try {
-      appendArgument(parameter, argument);
+      processArgument(parameter, argument);
     } finally {
       assert popTypeForLambda() == type;
     }
   }
 
-  protected abstract void appendArgument(AbstractParameter parameter, AbstractArgument argument);
+  public abstract void processArgument(AbstractParameter parameter, AbstractArgument argument);
 
-  protected abstract void appendKeyedArgument(JavaKeyedArgument arg);
-
-  protected void appendSingleStatement(Statement stmt, Runnable appender) {
+  public void processSingleStatement(Statement stmt, Runnable appender) {
     appender.run();
     appendStatementCompletion(stmt);
   }
@@ -332,14 +336,13 @@ public abstract class SourceCodeGenerator {
     appender.run();
   }
 
-  void appendConditional(ConditionalStatement stmt) {
+  @Override
+  public void processConditional(ConditionalStatement stmt) {
     appendCodeFlowStatement(stmt, () -> {
       String text = "if";
       for (BooleanExpressionBodyPair booleanExpressionBodyPair : stmt.booleanExpressionBodyPairs) {
         appendString(text);
-        appendString("(");
-        appendExpression(booleanExpressionBodyPair.expression.getValue());
-        closeParen();
+        parenthesize(() -> processExpression(booleanExpressionBodyPair.expression.getValue()));
         appendStatement(booleanExpressionBodyPair.body.getValue());
         text = " else if";
       }
@@ -348,9 +351,8 @@ public abstract class SourceCodeGenerator {
     });
   }
 
-  public abstract void appendCountLoop(CountLoop loop);
-
-  void appendForEach(AbstractForEachLoop loop) {
+  @Override
+  public void processForEach(AbstractForEachLoop loop) {
     appendCodeFlowStatement(loop, () -> {
       UserLocal itemValue = loop.item.getValue();
       final Expression items = loop.getArrayOrIterableProperty().getValue();
@@ -363,31 +365,25 @@ public abstract class SourceCodeGenerator {
   protected abstract void appendForEachToken();
 
   protected void appendEachItemsClause(UserLocal itemValue, Expression items) {
-    openParen();
-    appendTypeName(itemValue.getValueType());
-    appendSpace();
-    appendString(itemValue.getValidName());
-    appendInEachToken();
-    appendExpression(items);
-    closeParen();
+    parenthesize(() -> {
+      processTypeName(itemValue.getValueType());
+      appendSpace();
+      appendString(itemValue.getValidName());
+      appendInEachToken();
+      processExpression(items);
+    });
   }
 
   protected abstract void appendInEachToken();
 
-  void appendWhileLoop(WhileLoop loop) {
+  @Override
+  public void processWhileLoop(WhileLoop loop) {
     appendCodeFlowStatement(loop, () -> {
-      appendString("while (");
-      appendExpression(loop.conditional.getValue());
-      closeParen();
+      appendString("while ");
+      parenthesize(() -> processExpression(loop.conditional.getValue()));
       appendStatement(loop.body.getValue());
     });
   }
-
-  public abstract void appendDoInOrder(DoInOrder doInOrder);
-
-  public abstract void appendDoTogether(DoTogether doTogether);
-
-  public abstract void appendEachInTogether(AbstractEachInTogether eachInTogether);
 
   private AbstractType<?, ?, ?> peekTypeForLambda() {
     return typeForLambdaStack.peek();
@@ -401,7 +397,8 @@ public abstract class SourceCodeGenerator {
     return typeForLambdaStack.pop();
   }
 
-  public void appendLambda(UserLambda lambda) {
+  @Override
+  public void processLambda(UserLambda lambda) {
     AbstractType<?, ?, ?> type = peekTypeForLambda();
     AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod(type);
     if (isLambdaSupported()) {
@@ -409,7 +406,7 @@ public abstract class SourceCodeGenerator {
       appendString("->");
     } else {
       appendString("new ");
-      appendTypeName(type);
+      processTypeName(type);
       appendString("()");
       openBlock();
       appendMethodHeader(singleAbstractMethod);
@@ -426,77 +423,89 @@ public abstract class SourceCodeGenerator {
 
   // ** Expressions **
 
-  protected void appendExpression(Expression expression) {
-    expression.appendCode(this);
+  @Override
+  public void processExpression(Expression expression) {
+    expression.process(this);
   }
 
-  void appendMethodCall(MethodInvocation invocation) {
+  @Override
+  public void processMethodCall(MethodInvocation invocation) {
     appendTargetAndMethodName(invocation.expression.getValue(), invocation.method.getValue());
     appendArguments(invocation);
   }
 
   protected void appendTargetAndMethodName(Expression target, AbstractMethod method) {
-    appendExpression(target);
-    appendChar('.');
-    appendString(method.getName());
+    appendTargetAndMember(target, method.getName(), method.getReturnType());
   }
 
-  protected abstract void appendResourceExpression(ResourceExpression resourceExpression);
+  protected void appendTargetAndMember(Expression target, String member, AbstractType<?, ?, ?> returnType) {
+    processExpression(target);
+    appendAccessSeparator();
+    appendString(member);
+  }
 
-  void appendAssignmentExpression(AssignmentExpression assignment) {
+  @Override
+  public void processAssignmentExpression(AssignmentExpression assignment) {
     appendPrecedented(assignment, () -> {
-      appendExpression(assignment.leftHandSide.getValue());
+      processExpression(assignment.leftHandSide.getValue());
       final AssignmentExpression.Operator assignmentOp = assignment.operator.getValue();
       if (AssignmentExpression.Operator.ASSIGN.equals(assignmentOp)) {
         appendAssignmentOperator();
       } else {
         // Only basic assignment is used in existing Alice code.
-        Logger.errln("Use of unexpected assignent operator " + assignmentOp + " in " + assignment);
-        assignmentOp.appendCode(this);
+        Logger.errln("Use of unexpected assignment operator " + assignmentOp + " in " + assignment);
+        appendString(assignmentOp.toString());
       }
-      appendExpression(assignment.rightHandSide.getValue());
+      processExpression(assignment.rightHandSide.getValue());
     });
   }
 
-  void appendConcatenation(StringConcatenation concat) {
+  @Override
+  public void processConcatenation(StringConcatenation concat) {
     appendPrecedented(concat, () -> {
-      appendExpression(concat.leftOperand.getValue());
-      appendChar('+');
-      appendExpression(concat.rightOperand.getValue());
+      processExpression(concat.leftOperand.getValue());
+      appendConcatenationOperator();
+      processExpression(concat.rightOperand.getValue());
     });
   }
 
-  void appendLogicalComplement(LogicalComplement complement) {
+  protected abstract void appendConcatenationOperator();
+
+  @Override
+  public void processLogicalComplement(LogicalComplement complement) {
     appendPrecedented(complement, () -> {
       appendChar('!');
-      appendExpression(complement.operand.getValue());
+      processExpression(complement.operand.getValue());
     });
   }
 
-  void appendInfixExpression(InfixExpression infixExpression) {
+  @Override
+  public void processInfixExpression(InfixExpression infixExpression) {
     appendPrecedented(infixExpression, () -> {
-      appendExpression(infixExpression.leftOperand.getValue());
-      infixExpression.getOperatorValue().appendCode(this);
-      appendExpression(infixExpression.rightOperand.getValue());
+      processExpression(infixExpression.leftOperand.getValue());
+      appendString(infixExpression.getOperatorValue().getSymbol());
+      processExpression(infixExpression.rightOperand.getValue());
     });
   }
 
-  void appendInstantiation(InstanceCreation creation) {
+  @Override
+  public void processInstantiation(InstanceCreation creation) {
     appendPrecedented(creation, () -> {
       appendString("new ");
       AbstractType<?, ?, ?> type = creation.getType();
       if (null == type) {
         type = ((UserField) creation.getParent()).valueType.getValue();
       }
-      appendTypeName(type);
+      processTypeName(type);
       appendArguments(creation);
     });
   }
 
-  void appendArrayInstantiation(ArrayInstanceCreation creation) {
+  @Override
+  public void processArrayInstantiation(ArrayInstanceCreation creation) {
     appendPrecedented(creation, () -> {
       appendString("new ");
-      appendTypeName(creation.arrayType.getValue().getComponentType());
+      processTypeName(creation.arrayType.getValue().getComponentType());
 
       //todo: lengths
       appendChar('[');
@@ -506,68 +515,65 @@ public abstract class SourceCodeGenerator {
       String prefix = "";
       for (Expression expression : creation.expressions) {
         appendString(prefix);
-        appendExpression(expression);
+        processExpression(expression);
         prefix = ", ";
       }
       appendChar('}');
     });
   }
 
-  void appendArrayAccess(ArrayAccess access) {
+  @Override
+  public void processArrayAccess(ArrayAccess access) {
     // Array access has the highest level of precedence, 16, so it will never need parentheses
     pushPrecedented(access, () -> {
-      appendExpression(access.array.getValue());
+      processExpression(access.array.getValue());
       appendChar('[');
-      appendExpression(access.index.getValue());
+      processExpression(access.index.getValue());
       appendChar(']');
     });
   }
 
-  void appendArrayLength(ArrayLength arrayLength) {
-    appendExpression(arrayLength.array.getValue());
+  @Override
+  public void processArrayLength(ArrayLength arrayLength) {
+    processExpression(arrayLength.array.getValue());
     appendString(".length");
   }
 
-  void appendFieldAccess(FieldAccess access) {
+  @Override
+  public void processFieldAccess(FieldAccess access) {
     // Field access has the highest level of precedence, 16, so it will never need parentheses
     pushPrecedented(access, () -> {
-      appendExpression(access.expression.getValue());
-      appendChar('.');
-      appendString(access.field.getValue().getName());
+      appendTargetAndMember(access.expression.getValue(), access.field.getValue().getName(), null);
     });
   }
 
-  private void appendPrecedented(PrecedentedAppender expr, Runnable appender) {
-    boolean shouldParenthesize = areParenthesesNeeded(expr);
-    if (shouldParenthesize) {
-      openParen();
-    }
-
-    pushPrecedented(expr, appender);
-
-    if (shouldParenthesize) {
-      closeParen();
+  private void appendPrecedented(PrecedentedOperation expr, Runnable appender) {
+    if (areParenthesesNeeded(expr)) {
+      parenthesize(() -> pushPrecedented(expr, appender));
+    } else {
+      pushPrecedented(expr, appender);
     }
   }
 
-  private void pushPrecedented(PrecedentedAppender expr, Runnable appender) {
+  private void pushPrecedented(PrecedentedOperation expr, Runnable appender) {
     operatorStack.push(expr);
 
     appender.run();
 
-    PrecedentedAppender popped = operatorStack.pop();
+    PrecedentedOperation popped = operatorStack.pop();
     if (popped != expr) {
       Logger.errln("Unexpected expression on stack. These two should have been the same:", expr, popped);
     }
   }
 
-  private boolean areParenthesesNeeded(PrecedentedAppender expr) {
+  private boolean areParenthesesNeeded(PrecedentedOperation expr) {
     return !operatorStack.empty() && expr.getLevelOfPrecedence() < operatorStack.peek().getLevelOfPrecedence();
   }
 
   // ** Comments **
 
-  public void formatMultiLineComment(String comment) {
+  @Override
+  public void processMultiLineComment(String comment) {
     for (String line : splitIntoLines(comment)) {
       appendSingleLineComment(line);
     }
@@ -587,23 +593,28 @@ public abstract class SourceCodeGenerator {
 
   // ** Primitives and syntax **
 
-  void appendNull() {
+  @Override
+  public void processNull() {
     appendString("null");
   }
 
-  void appendThisReference() {
+  @Override
+  public void processThisReference() {
     appendString("this");
   }
 
-  void appendSuperReference() {
+  @Override
+  public void processSuperReference() {
     appendString("super");
   }
 
-  void appendBoolean(boolean b) {
+  @Override
+  public void processBoolean(boolean b) {
     codeStringBuilder.append(b);
   }
 
-  void appendInt(int n) {
+  @Override
+  public void processInt(int n) {
     if (n == Integer.MAX_VALUE) {
       appendString("Integer.MAX_VALUE");
     } else if (n == Integer.MIN_VALUE) {
@@ -613,7 +624,8 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendFloat(float f) {
+  @Override
+  public void processFloat(float f) {
     if (Float.isNaN(f)) {
       appendString("Float.NaN");
     } else if (f == Float.POSITIVE_INFINITY) {
@@ -626,7 +638,8 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendDouble(double d) {
+  @Override
+  public void processDouble(double d) {
     if (Double.isNaN(d)) {
       appendString("Double.NaN");
     } else if (d == Double.POSITIVE_INFINITY) {
@@ -638,7 +651,8 @@ public abstract class SourceCodeGenerator {
     }
   }
 
-  void appendEscapedStringLiteral(StringLiteral literal) {
+  @Override
+  public void processEscapedStringLiteral(StringLiteral literal) {
     appendEscapedString(literal.value.getValue());
   }
 
@@ -657,6 +671,10 @@ public abstract class SourceCodeGenerator {
     appendChar(' ');
   }
 
+  protected void appendAccessSeparator() {
+    appendChar('.');
+  }
+
   protected void appendString(String s) {
     codeStringBuilder.append(s);
   }
@@ -673,6 +691,12 @@ public abstract class SourceCodeGenerator {
     appendChar(')');
   }
 
+  protected void parenthesize(Runnable appender) {
+    openParen();
+    appender.run();
+    closeParen();
+  }
+
   protected void openBlock() {
     appendChar('{');
   }
@@ -681,24 +705,34 @@ public abstract class SourceCodeGenerator {
     appendChar('}');
   }
 
+  protected void bracketize(Runnable appender) {
+    openBlock();
+    appender.run();
+    closeBlock();
+  }
+
   protected abstract void appendAssignmentOperator();
 
-  protected abstract void appendTypeName(AbstractType<?, ?, ?> type);
+  @Override
+  public void processVariableAccess(String name) {
+    appendString(name);
+  }
 
-  void appendTypeLiteral(TypeLiteral typeLiteral) {
-    appendTypeName(typeLiteral.value.getValue());
+  protected void appendParameterTypeName(AbstractType<?, ?, ?> type) {
+    processTypeName(type);
+  }
+
+  @Override
+  public void processTypeLiteral(TypeLiteral typeLiteral) {
+    processTypeName(typeLiteral.value.getValue());
     appendString(".class");
   }
 
-  // TODO move in use by NamedUserType and push down to JavaCodeGenerator
-  boolean isPublicStaticFinalFieldGetterDesired() {
-    return true;
-  }
-
-  private final Stack<PrecedentedAppender> operatorStack = new Stack<>();
+  private final Stack<PrecedentedOperation> operatorStack = new Stack<>();
   private final StringBuilder codeStringBuilder = new StringBuilder();
   private final Stack<AbstractType<?, ?, ?>> typeForLambdaStack = new Stack<>();
   private int statementDisabledCount = 0;
   private final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitions;
   private final CodeOrganizer.CodeOrganizerDefinition defaultCodeOrganizerDefn;
+
 }

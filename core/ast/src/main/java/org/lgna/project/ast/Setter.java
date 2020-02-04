@@ -67,8 +67,8 @@ public class Setter extends AbstractMethodContainedByUserField {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendSetter(this);
+  public void process(AstProcessor processor) {
+    processor.processSetter(this);
   }
 
   @Override

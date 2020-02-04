@@ -130,7 +130,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
         id = rc.generateDisplayListID(this);
         setIsGeometryChanged(true);
       }
-      if (isDisplayListInNeedOfRefresh(rc) || (rc.gl.glIsList(id) == false)) {
+      if (isDisplayListInNeedOfRefresh(rc) || (!rc.gl.glIsList(id))) {
         rc.gl.glNewList(id, GL_COMPILE_AND_EXECUTE);
         renderGeometry(rc, renderType);
         rc.gl.glEndList();

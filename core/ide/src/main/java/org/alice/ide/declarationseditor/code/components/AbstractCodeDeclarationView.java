@@ -60,7 +60,6 @@ import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 
-import java.awt.print.Printable;
 import java.util.List;
 
 /**
@@ -105,11 +104,6 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
   @Deprecated
   public final CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
     return this.codePanelWithDropReceptor;
-  }
-
-  @Override
-  public Printable getPrintable() {
-    return this.getCodePanelWithDropReceptor().getPrintable();
   }
 
   @Override

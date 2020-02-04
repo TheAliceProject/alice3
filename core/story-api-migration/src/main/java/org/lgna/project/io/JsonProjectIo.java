@@ -157,7 +157,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = type.getName();
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = type.getId().toString();
+      manifest.metadata.identifier.name = type.getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.Library;
       return manifest;
     }
@@ -170,25 +170,36 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
       entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
-
-      Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
-      for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
-        JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
+      ModelResourceCrawler crawler = new ModelResourceCrawler();
+      project.getProgramType().crawl(crawler, CrawlPolicy.COMPLETE);
+      Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
+      for (Set<JointedModelResource> resourceSet : modelResources.values()) {
+        JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
-
+      final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
+      if (!personResourceCreations.isEmpty()) {
+        JsonModelIo modelIo = JsonModelIo.createPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
+        entries.addAll(modelIo.createDataSources("models"));
+        manifest.resources.add(modelIo.createModelReference("models"));
+      }
       entries.add(manifestDataSource(manifest));
       writeDataSources(os, entries);
     }
 
     private Collection<? extends DataSource> createEntriesForTypes(Manifest manifest, Set<NamedUserType> userTypes) {
-      return userTypes.stream().map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
+      return userTypes.stream().sorted(Comparator.comparingInt(AbstractType::hierarchyDepth)).map(ut -> dataSourceForType(manifest, ut)).collect(Collectors.toList());
     }
 
     private DataSource dataSourceForType(Manifest manifest, NamedUserType ut) {
-      final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
-      manifest.resources.add(new TypeReference(ut.getName(), fileName, TWEEDLE_FORMAT));
+      String typeName = ut.getName();
+      // Special case (read: "hack") to catch older models from starter worlds
+      if ("SandDunes".equals(typeName)) {
+        typeName = "Terrain";
+      }
+      final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
       return createDataSource(fileName, serializedClass(ut));
     }
 
@@ -200,9 +211,18 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final Manifest manifest = new Manifest();
       manifest.description.name = project.getProgramType().getName(); // probably "Program"
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.id = project.getProgramType().getId().toString();
+      manifest.metadata.identifier.name = project.getProgramType().getId().toString();
       manifest.metadata.identifier.type = Manifest.ProjectType.World;
+      manifest.prerequisites.add(standardLibrary());
       return manifest;
+    }
+
+    private Manifest.ProjectIdentifier standardLibrary() {
+      final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
+      libraryIdentifier.type = Manifest.ProjectType.Library;
+      libraryIdentifier.version = "0.4";
+      libraryIdentifier.name = "SceneGraphLibrary";
+      return libraryIdentifier;
     }
 
     private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
@@ -229,30 +249,6 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
     }
 
-    private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
-      IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler = new IsInstanceCrawler<FieldAccess>(FieldAccess.class) {
-        @Override
-        protected boolean isAcceptable(FieldAccess fieldAccess) {
-          AbstractType type = fieldAccess.field.getValue().getValueType();
-          return type.isAssignableTo(JointedModelResource.class);
-        }
-      };
-      type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
-      Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
-      for (FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList()) {
-        JavaField field = (JavaField) fieldAccess.field.getValue();
-        JointedModelResource modelResource = null;
-        try {
-          modelResource = (JointedModelResource) field.getFieldReflectionProxy().getReification().get(null);
-          List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
-          resourceList.add(modelResource);
-        } catch (IllegalAccessException e) {
-          e.printStackTrace(); //TODO: Log this
-        }
-      }
-      return modelResources;
-    }
-
     private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
       IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
         @Override
@@ -272,49 +268,43 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     private static void addResources(Manifest manifest, List<DataSource> dataSources, Set<Resource> resources) {
       Set<String> usedEntryNames = new HashSet<>();
       for (Resource resource : resources) {
-        // TODO add entries to manifest avoiding duplicating names
         String entryName = generateEntryName(resource, usedEntryNames);
         usedEntryNames.add(entryName);
-        addResourceReference(manifest, resource);
+        addResourceReference(manifest, resource, entryName);
         // TODO Expand to cover arbitrary data files
         dataSources.add(new ByteArrayDataSource(entryName, resource.getData()));
       }
     }
 
-    private static void addResourceReference(Manifest manifest, Resource resource) {
+    private static void addResourceReference(Manifest manifest, Resource resource, String entryName) {
+      final ResourceReference resourceReference = resourceReference(resource);
+      resourceReference.file = entryName;
+      manifest.resources.add(resourceReference);
+    }
+
+    private static ResourceReference resourceReference(Resource resource) {
       if (resource instanceof AudioResource) {
-        manifest.resources.add(new AudioReference((AudioResource) resource));
+        return new AudioReference((AudioResource) resource);
       }
       if (resource instanceof ImageResource) {
-        manifest.resources.add(new ImageReference((ImageResource) resource));
+        return new ImageReference((ImageResource) resource);
       }
+      throw new RuntimeException("Resource of unexpected type " + resource);
     }
 
-    // TODO Reconsider and rework since this is cloned from XmlProjectIo
     private static String generateEntryName(Resource resource, Set<String> usedEntryNames) {
-      String validFilename = getValidName(resource.getOriginalFileName());
-      final String DESIRED_DIRECTORY_NAME = "resources";
+      String fileName = resource.getOriginalFileName();
+      String entryName = potentialEntryName(fileName, "");
       int i = 1;
-      while (true) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(DESIRED_DIRECTORY_NAME);
-        if (i > 1) {
-          sb.append(i);
-        }
-        sb.append("/");
-        sb.append(validFilename);
-        String potentialEntryName = sb.toString();
-        if (usedEntryNames.contains(potentialEntryName)) {
-          i += 1;
-        } else {
-          return potentialEntryName;
-        }
+      while (usedEntryNames.contains(entryName)) {
+        i++;
+        entryName = potentialEntryName(fileName, String.valueOf(i));
       }
+      return entryName;
     }
 
-    private static String getValidName(String name) {
-      //todo
-      return name;
+    private static String potentialEntryName(String validFilename, String i) {
+      return "resources" + i + "/" + validFilename;
     }
   }
 }

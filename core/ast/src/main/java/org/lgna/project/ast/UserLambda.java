@@ -44,13 +44,13 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppender {
+public class UserLambda extends AbstractUserMethod implements Lambda, ProcessableNode {
   public UserLambda() {
   }
 
@@ -83,8 +83,8 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendLambda(this);
+  public void process(AstProcessor processor) {
+    processor.processLambda(this);
   }
 
   @Override

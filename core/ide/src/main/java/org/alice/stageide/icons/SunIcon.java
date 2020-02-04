@@ -103,7 +103,7 @@ public class SunIcon implements Icon {
       g2.setColor(new Color(230, 230, 0));
       g2.fill(innerArc);
     } finally {
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
       g2.setTransform(m);
     }
   }

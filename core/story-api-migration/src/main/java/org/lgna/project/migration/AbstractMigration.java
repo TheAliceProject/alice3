@@ -48,11 +48,9 @@ import org.lgna.project.Version;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigration implements Migration {
-  private final Version minimumVersion;
   private final Version resultVersion;
 
-  public AbstractMigration(Version minimumVersion, Version resultVersion) {
-    this.minimumVersion = minimumVersion;
+  AbstractMigration(Version resultVersion) {
     this.resultVersion = resultVersion;
   }
 
@@ -63,23 +61,11 @@ public abstract class AbstractMigration implements Migration {
 
   @Override
   public boolean isApplicable(Version version) {
-    if ((this.minimumVersion != null) && (this.resultVersion != null)) {
-      return (this.minimumVersion.compareTo(version) <= 0) && (this.resultVersion.compareTo(version) > 0);
-    } else {
-      //todo?
-      return false;
-    }
+    return resultVersion != null && resultVersion.compareTo(version) > 0;
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(this.getClass().getSimpleName());
-    sb.append("[");
-    sb.append(this.minimumVersion);
-    sb.append(";");
-    sb.append(this.resultVersion);
-    sb.append("]");
-    return sb.toString();
+    return this.getClass().getSimpleName() + "[" + resultVersion + "]";
   }
 }

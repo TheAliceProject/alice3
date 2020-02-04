@@ -123,7 +123,7 @@ public class AnonymousUserConstructor extends UserConstructor {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
+  public void process(AstProcessor processor) {
     //todo?
   }
 

@@ -86,6 +86,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   public static interface VisualData<R extends JointedModelResource> {
     public Visual[] getSgVisuals();
 
+    public SkeletonVisual getSgVisualForExporting(R resource);
+
     public SimpleAppearance[] getSgAppearances();
 
     public double getBoundingSphereRadius();
@@ -109,6 +111,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     public UnitQuaternion getOriginalJointOrientation(JointId jointId);
 
     public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId);
+
+    boolean isSims();
   }
 
   private static class JointImpWrapper extends JointImp {
@@ -335,8 +339,10 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       allJoints.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
     }
     //Handle joint arrays
+    mapArrayIdToJointIdArray.clear();
     for (JointArrayId arrayId : this.getJointArrayIds()) {
       JointId[] jointArrayIds = this.factory.getJointArrayIds(this, arrayId);
+      mapArrayIdToJointIdArray.put(arrayId, jointArrayIds);
       for (JointId jointId : jointArrayIds) {
         allJoints.add(jointId);
       }
@@ -444,10 +450,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     this.treeWalk(new TreeWalkObserver() {
       @Override
       public void pushJoint(JointImp joint) {
-        //todo: remove null check?
-        if (joint != null) {
-          rv.add(joint);
-        }
+        rv.add(joint);
       }
 
       @Override
@@ -931,9 +934,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     @Override
     public void pushJoint(JointImp jointImp) {
-      if (jointImp != null) {
-        list.add(new JointData(jointImp));
-      }
+      list.add(new JointData(jointImp));
     }
 
     @Override

@@ -382,17 +382,17 @@ public class ModelResourceInfo {
     return themeTags;
   }
 
-  public List<ModelResourceInfo> getSubResources() {
+  private List<ModelResourceInfo> getSubResources() {
     return subResources;
   }
 
-  public boolean matchesModelAndTexture(String modelName, String textureName) {
+  private boolean matchesModelAndTexture(String modelName, String textureName) {
     String thisModel = getModelName();
     String thisTexture = getTextureName();
     return ((thisModel != null) && thisModel.equalsIgnoreCase(modelName) && (thisTexture != null) && thisTexture.equalsIgnoreCase(textureName));
   }
 
-  public boolean matchesResource(String resourceName) {
+  private boolean matchesResource(String resourceName) {
     String resource = getResourceName();
     return (resource != null) && resource.equalsIgnoreCase(resourceName);
   }
@@ -403,7 +403,17 @@ public class ModelResourceInfo {
         return mri;
       }
     }
+    for (ModelResourceInfo subResource : this.subResources) {
+      if (subResource.matchesModel(modelName)) {
+        return subResource;
+      }
+    }
     return null;
+  }
+
+  private boolean matchesModel(String modelName) {
+    String thisModel = getModelName();
+    return thisModel != null && thisModel.equalsIgnoreCase(modelName);
   }
 
   public ModelResourceInfo getSubResource(String resourceName) {
@@ -432,9 +442,9 @@ public class ModelResourceInfo {
     manifest.provenance.created = getCreationYear() < 0 ? ZonedDateTime.now() : Year.of(getCreationYear());
     manifest.provenance.creator = getCreator();
 
-    manifest.metadata.identifier.id = getResourceName();
+    manifest.metadata.identifier.name = getModelName();
     manifest.metadata.identifier.type = Manifest.ProjectType.Model;
-    manifest.metadata.formatVersion = "0.1+alpha";
+    manifest.metadata.formatVersion = "0.1";
 
     manifest.placeOnGround = getPlaceOnGround();
     manifest.boundingBox = createManifestBoundingBox();
@@ -481,19 +491,19 @@ public class ModelResourceInfo {
 
   private ModelManifest.TextureSet createTextureSet() {
     ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
-    textureReference.name = getTextureReferenceId();
+    textureReference.name = getTextureReferenceName();
     return textureReference;
   }
 
   private StructureReference createStructureReference() {
     StructureReference structureReference = new StructureReference();
     structureReference.boundingBox = createManifestBoundingBox();
-    structureReference.name = getModelName();
+    structureReference.name = getTextureReferenceName();
     return structureReference;
   }
 
-  private String getTextureReferenceId() {
-    //Textures sets are model specific, so must prepend the model name to the id
+  private String getTextureReferenceName() {
+    //Textures sets are model specific, so must prepend the model name
     return getModelName() + "_" + getTextureName();
   }
 

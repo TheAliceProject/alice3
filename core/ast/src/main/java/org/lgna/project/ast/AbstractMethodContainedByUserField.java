@@ -44,12 +44,12 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.ProcessableNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMethodContainedByUserField extends AbstractMethod implements CodeAppender {
+public abstract class AbstractMethodContainedByUserField extends AbstractMethod implements ProcessableNode {
   AbstractMethodContainedByUserField(UserField field) {
     this.field = field;
   }

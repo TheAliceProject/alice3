@@ -98,7 +98,7 @@ public abstract class LayerStencil extends Panel {
           super.paintComponent(g2);
           LayerStencil.this.paintComponentEpilogue(g2);
         } finally {
-          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing);
+          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, prevAntialiasing == null ? RenderingHints.VALUE_ANTIALIAS_DEFAULT : prevAntialiasing);
           g2.setPaint(prevPaint);
         }
       }

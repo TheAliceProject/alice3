@@ -49,13 +49,12 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.Model;
+import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.nebulous.Thing;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.JointArrayId;
-
-import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.sims2.PersonResource;
@@ -137,6 +136,11 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
     Logger.severe("getOriginalJointTransformation not supported from nebulous factory");
     return AffineMatrix4x4.createIdentity();
+  }
+
+  @Override
+  public boolean isSims() {
+    return true;
   }
 
 }

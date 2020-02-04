@@ -66,8 +66,8 @@ public final class ResourceExpression extends Expression {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendResourceExpression(this);
+  public void process(AstProcessor processor) {
+    processor.processResourceExpression(this);
   }
 
   public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance(this);

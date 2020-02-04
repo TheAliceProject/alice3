@@ -60,8 +60,8 @@ public class ArrayItemSetter extends Setter {
   }
 
   @Override
-  public void appendCode(SourceCodeGenerator generator) {
-    generator.appendIndexedSetter(this);
+  public void process(AstProcessor processor) {
+    processor.processIndexedSetter(this);
   }
 
   @Override
