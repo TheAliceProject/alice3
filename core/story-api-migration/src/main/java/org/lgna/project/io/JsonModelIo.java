@@ -439,6 +439,7 @@ public class JsonModelIo extends DataSourceIo {
   //Uses the skeleton visual to create collada file and texture files
   //Adds appropriate DataSources and updates the manifest
   private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
+    addBoundsForJoints(sv.skeleton.getValue(), manifest);
     JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelVariant, manifest.description.name);
     //Create the collada model data source
     DataSource structureDataSource = exporter.createColladaDataSource(resourcePath);
@@ -479,6 +480,13 @@ public class JsonModelIo extends DataSourceIo {
         dataSources.add(imageDataSource);
       }
     }
+  }
+
+  private void addBoundsForJoints(Joint root, ModelManifest manifest) {
+    if (root == null) {
+      return;
+    }
+    root.visitJoints((joint) -> manifest.addBoundsForJoint(joint.jointID.getValue(), joint.getBoundingBox(null, false)));
   }
 
   public List<DataSource> createDataSources(String baseModelPath) throws IOException {

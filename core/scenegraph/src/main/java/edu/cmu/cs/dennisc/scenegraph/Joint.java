@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.property.StringProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Joint extends Transformable implements ModelJoint {
   //  private static final java.util.Comparator<Joint> JOINT_ARRAY_COMPARATOR = new java.util.Comparator<Joint>() {
@@ -214,4 +215,13 @@ public class Joint extends Transformable implements ModelJoint {
   public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty(this, new Vector3f());
 
   private SkeletonVisual parentVisual = null;
+
+  public void visitJoints(Consumer<Joint> op) {
+    op.accept(this);
+    for (Component c : getComponents()) {
+      if (c instanceof Joint) {
+        ((Joint) c).visitJoints(op);
+      }
+    }
+  }
 }
