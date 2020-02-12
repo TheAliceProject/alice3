@@ -227,7 +227,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   public void processBlock(BlockStatement blockStatement) {
     openBlock();
     appendBody(blockStatement);
-    closeBlock();
+    closeBlockInline();
   }
 
   @Override
@@ -403,7 +403,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod(type);
     if (isLambdaSupported()) {
       appendParameters(lambda);
-      appendString("->");
+      appendString(" ->");
     } else {
       appendString("new ");
       processTypeName(type);
@@ -702,6 +702,10 @@ public abstract class SourceCodeGenerator implements AstProcessor {
   }
 
   protected void closeBlock() {
+    closeBlockInline();
+  }
+
+  protected void closeBlockInline() {
     appendChar('}');
   }
 
