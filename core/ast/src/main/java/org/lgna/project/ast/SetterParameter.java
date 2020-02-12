@@ -75,7 +75,7 @@ public class SetterParameter extends AbstractParameter {
 
   @Override
   public boolean isUserAuthored() {
-    return false; //todo?
+    return true;
   }
 
   @Override
