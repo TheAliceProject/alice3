@@ -239,7 +239,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     private Manifest.ProjectIdentifier standardLibrary() {
       final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
       libraryIdentifier.type = Manifest.ProjectType.Library;
-      libraryIdentifier.version = "0.4";
+      libraryIdentifier.version = "0.11";
       libraryIdentifier.name = "SceneGraphLibrary";
       return libraryIdentifier;
     }
