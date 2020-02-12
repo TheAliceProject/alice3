@@ -1,5 +1,6 @@
 package org.alice.tweedle.file;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.lgna.project.annotations.Visibility;
 
 import java.util.*;
@@ -8,6 +9,7 @@ public class ModelManifest extends Manifest {
 
   public String parentClass;
   public List<String> rootJoints = new ArrayList<>();
+  public List<JointBounds> jointBounds = new ArrayList<>();
   public List<Joint> additionalJoints = new ArrayList<>();
   public List<JointArray> additionalJointArrays = new ArrayList<>();
   public List<JointArrayId> additionalJointArrayIds = new ArrayList<>();
@@ -83,6 +85,17 @@ public class ModelManifest extends Manifest {
     public List<Float> position;
   }
 
+  public static class JointBounds {
+    public String name;
+    public BoundingBox bounds = new BoundingBox();
+
+    public JointBounds(String jointName, AxisAlignedBox box) {
+      name = jointName;
+      bounds.max = box.getMaximum().getAsFloatList();
+      bounds.min = box.getMinimum().getAsFloatList();
+    }
+  }
+
   public ModelVariant getModelVariant(String variantName) {
     for (ModelVariant variant : models) {
       if (variant.name.equals(variantName)) {
@@ -115,5 +128,12 @@ public class ModelManifest extends Manifest {
       }
     }
     return null;
+  }
+
+  public void addBoundsForJoint(String jointName, AxisAlignedBox bounds) {
+    if (bounds.isNaN()) {
+      return;
+    }
+    jointBounds.add(new JointBounds(jointName, bounds));
   }
 }
