@@ -209,9 +209,7 @@ public class Encoder extends SourceCodeGenerator {
       getCodeStringBuilder().append("class ").append(resourceClass.getSimpleName()).append(" extends ").append(superclass);
       openBlock();
       appendResourceConstructor(superclass, resourceClass);
-      appendNewLine();
       appendResourceFields(superclass, resourceClass);
-      appendNewLine();
       appendResourceInstances(resourceClass);
       appendClassFooter();
     } catch (ClassNotFoundException cnfe) {
@@ -398,7 +396,6 @@ public class Encoder extends SourceCodeGenerator {
     processTypeName(constructor.getDeclaringType());
     appendParameters(constructor);
     appendStatement(constructor.body.getValue());
-    appendNewLine();
   }
 
   @Override
@@ -411,14 +408,14 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   public void processMethod(UserMethod method) {
-    appendNewLine();
-    appendIndent();
     super.processMethod(method);
     appendNewLine();
   }
 
   @Override
   public void appendMethodHeader(AbstractMethod method) {
+    appendNewLine();
+    appendIndent();
     if (method.isStatic()) {
       appendString("static ");
     }
@@ -426,20 +423,6 @@ public class Encoder extends SourceCodeGenerator {
     appendSpace();
     appendString(method.getName());
     appendParameters(method);
-  }
-
-  @Override
-  public void processGetter(Getter getter) {
-    appendIndent();
-    super.processGetter(getter);
-    appendNewLine();
-  }
-
-  @Override
-  public void processSetter(Setter setter) {
-    appendIndent();
-    super.processSetter(setter);
-    appendNewLine();
   }
 
   @Override
@@ -747,10 +730,16 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void closeBlock() {
+  protected void closeBlockInline() {
     popIndent();
     appendIndent();
+    super.closeBlockInline();
+  }
+
+  @Override
+  protected void closeBlock() {
     super.closeBlock();
+    appendNewLine();
   }
 
   @Override
@@ -760,14 +749,12 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   protected String identifierName(AbstractDeclaration variable) {
-    final String nom;
     final String varName = super.identifierName(variable);
     if (variable.isUserAuthored() && !systemIdentifiers.contains(varName)) {
-      nom = USER_PREFIX + varName;
+      return USER_PREFIX + varName;
     } else {
-      nom = varName;
+      return varName;
     }
-    return nom;
   }
 
   @Override
