@@ -397,16 +397,26 @@ public class JointedModelColladaExporter {
     return vertices;
   }
 
-  private Geometry createGeometryForMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
-    //Geometry consists of a Geometry node with a single Mesh node inside
+  private void addGeometriesForMesh(List<Geometry> geometries, edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
+    //Make a unique geometry for each triangle set using a distinct textureId in the mesh
+    for (Integer textureId : sgMesh.getReferencedTextureIds()) {
+      geometries.add(geometryForMeshAndTexture(sgMesh, textureId));
+    }
+  }
+
+  private Geometry geometryForMeshAndTexture(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, Integer textureId) {
     Geometry geometry = factory.createGeometry();
+    String meshName = getMeshTextureId(sgMesh, textureId);
 
-    //Top level Geometry setup
-    String meshName = meshNameMap.get(sgMesh);
-    String meshIdName = getMeshIdForMeshName(meshName);
-    geometry.setId(meshIdName);
+    geometry.setId(getMeshIdForMeshName(meshName));
     geometry.setName(meshName + "mesh");
+    //Geometry consists of a Geometry node with a single Mesh node inside
+    geometry.setMesh(createMesh(sgMesh, textureId, meshName));
 
+    return geometry;
+  }
+
+  private Mesh createMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, Integer textureId, String meshName) {
     //Set up the Mesh node
     Mesh mesh = factory.createMesh();
     //Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
@@ -429,19 +439,13 @@ public class JointedModelColladaExporter {
     String vertexName = meshName + "-VERTEX";
     Vertices vertices = createVertices(vertexName, positionName);
     mesh.setVertices(vertices);
-    //Create and add the triangles
-    //Find all the textureIds referenced by this mesh
-    List<Integer> usedTextureIds = sgMesh.getReferencedTextureIds();
-    //Make a unique triangle entry for each textureId used by the mesh
-    for (Integer usedTextureId : usedTextureIds) {
-      Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName, usedTextureId);
-      // Sets a reference to an instance_material by its symbol
-      triangles.setMaterial(getInstanceMaterialSymbolForIndex(usedTextureId));
-      mesh.getLinesOrLinestripsOrPolygons().add(triangles);
-    }
-    geometry.setMesh(mesh);
 
-    return geometry;
+    //Create and add the triangles
+    Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName, textureId);
+    // Sets a reference to an instance_material by its symbol
+    triangles.setMaterial(getInstanceMaterialSymbolForIndex(textureId));
+    mesh.getLinesOrLinestripsOrPolygons().add(triangles);
+    return mesh;
   }
 
   private double[] getBindShapeMatrix(WeightedMesh sgWeightedMesh) {
@@ -581,8 +585,6 @@ public class JointedModelColladaExporter {
   //  </skin>
   private Skin createSkin(WeightedMesh sgWeightedMesh, String controllerName) {
     Skin skin = factory.createSkin();
-    String meshName = meshNameMap.get(sgWeightedMesh);
-    skin.setSourceAttribute("#" + getMeshIdForMeshName(meshName));
 
     //Set the bind shape matrix
     double[] bindShapeMatrix = getBindShapeMatrix(sgWeightedMesh);
@@ -638,16 +640,19 @@ public class JointedModelColladaExporter {
     return skin;
   }
 
-  private Controller createControllerForMesh(WeightedMesh sgWeightedMesh) {
-    Controller controller = factory.createController();
-    String meshName = meshNameMap.get(sgWeightedMesh);
-    String controllerName = meshName + "Controller";
-    controller.setId(controllerName);
+  private void addControllersForMesh(List<Controller> controllers, WeightedMesh sgWeightedMesh) {
+    for (Integer usedTextureId : sgWeightedMesh.getReferencedTextureIds()) {
+      String meshName = getMeshTextureId(sgWeightedMesh, usedTextureId);
+      Controller controller = factory.createController();
+      String controllerName = meshName + "Controller";
+      controller.setId(controllerName);
 
-    Skin skin = createSkin(sgWeightedMesh, controllerName);
-    controller.setSkin(skin);
+      Skin skin = createSkin(sgWeightedMesh, controllerName);
+      skin.setSourceAttribute("#" + getMeshIdForMeshName(meshName));
+      controller.setSkin(skin);
 
-    return controller;
+      controllers.add(controller);
+    }
   }
 
   private void addMeshToNameMap(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
@@ -713,24 +718,22 @@ public class JointedModelColladaExporter {
     return materialNameMap.get(index) + "_fx";
   }
 
-  private BindMaterial createBindMaterialForMaterialIndexes(List<Integer> materialIndexes) {
+  private BindMaterial createBindMaterialForMaterialIndex(Integer materialIndex) {
     BindMaterial bindMaterial = factory.createBindMaterial();
 
     BindMaterial.TechniqueCommon techniqueCommon = factory.createBindMaterialTechniqueCommon();
-    for (Integer materialIndex : materialIndexes) {
-      InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
-      // Symbol uniquely identifies the instance_material.
-      // It is referred to from a geometry sub element (e.g. triangle) by material="anInstanceMaterialSymbol"
-      instanceMaterial.setSymbol(getInstanceMaterialSymbolForIndex(materialIndex));
-      // Target is the id of the material to use does not have #
-      instanceMaterial.setTarget(getMaterialIDForIndex(materialIndex));
-      InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
-      bindVertexInput.setSemantic("UVMap");
-      bindVertexInput.setInputSet(BigInteger.ZERO);
-      bindVertexInput.setInputSemantic("TEXCOORD");
-      instanceMaterial.getBindVertexInput().add(bindVertexInput);
-      techniqueCommon.getInstanceMaterial().add(instanceMaterial);
-    }
+    InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
+    // Symbol uniquely identifies the instance_material.
+    // It is referred to from a geometry sub element (e.g. triangle) by material="anInstanceMaterialSymbol"
+    instanceMaterial.setSymbol(getInstanceMaterialSymbolForIndex(materialIndex));
+    // Target is the id of the material to use does not have #
+    instanceMaterial.setTarget(getMaterialIDForIndex(materialIndex));
+    InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
+    bindVertexInput.setSemantic("UVMap");
+    bindVertexInput.setInputSet(BigInteger.ZERO);
+    bindVertexInput.setInputSemantic("TEXCOORD");
+    instanceMaterial.getBindVertexInput().add(bindVertexInput);
+    techniqueCommon.getInstanceMaterial().add(instanceMaterial);
 
     bindMaterial.setTechniqueCommon(techniqueCommon);
     return bindMaterial;
@@ -744,31 +747,44 @@ public class JointedModelColladaExporter {
     return visualSceneNode;
   }
 
-  private Node createVisualSceneNodeForMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
-    String meshName = meshNameMap.get(sgMesh);
-    String geometryURL = "#" + getMeshIdForMeshName(meshName);
+  private void addVisualSceneNodesForMesh(List<Node> sceneNodes, edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
+    for (Integer usedTextureId : sgMesh.getReferencedTextureIds()) {
+      String meshName = getMeshTextureId(sgMesh, usedTextureId);
+      Node visualSceneNode = createVisualSceneNode(meshName);
 
-    Node visualSceneNode = createVisualSceneNode(meshName);
-    InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
-    instanceGeometry.setUrl(geometryURL);
+      String geometryURL = "#" + getMeshIdForMeshName(meshName);
+      InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
+      instanceGeometry.setUrl(geometryURL);
 
-    instanceGeometry.setBindMaterial(createBindMaterialForMaterialIndexes(sgMesh.getReferencedTextureIds()));
-    visualSceneNode.getInstanceGeometry().add(instanceGeometry);
+      instanceGeometry.setBindMaterial(createBindMaterialForMaterialIndex(usedTextureId));
+      visualSceneNode.getInstanceGeometry().add(instanceGeometry);
 
-    return visualSceneNode;
+      sceneNodes.add(visualSceneNode);
+    }
   }
 
-  private Node createVisualSceneNodeForWeightedMesh(WeightedMesh sgWeightedMesh) {
-    String meshName = meshNameMap.get(sgWeightedMesh);
-    String controllerURL = "#" + meshName + "Controller";
+  private String getMeshTextureId(edu.cmu.cs.dennisc.scenegraph.Mesh mesh, Integer usedTextureId) {
+    String meshName = meshNameMap.get(mesh);
+    if (mesh.getReferencedTextureIds().size() > 1) {
+      meshName = meshName + "-" + usedTextureId;
+    }
+    return meshName;
+  }
 
-    Node visualSceneNode = createVisualSceneNode(meshName);
-    InstanceController instanceController = factory.createInstanceController();
-    instanceController.setUrl(controllerURL);
-    instanceController.setBindMaterial(createBindMaterialForMaterialIndexes(sgWeightedMesh.getReferencedTextureIds()));
-    visualSceneNode.getInstanceController().add(instanceController);
+  private void addVisualSceneNodesForWeightedMesh(List<Node> sceneNodes, WeightedMesh sgWeightedMesh) {
+    for (Integer usedTextureId : sgWeightedMesh.getReferencedTextureIds()) {
+      String meshName = getMeshTextureId(sgWeightedMesh, usedTextureId);
+      Node visualSceneNode = createVisualSceneNode(meshName);
 
-    return visualSceneNode;
+      String controllerURL = "#" + meshName + "Controller";
+      InstanceController instanceController = factory.createInstanceController();
+      instanceController.setUrl(controllerURL);
+
+      instanceController.setBindMaterial(createBindMaterialForMaterialIndex(usedTextureId));
+      visualSceneNode.getInstanceController().add(instanceController);
+
+      sceneNodes.add(visualSceneNode);
+    }
   }
 
   private CommonColorOrTextureType.Color createCommonColor(String sid, double r, double g, double b, double a) {
@@ -907,17 +923,13 @@ public class JointedModelColladaExporter {
     for (edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue()) {
       if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
         edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
-        Geometry geometry = createGeometryForMesh(sgMesh);
-        lg.getGeometry().add(geometry);
-
-        Node vsNode = createVisualSceneNodeForMesh(sgMesh);
-        visualScene.getNode().add(vsNode);
+        addGeometriesForMesh(lg.getGeometry(), sgMesh);
+        addVisualSceneNodesForMesh(visualScene.getNode(), sgMesh);
       }
     }
     //Grab the weighted meshes and add their geometry to the scene
     for (WeightedMesh sgWM : visual.weightedMeshes.getValue()) {
-      Geometry geometry = createGeometryForMesh(sgWM);
-      lg.getGeometry().add(geometry);
+      addGeometriesForMesh(lg.getGeometry(), sgWM);
     }
     collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(lg);
 
@@ -925,11 +937,8 @@ public class JointedModelColladaExporter {
     LibraryControllers lc = factory.createLibraryControllers();
     //Create controllers for all the weighted meshes
     for (WeightedMesh sgWM : visual.weightedMeshes.getValue()) {
-      Controller controller = createControllerForMesh(sgWM);
-      lc.getController().add(controller);
-
-      Node vsNode = createVisualSceneNodeForWeightedMesh(sgWM);
-      visualScene.getNode().add(vsNode);
+      addControllersForMesh(lc.getController(), sgWM);
+      addVisualSceneNodesForWeightedMesh(visualScene.getNode(), sgWM);
     }
     collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(lc);
   }
