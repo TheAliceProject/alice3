@@ -100,9 +100,7 @@ public final class Version implements Comparable<Version> {
 
   public boolean isValid() {
     for (int i : this.subNumbers) {
-      if (i >= 0) {
-        //pass
-      } else {
+      if (i < 0) {
         return false;
       }
     }
@@ -122,8 +120,15 @@ public final class Version implements Comparable<Version> {
     return this.subNumbers[2];
   }
 
-  public String getMajorAndMinor() {
-    return getAliceIdentifier() + "." + getMajor() + "." + getMinor();
+  public String getSimpleVersion() {
+    String ver = getAliceIdentifier() + "." + getMajor();
+    if (getMinor() != 0) {
+      ver = ver + "." + getMinor();
+    }
+    if (hasPrerelease()) {
+      ver = ver + '-' + prerelease;
+    }
+    return ver;
   }
 
   public int getPatch() {
