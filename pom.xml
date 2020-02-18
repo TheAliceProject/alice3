@@ -491,7 +491,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.19</version> <!-- Checkstyle version -->
+            <version>8.29</version> <!-- Checkstyle version -->
           </dependency>
         </dependencies>
       </plugin>
