@@ -77,9 +77,11 @@
 
     <jogl.version>2.3.2</jogl.version>
 
-    <alice.build.version>3.5.0.1</alice.build.version>
-    <alice.build.prerelease>-alpha</alice.build.prerelease>
-    <alice.build.metadata>+export</alice.build.metadata>
+    <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
+    <alice.build.version>3.6.0.0</alice.build.version>
+    <alice.build.prerelease>-beta.4</alice.build.prerelease>
+    <!--  The build system will replace local with a build #  -->
+    <alice.build.metadata>+build.local</alice.build.metadata>
 
     <netbeans.version>RELEASE82</netbeans.version>
     <guava.version>13.0.1</guava.version>
