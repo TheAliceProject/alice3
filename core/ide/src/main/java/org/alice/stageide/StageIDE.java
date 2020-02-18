@@ -106,6 +106,7 @@ import org.lgna.story.SCamera;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.STurnable;
+import org.lgna.story.SVRHand;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
@@ -438,7 +439,7 @@ public abstract class StageIDE extends IDE {
   @Override
   public boolean isInstanceCreationAllowableFor(NamedUserType userType) {
     JavaType javaType = userType.getFirstEncounteredJavaType();
-    return false == ClassUtilities.isAssignableToAtLeastOne(javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class);
+    return false == ClassUtilities.isAssignableToAtLeastOne(javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class, SVRHand.class);
   }
 
   private ThumbnailGenerator thumbnailGenerator;
@@ -459,36 +460,19 @@ public abstract class StageIDE extends IDE {
     return StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod(sceneType);
   }
 
-  private InstanceFactory getInstanceFactoryForSceneOrSceneField(UserField field) {
-    NamedUserType programType = this.getProgramType();
-    if (programType != null) {
-      NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(programType);
-      if (sceneType != null) {
-        NamedUserType scopeType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
-        if (scopeType == sceneType) {
-          if (field != null) {
-            return ThisFieldAccessFactory.getInstance(field);
-          } else {
-            return ThisInstanceFactory.getInstance();
-          }
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    } else {
-      return null;
-    }
+
+
+  private boolean isSceneScoped() {
+    NamedUserType sceneType = StoryApiSpecificAstUtilities.getSceneTypeFromProgramType(getProgramType());
+    return (sceneType != null &&  sceneType == getDocumentFrame().getTypeMetaState().getValue());
   }
 
   public InstanceFactory getInstanceFactoryForScene() {
-    return this.getInstanceFactoryForSceneOrSceneField(null);
+    return isSceneScoped() ? ThisInstanceFactory.getInstance() : null;
   }
 
   public InstanceFactory getInstanceFactoryForSceneField(UserField field) {
-    assert field != null : this;
-    return this.getInstanceFactoryForSceneOrSceneField(field);
+    return isSceneScoped() ? ThisFieldAccessFactory.getInstance(field) : null;
   }
 
   public File getGalleryDirectory() {

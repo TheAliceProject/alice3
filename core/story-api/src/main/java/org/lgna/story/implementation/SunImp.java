@@ -65,8 +65,7 @@ import org.lgna.story.SSun;
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    return rv;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
   }
 
   private final SSun abstraction;

@@ -53,16 +53,12 @@ import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
-import org.lgna.story.SJoint;
-import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -89,7 +85,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
       this.hierarchyListener = new HierarchyListener() {
         @Override
         public void hierarchyChanged(HierarchyEvent hierarchyEvent) {
-          MutableRiderVehicleAdapter.this.handleHeirarchyChanged();
+          MutableRiderVehicleAdapter.this.handleHierarchyChanged();
         }
       };
     }
@@ -98,21 +94,9 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
   @Override
   protected void setExpressionValue(SThing value) {
     if ((this.expressionState != null) && (this.sceneInstance != null)) {
-      Expression expressionValue;
-      if (value != null) {
-        if (value instanceof SJoint) {
-          expressionValue = SetUpMethodGenerator.getGetterExpressionForJoint((SJoint) value, this.sceneInstance);
-        } else {
-          if (value instanceof SScene) {
-            expressionValue = new ThisExpression();
-          } else {
-            AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(value);
-            expressionValue = new FieldAccess(entityField);
-          }
-        }
-      } else {
-        expressionValue = new NullLiteral();
-      }
+      Expression expressionValue = value == null
+          ? new NullLiteral()
+          : SetUpMethodGenerator.getExpressionOfThingInScene(value, sceneInstance);
       this.expressionState.setValueTransactionlessly(expressionValue);
     }
   }
@@ -140,7 +124,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
     return values[0];
   }
 
-  protected void handleHeirarchyChanged() {
+  private void handleHierarchyChanged() {
     this.notifyValueObservers(this.getValue());
   }
 

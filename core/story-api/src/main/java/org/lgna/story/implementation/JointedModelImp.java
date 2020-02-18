@@ -211,8 +211,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
-    protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-      return internalJointImp.updateCumulativeBound(rv, trans);
+    protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+      internalJointImp.updateCumulativeBound(rv, trans);
     }
 
     @Override
@@ -339,10 +339,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       allJoints.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
     }
     //Handle joint arrays
-    mapArrayIdToJointIdArray.clear();
     for (JointArrayId arrayId : this.getJointArrayIds()) {
       JointId[] jointArrayIds = this.factory.getJointArrayIds(this, arrayId);
-      mapArrayIdToJointIdArray.put(arrayId, jointArrayIds);
       for (JointId jointId : jointArrayIds) {
         allJoints.add(jointId);
       }
@@ -522,25 +520,16 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   public JointImp getJointImplementation(JointId jointId) {
-    JointImpWrapper wrapper = this.mapIdToJoint.get(jointId);
-    if (wrapper != null) {
-      return wrapper;
-    }
-    return null;
+    return this.mapIdToJoint.get(jointId);
   }
 
   //String based lookup for DynamicJointIds
   public JointImp getJointImplementation(String jointName) {
-    JointImpWrapper wrapper = null;
     //TODO: Think about maintaining a map of names to joints. It would be double accounting and might be a pain though
     for (Map.Entry<JointId, JointImpWrapper> entry : this.mapIdToJoint.entrySet()) {
       if (entry.getKey().toString().equals(jointName)) {
-        wrapper = entry.getValue();
-        break;
+        return entry.getValue();
       }
-    }
-    if (wrapper != null) {
-      return wrapper;
     }
     return null;
   }
@@ -667,7 +656,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     setScale(getScaleForSize(size));
   }
 
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans, boolean ignoreJointOrientations) {
     for (Visual sgVisual : this.getSgVisuals()) {
       if (sgVisual instanceof SkeletonVisual) {
         rv.addSkeletonVisual((SkeletonVisual) sgVisual, trans, ignoreJointOrientations);
@@ -675,12 +664,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         rv.add(sgVisual, trans);
       }
     }
-    return rv;
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    return updateCumulativeBound(rv, trans, true);
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    updateCumulativeBound(rv, trans, true);
   }
 
   protected final JointImp createJointImplementation(JointId jointId) {

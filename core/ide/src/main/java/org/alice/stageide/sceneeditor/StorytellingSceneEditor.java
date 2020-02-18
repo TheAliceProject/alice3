@@ -162,6 +162,7 @@ import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.SThingMarker;
+import org.lgna.story.SVRHand;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
@@ -455,25 +456,25 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  public void setSelectedInstance(InstanceFactory instanceFactory) {
+  private void setSelectedInstance(InstanceFactory instanceFactory) {
     Expression expression = instanceFactory != null ? instanceFactory.createExpression() : null;
     if (expression instanceof FieldAccess) {
       FieldAccess fa = (FieldAccess) expression;
       AbstractField field = fa.field.getValue();
       if (field instanceof UserField) {
         UserField uf = (UserField) field;
-        StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+        setSelectedField(uf.getDeclaringType(), uf);
       }
     } else if (expression instanceof MethodInvocation) {
-      StorytellingSceneEditor.this.setSelectedExpression(expression);
+      setSelectedExpression(expression);
     } else if (expression instanceof ArrayAccess) {
-      StorytellingSceneEditor.this.setSelectedExpression(expression);
+      setSelectedExpression(expression);
     } else if (expression instanceof ThisExpression) {
-      UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
+      UserField uf = getActiveSceneField();
       if (uf != null) {
-        StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+        setSelectedField(uf.getDeclaringType(), uf);
       } else {
-        StorytellingSceneEditor.this.setSelectedField(null, null);
+        setSelectedField(null, null);
       }
     }
     getPropertyPanel().setSelectedInstance(instanceFactory);
@@ -493,26 +494,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public void setSelectedField(UserType<?> declaringType, UserField field) {
     if (!this.selectionIsFromMain) {
       this.selectionIsFromMain = true;
-      if (field.getValueType().isAssignableFrom(SThingMarker.class)) {
-        //Do nothing
-      } else if (field.getValueType().isAssignableFrom(SCameraMarker.class)) {
-        //Do nothing
-      } else {
+      final AbstractType<?, ?, ?> valueType = field.getValueType();
+      if (isSelectableType(valueType)) {
         super.setSelectedField(declaringType, field);
 
         MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField(field);
         MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField(field);
-        //      ObjectMarkerFieldDeclarationOperation.getInstance().setSelectedField( field );
-        //
-        //      this.getCameraMarkerPanel().revalidateAndRepaint();
-        //      this.getObjectMarkerPanel().revalidateAndRepaint();
-
         if (!this.selectionIsFromInstanceSelector) {
           StageIDE ide = StageIDE.getActiveInstance();
           InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
           if (field == this.getActiveSceneField()) {
             instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForScene());
-          } else if (field != null) {
+          } else {
             instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForSceneField(field));
           }
         }
@@ -537,6 +530,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     } catch (Throwable e) {
       e.printStackTrace();
     }
+  }
+
+  private boolean isSelectableType(AbstractType<?, ?, ?> valueType) {
+    return !valueType.isAssignableFrom(SThingMarker.class)
+        && !valueType.isAssignableFrom(SCameraMarker.class)
+        && !valueType.isAssignableFrom(SVRHand.class);
   }
 
   private void initializeCameraMarkers() {
@@ -723,8 +722,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         this.setSelectedField(this.getActiveSceneType(), this.getFieldForInstanceInJavaVM(this.sceneCameraImp.getAbstraction()));
       }
     } else {
-      UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
-      StorytellingSceneEditor.this.setSelectedField(uf.getDeclaringType(), uf);
+      UserField uf = getActiveSceneField();
+      setSelectedField(uf.getDeclaringType(), uf);
     }
   }
 

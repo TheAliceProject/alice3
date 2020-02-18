@@ -219,7 +219,7 @@ public class BootstrapUtilties {
         Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
         performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setAtmosphereColorMethod, colorExpression));
       } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
-        Logger.severe("This exception should not occure: " + e);
+        Logger.severe("This exception should not occur: " + e);
       }
     }
     if (!Double.isNaN(fogDensity)) {

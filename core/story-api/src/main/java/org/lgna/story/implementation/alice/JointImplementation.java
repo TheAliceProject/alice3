@@ -44,7 +44,6 @@
 package org.lgna.story.implementation.alice;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.implementation.JointImp;
@@ -92,9 +91,7 @@ public class JointImplementation extends JointImp {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
-    rv.addBoundingBox(jointBBox, trans);
-    return rv;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(sgJoint.getBoundingBox(null, false), trans);
   }
 }

@@ -2566,6 +2566,16 @@
         ]
       },
       {
+        "name": "getLeftHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
         "name": "moveAndOrientToAGoodVantagePointOf",
         "parameterClassNames": [
           "org.lgna.story.SThing",
@@ -2577,6 +2587,22 @@
         ]
       }
     ]
+  },
+  {
+    "clsName": "org.lgna.story.SVRHand",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.String",
+          "org.lgna.story.SCamera"
+        ],
+        "parameterNames": [
+          "name",
+          "camera"
+        ]
+      }
+    ],
+    "methodInfos": []
   },
   {
     "clsName": "org.lgna.story.JointedModelPoseBuilder",

@@ -49,8 +49,6 @@ import org.lgna.croquet.views.PopupMenu;
 
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.UUID;
 
 /**
@@ -128,33 +126,6 @@ public abstract class MenuModel extends AbstractMenuModel {
           this.cancelEvent = e;
         }
       });
-
-      popupMenu.addComponentListener(new ComponentListener() {
-        @Override
-        public void componentShown(ComponentEvent e) {
-          //        java.awt.Component awtComponent = e.getComponent();
-          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-        }
-
-        @Override
-        public void componentMoved(ComponentEvent e) {
-          //        java.awt.Component awtComponent = e.getComponent();
-          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-        }
-
-        @Override
-        public void componentResized(ComponentEvent e) {
-          //        java.awt.Component awtComponent = e.getComponent();
-          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-        }
-
-        @Override
-        public void componentHidden(ComponentEvent e) {
-          //        java.awt.Component awtComponent = e.getComponent();
-          //        edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-        }
-      });
-
       this.menuModel.handlePopupMenuPrologue(popupMenu);
 
       step.showPopupMenu(popupMenu);
@@ -164,9 +135,7 @@ public abstract class MenuModel extends AbstractMenuModel {
   private InternalPopupPrepModel popupPrepModel;
 
   public synchronized InternalPopupPrepModel getPopupPrepModel() {
-    if (this.popupPrepModel != null) {
-      //pass
-    } else {
+    if (this.popupPrepModel == null) {
       this.popupPrepModel = new InternalPopupPrepModel(this);
     }
     return this.popupPrepModel;

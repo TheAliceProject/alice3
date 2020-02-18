@@ -54,14 +54,14 @@ abstract class RtNode<E, N extends CascadeNode<E>> {
   private RtNode<?, ?> parent;
   private RtNode<?, ?> nextSibling;
 
-  public RtNode(E element, N node) {
+  RtNode(E element, N node) {
     assert element != null;
     this.element = element;
     assert node != null : element;
     this.node = node;
   }
 
-  public E getElement() {
+  E getElement() {
     return this.element;
   }
 
@@ -77,7 +77,7 @@ abstract class RtNode<E, N extends CascadeNode<E>> {
     return this.parent;
   }
 
-  protected RtNode<?, ?> getNextSibling() {
+  RtNode<?, ?> getNextSibling() {
     return this.nextSibling;
   }
 
@@ -85,11 +85,11 @@ abstract class RtNode<E, N extends CascadeNode<E>> {
     this.parent = parent;
   }
 
-  public void setNextSibling(RtNode<?, ?> nextSibling) {
+  private void setNextSibling(RtNode<?, ?> nextSibling) {
     this.nextSibling = nextSibling;
   }
 
-  protected void updateParentsAndNextSiblings(RtNode<?, ?>[] rtNodes) {
+  void updateParentsAndNextSiblings(RtNode<?, ?>[] rtNodes) {
     for (RtNode<?, ?> rtNode : rtNodes) {
       rtNode.setParent(this);
     }
@@ -106,7 +106,7 @@ abstract class RtNode<E, N extends CascadeNode<E>> {
 
   public abstract RtBlank<?> getNearestBlank();
 
-  public RtBlank<?> getNextBlank() {
+  RtBlank<?> getNextBlank() {
     RtBlank<?> blank = this.getNearestBlank();
     if (blank != null) {
       RtBlank<?> nextSibling = (RtBlank<?>) blank.getNextSibling();
@@ -119,25 +119,6 @@ abstract class RtNode<E, N extends CascadeNode<E>> {
     } else {
       return null;
     }
-    //  RtBlank< ? > rv = null;
-    //  RtBlank< ? > blank = this.getNearestBlank();
-    //  if( blank != null ) {
-    //    RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
-    //    if( nextSibling != null ) {
-    //      rv = nextSibling;
-    //    }
-    //  }
-    //  if( rv != null ) {
-    //    if( this.parent != null ) {
-    //      rv = this.parent.getNextBlank();
-    //    }
-    //  }
-    //  if( rv != null ) {
-    //    if( rv.isAutomaticallyDetermined() ) {
-    //      edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
-    //    }
-    //  }
-    //  return rv;
   }
 
   @Override

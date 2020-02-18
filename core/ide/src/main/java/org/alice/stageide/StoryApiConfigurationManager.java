@@ -59,6 +59,8 @@ import org.alice.ide.iconfactory.IconFactoryManager;
 import org.alice.ide.icons.Icons;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
 import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
@@ -101,9 +103,11 @@ import org.alice.stageide.member.SizeProceduresComposite;
 import org.alice.stageide.member.TextProceduresComposite;
 import org.alice.stageide.member.TimingProceduresComposite;
 import org.alice.stageide.member.VehicleProceduresComposite;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.ValueDetails;
@@ -138,6 +142,7 @@ import org.lgna.story.STextModel;
 import org.lgna.story.SThing;
 import org.lgna.story.STorus;
 import org.lgna.story.StrikePose;
+import org.lgna.story.SVRHand;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.VantagePoint;
 import org.lgna.story.annotation.PortionDetails;
@@ -150,12 +155,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends ApiConfigurationManager {
   public static final JavaMethod SET_ACTIVE_SCENE_METHOD = JavaMethod.getInstance(SProgram.class, "setActiveScene", SScene.class);
+  private CascadeMenuModel<InstanceFactory> cameraFieldsMenuModel;
 
   private static class SingletonHolder {
     private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
@@ -191,6 +198,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, JointIconFactory.getInstance());
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/160x120/Camera.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/160x120/VRHand.png")));
 
     this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 
@@ -287,17 +295,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type) {
-    if (type.isAssignableTo(SThing.class)) {
-      if (type.isAssignableTo(SMarker.class)) {
-        return false;
-      } else {
-        return true;
-      }
-    } else if (type.isAssignableTo(SProgram.class)) {
-      return true;
-    } else {
-      return false;
-    }
+    return type.isAssignableTo(SThing.class) && !type.isAssignableTo(SMarker.class)
+        || type.isAssignableTo(SProgram.class);
   }
 
   protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance(BipedResource.class);
@@ -309,8 +308,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public List<AbstractDeclaration> getGalleryResourceChildrenFor(AbstractType<?, ?, ?> type) {
-    List<AbstractDeclaration> rv = StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor(type);
-    return rv;
+    return StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor(type);
   }
 
   @Override
@@ -327,10 +325,25 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     AbstractType<?, ?, ?> type = field.getValueType();
     if (JointedTypeInfo.isJointed(type)) {
       return ThisFieldAccessJointedTypeMenuModel.getInstance(field);
-    } else {
-      return null;
     }
-    //    return org.alice.stageide.instancefactory.croquet.joint.declaration.ThisFieldAccessJointedTypeMenuModel.getMenuModel( field );
+    if (JavaType.getInstance(SCamera.class).isAssignableFrom(type)) {
+      return getCameraFieldsMenu(field);
+    }
+    return null;
+  }
+
+  private CascadeMenuModel<InstanceFactory> getCameraFieldsMenu(UserField cameraField) {
+    if (cameraFieldsMenuModel == null) {
+      cameraFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4080-8a28-381f3d3b26c8")) {
+        @Override
+        protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+          for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
+            blankChildren.add(InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(cameraField, method)));
+          }
+        }
+      };
+    }
+    return cameraFieldsMenuModel;
   }
 
   @Override
@@ -378,10 +391,10 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     return null;
   }
 
-  protected DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
+  private DeclarationNameLabel createDeclarationNameLabel(AbstractField field) {
     //todo: better name
     class ThisFieldAccessNameLabel extends DeclarationNameLabel {
-      public ThisFieldAccessNameLabel(AbstractField field) {
+      private ThisFieldAccessNameLabel(AbstractField field) {
         super(field);
       }
 
@@ -437,7 +450,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public boolean isTabClosable(AbstractCode code) {
-    return BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName()) == false;
+    return !BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
   }
 
   @Override

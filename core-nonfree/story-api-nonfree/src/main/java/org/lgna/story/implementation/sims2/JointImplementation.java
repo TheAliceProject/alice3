@@ -43,7 +43,6 @@
 package org.lgna.story.implementation.sims2;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
@@ -99,10 +98,8 @@ public class JointImplementation extends JointImp {
   }
 
   @Override
-  protected CumulativeBound updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
-    AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
-    rv.addBoundingBox(jointBBox, trans);
-    return rv;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(sgJoint.getAxisAlignedBoundingBox(), trans);
   }
 
 }

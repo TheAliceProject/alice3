@@ -120,17 +120,6 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
     }
   }
 
-  @Override
-  public void encodeDefinition(Encoder processor) {
-    processor.appendNewJointId(fld.getName(),
-                               parent == null ? "null" : parent.getCodeIdentifier(processor));
-  }
-
-  @Override
-  public String getCodeIdentifier(Encoder encoder) {
-    return encoder.getFieldReference(containingClass.getSimpleName(), fld.getName());
-  }
-
   public int descendantComparison(JointId b) {
     if (isMyDescendant(b)) {
       return 1;
@@ -143,5 +132,16 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
 
   private boolean isMyDescendant(JointId b) {
     return b != null && (b.parent == this || isMyDescendant(b.parent));
+  }
+
+  @Override
+  public void encodeDefinition(Encoder processor) {
+    processor.appendNewJointId(fld.getName(),
+                               parent == null ? "null" : parent.getCodeIdentifier(processor));
+  }
+
+  @Override
+  public String getCodeIdentifier(Encoder encoder) {
+    return encoder.getFieldReference(containingClass.getSimpleName(), fld.getName());
   }
 }
