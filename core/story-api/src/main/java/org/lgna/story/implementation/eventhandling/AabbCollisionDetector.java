@@ -89,27 +89,13 @@ public class AabbCollisionDetector {
     return doAabbsCollide(center1, corner1, center2, corner2, extraProximity);
   }
 
-  //  private static void findCenterAndCorner(Entity object, Point3 center, Vector3 corner) {
-  //    // there are some issues with all these puttings in and
-  //    // takings out of objects in the scene.
-  //    if (object.getVehicle() != null) {
-  //      AxisAlignedBox aabb1 = ImplementationAccessor.getImplementation(object).getAxisAlignedMinimumBoundingBox();
-  //      Point3 min = aabb1.getMinimum();
-  //      Point3 max = aabb1.getMaximum();
-  //      center.setToInterpolation(min, max, .5);
-  //      corner.setToSubtraction(max, min);
-  //      corner.multiply(.5);
-  //    }
-  //  }
-
   private static void findCenterAndCorner(SThing object, Point3 center, Vector3 corner) {
-    AxisAlignedBox aabb1 = EmployeesOnly.getImplementation(object).getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
+    AxisAlignedBox aabb1 = EmployeesOnly.getImplementation(object).getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
     Point3 min = aabb1.getMinimum();
     Point3 max = aabb1.getMaximum();
     center.setToInterpolation(min, max, .5);
     corner.setToSubtraction(max, min);
     corner.multiply(.5);
-
   }
 
   private static boolean doAabbsCollide(Point3 boxAPosition, Vector3 boxACorner, Point3 boxBPosition, Vector3 boxBCorner) {
