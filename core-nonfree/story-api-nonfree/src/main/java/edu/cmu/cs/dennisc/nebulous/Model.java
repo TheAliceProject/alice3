@@ -286,7 +286,7 @@ public abstract class Model extends Geometry {
         double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint.toString());
         float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString());
         //Sims weights reference the old vertex indices so we need to remap them to the new vertices
-        //First we find the new hightest index
+        //First we find the new highest index
         int maxVertexIndex = 0;
         for (int i = 0; i < vertexWeights.length; i++) {
             int newVertexIndex = oldVertexIndexToNewIndex.get(i);
