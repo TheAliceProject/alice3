@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import java.awt.image.BufferedImage;
@@ -149,6 +148,8 @@ public abstract class Model extends Geometry {
 
   private native void getOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
+  private native void getRawOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
+
   private native void getLocalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
   private native void setLocalTransformationForPartNamed(String name, String parent, double[] transformIn);
@@ -209,6 +210,17 @@ public abstract class Model extends Geometry {
     return this.sgParent;
   }
 
+  public AffineMatrix4x4 getRawOriginalTransformationForJoint(JointId joint) {
+    double[] buffer = new double[12];
+    try {
+      getRawOriginalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
+    } catch (RuntimeException re) {
+      Logger.severe(joint);
+      throw re;
+    }
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
+  }
+
   public AffineMatrix4x4 getOriginalTransformationForJoint(JointId joint) {
     double[] buffer = new double[12];
     try {
@@ -217,8 +229,7 @@ public abstract class Model extends Geometry {
       Logger.severe(joint);
       throw re;
     }
-    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
-    return affineMatrix;
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public AffineMatrix4x4 getLocalTransformationForJoint(JointId joint) {
@@ -229,8 +240,7 @@ public abstract class Model extends Geometry {
       Logger.severe(joint);
       throw re;
     }
-    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
-    return affineMatrix;
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
@@ -405,7 +415,7 @@ public abstract class Model extends Geometry {
       Joint j = new Joint();
       j.jointID.setValue(currentJointId.toString());
       j.setName(currentJointId.toString());
-      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
+      j.localTransformation.setValue(getRawOriginalTransformationForJoint(currentJointId));
       processedJoints.add(j);
       if (currentJointId.getParent() == null) {
         rootJoint = j;
@@ -472,15 +482,9 @@ public abstract class Model extends Geometry {
       //Check to see if the weighted mesh is really a weighted to joints, and therefore actually a weighted mesh.
       // Some meshes are listed on the sims side as weighted meshes but are not weighted to any joints
       if (isActuallyWeightedToJoints(meshId, resourceJointIds)) {
-        if (resource instanceof PersonResource) {
-          Mesh mesh = new Mesh();
-          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-          unWeightedMeshes.add(mesh);
-        } else {
-          WeightedMesh mesh = new WeightedMesh();
-          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-          weightedMeshes.add(mesh);
-        }
+        WeightedMesh mesh = new WeightedMesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        weightedMeshes.add(mesh);
       } else {
         //Add meshes that are weighted to no joints to the unweighted mesh list
         unweightedMeshIds.add(meshId);

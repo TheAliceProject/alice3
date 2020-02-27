@@ -612,6 +612,12 @@ public class JointedModelColladaExporter {
     //Add the ColladaSkinWeights to the VertexWeights structure by adding the indices to the V element
     //See the Skin structure comment at the top for details
     for (ColladaSkinWeights vertexWeights : skinWeights) {
+      if (vertexWeights == null) {
+        // This vertex is not weighted to any joints. It is probably weighted to hidden joints. It will not be displayed.
+        vw.getVcount().add(BigInteger.valueOf(0));
+        continue;
+      }
+
       vw.getVcount().add(BigInteger.valueOf(vertexWeights.jointIndices.size()));
       for (int j = 0; j < vertexWeights.jointIndices.size(); j++) {
         vw.getV().add(vertexWeights.jointIndices.get(j).longValue());
