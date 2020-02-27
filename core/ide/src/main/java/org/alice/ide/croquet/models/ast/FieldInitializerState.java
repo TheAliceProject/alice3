@@ -45,6 +45,8 @@ package org.alice.ide.croquet.models.ast;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.cascade.ExpressionPropertyContext;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CascadeBlankChild;
@@ -65,9 +67,7 @@ public class FieldInitializerState extends CustomItemStateWithInternalBlank<Expr
 
   public static synchronized FieldInitializerState getInstance(UserField field) {
     FieldInitializerState rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FieldInitializerState(field);
       map.put(field, rv);
     }
@@ -75,10 +75,25 @@ public class FieldInitializerState extends CustomItemStateWithInternalBlank<Expr
   }
 
   private final UserField field;
+  private ExpressionCascadeContext pushedContext;
 
   private FieldInitializerState(UserField field) {
     super(Application.PROJECT_GROUP, UUID.fromString("7df7024e-5eef-4ed0-b463-da3719955e7a"), field.initializer.getValue(), NodeCodec.getInstance(Expression.class));
     this.field = field;
+  }
+
+  @Override
+  protected void prologue() {
+    pushedContext = new ExpressionPropertyContext(field.initializer);
+    IDE.getActiveInstance().getExpressionCascadeManager().pushContext(pushedContext);
+    super.prologue();
+  }
+
+  @Override
+  protected void epilogue() {
+    super.epilogue();
+    IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(pushedContext);
+    pushedContext = null;
   }
 
   @Override
