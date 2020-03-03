@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.alice.interact.DragAdapter;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.RuntimeDragAdapter;
 import org.lgna.story.HeldKeyPolicy;
@@ -155,7 +154,7 @@ public class EventManager {
     }
   };
 
-  private DragAdapter dragAdapter;
+  private RuntimeDragAdapter dragAdapter;
 
   public EventManager(SceneImp scene) {
     this.scene = scene;
@@ -269,20 +268,17 @@ public class EventManager {
     this.sceneActivationHandler.handleEventFire(new SceneActivationEvent());
   }
 
-  public void addDragAdapter() {
-    if (this.dragAdapter != null) {
-      //pass
-    } else {
-      this.dragAdapter = new RuntimeDragAdapter();
+  public void addDragAdapter(Visual[] visuals) {
+    if (this.dragAdapter == null) {
+      this.dragAdapter = new RuntimeDragAdapter(visuals);
       OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
       this.dragAdapter.setOnscreenRenderTarget(renderTarget);
       this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
       this.dragAdapter.makeCameraActive(camera);
       this.dragAdapter.setAnimator(this.scene.getProgram().getAnimator());
-      //      for( Transformable transformable : this.scene.getComponents() ) {
-      //        this.putBonusDataFor( transformable );
-      //      }
+    } else {
+      dragAdapter.addTargets(visuals);
     }
   }
 

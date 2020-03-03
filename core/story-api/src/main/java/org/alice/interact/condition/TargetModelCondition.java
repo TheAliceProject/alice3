@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2020 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.story;
+package org.alice.interact.condition;
 
-import org.lgna.story.implementation.eventhandling.MouseClickedHandler;
+import org.alice.interact.InputState;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SModel;
 
-/**
- * @author Matt May
- */
-public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail, AddDefaultModelManipulation.Detail {
-  private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
-  private final Visual[] value;
+import java.util.List;
 
-  public SetOfVisuals(Visual... value) {
-    this.value = value;
+public class TargetModelCondition extends InputCondition {
+  public TargetModelCondition(List<SModel> targets) {
+    this.targets = targets;
   }
 
-  private static Visual[] getValue(Object[] details, Visual[] defaultValue) {
-    for (Object detail : details) {
-      if (detail instanceof SetOfVisuals) {
-        SetOfVisuals setOfVisuals = (SetOfVisuals) detail;
-        return setOfVisuals.value;
+  @Override
+  protected boolean testState(InputState state) {
+    if (state.getClickPickResult() == null || state.getClickPickResult().getVisual() == null) {
+      return false;
+    }
+    for (SModel target : targets) {
+      if (state.getClickPickResult().getVisual().getParent() == EmployeesOnly.getImplementation(target).getSgComposite()) {
+        return true;
       }
     }
-    return defaultValue;
+    return false;
   }
 
-  /* package-private */
-  static Visual[] getValue(Object[] details) {
-    return getValue(details, DEFAULT_VALUE);
-  }
+  private final List<SModel> targets;
 }

@@ -43,11 +43,16 @@
 package org.alice.interact;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.condition.AndInputCondition;
+import org.alice.interact.condition.InputCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.condition.TargetModelCondition;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
@@ -56,6 +61,8 @@ import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
+import org.lgna.story.SModel;
+import org.lgna.story.Visual;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -64,27 +71,68 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  * @author David Culyba
  */
 public class RuntimeDragAdapter extends DragAdapter {
-  public RuntimeDragAdapter() {
-    this.setUpControls();
+  private List<SModel> targetModels = new ArrayList<>();
+  private boolean targetGround;
+  private boolean moveAllObjects;
+
+
+  public RuntimeDragAdapter(Visual[] targets) {
+    addTargets(targets);
+  }
+
+  public void addTargets(org.lgna.story.Visual[] targets) {
+    if (moveAllObjects) {
+      // Once all models are included there is nothing to add.
+      return;
+    }
+    moveAllObjects = targets.length == 0;
+    for (Visual t : targets) {
+      if (t instanceof SModel) {
+        targetModels.add((SModel) t);
+      } else {
+        targetGround = true;
+      }
+    }
+    targetGround = targetGround || moveAllObjects;
+    setUpControls();
   }
 
   private void setUpControls() {
     ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet(new ObjectTranslateDragManipulator());
-    MouseDragCondition moveableObject = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
-    mouseTranslateObject.addCondition(moveableObject);
+    MouseDragCondition movableObject = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
+    addDragCondition(mouseTranslateObject, movableObject);
     this.addManipulatorConditionSet(mouseTranslateObject);
 
     ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet(new ObjectUpDownDragManipulator());
-    MouseDragCondition moveableObjectWithShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierKey.SHIFT));
-    mouseUpDownTranslateObject.addCondition(moveableObjectWithShift);
+    MouseDragCondition movableObjectWithShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.MOVEABLE.pickHint()), new ModifierMask(ModifierKey.SHIFT));
+    addDragCondition(mouseUpDownTranslateObject, movableObjectWithShift);
     this.addManipulatorConditionSet(mouseUpDownTranslateObject);
 
     ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet(new HandlelessObjectRotateDragManipulator(MovementDirection.UP));
-    MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierKey.CONTROL));
-    mouseRotateObjectLeftRight.addCondition(moveableObjectWithCtrl);
+    MouseDragCondition movableObjectWithCtrl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TURNABLE.pickHint()), new ModifierMask(ModifierKey.CONTROL));
+    addDragCondition(mouseRotateObjectLeftRight, movableObjectWithCtrl);
     this.addManipulatorConditionSet(mouseRotateObjectLeftRight);
 
-    //Camera mouse control
+    if (targetGround) {
+      addCameraManipulators();
+    }
+
+    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
+      manipulatorConditionSet.getManipulator().setDragAdapter(this);
+    }
+  }
+
+  private void addDragCondition(ManipulatorConditionSet mouseTranslateObject, MouseDragCondition moveableObject) {
+    if (moveAllObjects) {
+      mouseTranslateObject.addCondition(moveableObject);
+    } else {
+      InputCondition targetCondition = new TargetModelCondition(targetModels);
+      InputCondition condition = new AndInputCondition(targetCondition, moveableObject);
+      mouseTranslateObject.addCondition(condition);
+    }
+  }
+
+  private void addCameraManipulators() {
     MouseDragCondition leftAndNoModifiers = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN));
     MouseDragCondition leftAndShift = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_SHIFT));
     MouseDragCondition leftAndControl = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.getNonInteractiveHint()), new ModifierMask(ModifierMask.JUST_CONTROL));
@@ -92,7 +140,6 @@ public class RuntimeDragAdapter extends DragAdapter {
     MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.getNonInteractiveHint()));
 
     ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet(new CameraOrbitDragManipulator());
-    //    cameraOrbit.addCondition(rightMouseAndNonInteractive);
     cameraOrbit.addCondition(middleMouseAndAnything);
     this.addManipulatorConditionSet(cameraOrbit);
 
@@ -108,10 +155,6 @@ public class RuntimeDragAdapter extends DragAdapter {
     ManipulatorConditionSet cameraMousePan = new ManipulatorConditionSet(new CameraPanDragManipulator());
     cameraMousePan.addCondition(leftAndShift);
     this.addManipulatorConditionSet(cameraMousePan);
-
-    for (ManipulatorConditionSet manipulatorConditionSet : this.getManipulatorConditionSets()) {
-      manipulatorConditionSet.getManipulator().setDragAdapter(this);
-    }
   }
 
   @Override
