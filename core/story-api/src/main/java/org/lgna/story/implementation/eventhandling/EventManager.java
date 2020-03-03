@@ -155,9 +155,6 @@ public class EventManager {
     }
   };
 
-  //  private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
-  //  private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
-
   private DragAdapter dragAdapter;
 
   public EventManager(SceneImp scene) {
@@ -198,14 +195,6 @@ public class EventManager {
     component.removeKeyListener(this.keyAdapter);
     component.removeFocusListener(this.focusAdapter);
   }
-
-  //  public void mouseButtonClicked(MouseButtonEvent e) {
-  //    mouse.fireAllTargeted(e.getModelAtMouseLocation());
-  //  }
-  //
-  //  public void keyPressed(KeyEvent e) {
-  //    key.fireAllTargeted(e);
-  //  }
 
   private AbstractEventHandler<?, ?>[] getEventHandlers() {
     return handlers;
@@ -259,6 +248,7 @@ public class EventManager {
     this.mouseHandler.addListener(listener, policy, targets);
   }
 
+  @Deprecated //(since = "3.1.39.0.0", forRemoval = true)   // It was split into addMouseClickOnScreenListener and addMouseClickOnObjectListener above
   public void addMouseButtonListener(Object listener, MultipleEventPolicy policy, Visual[] targets) {
     this.mouseHandler.addListener(listener, policy, targets);
   }
@@ -266,10 +256,6 @@ public class EventManager {
   public void addTransformationListener(PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo) {
     this.transHandler.addTransformationListener(transformationlistener, shouldListenTo);
   }
-
-  //  public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-  //    this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
-  //  }
 
   public void addComesIntoViewEventListener(ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy) {
     this.viewHandler.addViewEventListener(listener, entities, policy);
@@ -290,13 +276,6 @@ public class EventManager {
       this.dragAdapter = new RuntimeDragAdapter();
       OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
-      //      for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
-      //        if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera )
-      //        {
-      //          camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
-      //          break;
-      //        }
-      //      }
       this.dragAdapter.setOnscreenRenderTarget(renderTarget);
       this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
       this.dragAdapter.makeCameraActive(camera);
