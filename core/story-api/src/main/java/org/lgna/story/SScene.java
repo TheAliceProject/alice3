@@ -174,8 +174,8 @@ public abstract class SScene extends SThing {
 
   @MethodTemplate(visibility = Visibility.PRIME_TIME)
   @AddEventListenerTemplate()
-  public void addDefaultModelManipulation() {
-    this.getImplementation().getEventManager().addDragAdapter();
+  public void addDefaultModelManipulation(AddDefaultModelManipulation.Detail... details) {
+    this.getImplementation().getEventManager().addDragAdapter(SetOfVisuals.getValue(details));
   }
 
   //time/Scene

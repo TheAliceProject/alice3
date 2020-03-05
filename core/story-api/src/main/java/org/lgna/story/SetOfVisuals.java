@@ -47,7 +47,7 @@ import org.lgna.story.implementation.eventhandling.MouseClickedHandler;
 /**
  * @author Matt May
  */
-public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail {
+public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail, AddDefaultModelManipulation.Detail {
   private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
   private final Visual[] value;
 

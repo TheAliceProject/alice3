@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2020 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,74 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.alice.interact.condition;
 
-package org.alice.ide.croquet.models.ast;
-
-import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.IDE;
-import org.alice.ide.cascade.ExpressionCascadeContext;
-import org.alice.ide.cascade.ExpressionPropertyContext;
-import org.alice.ide.croquet.codecs.NodeCodec;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CustomItemStateWithInternalBlank;
-import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.UserField;
+import org.alice.interact.InputState;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SModel;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-/**
- * @author Dennis Cosgrove
- */
-public class FieldInitializerState extends CustomItemStateWithInternalBlank<Expression> {
-  private static Map<UserField, FieldInitializerState> map = Maps.newHashMap();
+public class TargetModelCondition extends InputCondition {
+  public TargetModelCondition(List<SModel> targets) {
+    this.targets = targets;
+  }
 
-  public static synchronized FieldInitializerState getInstance(UserField field) {
-    FieldInitializerState rv = map.get(field);
-    if (rv == null) {
-      rv = new FieldInitializerState(field);
-      map.put(field, rv);
+  @Override
+  protected boolean testState(InputState state) {
+    if (state.getClickPickResult() == null || state.getClickPickResult().getVisual() == null) {
+      return false;
     }
-    return rv;
+    for (SModel target : targets) {
+      if (state.getClickPickResult().getVisual().getParent() == EmployeesOnly.getImplementation(target).getSgComposite()) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  private final UserField field;
-  private ExpressionCascadeContext pushedContext;
-
-  private FieldInitializerState(UserField field) {
-    super(Application.PROJECT_GROUP, UUID.fromString("7df7024e-5eef-4ed0-b463-da3719955e7a"), field.initializer.getValue(), NodeCodec.getInstance(Expression.class));
-    this.field = field;
-  }
-
-  @Override
-  protected void prologue() {
-    pushedContext = new ExpressionPropertyContext(field.initializer);
-    IDE.getActiveInstance().getExpressionCascadeManager().pushContext(pushedContext);
-    super.prologue();
-  }
-
-  @Override
-  protected void epilogue() {
-    super.epilogue();
-    IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext(pushedContext);
-    pushedContext = null;
-  }
-
-  @Override
-  protected Expression getSwingValue() {
-    return this.field.initializer.getValue();
-  }
-
-  @Override
-  protected void setSwingValue(Expression nextValue) {
-    this.field.initializer.setValue(nextValue);
-  }
-
-  @Override
-  protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
-    IDE.getActiveInstance().getExpressionCascadeManager().appendItems(blankChildren, blankNode, this.field.getValueType(), null);
-  }
+  private final List<SModel> targets;
 }
