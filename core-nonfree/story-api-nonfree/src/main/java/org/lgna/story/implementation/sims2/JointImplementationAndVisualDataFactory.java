@@ -53,7 +53,6 @@ import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.nebulous.Thing;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
@@ -116,10 +115,6 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
         PersonResource personResource = (PersonResource) this.resource;
         return NebulousPersonVisualData.createInstance(personResource);
       } else {
-        String modelResourceName = AliceResourceUtilties.getVisualResourceName(this.resource);
-        modelResourceName = AliceResourceUtilties.camelCaseToEnum(modelResourceName);
-        String textureResourceName = AliceResourceUtilties.getTextureResourceName(this.resource);
-        //        return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, modelResourceName+"__"+textureResourceName ) );
         return new NebulousVisualData<Model>(new Thing(this.resource, this.resource));
       }
     } catch (LicenseRejectedException lre) {

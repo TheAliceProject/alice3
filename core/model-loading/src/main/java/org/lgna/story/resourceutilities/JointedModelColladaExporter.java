@@ -611,14 +611,18 @@ public class JointedModelColladaExporter {
     List<Float> weightArray = createWeightList(sgWeightedMesh);
     //Add the ColladaSkinWeights to the VertexWeights structure by adding the indices to the V element
     //See the Skin structure comment at the top for details
-    int skinIndex = 0;
     for (ColladaSkinWeights vertexWeights : skinWeights) {
+      if (vertexWeights == null) {
+        // This vertex is not weighted to any joints. It is probably weighted to hidden joints. It will not be displayed.
+        vw.getVcount().add(BigInteger.valueOf(0));
+        continue;
+      }
+
       vw.getVcount().add(BigInteger.valueOf(vertexWeights.jointIndices.size()));
       for (int j = 0; j < vertexWeights.jointIndices.size(); j++) {
         vw.getV().add(vertexWeights.jointIndices.get(j).longValue());
         vw.getV().add(vertexWeights.weightIndices.get(j).longValue());
       }
-      skinIndex++;
     }
 
     //Build the weights source.
