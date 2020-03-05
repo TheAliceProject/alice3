@@ -250,7 +250,7 @@ public abstract class DragAdapter {
     manipulator.setOnscreenRenderTarget(this.onscreenRenderTarget);
   }
 
-  private void setCurrentInterationState(InteractionGroup interactionState) {
+  private void setCurrentInteractionState(InteractionGroup interactionState) {
     this.currentInteractionState = interactionState;
     if (this.currentInteractionState != null) {
       InteractionGroup.InteractionInfo interactionInfo = this.currentInteractionState.getMatchingInfo(ObjectType.getObjectType(this.selectedObject));
@@ -265,7 +265,7 @@ public abstract class DragAdapter {
     if (this.currentInteractionState != null) {
       this.currentInteractionState.enabledManipulators(false);
     }
-    setCurrentInterationState(this.mapHandleStyleToInteractionGroup.get(handleStyle));
+    setCurrentInteractionState(this.mapHandleStyleToInteractionGroup.get(handleStyle));
   }
 
   public void makeCameraActive(AbstractCamera camera) {
@@ -307,7 +307,7 @@ public abstract class DragAdapter {
     return cameraToReturn;
   }
 
-  public void setCameraOnManipulator(CameraInformedManipulator manipulator, InputState startInput) {
+  public void setCameraOnManipulator(CameraInformedManipulator manipulator) {
     //The pick camera can be null if we roll over a 2D handle while we're moving
     if ((manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA) && (this.currentInputState.getPickCamera() != null)) {
       manipulator.setCamera(this.currentInputState.getPickCamera());
@@ -316,14 +316,14 @@ public abstract class DragAdapter {
     }
   }
 
-  private void setManipulatorStartState(AbstractManipulator manipulator, InputState startState) {
+  private void setManipulatorStartState(AbstractManipulator manipulator) {
     if (manipulator instanceof OnscreenPicturePlaneInformedManipulator) {
       OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator) manipulator;
       this.setLookingGlassOnManipulator(lookingGlassManipulator);
     }
     if (manipulator instanceof CameraInformedManipulator) {
       CameraInformedManipulator cameraInformed = (CameraInformedManipulator) manipulator;
-      this.setCameraOnManipulator(cameraInformed, startState);
+      this.setCameraOnManipulator(cameraInformed);
     }
   }
 
@@ -455,7 +455,7 @@ public abstract class DragAdapter {
       //If the current handle state is null, force it to update by setting the interaction state again
       //The handle state can be null if the previous selected object didn't match the selected state
       if (this.handleManager.getCurrentHandleSet() == null) {
-        this.setCurrentInterationState(this.currentInteractionState);
+        this.setCurrentInteractionState(this.currentInteractionState);
       }
       updateHandleSelection(selected);
     } else {
@@ -496,11 +496,11 @@ public abstract class DragAdapter {
       toEndManipulator.endManipulator(this.currentInputState, this.previousInputState);
     }
     for (AbstractManipulator toClickManipulator : toClick) {
-      this.setManipulatorStartState(toClickManipulator, this.currentInputState);
+      this.setManipulatorStartState(toClickManipulator);
       toClickManipulator.clickManipulator(this.currentInputState, this.previousInputState);
     }
     for (AbstractManipulator toStartManipulator : toStart) {
-      this.setManipulatorStartState(toStartManipulator, this.currentInputState);
+      this.setManipulatorStartState(toStartManipulator);
       toStartManipulator.startManipulator(this.currentInputState);
     }
     for (AbstractManipulator toUpdateManipulator : toUpdate) {

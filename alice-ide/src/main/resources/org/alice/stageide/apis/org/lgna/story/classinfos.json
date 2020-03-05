@@ -1085,8 +1085,11 @@
       },
       {
         "name": "addDefaultModelManipulation",
-        "parameterClassNames": [],
-        "parameterNames": []
+        "parameterClassNames": [
+          "[Lorg.lgna.story.AddDefaultModelManipulation$Detail;"
+        ],
+        "parameterNames": [
+          "details"]
       },
       {
         "name": "addTimeListener",

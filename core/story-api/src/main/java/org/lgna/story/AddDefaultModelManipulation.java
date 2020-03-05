@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2020 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,31 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
-import org.lgna.story.implementation.eventhandling.MouseClickedHandler;
+import org.lgna.project.annotations.ClassTemplate;
 
-/**
- * @author Matt May
- */
-public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail, AddDefaultModelManipulation.Detail {
-  private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
-  private final Visual[] value;
+public class AddDefaultModelManipulation {
 
-  public SetOfVisuals(Visual... value) {
-    this.value = value;
+  @ClassTemplate(keywordFactoryCls = AddDefaultModelManipulation.class) public interface Detail {
   }
 
-  private static Visual[] getValue(Object[] details, Visual[] defaultValue) {
-    for (Object detail : details) {
-      if (detail instanceof SetOfVisuals) {
-        SetOfVisuals setOfVisuals = (SetOfVisuals) detail;
-        return setOfVisuals.value;
-      }
-    }
-    return defaultValue;
-  }
-
-  /* package-private */
-  static Visual[] getValue(Object[] details) {
-    return getValue(details, DEFAULT_VALUE);
+  public static SetOfVisuals setOfVisuals(Visual[] visuals) {
+    return new SetOfVisuals(visuals);
   }
 }
