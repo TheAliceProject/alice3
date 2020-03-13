@@ -169,9 +169,9 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       compareResources(project.getResources(), resources);
 
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
-      entries.addAll(createEntriesForTypes(manifest, project.getNamedUserTypes()));
       ModelResourceCrawler crawler = new ModelResourceCrawler();
       project.getProgramType().crawl(crawler, CrawlPolicy.COMPLETE);
+      entries.addAll(createEntriesForTypes(manifest, crawler.activeUserTypes));
       Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
       for (Set<JointedModelResource> resourceSet : modelResources.values()) {
         JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
