@@ -148,8 +148,6 @@ public abstract class Model extends Geometry {
 
   private native void getOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
-  private native void getRawOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
-
   private native void getLocalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
   private native void setLocalTransformationForPartNamed(String name, String parent, double[] transformIn);
@@ -208,17 +206,6 @@ public abstract class Model extends Geometry {
 
   public Composite getSGParent() {
     return this.sgParent;
-  }
-
-  public AffineMatrix4x4 getRawOriginalTransformationForJoint(JointId joint) {
-    double[] buffer = new double[12];
-    try {
-      getRawOriginalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
-    } catch (RuntimeException re) {
-      Logger.severe(joint);
-      throw re;
-    }
-    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public AffineMatrix4x4 getOriginalTransformationForJoint(JointId joint) {
@@ -415,7 +402,7 @@ public abstract class Model extends Geometry {
       Joint j = new Joint();
       j.jointID.setValue(currentJointId.toString());
       j.setName(currentJointId.toString());
-      j.localTransformation.setValue(getRawOriginalTransformationForJoint(currentJointId));
+      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
       processedJoints.add(j);
       if (currentJointId.getParent() == null) {
         rootJoint = j;
