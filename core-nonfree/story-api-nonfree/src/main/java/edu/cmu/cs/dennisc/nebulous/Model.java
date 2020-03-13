@@ -180,7 +180,7 @@ public abstract class Model extends Geometry {
 
   private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, String jointId);
 
-  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId);
+  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId, String parentId);
 
   private native int getMaterialTypeForTexture(String textureId);
 
@@ -281,7 +281,7 @@ public abstract class Model extends Geometry {
     for (JointId joint : resourceJointIds) {
       if (isMeshWeightedToJoint(meshId, joint.toString())) {
         double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint.toString());
-        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString());
+        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
         //Sims weights reference the old vertex indices so we need to remap them to the new vertices
         //First we find the new highest index
         int maxVertexIndex = 0;
