@@ -148,8 +148,6 @@ public abstract class Model extends Geometry {
 
   private native void getOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
-  private native void getRawOriginalTransformationForPartNamed(double[] transformOut, String name, String parent);
-
   private native void getLocalTransformationForPartNamed(double[] transformOut, String name, String parent);
 
   private native void setLocalTransformationForPartNamed(String name, String parent, double[] transformIn);
@@ -182,7 +180,7 @@ public abstract class Model extends Geometry {
 
   private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, String jointId);
 
-  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId);
+  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId, String parentId);
 
   private native int getMaterialTypeForTexture(String textureId);
 
@@ -208,17 +206,6 @@ public abstract class Model extends Geometry {
 
   public Composite getSGParent() {
     return this.sgParent;
-  }
-
-  public AffineMatrix4x4 getRawOriginalTransformationForJoint(JointId joint) {
-    double[] buffer = new double[12];
-    try {
-      getRawOriginalTransformationForPartNamed(buffer, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
-    } catch (RuntimeException re) {
-      Logger.severe(joint);
-      throw re;
-    }
-    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public AffineMatrix4x4 getOriginalTransformationForJoint(JointId joint) {
@@ -294,7 +281,7 @@ public abstract class Model extends Geometry {
     for (JointId joint : resourceJointIds) {
       if (isMeshWeightedToJoint(meshId, joint.toString())) {
         double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint.toString());
-        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString());
+        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
         //Sims weights reference the old vertex indices so we need to remap them to the new vertices
         //First we find the new highest index
         int maxVertexIndex = 0;
@@ -415,7 +402,7 @@ public abstract class Model extends Geometry {
       Joint j = new Joint();
       j.jointID.setValue(currentJointId.toString());
       j.setName(currentJointId.toString());
-      j.localTransformation.setValue(getRawOriginalTransformationForJoint(currentJointId));
+      j.localTransformation.setValue(getOriginalTransformationForJoint(currentJointId));
       processedJoints.add(j);
       if (currentJointId.getParent() == null) {
         rootJoint = j;
