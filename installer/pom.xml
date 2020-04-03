@@ -78,7 +78,7 @@
             <configuration>
               <projectFile>aliceinstallerproject.install4j</projectFile>
               <attach>true</attach>
-              <release>${alice.build.version}${alice.build.prerelease}</release>
+              <release>${alice.build.version}${alice.build.prerelease}${alice.build.metadata}</release>
             </configuration>
           </execution>
           <execution>
