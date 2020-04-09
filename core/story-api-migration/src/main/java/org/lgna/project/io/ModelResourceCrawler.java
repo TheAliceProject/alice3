@@ -56,6 +56,7 @@ import java.util.Set;
 public class ModelResourceCrawler implements Crawler {
   Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
   Set<InstanceCreation> personCreations = new HashSet<>();
+  Set<NamedUserType> activeUserTypes = new HashSet<>();
 
   @Override
   public void visit(Crawlable crawlable) {
@@ -67,6 +68,9 @@ public class ModelResourceCrawler implements Crawler {
     }
     if (InstanceCreation.class.isAssignableFrom(crawlable.getClass())) {
       addIfSimsPersonResourceCreation((InstanceCreation) crawlable);
+    }
+    if (NamedUserType.class.isAssignableFrom(crawlable.getClass())) {
+      activeUserTypes.add((NamedUserType) crawlable);
     }
   }
 

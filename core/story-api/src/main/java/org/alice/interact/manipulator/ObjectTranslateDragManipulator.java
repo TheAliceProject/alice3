@@ -133,7 +133,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
     }
   }
 
-  protected Point3 getPositionBasedonOnMouseLocation(Point mouseLocation) {
+  protected Point3 getPositionBasedOnMouseLocation(Point mouseLocation) {
     Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y);
     if (pickRay != null) {
       Plane toMoveIn = this.movementPlane;
@@ -205,7 +205,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
         this.hasMoved = true;
       }
 
-      Point3 newPosition = getPositionBasedonOnMouseLocation(currentInput.getMouseLocation());
+      Point3 newPosition = getPositionBasedOnMouseLocation(currentInput.getMouseLocation());
 
       newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
 

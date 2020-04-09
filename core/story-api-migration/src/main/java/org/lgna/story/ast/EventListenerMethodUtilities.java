@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.story.AddCollisionEndListener;
 import org.lgna.story.AddCollisionStartListener;
+import org.lgna.story.AddDefaultModelManipulation;
 import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.AddMouseClickOnObjectListener;
 import org.lgna.story.AddMouseClickOnScreenListener;
@@ -91,7 +92,7 @@ public class EventListenerMethodUtilities {
 
   public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class);
   public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addMouseClickOnObjectListener", MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class);
-  public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(SScene.class, "addDefaultModelManipulation");
+  public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(SScene.class, "addDefaultModelManipulation", AddDefaultModelManipulation.Detail[].class);
   public static final List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Lists.newArrayList(ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR);
 
   public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(SScene.class, "addSceneActivationListener", SceneActivationListener.class);

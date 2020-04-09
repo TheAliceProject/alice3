@@ -178,7 +178,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
     }
   }
 
-  protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState) {
+  protected void setManipulatorStartState(AbstractManipulator manipulator) {
     manipulator.setDragAdapter(this.dragAdapter);
     if (manipulator instanceof OnscreenPicturePlaneInformedManipulator) {
       OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator) manipulator;
@@ -186,7 +186,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
     }
     if (manipulator instanceof CameraInformedManipulator) {
       CameraInformedManipulator cameraInformed = (CameraInformedManipulator) manipulator;
-      this.dragAdapter.setCameraOnManipulator(cameraInformed, startState);
+      this.dragAdapter.setCameraOnManipulator(cameraInformed);
     }
   }
 
@@ -197,7 +197,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
       this.activeManipulator = this.activeHandle.getManipulation(clickInput);
       if (this.activeManipulator != null) {
         //Since the active manipulator was just set, we need to set its start state properly
-        setManipulatorStartState(this.activeManipulator, clickInput);
+        setManipulatorStartState(this.activeManipulator);
         this.activeManipulator.doClickManipulator(clickInput, previousInput);
       }
     }
@@ -223,7 +223,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
       this.activeManipulator = this.activeHandle.getManipulation(startInput);
       if (this.activeManipulator != null) {
         //Since the active manipulator was just set, we need to set its start state properly
-        setManipulatorStartState(this.activeManipulator, startInput);
+        setManipulatorStartState(this.activeManipulator);
         return this.activeManipulator.doStartManipulator(startInput);
       }
     }

@@ -63,19 +63,13 @@ public abstract class PropertyOwnerImp {
   }
 
   protected double adjustDurationIfNecessary(double duration) {
-    if (duration == RIGHT_NOW) {
-      //pass
-    } else {
+    if (duration != RIGHT_NOW) {
       double simulationSpeedFactor = this.getSimulationSpeedFactor();
-      if (Double.isNaN(simulationSpeedFactor)) {
-        duration = RIGHT_NOW;
-      } else if (Double.isInfinite(simulationSpeedFactor)) {
-        duration = RIGHT_NOW;
-      } else {
-        duration = duration / simulationSpeedFactor;
+      if (Double.isFinite(simulationSpeedFactor)) {
+        return duration / simulationSpeedFactor;
       }
     }
-    return duration;
+    return RIGHT_NOW;
   }
 
   protected void perform(Animation animation, AnimationObserver animationObserver) {

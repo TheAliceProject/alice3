@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
 
 import java.awt.image.BufferedImage;
@@ -181,7 +180,7 @@ public abstract class Model extends Geometry {
 
   private native double[] getInvAbsTransForWeightedMeshAndJoint(String meshId, String jointId);
 
-  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId);
+  private native float[] getVertexWeightsForWeightedMeshAndJoint(String meshId, String jointId, String parentId);
 
   private native int getMaterialTypeForTexture(String textureId);
 
@@ -217,8 +216,7 @@ public abstract class Model extends Geometry {
       Logger.severe(joint);
       throw re;
     }
-    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
-    return affineMatrix;
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public AffineMatrix4x4 getLocalTransformationForJoint(JointId joint) {
@@ -229,8 +227,7 @@ public abstract class Model extends Geometry {
       Logger.severe(joint);
       throw re;
     }
-    AffineMatrix4x4 affineMatrix = AffineMatrix4x4.createFromColumnMajorArray12(buffer);
-    return affineMatrix;
+    return AffineMatrix4x4.createFromColumnMajorArray12(buffer);
   }
 
   public void setLocalTransformationForJoint(JointId joint, AffineMatrix4x4 localTrans) {
@@ -284,9 +281,9 @@ public abstract class Model extends Geometry {
     for (JointId joint : resourceJointIds) {
       if (isMeshWeightedToJoint(meshId, joint.toString())) {
         double[] inverseAbsTransform = getInvAbsTransForWeightedMeshAndJoint(meshId, joint.toString());
-        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString());
+        float[] vertexWeights = getVertexWeightsForWeightedMeshAndJoint(meshId, joint.toString(), joint.getParent() == null ? "" : joint.getParent().toString());
         //Sims weights reference the old vertex indices so we need to remap them to the new vertices
-        //First we find the new hightest index
+        //First we find the new highest index
         int maxVertexIndex = 0;
         for (int i = 0; i < vertexWeights.length; i++) {
             int newVertexIndex = oldVertexIndexToNewIndex.get(i);
@@ -472,15 +469,9 @@ public abstract class Model extends Geometry {
       //Check to see if the weighted mesh is really a weighted to joints, and therefore actually a weighted mesh.
       // Some meshes are listed on the sims side as weighted meshes but are not weighted to any joints
       if (isActuallyWeightedToJoints(meshId, resourceJointIds)) {
-        if (resource instanceof PersonResource) {
-          Mesh mesh = new Mesh();
-          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-          unWeightedMeshes.add(mesh);
-        } else {
-          WeightedMesh mesh = new WeightedMesh();
-          initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
-          weightedMeshes.add(mesh);
-        }
+        WeightedMesh mesh = new WeightedMesh();
+        initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
+        weightedMeshes.add(mesh);
       } else {
         //Add meshes that are weighted to no joints to the unweighted mesh list
         unweightedMeshIds.add(meshId);

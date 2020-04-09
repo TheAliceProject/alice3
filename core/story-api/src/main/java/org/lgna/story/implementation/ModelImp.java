@@ -410,7 +410,15 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   private void displayBubble(BubbleImp bubbleImp, double duration) {
     if (getScene() != null) {
       duration = adjustDurationIfNecessary(duration);
-      perform(new BubbleAnimation(0.2, duration, 0.2, bubbleImp));
+      double inOutDuration;
+      if (duration >= 1) {
+        duration = duration - 0.4;
+        inOutDuration = 0.2;
+      } else {
+        duration = duration * 0.6;
+        inOutDuration = duration * 0.2;
+      }
+      perform(new BubbleAnimation(inOutDuration, duration, inOutDuration, bubbleImp));
     } else {
       //todo
       JOptionPane.showMessageDialog(null, "unable to display bubble");
