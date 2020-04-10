@@ -47,6 +47,7 @@ import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -63,6 +64,8 @@ public interface ProjectIo {
     TypeResourcesPair readType() throws IOException, VersionNotSupportedException;
 
     Version checkForFutureVersion() throws IOException;
+
+    void setResourceTypeHelper(ResourceTypeHelper typeHelper);
   }
 
   interface ProjectWriter {

@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.Node;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 /**
  * @author Dennis Cosgrove
@@ -56,5 +56,5 @@ public interface MigrationManager {
 
   String migrate(String source, Version version);
 
-  void migrate(Node root, Project projectIfApplicable, Version version);
+  void migrate(Node root, ResourceTypeHelper typeHelper, Version version);
 }

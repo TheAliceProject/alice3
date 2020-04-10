@@ -1,7 +1,7 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.Project;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 /**
  * An individual step in a CompoundMigration.
@@ -9,5 +9,5 @@ import org.lgna.project.Project;
  * NodeMigrations describe the specific work to be on a node in the AST.
  */
 public interface NodeMigration {
-  void migrateNode(Crawlable node, Project projectIfApplicable);
+  void migrateNode(Crawlable node, ResourceTypeHelper typeHelper);
 }

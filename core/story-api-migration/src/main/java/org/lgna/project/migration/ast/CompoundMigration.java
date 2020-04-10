@@ -43,11 +43,11 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 /**
  * A Migration that walks the node tree and applies an arbitrary series of individual migrations.
@@ -61,14 +61,14 @@ public class CompoundMigration extends AstMigration {
     this.migrations = migrations;
   }
 
-  private void migrateNode(Crawlable node, Project projectIfApplicable) {
+  private void migrateNode(Crawlable node, ResourceTypeHelper typeHelper) {
     for (NodeMigration migration : migrations) {
-      migration.migrateNode(node, projectIfApplicable);
+      migration.migrateNode(node, typeHelper);
     }
   }
 
   @Override
-  public final void migrate(Node node, final Project projectIfApplicable) {
-    node.crawl(crawlable -> migrateNode(crawlable, projectIfApplicable), CrawlPolicy.COMPLETE, null);
+  public final void migrate(Node node, final ResourceTypeHelper typeHelper) {
+    node.crawl(crawlable -> migrateNode(crawlable, typeHelper), CrawlPolicy.COMPLETE, null);
   }
 }

@@ -50,6 +50,7 @@ import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 /**
  * @author Dennis Cosgrove
@@ -63,13 +64,13 @@ import org.lgna.project.migration.AstMigration;
   protected abstract void migrate(MethodInvocation methodInvocation, Project projectIfApplicable);
 
   @Override
-  public final void migrate(Node node, final Project projectIfApplicable) {
+  public final void migrate(Node node, final ResourceTypeHelper typeHelper) {
     node.crawl(new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
         if (crawlable instanceof MethodInvocation) {
           MethodInvocation methodInvocation = (MethodInvocation) crawlable;
-          MethodInvocationAstMigration.this.migrate(methodInvocation, projectIfApplicable);
+          MethodInvocationAstMigration.this.migrate(methodInvocation, typeHelper);
         }
       }
     }, CrawlPolicy.COMPLETE, null);

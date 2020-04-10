@@ -42,9 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.Node;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 /**
  * @author Dennis Cosgrove
@@ -54,5 +54,5 @@ public abstract class AstMigration extends AbstractMigration {
     super(resultVersion);
   }
 
-  public abstract void migrate(Node node, Project projectIfApplicable);
+  public abstract void migrate(Node node, ResourceTypeHelper typeHelper);
 }

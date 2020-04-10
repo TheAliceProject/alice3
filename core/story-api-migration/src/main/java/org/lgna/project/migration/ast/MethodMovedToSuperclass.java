@@ -44,7 +44,6 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractParameter;
@@ -52,6 +51,7 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaMethodParameter;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -79,7 +79,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
   }
 
   @Override
-  public void migrateNode(Crawlable node, Project projectIfApplicable) {
+  public void migrateNode(Crawlable node, ResourceTypeHelper typeHelper) {
     if (node instanceof MethodInvocation) {
       MethodInvocation invocation = (MethodInvocation) node;
       AbstractMethod method = invocation.method.getValue();
