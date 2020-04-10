@@ -56,7 +56,7 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public enum StorytellingResourcesTreeUtils {
+public enum StorytellingResourcesTreeUtils implements ResourceTypeHelper {
   INSTANCE;
 
   private ModelResourceTree getGalleryTreeInternal() {
@@ -137,6 +137,12 @@ public enum StorytellingResourcesTreeUtils {
       }
     }
     return toReturn;
+  }
+
+  @Override
+  public AbstractType<?, ?, ?> getUserTypeForResource(Class<? extends ModelResource> resourceClass) {
+    final TypeDefinedGalleryTreeNode node = getGalleryTreeInternal().getNodeForResource(resourceClass);
+    return node == null ? null : node.getUserType();
   }
 
   private Collection<JavaType> rootTypes = null;
