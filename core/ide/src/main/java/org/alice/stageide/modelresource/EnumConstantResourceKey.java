@@ -64,6 +64,7 @@ import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.JComponent;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -118,12 +119,12 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     JavaField argumentField = this.getField();
 
     JavaType abstractionType = getAbstractionTypeForResourceType(JavaType.getInstance(this.enumConstant.getClass()));
     if (abstractionType != null) {
-      NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(abstractionType, argumentField);
+      NamedUserType userType = TypeManager.getNamedUserTypeFromArgumentField(abstractionType, argumentField, typeCache);
       NamedUserConstructor constructor = userType.getDeclaredConstructors().get(0);
       Expression[] argumentExpressions;
       if (constructor.getRequiredParameters().size() == 1) {

@@ -43,8 +43,11 @@
 package org.lgna.project.migration;
 
 import org.lgna.project.Version;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
+
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -56,5 +59,5 @@ public interface MigrationManager {
 
   String migrate(String source, Version version);
 
-  void migrate(Node root, ResourceTypeHelper typeHelper, Version version);
+  void migrate(Node root, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache, Version version);
 }

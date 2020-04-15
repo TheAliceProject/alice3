@@ -53,10 +53,12 @@ import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.JComponent;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -104,7 +106,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     throw new Error();
   }
 

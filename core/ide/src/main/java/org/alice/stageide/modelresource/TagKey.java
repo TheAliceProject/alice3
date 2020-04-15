@@ -47,9 +47,11 @@ import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import javax.swing.JComponent;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -90,7 +92,7 @@ public abstract class TagKey extends ResourceKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     return null;
   }
 

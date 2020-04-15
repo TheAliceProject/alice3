@@ -79,6 +79,7 @@ import org.lgna.story.resources.JointedModelResource;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -325,15 +326,17 @@ public class TypeManager {
 
   private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance(SJointedModel.class, "setJointedModelResource", JointedModelResource.class);
 
-  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField) {
-    return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null);
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Set<NamedUserType> typeCache) {
+    return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null, typeCache);
   }
 
-  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className) {
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className, Set<NamedUserType> typeCache) {
     AbstractType<?, ?, ?> superType;
     final int LAST_INDEX = argumentTypes.length - 1;
     if (i < LAST_INDEX) {
-      superType = getNamedUserTypeFor(ancestorType, argumentTypes, i + 1, null, null, null);
+      NamedUserType userSuperType = getNamedUserTypeFor(ancestorType, argumentTypes, i + 1, null, null, null, typeCache);
+      typeCache.add(userSuperType);
+      superType = userSuperType;
     } else {
       superType = ancestorType;
     }
@@ -357,6 +360,11 @@ public class TypeManager {
     //    else {
     //      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
     //    }
+    for (NamedUserType existingType : typeCache) {
+      if (criterion.accept(existingType)) {
+        return existingType;
+      }
+    }
     Project project = ProjectStack.peekProject();
     if (project != null) {
       Set<NamedUserType> existingTypes = project.getNamedUserTypes();
@@ -412,6 +420,7 @@ public class TypeManager {
         }
       }
     }
+    typeCache.add(rv);
     return rv;
   }
 
@@ -432,19 +441,23 @@ public class TypeManager {
   }
 
   public static NamedUserType getNamedUserTypeFromArgumentField(JavaType ancestorType, JavaField argumentField) {
+    return getNamedUserTypeFromArgumentField(ancestorType, argumentField, new HashSet<>());
+  }
+
+  public static NamedUserType getNamedUserTypeFromArgumentField(JavaType ancestorType, JavaField argumentField, Set<NamedUserType> typeCache) {
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(ancestorType, argumentField);
-    return getNamedUserTypeFor(ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly(argumentTypes[0]));
+    return getNamedUserTypeFor(ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly(argumentTypes[0]), typeCache);
   }
 
   public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation(JavaType resourceType, InstanceCreation instanceCreation, String className) {
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(resourceType, instanceCreation.getType());
-    return getNamedUserTypeFor(resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className);
+    return getNamedUserTypeFor(resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className, new HashSet<>());
   }
 
   public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation(InstanceCreation instanceCreation) {
     JavaType bipedType = JavaType.getInstance(SBiped.class);
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(bipedType, instanceCreation.getType());
-    return getNamedUserTypeFor(bipedType, argumentTypes, 0, null);
+    return getNamedUserTypeFor(bipedType, argumentTypes, 0, null, new HashSet<>());
   }
 
   public static NamedUserType getNamedUserTypeFromSuperType(JavaType superType) {

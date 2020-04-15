@@ -48,6 +48,10 @@ import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -69,7 +73,11 @@ public abstract class ResourceKey {
 
   protected abstract void appendRep(StringBuilder sb);
 
-  public abstract InstanceCreation createInstanceCreation();
+  public InstanceCreation createInstanceCreation() {
+    return createInstanceCreation(new HashSet<>());
+  }
+
+  public abstract InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache);
 
   public abstract String[] getTags();
 

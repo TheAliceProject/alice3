@@ -15,6 +15,8 @@ import org.lgna.project.ast.*;
 import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 
+import java.util.Set;
+
 public class DynamicResourceKey extends InstanceCreatorKey {
   private DynamicResource dynamicResource;
 
@@ -49,7 +51,7 @@ public class DynamicResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     InstanceCreation resourceInstanceCreation = AstUtilities.createInstanceCreation(dynamicResource.getClass(), new Class<?>[] {String.class, String.class}, new StringLiteral(dynamicResource.getModelClassName()), new StringLiteral(dynamicResource.getModelVariantName()));
 
     JavaType resourceType = getAbstractionTypeForResourceType(JavaType.getInstance(dynamicResource.getClass()));

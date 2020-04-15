@@ -211,7 +211,7 @@ public class XmlProjectIo implements ProjectIo {
 
     private void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
       if (migrationManager.hasMigrationsFor(decodedVersion)) {
-        migrationManager.migrate(affectedNode, typeHelper, decodedVersion);
+        migrationManager.migrate(affectedNode, typeHelper, new HashSet<>(), decodedVersion);
       }
     }
 

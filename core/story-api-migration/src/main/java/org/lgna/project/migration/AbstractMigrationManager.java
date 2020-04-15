@@ -45,10 +45,12 @@ package org.lgna.project.migration;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Version;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 /**
@@ -91,13 +93,13 @@ public abstract class AbstractMigrationManager implements MigrationManager {
   }
 
   @Override
-  public void migrate(Node root, ResourceTypeHelper typeHelper, Version version) {
+  public void migrate(Node root, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache, Version version) {
     for (AstMigration astMigration : this.getAstMigrations()) {
       if (astMigration != null && astMigration.isApplicable(version)) {
         if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
           Logger.outln(version, astMigration);
         }
-        astMigration.migrate(root, typeHelper);
+        astMigration.migrate(root, typeHelper, typeCache);
         version = astMigration.getResultVersion();
       }
     }

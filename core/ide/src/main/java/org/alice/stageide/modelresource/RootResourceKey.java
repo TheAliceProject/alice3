@@ -51,10 +51,12 @@ import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
 
 import javax.swing.JComponent;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -97,7 +99,7 @@ public class RootResourceKey extends ResourceKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     throw new Error();
   }
 
