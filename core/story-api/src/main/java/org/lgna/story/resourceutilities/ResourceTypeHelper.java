@@ -1,8 +1,3 @@
-package org.lgna.story.resourceutilities;
-
-import org.lgna.project.ast.AbstractType;
-import org.lgna.story.resources.ModelResource;
-
 /*******************************************************************************
  * Copyright (c) 2020 Carnegie Mellon University. All rights reserved.
  *
@@ -45,6 +40,14 @@ import org.lgna.story.resources.ModelResource;
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.lgna.story.resourceutilities;
+
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.resources.ModelResource;
+
+import java.util.Set;
+
 public interface ResourceTypeHelper {
-  AbstractType<?, ?, ?> getUserTypeForResource(Class<? extends ModelResource> resourceClass);
+  InstanceCreation createInstanceCreation(ModelResource resourceClass, Set<NamedUserType> typeCache);
 }

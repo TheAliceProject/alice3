@@ -229,7 +229,7 @@ public class ModelResourceTree {
   private final Map<Object, TypeDefinedGalleryTreeNode> resourceClassToNodeMap = Maps.newHashMap();
   private final Map<String, TypeDefinedGalleryTreeNode> dynamicResources = Maps.newHashMap();
 
-  public TypeDefinedGalleryTreeNode getNodeForResource(Class<? extends ModelResource> resource) {
+  public TypeDefinedGalleryTreeNode getNodeForResource(Object resource) {
     return resourceClassToNodeMap.get(resource);
   }
 }
