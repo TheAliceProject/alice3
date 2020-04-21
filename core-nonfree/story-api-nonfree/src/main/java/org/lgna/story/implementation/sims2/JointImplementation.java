@@ -43,6 +43,7 @@
 package org.lgna.story.implementation.sims2;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
@@ -89,12 +90,27 @@ public class JointImplementation extends JointImp {
 
   @Override
   public UnitQuaternion getOriginalOrientation() {
-    return this.sgJoint.getOriginalLocalTransformation().orientation.createUnitQuaternion();
+    return this.sgJoint.getScaledOriginalLocalTransformation().orientation.createUnitQuaternion();
   }
 
   @Override
-  public AffineMatrix4x4 getOriginalTransformation() {
-    return this.sgJoint.getOriginalLocalTransformation();
+  public AffineMatrix4x4 getScaledOriginalTransformation() {
+    return this.sgJoint.getScaledOriginalLocalTransformation();
+  }
+
+  @Override
+  public void setScale(Dimension3 scale) {
+    sgJoint.setScale(scale);
+  }
+
+  @Override
+  public boolean isReoriented() {
+    return !getLocalTransformation().orientation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation);
+  }
+
+  @Override
+  public boolean isRelocated() {
+    return !getLocalTransformation().translation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation);
   }
 
   @Override

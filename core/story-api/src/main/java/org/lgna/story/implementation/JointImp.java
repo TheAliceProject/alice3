@@ -85,18 +85,20 @@ public abstract class JointImp extends AbstractTransformableImp {
 
   public abstract boolean isFreeInZ();
 
+  public abstract UnitQuaternion getOriginalOrientation();
+
+  public abstract AffineMatrix4x4 getScaledOriginalTransformation();
+
+  public abstract void setScale(Dimension3 scale);
+
+  public abstract boolean isReoriented();
+
+  public abstract boolean isRelocated();
+
   @Override
   protected void postCheckSetVehicle(EntityImp vehicle) {
     //note: do not call super
     this.setSgVehicle(vehicle != null ? vehicle.getSgComposite() : null);
-  }
-
-  public UnitQuaternion getOriginalOrientation() {
-    return this.jointedModelImplementation.getOriginalJointOrientation(this.getJointId());
-  }
-
-  public AffineMatrix4x4 getOriginalTransformation() {
-    return this.jointedModelImplementation.getOriginalJointTransformation(this.getJointId());
   }
 
   private ModestAxes getPivot() {

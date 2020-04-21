@@ -152,6 +152,21 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
+    public void setScale(Dimension3 scale) {
+      internalJointImp.setScale(scale);
+    }
+
+    @Override
+    public boolean isReoriented() {
+      return internalJointImp.isReoriented();
+    }
+
+    @Override
+    public boolean isRelocated() {
+      return internalJointImp.isRelocated();
+    }
+
+    @Override
     public SceneImp getScene() {
       return this.internalJointImp.getScene();
     }
@@ -221,8 +236,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
-    public AffineMatrix4x4 getOriginalTransformation() {
-      return internalJointImp.getOriginalTransformation();
+    public AffineMatrix4x4 getScaledOriginalTransformation() {
+      return internalJointImp.getScaledOriginalTransformation();
     }
 
     @Override
@@ -604,9 +619,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         sgVisual.scale.setValue(m);
       }
       for (JointImp jointImp : this.mapIdToJoint.values()) {
-        AffineMatrix4x4 lt = jointImp.getLocalTransformation();
-        lt.translation.setToMultiplication(jointImp.getOriginalTransformation().translation, scale);
-        jointImp.setLocalTransformation(lt);
+        jointImp.setScale(scale);
       }
     }
   }

@@ -44,6 +44,8 @@
 package org.lgna.story.implementation.alice;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.implementation.JointImp;
@@ -56,6 +58,7 @@ import org.lgna.story.resources.JointId;
 public class JointImplementation extends JointImp {
   private Joint sgJoint;
   private final JointId jointId;
+  private Dimension3 scale = new Dimension3(1, 1, 1);
 
   public JointImplementation(JointedModelImp<?, ?> jointedModelImplementation, JointId jointId, Joint sgJoint) {
     super(jointedModelImplementation);
@@ -88,6 +91,41 @@ public class JointImplementation extends JointImp {
   @Override
   public boolean isFreeInZ() {
     return this.sgJoint.isFreeInZ.getValue();
+  }
+
+  @Override
+  public UnitQuaternion getOriginalOrientation() {
+    return getJointedModelImplementation().getOriginalJointOrientation(this.getJointId());
+  }
+
+  @Override
+  public AffineMatrix4x4 getScaledOriginalTransformation() {
+    final AffineMatrix4x4 originalTransformation = getOriginalTransformation();
+    originalTransformation.translation.setToMultiplication(originalTransformation.translation, scale);
+    return originalTransformation;
+  }
+
+  private AffineMatrix4x4 getOriginalTransformation() {
+    return getJointedModelImplementation().getOriginalJointTransformation(this.getJointId());
+  }
+
+  @Override
+  public void setScale(Dimension3 newScale) {
+    Dimension3 scaleChange = Dimension3.createDivision(newScale, scale);
+    this.scale = newScale;
+    AffineMatrix4x4 lt = getLocalTransformation();
+    lt.translation.setToMultiplication(lt.translation, scaleChange);
+    setLocalTransformation(lt);
+  }
+
+  @Override
+  public boolean isReoriented() {
+    return !getLocalTransformation().orientation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().orientation);
+  }
+
+  @Override
+  public boolean isRelocated() {
+    return !getLocalTransformation().translation.isWithinReasonableEpsilonOf(getScaledOriginalTransformation().translation);
   }
 
   @Override
