@@ -103,13 +103,11 @@ public class PersonImp extends SingleVisualModelImp {
     sgVisual.setGeometry(sgGeometry);
   }
 
-  /* package-private */void updateNebPerson() {
+  void updateNebPerson() {
     IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
     LifeStage lifeStage = composite.getLifeStageState().getValue();
     Person nebPerson = this.mapLifeStageToNebPerson.get(lifeStage);
-    if (nebPerson != null) {
-      //pass
-    } else {
+    if (nebPerson == null) {
       try {
         nebPerson = new Person(lifeStage);
         this.mapLifeStageToNebPerson.put(lifeStage, nebPerson);
@@ -120,9 +118,8 @@ public class PersonImp extends SingleVisualModelImp {
     }
     PersonResource personResource = composite.createResourceFromStates();
     if (personResource == null) {
-      Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: null resource.");
-    } else {
-
+      Logger.severe("NOT SETTING ATTRIBUTES ON PERSON: null resource.");
+      return;
     }
     Gender gender = personResource.getGender();
     Color awtSkinColor = new Color(personResource.getSkinColor().getRed().floatValue(), personResource.getSkinColor().getGreen().floatValue(), personResource.getSkinColor().getBlue().floatValue());
@@ -132,11 +129,15 @@ public class PersonImp extends SingleVisualModelImp {
     Outfit outfit = personResource.getOutfit();
     Face face = personResource.getFace();
 
-    if ((gender == null) || (outfit == null) || (awtSkinColor == null) || (eyeColor == null) || (hair == null) || (face == null)) {
-      Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face);
+    if (gender == null || outfit == null || eyeColor == null || hair == null || face == null) {
+      Logger.severe("NOT SETTING ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face);
+      return;
     } else {
       if (lifeStage.getGenderedHairInterfaceClass(gender).isAssignableFrom(hair.getClass())) {
-        if ((((outfit instanceof FullBodyOutfit) && lifeStage.getGenderedFullBodyOutfitInterfaceClass(gender).isAssignableFrom(outfit.getClass())) || ((outfit instanceof TopAndBottomOutfit<?, ?>) && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit) outfit).getTopPiece().getClass()) && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit) outfit).getBottomPiece().getClass())))) {
+        if ((outfit instanceof FullBodyOutfit && lifeStage.getGenderedFullBodyOutfitInterfaceClass(gender).isAssignableFrom(outfit.getClass()))
+            || outfit instanceof TopAndBottomOutfit<?, ?>
+              && lifeStage.getGenderedTopPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getTopPiece().getClass())
+              && lifeStage.getGenderedBottomPieceInterfaceClass(gender).isAssignableFrom(((TopAndBottomOutfit<?, ?>) outfit).getBottomPiece().getClass())) {
           nebPerson.synchronizedSetAll(gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face);
         } else {
           Logger.severe(outfit, lifeStage, gender);

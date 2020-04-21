@@ -100,9 +100,7 @@ public abstract class JointImp extends AbstractTransformableImp {
   }
 
   private ModestAxes getPivot() {
-    if (this.axes != null) {
-      //pass
-    } else {
+    if (this.axes == null) {
       this.axes = new ModestAxes(0.1);
       putInstance(this.axes);
     }
