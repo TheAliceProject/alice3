@@ -95,6 +95,8 @@ public abstract class JointImp extends AbstractTransformableImp {
 
   public abstract boolean isRelocated();
 
+  protected abstract void copyOnto(JointImp newJoint);
+
   @Override
   protected void postCheckSetVehicle(EntityImp vehicle) {
     //note: do not call super

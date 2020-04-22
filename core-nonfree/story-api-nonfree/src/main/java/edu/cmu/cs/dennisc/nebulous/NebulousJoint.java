@@ -71,6 +71,10 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
     return this.jointId;
   }
 
+  public Dimension3 getScale() {
+    return scale;
+  }
+
   public void setScale(Dimension3 scale) {
     this.scale = scale;
   }
