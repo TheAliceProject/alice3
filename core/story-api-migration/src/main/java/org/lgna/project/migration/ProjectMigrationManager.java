@@ -50,11 +50,14 @@ import org.lgna.project.migration.ast.EventAstMigration;
 import org.lgna.project.migration.ast.MethodMovedToSuperclass;
 import org.lgna.project.migration.ast.MouseClickAstMigration;
 import org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration;
+import org.lgna.project.migration.ast.ReplaceTypeWithResourcedForm;
 import org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
 import org.lgna.story.Say;
 import org.lgna.story.Think;
+import org.lgna.story.resources.prop.FirTreeTrunkResource;
+import org.lgna.story.resources.prop.IceFloeResource;
 
 /**
  * @author Dennis Cosgrove
@@ -5870,6 +5873,20 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
           new Version("3.5.0.0"),
           new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "say", String.class, Say.Detail[].class),
           new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "think", String.class, Think.Detail[].class)
+      ),
+      new CompoundMigration(
+          new Version("3.6.0.0"),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunk", FirTreeTrunkResource.DEFAULT),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkTall", FirTreeTrunkResource.TALL),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkSnow", FirTreeTrunkResource.SNOW),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkSnowTall", FirTreeTrunkResource.SNOW_TALL),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkMirror", FirTreeTrunkResource.MIRROR),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkTallMirror", FirTreeTrunkResource.TALL_MIRROR),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkSnowMirror", FirTreeTrunkResource.SNOW_MIRROR),
+          new ReplaceTypeWithResourcedForm<>("FirTreeTrunkSnowTallMirror", FirTreeTrunkResource.SNOW_TALL_MIRROR),
+          // Unlike the trees, an ice floe model that does not take a resource does not have a distinct name to pick the resource.
+          // Some worlds may thus end up with the floe1 resource instead of floe2, but they will work, and that can be changed by the user.
+          new ReplaceTypeWithResourcedForm<>("IceFloe", IceFloeResource.ICE_FLOE1)
       )
   };
 

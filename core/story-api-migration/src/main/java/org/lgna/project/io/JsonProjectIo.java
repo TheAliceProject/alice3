@@ -57,6 +57,7 @@ import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
 import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -101,6 +102,11 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     public Version checkForFutureVersion() throws IOException {
       // TODO
       return null;
+    }
+
+    @Override
+    public void setResourceTypeHelper(ResourceTypeHelper typeHelper) {
+      // Ignored for now
     }
 
     private Manifest readManifest() {

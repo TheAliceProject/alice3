@@ -67,6 +67,7 @@ import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
 import org.lgna.project.properties.PropertyKey;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -140,6 +141,12 @@ public class XmlProjectIo implements ProjectIo {
       return null;
     }
 
+    @Override
+    public void setResourceTypeHelper(ResourceTypeHelper typeHelper) {
+      this.typeHelper = typeHelper;
+    }
+
+
     private Version readSourceProgramVersion() throws IOException {
       if (container == null) {
         throw new IOException("There is no file to read");
@@ -202,9 +209,9 @@ public class XmlProjectIo implements ProjectIo {
       return type;
     }
 
-    private static void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
+    private void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
       if (migrationManager.hasMigrationsFor(decodedVersion)) {
-        migrationManager.migrate(affectedNode, null, decodedVersion);
+        migrationManager.migrate(affectedNode, typeHelper, new HashSet<>(), decodedVersion);
       }
     }
 
@@ -237,6 +244,8 @@ public class XmlProjectIo implements ProjectIo {
       }
       return resources;
     }
+
+    private ResourceTypeHelper typeHelper;
   }
 
   private static class XmlProjectWriter implements ProjectWriter {

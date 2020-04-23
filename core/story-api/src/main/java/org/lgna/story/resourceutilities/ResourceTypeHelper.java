@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2020 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,99 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.modelresource;
+package org.lgna.story.resourceutilities;
 
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.SingleSelectTreeState;
-import org.lgna.croquet.Triggerable;
-import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.ModelResource;
 
-import javax.swing.JComponent;
 import java.util.Set;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class TagKey extends ResourceKey {
-  public static final char SEPARATOR = ':';
-
-  private final String tag;
-
-  TagKey(String tag) {
-    this.tag = tag;
-  }
-
-  public String getTag() {
-    return this.tag;
-  }
-
-  @Override
-  public String getInternalText() {
-    String tagValue;
-    int lastIndex = tag.lastIndexOf(TagKey.SEPARATOR);
-    if (lastIndex != -1) {
-      tagValue = tag.substring(lastIndex + 1);
-    } else {
-      tagValue = this.tag;
-    }
-    return tagValue;
-  }
-
-  @Override
-  public String getLocalizedDisplayText() {
-    return AliceResourceUtilties.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
-  }
-
-  @Override
-  public String getSearchText() {
-    return this.getLocalizedDisplayText();
-  }
-
-  @Override
-  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
-    return null;
-  }
-
-  @Override
-  public String[] getTags() {
-    return null;
-  }
-
-  @Override
-  public String[] getGroupTags() {
-    return null;
-  }
-
-  @Override
-  public String[] getThemeTags() {
-    return null;
-  }
-
-  @Override
-  public boolean isLeaf() {
-    return false;
-  }
-
-  @Override
-  public boolean isInstanceCreator() {
-    return false;
-  }
-
-  @Override
-  public Triggerable getLeftClickOperation(ResourceNode node, SingleSelectTreeState<ResourceNode> controller) {
-    return controller.getItemSelectionOperation(node);
-  }
-
-  @Override
-  public Triggerable getDropOperation(ResourceNode node, DragStep step, DropSite dropSite) {
-    return new AddFieldCascade(node, dropSite);
-  }
-
-  @Override
-  protected void appendRep(StringBuilder sb) {
-    sb.append(this.getLocalizedDisplayText());
-  }
+public interface ResourceTypeHelper {
+  InstanceCreation createInstanceCreation(ModelResource resourceClass, Set<NamedUserType> typeCache);
 }

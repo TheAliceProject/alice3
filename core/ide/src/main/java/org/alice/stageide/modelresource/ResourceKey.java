@@ -42,12 +42,18 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.ProjectStack;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.Project;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -69,7 +75,13 @@ public abstract class ResourceKey {
 
   protected abstract void appendRep(StringBuilder sb);
 
-  public abstract InstanceCreation createInstanceCreation();
+  public InstanceCreation createInstanceCreation() {
+    Project project = ProjectStack.peekProject();
+    Set<NamedUserType> cache = project != null ? project.getNamedUserTypes() : new HashSet<>();
+    return createInstanceCreation(cache);
+  }
+
+  public abstract InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache);
 
   public abstract String[] getTags();
 

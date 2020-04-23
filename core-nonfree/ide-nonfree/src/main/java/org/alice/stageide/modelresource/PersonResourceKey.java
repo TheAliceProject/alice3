@@ -56,6 +56,7 @@ import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedImageIconFactory;
 import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
@@ -65,6 +66,8 @@ import org.lgna.story.resources.sims2.LifeStage;
 import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resources.sims2.TeenPersonResource;
 import org.lgna.story.resources.sims2.ToddlerPersonResource;
+
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -204,7 +207,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
   }
 
   @Override
-  public InstanceCreation createInstanceCreation() {
+  public InstanceCreation createInstanceCreation(Set<NamedUserType> typeCache) {
     return this.getPersonResourceValueCreator().fireAndGetValue();
   }
 
