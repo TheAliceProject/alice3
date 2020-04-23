@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -152,6 +151,29 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
+    public void setScale(Dimension3 scale) {
+      internalJointImp.setScale(scale);
+    }
+
+    @Override
+    public boolean isReoriented() {
+      return internalJointImp.isReoriented();
+    }
+
+    @Override
+    public boolean isRelocated() {
+      return internalJointImp.isRelocated();
+    }
+
+    @Override
+    protected void copyOnto(JointImp newJoint) {
+      internalJointImp.copyOnto(newJoint);
+      if (getAbstraction() != null) {
+        newJoint.setAbstraction(getAbstraction());
+      }
+    }
+
+    @Override
     public SceneImp getScene() {
       return this.internalJointImp.getScene();
     }
@@ -176,28 +198,14 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       return internalJointImp.isFreeInZ();
     }
 
-    void replaceWithJoint(JointImp newJoint, UnitQuaternion originalRotation) {
-      OrthogonalMatrix3x3 currentRotation = this.getLocalOrientation();
-      OrthogonalMatrix3x3 invertedOriginal = new OrthogonalMatrix3x3();
-      invertedOriginal.setValue(originalRotation);
-      invertedOriginal.invert();
-      OrthogonalMatrix3x3 dif = new OrthogonalMatrix3x3();
-      dif.setToMultiplication(invertedOriginal, currentRotation);
-      if (!dif.isWithinReasonableEpsilonOfIdentity()) {
-        OrthogonalMatrix3x3 newRotation = new OrthogonalMatrix3x3();
-        newRotation.setToMultiplication(newJoint.getLocalOrientation(), dif);
-        newJoint.setLocalOrientation(newRotation);
-      }
-      if (this.getAbstraction() != null) {
-        newJoint.setAbstraction(this.getAbstraction());
-      }
-      for (Component child : this.internalJointImp.getSgComposite().getComponents()) {
+    void replaceWithJoint(JointImp newJoint) {
+      copyOnto(newJoint);
+      for (Component child : internalJointImp.getSgComposite().getComponents()) {
         if (!(child instanceof ModelJoint)) {
           child.setParent(newJoint.getSgComposite());
-
         }
       }
-      this.internalJointImp = newJoint;
+      internalJointImp = newJoint;
     }
 
     @Override
@@ -221,8 +229,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
-    public AffineMatrix4x4 getOriginalTransformation() {
-      return internalJointImp.getOriginalTransformation();
+    public AffineMatrix4x4 getScaledOriginalTransformation() {
+      return internalJointImp.getScaledOriginalTransformation();
     }
 
     @Override
@@ -277,9 +285,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     this.visualData = this.factory.createVisualData();
     this.sgScalable = null;
 
-    List<JointId> allJointIds = getAllJoints();
-
-    Map<JointId, JointImp> jointMap = createJointImps(allJointIds);
+    Map<JointId, JointImp> jointMap = createJointImps();
     //Make all the joint wrappers and put them in the map
     for (Map.Entry<JointId, JointImp> entry : jointMap.entrySet()) {
       JointImpWrapper wrapper = new JointImpWrapper(this, entry.getValue());
@@ -308,7 +314,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
   }
 
-  private Map<JointId, JointImp> createJointImps(List<JointId> allJointIds) {
+  private Map<JointId, JointImp> createJointImps() {
+    List<JointId> allJointIds = getAllJointIds();
     Map<JointId, JointImp> jointMap = new HashMap<>();
     for (JointId jointId : allJointIds) {
       jointMap.put(jointId, this.createJointImplementation(jointId));
@@ -324,29 +331,26 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return jointMap;
   }
 
-  private List<JointId> getAllJoints() {
-    List<JointId> allJoints = new ArrayList<>();
+  private List<JointId> getAllJointIds() {
+    List<JointId> allJointIds = new ArrayList<>();
     JointedModelResource resource = getResource();
     for (Field jointField : ReflectionUtilities.getPublicStaticFinalFields(resource.getClass(), JointId.class)) {
       try {
-        JointId joint = (JointId) jointField.get(null);
-        allJoints.add(joint);
+        JointId jointId = (JointId) jointField.get(null);
+        allJointIds.add(jointId);
       } catch (IllegalAccessException iae) {
         Logger.throwable(iae, jointField);
       }
     }
     if (resource instanceof DynamicResource) {
-      allJoints.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
+      allJointIds.addAll(Arrays.asList(((DynamicResource) resource).getModelSpecificJoints()));
     }
     //Handle joint arrays
     for (JointArrayId arrayId : this.getJointArrayIds()) {
       JointId[] jointArrayIds = this.factory.getJointArrayIds(this, arrayId);
-      for (JointId jointId : jointArrayIds) {
-        allJoints.add(jointId);
-      }
+      Collections.addAll(allJointIds, jointArrayIds);
     }
-
-    return allJoints;
+    return allJointIds;
   }
 
   private void fillInJointArrays() {
@@ -394,10 +398,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   public void setNewResource(JointedModelResource resource) {
     if (resource != this.getResource()) {
-      Map<JointId, UnitQuaternion> mapIdToOriginalRotation = Maps.newHashMap();
-      for (Map.Entry<JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet()) {
-        mapIdToOriginalRotation.put(jointEntry.getKey(), jointEntry.getValue().getOriginalOrientation());
-      }
       Composite originalParent = this.visualData.getSGParent();
       VisualData<?> oldVisualData = this.visualData;
       Dimension3 oldScale = this.getScale();
@@ -407,10 +407,8 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
       Paint originalPaint = this.paint.getValue();
       this.visualData = this.factory.createVisualData();
 
-      List<JointId> allJointIds = getAllJoints();
-      Map<JointId, JointImp> newJoints = createJointImps(allJointIds);
-
-      matchNewDataToExistingJoints(mapIdToOriginalRotation, newJoints);
+      Map<JointId, JointImp> newJoints = createJointImps();
+      matchNewDataToExistingJoints(newJoints);
 
       //Make joint wrappers for new entries and put them in the map
       for (Map.Entry<JointId, JointImp> entry : newJoints.entrySet()) {
@@ -462,14 +460,13 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return rv;
   }
 
-  private void matchNewDataToExistingJoints(Map<JointId, UnitQuaternion> mapIdToOriginalRotation, Map<JointId, JointImp> newJoints) {
+  private void matchNewDataToExistingJoints(Map<JointId, JointImp> newJoints) {
     List<JointId> toRemove = Lists.newLinkedList();
-    for (Map.Entry<JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet()) {
-      if (newJoints.containsKey(jointEntry.getKey())) {
-        JointImp newJoint = newJoints.get(jointEntry.getKey());
-        jointEntry.getValue().replaceWithJoint(newJoint, mapIdToOriginalRotation.get(jointEntry.getKey()));
+    for (JointId oldJointId : mapIdToJoint.keySet()) {
+      if (newJoints.containsKey(oldJointId)) {
+        mapIdToJoint.get(oldJointId).replaceWithJoint(newJoints.get(oldJointId));
       } else {
-        toRemove.add(jointEntry.getKey());
+        toRemove.add(oldJointId);
       }
     }
     // Order from outer-most toward root to always remove a leaf
@@ -485,7 +482,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
   }
 
-  public void setAllJointPivotsVisibile(boolean isPivotVisible) {
+  public void setAllJointPivotsVisible(boolean isPivotVisible) {
     for (Map.Entry<JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet()) {
       jointEntry.getValue().setPivotVisible(isPivotVisible);
     }
@@ -604,9 +601,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
         sgVisual.scale.setValue(m);
       }
       for (JointImp jointImp : this.mapIdToJoint.values()) {
-        AffineMatrix4x4 lt = jointImp.getLocalTransformation();
-        lt.translation.setToMultiplication(jointImp.getOriginalTransformation().translation, scale);
-        jointImp.setLocalTransformation(lt);
+        jointImp.setScale(scale);
       }
     }
   }

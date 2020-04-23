@@ -416,9 +416,7 @@ public class SetUpMethodGenerator {
                 if (o instanceof SJoint) {
                   SJoint jointEntity = (SJoint) o;
                   JointImp gottenJoint = EmployeesOnly.getImplementation(jointEntity);
-                  AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
-                  AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
-                  if (captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+                  if (captureFullState || gottenJoint.isReoriented()) {
                     try {
                       Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
                       ExpressionStatement orientationStatement = createStatement(STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] {Orientation.class, SetOrientationRelativeToVehicle.Detail[].class}, getJointExpression, getExpressionCreator().createExpression(orientation));
@@ -427,7 +425,7 @@ public class SetUpMethodGenerator {
                       throw new RuntimeException(ccee);
                     }
                   }
-                  if (captureFullState || !currentTransform.translation.isWithinReasonableEpsilonOf(originalTransform.translation)) {
+                  if (captureFullState || gottenJoint.isRelocated()) {
                     try {
                       Position position = jointEntity.getPositionRelativeToVehicle();
                       ExpressionStatement positionStatement = createStatement(SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] {Position.class, SetPositionRelativeToVehicle.Detail[].class}, getJointExpression, getExpressionCreator().createExpression(position));
