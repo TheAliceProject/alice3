@@ -68,6 +68,10 @@
     </dependency>
     <dependency>
       <groupId>org.alice</groupId>
+      <artifactId>models</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
       <artifactId>model-loading</artifactId>
     </dependency>
     <dependency>
