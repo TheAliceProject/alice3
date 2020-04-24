@@ -458,6 +458,9 @@ public class ModelResourceInfo {
   }
 
   private ModelManifest.BoundingBox createManifestBoundingBox() {
+    if (getBoundingBox() == null) {
+      return null;
+    }
     ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
     boundingBox.max = getBoundingBox().getMaximum().getAsFloatList();
     boundingBox.min = getBoundingBox().getMinimum().getAsFloatList();

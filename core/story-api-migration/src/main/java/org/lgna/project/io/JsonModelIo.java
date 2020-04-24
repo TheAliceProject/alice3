@@ -4,6 +4,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.tweedle.file.*;
@@ -100,8 +101,7 @@ public class JsonModelIo extends DataSourceIo {
 
   private ModelResourceInfo personModelInfo(String resourceName, String textureName) {
     return new ModelResourceInfo(
-        null, resourceName, "EA", 2004,
-        new AxisAlignedBox(0, 0, 0, 1, 1, 1),
+        null, resourceName, "EA", 2004, null,
         new String[0], new String[0], new String[0],
         "Person", textureName, false, true);
   }
@@ -449,10 +449,19 @@ public class JsonModelIo extends DataSourceIo {
     structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
     structureReference.format = ExportFormat.COLLADA.modelExtension;
     if (structureReference.boundingBox == null) {
+      // Only sims people should have a null bounding box at this point
       AxisAlignedBox boundingBox = sv.getAxisAlignedMinimumBoundingBox();
+      final Point3 max = boundingBox.getMaximum();
+      final Point3 min = boundingBox.getMinimum();
+      // The size here is for the person in a T pose. Once bound to joints they
+      // are brought in with arms at their sides, making this value too large.
+      // This is an empirically determined factor that seems to work well enough.
+      final int T_POSE_TO_STAND_RATIO = 4;
+      max.x /= T_POSE_TO_STAND_RATIO;
+      min.x /= T_POSE_TO_STAND_RATIO;
       structureReference.boundingBox = new ModelManifest.BoundingBox();
-      structureReference.boundingBox.max = boundingBox.getMaximum().getAsFloatList();
-      structureReference.boundingBox.min = boundingBox.getMinimum().getAsFloatList();
+      structureReference.boundingBox.max = max.getAsFloatList();
+      structureReference.boundingBox.min = min.getAsFloatList();
     }
 
     //Only add new model files to the list to be written
