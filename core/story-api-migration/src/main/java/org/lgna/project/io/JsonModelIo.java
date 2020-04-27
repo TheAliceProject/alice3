@@ -2,16 +2,12 @@ package org.lgna.project.io;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.tweedle.file.*;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 import org.lgna.story.JointedModelPose;
 import org.lgna.story.Pose;
 import org.lgna.story.implementation.ImageFactory;
@@ -38,8 +34,8 @@ public class JsonModelIo extends DataSourceIo {
   private static final boolean NORMALIZE_WEIGHTS = true;
   private static final boolean GENERATE_BACKFACES = true;
 
-  private ModelManifest modelManifest;
-  private Set<JointedModelResource> modelResources;
+  protected ModelManifest modelManifest;
+  protected Set<JointedModelResource> modelResources;
   private List<SkeletonVisual> skeletonVisuals;
   private List<BufferedImage> thumbnails;
   private final ExportFormat exportFormat;
@@ -56,7 +52,7 @@ public class JsonModelIo extends DataSourceIo {
     }
   }
 
-  private JsonModelIo(ExportFormat exportFormat) {
+  protected JsonModelIo(ExportFormat exportFormat) {
     this.exportFormat = exportFormat;
   }
 
@@ -74,36 +70,6 @@ public class JsonModelIo extends DataSourceIo {
     this(exportFormat);
     this.modelManifest = createModelManifest(modelResources);
     this.modelResources = modelResources;
-  }
-
-  static JsonModelIo createPersonIo(Set<InstanceCreation> resourceCreations, ExportFormat exportFormat) {
-    final JsonModelIo jsonModelIo = new JsonModelIo(exportFormat);
-    jsonModelIo.initializeFromPersonResources(resourceCreations);
-    return jsonModelIo;
-  }
-
-  private void initializeFromPersonResources(Set<InstanceCreation> resourceCreations) {
-    InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
-    modelResources = new HashSet<>();
-    for (InstanceCreation creation : resourceCreations) {
-      final Object instance = vm.createInstance(creation);
-      if (instance instanceof JointedModelResource) {
-        modelResources.add((JointedModelResource) instance);
-      }
-    }
-    ModelResourceInfo modelInfo = personModelInfo("PersonResource", "");
-    for (JointedModelResource resource: modelResources) {
-      modelInfo.addSubResource(personModelInfo(resource.toString(), resource.toString()));
-    }
-    modelManifest = modelInfo.createModelManifest();
-    modelManifest.parentClass = "BipedResource";
-  }
-
-  private ModelResourceInfo personModelInfo(String resourceName, String textureName) {
-    return new ModelResourceInfo(
-        null, resourceName, "EA", 2004, null,
-        new String[0], new String[0], new String[0],
-        "Person", textureName, false, true);
   }
 
   //AliceResourcesUtilities.getTextureResourceName returns null for resources that use "default" texture names
@@ -331,8 +297,7 @@ public class JsonModelIo extends DataSourceIo {
     return null;
   }
 
-
-  private SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
+  protected SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
     SkeletonVisual sv = v.getSgVisualForExporting(modelResource);
     //Make sure meshes have a name
     int meshCount = 0;
@@ -372,7 +337,6 @@ public class JsonModelIo extends DataSourceIo {
         }
         sv.weightedMeshes.setValue(backfaceWeightedMeshes.toArray(new WeightedMesh[backfaceWeightedMeshes.size()]));
       }
-
     }
     if (NORMALIZE_WEIGHTS) {
       sv.normalizeWeightedMeshes();
@@ -403,7 +367,7 @@ public class JsonModelIo extends DataSourceIo {
     return modelReference;
   }
 
-  private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
+  private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) {
     TexturedAppearance[] texturedAppearancesToSave = sv.textures.getValue();
     // Null out the appearance since we save the textures separately
     sv.textures.setValue(new TexturedAppearance[0]);
@@ -448,21 +412,7 @@ public class JsonModelIo extends DataSourceIo {
     //Strip the base and model path from the name to make it relative to the manifest
     structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
     structureReference.format = ExportFormat.COLLADA.modelExtension;
-    if (structureReference.boundingBox == null) {
-      // Only sims people should have a null bounding box at this point
-      AxisAlignedBox boundingBox = sv.getAxisAlignedMinimumBoundingBox();
-      final Point3 max = boundingBox.getMaximum();
-      final Point3 min = boundingBox.getMinimum();
-      // The size here is for the person in a T pose. Once bound to joints they
-      // are brought in with arms at their sides, making this value too large.
-      // This is an empirically determined factor that seems to work well enough.
-      final int T_POSE_TO_STAND_RATIO = 4;
-      max.x /= T_POSE_TO_STAND_RATIO;
-      min.x /= T_POSE_TO_STAND_RATIO;
-      structureReference.boundingBox = new ModelManifest.BoundingBox();
-      structureReference.boundingBox.max = max.getAsFloatList();
-      structureReference.boundingBox.min = min.getAsFloatList();
-    }
+    finishStructureReference(structureReference, sv);
 
     //Only add new model files to the list to be written
     if (!dataSources.contains(structureDataSource)) {
@@ -489,6 +439,10 @@ public class JsonModelIo extends DataSourceIo {
         dataSources.add(imageDataSource);
       }
     }
+  }
+
+  // Hook to be overridden
+  protected void finishStructureReference(StructureReference structureReference, SkeletonVisual sv) {
   }
 
   private void addBoundsForJoints(Joint root, ModelManifest manifest) {
