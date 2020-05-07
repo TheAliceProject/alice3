@@ -147,36 +147,7 @@ public class SkeletonVisual extends Visual {
 
   @Override
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox(AxisAlignedBox rv) {
-    if (this.tracker != null) {
-      this.tracker.getAxisAlignedMinimumBoundingBox(rv);
-    } else {
-      //See comment above
-      if (this.hasDefaultPoseWeightedMeshes.getValue()) {
-        if (this.defaultPoseWeightedMeshes.getValue() != null) {
-          for (WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
-          }
-        }
-      } else {
-        if (this.weightedMeshes.getValue() != null) {
-          for (WeightedMesh wm : this.weightedMeshes.getValue()) {
-            AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-            rv.union(b);
-          }
-        }
-      }
-      if (this.geometries.getValue() != null) {
-        for (Geometry g : this.geometries.getValue()) {
-          AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-          rv.union(b);
-        }
-      }
-    }
-    if (!rv.isNaN()) {
-      rv.scale(this.scale.getValue());
-    }
-    return rv;
+    return getAxisAlignedMinimumBoundingBox(rv, false);
   }
 
   @Override
