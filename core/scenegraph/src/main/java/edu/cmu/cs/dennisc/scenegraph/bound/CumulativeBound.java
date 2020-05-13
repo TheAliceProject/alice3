@@ -91,12 +91,10 @@ public class CumulativeBound {
 
   public void addBoundingBox(AxisAlignedBox box, AffineMatrix4x4 trans) {
     if (box.isNaN()) {
-      //pass
-    } else {
-      Hexahedron hexahedron = box.getHexahedron();
-      for (int i = 0; i < 8; i++) {
-        addPoint(hexahedron.getPointAt(i), trans);
-      }
+      return;
+    }
+    for (Point3 point : box.getPoints()) {
+      addPoint(point, trans);
     }
   }
 

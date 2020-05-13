@@ -213,21 +213,6 @@ public class Hexahedron {
     }
   }
 
-  @Deprecated
-  public Point3 getPointAt(int index) {
-    return new Point3(this.points[index]);
-  }
-
-  @Deprecated
-  public Point3[] getPoints() {
-    return this.points;
-  }
-
-  @Deprecated
-  public Vector3[] getNormals() {
-    return this.normals;
-  }
-
   private int getPointIndex(RightOrLeft rightOrLeft, TopOrBottom topOrBottom, BackOrFront backOrFront) {
     return rightOrLeft.getMask() | topOrBottom.getMask() | backOrFront.getMask();
   }

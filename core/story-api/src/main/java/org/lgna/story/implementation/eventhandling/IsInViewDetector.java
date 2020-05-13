@@ -60,8 +60,8 @@ public class IsInViewDetector {
 
   public static boolean isThisInView(SThing entity, CameraImp camera) {
     EntityImp implementation = EmployeesOnly.getImplementation(entity);
-    Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
-    Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox(camera).getHexahedron().getPoints();
+    Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getPoints();
+    Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox(camera).getPoints();
     Point[] awtPoints = new Point[points.length];
     for (int i = 0; i < points.length; ++i) {
       awtPoints[i] = implementation.transformToAwt(points[i], camera);

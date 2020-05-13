@@ -367,9 +367,8 @@ public abstract class AbstractThumbnailMaker {
     double halfCameraFOV = (horizontalAngle < verticalAngle) ? horizontalAngle : verticalAngle;
     halfCameraFOV /= 2.0;
 
-    Hexahedron hex = bbox.getHexahedron();
     double minVal = Double.MAX_VALUE;
-    for (Point3 p : hex.getPoints()) {
+    for (Point3 p : bbox.getPoints()) {
       double t = cameraRay.getProjectedPointT(p);
       Point3 rayPoint = cameraRay.getPointAlong(t);
       double distanceToRay = Point3.calculateDistanceBetween(p, rayPoint);
