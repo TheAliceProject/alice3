@@ -50,7 +50,6 @@ import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
-import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -62,45 +61,42 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
   protected boolean shouldFire = true;
   protected Integer count = 0;
-  protected final Map<Object, MultipleEventPolicy> policyMap = Maps.newConcurrentHashMap();
-  protected final Map<Object, Map<Object, Boolean>> isFiringMap = Maps.newConcurrentHashMap();
-  private final CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
+  protected final Map<L, MultipleEventPolicy> policyMap = Maps.newConcurrentHashMap();
+  protected final Map<L, Map<Object, Boolean>> isFiringMap = Maps.newConcurrentHashMap();
+  private final CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<>();
   protected final Object NULL_OBJECT = new Object();
   protected SceneImp scene;
 
-  protected void fireEvent(final L listener, final E event, final Object object) {
-    final Object o = object == null ? NULL_OBJECT : object;
-    if (isFiringMap.get(listener) == null) {
-      isFiringMap.put(listener, new ConcurrentHashMap<Object, Boolean>());
-    }
-    if (isFiringMap.get(listener).get(o) == null) {
-      isFiringMap.get(listener).put(o, false);
-    }
+  protected void fireEvent(final L listener, final E event, final Object multiEventLock) {
     if (shouldFire) {
-      ComponentExecutor thread = new ComponentExecutor(new Runnable() {
-        @Override
-        public void run() {
-          fire(listener, event);
-          if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
-            fireDequeue(listener);
-          }
-          isFiringMap.get(listener).put(o, false);
-        }
-      }, "eventThread");
-      if (listener instanceof CollisionStartListener) {
-        System.out.println("event: " + event);
-        System.out.println("object: " + o);
-      }
-      if (isFiringMap.get(listener).get(o).equals(false)) {
-        isFiringMap.get(listener).put(o, true);
-        thread.start();
-        return;
+      final Object eventLock = multiEventLock == null ? NULL_OBJECT : multiEventLock;
+      final Map<Object, Boolean> activeThings = activeThingsFor(listener, eventLock);
+      if (!activeThings.get(eventLock)) {
+        activeThings.put(eventLock, true);
+        newEventCall(listener, event, eventLock).start();
       } else if (policyMap.get(listener).equals(MultipleEventPolicy.COMBINE)) {
-        thread.start();
+        newEventCall(listener, event, eventLock).start();
       } else if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
         enqueue(event);
       }
     }
+  }
+
+  private Map<Object, Boolean> activeThingsFor(L listener, Object eventLock) {
+    isFiringMap.computeIfAbsent(listener, k -> new ConcurrentHashMap<>());
+    final Map<Object, Boolean> activeThings = isFiringMap.get(listener);
+    activeThings.putIfAbsent(eventLock, false);
+    return activeThings;
+  }
+
+  private ComponentExecutor newEventCall(L listener, E event, Object eventLock) {
+    return new ComponentExecutor(() -> {
+      fire(listener, event);
+      if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
+        fireDequeue(listener);
+      }
+      isFiringMap.get(listener).put(eventLock, false);
+    }, "eventThread");
   }
 
   protected void enqueue(E event) {
@@ -108,11 +104,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
   }
 
   protected void fireDequeue(L listener) {
-    CopyOnWriteArrayList<E> internalQueue;
     if (queue.size() == 0) {
       return;
     }
-    internalQueue = new CopyOnWriteArrayList<E>(queue);
+    CopyOnWriteArrayList<E> internalQueue = new CopyOnWriteArrayList<>(queue);
     queue.clear();
     while (internalQueue.size() > 0) {
       fire(listener, internalQueue.remove(0));
@@ -130,13 +125,13 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
     shouldFire = true;
   }
 
-  protected void registerIsFiringMap(Object eventListener) {
-    isFiringMap.put(eventListener, new ConcurrentHashMap<Object, Boolean>());
+  protected void registerIsFiringMap(L eventListener) {
+    isFiringMap.put(eventListener, new ConcurrentHashMap<>());
     isFiringMap.get(eventListener).put(eventListener, false);
   }
 
-  protected void registerIsFiringMap(Object eventListener, Visual[] targets) {
-    isFiringMap.put(eventListener, new ConcurrentHashMap<Object, Boolean>());
+  protected void registerIsFiringMap(L eventListener, Visual[] targets) {
+    isFiringMap.put(eventListener, new ConcurrentHashMap<>());
     if ((targets != null) && (targets.length > 0)) {
       for (Visual target : targets) {
         isFiringMap.get(eventListener).put(target, false);

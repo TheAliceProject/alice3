@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class AabbOcclusionDetector {
 
-  public static boolean doesTheseOcclude(CameraImp<?> camera, SThing object1, SThing object2) {
+  public static boolean doTheseOcclude(CameraImp<?> camera, SThing object1, SThing object2) {
     return projectedBoundsInView(camera, object1).intersects(projectedBoundsInView(camera, object2));
   }
 

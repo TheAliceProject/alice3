@@ -45,8 +45,8 @@ package org.lgna.story.implementation.eventhandling;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
@@ -57,42 +57,78 @@ import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
  */
-public class OcclusionHandler extends AbstractBinaryEventHandler<Object, OcclusionEvent> {
-
-  private final OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
+public class OcclusionHandler extends AbstractBinaryEventHandler<Object, OcclusionEvent, SModel> {
+  private final Map<SModel, Map<SModel, Boolean>> wereOccluded = Maps.newConcurrentHashMap();
   private CameraImp<?> camera;
 
-  public void addOcclusionEvent(Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo, MultipleEventPolicy policy) {
-    registerIsFiringMap(occlusionEventListener);
-    registerPolicyMap(occlusionEventListener, policy);
-    List<SModel> allObserving = Lists.newCopyOnWriteArrayList(groupOne);
-    allObserving.addAll(groupTwo);
-    if ((groupOne.size() > 0) && (groupOne.get(0) != null) && (camera == null)) {
-      camera = EmployeesOnly.getImplementation(groupOne.get(0)).getScene().findFirstCamera();
+  public void addOcclusionEventListener(Object occlusionEventListener, List<SModel> groupA, List<SModel> groupB, MultipleEventPolicy policy) {
+    startTrackingListener(occlusionEventListener, groupA, groupB, policy);
+    if ((groupA.size() > 0) && (groupA.get(0) != null) && (camera == null)) {
+      camera = EmployeesOnly.getImplementation(groupA.get(0)).getScene().findFirstCamera();
       camera.getSgComposite().addAbsoluteTransformationListener(this);
     }
-    for (SThing m : allObserving) {
-      if (!getModelList().contains(m)) {
-        getModelList().add(m);
-        EmployeesOnly.getImplementation(m).getSgComposite().addAbsoluteTransformationListener(this);
-      }
-    }
-    occlusionEventHandler.register(occlusionEventListener, groupOne, groupTwo);
   }
 
   @Override
-  protected void check(SThing changedEntity) {
-    occlusionEventHandler.check(changedEntity);
+  protected void startTrackingThing(SModel thing) {
+    super.startTrackingThing(thing);
+    if (wereOccluded.get(thing) == null) {
+      wereOccluded.put(thing, new ConcurrentHashMap<>());
+    }
+  }
+
+  @Override
+  protected void check(SThing changedThing) {
+    if (camera == null) {
+      camera = EmployeesOnly.getImplementation(changedThing).getScene().findFirstCamera();
+      if (camera == null) {
+        return;
+      }
+    }
+    if (changedThing.equals(camera.getAbstraction())) {
+      for (SModel model : interactionListeners.keySet()) {
+        checkForOcclusions(model);
+      }
+    } else {
+      if (changedThing instanceof SModel) {
+        checkForOcclusions((SModel) changedThing);
+      }
+    }
+  }
+
+  protected void checkForOcclusions(SModel changedModel) {
+    final Map<SModel, Set<Object>> thingsToOcclude = interactionListeners.get(changedModel);
+    for (SModel model : thingsToOcclude.keySet()) {
+      Set<Object> listeners = thingsToOcclude.get(model);
+      if ((listeners == null) || (listeners.size() == 0)) {
+        break;
+      }
+      boolean doTheseOcclude = AabbOcclusionDetector.doTheseOcclude(camera, changedModel, model);
+      final boolean isOcclusionStart = wasFalse(wereOccluded, changedModel, model) && doTheseOcclude;
+      final boolean isOcclusionEnd = wasTrue(wereOccluded, changedModel, model) && !doTheseOcclude;
+      wereOccluded.get(changedModel).put(model, doTheseOcclude);
+      wereOccluded.get(model).put(changedModel, doTheseOcclude);
+      if (!isOcclusionStart && !isOcclusionEnd) {
+        continue;
+      }
+      final boolean isChangedModelInBackground = camera.getDistanceTo(EmployeesOnly.getImplementation(model)) < camera.getDistanceTo(EmployeesOnly.getImplementation(changedModel));
+      SModel foreground = isChangedModelInBackground ? model : changedModel;
+      SModel background = isChangedModelInBackground ? changedModel : model;
+      for (Object listener : listeners) {
+        if (isOcclusionStart && listener instanceof OcclusionStartListener) {
+          fireEvent(listener, new StartOcclusionEvent(foreground, background));
+        } else if (isOcclusionEnd && listener instanceof OcclusionEndListener) {
+          fireEvent(listener, new EndOcclusionEvent(foreground, background));
+        }
+      }
+    }
   }
 
   @Override
@@ -105,123 +141,4 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
       start.occlusionEnded((EndOcclusionEvent) event);
     }
   }
-
-  private class OcclusionEventHandler {
-
-    private final Map<SModel, CopyOnWriteArrayList<SModel>> checkMap = Maps.newConcurrentHashMap();
-    private final Map<SModel, Map<SModel, CopyOnWriteArrayList<Object>>> eventMap = Maps.newConcurrentHashMap();
-    private final Map<SModel, Map<SModel, Boolean>> wereOccluded = Maps.newConcurrentHashMap();
-
-    public void check(SThing changedEntity) {
-      if (camera == null) {
-        camera = EmployeesOnly.getImplementation(changedEntity).getScene().findFirstCamera();
-        if (camera == null) {
-          return;
-        }
-      }
-      if (changedEntity.equals(camera.getAbstraction())) {
-        for (SModel t : checkMap.keySet()) {
-          for (SModel m : checkMap.get(t)) {
-            for (Object occList : eventMap.get(t).get(m)) {
-              if (check(occList, t, m)) {
-                CopyOnWriteArrayList<SModel> models = Lists.newCopyOnWriteArrayList();
-                if (camera.getDistanceTo((AbstractTransformableImp) EmployeesOnly.getImplementation(m)) < camera.getDistanceTo((AbstractTransformableImp) EmployeesOnly.getImplementation(t))) {
-                  models.add(m);
-                  models.add(t);
-                } else {
-                  models.add(t);
-                  models.add(m);
-                }
-                if (occList instanceof OcclusionStartListener) {
-                  fireEvent(occList, new StartOcclusionEvent(models.get(0), models.get(models.size() - 1)), models.get(0), models.get(1));
-                } else if (occList instanceof OcclusionEndListener) {
-                  fireEvent(occList, new EndOcclusionEvent(models.get(0), models.get(models.size() - 1)), models.get(0), models.get(1));
-                }
-              } else {
-
-              }
-            }
-            boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude(camera, t, m);
-            wereOccluded.get(t).put(m, doTheseOcclude);
-            wereOccluded.get(m).put(t, doTheseOcclude);
-          }
-        }
-      } else {
-        for (SModel m : checkMap.get(changedEntity)) {
-          for (Object occList : eventMap.get(changedEntity).get(m)) {
-            if (check(occList, (SModel) changedEntity, m)) {
-              CopyOnWriteArrayList<SModel> models = Lists.newCopyOnWriteArrayList();
-              if (camera.getDistanceTo((AbstractTransformableImp) EmployeesOnly.getImplementation(m)) < camera.getDistanceTo((AbstractTransformableImp) EmployeesOnly.getImplementation(changedEntity))) {
-                models.add(m);
-                models.add((SModel) changedEntity);
-              } else {
-                models.add((SModel) changedEntity);
-                models.add(m);
-              }
-              if (occList instanceof OcclusionStartListener) {
-                fireEvent(occList, new StartOcclusionEvent(models.get(0), models.get(models.size() - 1)), models.get(0), models.get(1));
-              } else if (occList instanceof OcclusionEndListener) {
-                fireEvent(occList, new EndOcclusionEvent(models.get(0), models.get(models.size() - 1)), models.get(0), models.get(1));
-              }
-            }
-          }
-          boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude(camera, changedEntity, m);
-          wereOccluded.get(changedEntity).put(m, AabbOcclusionDetector.doesTheseOcclude(camera, changedEntity, m));
-          wereOccluded.get(m).put((SModel) changedEntity, AabbOcclusionDetector.doesTheseOcclude(camera, m, changedEntity));
-        }
-      }
-    }
-
-    private boolean check(Object occList, SModel changedEntity, SModel m) {
-      if (occList instanceof OcclusionStartListener) {
-        return !wereOccluded.get(changedEntity).get(m) && AabbOcclusionDetector.doesTheseOcclude(camera, changedEntity, m);
-      } else if (occList instanceof OcclusionEndListener) {
-        return wereOccluded.get(changedEntity).get(m) && !AabbOcclusionDetector.doesTheseOcclude(camera, changedEntity, m);
-      }
-      Logger.errln("UNHANDLED OcclusionListener TYPE", occList.getClass());
-      return false;
-    }
-
-    public void register(Object occlusionListener, List<SModel> groupOne, List<SModel> groupTwo) {
-      for (SModel m : groupOne) {
-        if (eventMap.get(m) == null) {
-          eventMap.put(m, new ConcurrentHashMap<SModel, CopyOnWriteArrayList<Object>>());
-          wereOccluded.put(m, new ConcurrentHashMap<SModel, Boolean>());
-          checkMap.put(m, new CopyOnWriteArrayList<SModel>());
-        }
-        for (SModel t : groupTwo) {
-          if (eventMap.get(m).get(t) == null) {
-            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
-          }
-          if (!m.equals(t)) {
-            eventMap.get(m).get(t).add(occlusionListener);
-            wereOccluded.get(m).put(t, false);
-            if (!checkMap.get(m).contains(t)) {
-              checkMap.get(m).add(t);
-            }
-          }
-        }
-      }
-      for (SModel m : groupTwo) {
-        if (eventMap.get(m) == null) {
-          eventMap.put(m, new ConcurrentHashMap<SModel, CopyOnWriteArrayList<Object>>());
-          wereOccluded.put(m, new ConcurrentHashMap<SModel, Boolean>());
-          checkMap.put(m, new CopyOnWriteArrayList<SModel>());
-        }
-        for (SModel t : groupOne) {
-          if (eventMap.get(m).get(t) == null) {
-            eventMap.get(m).put(t, new CopyOnWriteArrayList<Object>());
-          }
-          if (!m.equals(t)) {
-            eventMap.get(m).get(t).add(occlusionListener);
-            wereOccluded.get(m).put(t, false);
-            if (!checkMap.get(m).contains(t)) {
-              checkMap.get(m).add(t);
-            }
-          }
-        }
-      }
-    }
-  }
-
 }
