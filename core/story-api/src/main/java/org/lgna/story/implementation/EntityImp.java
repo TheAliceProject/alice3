@@ -210,7 +210,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   protected void setSgVehicle(Composite sgVehicle) {
-    this.getSgComposite().setParent(sgVehicle);
+    this.getSgComposite().setParentWithoutMoving(sgVehicle);
   }
 
   //HACK
