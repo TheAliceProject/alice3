@@ -166,17 +166,29 @@ public abstract class Component extends Element implements Visitable, ReferenceF
   }
 
   public void setParent(Composite parent) {
-    if (this.vehicle != parent) {
-      if (this.vehicle != null) {
-        this.vehicle.fireChildRemoved(this);
-      }
-      this.vehicle = parent;
-      if (this.vehicle != null) {
-        this.vehicle.fireChildAdded(this);
-      }
-      //firePropertyChange( VEHICLE_PROPERTY_NAME );
-      fireAbsoluteTransformationChange();
-      fireHierarchyChanged();
+    if (vehicle == parent) {
+      return;
+    }
+    setParentInHierarchy(parent);
+    fireAbsoluteTransformationChange();
+    fireHierarchyChanged();
+  }
+
+  public void setParentWithoutMoving(Composite parent) {
+    if (vehicle == parent) {
+      return;
+    }
+    setParentInHierarchy(parent);
+    fireHierarchyChanged();
+  }
+
+  protected void setParentInHierarchy(Composite parent) {
+    if (vehicle != null) {
+      vehicle.fireChildRemoved(this);
+    }
+    vehicle = parent;
+    if (vehicle != null) {
+      vehicle.fireChildAdded(this);
     }
   }
 

@@ -299,11 +299,11 @@ public class EventManager {
   }
 
   public void addOcclusionEventListener(OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy) {
-    occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo, policy);
+    occlusionHandler.addOcclusionEventListener(occlusionEventListener, groupOne, groupTwo, policy);
   }
 
   public void addOcclusionEventListener(OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy) {
-    occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo, policy);
+    occlusionHandler.addOcclusionEventListener(occlusionEventListener, groupOne, groupTwo, policy);
   }
 
   public void addSceneActivationListener(SceneActivationListener listener) {
