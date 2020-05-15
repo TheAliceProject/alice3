@@ -286,10 +286,21 @@ public abstract class Model extends Geometry {
         //First we find the new highest index
         int maxVertexIndex = 0;
         for (int i = 0; i < vertexWeights.length; i++) {
+          if (oldVertexIndexToNewIndex.containsKey(i)) {
             int newVertexIndex = oldVertexIndexToNewIndex.get(i);
             if (newVertexIndex > maxVertexIndex) {
               maxVertexIndex = newVertexIndex;
             }
+          } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Model data will be missing some points\n\t");
+            this.appendRepr(sb);
+            sb.append("\n\tMesh ") .append(meshId)
+              .append(" has no mapping from old vertex ")
+              .append(i)
+              .append(" to a new one in the export");
+            Logger.warning(sb);
+          }
         }
         //Since we stored weights in an array where the index in the array is also the vertex index,
         // this becomes the size of the new weight array
