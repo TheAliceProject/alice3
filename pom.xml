@@ -79,7 +79,7 @@
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.6.0.0</alice.build.version>
-    <alice.build.prerelease>-beta.5</alice.build.prerelease>
+    <alice.build.prerelease>-beta.6</alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
