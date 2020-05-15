@@ -46,17 +46,21 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resources.ModelResource;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum StorytellingResourcesTreeUtils {
+public enum StorytellingResourcesTreeUtils implements ResourceTypeHelper {
   INSTANCE;
 
   private ModelResourceTree getGalleryTreeInternal() {
@@ -137,6 +141,18 @@ public enum StorytellingResourcesTreeUtils {
       }
     }
     return toReturn;
+  }
+
+  @Override
+  public InstanceCreation createInstanceCreation(ModelResource resource, Set<NamedUserType> typeCache) {
+    Class<? extends ModelResource> resourceClass = resource.getClass();
+    try {
+      Field enumValue = resourceClass.getField(resource.toString());
+      final TypeDefinedGalleryTreeNode node = getGalleryTreeInternal().getNodeForResource(enumValue);
+      return node == null ? null : node.getResourceKey().createInstanceCreation(typeCache);
+    } catch (NoSuchFieldException nsfe) {
+      return null;
+    }
   }
 
   private Collection<JavaType> rootTypes = null;

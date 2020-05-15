@@ -79,6 +79,7 @@ import org.lgna.story.resources.JointedModelResource;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -296,14 +297,8 @@ public class TypeManager {
     return getArgumentTypes(ancestorType, field.getDeclaringType());
   }
 
-  private static void appendTypeName(StringBuilder sb, String name) {
-    sb.append(name);
-  }
-
   private static String createClassNameFromResourceType(AbstractType<?, ?, ?> resourceType) {
-    StringBuilder sb = new StringBuilder();
-    appendTypeName(sb, resourceType.getName().replace("Resource", ""));
-    return sb.toString();
+    return resourceType.getName().replace("Resource", "");
   }
 
   public static String createClassNameFromArgumentField(AbstractType<?, ?, ?> ancestorType, AbstractField argumentField) {
@@ -325,15 +320,17 @@ public class TypeManager {
 
   private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance(SJointedModel.class, "setJointedModelResource", JointedModelResource.class);
 
-  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField) {
-    return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null);
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Set<NamedUserType> typeCache) {
+    return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null, typeCache);
   }
 
-  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className) {
+  private static NamedUserType getNamedUserTypeFor(JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className, Set<NamedUserType> typeCache) {
     AbstractType<?, ?, ?> superType;
     final int LAST_INDEX = argumentTypes.length - 1;
     if (i < LAST_INDEX) {
-      superType = getNamedUserTypeFor(ancestorType, argumentTypes, i + 1, null, null, null);
+      NamedUserType userSuperType = getNamedUserTypeFor(ancestorType, argumentTypes, i + 1, null, null, null, typeCache);
+      typeCache.add(userSuperType);
+      superType = userSuperType;
     } else {
       superType = ancestorType;
     }
@@ -357,13 +354,9 @@ public class TypeManager {
     //    else {
     //      criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
     //    }
-    Project project = ProjectStack.peekProject();
-    if (project != null) {
-      Set<NamedUserType> existingTypes = project.getNamedUserTypes();
-      for (NamedUserType existingType : existingTypes) {
-        if (criterion.accept(existingType)) {
-          return existingType;
-        }
+    for (NamedUserType existingType : typeCache) {
+      if (criterion.accept(existingType)) {
+        return existingType;
       }
     }
     Expression[] expressions;
@@ -412,6 +405,7 @@ public class TypeManager {
         }
       }
     }
+    typeCache.add(rv);
     return rv;
   }
 
@@ -432,19 +426,31 @@ public class TypeManager {
   }
 
   public static NamedUserType getNamedUserTypeFromArgumentField(JavaType ancestorType, JavaField argumentField) {
+    return getNamedUserTypeFromArgumentField(ancestorType, argumentField, getTypeCache());
+  }
+
+  public static NamedUserType getNamedUserTypeFromArgumentField(JavaType ancestorType, JavaField argumentField, Set<NamedUserType> typeCache) {
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(ancestorType, argumentField);
-    return getNamedUserTypeFor(ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly(argumentTypes[0]));
+    return getNamedUserTypeFor(ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly(argumentTypes[0]), typeCache);
   }
 
   public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation(JavaType resourceType, InstanceCreation instanceCreation, String className) {
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(resourceType, instanceCreation.getType());
-    return getNamedUserTypeFor(resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className);
+    return getNamedUserTypeFor(resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className, getTypeCache());
+  }
+
+  protected static Set<NamedUserType> getTypeCache() {
+    Project project = ProjectStack.peekProject();
+    if (project != null) {
+      return project.getNamedUserTypes();
+    }
+    return new HashSet<>();
   }
 
   public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation(InstanceCreation instanceCreation) {
     JavaType bipedType = JavaType.getInstance(SBiped.class);
     AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes(bipedType, instanceCreation.getType());
-    return getNamedUserTypeFor(bipedType, argumentTypes, 0, null);
+    return getNamedUserTypeFor(bipedType, argumentTypes, 0, null, getTypeCache());
   }
 
   public static NamedUserType getNamedUserTypeFromSuperType(JavaType superType) {

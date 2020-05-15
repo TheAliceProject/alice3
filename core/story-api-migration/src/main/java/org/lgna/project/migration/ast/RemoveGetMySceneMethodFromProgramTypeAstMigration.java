@@ -45,7 +45,6 @@ package org.lgna.project.migration.ast;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
@@ -54,6 +53,9 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.migration.AstMigration;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
+
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +66,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
   }
 
   @Override
-  public void migrate(Node node, Project projectIfApplicable) {
+  public void migrate(Node node, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
     if (node instanceof NamedUserType) {
       NamedUserType type = (NamedUserType) node;
       UserMethod mainMethod = type.getDeclaredMethod("main", String[].class);

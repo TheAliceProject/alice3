@@ -52,7 +52,6 @@ import java.io.IOException;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -367,9 +366,8 @@ public abstract class AbstractThumbnailMaker {
     double halfCameraFOV = (horizontalAngle < verticalAngle) ? horizontalAngle : verticalAngle;
     halfCameraFOV /= 2.0;
 
-    Hexahedron hex = bbox.getHexahedron();
     double minVal = Double.MAX_VALUE;
-    for (Point3 p : hex.getPoints()) {
+    for (Point3 p : bbox.getPoints()) {
       double t = cameraRay.getProjectedPointT(p);
       Point3 rayPoint = cameraRay.getPointAlong(t);
       double distanceToRay = Point3.calculateDistanceBetween(p, rayPoint);

@@ -50,6 +50,7 @@ import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.io.IoUtilities;
 import org.lgna.project.io.ProjectIo;
+import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +75,7 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
       if (isFromFutureVersion(reader)) {
         return null;
       }
+      reader.setResourceTypeHelper(StorytellingResourcesTreeUtils.INSTANCE);
       return reader.readProject();
     } catch (VersionNotSupportedException vnse) {
       ProjectApplication.getActiveInstance().handleVersionNotSupported(file, vnse);

@@ -57,6 +57,7 @@ import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
 import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -101,6 +102,11 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     public Version checkForFutureVersion() throws IOException {
       // TODO
       return null;
+    }
+
+    @Override
+    public void setResourceTypeHelper(ResourceTypeHelper typeHelper) {
+      // Ignored for now
     }
 
     private Manifest readManifest() {
@@ -181,7 +187,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       }
       final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
       if (!personResourceCreations.isEmpty()) {
-        JsonModelIo modelIo = JsonModelIo.createPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
+        JsonModelIo modelIo = new JsonPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
@@ -239,7 +245,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     private Manifest.ProjectIdentifier standardLibrary() {
       final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
       libraryIdentifier.type = Manifest.ProjectType.Library;
-      libraryIdentifier.version = "0.13";
+      libraryIdentifier.version = "0.14";
       libraryIdentifier.name = "SceneGraphLibrary";
       return libraryIdentifier;
     }

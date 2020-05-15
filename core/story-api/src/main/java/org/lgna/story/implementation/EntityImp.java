@@ -210,7 +210,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   protected void setSgVehicle(Composite sgVehicle) {
-    this.getSgComposite().setParent(sgVehicle);
+    this.getSgComposite().setParentWithoutMoving(sgVehicle);
   }
 
   //HACK
@@ -763,7 +763,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
         EntityImp imp = EntityImp.getInstance(sgJoint);
         if (imp instanceof JointImp) {
           JointImp jointImp = (JointImp) imp;
-          return jointImp.getOriginalTransformation();
+          return jointImp.getScaledOriginalTransformation();
         } else {
           return AffineMatrix4x4.createIdentity();
         }

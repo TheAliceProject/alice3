@@ -232,6 +232,9 @@ public class Encoder extends SourceCodeGenerator {
                          + "          tailArray: " + resourceName + ".TAIL_ARRAY,\n"
                          + "          neckArray: " + resourceName + ".NECK_ARRAY");
       }
+      if ("QuadrupedResource".equals(superclass)) {
+        appendString(", tailArray: " + resourceName + ".TAIL_ARRAY");
+      }
       if ("SlithererResource".equals(superclass)) {
         appendString(", tailArray: " + resourceName + ".TAIL_ARRAY");
       }

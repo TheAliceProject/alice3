@@ -44,7 +44,6 @@ package edu.cmu.cs.dennisc.scenegraph.bound;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -91,12 +90,10 @@ public class CumulativeBound {
 
   public void addBoundingBox(AxisAlignedBox box, AffineMatrix4x4 trans) {
     if (box.isNaN()) {
-      //pass
-    } else {
-      Hexahedron hexahedron = box.getHexahedron();
-      for (int i = 0; i < 8; i++) {
-        addPoint(hexahedron.getPointAt(i), trans);
-      }
+      return;
+    }
+    for (Point3 point : box.getPoints()) {
+      addPoint(point, trans);
     }
   }
 

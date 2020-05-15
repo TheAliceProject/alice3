@@ -42,58 +42,69 @@
  *******************************************************************************/
 package org.lgna.story.implementation.eventhandling;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.lgna.common.ComponentExecutor;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
 import org.lgna.story.event.AbstractEvent;
 
 /**
  * @author Matt May
  */
-public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent> extends TransformationChangedHandler<L, E> {
+public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent, T extends SThing> extends TransformationChangedHandler<L, E> {
 
-  protected void fireEvent(final L listener, final E event, final Object one, final Object two) {
-    //    final Object o = object == null ? NULL_OBJECT : object;
-    if (isFiringMap.get(listener) == null) {
-      isFiringMap.put(listener, new ConcurrentHashMap<Object, Boolean>());
-    }
-    if (isFiringMap.get(listener).get(one) == null) {
-      isFiringMap.get(listener).put(one, false);
-    }
-    if (isFiringMap.get(listener).get(two) == null) {
-      isFiringMap.get(listener).put(two, false);
-    }
-    if (shouldFire) {
-      ComponentExecutor thread = new ComponentExecutor(new Runnable() {
-        @Override
-        public void run() {
-          fire(listener, event);
-          if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
-            fireDequeue(listener);
-          }
-          isFiringMap.get(listener).put(one, false);
-          isFiringMap.get(listener).put(two, false);
+  protected final Map<T, Map<T, Set<Object>>> interactionListeners = Maps.newConcurrentHashMap();
+
+  protected void startTrackingListener(L listener, List<T> groupA, List<T> groupB, MultipleEventPolicy policy) {
+    registerIsFiringMap(listener);
+    registerPolicyMap(listener, policy);
+    startTrackingThings(groupA);
+    startTrackingThings(groupB);
+    for (T a : groupA) {
+      for (T b : groupB) {
+        if (!a.equals(b)) {
+          startTrackingInteraction(a, b, listener);
         }
-      }, "eventThread");
-      if (isFiringMap.get(listener).get(one).equals(false) && isFiringMap.get(listener).get(two).equals(false)) {
-        isFiringMap.get(listener).put(one, true);
-        isFiringMap.get(listener).put(two, true);
-        thread.start();
-        return;
-      } else if (policyMap.get(listener).equals(MultipleEventPolicy.COMBINE)) {
-        thread.start();
-      } else if (policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)) {
-        enqueue(event);
       }
     }
   }
 
-  @Override
-  @Deprecated
-  /**
-   * If you are calling this method you are doing something wrong (mmay) use fireEvent(L,E,Object,Object)
-   */ protected void fireEvent(L listener, E event) {
-    super.fireEvent(listener, event);
+  private void startTrackingThings(List<T> things) {
+    for (T thing : things) {
+      startTrackingThing(thing);
+    }
+  }
+
+  protected void startTrackingThing(T thing) {
+    if (!getModelList().contains(thing)) {
+      getModelList().add(thing);
+      EmployeesOnly.getImplementation(thing).getSgComposite().addAbsoluteTransformationListener(this);
+    }
+    if (interactionListeners.get(thing) == null) {
+      interactionListeners.put(thing, new ConcurrentHashMap<>());
+    }
+  }
+
+  protected void startTrackingInteraction(T a, T b, Object listener) {
+    interactionListeners.get(a).computeIfAbsent(b, k -> new LinkedHashSet<>()).add(listener);
+    interactionListeners.get(b).computeIfAbsent(a, k -> new LinkedHashSet<>()).add(listener);
+  }
+
+  protected boolean wasTrue(Map<T, Map<T, Boolean>> previousState, T a, T b) {
+    final Map<T, Boolean> determinedStates = previousState.get(a);
+    // If there is no entry, then this was not previously determined
+    return determinedStates.containsKey(b) && determinedStates.get(b);
+  }
+
+  protected boolean wasFalse(Map<T, Map<T, Boolean>> previousState, T a, T b) {
+    final Map<T, Boolean> determinedStates = previousState.get(a);
+    // If there is no entry, then this was not previously determined
+    return determinedStates.containsKey(b) && !determinedStates.get(b);
   }
 }

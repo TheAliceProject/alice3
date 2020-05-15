@@ -176,7 +176,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
   private void setShowJointsOfField(AbstractField field, boolean showJoints) {
     JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation(field);
     if (imp != null) {
-      imp.setAllJointPivotsVisibile(showJoints);
+      imp.setAllJointPivotsVisible(showJoints);
     }
   }
 

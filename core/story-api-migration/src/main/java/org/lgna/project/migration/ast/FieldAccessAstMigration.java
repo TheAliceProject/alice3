@@ -44,12 +44,15 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
+import org.lgna.story.resourceutilities.ResourceTypeHelper;
+
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -63,7 +66,7 @@ import org.lgna.project.migration.AstMigration;
   protected abstract void migrate(FieldAccess fieldAccess);
 
   @Override
-  public final void migrate(Node root, Project projectIfApplicable) {
+  public final void migrate(Node root, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
     root.crawl(new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
