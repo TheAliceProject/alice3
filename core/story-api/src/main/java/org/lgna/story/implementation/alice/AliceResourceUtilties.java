@@ -167,10 +167,10 @@ public class AliceResourceUtilties {
     }
   }
 
-  private static String CLASS_NAME_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryNames";
-  private static String GROUP_TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
-  private static String THEME_TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
-  private static String TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
+  private static String CLASS_NAME_LOCALIZATION_BUNDLE = ModelResource.class.getPackage().getName() + ".GalleryNames";
+  private static String GROUP_TAGS_LOCALIZATION_BUNDLE = ModelResource.class.getPackage().getName() + ".GalleryTags";
+  private static String THEME_TAGS_LOCALIZATION_BUNDLE = ModelResource.class.getPackage().getName() + ".GalleryTags";
+  private static String TAGS_LOCALIZATION_BUNDLE = ModelResource.class.getPackage().getName() + ".GalleryTags";
 
   private static String getClassNameLocalizationBundleName() {
     return CLASS_NAME_LOCALIZATION_BUNDLE;

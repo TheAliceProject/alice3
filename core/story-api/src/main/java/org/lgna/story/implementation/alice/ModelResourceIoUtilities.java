@@ -52,16 +52,10 @@ public class ModelResourceIoUtilities {
     throw new AssertionError();
   }
 
-  public static final String RESOURCE_SUB_DIR = "";
-
   public static String getResourceSubDirWithSeparator(String className) {
-    className = AliceResourceClassUtilities.getAliceClassName(className);
-    String classDir = (className != null) && (className.length() > 0) ? className.toLowerCase(Locale.ENGLISH) + "/" : "";
-
-    if ((RESOURCE_SUB_DIR == null) || (RESOURCE_SUB_DIR.length() == 0)) {
-      return classDir;
-    } else {
-      return RESOURCE_SUB_DIR + "/" + classDir;
-    }
+    String aliceClassName = AliceResourceClassUtilities.getAliceClassName(className);
+    return aliceClassName.length() > 0
+        ? aliceClassName.toLowerCase(Locale.ENGLISH) + "/"
+        : "";
   }
 }

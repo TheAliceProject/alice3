@@ -8,6 +8,7 @@ import org.alice.tweedle.file.StructureReference;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
 import java.io.File;
@@ -126,7 +127,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
   @Override
   public JointedModelImp.JointImplementationAndVisualDataFactory getImplementationAndVisualFactory() {
-    return org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.getInstance(this);
+    return JointImplementationAndVisualDataFactory.getInstance(this);
   }
 
   @Override
