@@ -786,10 +786,20 @@
                   <java class="java.beans.XMLDecoder">
                     <object class="com.install4j.runtime.beans.actions.files.DeleteFileAction">
                       <void property="files">
-                        <array class="java.io.File" length="1">
+                        <array class="java.io.File" length="3">
                           <void index="0">
                             <object class="java.io.File">
-                              <string>.</string>
+                              <string>lib</string>
+                            </object>
+                          </void>
+                          <void index="1">
+                            <object class="java.io.File">
+                              <string>platform</string>
+                            </object>
+                          </void>
+                          <void index="2">
+                            <object class="java.io.File">
+                              <string>ext</string>
                             </object>
                           </void>
                         </array>
