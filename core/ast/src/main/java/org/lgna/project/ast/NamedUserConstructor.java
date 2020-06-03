@@ -131,43 +131,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
       if (expression instanceof FieldAccess) {
         return instantiateFieldAccess((FieldAccess) expression);
       } else if (expression instanceof InstanceCreation) {
-        return instantiateInstanceCreation((InstanceCreation) expression);
-      }
-    }
-    return null;
-  }
-
-  //This handles the case of a DynamicResource
-  //DynamicResources use a constructor that looks like this:
-  //  public DyanamicBipedResource(String modelName, String resourceName)
-  //And the InstanceCreation looks like this:
-  //  AstUtilities.createInstanceCreation(
-  //    DynamicBipedResource.class,
-  //    new Class<?>[] {
-  //      String.class,
-  //      String.class
-  //    },
-  //    new StringLiteral( dynamicResource.getModelClassName() ),
-  //    new StringLiteral( dynamicResource.getModelVariantName() ));
-  //This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
-  private Object instantiateInstanceCreation(InstanceCreation instanceCreation) {
-    if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
-      JavaConstructor instanceConstructor = (JavaConstructor) instanceCreation.constructor.getValue();
-      Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
-      int index = 0;
-      boolean canEvaluate = true;
-      for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
-        if (argument.expression.getValue() instanceof StringLiteral) {
-          StringLiteral literal = (StringLiteral) argument.expression.getValue();
-          String argumentValue = literal.getValueProperty().getValue();
-          constructorArguments[index++] = argumentValue;
-        } else {
-          canEvaluate = false;
-          break;
-        }
-      }
-      if (canEvaluate) {
-        return instanceConstructor.evaluate(null, null, constructorArguments);
+        return ((InstanceCreation) expression).instantiateDynamicResource();
       }
     }
     return null;
