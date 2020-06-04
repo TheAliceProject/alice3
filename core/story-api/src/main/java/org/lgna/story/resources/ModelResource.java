@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.resources;
 
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 
 import java.net.URL;
 
@@ -56,7 +56,7 @@ public interface ModelResource {
   }
 
   default URL getThumbnailUrl(String variant) {
-    return AliceResourceUtilties.getThumbnailURL(this, variant);
+    return AliceResourceUtilities.getThumbnailURL(this, variant);
   }
 
 }

@@ -87,7 +87,7 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class AliceResourceUtilties {
+public class AliceResourceUtilities {
   public static final String MODEL_RESOURCE_EXTENSION = "a3r";
   public static final String TEXTURE_RESOURCE_EXTENSION = "a3t";
 
@@ -107,7 +107,7 @@ public class AliceResourceUtilties {
   }
 
   /*private*/
-  protected AliceResourceUtilties() {
+  protected AliceResourceUtilities() {
     throw new AssertionError();
   }
 
@@ -448,9 +448,9 @@ public class AliceResourceUtilties {
     }
     if (textureName == null) {
       textureName = "_cls";
-    } else if (textureName.equalsIgnoreCase(getDefaultTextureEnumName(modelName)) ||
-        modelName.equalsIgnoreCase(enumToCamelCase(textureName)) ||
-        textureName.equalsIgnoreCase(makeEnumName(modelName))) {
+    } else if (textureName.equalsIgnoreCase(getDefaultTextureEnumName(modelName))
+        || modelName.equalsIgnoreCase(enumToCamelCase(textureName))
+        || textureName.equalsIgnoreCase(makeEnumName(modelName))) {
       textureName = "";
     } else if (textureName.length() > 0) {
       textureName = "_" + makeEnumName(textureName);

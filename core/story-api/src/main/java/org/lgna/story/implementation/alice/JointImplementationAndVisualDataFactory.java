@@ -74,9 +74,9 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
 
     VisualData(JointedModelResource resource) {
       assert resource != null;
-      this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances(resource);
+      this.texturedAppearances = AliceResourceUtilities.getTexturedAppearances(resource);
       //Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
-      this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy(resource);
+      this.sgSkeletonVisual = AliceResourceUtilities.getVisualCopy(resource);
       //Set the texture data to be the texture info specified by the resource
       this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
       if (this.sgSkeletonVisual.skeleton.getValue() != null) {
@@ -221,12 +221,12 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
 
   @Override
   public UnitQuaternion getOriginalJointOrientation(JointId jointId) {
-    return AliceResourceUtilties.getOriginalJointOrientation(this.resource, jointId);
+    return AliceResourceUtilities.getOriginalJointOrientation(this.resource, jointId);
   }
 
   @Override
   public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId) {
-    return AliceResourceUtilties.getOriginalJointTransformation(this.resource, jointId);
+    return AliceResourceUtilities.getOriginalJointTransformation(this.resource, jointId);
   }
 
   @Override

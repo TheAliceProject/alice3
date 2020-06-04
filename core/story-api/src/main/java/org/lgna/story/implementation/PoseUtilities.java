@@ -63,7 +63,7 @@ import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.JointId;
@@ -228,7 +228,7 @@ public class PoseUtilities {
     Field jField = jointId.getPublicStaticFinalFld();
     if (jField != null) {
       String fieldName = jField.getName();
-      String camelCaseName = AliceResourceUtilties.enumToCamelCase(fieldName, true);
+      String camelCaseName = AliceResourceUtilities.enumToCamelCase(fieldName, true);
       try {
         return poseBuilderCls.getMethod(camelCaseName, Orientation.class);
       } catch (NoSuchMethodException nsme) {

@@ -48,7 +48,7 @@ import org.lgna.project.ast.Expression;
 import org.lgna.story.Paint;
 import org.lgna.story.SGround;
 import org.lgna.story.SetPaint;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 
 import javax.swing.JComponent;
 import java.util.UUID;
@@ -73,7 +73,7 @@ public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeMan
 
   @Override
   protected String generateName() {
-    return AliceResourceUtilties.getLocalizedTag("ground", JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getLocalizedTag("ground", JComponent.getDefaultLocale());
   }
 
   private AddGroundManagedFieldComposite() {

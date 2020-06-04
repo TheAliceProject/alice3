@@ -78,7 +78,7 @@ import org.alice.tweedle.file.ModelManifest;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.exporterutils.collada.*;
@@ -1167,7 +1167,7 @@ public class JointedModelColladaExporter {
   }
 
   private static List<File> exportAliceModelResourceToDir(JointedModelResource modelResource, File rootDir) throws IOException {
-    ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo(modelResource.getClass(), modelResource.toString());
+    ModelResourceInfo modelInfo = AliceResourceUtilities.getModelResourceInfo(modelResource.getClass(), modelResource.toString());
     SkeletonVisual sgSkeletonVisual = loadAliceModel(modelResource);
     ModelManifest modelManifest = modelInfo.createModelManifest();
     JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);

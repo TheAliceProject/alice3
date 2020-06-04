@@ -14,7 +14,7 @@ import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.JointedModelColladaExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
@@ -88,9 +88,9 @@ public class JsonModelIo extends DataSourceIo {
   //AliceResourcesUtilities.getTextureResourceName returns null for resources that use "default" texture names
   //Catch this and return the default texture name
   private static String getTextureName(JointedModelResource modelResource) {
-    String textureName = AliceResourceUtilties.getTextureResourceName(modelResource);
+    String textureName = AliceResourceUtilities.getTextureResourceName(modelResource);
     if (textureName.length() == 0) {
-      textureName = AliceResourceUtilties.getDefaultTextureEnumName(modelResource.toString());
+      textureName = AliceResourceUtilities.getDefaultTextureEnumName(modelResource.toString());
     }
     return textureName;
   }
@@ -100,7 +100,7 @@ public class JsonModelIo extends DataSourceIo {
     //Get the ModelResourceInfo from the first resource in the list.
     //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
     ModelResource firstResource = modelResources.get(0);
-    ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
+    ModelResourceInfo rootInfo = AliceResourceUtilities.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
     return copyResourceInfo(modelResources, rootInfo);
   }
 
@@ -108,7 +108,7 @@ public class JsonModelIo extends DataSourceIo {
     //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
     ModelResourceInfo toReturn = rootInfo.createShallowCopy();
     for (JointedModelResource modelResource : modelResources) {
-      String visualName = AliceResourceUtilties.getVisualResourceName(modelResource);
+      String visualName = AliceResourceUtilities.getVisualResourceName(modelResource);
       String textureName = getTextureName(modelResource);
       ModelResourceInfo subResource = rootInfo.getSubResource(visualName, textureName);
       ModelResourceInfo newSubResource = subResource.createShallowCopy();
@@ -125,7 +125,7 @@ public class JsonModelIo extends DataSourceIo {
     //Get the ModelResourceInfo from the first resource found.
     //Then get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
     JointedModelResource firstResource = modelResources.iterator().next();
-    ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
+    ModelResourceInfo rootInfo = AliceResourceUtilities.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
     ModelResourceInfo modelInfo = copyResourceInfo(modelResources, rootInfo);
 
@@ -398,7 +398,7 @@ public class JsonModelIo extends DataSourceIo {
     TexturedAppearance[] texturedAppearancesToSave = sv.textures.getValue();
     // Null out the appearance since we save the textures separately
     sv.textures.setValue(new TexturedAppearance[0]);
-    String modelFileName = AliceResourceUtilties.getVisualResourceFileNameFromModelName(modelVariant.structure);
+    String modelFileName = AliceResourceUtilities.getVisualResourceFileNameFromModelName(modelVariant.structure);
     DataSource structureDataSource = createAliceStructureDataSource(resourcePath + "/" + modelFileName, sv);
 
     if (!dataSources.contains(structureDataSource)) {
@@ -410,7 +410,7 @@ public class JsonModelIo extends DataSourceIo {
       structureReference.format = ExportFormat.ALICE.modelExtension;
     }
 
-    String textureName = AliceResourceUtilties.getTextureResourceFileName(modelVariant.structure, modelVariant.textureSet);
+    String textureName = AliceResourceUtilities.getTextureResourceFileName(modelVariant.structure, modelVariant.textureSet);
     DataSource textureDataSource = createAliceTextureDataSource(resourcePath + "/" + textureName, texturedAppearancesToSave);
 
     if (!dataSources.contains(textureDataSource)) {
@@ -547,7 +547,7 @@ public class JsonModelIo extends DataSourceIo {
 
       @Override
       public void write(OutputStream os) throws IOException {
-        AliceResourceUtilties.encodeVisual(sv, os);
+        AliceResourceUtilities.encodeVisual(sv, os);
       }
     };
   }
@@ -561,7 +561,7 @@ public class JsonModelIo extends DataSourceIo {
 
       @Override
       public void write(OutputStream os) throws IOException {
-        AliceResourceUtilties.encodeTexture(textures, os);
+        AliceResourceUtilities.encodeTexture(textures, os);
       }
     };
   }

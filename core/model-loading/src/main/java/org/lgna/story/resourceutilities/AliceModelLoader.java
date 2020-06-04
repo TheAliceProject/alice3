@@ -9,7 +9,7 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.*;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.JointId;
 
 import javax.swing.*;
@@ -219,7 +219,7 @@ public class AliceModelLoader {
     if (textureName.toLowerCase().endsWith("_diffuse")) {
       textureName = textureName.substring(0, textureName.toLowerCase().lastIndexOf("_diffuse"));
     }
-    textureName = AliceResourceUtilties.trimName(textureName);
+    textureName = AliceResourceUtilities.trimName(textureName);
     textureName = textureName.replace(' ', '_');
     while (textureName.contains("__")) {
       textureName = textureName.replace("__", "_");
@@ -229,7 +229,7 @@ public class AliceModelLoader {
 
   public static String getAliceResourceNameForImageFile(String modelResourceName, String textureName) {
     textureName = getAliceTextureName(textureName);
-    return AliceResourceUtilties.getTextureResourceFileName(modelResourceName, textureName);
+    return AliceResourceUtilities.getTextureResourceFileName(modelResourceName, textureName);
   }
 
   private static JPanel showVisual(SkeletonVisual sv, JPanel existingImagePanel) {

@@ -70,7 +70,7 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserConstructor;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 
 import javax.swing.ImageIcon;
@@ -173,7 +173,7 @@ public class IconFactoryManager {
 
     @Override
     protected URL getThumbnailUrl() {
-      return AliceResourceUtilties.getThumbnailURL(enm, getModelResourceName());
+      return AliceResourceUtilities.getThumbnailURL(enm, getModelResourceName());
     }
 
     @Override
@@ -214,7 +214,7 @@ public class IconFactoryManager {
 
     @Override
     protected URL getThumbnailUrl() {
-      return AliceResourceUtilties.getThumbnailURL(cls);
+      return AliceResourceUtilities.getThumbnailURL(cls);
     }
 
     @Override
