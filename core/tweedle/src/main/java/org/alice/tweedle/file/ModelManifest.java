@@ -19,6 +19,28 @@ public class ModelManifest extends Manifest {
   public List<TextureSet> textureSets = new ArrayList<>();
   public List<ModelVariant> models = new ArrayList<>();
 
+  public ModelManifest copyForExport() {
+    ModelManifest copy = new ModelManifest();
+    super.copyForExport(copy);
+    copy.parentClass = parentClass;
+    copy.rootJoints = new ArrayList<>(rootJoints);
+    copy.additionalJoints = new ArrayList<>(additionalJoints);
+    copy.additionalJointArrays = new ArrayList<>(additionalJointArrays);
+    copy.additionalJointArrayIds = new ArrayList<>(additionalJointArrayIds);
+    copy.poses = new ArrayList<>(poses);
+    copy.boundingBox = boundingBox;
+    copy.placeOnGround = placeOnGround;
+    copy.textureSets = new ArrayList<>();
+    for (TextureSet t : textureSets) {
+      copy.textureSets.add(t.copyForExport());
+    }
+    copy.models = new ArrayList<>();
+    for (ModelVariant m : models) {
+      copy.models.add(m.copyForExport(getName()));
+    }
+    return copy;
+  }
+
   public static class BoundingBox {
     public List<Float> min;
     public List<Float> max;
@@ -29,11 +51,29 @@ public class ModelManifest extends Manifest {
     public String structure;
     public String textureSet;
     public String icon;
+
+    public ModelVariant copyForExport(String modelName) {
+      final ModelVariant copy = new ModelVariant();
+      copy.name = modelName.equals(this.name) ? "DEFAULT" : this.name;
+      copy.structure = structure;
+      copy.textureSet = textureSet;
+      copy.icon = icon;
+      return copy;
+    }
   }
 
   public static class TextureSet {
     public String name;
     public Map<Integer, String> idToResourceMap = new HashMap<>();
+
+    TextureSet copyForExport() {
+      final TextureSet copy = new TextureSet();
+      copy.name = name;
+      for (Integer key: idToResourceMap.keySet()) {
+        copy.idToResourceMap.put(key, idToResourceMap.get(key));
+      }
+      return copy;
+    }
   }
 
   public static class Joint {

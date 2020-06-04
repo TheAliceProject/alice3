@@ -57,7 +57,7 @@ import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedImageIconFactory;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.ChildPersonResource;
@@ -246,7 +246,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilties.getBoundingBox(getModelResourceCls());
+    return AliceResourceUtilities.getBoundingBox(getModelResourceCls());
   }
 
   @Override

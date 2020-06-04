@@ -72,7 +72,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.SModel;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 
 import java.awt.Dimension;
 import java.util.List;
@@ -126,7 +126,7 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
       JavaType javaType = type.getFirstEncounteredJavaType();
       Class<?> cls = javaType.getClassReflectionProxy().getReification();
       if (SModel.class.isAssignableFrom(cls)) {
-        initialTransform = AliceResourceUtilties.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
+        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
       } else {
         initialTransform = null;
       }

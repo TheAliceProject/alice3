@@ -89,7 +89,7 @@ import org.lgna.story.SlithererPoseBuilder;
 import org.lgna.story.SwimmerPose;
 import org.lgna.story.SwimmerPoseBuilder;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
 import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.BipedResource;
@@ -761,7 +761,7 @@ public class ModelResourceExporter {
 
   private static Element createSubResourceElement(Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE) {
     Element resourceElement = doc.createElement("Resource");
-    resourceElement.setAttribute("textureName", AliceResourceUtilties.makeEnumName(subResource.getTextureName()));
+    resourceElement.setAttribute("textureName", AliceResourceUtilities.makeEnumName(subResource.getTextureName()));
     resourceElement.setAttribute("resourceName", createResourceEnumName(parentMRE, subResource));
     if (subResource.getModelName() != null) {
       resourceElement.setAttribute("modelName", subResource.getModelName());
@@ -999,11 +999,11 @@ public class ModelResourceExporter {
 
   private static String createResourceEnumName(ModelResourceExporter parentExporter, String modelName, String textureName) {
     if (modelName.equalsIgnoreCase(parentExporter.getClassName())) {
-      return AliceResourceUtilties.makeEnumName(textureName);
-    } else if (modelName.equalsIgnoreCase(textureName) || textureName.equalsIgnoreCase(AliceResourceUtilties.getDefaultTextureEnumName(modelName)) || textureName.equalsIgnoreCase(AliceResourceUtilties.makeEnumName(modelName))) {
-      return AliceResourceUtilties.makeEnumName(modelName);
+      return AliceResourceUtilities.makeEnumName(textureName);
+    } else if (modelName.equalsIgnoreCase(textureName) || textureName.equalsIgnoreCase(AliceResourceUtilities.getDefaultTextureEnumName(modelName)) || textureName.equalsIgnoreCase(AliceResourceUtilities.makeEnumName(modelName))) {
+      return AliceResourceUtilities.makeEnumName(modelName);
     } else {
-      return AliceResourceUtilties.makeEnumName(modelName) + "_" + AliceResourceUtilties.makeEnumName(textureName);
+      return AliceResourceUtilities.makeEnumName(modelName) + "_" + AliceResourceUtilities.makeEnumName(textureName);
     }
   }
 
@@ -1072,7 +1072,7 @@ public class ModelResourceExporter {
   }
 
   private String getAccessorMethodName(String arrayName) {
-    return "get" + AliceResourceUtilties.enumToCamelCase(arrayName);
+    return "get" + AliceResourceUtilities.enumToCamelCase(arrayName);
   }
 
   //If a parent interface has declared an accessor for a given field, return true
@@ -1115,7 +1115,7 @@ public class ModelResourceExporter {
           if (arrayIndex != -1) {
             newName = newName.substring(0, arrayIndex);
           }
-          newName = AliceResourceUtilties.makeEnumName(newName);
+          newName = AliceResourceUtilities.makeEnumName(newName);
           arrayNames.add(newName);
         }
       } else {
@@ -1151,7 +1151,7 @@ public class ModelResourceExporter {
         if (arrayIndex != -1) {
           newName = newName.substring(0, arrayIndex);
         }
-        newName = AliceResourceUtilties.makeEnumName(newName);
+        newName = AliceResourceUtilities.makeEnumName(newName);
         poseNames.add(newName);
       } else {
         System.err.println("FROM " + superClass + ": UNABLE TO CONVERT " + methodName + " INTO POSE NAME.");
@@ -1674,7 +1674,7 @@ public class ModelResourceExporter {
     }
     for (Entry<ModelSubResourceExporter, Image> entry : this.thumbnails.entrySet()) {
       if (!thumbnailsCreated.contains(entry.getKey())) {
-        String thumbnailName = AliceResourceUtilties.getThumbnailResourceFileName(entry.getKey().getModelName(), entry.getKey().getTextureName());
+        String thumbnailName = AliceResourceUtilities.getThumbnailResourceFileName(entry.getKey().getModelName(), entry.getKey().getTextureName());
         File f = saveImageToFile(getThumbnailPath(root, thumbnailName), entry.getValue());
         if (f != null) {
           thumbnailsCreated.add(thumbnailName);
@@ -1686,8 +1686,8 @@ public class ModelResourceExporter {
       System.err.println("NO SUB RESOURCES ON " + this.resourceName);
     }
     ModelSubResourceExporter firstSubResource = this.subResources.get(0);
-    String firstThumbName = AliceResourceUtilties.getThumbnailResourceFileName(firstSubResource.getModelName(), firstSubResource.getTextureName());
-    String classThumbName = AliceResourceUtilties.getThumbnailResourceFileName(this.getClassName(), null);
+    String firstThumbName = AliceResourceUtilities.getThumbnailResourceFileName(firstSubResource.getModelName(), firstSubResource.getTextureName());
+    String classThumbName = AliceResourceUtilities.getThumbnailResourceFileName(this.getClassName(), null);
     File firstThumbFile = new File(getThumbnailPath(root, firstThumbName));
     File classThumbFile = new File(getThumbnailPath(root, classThumbName));
 

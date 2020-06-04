@@ -43,6 +43,7 @@
 package org.lgna.project.ast;
 
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.InstantiableTweedleNode;
 
 /**
  * AstProcessor implementor work through some portion of the code stored in an AST.
@@ -63,6 +64,8 @@ public interface AstProcessor {
   void processClass(CodeOrganizer codeOrganizer, NamedUserType userType);
 
   default void processResourceType(String jointedModelResource) { }
+
+  default void processDynamicResource(String jointedModelResource, String resourceName, InstantiableTweedleNode[] addedJoints) { }
 
   void processConstructor(NamedUserConstructor constructor);
 

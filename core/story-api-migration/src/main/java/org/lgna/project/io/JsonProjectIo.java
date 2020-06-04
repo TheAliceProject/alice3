@@ -56,6 +56,7 @@ import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
@@ -191,6 +192,12 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
+      for (DynamicResource dynamicResource: crawler.dynamicResources) {
+        JsonModelIo modelIo = new JsonModelIo(dynamicResource, JsonModelIo.ExportFormat.COLLADA);
+        entries.addAll(modelIo.createDataSources("models"));
+        entries.add(createEntryForResourceTypes(manifest, dynamicResource));
+        manifest.resources.add(modelIo.createModelReference("models"));
+      }
       entries.add(manifestDataSource(manifest));
       writeDataSources(os, entries);
     }
@@ -223,6 +230,13 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
                         return dataSourceForResource(manifest, resource);
                       })
                       .collect(Collectors.toList());
+    }
+
+    private DataSource createEntryForResourceTypes(Manifest manifest, DynamicResource<?, ?> resource) {
+      String typeName = resource.getModelVariantName() + "Resource";
+      final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
+      manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
+      return createDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private DataSource dataSourceForResource(Manifest manifest, JointedModelResource resource) {

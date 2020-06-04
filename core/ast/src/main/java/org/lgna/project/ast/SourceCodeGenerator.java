@@ -663,7 +663,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
     appendChar('"');
   }
 
-  void appendChar(char c) {
+  protected void appendChar(char c) {
     codeStringBuilder.append(c);
   }
 

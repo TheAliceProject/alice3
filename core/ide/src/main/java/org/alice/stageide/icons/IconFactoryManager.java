@@ -70,7 +70,7 @@ import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserConstructor;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 
 import javax.swing.ImageIcon;
@@ -127,39 +127,34 @@ public class IconFactoryManager {
 
     protected abstract String getModelResourceName();
 
+    protected abstract URL getThumbnailUrl();
+
     @Override
     public final IconFactory createIconFactory() {
       Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
       String modelResourceName = this.getModelResourceName();
-      if (modelResourceName != null) {
-        //pass
-      } else {
-        if (getSetOfClassesWithIcons().contains(modelResourceCls)) {
-          ImageIcon smallIcon = getIcon(modelResourceCls, true);
-          ImageIcon largeIcon = getIcon(modelResourceCls, false);
-          return new MultipleSourceImageIconFactory(1, smallIcon, largeIcon);
-          //return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
-        }
+      if (modelResourceName == null && getSetOfClassesWithIcons().contains(modelResourceCls)) {
+        ImageIcon smallIcon = getIcon(modelResourceCls, true);
+        ImageIcon largeIcon = getIcon(modelResourceCls, false);
+        return new MultipleSourceImageIconFactory(1, smallIcon, largeIcon);
       }
-      URL url;
-      if (modelResourceCls != null) {
-        url = AliceResourceUtilties.getThumbnailURL(modelResourceCls, modelResourceName);
-      } else {
-        url = null;
-      }
+      return createIconFactoryFromUrl(modelResourceCls != null ? getThumbnailUrl() : null);
+    }
+
+    private IconFactory createIconFactoryFromUrl(URL url) {
       if (url != null) {
         return new TrimmedImageIconFactory(url, 160, 120);
       } else {
-        Logger.severe(this, this.getClass(), modelResourceCls, modelResourceName);
+        Logger.severe(this, this.getClass(), getModelResourceClass(), getModelResourceName());
         return EmptyIconFactory.getInstance();
       }
     }
   }
 
   private static final class ResourceEnumConstant extends UrlResourceDeclaration {
-    private final Enum<? extends ModelResource> enm;
+    private final ModelResource enm;
 
-    public ResourceEnumConstant(Enum<? extends ModelResource> enm) {
+    public ResourceEnumConstant(ModelResource enm) {
       assert enm != null;
       this.enm = enm;
     }
@@ -167,12 +162,18 @@ public class IconFactoryManager {
     @Override
     protected Class<? extends ModelResource> getModelResourceClass() {
       //todo?
-      return (Class<? extends ModelResource>) this.enm.getClass();
+      return enm.getClass();
     }
 
     @Override
     protected String getModelResourceName() {
-      return this.enm.name();
+      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) enm;
+      return e.name();
+    }
+
+    @Override
+    protected URL getThumbnailUrl() {
+      return AliceResourceUtilities.getThumbnailURL(enm, getModelResourceName());
     }
 
     @Override
@@ -209,6 +210,11 @@ public class IconFactoryManager {
     @Override
     protected String getModelResourceName() {
       return null;
+    }
+
+    @Override
+    protected URL getThumbnailUrl() {
+      return AliceResourceUtilities.getThumbnailURL(cls);
     }
 
     @Override
@@ -300,10 +306,9 @@ public class IconFactoryManager {
         try {
           Object o = fld.get(null);
           if (o != null) {
-            if (o instanceof ModelResource) {
+            if (o instanceof JointedModelResource) {
               if (o.getClass().isEnum()) {
-                Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) o;
-                return new ResourceEnumConstant(e);
+                return new ResourceEnumConstant((JointedModelResource) o);
               }
             }
           }
@@ -348,9 +353,7 @@ public class IconFactoryManager {
   public static IconFactory getIconFactoryForResourceCls(Class<? extends ModelResource> cls) {
     ResourceType resourceType = new ResourceType(cls);
     IconFactory iconFactory = mapResourceDeclarationToIconFactory.get(resourceType);
-    if (iconFactory != null) {
-      //pass
-    } else {
+    if (iconFactory == null) {
       iconFactory = resourceType.createIconFactory();
       mapResourceDeclarationToIconFactory.put(resourceType, iconFactory);
     }
@@ -359,9 +362,7 @@ public class IconFactoryManager {
 
   public static IconFactory getIconFactoryForModelStructure(ModelStructure modelStructure) {
     IconFactory iconFactory = mapModelStructureToIconFactory.get(modelStructure);
-    if (iconFactory != null) {
-      //pass
-    } else {
+    if (iconFactory == null) {
       URL url = null;
       try {
         url = modelStructure.getIconURI().toURL();
@@ -381,20 +382,16 @@ public class IconFactoryManager {
   public static IconFactory getIconFactoryForResourceInstance(ModelResource modelResource) {
     ResourceDeclaration resourceDeclaration;
     if (modelResource.getClass().isEnum()) {
-      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) modelResource;
-      resourceDeclaration = new ResourceEnumConstant(e);
+      resourceDeclaration = new ResourceEnumConstant(modelResource);
     } else {
       resourceDeclaration = new ResourceInstance(modelResource);
     }
-    IconFactory iconFactory = getIconFactoryForResourceDeclaration(resourceDeclaration);
-    return iconFactory;
+    return getIconFactoryForResourceDeclaration(resourceDeclaration);
   }
 
   private static IconFactory getIconFactoryForResourceDeclaration(ResourceDeclaration resourceDeclaration) {
     IconFactory iconFactory = mapResourceDeclarationToIconFactory.get(resourceDeclaration);
-    if (iconFactory != null) {
-      //pass
-    } else {
+    if (iconFactory == null) {
       iconFactory = resourceDeclaration.createIconFactory();
       mapResourceDeclarationToIconFactory.put(resourceDeclaration, iconFactory);
     }
@@ -460,9 +457,7 @@ public class IconFactoryManager {
 
   public static IconFactory getIconFactoryForCameraMarker(Color color) {
     IconFactory rv = mapColorToCameraMarkerIconFactory.get(color);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       ImageIcon imageIcon = MarkerUtilities.getCameraMarkIconForColor(color); //todo
       rv = new ImageIconFactory(imageIcon);
       mapColorToCameraMarkerIconFactory.put(color, rv);
@@ -472,9 +467,7 @@ public class IconFactoryManager {
 
   public static IconFactory getIconFactoryForObjectMarker(Color color) {
     IconFactory rv = mapColorToObjectMarkerIconFactory.get(color);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       ImageIcon imageIcon = MarkerUtilities.getObjectMarkIconForColor(color);
       //todo
       rv = new ImageIconFactory(imageIcon);

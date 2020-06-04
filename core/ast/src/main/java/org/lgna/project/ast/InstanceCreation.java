@@ -68,9 +68,6 @@ public final class InstanceCreation extends Expression implements ArgumentOwner,
     }
   }
 
-  //  public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
-  //    this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
-  //  }
   @Override
   public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
     return this.constructor;
@@ -127,5 +124,32 @@ public final class InstanceCreation extends Expression implements ArgumentOwner,
     AbstractType<?, ?, ?> fallbackType = getParent() instanceof AbstractField ? ((AbstractField) getParent()).getValueType() : null;
     Object[] arguments = virtualMachine.evaluateArguments(constructor.getValue(), requiredArguments, variableArguments, keyedArguments);
     return constructor.getValue().evaluate(virtualMachine, fallbackType, arguments);
+  }
+
+  // DynamicResource subclasses use constructors that looks like this:
+  //   public DynamicBipedResource(String modelName, String resourceName)
+  // This InstanceCreation looks like this:
+  //   AstUtilities.createInstanceCreation(
+  //     DynamicBipedResource.class,
+  //     new Class<?>[] {String.class,String.class},
+  //     new StringLiteral(dynamicResource.getModelClassName()),
+  //     new StringLiteral(dynamicResource.getModelVariantName()));
+  public Object instantiateDynamicResource() {
+    if (constructor.getValue() instanceof JavaConstructor) {
+      JavaConstructor instanceConstructor = (JavaConstructor) constructor.getValue();
+      Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
+      int index = 0;
+      for (SimpleArgument argument : requiredArguments.getValue()) {
+        if (argument.expression.getValue() instanceof StringLiteral) {
+          StringLiteral literal = (StringLiteral) argument.expression.getValue();
+          String argumentValue = literal.getValueProperty().getValue();
+          constructorArguments[index++] = argumentValue;
+        } else {
+          return null;
+        }
+      }
+      return instanceConstructor.evaluate(null, null, constructorArguments);
+    }
+    return null;
   }
 }

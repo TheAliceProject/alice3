@@ -60,7 +60,7 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.JComponent;
@@ -96,17 +96,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
   @Override
   public String getInternalText() {
-    return AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), null);
+    return AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), null);
   }
 
   @Override
   public String getSearchText() {
-    return AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
   }
 
   @Override
   public String getLocalizedDisplayText() {
-    String simpleName = AliceResourceUtilties.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    String simpleName = AliceResourceUtilities.getModelClassName(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
     String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
     Formatter formatter = FormatterState.getInstance().getValue();
@@ -145,17 +145,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
   @Override
   public String[] getTags() {
-    return AliceResourceUtilties.getTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
   }
 
   @Override
   public String[] getGroupTags() {
-    return AliceResourceUtilties.getGroupTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getGroupTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
   }
 
   @Override
   public String[] getThemeTags() {
-    return AliceResourceUtilties.getThemeTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getThemeTags(enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale());
   }
 
   @Override
@@ -171,12 +171,12 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilties.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name());
+    return AliceResourceUtilities.getBoundingBox(enumConstant.getDeclaringClass(), enumConstant.name());
   }
 
   @Override
   public boolean getPlaceOnGround() {
-    return AliceResourceUtilties.getPlaceOnGround(enumConstant.getDeclaringClass(), enumConstant.name());
+    return AliceResourceUtilities.getPlaceOnGround(enumConstant.getDeclaringClass(), enumConstant.name());
   }
 
   @Override

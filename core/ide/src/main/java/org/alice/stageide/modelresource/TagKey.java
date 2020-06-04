@@ -48,7 +48,7 @@ import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 
 import javax.swing.JComponent;
 import java.util.Set;
@@ -83,7 +83,7 @@ public abstract class TagKey extends ResourceKey {
 
   @Override
   public String getLocalizedDisplayText() {
-    return AliceResourceUtilties.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getLocalizedTag(getInternalText(), JComponent.getDefaultLocale());
   }
 
   @Override
