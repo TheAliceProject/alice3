@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation.alice;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,8 +52,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import javax.imageio.ImageIO;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -74,7 +71,6 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
-import org.alice.tweedle.file.ModelManifest;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -98,8 +94,7 @@ public class AliceResourceUtilties {
   private static final Map<URL, SkeletonVisual> urlToVisualMap = Maps.newHashMap();
   private static final Map<URL, TexturedAppearance[]> urlToTextureMap = Maps.newHashMap();
   private static final Map<String, ModelResourceInfo> classToInfoMap = Maps.newHashMap();
-  private static final Map<String, ModelManifest> modelNameToManifestMap = Maps.newHashMap();
-  private static final Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = Maps.newHashMap();
+  private static final Map<String, ResourceNames> resourceIdentifierToResourceNamesMap = Maps.newHashMap();
 
   private static final class ResourceNames {
     public final String visualName;
@@ -109,42 +104,6 @@ public class AliceResourceUtilties {
       this.visualName = visualName;
       this.textureName = textureName;
     }
-  }
-
-  private static final class ResourceIdentifier {
-    public final Class<?> resourceClass;
-    public final String resourceName;
-
-    private final String key;
-
-    public ResourceIdentifier(Class<?> resourceClass, String resourceName) {
-      this.resourceClass = resourceClass;
-      this.resourceName = resourceName;
-      this.key = this.resourceClass.getName() + this.resourceName;
-    }
-
-    @Override
-    public boolean equals(Object arg0) {
-      if ((arg0 != null) && (arg0 instanceof ResourceIdentifier)) {
-        return this.key.equals(((ResourceIdentifier) arg0).key);
-      }
-      return false;
-    }
-
-    @Override
-    public int hashCode() {
-      return this.key.hashCode();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder();
-      sb.append("ResourceIdentifier[");
-      sb.append(this.key);
-      sb.append("]");
-      return sb.toString();
-    }
-
   }
 
   /*private*/
@@ -312,22 +271,6 @@ public class AliceResourceUtilties {
     return key.replace(' ', '_');
   }
 
-  public static String arrayToCamelCase(String[] nameArray, int start, int end) {
-    StringBuilder sb = new StringBuilder();
-    boolean isFirst = true;
-    for (int i = start; i < end; i++) {
-      if (nameArray[i].length() > 0) {
-        if (isFirst) {
-          sb.append(nameArray[i].toLowerCase());
-          isFirst = false;
-        } else {
-          sb.append(nameArray[i].substring(0, 1).toUpperCase() + nameArray[i].substring(1).toLowerCase());
-        }
-      }
-    }
-    return sb.toString();
-  }
-
   public static String arrayToEnum(String[] nameArray, int start, int end) {
     StringBuilder sb = new StringBuilder();
     boolean isFirst = true;
@@ -345,9 +288,9 @@ public class AliceResourceUtilties {
   }
 
   //Check to see if a thumbnail exists for the given visual name and texture name
-  private static boolean checkVisualAndTextureName(Class<?> resourceClass, String visualName, String textureName) {
-    String thubmnailFileName = getThumbnailResourceFileName(visualName, textureName);
-    return getThumbnailURLInternalFromFilename(resourceClass, thubmnailFileName) != null;
+  private static boolean checkVisualAndTextureName(ModelResource resource, String visualName, String textureName) {
+    String thumbnailFileName = getThumbnailResourceFileName(visualName, textureName);
+    return getThumbnailURLInternalFromFilename(resource, thumbnailFileName) != null;
   }
 
   /**
@@ -365,19 +308,19 @@ public class AliceResourceUtilties {
    * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
    **/
 
-  private static void findAndStoreResourceNames(Class<?> resourceClass, String resourceName) {
+  private static void findAndStoreResourceNames(ModelResource resource, String resourceName) {
     String[] splitName = resourceName.split("_");
     StringBuilder modelName = new StringBuilder();
     //Set up to try the simple approach first (that the visual is the class name and the texture is the resource name)
-    String visualName = AliceResourceClassUtilities.getAliceClassName(resourceClass.getSimpleName());
+    String visualName = AliceResourceClassUtilities.getAliceClassName(resource.getClass().getSimpleName());
     String textureName = resourceName;
 
     //Check the simple case (visual name is class name and texture name is resource name) and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
     //Use that as the visual name and the remaining name as the texture name
     boolean found = false;
-    if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
+    if (checkVisualAndTextureName(resource, visualName, textureName)) {
       found = true;
-    } else if (checkVisualAndTextureName(resourceClass, enumToCamelCase(resourceName), "")) {
+    } else if (checkVisualAndTextureName(resource, enumToCamelCase(resourceName), "")) {
       //Try using the resourceName as the visual name and assume no specified texture
       visualName = enumToCamelCase(resourceName);
       textureName = "";
@@ -391,8 +334,8 @@ public class AliceResourceUtilties {
           modelName.append(splitName[i]);
           visualName = enumToCamelCase(modelName.toString());
           textureName = arrayToEnum(splitName, i + 1, splitName.length);
-          if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
-            checkVisualAndTextureName(resourceClass, visualName, textureName);
+          if (checkVisualAndTextureName(resource, visualName, textureName)) {
+            checkVisualAndTextureName(resource, visualName, textureName);
             found = true;
             break;
           }
@@ -400,7 +343,7 @@ public class AliceResourceUtilties {
       }
     }
     if (!found) {
-      Logger.severe("Failed to find resource names for '" + resourceClass + "' and '" + resourceName + "'");
+      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       modelName = new StringBuilder();
       for (int i = 0; i < splitName.length; i++) {
         if (splitName[i].length() > 0) {
@@ -410,7 +353,7 @@ public class AliceResourceUtilties {
           modelName.append(splitName[i]);
           visualName = enumToCamelCase(modelName.toString());
           textureName = arrayToEnum(splitName, i + 1, splitName.length);
-          if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
+          if (checkVisualAndTextureName(resource, visualName, textureName)) {
             found = true;
             break;
           }
@@ -418,90 +361,85 @@ public class AliceResourceUtilties {
       }
       return;
     }
-    ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+    String identifier = resource.identifierFor(resourceName);
     resourceIdentifierToResourceNamesMap.put(identifier, new ResourceNames(visualName, textureName));
   }
 
-  public static String getModelNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+  public static String getModelNameFromClassAndResource(ModelResource resource, String resourceName) {
     //If we're just using the class as a lookup, return the class name directly
     if (resourceName == null) {
-      return AliceResourceClassUtilities.getAliceClassName(resourceClass);
+      return getName(resource.getClass());
     }
-    ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+    String identifier = resource.identifierFor(resourceName);
     if (!resourceIdentifierToResourceNamesMap.containsKey(identifier)) {
-      findAndStoreResourceNames(resourceClass, resourceName);
+      findAndStoreResourceNames(resource, resourceName);
     }
     if (resourceIdentifierToResourceNamesMap.get(identifier) != null) {
       return resourceIdentifierToResourceNamesMap.get(identifier).visualName;
     } else {
-      Logger.severe("Failed to find resource names for '" + resourceClass + "' and '" + resourceName + "'");
+      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       return null;
     }
   }
 
-  public static String getTextureNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+  public static String getTextureNameFromClassAndResource(ModelResource resource, String resourceName) {
     //If we're just using the class as a lookup, return null since the class name only distinguishes visuals
     if (resourceName == null) {
       return null;
     }
-    ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+    String identifier = resource.identifierFor(resourceName);
     if (!resourceIdentifierToResourceNamesMap.containsKey(identifier)) {
-      findAndStoreResourceNames(resourceClass, resourceName);
+      findAndStoreResourceNames(resource, resourceName);
     }
     ResourceNames resourceNames = resourceIdentifierToResourceNamesMap.get(identifier);
     if (resourceNames != null) {
       return resourceNames.textureName;
     } else {
-      Logger.severe(resourceClass, resourceName, identifier);
+      Logger.severe(resource, resourceName, identifier);
       return null;
     }
   }
 
-  public static String getTextureResourceFileName(Class<?> resourceClass, String resourceName) {
-    String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
-    String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
+  public static String getTextureResourceFileName(ModelResource resource, String resourceName) {
+    String modelName = getModelNameFromClassAndResource(resource, resourceName);
+    String textureName = getTextureNameFromClassAndResource(resource, resourceName);
     return getTextureResourceFileName(modelName, textureName);
   }
 
-  public static String getTextureResourceFileName(JointedModelResource resource) {
-    return getTextureResourceFileName(resource.getClass(), resource.toString());
+  public static String getTextureResourceFileName(ModelResource resource) {
+    return getTextureResourceFileName(resource, resource.toString());
   }
 
-  public static String getVisualResourceFileName(Class<?> resourceClass, String resourceName) {
-    String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
+  public static String getVisualResourceFileName(ModelResource resource, String resourceName) {
+    String modelName = getModelNameFromClassAndResource(resource, resourceName);
     return getVisualResourceFileNameFromModelName(modelName);
   }
 
-  public static String getVisualResourceName(JointedModelResource resource) {
-    return getModelNameFromClassAndResource(resource.getClass(), resource.toString());
+  public static String getVisualResourceName(ModelResource resource) {
+    return getModelNameFromClassAndResource(resource, resource.toString());
   }
 
-  public static String getTextureResourceName(JointedModelResource resource) {
-    return getTextureNameFromClassAndResource(resource.getClass(), resource.toString());
+  public static String getTextureResourceName(ModelResource resource) {
+    return getTextureNameFromClassAndResource(resource, resource.toString());
   }
 
-  private static String getVisualResourceFileName(JointedModelResource resource) {
-    return getVisualResourceFileName(resource.getClass(), resource.toString());
+  private static String getVisualResourceFileName(ModelResource resource) {
+    return getVisualResourceFileName(resource, resource.toString());
   }
 
-  public static String getThumbnailResourceFileName(Class<?> resourceClass, String resourceName) {
-    String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
-    String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
+  public static String getThumbnailResourceFileName(ModelResource resource, String resourceName) {
+    String modelName = getModelNameFromClassAndResource(resource, resourceName);
+    String textureName = getTextureNameFromClassAndResource(resource, resourceName);
     if (modelName != null) {
       return getThumbnailResourceFileName(modelName, textureName);
     } else {
-      Logger.severe(resourceClass, resourceName, modelName, textureName);
+      Logger.severe(resource, resourceName, modelName, textureName);
       return null;
     }
-  }
-
-  public static String getThumbnailResourceFileName(JointedModelResource resource) {
-    return getThumbnailResourceFileName(resource.getClass(), resource.toString());
   }
 
   public static String getDefaultTextureEnumName(String resourceName) {
     return "DEFAULT";
-    //    return AliceResourceUtilties.makeEnumName( resourceName );
   }
 
   private static String createTextureBaseName(String modelName, String textureName) {
@@ -510,7 +448,9 @@ public class AliceResourceUtilties {
     }
     if (textureName == null) {
       textureName = "_cls";
-    } else if (textureName.equalsIgnoreCase(getDefaultTextureEnumName(modelName)) || modelName.equalsIgnoreCase(enumToCamelCase(textureName)) || textureName.equalsIgnoreCase(AliceResourceUtilties.makeEnumName(modelName))) {
+    } else if (textureName.equalsIgnoreCase(getDefaultTextureEnumName(modelName)) ||
+        modelName.equalsIgnoreCase(enumToCamelCase(textureName)) ||
+        textureName.equalsIgnoreCase(makeEnumName(modelName))) {
       textureName = "";
     } else if (textureName.length() > 0) {
       textureName = "_" + makeEnumName(textureName);
@@ -522,12 +462,8 @@ public class AliceResourceUtilties {
     return createTextureBaseName(modelName, textureName) + ".png";
   }
 
-  public static String getTextureResourceFileName(String modelName, String textureName, String extension) {
-    return createTextureBaseName(modelName, textureName) + "." + extension;
-  }
-
   public static String getTextureResourceFileName(String modelName, String textureName) {
-    return getTextureResourceFileName(modelName, textureName, TEXTURE_RESOURCE_EXTENSION);
+    return createTextureBaseName(modelName, textureName) + "." + TEXTURE_RESOURCE_EXTENSION;
   }
 
   public static String getVisualResourceFileNameFromModelName(String modelName, String extension) {
@@ -538,17 +474,16 @@ public class AliceResourceUtilties {
     return getVisualResourceFileNameFromModelName(modelName, MODEL_RESOURCE_EXTENSION);
   }
 
-  /*private*/
-  protected static URL getThumbnailURLInternal(Class<?> modelResource, String resourceName) {
-    String thumbnailName = getThumbnailResourceFileName(modelResource, resourceName);
-    return getThumbnailURLInternalFromFilename(modelResource, thumbnailName);
+  private static URL getThumbnailURLInternalFromFilename(ModelResource modelResource, String thumbnailFilename) {
+    return getAliceResource(modelResource.getClass(),
+                            getResourceSubDirWithSeparator(modelResource.getClass()) + thumbnailFilename);
   }
 
-  private static URL getThumbnailURLInternalFromFilename(Class<?> modelResource, String thumbnailFilename) {
-    return getAliceResource(modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator(modelResource.getSimpleName()) + thumbnailFilename);
+  private static String getResourceSubDirWithSeparator(Class<?> resource) {
+    return ModelResourceIoUtilities.getResourceSubDirWithSeparator(resource.getSimpleName());
   }
 
-  public static URL getTextureURL(JointedModelResource resource) {
+  public static URL getTextureURL(ModelResource resource) {
     if (resource instanceof DynamicResource) {
       try {
         return ((DynamicResource) resource).getTextureURI().toURL();
@@ -557,18 +492,14 @@ public class AliceResourceUtilties {
         return null;
       }
     }
-    return getTextureURL(resource.getClass(), getTextureResourceFileName(resource));
+    return getUrl(resource, getTextureResourceFileName(resource));
   }
 
-  public static URL getTextureURL(Class<?> resourceClass, String visualResourceFileName) {
-    return getAliceResource(resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator(resourceClass.getSimpleName()) + visualResourceFileName);
+  public static URL getUrl(ModelResource resource, String visualResourceFileName) {
+    return getAliceResource(resource.getClass(), getResourceSubDirWithSeparator(resource.getClass()) + visualResourceFileName);
   }
 
-  public static URL getVisualURL(Class<?> resourceClass, String visualResourceFileName) {
-    return getAliceResource(resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator(resourceClass.getSimpleName()) + visualResourceFileName);
-  }
-
-  private static URL getVisualURL(JointedModelResource resource) {
+  private static URL getVisualURL(ModelResource resource) {
     if (resource instanceof DynamicResource) {
       try {
         return ((DynamicResource) resource).getVisualURI().toURL();
@@ -577,10 +508,10 @@ public class AliceResourceUtilties {
         return null;
       }
     }
-    return getVisualURL(resource.getClass(), getVisualResourceFileName(resource));
+    return getUrl(resource, getVisualResourceFileName(resource));
   }
 
-  public static SkeletonVisual getVisual(JointedModelResource resource) {
+  public static SkeletonVisual getVisual(ModelResource resource) {
     URL resourceURL = getVisualURL(resource);
     if (urlToVisualMap.containsKey(resourceURL)) {
       return urlToVisualMap.get(resourceURL);
@@ -598,12 +529,12 @@ public class AliceResourceUtilties {
     }
   }
 
-  public static SkeletonVisual getVisualCopy(JointedModelResource resource) {
+  public static SkeletonVisual getVisualCopy(ModelResource resource) {
     SkeletonVisual original = getVisual(resource);
     return createCopy(original);
   }
 
-  public static TexturedAppearance[] getTexturedAppearances(JointedModelResource resource) {
+  public static TexturedAppearance[] getTexturedAppearances(ModelResource resource) {
     URL resourceURL = getTextureURL(resource);
     if (urlToTextureMap.containsKey(resourceURL)) {
       return urlToTextureMap.get(resourceURL);
@@ -658,7 +589,7 @@ public class AliceResourceUtilties {
     return rv;
   }
 
-  public static SkeletonVisual createReplaceVisualElements(SkeletonVisual sgOriginal, JointedModelResource resource) {
+  public static SkeletonVisual createReplaceVisualElements(SkeletonVisual sgOriginal, ModelResource resource) {
     SkeletonVisual sgToReplaceWith = getVisual(resource);
     Geometry[] sgGeometries = sgToReplaceWith.geometries.getValue();
     WeightedMesh[] sgWeightedMeshes = sgToReplaceWith.weightedMeshes.getValue();
@@ -686,14 +617,14 @@ public class AliceResourceUtilties {
     return sgOriginal;
   }
 
-  public static AffineMatrix4x4 getOriginalJointTransformation(JointedModelResource resource, JointId jointId) {
+  public static AffineMatrix4x4 getOriginalJointTransformation(ModelResource resource, JointId jointId) {
     SkeletonVisual sgOriginal = getVisual(resource);
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     Joint sgJoint = sgSkeletonRoot.getJoint(jointId.toString());
     return sgJoint.getLocalTransformation();
   }
 
-  public static UnitQuaternion getOriginalJointOrientation(JointedModelResource resource, JointId jointId) {
+  public static UnitQuaternion getOriginalJointOrientation(ModelResource resource, JointId jointId) {
     SkeletonVisual sgOriginal = getVisual(resource);
     Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
     Joint sgJoint = sgSkeletonRoot.getJoint(jointId.toString());
@@ -718,38 +649,17 @@ public class AliceResourceUtilties {
     return name;
   }
 
-  /*private*/
-  protected static BufferedImage getThumbnailInternal(Class<?> modelResource, String resourceName) {
-    URL resourceURL = getThumbnailURLInternal(modelResource, resourceName);
-    if (resourceURL == null) {
-      Logger.warning("Cannot load thumbnail for", modelResource, resourceName);
-      resourceURL = getThumbnailURLInternal(modelResource, resourceName);
-    }
-    if (resourceURL != null) {
-      try {
-        return ImageIO.read(resourceURL);
-      } catch (Throwable t) {
-        t.printStackTrace();
-        return null;
-      }
-    } else {
-      return null;
-    }
+  public static URL getThumbnailURL(ModelResource modelResource, String instanceName) {
+    String thumbnailName = getThumbnailResourceFileName(modelResource, instanceName);
+    return getThumbnailURLInternalFromFilename(modelResource, thumbnailName);
   }
 
-  public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName) {
-    return getThumbnailInternal(modelResource, instanceName);
+  public static URL getThumbnailURL(Class<?> modelResource) {
+    String thumbnailFilename =  getThumbnailResourceFileName(getName(modelResource), null);
+    return getAliceResource(modelResource, getResourceSubDirWithSeparator(modelResource) + thumbnailFilename);
   }
 
-  public static BufferedImage getThumbnail(Class<?> modelResource) {
-    return getThumbnailInternal(modelResource, null);
-  }
-
-  public static URL getThumbnailURL(Class<?> modelResource, String instanceName) {
-    return getThumbnailURLInternal(modelResource, instanceName);
-  }
-
-  /*private*/
+    /*private*/
   protected static String getKey(Class<?> modelResource, String resourceName) {
     if (resourceName != null) {
       return modelResource.getName() + resourceName;

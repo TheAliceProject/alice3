@@ -42,10 +42,21 @@
  *******************************************************************************/
 package org.lgna.story.resources;
 
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
+import java.net.URL;
+
 /**
  * @author dculyba
  *
  */
 public interface ModelResource {
+  default String identifierFor(String variant) {
+    return getClass().getName() + variant;
+  }
+
+  default URL getThumbnailUrl(String variant) {
+    return AliceResourceUtilties.getThumbnailURL(this, variant);
+  }
 
 }

@@ -127,6 +127,8 @@ public class IconFactoryManager {
 
     protected abstract String getModelResourceName();
 
+    protected abstract URL getThumbnailUrl();
+
     @Override
     public final IconFactory createIconFactory() {
       Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
@@ -136,25 +138,23 @@ public class IconFactoryManager {
         ImageIcon largeIcon = getIcon(modelResourceCls, false);
         return new MultipleSourceImageIconFactory(1, smallIcon, largeIcon);
       }
-      URL url;
-      if (modelResourceCls != null) {
-        url = AliceResourceUtilties.getThumbnailURL(modelResourceCls, modelResourceName);
-      } else {
-        url = null;
-      }
+      return createIconFactoryFromUrl(modelResourceCls != null ? getThumbnailUrl() : null);
+    }
+
+    private IconFactory createIconFactoryFromUrl(URL url) {
       if (url != null) {
         return new TrimmedImageIconFactory(url, 160, 120);
       } else {
-        Logger.severe(this, this.getClass(), modelResourceCls, modelResourceName);
+        Logger.severe(this, this.getClass(), getModelResourceClass(), getModelResourceName());
         return EmptyIconFactory.getInstance();
       }
     }
   }
 
   private static final class ResourceEnumConstant extends UrlResourceDeclaration {
-    private final Enum<? extends ModelResource> enm;
+    private final ModelResource enm;
 
-    public ResourceEnumConstant(Enum<? extends ModelResource> enm) {
+    public ResourceEnumConstant(ModelResource enm) {
       assert enm != null;
       this.enm = enm;
     }
@@ -162,12 +162,18 @@ public class IconFactoryManager {
     @Override
     protected Class<? extends ModelResource> getModelResourceClass() {
       //todo?
-      return (Class<? extends ModelResource>) this.enm.getClass();
+      return enm.getClass();
     }
 
     @Override
     protected String getModelResourceName() {
-      return this.enm.name();
+      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) enm;
+      return e.name();
+    }
+
+    @Override
+    protected URL getThumbnailUrl() {
+      return AliceResourceUtilties.getThumbnailURL(enm, getModelResourceName());
     }
 
     @Override
@@ -204,6 +210,11 @@ public class IconFactoryManager {
     @Override
     protected String getModelResourceName() {
       return null;
+    }
+
+    @Override
+    protected URL getThumbnailUrl() {
+      return AliceResourceUtilties.getThumbnailURL(cls);
     }
 
     @Override
@@ -295,10 +306,9 @@ public class IconFactoryManager {
         try {
           Object o = fld.get(null);
           if (o != null) {
-            if (o instanceof ModelResource) {
+            if (o instanceof JointedModelResource) {
               if (o.getClass().isEnum()) {
-                Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) o;
-                return new ResourceEnumConstant(e);
+                return new ResourceEnumConstant((JointedModelResource) o);
               }
             }
           }
@@ -372,13 +382,11 @@ public class IconFactoryManager {
   public static IconFactory getIconFactoryForResourceInstance(ModelResource modelResource) {
     ResourceDeclaration resourceDeclaration;
     if (modelResource.getClass().isEnum()) {
-      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) modelResource;
-      resourceDeclaration = new ResourceEnumConstant(e);
+      resourceDeclaration = new ResourceEnumConstant(modelResource);
     } else {
       resourceDeclaration = new ResourceInstance(modelResource);
     }
-    IconFactory iconFactory = getIconFactoryForResourceDeclaration(resourceDeclaration);
-    return iconFactory;
+    return getIconFactoryForResourceDeclaration(resourceDeclaration);
   }
 
   private static IconFactory getIconFactoryForResourceDeclaration(ResourceDeclaration resourceDeclaration) {

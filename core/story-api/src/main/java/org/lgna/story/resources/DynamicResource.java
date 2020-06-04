@@ -72,6 +72,21 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     initialize();
   }
 
+   @Override
+   public String identifierFor(String resourceName) {
+    return resourceName;
+  }
+
+  @Override
+  public URL getThumbnailUrl(String variant) {
+    try {
+      return getIconURI().toURL();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   private void initialize() {
     this.tags = modelManifest.description.tags.toArray(new String[modelManifest.description.tags.size()]);
     this.groupTags = modelManifest.description.groupTags.toArray(new String[modelManifest.description.groupTags.size()]);
