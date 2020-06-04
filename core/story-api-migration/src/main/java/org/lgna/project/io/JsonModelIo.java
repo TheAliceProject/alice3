@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.*;
 
 public class JsonModelIo extends DataSourceIo {
@@ -39,6 +40,7 @@ public class JsonModelIo extends DataSourceIo {
   private List<SkeletonVisual> skeletonVisuals;
   private List<BufferedImage> thumbnails;
   private final ExportFormat exportFormat;
+  private final Map<String, String> renamedJoints = new HashMap<>();
 
   public enum ExportFormat {
     COLLADA("dae", "png"), ALICE("a3r", "a3t");
@@ -68,8 +70,19 @@ public class JsonModelIo extends DataSourceIo {
 
   JsonModelIo(Set<JointedModelResource> modelResources, ExportFormat exportFormat) {
     this(exportFormat);
-    this.modelManifest = createModelManifest(modelResources);
+    this.modelManifest = createModelManifestFromEnums(modelResources);
     this.modelResources = modelResources;
+  }
+
+  JsonModelIo(DynamicResource<?, ?> dynamicResource, ExportFormat exportFormat) {
+    this(exportFormat);
+    this.modelResources = Collections.singleton(dynamicResource);
+    this.modelManifest = dynamicResource.getModelManifest().copyForExport();
+    modelManifest.additionalJoints
+        .stream()
+        .map(joint -> joint.name)
+        .filter(name -> !"root".equalsIgnoreCase(name))
+        .forEach(name -> renamedJoints.put(name, "u_" + name));
   }
 
   //AliceResourcesUtilities.getTextureResourceName returns null for resources that use "default" texture names
@@ -105,7 +118,7 @@ public class JsonModelIo extends DataSourceIo {
   }
 
   //Build a new ModelResourceInfo that includes only the resources in the modelResources list
-  private static ModelManifest createModelManifest(Set<JointedModelResource> modelResources) {
+  private static ModelManifest createModelManifestFromEnums(Set<JointedModelResource> modelResources) {
     if (modelResources == null || modelResources.isEmpty()) {
       return null;
     }
@@ -260,6 +273,9 @@ public class JsonModelIo extends DataSourceIo {
 
   private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
     if (modelResources != null) {
+      if ("DEFAULT".equals(modelVariant.name) && modelResources.size() == 1) {
+        return modelResources.iterator().next();
+      }
       for (JointedModelResource resource : modelResources) {
         if (modelVariant.name.equals(resource.toString())) {
           return resource;
@@ -286,7 +302,7 @@ public class JsonModelIo extends DataSourceIo {
       }
       Logger.warning("Could not find matching visual for " + modelVariant.structure + ". Returning first skeleton visual in list.");
       return skeletonVisuals.get(0);
-    } else if (modelResources != null) {
+    } else {
       JointedModelResource modelResource = getResourceForVariant(modelVariant);
       if (modelResource == null) {
         return null;
@@ -294,7 +310,6 @@ public class JsonModelIo extends DataSourceIo {
       final JointedModelImp.JointImplementationAndVisualDataFactory<JointedModelResource> factory = modelResource.getImplementationAndVisualFactory();
       return getSkeletonVisual(factory.createVisualData(), modelResource);
     }
-    return null;
   }
 
   protected SkeletonVisual getSkeletonVisual(JointedModelImp.VisualData<JointedModelResource> v, JointedModelResource modelResource) {
@@ -345,10 +360,22 @@ public class JsonModelIo extends DataSourceIo {
   }
 
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
-    if (modelResources != null) {
-      JointedModelResource modelResource = getResourceForVariant(modelVariant);
-      if (modelResource != null && !modelResource.getImplementationAndVisualFactory().isSims()) {
-        return AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelVariant.name);
+    JointedModelResource modelResource = getResourceForVariant(modelVariant);
+    if (modelResource != null && !modelResource.getImplementationAndVisualFactory().isSims()) {
+      return getThumbnail(modelResource, modelVariant.name);
+    }
+    return null;
+  }
+
+  public static BufferedImage getThumbnail(ModelResource modelResource, String modelVariant) {
+    URL resourceURL = modelResource.getThumbnailUrl(modelVariant);
+    if (resourceURL == null) {
+      Logger.warning("Cannot load thumbnail for", modelResource, modelVariant);
+    } else {
+      try {
+        return ImageIO.read(resourceURL);
+      } catch (Throwable t) {
+        t.printStackTrace();
       }
     }
     return null;
@@ -402,13 +429,13 @@ public class JsonModelIo extends DataSourceIo {
 
   //Uses the skeleton visual to create collada file and texture files
   //Adds appropriate DataSources and updates the manifest
-  private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
-    addBoundsForJoints(sv.skeleton.getValue(), manifest);
-    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelVariant, manifest.description.name);
+  private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
+    addBoundsForJoints(sv.skeleton.getValue(), modelManifest);
+    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelVariant, modelManifest.description.name, renamedJoints);
     //Create the collada model data source
     DataSource structureDataSource = exporter.createColladaDataSource(resourcePath);
     //Link manifest entries to the files created by the exporter
-    StructureReference structureReference = manifest.getStructure(modelVariant.structure);
+    StructureReference structureReference = modelManifest.getStructure(modelVariant.structure);
     //Strip the base and model path from the name to make it relative to the manifest
     structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
     structureReference.format = ExportFormat.COLLADA.modelExtension;
@@ -420,7 +447,7 @@ public class JsonModelIo extends DataSourceIo {
     }
 
     //Get the existing texture set defined by the modelInfo.
-    ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
+    ModelManifest.TextureSet textureSet = modelManifest.getTextureSet(modelVariant.textureSet);
     //Now that we have a model and exporter, use this to get the name to image map
     textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
     //Get all the textures from the model as data sources
@@ -435,7 +462,7 @@ public class JsonModelIo extends DataSourceIo {
         //ResourceReference have their name initialized to the filename of the resource.
         //We need it to be the imageName from the idToResourceMap
         imageReference.name = imageName;
-        manifest.resources.add(imageReference);
+        modelManifest.resources.add(imageReference);
         dataSources.add(imageDataSource);
       }
     }
@@ -449,7 +476,11 @@ public class JsonModelIo extends DataSourceIo {
     if (root == null) {
       return;
     }
-    root.visitJoints((joint) -> manifest.addBoundsForJoint(joint.jointID.getValue(), joint.getBoundingBox(null, false)));
+    root.visitJoints((joint) -> manifest.addBoundsForJoint(getJointNameForOutput(joint.jointID.getValue()), joint.getBoundingBox(null, false)));
+  }
+
+  private String getJointNameForOutput(String jointName) {
+    return renamedJoints.getOrDefault(jointName, jointName);
   }
 
   public List<DataSource> createDataSources(String baseModelPath) throws IOException {
@@ -463,7 +494,7 @@ public class JsonModelIo extends DataSourceIo {
         break;
       }
       if (exportFormat == ExportFormat.COLLADA) {
-        addColladaDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
+        addColladaDataSources(dataToWrite, sv, modelVariant, resourcePath);
       } else if (exportFormat == ExportFormat.ALICE) {
         addAliceDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
       } else {
@@ -477,7 +508,7 @@ public class JsonModelIo extends DataSourceIo {
       if (variantThumbnail != null) {
         String thumbnailName = modelVariant.name + ".png";
         modelVariant.icon = thumbnailName;
-        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, variantThumbnail, resourcePath, thumbnailName);
+        DataSource thumbnailDataSource = createAndAddImageDataSource(variantThumbnail, resourcePath, thumbnailName);
         dataToWrite.add(thumbnailDataSource);
       }
     }
@@ -490,7 +521,7 @@ public class JsonModelIo extends DataSourceIo {
     }
     if (thumbnailImage != null) {
       String classIconName = getModelName() + "_cls.png";
-      DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
+      DataSource thumbnailDataSource = createAndAddImageDataSource(thumbnailImage, resourcePath, classIconName);
       dataToWrite.add(thumbnailDataSource);
       modelManifest.description.icon = classIconName;
     }
@@ -499,7 +530,7 @@ public class JsonModelIo extends DataSourceIo {
     return dataToWrite;
   }
 
-  private DataSource createAndAddImageDataSource(ModelManifest modelManifest, BufferedImage image, String resourcePath, String imageName) throws IOException {
+  private DataSource createAndAddImageDataSource(BufferedImage image, String resourcePath, String imageName) throws IOException {
     DataSource imageDataSource = createPNGImageDataSource(resourcePath + "/" + imageName, image);
     ImageReference imageReference = new ImageReference(ImageFactory.createImageResource(image, imageName));
     imageReference.name = imageName;

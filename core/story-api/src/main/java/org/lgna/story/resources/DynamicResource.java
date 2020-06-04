@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.tweedle.file.AliceTextureReference;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
+import org.lgna.project.ast.AstProcessor;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
@@ -12,7 +13,9 @@ import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFacto
 import org.lgna.story.resourceutilities.StorytellingResources;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -87,6 +90,11 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     }
   }
 
+  @Override
+  public void process(AstProcessor processor) {
+    processor.processDynamicResource(this.getClass().getName(), modelVariant.name, resourceSpecificJoints);
+  }
+
   private void initialize() {
     this.tags = modelManifest.description.tags.toArray(new String[modelManifest.description.tags.size()]);
     this.groupTags = modelManifest.description.groupTags.toArray(new String[modelManifest.description.groupTags.size()]);
@@ -114,7 +122,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
       //If we already have a JointId for the parent or the parent is null, make a new JointId and add it to the newJoints list and the jointMap
       if (currentJoint.parent == null || jointMap.containsKey(currentJoint.parent)) {
         JointId parent = currentJoint.parent != null ? jointMap.get(currentJoint.parent) : null;
-        JointId newJoint = new DynamicJointId(currentJoint.name, parent, currentJoint.visibility);
+        JointId newJoint = new DynamicJointId(this, currentJoint.name, parent, currentJoint.visibility);
         newJoints.add(newJoint);
         jointMap.put(newJoint.toString(), newJoint);
       } else {
@@ -216,4 +224,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     return textureFile.toURI();
   }
 
+  public ModelManifest getModelManifest() {
+    return modelManifest;
+  }
 }

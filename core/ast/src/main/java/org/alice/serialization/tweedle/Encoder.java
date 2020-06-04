@@ -15,14 +15,7 @@ import org.lgna.project.code.InstantiableTweedleNode;
 import org.lgna.project.virtualmachine.InstanceCreatingVirtualMachine;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -133,6 +126,7 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("startsWith", new String[] {"text"});
     methodsMissingParameterNames.put("endsWith", new String[] {"text"});
     methodsMissingParameterNames.put("contains", new String[] {"text"});
+    methodsMissingParameterNames.put("getJoint", new String[] {"name"});
 
     Map<String, String> duration = new HashMap<>();
     duration.put("duration", "new Duration(seconds: ");
@@ -150,6 +144,9 @@ public class Encoder extends SourceCodeGenerator {
     Map<String, String> opacity = new HashMap<>();
     opacity.put("opacity", "new Portion(portion: ");
     methodsWithWrappedArgs.put("setOpacity", opacity);
+    Map<String, String> userJointName = new HashMap<>();
+    userJointName.put("name", "(\"u_\" .. ");
+    methodsWithWrappedArgs.put("getJoint", userJointName);
 
     optionalParamsToWrap.put("duration", "new Duration(seconds: ");
 
@@ -208,7 +205,7 @@ public class Encoder extends SourceCodeGenerator {
       final String superclass = resourceClass.getInterfaces().length == 1 ? resourceClass.getInterfaces()[0].getSimpleName() : "JointedModelInterface";
       getCodeStringBuilder().append("class ").append(resourceClass.getSimpleName()).append(" extends ").append(superclass);
       openBlock();
-      appendResourceConstructor(superclass, resourceClass);
+      appendResourceConstructor(superclass, resourceClass.getSimpleName());
       appendResourceFields(superclass, resourceClass);
       appendResourceInstances(resourceClass);
       appendClassFooter();
@@ -217,8 +214,34 @@ public class Encoder extends SourceCodeGenerator {
     }
   }
 
-  private void appendResourceConstructor(String superclass, Class resourceClass) {
-    final String resourceName = resourceClass.getSimpleName();
+  @Override
+  public void processDynamicResource(String dynamicResourceClass, String variant, InstantiableTweedleNode[] addedJoints) {
+    try {
+      final String variantName = variant + "Resource";
+      Class<?> parentClass = Class.forName(dynamicResourceClass);
+      final String superclass = parentClass.getInterfaces().length == 1 ? parentClass.getInterfaces()[0].getSimpleName() : "JointedModelInterface";
+      getCodeStringBuilder().append("class ").append(variantName).append(" extends ").append(superclass);
+      openBlock();
+      appendResourceConstructor(superclass, variantName);
+      List<String> jointNames = new ArrayList<>();
+      for (InstantiableTweedleNode joint : addedJoints) {
+        final String jointIdentifier = getUserJointIdentifier(joint.toString());
+        appendStaticField(null, "JointId", jointIdentifier, () -> joint.encodeDefinition(this));
+        jointNames.add(jointIdentifier);
+      }
+      appendAddedJoints(superclass, jointNames);
+      appendResourceInstance(variantName, "DEFAULT");
+      appendClassFooter();
+    } catch (ClassNotFoundException cnfe) {
+      throw new RuntimeException("Unable to find class " + dynamicResourceClass + " which should have been the caller type. This should not happen and yet it has.", cnfe);
+    }
+  }
+
+  public String getUserJointIdentifier(String jointIdentifier) {
+    return "root".equalsIgnoreCase(jointIdentifier) ? jointIdentifier : USER_PREFIX + jointIdentifier;
+  }
+
+  private void appendResourceConstructor(String superclass, String resourceName) {
     appendIndent();
     appendString(resourceName);
     appendString("(TextString name)");
@@ -248,17 +271,21 @@ public class Encoder extends SourceCodeGenerator {
     }
     final String className = resourceClass.getSimpleName();
     final List<String> resourceNames = Arrays.stream(resourceClass.getEnumConstants()).map(Object::toString).collect(Collectors.toList());
-    for (String resource: resourceNames) {
-      appendNewLine();
-      appendIndent();
-      appendString("static ");
-      appendString(className);
-      appendSpace();
-      appendString(resource);
-      appendAssignmentOperator();
-      appendInstantiation(className, () -> appendArg("name", () -> appendEscapedString(className.substring(0, className.length() - 8) + "/" + resource)));
-      appendStatementCompletion();
+    for (String resourceName: resourceNames) {
+      appendResourceInstance(className, resourceName);
     }
+  }
+
+  private void appendResourceInstance(String className, String resourceName) {
+    appendNewLine();
+    appendIndent();
+    appendString("static ");
+    appendString(className);
+    appendSpace();
+    appendString(resourceName);
+    appendAssignmentOperator();
+    appendInstantiation(className, () -> appendArg("name", () -> appendEscapedString(className.substring(0, className.length() - 8) + "/" + resourceName)));
+    appendStatementCompletion();
   }
 
   private void appendResourceFields(String superclass, Class resourceClass) {
@@ -292,7 +319,7 @@ public class Encoder extends SourceCodeGenerator {
     appendAddedJoints(superclass, newJoints);
   }
 
-  private void appendAddedJoints(String superclass, List<String> newJoints) {
+  private void appendAddedJoints(String superclass, Collection<String> newJoints) {
     if (newJoints.isEmpty()) {
       return;
     }
@@ -317,12 +344,19 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private void appendStaticField(Field field, Runnable value) {
+    appendStaticField(field.getAnnotation(FieldTemplate.class),
+                      field.getType().getSimpleName(),
+                      field.getName(),
+                      value);
+  }
+
+  private void appendStaticField(FieldTemplate annotation, String fieldType, String fieldName, Runnable value) {
     appendSingleCodeLine(() -> {
-      appendVisibilityTag(field.getAnnotation(FieldTemplate.class));
+      appendVisibilityTag(annotation);
       appendString("static ");
-      appendString(field.getType().getSimpleName());
+      appendString(fieldType);
       appendSpace();
-      appendString(field.getName());
+      appendString(fieldName);
       appendAssignmentOperator();
       value.run();
     });
@@ -449,6 +483,18 @@ public class Encoder extends SourceCodeGenerator {
           return;
         }
       }
+      if (className.startsWith("Dynamic") && className.endsWith("Resource")) {
+        final ArrayList<SimpleArgument> requiredArgs = creation.requiredArguments.getValue();
+        if (requiredArgs.size() == 2) {
+          Expression variantNameExp = requiredArgs.get(1).expression.getValue();
+          if (variantNameExp instanceof StringLiteral) {
+            appendString(((StringLiteral) variantNameExp).value.getValue());
+            appendString("Resource.DEFAULT");
+            return;
+          }
+        }
+      }
+
     }
     super.processInstantiation(creation);
   }
@@ -853,23 +899,22 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   private <T> void appendList(T[] values, Consumer<T> appendValue, String separator) {
-    bracketize(() -> {
-      appendIndent();
-      int i = 0;
-      while (i < values.length) {
-        appendValue.accept(values[i]);
-        i++;
-        if (i < values.length) {
-          appendString(separator);
-        }
+    appendChar('{');
+    int i = 0;
+    while (i < values.length) {
+      appendValue.accept(values[i]);
+      i++;
+      if (i < values.length) {
+        appendString(separator);
       }
-    });
+    }
+    appendChar('}');
   }
 
   private void quoteString(String aString) {
-    appendString("\"");
+    appendChar('\"');
     appendString(aString);
-    appendString("\"");
+    appendChar('\"');
   }
 
   /** Formatting **/

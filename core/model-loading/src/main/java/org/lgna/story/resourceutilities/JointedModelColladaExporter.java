@@ -110,19 +110,25 @@ public class JointedModelColladaExporter {
   private final SkeletonVisual visual;
   private final ModelManifest.ModelVariant modelVariant;
   private final String modelName;
+  private final Map<String, String> renamedJoints;
 
   private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
   private final HashMap<Integer, String> materialNameMap = new HashMap<>();
 
-  public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName) {
+  public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName, Map<String, String> renamedJoints) {
     this.factory = new ObjectFactory();
     this.visual = sv;
     this.modelVariant = modelVariant;
     this.modelName = modelName;
+    this.renamedJoints = renamedJoints;
     //Go through all the meshes in the sgVisual and find or create names for all of them
     initializeMeshNameMap();
     //Go through all the textures and create names based on the IDs
     initializeMaterialNameMap();
+  }
+
+  public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName) {
+    this(sv, modelVariant, modelName, Collections.emptyMap());
   }
 
   private Asset createAsset() {
@@ -150,9 +156,10 @@ public class JointedModelColladaExporter {
 
   private Node createNodeForJoint(Joint joint) {
     Node node = factory.createNode();
-    node.setName(joint.jointID.getValue());
-    node.setId(joint.jointID.getValue());
-    node.setSid(joint.jointID.getValue());
+    String jointIdentifier = getUserJointIdentifier(joint.jointID.getValue());
+    node.setName(jointIdentifier);
+    node.setId(jointIdentifier);
+    node.setSid(jointIdentifier);
     node.setType(NodeType.JOINT);
 
     Matrix matrix = factory.createMatrix();
@@ -180,6 +187,10 @@ public class JointedModelColladaExporter {
     }
 
     return node;
+  }
+
+  public String getUserJointIdentifier(String jointIdentifier) {
+    return renamedJoints.getOrDefault(jointIdentifier, jointIdentifier);
   }
 
   private Node createSkeletonNodes() {
@@ -460,7 +471,7 @@ public class JointedModelColladaExporter {
     NameArray jointNameArray = factory.createNameArray();
     jointNameArray.setId(jointSourceName + "-array");
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
-      jointNameArray.getValue().add(entry.getKey());
+      jointNameArray.getValue().add(getUserJointIdentifier(entry.getKey()));
     }
     jointNameArray.setCount(BigInteger.valueOf(jointNameArray.getValue().size()));
     jointSource.setNameArray(jointNameArray);
