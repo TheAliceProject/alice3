@@ -45,6 +45,7 @@ package org.lgna.project.io;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.ast.*;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
 
@@ -56,6 +57,7 @@ import java.util.Set;
 public class ModelResourceCrawler implements Crawler {
   Map<String, Set<JointedModelResource>> modelResources = new HashMap<>();
   Set<InstanceCreation> personCreations = new HashSet<>();
+  Set<DynamicResource> dynamicResources = new HashSet<>();
   Set<NamedUserType> activeUserTypes = new HashSet<>();
 
   @Override
@@ -67,7 +69,7 @@ public class ModelResourceCrawler implements Crawler {
       addIfResourceEnum((FieldAccess) crawlable);
     }
     if (InstanceCreation.class.isAssignableFrom(crawlable.getClass())) {
-      addIfSimsPersonResourceCreation((InstanceCreation) crawlable);
+      addNonEnumResourceCreations((InstanceCreation) crawlable);
     }
     if (NamedUserType.class.isAssignableFrom(crawlable.getClass())) {
       activeUserTypes.add((NamedUserType) crawlable);
@@ -96,11 +98,17 @@ public class ModelResourceCrawler implements Crawler {
         : resourceName;
   }
 
-  private void addIfSimsPersonResourceCreation(InstanceCreation resourceCreation) {
+  private void addNonEnumResourceCreations(InstanceCreation resourceCreation) {
     AbstractType<?, ?, ?> resourceType = resourceCreation.constructor.getValue().getDeclaringType();
     final Class<?> resourceClass = resourceType.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-    if (ModelResource.class.isAssignableFrom(resourceClass)) {
+    if (ModelResource.class.isAssignableFrom(resourceClass) && resourceClass.getSimpleName().contains("PersonResource")) {
       personCreations.add(resourceCreation);
+    }
+    if (DynamicResource.class.isAssignableFrom(resourceClass)) {
+      Object dynamicInstance = resourceCreation.instantiateDynamicResource();
+      if (dynamicInstance instanceof DynamicResource) {
+        dynamicResources.add((DynamicResource) dynamicInstance);
+      }
     }
   }
 }

@@ -2,7 +2,7 @@ package org.alice.tweedle.file;
 
 import org.lgna.common.Resource;
 
-public abstract class ResourceReference {
+public abstract class ResourceReference implements Cloneable {
 
   public String name;
   public String format;
@@ -32,4 +32,8 @@ public abstract class ResourceReference {
 
   public abstract String getContentType();
 
+  @Override
+  public ResourceReference clone() throws CloneNotSupportedException {
+    return (ResourceReference) super.clone();
+  }
 }

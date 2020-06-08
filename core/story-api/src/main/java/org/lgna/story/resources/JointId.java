@@ -134,14 +134,19 @@ public class JointId implements InstantiableTweedleNode, IdentifiableTweedleNode
     return b != null && (b.parent == this || isMyDescendant(b.parent));
   }
 
+
+  protected String getJointName(Encoder encoder) {
+    return toString();
+  }
+
   @Override
-  public void encodeDefinition(Encoder processor) {
-    processor.appendNewJointId(fld.getName(),
-                               parent == null ? "null" : parent.getCodeIdentifier(processor));
+  public void encodeDefinition(Encoder encoder) {
+    encoder.appendNewJointId(getJointName(encoder),
+                             parent == null ? "null" : parent.getCodeIdentifier(encoder));
   }
 
   @Override
   public String getCodeIdentifier(Encoder encoder) {
-    return encoder.getFieldReference(containingClass.getSimpleName(), fld.getName());
+    return encoder.getFieldReference(containingClass.getSimpleName(), getJointName(encoder));
   }
 }

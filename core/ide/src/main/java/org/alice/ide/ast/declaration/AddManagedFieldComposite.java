@@ -85,7 +85,7 @@ import org.lgna.story.SetDimensionPolicy;
 import org.lgna.story.SetHeight;
 import org.lgna.story.SetWidth;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -229,7 +229,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
       JavaType javaType = type.getFirstEncounteredJavaType();
       Class<?> cls = javaType.getClassReflectionProxy().getReification();
       if (SModel.class.isAssignableFrom(cls)) {
-        initialTransform = AliceResourceUtilties.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
+        initialTransform = AliceResourceUtilities.getDefaultInitialTransform(AliceResourceClassUtilities.getResourceClassForModelClass((Class<? extends SModel>) cls));
       } else {
         initialTransform = null;
       }

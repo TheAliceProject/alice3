@@ -54,7 +54,7 @@ import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.JComponent;
@@ -81,12 +81,12 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
   @Override
   public String getInternalText() {
-    return AliceResourceUtilties.getModelClassName(getModelResourceCls(), null, null);
+    return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, null);
   }
 
   @Override
   public String getSearchText() {
-    return AliceResourceUtilties.getModelClassName(getModelResourceCls(), null, JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getModelClassName(getModelResourceCls(), null, JComponent.getDefaultLocale());
   }
 
   @Override
@@ -122,17 +122,17 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
   @Override
   public String[] getTags() {
-    return AliceResourceUtilties.getTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
   }
 
   @Override
   public String[] getGroupTags() {
-    return AliceResourceUtilties.getGroupTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getGroupTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
   }
 
   @Override
   public String[] getThemeTags() {
-    return AliceResourceUtilties.getThemeTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
+    return AliceResourceUtilities.getThemeTags(getModelResourceCls(), null, JComponent.getDefaultLocale());
   }
 
   @Override
@@ -165,12 +165,12 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
   @Override
   public AxisAlignedBox getBoundingBox() {
-    return AliceResourceUtilties.getBoundingBox(getModelResourceCls());
+    return AliceResourceUtilities.getBoundingBox(getModelResourceCls());
   }
 
   @Override
   public boolean getPlaceOnGround() {
-    return AliceResourceUtilties.getPlaceOnGround(getModelResourceCls());
+    return AliceResourceUtilities.getPlaceOnGround(getModelResourceCls());
   }
 
   @Override

@@ -26,6 +26,25 @@ public class Manifest {
     return description.name;
   }
 
+  protected void copyForExport(Manifest copy) {
+    copy.description = description;
+    copy.provenance = provenance;
+    copy.metadata = new MetaData();
+    copy.metadata.identifier.name = description.name;
+    copy.metadata.identifier.type = ProjectType.Model;
+    copy.prerequisites = new ArrayList<>(prerequisites);
+    copy.resources = new ArrayList<>();
+    for (ResourceReference resource : resources) {
+      if (resource instanceof StructureReference) {
+        try {
+          copy.resources.add(resource.clone());
+        } catch (CloneNotSupportedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
   public static class Description {
     public String name;
     public String icon = DEFAULT_ICON;
