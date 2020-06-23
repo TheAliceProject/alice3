@@ -68,7 +68,7 @@ import javax.swing.event.ChangeListener;
 
 import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.alice.netbeans.project.ProjectCodeGenerator;
-import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.migration.ast.MigrationException;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.templates.TemplateRegistration;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
@@ -221,9 +221,7 @@ import org.xml.sax.InputSource;
       File aliceProjectFile = (File) wizardDescriptor.getProperty("aliceProjectFile");
       File javaSrcDirectory = new File(projectDirectory, "src");
 
-      if (javaSrcDirectory.exists()) {
-        //pass
-      } else {
+      if (!javaSrcDirectory.exists()) {
         javaSrcDirectory.mkdirs();
       }
 
@@ -235,10 +233,14 @@ import org.xml.sax.InputSource;
       try {
         Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory, progressHandle);
         resultSet.addAll(filesToOpen);
-      } catch (IOException ioe) {
-        Logger.throwable(ioe);
-      } catch (VersionNotSupportedException vnse) {
-        Logger.throwable(vnse);
+      } catch (MigrationException me) {
+        Logger.throwable(me);
+        notifyUserOfMigrationFailure();
+        return null;
+      } catch (Exception e) {
+        Logger.throwable(e);
+        notifyUserOfFailure();
+        return null;
       }
 
       this.cleanSlateIfAppropriate();
@@ -248,6 +250,19 @@ import org.xml.sax.InputSource;
         progressHandle.finish();
       }
     }
+  }
+
+  private void notifyUserOfFailure() {
+    final String title = "Unable to Import Project";
+    final String msg = "<html><h1>There was an error when loading this project.</h1><p>For details look in <i>Output - Alice3 Plugin</i></p></html>";
+    JOptionPane.showMessageDialog(panels[0].getComponent(), msg, title, JOptionPane.ERROR_MESSAGE);
+  }
+
+  private void notifyUserOfMigrationFailure() {
+    final String title = "Unable to Migrate Project";
+    final String msg = "<html><h1>There was an error when attempting to migrate this project from an earlier version of Alice.</h1>"
+        + "<p>Use an up to date version of Alice to load and save a copy and then try this again in NetBeans.</p></html>";
+    JOptionPane.showMessageDialog(panels[0].getComponent(), msg, title, JOptionPane.ERROR_MESSAGE);
   }
 
   @Override
