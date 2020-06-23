@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
-    <version>6.0.0-beta.7</version>
+    <version>6.0.0</version>
   </parent>
 
   <name>Tweedle Language</name>
