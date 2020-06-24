@@ -53,7 +53,7 @@
       <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.0.0-beta.7.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.0.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="externalDependencies" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
       <fileEntry mountPoint="303" file="../core/resources/target/distribution/platform/macosx/ffmpeg/ffmpeg" overwriteMode="1" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="true" overrideUninstallMode="false" />

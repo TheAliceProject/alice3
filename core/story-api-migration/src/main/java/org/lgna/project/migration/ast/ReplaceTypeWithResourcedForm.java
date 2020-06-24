@@ -93,6 +93,9 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
       if (superType instanceof NamedUserType) {
         typeCache.add((NamedUserType) superType);
       }
+      if (typeHelper == null) {
+        throw new MigrationException("Unable to migrate project without ResourceTypeHelper");
+      }
       InstanceCreation instantiation = typeHelper.createInstanceCreation(newResource, typeCache);
       field.valueType.setValue(instantiation.getType());
       field.initializer.setValue(instantiation);
