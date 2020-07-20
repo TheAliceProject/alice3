@@ -108,14 +108,14 @@ import java.util.Map;
 
   @Override
   public synchronized float getLayoutAlignmentX(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.widthRequirement.alignment;
+    updateRequirementsIfNecessary();
+    return widthRequirement.alignment;
   }
 
   @Override
   public synchronized float getLayoutAlignmentY(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.heightRequirement.alignment;
+    updateRequirementsIfNecessary();
+    return heightRequirement.alignment;
   }
 
   @Override
@@ -171,59 +171,81 @@ import java.util.Map;
 
   @Override
   public synchronized void invalidateLayout(Container target) {
-    this.index0 = 0;
-    this.childWidthRequirements = null;
-    this.childHeightRequirements = null;
-    this.widthRequirement = null;
-    this.heightRequirement = null;
+    index0 = 0;
+    // Drop height info, but leave widths in place to preserve when scrolling to avoid expanding over sub menu triggers
+    childHeightRequirements = null;
+    heightRequirement = null;
   }
 
-  private void updateRequirementsIfNecessary(Container target) {
-    if (this.childWidthRequirements != null) {
-      //pass
-    } else {
-      final int N = this.mainItems.size();
-      this.childWidthRequirements = new SizeRequirements[N];
-      this.childHeightRequirements = new SizeRequirements[N];
-      int i = 0;
-      for (Component componentI : this.mainItems) {
-        Dimension minimum;
-        Dimension preferred;
-        Dimension maximum;
-        if (componentI.isVisible()) {
-          minimum = componentI.getMinimumSize();
-          preferred = componentI.getPreferredSize();
-          maximum = componentI.getMaximumSize();
-        } else {
-          minimum = new Dimension();
-          preferred = new Dimension();
-          maximum = new Dimension();
-        }
-        this.childWidthRequirements[i] = new SizeRequirements(minimum.width, preferred.width, maximum.width, componentI.getAlignmentX());
-        this.childHeightRequirements[i] = new SizeRequirements(minimum.height, preferred.height, maximum.height, componentI.getAlignmentY());
-        i += 1;
+  private void updateRequirementsIfNecessary() {
+    if (childHeightRequirements != null) {
+      return;
+    }
+    final int childWidthCount = mainItems.size() + (pageStartComponent == null ? 0 : 1) + (pageEndComponent == null ? 0 : 1);
+    final boolean recomputeWidths = childWidthRequirements == null || childWidthCount > childWidthRequirements.length;
+    if (recomputeWidths) {
+      childWidthRequirements = new SizeRequirements[childWidthCount];
+    }
+    childHeightRequirements = new SizeRequirements[mainItems.size()];
+    int i = 0;
+    for (Component componentI : mainItems) {
+      addChildHeightRequirement(componentI, i);
+      if (recomputeWidths) {
+        addChildWidthRequirement(componentI, i);
       }
-      this.widthRequirement = SizeRequirements.getAlignedSizeRequirements(this.childWidthRequirements);
-      this.heightRequirement = SizeRequirements.getTiledSizeRequirements(this.childHeightRequirements);
+      i++;
+    }
+    if (pageStartComponent != null) {
+      addChildWidthRequirement(pageStartComponent, i);
+      i++;
+    }
+    if (pageEndComponent != null) {
+      addChildWidthRequirement(pageEndComponent, i);
+    }
+    if (recomputeWidths) {
+      widthRequirement = SizeRequirements.getAlignedSizeRequirements(childWidthRequirements);
+    }
+    heightRequirement = SizeRequirements.getTiledSizeRequirements(childHeightRequirements);
+  }
+
+  private void addChildHeightRequirement(Component child, int i) {
+    if (child.isVisible()) {
+      Dimension minimum = child.getMinimumSize();
+      Dimension preferred = child.getPreferredSize();
+      Dimension maximum = child.getMaximumSize();
+      childHeightRequirements[i] = new SizeRequirements(minimum.height, preferred.height, maximum.height, child.getAlignmentY());
+    } else {
+      childHeightRequirements[i] = new SizeRequirements(0, 0, 0, child.getAlignmentY());
+    }
+  }
+
+  private void addChildWidthRequirement(Component child, int i) {
+    if (child.isVisible()) {
+      Dimension minimum = child.getMinimumSize();
+      Dimension preferred = child.getPreferredSize();
+      Dimension maximum = child.getMaximumSize();
+      childWidthRequirements[i] = new SizeRequirements(minimum.width, preferred.width, maximum.width, child.getAlignmentX());
+    } else {
+      childWidthRequirements[i] = new SizeRequirements(0, 0, 0, child.getAlignmentX());
     }
   }
 
   private static final int SIDE_WIDTH = 20;
 
-  private int getSizeWidth() {
-    return this.mapSideItemToIndex.size() > 0 ? SIDE_WIDTH : 0;
+  private int getSideWidth() {
+    return mapSideItemToIndex.isEmpty() ? 0 : SIDE_WIDTH;
   }
 
   private Dimension getInsetSize(int width, int height, Container target) {
     Insets insets = target.getInsets();
-    int sideWidth = this.getSizeWidth();
+    int sideWidth = getSideWidth();
     return new Dimension(width + insets.left + insets.right + sideWidth, height + insets.top + insets.bottom);
   }
 
   @Override
   public synchronized Dimension minimumLayoutSize(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.getInsetSize(this.widthRequirement.minimum, this.heightRequirement.minimum, target);
+    updateRequirementsIfNecessary();
+    return getInsetSize(widthRequirement.minimum, heightRequirement.minimum, target);
   }
 
   private Dimension actualPreferredLayoutSize(Container target) {
@@ -261,7 +283,7 @@ import java.util.Map;
 
   @Override
   public synchronized Dimension maximumLayoutSize(Container target) {
-    this.updateRequirementsIfNecessary(target);
+    updateRequirementsIfNecessary();
     return this.getInsetSize(this.widthRequirement.maximum, this.heightRequirement.maximum, target);
   }
 
@@ -281,20 +303,16 @@ import java.util.Map;
 
   @Override
   public synchronized void layoutContainer(Container target) {
-    this.updateRequirementsIfNecessary(target);
+    updateRequirementsIfNecessary();
     Dimension layoutSize = this.actualPreferredLayoutSize(target);
     Insets insets = target.getInsets();
     int layoutWidth = layoutSize.width - insets.left - insets.right;
     int layoutHeight = layoutSize.height - insets.top - insets.bottom;
 
-    final int N = this.mainItems.size();
-    int[] xs = new int[N];
+    final int N = mainItems.size();
     int[] ys = new int[N];
-    int[] widths = new int[N];
     int[] heights = new int[N];
-
-    SizeRequirements.calculateAlignedPositions(layoutWidth, this.widthRequirement, this.childWidthRequirements, xs, widths);
-    SizeRequirements.calculateTiledPositions(layoutHeight, this.heightRequirement, this.childHeightRequirements, ys, heights);
+    SizeRequirements.calculateTiledPositions(layoutHeight, heightRequirement, childHeightRequirements, ys, heights);
 
     Dimension size = target.getSize();
     int firstIndex;
@@ -351,10 +369,12 @@ import java.util.Map;
       if (this.pageStartComponent instanceof JScrollMenuItem) {
         JScrollMenuItem pageStartScrollMenuItem = (JScrollMenuItem) this.pageStartComponent;
         pageStartScrollMenuItem.setCount(firstIndex);
+        addChildWidthRequirement(pageStartComponent, lastIndex);
       }
       if (this.pageEndComponent instanceof JScrollMenuItem) {
         JScrollMenuItem pageEndScrollMenuItem = (JScrollMenuItem) this.pageEndComponent;
         pageEndScrollMenuItem.setCount(N - 1 - lastIndex);
+        addChildWidthRequirement(pageStartComponent, lastIndex + 1);
       }
     } else {
       pageStartHeight = 0;
@@ -367,7 +387,12 @@ import java.util.Map;
         this.pageEndComponent.setBounds(0, 0, 0, 0);
       }
     }
-    int sideWidth = this.getSizeWidth();
+    final int widthCount = childWidthRequirements.length;
+    int[] xs = new int[widthCount];
+    int[] widths = new int[widthCount];
+    SizeRequirements.calculateAlignedPositions(layoutWidth, widthRequirement, childWidthRequirements, xs, widths);
+
+    int sideWidth = getSideWidth();
     int i = 0;
     for (Component component : this.mainItems) {
       if ((firstIndex <= i) && (i <= lastIndex)) {
