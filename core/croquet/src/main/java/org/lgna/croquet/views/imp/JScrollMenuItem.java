@@ -66,6 +66,7 @@ import java.awt.event.MouseEvent;
  */
 /* package-private */class JScrollMenuItem extends JMenuItem {
   private static final Dimension ARROW_SIZE = new Dimension(10, 10);
+  private static final int SPACE = 10;
 
   private final ChangeListener changeListener = new ChangeListener() {
     @Override
@@ -154,7 +155,9 @@ import java.awt.event.MouseEvent;
     Font font = this.getFont();
     FontMetrics fontMetrics = this.getFontMetrics(font);
     int height = Math.max(fontMetrics.getHeight(), ARROW_SIZE.height);
-    return DimensionUtilities.constrainToMinimumHeight(super.getPreferredSize(), height + 8);
+    // Width enough for centered arrows with string on either side
+    int width = 5 * (ARROW_SIZE.width + SPACE) + 2 * fontMetrics.stringWidth(" (9999)");
+    return DimensionUtilities.constrainToMinimumSize(super.getPreferredSize(), width, height + 8);
   }
 
   @Override
@@ -178,7 +181,6 @@ import java.awt.event.MouseEvent;
     int x = (this.getWidth() - ARROW_SIZE.width) / 2;
     int y = (this.getHeight() - ARROW_SIZE.height) / 2;
 
-    final int SPACE = 10;
     for (int i = -2; i < 3; i++) {
       GraphicsUtilities.fillTriangle(g2, heading, x + (i * (ARROW_SIZE.width + SPACE)), y, ARROW_SIZE.width, ARROW_SIZE.height);
     }
