@@ -459,6 +459,7 @@ public class JointedModelColladaImporter {
             if (bufferedImage == null) {
               throw new ModelLoadingException("Error loading texture: File '" + image.getInitFrom() + "' not readable.");
             }
+            bufferedImage = ImageUtilities.stretchToPowersOfTwo(bufferedImage);
           } catch (IOException e) {
             throw new ModelLoadingException("Error loading texture: " + image.getInitFrom() + " not found.", e);
           } catch (RuntimeException e) {
