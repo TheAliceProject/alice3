@@ -284,7 +284,7 @@ public class Encoder extends SourceCodeGenerator {
     });
   }
 
-  private void appendResourceInstances(Class resourceClass) {
+  private void appendResourceInstances(Class<?> resourceClass) {
     if (!resourceClass.isEnum()) {
       return;
     }
@@ -307,7 +307,7 @@ public class Encoder extends SourceCodeGenerator {
     appendStatementCompletion();
   }
 
-  private void appendResourceFields(String superclass, Class resourceClass) {
+  private void appendResourceFields(String superclass, Class<?> resourceClass) {
     Field[] fields = resourceClass.getDeclaredFields();
     List<String> newJoints = new ArrayList<>();
     for (Field field : fields) {
@@ -850,31 +850,6 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   /** Helper methods **/
-
-  // Enums are replaced with strings and this is used in the conversion.
-  private Class getResourceClass(NamedUserType nut) {
-    try {
-      return Class.forName(getResourceName(nut));
-    } catch (ClassNotFoundException e) {
-      try {
-        return Class.forName(getAlternateResourceName(nut));
-      } catch (ClassNotFoundException cnfe) {
-        return null;
-      }
-    }
-  }
-
-  private String getResourceName(NamedUserType nut) {
-    String owningClass = nut.getName();
-    if ("SandDunes".equals(owningClass)) {
-      owningClass = "Terrain";
-    }
-    return "org.lgna.story.resources." + nut.getSuperType().getName().toLowerCase() + "." + owningClass + "Resource";
-  }
-
-  private String getAlternateResourceName(NamedUserType nut) {
-    return "org.lgna.story.resources." + nut.getName() + "Resource";
-  }
 
   private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
     if (fieldAnnotation == null) {
