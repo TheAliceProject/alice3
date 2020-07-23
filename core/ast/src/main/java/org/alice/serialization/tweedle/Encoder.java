@@ -28,6 +28,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final List<String> angleMembers = new ArrayList<>();
   private static final Map<String, String> typesToRename = new HashMap<>();
+  private static final Map<String, String> typesWithAddedCode = new HashMap<>();
   private static final Map<String, String> membersToRename = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
@@ -82,6 +83,19 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("SlithererPose", "JointedModelPose");
     typesToRename.put("SwimmerPose", "JointedModelPose");
     typesToRename.put("QuadrupedPose", "JointedModelPose");
+
+    typesWithAddedCode.put(
+        "Person",
+        "\n  SJoint getRightEye() {\n"
+            + "    SJoint eye <- super.getRightEye();\n"
+            + "    $SceneGraph.updateEyesOnChange(eye: eye, person: this);\n"
+            + "    return eye;\n"
+            + "  }\n\n"
+            + "  SJoint getLeftEye() {\n"
+            + "    SJoint eye <- super.getLeftEye();\n"
+            + "    $SceneGraph.updateEyesOnChange(eye: eye, person: this);\n"
+            + "    return eye;\n"
+            + "  }\n");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -213,7 +227,7 @@ public class Encoder extends SourceCodeGenerator {
       appendResourceConstructor(superclass, resourceClass.getSimpleName());
       appendResourceFields(superclass, resourceClass);
       appendResourceInstances(resourceClass);
-      appendClassFooter();
+      appendClassFooter(jointedModelResource);
     } catch (ClassNotFoundException cnfe) {
       throw new RuntimeException("Unable to find class " + jointedModelResource + " which should have been the caller type. This should not happen and yet it has.", cnfe);
     }
@@ -236,7 +250,7 @@ public class Encoder extends SourceCodeGenerator {
       }
       appendAddedJoints(superclass, jointNames);
       appendResourceInstance(variantName, "DEFAULT");
-      appendClassFooter();
+      appendClassFooter(dynamicResourceClass);
     } catch (ClassNotFoundException cnfe) {
       throw new RuntimeException("Unable to find class " + dynamicResourceClass + " which should have been the caller type. This should not happen and yet it has.", cnfe);
     }
@@ -426,8 +440,9 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendClassFooter() {
-    closeBlock();
+  protected void appendClassFooter(String userTypeName) {
+    appendString(typesWithAddedCode.getOrDefault(userTypeName, ""));
+    super.appendClassFooter(userTypeName);
   }
 
   /** Methods and Fields **/

@@ -84,7 +84,7 @@ public abstract class SourceCodeGenerator implements AstProcessor {
         appendSection(codeOrganizer, userType, entry);
       }
     }
-    appendClassFooter();
+    appendClassFooter(userType.getName());
   }
 
   protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
@@ -95,7 +95,9 @@ public abstract class SourceCodeGenerator implements AstProcessor {
 
   protected abstract void appendClassHeader(NamedUserType userType);
 
-  protected abstract void appendClassFooter();
+  protected void appendClassFooter(String userTypeName) {
+    closeBlock();
+  }
 
   // ** Methods and Fields **
 
