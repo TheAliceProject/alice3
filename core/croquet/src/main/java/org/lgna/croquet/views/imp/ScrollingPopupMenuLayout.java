@@ -62,7 +62,7 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ScrollingPopupMenuLayout implements LayoutManager2 {
+class ScrollingPopupMenuLayout implements LayoutManager2 {
   private final List<Component> mainItems = Lists.newCopyOnWriteArrayList();
   private final Map<Component, Integer> mapSideItemToIndex = Maps.newHashMap();
 
@@ -76,11 +76,11 @@ import java.util.Map;
 
   private int index0;
 
-  public static enum ScrollConstraint {
+  public enum ScrollConstraint {
     PAGE_START, PAGE_END
   }
 
-  public static enum ColumnConstraint {
+  public enum ColumnConstraint {
     MAIN, SIDE
   }
 
@@ -91,154 +91,163 @@ import java.util.Map;
   }
 
   private void constrainIndex() {
-    final int N = this.mainItems.size();
-    this.index0 = Math.max(this.index0, 0);
-    this.index0 = Math.min(this.index0, N - 1);
+    final int N = mainItems.size();
+    index0 = Math.max(index0, 0);
+    index0 = Math.min(index0, N - 1);
   }
 
   public void adjustIndex(int delta) {
-    this.index0 += delta;
-    this.constrainIndex();
-    if (this.mainItems.get(this.index0) instanceof JPopupMenu.Separator) {
-      this.index0 += delta;
-      this.constrainIndex();
+    index0 += delta;
+    constrainIndex();
+    if (mainItems.get(index0) instanceof JPopupMenu.Separator) {
+      index0 += delta;
+      constrainIndex();
     }
-    this.layoutContainer(this.target);
+    layoutContainer(target);
   }
 
   @Override
   public synchronized float getLayoutAlignmentX(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.widthRequirement.alignment;
+    updateRequirementsIfNecessary();
+    return widthRequirement.alignment;
   }
 
   @Override
   public synchronized float getLayoutAlignmentY(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.heightRequirement.alignment;
+    updateRequirementsIfNecessary();
+    return heightRequirement.alignment;
   }
 
   @Override
   public void addLayoutComponent(String name, Component comp) {
     Logger.severe(this, name, comp);
-    this.invalidateLayout(comp.getParent());
+    invalidateLayout(comp.getParent());
   }
 
   @Override
   public void addLayoutComponent(Component comp, Object constraints) {
-    if (constraints != null) {
-      //pass
-    } else {
-      constraints = ColumnConstraint.MAIN;
-    }
-    if (constraints == ColumnConstraint.MAIN) {
-      this.mainItems.add(comp);
+    if (constraints == null || constraints == ColumnConstraint.MAIN) {
+      mainItems.add(comp);
     } else if (constraints == ColumnConstraint.SIDE) {
-      final boolean IS_SIDE_READY_FOR_PRIME_TIME = true;
-      if (IS_SIDE_READY_FOR_PRIME_TIME) {
-        this.mapSideItemToIndex.put(comp, this.mainItems.size() - 1);
-      } else {
-        this.mainItems.add(comp);
-      }
+      mapSideItemToIndex.put(comp, mainItems.size() - 1);
     } else if (constraints == ScrollConstraint.PAGE_START) {
-      this.pageStartComponent = comp;
+      pageStartComponent = comp;
     } else if (constraints == ScrollConstraint.PAGE_END) {
-      this.pageEndComponent = comp;
+      pageEndComponent = comp;
     } else {
       Logger.severe(this, comp, constraints);
     }
-    this.invalidateLayout(comp.getParent());
+    invalidateLayout(comp.getParent());
   }
 
   @Override
   public void removeLayoutComponent(Component comp) {
-    this.invalidateLayout(comp.getParent());
-    if (this.mainItems.contains(comp)) {
-      this.mainItems.remove(comp);
-      this.constrainIndex();
+    invalidateLayout(comp.getParent());
+    if (mainItems.contains(comp)) {
+      mainItems.remove(comp);
+      constrainIndex();
     } else {
-      if ((comp == this.pageStartComponent) || (comp == this.pageEndComponent)) {
-        //todo
+      if (mapSideItemToIndex.containsKey(comp)) {
+        mapSideItemToIndex.remove(comp);
       } else {
-        if (this.mapSideItemToIndex.containsKey(comp)) {
-          this.mapSideItemToIndex.remove(comp);
-        } else {
-          Logger.severe(comp);
+        if ((comp != pageStartComponent) && (comp != pageEndComponent)) {
+          Logger.severe("Failed to remove unexpected child component in ScrollingPopupMenuLayout", comp);
         }
+        // TODO Handle else state - the removal of start or end component
       }
     }
   }
 
   @Override
   public synchronized void invalidateLayout(Container target) {
-    this.index0 = 0;
-    this.childWidthRequirements = null;
-    this.childHeightRequirements = null;
-    this.widthRequirement = null;
-    this.heightRequirement = null;
+    index0 = 0;
+    // Drop height info, but leave widths in place to preserve when scrolling to avoid expanding over sub menu triggers
+    childHeightRequirements = null;
+    heightRequirement = null;
   }
 
-  private void updateRequirementsIfNecessary(Container target) {
-    if (this.childWidthRequirements != null) {
-      //pass
-    } else {
-      final int N = this.mainItems.size();
-      this.childWidthRequirements = new SizeRequirements[N];
-      this.childHeightRequirements = new SizeRequirements[N];
-      int i = 0;
-      for (Component componentI : this.mainItems) {
-        Dimension minimum;
-        Dimension preferred;
-        Dimension maximum;
-        if (componentI.isVisible()) {
-          minimum = componentI.getMinimumSize();
-          preferred = componentI.getPreferredSize();
-          maximum = componentI.getMaximumSize();
-        } else {
-          minimum = new Dimension();
-          preferred = new Dimension();
-          maximum = new Dimension();
-        }
-        this.childWidthRequirements[i] = new SizeRequirements(minimum.width, preferred.width, maximum.width, componentI.getAlignmentX());
-        this.childHeightRequirements[i] = new SizeRequirements(minimum.height, preferred.height, maximum.height, componentI.getAlignmentY());
-        i += 1;
+  private void updateRequirementsIfNecessary() {
+    if (childHeightRequirements != null) {
+      return;
+    }
+    final int childWidthCount = mainItems.size() + (pageStartComponent == null ? 0 : 1) + (pageEndComponent == null ? 0 : 1);
+    final boolean recomputeWidths = childWidthRequirements == null || childWidthCount > childWidthRequirements.length;
+    if (recomputeWidths) {
+      childWidthRequirements = new SizeRequirements[childWidthCount];
+    }
+    childHeightRequirements = new SizeRequirements[mainItems.size()];
+    int i = 0;
+    for (Component componentI : mainItems) {
+      addChildHeightRequirement(componentI, i);
+      if (recomputeWidths) {
+        addChildWidthRequirement(componentI, i);
       }
-      this.widthRequirement = SizeRequirements.getAlignedSizeRequirements(this.childWidthRequirements);
-      this.heightRequirement = SizeRequirements.getTiledSizeRequirements(this.childHeightRequirements);
+      i++;
+    }
+    if (pageStartComponent != null) {
+      addChildWidthRequirement(pageStartComponent, i);
+      i++;
+    }
+    if (pageEndComponent != null) {
+      addChildWidthRequirement(pageEndComponent, i);
+    }
+    if (recomputeWidths) {
+      widthRequirement = SizeRequirements.getAlignedSizeRequirements(childWidthRequirements);
+    }
+    heightRequirement = SizeRequirements.getTiledSizeRequirements(childHeightRequirements);
+  }
+
+  private void addChildHeightRequirement(Component child, int i) {
+    if (child.isVisible()) {
+      Dimension minimum = child.getMinimumSize();
+      Dimension preferred = child.getPreferredSize();
+      Dimension maximum = child.getMaximumSize();
+      childHeightRequirements[i] = new SizeRequirements(minimum.height, preferred.height, maximum.height, child.getAlignmentY());
+    } else {
+      childHeightRequirements[i] = new SizeRequirements(0, 0, 0, child.getAlignmentY());
+    }
+  }
+
+  private void addChildWidthRequirement(Component child, int i) {
+    if (child.isVisible()) {
+      Dimension minimum = child.getMinimumSize();
+      Dimension preferred = child.getPreferredSize();
+      Dimension maximum = child.getMaximumSize();
+      childWidthRequirements[i] = new SizeRequirements(minimum.width, preferred.width, maximum.width, child.getAlignmentX());
+    } else {
+      childWidthRequirements[i] = new SizeRequirements(0, 0, 0, child.getAlignmentX());
     }
   }
 
   private static final int SIDE_WIDTH = 20;
 
-  private int getSizeWidth() {
-    return this.mapSideItemToIndex.size() > 0 ? SIDE_WIDTH : 0;
+  private int getSideWidth() {
+    return mapSideItemToIndex.isEmpty() ? 0 : SIDE_WIDTH;
   }
 
   private Dimension getInsetSize(int width, int height, Container target) {
     Insets insets = target.getInsets();
-    int sideWidth = this.getSizeWidth();
+    int sideWidth = getSideWidth();
     return new Dimension(width + insets.left + insets.right + sideWidth, height + insets.top + insets.bottom);
   }
 
   @Override
   public synchronized Dimension minimumLayoutSize(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.getInsetSize(this.widthRequirement.minimum, this.heightRequirement.minimum, target);
+    updateRequirementsIfNecessary();
+    return getInsetSize(widthRequirement.minimum, heightRequirement.minimum, target);
   }
 
   private Dimension actualPreferredLayoutSize(Container target) {
-    return this.getInsetSize(this.widthRequirement.preferred, this.heightRequirement.preferred, target);
+    return getInsetSize(widthRequirement.preferred, heightRequirement.preferred, target);
   }
 
   @Override
   public synchronized Dimension preferredLayoutSize(Container target) {
-    this.invalidateLayout(target);
-    this.updateRequirementsIfNecessary(target);
-    Dimension rv = this.actualPreferredLayoutSize(target);
+    invalidateLayout(target);
+    updateRequirementsIfNecessary();
+    Dimension rv = actualPreferredLayoutSize(target);
     GraphicsConfiguration graphicsConfiguration = target.getGraphicsConfiguration();
-    if (graphicsConfiguration != null) {
-      //pass
-    } else {
+    if (graphicsConfiguration == null) {
       if (target instanceof JPopupMenu) {
         JPopupMenu jPopupMenu = (JPopupMenu) target;
         Component invoker = jPopupMenu.getInvoker();
@@ -246,9 +255,7 @@ import java.util.Map;
           graphicsConfiguration = invoker.getGraphicsConfiguration();
         }
       }
-      if (graphicsConfiguration != null) {
-        //pass
-      } else {
+      if (graphicsConfiguration == null) {
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         graphicsConfiguration = graphicsEnvironment.getDefaultScreenDevice().getDefaultConfiguration();
         Logger.outln("todo: determine correct graphicsConfiguration.  using default:", graphicsConfiguration);
@@ -261,8 +268,8 @@ import java.util.Map;
 
   @Override
   public synchronized Dimension maximumLayoutSize(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    return this.getInsetSize(this.widthRequirement.maximum, this.heightRequirement.maximum, target);
+    updateRequirementsIfNecessary();
+    return getInsetSize(widthRequirement.maximum, heightRequirement.maximum, target);
   }
 
   private static int calculateLastIndex(int firstIndex, int[] heights, int availableHeight) {
@@ -281,35 +288,31 @@ import java.util.Map;
 
   @Override
   public synchronized void layoutContainer(Container target) {
-    this.updateRequirementsIfNecessary(target);
-    Dimension layoutSize = this.actualPreferredLayoutSize(target);
+    updateRequirementsIfNecessary();
+    Dimension layoutSize = actualPreferredLayoutSize(target);
     Insets insets = target.getInsets();
     int layoutWidth = layoutSize.width - insets.left - insets.right;
     int layoutHeight = layoutSize.height - insets.top - insets.bottom;
 
-    final int N = this.mainItems.size();
-    int[] xs = new int[N];
+    final int N = mainItems.size();
     int[] ys = new int[N];
-    int[] widths = new int[N];
     int[] heights = new int[N];
-
-    SizeRequirements.calculateAlignedPositions(layoutWidth, this.widthRequirement, this.childWidthRequirements, xs, widths);
-    SizeRequirements.calculateTiledPositions(layoutHeight, this.heightRequirement, this.childHeightRequirements, ys, heights);
+    SizeRequirements.calculateTiledPositions(layoutHeight, heightRequirement, childHeightRequirements, ys, heights);
 
     Dimension size = target.getSize();
     int firstIndex;
     int lastIndex;
     int pageStartHeight;
     if (size.height < layoutSize.height) {
-      firstIndex = this.index0;
+      firstIndex = index0;
 
-      if (this.pageStartComponent != null) {
+      if (pageStartComponent != null) {
         if (firstIndex > 0) {
-          pageStartHeight = this.pageStartComponent.getPreferredSize().height;
+          pageStartHeight = pageStartComponent.getPreferredSize().height;
         } else {
           pageStartHeight = 0;
         }
-        this.pageStartComponent.setBounds(0, 0, size.width, pageStartHeight);
+        pageStartComponent.setBounds(0, 0, size.width, pageStartHeight);
       } else {
         pageStartHeight = 0;
       }
@@ -317,13 +320,13 @@ import java.util.Map;
       lastIndex = calculateLastIndex(firstIndex, heights, size.height - pageStartHeight);
 
       int pageEndHeight;
-      if (this.pageEndComponent != null) {
+      if (pageEndComponent != null) {
         if (lastIndex < (N - 1)) {
-          pageEndHeight = this.pageEndComponent.getPreferredSize().height;
+          pageEndHeight = pageEndComponent.getPreferredSize().height;
         } else {
           pageEndHeight = 0;
         }
-        this.pageEndComponent.setBounds(0, size.height - pageEndHeight, size.width, pageEndHeight);
+        pageEndComponent.setBounds(0, size.height - pageEndHeight, size.width, pageEndHeight);
       } else {
         pageEndHeight = 0;
       }
@@ -345,31 +348,38 @@ import java.util.Map;
             break;
           }
         }
-        this.index0 = firstIndex;
+        index0 = firstIndex;
       }
 
-      if (this.pageStartComponent instanceof JScrollMenuItem) {
-        JScrollMenuItem pageStartScrollMenuItem = (JScrollMenuItem) this.pageStartComponent;
+      if (pageStartComponent instanceof JScrollMenuItem) {
+        JScrollMenuItem pageStartScrollMenuItem = (JScrollMenuItem) pageStartComponent;
         pageStartScrollMenuItem.setCount(firstIndex);
+        addChildWidthRequirement(pageStartComponent, lastIndex);
       }
-      if (this.pageEndComponent instanceof JScrollMenuItem) {
-        JScrollMenuItem pageEndScrollMenuItem = (JScrollMenuItem) this.pageEndComponent;
+      if (pageEndComponent instanceof JScrollMenuItem) {
+        JScrollMenuItem pageEndScrollMenuItem = (JScrollMenuItem) pageEndComponent;
         pageEndScrollMenuItem.setCount(N - 1 - lastIndex);
+        addChildWidthRequirement(pageStartComponent, lastIndex + 1);
       }
     } else {
       pageStartHeight = 0;
       firstIndex = 0;
       lastIndex = N - 1;
-      if (this.pageStartComponent != null) {
-        this.pageStartComponent.setBounds(0, 0, 0, 0);
+      if (pageStartComponent != null) {
+        pageStartComponent.setBounds(0, 0, 0, 0);
       }
-      if (this.pageEndComponent != null) {
-        this.pageEndComponent.setBounds(0, 0, 0, 0);
+      if (pageEndComponent != null) {
+        pageEndComponent.setBounds(0, 0, 0, 0);
       }
     }
-    int sideWidth = this.getSizeWidth();
+    final int widthCount = childWidthRequirements.length;
+    int[] xs = new int[widthCount];
+    int[] widths = new int[widthCount];
+    SizeRequirements.calculateAlignedPositions(layoutWidth, widthRequirement, childWidthRequirements, xs, widths);
+
+    int sideWidth = getSideWidth();
     int i = 0;
-    for (Component component : this.mainItems) {
+    for (Component component : mainItems) {
       if ((firstIndex <= i) && (i <= lastIndex)) {
         component.setBounds(insets.left + xs[i], ((insets.top + ys[i]) + pageStartHeight) - ys[firstIndex], widths[i] - sideWidth, heights[i]);
       } else {
@@ -378,14 +388,12 @@ import java.util.Map;
       i++;
     }
 
-    if (this.mapSideItemToIndex.size() > 0) {
-      for (Component component : this.mapSideItemToIndex.keySet()) {
-        i = this.mapSideItemToIndex.get(component);
-        if ((firstIndex <= i) && (i <= lastIndex)) {
-          component.setBounds(size.width - sideWidth, ((insets.top + ys[i]) + pageStartHeight) - ys[firstIndex], sideWidth, heights[i]);
-        } else {
-          component.setBounds(0, 0, 0, 0);
-        }
+    for (Component component : mapSideItemToIndex.keySet()) {
+      i = mapSideItemToIndex.get(component);
+      if ((firstIndex <= i) && (i <= lastIndex)) {
+        component.setBounds(size.width - sideWidth, ((insets.top + ys[i]) + pageStartHeight) - ys[firstIndex], sideWidth, heights[i]);
+      } else {
+        component.setBounds(0, 0, 0, 0);
       }
     }
 

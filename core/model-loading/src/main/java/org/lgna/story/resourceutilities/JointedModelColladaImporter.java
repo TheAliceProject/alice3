@@ -55,9 +55,9 @@ public class JointedModelColladaImporter {
     return (n.getType() != null && n.getType().equals("JOINT"));
   }
 
-  private static Node findNodeNamedRoot(List<Node> nodes) {
+  private Node findNodeNamedRoot(List<Node> nodes) {
     for (Node n : nodes) {
-      if (nodeIsJoint(n) && n.getName().equalsIgnoreCase("root")) {
+      if (nodeIsJoint(n) && getJointIdentifier(n).equalsIgnoreCase("root")) {
         return n;
       }
     }
@@ -100,7 +100,7 @@ public class JointedModelColladaImporter {
     return null;
   }
 
-  private static Node findRootNode(List<Node> nodes) {
+  private Node findRootNode(List<Node> nodes) {
     Node rootNode = findNodeNamedRoot(nodes);
     if (rootNode != null) {
       return rootNode;
@@ -135,8 +135,8 @@ public class JointedModelColladaImporter {
 
   private Joint createAliceSkeletonFromNode(Node node) throws ModelLoadingException {
     Joint j = new Joint();
-    j.jointID.setValue(node.getName());
-    j.setName(node.getName());
+    j.jointID.setValue(getJointIdentifier(node));
+    j.setName(getJointIdentifier(node));
 
     j.localTransformation.setValue(getNodeTransform(node));
     for (Node child : node.getChildNodes()) {
@@ -146,6 +146,18 @@ public class JointedModelColladaImporter {
       }
     }
     return j;
+  }
+
+  private String getJointIdentifier(Node node) {
+    String sid = node.getSid();
+    String name = node.getName();
+    if (sid == null || "".equals(sid)) {
+      return name;
+    }
+    if (name != null && !"".equals(name) && !name.equals(sid)) {
+      modelLoadingLogger.log(Level.WARNING, "Incoming Joint has scoped ID (sid) '" + sid + "' that differs from name '" + name + "'. Using sid as identifier. This may conflict with export assumptions.");
+    }
+    return sid;
   }
 
   private AffineMatrix4x4 getNodeTransform(Node node) throws ModelLoadingException {
@@ -459,6 +471,7 @@ public class JointedModelColladaImporter {
             if (bufferedImage == null) {
               throw new ModelLoadingException("Error loading texture: File '" + image.getInitFrom() + "' not readable.");
             }
+            bufferedImage = ImageUtilities.stretchToPowersOfTwo(bufferedImage);
           } catch (IOException e) {
             throw new ModelLoadingException("Error loading texture: " + image.getInitFrom() + " not found.", e);
           } catch (RuntimeException e) {
