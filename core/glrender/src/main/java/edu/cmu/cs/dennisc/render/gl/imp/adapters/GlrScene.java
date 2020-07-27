@@ -61,6 +61,7 @@ import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -134,13 +135,21 @@ public class GlrScene extends GlrComposite<Scene> {
     //    rc.gl.glDepthMask( false );
     //    try {
     synchronized (this.glrGhostDescendants) {
-      glrGhostDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      try {
+        glrGhostDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      } catch (IllegalArgumentException iae) {
+        Logger.warning("Scene sorting for alpha layering did not keep up with model changes", iae);
+      }
       for (GlrGhost ghostAdapter : this.glrGhostDescendants) {
         ghostAdapter.renderGhost(rc, ghostAdapter);
       }
     }
     synchronized (this.glrVisualDescendants) {
-      glrVisualDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      try {
+        glrVisualDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      } catch (IllegalArgumentException iae) {
+        Logger.warning("Scene sorting for alpha layering did not keep up with model changes", iae);
+      }
       for (GlrVisual<? extends Visual> visualAdapter : this.glrVisualDescendants) {
         if (visualAdapter.isAlphaBlended()) {
           //todo: adapters should be removed
