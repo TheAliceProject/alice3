@@ -64,6 +64,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -263,6 +264,47 @@ public class ImageUtilities {
     }
     buffer.flush();
     return buffer.toByteArray();
+  }
+
+  public static BufferedImage stretchToPowersOfTwo(BufferedImage baseImage) {
+    final int srcHeight = baseImage.getHeight();
+    final int srcWidth = baseImage.getWidth();
+    if (isPowerOfTwo(srcHeight) && isPowerOfTwo(srcWidth)) {
+      return baseImage;
+    }
+
+    final int destHeight = nextPowerOfTwo(srcHeight);
+    final int destWidth = nextPowerOfTwo(srcWidth);
+    int[] pixel = new int[baseImage.getColorModel().getPixelSize() / 8];
+    BufferedImage destImage = new BufferedImage(destWidth, destHeight, baseImage.getType());
+    final WritableRaster srcRaster = baseImage.getRaster();
+    final WritableRaster destRaster = destImage.getRaster();
+
+    for (int destRow = 0; destRow < destHeight; destRow++) {
+      int srcRow = destRow * srcHeight / destHeight;
+      for (int destCol = 0; destCol < destWidth; destCol++) {
+        int srcCol = destCol * srcWidth / destWidth;
+        srcRaster.getPixel(srcCol, srcRow, pixel);
+        destRaster.setPixel(destCol, destRow, pixel);
+      }
+    }
+    return destImage;
+  }
+
+  private static int nextPowerOfTwo(int n) {
+    if (isPowerOfTwo(n)) {
+      return n;
+    }
+    double power =  Math.ceil(Math.log(n) / Math.log(2));
+    return (int) Math.round(Math.pow(2.0, power));
+  }
+
+  // In binary, 2^n has a single bit set (e.g. 10000)
+  // Subtracting 1 flips all the bits iff it starts as 2^n
+  // 1000… - 1 == 0111…
+  // The & then produces 0 only for 2^n
+  private static boolean isPowerOfTwo(int n) {
+    return n != 0 && ((n & (n - 1)) == 0);
   }
 
   public static void write(String path, Image image) throws IOException {

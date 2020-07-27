@@ -61,6 +61,8 @@ import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -69,6 +71,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -128,16 +131,25 @@ public class GlrScene extends GlrComposite<Scene> {
   }
 
   public void renderAlphaBlended(RenderContext rc) {
-    // todo depth sort
     //rc.gl.glDisable( GL_DEPTH_TEST );
     //    rc.gl.glDepthMask( false );
     //    try {
     synchronized (this.glrGhostDescendants) {
+      try {
+        glrGhostDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      } catch (IllegalArgumentException iae) {
+        Logger.warning("Scene sorting for alpha layering did not keep up with model changes", iae);
+      }
       for (GlrGhost ghostAdapter : this.glrGhostDescendants) {
         ghostAdapter.renderGhost(rc, ghostAdapter);
       }
     }
     synchronized (this.glrVisualDescendants) {
+      try {
+        glrVisualDescendants.sort(Comparator.comparingDouble(o -> negativeDistanceFromCameraSquared(o.owner)));
+      } catch (IllegalArgumentException iae) {
+        Logger.warning("Scene sorting for alpha layering did not keep up with model changes", iae);
+      }
       for (GlrVisual<? extends Visual> visualAdapter : this.glrVisualDescendants) {
         if (visualAdapter.isAlphaBlended()) {
           //todo: adapters should be removed
@@ -155,6 +167,10 @@ public class GlrScene extends GlrComposite<Scene> {
     //      rc.gl.glDepthMask( true );
     //    }
     //rc.gl.glEnable( GL_DEPTH_TEST );
+  }
+
+  private double negativeDistanceFromCameraSquared(Component comp) {
+    return 0.0 - Point3.calculateDistanceSquaredBetween(cameraPosition, comp.getAbsoluteTransformation().translation);
   }
 
   @Override
@@ -178,6 +194,7 @@ public class GlrScene extends GlrComposite<Scene> {
     rc.gl.glMatrixMode(GL_MODELVIEW);
     synchronized (cameraAdapter) {
       rc.gl.glLoadMatrixd(cameraAdapter.accessInverseAbsoluteTransformationAsBuffer());
+      cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation;
     }
 
     if (backgroundAdapter != null) {
@@ -245,5 +262,6 @@ public class GlrScene extends GlrComposite<Scene> {
   private final List<GlrGhost> glrGhostDescendants = Lists.newLinkedList();
   private final List<GlrVisual<?>> glrVisualDescendants = Lists.newLinkedList();
   private final List<GlrPlanarReflector> glrPlanarReflectorDescendants = Lists.newLinkedList();
+  private Point3 cameraPosition;
   private boolean isInitialized = false;
 }
