@@ -269,10 +269,12 @@ public abstract class ProgramImp {
     this.simulationSpeedFactor = simulationSpeedFactor;
   }
 
-  private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+  private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
     @Override
     public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
-      ProgramImp.this.getAnimator().update();
+      if (isAnimatorStarted) {
+        ProgramImp.this.getAnimator().update();
+      }
     }
   };
 
@@ -285,11 +287,11 @@ public abstract class ProgramImp {
 
   public void stopAnimator() {
     if (this.isAnimatorStarted) {
+      isAnimatorStarted = false;
       this.getAnimator().completeAll(null);
       RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
       renderFactory.decrementAutomaticDisplayCount();
       renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
-      this.isAnimatorStarted = false;
     } else {
       Logger.severe(this.isAnimatorStarted);
     }
