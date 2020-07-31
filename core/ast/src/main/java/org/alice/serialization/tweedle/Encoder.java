@@ -77,6 +77,11 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("TeenPersonResource", "PersonResource");
     typesToRename.put("ChildPersonResource", "PersonResource");
     typesToRename.put("ToddlerPersonResource", "PersonResource");
+    typesToRename.put("BipedPose", "JointedModelPose");
+    typesToRename.put("FlyerPose", "JointedModelPose");
+    typesToRename.put("SlithererPose", "JointedModelPose");
+    typesToRename.put("SwimmerPose", "JointedModelPose");
+    typesToRename.put("QuadrupedPose", "JointedModelPose");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
