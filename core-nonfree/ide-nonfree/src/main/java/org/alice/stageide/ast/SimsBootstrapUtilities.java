@@ -68,7 +68,7 @@ import java.util.ArrayList;
 /**
  * @author Dennis Cosgrove
  */
-public class SimsBootstrapUtilties extends BootstrapUtilties {
+public class SimsBootstrapUtilities extends BootstrapUtilities {
   //groundAppearance is optional and will cause the program to generate a ground in addition to a room
   public static NamedUserType createProgramType(SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
 

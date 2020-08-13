@@ -56,7 +56,7 @@ import org.alice.stageide.SimsStoryApiConfigurationManager;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.about.SimsArtAssetsEulaComposite;
 import org.alice.stageide.ast.ExpressionCreator;
-import org.alice.stageide.ast.SimsBootstrapUtilties;
+import org.alice.stageide.ast.SimsBootstrapUtilities;
 import org.alice.stageide.ast.SimsExpressionCreator;
 import org.alice.stageide.ast.sort.SimsOneShotSorter;
 import org.alice.stageide.cascade.ExpressionCascadeManager;
@@ -120,7 +120,7 @@ public class IdeNonfree extends NebulousIde {
 
   @Override
   public NamedUserType createProgramType(TemplateUriState.Template template) {
-    return SimsBootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+    return SimsBootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
   }
 
   @Override

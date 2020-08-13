@@ -106,7 +106,7 @@ import java.util.ArrayList;
 /**
  * @author Dennis Cosgrove
  */
-public class BootstrapUtilties {
+public class BootstrapUtilities {
   private static NamedUserType createType(String name, AbstractType<?, ?, ?> superType) {
     NamedUserType rv = new NamedUserType();
     rv.name.setValue(name);
