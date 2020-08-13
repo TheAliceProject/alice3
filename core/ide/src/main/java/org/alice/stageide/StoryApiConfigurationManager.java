@@ -65,7 +65,7 @@ import org.alice.ide.member.FilteredMethodsSubComposite;
 import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.ast.BootstrapUtilties;
+import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.ast.JointedTypeInfo;
 import org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite;
 import org.alice.stageide.iconfactory.StoryIconFactoryManager;
@@ -445,12 +445,12 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
   @Override
   public boolean isSignatureLocked(Code code) {
     //todo: check to see if only referenced from Program and Program type is hidden
-    return super.isSignatureLocked(code) || BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
+    return super.isSignatureLocked(code) || BootstrapUtilities.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
   }
 
   @Override
   public boolean isTabClosable(AbstractCode code) {
-    return !BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
+    return !BootstrapUtilities.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase(code.getName());
   }
 
   @Override

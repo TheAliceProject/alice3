@@ -12,7 +12,6 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -82,8 +81,13 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
   @Override
   public URL getThumbnailUrl(String variant) {
+    final URI iconURI = getIconURI();
+    if (iconURI == null) {
+      Logger.severe("Null icon URL for " + getModelClassName());
+      return null;
+    }
     try {
-      return getIconURI().toURL();
+      return iconURI.toURL();
     } catch (MalformedURLException e) {
       e.printStackTrace();
       return null;
@@ -204,15 +208,13 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
   @Override
   public URI getIconURI() {
-    File iconFile = modelManifest.getFile(modelVariant.icon);
-    return iconFile.toURI();
+    return modelManifest.getUri(modelVariant.icon);
   }
 
   @Override
   public URI getVisualURI() {
     StructureReference structureReference = modelManifest.getStructure(modelVariant.structure);
-    File visualFile = modelManifest.getFile(structureReference.file);
-    return visualFile.toURI();
+    return modelManifest.getUri(structureReference.file);
   }
 
   @Override
@@ -220,8 +222,7 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     ModelManifest.TextureSet textureSet = modelManifest.getTextureSet(modelVariant.textureSet);
     String textureResourceName = textureSet.idToResourceMap.values().iterator().next();
     AliceTextureReference textureReference = modelManifest.getAliceTextureReference(textureResourceName);
-    File textureFile = modelManifest.getFile(textureReference.file);
-    return textureFile.toURI();
+    return modelManifest.getUri(textureReference.file);
   }
 
   public ModelManifest getModelManifest() {

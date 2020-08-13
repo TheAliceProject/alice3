@@ -883,7 +883,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     if (this.orientation != null) {
       rv = (37 * rv) + this.orientation.hashCode();
     }
-    if (this.orientation != null) {
+    if (this.translation != null) {
       rv = (37 * rv) + this.translation.hashCode();
     }
     return rv;

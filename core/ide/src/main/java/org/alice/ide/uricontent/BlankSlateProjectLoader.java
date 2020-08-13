@@ -43,7 +43,7 @@
 package org.alice.ide.uricontent;
 
 import org.alice.nonfree.NebulousIde;
-import org.alice.stageide.ast.BootstrapUtilties;
+import org.alice.stageide.ast.BootstrapUtilities;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
 import org.lgna.project.Project;
 import org.lgna.project.ast.NamedUserType;
@@ -71,7 +71,7 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
     if (template.isRoom()) {
       programType = NebulousIde.nonfree.createProgramType(this.template);
     } else {
-      programType = BootstrapUtilties.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+      programType = BootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
     }
     return new Project(programType);
   }
