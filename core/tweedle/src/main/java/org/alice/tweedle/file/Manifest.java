@@ -1,6 +1,7 @@
 package org.alice.tweedle.file;
 
 import java.io.File;
+import java.net.URI;
 import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -87,10 +88,13 @@ public class Manifest {
     this.rootFile = rootFile;
   }
 
-  public File getFile(String manifestRelativeFileName) {
-    if (rootFile != null) {
-      return new File(rootFile, manifestRelativeFileName);
+  public URI getUri(String manifestRelativeFileName) {
+    if (manifestRelativeFileName == null) {
+      return null;
     }
-    return new File(manifestRelativeFileName);
+    if (rootFile != null) {
+      return new File(rootFile, manifestRelativeFileName).toURI();
+    }
+    return new File(manifestRelativeFileName).toURI();
   }
 }
