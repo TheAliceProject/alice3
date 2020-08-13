@@ -19,6 +19,9 @@ abstract class DataSourceIo {
     ZipOutputStream zos = new ZipOutputStream(os);
     Set<String> names = new HashSet<>();
     for (DataSource dataSource : dataSources) {
+      if (dataSource == null) {
+        continue;
+      }
       if (names.add(dataSource.getName())) {
         ZipUtilities.write(zos, dataSource);
       } else {
