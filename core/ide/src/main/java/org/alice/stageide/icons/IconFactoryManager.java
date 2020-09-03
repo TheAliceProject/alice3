@@ -76,6 +76,7 @@ import org.lgna.story.resources.*;
 import javax.swing.ImageIcon;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -364,10 +365,15 @@ public class IconFactoryManager {
     IconFactory iconFactory = mapModelStructureToIconFactory.get(modelStructure);
     if (iconFactory == null) {
       URL url = null;
-      try {
-        url = modelStructure.getIconURI().toURL();
-      } catch (MalformedURLException e) {
-        Logger.severe("Malformed URL: " + modelStructure.getIconURI());
+      final URI iconURI = modelStructure.getIconURI();
+      if (iconURI == null) {
+        Logger.severe("Null icon URL for " + modelStructure.getModelClassName());
+      } else {
+        try {
+          url = iconURI.toURL();
+        } catch (MalformedURLException e) {
+          Logger.severe("Malformed URL: " + iconURI);
+        }
       }
       if (url != null) {
         iconFactory = new TrimmedImageIconFactory(url, 160, 120);

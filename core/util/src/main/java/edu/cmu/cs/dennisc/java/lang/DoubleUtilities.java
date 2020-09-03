@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.java.lang;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -100,7 +99,7 @@ public class DoubleUtilities {
   public static double round(double value, int decimalPlaces) {
     if (Double.isFinite(value)) {
       BigDecimal bigDecimal = new BigDecimal(value);
-      bigDecimal = bigDecimal.round(new MathContext(decimalPlaces, RoundingMode.HALF_DOWN));
+      bigDecimal = bigDecimal.setScale(decimalPlaces, RoundingMode.HALF_DOWN);
       return bigDecimal.doubleValue();
     } else {
       return value;

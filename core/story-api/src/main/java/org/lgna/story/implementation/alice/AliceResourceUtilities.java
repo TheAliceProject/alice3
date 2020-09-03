@@ -45,6 +45,7 @@ package org.lgna.story.implementation.alice;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -485,10 +486,14 @@ public class AliceResourceUtilities {
 
   public static URL getTextureURL(ModelResource resource) {
     if (resource instanceof DynamicResource) {
+      final URI textureURI = ((DynamicResource) resource).getTextureURI();
+      if (textureURI == null) {
+        return null;
+      }
       try {
-        return ((DynamicResource) resource).getTextureURI().toURL();
+        return textureURI.toURL();
       } catch (MalformedURLException e) {
-        Logger.severe("Failed to get texture URL for " + ((DynamicResource) resource).getTextureURI(), e);
+        Logger.severe("Failed to get texture URL for " + textureURI, e);
         return null;
       }
     }
@@ -501,10 +506,14 @@ public class AliceResourceUtilities {
 
   private static URL getVisualURL(ModelResource resource) {
     if (resource instanceof DynamicResource) {
+      final URI visualURI = ((DynamicResource) resource).getVisualURI();
+      if (visualURI == null) {
+        return null;
+      }
       try {
-        return ((DynamicResource) resource).getVisualURI().toURL();
+        return visualURI.toURL();
       } catch (MalformedURLException e) {
-        Logger.severe("Failed to get visual URL for " + ((DynamicResource) resource).getVisualURI(), e);
+        Logger.severe("Failed to get visual URL for " + visualURI, e);
         return null;
       }
     }
