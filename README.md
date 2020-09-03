@@ -2,19 +2,24 @@
 
 [Alice](https://www.alice.org) is an innovative block-based programming environment that makes it easy to create animations, build interactive narratives, or program simple games in 3D.
 
+### Latest Released Build:
+
+[![](https://img.shields.io/badge/master-3.6.0.0-green.svg)](https://www.alice.org/get-alice/alice-3/)
+
 ## Building Alice 3 from the source
 
 Download and install the following build tools
-* J2SE 1.8 JDK
+* [J2SE 1.8 JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
   * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-* [Apache Maven](https://maven.apache.org/install.html)
+  * Using more recent versions than Java 8 will cause problems when building
+* [Apache Maven](https://maven.apache.org/install.html) 3.6.3 is the newest at present and works
 * git
 * [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
 * [Install4J 7](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
 
 ---
 
-Clone the Alice 3 repository into a local directory, (`${alice3}`)
+Clone the Alice 3 repository into a local directory, `${alice3}`
 
     cd ${alice3}
     git clone --recurse-submodules https://github.com/TheAliceProject/alice3.git
@@ -25,13 +30,21 @@ If you do not use the `--recurse-submodules` flag above it can be pulled in expl
     git submodule init
     git submodule update
 
-Compile and jar the Alice code. This will also build the NetBeans plugin:
+Compile and jar the Alice code.
+
+    mvn compile
+
+or, to also build the NetBeans plugin:
 
     mvn -Dinstall4j.skip install
 
+And, if you want to use Install4J to build the installers:
+
+        mvn install
+
 ## Executing, testing, and building
 
-Launch the Alice IDE
+After successfully compiling, you can launch the Alice IDE
 
     cd alice-ide
     mvn exec:java -Dentry-point
@@ -45,6 +58,46 @@ Build the Alice installers, which  requires Install4J 7:
 
     cd ${alice3}
     mvn install
+
+## IDE
+**IntelliJ IDEA** is suggested for coding/building Alice 3. There is a free community edition
+or JetBrains offers a product pack for students using an edu email address [here](https://www.jetbrains.com/community/education/#students
+).
+
+### Build with IntelliJ
+
+Although IntelliJ IDEA installs Openjdk-14.0.1 **Alice 3 builds with Java 8** which will need to be installed and selected.
+
+IntelliJ IDEA has a bundled maven.
+* The location is set in:
+  * *File -> Settings -> Build, Execution, Deployment -> Build Tools -> Maven*
+* To build with maven using **build project** in the IDE first check the "Delegate IDE build/run actions to Maven" option in
+  * *File -> Settings -> Build, Execution, Deployment -> Build Tools -> Maven -> Runner*
+
+### Run with IntelliJ
+After the project is built successfully. You can create a Run/Debug Configuration and run the project.
+In the **Run/Debug Configurations** window, create a new **Application** configuration and enter lines as bellow.
+![New Application Configuration](IDELaunchAlice.png)
+The working directory should be the root directory where you checked the Alice 3 project out, `${alice3}`.
+
+The VM options are:
+
+    -ea
+    -splash:"./core/resources/target/distribution/application/SplashScreen.png"
+    -Xmx1024m
+    -Dswing.aatext=true
+    -Dorg.alice.ide.rootDirectory="./core/resources/target/distribution"
+    -Dcom.apple.mrj.application.apple.menu.about.name=Alice3
+    -Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING
+    -Dorg.alice.ide.internalTesting=true
+    -Dorg.lgna.croquet.Element.isIdCheckDesired=true
+    -Djogamp.gluegen.UseTempJarCache=false
+    -Dorg.alice.stageide.isCrashDetectionDesired=false
+    -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
+
+Then the project should be ready to run.
+
+Final note: If you were delegating IDE build/run actions to Maven in the previous step, please uncheck that option. Or you might run into some graphics errors running Alice.
 
 ## Working without the Sims*
 
