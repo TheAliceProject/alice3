@@ -279,7 +279,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
       }
     }
     //todo: handle imports
-    appendString(type.getName());
+    appendString(type == null ? "MISSING_TYPE" : type.getName());
   }
 
   @Override
