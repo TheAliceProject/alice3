@@ -818,7 +818,7 @@ public class Encoder extends SourceCodeGenerator {
 
   @Override
   public void processTypeName(AbstractType<?, ?, ?> type) {
-    appendString(tweedleTypeName(type.getName()));
+    appendString(type == null ? "MISSING_TYPE" : tweedleTypeName(type.getName()));
   }
 
   private String tweedleTypeName(String typeName) {
