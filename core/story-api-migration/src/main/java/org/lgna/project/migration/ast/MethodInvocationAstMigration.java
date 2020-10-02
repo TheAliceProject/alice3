@@ -73,7 +73,7 @@ import java.util.Set;
       public void visit(Crawlable crawlable) {
         if (crawlable instanceof MethodInvocation) {
           MethodInvocation methodInvocation = (MethodInvocation) crawlable;
-          MethodInvocationAstMigration.this.migrate(methodInvocation, typeHelper, typeCache);
+          MethodInvocationAstMigration.this.migrate(methodInvocation, null);
         }
       }
     }, CrawlPolicy.COMPLETE, null);
