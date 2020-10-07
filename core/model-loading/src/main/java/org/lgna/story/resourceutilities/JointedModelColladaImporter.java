@@ -593,7 +593,7 @@ public class JointedModelColladaImporter {
     }
 
     SkeletonVisual skeletonVisual = new SkeletonVisual();
-    skeletonVisual.setName(scene.getName());
+    skeletonVisual.setName(baseFileName(colladaModelFile.getName()));
     skeletonVisual.frontFacingAppearance.setValue(new SimpleAppearance());
     skeletonVisual.skeleton.setValue(aliceSkeleton);
     List<Mesh> aliceGeometry = new ArrayList<Mesh>();
@@ -636,6 +636,17 @@ public class JointedModelColladaImporter {
     skeletonVisual.setTracker(null);
 
     return skeletonVisual;
+  }
+
+  private String baseFileName(String fileName) {
+    if (fileName == null || fileName.isEmpty()) {
+      return "Model";
+    }
+    int pos = fileName.lastIndexOf(".");
+    if (pos < 0) {
+      return  fileName;
+    }
+    return fileName.substring(0, pos);
   }
 
   /*
