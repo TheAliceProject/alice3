@@ -6,7 +6,7 @@
   <groupId>org.alice</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>6.0.0-SNAPSHOT</version>
+  <version>6.0.2-SNAPSHOT</version>
 
   <name>Alice</name>
   <url>http://www.alice.org/</url>
@@ -78,7 +78,7 @@
     <jogl.version>2.3.2</jogl.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
-    <alice.build.version>3.6.0.0</alice.build.version>
+    <alice.build.version>3.6.0.2</alice.build.version>
     <alice.build.prerelease></alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
@@ -124,90 +124,90 @@
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>util</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>ast</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>croquet</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>image-editor</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>scenegraph</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>glrender</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>issue-reporting</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>story-api</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>story-api-migration</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>resources</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>ide</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>i18n</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>alice-ide</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>model-loading</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>tweedle</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
 
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>netbeans</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
 
       <!-- Gallery/Models -->
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>models</artifactId>
-        <version>6.0.0-SNAPSHOT</version>
+        <version>6.0.2-SNAPSHOT</version>
       </dependency>
 
       <!-- Third Party Libraries in project-->
@@ -235,7 +235,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.11</version>
+        <version>4.13.1</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -613,22 +613,22 @@
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>models-nonfree</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>6.0.2-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>resources-nonfree</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>6.0.2-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>story-api-nonfree</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>6.0.2-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>org.alice.nonfree</groupId>
             <artifactId>ide-nonfree</artifactId>
-            <version>6.0.0-SNAPSHOT</version>
+            <version>6.0.2-SNAPSHOT</version>
           </dependency>
         </dependencies>
       </dependencyManagement>
