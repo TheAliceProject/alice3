@@ -3,7 +3,7 @@ OpenIDE-Module: org.alice.netbeans
 OpenIDE-Module-Install: org/alice/netbeans/installer/Installer.class
 OpenIDE-Module-Layer: org/alice/netbeans/layer.xml
 OpenIDE-Module-Localizing-Bundle: org/alice/netbeans/Bundle.properties
-OpenIDE-Module-Specification-Version: 3.6.0.0
+OpenIDE-Module-Specification-Version: 3.6.0.2
 OpenIDE-Module-Short-Description: Converts Alice3 projects (a3p files) into runnable NetBeans java projects.
 OpenIDE-Module-Long-Description: Converts Alice3 projects (a3p files) into runnable NetBeans java projects and provides a palette of draggable code elements to further extend the project.
 OpenIDE-Module-Display-Category: Java

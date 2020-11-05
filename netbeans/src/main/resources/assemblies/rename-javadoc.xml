@@ -7,7 +7,7 @@
 
   <files>
     <file>
-      <source>${project.build.directory}/netbeans-6.0.0-SNAPSHOT-javadoc.jar</source>
+      <source>${project.build.directory}/netbeans-6.0.2-SNAPSHOT-javadoc.jar</source>
       <outputDirectory>.</outputDirectory>
       <destName>nbm/netbeans/extra/doc/aliceDocs.zip</destName>
     </file>
