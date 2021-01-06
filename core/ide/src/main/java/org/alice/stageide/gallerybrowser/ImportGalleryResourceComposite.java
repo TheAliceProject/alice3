@@ -1,6 +1,8 @@
 package org.alice.stageide.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
@@ -152,6 +154,17 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
   protected void releaseView(CompositeView<?, ?> view) {
     splitComposite.releaseView();
     super.releaseView(view);
+  }
+
+  @Override
+  protected void handlePostHideDialog() {
+    super.handlePostHideDialog();
+    if (openingActivity.isCanceledByError()) {
+      Throwable cause = (Throwable) openingActivity.getProducedValue();
+      final String message = "There was a problem writing to the My Gallery directory:\n" + cause.getLocalizedMessage();
+      Dialogs.showWarning("Failed to save model", message);
+      Logger.throwable(cause, message);
+    }
   }
 
   @Override

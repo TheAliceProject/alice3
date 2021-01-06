@@ -135,7 +135,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
   }
 
   public MenuItemSelectStep findFirstMenuSelectStep() {
-    for (PrepStep step : prepSteps) {
+    for (PrepStep<?> step : prepSteps) {
       if (step instanceof MenuItemSelectStep) {
         return (MenuItemSelectStep) step;
       }
@@ -161,7 +161,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
     MenuItemSelectStep.createAndAddToActivity(this, menuSelection, trigger);
   }
 
-  public <M extends DragModel> DragStep addDragStep(DragModel model, DragTrigger trigger) {
+  public <M extends DragModel> DragStep addDragStep(M model, DragTrigger trigger) {
     return new DragStep(this, model, trigger);
   }
 
@@ -173,7 +173,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
     return getPrepStepCount() + childActivities.size();
   }
 
-  public ActivityNode getChildAt(int index) {
+  public ActivityNode<?> getChildAt(int index) {
     if (index >= getPrepStepCount()) {
       return childActivities.get(index - getPrepStepCount());
     } else {
@@ -191,12 +191,12 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 
   void addPrepStep(PrepStep<?> step) {
     prepSteps.add(step);
-    step.fireChanged(new ChangeEvent<PrepStep>(step));
+    step.fireChanged(new ChangeEvent<>(step));
   }
 
   public void setCompletionModel(CompletionModel model) {
     this.model = model;
-    fireChanged(new ChangeEvent<UserActivity>(this));
+    fireChanged(new ChangeEvent<>(this));
   }
 
   public CompletionModel getCompletionModel() {
@@ -240,8 +240,9 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 
   public void cancel(CancelException ce) {
     removeFromOwnerIfEmpty();
-    if (ce != null && ce.getCause() != ce) {
+    if (ce != null && ce.getCause() != null && ce.getCause() != ce) {
       status = ActivityStatus.ERROR;
+      producedValue = ce.getCause();
     } else {
       status = ActivityStatus.CANCELED;
     }
@@ -251,7 +252,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
   private void removeFromOwnerIfEmpty() {
     if (getOwner() != null && childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null) {
       getOwner().childActivities.remove(this);
-      getOwner().fireChanged(new ChangeEvent<UserActivity>(getOwner()));
+      getOwner().fireChanged(new ChangeEvent<>(getOwner()));
     }
   }
 
@@ -267,7 +268,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append(getClass().getSimpleName()).append(' ').append(status).append("[");
-    for (PrepStep prepStep : prepSteps) {
+    for (PrepStep<?> prepStep : prepSteps) {
       sb.append(prepStep);
       sb.append(",");
     }
