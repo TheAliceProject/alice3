@@ -77,7 +77,7 @@ IntelliJ IDEA has a bundled maven.
 ### Run with IntelliJ
 After the project is built successfully. You can create a Run/Debug Configuration and run the project.
 In the **Run/Debug Configurations** window, create a new **Application** configuration and enter lines as bellow.
-![New Application Configuration](IDELaunchAlice.png)
+![New Application Configuration](docs/images/IDELaunchAlice.png)
 The working directory should be the root directory where you checked the Alice 3 project out, `${alice3}`.
 
 The VM options are:
