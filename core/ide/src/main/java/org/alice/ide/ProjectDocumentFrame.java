@@ -114,7 +114,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     this.metaDeclarationFauxState = new MetaDeclarationFauxState(this);
     this.instanceFactoryState = new InstanceFactoryState(this);
     this.findComposite = new FindComposite(this);
-    this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations(this) : new Operation[0];
     this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
   }
 
@@ -179,10 +178,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
   public ApiConfigurationManager getApiConfigurationManager() {
     return this.apiConfigurationManager;
-  }
-
-  public Operation[] getUploadOperations() {
-    return this.uploadOperations;
   }
 
   public InstanceFactoryState getInstanceFactoryState() {
@@ -345,8 +340,6 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   private final ApiConfigurationManager apiConfigurationManager;
 
   private MetaState<NamedUserType> typeMetaState;
-
-  private final Operation[] uploadOperations;
 
   private final FindComposite findComposite;
 

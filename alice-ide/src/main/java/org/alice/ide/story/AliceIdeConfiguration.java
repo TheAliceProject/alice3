@@ -43,21 +43,13 @@
 package org.alice.ide.story;
 
 import org.alice.ide.IdeConfiguration;
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.issue.AliceIssueReportingHub;
-import org.alice.ide.youtube.croquet.UploadOperation;
-import org.lgna.croquet.Operation;
 import org.lgna.issue.IssueReportingHub;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AliceIdeConfiguration implements IdeConfiguration {
-  @Override
-  public Operation[] createUploadOperations(ProjectDocumentFrame projectDocumentFrame) {
-    return new Operation[] {new UploadOperation(projectDocumentFrame)};
-  }
-
   @Override
   public IssueReportingHub getIssueReportingHub() {
     return this.issueReportingHub;
