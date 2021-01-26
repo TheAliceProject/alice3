@@ -42,27 +42,20 @@
  *******************************************************************************/
 package org.alice.ide;
 
-import org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation;
-import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite;
 import org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite;
 import org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite;
-import org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite;
-import org.alice.ide.croquet.models.menubar.ContributorMenuModel;
 import org.alice.ide.croquet.models.menubar.HelpMenuModel;
 import org.alice.ide.croquet.models.ui.MemoryUsageComposite;
 import org.alice.ide.help.HelpComposite;
-import org.alice.ide.localize.review.croquet.LocalizeReviewFrame;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
-import org.alice.ide.warning.WarningDialogComposite;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.about.AboutComposite;
 import org.alice.stageide.about.CreditsComposite;
 import org.alice.stageide.about.SystemEulaComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
 import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
@@ -77,40 +70,16 @@ public enum IdeApp {
     return this.memoryUsageFrameIsShowingState;
   }
 
-  public BooleanState getLocalizeReviewIsShowingState() {
-    return this.localizeReviewIsShowingState;
-  }
-
   public Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
     return this.isRecursionAllowedPreferenceDialogLaunchOperation;
-  }
-
-  public MenuModel getContributorMenuModel() {
-    return this.contributorMenuModel;
   }
 
   public Operation getHelpDialogLaunchOperation() {
     return this.helpDialogLaunchOperation;
   }
 
-  public Operation getGraphicsHelpDialogLaunchOperation() {
-    return this.graphicsHelpDialogLaunchOperation;
-  }
-
   public Operation getReportBugLaunchOperation() {
     return this.reportIssueComposite.getReportBugLaunchOperation();
-  }
-
-  public Operation getRequestNewFeatureLaunchOperation() {
-    return this.reportIssueComposite.getRequestNewFeatureLaunchOperation();
-  }
-
-  public Operation getSuggestImprovementLaunchOperation() {
-    return this.reportIssueComposite.getSuggestImprovementLaunchOperation();
-  }
-
-  public Operation getWarningDialogLaunchOperation() {
-    return this.warningDialogLaunchOperation;
   }
 
   public ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
@@ -123,14 +92,6 @@ public enum IdeApp {
 
   public ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
     return this.showAllSystemPropertiesComposite;
-  }
-
-  public Operation getShowSystemPropertiesDialogLaunchOperation() {
-    return this.showSystemPropertiesDialogLaunchOperation;
-  }
-
-  public Operation getBrowseReleaseNotesOperation() {
-    return this.browseReleaseNotesOperation;
   }
 
   public Operation getSystemEulaDialogLaunchOperation() {
@@ -155,29 +116,17 @@ public enum IdeApp {
 
   private final BooleanState memoryUsageFrameIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, MemoryUsageComposite.class);
 
-  private final BooleanState localizeReviewIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(Application.INFORMATION_GROUP, LocalizeReviewFrame.class);
-
   private final Operation isRecursionAllowedPreferenceDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(IsRecursionAllowedPreferenceDialogComposite.class, Application.APPLICATION_UI_GROUP).getLaunchOperation();
-
-  private final MenuModel contributorMenuModel = new ContributorMenuModel(localizeReviewIsShowingState);
 
   private final Operation helpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(HelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-  private final Operation graphicsHelpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(GraphicsHelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
-
   private final ReportIssueComposite reportIssueComposite = new ReportIssueComposite();
-
-  private final Operation warningDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(WarningDialogComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
   private final ShowClassPathPropertyComposite showClassPathPropertyComposite = new ShowClassPathPropertyComposite();
 
   private final ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new ShowLibraryPathPropertyComposite();
 
   private final ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new ShowAllSystemPropertiesComposite();
-
-  private final Operation showSystemPropertiesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(ShowSystemPropertiesComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
-
-  private final BrowseReleaseNotesOperation browseReleaseNotesOperation = new BrowseReleaseNotesOperation();
 
   private final Operation systemEulaDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(SystemEulaComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 

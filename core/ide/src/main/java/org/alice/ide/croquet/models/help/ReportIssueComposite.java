@@ -80,8 +80,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
     this.reportTypeState = createImmutableListStateForEnum("reportTypeState", IssueType.class, null);
     this.registerSubComposite(logInOutComposite);
     this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation("reportBug", new IssueTypeInitializer(IssueType.BUG));
-    this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation("requestNewFeature", new IssueTypeInitializer(IssueType.NEW_FEATURE));
-    this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation("suggestImprovement", new IssueTypeInitializer(IssueType.IMPROVEMENT));
   }
 
   @Override
@@ -199,14 +197,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
     return this.reportBugLaunchOperation;
   }
 
-  public Operation getRequestNewFeatureLaunchOperation() {
-    return this.requestNewFeatureLaunchOperation;
-  }
-
-  public Operation getSuggestImprovementLaunchOperation() {
-    return this.suggestImprovementLaunchOperation;
-  }
-
   private final ImmutableDataSingleSelectListState<BugSubmitVisibility> visibilityState = createImmutableListStateForEnum("visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE);
 
   private final ImmutableDataSingleSelectListState<IssueType> reportTypeState;
@@ -216,8 +206,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
   private final Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
   private final LogInOutComposite logInOutComposite = new LogInOutComposite(UUID.fromString("079f108d-c3bb-4581-b107-f21b8d7286ca"), BugLoginComposite.getInstance());
   private final Operation reportBugLaunchOperation;
-  private final Operation requestNewFeatureLaunchOperation;
-  private final Operation suggestImprovementLaunchOperation;
 
   private final ValueListener<String> adapter = new ValueListener<String>() {
     @Override
