@@ -42,18 +42,14 @@
  *******************************************************************************/
 package org.alice.ide;
 
-import org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation;
-import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite;
 import org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite;
 import org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite;
-import org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite;
 import org.alice.ide.croquet.models.menubar.HelpMenuModel;
 import org.alice.ide.croquet.models.ui.MemoryUsageComposite;
 import org.alice.ide.help.HelpComposite;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
-import org.alice.ide.warning.WarningDialogComposite;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.about.AboutComposite;
 import org.alice.stageide.about.CreditsComposite;
@@ -82,24 +78,8 @@ public enum IdeApp {
     return this.helpDialogLaunchOperation;
   }
 
-  public Operation getGraphicsHelpDialogLaunchOperation() {
-    return this.graphicsHelpDialogLaunchOperation;
-  }
-
   public Operation getReportBugLaunchOperation() {
     return this.reportIssueComposite.getReportBugLaunchOperation();
-  }
-
-  public Operation getRequestNewFeatureLaunchOperation() {
-    return this.reportIssueComposite.getRequestNewFeatureLaunchOperation();
-  }
-
-  public Operation getSuggestImprovementLaunchOperation() {
-    return this.reportIssueComposite.getSuggestImprovementLaunchOperation();
-  }
-
-  public Operation getWarningDialogLaunchOperation() {
-    return this.warningDialogLaunchOperation;
   }
 
   public ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
@@ -112,14 +92,6 @@ public enum IdeApp {
 
   public ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
     return this.showAllSystemPropertiesComposite;
-  }
-
-  public Operation getShowSystemPropertiesDialogLaunchOperation() {
-    return this.showSystemPropertiesDialogLaunchOperation;
-  }
-
-  public Operation getBrowseReleaseNotesOperation() {
-    return this.browseReleaseNotesOperation;
   }
 
   public Operation getSystemEulaDialogLaunchOperation() {
@@ -148,21 +120,13 @@ public enum IdeApp {
 
   private final Operation helpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(HelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
-  private final Operation graphicsHelpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(GraphicsHelpComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
-
   private final ReportIssueComposite reportIssueComposite = new ReportIssueComposite();
-
-  private final Operation warningDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(WarningDialogComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
   private final ShowClassPathPropertyComposite showClassPathPropertyComposite = new ShowClassPathPropertyComposite();
 
   private final ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new ShowLibraryPathPropertyComposite();
 
   private final ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new ShowAllSystemPropertiesComposite();
-
-  private final Operation showSystemPropertiesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(ShowSystemPropertiesComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
-
-  private final BrowseReleaseNotesOperation browseReleaseNotesOperation = new BrowseReleaseNotesOperation();
 
   private final Operation systemEulaDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(SystemEulaComposite.class, Application.INFORMATION_GROUP).getLaunchOperation();
 
