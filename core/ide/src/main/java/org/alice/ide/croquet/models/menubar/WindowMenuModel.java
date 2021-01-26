@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.IdeApp;
 import org.alice.ide.ProjectDocumentFrame;
-import org.alice.ide.croquet.models.history.ProjectHistoryComposite;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.lgna.croquet.ItemState;
 import org.lgna.croquet.MenuModel;
@@ -68,10 +67,8 @@ public class WindowMenuModel extends StaticMenuModel {
       rv.add(((SingleSelectListState) perspectiveState).getMenuModel());
       rv.add(MenuModel.SEPARATOR);
     }
-    rv.add(ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel());
-    rv.add(IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel());
-    rv.add(MenuModel.SEPARATOR);
     rv.add(PreferencesMenuModel.getInstance());
+    rv.add(IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel());
     if (SystemUtilities.isPropertyTrue("org.alice.ide.internalTesting")) {
       rv.add(MenuModel.SEPARATOR);
       rv.add(InternalTestingMenuModel.getInstance());

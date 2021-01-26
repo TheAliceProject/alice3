@@ -264,7 +264,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
     return this.resourcesDialogLaunchOperation;
   }
 
-  public BooleanState getStasticsFrameIsShowingState() {
+  public BooleanState getStatisticsFrameIsShowingState() {
     return this.stasticsFrameIsShowingState;
   }
 
