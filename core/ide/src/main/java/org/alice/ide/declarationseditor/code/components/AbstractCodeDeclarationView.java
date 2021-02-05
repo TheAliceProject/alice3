@@ -49,7 +49,6 @@ import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
 import org.alice.ide.controlflow.ControlFlowComposite;
 import org.alice.ide.croquet.models.IdeDragModel;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
 import org.alice.ide.declarationseditor.CodeComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
 import org.lgna.croquet.DropReceptor;
@@ -72,12 +71,7 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
 
     AbstractCode code = composite.getDeclaration();
 
-    SwingComponentView<?> controlFlowComponent;
-    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
-      controlFlowComponent = ControlFlowComposite.getInstance(code).getView();
-    } else {
-      controlFlowComponent = null;
-    }
+    SwingComponentView<?> controlFlowComponent = ControlFlowComposite.getInstance(code).getView();
 
     UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
     SwingComponentView<?> pageEndComponent;

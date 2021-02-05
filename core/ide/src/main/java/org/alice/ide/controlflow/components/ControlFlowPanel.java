@@ -45,13 +45,11 @@ package org.alice.ide.controlflow.components;
 
 import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
 import org.alice.ide.controlflow.ControlFlowComposite;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Panel;
 import wrap.WrappedFlowLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import java.awt.LayoutManager;
 
@@ -74,10 +72,6 @@ public class ControlFlowPanel extends Panel {
 
   @Override
   protected LayoutManager createLayoutManager(JPanel jPanel) {
-    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
-      return new WrappedFlowLayout(WrappedFlowLayout.LEADING, 1, 0);
-    } else {
-      return new BoxLayout(jPanel, BoxLayout.PAGE_AXIS);
-    }
+    return new WrappedFlowLayout(WrappedFlowLayout.LEADING, 1, 0);
   }
 }

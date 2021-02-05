@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import org.alice.ide.controlflow.ControlFlowComposite;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
 import org.alice.ide.croquet.models.ui.preferences.IsJavaCodeOnTheSideState;
 import org.alice.ide.declarationseditor.CodeComposite;
 import org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView;
@@ -93,9 +92,7 @@ public class EventListenersView extends AbstractCodeDeclarationView {
     this.stickyBottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 12, 0));
     this.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
     this.scrollPane.setBackgroundColor(this.getBackgroundColor());
-    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
-      this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());
-    }
+    this.addPageEndComponent(ControlFlowComposite.getInstance(composite.getDeclaration()).getView());
   }
 
   @Override
