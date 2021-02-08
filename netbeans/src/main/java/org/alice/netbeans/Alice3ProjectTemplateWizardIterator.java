@@ -126,10 +126,12 @@ import org.xml.sax.InputSource;
         }
       }
       if (componentsToClose.size() > 0) {
+        // TODO I18n
         String title = "Clean Slate?";
 
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
+        // TODO I18n
         sb.append("<h1>Would you like to start with a clean slate?</h1>");
         sb.append("<h1>Close the following tabs:</h1>");
         sb.append("<ul>");
@@ -253,12 +255,14 @@ import org.xml.sax.InputSource;
   }
 
   private void notifyUserOfFailure() {
+    // TODO I18n
     final String title = "Unable to Import Project";
     final String msg = "<html><h1>There was an error when loading this project.</h1><p>For details look in <i>Output - Alice3 Plugin</i></p></html>";
     JOptionPane.showMessageDialog(panels[0].getComponent(), msg, title, JOptionPane.ERROR_MESSAGE);
   }
 
   private void notifyUserOfMigrationFailure() {
+    // TODO I18n
     final String title = "Unable to Migrate Project";
     final String msg = "<html><h1>There was an error when attempting to migrate this project from an earlier version of Alice.</h1>"
         + "<p>Use an up to date version of Alice to load and save a copy and then try this again in NetBeans.</p></html>";
