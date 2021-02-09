@@ -92,6 +92,7 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
     dialogOK = false;
 
+    // TODO I18N
     String displayName = "Counted For Loop";
     Object[] options = {okButton, cancelButton};
     descriptor = new DialogDescriptor(this, displayName, true, options, okButton, DialogDescriptor.DEFAULT_ALIGN, null, null);

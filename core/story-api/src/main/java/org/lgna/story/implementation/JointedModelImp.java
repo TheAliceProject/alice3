@@ -397,44 +397,49 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   //  }
 
   public void setNewResource(JointedModelResource resource) {
-    if (resource != this.getResource()) {
-      Composite originalParent = this.visualData.getSGParent();
-      VisualData<?> oldVisualData = this.visualData;
-      Dimension3 oldScale = this.getScale();
-      InstanceProperty[] oldScaleProperties = this.getScaleProperties();
-      this.factory = (JointImplementationAndVisualDataFactory<R>) resource.getImplementationAndVisualFactory();
-      float originalOpacity = this.opacity.getValue();
-      Paint originalPaint = this.paint.getValue();
-      this.visualData = this.factory.createVisualData();
-
-      Map<JointId, JointImp> newJoints = createJointImps();
-      matchNewDataToExistingJoints(newJoints);
-
-      //Make joint wrappers for new entries and put them in the map
-      for (Map.Entry<JointId, JointImp> entry : newJoints.entrySet()) {
-        if (!mapIdToJoint.containsKey(entry.getKey())) {
-          mapIdToJoint.put(entry.getKey(), new JointImpWrapper(this, entry.getValue()));
-        }
-      }
-
-      mapArrayIdToJointIdArray.clear();
-      fillInJointArrays();
-
-      this.visualData.setSGParent(originalParent);
-      oldVisualData.setSGParent(null);
-      this.opacity.setValue(originalOpacity);
-      this.paint.setValue(originalPaint);
-
-      InstanceProperty<?>[] newScaleProperties = this.getScaleProperties();
-      for (int i = 0; i < oldScaleProperties.length; i++) {
-        InstanceProperty<?> oldProp = oldScaleProperties[i];
-        assert oldProp != null : i;
-        for (PropertyListener propListener : oldProp.getPropertyListeners()) {
-          newScaleProperties[i].addPropertyListener(propListener);
-        }
-      }
-      this.setScale(oldScale);
+    if (resource == this.getResource()) {
+      return;
     }
+    Composite originalParent = this.visualData.getSGParent();
+    VisualData<?> oldVisualData = this.visualData;
+    Dimension3 oldScale = this.getScale();
+    InstanceProperty[] oldScaleProperties = this.getScaleProperties();
+    this.factory = (JointImplementationAndVisualDataFactory<R>) resource.getImplementationAndVisualFactory();
+    float originalOpacity = this.opacity.getValue();
+    Paint originalPaint = this.paint.getValue();
+    this.visualData = this.factory.createVisualData();
+
+    if (!factory.isSims() || mapIdToJoint.isEmpty()) {
+      updateSkeleton();
+    }
+
+    this.visualData.setSGParent(originalParent);
+    oldVisualData.setSGParent(null);
+    this.opacity.setValue(originalOpacity);
+    this.paint.setValue(originalPaint);
+
+    InstanceProperty<?>[] newScaleProperties = this.getScaleProperties();
+    for (int i = 0; i < oldScaleProperties.length; i++) {
+      InstanceProperty<?> oldProp = oldScaleProperties[i];
+      assert oldProp != null : i;
+      for (PropertyListener propListener : oldProp.getPropertyListeners()) {
+        newScaleProperties[i].addPropertyListener(propListener);
+      }
+    }
+    this.setScale(oldScale);
+  }
+
+  private void updateSkeleton() {
+    Map<JointId, JointImp> newJoints = createJointImps();
+    matchNewDataToExistingJoints(newJoints);
+    //Make joint wrappers for new entries and put them in the map
+    for (Map.Entry<JointId, JointImp> entry : newJoints.entrySet()) {
+      if (!mapIdToJoint.containsKey(entry.getKey())) {
+        mapIdToJoint.put(entry.getKey(), new JointImpWrapper(this, entry.getValue()));
+      }
+    }
+    mapArrayIdToJointIdArray.clear();
+    fillInJointArrays();
   }
 
   public JointedModelResource getVisualResource() {

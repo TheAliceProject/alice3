@@ -49,6 +49,6 @@ import java.util.UUID;
 
 public class AudioSourceFillIn extends SourceFillIn<AudioResource> {
   public AudioSourceFillIn(AudioResource resource) {
-    super(UUID.fromString("16a99ec6-6fe4-4ba3-af34-a8f54bfe936a"), AudioSource.class, AudioResource.class, resource);
+    super(UUID.fromString("c5d40d9e-b7a9-45d7-8784-1a0bdfc05b90"), AudioSource.class, AudioResource.class, resource);
   }
 }

@@ -70,7 +70,7 @@ public abstract class BrowserOperation extends InconsequentialActionOperation {
         BrowserUtilities.browse(url);
       } catch (Exception e) {
         ClipboardUtilities.setClipboardContents(url.toString());
-        Dialogs.showInfo("An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
+        Dialogs.showInfo("An error has occurred in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
       }
     } else {
       StringBuilder sbDescription = new StringBuilder();
