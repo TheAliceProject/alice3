@@ -123,6 +123,25 @@ public abstract class Application<D extends DocumentFrame> {
   public void initialize(String[] args) {
     if (SystemUtilities.isMac()) {
       com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
+      // take the menu bar off the jframe
+//      System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+      // set the name of the application menu item
+      System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Alice 3");
+
+      // set the look and feel
+      try {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      } catch (InstantiationException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      } catch (UnsupportedLookAndFeelException e) {
+        e.printStackTrace();
+      }
+
       application.setAboutHandler(new AboutHandler() {
         @Override
         public void handleAbout(AppEvent.AboutEvent e) {

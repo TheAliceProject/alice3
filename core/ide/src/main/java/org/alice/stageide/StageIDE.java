@@ -114,9 +114,7 @@ import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
 
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
@@ -156,6 +154,13 @@ public abstract class StageIDE extends IDE {
   public void initialize(String[] args) {
     super.initialize(args);
     StoryApiDirectoryUtilities.setUserGalleryDirectory(this.getGalleryDirectory());
+/*
+    if (SystemUtilities.isMac()) {
+      com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
+      final Menu menu = new Menu("More Here"); //(new EditMenuModel(getDocumentFrame())).createMenu();
+      application.getDockMenu().add(menu);
+    }
+*/
   }
 
   @Override
@@ -199,6 +204,12 @@ public abstract class StageIDE extends IDE {
   protected void registerAdaptersForSceneEditorVm(VirtualMachine vm) {
     vm.registerAbstractClassAdapter(SScene.class, SceneAdapter.class);
     vm.registerProtectedMethodAdapter(ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class), ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class));
+
+/*    final Method mthd = ReflectionUtilities.getDeclaredMethod(SJointedModel.class, "setJointedModelResource", JointedModelResource.class);
+    final int m = SJointedModel::setJointedModelResource;
+    final Method invokeMthd = ReflectionUtilities.getDeclaredMethod(EmployeesOnly.class, "invokeSetJointedModelResource", SJointedModel.class, JointedModelResource.class);
+    vm.registerProtectedMethodAdapter(SJointedModel::setJointedModelResource,
+                                      invokeMthd);*/
   }
 
   @Override

@@ -367,9 +367,11 @@ class ScrollingPopupMenuLayout implements LayoutManager2 {
       lastIndex = N - 1;
       if (pageStartComponent != null) {
         pageStartComponent.setBounds(0, 0, 0, 0);
+        pageStartComponent.setEnabled(false);
       }
       if (pageEndComponent != null) {
         pageEndComponent.setBounds(0, 0, 0, 0);
+        pageEndComponent.setEnabled(false);
       }
     }
     final int widthCount = childWidthRequirements.length;
