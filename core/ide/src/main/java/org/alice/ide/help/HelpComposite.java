@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.help;
 
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.help.views.HelpView;
 import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.PlainStringValue;
 
 import java.util.UUID;
@@ -60,7 +62,7 @@ public final class HelpComposite extends LazyOperationUnadornedDialogCoreComposi
     return this.whereToFindHelpText;
   }
 
-  public HelpBrowserOperation getBrowserOperation() {
+  public Operation getBrowserOperation() {
     return this.browserOperation;
   }
 
@@ -69,6 +71,7 @@ public final class HelpComposite extends LazyOperationUnadornedDialogCoreComposi
     return new HelpView(this);
   }
 
-  private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
+  private final Operation browserOperation = new BrowserOperation(UUID.fromString("5a1b1db2-da93-4c85-bca5-e1796bd07d00"),
+                                                                  BrowserOperation.ALICE_USE_URL);
   private final PlainStringValue whereToFindHelpText = this.createStringValue("whereToFindHelpText");
 }
