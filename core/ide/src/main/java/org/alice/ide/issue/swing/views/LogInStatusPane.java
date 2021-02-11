@@ -58,9 +58,10 @@ import edu.cmu.cs.dennisc.javax.swing.components.JPane;
 import edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane;
 import edu.cmu.cs.dennisc.login.AccountInformation;
 import edu.cmu.cs.dennisc.login.AccountManager;
-import org.alice.ide.croquet.models.help.SignUpOperation;
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.Operation;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -197,7 +198,8 @@ class LogInPane extends JPageAxisPane {
 
     JPane signUpPane = new JPane();
     signUpPane.add(LabelUtilities.createLabel("Not a member?"));
-    SignUpOperation signUpOperation = new SignUpOperation();
+    Operation signUpOperation = new BrowserOperation(UUID.fromString("450727b2-d86a-4812-a77c-99eb785e10b2"),
+                                                     ReportSubmissionConfiguration.JIRA_SIGNUP_URL);
     signUpPane.add(signUpOperation.createHyperlink().getAwtComponent());
     signUpPane.add(LabelUtilities.createLabel("for an account."));
 

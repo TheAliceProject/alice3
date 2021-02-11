@@ -45,7 +45,6 @@ package org.alice.ide.issue.croquet;
 import com.jogamp.opengl.GLException;
 import org.alice.ide.issue.croquet.views.GlExceptionView;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
 
 import java.util.UUID;
@@ -68,9 +67,5 @@ public final class GlExceptionComposite extends SimpleOperationUnadornedDialogCo
   @Override
   protected GlExceptionView createView() {
     return new GlExceptionView(this);
-  }
-
-  public Operation getDisplayDriverHelpOperation() {
-    return GraphicsDriverHelpOperation.getInstance();
   }
 }

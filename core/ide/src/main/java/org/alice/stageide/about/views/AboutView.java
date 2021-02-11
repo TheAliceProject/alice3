@@ -45,8 +45,8 @@ package org.alice.stageide.about.views;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.stageide.about.AboutComposite;
-import org.alice.stageide.about.MainSiteBrowserOperation;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.BoxUtilities;
@@ -64,6 +64,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -120,13 +121,8 @@ public class AboutView extends BorderPanel {
     otherPanel.addComponent(formPanel);
     otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
 
-    //    org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
-    //        org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
-    //        org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
-    //        composite.getVersionLabel().createImmutableEditorPane()
-    //    );
-    //    otherPanel.addComponent( lineAxisPanel );
-    otherPanel.addComponent(MainSiteBrowserOperation.getInstance().createHyperlink());
+    final Operation aliceSiteOperation = new BrowserOperation(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea"), BrowserOperation.ALICE_HOME_URL);
+    otherPanel.addComponent(aliceSiteOperation.createHyperlink());
     otherPanel.addComponent(composite.getCreditsDialogLaunchOperation().createHyperlink());
     otherPanel.addComponent(new HtmlMultiLineLabel(String.format(getLocalizedStringByKey("aboutVersion"), ProjectVersion.getCurrentVersionText())));
     otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
