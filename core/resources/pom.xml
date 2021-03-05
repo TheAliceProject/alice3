@@ -130,6 +130,22 @@
                   <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
 
+                <!-- linux-armv6hf -->
+                <artifactItem>
+                  <groupId>org.jogamp.jogl</groupId>
+                  <artifactId>jogl-all</artifactId>
+                  <version>${jogl.version}</version>
+                  <classifier>natives-linux-armv6hf</classifier>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-armv6hf.label}/${platform.jogl.label}</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.jogamp.gluegen</groupId>
+                  <artifactId>gluegen-rt</artifactId>
+                  <version>${jogl.version}</version>
+                  <classifier>natives-linux-armv6hf</classifier>
+                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-armv6hf.label}/${platform.jogl.label}</outputDirectory>
+                </artifactItem>
+
                 <!-- macosx -->
                 <artifactItem>
                   <groupId>org.jogamp.jogl</groupId>

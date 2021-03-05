@@ -119,22 +119,29 @@ public class ApplicationRoot {
         } else {
           throw new RuntimeException(System.getProperty("os.name"));
         }
-        switch (bitCount) {
-        case 32:
-          sb.append("i586/");
-          break;
-        case 64:
-          sb.append("amd64/");
-          break;
-        default:
-          throw new RuntimeException(System.getProperty("sun.arch.data.model"));
-        }
-
+        appendArchitecture(sb, bitCount);
       } else {
         throw new RuntimeException(System.getProperty("sun.arch.data.model"));
       }
     }
     return sb.toString();
+  }
+
+  private static void appendArchitecture(StringBuilder sb, Integer bitCount) {
+    if (SystemUtilities.isArmArchitecture()) {
+      sb.append("armv6hf/");
+      return;
+    }
+    switch (bitCount) {
+    case 32:
+      sb.append("i586/");
+      break;
+    case 64:
+      sb.append("amd64/");
+      break;
+    default:
+      throw new RuntimeException(System.getProperty("sun.arch.data.model"));
+    }
   }
 
   public static File getArchitectureSpecificDirectory() {
@@ -149,16 +156,7 @@ public class ApplicationRoot {
           sb.append(bitCount);
         } else if (SystemUtilities.isLinux()) {
           sb.append("linux-");
-          switch (bitCount) {
-          case 32:
-            sb.append("i586/");
-            break;
-          case 64:
-            sb.append("amd64/");
-            break;
-          default:
-            throw new RuntimeException(System.getProperty("sun.arch.data.model"));
-          }
+          appendArchitecture(sb, bitCount);
         } else {
           throw new RuntimeException(System.getProperty("os.name"));
         }
