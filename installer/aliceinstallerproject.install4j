@@ -1659,6 +1659,7 @@
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
+        <entry location="platform/linux-armv6hf" fileType="regular" />
         <entry location="platform/linux-amd64" fileType="regular" />
         <entry location="platform/linux-i586" fileType="regular" />
         <entry location="platform/macosx" fileType="regular" />
@@ -1678,6 +1679,7 @@
       </excludedBeans>
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
+        <entry location="platform/linux-armv6hf" fileType="regular" />
         <entry location="platform/linux-amd64" fileType="regular" />
         <entry location="platform/linux-i586" fileType="regular" />
         <entry location="platform/win32" fileType="regular" />
