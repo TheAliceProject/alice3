@@ -75,7 +75,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
 
-    <jogl.version>2.3.2</jogl.version>
+    <jogl.version>2.4.0-rc-20210111</jogl.version>
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.6.0.2</alice.build.version>
