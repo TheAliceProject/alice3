@@ -109,9 +109,9 @@
         </executions>
         <configuration>
           <csvSummary>true</csvSummary>
-          <csvSummaryFile>artifacts-checksums.csv</csvSummaryFile>
+          <csvSummaryFile>media/artifacts-checksums.csv</csvSummaryFile>
           <xmlSummary>true</xmlSummary>
-          <xmlSummaryFile>artifacts-checksums.xml</xmlSummaryFile>
+          <xmlSummaryFile>media/artifacts-checksums.xml</xmlSummaryFile>
           <algorithms>
             <algorithm>SHA-256</algorithm>
             <algorithm>MD5</algorithm>
