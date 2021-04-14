@@ -66,4 +66,21 @@ public abstract class TopAndBottomOutfit<T extends TopPiece, B extends BottomPie
   public String toString() {
     return topPiece.toString() + "-" + bottomPiece.toString();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj instanceof TopAndBottomOutfit) {
+      TopAndBottomOutfit<?, ?> other = (TopAndBottomOutfit<?, ?>) obj;
+      return this.topPiece.equals(other.topPiece) && this.bottomPiece.equals(other.bottomPiece);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return topPiece.hashCode() * 13 + bottomPiece.hashCode();
+  }
 }
