@@ -429,6 +429,11 @@
           <artifactId>install4j-maven-plugin</artifactId>
           <version>1.0.8</version>
         </plugin>
+        <plugin>
+          <groupId>net.nicoulaj.maven.plugins</groupId>
+          <artifactId>checksum-maven-plugin</artifactId>
+          <version>1.9</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 

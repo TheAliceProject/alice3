@@ -97,6 +97,27 @@
           <skip>true</skip>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>net.nicoulaj.maven.plugins</groupId>
+        <artifactId>checksum-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>artifacts</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <csvSummary>true</csvSummary>
+          <csvSummaryFile>media/artifacts-checksums.csv</csvSummaryFile>
+          <xmlSummary>true</xmlSummary>
+          <xmlSummaryFile>media/artifacts-checksums.xml</xmlSummaryFile>
+          <algorithms>
+            <algorithm>SHA-256</algorithm>
+            <algorithm>MD5</algorithm>
+          </algorithms>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
