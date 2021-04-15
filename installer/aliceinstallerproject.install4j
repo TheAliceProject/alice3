@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="7.0.12" transformSequenceNumber="7">
-  <directoryPresets config="./installerFiles" />
-  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" macVolumeId="bf5b38a83930832b" javaMinVersion="1.8" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <directoryPresets config="./installerFiles/alice3.desktop.partial" />
+  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" macVolumeId="bf5b38a83930832b" javaMinVersion="1.8" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
       <additionalLanguages>
@@ -51,12 +51,14 @@
       <mountPoint id="892" root="" location="platform" mode="755" />
       <mountPoint id="893" root="" location="platform/macosx" mode="755" />
       <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
+      <mountPoint id="1295" root="" location="platform/linux" mode="755" />
     </mountPoints>
     <entries>
       <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.0.2-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="externalDependencies" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
       <fileEntry mountPoint="303" file="../core/resources/target/distribution/platform/macosx/ffmpeg/ffmpeg" overwriteMode="1" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="true" overrideUninstallMode="false" />
+      <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
     </entries>
     <components>
       <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
@@ -145,7 +147,7 @@
   </files>
   <launchers>
     <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" unixAutoStart="true" menuName="" icnsFile="installerFiles/macIcon_flat.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="" useCustomMacosExecutableName="false" customMacosExecutableName="" useJavaMinVersionOverride="false" javaMinVersionOverride="" useJavaMaxVersionOverride="false" javaMaxVersionOverride="" checkUpdater="false" updateExecutionMode="unattendedProgress" unattendedUpdateTitle="${i18n:updater.WindowTitle(&quot;${compiler:sys.fullName}&quot;)}">
-      <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="${installer:sys.userHome}/Alice3/error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="java9+">
+      <executable name="${compiler:sys.shortName}" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="${installer:sys.userHome}/Alice3/error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="true" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="java9+">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
@@ -1766,11 +1768,11 @@
       <preInstallScript mode="1" file="">
         <content />
       </preInstallScript>
-      <postInstallScript mode="1" file="">
-        <content />
+      <postInstallScript mode="3" file="">
+        <content>cat /opt/alice3/alice3.desktop /opt/alice3/platform/linux/alice3.desktop.partial &gt; /usr/share/applications/alice3.desktop</content>
       </postInstallScript>
-      <preUninstallScript mode="1" file="">
-        <content />
+      <preUninstallScript mode="3" file="">
+        <content>rm /usr/share/applications/alice3.desktop</content>
       </preUninstallScript>
       <postUninstallScript mode="1" file="">
         <content />
