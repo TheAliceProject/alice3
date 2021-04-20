@@ -46,44 +46,20 @@ package edu.cmu.cs.dennisc.render.gl;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.awt.GLJPanel;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.java.awt.ProxyGraphics2D;
 import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 
-import javax.swing.GrayFilter;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.ImageObserver;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
-  private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
+class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
 
   private class RenderPane extends GLJPanel {
-    private Image mostRecentDrawnImage;
-    private Image disabledImage;
-
-    private class ImageTrackingProxyGraphics extends ProxyGraphics2D {
-      @Override
-      public Graphics create() {
-        ImageTrackingProxyGraphics rv = new ImageTrackingProxyGraphics();
-        rv.setOther((Graphics2D) super.create());
-        return rv;
-      }
-
-      @Override
-      public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
-        mostRecentDrawnImage = img;
-        return super.drawImage(img, x, y, width, height, observer);
-      }
-    }
-
     public RenderPane(RenderCapabilities requestedCapabilities) {
       super(GlDrawableUtils.createGlCapabilitiesForLightweightComponent(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser());
     }
@@ -107,10 +83,7 @@ import java.awt.image.ImageObserver;
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(Color.BLACK);
             GraphicsUtilities.drawCenteredText(g, "error in attempting to render scene", this.getSize());
-            //edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
-            if (this.prevThrowable != null) {
-              //pass
-            } else {
+            if (this.prevThrowable == null) {
               this.prevThrowable = throwable;
               throwable.printStackTrace();
             }
@@ -125,31 +98,11 @@ import java.awt.image.ImageObserver;
     @Override
     public void paint(Graphics g) {
       if (GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled()) {
-        if (imageTrackingProxyGraphics != null) {
-          Graphics2D g2 = (Graphics2D) g;
-          imageTrackingProxyGraphics.setOther(g2);
-          mostRecentDrawnImage = null;
-          disabledImage = null;
-          super.paint(imageTrackingProxyGraphics);
-          imageTrackingProxyGraphics.setOther(null);
-        } else {
-          super.paint(g);
-        }
+        super.paint(g);
       } else {
-        if (disabledImage != null) {
-          //pass
-        } else {
-          if (mostRecentDrawnImage != null) {
-            disabledImage = GrayFilter.createDisabledImage(mostRecentDrawnImage);
-          }
-        }
         Dimension size = this.getSize();
-        if (disabledImage != null) {
-          g.drawImage(disabledImage, 0, 0, this);
-        } else {
-          g.setColor(Color.GRAY);
-          g.fillRect(0, 0, size.width, size.height);
-        }
+        g.setColor(Color.GRAY);
+        g.fillRect(0, 0, size.width, size.height);
         String text = "rendering disabled for performance considerations";
         g.setColor(Color.BLACK);
         GraphicsUtilities.drawCenteredText(g, text, size);
@@ -160,7 +113,6 @@ import java.awt.image.ImageObserver;
       }
     }
 
-    private final ImageTrackingProxyGraphics imageTrackingProxyGraphics = IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME ? new ImageTrackingProxyGraphics() : null;
     private Throwable prevThrowable = null;
   }
 
