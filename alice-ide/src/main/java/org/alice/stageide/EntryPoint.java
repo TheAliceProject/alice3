@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
 import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
+import edu.cmu.cs.dennisc.render.RenderUtils;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
 import org.alice.ide.story.AliceIde;
 import org.lgna.project.ProjectVersion;
@@ -187,5 +188,6 @@ public class EntryPoint {
         heapMonitor = new HeapWatchDog();
       }
     });
+    RenderUtils.getDefaultRenderFactory();
   }
 }
