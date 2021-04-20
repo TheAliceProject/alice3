@@ -40,25 +40,32 @@
       <variable name="included_jre_version" value="1.8.0_152" description="" category="" />
     </variables>
     <mergedProjects />
-    <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="false" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="" />
+    <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="false" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="" windowsPkcs11Library="" windowsPkcs11Slot="">
+      <windowsKeystoreIdentifier issuer="" serial="" subject="" />
+      <windowsPkcs11Identifier issuer="" serial="" subject="" />
+    </codeSigning>
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="*.sha1,*.lastUpdated,*.pom,*.repositories,*.DS_Store" defaultOverwriteMode="2" defaultUninstallMode="0" launcherOverwriteMode="3" defaultFileMode="644" defaultDirMode="755">
     <filesets />
     <roots />
     <mountPoints>
       <mountPoint id="521" root="" location="lib" mode="755" />
-      <mountPoint id="23" root="" location="" mode="755" />
       <mountPoint id="892" root="" location="platform" mode="755" />
       <mountPoint id="893" root="" location="platform/macosx" mode="755" />
       <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
       <mountPoint id="1295" root="" location="platform/linux" mode="755" />
+      <mountPoint id="23" root="" location="" mode="755" />
     </mountPoints>
     <entries>
       <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.0.2-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
-      <dirEntry mountPoint="521" file="../alice-ide/target/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="externalDependencies" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
-      <dirEntry mountPoint="23" file="../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false"/>
+      <dirEntry mountPoint="521" file="../alice-ide/target/lib" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="externalDependencies" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+        <exclude />
+      </dirEntry>
       <fileEntry mountPoint="303" file="../core/resources/target/distribution/platform/macosx/ffmpeg/ffmpeg" overwriteMode="1" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="true" overrideUninstallMode="false" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <dirEntry mountPoint="23" file="../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+        <exclude />
+      </dirEntry>
     </entries>
     <components>
       <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
@@ -276,6 +283,9 @@
             </group>
           </styleOverride>
         </styleOverrides>
+        <customScript mode="1" file="">
+          <content />
+        </customScript>
         <launcherIds />
         <variables />
         <startup>
@@ -985,6 +995,9 @@
           </java>
         </serializedBean>
         <styleOverrides />
+        <customScript mode="1" file="">
+          <content />
+        </customScript>
         <launcherIds />
         <variables />
         <startup>
@@ -1661,6 +1674,7 @@
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
+        <entry location="platform/linux" fileType="regular" />
         <entry location="platform/linux-armv6hf" fileType="regular" />
         <entry location="platform/linux-amd64" fileType="regular" />
         <entry location="platform/linux-i586" fileType="regular" />
@@ -1681,6 +1695,7 @@
       </excludedBeans>
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
+        <entry location="platform/linux" fileType="regular" />
         <entry location="platform/linux-armv6hf" fileType="regular" />
         <entry location="platform/linux-amd64" fileType="regular" />
         <entry location="platform/linux-i586" fileType="regular" />
@@ -1720,7 +1735,14 @@
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/linux" fileType="regular" />
+        <entry location="platform/linux-armv6hf" fileType="regular" />
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -1732,7 +1754,14 @@
       <includedDownloadableComponents />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/linux" fileType="regular" />
+        <entry location="platform/linux-armv6hf" fileType="regular" />
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -1746,7 +1775,13 @@
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/linux" fileType="regular" />
+        <entry location="platform/linux-armv6hf" fileType="regular" />
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/macosx" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -1759,7 +1794,11 @@
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -1784,7 +1823,11 @@
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -1797,7 +1840,11 @@
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude />
+      <exclude>
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
