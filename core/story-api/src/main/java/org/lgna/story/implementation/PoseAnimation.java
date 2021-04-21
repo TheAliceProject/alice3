@@ -42,6 +42,7 @@
  */
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import org.lgna.story.EmployeesOnly;
@@ -61,6 +62,11 @@ public class PoseAnimation extends DurationBasedAnimation {
   private final JointedModelImp<?, ?> jointedModel;
   private final Pose<?> pose;
   private transient List<JointInfo> jointInfos = Lists.newLinkedList();
+
+  @Override
+  public Animated getAnimated() {
+    return jointedModel;
+  }
 
   private static class JointInfo {
     private final JointImp jointImp;

@@ -1,5 +1,7 @@
+package edu.cmu.cs.dennisc.animation;
+
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +42,6 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation;
-
-/**
- * @author Dennis Cosgrove
- */
-public interface Animation {
-  void reset();
-
-  double update(double tCurrent, AnimationObserver animationObserver);
-
-  void complete(AnimationObserver animationObserver);
-
-  default Animated getAnimated() {
-    return null;
-  }
+public interface Animated {
+  void applyAnimation();
 }

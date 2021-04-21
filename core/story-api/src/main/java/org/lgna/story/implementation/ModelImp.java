@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Objects;
@@ -209,6 +210,11 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
         @Override
         protected void updateValue(Dimension3 v) {
           ModelImp.this.setSize(v);
+        }
+
+        @Override
+        public Animated getAnimated() {
+          return ModelImp.this;
         }
       }
       this.perform(new SizeAnimation(duration, style, ModelImp.this.getSize(), size));

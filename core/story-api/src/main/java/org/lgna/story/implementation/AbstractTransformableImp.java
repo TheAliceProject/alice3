@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -66,13 +67,18 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTransformableImp extends EntityImp {
+public abstract class AbstractTransformableImp extends EntityImp implements Animated {
   @Override
   public abstract AbstractTransformable getSgComposite();
 
   public boolean isFacing(EntityImp other) {
     AffineMatrix4x4 m = other.getTransformation(this);
     return m.translation.z < 0.0;
+  }
+
+  @Override
+  public void applyAnimation() {
+    //TODO apply collected per frame animations
   }
 
   public AffineMatrix4x4 getLocalTransformation() {
@@ -165,6 +171,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
         protected void epilogue() {
           AbstractTransformableImp.this.applyTranslation(this.x - this.xSum, this.y - this.ySum, this.z - this.zSum, this.asSeenBy);
         }
+
+        @Override
+        public Animated getAnimated() {
+          return AbstractTransformableImp.this;
+        }
       }
       this.perform(new TranslateAnimation(duration, style, translation, asSeenBy));
     }
@@ -227,6 +238,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
         @Override
         protected void epilogue() {
           AbstractTransformableImp.this.applyRotationInRadians(this.axis, this.angleInRadians - this.angleSumInRadians, this.asSeenBy);
+        }
+
+        @Override
+        public Animated getAnimated() {
+          return AbstractTransformableImp.this;
         }
       }
       this.perform(new RotateAnimation(duration, style, axis, angleInRadians, asSeenBy));
@@ -335,6 +351,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
       data.epilogue();
     } else {
       perform(new DurationBasedAnimation(duration, style) {
+        @Override
+        public Animated getAnimated() {
+          return data.subject;
+        }
+
         @Override
         protected void prologue() {
         }
@@ -555,6 +576,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
     } else {
       perform(new DurationBasedAnimation(duration, style) {
         @Override
+        public Animated getAnimated() {
+          return data.subject;
+        }
+
+        @Override
         protected void prologue() {
         }
 
@@ -611,6 +637,10 @@ public abstract class AbstractTransformableImp extends EntityImp {
           buffer.setValue(q);
           AbstractTransformableImp.this.setOrientationOnly(target, buffer);
         }
+        @Override
+        public Animated getAnimated() {
+          return AbstractTransformableImp.this;
+        }
       });
     }
   }
@@ -663,6 +693,10 @@ public abstract class AbstractTransformableImp extends EntityImp {
       super(subject.getTransformation(asSeenBy), m1, duration, style);
       this.subject = subject;
       this.asSeenBy = asSeenBy;
+    }
+    @Override
+    public Animated getAnimated() {
+      return subject;
     }
 
     @Override
@@ -767,6 +801,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
     }
 
     @Override
+    public Animated getAnimated() {
+      return placeData.subject;
+    }
+
+    @Override
     protected void epilogue() {
       this.placeData.setTranslation(new AffineMatrix4x4(this.q1, this.p1));
     }
@@ -790,6 +829,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
       } else {
         AffineMatrix4x4 m0 = this.getTransformation(target);
         perform(new Point3Animation(duration, style, m0.translation, offset != null ? offset : Point3.ORIGIN) {
+          @Override
+          public Animated getAnimated() {
+            return AbstractTransformableImp.this;
+          }
+
           @Override
           protected void updateValue(Point3 t) {
             AbstractTransformableImp.this.setPositionOnly(target, t);
@@ -857,6 +901,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
       //        this.perform( new SmoothAffineMatrix4x4Animation( duration, style, m0, m1 ) );
       //      } else {
       perform(new AffineMatrix4x4Animation(duration, style, m0, m1) {
+        @Override
+        public Animated getAnimated() {
+          return AbstractTransformableImp.this;
+        }
+
         @Override
         protected void updateValue(AffineMatrix4x4 m) {
           setTransformation(target, m);
