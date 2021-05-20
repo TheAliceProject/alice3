@@ -171,6 +171,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
+      final JsonModelIo.ExportFormat format = JsonModelIo.ExportFormat.GLTF;
       Manifest manifest = createProjectManifest(project);
       Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
       compareResources(project.getResources(), resources);
@@ -181,19 +182,19 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       entries.addAll(createEntriesForTypes(manifest, crawler.activeUserTypes));
       Map<String, Set<JointedModelResource>> modelResources = crawler.modelResources;
       for (Set<JointedModelResource> resourceSet : modelResources.values()) {
-        JsonModelIo modelIo = new JsonModelIo(resourceSet, JsonModelIo.ExportFormat.COLLADA);
+        JsonModelIo modelIo = new JsonModelIo(resourceSet, format);
         entries.addAll(modelIo.createDataSources("models"));
         entries.addAll(createEntriesForResourceTypes(manifest, resourceSet));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
       final Set<InstanceCreation> personResourceCreations = crawler.personCreations;
       if (!personResourceCreations.isEmpty()) {
-        JsonModelIo modelIo = new JsonPersonIo(personResourceCreations, JsonModelIo.ExportFormat.COLLADA);
+        JsonModelIo modelIo = new JsonPersonIo(personResourceCreations, format);
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
       for (DynamicResource dynamicResource: crawler.dynamicResources) {
-        JsonModelIo modelIo = new JsonModelIo(dynamicResource, JsonModelIo.ExportFormat.COLLADA);
+        JsonModelIo modelIo = new JsonModelIo(dynamicResource, format);
         entries.addAll(modelIo.createDataSources("models"));
         entries.add(createEntryForResourceTypes(manifest, dynamicResource));
         manifest.resources.add(modelIo.createModelReference("models"));
