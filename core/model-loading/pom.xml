@@ -48,5 +48,9 @@
       <groupId>org.alice.external</groupId>
       <artifactId>collada-schema-1-4-1</artifactId>
     </dependency>
+    <dependency>
+      <groupId>de.javagl</groupId>
+      <artifactId>jgltf-model</artifactId>
+    </dependency>
   </dependencies>
 </project>
