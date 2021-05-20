@@ -74,8 +74,10 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.tweedle.file.ImageReference;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.common.resources.ImageResource;
+import org.lgna.project.io.JointedModelExporter;
 import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
@@ -95,7 +97,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author Dave Culyba
  */
-public class JointedModelColladaExporter {
+public class JointedModelColladaExporter implements JointedModelExporter {
 
   private static final String COLLADA_EXTENSION = "dae";
   private static final String IMAGE_EXTENSION = "png";
@@ -110,16 +112,18 @@ public class JointedModelColladaExporter {
   private final SkeletonVisual visual;
   private final ModelManifest.ModelVariant modelVariant;
   private final String modelName;
+  private final String resourcePath;
   private final Map<String, String> renamedJoints;
 
   private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
   private final HashMap<Integer, String> materialNameMap = new HashMap<>();
 
-  public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName, Map<String, String> renamedJoints) {
+  public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName, String resourcePath, Map<String, String> renamedJoints) {
     this.factory = new ObjectFactory();
     this.visual = sv;
     this.modelVariant = modelVariant;
     this.modelName = modelName;
+    this.resourcePath = resourcePath;
     this.renamedJoints = renamedJoints;
     //Go through all the meshes in the sgVisual and find or create names for all of them
     initializeMeshNameMap();
@@ -128,7 +132,7 @@ public class JointedModelColladaExporter {
   }
 
   public JointedModelColladaExporter(SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName) {
-    this(sv, modelVariant, modelName, Collections.emptyMap());
+    this(sv, modelVariant, modelName, "", Collections.emptyMap());
   }
 
   private Asset createAsset() {
@@ -244,7 +248,7 @@ public class JointedModelColladaExporter {
     public void initializeList(List<Double> toInitialize);
   }
 
-  private class DoubleArrayInitializeList implements ListInitializer {
+  private static class DoubleArrayInitializeList implements ListInitializer {
     private final double[] da;
 
     public DoubleArrayInitializeList(double[] da) {
@@ -259,7 +263,7 @@ public class JointedModelColladaExporter {
     }
   }
 
-  private class DoubleListInitializeList implements ListInitializer {
+  private static class DoubleListInitializeList implements ListInitializer {
     private final List<Double> dl;
 
     public DoubleListInitializeList(List<Double> dl) {
@@ -274,7 +278,7 @@ public class JointedModelColladaExporter {
     }
   }
 
-  private class FloatListInitializeList implements ListInitializer {
+  private static class FloatListInitializeList implements ListInitializer {
     private final List<Float> fl;
 
     public FloatListInitializeList(List<Float> fl) {
@@ -289,7 +293,7 @@ public class JointedModelColladaExporter {
     }
   }
 
-  private class DoubleBufferInitializeList implements ListInitializer {
+  private static class DoubleBufferInitializeList implements ListInitializer {
     private final DoubleBuffer db;
 
     public DoubleBufferInitializeList(DoubleBuffer db) {
@@ -306,7 +310,7 @@ public class JointedModelColladaExporter {
     }
   }
 
-  private class FloatBufferInitializeList implements ListInitializer {
+  private static class FloatBufferInitializeList implements ListInitializer {
     private final FloatBuffer fb;
 
     public FloatBufferInitializeList(FloatBuffer fb) {
@@ -540,7 +544,7 @@ public class JointedModelColladaExporter {
   }
 
   //Helper class for storing weights as lists of indices
-  private class ColladaSkinWeights {
+  private static class ColladaSkinWeights {
     public final List<Integer> weightIndices = new ArrayList<Integer>();
     public final List<Integer> jointIndices = new ArrayList<Integer>();
 
@@ -1081,8 +1085,9 @@ public class JointedModelColladaExporter {
     return -1;
   }
 
-  public DataSource createColladaDataSource(String pathName) {
-    final String name = pathName + "/" + getColladaFileName();
+  @Override
+  public DataSource createStructureDataSource() {
+    final String name = resourcePath + "/" + getColladaFileName();
     return new DataSource() {
       @Override
       public String getName() {
@@ -1096,12 +1101,47 @@ public class JointedModelColladaExporter {
     };
   }
 
-  public List<DataSource> createImageDataSources(String pathName) {
+  @Override
+  public String getStructureFileName(DataSource structureDataSource) {
+    //Strip the base and model path from the name to make it relative to the manifest
+    return structureDataSource.getName().substring(resourcePath.length() + 1);
+  }
+
+  @Override
+  public String getStructureExtension() {
+    return IMAGE_EXTENSION;
+  }
+
+  @Override
+  public void addImageDataSources(List<DataSource> dataSources, ModelManifest modelManifest, Map<Integer, String> resourceMap) throws IOException {
+    addTextureIds(resourceMap);
+    for (DataSource imageDataSource : createImageDataSources()) {
+      //For each new image, create an image reference and add it to the manifest
+      if (!dataSources.contains(imageDataSource)) {
+        Integer imageId = getTextureIdForName(imageDataSource.getName());
+        ImageReference imageReference = new ImageReference(createImageResourceForTexture(imageId));
+        //ResourceReference name is initialized to the source filename. Replacing with the imageName instead.
+        imageReference.name = resourceMap.get(imageId);
+        modelManifest.resources.add(imageReference);
+        dataSources.add(imageDataSource);
+      }
+    }
+  }
+
+  private void addTextureIds(Map<Integer, String> resourceMap) {
+    for (TexturedAppearance texture : visual.textures.getValue()) {
+      Integer textureID = texture.textureId.getValue();
+      resourceMap.put(textureID, getExternallyUniqueImageNameForID(textureID));
+    }
+  }
+
+  //Get all the textures from the model as data sources
+  public List<DataSource> createImageDataSources() {
     List<DataSource> dataSources = new ArrayList<>();
     for (TexturedAppearance texture : visual.textures.getValue()) {
       if (texture.diffuseColorTexture.getValue() != null) {
         Integer materialIndex = texture.textureId.getValue();
-        final String textureName = pathName + "/" + getImageFileNameForIndex(materialIndex);
+        final String textureName = resourcePath + "/" + getImageFileNameForIndex(materialIndex);
         DataSource dataSource = new DataSource() {
           @Override
           public String getName() {
@@ -1119,15 +1159,7 @@ public class JointedModelColladaExporter {
     return dataSources;
   }
 
-  public List<DataSource> createDataSources(String pathName) {
-    List<DataSource> dataSources = new ArrayList<>();
-    dataSources.add(createColladaDataSource(pathName));
-    dataSources.addAll(createImageDataSources(pathName));
-    return dataSources;
-
-  }
-
-  public List<File> saveTexturesToDirectory(File directory) throws IOException {
+  public List<File> saveTexturesToDirectory(File directory) {
     List<File> textureFiles = new ArrayList<>();
     for (TexturedAppearance texture : visual.textures.getValue()) {
       File textureFile = new File(directory, getImageFileNameForIndex(texture.textureId.getValue()));
