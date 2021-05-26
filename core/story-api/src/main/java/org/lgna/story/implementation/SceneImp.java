@@ -76,6 +76,7 @@ public class SceneImp extends EntityImp {
     Transformable rv = new Transformable();
     rv.applyRotationAboutYAxis(yaw);
     rv.applyRotationAboutXAxis(pitch);
+    rv.notifyTransformationListeners();
     sgDirectionalLight.brightness.setValue(brightness);
     sgDirectionalLight.setParent(rv);
     return rv;
