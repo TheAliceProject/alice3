@@ -164,12 +164,18 @@ public class CodeOrganizer {
   }
 
   public void addGetters(List<Getter> getters) {
+    if (getters == null) {
+      return;
+    }
     for (Getter getter : getters) {
       addItem(getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS);
     }
   }
 
   public void addSetters(List<Setter> setters) {
+    if (setters == null) {
+      return;
+    }
     for (Setter setter : setters) {
       addItem(setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS);
     }
