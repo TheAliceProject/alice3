@@ -1068,6 +1068,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.fillInAutomaticSetUpMethod(bs.statements, false, field, true);
     if (this.sceneCameraImp.getVehicle() != null) {
       this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+      sceneCameraImp.applyAnimation();
     }
     Statement setVehicleStatement = null;
     for (Statement statement : bs.statements.getValue()) {

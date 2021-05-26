@@ -48,9 +48,11 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -84,35 +86,27 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   @Override
-  public boolean isUpdateRequired() {
-    return this.waitingAnimations.isEmpty() == false;
-  }
-
-  @Override
   public void update() {
     boolean isPaused = this.speedFactor <= 0.0;
     updateCurrentTime(isPaused);
-    if (isPaused) {
-      //pass
-    } else {
+    if (!isPaused) {
       double tCurrent = getCurrentTime();
       if (this.waitingAnimations.size() > 0) {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( this.waitingAnimations.size() );
         Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
+        Set<Animated> allAnimated = new HashSet<>();
         while (iterator.hasNext()) {
           WaitingAnimation waitingAnimation = iterator.next();
-          double tRemaining = waitingAnimation.getAnimation().update(tCurrent, waitingAnimation.getAnimationObserver());
-          if (tRemaining > 0.0) {
-            //pass
-          } else {
-            Thread thread = waitingAnimation.getThread();
-            if (thread != null) {
-              synchronized (thread) {
-                thread.notify();
-              }
-            }
+          boolean finished = waitingAnimation.update(tCurrent);
+          final Animated animated = waitingAnimation.getAnimated();
+          if (null != animated) {
+            allAnimated.add(animated);
+          }
+          if (finished) {
             iterator.remove();
           }
+        }
+        for (Animated animated: allAnimated) {
+          animated.applyAnimation();
         }
       }
       if (this.frameObservers.size() > 0) {
@@ -134,7 +128,7 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   protected boolean isAcceptableThread() {
-    return EventQueue.isDispatchThread() == false;
+    return !EventQueue.isDispatchThread();
   }
 
   @Override
@@ -167,11 +161,6 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   @Override
-  public Iterable<FrameObserver> getFrameObservers() {
-    return this.frameObservers;
-  }
-
-  @Override
   public void addFrameObserver(FrameObserver frameObserver) {
     this.frameObservers.add(frameObserver);
   }
@@ -185,12 +174,7 @@ public abstract class AbstractAnimator implements Animator {
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();
-      Thread thread = waitingAnimation.getThread();
-      if (thread != null) {
-        synchronized (thread) {
-          thread.notify();
-        }
-      }
+      waitingAnimation.notifyNext();
       iterator.remove();
     }
   }
@@ -200,13 +184,7 @@ public abstract class AbstractAnimator implements Animator {
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();
-      waitingAnimation.getAnimation().complete(waitingAnimation.getAnimationObserver());
-      Thread thread = waitingAnimation.getThread();
-      if (thread != null) {
-        synchronized (thread) {
-          thread.notify();
-        }
-      }
+      waitingAnimation.complete();
       iterator.remove();
     }
   }
