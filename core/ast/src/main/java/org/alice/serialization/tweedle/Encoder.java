@@ -592,7 +592,10 @@ public class Encoder extends SourceCodeGenerator {
     appendString(parameterLabel);
     appendString(": ");
 
-    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(parameter.getCode().getName());
+    final Code parameterCode = parameter.getCode();
+    Map<String, String> wrappedParams = parameterCode == null
+        ? null
+        : methodsWithWrappedArgs.get(parameterCode.getName());
     appendWrappedArg(argument, parameterLabel, wrappedParams);
   }
 
