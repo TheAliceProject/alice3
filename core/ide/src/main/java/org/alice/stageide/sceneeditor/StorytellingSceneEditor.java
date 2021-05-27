@@ -995,7 +995,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       for (AbstractField field : sceneField.getValueType().getDeclaredFields()) {
         //Turn markers on so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene. we have to manually make them visible to see them in the scene editor)
-        if (field.getValueType().isAssignableTo(SMarker.class)) {
+        if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
           MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
           markerImp.setDisplayVisuals(true);

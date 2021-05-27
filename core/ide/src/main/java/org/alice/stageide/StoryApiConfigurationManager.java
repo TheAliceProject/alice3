@@ -295,8 +295,9 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
   @Override
   public boolean isInstanceFactoryDesiredForType(AbstractType<?, ?, ?> type) {
-    return type.isAssignableTo(SThing.class) && !type.isAssignableTo(SMarker.class)
-        || type.isAssignableTo(SProgram.class);
+    return type != null
+        && (type.isAssignableTo(SThing.class) && !type.isAssignableTo(SMarker.class)
+        || type.isAssignableTo(SProgram.class));
   }
 
   protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance(BipedResource.class);
