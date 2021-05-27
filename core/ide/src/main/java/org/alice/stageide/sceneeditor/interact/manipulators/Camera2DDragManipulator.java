@@ -191,6 +191,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
     if (rotateVector.z != 0.0d) {
       this.manipulatedTransformable.applyRotationAboutZAxis(new AngleInRadians(rotateVector.z), getRotationReferenceFrame());
     }
+    manipulatedTransformable.notifyTransformationListeners();
 
     for (ManipulationEvent event : this.getManipulationEvents()) {
       Vector3 dotVector = null;

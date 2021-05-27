@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation.affine;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+package edu.cmu.cs.dennisc.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotationAnimation {
-  private Vector3 m_axis = new Vector3();
-
-  public ApplyRotationAboutArbitraryAxisAnimation() {
-    m_axis.setNaN();
-  }
-
-  public ApplyRotationAboutArbitraryAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis) {
-    super(sgSubject, sgAsSeenBy, angle);
-    setAxis(axis);
-  }
-
-  public Vector3 accessAxis() {
-    return m_axis;
-  }
-
-  public Vector3 getAxis(Vector3 rv) {
-    rv.set(m_axis);
-    return rv;
-  }
-
-  public Vector3 getAxis() {
-    return getAxis(new Vector3());
-  }
-
-  public void setAxis(Vector3 axis) {
-    m_axis.set(axis);
-  }
-
-  @Override
-  protected void applyRotationInRadians(double angleInRadians) {
-    getSubject().applyRotationAboutArbitraryAxisInRadians(m_axis, angleInRadians, getAsSeenBy());
-  }
+public interface Animated {
+  void applyAnimation();
 }

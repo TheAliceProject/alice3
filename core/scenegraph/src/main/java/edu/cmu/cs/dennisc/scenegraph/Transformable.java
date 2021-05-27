@@ -69,11 +69,5 @@ public class Transformable extends AbstractTransformable {
     }
   }
 
-  public final AffineMatrix4x4Property localTransformation = new AffineMatrix4x4Property(this, AffineMatrix4x4.createIdentity()) {
-    @Override
-    public void setValue(AffineMatrix4x4 value) {
-      super.setValue(value);
-      Transformable.this.fireAbsoluteTransformationChange();
-    }
-  };
+  public final AffineMatrix4x4Property localTransformation = new AffineMatrix4x4Property(this, AffineMatrix4x4.createIdentity());
 }

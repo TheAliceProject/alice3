@@ -84,6 +84,9 @@ public abstract class AbstractTransformable extends Composite {
     AffineMatrix4x4 m = this.accessLocalTransformation();
     affect.set(m, transformation);
     this.touchLocalTransformation(m);
+  }
+
+  public void notifyTransformationListeners() {
     fireAbsoluteTransformationChange();
   }
 
@@ -173,6 +176,7 @@ public abstract class AbstractTransformable extends Composite {
 
   public void setTranslationOnly(Tuple3 t, ReferenceFrame asSeenBy) {
     setTranslationOnly(t.x, t.y, t.z, asSeenBy);
+    notifyTransformationListeners();
   }
 
   public void setAxesOnly(Orientation orientation, ReferenceFrame asSeenBy) {
@@ -197,6 +201,7 @@ public abstract class AbstractTransformable extends Composite {
 
   public void setAxesOnlyToStandUp() {
     setAxesOnlyToStandUp(AsSeenBy.SCENE);
+    notifyTransformationListeners();
   }
 
   private void applyTransformation(AffineMatrix4x4 transformation, ReferenceFrame asSeenBy, TransformationAffect affect) {
