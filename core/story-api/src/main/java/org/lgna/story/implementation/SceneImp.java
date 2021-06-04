@@ -141,9 +141,7 @@ public class SceneImp extends EntityImp {
   private void changeActiveStatus(ProgramImp programImp, boolean isActive, int activationCount) {
     double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
     program.setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
-    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0) {
-      //pass
-    } else {
+    if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
       EmployeesOnly.invokeHandleActiveChanged(this.getAbstraction(), isActive, activationCount);
     }
     program.setSimulationSpeedFactor(prevSimulationSpeedFactor);
@@ -153,17 +151,13 @@ public class SceneImp extends EntityImp {
       AdapterFactory.getAdapterFor(this.sgScene);
 
       this.addCamerasTo(programImp);
-      if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0) {
-        //pass
-      } else {
+      if (ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount <= 0) {
         this.fireSceneActivationListeners();
       }
     } else {
       this.removeCamerasFrom(programImp);
     }
   }
-
-  private static final long TIMEOUT_DURATION = 10000; //Forces the scene to start if the wait loop exceed this time
 
   public void activate(ProgramImp programImp) {
     assert deactiveCount == activeCount;
