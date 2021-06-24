@@ -43,8 +43,9 @@
 
 package org.lgna.croquet.triggers;
 
-import com.apple.eawt.AppEvent;
 import org.lgna.croquet.history.UserActivity;
+
+import java.awt.desktop.AppEvent;
 
 /**
  * @author Dennis Cosgrove

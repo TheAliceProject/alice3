@@ -43,12 +43,6 @@
 
 package org.lgna.croquet;
 
-import com.apple.eawt.AboutHandler;
-import com.apple.eawt.AppEvent;
-import com.apple.eawt.OpenFilesHandler;
-import com.apple.eawt.PreferencesHandler;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -64,6 +58,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import java.awt.ComponentOrientation;
+import java.awt.Desktop;
+import java.awt.desktop.AppEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.List;
@@ -122,42 +118,28 @@ public abstract class Application<D extends DocumentFrame> {
 
   public void initialize(String[] args) {
     if (SystemUtilities.isMac()) {
-      com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
-      application.setAboutHandler(new AboutHandler() {
-        @Override
-        public void handleAbout(AppEvent.AboutEvent e) {
-          Operation aboutOperation = Application.this.getAboutOperation();
-          if (aboutOperation != null) {
-            aboutOperation.fire(newAppleTriggerActivity(e));
-          }
+      Desktop application = Desktop.getDesktop();
+      application.setAboutHandler(e -> {
+        Operation aboutOperation = Application.this.getAboutOperation();
+        if (aboutOperation != null) {
+          aboutOperation.fire(newAppleTriggerActivity(e));
         }
       });
-      application.setPreferencesHandler(new PreferencesHandler() {
-        @Override
-        public void handlePreferences(AppEvent.PreferencesEvent e) {
-          Operation preferencesOperation = Application.this.getPreferencesOperation();
-          if (preferencesOperation != null) {
-            preferencesOperation.fire(newAppleTriggerActivity(e));
-          }
+      application.setPreferencesHandler(e -> {
+        Operation preferencesOperation = Application.this.getPreferencesOperation();
+        if (preferencesOperation != null) {
+          preferencesOperation.fire(newAppleTriggerActivity(e));
         }
       });
-      application.setQuitHandler(new QuitHandler() {
-        @Override
-        public void handleQuitRequestWith(AppEvent.QuitEvent e, QuitResponse quitResponse) {
-          UserActivity activity = newAppleTriggerActivity(e);
-          Application.this.handleQuit(activity);
-          if (activity.isCanceled()) {
-            quitResponse.cancelQuit();
-          }
+      application.setQuitHandler((e, quitResponse) -> {
+        UserActivity activity = newAppleTriggerActivity(e);
+        Application.this.handleQuit(activity);
+        if (activity.isCanceled()) {
+          quitResponse.cancelQuit();
         }
       });
 
-      application.setOpenFileHandler(new OpenFilesHandler() {
-        @Override
-        public void openFiles(AppEvent.OpenFilesEvent e) {
-          Application.this.handleOpenFiles(e.getFiles());
-        }
-      });
+      application.setOpenFileHandler(e -> Application.this.handleOpenFiles(e.getFiles()));
     }
     //this.frame.pack();
   }

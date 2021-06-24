@@ -73,7 +73,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
+    <java.version>15</java.version>
 
     <jogl.version>2.4.0-rc-20210111</jogl.version>
 
@@ -87,6 +87,8 @@
     <guava.version>13.0.1</guava.version>
     <commons.discovery.version>0.5</commons.discovery.version>
     <openhtml.version>1.0.0</openhtml.version>
+    <javax.activation.version>1.2.0</javax.activation.version>
+    <jaxb.api.version>2.2.3</jaxb.api.version>
   </properties>
 
   <modules>
@@ -232,6 +234,11 @@
         <version>1.0</version>
       </dependency>
       <!-- Third Party Libraries from maven-->
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb.api.version}</version>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
