@@ -174,15 +174,6 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     set(orientation, translation);
   }
 
-  @Deprecated
-  public AffineMatrix4x4(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) {
-    set(new Matrix4x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33));
-  }
-
-  public AffineMatrix4x4(Matrix4x4 other) {
-    set(other);
-  }
-
   public AffineMatrix4x4(MAffineMatrix4x4 other) {
     this(new OrthogonalMatrix3x3(other.orientation), new Point3(other.translation));
   }
@@ -771,12 +762,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     return setReturnValueToInverse(new AffineMatrix4x4(), a);
   }
 
-  public void setToInverse(AffineMatrix4x4 a) {
-    setReturnValueToInverse(this, a);
-  }
-
-  public void invert() {
-    setToInverse(this);
+  public AffineMatrix4x4 invert() {
+    return setReturnValueToInverse(this, this);
   }
 
   public boolean isZero() {

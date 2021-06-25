@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
@@ -61,8 +62,15 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public class CollisionHandler extends AbstractBinaryEventHandler<Object, CollisionEvent, SThing> {
+  private final Map<SThing, AabbCollisionHull> hulls;
   private final Map<SThing, Map<SThing, Boolean>> wereTouching = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
+  private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
+  long millisSinceLastCheck = 0;
+
+  public CollisionHandler(Map<SThing, AabbCollisionHull> hulls) {
+    this.hulls = hulls;
+  }
 
   public void addCollisionListener(Object collisionListener, List<SThing> groupA, List<SThing> groupB, MultipleEventPolicy policy) {
     startTrackingListener(collisionListener, groupA, groupB, policy);
@@ -79,10 +87,18 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
 
   @Override
   protected void check(SThing changedThing) {
+    // Will be recomputed as needed after MINIMUM_MILLIS_BETWEEN_CHECKS
+    hulls.remove(changedThing);
+    long now = System.currentTimeMillis();
+    if (now - millisSinceLastCheck < MINIMUM_MILLIS_BETWEEN_CHECKS) {
+      return;
+    }
+    millisSinceLastCheck = now;
+
     final Map<SThing, Set<Object>> thingsToCollideWith = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCollideWith.keySet()) {
       Set<Object> listeners = thingsToCollideWith.get(thing);
-      boolean doTheseCollide = AabbCollisionDetector.doTheseCollide(thing, changedThing);
+      boolean doTheseCollide = doTheseCollide(changedThing, thing);
       final boolean isCollisionStart = wasFalse(wereTouching, changedThing, thing) && doTheseCollide;
       final boolean isCollisionEnd = wasTrue(wereTouching, changedThing, thing) && !doTheseCollide;
       wereTouching.get(thing).put(changedThing, doTheseCollide);
@@ -104,6 +120,16 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
         }
       }
     }
+  }
+
+  public boolean doTheseCollide(SThing changedThing, SThing thing) {
+    AabbCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
+    AabbCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
+    return changedHull.collidesWith(hull);
+  }
+
+  private AabbCollisionHull newCollisionHull(SThing thing) {
+    return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 
   @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,72 +43,33 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.SThing;
-import org.lgna.story.implementation.AsSeenBy;
-import org.lgna.story.implementation.EntityImp;
-
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
-/**
- * @author Gazihan Alankus, Matt May
- */
-public class AabbCollisionDetector {
+public class AabbCollisionHull {
+  final Vector3 corner;
+  final Point3 center;
 
-  public static boolean doTheseCollide(SThing object1, SThing object2) {
-    Point3 center1 = new Point3();
-    Point3 center2 = new Point3();
-    Vector3 corner1 = new Vector3();
-    Vector3 corner2 = new Vector3();
-    findCenterAndCorner(object1, center1, corner1);
-    findCenterAndCorner(object2, center2, corner2);
-
-    return doAabbsCollide(center1, corner1, center2, corner2);
+  public AabbCollisionHull(AxisAlignedBox aabb) {
+    this(aabb.getMinimum(), aabb.getMaximum());
   }
 
-  public static boolean doTheseCollide(Transformable object1, Transformable object2, double dist) {
-
-    return doTheseCollide(EntityImp.getAbstractionFromSgElement(object1), EntityImp.getAbstractionFromSgElement(object2), dist);
-  }
-
-  public static boolean doTheseCollide(Transformable object1, Transformable object2) {
-    return doTheseCollide(EntityImp.getAbstractionFromSgElement(object1), EntityImp.getAbstractionFromSgElement(object2));
-  }
-
-  public static boolean doTheseCollide(SThing object1, SThing object2, double extraProximity) {
-    Point3 center1 = new Point3();
-    Point3 center2 = new Point3();
-    Vector3 corner1 = new Vector3();
-    Vector3 corner2 = new Vector3();
-    findCenterAndCorner(object1, center1, corner1);
-    findCenterAndCorner(object2, center2, corner2);
-
-    return doAabbsCollide(center1, corner1, center2, corner2, extraProximity);
-  }
-
-  private static void findCenterAndCorner(SThing object, Point3 center, Vector3 corner) {
-    AxisAlignedBox aabb1 = EmployeesOnly.getImplementation(object).getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
-    Point3 min = aabb1.getMinimum();
-    Point3 max = aabb1.getMaximum();
-    center.setToInterpolation(min, max, .5);
-    corner.setToSubtraction(max, min);
+  private AabbCollisionHull(Point3 min, Point3 max) {
+    center = Point3.createInterpolation(min, max, .5);
+    corner = Vector3.createSubtraction(max, min);
     corner.multiply(.5);
   }
 
-  private static boolean doAabbsCollide(Point3 boxAPosition, Vector3 boxACorner, Point3 boxBPosition, Vector3 boxBCorner) {
-    return doAabbsCollide(boxAPosition, boxACorner, boxBPosition, boxBCorner, .0);
+  public boolean collidesWith(AabbCollisionHull other) {
+    return isWithinDistance(other, 0);
   }
 
-  //it collides if it's not exactly touching but extraProximity far apart
-  private static boolean doAabbsCollide(Point3 boxAPosition, Vector3 boxACorner, Point3 boxBPosition, Vector3 boxBCorner, double extraProximity) {
-    Vector3 distVector = Vector3.createSubtraction(boxAPosition, boxBPosition);
+  public boolean isWithinDistance(AabbCollisionHull other, double proximity) {
+    Vector3 distVector = Vector3.createSubtraction(center, other.center);
     distVector.x = Math.abs(distVector.x);
     distVector.y = Math.abs(distVector.y);
     distVector.z = Math.abs(distVector.z);
-
-    return ((distVector.x - extraProximity) < (boxACorner.x + boxBCorner.x)) && ((distVector.y - extraProximity) < (boxACorner.y + boxBCorner.y)) && ((distVector.z - extraProximity) < (boxACorner.z + boxBCorner.z));
+    return ((distVector.x - proximity) < (corner.x + other.corner.x)) && ((distVector.y - proximity) < (corner.y + other.corner.y)) && ((distVector.z - proximity) < (corner.z + other.corner.z));
   }
 }
