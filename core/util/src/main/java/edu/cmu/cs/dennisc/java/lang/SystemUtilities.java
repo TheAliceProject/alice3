@@ -140,6 +140,8 @@ public class SystemUtilities {
 
   private static Platform platform;
 
+  private static final String architecture = System.getProperty("os.arch").toLowerCase(Locale.ENGLISH);
+
   static {
     String lowercaseOSName = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
     if (lowercaseOSName.contains("windows")) {
@@ -156,6 +158,10 @@ public class SystemUtilities {
 
   public static boolean isLinux() {
     return SystemUtilities.platform == Platform.LINUX;
+  }
+
+  public static boolean isArmArchitecture() {
+    return architecture.contains("arm");
   }
 
   public static boolean isMac() {
