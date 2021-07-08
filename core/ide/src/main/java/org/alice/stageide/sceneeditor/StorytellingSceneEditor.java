@@ -126,26 +126,7 @@ import org.lgna.croquet.views.SpringPanel.Vertical;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractStatementWithBody;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArrayAccess;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.DoInOrder;
-import org.lgna.project.ast.DoTogether;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.Method;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.StatementListProperty;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.Color;
@@ -921,7 +902,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       } finally {
         ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
       }
-      this.getVirtualMachine().ENTRY_POINT_invoke(sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod(StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME));
+      UserMethod generatedSetupMethod = sceneAliceInstance.getType().getDeclaredMethod(StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME);
+      useSceneAsVehicleForDisconnectedModels(generatedSetupMethod);
+      this.getVirtualMachine().ENTRY_POINT_invoke(sceneAliceInstance, generatedSetupMethod);
 
       getPropertyPanel().setSceneInstance(sceneAliceInstance);
 
@@ -1011,6 +994,33 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(1.0);
     }
+  }
+
+  private void useSceneAsVehicleForDisconnectedModels(UserMethod generatedSetupMethod) {
+    for (Statement statement : generatedSetupMethod.body.getValue().statements.getValue()) {
+      MethodInvocation setVehicleCall = asSetVehicleCall(statement);
+      if (setVehicleCall == null) {
+        continue;
+      }
+      ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
+      if (args.size() == 1 && args.get(0).expression.getValue() instanceof NullLiteral) {
+        args.get(0).expression.setValue(new ThisExpression());
+      }
+    }
+  }
+
+  private MethodInvocation asSetVehicleCall(Statement statement) {
+    if (statement instanceof ExpressionStatement) {
+      Expression expression = ((ExpressionStatement) statement).expression.getValue();
+      if (expression instanceof MethodInvocation) {
+        MethodInvocation mi = (MethodInvocation) expression;
+        Method method = mi.method.getValue();
+        if (method.getName().equalsIgnoreCase("setVehicle")) {
+          return mi;
+        }
+      }
+    }
+    return null;
   }
 
   @Override
