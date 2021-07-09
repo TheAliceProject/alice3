@@ -46,9 +46,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -128,22 +126,7 @@ import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.Project;
 import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.CameraMarker;
-import org.lgna.story.Color;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.OrthographicCameraMarker;
-import org.lgna.story.PerspectiveCameraMarker;
-import org.lgna.story.Rider;
-import org.lgna.story.SCamera;
-import org.lgna.story.SCameraMarker;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SMarker;
-import org.lgna.story.SModel;
-import org.lgna.story.SProgram;
-import org.lgna.story.SScene;
-import org.lgna.story.SThing;
-import org.lgna.story.SThingMarker;
-import org.lgna.story.SVRHand;
+import org.lgna.story.*;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
@@ -1023,6 +1006,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     return null;
   }
 
+  private boolean isSetVehicleInvocation(Statement statement) {
+    return asSetVehicleCall(statement) != null;
+  }
+
   @Override
   public void enableRendering(ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering) {
     if ((reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN) || (reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK)) {
@@ -1082,16 +1069,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
     Statement setVehicleStatement = null;
     for (Statement statement : bs.statements.getValue()) {
-      if (statement instanceof ExpressionStatement) {
-        Expression expression = ((ExpressionStatement) statement).expression.getValue();
-        if (expression instanceof MethodInvocation) {
-          MethodInvocation mi = (MethodInvocation) expression;
-          Method method = mi.method.getValue();
-          if (method.getName().equalsIgnoreCase("setVehicle")) {
-            setVehicleStatement = statement;
-            break;
-          }
-        }
+      if (isSetVehicleInvocation(statement)) {
+        setVehicleStatement = statement;
+        break;
       }
     }
     if (setVehicleStatement != null) {
@@ -1237,22 +1217,62 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public Statement[] getUndoStatementsForAddField(UserField field) {
     List<Statement> undoStatements = Lists.newLinkedList();
 
-    undoStatements.add(SetUpMethodGenerator.createSetVehicleStatement(field, null, false));
+    undoStatements.add(SetUpMethodGenerator.createSetVehicleNullStatement(field));
 
     return ArrayUtilities.createArray(undoStatements, Statement.class);
   }
 
+  public Map<AbstractField, Statement> getRiders(UserField vehicle) {
+    IDE.getActiveInstance().ensureProjectCodeUpToDate();
+    UserInstance sceneAliceInstance = getActiveSceneInstance();
+    UserMethod generatedSetupMethod = sceneAliceInstance.getType().getDeclaredMethod(StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME);
+    Map<AbstractField, Statement> riders = new HashMap<>();
+    for (Statement statement : generatedSetupMethod.body.getValue().statements.getValue()) {
+      MethodInvocation setVehicleCall = asSetVehicleCall(statement);
+      if (setVehicleCall != null && doesSetVehicleImplyVehicle(setVehicleCall, vehicle)) {
+        FieldAccess riderAccess = (FieldAccess) setVehicleCall.expression.getValue();
+        riders.put(riderAccess.field.getValue(), statement);
+      }
+    }
+    return riders;
+  }
+
+  private boolean doesSetVehicleImplyVehicle(MethodInvocation setVehicleCall, UserField vehicle) {
+    ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
+    if (args.size() == 1  && setVehicleCall.expression.getValue() instanceof FieldAccess) {
+      Expression vehicleExpr = args.get(0).expression.getValue();
+      return isDirectRider(vehicle, vehicleExpr) || isJointRider(vehicle, vehicleExpr);
+    }
+    return false;
+  }
+
+  private boolean isDirectRider(UserField vehicle, Expression vehicleExpr) {
+    return vehicleExpr instanceof FieldAccess && ((FieldAccess) vehicleExpr).field.getValue() == vehicle;
+  }
+
+  private boolean isJointRider(UserField vehicle, Expression vehicleExpr) {
+    if (vehicleExpr instanceof MethodInvocation) {
+      MethodInvocation vehicleMethod = (MethodInvocation) vehicleExpr;
+      if (vehicleMethod.expression.getValue() instanceof FieldAccess) {
+        FieldAccess target = (FieldAccess) vehicleMethod.expression.getValue();
+        return target.field.getValue() == vehicle;
+      }
+    }
+    return false;
+  }
+
   @Override
-  public Statement[] getDoStatementsForRemoveField(UserField field) {
+  public Statement[] getDoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders) {
     List<Statement> doStatements = Lists.newLinkedList();
-
-    doStatements.add(SetUpMethodGenerator.createSetVehicleStatement(field, null, false));
-
+    for (AbstractField rider: riders.keySet()) {
+      doStatements.add(SetUpMethodGenerator.createSetVehicleSceneStatement(rider));
+    }
+    doStatements.add(SetUpMethodGenerator.createSetVehicleNullStatement(field));
     return ArrayUtilities.createArray(doStatements, Statement.class);
   }
 
   @Override
-  public Statement[] getUndoStatementsForRemoveField(UserField field) {
+  public Statement[] getUndoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders) {
     Object instance = this.getInstanceInJavaVMForField(field);
     AbstractField vehicleField = null;
     if (instance instanceof Rider) {
@@ -1260,12 +1280,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       vehicleField = this.getFieldForInstanceInJavaVM(vehicleInstance);
     }
     Statement[] setupStatements = SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance(), false);
-    Statement vehicleStatement = SetUpMethodGenerator.createSetVehicleStatement(field, vehicleField, false);
-    Statement[] statements = new Statement[setupStatements.length + 1];
+    Statement vehicleStatement = SetUpMethodGenerator.createSetVehicleFieldStatement(field, vehicleField);
+    Statement[] statements = new Statement[setupStatements.length + 1 + riders.size()];
     statements[0] = vehicleStatement;
     System.arraycopy(setupStatements, 0, statements, 1, setupStatements.length);
-    return statements;
 
+    int i = setupStatements.length + 1;
+    for (Statement setVehicleStatement : riders.values()) {
+      statements[i++] = setVehicleStatement;
+    }
+    return statements;
   }
 
   @Override

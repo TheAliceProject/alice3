@@ -138,9 +138,9 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 
   public abstract Statement[] getUndoStatementsForAddField(UserField field);
 
-  public abstract Statement[] getDoStatementsForRemoveField(UserField field);
+  public abstract Statement[] getDoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders);
 
-  public abstract Statement[] getUndoStatementsForRemoveField(UserField field);
+  public abstract Statement[] getUndoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders);
 
   public abstract void preScreenCapture();
 
