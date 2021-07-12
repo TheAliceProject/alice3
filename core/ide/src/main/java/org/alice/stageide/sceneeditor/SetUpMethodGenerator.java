@@ -133,15 +133,21 @@ public class SetUpMethodGenerator {
     return AstUtilities.createMethodInvocationStatement(instanceExpression, method, argumentExpressions);
   }
 
-  static ExpressionStatement createSetVehicleStatement(AbstractField field, AbstractField vehicleField, boolean isVehicleScene) {
+  static ExpressionStatement createSetVehicleNullStatement(AbstractField rider) {
+    return createSetVehicleStatement(rider, new NullLiteral());
+  }
+
+  static ExpressionStatement createSetVehicleSceneStatement(AbstractField rider) {
+    return createSetVehicleStatement(rider, new ThisExpression());
+  }
+
+  static ExpressionStatement createSetVehicleFieldStatement(AbstractField rider, AbstractField vehicle) {
+    return createSetVehicleStatement(rider, SetUpMethodGenerator.createInstanceExpression(vehicle == null, vehicle));
+  }
+
+  private static ExpressionStatement createSetVehicleStatement(AbstractField rider, Expression vehicle) {
     AbstractMethod setVehicleMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", (Class<?>) SThing.class);
-    Expression vehicle;
-    if ((vehicleField != null) || isVehicleScene) {
-      vehicle = SetUpMethodGenerator.createInstanceExpression(isVehicleScene, vehicleField);
-    } else {
-      vehicle = new NullLiteral();
-    }
-    return AstUtilities.createMethodInvocationStatement(new FieldAccess(field), setVehicleMethod, vehicle);
+    return AstUtilities.createMethodInvocationStatement(new FieldAccess(rider), setVehicleMethod, vehicle);
   }
 
   public static ExpressionStatement createSetPaintStatement(AbstractField field, Paint paint) {
@@ -224,7 +230,7 @@ public class SetUpMethodGenerator {
     AbstractType<?, ?, ?> abstractType = field.getValueType();
     JavaType javaType = abstractType.getFirstEncounteredJavaType();
     if (javaType.isAssignableTo(MutableRider.class)) {
-      statements.add(createSetVehicleStatement(field, initialVehicle, (initialVehicle == null)));
+      statements.add(createSetVehicleFieldStatement(field, initialVehicle));
     }
     if (initialTransform != null) {
       if (javaType.isAssignableTo(STurnable.class)) {
