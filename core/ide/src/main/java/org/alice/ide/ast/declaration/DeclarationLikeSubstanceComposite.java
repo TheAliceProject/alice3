@@ -86,6 +86,7 @@ import org.lgna.story.SThing;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 /**
  * @author Dennis Cosgrove
@@ -412,15 +413,15 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
           return null;
         } else {
           String notAvalableText = this.findLocalizedText("isNotAvailable");
-          return notAvalableText.replaceAll("</name/>", "\"" + declarationName + "\"");
+          return notAvalableText.replaceAll("</name/>", "\"" + Matcher.quoteReplacement(declarationName) + "\"");
         }
       } else {
         String notValidNameText = this.findLocalizedText("isNotAValidName");
-        return notValidNameText.replaceAll("</name/>", "\"" + declarationName + "\"");
+        return notValidNameText.replaceAll("</name/>", "\"" + Matcher.quoteReplacement(declarationName) + "\"");
       }
     } else {
       String notValidText = this.findLocalizedText("isNotValid");
-      notValidText = notValidText.replaceAll("</name/>", "\"" + declarationName + "\"");
+      notValidText = notValidText.replaceAll("</name/>", "\"" + Matcher.quoteReplacement(declarationName) + "\"");
       return notValidText.replaceAll("</type/>", this.nameState.getSidekickLabel().getText().replaceAll(":", ""));
     }
   }
