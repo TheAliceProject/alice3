@@ -55,7 +55,7 @@ public abstract class ThreadWithRevealingToString extends Thread {
     //    edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
   }
 
-  protected StringBuffer updateRepr(StringBuffer rv) {
+  protected StringBuilder updateRepr(StringBuilder rv) {
     rv.append("id=");
     rv.append(this.getId());
     //    rv.append( ";group=" );
@@ -67,7 +67,7 @@ public abstract class ThreadWithRevealingToString extends Thread {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(this.getClass().getName());
     sb.append("[");
     updateRepr(sb);

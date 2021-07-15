@@ -82,7 +82,7 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 
   private static void showMessageDialog(File file, boolean isValidZip) {
     String applicationName = IDE.getApplicationName();
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("Unable to create instance from file ");
     sb.append(FileUtilities.getCanonicalPathIfPossible(file));
     sb.append(".\n\n");

@@ -356,13 +356,6 @@ public abstract class Tuple2 implements BinaryEncodableAndDecodable, Printable {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(getClass().getName());
-    sb.append("[x=");
-    sb.append(x);
-    sb.append(";y=");
-    sb.append(y);
-    sb.append("]");
-    return sb.toString();
+    return getClass().getName() + "[x=" + x + ";y=" + y + "]";
   }
 }

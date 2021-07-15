@@ -93,7 +93,7 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
   }
 
   public CaughtExceptionPane() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("<html>");
     sb.append("An exception has been caught");
 

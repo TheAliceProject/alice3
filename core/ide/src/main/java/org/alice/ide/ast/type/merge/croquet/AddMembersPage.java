@@ -361,7 +361,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
     this.getView().repaint();
     //
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] {this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite}) {
       addMembersComposite.appendStatusPreRejectorCheck(sb);
     }

@@ -138,7 +138,7 @@ public final class DifferentSignature<M extends Member> extends PotentialNameCha
     return false;
   }
 
-  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+  public void appendStatusPreRejectorCheck(StringBuilder sb) {
     if (this.isRenameRequired()) {
       sb.append("must not have same name: \"");
       sb.append(this.importHub.getMember().getName());

@@ -94,7 +94,7 @@ class ExceptionPane extends JPanel {
       }
     });
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(throwable.getClass().getSimpleName());
     String message = throwable.getLocalizedMessage();
     if ((message != null) && (message.length() > 0)) {
@@ -239,14 +239,10 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
   @Override
   protected String getSummaryText() {
     String rv = super.getSummaryText();
-    if ((rv != null) && (rv.length() > 0)) {
-      //pass
-    } else {
-      StringBuffer sb = new StringBuffer();
-      //      sb.append( "summary: unspecified; " );
+    if ((rv == null) || (rv.length() <= 0)) {
+      StringBuilder sb = new StringBuilder();
       Throwable throwable = this.getThrowable();
       if (throwable != null) {
-        //        sb.append( "exception: " );
         sb.append(throwable.getClass().getName());
         sb.append("; ");
         String message = throwable.getMessage();
@@ -258,10 +254,9 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
         StackTraceElement[] stackTraceElements = throwable.getStackTrace();
         if ((stackTraceElements != null) && (stackTraceElements.length > 0) && (stackTraceElements[0] != null)) {
           sb.append("stack[0]: ");
-          sb.append(stackTraceElements[0].toString());
+          sb.append(stackTraceElements[0]);
           sb.append("; ");
         }
-        //      }
       }
       rv = sb.toString();
     }
@@ -318,23 +313,4 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
     this.paneException.setThreadAndThrowable(thread, throwable);
     this.revalidate();
   }
-  //  private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
-  //    rv.append( issue.getAffectsVersionText() );
-  //    rv.append( ": " );
-  //    String summary = issue.getSummary();
-  //    if( summary != null && summary.length() > 0 ) {
-  //      rv.append( summary );
-  //    } else {
-  //      rv.append( this.getSubSummary( issue ) );
-  //    }
-  //    return rv;
-  //  }
-  //  protected final String getMailSubject( Issue issue ) {
-  //    StringBuffer sb = new StringBuffer();
-  //    updateMailSubject( sb, issue );
-  //    return sb.toString();
-  //  }
-  //  protected final String getMailBody( Issue issue ) {
-  //    return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
-  //  }
 }

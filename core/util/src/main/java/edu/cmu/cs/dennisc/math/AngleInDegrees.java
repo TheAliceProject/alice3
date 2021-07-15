@@ -136,11 +136,6 @@ public class AngleInDegrees implements Angle {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(AngleInDegrees.class.getName());
-    sb.append("[");
-    sb.append(m_degrees);
-    sb.append("]");
-    return sb.toString();
+    return AngleInDegrees.class.getName() + "[" + m_degrees + "]";
   }
 }

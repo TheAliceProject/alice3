@@ -151,14 +151,7 @@ public class PickResult {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(getClass().getName());
-    //todo:
-    sb.append("[visual=");
-    sb.append(m_sgVisual);
-    //    sb.append( ",geometry=" );
-    //    sb.append( m_sgGeometry );
-    sb.append("]");
-    return sb.toString();
+    return getClass().getName() + "[visual=" + m_sgVisual + "]";
+    // ",geometry=" + m_sgGeometry
   }
 }

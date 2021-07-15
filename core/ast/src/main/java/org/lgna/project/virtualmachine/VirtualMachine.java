@@ -677,12 +677,9 @@ public abstract class VirtualMachine {
   }
 
   protected String evaluateStringConcatenation(StringConcatenation stringConcatenation) {
-    StringBuffer sb = new StringBuffer();
     Object leftOperand = this.evaluate(stringConcatenation.leftOperand.getValue());
     Object rightOperand = this.evaluate(stringConcatenation.rightOperand.getValue());
-    sb.append(leftOperand);
-    sb.append(rightOperand);
-    return sb.toString();
+    return String.valueOf(leftOperand) + rightOperand;
   }
 
   protected Object evaluateMethodInvocation(MethodInvocation methodInvocation) {

@@ -223,13 +223,6 @@ public class ForwardAndUpGuide implements Orientation {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(ForwardAndUpGuide.class.getName());
-    sb.append("[forward=");
-    sb.append(forward);
-    sb.append(";upGuide=");
-    sb.append(upGuide);
-    sb.append("]");
-    return sb.toString();
+    return ForwardAndUpGuide.class.getName() + "[forward=" + forward + ";upGuide=" + upGuide + "]";
   }
 }

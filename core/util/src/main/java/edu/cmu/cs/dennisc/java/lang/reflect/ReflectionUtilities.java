@@ -235,7 +235,7 @@ public final class ReflectionUtilities {
     try {
       return cls.getConstructor(parameterClses);
     } catch (NoSuchMethodException nsme) {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append(cls.getName());
       for (Class<?> parameterCls : parameterClses) {
         sb.append(" ");
@@ -289,7 +289,7 @@ public final class ReflectionUtilities {
   }
 
   public static String getDetail(Object instance, Method method, Object[] args) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append("instance=");
     sb.append(instance);
     sb.append(";method=");

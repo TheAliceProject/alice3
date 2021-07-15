@@ -146,10 +146,7 @@ public abstract class IDE extends ProjectApplication {
     super(ideConfiguration, apiConfigurationManager);
     this.ideConfiguration = ideConfiguration;
     this.crashDetector = crashDetector;
-    StringBuffer sb = new StringBuffer();
-    sb.append("Please Submit Bug Report: ");
-    sb.append(getApplicationName());
-    IDE.exceptionHandler.setTitle(sb.toString());
+    IDE.exceptionHandler.setTitle("Please Submit Bug Report: " + getApplicationName());
     IDE.exceptionHandler.setApplicationName(getApplicationName());
     //initialize locale
     //Checks the org.alice.ide.locale property to see if there is a specified locale to initialize Alice to
