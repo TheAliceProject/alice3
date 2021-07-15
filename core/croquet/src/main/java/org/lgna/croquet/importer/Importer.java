@@ -85,6 +85,7 @@ public abstract class Importer<T> {
           return this.createFromFile(file);
         } catch (IOException ioe) {
           ioe.printStackTrace();
+          //TODO I18n
           Dialogs.showError("Exception Thrown", "Unable to import: " + file.getAbsolutePath());
           return null;
         }
@@ -100,6 +101,7 @@ public abstract class Importer<T> {
           prefix = ", ";
         }
         sb.append(" }.");
+        //TODO I18n
         Dialogs.showError("Content Type Not Supported", sb.toString());
         return null;
       }

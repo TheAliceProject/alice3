@@ -102,6 +102,7 @@ class ExceptionPane extends JPanel {
       sb.append(message);
       sb.append("]");
     }
+    // TODO I18n
     sb.append(" in ");
     sb.append(thread.getClass().getSimpleName());
     sb.append("[");

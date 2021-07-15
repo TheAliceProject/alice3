@@ -65,6 +65,7 @@ public class JStandardHeaderPane extends JPanel {
 
   public JStandardHeaderPane(ApplicationIssueConfiguration config) {
     StringBuilder sbHeader = new StringBuilder();
+    // TODO I18n
     sbHeader.append("<html>");
     sbHeader.append("<h1>");
     if (UserProgramRunningStateUtilities.isUserProgramRunning()) {

@@ -86,6 +86,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
       List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations(method);
       final int N_INVOCATIONS = methodInvocations.size();
       if (N_ACCESSES > 0) {
+        // TODO I18n
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>There ");
         if (N_ACCESSES == 1) {

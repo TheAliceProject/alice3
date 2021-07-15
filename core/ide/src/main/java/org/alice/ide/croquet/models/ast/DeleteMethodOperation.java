@@ -95,6 +95,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
     List<MethodInvocation> references = IDE.getActiveInstance().getMethodInvocations(method);
     final int N = references.size();
     if (N > 0) {
+      // TODO I18n
       StringBuilder sb = new StringBuilder();
       sb.append("Unable to delete ");
       if (method.isProcedure()) {

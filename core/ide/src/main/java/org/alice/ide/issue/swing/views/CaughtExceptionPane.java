@@ -94,6 +94,7 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
 
   public CaughtExceptionPane() {
     StringBuilder sb = new StringBuilder();
+    //TODO I18n
     sb.append("<html>");
     sb.append("An exception has been caught");
 
@@ -185,6 +186,7 @@ public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
       pane.setThreadAndThrowable(Thread.currentThread(), re);
     }
 
+    // TODO I18n
     JDialog window = JDialogUtilities.createPackedJDialog(pane, null, "Report Bug", true, WindowConstants.DISPOSE_ON_CLOSE);
     window.getRootPane().setDefaultButton(pane.getSubmitButton());
     window.setVisible(true);
