@@ -73,7 +73,7 @@ public class ShowAllSystemPropertiesView extends BorderPanel {
       max = Math.max(max, name.length());
     }
     String formatString = "%-" + (max + 1) + "s";
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     for (String name : names) {
       sb.append(String.format(formatString, name));
       sb.append(": ");

@@ -51,6 +51,7 @@ import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.ast.components.DeclarationNameLabel;
 import org.alice.ide.common.BeveledShapeForType;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingImportAndExportType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
@@ -402,7 +403,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       @Override
       protected String getNameText() {
         if (IsIncludingThisForFieldAccessesState.getInstance().getValue()) {
-          return "this." + super.getNameText();
+          return FormatterState.getInstance().getValue().getTextForThis() + "." + super.getNameText();
         } else {
           return super.getNameText();
         }

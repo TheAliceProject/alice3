@@ -352,6 +352,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
               if (method == getCode()) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("<html>");
+                // TODO I18n
                 sb.append("The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.");
                 final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
                 if (IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED) {

@@ -115,10 +115,8 @@ public class AdapterFactory {
   private static <SG extends Releasable, GLR extends GlrObject<SG>> GLR createAdapterFor(SG sgElement) {
     Class sgClass = sgElement.getClass();
     Class cls = s_classToAdapterClassMap.get(sgClass);
-    if (cls != null) {
-      //pass
-    } else {
-      StringBuffer sb = new StringBuffer();
+    if (cls == null) {
+      StringBuilder sb = new StringBuilder();
       while (sgClass != null) {
         Package sgPackage = sgClass.getPackage();
         if ((sgPackage != null) && sgPackage.getName().equals(SCENEGRAPH_PACKAGE_NAME)) {

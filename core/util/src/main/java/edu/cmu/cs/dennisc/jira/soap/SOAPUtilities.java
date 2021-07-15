@@ -97,7 +97,7 @@ public class SOAPUtilities {
     RemoteCustomFieldValue exception = createCustomField(10001, jiraReport.getException());
     remoteIssue.setCustomFieldValues(new RemoteCustomFieldValue[] {steps, exception});
 
-    StringBuffer environment = new StringBuffer();
+    StringBuilder environment = new StringBuilder();
     String[] affectsVersions = jiraReport.getAffectsVersions();
     if ((affectsVersions != null) && (affectsVersions.length > 0)) {
       environment.append("version: ");

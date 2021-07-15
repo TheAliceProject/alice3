@@ -55,7 +55,7 @@ public class DoTogether implements ActiveEditorDrop {
 
   private String createBody() {
     int count = getRunnableCount();
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     buffer.append("\n");
     // TODO I18n
     buffer.append("\t//start a Thread for each Runnable and wait until they complete\n");

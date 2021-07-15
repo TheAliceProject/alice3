@@ -97,12 +97,6 @@ public class Tuple2<A, B> {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append("edu.cmu.cs.dennisc.pattern.Tuple2[ a=");
-    sb.append(this.a);
-    sb.append(", b=");
-    sb.append(this.b);
-    sb.append(" ]");
-    return sb.toString();
+    return "edu.cmu.cs.dennisc.pattern.Tuple2[ a=" + a + ", b=" + b + " ]";
   }
 }

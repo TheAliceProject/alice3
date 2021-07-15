@@ -85,7 +85,7 @@ public abstract class AbstractFieldBasedManipulationActionOperation extends Acti
   protected EntityImp getEntityImp() {
     EntityImp entityImp = StorytellingSceneEditor.getInstance().getImplementation(this.field);
     if ((this.field == null) || (entityImp == null)) {
-      Logger.severe("NULL EnityImp");
+      Logger.severe("NULL EntityImp");
     }
     return entityImp;
   }

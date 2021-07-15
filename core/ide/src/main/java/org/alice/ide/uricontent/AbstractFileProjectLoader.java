@@ -87,16 +87,19 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 
   private boolean isAlice3ProjectFile() {
     if (!file.exists()) {
+      // TODO I18n
       Dialogs.showUnableToOpenFileDialog(file, "It does not exist.");
       return false;
     }
     final Locale locale = Locale.ENGLISH;
     String lcFilename = file.getName().toLowerCase(locale);
     if (lcFilename.endsWith(".a2w")) {
+      // TODO I18n
       Dialogs.showError("Cannot read file", "Alice3 does not load Alice2 worlds");
       return false;
     }
     if (lcFilename.endsWith(IoUtilities.TYPE_EXTENSION.toLowerCase(locale))) {
+      // TODO I18n
       Dialogs.showError("Incorrect File Type", file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with the extension " + IoUtilities.PROJECT_EXTENSION);
       return false;
     }
@@ -106,6 +109,7 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
   private boolean isFromFutureVersion(ProjectIo.ProjectReader reader) throws IOException {
     Version fromFutureVersion = reader.checkForFutureVersion();
     if (fromFutureVersion != null) {
+      // TODO I18n
       return !Dialogs.confirmWithWarning("From later Alice version", "WARNING: This project was produced by a newer version of Alice:" + fromFutureVersion + "\n" + "You are running " + ProjectVersion.getCurrentVersion() + " and should consider upgrading. Visit alice.org.\n\n" + "Would you like to try to load this anyway?");
     }
     return false;

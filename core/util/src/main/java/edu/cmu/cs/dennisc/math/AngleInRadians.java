@@ -136,11 +136,6 @@ public class AngleInRadians implements Angle {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(getClass().getName());
-    sb.append("[");
-    sb.append(m_radians);
-    sb.append("]");
-    return sb.toString();
+    return getClass().getName() + "[" + m_radians + "]";
   }
 }

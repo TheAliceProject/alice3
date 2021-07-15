@@ -168,7 +168,7 @@ public abstract class MembersToolPalette<V extends MembersView<?>, M extends Mem
     return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
   }
 
-  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+  public void appendStatusPreRejectorCheck(StringBuilder sb) {
     for (DifferentSignature<M> differentSignatureMember : this.differentSignatures) {
       differentSignatureMember.appendStatusPreRejectorCheck(sb);
     }

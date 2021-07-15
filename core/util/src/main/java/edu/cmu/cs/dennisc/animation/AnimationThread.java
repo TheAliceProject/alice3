@@ -66,7 +66,7 @@ import edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString;
   }
 
   @Override
-  protected StringBuffer updateRepr(StringBuffer rv) {
+  protected StringBuilder updateRepr(StringBuilder rv) {
     rv = super.updateRepr(rv);
     rv.append(";animator=");
     rv.append(m_animator);

@@ -121,8 +121,8 @@ public class AddParameterView extends DeclarationView<UserParameter> {
       } else {
         codeText = "constructor";
       }
-
-      StringBuffer sb = new StringBuffer();
+      // TODO I18n
+      StringBuilder sb = new StringBuilder();
       sb.append("<html><body>There ");
       if (N == 1) {
         sb.append("is 1 invocation");

@@ -193,16 +193,7 @@ public abstract class Resource implements Nameable, NameChangeListenable {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(Resource.class.getName());
-    sb.append("[name=");
-    sb.append(this.getName());
-    sb.append(";contentType=");
-    sb.append(this.getContentType());
-    sb.append(";uuid=");
-    sb.append(this.getId());
-    sb.append("]");
-    return sb.toString();
+    return Resource.class.getName() + "[name=" + getName() + ";contentType=" + getContentType() + ";uuid=" + getId() + "]";
   }
 
   private final UUID uuid;

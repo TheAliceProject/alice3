@@ -90,6 +90,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
           this.save(application, fileNext);
         } catch (IOException ioe) {
           isExceptionRaised = true;
+          //TODO I18n
           Dialogs.showError("Unable to save file", ioe.getMessage());
         } finally {
           application.hideWaitCursor();

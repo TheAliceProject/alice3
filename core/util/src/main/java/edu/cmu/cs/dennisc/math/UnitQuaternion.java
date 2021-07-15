@@ -583,17 +583,6 @@ public class UnitQuaternion implements Orientation, Printable {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(UnitQuaternion.class.getName());
-    sb.append("[x=");
-    sb.append(x);
-    sb.append(";y=");
-    sb.append(y);
-    sb.append(";z=");
-    sb.append(z);
-    sb.append(";w=");
-    sb.append(w);
-    sb.append("]");
-    return sb.toString();
+    return getClass().getName() + "[x=" + x + ";y=" + y + ";z=" + z + ";w=" + w + "]";
   }
 }
