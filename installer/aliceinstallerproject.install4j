@@ -40,7 +40,7 @@
       <variable name="included_jre_version" value="1.8.0_152" description="" category="" />
     </variables>
     <mergedProjects />
-    <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="false" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="" windowsPkcs11Library="" windowsPkcs11Slot="">
+    <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="true" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="../../The Alice Project.p12" windowsPkcs11Library="" windowsPkcs11Slot="">
       <windowsKeystoreIdentifier issuer="" serial="" subject="" />
       <windowsPkcs11Identifier issuer="" serial="" subject="" />
     </codeSigning>
