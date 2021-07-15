@@ -70,7 +70,6 @@ public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
   private static final Stroke STROKE = new BasicStroke(2);
 
   private Ellipse[] m_tailEllipses = null;
-  //  private BumpyBubble m_bumpyBubble;
 
   private final int TAIL_ELLIPSE_COUNT = 3;
   private final double PORTION_PER_TAIL_ELLIPSE = 1.0 / TAIL_ELLIPSE_COUNT;
@@ -115,8 +114,6 @@ public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
     Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D(r, -0.1, 0.15, 0.7, 1.2);
     Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D(r, 0.15, 0.45, 0.8, 1.0);
 
-    AffineTransform m = AffineTransform.getRotateInstance(0.1, topEllipse.getCenterX(), topEllipse.getCenterY());
-
     Area rv = new Area(r);
     rv.add(createRotatedAboutCenterArea(rightEllipse, -0.1));
     rv.add(createRotatedAboutCenterArea(topEllipse, -0.05));
@@ -131,9 +128,7 @@ public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
     Stroke stroke = g2.getStroke();
     g2.setStroke(STROKE);
 
-    if (m_tailEllipses != null) {
-      //pass
-    } else {
+    if (m_tailEllipses == null) {
       m_tailEllipses = new Ellipse[TAIL_ELLIPSE_COUNT];
 
       double xDelta = bubble.getEndOfTail().getX() - bubble.getOriginOfTail().getX();
