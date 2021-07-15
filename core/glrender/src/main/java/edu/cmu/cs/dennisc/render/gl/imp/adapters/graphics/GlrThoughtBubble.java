@@ -148,6 +148,10 @@ public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
     if (portion < 1.0) {
       paintEllipses(gc, portion);
     } else {
+      for (Ellipse tailEllipse : m_tailEllipses) {
+        tailEllipse.paint(gc);
+      }
+
       Rectangle2D.Double textBounds = bubble.getTextBounds();
       final double MINIMUM_WIDTH = 48.0;
       double w;
@@ -180,10 +184,6 @@ public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
 
       g2.setPaint(textColor);
       multilineText.paint(g2, wrapWidth, TextAlignment.LEADING, textBounds);
-
-      for (Ellipse tailEllipse : m_tailEllipses) {
-        tailEllipse.paint(gc);
-      }
     }
 
     g2.setStroke(stroke);
