@@ -301,29 +301,14 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     node.setName(getUserJointIdentifier(joint.jointID.getValue()));
 
     final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue();
-    double[] matrixValues = jointTransform.getAsColumnMajorArray16();
-    //Flip the values from Alice space to Collada/glTF space
-    float[] flippedMatrix = createFlippedColumnMajorTransform(matrixValues);
-    node.setMatrix(flippedMatrix);
+    float[] matrixValues = new float[16];
+    matrixValues = jointTransform.getAsColumnMajorArray16(matrixValues);
+    node.setMatrix(matrixValues);
     return node;
   }
 
   public String getUserJointIdentifier(String jointIdentifier) {
     return renamedJoints.getOrDefault(jointIdentifier, jointIdentifier);
-  }
-
-  public static float[] createFlippedColumnMajorTransform(double[] transform) {
-    float[] flippedTransform = new float[transform.length];
-    for (int i = 0; i < transform.length; i++) {
-      flippedTransform[i] = (float) transform[i];
-    }
-    flippedTransform[4] *= -1;  //up.x
-    flippedTransform[12] *= -1; //translation.x
-    flippedTransform[1] *= -1;  //right.y
-    flippedTransform[9] *= -1;  //backward.y
-    flippedTransform[6] *= -1;  //up.z
-    flippedTransform[14] *= -1; //translation.z
-    return flippedTransform;
   }
 
   private List<Mesh> createMeshes(BufferStructureBuilder bufferStructureBuilder, GlTF gltf, Map<String, Integer> jointNodes) {
@@ -370,7 +355,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
     // Add the vertices (positions) from the mesh to the buffer structure
     int positionsAccessorIndex = builder.getNumAccessorModels();
-    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArrayNegatingXandZ(sgMesh.vertexBuffer.getValue()));
+    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArray(sgMesh.vertexBuffer.getValue()));
     builder.createAccessorModel("positionsAccessor_" + positionsAccessorIndex,
                                 GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objVertices));
     meshPrimitive.addAttributes("POSITION", positionsAccessorIndex);
@@ -387,7 +372,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
 
     // Add the normals from the mesh to the buffer structure
-    FloatBuffer objNormals = BufferUtilities.createDirectFloatBuffer(convertToFloatArrayNegatingXandZ(sgMesh.normalBuffer.getValue()));
+    FloatBuffer objNormals = BufferUtilities.copyFloatBuffer(sgMesh.normalBuffer.getValue());
     if (objNormals.capacity() > 0) {
       normalize(objNormals);
       int normalsAccessorIndex = builder.getNumAccessorModels();
@@ -497,13 +482,13 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     int ibmIndex = builder.getNumAccessorModels();
     final Set<Map.Entry<String, InverseAbsoluteTransformationWeightsPair>> entries = sgWM.weightInfo.getValue().getMap().entrySet();
     float[] matrices = new float[16 * entries.size()];
+    float[] matrix = new float[16];
     int index = 0;
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : entries) {
       skin.addJoints(jointNodes.get(entry.getKey()));
       AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation();
-      double[] matrix = inverseBindMatrix.getAsColumnMajorArray16();
-      float[] flippedMatrix = createFlippedColumnMajorTransform(matrix);
-      System.arraycopy(flippedMatrix, 0, matrices, index, 16);
+      inverseBindMatrix.getAsColumnMajorArray16(matrix);
+      System.arraycopy(matrix, 0, matrices, index, 16);
       index += 16;
     }
 
@@ -549,7 +534,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
   }
 
-  public static float[] convertToFloatArrayNegatingXandZ(DoubleBuffer buf) {
+  public static float[] convertToFloatArray(DoubleBuffer buf) {
     if (buf == null) {
       return new float[0];
     }
@@ -557,25 +542,11 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     float[] array = new float[buf.remaining()];
     int index = 0;
     while (buf.hasRemaining()) {
-      array[index++] = (float) -buf.get();
       array[index++] = (float) buf.get();
-      array[index++] = (float) -buf.get();
+      array[index++] = (float) buf.get();
+      array[index++] = (float) buf.get();
     }
     return array;
   }
 
-  public static float[] convertToFloatArrayNegatingXandZ(FloatBuffer buf) {
-    if (buf == null) {
-      return new float[0];
-    }
-    buf.rewind();
-    float[] array = new float[buf.remaining()];
-    int index = 0;
-    while (buf.hasRemaining()) {
-      array[index++] = -buf.get();
-      array[index++] = buf.get();
-      array[index++] = -buf.get();
-    }
-    return array;
-  }
 }
