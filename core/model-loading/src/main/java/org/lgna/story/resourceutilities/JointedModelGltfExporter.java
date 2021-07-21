@@ -317,12 +317,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     for (int i = 0; i < transform.length; i++) {
       flippedTransform[i] = (float) transform[i];
     }
-    flippedTransform[4] *= -1;  //up.x
-    flippedTransform[12] *= -1; //translation.x
-    flippedTransform[1] *= -1;  //right.y
-    flippedTransform[9] *= -1;  //backward.y
-    flippedTransform[6] *= -1;  //up.z
-    flippedTransform[14] *= -1; //translation.z
     return flippedTransform;
   }
 
@@ -557,9 +551,9 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     float[] array = new float[buf.remaining()];
     int index = 0;
     while (buf.hasRemaining()) {
-      array[index++] = (float) -buf.get();
       array[index++] = (float) buf.get();
-      array[index++] = (float) -buf.get();
+      array[index++] = (float) buf.get();
+      array[index++] = (float) buf.get();
     }
     return array;
   }
@@ -572,9 +566,9 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     float[] array = new float[buf.remaining()];
     int index = 0;
     while (buf.hasRemaining()) {
-      array[index++] = -buf.get();
       array[index++] = buf.get();
-      array[index++] = -buf.get();
+      array[index++] = buf.get();
+      array[index++] = buf.get();
     }
     return array;
   }
