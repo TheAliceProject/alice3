@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.story.implementation;
 
-import org.lgna.story.SCylinder;
-import org.lgna.story.implementation.eventhandling.CylinderHull;
-import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
+package org.lgna.story.implementation.eventhandling;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CylinderImp extends AbstractCylinderImp {
-  public CylinderImp(SCylinder abstraction) {
-    this.abstraction = abstraction;
-    this.getSgCylinder().bottomRadius.setValue(0.5);
-    this.getSgCylinder().topRadius.setValue(0.5);
+import edu.cmu.cs.dennisc.math.Point3;
+
+public class CylinderHull extends VerticalPrismCollisionHull {
+  private final double radius;
+
+  public CylinderHull(Point3 centerBase, double height, double radius) {
+    super(centerBase, height);
+    this.radius = radius;
   }
 
   @Override
-  public SCylinder getAbstraction() {
-    return this.abstraction;
+  public double distanceAlong(double xDistance, double zDistance) {
+    return radius;
   }
-
-  @Override
-  protected void setXZ(double xz) {
-    this.radius.setValue(xz);
-  }
-
-  @Override
-  protected double getXZ() {
-    return this.radius.getValue();
-  }
-
-  @Override
-  public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation, getHeight(), radius.getValue());
-  }
-
-  private final SCylinder abstraction;
-  public final DoubleProperty radius = new DoubleProperty(CylinderImp.this) {
-    @Override
-    public Double getValue() {
-      return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-    }
-
-    @Override
-    protected void handleSetValue(Double value) {
-      //Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-      CylinderImp.this.getSgCylinder().topRadius.setValue(value);
-      CylinderImp.this.getSgCylinder().bottomRadius.setValue(value);
-    }
-  };
 }

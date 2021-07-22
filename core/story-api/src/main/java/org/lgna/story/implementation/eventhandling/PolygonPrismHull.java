@@ -43,33 +43,23 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 
-public class AabbCollisionHull {
-  final Vector3 corner;
-  final Point3 center;
+import edu.cmu.cs.dennisc.math.*;
 
-  public AabbCollisionHull(AxisAlignedBox aabb) {
-    this(aabb.getMinimum(), aabb.getMaximum());
+public class PolygonPrismHull extends VerticalPrismCollisionHull {
+  private final ConvexPolygon crossSection = new ConvexPolygon();
+
+  public PolygonPrismHull(Point3 centerBase, double height, AffineMatrix4x4 transformation, AxisAlignedBox aabbLocal) {
+    super(centerBase, height);
+    for (Point3 localPoint : aabbLocal.getPoints()) {
+      Point3 p = transformation.createTransformed(localPoint);
+      p.subtract(centerBase);
+      crossSection.includePoint(new Point2(p.x, p.z));
+    }
   }
 
-  private AabbCollisionHull(Point3 min, Point3 max) {
-    center = Point3.createInterpolation(min, max, .5);
-    corner = Vector3.createSubtraction(max, min);
-    corner.multiply(.5);
-  }
-
-  public boolean collidesWith(AabbCollisionHull other) {
-    return isWithinDistance(other, 0);
-  }
-
-  public boolean isWithinDistance(AabbCollisionHull other, double proximity) {
-    Vector3 distVector = Vector3.createSubtraction(center, other.center);
-    distVector.x = Math.abs(distVector.x);
-    distVector.y = Math.abs(distVector.y);
-    distVector.z = Math.abs(distVector.z);
-    return ((distVector.x - proximity) < (corner.x + other.corner.x)) && ((distVector.y - proximity) < (corner.y + other.corner.y)) && ((distVector.z - proximity) < (corner.z + other.corner.z));
+  @Override
+  public double distanceAlong(double x, double z) {
+    return crossSection.distanceAlong(x, z);
   }
 }

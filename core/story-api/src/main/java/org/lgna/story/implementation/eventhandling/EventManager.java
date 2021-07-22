@@ -83,7 +83,7 @@ public class EventManager {
   private final TransformationHandler transHandler = new TransformationHandler();
   private final OcclusionHandler occlusionHandler = new OcclusionHandler();
   private final ViewEventHandler viewHandler = new ViewEventHandler();
-  private final Map<SThing, AabbCollisionHull> hulls = Maps.newConcurrentHashMap();
+  private final Map<SThing, VerticalPrismCollisionHull> hulls = Maps.newConcurrentHashMap();
   private final CollisionHandler collisionHandler = new CollisionHandler(hulls);
   private final ProximityEventHandler proxyHandler = new ProximityEventHandler(hulls);
   private final TimerEventHandler timer = new TimerEventHandler();
