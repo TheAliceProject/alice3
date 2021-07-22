@@ -51,6 +51,8 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.lgna.story.SDisc;
+import org.lgna.story.implementation.eventhandling.CylinderHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
@@ -103,6 +105,11 @@ public class DiscImp extends ShapeImp {
       Logger.severe("Invalid size for " + this.getClass().getSimpleName() + ": " + size);
     }
     this.outerRadius.setValue(size.x * .5);
+  }
+
+  @Override
+  public VerticalPrismCollisionHull getCollisionHull() {
+    return new CylinderHull(getAbsoluteTransformation().translation, 0.01, outerRadius.getValue());
   }
 
   private final SDisc abstraction;

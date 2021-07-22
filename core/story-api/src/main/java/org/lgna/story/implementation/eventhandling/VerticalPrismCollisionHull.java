@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.story.implementation;
 
-import org.lgna.story.SCylinder;
-import org.lgna.story.implementation.eventhandling.CylinderHull;
-import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
+package org.lgna.story.implementation.eventhandling;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CylinderImp extends AbstractCylinderImp {
-  public CylinderImp(SCylinder abstraction) {
-    this.abstraction = abstraction;
-    this.getSgCylinder().bottomRadius.setValue(0.5);
-    this.getSgCylinder().topRadius.setValue(0.5);
+import edu.cmu.cs.dennisc.math.Point3;
+
+public abstract class VerticalPrismCollisionHull {
+  Point3 centerBase;
+  double height;
+
+  public VerticalPrismCollisionHull(Point3 centerBase, double height) {
+    this.centerBase = centerBase;
+    this.height = height;
   }
 
-  @Override
-  public SCylinder getAbstraction() {
-    return this.abstraction;
+  public abstract double distanceAlong(double xDistance, double zDistance);
+
+  public boolean collidesWith(VerticalPrismCollisionHull other) {
+    return isWithinDistance(other, 0);
   }
 
-  @Override
-  protected void setXZ(double xz) {
-    this.radius.setValue(xz);
-  }
-
-  @Override
-  protected double getXZ() {
-    return this.radius.getValue();
-  }
-
-  @Override
-  public VerticalPrismCollisionHull getCollisionHull() {
-    return new CylinderHull(getAbsoluteTransformation().translation, getHeight(), radius.getValue());
-  }
-
-  private final SCylinder abstraction;
-  public final DoubleProperty radius = new DoubleProperty(CylinderImp.this) {
-    @Override
-    public Double getValue() {
-      return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+  public boolean isWithinDistance(VerticalPrismCollisionHull other, double proximity) {
+    if (isBeyondHeight(other, proximity)) {
+      return false;
     }
+    double xDistance = centerBase.x - other.centerBase.x;
+    double zDistance = centerBase.z - other.centerBase.z;
+    double radius = distanceAlong(xDistance, zDistance);
+    double otherRadius = other.distanceAlong(-xDistance, -zDistance);
+    double allowedDistance = radius + otherRadius + proximity;
+    return xDistance * xDistance + zDistance * zDistance < allowedDistance * allowedDistance;
+  }
 
-    @Override
-    protected void handleSetValue(Double value) {
-      //Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-      CylinderImp.this.getSgCylinder().topRadius.setValue(value);
-      CylinderImp.this.getSgCylinder().bottomRadius.setValue(value);
-    }
-  };
+  private boolean isBeyondHeight(VerticalPrismCollisionHull other, double proximity) {
+    double bottom = centerBase.y;
+    double otherBottom = other.centerBase.y;
+    double top = bottom + height;
+    double otherTop = otherBottom + other.height;
+    return otherTop + proximity <= bottom || otherBottom - proximity >= top;
+  }
 }

@@ -62,14 +62,14 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, ProximityEvent, SThing> {
-  private final Map<SThing, AabbCollisionHull> hulls;
+  private final Map<SThing, VerticalPrismCollisionHull> hulls;
   private final Map<Object, Map<SThing, Map<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
   private final Map<Object, Double> listenerDistances = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
   private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
   long millisSinceLastCheck = 0;
 
-  public ProximityEventHandler(Map<SThing, AabbCollisionHull> hulls) {
+  public ProximityEventHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
     this.hulls = hulls;
   }
 
@@ -124,12 +124,12 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   private boolean areTheseCloseEnough(SThing changedThing, SThing thing, Double proximity) {
-    AabbCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
-    AabbCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
+    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
+    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
     return changedHull.isWithinDistance(hull, proximity);
   }
 
-  private AabbCollisionHull newCollisionHull(SThing thing) {
+  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
     return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 

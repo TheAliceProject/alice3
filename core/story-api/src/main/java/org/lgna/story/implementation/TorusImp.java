@@ -43,12 +43,15 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.lgna.story.STorus;
+import org.lgna.story.implementation.eventhandling.CylinderHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
@@ -106,6 +109,12 @@ public class TorusImp extends ShapeImp {
   public void setSize(Dimension3 size) {
     Logger.outln("setSize", size, this);
     this.outerRadius.setValue(size.x * .5);
+  }
+
+  @Override
+  public VerticalPrismCollisionHull getCollisionHull() {
+    AxisAlignedBox aabb = getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
+    return new CylinderHull(aabb.getCenterOfBottomFace(), aabb.getHeight(), outerRadius.getValue());
   }
 
   private final STorus abstraction;

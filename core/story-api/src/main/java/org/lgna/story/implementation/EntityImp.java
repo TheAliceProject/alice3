@@ -69,7 +69,8 @@ import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.story.AudioSource;
 import org.lgna.story.SThing;
-import org.lgna.story.implementation.eventhandling.AabbCollisionHull;
+import org.lgna.story.implementation.eventhandling.PolygonPrismHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -150,8 +151,10 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     return cumulativeBound.getBoundingBox();
   }
 
-  public AabbCollisionHull getCollisionHull() {
-    return new AabbCollisionHull(getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE));
+  public VerticalPrismCollisionHull getCollisionHull() {
+    AxisAlignedBox myBox = getDynamicAxisAlignedMinimumBoundingBox();
+    AxisAlignedBox sceneBox = getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
+    return new PolygonPrismHull(sceneBox.getCenterOfBottomFace(), sceneBox.getHeight(), getAbsoluteTransformation(), myBox);
   }
 
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {

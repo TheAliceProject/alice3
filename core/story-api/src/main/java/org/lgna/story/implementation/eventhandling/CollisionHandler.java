@@ -62,13 +62,13 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public class CollisionHandler extends AbstractBinaryEventHandler<Object, CollisionEvent, SThing> {
-  private final Map<SThing, AabbCollisionHull> hulls;
+  private final Map<SThing, VerticalPrismCollisionHull> hulls;
   private final Map<SThing, Map<SThing, Boolean>> wereTouching = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
   private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
   long millisSinceLastCheck = 0;
 
-  public CollisionHandler(Map<SThing, AabbCollisionHull> hulls) {
+  public CollisionHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
     this.hulls = hulls;
   }
 
@@ -123,12 +123,14 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   }
 
   public boolean doTheseCollide(SThing changedThing, SThing thing) {
-    AabbCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
-    AabbCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
-    return changedHull.collidesWith(hull);
+    return collisionHull(changedThing).collidesWith(collisionHull(thing));
   }
 
-  private AabbCollisionHull newCollisionHull(SThing thing) {
+  private VerticalPrismCollisionHull collisionHull(SThing changedThing) {
+    return hulls.computeIfAbsent(changedThing, this::newCollisionHull);
+  }
+
+  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
     return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 
