@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.nebulous;
 
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 
 /**
@@ -58,8 +59,12 @@ public class Person extends Model {
 
   public Person(Object o) throws LicenseRejectedException {
     this.o = o;
-    synchronized (renderLock) {
-      initialize(o);
+    if (o == null) {
+      Logger.severe("NOT INITIALIZING PERSON: lifeStage=null");
+    } else {
+      synchronized (renderLock) {
+        initialize(o);
+      }
     }
   }
 
@@ -132,8 +137,12 @@ public class Person extends Model {
   private native void setAll(Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face);
 
   public void synchronizedSetAll(Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face) {
-    synchronized (renderLock) {
-      setAll(gender, outfit, skinTone, obesityLevel, eyeColor, hair, face);
+    if (gender == null || outfit == null || skinTone == null || obesityLevel == null || eyeColor == null || hair == null || face == null) {
+      Logger.severe("NOT SYNCHRONIZING ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinTone=" + skinTone + ", obesityLevel=" + obesityLevel + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", eyeColor=" + eyeColor + ", hair=" + hair + ", face=" + face);
+    } else {
+      synchronized (renderLock) {
+        setAll(gender, outfit, skinTone, obesityLevel, eyeColor, hair, face);
+      }
     }
   }
 
