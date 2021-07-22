@@ -225,6 +225,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 
   @Override
   protected void handlePreShowDialog(Dialog dialog) {
+    isCommitted = false;
     this.getDialogContentComposite().handlePreActivation();
     if (this.isDefaultButtonDesired()) {
       Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
