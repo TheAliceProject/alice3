@@ -399,7 +399,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
   private MeshPrimitive createWeightedMeshPrimitive(WeightedMesh sgWM, BufferStructureBuilder builder, Map<String, Integer> jointNodes, Skin skin) {
     MeshPrimitive meshPrimitive = createMeshPrimitive(sgWM, builder);
     VertexWeights[] vertexWeights = getWeightsByVertex(sgWM, jointNodes, skin);
-    int highestJointCount = 5;
+    int highestJointCount = computeHighestJointCount(vertexWeights);
     int quadCount = (highestJointCount + 3) / 4;
     JointWeightQuad[] quads = new JointWeightQuad[quadCount];
     for (int i = 0; i < quadCount; i++) {
@@ -423,6 +423,24 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       buildJointWeightBuffers(sgWM, builder, meshPrimitive, quads[i]);
     }
     return meshPrimitive;
+  }
+
+  private int computeHighestJointCount(VertexWeights[] vertexWeights) {
+    int highestJointCount = 0;
+
+    for (VertexWeights vertexWeight : vertexWeights) {
+      if (null == vertexWeight) {
+        continue;
+      }
+
+      int numJoints = vertexWeight.jointIndices.size();
+
+      if (numJoints > highestJointCount) {
+        highestJointCount = numJoints;
+      }
+    }
+
+    return highestJointCount;
   }
 
   private void buildJointWeightBuffers(WeightedMesh sgWM, BufferStructureBuilder builder, MeshPrimitive meshPrimitive, JointWeightQuad quad) {
