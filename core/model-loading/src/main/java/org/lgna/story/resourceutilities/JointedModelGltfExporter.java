@@ -508,22 +508,27 @@ public class JointedModelGltfExporter implements JointedModelExporter {
   // Borrowed from JglTF/ObjNormals.java
   public static void normalize(FloatBuffer normals) {
     int numZeroLengthNormals = 0;
+    int numNaNNormals = 0;
     int n = normals.capacity() / 3;
     for (int i = 0; i < n; i++) {
       float x = normals.get(i * 3);
       float y = normals.get(i * 3 + 1);
       float z = normals.get(i * 3 + 2);
-      double length = Math.sqrt(x * x + y * y + z * z);
       float nx = 1.0f;
       float ny = 0.0f;
       float nz = 0.0f;
-      if (length < EPSILON) {
-        numZeroLengthNormals++;
+      if (Float.isNaN(x) || Float.isNaN(y) || Float.isNaN(z)) {
+        numNaNNormals++;
       } else {
-        float invLength = (float) (1.0 / length);
-        nx = x * invLength;
-        ny = y * invLength;
-        nz = z * invLength;
+        double length = Math.sqrt(x * x + y * y + z * z);
+        if (length < EPSILON) {
+          numZeroLengthNormals++;
+        } else {
+          float invLength = (float) (1.0 / length);
+          nx = x * invLength;
+          ny = y * invLength;
+          nz = z * invLength;
+        }
       }
       normals.put(i * 3, nx);
       normals.put(i * 3 + 1, ny);
@@ -531,6 +536,9 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
     if (numZeroLengthNormals > 0) {
       System.out.println("There have been " + numZeroLengthNormals + " normals with zero length. Using (1,0,0) as a default.");
+    }
+    if (numNaNNormals > 0) {
+      System.out.println("There have been " + numNaNNormals + " normals with NaN components. Using (1,0,0) as a default.");
     }
   }
 
