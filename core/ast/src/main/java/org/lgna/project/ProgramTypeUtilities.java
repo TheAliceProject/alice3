@@ -235,17 +235,26 @@ public class ProgramTypeUtilities {
     return getMainMethod(project.getProgramType());
   }
 
-  public static void sanityCheckAllTypes(Project project) {
+  public static String sanityCheckAllTypes(Project project) {
+    // TODO I18N
+    StringBuilder sb = new StringBuilder();
     for (NamedUserType type : project.getNamedUserTypes()) {
       for (NamedUserConstructor constructor : type.constructors) {
-        assert constructor.getDeclaringType() == type : type;
+        if (constructor.getDeclaringType() != type) {
+          sb.append("Constructor for ").append(constructor.getDeclaringType()).append(" is found on a different class ").append(type);
+        }
       }
       for (UserMethod method : type.methods) {
-        assert method.getDeclaringType() == type : type;
+        if (method.getDeclaringType() != type) {
+          sb.append("Method ").append(method.getDeclaringType()).append('.').append(method.getName()).append(" is found on a different class ").append(type);
+        }
       }
       for (UserField field : type.fields) {
-        assert field.getDeclaringType() == type : type;
+        if (field.getDeclaringType() != type) {
+          sb.append("Field ").append(field.getDeclaringType()).append('.').append(field.getName()).append(" is found on a different class ").append(type);
+        }
       }
     }
+    return sb.toString();
   }
 }
