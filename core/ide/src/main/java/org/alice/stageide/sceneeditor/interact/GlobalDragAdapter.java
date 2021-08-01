@@ -223,7 +223,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
           //Left
           new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), 2.0d),
           //Right
-          new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), -2.0d),
+          new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 2.0d),
       };
 
       ModifierMask noModifiers = new ModifierMask(ModifierMask.NO_MODIFIERS_DOWN);

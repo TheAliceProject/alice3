@@ -119,54 +119,56 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
     Ray newPickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
     Point3 oldPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, oldPickRay);
     Point3 newPickPoint = PlaneUtilities.getPointInPlane(this.cameraFacingPickPlane, newPickRay);
-    if ((newPickPoint != null) && (oldPickPoint != null)) {
-      this.setPlaneDiscPoint(pickPoint);
-
-      Point3 oldPointInCamera = this.camera.transformFrom_New(oldPickPoint, this.camera.getRoot());
-      Point3 newPointInCamera = this.camera.transformFrom_New(newPickPoint, this.camera.getRoot());
-
-      Vector3 xDif = new Vector3(newPointInCamera.x, oldPointInCamera.y, oldPointInCamera.z);
-      xDif.normalize();
-      Vector3 yDif = new Vector3(oldPointInCamera.x, newPointInCamera.y, oldPointInCamera.z);
-      yDif.normalize();
-
-      Vector3 oldDirection = new Vector3(oldPointInCamera);
-      oldDirection.normalize();
-
-      Angle xAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, xDif);
-      if (currentInput.getMouseLocation().x < previousInput.getMouseLocation().x) {
-        xAngle.setAsRadians(xAngle.getAsRadians() * -1);
-      }
-      Angle yAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, yDif);
-      if (currentInput.getMouseLocation().y < previousInput.getMouseLocation().y) {
-        yAngle.setAsRadians(yAngle.getAsRadians() * -1);
-      }
-
-      StandIn standIn = new StandIn();
-      standIn.setName("CameraOrbitStandIn");
-      standIn.setVehicle(this.getCamera().getRoot());
-      try {
-        standIn.setTransformation(this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE);
-        standIn.setAxesOnlyToStandUp();
-        this.manipulatedTransformable.applyRotationAboutXAxis(yAngle, standIn);
-        this.manipulatedTransformable.applyRotationAboutYAxis(xAngle, standIn);
-      } finally {
-        standIn.setVehicle(null);
-      }
-
-      //Make sure the camera's x-axis is still horizontal
-      AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
-      Vector3 rightAxis = cameraTransform.orientation.right;
-      rightAxis.y = 0;
-      rightAxis.normalize();
-      Vector3 upAxis = Vector3.createCrossProduct(cameraTransform.orientation.backward, rightAxis);
-      upAxis.normalize();
-      cameraTransform.orientation.right.set(rightAxis);
-      cameraTransform.orientation.up.set(upAxis);
-      this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
-
-      this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+    if (newPickPoint == null || oldPickPoint == null) {
+      return;
     }
+    this.setPlaneDiscPoint(pickPoint);
+
+    Point3 oldPointInCamera = this.camera.transformFrom_New(oldPickPoint, this.camera.getRoot());
+    Point3 newPointInCamera = this.camera.transformFrom_New(newPickPoint, this.camera.getRoot());
+
+    Vector3 xDif = new Vector3(newPointInCamera.x, oldPointInCamera.y, oldPointInCamera.z);
+    xDif.normalize();
+    Vector3 yDif = new Vector3(oldPointInCamera.x, newPointInCamera.y, oldPointInCamera.z);
+    yDif.normalize();
+
+    Vector3 oldDirection = new Vector3(oldPointInCamera);
+    oldDirection.normalize();
+
+    Angle xAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, xDif);
+    if (currentInput.getMouseLocation().x < previousInput.getMouseLocation().x) {
+      xAngle.setAsRadians(xAngle.getAsRadians() * -1);
+    }
+    Angle yAngle = VectorUtilities.getAngleBetweenVectors(oldDirection, yDif);
+    if (currentInput.getMouseLocation().y < previousInput.getMouseLocation().y) {
+      yAngle.setAsRadians(yAngle.getAsRadians() * -1);
+    }
+
+    StandIn standIn = new StandIn();
+    standIn.setName("CameraOrbitStandIn");
+    standIn.setVehicle(this.getCamera().getRoot());
+    try {
+      standIn.setTransformation(this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE);
+      standIn.setAxesOnlyToStandUp();
+      this.manipulatedTransformable.applyRotationAboutXAxis(yAngle, standIn);
+      this.manipulatedTransformable.applyRotationAboutYAxis(xAngle, standIn);
+    } finally {
+      standIn.setVehicle(null);
+    }
+
+    //Make sure the camera's x-axis is still horizontal
+    AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
+    Vector3 rightAxis = cameraTransform.orientation.right;
+    rightAxis.y = 0;
+    rightAxis.normalize();
+    Vector3 upAxis = Vector3.createCrossProduct(cameraTransform.orientation.backward, rightAxis);
+    upAxis.normalize();
+    cameraTransform.orientation.right.set(rightAxis);
+    cameraTransform.orientation.up.set(upAxis);
+    this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
+
+    this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+    manipulatedTransformable.notifyTransformationListeners();
   }
 
   @Override

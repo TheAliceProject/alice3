@@ -62,11 +62,7 @@ public class Transformable extends AbstractTransformable {
 
   @Override
   protected void touchLocalTransformation(AffineMatrix4x4 m) {
-    if (m == this.localTransformation.getValue()) {
-      this.localTransformation.touch();
-    } else {
-      this.localTransformation.setValue(m);
-    }
+    localTransformation.setValue(m);
   }
 
   public final AffineMatrix4x4Property localTransformation = new AffineMatrix4x4Property(this, AffineMatrix4x4.createIdentity());

@@ -77,10 +77,4 @@ public class AffineMatrix4x4Property extends CopyableInstanceProperty<AffineMatr
     //todo?
     this.setValue(new AffineMatrix4x4(value));
   }
-
-  @Deprecated
-  public void touch() {
-    this.setValue(this.getValue());
-  }
-
 }

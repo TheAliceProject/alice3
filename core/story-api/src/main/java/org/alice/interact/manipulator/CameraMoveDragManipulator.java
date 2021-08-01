@@ -94,6 +94,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
     this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
     this.manipulatedTransformable.applyTranslation(translationX, AsSeenBy.SCENE);
     this.manipulatedTransformable.applyTranslation(translationY, AsSeenBy.SCENE);
+    manipulatedTransformable.notifyTransformationListeners();
   }
 
   @Override
