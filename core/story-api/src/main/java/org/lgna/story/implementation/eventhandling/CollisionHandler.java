@@ -65,8 +65,6 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   private final Map<SThing, VerticalPrismCollisionHull> hulls;
   private final Map<SThing, Map<SThing, Boolean>> wereTouching = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
-  private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
-  long millisSinceLastCheck = 0;
 
   public CollisionHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
     this.hulls = hulls;
@@ -86,15 +84,7 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   }
 
   @Override
-  protected void check(SThing changedThing) {
-    // Will be recomputed as needed after MINIMUM_MILLIS_BETWEEN_CHECKS
-    hulls.remove(changedThing);
-    long now = System.currentTimeMillis();
-    if (now - millisSinceLastCheck < MINIMUM_MILLIS_BETWEEN_CHECKS) {
-      return;
-    }
-    millisSinceLastCheck = now;
-
+  protected void checkForEvents(SThing changedThing) {
     final Map<SThing, Set<Object>> thingsToCollideWith = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCollideWith.keySet()) {
       Set<Object> listeners = thingsToCollideWith.get(thing);
