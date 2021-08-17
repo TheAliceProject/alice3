@@ -119,8 +119,7 @@ public class ConvexPolygon {
     return null;
   }
 
-  // For unit tests
-  protected List<Point2> getVertices() {
+  public List<Point2> getVertices() {
     return vertices;
   }
 }

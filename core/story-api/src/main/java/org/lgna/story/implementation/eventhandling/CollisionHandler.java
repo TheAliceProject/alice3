@@ -85,10 +85,16 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
 
   @Override
   protected void checkForEvents(SThing changedThing) {
+    VerticalPrismCollisionHull oldHull = hulls.remove(changedThing);
+    VerticalPrismCollisionHull newHull = collisionHull(changedThing);
+    // Compute a combination only if there is an old hull that does not overlap the new
+    VerticalPrismCollisionHull combinedHull = oldHull == null || newHull.collidesWith(oldHull)
+        ? newHull
+        : PolygonPrismHull.combinationHull(oldHull, newHull);
     final Map<SThing, Set<Object>> thingsToCollideWith = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCollideWith.keySet()) {
       Set<Object> listeners = thingsToCollideWith.get(thing);
-      boolean doTheseCollide = doTheseCollide(changedThing, thing);
+      boolean doTheseCollide = combinedHull.collidesWith(collisionHull(thing));
       final boolean isCollisionStart = wasFalse(wereTouching, changedThing, thing) && doTheseCollide;
       final boolean isCollisionEnd = wasTrue(wereTouching, changedThing, thing) && !doTheseCollide;
       wereTouching.get(thing).put(changedThing, doTheseCollide);
