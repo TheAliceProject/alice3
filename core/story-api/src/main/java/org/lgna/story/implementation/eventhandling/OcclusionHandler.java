@@ -85,7 +85,7 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
   }
 
   @Override
-  protected void check(SThing changedThing) {
+  protected void checkForEvents(SThing changedThing) {
     if (camera == null) {
       camera = EmployeesOnly.getImplementation(changedThing).getScene().findFirstCamera();
       if (camera == null) {

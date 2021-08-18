@@ -43,7 +43,10 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.math.Point2;
 import edu.cmu.cs.dennisc.math.Point3;
+
+import java.util.List;
 
 public abstract class VerticalPrismCollisionHull {
   Point3 centerBase;
@@ -61,7 +64,7 @@ public abstract class VerticalPrismCollisionHull {
   }
 
   public boolean isWithinDistance(VerticalPrismCollisionHull other, double proximity) {
-    if (isBeyondHeight(other, proximity)) {
+    if (other == null || isBeyondHeight(other, proximity)) {
       return false;
     }
     double xDistance = centerBase.x - other.centerBase.x;
@@ -79,4 +82,6 @@ public abstract class VerticalPrismCollisionHull {
     double otherTop = otherBottom + other.height;
     return otherTop + proximity <= bottom || otherBottom - proximity >= top;
   }
+
+  protected abstract List<Point2> getCrossSectionVertices(Point3 newCenter);
 }
