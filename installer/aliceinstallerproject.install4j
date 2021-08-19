@@ -1687,28 +1687,6 @@
         <customAttributes />
       </autoUpdate>
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="macosx-amd64-${compiler:included_jre_version}_unpacked" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" installerName="${i18n:InstallerName(${compiler:sys.fullName})}" volumeName="${compiler:sys.shortName}" compressDmg="false" launcherId="24">
-      <excludedComponents />
-      <includedDownloadableComponents />
-      <excludedBeans>
-        <bean refId="142" />
-      </excludedBeans>
-      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude>
-        <entry location="platform/linux" fileType="regular" />
-        <entry location="platform/linux-armv6hf" fileType="regular" />
-        <entry location="platform/linux-amd64" fileType="regular" />
-        <entry location="platform/linux-i586" fileType="regular" />
-        <entry location="platform/win32" fileType="regular" />
-        <entry location="platform/win64" fileType="regular" />
-      </exclude>
-      <variables />
-      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
-        <commentFiles />
-        <customAttributes />
-      </autoUpdate>
-      <topLevelFiles />
-    </macos>
     <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1">
       <excludedComponents />
       <includedDownloadableComponents />
@@ -1749,26 +1727,6 @@
         <customAttributes />
       </autoUpdate>
     </windows>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="macosx-amd64-${compiler:included_jre_version}_unpacked" manualJREEntry="false" archiveType="dmg" volumeName="${compiler:sys.shortName}" launcherId="24">
-      <excludedComponents />
-      <includedDownloadableComponents />
-      <excludedBeans />
-      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude>
-        <entry location="platform/linux" fileType="regular" />
-        <entry location="platform/linux-armv6hf" fileType="regular" />
-        <entry location="platform/linux-amd64" fileType="regular" />
-        <entry location="platform/linux-i586" fileType="regular" />
-        <entry location="platform/win32" fileType="regular" />
-        <entry location="platform/win64" fileType="regular" />
-      </exclude>
-      <variables />
-      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
-        <commentFiles />
-        <customAttributes />
-      </autoUpdate>
-      <topLevelFiles />
-    </macosArchive>
     <windowsArchive name="Windows Archive" id="891" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="${compiler:sys.shortName}" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="windows-amd64-${compiler:included_jre_version}" manualJREEntry="false">
       <excludedComponents />
       <includedDownloadableComponents />
