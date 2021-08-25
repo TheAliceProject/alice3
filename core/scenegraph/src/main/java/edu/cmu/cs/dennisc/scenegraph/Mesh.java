@@ -120,36 +120,51 @@ public class Mesh extends Geometry {
   }
 
   public void scale(Vector3 scale) {
-    double[] vertices = BufferUtilities.convertDoubleBufferToArray(vertexBuffer.getValue());
-    double[] newVertices = new double[vertices.length];
-    for (int i = 0; i < vertices.length; i += 3) {
-      newVertices[i] = vertices[i] * scale.x;
-      newVertices[i + 1] = vertices[i + 1] * scale.y;
-      newVertices[i + 2] = vertices[i + 2] * scale.z;
+    DoubleBuffer buffer =  vertexBuffer.getValue();
+
+    buffer.rewind();
+
+    int n = buffer.remaining();
+
+    for (int i = 0; i < n; i += 3) {
+      buffer.put(i, buffer.get(i) * scale.x);
+      buffer.put(i + 1, buffer.get(i + 1) * scale.y);
+      buffer.put(i + 2, buffer.get(i + 2) * scale.z);
     }
-    vertexBuffer.setValue(BufferUtilities.createDirectDoubleBuffer(newVertices));
+
+    vertexBuffer.setValue(buffer);
   }
 
   public void invertNormals() {
-    float[] normals = BufferUtilities.convertFloatBufferToArray(normalBuffer.getValue());
-    float[] newNormals = new float[normals.length];
-    for (int i = 0; i < normals.length; i += 3) {
-      newNormals[i] = -normals[i];
-      newNormals[i + 1] = -normals[i + 1];
-      newNormals[i + 2] = -normals[i + 2];
+    FloatBuffer buffer = normalBuffer.getValue();
+
+    buffer.rewind();
+
+    int n = buffer.remaining();
+
+    for (int i = 0; i < n; i += 3) {
+      buffer.put(i, -buffer.get(i));
+      buffer.put(i + 1, -buffer.get(i + 1));
+      buffer.put(i + 2, -buffer.get(i + 2));
     }
-    normalBuffer.setValue(BufferUtilities.createDirectFloatBuffer(newNormals));
+    normalBuffer.setValue(buffer);
   }
 
   public void invertIndices() {
-    int[] indices = BufferUtilities.convertIntBufferToArray(indexBuffer.getValue());
-    int[] newIndices = new int[indices.length];
-    for (int i = 0; i < indices.length; i += 3) {
-      newIndices[i] = indices[i];
-      newIndices[i + 1] = indices[i + 2];
-      newIndices[i + 2] = indices[i + 1];
+    IntBuffer buffer = indexBuffer.getValue();
+
+    buffer.rewind();
+
+    int n = buffer.remaining();
+
+    for (int i = 0; i < n; i += 3) {
+      // Leave buffer[i] alone
+      // Swap the values of i + 1 and i + 2
+      int temp = buffer.get(i + 1);
+      buffer.put(i + 1, buffer.get(i + 2));
+      buffer.put(i + 2, temp);
     }
-    indexBuffer.setValue(BufferUtilities.createDirectIntBuffer(newIndices));
+    indexBuffer.setValue(buffer);
   }
 
   public List<Integer> getReferencedTextureIds() {
