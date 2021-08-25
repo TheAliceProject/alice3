@@ -348,15 +348,18 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
     // Add the indices data from the mesh to the buffer structure
     int indicesAccessorIndex = builder.getNumAccessorModels();
+    IntBuffer indexBuffer = sgMesh.indexBuffer.getValue();
+    indexBuffer.rewind();
     builder.createAccessorModel("indicesAccessor_" + indicesAccessorIndex,
-                                indicesComponentType, "SCALAR", Buffers.castToShortByteBuffer(sgMesh.indexBuffer.getValue()));
+                                indicesComponentType, "SCALAR", Buffers.castToShortByteBuffer(indexBuffer));
     meshPrimitive.setIndices(indicesAccessorIndex);
     builder.createArrayElementBufferViewModel(sgMesh.getName() + "_indices_bufferView");
 
     // Add the vertices (positions) from the mesh to the buffer structure
     int positionsAccessorIndex = builder.getNumAccessorModels();
-    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArray(sgMesh.vertexBuffer.getValue()));
-    objVertices.rewind();
+    DoubleBuffer vertexBuffer = sgMesh.vertexBuffer.getValue();
+    vertexBuffer.rewind();
+    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArray(vertexBuffer));
     builder.createAccessorModel("positionsAccessor_" + positionsAccessorIndex,
                                 GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objVertices));
     meshPrimitive.addAttributes("POSITION", positionsAccessorIndex);
@@ -365,7 +368,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     // Add the texture coordinates from the mesh to the buffer structure
     FloatBuffer objTexCoords = sgMesh.textCoordBuffer.getValue();
     objTexCoords.rewind();
-    if (objTexCoords.capacity() > 0) {
+    if (objTexCoords.hasRemaining()) {
       int texCoordsAccessorIndex = builder.getNumAccessorModels();
       builder.createAccessorModel("texCoordsAccessor_" + texCoordsAccessorIndex,
                                   GltfConstants.GL_FLOAT, "VEC2", Buffers.createByteBufferFrom(objTexCoords));
@@ -374,9 +377,10 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
 
     // Add the normals from the mesh to the buffer structure
-    FloatBuffer objNormals = BufferUtilities.copyFloatBuffer(sgMesh.normalBuffer.getValue());
-    objNormals.rewind();
-    if (objNormals.capacity() > 0) {
+    FloatBuffer normalBuffer = sgMesh.normalBuffer.getValue();
+    normalBuffer.rewind();
+    FloatBuffer objNormals = BufferUtilities.copyFloatBuffer(normalBuffer);
+    if (objNormals.hasRemaining()) {
       normalize(objNormals);
       int normalsAccessorIndex = builder.getNumAccessorModels();
       builder.createAccessorModel("normalsAccessor_" + normalsAccessorIndex,
@@ -449,7 +453,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
   private void buildJointWeightBuffers(WeightedMesh sgWM, BufferStructureBuilder builder, MeshPrimitive meshPrimitive, JointWeightQuad quad) {
     int jointsAccessorIndex = builder.getNumAccessorModels();
     IntBuffer joints = BufferUtilities.createDirectIntBuffer(quad.jointData);
-    joints.rewind();
     builder.createAccessorModel("jointsAccessor_" + jointsAccessorIndex,
                                 GltfConstants.GL_UNSIGNED_SHORT, "VEC4", Buffers.castToShortByteBuffer(joints));
     meshPrimitive.addAttributes("JOINTS_" + quad.offset, jointsAccessorIndex);
@@ -457,7 +460,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
     int weightsAccessorIndex = builder.getNumAccessorModels();
     FloatBuffer weights = BufferUtilities.createDirectFloatBuffer(quad.weightData);
-    weights.rewind();
     builder.createAccessorModel("weightsAccessor_" + weightsAccessorIndex,
                                 GltfConstants.GL_FLOAT, "VEC4", Buffers.createByteBufferFrom(weights));
     meshPrimitive.addAttributes("WEIGHTS_" + quad.offset, weightsAccessorIndex);
@@ -516,7 +518,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
 
     FloatBuffer ibmBuffer = BufferUtilities.createDirectFloatBuffer(matrices);
-    ibmBuffer.rewind();
     builder.createAccessorModel("ibmsAccessor_" + ibmIndex, GltfConstants.GL_FLOAT, "MAT4", Buffers.createByteBufferFrom(ibmBuffer));
 
     builder.createBufferViewModel(sgWM.getName() + "_skin_bufferView", null);
@@ -533,7 +534,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
   public static void normalize(FloatBuffer normals) {
     int numZeroLengthNormals = 0;
     int numNaNNormals = 0;
-    int n = normals.capacity() / 3;
+    int n = normals.remaining() / 3;
     for (int i = 0; i < n; i++) {
       float x = normals.get(i * 3);
       float y = normals.get(i * 3 + 1);
@@ -570,7 +571,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     if (buf == null) {
       return new float[0];
     }
-    buf.rewind();
     float[] array = new float[buf.remaining()];
     int index = 0;
     while (buf.hasRemaining()) {
@@ -578,6 +578,8 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       array[index++] = (float) buf.get();
       array[index++] = (float) buf.get();
     }
+
+    buf.rewind();
     return array;
   }
 
