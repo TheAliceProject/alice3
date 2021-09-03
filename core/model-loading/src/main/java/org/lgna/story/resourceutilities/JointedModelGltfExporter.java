@@ -422,7 +422,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     meshPrimitive.setMode(GltfConstants.GL_TRIANGLES);
 
     if (textureMaterialMap.containsKey(textureId)) {
-      meshPrimitive.setMaterial(textureId);
+      meshPrimitive.setMaterial(textureMaterialMap.get(textureId));
     } else {
       System.err.println("Missing material for texture id " + textureId);
     }
