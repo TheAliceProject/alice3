@@ -56,6 +56,7 @@ import de.javagl.jgltf.model.io.GltfModelWriter;
 import de.javagl.jgltf.model.io.GltfReference;
 import de.javagl.jgltf.model.io.GltfReferenceResolver;
 import de.javagl.jgltf.model.io.v2.GltfAssetV2;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -225,8 +226,13 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
   private void createAndAddTextureComponents(Path tempDir, GlTF gltf) throws IOException {
     for (TexturedAppearance texture : visual.textures.getValue()) {
+      Integer textureId = texture.textureId.getValue();
+      MaterialPbrMetallicRoughness pbrMetallicRoughness = new MaterialPbrMetallicRoughness();
+      pbrMetallicRoughness.setMetallicFactor(0.0f);
+
+      boolean alphaBlend = false;
+
       if (texture.diffuseColorTexture.getValue() != null) {
-        Integer textureId = texture.textureId.getValue();
         Image image = new de.javagl.jgltf.impl.v2.Image();
         final String uri = getImageFileName(textureId);
         image.setUri(uri);
@@ -241,11 +247,41 @@ public class JointedModelGltfExporter implements JointedModelExporter {
         int textureIndex = Optionals.of(gltf.getTextures()).size();
         gltf.addTextures(textureOut);
 
-        Material material = createMaterialWithTexture(textureIndex);
-        int materialIndex = Optionals.of(gltf.getMaterials()).size();
-        gltf.addMaterials(material);
-        textureMaterialMap.put(textureId, materialIndex);
+        TextureInfo baseColorTexture = new TextureInfo();
+        baseColorTexture.setIndex(textureIndex);
+        pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
+
+        // TODO: Enable blend on materials containing variance in the alpha channel in the base color texture
+        alphaBlend = false;
       }
+
+      float opacity = texture.opacity.getValue() != null ? texture.opacity.getValue() : 1.0f;
+
+      if (texture.diffuseColor.getValue() != null) {
+        Color4f baseColor = texture.diffuseColor.getValue();
+        float[] baseColorFactor = new float[]{baseColor.red, baseColor.green, baseColor.blue, baseColor.alpha * opacity};
+        alphaBlend = alphaBlend || baseColor.alpha < 1.0f;
+        pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
+      } else if (opacity != 1.0f) {
+        // Just apply opacity
+        float[] baseColorFactor = new float[]{1.0f, 1.0f, 1.0f, 1.0f * opacity};
+        pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
+      }
+
+      Material material = new Material();
+      material.setPbrMetallicRoughness(pbrMetallicRoughness);
+
+      if (texture.emissiveColor.getValue() != null) {
+        Color4f emissiveColor = texture.emissiveColor.getValue();
+        float[] emissiveFactor = new float[]{emissiveColor.red, emissiveColor.green, emissiveColor.blue};
+        material.setEmissiveFactor(emissiveFactor);
+      }
+
+      material.setAlphaMode(alphaBlend ? "BLEND" : material.defaultAlphaMode());
+
+      int materialIndex = Optionals.of(gltf.getMaterials()).size();
+      gltf.addMaterials(material);
+      textureMaterialMap.put(textureId, materialIndex);
     }
   }
 
@@ -258,19 +294,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     ImageIO.write(bufferedTexture.getBufferedImage(), IMAGE_EXTENSION, os);
   }
 
-  private Material createMaterialWithTexture(int textureIndex) {
-    TextureInfo baseColorTexture = new TextureInfo();
-    baseColorTexture.setIndex(textureIndex);
-
-    MaterialPbrMetallicRoughness pbrMetallicRoughness = new MaterialPbrMetallicRoughness();
-    pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
-    pbrMetallicRoughness.setMetallicFactor(0.0f);
-
-    Material material = new Material();
-    material.setPbrMetallicRoughness(pbrMetallicRoughness);
-
-    return material;
-  }
 
   private Map<String, Integer> addSkeletonNodes(GlTF gltf) {
     Joint rootJoint = visual.skeleton.getValue();
