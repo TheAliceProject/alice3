@@ -461,7 +461,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
     filteredBuffer.flip();
 
-    // Resize the buffer to just the valid entries.
+    // Resize the buffer to just the valid entries. JGTLF buffer operations assume limit() == capacity().
     return BufferUtilities.copyIntBuffer(filteredBuffer);
   }
 
