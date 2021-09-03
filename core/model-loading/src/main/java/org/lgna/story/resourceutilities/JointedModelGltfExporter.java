@@ -207,7 +207,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     gltf.setScene(sceneIndex);
 
     GltfAssetV2 gltfAsset = new GltfAssetV2(gltf, null);
-    resolveImages(tempDir, gltfAsset);
     resolveBuffers(bufferStructure, gltfAsset);
 
     return GltfModels.create(gltfAsset);
@@ -232,6 +231,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
       boolean alphaBlend = false;
 
+      // Embed diffuse texture
       if (texture.diffuseColorTexture.getValue() != null) {
         Image image = new de.javagl.jgltf.impl.v2.Image();
         final String uri = getImageFileName(textureId);
@@ -251,32 +251,38 @@ public class JointedModelGltfExporter implements JointedModelExporter {
         baseColorTexture.setIndex(textureIndex);
         pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
 
-        // TODO: Enable blend on materials containing variance in the alpha channel in the base color texture
-        alphaBlend = false;
+        alphaBlend = alphaBlend || texture.isDiffuseColorTextureAlphaBlended.getValue();
       }
+
+      // TODO: Transform bump map to normal map
 
       float opacity = texture.opacity.getValue() != null ? texture.opacity.getValue() : 1.0f;
+      float[] baseColorFactor = null;
 
+      // Apply base diffuse color
       if (texture.diffuseColor.getValue() != null) {
         Color4f baseColor = texture.diffuseColor.getValue();
-        float[] baseColorFactor = new float[]{baseColor.red, baseColor.green, baseColor.blue, baseColor.alpha * opacity};
+        // Multiply the texture's opacity with the alpha channel of the base color
+        baseColorFactor = new float[]{baseColor.red, baseColor.green, baseColor.blue, baseColor.alpha * opacity};
         alphaBlend = alphaBlend || baseColor.alpha < 1.0f;
-        pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
       } else if (opacity != 1.0f) {
         // Just apply opacity
-        float[] baseColorFactor = new float[]{1.0f, 1.0f, 1.0f, 1.0f * opacity};
-        pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
+        baseColorFactor = new float[]{1.0f, 1.0f, 1.0f, opacity};
       }
+
+      pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
 
       Material material = new Material();
       material.setPbrMetallicRoughness(pbrMetallicRoughness);
 
+      // Apply emissive color
       if (texture.emissiveColor.getValue() != null) {
         Color4f emissiveColor = texture.emissiveColor.getValue();
         float[] emissiveFactor = new float[]{emissiveColor.red, emissiveColor.green, emissiveColor.blue};
         material.setEmissiveFactor(emissiveFactor);
       }
 
+      // If we have transparency in our material we need to activate alpha blending which is off by default
       material.setAlphaMode(alphaBlend ? "BLEND" : material.defaultAlphaMode());
 
       int materialIndex = Optionals.of(gltf.getMaterials()).size();
@@ -368,7 +374,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     if (textureMaterialMap.containsKey(sgMesh.textureId.getValue())) {
       meshPrimitive.setMaterial(textureMaterialMap.get(sgMesh.textureId.getValue()));
     } else {
-      System.out.println("Missing material for texture id " + sgMesh.textureId);
+      System.err.println("Missing material for texture id " + sgMesh.textureId);
     }
 
     // Add the indices data from the mesh to the buffer structure
