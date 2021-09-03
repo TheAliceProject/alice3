@@ -363,7 +363,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
   private MeshPrimitive createMeshPrimitive(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder) {
     MeshPrimitive meshPrimitive = new MeshPrimitive();
-    meshPrimitive.setMode(GltfConstants.GL_TRIANGLES);gt
+    meshPrimitive.setMode(GltfConstants.GL_TRIANGLES);
 
     if (textureMaterialMap.containsKey(sgMesh.textureId.getValue())) {
       meshPrimitive.setMaterial(textureMaterialMap.get(sgMesh.textureId.getValue()));
