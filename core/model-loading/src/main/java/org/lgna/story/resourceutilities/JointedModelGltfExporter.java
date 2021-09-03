@@ -207,6 +207,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     gltf.setScene(sceneIndex);
 
     GltfAssetV2 gltfAsset = new GltfAssetV2(gltf, null);
+    resolveImages(tempDir, gltfAsset);
     resolveBuffers(bufferStructure, gltfAsset);
 
     return GltfModels.create(gltfAsset);
