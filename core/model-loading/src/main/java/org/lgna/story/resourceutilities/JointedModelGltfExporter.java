@@ -83,6 +83,8 @@ import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -256,7 +258,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
         baseColorTexture.setIndex(textureIndex);
         pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
 
-        alphaBlend = alphaBlend || texture.isDiffuseColorTextureAlphaBlended.getValue() || bufferedImage.getTransparency() == Transparency.TRANSLUCENT;
+        alphaBlend = texture.isDiffuseColorTextureAlphaBlended.getValue() || bufferedImage.getTransparency() == Transparency.TRANSLUCENT;
       }
 
       // TODO: Transform bump map to normal map
@@ -487,6 +489,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     MeshPrimitive[] meshPrimitives = createMeshPrimitives(sgWM, builder);
     VertexWeights[] vertexWeights = getWeightsByVertex(sgWM, jointNodes, skin);
     int highestJointCount = computeHighestJointCount(vertexWeights);
+    Integer[] orderedIndices = increasingArray(highestJointCount);
     int quadCount = (highestJointCount + 3) / 4;
     JointWeightQuad[] quads = new JointWeightQuad[quadCount];
     for (int i = 0; i < quadCount; i++) {
@@ -499,17 +502,34 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       }
       List<Integer> joints = vertexWeight.jointIndices;
       List<Float> weights = vertexWeight.weights;
-      for (int j = 0; j < joints.size(); j++) {
+      int jointCount = joints.size();
+      Integer[] indexRemapping = jointCount > 4 ? indicesInDecreasingOrder(weights) : orderedIndices;
+      for (int j = 0; j < jointCount; j++) {
         final JointWeightQuad quad = quads[j / 4];
         int index = 4 * i + j % 4;
-        quad.jointData[index] = joints.get(j);
-        quad.weightData[index] = weights.get(j);
+        quad.jointData[index] = joints.get(indexRemapping[j]);
+        quad.weightData[index] = weights.get(indexRemapping[j]);
       }
     }
     for (int i = 0; i < quadCount; i++) {
       buildJointWeightBuffers(sgWM, builder, meshPrimitives, quads[i]);
     }
     return meshPrimitives;
+  }
+
+  private static Integer[] indicesInDecreasingOrder(List<Float> values) {
+    Integer[] indexes = increasingArray(values.size());
+    Comparator<Integer> comparator = Comparator.comparing(values::get).reversed();
+    Arrays.sort(indexes, comparator);
+    return indexes;
+  }
+
+  private static Integer[] increasingArray(int length) {
+    Integer[] indexes = new Integer[length];
+    for (int i = 0; i < length; i++) {
+      indexes[i] = i;
+    }
+    return indexes;
   }
 
   private int computeHighestJointCount(VertexWeights[] vertexWeights) {
