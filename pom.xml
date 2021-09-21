@@ -83,7 +83,7 @@
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
-    <netbeans.version>RELEASE82</netbeans.version>
+    <netbeans.version>RELEASE125</netbeans.version>
     <guava.version>13.0.1</guava.version>
     <commons.discovery.version>0.5</commons.discovery.version>
     <openhtml.version>1.0.0</openhtml.version>
