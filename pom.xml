@@ -683,12 +683,12 @@
     <repository>
       <id>org.alice</id>
       <name>Alice Repository</name>
-      <url>http://maven.alice.org/alice</url>
+      <url>https://maven.alice.org/alice</url>
     </repository>
     <repository>
       <id>org.alice.external</id>
       <name>Alice External Repository</name>
-      <url>http://maven.alice.org/external</url>
+      <url>https://maven.alice.org/external</url>
     </repository>
 
     <repository>
