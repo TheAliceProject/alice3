@@ -65,6 +65,7 @@ public class JGraphicsHeaderPane extends JPanel {
     String searchGraphicsDriverUrlSpec = GraphicsHelpView.getRendererSearchUrl();
     String graphicsHelpUrlSpec = BrowserOperation.TROUBLESHOOTING_URL;
 
+    // TODO I18n
     StringBuilder sb = new StringBuilder();
     sb.append("<html>");
     sb.append("<h1>");

@@ -211,6 +211,7 @@ public abstract class ApiConfigurationManager {
   private final Map<AbstractType<?, ?, ?>, String> mapTypeToText = Maps.newHashMap();
 
   private static String createExampleText(String examples) {
+    // TODO I18n
     return "<html><em>examples:</em> " + examples + "</html>";
   }
 

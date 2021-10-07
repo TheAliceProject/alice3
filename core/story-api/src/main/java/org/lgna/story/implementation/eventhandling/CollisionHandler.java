@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
@@ -61,8 +62,13 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public class CollisionHandler extends AbstractBinaryEventHandler<Object, CollisionEvent, SThing> {
+  private final Map<SThing, VerticalPrismCollisionHull> hulls;
   private final Map<SThing, Map<SThing, Boolean>> wereTouching = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
+
+  public CollisionHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
+    this.hulls = hulls;
+  }
 
   public void addCollisionListener(Object collisionListener, List<SThing> groupA, List<SThing> groupB, MultipleEventPolicy policy) {
     startTrackingListener(collisionListener, groupA, groupB, policy);
@@ -78,11 +84,17 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
   }
 
   @Override
-  protected void check(SThing changedThing) {
+  protected void checkForEvents(SThing changedThing) {
+    VerticalPrismCollisionHull oldHull = hulls.remove(changedThing);
+    VerticalPrismCollisionHull newHull = collisionHull(changedThing);
+    // Compute a combination only if there is an old hull that does not overlap the new
+    VerticalPrismCollisionHull combinedHull = oldHull == null || newHull.collidesWith(oldHull)
+        ? newHull
+        : PolygonPrismHull.combinationHull(oldHull, newHull);
     final Map<SThing, Set<Object>> thingsToCollideWith = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCollideWith.keySet()) {
       Set<Object> listeners = thingsToCollideWith.get(thing);
-      boolean doTheseCollide = AabbCollisionDetector.doTheseCollide(thing, changedThing);
+      boolean doTheseCollide = combinedHull.collidesWith(collisionHull(thing));
       final boolean isCollisionStart = wasFalse(wereTouching, changedThing, thing) && doTheseCollide;
       final boolean isCollisionEnd = wasTrue(wereTouching, changedThing, thing) && !doTheseCollide;
       wereTouching.get(thing).put(changedThing, doTheseCollide);
@@ -104,6 +116,18 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
         }
       }
     }
+  }
+
+  public boolean doTheseCollide(SThing changedThing, SThing thing) {
+    return collisionHull(changedThing).collidesWith(collisionHull(thing));
+  }
+
+  private VerticalPrismCollisionHull collisionHull(SThing changedThing) {
+    return hulls.computeIfAbsent(changedThing, this::newCollisionHull);
+  }
+
+  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
+    return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 
   @Override

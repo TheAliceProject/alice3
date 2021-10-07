@@ -67,7 +67,7 @@ public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable imple
   public String toString() {
     String name = getName();
     if (m_clsOwner != null) {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append(m_clsOwner.getName());
       sb.append(".");
       if (name != null) {

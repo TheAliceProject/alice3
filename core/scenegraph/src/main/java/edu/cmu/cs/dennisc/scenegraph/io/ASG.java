@@ -583,7 +583,7 @@ public class ASG {
   }
 
   private static String encodeIntArray(int[] array, int offset, int length, boolean isHexadecimal) {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     int index = offset;
     for (int lcv = 0; lcv < length; lcv++) {
       String s;
@@ -630,10 +630,10 @@ public class ASG {
   }
 
   private static String encodeDoubleArray(double[] array, int offset, int length) {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     int index = offset;
     for (int lcv = 0; lcv < length; lcv++) {
-      buffer.append(Double.toString(array[index++]));
+      buffer.append(array[index++]);
       if (lcv < (length - 1)) {
         buffer.append(' ');
       }
@@ -664,13 +664,7 @@ public class ASG {
   }
 
   private static String encodeTuple3d(Tuple3 tuple3d) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(Double.toString(tuple3d.x));
-    buffer.append(' ');
-    buffer.append(Double.toString(tuple3d.y));
-    buffer.append(' ');
-    buffer.append(Double.toString(tuple3d.z));
-    return buffer.toString();
+    return Double.toString(tuple3d.x) + ' ' + tuple3d.y + ' ' + tuple3d.z;
   }
 
   private static void decodeTuple3d(String s, Tuple3 tuple3d) {
@@ -686,13 +680,7 @@ public class ASG {
   }
 
   private static String encodeTuple3f(Tuple3f tuple3d) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(Double.toString(tuple3d.x));
-    buffer.append(' ');
-    buffer.append(Double.toString(tuple3d.y));
-    buffer.append(' ');
-    buffer.append(Double.toString(tuple3d.z));
-    return buffer.toString();
+    return Double.toString(tuple3d.x) + ' ' + Double.toString(tuple3d.y) + ' ' + Double.toString(tuple3d.z);
   }
 
   private static void decodeTuple3f(String s, Tuple3f tuple3d) {
@@ -707,13 +695,6 @@ public class ASG {
     tuple3d.z = Float.parseFloat(s.substring(begin, end));
   }
 
-  //  private static String encodeTuple2f( edu.cmu.cs.dennisc.math.TupleF2 tuple2f ) {
-  //    StringBuffer buffer = new StringBuffer();
-  //    buffer.append( Float.toString( tuple2f.x ) );
-  //    buffer.append( ' ' );
-  //    buffer.append( Float.toString( tuple2f.y ) );
-  //    return buffer.toString();
-  //  }
   private static void decodeTuple2f(String s, Tuple2f tuple2f) {
     int begin = 0;
     int end = s.indexOf(' ', begin);
@@ -723,37 +704,8 @@ public class ASG {
     tuple2f.y = Float.parseFloat(s.substring(begin, end));
   }
 
-  //  private static String encodeTuple4f( edu.cmu.cs.dennisc.math.TupleF4 tuple4f ) {
-  //    StringBuffer buffer = new StringBuffer();
-  //    buffer.append( Float.toString( tuple4f.x ) );
-  //    buffer.append( ' ' );
-  //    buffer.append( Float.toString( tuple4f.y ) );
-  //    buffer.append( ' ' );
-  //    buffer.append( Float.toString( tuple4f.z ) );
-  //    buffer.append( ' ' );
-  //    buffer.append( Float.toString( tuple4f.w ) );
-  //    return buffer.toString();
-  //  }
-  //  private static void decodeTuple4f( String s, edu.cmu.cs.dennisc.math.TupleF4 tuple4f ) {
-  //    int begin = 0;
-  //    int end = s.indexOf( ' ', begin );
-  //    tuple4f.x = Float.parseFloat( s.substring( begin, end ) );
-  //    begin = end + 1;
-  //    end = s.indexOf( ' ', begin );
-  //    tuple4f.y = Float.parseFloat( s.substring( begin, end ) );
-  //    begin = end + 1;
-  //    end = s.indexOf( ' ', begin );
-  //    tuple4f.z = Float.parseFloat( s.substring( begin, end ) );
-  //    begin = end + 1;
-  //    end = s.length();
-  //    tuple4f.w = Float.parseFloat( s.substring( begin, end ) );
-  //  }
   private static String encodeTexCoord2f(TextureCoordinate2f tc2f) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(Float.toString(tc2f.u));
-    buffer.append(' ');
-    buffer.append(Float.toString(tc2f.v));
-    return buffer.toString();
+    return String.valueOf(tc2f.u) + ' ' + tc2f.v;
   }
 
   private static TextureCoordinate2f decodeTexCoord2f(String s) {
@@ -767,15 +719,7 @@ public class ASG {
   }
 
   private static String encodeColor4f(Color4f color4f) {
-    StringBuffer buffer = new StringBuffer();
-    buffer.append(Float.toString(color4f.red));
-    buffer.append(' ');
-    buffer.append(Float.toString(color4f.green));
-    buffer.append(' ');
-    buffer.append(Float.toString(color4f.blue));
-    buffer.append(' ');
-    buffer.append(Float.toString(color4f.alpha));
-    return buffer.toString();
+    return String.valueOf(color4f.red) + ' ' + color4f.green + ' ' + color4f.blue + ' ' + color4f.alpha;
   }
 
   private static Color4f decodeColor4f(String s) {
@@ -1103,7 +1047,7 @@ public class ASG {
   }
 
   private static String getNodeText(Node node) {
-    StringBuffer propertyTextBuffer = new StringBuffer();
+    StringBuilder propertyTextBuffer = new StringBuilder();
     NodeList children = node.getChildNodes();
     for (int j = 0; j < children.getLength(); j++) {
       Text textNode = (Text) children.item(j);

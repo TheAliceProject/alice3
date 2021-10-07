@@ -86,11 +86,6 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   @Override
-  public boolean isUpdateRequired() {
-    return this.waitingAnimations.isEmpty() == false;
-  }
-
-  @Override
   public void update() {
     boolean isPaused = this.speedFactor <= 0.0;
     updateCurrentTime(isPaused);
@@ -133,7 +128,7 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   protected boolean isAcceptableThread() {
-    return EventQueue.isDispatchThread() == false;
+    return !EventQueue.isDispatchThread();
   }
 
   @Override
@@ -163,11 +158,6 @@ public abstract class AbstractAnimator implements Animator {
     } catch (InvocationTargetException ie) {
       throw new RuntimeException(ie);
     }
-  }
-
-  @Override
-  public Iterable<FrameObserver> getFrameObservers() {
-    return this.frameObservers;
   }
 
   @Override

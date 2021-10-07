@@ -146,10 +146,8 @@ public abstract class IDE extends ProjectApplication {
     super(ideConfiguration, apiConfigurationManager);
     this.ideConfiguration = ideConfiguration;
     this.crashDetector = crashDetector;
-    StringBuffer sb = new StringBuffer();
-    sb.append("Please Submit Bug Report: ");
-    sb.append(getApplicationName());
-    IDE.exceptionHandler.setTitle(sb.toString());
+    //TODO I18n
+    IDE.exceptionHandler.setTitle("Please Submit Bug Report: " + getApplicationName());
     IDE.exceptionHandler.setApplicationName(getApplicationName());
     //initialize locale
     //Checks the org.alice.ide.locale property to see if there is a specified locale to initialize Alice to
@@ -279,6 +277,7 @@ public abstract class IDE extends ProjectApplication {
       if (alreadyMovedFields.contains(fieldToMoveToTheEnd)) {
         //todo: better cycle detection?
         StringBuilder sb = new StringBuilder();
+        // TODO I18n
         sb.append("<html>Possible cycle detected.<br>The field <strong>\"");
         sb.append(fieldToMoveToTheEnd.getName());
         sb.append("\"</strong> on type <strong>\"");
@@ -301,6 +300,7 @@ public abstract class IDE extends ProjectApplication {
           AbstractField accessedField = fieldAccess.field.getValue();
           if (accessedField == fieldToMoveToTheEnd) {
             StringBuilder sb = new StringBuilder();
+            // TODO I18n
             sb.append("<html>The field <strong>\"");
             sb.append(fieldToMoveToTheEnd.getName());
             sb.append("\"</strong> on type <strong>\"");
@@ -328,6 +328,7 @@ public abstract class IDE extends ProjectApplication {
         Set<UserField> alreadyMovedFields = Sets.newHashSet();
         String message = this.reorganizeTypeFieldsIfNecessary(namedUserType, 0, alreadyMovedFields);
         if (message != null) {
+          //TODO I18n
           Dialogs.showError("Unable to Recover", message);
         }
       }

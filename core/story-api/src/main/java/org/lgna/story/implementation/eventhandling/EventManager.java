@@ -44,7 +44,7 @@
 package org.lgna.story.implementation.eventhandling;
 
 import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
@@ -69,6 +69,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Matt May
@@ -82,33 +83,20 @@ public class EventManager {
   private final TransformationHandler transHandler = new TransformationHandler();
   private final OcclusionHandler occlusionHandler = new OcclusionHandler();
   private final ViewEventHandler viewHandler = new ViewEventHandler();
-  private final CollisionHandler collisionHandler = new CollisionHandler();
-  private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
+  private final Map<SThing, VerticalPrismCollisionHull> hulls = Maps.newConcurrentHashMap();
+  private final CollisionHandler collisionHandler = new CollisionHandler(hulls);
+  private final ProximityEventHandler proxyHandler = new ProximityEventHandler(hulls);
   private final TimerEventHandler timer = new TimerEventHandler();
   private final SceneActivationHandler sceneActivationHandler = new SceneActivationHandler();
   private final AbstractEventHandler<?, ?>[] handlers = new AbstractEventHandler[] {keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler};
 
   private final TimerContingencyManager contingent;
 
-  public void recieveEvent(Object event) {
-    if (event instanceof MouseEventWrapper) {
-      MouseEventWrapper mouseEvent = (MouseEventWrapper) event;
-      mouseAdapter.handleReplayedEvent(mouseEvent);
-    } else if (event instanceof KeyEvent) {
-      KeyEvent keyEvent = (KeyEvent) event;
-      if (new Integer(keyEvent.getID()).equals(KeyEvent.KEY_PRESSED)) {
-        keyAdapter.keyPressed(keyEvent);
-      } else if (new Integer(keyEvent.getID()).equals(KeyEvent.KEY_RELEASED)) {
-        keyAdapter.keyReleased(keyEvent);
-      } else {
-        Logger.errln("mishandled recieved keyboard event", keyEvent);
-      }
-    } else {
-      Logger.errln("mishandled recieved event ", event);
-    }
-  }
-
   public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
+
+  public CollisionHandler getCollisionHandler() {
+    return collisionHandler;
+  }
 
   private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
     @Override

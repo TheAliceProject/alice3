@@ -592,7 +592,10 @@ public class Encoder extends SourceCodeGenerator {
     appendString(parameterLabel);
     appendString(": ");
 
-    Map<String, String> wrappedParams = methodsWithWrappedArgs.get(parameter.getCode().getName());
+    final Code parameterCode = parameter.getCode();
+    Map<String, String> wrappedParams = parameterCode == null
+        ? null
+        : methodsWithWrappedArgs.get(parameterCode.getName());
     appendWrappedArg(argument, parameterLabel, wrappedParams);
   }
 
@@ -638,6 +641,7 @@ public class Encoder extends SourceCodeGenerator {
     }
     final String paramType = parameter.getValueType().getName().toLowerCase();
     final String message = String.format("Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.", parameter.getCode().toString(), paramType);
+    //TODO I18n
     Dialogs.showError("Unlabeled parameter", message);
     Logger.errln(message);
     return paramType;

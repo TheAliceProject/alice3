@@ -92,7 +92,7 @@ public class UserArrayType extends AbstractType {
 
   @Override
   public String getName() {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(this.leafType.getName());
     for (int i = 0; i < this.dimensionCount; i++) {
       sb.append("[]");

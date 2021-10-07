@@ -175,6 +175,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
+    public String getName() {
+      return internalJointImp.getJointId().toString();
+    }
+
+    @Override
     public SceneImp getScene() {
       return this.internalJointImp.getScene();
     }
@@ -990,7 +995,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     this.animateStraightenOutJoints(DEFAULT_DURATION);
   }
 
-  public void strikePose(Pose<? extends SJointedModel> pose, double duration, Style style) {
+  public void strikePose(Pose<A> pose, double duration, Style style) {
     this.getProgram().perform(new PoseAnimation(duration, style, this, pose), null);
   }
 

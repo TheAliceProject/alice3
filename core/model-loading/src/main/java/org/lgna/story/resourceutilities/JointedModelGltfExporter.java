@@ -307,7 +307,6 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     ImageIO.write(image, IMAGE_EXTENSION, os);
   }
 
-
   private Map<String, Integer> addSkeletonNodes(GlTF gltf) {
     Joint rootJoint = visual.skeleton.getValue();
     Map<String, Integer> jointIndices = new HashMap<>();

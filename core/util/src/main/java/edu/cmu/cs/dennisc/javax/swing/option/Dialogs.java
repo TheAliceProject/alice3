@@ -70,6 +70,7 @@ public class Dialogs {
   }
 
   public static void showUnableToOpenFileDialog(File file, String message) {
+    //TODO I18n
     Dialogs.showError("Cannot read file", String.format("Unable to open file %s.\n\n%s", FileUtilities.getCanonicalPathIfPossible(file), message));
   }
 

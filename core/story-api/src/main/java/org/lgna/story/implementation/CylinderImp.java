@@ -43,6 +43,8 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.SCylinder;
+import org.lgna.story.implementation.eventhandling.CylinderHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
@@ -67,6 +69,11 @@ public class CylinderImp extends AbstractCylinderImp {
   @Override
   protected double getXZ() {
     return this.radius.getValue();
+  }
+
+  @Override
+  public VerticalPrismCollisionHull getCollisionHull() {
+    return new CylinderHull(getAbsoluteTransformation().translation, getHeight(), radius.getValue());
   }
 
   private final SCylinder abstraction;

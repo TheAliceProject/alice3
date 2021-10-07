@@ -84,6 +84,9 @@ public abstract class AbstractTransformable extends Composite {
     AffineMatrix4x4 m = this.accessLocalTransformation();
     affect.set(m, transformation);
     this.touchLocalTransformation(m);
+  }
+
+  public void notifyTransformationListeners() {
     fireAbsoluteTransformationChange();
   }
 
@@ -137,10 +140,10 @@ public abstract class AbstractTransformable extends Composite {
       //      applyTransformation( transformation, asSeenBy, affectMask );
     } else {
       Composite vehicle = getVehicle();
-      assert vehicle != null : this;
-
       //todo: optimize
-      AffineMatrix4x4 m = new AffineMatrix4x4(vehicle.getInverseAbsoluteTransformation());
+      AffineMatrix4x4 m = vehicle == null
+              ? new AffineMatrix4x4()
+              : new AffineMatrix4x4(vehicle.getInverseAbsoluteTransformation());
       if (!asSeenBy.isSceneOf(this)) {
         final AffineMatrix4x4 seenBy = asSeenBy.getAbsoluteTransformation();
         seenBy.orientation.normalizeColumns();
@@ -173,6 +176,7 @@ public abstract class AbstractTransformable extends Composite {
 
   public void setTranslationOnly(Tuple3 t, ReferenceFrame asSeenBy) {
     setTranslationOnly(t.x, t.y, t.z, asSeenBy);
+    notifyTransformationListeners();
   }
 
   public void setAxesOnly(Orientation orientation, ReferenceFrame asSeenBy) {
@@ -197,6 +201,7 @@ public abstract class AbstractTransformable extends Composite {
 
   public void setAxesOnlyToStandUp() {
     setAxesOnlyToStandUp(AsSeenBy.SCENE);
+    notifyTransformationListeners();
   }
 
   private void applyTransformation(AffineMatrix4x4 transformation, ReferenceFrame asSeenBy, TransformationAffect affect) {

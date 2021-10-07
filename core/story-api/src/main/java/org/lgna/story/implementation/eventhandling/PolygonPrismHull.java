@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,71 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.java.awt.geom.animation;
 
-import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+package org.lgna.story.implementation.eventhandling;
 
-import java.awt.geom.Point2D;
 
-//todo: rename?
-//todo: support float
+import edu.cmu.cs.dennisc.math.*;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class Point2DAnimation extends InterpolationAnimation<Point2D> {
-  public Point2DAnimation(Number duration, Style style, Point2D p0, Point2D p1) {
-    super(duration, style, p0, p1);
-  }
+import java.util.ArrayList;
+import java.util.List;
 
-  @Override
-  protected Point2D newE(Point2D other) {
-    double x;
-    double y;
-    if (other != null) {
-      x = other.getX();
-      y = other.getY();
-    } else {
-      x = Double.NaN;
-      y = Double.NaN;
+public class PolygonPrismHull extends VerticalPrismCollisionHull {
+  private final ConvexPolygon crossSection = new ConvexPolygon();
+
+  public PolygonPrismHull(Point3 centerBase, double height, AffineMatrix4x4 transformation, AxisAlignedBox aabbLocal) {
+    super(centerBase, height);
+    for (Point3 localPoint : aabbLocal.getPoints()) {
+      Point3 p = transformation.createTransformed(localPoint);
+      p.subtract(centerBase);
+      crossSection.includePoint(new Point2(p.x, p.z));
     }
-    return new Point2D.Double(x, y);
+  }
+
+  public PolygonPrismHull(Point3 centerBase, double height, List<Point2> crossSectionVertices) {
+    super(centerBase, height);
+    for (Point2 vertex : crossSectionVertices) {
+      crossSection.includePoint(vertex);
+    }
+  }
+
+  public static VerticalPrismCollisionHull combinationHull(VerticalPrismCollisionHull hullA, VerticalPrismCollisionHull hullB) {
+    if (hullA == null) {
+      return hullB;
+    }
+    if (hullB == null) {
+      return hullA;
+    }
+
+    double bottomA = hullA.centerBase.y;
+    double bottomB = hullB.centerBase.y;
+    double newBottom = Math.min(bottomA, bottomB);
+    double newTop = Math.max(bottomA + hullA.height, bottomB + hullB.height);
+
+    Point3 newBase = new Point3(hullA.centerBase);
+    newBase.y = newBottom;
+    double height = newTop - newBottom;
+
+    List<Point2> crossSectionVertices = hullA.getCrossSectionVertices(null);
+    crossSectionVertices.addAll(hullB.getCrossSectionVertices(hullA.centerBase));
+    return new PolygonPrismHull(newBase, height, crossSectionVertices);
   }
 
   @Override
-  protected Point2D interpolate(Point2D rv, Point2D v0, Point2D v1, double portion) {
-    rv.setLocation(v0.getX() + ((v1.getX() - v0.getX()) * portion), v0.getY() + ((v1.getY() - v0.getY()) * portion));
-    return rv;
+  public double distanceAlong(double x, double z) {
+    return crossSection.distanceAlong(x, z);
+  }
+
+  @Override
+  protected List<Point2> getCrossSectionVertices(Point3 newCenter) {
+    if (newCenter == null) {
+      return crossSection.getVertices();
+    }
+    Point3 offset = Point3.createSubtraction(newCenter, centerBase);
+    List<Point2> vertices = new ArrayList<>();
+    for (Point2 vertex : crossSection.getVertices()) {
+      vertices.add(new Point2(vertex.x + offset.x, vertex.y + offset.z));
+    }
+    return vertices;
   }
 }

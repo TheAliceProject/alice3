@@ -69,7 +69,8 @@ import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.common.ProgramClosedException;
 import org.lgna.story.AudioSource;
 import org.lgna.story.SThing;
-import org.lgna.story.implementation.eventhandling.AabbCollisionDetector;
+import org.lgna.story.implementation.eventhandling.PolygonPrismHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -148,6 +149,12 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     CumulativeBound cumulativeBound = new CumulativeBound();
     this.updateCumulativeBound(cumulativeBound, trans);
     return cumulativeBound.getBoundingBox();
+  }
+
+  public VerticalPrismCollisionHull getCollisionHull() {
+    AxisAlignedBox myBox = getDynamicAxisAlignedMinimumBoundingBox();
+    AxisAlignedBox sceneBox = getDynamicAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
+    return new PolygonPrismHull(sceneBox.getCenterOfBottomFace(), sceneBox.getHeight(), getAbsoluteTransformation(), myBox);
   }
 
   public AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
@@ -753,7 +760,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   public boolean isCollidingWith(SThing other) {
-    return AabbCollisionDetector.doTheseCollide(this.getAbstraction(), other);
+    return getScene().getEventManager().getCollisionHandler().doTheseCollide(this.getAbstraction(), other);
   }
 
   public void mendSceneGraphIfNecessary() {

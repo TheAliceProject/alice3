@@ -73,9 +73,7 @@ public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty,
   }
 
   private NameListener getNameListener() {
-    if (this.nameListener != null) {
-      //pass
-    } else {
+    if (this.nameListener == null) {
       this.nameListener = new NameListener() {
         @Override
         public void nameChanging(NameEvent nameEvent) {
@@ -111,19 +109,17 @@ public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty,
       this.prevResource.removeNameListener(this.getNameListener());
     }
     Resource nextResource = getProperty().getValue();
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     if (nextResource != null) {
       sb.append("<html>");
       sb.append(nextResource.getName());
       if (nextResource instanceof AudioResource) {
         AudioResource audioResource = (AudioResource) nextResource;
         double duration = audioResource.getDuration();
-        if (Double.isNaN(duration)) {
-          //pass
-        } else {
+        if (!Double.isNaN(duration)) {
           sb.append("<font color=\"gray\">");
           sb.append("<i>");
-          sb.append(" (" + DURATION_FORMAT.format(duration) + "s) ");
+          sb.append(" (").append(DURATION_FORMAT.format(duration)).append("s) ");
           sb.append("</i>");
           sb.append("</font>");
         }
@@ -134,7 +130,7 @@ public class ResourcePropertyView extends AbstractPropertyPane<ResourceProperty,
         if ((width >= 0) && (height >= 0)) {
           sb.append("<font color=\"gray\">");
           sb.append("<i>");
-          sb.append(" (" + width + "x" + height + ") ");
+          sb.append(" (").append(width).append("x").append(height).append(") ");
           sb.append("</i>");
           sb.append("</font>");
         }

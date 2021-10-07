@@ -106,6 +106,10 @@ public class PersonImp extends SingleVisualModelImp {
   void updateNebPerson() {
     IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
     LifeStage lifeStage = composite.getLifeStageState().getValue();
+    if (lifeStage == null) {
+      Logger.severe("NO PERSON LIFESTAGE: not attempting to update");
+      return;
+    }
     Person nebPerson = this.mapLifeStageToNebPerson.get(lifeStage);
     if (nebPerson == null) {
       try {

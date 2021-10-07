@@ -69,7 +69,7 @@ public final class FieldMenuModel extends MemberMenuModel<UserField> {
         prepModels.add(RenameFieldComposite.getInstance(key).getLaunchOperation().getMenuItemPrepModel());
         prepModels.add(DeleteFieldOperation.getInstance(key).getMenuItemPrepModel());
 
-        if (key.getValueType().isAssignableTo(SMarker.class)) {
+        if (key.getValueType() != null && key.getValueType().isAssignableTo(SMarker.class)) {
           prepModels.add(MarkerColorIdCascade.getInstance(key).getMenuModel());
         }
 

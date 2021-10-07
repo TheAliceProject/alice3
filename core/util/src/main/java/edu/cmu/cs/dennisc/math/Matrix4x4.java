@@ -422,6 +422,10 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 
   public void invert() {
     double d = determinate();
+    if (d == 0) {
+      setIdentity();
+      return;
+    }
     double m00 = right.x;
     double m10 = right.y;
     double m20 = right.z;

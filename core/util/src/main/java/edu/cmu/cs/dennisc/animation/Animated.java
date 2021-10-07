@@ -1,5 +1,3 @@
-package edu.cmu.cs.dennisc.animation;
-
 /*******************************************************************************
  * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
@@ -42,6 +40,8 @@ package edu.cmu.cs.dennisc.animation;
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package edu.cmu.cs.dennisc.animation;
+
 public interface Animated {
   void applyAnimation();
 }

@@ -48,31 +48,27 @@ import java.lang.reflect.InvocationTargetException;
  * @author Dennis Cosgrove
  */
 public interface Animator {
-  public double getCurrentTime();
+  double getCurrentTime();
 
-  public double getSpeedFactor();
+  double getSpeedFactor();
 
-  public void setSpeedFactor(double speedFactor);
+  void setSpeedFactor(double speedFactor);
 
-  public boolean isUpdateRequired();
+  void update();
 
-  public void update();
+  void invokeLater(Animation animation, AnimationObserver animationObserver);
 
-  public void invokeLater(Animation animation, AnimationObserver animationObserver);
+  void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException;
 
-  public void invokeAndWait(Animation animation, AnimationObserver animationObserver) throws InterruptedException, InvocationTargetException;
+  void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Animation animation, AnimationObserver animationObserver);
 
-  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Animation animation, AnimationObserver animationObserver);
+  void addFrameObserver(FrameObserver runnable);
 
-  public void addFrameObserver(FrameObserver runnable);
+  void removeFrameObserver(FrameObserver runnable);
 
-  public void removeFrameObserver(FrameObserver runnable);
+  void completeAnimations(AnimationObserver animationObserver);
 
-  public Iterable<FrameObserver> getFrameObservers();
+  void completeFrameObservers();
 
-  public void completeAnimations(AnimationObserver animationObserver);
-
-  public void completeFrameObservers();
-
-  public void completeAll(AnimationObserver animationObserver);
+  void completeAll(AnimationObserver animationObserver);
 }

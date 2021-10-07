@@ -57,7 +57,7 @@ import java.nio.DoubleBuffer;
  * @author Dennis Cosgrove
  */
 public abstract class GlrComponent<T extends Component> extends GlrElement<T> implements Visitable {
-  private static AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
+  private static final AffineMatrix4x4 s_buffer = AffineMatrix4x4.createNaN();
 
   /*package-private*/
   static void handleAbsoluteTransformationChanged(Component component) {
@@ -125,7 +125,7 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
       if (Double.isNaN(this.absolute[0])) {
         synchronized (s_buffer) {
           owner.getAbsoluteTransformation(s_buffer);
-          assert s_buffer.isNaN() == false;
+          assert !s_buffer.isNaN();
           s_buffer.getAsColumnMajorArray16(this.absolute);
         }
       }
@@ -137,7 +137,7 @@ public abstract class GlrComponent<T extends Component> extends GlrElement<T> im
       if (Double.isNaN(this.inverseAbsolute[0])) {
         synchronized (s_buffer) {
           owner.getInverseAbsoluteTransformation(s_buffer);
-          assert s_buffer.isNaN() == false;
+          assert !s_buffer.isNaN();
           s_buffer.getAsColumnMajorArray16(this.inverseAbsolute);
         }
       }

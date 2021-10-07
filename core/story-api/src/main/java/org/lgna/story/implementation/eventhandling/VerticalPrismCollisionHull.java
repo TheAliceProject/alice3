@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation.affine;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+package org.lgna.story.implementation.eventhandling;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotationAnimation {
-  private Vector3 m_axis = new Vector3();
+import edu.cmu.cs.dennisc.math.Point2;
+import edu.cmu.cs.dennisc.math.Point3;
 
-  public ApplyRotationAboutArbitraryAxisAnimation() {
-    m_axis.setNaN();
+import java.util.List;
+
+public abstract class VerticalPrismCollisionHull {
+  Point3 centerBase;
+  double height;
+
+  public VerticalPrismCollisionHull(Point3 centerBase, double height) {
+    this.centerBase = centerBase;
+    this.height = height;
   }
 
-  public ApplyRotationAboutArbitraryAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis) {
-    super(sgSubject, sgAsSeenBy, angle);
-    setAxis(axis);
+  public abstract double distanceAlong(double xDistance, double zDistance);
+
+  public boolean collidesWith(VerticalPrismCollisionHull other) {
+    return isWithinDistance(other, 0);
   }
 
-  public Vector3 accessAxis() {
-    return m_axis;
+  public boolean isWithinDistance(VerticalPrismCollisionHull other, double proximity) {
+    if (other == null || isBeyondHeight(other, proximity)) {
+      return false;
+    }
+    double xDistance = centerBase.x - other.centerBase.x;
+    double zDistance = centerBase.z - other.centerBase.z;
+    double radius = distanceAlong(xDistance, zDistance);
+    double otherRadius = other.distanceAlong(-xDistance, -zDistance);
+    double allowedDistance = radius + otherRadius + proximity;
+    return xDistance * xDistance + zDistance * zDistance < allowedDistance * allowedDistance;
   }
 
-  public Vector3 getAxis(Vector3 rv) {
-    rv.set(m_axis);
-    return rv;
+  private boolean isBeyondHeight(VerticalPrismCollisionHull other, double proximity) {
+    double bottom = centerBase.y;
+    double otherBottom = other.centerBase.y;
+    double top = bottom + height;
+    double otherTop = otherBottom + other.height;
+    return otherTop + proximity <= bottom || otherBottom - proximity >= top;
   }
 
-  public Vector3 getAxis() {
-    return getAxis(new Vector3());
-  }
-
-  public void setAxis(Vector3 axis) {
-    m_axis.set(axis);
-  }
-
-  @Override
-  protected void applyRotationInRadians(double angleInRadians) {
-    getSubject().applyRotationAboutArbitraryAxisInRadians(m_axis, angleInRadians, getAsSeenBy());
-  }
+  protected abstract List<Point2> getCrossSectionVertices(Point3 newCenter);
 }

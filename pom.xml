@@ -79,7 +79,7 @@
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.6.0.2</alice.build.version>
-    <alice.build.prerelease>-beta.2</alice.build.prerelease>
+    <alice.build.prerelease>-rc.2</alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
@@ -699,7 +699,7 @@
     <repository>
       <id>netbeans</id>
       <name>Netbeans</name>
-      <url>http://bits.netbeans.org/maven2/</url>
+      <url>http://netbeans.apidesign.org/maven2/</url>
     </repository>
   </repositories>
 </project>

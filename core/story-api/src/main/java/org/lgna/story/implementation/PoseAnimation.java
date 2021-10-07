@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
+import org.lgna.story.SJointedModel;
 
 import java.util.List;
 
@@ -111,7 +112,7 @@ public class PoseAnimation extends DurationBasedAnimation {
     }
   }
 
-  public PoseAnimation(double duration, Style style, JointedModelImp<?, ?> jointedModel, Pose pose) {
+  public <A extends JointedModelImp<M, ?>, M extends SJointedModel> PoseAnimation(double duration, Style style, A jointedModel, Pose<M> pose) {
     super(duration, style);
     this.jointedModel = jointedModel;
     this.pose = pose;

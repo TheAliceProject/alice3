@@ -273,6 +273,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public void setProject(Project project) {
+    // TODO I18N
     StringBuilder sb = new StringBuilder();
     Set<NamedUserType> types = project.getNamedUserTypes();
     for (NamedUserType type : types) {
@@ -280,9 +281,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       ListIterator<UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
       while (methodIterator.hasNext()) {
         UserMethod method = methodIterator.next();
-        if (method != null) {
-          //pass
-        } else {
+        if (method == null) {
           methodIterator.remove();
           wasNullMethodRemoved = true;
         }
@@ -291,9 +290,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       ListIterator<UserField> fieldIterator = type.getDeclaredFields().listIterator();
       while (fieldIterator.hasNext()) {
         UserField field = fieldIterator.next();
-        if (field != null) {
-          //pass
-        } else {
+        if (field == null) {
           fieldIterator.remove();
           wasNullFieldRemoved = true;
         }
@@ -318,7 +315,10 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     if (sb.length() > 0) {
       Dialogs.showWarning("A Problem With Your Project Has Been Fixed", sb.toString());
     }
-    ProgramTypeUtilities.sanityCheckAllTypes(project);
+    String typeCheck = ProgramTypeUtilities.sanityCheckAllTypes(project);
+    if (typeCheck.length() > 0) {
+      Dialogs.showError("Problems With Your Project Were Not Fixed", "These may cause errors when editing or running.\nProceed with caution.\n\n" + typeCheck);
+    }
     this.setDocument(new ProjectDocument(project, newProjectActivity()));
   }
 

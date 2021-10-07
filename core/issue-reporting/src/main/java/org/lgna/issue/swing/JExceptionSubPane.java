@@ -76,7 +76,7 @@ public class JExceptionSubPane extends JPanel {
       }
     });
 
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(originalThrowable.getClass().getSimpleName());
     String message = originalThrowable.getLocalizedMessage();
     if ((message != null) && (message.length() > 0)) {

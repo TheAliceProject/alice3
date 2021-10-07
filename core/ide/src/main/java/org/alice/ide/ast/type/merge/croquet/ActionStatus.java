@@ -170,6 +170,7 @@ public enum ActionStatus {
     }
   };
 
+  // TODO I18n
   public abstract String getDescriptionText(Member member);
 
   private static String getSingularMemberClassText(Member member) {

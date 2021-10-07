@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
@@ -61,9 +62,14 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, ProximityEvent, SThing> {
+  private final Map<SThing, VerticalPrismCollisionHull> hulls;
   private final Map<Object, Map<SThing, Map<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
   private final Map<Object, Double> listenerDistances = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
+
+  public ProximityEventHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
+    this.hulls = hulls;
+  }
 
   public void addProximityEventListener(Object listener, List<SThing> groupA, List<SThing> groupB, Double distance, MultipleEventPolicy policy) {
     wereClose.put(listener, new HashMap<>());
@@ -81,11 +87,12 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   @Override
-  protected void check(SThing changedThing) {
+  protected void checkForEvents(SThing changedThing) {
+    hulls.remove(changedThing);
     final Map<SThing, Set<Object>> thingsToCheckAgainst = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCheckAgainst.keySet()) {
       for (Object listener : thingsToCheckAgainst.get(thing)) {
-        boolean areTheseCloseEnough = AabbCollisionDetector.doTheseCollide(thing, changedThing, listenerDistances.get(listener));
+        boolean areTheseCloseEnough = areTheseCloseEnough(changedThing, thing, listenerDistances.get(listener));
         final boolean isProximityStart = wasFalse(wereClose.get(listener), changedThing, thing) && areTheseCloseEnough;
         final boolean isProximityEnd = wasTrue(wereClose.get(listener), changedThing, thing) && !areTheseCloseEnough;
         wereClose.get(listener).get(changedThing).put(thing, areTheseCloseEnough);
@@ -105,6 +112,16 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
         }
       }
     }
+  }
+
+  private boolean areTheseCloseEnough(SThing changedThing, SThing thing, Double proximity) {
+    VerticalPrismCollisionHull changedHull = hulls.computeIfAbsent(changedThing, this::newCollisionHull);
+    VerticalPrismCollisionHull hull = hulls.computeIfAbsent(thing, this::newCollisionHull);
+    return changedHull.isWithinDistance(hull, proximity);
+  }
+
+  private VerticalPrismCollisionHull newCollisionHull(SThing thing) {
+    return EmployeesOnly.getImplementation(thing).getCollisionHull();
   }
 
   @Override

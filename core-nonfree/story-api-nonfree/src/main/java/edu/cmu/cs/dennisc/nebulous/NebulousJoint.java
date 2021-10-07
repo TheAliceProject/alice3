@@ -108,6 +108,7 @@ public class NebulousJoint extends AbstractTransformable implements ModelJoint {
     }
     this.actualTranslation.set(unscaledTranslation);
     this.nebModel.setLocalTransformationForJoint(this.jointId, current);
+    notifyTransformationListeners();
   }
 
   @Override

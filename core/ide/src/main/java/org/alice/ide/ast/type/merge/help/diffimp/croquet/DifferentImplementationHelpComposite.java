@@ -84,6 +84,7 @@ public abstract class DifferentImplementationHelpComposite<M extends Member> ext
 
   public DifferentImplementationHelpComposite(UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText) {
     super(migrationId, differentImplementation);
+    // TODO I18n
     StringBuilder sb = new StringBuilder();
     sb.append("<html>");
     sb.append("Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has ");

@@ -59,6 +59,8 @@ import org.lgna.story.event.AbstractEvent;
  */
 public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent, T extends SThing> extends TransformationChangedHandler<L, E> {
 
+  private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
+  private final Map<SThing, Long> lastCheckTimes = Maps.newConcurrentHashMap();
   protected final Map<T, Map<T, Set<Object>>> interactionListeners = Maps.newConcurrentHashMap();
 
   protected void startTrackingListener(L listener, List<T> groupA, List<T> groupB, MultipleEventPolicy policy) {
@@ -95,6 +97,19 @@ public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent, T e
     interactionListeners.get(a).computeIfAbsent(b, k -> new LinkedHashSet<>()).add(listener);
     interactionListeners.get(b).computeIfAbsent(a, k -> new LinkedHashSet<>()).add(listener);
   }
+
+  @Override
+  protected void check(SThing changedThing) {
+    long now = System.currentTimeMillis();
+    long millisSinceLastUpdate = lastCheckTimes.getOrDefault(changedThing, 0L);
+    if (now - millisSinceLastUpdate < MINIMUM_MILLIS_BETWEEN_CHECKS) {
+      return;
+    }
+    lastCheckTimes.put(changedThing, now);
+    checkForEvents(changedThing);
+  }
+
+  protected abstract void checkForEvents(SThing changedThing);
 
   protected boolean wasTrue(Map<T, Map<T, Boolean>> previousState, T a, T b) {
     final Map<T, Boolean> determinedStates = previousState.get(a);

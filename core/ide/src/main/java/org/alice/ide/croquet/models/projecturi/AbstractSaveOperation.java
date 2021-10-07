@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
@@ -69,8 +70,6 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 
   protected abstract void save(ProjectApplication application, File file) throws IOException;
 
-  protected abstract String getInitialFilename();
-
   @Override
   protected void perform(UserActivity activity) {
     StageIDE application = StageIDE.getActiveInstance();
@@ -80,7 +79,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
     do {
       File fileNext;
       if (isExceptionRaised || this.isPromptNecessary(filePrevious)) {
-        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), this.getInitialFilename(), this.getExtension(), true);
+        fileNext = application.getDocumentFrame().showSaveFileDialog(this.getDefaultDirectory(application), FileUtilities.getBaseName(filePrevious), this.getExtension(), true);
       } else {
         fileNext = filePrevious;
       }
@@ -91,6 +90,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
           this.save(application, fileNext);
         } catch (IOException ioe) {
           isExceptionRaised = true;
+          //TODO I18n
           Dialogs.showError("Unable to save file", ioe.getMessage());
         } finally {
           application.hideWaitCursor();

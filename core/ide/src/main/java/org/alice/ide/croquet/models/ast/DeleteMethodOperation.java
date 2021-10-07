@@ -45,6 +45,7 @@ package org.alice.ide.croquet.models.ast;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.IDE;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserMethod;
@@ -90,11 +91,12 @@ public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
   }
 
   @Override
-  protected boolean isClearToDelete(UserMethod method) {
+  protected boolean isClearToDelete(UserMethod method, UserActivity activity) {
     List<MethodInvocation> references = IDE.getActiveInstance().getMethodInvocations(method);
     final int N = references.size();
     if (N > 0) {
-      StringBuffer sb = new StringBuffer();
+      // TODO I18n
+      StringBuilder sb = new StringBuilder();
       sb.append("Unable to delete ");
       if (method.isProcedure()) {
         sb.append("procedure");

@@ -195,6 +195,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
         this.handleOffset.set(0.0d, 0.0d, 0.0d);
       }
       this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
+      notifyTransformationListeners();
     }
   }
 
@@ -234,6 +235,7 @@ public class RotationRingHandle extends ManipulationHandle3D {
 
   protected void placeSphere() {
     this.sphereTransformable.setTranslationOnly(Point3.createMultiplication(this.sphereDirection, this.sgTorus.majorRadius.getValue()), this);
+    notifyTransformationListeners();
   }
 
   protected void animateHandleToRadius(double desiredRadius) {

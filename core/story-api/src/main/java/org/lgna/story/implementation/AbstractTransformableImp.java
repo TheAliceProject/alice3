@@ -78,7 +78,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
 
   @Override
   public void applyAnimation() {
-    //TODO apply collected per frame animations
+    getSgComposite().notifyTransformationListeners();
   }
 
   public AffineMatrix4x4 getLocalTransformation() {
@@ -110,6 +110,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     super.postCheckSetVehicle(vehicle);
     if ((vehicle != null) && (scene != null)) {
       this.setTransformation(scene, absTransform);
+      applyAnimation();
     }
   }
 
@@ -129,6 +130,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     duration = adjustDurationIfNecessary(duration);
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       this.applyTranslation(translation, asSeenBy);
+      applyAnimation();
     } else {
       class TranslateAnimation extends DurationBasedAnimation {
         private ReferenceFrame asSeenBy;
@@ -207,6 +209,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     duration = adjustDurationIfNecessary(duration);
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       this.applyRotationInRadians(axis, angleInRadians, asSeenBy);
+      applyAnimation();
     } else {
       class RotateAnimation extends DurationBasedAnimation {
         private ReferenceFrame asSeenBy;
@@ -620,6 +623,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     duration = adjustDurationIfNecessary(duration);
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       this.setOrientationOnly(target, offset);
+      applyAnimation();
     } else {
       final OrthogonalMatrix3x3 buffer = new OrthogonalMatrix3x3();
       final OrthogonalMatrix3x3 targetOrientation = this.getTransformation(target).orientation;
@@ -823,6 +827,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     duration = adjustDurationIfNecessary(duration);
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       this.setPositionOnly(target, offset);
+      applyAnimation();
     } else {
       if (isSmooth) {
         this.perform(new SmoothPositionAnimation(this, AffineMatrix4x4.createIdentity(), target, duration, style));
@@ -888,6 +893,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     if (EpsilonUtilities.isWithinReasonableEpsilon(duration, RIGHT_NOW)) {
       if ((offset == null) || !offset.isNaN()) {
         this.setTransformation(target, offset);
+        applyAnimation();
       }
     } else {
       AffineMatrix4x4 m1;

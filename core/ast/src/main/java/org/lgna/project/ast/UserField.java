@@ -191,6 +191,11 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
   // into the constructor and only called once with the variables becoming final.
   private void initializeAccessors() {
     if (getters == null) {
+      if (valueType.getValue() == null) {
+        getters = Collections.emptyList();
+        setters = Collections.emptyList();
+        return;
+      }
       if (valueType.getValue().isArray()) {
         arrayItemGetter = new ArrayItemGetter(this);
         getters = Collections.unmodifiableList(Lists.newArrayList(arrayItemGetter, getter));

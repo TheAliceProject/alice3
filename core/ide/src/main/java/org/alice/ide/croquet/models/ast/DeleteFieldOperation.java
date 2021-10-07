@@ -46,6 +46,10 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NodeListProperty;
@@ -69,9 +73,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
 
   public static synchronized DeleteFieldOperation getInstance(UserField field, UserType<?> declaringType) {
     DeleteFieldOperation rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DeleteFieldOperation(field, declaringType);
       map.put(field, rv);
     }
@@ -98,15 +100,16 @@ public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
   }
 
   @Override
-  protected boolean isClearToDelete(UserField field) {
+  protected boolean isClearToDelete(UserField field, UserActivity activity) {
     List<FieldAccess> references = IDE.getActiveInstance().getFieldAccesses(field);
     final int N = references.size();
     if (N > 0) {
       ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog(field, references);
-      referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
-      if (true) { //step.isSuccessfullyCompleted() ) {
+      UserActivity referenceCheckActivity = activity.newChildActivity();
+      referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire(referenceCheckActivity);
+      if (referenceCheckActivity.isSuccessfullyCompleted()) {
         ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-        projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance(field).fire();
+        projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance(field).fire(referenceCheckActivity);
       }
       return false;
     } else {
@@ -121,9 +124,11 @@ public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
       //Save the index position of the field so we can insert it correctly on undo
       this.index = this.getDeclaringType().fields.indexOf(field);
       //Save the state of field by precomputing the undo and redo statements
-      this.doStatements = IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField(field);
-      this.undoStatements = IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField(field);
-      IDE.getActiveInstance().getSceneEditor().removeField(this.getDeclaringType(), field, this.doStatements);
+      StorytellingSceneEditor editor = StageIDE.getActiveInstance().getSceneEditor();
+      Map<AbstractField, Statement> riders = editor.getRiders(field);
+      this.doStatements = editor.getDoStatementsForRemoveField(field, riders);
+      this.undoStatements = editor.getUndoStatementsForRemoveField(field, riders);
+      editor.removeField(this.getDeclaringType(), field, this.doStatements);
     } else {
       super.doOrRedoInternal(isDo);
     }

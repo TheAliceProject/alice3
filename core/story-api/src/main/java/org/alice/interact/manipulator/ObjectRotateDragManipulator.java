@@ -291,6 +291,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 
         this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
         this.manipulatedTransformable.applyRotationAboutArbitraryAxis(this.rotationHandle.getRotationAxis(), angleDif, this.rotationHandle.getReferenceFrame());
+        manipulatedTransformable.notifyTransformationListeners();
 
         if (didSnap) {
           SnapUtilities.showSnapRotation(this.rotationHandle);

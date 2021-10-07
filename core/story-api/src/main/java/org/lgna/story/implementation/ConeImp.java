@@ -44,6 +44,8 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.SCone;
+import org.lgna.story.implementation.eventhandling.CylinderHull;
+import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
 
 /**
  * @author Dennis Cosgrove
@@ -69,6 +71,11 @@ public class ConeImp extends AbstractCylinderImp {
   @Override
   protected double getXZ() {
     return this.baseRadius.getValue();
+  }
+
+  @Override
+  public VerticalPrismCollisionHull getCollisionHull() {
+    return new CylinderHull(getAbsoluteTransformation().translation, getHeight(), baseRadius.getValue());
   }
 
   private final SCone abstraction;
