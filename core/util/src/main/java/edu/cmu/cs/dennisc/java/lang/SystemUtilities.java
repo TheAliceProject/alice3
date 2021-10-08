@@ -209,24 +209,12 @@ public class SystemUtilities {
     }
   }
 
-  public static boolean isPlatformSpecificLibraryLoadingDesired() {
-    return true;
-  }
-
   public static void loadLibrary(String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle) {
     File directory = new File(ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName);
     if (libDirectoryName.equalsIgnoreCase("jogl")) {
       directory = new File(directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory());
     }
     String filename = System.mapLibraryName(libraryName);
-    if (isMac()) {
-      //todo
-      final String DYLIB_EXT = "dylib";
-      if (filename.endsWith(DYLIB_EXT)) {
-        final String JNILIB_EXT = "jnilib";
-        filename = filename.substring(0, filename.length() - DYLIB_EXT.length()) + JNILIB_EXT;
-      }
-    }
     File file = new File(directory, filename);
     if (file.exists()) {
       System.load(file.getAbsolutePath());
@@ -236,59 +224,6 @@ public class SystemUtilities {
       System.loadLibrary(libraryName);
     }
   }
-
-  //  @Deprecated
-  //  public static void loadPlatformSpecific( String libraryName ) {
-  //    String postfix;
-  //    StringBuilder sb = new StringBuilder();
-  //    if( isMac() ) {
-  //      sb.append( "macosx-universal/lib" );
-  //      postfix = ".jnilib";
-  //    } else {
-  //      Integer bitCount = getBitCount();
-  //      if( bitCount != null ) {
-  //        String bitCountText;
-  //        switch( bitCount ) {
-  //        case 32:
-  //          bitCountText = "i586/";
-  //          break;
-  //        case 64:
-  //          bitCountText = "amd64/";
-  //          break;
-  //        default:
-  //          throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-  //        }
-  //
-  //        if( isWindows() ) {
-  //          sb.append( "windows-" );
-  //          sb.append( bitCountText );
-  //          postfix = ".dll";
-  //        } else if( isLinux() ) {
-  //          sb.append( "linux-" );
-  //          sb.append( bitCountText );
-  //          sb.append( "lib" );
-  //          postfix = ".so";
-  //        } else {
-  //          throw new RuntimeException( System.getProperty( "os.name" ) );
-  //        }
-  //      } else {
-  //        throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
-  //      }
-  //    }
-  //    sb.append( libraryName );
-  //    sb.append( postfix );
-  //    String subpath = sb.toString();
-  //    String[] libraryDirectoryPaths = getLibraryPath();
-  //    for( String libraryDirectoryPath : libraryDirectoryPaths ) {
-  //      java.io.File libraryDirectory = new java.io.File( libraryDirectoryPath );
-  //      java.io.File file = new java.io.File( libraryDirectory, subpath );
-  //      if( file.exists() ) {
-  //        System.load( file.getAbsolutePath() );
-  //        return;
-  //      }
-  //    }
-  //    System.loadLibrary( libraryName );
-  //  }
 
   public static boolean areIconsDisplayedInMenus() {
     return true;

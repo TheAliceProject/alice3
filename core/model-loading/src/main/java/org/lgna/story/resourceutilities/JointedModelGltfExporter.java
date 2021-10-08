@@ -43,6 +43,7 @@
 package org.lgna.story.resourceutilities;
 
 import de.javagl.jgltf.impl.v2.*;
+import de.javagl.jgltf.impl.v2.Image;
 import de.javagl.jgltf.model.GltfConstants;
 import de.javagl.jgltf.model.GltfModel;
 import de.javagl.jgltf.model.GltfModels;
@@ -56,6 +57,7 @@ import de.javagl.jgltf.model.io.GltfModelWriter;
 import de.javagl.jgltf.model.io.GltfReference;
 import de.javagl.jgltf.model.io.GltfReferenceResolver;
 import de.javagl.jgltf.model.io.v2.GltfAssetV2;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -72,15 +74,17 @@ import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.io.JointedModelExporter;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,13 +229,22 @@ public class JointedModelGltfExporter implements JointedModelExporter {
 
   private void createAndAddTextureComponents(Path tempDir, GlTF gltf) throws IOException {
     for (TexturedAppearance texture : visual.textures.getValue()) {
-      if (texture.diffuseColorTexture.getValue() != null) {
-        Integer textureId = texture.textureId.getValue();
+      Integer textureId = texture.textureId.getValue();
+      MaterialPbrMetallicRoughness pbrMetallicRoughness = new MaterialPbrMetallicRoughness();
+      pbrMetallicRoughness.setMetallicFactor(0.0f);
+
+      boolean alphaBlend = false;
+
+      edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture = texture.diffuseColorTexture.getValue();
+
+      // Embed diffuse texture
+      if (diffuseColorTexture != null) {
         Image image = new de.javagl.jgltf.impl.v2.Image();
         final String uri = getImageFileName(textureId);
         image.setUri(uri);
         final Path imageFile = tempDir.resolve(uri);
-        writeTexture(texture, Files.newOutputStream(imageFile));
+        BufferedImage bufferedImage = ((BufferedImageTexture) diffuseColorTexture).getBufferedImage();
+        writeTexture(bufferedImage, Files.newOutputStream(imageFile));
 
         int imageIndex = Optionals.of(gltf.getImages()).size();
         gltf.addImages(image);
@@ -241,11 +254,48 @@ public class JointedModelGltfExporter implements JointedModelExporter {
         int textureIndex = Optionals.of(gltf.getTextures()).size();
         gltf.addTextures(textureOut);
 
-        Material material = createMaterialWithTexture(textureIndex);
-        int materialIndex = Optionals.of(gltf.getMaterials()).size();
-        gltf.addMaterials(material);
-        textureMaterialMap.put(textureId, materialIndex);
+        TextureInfo baseColorTexture = new TextureInfo();
+        baseColorTexture.setIndex(textureIndex);
+        pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
+
+        alphaBlend = texture.isDiffuseColorTextureAlphaBlended.getValue() || bufferedImage.getTransparency() == Transparency.TRANSLUCENT;
       }
+
+      // TODO: Transform bump map to normal map
+
+      float opacity = texture.opacity.getValue() != null ? texture.opacity.getValue() : 1.0f;
+      float[] baseColorFactor = null;
+
+      // Apply base diffuse color
+      if (texture.diffuseColor.getValue() != null) {
+        Color4f baseColor = texture.diffuseColor.getValue();
+        // Multiply the texture's opacity with the alpha channel of the base color
+        baseColorFactor = new float[]{baseColor.red, baseColor.green, baseColor.blue, baseColor.alpha * opacity};
+        alphaBlend = alphaBlend || baseColorFactor[3] < 1.0f;
+      } else if (opacity != 1.0f) {
+        // Just apply opacity
+        baseColorFactor = new float[]{1.0f, 1.0f, 1.0f, opacity};
+        alphaBlend = true;
+      }
+
+      pbrMetallicRoughness.setBaseColorFactor(baseColorFactor);
+
+      Material material = new Material();
+      material.setPbrMetallicRoughness(pbrMetallicRoughness);
+
+      // Apply emissive color
+      if (texture.emissiveColor.getValue() != null) {
+        Color4f emissiveColor = texture.emissiveColor.getValue();
+        float[] emissiveFactor = new float[]{emissiveColor.red, emissiveColor.green, emissiveColor.blue};
+        material.setEmissiveFactor(emissiveFactor);
+      }
+
+      // If we have transparency in our material we need to activate alpha blending which is off by default
+      material.setAlphaMode(alphaBlend ? "BLEND" : material.defaultAlphaMode());
+
+      int materialIndex = Optionals.of(gltf.getMaterials()).size();
+      gltf.addMaterials(material);
+      textureMaterialMap.put(textureId, materialIndex);
     }
   }
 
@@ -253,23 +303,8 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     return fullResourceName + "_material_" + textureId + "_diffuseMap." + IMAGE_EXTENSION;
   }
 
-  private static void writeTexture(TexturedAppearance texture, OutputStream os) throws IOException {
-    BufferedImageTexture bufferedTexture = (BufferedImageTexture) texture.diffuseColorTexture.getValue();
-    ImageIO.write(bufferedTexture.getBufferedImage(), IMAGE_EXTENSION, os);
-  }
-
-  private Material createMaterialWithTexture(int textureIndex) {
-    TextureInfo baseColorTexture = new TextureInfo();
-    baseColorTexture.setIndex(textureIndex);
-
-    MaterialPbrMetallicRoughness pbrMetallicRoughness = new MaterialPbrMetallicRoughness();
-    pbrMetallicRoughness.setBaseColorTexture(baseColorTexture);
-    pbrMetallicRoughness.setMetallicFactor(0.0f);
-
-    Material material = new Material();
-    material.setPbrMetallicRoughness(pbrMetallicRoughness);
-
-    return material;
+  private static void writeTexture(BufferedImage image, OutputStream os) throws IOException {
+    ImageIO.write(image, IMAGE_EXTENSION, os);
   }
 
   private Map<String, Integer> addSkeletonNodes(GlTF gltf) {
@@ -301,29 +336,14 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     node.setName(getUserJointIdentifier(joint.jointID.getValue()));
 
     final AffineMatrix4x4 jointTransform = joint.localTransformation.getValue();
-    double[] matrixValues = jointTransform.getAsColumnMajorArray16();
-    //Flip the values from Alice space to Collada/glTF space
-    float[] flippedMatrix = createFlippedColumnMajorTransform(matrixValues);
-    node.setMatrix(flippedMatrix);
+    float[] matrixValues = new float[16];
+    matrixValues = jointTransform.getAsColumnMajorArray16(matrixValues);
+    node.setMatrix(matrixValues);
     return node;
   }
 
   public String getUserJointIdentifier(String jointIdentifier) {
     return renamedJoints.getOrDefault(jointIdentifier, jointIdentifier);
-  }
-
-  public static float[] createFlippedColumnMajorTransform(double[] transform) {
-    float[] flippedTransform = new float[transform.length];
-    for (int i = 0; i < transform.length; i++) {
-      flippedTransform[i] = (float) transform[i];
-    }
-    flippedTransform[4] *= -1;  //up.x
-    flippedTransform[12] *= -1; //translation.x
-    flippedTransform[1] *= -1;  //right.y
-    flippedTransform[9] *= -1;  //backward.y
-    flippedTransform[6] *= -1;  //up.z
-    flippedTransform[14] *= -1; //translation.z
-    return flippedTransform;
   }
 
   private List<Mesh> createMeshes(BufferStructureBuilder bufferStructureBuilder, GlTF gltf, Map<String, Integer> jointNodes) {
@@ -332,71 +352,124 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     for (Geometry g : visual.geometries.getValue()) {
       if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
         edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
-        MeshPrimitive meshPrimitive = createMeshPrimitive(sgMesh, bufferStructureBuilder);
-        Mesh mesh = createMesh(sgMesh, meshPrimitive);
+        MeshPrimitive[] meshPrimitives = createMeshPrimitives(sgMesh, bufferStructureBuilder);
+        Mesh mesh = createMesh(sgMesh, meshPrimitives);
         meshes.add(mesh);
       }
     }
     for (WeightedMesh sgWM : visual.weightedMeshes.getValue()) {
       Skin skin = addSkin(sgWM, bufferStructureBuilder, gltf, jointNodes);
-      MeshPrimitive meshPrimitive = createWeightedMeshPrimitive(sgWM, bufferStructureBuilder, jointNodes, skin);
-      Mesh mesh = createMesh(sgWM, meshPrimitive);
+      MeshPrimitive[] meshPrimitives = createWeightedMeshPrimitives(sgWM, bufferStructureBuilder, jointNodes, skin);
+      Mesh mesh = createMesh(sgWM, meshPrimitives);
       meshes.add(mesh);
     }
     return meshes;
   }
 
-  private Mesh createMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, MeshPrimitive meshPrimitive) {
+  private Mesh createMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, MeshPrimitive[] meshPrimitives) {
     Mesh mesh = new Mesh();
-    mesh.addPrimitives(meshPrimitive);
-    mesh.setName(sgMesh.getName());
+    for (MeshPrimitive primitive : meshPrimitives) {
+      mesh.addPrimitives(primitive);
+      mesh.setName(sgMesh.getName());
+    }
     return mesh;
   }
 
-  private MeshPrimitive createMeshPrimitive(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder) {
-    MeshPrimitive meshPrimitive = new MeshPrimitive();
-    meshPrimitive.setMode(GltfConstants.GL_TRIANGLES);
+  private MeshPrimitive[] createMeshPrimitives(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder) {
+    List<Integer> referencedTextureIds = sgMesh.getReferencedTextureIds();
+    MeshPrimitive[] result = new MeshPrimitive[referencedTextureIds.size()];
+    boolean hasMultipleTextureIds = referencedTextureIds.size() > 1;
 
-    if (textureMaterialMap.containsKey(sgMesh.textureId.getValue())) {
-      meshPrimitive.setMaterial(textureMaterialMap.get(sgMesh.textureId.getValue()));
-    }
-
-    // Add the indices data from the mesh to the buffer structure
-    int indicesAccessorIndex = builder.getNumAccessorModels();
-    builder.createAccessorModel("indicesAccessor_" + indicesAccessorIndex,
-                                indicesComponentType, "SCALAR", Buffers.castToShortByteBuffer(sgMesh.indexBuffer.getValue()));
-    meshPrimitive.setIndices(indicesAccessorIndex);
-    builder.createArrayElementBufferViewModel(sgMesh.getName() + "_indices_bufferView");
+    int texCoordsAccessorIndex = -1;
+    int normalsAccessorIndex = -1;
 
     // Add the vertices (positions) from the mesh to the buffer structure
     int positionsAccessorIndex = builder.getNumAccessorModels();
-    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArrayNegatingXandZ(sgMesh.vertexBuffer.getValue()));
+    DoubleBuffer vertexBuffer = sgMesh.vertexBuffer.getValue();
+    vertexBuffer.rewind();
+    FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArray(vertexBuffer));
     builder.createAccessorModel("positionsAccessor_" + positionsAccessorIndex,
-                                GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objVertices));
-    meshPrimitive.addAttributes("POSITION", positionsAccessorIndex);
+            GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objVertices));
     builder.createArrayBufferViewModel(sgMesh.getName() + "_positions_bufferView");
 
     // Add the texture coordinates from the mesh to the buffer structure
     FloatBuffer objTexCoords = sgMesh.textCoordBuffer.getValue();
-    if (objTexCoords.capacity() > 0) {
-      int texCoordsAccessorIndex = builder.getNumAccessorModels();
+    objTexCoords.rewind();
+    if (objTexCoords.hasRemaining()) {
+      texCoordsAccessorIndex = builder.getNumAccessorModels();
       builder.createAccessorModel("texCoordsAccessor_" + texCoordsAccessorIndex,
-                                  GltfConstants.GL_FLOAT, "VEC2", Buffers.createByteBufferFrom(objTexCoords));
-      meshPrimitive.addAttributes("TEXCOORD_0", texCoordsAccessorIndex);
+              GltfConstants.GL_FLOAT, "VEC2", Buffers.createByteBufferFrom(objTexCoords));
       builder.createArrayBufferViewModel(sgMesh.getName() + "_textCoords_bufferView");
     }
 
     // Add the normals from the mesh to the buffer structure
-    FloatBuffer objNormals = BufferUtilities.createDirectFloatBuffer(convertToFloatArrayNegatingXandZ(sgMesh.normalBuffer.getValue()));
-    if (objNormals.capacity() > 0) {
+    FloatBuffer normalBuffer = sgMesh.normalBuffer.getValue();
+    normalBuffer.rewind();
+    FloatBuffer objNormals = BufferUtilities.copyFloatBuffer(normalBuffer);
+    if (objNormals.hasRemaining()) {
       normalize(objNormals);
-      int normalsAccessorIndex = builder.getNumAccessorModels();
+      normalsAccessorIndex = builder.getNumAccessorModels();
       builder.createAccessorModel("normalsAccessor_" + normalsAccessorIndex,
-                                  GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objNormals));
-      meshPrimitive.addAttributes("NORMAL", normalsAccessorIndex);
+              GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objNormals));
       builder.createArrayBufferViewModel(sgMesh.getName() + "_normals_bufferView");
     }
+
+    int i = 0;
+
+    for (Integer textureId : referencedTextureIds) {
+      result[i] = createMeshPrimitive(sgMesh, builder, textureId, hasMultipleTextureIds, positionsAccessorIndex, texCoordsAccessorIndex, normalsAccessorIndex);
+      i++;
+    }
+
+    return result;
+  }
+
+  private MeshPrimitive createMeshPrimitive(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder, Integer textureId, boolean hasMultipleTextureIds, int positionsAccessorIndex, int texCoordsAccessorIndex, int normalsAccessorIndex) {
+    MeshPrimitive meshPrimitive = new MeshPrimitive();
+    meshPrimitive.setMode(GltfConstants.GL_TRIANGLES);
+
+    if (textureMaterialMap.containsKey(textureId)) {
+      meshPrimitive.setMaterial(textureMaterialMap.get(textureId));
+    } else {
+      System.err.println("Missing material for texture id " + textureId);
+    }
+
+    // Add the indices data from the mesh to the buffer structure
+    int indicesAccessorIndex = builder.getNumAccessorModels();
+    IntBuffer indexBuffer = sgMesh.indexBuffer.getValue();
+    // Filter indices based on textureId if the mesh has multiple textures
+    IntBuffer filteredIndexBuffer = hasMultipleTextureIds ? filterIndexBufferByTextureId(indexBuffer, textureId, sgMesh.textureIdArray) : indexBuffer;
+    filteredIndexBuffer.rewind();
+    builder.createAccessorModel("indicesAccessor_" + indicesAccessorIndex,
+            indicesComponentType, "SCALAR", Buffers.castToShortByteBuffer(filteredIndexBuffer));
+    builder.createArrayElementBufferViewModel(sgMesh.getName() + "_indices_bufferView");
+
+    meshPrimitive.setIndices(indicesAccessorIndex);
+    meshPrimitive.addAttributes("POSITION", positionsAccessorIndex);
+    meshPrimitive.addAttributes("TEXCOORD_0", texCoordsAccessorIndex);
+    meshPrimitive.addAttributes("NORMAL", normalsAccessorIndex);
+
     return meshPrimitive;
+  }
+
+  private IntBuffer filterIndexBufferByTextureId(IntBuffer indexBuffer, Integer textureId, ArrayList<Integer> textureIdArray) {
+    indexBuffer.rewind();
+
+    // We don't know how many indices we are going to end up with so just allocate a buffer large enough to fit them all
+    IntBuffer filteredBuffer = ByteBuffer.allocateDirect((Integer.SIZE / 8) * indexBuffer.remaining()).order(ByteOrder.nativeOrder()).asIntBuffer();
+
+    while (indexBuffer.hasRemaining()) {
+      int index = indexBuffer.get();
+      int indexTextureId = textureIdArray.get(index);
+      if (indexTextureId == textureId) {
+        filteredBuffer.put(index);
+      }
+    }
+
+    filteredBuffer.flip();
+
+    // Resize the buffer to just the valid entries. JGLTF buffer operations assume limit() == capacity().
+    return BufferUtilities.copyIntBuffer(filteredBuffer);
   }
 
   private static class JointWeightQuad {
@@ -411,10 +484,11 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
   }
 
-  private MeshPrimitive createWeightedMeshPrimitive(WeightedMesh sgWM, BufferStructureBuilder builder, Map<String, Integer> jointNodes, Skin skin) {
-    MeshPrimitive meshPrimitive = createMeshPrimitive(sgWM, builder);
+  private MeshPrimitive[] createWeightedMeshPrimitives(WeightedMesh sgWM, BufferStructureBuilder builder, Map<String, Integer> jointNodes, Skin skin) {
+    MeshPrimitive[] meshPrimitives = createMeshPrimitives(sgWM, builder);
     VertexWeights[] vertexWeights = getWeightsByVertex(sgWM, jointNodes, skin);
-    int highestJointCount = 5;
+    int highestJointCount = computeHighestJointCount(vertexWeights);
+    Integer[] orderedIndices = increasingArray(highestJointCount);
     int quadCount = (highestJointCount + 3) / 4;
     JointWeightQuad[] quads = new JointWeightQuad[quadCount];
     for (int i = 0; i < quadCount; i++) {
@@ -427,33 +501,71 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       }
       List<Integer> joints = vertexWeight.jointIndices;
       List<Float> weights = vertexWeight.weights;
-      for (int j = 0; j < joints.size(); j++) {
+      int jointCount = joints.size();
+      Integer[] indexRemapping = jointCount > 4 ? indicesInDecreasingOrder(weights) : orderedIndices;
+      for (int j = 0; j < jointCount; j++) {
         final JointWeightQuad quad = quads[j / 4];
         int index = 4 * i + j % 4;
-        quad.jointData[index] = joints.get(j);
-        quad.weightData[index] = weights.get(j);
+        quad.jointData[index] = joints.get(indexRemapping[j]);
+        quad.weightData[index] = weights.get(indexRemapping[j]);
       }
     }
     for (int i = 0; i < quadCount; i++) {
-      buildJointWeightBuffers(sgWM, builder, meshPrimitive, quads[i]);
+      buildJointWeightBuffers(sgWM, builder, meshPrimitives, quads[i]);
     }
-    return meshPrimitive;
+    return meshPrimitives;
   }
 
-  private void buildJointWeightBuffers(WeightedMesh sgWM, BufferStructureBuilder builder, MeshPrimitive meshPrimitive, JointWeightQuad quad) {
+  private static Integer[] indicesInDecreasingOrder(List<Float> values) {
+    Integer[] indexes = increasingArray(values.size());
+    Comparator<Integer> comparator = Comparator.comparing(values::get).reversed();
+    Arrays.sort(indexes, comparator);
+    return indexes;
+  }
+
+  private static Integer[] increasingArray(int length) {
+    Integer[] indexes = new Integer[length];
+    for (int i = 0; i < length; i++) {
+      indexes[i] = i;
+    }
+    return indexes;
+  }
+
+  private int computeHighestJointCount(VertexWeights[] vertexWeights) {
+    int highestJointCount = 0;
+
+    for (VertexWeights vertexWeight : vertexWeights) {
+      if (null == vertexWeight) {
+        continue;
+      }
+
+      int numJoints = vertexWeight.jointIndices.size();
+
+      if (numJoints > highestJointCount) {
+        highestJointCount = numJoints;
+      }
+    }
+
+    return highestJointCount;
+  }
+
+  private void buildJointWeightBuffers(WeightedMesh sgWM, BufferStructureBuilder builder, MeshPrimitive[] meshPrimitives, JointWeightQuad quad) {
     int jointsAccessorIndex = builder.getNumAccessorModels();
     IntBuffer joints = BufferUtilities.createDirectIntBuffer(quad.jointData);
     builder.createAccessorModel("jointsAccessor_" + jointsAccessorIndex,
                                 GltfConstants.GL_UNSIGNED_SHORT, "VEC4", Buffers.castToShortByteBuffer(joints));
-    meshPrimitive.addAttributes("JOINTS_" + quad.offset, jointsAccessorIndex);
     builder.createArrayBufferViewModel(sgWM.getName() + "_joints_bufferView" + quad.offset);
 
     int weightsAccessorIndex = builder.getNumAccessorModels();
     FloatBuffer weights = BufferUtilities.createDirectFloatBuffer(quad.weightData);
     builder.createAccessorModel("weightsAccessor_" + weightsAccessorIndex,
                                 GltfConstants.GL_FLOAT, "VEC4", Buffers.createByteBufferFrom(weights));
-    meshPrimitive.addAttributes("WEIGHTS_" + quad.offset, weightsAccessorIndex);
     builder.createArrayBufferViewModel(sgWM.getName() + "_weights_bufferView" + quad.offset);
+
+    for (MeshPrimitive meshPrimitive : meshPrimitives) {
+      meshPrimitive.addAttributes("JOINTS_" + quad.offset, jointsAccessorIndex);
+      meshPrimitive.addAttributes("WEIGHTS_" + quad.offset, weightsAccessorIndex);
+    }
   }
 
   public static class VertexWeights {
@@ -497,13 +609,13 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     int ibmIndex = builder.getNumAccessorModels();
     final Set<Map.Entry<String, InverseAbsoluteTransformationWeightsPair>> entries = sgWM.weightInfo.getValue().getMap().entrySet();
     float[] matrices = new float[16 * entries.size()];
+    float[] matrix = new float[16];
     int index = 0;
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : entries) {
       skin.addJoints(jointNodes.get(entry.getKey()));
       AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation();
-      double[] matrix = inverseBindMatrix.getAsColumnMajorArray16();
-      float[] flippedMatrix = createFlippedColumnMajorTransform(matrix);
-      System.arraycopy(flippedMatrix, 0, matrices, index, 16);
+      inverseBindMatrix.getAsColumnMajorArray16(matrix);
+      System.arraycopy(matrix, 0, matrices, index, 16);
       index += 16;
     }
 
@@ -523,22 +635,27 @@ public class JointedModelGltfExporter implements JointedModelExporter {
   // Borrowed from JglTF/ObjNormals.java
   public static void normalize(FloatBuffer normals) {
     int numZeroLengthNormals = 0;
-    int n = normals.capacity() / 3;
+    int numNaNNormals = 0;
+    int n = normals.remaining() / 3;
     for (int i = 0; i < n; i++) {
       float x = normals.get(i * 3);
       float y = normals.get(i * 3 + 1);
       float z = normals.get(i * 3 + 2);
-      double length = Math.sqrt(x * x + y * y + z * z);
       float nx = 1.0f;
       float ny = 0.0f;
       float nz = 0.0f;
-      if (length < EPSILON) {
-        numZeroLengthNormals++;
+      if (Float.isNaN(x) || Float.isNaN(y) || Float.isNaN(z)) {
+        numNaNNormals++;
       } else {
-        float invLength = (float) (1.0 / length);
-        nx = x * invLength;
-        ny = y * invLength;
-        nz = z * invLength;
+        double length = Math.sqrt(x * x + y * y + z * z);
+        if (length < EPSILON) {
+          numZeroLengthNormals++;
+        } else {
+          float invLength = (float) (1.0 / length);
+          nx = x * invLength;
+          ny = y * invLength;
+          nz = z * invLength;
+        }
       }
       normals.put(i * 3, nx);
       normals.put(i * 3 + 1, ny);
@@ -547,35 +664,25 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     if (numZeroLengthNormals > 0) {
       System.out.println("There have been " + numZeroLengthNormals + " normals with zero length. Using (1,0,0) as a default.");
     }
+    if (numNaNNormals > 0) {
+      System.out.println("There have been " + numNaNNormals + " normals with NaN components. Using (1,0,0) as a default.");
+    }
   }
 
-  public static float[] convertToFloatArrayNegatingXandZ(DoubleBuffer buf) {
+  public static float[] convertToFloatArray(DoubleBuffer buf) {
     if (buf == null) {
       return new float[0];
     }
-    buf.rewind();
     float[] array = new float[buf.remaining()];
     int index = 0;
     while (buf.hasRemaining()) {
-      array[index++] = (float) -buf.get();
       array[index++] = (float) buf.get();
-      array[index++] = (float) -buf.get();
+      array[index++] = (float) buf.get();
+      array[index++] = (float) buf.get();
     }
+
+    buf.rewind();
     return array;
   }
 
-  public static float[] convertToFloatArrayNegatingXandZ(FloatBuffer buf) {
-    if (buf == null) {
-      return new float[0];
-    }
-    buf.rewind();
-    float[] array = new float[buf.remaining()];
-    int index = 0;
-    while (buf.hasRemaining()) {
-      array[index++] = -buf.get();
-      array[index++] = buf.get();
-      array[index++] = -buf.get();
-    }
-    return array;
-  }
 }

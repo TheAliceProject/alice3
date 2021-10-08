@@ -171,8 +171,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
-      // TODO switch to GLTF when the exporter and player are ready
-      final JsonModelIo.ExportFormat format = JsonModelIo.ExportFormat.COLLADA;
+      final JsonModelIo.ExportFormat format = JsonModelIo.ExportFormat.GLTF;
       Manifest manifest = createProjectManifest(project);
       Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
       compareResources(project.getResources(), resources);

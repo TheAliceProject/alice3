@@ -211,6 +211,27 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
     return rv;
   }
 
+  public float[] getAsColumnMajorArray16(float[] rv) {
+    assert rv.length == 16;
+    rv[0] = (float) orientation.right.x;
+    rv[1] = (float) orientation.right.y;
+    rv[2] = (float) orientation.right.z;
+    rv[3] = (float) 0.0;
+    rv[4] = (float) orientation.up.x;
+    rv[5] = (float) orientation.up.y;
+    rv[6] = (float) orientation.up.z;
+    rv[7] = (float) 0.0;
+    rv[8] = (float) orientation.backward.x;
+    rv[9] = (float) orientation.backward.y;
+    rv[10] = (float) orientation.backward.z;
+    rv[11] = (float) 0.0;
+    rv[12] = (float) translation.x;
+    rv[13] = (float) translation.y;
+    rv[14] = (float) translation.z;
+    rv[15] = (float) 1.0;
+    return rv;
+  }
+
   public double[] getAsColumnMajorArray12(double[] rv) {
     assert rv.length == 12;
     rv[0] = orientation.right.x;

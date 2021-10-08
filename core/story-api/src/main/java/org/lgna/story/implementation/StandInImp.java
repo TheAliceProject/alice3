@@ -87,4 +87,8 @@ public class StandInImp extends AbstractTransformableImp implements Reusable {
   }
 
   private final StandIn sgStandIn = new StandIn();
+
+  @Override
+  public void applyAnimation() {
+  }
 }

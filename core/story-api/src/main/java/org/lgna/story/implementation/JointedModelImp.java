@@ -46,6 +46,7 @@ package org.lgna.story.implementation;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
@@ -975,6 +976,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
           for (JointData jointData : treeWalkObserver.list) {
             jointData.epilogue();
           }
+        }
+
+        @Override
+        public Animated getAnimated() {
+          return JointedModelImp.this;
         }
       }
       perform(new StraightenOutJointsAnimation(duration, style));

@@ -99,6 +99,10 @@ public abstract class MarkerImp extends VisualScaleModelImp {
   }
 
   @Override
+  public void applyAnimation() {
+  }
+
+  @Override
   public void setSize(Dimension3 size) {
     setScale(getScaleForSize(size));
   }
