@@ -97,6 +97,9 @@ The VM options are:
     -Djogamp.gluegen.UseTempJarCache=false
     -Dorg.alice.stageide.isCrashDetectionDesired=false
     -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
+    --add-opens=java.base/java.io=ALL-UNNAMED
+    --add-opens=java.desktop/sun.awt=ALL-UNNAMED
+    --add-opens=java.base/java.time=ALL-UNNAMED
 
 Then the project should be ready to run.
 
