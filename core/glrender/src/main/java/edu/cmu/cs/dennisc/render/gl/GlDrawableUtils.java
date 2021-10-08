@@ -201,16 +201,6 @@ public class GlDrawableUtils {
     return capabilities;
   }
 
-  public static GLCapabilities createGlCapabilitiesForLightweightComponent(RenderCapabilities requestedCapabilities) {
-    GLCapabilities rv = createGlCapabilities(requestedCapabilities);
-    if (SystemUtilities.isLinux()) {
-      //pass
-    } else {
-      rv.setPBuffer(true);
-    }
-    return rv;
-  }
-
   public static GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
     if (glMultisampleCapabilitiesChooser != null) {
       return glMultisampleCapabilitiesChooser;

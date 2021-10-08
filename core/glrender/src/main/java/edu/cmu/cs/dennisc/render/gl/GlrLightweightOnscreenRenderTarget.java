@@ -61,7 +61,7 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<JPanel>
 
   private class RenderPane extends GLJPanel {
     public RenderPane(RenderCapabilities requestedCapabilities) {
-      super(GlDrawableUtils.createGlCapabilitiesForLightweightComponent(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser());
+      super(GlDrawableUtils.createGlCapabilities(requestedCapabilities), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser());
     }
 
     @Override

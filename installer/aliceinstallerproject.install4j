@@ -37,7 +37,7 @@
       <envVar name="JDK_HOME" />
     </searchSequence>
     <variables>
-      <variable name="included_jre_version" value="1.8.0_152" description="" category="" />
+      <variable name="included_jre_version" value="17" description="" category="" />
     </variables>
     <mergedProjects />
     <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="true" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="../../The Alice Project.p12" windowsPkcs11Library="" windowsPkcs11Slot="">
