@@ -109,7 +109,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-linux-amd64</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
@@ -125,7 +125,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-linux-i586</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
@@ -141,7 +141,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-linux-armv6hf</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.linux-armv6hf.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
@@ -157,7 +157,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-macosx-universal</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
@@ -187,7 +187,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-windows-i586</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
@@ -217,7 +217,7 @@
                 <artifactItem>
                   <groupId>org.jogamp.gluegen</groupId>
                   <artifactId>gluegen-rt</artifactId>
-                  <version>${jogl.version}</version>
+                  <version>${gluegen.version}</version>
                   <classifier>natives-windows-amd64</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
