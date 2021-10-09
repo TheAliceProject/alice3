@@ -51,7 +51,7 @@
     <version>6.0.2-SNAPSHOT</version>
   </parent>
 
-  <name>Alice Plugin for NetBeans 8</name>
+  <name>Alice Plugin for NetBeans</name>
   <artifactId>netbeans</artifactId>
   <packaging>nbm</packaging>
 
@@ -180,7 +180,7 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>2.0.1</version>
+      <version>3.0.2</version>
     </dependency>
 
     <dependency>
@@ -235,12 +235,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>1.1</version>
+      <version>1.9</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.5</version>
+      <version>3.12.0</version>
     </dependency>
     <dependency>
       <groupId>com.sun.media</groupId>
@@ -291,7 +291,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.3.1</version>
         <configuration>
           <sourcepath>
             ${project.basedir}/../core/util/src/main/java/:
@@ -319,7 +319,7 @@
 
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.0</version>
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -328,7 +328,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/nbm/netbeans/extra/src/aliceSource.jar_root/platform</outputDirectory>
+              <outputDirectory>${basedir}/target/nbm/clusters/extra/src/aliceSource.jar_root/platform</outputDirectory>
               <resources>
                 <resource>
                   <directory>${project.basedir}/../core/resources/target/distribution/platform</directory>
@@ -385,7 +385,7 @@
               <descriptors>
                 <descriptor>src/main/resources/assemblies/story-src.xml</descriptor>
               </descriptors>
-              <finalName>nbm/netbeans/extra/src/aliceSource</finalName>
+              <finalName>nbm/clusters/extra/src/aliceSource</finalName>
               <appendAssemblyId>false</appendAssemblyId>
             </configuration>
           </execution>
@@ -407,9 +407,9 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>org.apache.netbeans.utilities</groupId>
         <artifactId>nbm-maven-plugin</artifactId>
-        <version>4.1</version>
+        <version>4.6</version>
         <extensions>true</extensions>
         <configuration>
           <licenseName>Alice 3 License</licenseName>
@@ -424,7 +424,7 @@
       <plugin> <!-- required since nbm-plugin 3.0-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.2.0</version>
         <configuration>
           <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>

@@ -4,15 +4,14 @@
 
 ### Latest Released Build:
 
-[![](https://img.shields.io/badge/master-3.6.0.0-green.svg)](https://www.alice.org/get-alice/alice-3/)
+[![](https://img.shields.io/badge/3.6.0.2-green.svg)](https://www.alice.org/get-alice/alice-3/)
 
 ## Building Alice 3 from the source
 
 Download and install the following build tools
-* [J2SE 1.8 JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+* [Java 17](https://www.oracle.com/java/technologies/downloads/#JDK17)
   * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-  * Using more recent versions of Java 8 may cause problems for jogl when building. Alice is currently tested and built using Oracle's JDK 1.8.0_152.
-* [Apache Maven](https://maven.apache.org/install.html) (3.6.3 is used on the build system)
+* [Apache Maven](https://maven.apache.org/install.html) 3.6.3 or later
 * git
 * [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
 * [Install4J 7](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
@@ -70,7 +69,7 @@ or JetBrains offers a product pack for students using an edu email address [here
 
 ### Build with IntelliJ
 
-Although IntelliJ IDEA installs Openjdk-14.0.1 **Alice 3 builds with Java 8** which will need to be installed and selected.
+**Alice 3 builds with Java 17** which should be installed and selected in place of IntelliJ's bundled JDK.
 
 IntelliJ IDEA has a bundled maven.
 * The location is set in:
@@ -98,6 +97,9 @@ The VM options are:
     -Djogamp.gluegen.UseTempJarCache=false
     -Dorg.alice.stageide.isCrashDetectionDesired=false
     -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
+    --add-opens=java.base/java.io=ALL-UNNAMED
+    --add-opens=java.desktop/sun.awt=ALL-UNNAMED
+    --add-opens=java.base/java.time=ALL-UNNAMED
 
 Then the project should be ready to run.
 

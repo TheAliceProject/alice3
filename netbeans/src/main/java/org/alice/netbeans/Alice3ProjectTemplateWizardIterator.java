@@ -118,7 +118,10 @@ import org.xml.sax.InputSource;
           Node[] nodes = comp.getActivatedNodes();
           if (nodes != null && nodes.length > 0) {
             for (Node node : nodes) {
-              if (node.getClass().getName().equals("org.netbeans.modules.java.JavaNode")) {
+              // This had used equals("org.netbeans.modules.java.JavaNode")
+              // Post RELEASE82 the build process rejected it as an error:
+              // Project depends on packages not accessible at runtime in module org.netbeans.api:org-netbeans-modules-java-source:jar
+              if (node.getClass().getName().endsWith("netbeans.modules.java.JavaNode")) {
                 componentsToClose.add(comp);
               }
             }

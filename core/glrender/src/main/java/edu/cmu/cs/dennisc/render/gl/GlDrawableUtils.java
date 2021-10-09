@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.nativewindow.CapabilitiesImmutable;
-import com.jogamp.nativewindow.ScalableSurface;
 import com.jogamp.opengl.DefaultGLCapabilitiesChooser;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLCapabilitiesChooser;
@@ -63,6 +62,7 @@ import jogamp.opengl.GLDrawableImpl;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
@@ -71,49 +71,17 @@ public class GlDrawableUtils {
   private static final Map<GLOffscreenAutoDrawable, Dimension> mapPixelBufferToDimension;
 
   private static boolean areEquivalentIgnoringMultisample(GLCapabilitiesImmutable a, GLCapabilitiesImmutable b) {
-    if (a.getAccumAlphaBits() != b.getAccumAlphaBits()) {
-      return false;
-    }
-    if (a.getAccumBlueBits() != b.getAccumBlueBits()) {
-      return false;
-    }
-    if (a.getAccumGreenBits() != b.getAccumGreenBits()) {
-      return false;
-    }
-    if (a.getAccumRedBits() != b.getAccumRedBits()) {
-      return false;
-    }
-    if (a.getDepthBits() != b.getDepthBits()) {
-      return false;
-    }
-    if (a.getDoubleBuffered() != b.getDoubleBuffered()) {
-      return false;
-    }
-    if (a.getHardwareAccelerated() != b.getHardwareAccelerated()) {
-      return false;
-    }
-    //    if( a.getPbufferFloatingPointBuffers() != b.getPbufferFloatingPointBuffers() ) {
-    //      return false;
-    //    }
-    //    if( a.getPbufferRenderToTexture() != b.getPbufferRenderToTexture() ) {
-    //      return false;
-    //    }
-    //    if( a.getPbufferRenderToTextureRectangle() != b.getPbufferRenderToTextureRectangle() ) {
-    //      return false;
-    //    }
-    if (a.getStencilBits() != b.getStencilBits()) {
-      return false;
-    }
-    if (a.getStereo() != b.getStereo()) {
-      return false;
-    }
-    if (a.isPBuffer() != b.isPBuffer()) {
-      return false;
-    }
-    if (a.isFBO() != b.isFBO()) {
-      return false;
-    }
-    return true;
+    return a.getAccumAlphaBits() == b.getAccumAlphaBits()
+        && a.getAccumBlueBits() == b.getAccumBlueBits()
+        && a.getAccumGreenBits() == b.getAccumGreenBits()
+        && a.getAccumRedBits() == b.getAccumRedBits()
+        && a.getDepthBits() == b.getDepthBits()
+        && a.getDoubleBuffered() == b.getDoubleBuffered()
+        && a.getHardwareAccelerated() == b.getHardwareAccelerated()
+        && a.getStencilBits() == b.getStencilBits()
+        && a.getStereo() == b.getStereo()
+        && a.isPBuffer() == b.isPBuffer()
+        && a.isFBO() == b.isFBO();
   }
 
   private static class GlMultisampledCapabilitiesChooser extends DefaultGLCapabilitiesChooser {
@@ -201,60 +169,12 @@ public class GlDrawableUtils {
     return capabilities;
   }
 
-  public static GLCapabilities createGlCapabilitiesForLightweightComponent(RenderCapabilities requestedCapabilities) {
-    GLCapabilities rv = createGlCapabilities(requestedCapabilities);
-    if (SystemUtilities.isLinux()) {
-      //pass
-    } else {
-      rv.setPBuffer(true);
-    }
-    return rv;
-  }
-
   public static GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
-    if (glMultisampleCapabilitiesChooser != null) {
-      return glMultisampleCapabilitiesChooser;
-    } else {
-      return glDefaultCapabilitiesChooser;
-    }
-  }
-
-  public static GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
-    return glDefaultCapabilitiesChooser;
+    return Objects.requireNonNullElse(glMultisampleCapabilitiesChooser, glDefaultCapabilitiesChooser);
   }
 
   public static GLCanvas createGLCanvas(RenderCapabilities renderCapabilities) {
     return new GLCanvas(createGlCapabilities(renderCapabilities), getPerhapsMultisampledGlCapabilitiesChooser(), null);
-  }
-
-  public static GLJPanel createGLJPanel(RenderCapabilities renderCapabilities) {
-    return new GLJPanel(createGlCapabilitiesForLightweightComponent(renderCapabilities), getPerhapsMultisampledGlCapabilitiesChooser());
-  }
-
-  public static boolean canCreateExternalGLDrawable() {
-    GLProfile profile = GLProfile.getDefault();
-    GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(profile);
-    return glDrawableFactory.canCreateExternalGLDrawable(GLProfile.getDefaultDevice());
-  }
-
-  public static GLDrawable createExternalGLDrawable() {
-    GLProfile profile = GLProfile.getDefault();
-    GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(profile);
-    if (glDrawableFactory.canCreateExternalGLDrawable(GLProfile.getDefaultDevice())) {
-      return glDrawableFactory.createExternalGLDrawable();
-    } else {
-      return null;
-    }
-  }
-
-  public GLContext createExternalGLContext() {
-    GLProfile profile = GLProfile.getDefault();
-    GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(profile);
-    if (glDrawableFactory.canCreateExternalGLDrawable(GLProfile.getDefaultDevice())) {
-      return glDrawableFactory.createExternalGLContext();
-    } else {
-      return null;
-    }
   }
 
   public static boolean canCreateGlPixelBuffer() {
@@ -345,15 +265,6 @@ public class GlDrawableUtils {
     } else {
       return getGlDrawableWidth(drawable);
     }
-  }
-
-  public static float[] getSurfaceScale(GLDrawable drawable) {
-    if (drawable instanceof ScalableSurface) {
-      ScalableSurface ss = (ScalableSurface) drawable;
-      return ss.getCurrentSurfaceScale(new float[2]);
-    }
-    float[] rv = {1.0f, 1.0f};
-    return rv;
   }
 
   public static GLContext getGlContextToShare(GlrRenderTarget glrRenderTarget) {

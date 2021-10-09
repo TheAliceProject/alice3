@@ -46,7 +46,7 @@ import com.atlassian.jira.rpc.soap.client.JiraSoapService;
 import com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue;
 import com.atlassian.jira.rpc.soap.client.RemoteIssue;
 import com.atlassian.jira.rpc.soap.client.RemoteVersion;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.util.Base64;
 
 import edu.cmu.cs.dennisc.issue.Attachment;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
@@ -121,7 +121,7 @@ public class SOAPUtilities {
     String[] names = {attachment.getFileName()};
     final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
     if (isBase64EncodingDesired) {
-      String[] base64s = {Base64.encode(attachment.getBytes())};
+      String[] base64s = {Base64.getEncoder().encodeToString(attachment.getBytes())};
       service.addBase64EncodedAttachmentsToIssue(token, rv.getKey(), names, base64s);
     } else {
       byte[][] data = {attachment.getBytes()};
