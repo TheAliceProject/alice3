@@ -159,8 +159,8 @@
       </executable>
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
-          <statusLine x="86" y="262" text="Loading…" fontSize="8" fontColor="0,0,0" bold="false" />
-          <versionLine x="461" y="262" text="version ${compiler:sys.version}" fontSize="8" fontColor="0,0,0" bold="false" />
+          <statusLine x="26" y="262" text="Loading…" fontSize="8" fontColor="0,0,0" bold="false" />
+          <versionLine x="541" y="262" text="version ${compiler:sys.version}" fontSize="8" fontColor="0,0,0" bold="false" />
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" mainMode="1" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
@@ -1823,10 +1823,7 @@
     </linuxRPM>
   </mediaSets>
   <buildIds buildAll="false">
-    <mediaSet refId="101" />
     <mediaSet refId="105" />
-    <mediaSet refId="111" />
-    <mediaSet refId="117" />
   </buildIds>
   <buildOptions verbose="false" faster="false" disableSigning="false" disableJreBundling="false" debug="false" />
 </install4j>
