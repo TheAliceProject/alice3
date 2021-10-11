@@ -174,6 +174,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
 
     @Override
+    public String getName() {
+      return internalJointImp.getJointId().toString();
+    }
+
+    @Override
     public SceneImp getScene() {
       return this.internalJointImp.getScene();
     }

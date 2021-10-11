@@ -46,6 +46,9 @@ package org.lgna.story.implementation.eventhandling;
 
 import edu.cmu.cs.dennisc.math.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PolygonPrismHull extends VerticalPrismCollisionHull {
   private final ConvexPolygon crossSection = new ConvexPolygon();
 
@@ -58,8 +61,50 @@ public class PolygonPrismHull extends VerticalPrismCollisionHull {
     }
   }
 
+  public PolygonPrismHull(Point3 centerBase, double height, List<Point2> crossSectionVertices) {
+    super(centerBase, height);
+    for (Point2 vertex : crossSectionVertices) {
+      crossSection.includePoint(vertex);
+    }
+  }
+
+  public static VerticalPrismCollisionHull combinationHull(VerticalPrismCollisionHull hullA, VerticalPrismCollisionHull hullB) {
+    if (hullA == null) {
+      return hullB;
+    }
+    if (hullB == null) {
+      return hullA;
+    }
+
+    double bottomA = hullA.centerBase.y;
+    double bottomB = hullB.centerBase.y;
+    double newBottom = Math.min(bottomA, bottomB);
+    double newTop = Math.max(bottomA + hullA.height, bottomB + hullB.height);
+
+    Point3 newBase = new Point3(hullA.centerBase);
+    newBase.y = newBottom;
+    double height = newTop - newBottom;
+
+    List<Point2> crossSectionVertices = hullA.getCrossSectionVertices(null);
+    crossSectionVertices.addAll(hullB.getCrossSectionVertices(hullA.centerBase));
+    return new PolygonPrismHull(newBase, height, crossSectionVertices);
+  }
+
   @Override
   public double distanceAlong(double x, double z) {
     return crossSection.distanceAlong(x, z);
+  }
+
+  @Override
+  protected List<Point2> getCrossSectionVertices(Point3 newCenter) {
+    if (newCenter == null) {
+      return crossSection.getVertices();
+    }
+    Point3 offset = Point3.createSubtraction(newCenter, centerBase);
+    List<Point2> vertices = new ArrayList<>();
+    for (Point2 vertex : crossSection.getVertices()) {
+      vertices.add(new Point2(vertex.x + offset.x, vertex.y + offset.z));
+    }
+    return vertices;
   }
 }

@@ -66,8 +66,6 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   private final Map<Object, Map<SThing, Map<SThing, Boolean>>> wereClose = Maps.newConcurrentHashMap();
   private final Map<Object, Double> listenerDistances = Maps.newConcurrentHashMap();
   private final Map<Object, List<SThing>> listenerToGroupA = Maps.newConcurrentHashMap();
-  private static final long MINIMUM_MILLIS_BETWEEN_CHECKS = 100;
-  long millisSinceLastCheck = 0;
 
   public ProximityEventHandler(Map<SThing, VerticalPrismCollisionHull> hulls) {
     this.hulls = hulls;
@@ -89,15 +87,8 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
   }
 
   @Override
-  protected void check(SThing changedThing) {
-    // Will be recomputed as needed after MINIMUM_MILLIS_BETWEEN_CHECKS
+  protected void checkForEvents(SThing changedThing) {
     hulls.remove(changedThing);
-    long now = System.currentTimeMillis();
-    if (now - millisSinceLastCheck < MINIMUM_MILLIS_BETWEEN_CHECKS) {
-      return;
-    }
-    millisSinceLastCheck = now;
-
     final Map<SThing, Set<Object>> thingsToCheckAgainst = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCheckAgainst.keySet()) {
       for (Object listener : thingsToCheckAgainst.get(thing)) {
