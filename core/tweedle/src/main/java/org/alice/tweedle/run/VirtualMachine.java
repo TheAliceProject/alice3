@@ -403,12 +403,9 @@ public abstract class VirtualMachine {
   }
 
   protected String evaluateStringConcatenation( StringConcatenation stringConcatenation ) {
-    StringBuffer sb = new StringBuffer();
     Object leftOperand = this.evaluate( frame, stringConcatenation.leftOperand.getPrimitiveValue() );
     Object rightOperand = this.evaluate( frame, stringConcatenation.rightOperand.getPrimitiveValue() );
-    sb.append( leftOperand );
-    sb.append( rightOperand );
-    return sb.toString();
+    return String.valueOf(leftOperand) + rightOperand;
   }
 
   protected Object evaluateMethodInvocation( MethodInvocation methodInvocation ) {

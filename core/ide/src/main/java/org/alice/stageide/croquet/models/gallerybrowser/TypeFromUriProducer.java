@@ -82,7 +82,8 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 
   private static void showMessageDialog(File file, boolean isValidZip) {
     String applicationName = IDE.getApplicationName();
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
+    //TODO I18n
     sb.append("Unable to create instance from file ");
     sb.append(FileUtilities.getCanonicalPathIfPossible(file));
     sb.append(".\n\n");
@@ -100,8 +101,10 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
     final Locale locale = Locale.ENGLISH;
     String lcName = file.getName().toLowerCase(locale);
     if (lcName.endsWith(".a2c")) {
+      //TODO I18n
       Dialogs.showError("Incorrect File Type", "Alice3 does not load Alice2 characters");
     } else if (lcName.endsWith(IoUtilities.PROJECT_EXTENSION.toLowerCase(locale))) {
+      //TODO I18n
       Dialogs.showError("Incorrect File Type", file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension.");
     } else {
       boolean isWorthyOfException = lcName.endsWith(IoUtilities.TYPE_EXTENSION.toLowerCase(locale));

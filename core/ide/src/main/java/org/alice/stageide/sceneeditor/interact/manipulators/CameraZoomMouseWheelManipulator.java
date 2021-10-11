@@ -176,6 +176,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   @Override
   public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
     zoomCamera(currentInput.getMouseWheelState());
+    manipulatedTransformable.notifyTransformationListeners();
   }
 
   private double getHeightForX(double x) {
@@ -322,6 +323,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
       };
       this.animator.addFrameObserver(this.cameraAnimation);
       zoomCamera(startInput.getMouseWheelState());
+      manipulatedTransformable.notifyTransformationListeners();
       return true;
     }
     return false;

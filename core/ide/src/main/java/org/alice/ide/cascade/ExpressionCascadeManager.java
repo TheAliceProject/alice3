@@ -345,18 +345,20 @@ public abstract class ExpressionCascadeManager {
 
     for (AbstractField field : selectedType.getDeclaredFields()) {
       AbstractType<?, ?, ?> fieldType = field.getValueType();
-      if (this.isApplicableForFillInAndPossiblyPartFillIns(type, fieldType)) {
-        Expression fieldAccess = new FieldAccess(field);
-        this.appendFillInAndPossiblyPartFillIns(blankChildren, type, fieldAccess);
-      }
-      if (fieldType.isArray()) {
-        AbstractType<?, ?, ?> fieldComponentType = fieldType.getComponentType();
-        if (this.isApplicableForFillInAndPossiblyPartFillIns(type, fieldComponentType)) {
+      if (fieldType != null) {
+        if (this.isApplicableForFillInAndPossiblyPartFillIns(type, fieldType)) {
           Expression fieldAccess = new FieldAccess(field);
-          blankChildren.add(new ArrayAccessFillIn(fieldAccess));
+          this.appendFillInAndPossiblyPartFillIns(blankChildren, type, fieldAccess);
         }
-        if (arrayLengthFillIns != null) {
-          arrayLengthFillIns.add(ThisFieldArrayLengthFillIn.getInstance(field));
+        if (fieldType.isArray()) {
+          AbstractType<?, ?, ?> fieldComponentType = fieldType.getComponentType();
+          if (this.isApplicableForFillInAndPossiblyPartFillIns(type, fieldComponentType)) {
+            Expression fieldAccess = new FieldAccess(field);
+            blankChildren.add(new ArrayAccessFillIn(fieldAccess));
+          }
+          if (arrayLengthFillIns != null) {
+            arrayLengthFillIns.add(ThisFieldArrayLengthFillIn.getInstance(field));
+          }
         }
       }
     }

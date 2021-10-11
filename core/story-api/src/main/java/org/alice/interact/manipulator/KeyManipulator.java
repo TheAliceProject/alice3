@@ -109,6 +109,7 @@ public abstract class KeyManipulator extends AbstractManipulator {
         manipulate(amountToMove, key);
       }
     }
+    manipulatedTransformable.notifyTransformationListeners();
   }
 
   protected abstract void manipulate(double amountToMove, MovementKey key);

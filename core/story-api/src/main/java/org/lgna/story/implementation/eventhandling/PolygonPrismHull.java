@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation.affine;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+package org.lgna.story.implementation.eventhandling;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotationAnimation {
-  private Vector3 m_axis = new Vector3();
 
-  public ApplyRotationAboutArbitraryAxisAnimation() {
-    m_axis.setNaN();
-  }
+import edu.cmu.cs.dennisc.math.*;
 
-  public ApplyRotationAboutArbitraryAxisAnimation(AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle, Vector3 axis) {
-    super(sgSubject, sgAsSeenBy, angle);
-    setAxis(axis);
-  }
+public class PolygonPrismHull extends VerticalPrismCollisionHull {
+  private final ConvexPolygon crossSection = new ConvexPolygon();
 
-  public Vector3 accessAxis() {
-    return m_axis;
-  }
-
-  public Vector3 getAxis(Vector3 rv) {
-    rv.set(m_axis);
-    return rv;
-  }
-
-  public Vector3 getAxis() {
-    return getAxis(new Vector3());
-  }
-
-  public void setAxis(Vector3 axis) {
-    m_axis.set(axis);
+  public PolygonPrismHull(Point3 centerBase, double height, AffineMatrix4x4 transformation, AxisAlignedBox aabbLocal) {
+    super(centerBase, height);
+    for (Point3 localPoint : aabbLocal.getPoints()) {
+      Point3 p = transformation.createTransformed(localPoint);
+      p.subtract(centerBase);
+      crossSection.includePoint(new Point2(p.x, p.z));
+    }
   }
 
   @Override
-  protected void applyRotationInRadians(double angleInRadians) {
-    getSubject().applyRotationAboutArbitraryAxisInRadians(m_axis, angleInRadians, getAsSeenBy());
+  public double distanceAlong(double x, double z) {
+    return crossSection.distanceAlong(x, z);
   }
 }

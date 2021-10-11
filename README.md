@@ -11,8 +11,8 @@
 Download and install the following build tools
 * [J2SE 1.8 JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
   * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-  * Using more recent versions than Java 8 will cause problems when building
-* [Apache Maven](https://maven.apache.org/install.html) 3.6.3 is the newest at present and works
+  * Using more recent versions of Java 8 may cause problems for jogl when building. Alice is currently tested and built using Oracle's JDK 1.8.0_152.
+* [Apache Maven](https://maven.apache.org/install.html) (3.6.3 is used on the build system)
 * git
 * [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
 * [Install4J 7](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
@@ -29,6 +29,10 @@ If you do not use the `--recurse-submodules` flag above it can be pulled in expl
 
     git submodule init
     git submodule update
+
+To ensure the lfs files are available locally:
+
+    git lfs pull 
 
 Compile and jar the Alice code.
 

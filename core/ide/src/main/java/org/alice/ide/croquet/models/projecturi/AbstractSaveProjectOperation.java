@@ -69,11 +69,6 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
   }
 
   @Override
-  protected String getInitialFilename() {
-    return null;
-  }
-
-  @Override
   protected void save(ProjectApplication application, File file) throws IOException {
     application.saveProjectTo(file);
   }

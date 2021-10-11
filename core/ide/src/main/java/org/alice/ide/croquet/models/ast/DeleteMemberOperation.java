@@ -86,7 +86,7 @@ public abstract class DeleteMemberOperation<N extends AbstractMember> extends Ac
 
   protected abstract NodeListProperty<N> getNodeListProperty(UserType<?> declaringType);
 
-  protected abstract boolean isClearToDelete(N node);
+  protected abstract boolean isClearToDelete(N node, UserActivity activity);
 
   @Override
   public void doOrRedoInternal(boolean isDo) {
@@ -114,7 +114,7 @@ public abstract class DeleteMemberOperation<N extends AbstractMember> extends Ac
 
   @Override
   protected void perform(UserActivity activity) {
-    if (this.isClearToDelete(this.member)) {
+    if (this.isClearToDelete(this.member, activity)) {
       activity.commitAndInvokeDo(new DependentEdit<DeleteMemberOperation<N>>(activity));
     } else {
       activity.cancel();

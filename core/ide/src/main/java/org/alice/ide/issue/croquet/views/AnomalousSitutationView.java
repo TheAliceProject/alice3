@@ -74,6 +74,7 @@ public class AnomalousSitutationView extends AbstractIssueView {
     sb.append(throwable.getMessage());
     sb.append("</h2>");
     sb.append("<h3>");
+    // TODO I18n
     sb.append("We are aware that this problem exists.  However, we are unable to reproduce it in the lab.");
     sb.append("</h3>");
     sb.append("<h3>");

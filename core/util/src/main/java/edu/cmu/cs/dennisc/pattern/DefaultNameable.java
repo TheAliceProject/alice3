@@ -70,12 +70,7 @@ public class DefaultNameable implements Nameable {
   public String toString() {
     String name = getName();
     if (name != null) {
-      StringBuffer sb = new StringBuffer();
-      sb.append(getClass().getName());
-      sb.append("[name=\"");
-      sb.append(name);
-      sb.append("\"]");
-      return sb.toString();
+      return getClass().getName() + "[name=\"" + name + "\"]";
     } else {
       return super.toString();
     }

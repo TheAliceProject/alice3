@@ -86,7 +86,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
       List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations(method);
       final int N_INVOCATIONS = methodInvocations.size();
       if (N_ACCESSES > 0) {
-        StringBuffer sb = new StringBuffer();
+        // TODO I18n
+        StringBuilder sb = new StringBuilder();
         sb.append("<html><body>There ");
         if (N_ACCESSES == 1) {
           sb.append("is 1 access");
@@ -112,7 +113,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
           } else {
             codeText = "function";
           }
-          StringBuffer sb = new StringBuffer();
+          StringBuilder sb = new StringBuilder();
           sb.append("<html><body>There ");
           if (N_INVOCATIONS == 1) {
             sb.append("is 1 invocation");

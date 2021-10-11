@@ -62,7 +62,7 @@ public class TextFileUtilities {
     BufferedReader bufferedReader = new BufferedReader(reader);
     try {
       try {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String line;
         while (true) {
           line = bufferedReader.readLine();

@@ -78,6 +78,7 @@ public class CameraPanDragManipulator extends CameraManipulator {
 
     this.manipulatedTransformable.applyTranslation(xMovement, AsSeenBy.SCENE);
     this.manipulatedTransformable.applyTranslation(yMovement, AsSeenBy.SCENE);
+    manipulatedTransformable.notifyTransformationListeners();
   }
 
   @Override

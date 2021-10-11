@@ -16,12 +16,13 @@ import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
+import org.lgna.story.resourceutilities.JointedModelAliceExporter;
 import org.lgna.story.resourceutilities.JointedModelColladaExporter;
+import org.lgna.story.resourceutilities.JointedModelGltfExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -43,15 +44,25 @@ public class JsonModelIo extends DataSourceIo {
   private final Map<String, String> renamedJoints = new HashMap<>();
 
   public enum ExportFormat {
-    COLLADA("dae", "png"), ALICE("a3r", "a3t");
-
-    public final String modelExtension;
-    public final String textureExtension;
-
-    ExportFormat(String modelExtension, String textureExtension) {
-      this.modelExtension = modelExtension;
-      this.textureExtension = textureExtension;
-    }
+    COLLADA() {
+      @Override
+      public JointedModelExporter exporter(JsonModelIo modelIo, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) {
+        return new JointedModelColladaExporter(sv, modelVariant, modelIo.modelManifest.description.name, resourcePath, modelIo.renamedJoints);
+      }
+    },
+    GLTF() {
+      @Override
+      public JointedModelExporter exporter(JsonModelIo modelIo, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) {
+        return new JointedModelGltfExporter(sv, modelVariant, modelIo.modelManifest.description.name, resourcePath, modelIo.renamedJoints);
+      }
+    },
+    ALICE() {
+      @Override
+      public JointedModelExporter exporter(JsonModelIo modelIo, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) {
+        return new JointedModelAliceExporter(sv, modelVariant, resourcePath);
+      }
+    };
+    public abstract JointedModelExporter exporter(JsonModelIo modelIo, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath);
   }
 
   protected JsonModelIo(ExportFormat exportFormat) {
@@ -394,77 +405,24 @@ public class JsonModelIo extends DataSourceIo {
     return modelReference;
   }
 
-  private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) {
-    TexturedAppearance[] texturedAppearancesToSave = sv.textures.getValue();
-    // Null out the appearance since we save the textures separately
-    sv.textures.setValue(new TexturedAppearance[0]);
-    String modelFileName = AliceResourceUtilities.getVisualResourceFileNameFromModelName(modelVariant.structure);
-    DataSource structureDataSource = createAliceStructureDataSource(resourcePath + "/" + modelFileName, sv);
+  private void addModelVariantDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
+    JointedModelExporter exporter = exportFormat.exporter(this, sv, modelVariant, resourcePath);
 
-    if (!dataSources.contains(structureDataSource)) {
-      dataSources.add(structureDataSource);
-
-      StructureReference structureReference = manifest.getStructure(modelVariant.structure);
-      //Strip the base and model path from the name to make it relative to the manifest
-      structureReference.file = new File(structureDataSource.getName()).getName();
-      structureReference.format = ExportFormat.ALICE.modelExtension;
-    }
-
-    String textureName = AliceResourceUtilities.getTextureResourceFileName(modelVariant.structure, modelVariant.textureSet);
-    DataSource textureDataSource = createAliceTextureDataSource(resourcePath + "/" + textureName, texturedAppearancesToSave);
-
-    if (!dataSources.contains(textureDataSource)) {
-      dataSources.add(textureDataSource);
-
-      AliceTextureReference aliceTextureReference = new AliceTextureReference();
-      aliceTextureReference.name = modelVariant.textureSet + "-textureReference";
-      aliceTextureReference.file = new File(textureDataSource.getName()).getName();
-      aliceTextureReference.format = "a3t";
-      manifest.resources.add(aliceTextureReference);
-
-      ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
-      textureSet.idToResourceMap.put(0, aliceTextureReference.name);
-    }
-  }
-
-  //Uses the skeleton visual to create collada file and texture files
-  //Adds appropriate DataSources and updates the manifest
-  private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException {
     addBoundsForJoints(sv.skeleton.getValue(), modelManifest);
-    JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelVariant, modelManifest.description.name, renamedJoints);
-    //Create the collada model data source
-    DataSource structureDataSource = exporter.createColladaDataSource(resourcePath);
-    //Link manifest entries to the files created by the exporter
-    StructureReference structureReference = modelManifest.getStructure(modelVariant.structure);
-    //Strip the base and model path from the name to make it relative to the manifest
-    structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
-    structureReference.format = ExportFormat.COLLADA.modelExtension;
-    finishStructureReference(structureReference, sv);
+
+    final Map<Integer, String> resources = modelManifest.getTextureSet(modelVariant.textureSet).idToResourceMap;
+    exporter.addImageDataSources(dataSources, modelManifest, resources);
+
+    DataSource structureDataSource = exporter.createStructureDataSource();
 
     //Only add new model files to the list to be written
     if (!dataSources.contains(structureDataSource)) {
+      //Link manifest entries to the files created by the exporter
+      StructureReference structureReference = modelManifest.getStructure(modelVariant.structure);
+      structureReference.file = exporter.getStructureFileName(structureDataSource);
+      structureReference.format = exporter.getStructureExtension();
+      finishStructureReference(structureReference, sv);
       dataSources.add(structureDataSource);
-    }
-
-    //Get the existing texture set defined by the modelInfo.
-    ModelManifest.TextureSet textureSet = modelManifest.getTextureSet(modelVariant.textureSet);
-    //Now that we have a model and exporter, use this to get the name to image map
-    textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
-    //Get all the textures from the model as data sources
-    List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
-    for (DataSource imageDataSource : imageDataSources) {
-      String imageFileName = imageDataSource.getName();
-      //For each new image, create a new image reference and add it to the manifest
-      if (!dataSources.contains(imageDataSource)) {
-        Integer imageId = exporter.getTextureIdForName(imageFileName);
-        String imageName = textureSet.idToResourceMap.get(imageId);
-        ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
-        //ResourceReference have their name initialized to the filename of the resource.
-        //We need it to be the imageName from the idToResourceMap
-        imageReference.name = imageName;
-        modelManifest.resources.add(imageReference);
-        dataSources.add(imageDataSource);
-      }
     }
   }
 
@@ -493,13 +451,7 @@ public class JsonModelIo extends DataSourceIo {
       if (sv == null) {
         break;
       }
-      if (exportFormat == ExportFormat.COLLADA) {
-        addColladaDataSources(dataToWrite, sv, modelVariant, resourcePath);
-      } else if (exportFormat == ExportFormat.ALICE) {
-        addAliceDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
-      } else {
-        Logger.warning("Not exporting " + getModelName() + "--Unsupported export format: " + exportFormat);
-      }
+      addModelVariantDataSources(dataToWrite, sv, modelVariant, resourcePath);
       //Add DataSources for the thumbnails if possible
       BufferedImage variantThumbnail = getThumbnailImageForModelVariant(modelVariant);
       if (variantThumbnail == null && skeletonVisuals != null) {
@@ -548,20 +500,6 @@ public class JsonModelIo extends DataSourceIo {
       @Override
       public void write(OutputStream os) throws IOException {
         AliceResourceUtilities.encodeVisual(sv, os);
-      }
-    };
-  }
-
-  private static DataSource createAliceTextureDataSource(final String fileName, final TexturedAppearance[] textures) {
-    return new DataSource() {
-      @Override
-      public String getName() {
-        return fileName;
-      }
-
-      @Override
-      public void write(OutputStream os) throws IOException {
-        AliceResourceUtilities.encodeTexture(textures, os);
       }
     };
   }

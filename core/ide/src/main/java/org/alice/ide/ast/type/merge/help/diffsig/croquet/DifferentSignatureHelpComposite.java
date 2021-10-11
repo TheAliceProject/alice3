@@ -70,6 +70,7 @@ public abstract class DifferentSignatureHelpComposite<M extends Member> extends 
   public DifferentSignatureHelpComposite(UUID migrationId, DifferentSignature<M> differentSignature, String signatureText) {
     super(migrationId, differentSignature);
     StringBuilder sb = new StringBuilder();
+    // TODO I18n
     sb.append("<html>");
     sb.append("Class file </filename/> contains a </kindOfMember/> <strong>\"</memberName/>\"</strong> which has a ");
     sb.append(signatureText);

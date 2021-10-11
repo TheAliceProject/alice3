@@ -59,6 +59,12 @@ public class SceneActivationAdapter extends AbstractAdapter implements SceneActi
 
   @Override
   public void sceneActivated(SceneActivationEvent e) {
+    // Half second pause to allow lighting effect in SceneImp.activate to complete
+    try {
+      Thread.sleep(500);
+    } catch (InterruptedException ie) {
+      ie.printStackTrace();
+    }
     invokeEntryPoint(e);
   }
 }

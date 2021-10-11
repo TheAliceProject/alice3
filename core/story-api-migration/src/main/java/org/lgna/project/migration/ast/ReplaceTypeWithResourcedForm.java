@@ -88,18 +88,19 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
 
   protected void migrateField(UserField field, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
     final AbstractType<?, ?, ?> oldFieldType = field.valueType.getValue();
-    if (oldClass.equals(oldFieldType.getName()) && constructorsTakeNoArguments(oldFieldType.getDeclaredConstructors())) {
-      AbstractType<?, ?, ?> superType = oldFieldType.getSuperType();
-      if (superType instanceof NamedUserType) {
-        typeCache.add((NamedUserType) superType);
-      }
-      if (typeHelper == null) {
-        throw new MigrationException("Unable to migrate project without ResourceTypeHelper");
-      }
-      InstanceCreation instantiation = typeHelper.createInstanceCreation(newResource, typeCache);
-      field.valueType.setValue(instantiation.getType());
-      field.initializer.setValue(instantiation);
+    if (oldFieldType == null || !oldClass.equals(oldFieldType.getName()) || !constructorsTakeNoArguments(oldFieldType.getDeclaredConstructors())) {
+      return;
     }
+    AbstractType<?, ?, ?> superType = oldFieldType.getSuperType();
+    if (superType instanceof NamedUserType) {
+      typeCache.add((NamedUserType) superType);
+    }
+    if (typeHelper == null) {
+      throw new MigrationException("Unable to migrate project without ResourceTypeHelper");
+    }
+    InstanceCreation instantiation = typeHelper.createInstanceCreation(newResource, typeCache);
+    field.valueType.setValue(instantiation.getType());
+    field.initializer.setValue(instantiation);
   }
 
   private boolean constructorsTakeNoArguments(List<? extends AbstractConstructor> constructors) {
@@ -113,13 +114,14 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
 
   private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property, Set<NamedUserType> typeCache) {
     final AbstractType<?, ?, ?> oldLocalType = property.getValue();
-    if (oldClass.equals(oldLocalType.getName())) {
-      // This relies on the typeCache being filled in when the UserField is migrated. The Project structure enforces this so far.
-      for (NamedUserType existingType : typeCache) {
-        if (newClass.equals(existingType.getName())) {
-          property.setValue(existingType);
-          return;
-        }
+    if (oldLocalType == null || !oldClass.equals(oldLocalType.getName())) {
+      return;
+    }
+    // This relies on the typeCache being filled in when the UserField is migrated. The Project structure enforces this so far.
+    for (NamedUserType existingType : typeCache) {
+      if (newClass.equals(existingType.getName())) {
+        property.setValue(existingType);
+        return;
       }
     }
   }

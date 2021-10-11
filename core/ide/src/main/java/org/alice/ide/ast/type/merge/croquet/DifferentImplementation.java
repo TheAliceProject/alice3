@@ -161,7 +161,7 @@ public final class DifferentImplementation<M extends Member> extends PotentialNa
     return false;
   }
 
-  public void appendStatusPreRejectorCheck(StringBuffer sb) {
+  public void appendStatusPreRejectorCheck(StringBuilder sb) {
     boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
     boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
     if (isAddDesired) {
@@ -170,16 +170,10 @@ public final class DifferentImplementation<M extends Member> extends PotentialNa
           sb.append("must not have same name: \"");
           sb.append(this.getImportHub().getMember().getName());
           sb.append("\".");
-        } else {
-          //pass
         }
-      } else {
-        //pass
       }
     } else {
-      if (isKeepDesired) {
-        //pass
-      } else {
+      if (!isKeepDesired) {
         sb.append("must take action on \"");
         sb.append(this.getImportHub().getMember().getName());
         sb.append("\" (replace, keep, or add-and-keep-with-rename).");

@@ -132,7 +132,7 @@ public class ImageUtilities {
 
     @Override
     public String getDescription() {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("Image (");
       for (String key : s_codecNameToExtensionsMap.keySet()) {
         String[] value = s_codecNameToExtensionsMap.get(key);

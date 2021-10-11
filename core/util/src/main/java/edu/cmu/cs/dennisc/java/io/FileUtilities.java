@@ -158,7 +158,7 @@ public class FileUtilities {
   }
 
   public static String fixFilenameIfNecessary(String filename) {
-    StringBuffer sb = new StringBuffer(filename.length());
+    StringBuilder sb = new StringBuilder(filename.length());
     for (int i = 0; i < filename.length(); i++) {
       char c = filename.charAt(i);
       switch (c) {

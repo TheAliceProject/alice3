@@ -78,7 +78,8 @@
             <configuration>
               <projectFile>aliceinstallerproject.install4j</projectFile>
               <attach>true</attach>
-              <release>${alice.build.version}${alice.build.prerelease}</release>
+              <release>${alice.build.version}${alice.build.prerelease}${alice.build.metadata}</release>
+              <jvmArguments>-Dinstall4j.timestampUrl=http://timestamp.digicert.com</jvmArguments>
             </configuration>
           </execution>
           <execution>
@@ -95,6 +96,27 @@
         <version>2.4</version>
         <configuration>
           <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.nicoulaj.maven.plugins</groupId>
+        <artifactId>checksum-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>artifacts</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <csvSummary>true</csvSummary>
+          <csvSummaryFile>media/artifacts-checksums.csv</csvSummaryFile>
+          <xmlSummary>true</xmlSummary>
+          <xmlSummaryFile>media/artifacts-checksums.xml</xmlSummaryFile>
+          <algorithms>
+            <algorithm>SHA-256</algorithm>
+            <algorithm>MD5</algorithm>
+          </algorithms>
         </configuration>
       </plugin>
     </plugins>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.math.animation;
 
-import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
+package org.lgna.story.implementation.eventhandling;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class AngleAnimation extends InterpolationAnimation<Angle> {
-  public AngleAnimation(Number duration, Style style, Angle a0, Angle a1) {
-    super(duration, style, a0, a1);
+import edu.cmu.cs.dennisc.math.Point3;
+
+public class CylinderHull extends VerticalPrismCollisionHull {
+  private final double radius;
+
+  public CylinderHull(Point3 centerBase, double height, double radius) {
+    super(centerBase, height);
+    this.radius = radius;
   }
 
   @Override
-  protected Angle newE(Angle other) {
-    Angle rv;
-    if (other != null) {
-      rv = new AngleInRadians(other);
-    } else {
-      rv = new AngleInRadians(Double.NaN);
-    }
-    return rv;
-  }
-
-  @Override
-  protected Angle interpolate(Angle rv, Angle v0, Angle v1, double portion) {
-    assert v0.isNaN() == false;
-    assert v1.isNaN() == false;
-    rv.setToInterpolation(v0, v1, portion);
-    return rv;
+  public double distanceAlong(double xDistance, double zDistance) {
+    return radius;
   }
 }

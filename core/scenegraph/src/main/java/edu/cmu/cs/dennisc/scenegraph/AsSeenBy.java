@@ -115,8 +115,7 @@ public enum AsSeenBy implements ReferenceFrame {
     @Override
     public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other) {
       other.getTransformation(rv, this);
-      rv.invert();
-      return rv;
+      return rv.invert();
     }
   }, SELF {
     @Override
@@ -150,8 +149,7 @@ public enum AsSeenBy implements ReferenceFrame {
     @Override
     public AffineMatrix4x4 getTransformation(AffineMatrix4x4 rv, ReferenceFrame other) {
       other.getTransformation(rv, this);
-      rv.invert();
-      return rv;
+      return rv.invert();
     }
   };
 

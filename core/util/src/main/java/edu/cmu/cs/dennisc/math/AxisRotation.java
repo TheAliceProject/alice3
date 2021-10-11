@@ -399,13 +399,6 @@ public class AxisRotation implements Orientation {
 
   @Override
   public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append(AxisRotation.class.getName());
-    sb.append("[axis=");
-    sb.append(this.axis);
-    sb.append(";angle=");
-    sb.append(this.angle);
-    sb.append("]");
-    return sb.toString();
+    return AxisRotation.class.getName() + "[axis=" + axis + ";angle=" + angle + "]";
   }
 }

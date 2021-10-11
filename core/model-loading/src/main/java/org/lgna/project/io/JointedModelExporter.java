@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.java.awt.geom.animation;
 
-import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+package org.lgna.project.io;
 
-import java.awt.geom.Point2D;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import org.alice.tweedle.file.ModelManifest;
 
-//todo: rename?
-//todo: support float
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class Point2DAnimation extends InterpolationAnimation<Point2D> {
-  public Point2DAnimation(Number duration, Style style, Point2D p0, Point2D p1) {
-    super(duration, style, p0, p1);
-  }
+public interface JointedModelExporter {
+  DataSource createStructureDataSource();
 
-  @Override
-  protected Point2D newE(Point2D other) {
-    double x;
-    double y;
-    if (other != null) {
-      x = other.getX();
-      y = other.getY();
-    } else {
-      x = Double.NaN;
-      y = Double.NaN;
-    }
-    return new Point2D.Double(x, y);
-  }
+  String getStructureFileName(DataSource structureDataSource);
 
-  @Override
-  protected Point2D interpolate(Point2D rv, Point2D v0, Point2D v1, double portion) {
-    rv.setLocation(v0.getX() + ((v1.getX() - v0.getX()) * portion), v0.getY() + ((v1.getY() - v0.getY()) * portion));
-    return rv;
-  }
+  String getStructureExtension();
+
+  void addImageDataSources(List<DataSource> dataSources, ModelManifest modelManifest, Map<Integer, String> resourceMap) throws IOException;
 }

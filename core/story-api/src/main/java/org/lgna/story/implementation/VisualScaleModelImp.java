@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
@@ -108,6 +109,11 @@ public abstract class VisualScaleModelImp extends ModelImp {
           model.applyScale(this.vBuffer, true);
         }
         this.vPrev.set(v);
+      }
+
+      @Override
+      public Animated getAnimated() {
+        return VisualScaleModelImp.this;
       }
     }
 

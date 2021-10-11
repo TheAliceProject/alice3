@@ -121,6 +121,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
   public void positionRelativeToObject() {
     this.setTransformation(this.getTransformationForAxis(this.rotationAxis), this.getReferenceFrame());
     this.setTranslationOnly(this.handleOffset, this.getReferenceFrame());
+    notifyTransformationListeners();
   }
 
   private final PropertyListener propertyListener = new PropertyListener() {

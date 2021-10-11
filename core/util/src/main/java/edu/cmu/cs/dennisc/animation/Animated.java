@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2021 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.java.awt.animation;
 
-import java.awt.Component;
+package edu.cmu.cs.dennisc.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class SubjectAsSeenByAnimation extends SubjectAnimation {
-  private Component m_awtAsSeenBy = null;
-
-  public SubjectAsSeenByAnimation() {
-  }
-
-  public SubjectAsSeenByAnimation(Component awtSubject, Component awtAsSeenBy) {
-    super(awtSubject);
-    setAsSeenBy(awtAsSeenBy);
-  }
-
-  public Component getAsSeenBy() {
-    return m_awtAsSeenBy;
-  }
-
-  public void setAsSeenBy(Component awtAsSeenBy) {
-    assert awtAsSeenBy != null;
-    m_awtAsSeenBy = awtAsSeenBy;
-  }
+public interface Animated {
+  void applyAnimation();
 }
