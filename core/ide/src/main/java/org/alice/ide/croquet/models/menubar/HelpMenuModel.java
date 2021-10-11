@@ -58,10 +58,11 @@ import java.util.UUID;
  */
 public class HelpMenuModel extends PredeterminedMenuModel {
   private static StandardMenuItemPrepModel[] createMenuItemPrepModels(IdeApp app) {
-    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(app.getHelpDialogLaunchOperation().getMenuItemPrepModel(), app.getGraphicsHelpDialogLaunchOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, app.getReportBugLaunchOperation().getMenuItemPrepModel(), app.getSuggestImprovementLaunchOperation().getMenuItemPrepModel(), app.getRequestNewFeatureLaunchOperation().getMenuItemPrepModel(), MenuModel.SEPARATOR, app.getWarningDialogLaunchOperation().getMenuItemPrepModel(), app.getShowSystemPropertiesDialogLaunchOperation().getMenuItemPrepModel(), app.getBrowseReleaseNotesOperation().getMenuItemPrepModel());
-    if (SystemUtilities.isMac()) {
-      //pass
-    } else {
+    List<StandardMenuItemPrepModel> list = Lists.newLinkedList(
+        app.getHelpDialogLaunchOperation().getMenuItemPrepModel(),
+        MenuModel.SEPARATOR,
+        app.getReportBugLaunchOperation().getMenuItemPrepModel());
+    if (!SystemUtilities.isMac()) {
       list.add(MenuModel.SEPARATOR);
       list.add(app.getAboutDialogLaunchOperation().getMenuItemPrepModel());
     }

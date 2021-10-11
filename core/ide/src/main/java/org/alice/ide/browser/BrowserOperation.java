@@ -44,23 +44,49 @@ package org.alice.ide.browser;
 
 import edu.cmu.cs.dennisc.browser.BrowserUtilities;
 import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
 import javax.swing.SwingUtilities;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BrowserOperation extends InconsequentialActionOperation {
-  public BrowserOperation(UUID id) {
+public class BrowserOperation extends InconsequentialActionOperation {
+  public static final String ALICE_HOME_URL = "http://www.alice.org";
+  public static final String WIKI_URL = "https://github.com/TheAliceProject/alice3/wiki";
+  public static final String ALICE_USE_URL = WIKI_URL + "/Using-Alice-3";
+  public static final String TROUBLESHOOTING_URL = WIKI_URL + "/Troubleshooting-Known-Issues";
+  public static final String RECURSION_URL = "https://en.wikipedia.org/wiki/Recursion_%28computer_science%29";
+
+  public BrowserOperation(UUID id, String spec) {
     super(id);
+    try {
+      this.url = new URL(spec);
+    } catch (MalformedURLException murle) {
+      throw new RuntimeException(spec, murle);
+    }
   }
 
-  protected abstract URL getUrl();
+  protected URL getUrl() {
+    return this.url;
+  }
+
+  @Override
+  protected final void localize() {
+    String spec = this.url.toString();
+    this.setName(spec);
+    super.localize();
+    String name = this.getImp().getName();
+    if (!Objects.equals(spec, name)) {
+      this.setToolTipText(spec);
+    }
+  }
 
   @Override
   protected void performInternal() {
@@ -70,19 +96,18 @@ public abstract class BrowserOperation extends InconsequentialActionOperation {
         BrowserUtilities.browse(url);
       } catch (Exception e) {
         ClipboardUtilities.setClipboardContents(url.toString());
-        Dialogs.showInfo("An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
+        // TODO I18n
+        Dialogs.showInfo("An error has occurred in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser.");
       }
     } else {
-      StringBuilder sbDescription = new StringBuilder();
-      sbDescription.append("URL is null for ");
-      sbDescription.append(this.getClass());
-      final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance("Oh no!  We do not know which web page to send you to.", sbDescription.toString());
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          composite.getLaunchOperation().fire();
-        }
-      });
+      // TODO I18n
+      final AnomalousSituationComposite composite =
+          AnomalousSituationComposite.createInstance(
+              "Oh no!  We do not know which web page to send you to.",
+              "URL is null for " + this.getClass());
+      SwingUtilities.invokeLater(() -> composite.getLaunchOperation().fire());
     }
   }
+
+  private final URL url;
 }

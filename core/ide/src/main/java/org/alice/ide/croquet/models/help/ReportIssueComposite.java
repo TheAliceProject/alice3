@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 import edu.cmu.cs.dennisc.issue.IssueType;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
-import org.alice.ide.browser.ImmutableBrowserOperation;
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.lgna.croquet.CardOwnerComposite;
@@ -53,7 +53,6 @@ import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.Initializer;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 
 import java.util.UUID;
@@ -80,8 +79,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
     this.reportTypeState = createImmutableListStateForEnum("reportTypeState", IssueType.class, null);
     this.registerSubComposite(logInOutComposite);
     this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation("reportBug", new IssueTypeInitializer(IssueType.BUG));
-    this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation("requestNewFeature", new IssueTypeInitializer(IssueType.NEW_FEATURE));
-    this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation("suggestImprovement", new IssueTypeInitializer(IssueType.IMPROVEMENT));
   }
 
   @Override
@@ -199,30 +196,15 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
     return this.reportBugLaunchOperation;
   }
 
-  public Operation getRequestNewFeatureLaunchOperation() {
-    return this.requestNewFeatureLaunchOperation;
-  }
-
-  public Operation getSuggestImprovementLaunchOperation() {
-    return this.suggestImprovementLaunchOperation;
-  }
-
   private final ImmutableDataSingleSelectListState<BugSubmitVisibility> visibilityState = createImmutableListStateForEnum("visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE);
 
   private final ImmutableDataSingleSelectListState<IssueType> reportTypeState;
   private final StringState summaryState = createStringState("summaryState");
   private final StringState descriptionState = createStringState("descriptionState");
   private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum("attachmentState", BugSubmitAttachment.class, null);
-  private final Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
+  private final Operation browserOperation = new BrowserOperation(UUID.fromString("55806b33-8b8a-43e0-ad5a-823d733be2f8"), ReportSubmissionConfiguration.JIRA_URL);
   private final LogInOutComposite logInOutComposite = new LogInOutComposite(UUID.fromString("079f108d-c3bb-4581-b107-f21b8d7286ca"), BugLoginComposite.getInstance());
   private final Operation reportBugLaunchOperation;
-  private final Operation requestNewFeatureLaunchOperation;
-  private final Operation suggestImprovementLaunchOperation;
 
-  private final ValueListener<String> adapter = new ValueListener<String>() {
-    @Override
-    public void valueChanged(ValueEvent<String> e) {
-      getSubmitBugOperation().setEnabled(summaryState.getValue().length() > 0);
-    }
-  };
+  private final ValueListener<String> adapter = e -> getSubmitBugOperation().setEnabled(summaryState.getValue().length() > 0);
 }

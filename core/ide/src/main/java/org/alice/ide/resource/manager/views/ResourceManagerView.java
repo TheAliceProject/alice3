@@ -71,10 +71,9 @@ abstract class ResourceTableCellRenderer<E> extends TableCellRenderer<E> {
   static final String BUNDLE_NAME = "org.alice.ide.resource.manager.croquet";
 
   @Override
-  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column) {
-    rv.setHorizontalAlignment(SwingConstants.CENTER);
-    rv.setBorder(null);
-    return rv;
+  protected void initLabel(JLabel label, E value, boolean isSelected, boolean hasFocus) {
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    label.setBorder(null);
   }
 
   protected Color getForegroundColor(boolean isGoodToGo, boolean isSelected) {
@@ -96,39 +95,37 @@ abstract class ResourceTableCellRenderer<E> extends TableCellRenderer<E> {
 
 class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Boolean> {
   @Override
-  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column) {
-    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
-    String key = value ? "yes" : "no";
-    rv.setText(ResourceBundleUtilities.getStringForKey(key, BUNDLE_NAME));
-    rv.setForeground(this.getForegroundColor(value, isSelected));
-    return rv;
+  protected void initLabel(JLabel label, Boolean value, boolean isSelected, boolean hasFocus) {
+    super.initLabel(label, value, isSelected, hasFocus);
+    final boolean isReferenced = value != null && value;
+    String key = isReferenced ? "yes" : "no";
+    label.setText(ResourceBundleUtilities.getStringForKey(key, BUNDLE_NAME));
+    label.setForeground(this.getForegroundColor(isReferenced, isSelected));
   }
 }
 
 class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? extends Resource>> {
   @Override
-  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Class<? extends Resource> value, boolean isSelected, boolean hasFocus, int row, int column) {
-    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
+  protected void initLabel(JLabel label, Class<? extends Resource> value, boolean isSelected, boolean hasFocus) {
+    super.initLabel(label, value, isSelected, hasFocus);
     String text = value != null ? ResourceBundleUtilities.getStringForKey(value.getSimpleName(), BUNDLE_NAME) : "ERROR";
-    rv.setText(text);
-    rv.setForeground(this.getForegroundColor(value != null, isSelected));
-    return rv;
+    label.setText(text);
+    label.setForeground(this.getForegroundColor(value != null, isSelected));
   }
 }
 
 class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<Resource> {
   @Override
-  protected JLabel getTableCellRendererComponent(JLabel rv, JTable table, Resource value, boolean isSelected, boolean hasFocus, int row, int column) {
-    rv = super.getTableCellRendererComponent(rv, table, value, isSelected, hasFocus, row, column);
+  protected void initLabel(JLabel label, Resource value, boolean isSelected, boolean hasFocus) {
+    super.initLabel(label, value, isSelected, hasFocus);
     String text;
     if (value != null) {
       text = value.getName();
     } else {
       text = "ERROR";
     }
-    rv.setText(text);
-    rv.setForeground(this.getForegroundColor(value != null, isSelected));
-    return rv;
+    label.setText(text);
+    label.setForeground(this.getForegroundColor(value != null, isSelected));
   }
 }
 

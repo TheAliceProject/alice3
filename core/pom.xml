@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>parent</artifactId>
-    <version>6.0.1</version>
+    <version>6.0.2-SNAPSHOT</version>
   </parent>
 
   <name>Alice Core</name>
@@ -20,6 +20,7 @@
     <platform.macosx.label>macosx</platform.macosx.label>
     <platform.linux-i586.label>linux-i586</platform.linux-i586.label>
     <platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
+    <platform.linux-armv6hf.label>linux-armv6hf</platform.linux-armv6hf.label>
 
     <platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
     <platform.libvlc.label>libvlc</platform.libvlc.label>

@@ -118,16 +118,14 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
     if (searchObject != null) {
       List<Expression> references = searchObject.getReferences();
       for (Expression reference : references) {
-        UserLambda lambda = reference.getFirstAncestorAssignableTo(UserLambda.class);
-        UserMethod userMethod = null;
-        if (lambda != null) {
-          //pass
-        } else {
-          userMethod = reference.getFirstAncestorAssignableTo(UserMethod.class);
+        AbstractDeclaration parentObject = reference.getFirstAncestorAssignableTo(UserLambda.class);
+        if (parentObject == null) {
+          parentObject = reference.getFirstAncestorAssignableTo(UserMethod.class);
         }
-        AbstractDeclaration parentObject = lambda != null ? lambda : userMethod;
+        if (parentObject == null) {
+          continue;
+        }
         SearchTreeNode parentNode = root.getChildForReference(parentObject);
-        assert parentObject != null : lambda + ", " + userMethod;
         if (parentNode == null) {
           SearchTreeNode newChildNode = new DeclarationSeachTreeNode(root, parentObject);
           root.addChild(newChildNode);

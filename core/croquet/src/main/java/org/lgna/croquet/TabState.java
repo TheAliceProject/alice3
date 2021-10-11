@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.views.FolderTabbedPane;
-import org.lgna.croquet.views.ToolPaletteTabbedPane;
 
 import javax.swing.Icon;
 import java.util.UUID;
@@ -60,10 +59,6 @@ public abstract class TabState<T extends TabComposite<?>, D extends ListData<T>>
 
   public FolderTabbedPane<T> createFolderTabbedPane() {
     return new FolderTabbedPane<T>(this);
-  }
-
-  public ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
-    return new ToolPaletteTabbedPane<T>(this);
   }
 
   public void setItemIconForBothTrueAndFalse(T item, Icon icon) {

@@ -48,7 +48,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
-    <version>6.0.1</version>
+    <version>6.0.2-SNAPSHOT</version>
   </parent>
 
   <name>Abstract Syntax Tree</name>

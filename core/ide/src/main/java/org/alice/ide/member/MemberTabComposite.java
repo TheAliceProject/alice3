@@ -44,16 +44,12 @@ package org.alice.ide.member;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.IDE;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon;
 import org.alice.ide.member.views.MemberTabView;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.views.BooleanStateButton;
-import org.lgna.croquet.views.HorizontalTextPosition;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.AbstractField;
@@ -121,13 +117,8 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
 
     @Override
     public void valueChanged(ValueEvent<InstanceFactory> e) {
-      if (e.isAdjusting()) {
-        //pass
-      } else {
-        if (this.isActive) {
-          MemberTabComposite.this.refreshContentsLater();
-        }
-        MemberTabComposite.this.repaintTitles();
+      if (!e.isAdjusting() && this.isActive) {
+        MemberTabComposite.this.refreshContentsLater();
       }
     }
   }
@@ -171,17 +162,6 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
   @Override
   protected final ScrollPane createScrollPaneIfDesired() {
     return null;
-  }
-
-  private void repaintTitles() {
-    try {
-      for (JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges) {
-        jComponent.repaint();
-      }
-    } catch (Throwable t) {
-      // deemed not worth an exception
-      t.printStackTrace();
-    }
   }
 
   private void refreshContentsLater() {
@@ -320,7 +300,6 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     this.getSortState().addNewSchoolValueListener(this.sortListener);
     IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener(this.declarationCompositeListener);
     this.refreshContentsLater();
-    this.repaintTitles();
   }
 
   @Override
@@ -329,16 +308,5 @@ public abstract class MemberTabComposite<V extends MemberTabView> extends Member
     this.getSortState().removeNewSchoolValueListener(this.sortListener);
     this.instanceFactoryListener.setActive(false);
     super.handlePostDeactivation();
-  }
-
-  @Override
-  public void customizeTitleComponentAppearance(BooleanStateButton<?> button) {
-    super.customizeTitleComponentAppearance(button);
-    final boolean IS_ICON_DESIRED = IsAlwaysShowingBlocksState.getInstance().getValue() == false;
-    if (IS_ICON_DESIRED) {
-      button.getModel().setIconForBothTrueAndFalse(IndirectCurrentAccessibleTypeIcon.SINGLTON);
-      button.setHorizontalTextPosition(HorizontalTextPosition.TRAILING);
-      this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add(button.getAwtComponent());
-    }
   }
 }

@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.menubar;
 
 import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.history.ProjectHistoryComposite;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.StaticMenuModel;
 
@@ -59,7 +60,11 @@ public class ProjectMenuModel extends StaticMenuModel {
 
   @Override
   protected StandardMenuItemPrepModel[] createModels() {
-    return new StandardMenuItemPrepModel[] {this.projectDocumentFrame.getResourcesDialogLaunchOperation().getMenuItemPrepModel(), this.projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(), this.projectDocumentFrame.getStasticsFrameIsShowingState().getMenuItemPrepModel()};
+    return new StandardMenuItemPrepModel[] {
+        ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
+        projectDocumentFrame.getResourcesDialogLaunchOperation().getMenuItemPrepModel(),
+        projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(),
+        projectDocumentFrame.getStatisticsFrameIsShowingState().getMenuItemPrepModel()};
   }
 
   private final ProjectDocumentFrame projectDocumentFrame;

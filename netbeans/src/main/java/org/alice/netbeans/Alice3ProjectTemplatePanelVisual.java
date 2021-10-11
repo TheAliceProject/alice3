@@ -64,6 +64,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
   private static final boolean IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED = "C:\\Users\\dennisc".contentEquals(System.getProperty("user.home"));
   public static final String PROP_PROJECT_NAME = "projectName";
+  public static final String browseCommand = "BROWSE";
 
   private Alice3ProjectTemplateWizardPanel panel;
 
@@ -131,13 +132,13 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
     fromAliceHeaderLabel = new javax.swing.JLabel();
 
     projectNameLabel.setLabelFor(projectNameTextField);
-    org.openide.awt.Mnemonics.setLocalizedText(projectNameLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.projectNameLabel.text")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(projectNameLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.projectNameLabel.text"));
 
     projectLocationLabel.setLabelFor(projectLocationTextField);
-    org.openide.awt.Mnemonics.setLocalizedText(projectLocationLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.projectLocationLabel.text")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(projectLocationLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.projectLocationLabel.text"));
 
-    org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.text")); // NOI18N
-    browseButton.setActionCommand(org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.actionCommand")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.text"));
+    browseButton.setActionCommand(browseCommand);
     browseButton.addActionListener(new java.awt.event.ActionListener() {
       @Override
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,18 +147,18 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
     });
 
     createdFolderLabel.setLabelFor(createdFolderTextField);
-    org.openide.awt.Mnemonics.setLocalizedText(createdFolderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.createdFolderLabel.text")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(createdFolderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.createdFolderLabel.text"));
 
     createdFolderTextField.setEditable(false);
 
-    toNetBeansHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    org.openide.awt.Mnemonics.setLocalizedText(toNetBeansHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.toNetBeansHeaderLabel.text")); // NOI18N
+    toNetBeansHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14));
+    org.openide.awt.Mnemonics.setLocalizedText(toNetBeansHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.toNetBeansHeaderLabel.text"));
 
     aliceWorldLocationLabel.setLabelFor(aliceWorldLocationTextField);
-    org.openide.awt.Mnemonics.setLocalizedText(aliceWorldLocationLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldLocationLabel.text")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(aliceWorldLocationLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldLocationLabel.text"));
 
-    org.openide.awt.Mnemonics.setLocalizedText(aliceWorldBrowseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.text")); // NOI18N
-    aliceWorldBrowseButton.setActionCommand(org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.actionCommand")); // NOI18N
+    org.openide.awt.Mnemonics.setLocalizedText(aliceWorldBrowseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.text"));
+    aliceWorldBrowseButton.setActionCommand(browseCommand);
     aliceWorldBrowseButton.addActionListener(new java.awt.event.ActionListener() {
       @Override
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,8 +166,8 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
       }
     });
 
-    fromAliceHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    org.openide.awt.Mnemonics.setLocalizedText(fromAliceHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.fromAliceHeaderLabel.text")); // NOI18N
+    fromAliceHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14));
+    org.openide.awt.Mnemonics.setLocalizedText(fromAliceHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.fromAliceHeaderLabel.text"));
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
     this.setLayout(layout);
@@ -180,9 +181,10 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
   private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_browseButtonActionPerformed
     String command = evt.getActionCommand();
-    if ("BROWSE".equals(command)) {
+    if (browseCommand.equals(command)) {
       JFileChooser chooser = new JFileChooser();
       FileUtil.preventFileChooserSymlinkTraversal(chooser, null);
+      // TODO I18n
       chooser.setDialogTitle("Select Project Location");
       chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       String path = this.projectLocationTextField.getText();
@@ -221,9 +223,10 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
   private void aliceWorldBrowseButtonActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_aliceWorldBrowseButtonActionPerformed
     String command = evt.getActionCommand();
-    if ("BROWSE".equals(command)) {
+    if (browseCommand.equals(command)) {
       JFileChooser chooser = new JFileChooser();
       FileUtil.preventFileChooserSymlinkTraversal(chooser, null);
+      // TODO I18n
       chooser.setDialogTitle("Select Alice Project to Import");
       //chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
       chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -290,23 +293,27 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
     String aliceFile = aliceWorldLocationTextField.getText().trim();
     if (aliceFile.length() == 0) {
       //this.aliceWorldLocationLabel.setForeground(Color.RED);
+      // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Alice Project Location is not set yet.");
       return false;
     }
     File aliceWorldFile = new File(aliceFile);
     if (!aliceWorldFile.exists()) {
       //this.aliceWorldLocationLabel.setForeground(Color.RED);
+      // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Alice Project " + aliceFile + " does not exist.");
       return false;
     }
 
     if (projectNameTextField.getText().length() == 0) {
       // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_ERROR_MESSAGE:
+      // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Name is not a valid folder name.");
       return false; // Display name not specified
     }
     File f = FileUtil.normalizeFile(new File(projectLocationTextField.getText()).getAbsoluteFile());
     if (!f.isDirectory()) {
+      // TODO I18n
       wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder is not a valid path.");
       return false;
     }
@@ -318,11 +325,13 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
         projLoc = projLoc.getParentFile();
       }
       if (projLoc == null || !projLoc.canWrite()) {
+        // TODO I18n
         wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder cannot be created.");
         return false;
       }
 
       if (FileUtil.toFileObject(projLoc) == null) {
+        // TODO I18n
         wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder is not a valid path.");
         return false;
       }
@@ -330,6 +339,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
       File[] kids = destFolder.listFiles();
       if (destFolder.exists() && kids != null && kids.length > 0) {
         // Folder exists and is not empty
+        // TODO I18n
         wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder already exists and is not empty.");
         return false;
       }

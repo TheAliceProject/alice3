@@ -43,8 +43,6 @@
 
 package org.alice.ide.members;
 
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
-import org.alice.ide.member.ControlFlowTabComposite;
 import org.alice.ide.member.FunctionTabComposite;
 import org.alice.ide.member.MemberOrControlFlowTabComposite;
 import org.alice.ide.member.ProcedureTabComposite;
@@ -68,19 +66,12 @@ public class MembersComposite extends SimpleComposite<MembersView> {
 
   private final ProcedureTabComposite procedureTabComposite = new ProcedureTabComposite();
   private final FunctionTabComposite functionTabComposite = new FunctionTabComposite();
-  private final ControlFlowTabComposite controlStructureTabComposite;
   private final ImmutableDataTabState<MemberOrControlFlowTabComposite<?>> tabState;
 
   private MembersComposite() {
     super(UUID.fromString("10225a3f-f05d-42f3-baaf-f6bd0f8a7c68"));
     MemberOrControlFlowTabComposite<?>[] tabComposites;
-    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
-      this.controlStructureTabComposite = null;
-      tabComposites = new MemberOrControlFlowTabComposite[] {this.procedureTabComposite, this.functionTabComposite};
-    } else {
-      this.controlStructureTabComposite = new ControlFlowTabComposite();
-      tabComposites = new MemberOrControlFlowTabComposite[] {this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite};
-    }
+    tabComposites = new MemberOrControlFlowTabComposite[] {this.procedureTabComposite, this.functionTabComposite};
     this.tabState = (ImmutableDataTabState) this.createImmutableTabState("tabState", 0, MemberOrControlFlowTabComposite.class, tabComposites);
   }
 
@@ -94,10 +85,6 @@ public class MembersComposite extends SimpleComposite<MembersView> {
 
   public FunctionTabComposite getFunctionTabComposite() {
     return this.functionTabComposite;
-  }
-
-  public ControlFlowTabComposite getControlStructureTabComposite() {
-    return this.controlStructureTabComposite;
   }
 
   @Override

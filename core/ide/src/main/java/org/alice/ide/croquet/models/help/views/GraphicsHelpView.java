@@ -46,13 +46,16 @@ import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
-import org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation;
-import org.alice.ide.issue.croquet.GraphicsDriverHelpOperation;
 import org.alice.ide.system.croquet.StartPerformanceInformationAndToolsOperation;
 import org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.MigPanel;
+
+import java.util.Locale;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -78,12 +81,37 @@ public class GraphicsHelpView extends MigPanel {
       this.addComponent(WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2);
       this.addComponent(StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2);
     }
-    this.addComponent(SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2);
-    this.addComponent(GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2);
+    final Operation searchOp = new BrowserOperation(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea"), getRendererSearchUrl());
+    this.addComponent(searchOp.createHyperlink(), "wrap, gapleft " + LEVEL_2);
+    final Operation driverHelp = new BrowserOperation(UUID.fromString("652d34f0-7f39-4b63-a15c-d95090d0b3e9"), BrowserOperation.TROUBLESHOOTING_URL);
+    this.addComponent(driverHelp.createHyperlink(), "wrap, gapleft " + LEVEL_2);
     this.addComponent(new Label(getLocalizedStringByKey("aboutHeader")), "wrap, gaptop 16, gapleft " + LEVEL_1);
     this.addComponent(new Label(getGraphicsInformation()), "wrap, gapleft " + LEVEL_2);
     this.addComponent(new Label(getSystemInformation()), "wrap, gapleft " + LEVEL_2);
     this.addComponent(new Label(getLocalizedStringByKey(getPickInfoKey())), "wrap, gaptop 24");
+  }
+
+  public static String getRendererSearchUrl() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("http://www.google.com/search?q=+graphics+driver");
+    ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+    if (sharedDetails != null) {
+      String renderer = sharedDetails.getRenderer();
+      if (renderer != null) {
+        renderer = getRendererSearchTerm(renderer);
+        sb.append("+");
+        sb.append(renderer.replaceAll(" ", "+"));
+      }
+    }
+    return sb.toString();
+  }
+
+  private static String getRendererSearchTerm(String renderer) {
+    if (renderer.toLowerCase(Locale.ENGLISH).contains("geforce")) {
+      return "GeForce";
+    } else {
+      return renderer;
+    }
   }
 
   private String getPickInfoKey() {

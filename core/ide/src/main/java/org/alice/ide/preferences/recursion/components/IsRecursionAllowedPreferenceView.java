@@ -44,8 +44,7 @@ package org.alice.ide.preferences.recursion.components;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.alice.ide.browser.ImmutableBrowserOperation;
-import org.alice.ide.help.HelpBrowserOperation;
+import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
 import org.alice.ide.preferences.recursion.IsRecursionAllowedState;
@@ -79,6 +78,7 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
   private static final int SPACING = 16;
   private static final int INDENT = 32;
 
+
   private static class RecursionAccessPanel extends PageAxisPanel {
     private final AbstractLabel label;
     private final Button button;
@@ -108,9 +108,7 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
         @Override
         public void paint(Graphics g) {
           super.paint(g);
-          if (IsAccessToRecursionPreferenceAllowedState.getInstance().getValue()) {
-            //pass
-          } else {
+          if (!IsAccessToRecursionPreferenceAllowedState.getInstance().getValue()) {
             Graphics2D g2 = (Graphics2D) g;
             Paint prevPaint = g2.getPaint();
             try {
@@ -119,19 +117,16 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
             } finally {
               g2.setPaint(prevPaint);
             }
-
           }
         }
       };
     }
 
-    private ValueListener<Boolean> valueObserver = new ValueListener<Boolean>() {
+    private final ValueListener<Boolean> valueObserver = new ValueListener<Boolean>() {
       @Override
       public void valueChanged(ValueEvent<Boolean> e) {
         Boolean nextValue = e.getNextValue();
-        if (nextValue) {
-          //pass
-        } else {
+        if (!nextValue) {
           IsRecursionAllowedState.getInstance().setValueTransactionlessly(false);
         }
         label.getAwtComponent().setEnabled(nextValue);
@@ -156,8 +151,7 @@ public class IsRecursionAllowedPreferenceView extends BorderPanel {
 
   public IsRecursionAllowedPreferenceView(IsRecursionAllowedPreferenceDialogComposite composite) {
     super(composite);
-    //todo
-    Operation browserOperation = new ImmutableBrowserOperation(UUID.fromString("30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d"), HelpBrowserOperation.HELP_URL_SPEC + "recursion");
+    Operation browserOperation = new BrowserOperation(UUID.fromString("30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d"), BrowserOperation.RECURSION_URL);
     Hyperlink hyperlink = browserOperation.createHyperlink();
     hyperlink.setBorder(BorderFactory.createEmptyBorder(SPACING, INDENT, SPACING, 0));
 

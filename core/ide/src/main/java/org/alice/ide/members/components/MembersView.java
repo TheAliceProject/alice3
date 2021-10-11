@@ -51,7 +51,6 @@ import org.alice.ide.ast.delete.DeleteStatementOperation;
 import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
 import org.alice.ide.members.MembersComposite;
 import org.alice.ide.recyclebin.RecycleBin;
 import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
@@ -65,7 +64,6 @@ import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FolderTabbedPane;
 import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TabbedPane;
 import org.lgna.croquet.views.TrackableShape;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Statement;
@@ -252,13 +250,7 @@ public class MembersView extends BorderPanel {
     //    this.addPageStartComponent( instancePanel );
     this.setBackgroundColor(FolderTabbedPane.DEFAULT_BACKGROUND_COLOR);
     this.addPageStartComponent(instanceFactoryPopupButton);
-    TabbedPane<?> tabbedPane;
-    if (IsAlwaysShowingBlocksState.getInstance().getValue()) {
-      tabbedPane = composite.getTabState().createFolderTabbedPane();
-    } else {
-      tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
-    }
-    this.addCenterComponent(tabbedPane);
+    this.addCenterComponent(composite.getTabState().createFolderTabbedPane());
   }
 
   @Override

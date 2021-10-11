@@ -42,60 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import net.miginfocom.swing.MigLayout;
-import org.alice.ide.help.HelpBrowserOperation;
+import org.alice.ide.browser.BrowserOperation;
+import org.alice.ide.croquet.models.help.views.GraphicsHelpView;
 import org.alice.ide.issue.croquet.views.GlExceptionView;
 import org.lgna.issue.ApplicationIssueConfiguration;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
-import java.util.Locale;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JGraphicsHeaderPane extends JPanel {
-  private static String getRendererSearchTerm(String renderer) {
-    if (renderer.toLowerCase(Locale.ENGLISH).contains("geforce")) {
-      return "GeForce";
-    } else {
-      return renderer;
-    }
-  }
-
   public JGraphicsHeaderPane(ApplicationIssueConfiguration config) {
     ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
     ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-    StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
-    sbSearchGraphicsDriverUrlSpec.append("http://www.google.com/search?q=+graphics+driver");
-    if (sharedDetails != null) {
-      String renderer = sharedDetails.getRenderer();
-      if (renderer != null) {
-        renderer = getRendererSearchTerm(renderer);
-        sbSearchGraphicsDriverUrlSpec.append("+");
-        sbSearchGraphicsDriverUrlSpec.append(renderer.replaceAll(" ", "+"));
-      }
-    }
-    String searchGraphicsDriverUrlSpec = sbSearchGraphicsDriverUrlSpec.toString();
-
-    StringBuilder sbGraphicsHelpUrlSpec = new StringBuilder();
-    sbGraphicsHelpUrlSpec.append(HelpBrowserOperation.HELP_URL_SPEC);
-    sbGraphicsHelpUrlSpec.append("w/page/");
-    if (SystemUtilities.isWindows()) {
-      sbGraphicsHelpUrlSpec.append("59839091/Updating%20Video%20Drivers%20for%20Windows");
-    } else if (SystemUtilities.isMac()) {
-      sbGraphicsHelpUrlSpec.append("59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X");
-    } else if (SystemUtilities.isLinux()) {
-      sbGraphicsHelpUrlSpec.append("59839254/Updating%20Video%20Drivers%20for%20Linux");
-    } else {
-      sbGraphicsHelpUrlSpec.append("54959364/Updating%20Video%20Drivers");
-    }
-    String graphicsHelpUrlSpec = sbGraphicsHelpUrlSpec.toString();
+    String searchGraphicsDriverUrlSpec = GraphicsHelpView.getRendererSearchUrl();
+    String graphicsHelpUrlSpec = BrowserOperation.TROUBLESHOOTING_URL;
 
     StringBuilder sb = new StringBuilder();
     sb.append("<html>");
