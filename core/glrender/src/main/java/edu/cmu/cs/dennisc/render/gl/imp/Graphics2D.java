@@ -64,12 +64,14 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.glu.GLUtessellator;
 import com.jogamp.opengl.glu.GLUtessellatorCallback;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import edu.cmu.cs.dennisc.image.ImageGenerator;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.SineCosineCache;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
@@ -1016,17 +1018,10 @@ import java.util.Map;
     private GL gl;
 
     public TextRenderer getTextRenderer(Font font, GL gl) {
-      if (this.textRenderer != null) {
-        if (this.gl == gl) {
-          //pass
-        } else {
-          this.textRenderer.dispose();
-          this.textRenderer = null;
-        }
+      if (this.textRenderer != null && this.gl != gl) {
+        disposeTextRendererSafely();
       }
-      if (this.textRenderer != null) {
-        //pass
-      } else {
+      if (this.textRenderer == null) {
         this.textRenderer = new TextRenderer(font);
       }
       return this.textRenderer;
@@ -1034,10 +1029,18 @@ import java.util.Map;
 
     public void dispose() {
       if (this.textRenderer != null) {
+        disposeTextRendererSafely();
+      }
+      this.gl = null;
+    }
+
+    private void disposeTextRendererSafely() {
+      try {
         this.textRenderer.dispose();
+      } catch (GLException gle) {
+        Logger.info("Unable to dispose of text renderer.", gle);
       }
       this.textRenderer = null;
-      this.gl = null;
     }
   }
 
