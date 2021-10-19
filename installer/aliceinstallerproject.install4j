@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.5" transformSequenceNumber="9">
   <directoryPresets config="./installerFiles/alice3.desktop.partial" />
-  <application name="Alice 3" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" autoSave="true" macVolumeId="bf5b38a83930832b" javaMinVersion="1.8" allowBetaVM="true" jdkMode="runtimeJre">
+  <application name="Alice 3" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" shortName="alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="https://www.alice.org" version="${compiler:sys.version}" allPathsRelative="true" autoSave="true" macVolumeId="bf5b38a83930832b" javaMinVersion="17" jdkMode="runtimeJre">
     <languages>
       <additionalLanguages>
         <language id="zh_CN" />
@@ -34,6 +34,7 @@
       <variable name="included_jre_version" value="17" />
     </variables>
     <codeSigning windowsEnabled="true" windowsPkcs12File="../../The Alice Project.p12" />
+    <jreBundles jdkProviderId="AdoptOpenJDK" release="17/jdk-17+35" />
   </application>
   <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="*.sha1,*.lastUpdated,*.pom,*.repositories,*.DS_Store" defaultOverwriteMode="2" preserveSymlinks="false">
     <mountPoints>
@@ -975,7 +976,7 @@
         <entry location="platform/macosx" />
         <entry location="platform/win32" />
       </exclude>
-      <jreBundle jreBundleSource="preCreated" includedJre="windows-amd64-${compiler:included_jre_version}" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
+      <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
     </windows>
     <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice 3" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
       <excludedBeans>
@@ -989,7 +990,7 @@
         <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
-      <jreBundle jreBundleSource="preCreated" includedJre="macosx-amd64-${compiler:included_jre_version}" bundleUrl="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" />
+      <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" />
     </macos>
     <unixInstaller name="Unix Installer Offline" id="111" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice3" downloadURL="http://www.alice.org/downloads/installerOnlineData">
       <exclude>
@@ -1008,7 +1009,6 @@
         <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
-      <jreBundle jreBundleSource="preCreated" includedJre="macosx-amd64-${compiler:included_jre_version}" />
     </macosArchive>
     <windowsArchive name="Windows Archive" id="891" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
@@ -1018,7 +1018,6 @@
         <entry location="platform/linux-i586" />
         <entry location="platform/macosx" />
       </exclude>
-      <jreBundle jreBundleSource="preCreated" includedJre="windows-amd64-${compiler:included_jre_version}" />
     </windowsArchive>
     <linuxDeb name="Linux Deb Archive" id="1294" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
