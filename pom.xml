@@ -439,9 +439,9 @@
           <version>1.6.0</version>
         </plugin>
         <plugin>
-          <groupId>org.sonatype.install4j</groupId>
-          <artifactId>install4j-maven-plugin</artifactId>
-          <version>1.1.2</version>
+          <groupId>com.install4j</groupId>
+          <artifactId>install4j-maven</artifactId>
+          <version>9.0.5</version>
         </plugin>
         <plugin>
           <groupId>net.nicoulaj.maven.plugins</groupId>
@@ -678,6 +678,13 @@
       </build>
     </profile>
   </profiles>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>ej-technologies</id>
+      <url>https://maven.ej-technologies.com/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <repositories>
     <repository>
