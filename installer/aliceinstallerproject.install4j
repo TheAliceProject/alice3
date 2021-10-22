@@ -139,7 +139,7 @@
           <entry location="EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
           <entry location="EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
           <entry location="platform" fileType="regular" />
-          <entry location="${compiler:sys.shortName}" fileType="launcher" />
+          <entry location="Alice 3" fileType="launcher" />
         </include>
         <dependencies />
       </component>
