@@ -47,6 +47,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLContext;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLOffscreenAutoDrawable;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 
@@ -105,11 +106,10 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements OffscreenRende
 
   @Override
   public GLAutoDrawable getGLAutoDrawable() {
-    if (this.glPbuffer != null) {
-      return this.glPbuffer;
-    } else {
-      throw new GLException();
+    if (glPbuffer == null) {
+      Logger.severe("GlrOffscreenRenderTarget has null glPbuffer/GLAutoDrawable. This may be part of the pick bug.");
     }
+    return glPbuffer;
   }
 
   @Override
