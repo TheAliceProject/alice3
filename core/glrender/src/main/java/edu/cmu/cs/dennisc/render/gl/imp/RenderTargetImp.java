@@ -258,18 +258,19 @@ public class RenderTargetImp {
   }
 
   public void stopListening(GLAutoDrawable drawable) {
-    if (drawable == this.drawable) {
-      //pass
+    if (drawable != null && drawable != this.drawable) {
+      Logger.severe("request GLEventAdapter.stopListening(drawable) came for different drawable", drawable, this.drawable);
     } else {
-      Logger.severe(drawable, this.drawable);
+      if (this.isListening) {
+        this.isListening = false;
+        if (drawable != null) {
+          drawable.removeGLEventListener(this.glEventListener);
+        }
+      } else {
+        Logger.warning("request GLEventAdapter.stopListening(drawable) ignored; already not listening.");
+      }
+      this.drawable = null;
     }
-    if (this.isListening) {
-      this.isListening = false;
-      drawable.removeGLEventListener(this.glEventListener);
-    } else {
-      Logger.warning("request GLEventAdapter.stopListening( drawable ) ignored; already not listening.");
-    }
-    this.drawable = null;
   }
 
   //  private void paintOverlay() {
