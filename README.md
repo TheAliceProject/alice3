@@ -14,7 +14,7 @@ Download and install the following build tools
 * [Apache Maven](https://maven.apache.org/install.html) 3.6.3 or later
 * git
 * [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
-* [Install4J 7](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
+* [Install4J 9](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
 
 ---
 

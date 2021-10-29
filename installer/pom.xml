@@ -64,9 +64,9 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.sonatype.install4j</groupId>
-        <artifactId>install4j-maven-plugin</artifactId>
-        <version>1.0.8</version>
+        <groupId>com.install4j</groupId>
+        <artifactId>install4j-maven</artifactId>
+        <version>9.0.5</version>
         <executions>
           <execution>
             <id>compile-installers</id>
@@ -80,14 +80,8 @@
               <attach>true</attach>
               <release>${alice.build.version}${alice.build.prerelease}${alice.build.metadata}</release>
               <jvmArguments>-Dinstall4j.timestampUrl=http://timestamp.digicert.com</jvmArguments>
+              <license>${install4j.licenseKey}</license>
             </configuration>
-          </execution>
-          <execution>
-            <id>install-license</id>
-            <phase>package</phase>
-            <goals>
-              <goal>install-license</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
