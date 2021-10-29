@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.render.gl;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLContext;
-import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLOffscreenAutoDrawable;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
