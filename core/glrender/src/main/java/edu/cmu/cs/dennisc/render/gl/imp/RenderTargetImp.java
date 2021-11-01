@@ -441,22 +441,10 @@ public class RenderTargetImp {
     return FloatBuffer.allocate(this.drawableWidth * this.drawableHeight);
   }
 
-  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
-    this.rvDepthBuffer = rv;
-    this.drawable.setAutoSwapBufferMode(false);
-    try {
-      this.drawable.display();
-    } finally {
-      this.rvDepthBuffer = null;
-      this.drawable.setAutoSwapBufferMode(true);
-    }
-    return rv;
-  }
-
   public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer, boolean[] atIsUpsideDown) {
-    GLContext glCurrentContext = GLContext.getCurrent();
-    if ((glCurrentContext != null) && (glCurrentContext == this.drawable.getContext())) {
-      this.renderContext.captureBuffers(rv, depthBuffer, atIsUpsideDown);
+      GLContext glCurrentContext = GLContext.getCurrent();
+      if ((glCurrentContext != null) && (glCurrentContext == this.drawable.getContext())) {
+        this.renderContext.captureBuffers(rv, depthBuffer, atIsUpsideDown);
     } else {
       if (this.rvColorBuffer != null) {
         Logger.severe(this.rvColorBuffer);
