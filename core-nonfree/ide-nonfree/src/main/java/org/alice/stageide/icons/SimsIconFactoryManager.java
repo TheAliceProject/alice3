@@ -76,6 +76,7 @@ public class SimsIconFactoryManager {
           return new TrimmedImageIconFactory(image, width, height);
         }
       } catch (Throwable t) {
+        System.err.println("Person thumbnail creation failed so it will be blank.");
         t.printStackTrace();
         return EmptyIconFactory.getInstance();
       }
