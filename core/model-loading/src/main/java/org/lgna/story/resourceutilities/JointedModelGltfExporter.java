@@ -402,6 +402,26 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       builder.createArrayBufferViewModel(sgMesh.getName() + "_textCoords_bufferView");
     }
 
+   /* var count = 0;
+    var total = 0;
+    var minU = 0.033548f;
+    var maxU = 0.091993f;
+    var minV = 0.790487f; //0.209513f;
+    var maxV = 0.960270f; //0.03973001f;
+    objTexCoords.rewind();
+    if (objTexCoords.hasRemaining()) {
+      System.out.println("Dump of TexCoords for " + sgMesh.getName() + "\n" + objTexCoords);
+      while (objTexCoords.hasRemaining()) {
+        float u = objTexCoords.get();
+        float v = objTexCoords.get();
+        if (u >= minU && u <= maxU && v >= minV && v <= maxV) {
+          System.out.print("[u:" + u + " v:" + v + "] ");
+          count++;
+        }
+        total++;
+      }
+      System.out.println(count + " out of " + total + " UVs ");
+    }*/
     // Add the normals from the mesh to the buffer structure
     FloatBuffer normalBuffer = sgMesh.normalBuffer.getValue();
     normalBuffer.rewind();

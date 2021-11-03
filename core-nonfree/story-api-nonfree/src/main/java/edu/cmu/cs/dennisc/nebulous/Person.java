@@ -46,6 +46,12 @@ package edu.cmu.cs.dennisc.nebulous;
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.scenegraph.BlendShape;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import org.lgna.story.resources.JointedModelResource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -69,6 +75,8 @@ public class Person extends Model {
   }
 
   private native void initialize(Object o);
+
+  private native String[] getBlendShapeIds();
 
   private native void unload();
 
@@ -148,6 +156,25 @@ public class Person extends Model {
 
   public void synchronizedSetAll(Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair) {
     synchronizedSetAll(gender, outfit, skinTone, obesityLevel, eyeColor, hair, "");
+  }
+
+  @Override
+  public SkeletonVisual createSkeletonVisualForExporting(JointedModelResource resource) {
+    SkeletonVisual sv = super.createSkeletonVisualForExporting(resource);
+    // TODO use getBlendShapeIds when neb library supports it
+    String[] blendShapeIds = {"leftEyeBlend", "mouthBlend"}; //getBlendShapeIds();
+    List<BlendShape> blendShapes = new ArrayList<>();
+    for (String blendShapeId : blendShapeIds) {
+        BlendShape blendShape = new BlendShape(blendShapeId);
+        initializeBlendShape(blendShape);
+        blendShapes.add(blendShape);
+    }
+    sv.blendShapes = blendShapes;
+    return sv;
+  }
+
+  private void initializeBlendShape(BlendShape blendShape) {
+    // TODO
   }
 
   @Override

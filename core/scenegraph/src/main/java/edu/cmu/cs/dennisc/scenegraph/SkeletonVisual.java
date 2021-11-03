@@ -51,6 +51,8 @@ import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
+import java.util.List;
+
 public class SkeletonVisual extends Visual {
 
   public SkeletonVisualBoundingBoxTracker getTracker() {
@@ -275,4 +277,7 @@ public class SkeletonVisual extends Visual {
       return src;
     }
   };
+
+  // These are used only on Sims persons for now, and only during export. Support can be expanded if we ever support them in imported models.
+  public List<BlendShape> blendShapes;
 }
