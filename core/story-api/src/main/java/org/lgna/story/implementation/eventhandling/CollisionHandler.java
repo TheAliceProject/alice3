@@ -85,16 +85,11 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
 
   @Override
   protected void checkForEvents(SThing changedThing) {
-    VerticalPrismCollisionHull oldHull = hulls.remove(changedThing);
-    VerticalPrismCollisionHull newHull = collisionHull(changedThing);
-    // Compute a combination only if there is an old hull that does not overlap the new
-    VerticalPrismCollisionHull combinedHull = oldHull == null || newHull.collidesWith(oldHull)
-        ? newHull
-        : PolygonPrismHull.combinationHull(oldHull, newHull);
+    VerticalPrismCollisionHull hull = getUpdatedHull(changedThing);
     final Map<SThing, Set<Object>> thingsToCollideWith = interactionListeners.get(changedThing);
     for (SThing thing : thingsToCollideWith.keySet()) {
       Set<Object> listeners = thingsToCollideWith.get(thing);
-      boolean doTheseCollide = combinedHull.collidesWith(collisionHull(thing));
+      boolean doTheseCollide = hull.collidesWith(collisionHull(thing));
       final boolean isCollisionStart = wasFalse(wereTouching, changedThing, thing) && doTheseCollide;
       final boolean isCollisionEnd = wasTrue(wereTouching, changedThing, thing) && !doTheseCollide;
       wereTouching.get(thing).put(changedThing, doTheseCollide);
@@ -116,6 +111,15 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
         }
       }
     }
+  }
+
+  private VerticalPrismCollisionHull getUpdatedHull(SThing changedThing) {
+    VerticalPrismCollisionHull oldHull = hulls.remove(changedThing);
+    VerticalPrismCollisionHull newHull = collisionHull(changedThing);
+    // Compute a combination only if there is an old hull that does not overlap the new
+    return oldHull == null || newHull.collidesWith(oldHull)
+        ? newHull
+        : PolygonPrismHull.combinationHull(oldHull, newHull);
   }
 
   public boolean doTheseCollide(SThing changedThing, SThing thing) {
