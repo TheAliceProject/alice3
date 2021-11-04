@@ -122,8 +122,10 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
         : PolygonPrismHull.combinationHull(oldHull, newHull);
   }
 
-  public boolean doTheseCollide(SThing changedThing, SThing thing) {
-    return collisionHull(changedThing).collidesWith(collisionHull(thing));
+  public boolean doTheseCollide(SThing aThing, SThing bThing) {
+    startTrackingThing(aThing);
+    startTrackingThing(bThing);
+    return collisionHull(aThing).collidesWith(collisionHull(bThing));
   }
 
   private VerticalPrismCollisionHull collisionHull(SThing changedThing) {
