@@ -477,7 +477,7 @@ public abstract class Model extends Geometry {
     List<String> unweightedMeshIds = new ArrayList<>(Arrays.asList(getUnweightedMeshIds())); //Need this as a list so we can add to it.
     String[] weightedMeshIds = getWeightedMeshIds();
     for (String meshId : weightedMeshIds) {
-      //Check to see if the weighted mesh is really a weighted to joints, and therefore actually a weighted mesh.
+      //Check to see if the weighted mesh is really weighted to joints, and therefore actually a weighted mesh.
       // Some meshes are listed on the sims side as weighted meshes but are not weighted to any joints
       if (isActuallyWeightedToJoints(meshId, resourceJointIds)) {
         WeightedMesh mesh = new WeightedMesh();
