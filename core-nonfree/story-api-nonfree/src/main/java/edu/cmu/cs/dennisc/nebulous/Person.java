@@ -44,13 +44,16 @@
 package edu.cmu.cs.dennisc.nebulous;
 
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.BlendShape;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import org.lgna.story.resources.JointedModelResource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,7 +79,9 @@ public class Person extends Model {
 
   private native void initialize(Object o);
 
-  private native String[] getBlendShapeIds();
+  private native String[] getBlendedMeshIds();
+  private native float[] getVerticesForBlend(String meshId, int blendId);
+  private native float[] getNormalsForBlend(String meshId, int blendId);
 
   private native void unload();
 
@@ -161,20 +166,62 @@ public class Person extends Model {
   @Override
   public SkeletonVisual createSkeletonVisualForExporting(JointedModelResource resource) {
     SkeletonVisual sv = super.createSkeletonVisualForExporting(resource);
-    // TODO use getBlendShapeIds when neb library supports it
-    String[] blendShapeIds = {"leftEyeBlend", "mouthBlend"}; //getBlendShapeIds();
-    List<BlendShape> blendShapes = new ArrayList<>();
-    for (String blendShapeId : blendShapeIds) {
-        BlendShape blendShape = new BlendShape(blendShapeId);
-        initializeBlendShape(blendShape);
-        blendShapes.add(blendShape);
+    String[] blendedMeshIds = getBlendedMeshIds();
+    for (WeightedMesh mesh : sv.weightedMeshes.getValue()) {
+      String meshId = mesh.getName();
+      if (Arrays.asList(blendedMeshIds).contains(meshId)) {
+        ArrayList<BlendShape> shapes = new ArrayList<>();
+        String[] meshTextureIds = getTextureIdsForMesh(meshId);
+        List<int[]> textureIndices = new ArrayList<>();
+        int originalIndexCount = 0;
+        for (String textureId : meshTextureIds) {
+          int[] indices = getIndicesForMesh(meshId, textureId);
+          originalIndexCount += indices.length;
+          textureIndices.add(indices);
+        }
+        for (int i = 0; i < 3; i++) {
+          BlendShape blendShape = initializeBlendShape(mesh, i, textureIndices, originalIndexCount);
+          if (blendShape != null) {
+            shapes.add(blendShape);
+          }
+        }
+        sv.blendShapes.put(mesh, shapes);
+      }
     }
-    sv.blendShapes = blendShapes;
     return sv;
   }
 
-  private void initializeBlendShape(BlendShape blendShape) {
-    // TODO
+  private BlendShape initializeBlendShape(WeightedMesh mesh, int blendShapeId, List<int[]> textureIndices, int originalIndexCount) {
+    String meshId = mesh.getName();
+    BlendShape blendShape = new BlendShape(blendShapeId);
+    float[] vertices = getVerticesForBlend(meshId, blendShapeId);
+    if (vertices.length == 0) {
+      return null;
+    }
+    float[] normals = getNormalsForBlend(meshId, blendShapeId);
+    double[] newVertices = new double[originalIndexCount];
+    float[] newNormals = new float[originalIndexCount];
+    int currentIndex = 0;
+    for (int[] currentIndices: textureIndices) {
+      for (int i = 0; i < currentIndices.length;) {
+        // First entry in texture triples is for uv. Skip it.
+        i++;
+        int normalIndex = currentIndices[i];
+        newNormals[currentIndex * 3] = normals[normalIndex];
+        newNormals[currentIndex * 3 + 1] = normals[normalIndex + 1];
+        newNormals[currentIndex * 3 + 2] = normals[normalIndex + 2];
+        i++;
+        int vertexIndex = currentIndices[i];
+        newVertices[currentIndex * 3] = vertices[vertexIndex];
+        newVertices[currentIndex * 3 + 1] = vertices[vertexIndex + 1];
+        newVertices[currentIndex * 3 + 2] = vertices[vertexIndex + 2];
+        i++;
+        currentIndex++;
+      }
+    }
+    blendShape.normalBuffer = BufferUtilities.createDirectFloatBuffer(newNormals);
+    blendShape.vertexBuffer = BufferUtilities.createDirectDoubleBuffer(newVertices);
+    return blendShape;
   }
 
   @Override

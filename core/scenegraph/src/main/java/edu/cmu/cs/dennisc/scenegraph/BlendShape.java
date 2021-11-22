@@ -43,49 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.property.IntegerProperty;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
-import java.util.LinkedList;
-import java.util.List;
+public class BlendShape {
+  public final int index;
+  public DoubleBuffer vertexBuffer;
+  public FloatBuffer normalBuffer;
 
-public class BlendShape extends Geometry {
-  public BlendShape(String id) {
-    setName(id);
-  }
-
-  @Override
-  protected void updateBoundingBox(AxisAlignedBox boundingBox) {
-    // TODO
-  }
-
-  @Override
-  protected void updateBoundingSphere(edu.cmu.cs.dennisc.math.Sphere boundingSphere) {
-    // TODO
-  }
-
-  @Override
-  protected void updatePlane(Vector3 forward, Vector3 upGuide, Point3 translation) {
-    // TODO
-  }
-
-  @Override
-  public void transform(AbstractMatrix4x4 trans) {
-    // TODO
-  }
-
-  public List<Integer> getReferencedTextureIds() {
-    List<Integer> referencedTextureIds = new LinkedList<>();
-    referencedTextureIds.add(textureId.getValue());
-    return referencedTextureIds;
-  }
-
-  public final IntegerProperty textureId = new IntegerProperty(this, -1);
-
-  public String[] getBlendNames() {
-    return new String[] {"blendStart", "blendEnd"};
+  public BlendShape(int id) {
+    index = id;
   }
 }

@@ -51,7 +51,9 @@ import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SkeletonVisual extends Visual {
 
@@ -279,5 +281,5 @@ public class SkeletonVisual extends Visual {
   };
 
   // These are used only on Sims persons for now, and only during export. Support can be expanded if we ever support them in imported models.
-  public List<BlendShape> blendShapes;
+  public Map<WeightedMesh, List<BlendShape>> blendShapes = new HashMap<>();
 }

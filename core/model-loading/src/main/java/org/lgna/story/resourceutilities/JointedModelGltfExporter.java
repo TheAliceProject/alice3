@@ -44,6 +44,8 @@ package org.lgna.story.resourceutilities;
 
 import de.javagl.jgltf.impl.v2.*;
 import de.javagl.jgltf.impl.v2.Image;
+import de.javagl.jgltf.impl.v2.Mesh;
+import de.javagl.jgltf.impl.v2.Scene;
 import de.javagl.jgltf.model.GltfConstants;
 import de.javagl.jgltf.model.GltfModel;
 import de.javagl.jgltf.model.GltfModels;
@@ -61,6 +63,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.BlendShape;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
@@ -84,6 +87,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -366,6 +370,36 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     return meshes;
   }
 
+  private void addAnyMorphTargets(MeshPrimitive meshPrimitive, edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder) {
+    for (BlendShape blend : visual.blendShapes.getOrDefault(sgMesh, Collections.emptyList())) {
+      Map<String, Integer> targets = new HashMap<>();
+
+      // Add the vertices (positions) from the blendshape to the buffer structure
+      int positionsAccessorIndex = builder.getNumAccessorModels();
+      DoubleBuffer vertexBuffer = blend.vertexBuffer;
+      vertexBuffer.rewind();
+      FloatBuffer objVertices = BufferUtilities.createDirectFloatBuffer(convertToFloatArray(vertexBuffer));
+      builder.createAccessorModel("positionsAccessor_" + positionsAccessorIndex,
+          GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objVertices));
+      builder.createArrayBufferViewModel(sgMesh.getName() + blend.index + "_positions_bufferView");
+      targets.put("POSITION", positionsAccessorIndex);
+
+      // Add the normals from the blendshape to the buffer structure
+      FloatBuffer normalBuffer = blend.normalBuffer;
+      normalBuffer.rewind();
+      FloatBuffer objNormals = BufferUtilities.copyFloatBuffer(normalBuffer);
+      if (objNormals.hasRemaining()) {
+        normalize(objNormals);
+        int normalsAccessorIndex = builder.getNumAccessorModels();
+        builder.createAccessorModel("normalsAccessor_" + normalsAccessorIndex,
+            GltfConstants.GL_FLOAT, "VEC3", Buffers.createByteBufferFrom(objNormals));
+        builder.createArrayBufferViewModel(sgMesh.getName() + blend.index + "_normals_bufferView");
+        targets.put("NORMAL", normalsAccessorIndex);
+      }
+      meshPrimitive.addTargets(targets);
+    }
+  }
+
   private Mesh createMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, MeshPrimitive[] meshPrimitives) {
     Mesh mesh = new Mesh();
     for (MeshPrimitive primitive : meshPrimitives) {
@@ -468,6 +502,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     meshPrimitive.addAttributes("POSITION", positionsAccessorIndex);
     meshPrimitive.addAttributes("TEXCOORD_0", texCoordsAccessorIndex);
     meshPrimitive.addAttributes("NORMAL", normalsAccessorIndex);
+    addAnyMorphTargets(meshPrimitive, sgMesh, builder);
 
     return meshPrimitive;
   }
