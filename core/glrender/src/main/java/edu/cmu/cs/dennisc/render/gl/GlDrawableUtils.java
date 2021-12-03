@@ -56,6 +56,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.awt.GLJPanel;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import jogamp.opengl.GLDrawableImpl;
 
@@ -199,6 +200,9 @@ public class GlDrawableUtils {
       return buffer;
     } else {
       //      throw new RuntimeException("cannot create pbuffer");
+      Logger.warning("GLDrawableFactory.canCreateGLPbuffer() returned false. This may cause errors in rendering."
+          + " From the JOGL documentation: Some older graphics cards do not have this capability, as well as some new GL"
+          + " implementation, i.e. OpenGL 3 core on OSX.");
       return null;
     }
   }

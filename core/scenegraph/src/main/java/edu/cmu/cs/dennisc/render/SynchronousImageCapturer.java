@@ -61,10 +61,6 @@ public interface SynchronousImageCapturer {
 
   FloatBuffer createFloatBufferForUseAsDepthBuffer();
 
-  FloatBuffer getDepthBuffer(FloatBuffer rv);
-
-  FloatBuffer getDepthBuffer();
-
   BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer);
 
   BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();

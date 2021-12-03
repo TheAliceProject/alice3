@@ -128,6 +128,9 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
       double axisCameraDot = Vector3.calculateDotProduct(this.absoluteDragAxis, cameraBack);
       if (Math.abs(axisCameraDot) > .98d) {
         Point3 pointInPlane = PlaneUtilities.getPointInPlane(this.cameraFacingPlane, pickRay);
+        if (pointInPlane == null || pointInPlane.isNaN()) {
+          return 0;
+        }
         Vector3 fromOriginalMouseToCurrentMouse = Vector3.createSubtraction(pointInPlane, this.previousClickPoint);
         this.previousClickPoint.set(pointInPlane);
         Vector3 dragRightAxis = this.getCamera().getAbsoluteTransformation().orientation.right;

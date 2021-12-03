@@ -84,16 +84,6 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.render.Synch
   }
 
   @Override
-  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
-    return this.rtImp.getDepthBuffer(rv);
-  }
-
-  @Override
-  public final FloatBuffer getDepthBuffer() {
-    return this.getDepthBuffer(createFloatBufferForUseAsDepthBuffer());
-  }
-
-  @Override
   public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer) {
     return this.rtImp.getColorBufferWithTransparencyBasedOnDepthBuffer(rv, depthBuffer, null);
   }

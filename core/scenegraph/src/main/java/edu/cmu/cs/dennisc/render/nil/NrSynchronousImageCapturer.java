@@ -83,16 +83,6 @@ import java.nio.FloatBuffer;
   }
 
   @Override
-  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
-    return rv;
-  }
-
-  @Override
-  public FloatBuffer getDepthBuffer() {
-    return null;
-  }
-
-  @Override
   public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer) {
     return rv;
   }

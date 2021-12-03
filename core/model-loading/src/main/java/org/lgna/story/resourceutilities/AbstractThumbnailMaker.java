@@ -246,6 +246,9 @@ public abstract class AbstractThumbnailMaker {
     getSGCameraVehicle().setLocalTransformation(cameraTransform);
     //offscreenRenderTarget.clearAndRenderOffscreen();
     BufferedImage rv = offscreenRenderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
+    if (rv == null) {
+      return null;
+    }
 
     writeDebugImageIfAppropriate("rawFinal.png", rv);
 

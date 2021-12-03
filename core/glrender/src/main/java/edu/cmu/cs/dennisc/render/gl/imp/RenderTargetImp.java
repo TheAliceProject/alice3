@@ -117,9 +117,7 @@ public class RenderTargetImp {
   public void addSgCamera(AbstractCamera sgCamera, GLAutoDrawable glAutoDrawable) {
     assert sgCamera != null : this;
     this.sgCameras.add(sgCamera);
-    if (this.isListening()) {
-      //pass
-    } else {
+    if (!this.isListening()) {
       this.startListening(glAutoDrawable);
     }
   }
@@ -242,34 +240,28 @@ public class RenderTargetImp {
     return this.isListening;
   }
 
-  public void startListening(GLAutoDrawable drawable) {
-    if (this.isListening) {
-      if (drawable == this.drawable) {
-        //pass
-      } else {
-        Logger.severe(drawable, this.drawable);
-      }
-      Logger.warning("request GLEventAdapter.startListening( drawable ) ignored; already listening.");
-    } else {
+  private void startListening(GLAutoDrawable drawable) {
+    if (drawable != null) {
       this.isListening = true;
       this.drawable = drawable;
       this.drawable.addGLEventListener(this.glEventListener);
     }
   }
 
-  public void stopListening(GLAutoDrawable drawable) {
-    if (drawable == this.drawable) {
-      //pass
+  private void stopListening(GLAutoDrawable drawable) {
+    if (drawable != null && drawable != this.drawable) {
+      Logger.severe("request GLEventAdapter.stopListening(drawable) came for different drawable", drawable, this.drawable);
     } else {
-      Logger.severe(drawable, this.drawable);
+      if (this.isListening) {
+        this.isListening = false;
+        if (drawable != null) {
+          drawable.removeGLEventListener(this.glEventListener);
+        }
+      } else {
+        Logger.warning("request GLEventAdapter.stopListening(drawable) ignored; already not listening.");
+      }
+      this.drawable = null;
     }
-    if (this.isListening) {
-      this.isListening = false;
-      drawable.removeGLEventListener(this.glEventListener);
-    } else {
-      Logger.warning("request GLEventAdapter.stopListening( drawable ) ignored; already not listening.");
-    }
-    this.drawable = null;
   }
 
   //  private void paintOverlay() {
@@ -440,37 +432,27 @@ public class RenderTargetImp {
     return FloatBuffer.allocate(this.drawableWidth * this.drawableHeight);
   }
 
-  public FloatBuffer getDepthBuffer(FloatBuffer rv) {
-    this.rvDepthBuffer = rv;
-    this.drawable.setAutoSwapBufferMode(false);
-    try {
-      this.drawable.display();
-    } finally {
-      this.rvDepthBuffer = null;
-      this.drawable.setAutoSwapBufferMode(true);
-    }
-    return rv;
-  }
-
   public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer(BufferedImage rv, FloatBuffer depthBuffer, boolean[] atIsUpsideDown) {
-    GLContext glCurrentContext = GLContext.getCurrent();
-    if ((glCurrentContext != null) && (glCurrentContext == this.drawable.getContext())) {
-      this.renderContext.captureBuffers(rv, depthBuffer, atIsUpsideDown);
-    } else {
-      if (this.rvColorBuffer != null) {
-        Logger.severe(this.rvColorBuffer);
-      }
-      this.rvColorBuffer = rv;
-      this.rvDepthBuffer = depthBuffer;
-      this.atIsUpsideDown = atIsUpsideDown;
-      this.drawable.setAutoSwapBufferMode(false);
-      try {
-        this.drawable.display();
-      } finally {
-        this.rvColorBuffer = null;
-        this.rvDepthBuffer = null;
-        this.atIsUpsideDown = null;
-        this.drawable.setAutoSwapBufferMode(true);
+    if (drawable != null) {
+      GLContext glCurrentContext = GLContext.getCurrent();
+      if ((glCurrentContext != null) && (glCurrentContext == this.drawable.getContext())) {
+        this.renderContext.captureBuffers(rv, depthBuffer, atIsUpsideDown);
+      } else {
+        if (this.rvColorBuffer != null) {
+          Logger.severe(this.rvColorBuffer);
+        }
+        this.rvColorBuffer = rv;
+        this.rvDepthBuffer = depthBuffer;
+        this.atIsUpsideDown = atIsUpsideDown;
+        this.drawable.setAutoSwapBufferMode(false);
+        try {
+          this.drawable.display();
+        } finally {
+          this.rvColorBuffer = null;
+          this.rvDepthBuffer = null;
+          this.atIsUpsideDown = null;
+          this.drawable.setAutoSwapBufferMode(true);
+        }
       }
     }
     return rv;

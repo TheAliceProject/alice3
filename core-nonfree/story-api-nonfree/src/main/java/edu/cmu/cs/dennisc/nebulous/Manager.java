@@ -114,6 +114,7 @@ public class Manager {
       try {
         unloadUnusedTextures(gl);
       } catch (RuntimeException e) {
+        System.err.println("Unable to unload unused textures in nebulous code. Continuing execution.");
         e.printStackTrace();
       }
     }
