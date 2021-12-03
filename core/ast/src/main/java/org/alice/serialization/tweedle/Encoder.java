@@ -28,6 +28,7 @@ public class Encoder extends SourceCodeGenerator {
   private static final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
   private static final List<String> angleMembers = new ArrayList<>();
   private static final Map<String, String> typesToRename = new HashMap<>();
+  private static final Map<String, String> typesWithAddedCode = new HashMap<>();
   private static final Map<String, String> membersToRename = new HashMap<>();
   private static final Map<String, String[]> methodsMissingParameterNames = new HashMap<>();
   private static final Map<String, Map<String, String>> methodsWithWrappedArgs = new HashMap<>();
@@ -82,6 +83,34 @@ public class Encoder extends SourceCodeGenerator {
     typesToRename.put("SlithererPose", "JointedModelPose");
     typesToRename.put("SwimmerPose", "JointedModelPose");
     typesToRename.put("QuadrupedPose", "JointedModelPose");
+
+    typesWithAddedCode.put(
+        "Person",
+        "\n  SJoint getRightEye() {\n"
+            + "    SJoint eye <- super.getRightEye();\n"
+            + "    $SceneGraph.trackFacialJoint(joint: eye, person: this);\n"
+            + "    return eye;\n"
+            + "  }\n\n"
+            + "  SJoint getLeftEye() {\n"
+            + "    SJoint eye <- super.getLeftEye();\n"
+            + "    $SceneGraph.trackFacialJoint(joint: eye, person: this);\n"
+            + "    return eye;\n"
+            + "  }\n\n"
+            + "  SJoint getLeftEyelid() {\n"
+            + "    SJoint eyelid <- super.getLeftEyelid();\n"
+            + "    $SceneGraph.trackFacialJoint(joint: eyelid, person: this);\n"
+            + "    return eyelid;\n"
+            + "  }\n\n"
+            + "  SJoint getRightEyelid() {\n"
+            + "    SJoint eyelid <- super.getRightEyelid();\n"
+            + "    $SceneGraph.trackFacialJoint(joint: eyelid, person: this);\n"
+            + "    return eyelid;\n"
+            + "  }\n\n"
+            + "  SJoint getMouth() {\n"
+            + "    SJoint mouth <- super.getMouth();\n"
+            + "    $SceneGraph.trackFacialJoint(joint: mouth, person: this);\n"
+            + "    return mouth;\n"
+            + "  }\n");
 
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
@@ -213,7 +242,7 @@ public class Encoder extends SourceCodeGenerator {
       appendResourceConstructor(superclass, resourceClass.getSimpleName());
       appendResourceFields(superclass, resourceClass);
       appendResourceInstances(resourceClass);
-      appendClassFooter();
+      appendClassFooter(jointedModelResource);
     } catch (ClassNotFoundException cnfe) {
       throw new RuntimeException("Unable to find class " + jointedModelResource + " which should have been the caller type. This should not happen and yet it has.", cnfe);
     }
@@ -236,7 +265,7 @@ public class Encoder extends SourceCodeGenerator {
       }
       appendAddedJoints(superclass, jointNames);
       appendResourceInstance(variantName, "DEFAULT");
-      appendClassFooter();
+      appendClassFooter(dynamicResourceClass);
     } catch (ClassNotFoundException cnfe) {
       throw new RuntimeException("Unable to find class " + dynamicResourceClass + " which should have been the caller type. This should not happen and yet it has.", cnfe);
     }
@@ -270,7 +299,7 @@ public class Encoder extends SourceCodeGenerator {
     });
   }
 
-  private void appendResourceInstances(Class resourceClass) {
+  private void appendResourceInstances(Class<?> resourceClass) {
     if (!resourceClass.isEnum()) {
       return;
     }
@@ -293,7 +322,7 @@ public class Encoder extends SourceCodeGenerator {
     appendStatementCompletion();
   }
 
-  private void appendResourceFields(String superclass, Class resourceClass) {
+  private void appendResourceFields(String superclass, Class<?> resourceClass) {
     Field[] fields = resourceClass.getDeclaredFields();
     List<String> newJoints = new ArrayList<>();
     for (Field field : fields) {
@@ -426,8 +455,9 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendClassFooter() {
-    closeBlock();
+  protected void appendClassFooter(String userTypeName) {
+    appendString(typesWithAddedCode.getOrDefault(userTypeName, ""));
+    super.appendClassFooter(userTypeName);
   }
 
   /** Methods and Fields **/
@@ -835,31 +865,6 @@ public class Encoder extends SourceCodeGenerator {
   }
 
   /** Helper methods **/
-
-  // Enums are replaced with strings and this is used in the conversion.
-  private Class getResourceClass(NamedUserType nut) {
-    try {
-      return Class.forName(getResourceName(nut));
-    } catch (ClassNotFoundException e) {
-      try {
-        return Class.forName(getAlternateResourceName(nut));
-      } catch (ClassNotFoundException cnfe) {
-        return null;
-      }
-    }
-  }
-
-  private String getResourceName(NamedUserType nut) {
-    String owningClass = nut.getName();
-    if ("SandDunes".equals(owningClass)) {
-      owningClass = "Terrain";
-    }
-    return "org.lgna.story.resources." + nut.getSuperType().getName().toLowerCase() + "." + owningClass + "Resource";
-  }
-
-  private String getAlternateResourceName(NamedUserType nut) {
-    return "org.lgna.story.resources." + nut.getName() + "Resource";
-  }
 
   private void appendVisibilityTag(FieldTemplate fieldAnnotation) {
     if (fieldAnnotation == null) {

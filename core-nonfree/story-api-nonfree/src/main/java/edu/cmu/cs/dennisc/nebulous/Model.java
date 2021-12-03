@@ -162,7 +162,7 @@ public abstract class Model extends Geometry {
 
   private native void prepareModelForExporting();
 
-  private native int[] getIndicesForMesh(String meshId, String textureId);
+  protected native int[] getIndicesForMesh(String meshId, String textureId);
 
   private native float[] getVerticesForMesh(String meshId);
 
@@ -174,7 +174,7 @@ public abstract class Model extends Geometry {
 
   private native float[] getUvsForMesh(String meshId);
 
-  private native String[] getTextureIdsForMesh(String meshId);
+  protected native String[] getTextureIdsForMesh(String meshId);
 
   private native boolean isMeshWeightedToJoint(String meshId, String jointId);
 
@@ -477,10 +477,11 @@ public abstract class Model extends Geometry {
     List<String> unweightedMeshIds = new ArrayList<>(Arrays.asList(getUnweightedMeshIds())); //Need this as a list so we can add to it.
     String[] weightedMeshIds = getWeightedMeshIds();
     for (String meshId : weightedMeshIds) {
-      //Check to see if the weighted mesh is really a weighted to joints, and therefore actually a weighted mesh.
+      //Check to see if the weighted mesh is really weighted to joints, and therefore actually a weighted mesh.
       // Some meshes are listed on the sims side as weighted meshes but are not weighted to any joints
       if (isActuallyWeightedToJoints(meshId, resourceJointIds)) {
         WeightedMesh mesh = new WeightedMesh();
+        mesh.setName(meshId);
         initializeMesh(meshId, mesh, resourceJointIds, textureNameToIdMap);
         weightedMeshes.add(mesh);
       } else {

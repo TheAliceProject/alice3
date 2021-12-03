@@ -215,11 +215,6 @@ public class JavaCodeGenerator extends SourceCodeGenerator {
   }
 
   @Override
-  protected void appendClassFooter() {
-    appendString("}");
-  }
-
-  @Override
   protected void appendSection(CodeOrganizer codeOrganizer, NamedUserType userType, Map.Entry<String, List<ProcessableNode>> entry) {
     boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection(entry.getKey());
     appendSectionPrefix(userType, entry.getKey(), shouldCollapseSection);
