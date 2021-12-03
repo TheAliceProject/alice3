@@ -46,7 +46,7 @@
       <mountPoint id="23" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.0.2-SNAPSHOT.jar" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-6.1.0-SNAPSHOT.jar" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" subDirectory="externalDependencies" />
       <fileEntry mountPoint="303" file="../core/resources/target/distribution/platform/macosx/ffmpeg/ffmpeg" overwriteMode="1" fileMode="755" overrideFileMode="true" overrideOverwriteMode="true" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" />
