@@ -74,11 +74,6 @@ public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiv
     return standIn;
   }
 
-  public void setTransformationToAGoodVantagePointOf(EntityImp other) {
-    GoodVantagePointData data = new GoodVantagePointData(this, other);
-    data.epilogue();
-  }
-
   public void animateSetTransformationToAGoodVantagePointOf(EntityImp other, double duration, Style style) {
     GoodVantagePointData data = new GoodVantagePointData(this, other);
     this.animateVantagePoint(data, duration, style);

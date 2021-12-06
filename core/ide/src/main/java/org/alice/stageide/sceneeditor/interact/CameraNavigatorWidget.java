@@ -71,7 +71,7 @@ import java.awt.event.MouseEvent;
  */
 public class CameraNavigatorWidget extends LineAxisPanel {
 
-  public static enum CameraMode {
+  public enum CameraMode {
     ORTHOGRAPHIC, PERSPECTIVE,
   }
 
@@ -80,7 +80,6 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 
     //this.setLayout( new FlowLayout() );
     this.setBackgroundColor(null); //transparent
-    this.dragAdapter = dragAdapter;
 
     //CAMERA DRIVER
     //Create the new handle
@@ -95,9 +94,9 @@ public class CameraNavigatorWidget extends LineAxisPanel {
       this.cameraDriver.addCondition(new ManipulationEventCriteria(event.getType(), event.getMovementDescription(), PickHint.PickType.PERSPECTIVE_CAMERA.pickHint()));
     }
     //Set the handle to listen to the relevant events so it can update its appearance as things happen
-    this.dragAdapter.addManipulationListener(this.cameraDriver);
+    dragAdapter.addManipulationListener(this.cameraDriver);
     //Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-    this.cameraDriver.setDragAdapterAndAddHandle(this.dragAdapter);
+    this.cameraDriver.setDragAdapterAndAddHandle(dragAdapter);
 
     //CAMERA ROTATE UP/DOWN
     //Create the new handle
@@ -112,9 +111,9 @@ public class CameraNavigatorWidget extends LineAxisPanel {
       this.cameraControlUpDown.addCondition(new ManipulationEventCriteria(event.getType(), event.getMovementDescription(), PickHint.PickType.PERSPECTIVE_CAMERA.pickHint()));
     }
     //Set the handle to listen to the relevant events so it can update its appearance as things happen
-    this.dragAdapter.addManipulationListener(this.cameraControlUpDown);
+    dragAdapter.addManipulationListener(this.cameraControlUpDown);
     //Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-    this.cameraControlUpDown.setDragAdapterAndAddHandle(this.dragAdapter);
+    this.cameraControlUpDown.setDragAdapterAndAddHandle(dragAdapter);
 
     //CAMERA STRAFE
     //Create the new handle
@@ -129,18 +128,18 @@ public class CameraNavigatorWidget extends LineAxisPanel {
       this.cameraControlStrafe.addCondition(new ManipulationEventCriteria(event.getType(), event.getMovementDescription(), PickHint.PickType.PERSPECTIVE_CAMERA.pickHint()));
     }
     //Set the handle to listen to the relevant events so it can update its appearance as things happen
-    this.dragAdapter.addManipulationListener(this.cameraControlStrafe);
+    dragAdapter.addManipulationListener(this.cameraControlStrafe);
     //Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-    this.cameraControlStrafe.setDragAdapterAndAddHandle(this.dragAdapter);
+    this.cameraControlStrafe.setDragAdapterAndAddHandle(dragAdapter);
 
     //This is the manipulator used to strafe the camera when holding down shift and using the camera widget
     //Note that this is the only manipulator directly added to the dragAdapter
     //The dragAdapter will automatically activate the correct manipulator based on which handle was clicked
-    strafeManipulator.setDragAdapter(this.dragAdapter);
+    strafeManipulator.setDragAdapter(dragAdapter);
     ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet(strafeManipulator);
     MouseDragCondition handleShiftCondition = new MouseDragCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.TWO_D_HANDLE.pickHint()), new ModifierMask(ModifierKey.SHIFT));
     mouseHandleDrag_Shift.addCondition(handleShiftCondition);
-    this.dragAdapter.addManipulatorConditionSet(mouseHandleDrag_Shift);
+    dragAdapter.addManipulatorConditionSet(mouseHandleDrag_Shift);
 
     //ORTHOGRAPHIC STRAFE
     //Create the new handle
@@ -155,9 +154,9 @@ public class CameraNavigatorWidget extends LineAxisPanel {
       this.orthographicCameraControlStrafe.addCondition(new ManipulationEventCriteria(event.getType(), event.getMovementDescription(), PickHint.PickType.ORTHOGRAPHIC_CAMERA.pickHint()));
     }
     //Set the handle to listen to the relevant events so it can update its appearance as things happen
-    this.dragAdapter.addManipulationListener(this.orthographicCameraControlStrafe);
+    dragAdapter.addManipulationListener(this.orthographicCameraControlStrafe);
     //Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-    this.orthographicCameraControlStrafe.setDragAdapterAndAddHandle(this.dragAdapter);
+    this.orthographicCameraControlStrafe.setDragAdapterAndAddHandle(dragAdapter);
 
     //ORTHOGRAPHIC ZOOM
     //Create the new handle
@@ -172,9 +171,9 @@ public class CameraNavigatorWidget extends LineAxisPanel {
       this.orthographicCameraControlZoom.addCondition(new ManipulationEventCriteria(event.getType(), event.getMovementDescription(), PickHint.PickType.ORTHOGRAPHIC_CAMERA.pickHint()));
     }
     //Set the handle to listen to the relevant events so it can update its appearance as things happen
-    this.dragAdapter.addManipulationListener(this.orthographicCameraControlZoom);
+    dragAdapter.addManipulationListener(this.orthographicCameraControlZoom);
     //Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
-    this.orthographicCameraControlZoom.setDragAdapterAndAddHandle(this.dragAdapter);
+    this.orthographicCameraControlZoom.setDragAdapterAndAddHandle(dragAdapter);
 
     this.cameraMode = null;
     setMode(CameraMode.PERSPECTIVE); //This will set the mode and also put the controls in the panel
@@ -183,38 +182,40 @@ public class CameraNavigatorWidget extends LineAxisPanel {
   public void setExpanded(boolean isExpanded) {
     this.isExpanded = isExpanded;
     switch (this.cameraMode) {
-    case PERSPECTIVE:
-      this.cameraControlUpDown.setVisible(isExpanded);
-      this.cameraControlStrafe.setVisible(isExpanded);
-      this.cameraDriver.setVisible(true);
-      this.orthographicCameraControlStrafe.setVisible(false);
-      this.orthographicCameraControlZoom.setVisible(false);
-      break;
-    case ORTHOGRAPHIC:
-      this.cameraControlUpDown.setVisible(false);
-      this.cameraControlStrafe.setVisible(false);
-      this.cameraDriver.setVisible(false);
-      this.orthographicCameraControlStrafe.setVisible(true);
-      this.orthographicCameraControlZoom.setVisible(true);
-      break;
+      case PERSPECTIVE -> {
+        this.cameraControlUpDown.setVisible(isExpanded);
+        this.cameraControlStrafe.setVisible(isExpanded);
+        this.cameraDriver.setVisible(true);
+        this.orthographicCameraControlStrafe.setVisible(false);
+        this.orthographicCameraControlZoom.setVisible(false);
+      }
+      case ORTHOGRAPHIC -> {
+        this.cameraControlUpDown.setVisible(false);
+        this.cameraControlStrafe.setVisible(false);
+        this.cameraDriver.setVisible(false);
+        this.orthographicCameraControlStrafe.setVisible(true);
+        this.orthographicCameraControlZoom.setVisible(true);
+      }
     }
 
   }
 
   protected void setControlsBasedOnMode(CameraMode mode) {
-    this.removeAllComponents();
-    this.setExpanded(this.isExpanded);
-    JPanel jPanel = this.getAwtComponent();
-    switch (mode) {
-    case PERSPECTIVE:
-      jPanel.add(this.cameraControlStrafe);
-      jPanel.add(this.cameraDriver);
-      jPanel.add(this.cameraControlUpDown);
-      break;
-    case ORTHOGRAPHIC:
-      jPanel.add(this.orthographicCameraControlStrafe);
-      jPanel.add(this.orthographicCameraControlZoom);
-      break;
+    synchronized (getTreeLock()) {
+      this.removeAllComponents();
+      this.setExpanded(this.isExpanded);
+      JPanel jPanel = this.getAwtComponent();
+      switch (mode) {
+        case PERSPECTIVE -> {
+          jPanel.add(this.cameraControlStrafe);
+          jPanel.add(this.cameraDriver);
+          jPanel.add(this.cameraControlUpDown);
+        }
+        case ORTHOGRAPHIC -> {
+          jPanel.add(this.orthographicCameraControlStrafe);
+          jPanel.add(this.orthographicCameraControlZoom);
+        }
+      }
     }
   }
 
@@ -233,12 +234,11 @@ public class CameraNavigatorWidget extends LineAxisPanel {
     }
   }
 
-  private CameraMode cameraMode = CameraMode.PERSPECTIVE;
+  private CameraMode cameraMode;
   private boolean isExpanded = false;
-  private DragAdapter dragAdapter;
-  private ManipulationHandle2DCameraDriver cameraDriver;
-  private ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
-  private ManipulationHandle2DCameraStrafe cameraControlStrafe;
-  private ManipulationHandle2DCameraStrafe orthographicCameraControlStrafe;
-  private ManipulationHandle2DCameraZoom orthographicCameraControlZoom;
+  private final ManipulationHandle2DCameraDriver cameraDriver;
+  private final ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
+  private final ManipulationHandle2DCameraStrafe cameraControlStrafe;
+  private final ManipulationHandle2DCameraStrafe orthographicCameraControlStrafe;
+  private final ManipulationHandle2DCameraZoom orthographicCameraControlZoom;
 }
