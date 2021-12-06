@@ -151,9 +151,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<View
     CameraMarkerImp previousMarker = this.activeMarker;
     this.activeMarker = this.getCameraMarker(e.getNextValue());
     if (previousMarker != this.activeMarker) {
-        stopTrackingCamera();
-        if (this.activeMarker != null) {
-          setCameraToSelectedMarker();
+      stopTrackingCamera();
+      if (this.activeMarker != null) {
+        setCameraToSelectedMarker();
       }
     }
   }
@@ -177,6 +177,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<View
       CameraMarkerTracker.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
       cameraParent.setTransformation(CameraMarkerTracker.this.activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), CameraMarkerTracker.this.orthographicCamera.getRoot());
       startTrackingCamera(this.orthographicCamera, orthoMarker);
+      cameraParent.notifyTransformationListeners();
     } else {
       sceneEditor.switchToPerspectiveCamera();
       animateToTargetView();
