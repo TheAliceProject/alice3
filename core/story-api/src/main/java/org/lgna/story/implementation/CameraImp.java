@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 public abstract class CameraImp<S extends AbstractCamera> extends TransformableImp {
   private final S sgCamera;
 
-  public CameraImp(S sgCamera) {
+  CameraImp(S sgCamera) {
     this.sgCamera = sgCamera;
     this.sgCamera.setParent(this.getSgComposite());
     this.putInstance(this.sgCamera);

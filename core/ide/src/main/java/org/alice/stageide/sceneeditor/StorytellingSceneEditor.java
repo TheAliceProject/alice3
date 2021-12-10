@@ -634,22 +634,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     return SideComposite.getInstance().getObjectPropertiesTab().getView();
   }
 
-  //  private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
-  //  {
-  //    return SideComposite.getInstance().getMarkerTab().getView().getCameraMarkerPanel();
-  //  }
-  //
-  //  private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
-  //  {
-  //    return SideComposite.getInstance().getMarkerTab().getView().getObjectMarkerPanel();
-  //  }
-
   private void handleCameraMarkerFieldSelection(UserField cameraMarkerField) {
     CameraMarkerImp newMarker = (CameraMarkerImp) this.getMarkerForField(cameraMarkerField);
     this.globalDragAdapter.setSelectedCameraMarker(newMarker);
     MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField(cameraMarkerField);
     MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField(cameraMarkerField);
-    //    this.getCameraMarkerPanel().updateButtons();
   }
 
   private void handleObjectMarkerFieldSelection(UserField objectMarkerField) {
@@ -657,7 +646,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.globalDragAdapter.setSelectedObjectMarker(newMarker);
     MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField(objectMarkerField);
     MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField(objectMarkerField);
-    //    this.getObjectMarkerPanel().updateButtons();
   }
 
   public void setSelectedObjectMarker(UserField objectMarkerField) {
@@ -718,122 +706,107 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private void switchToCamera(AbstractCamera camera) {
-    assert camera != null;
-    boolean isClearingAndAddingRequired;
-    if (this.onscreenRenderTarget.getSgCameraCount() == 1) {
-      if (onscreenRenderTarget.getSgCameraAt(0) == camera) {
-        isClearingAndAddingRequired = false;
-      } else {
-        isClearingAndAddingRequired = true;
-      }
-    } else {
-      isClearingAndAddingRequired = true;
-    }
-    if (isClearingAndAddingRequired) {
+    if (onscreenRenderTarget.getSgCameraCount() != 1
+        || onscreenRenderTarget.getSgCameraAt(0) != camera) {
       onscreenRenderTarget.clearSgCameras();
       onscreenRenderTarget.addSgCamera(camera);
     }
-    this.snapGrid.setCurrentCamera(camera);
-    this.onscreenRenderTarget.repaint();
-    this.revalidateAndRepaint();
+    snapGrid.setCurrentCamera(camera);
+    globalDragAdapter.makeCameraActive(camera);
+    onscreenRenderTarget.repaint();
+    revalidateAndRepaint();
   }
 
   public void switchToOthographicCamera() {
-    switchToCamera(this.orthographicCameraImp.getSgCamera());
-    this.globalDragAdapter.makeCameraActive(this.orthographicCameraImp.getSgCamera());
-    this.mainCameraNavigatorWidget.setToOrthographicMode();
+    switchToCamera(orthographicCameraImp.getSgCamera());
+    mainCameraNavigatorWidget.setToOrthographicMode();
   }
 
   public void switchToPerspectiveCamera() {
-    switchToCamera(this.sceneCameraImp.getSgCamera());
-    this.globalDragAdapter.makeCameraActive(this.sceneCameraImp.getSgCamera());
-    this.mainCameraNavigatorWidget.setToPerspectiveMode();
+    switchToCamera(sceneCameraImp.getSgCamera());
+    mainCameraNavigatorWidget.setToPerspectiveMode();
   }
 
   @Override
   protected void initializeComponents() {
     if (this.isInitialized) {
-      //pass
-    } else {
+      return;
+    }
+    this.snapGrid = new SnapGrid();
+    SnapState.getInstance().getShowSnapGridState().addAndInvokeNewSchoolValueListener(this.showSnapGridListener);
+    SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener(this.snapEnabledListener);
+    SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener(this.snapGridSpacingListener);
 
-      this.snapGrid = new SnapGrid();
-      SnapState.getInstance().getShowSnapGridState().addAndInvokeNewSchoolValueListener(this.showSnapGridListener);
-      SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener(this.snapEnabledListener);
-      SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener(this.snapGridSpacingListener);
+    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactorySelectionListener);
 
-      IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactorySelectionListener);
+    this.globalDragAdapter = new GlobalDragAdapter(this);
+    this.globalDragAdapter.setOnscreenRenderTarget(onscreenRenderTarget);
+    this.onscreenRenderTarget.addRenderTargetListener(this);
+    this.globalDragAdapter.setAnimator(animator);
+    if (this.getSelectedField() != null) {
+      setSelectedFieldOnManipulator(this.getSelectedField());
+    }
 
-      this.globalDragAdapter = new GlobalDragAdapter(this);
-      this.globalDragAdapter.setOnscreenRenderTarget(onscreenRenderTarget);
-      this.onscreenRenderTarget.addRenderTargetListener(this);
-      this.globalDragAdapter.setAnimator(animator);
-      if (this.getSelectedField() != null) {
-        setSelectedFieldOnManipulator(this.getSelectedField());
+    this.mainCameraNavigatorWidget = new CameraNavigatorWidget(this.globalDragAdapter, CameraView.MAIN);
+
+    IDE ide = IDE.getActiveInstance();
+    this.expandButton = ide.getDocumentFrame().getSetToSetupScenePerspectiveOperation().createButton();
+    this.expandButton.setClobberIcon(EXPAND_ICON);
+    //todo: tool tip text
+    //this.expandButton.getAwtComponent().setText( null );
+    this.expandButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+
+    this.contractButton = ide.getDocumentFrame().getSetToCodePerspectiveOperation().createButton();
+    this.contractButton.setClobberIcon(CONTRACT_ICON);
+    this.contractButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+    this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
+
+    this.orthographicCameraImp = new OrthographicCameraImp();
+    this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
+
+    initializeCameraMarkers();
+
+    this.globalDragAdapter.addSelectionListener(new SelectionListener() {
+      @Override
+      public void selecting(SelectionEvent e) {
       }
 
-      this.mainCameraNavigatorWidget = new CameraNavigatorWidget(this.globalDragAdapter, CameraView.MAIN);
+      @Override
+      public void selected(SelectionEvent e) {
+        StorytellingSceneEditor.this.handleManipulatorSelection(e);
+      }
+    });
 
-      IDE ide = IDE.getActiveInstance();
-      this.expandButton = ide.getDocumentFrame().getSetToSetupScenePerspectiveOperation().createButton();
-      this.expandButton.setClobberIcon(EXPAND_ICON);
-      //todo: tool tip text
-      //this.expandButton.getAwtComponent().setText( null );
-      this.expandButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+    ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.TURNABLE.pickHint()));
+    ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+      @Override
+      public void onClick(InputState clickInput) {
+        showRightClickMenuForModel(clickInput);
 
-      this.contractButton = ide.getDocumentFrame().getSetToCodePerspectiveOperation().createButton();
-      this.contractButton.setClobberIcon(CONTRACT_ICON);
-      this.contractButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-      this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
+      }
+    };
+    this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
 
-      this.orthographicCameraImp = new OrthographicCameraImp();
-      this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
+    SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.cameraMarkerFieldSelectionListener);
+    SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
 
-      initializeCameraMarkers();
+    this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
 
-      this.globalDragAdapter.addSelectionListener(new SelectionListener() {
-        @Override
-        public void selecting(SelectionEvent e) {
-        }
+    this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
+    this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
+    this.mainCameraViewSelector.setFontSize(15);
+    this.mainCameraViewTracker.mapViewToMarker(View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(View.TOP, this.topOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(View.SIDE, this.sideOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(View.FRONT, this.frontOrthoMarkerImp);
 
-        @Override
-        public void selected(SelectionEvent e) {
-          StorytellingSceneEditor.this.handleManipulatorSelection(e);
-        }
-      });
+    this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewTracker);
+    this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewSelectionObserver);
 
-      ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.TURNABLE.pickHint()));
-      ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
-        @Override
-        public void onClick(InputState clickInput) {
-          showRightClickMenuForModel(clickInput);
+    this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
 
-        }
-      };
-      this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
-
-      SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.cameraMarkerFieldSelectionListener);
-      SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
-      //      org.alice.stageide.croquet.models.sceneditor.CameraMarkerFieldListSelectionState.getInstance().addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
-      //      org.alice.stageide.croquet.models.sceneditor.ObjectMarkerFieldListSelectionState.getInstance().addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
-
-      this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-
-      this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
-      this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
-      this.mainCameraViewSelector.setFontSize(15);
-      this.mainCameraViewTracker.mapViewToMarkerAndViceVersa(View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp);
-      this.mainCameraViewTracker.mapViewToMarkerAndViceVersa(View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp);
-      this.mainCameraViewTracker.mapViewToMarkerAndViceVersa(View.TOP, this.topOrthoMarkerImp);
-      this.mainCameraViewTracker.mapViewToMarkerAndViceVersa(View.SIDE, this.sideOrthoMarkerImp);
-      this.mainCameraViewTracker.mapViewToMarkerAndViceVersa(View.FRONT, this.frontOrthoMarkerImp);
-
-      this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewTracker);
-      this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewSelectionObserver);
-
-      this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
-
-      this.isInitialized = true;
-    }
+    this.isInitialized = true;
   }
 
   @Override
@@ -891,8 +864,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       getPropertyPanel().setSceneInstance(sceneAliceInstance);
 
-      //      getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
-      //      getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
       this.instanceFactorySelectionPanel.setType(sceneAliceInstance.getType());
       for (AbstractField field : sceneField.getValueType().getDeclaredFields()) {
         if (field.getValueType().isAssignableTo(SCamera.class)) {
