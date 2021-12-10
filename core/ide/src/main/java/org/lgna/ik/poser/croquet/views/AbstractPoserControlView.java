@@ -56,8 +56,8 @@ public class AbstractPoserControlView extends MigPanel {
 
   public AbstractPoserControlView(AbstractPoserControlComposite poserControlComposite) {
     //                      [      BaseJointHandles    ][][ikbool][delete] [radioB] [savePose andRun]
-    super(poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" + "[grow 0]" + //straightenOutJoints
-              "[grow 0]"// + //handle visibility
+    super(poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" + "[grow 0]" //straightenOutJoints
+          + "[grow 0]"// + //handle visibility
           //        "[grow 0]" + //delete row
           //        "[]10" + //list section
           //        "[grow 0]0[grow 0]" + //save and export rows
