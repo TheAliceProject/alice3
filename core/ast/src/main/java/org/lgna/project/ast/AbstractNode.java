@@ -95,11 +95,6 @@ public abstract class AbstractNode extends Element implements Node {
 
   private void setParent(AbstractNode parent) {
     if (this.parent != parent) {
-      if (this.parent != null) {
-        if (parent != null) {
-          Logger.warning("previous not null", this, this.parent);
-        }
-      }
       this.parent = parent;
     }
   }
