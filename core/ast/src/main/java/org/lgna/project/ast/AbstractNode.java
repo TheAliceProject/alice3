@@ -95,11 +95,6 @@ public abstract class AbstractNode extends Element implements Node {
 
   private void setParent(AbstractNode parent) {
     if (this.parent != parent) {
-      if (this.parent != null) {
-        if (parent != null) {
-          Logger.warning("previous not null", this, this.parent);
-        }
-      }
       this.parent = parent;
     }
   }
@@ -131,17 +126,9 @@ public abstract class AbstractNode extends Element implements Node {
     super.firePropertyChanging(e);
     InstanceProperty<?> property = e.getTypedSource();
     if (property instanceof NodeProperty<?>) {
-      NodeProperty<?> nodeProperty = (NodeProperty<?>) property;
-      boolean isReference;
-      if (nodeProperty instanceof DeclarationProperty<?>) {
-        isReference = ((DeclarationProperty<?>) nodeProperty).isReference();
-      } else {
-        isReference = false;
-      }
-      if (isReference) {
-        //pass
-      } else {
-        AbstractNode node = (AbstractNode) nodeProperty.getValue();
+      if (!(property instanceof DeclarationProperty<?>
+          && ((DeclarationProperty<?>) property).isReference())) {
+        AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
         if (node != null) {
           node.setParent(null);
         }
@@ -153,17 +140,9 @@ public abstract class AbstractNode extends Element implements Node {
   public void firePropertyChanged(PropertyEvent e) {
     InstanceProperty<?> property = e.getTypedSource();
     if (property instanceof NodeProperty<?>) {
-      NodeProperty<?> nodeProperty = (NodeProperty<?>) property;
-      boolean isReference;
-      if (nodeProperty instanceof DeclarationProperty<?>) {
-        isReference = ((DeclarationProperty<?>) nodeProperty).isReference();
-      } else {
-        isReference = false;
-      }
-      if (isReference) {
-        //pass
-      } else {
-        AbstractNode node = (AbstractNode) nodeProperty.getValue();
+      if (!(property instanceof DeclarationProperty<?>
+          && ((DeclarationProperty<?>) property).isReference())) {
+        AbstractNode node = (AbstractNode) ((NodeProperty<?>) property).getValue();
         if (node != null) {
           node.setParent(this);
         }
@@ -262,9 +241,7 @@ public abstract class AbstractNode extends Element implements Node {
       if (declarationFilter != null) {
         if (node instanceof Declaration) {
           Declaration declaration = (Declaration) node;
-          if (declarationFilter.accept(declaration)) {
-            //pass
-          } else {
+          if (!declarationFilter.accept(declaration)) {
             Logger.errln("skipping", declaration);
             return;
           }
@@ -283,9 +260,7 @@ public abstract class AbstractNode extends Element implements Node {
   }
 
   private void accept(Crawler crawler, Set<Crawlable> visited, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter) {
-    if (visited.contains(this)) {
-      //pass
-    } else {
+    if (!visited.contains(this)) {
       visited.add(this);
       crawler.visit(this);
 
@@ -294,21 +269,15 @@ public abstract class AbstractNode extends Element implements Node {
         // Check if this is a reference
         if (property instanceof DeclarationProperty<?>) {
           DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>) property;
-          if (declarationProperty.isReference()) {
-            if (crawlPolicy.isReferenceTunneledInto()) {
-              //pass
-            } else {
-              if (crawlPolicy.isReferenceIncluded()) {
-                Declaration declaration = declarationProperty.getValue();
-                if (visited.contains(declaration)) {
-                  //pass
-                } else {
-                  visited.add(declaration);
-                  crawler.visit(declaration);
-                }
+          if (declarationProperty.isReference() && !crawlPolicy.isReferenceTunneledInto()) {
+            if (crawlPolicy.isReferenceIncluded()) {
+              Declaration declaration = declarationProperty.getValue();
+              if (!visited.contains(declaration)) {
+                visited.add(declaration);
+                crawler.visit(declaration);
               }
-              continue;
             }
+            continue;
           }
         }
 
@@ -339,27 +308,18 @@ public abstract class AbstractNode extends Element implements Node {
     this.crawl(crawler, crawlPolicy, null);
   }
 
-  // hashCode not terrible choice for "unique" key.
-  //  private static int getNotGuaranteedToBeUniqueKey( AbstractDeclaration declaration ) {
-  //    return System.identityHashCode( declaration );
-  //  }
-
   protected Set<AbstractDeclaration> fillInDeclarationSet(Set<AbstractDeclaration> rv, Set<AbstractNode> nodes) {
     nodes.add(this);
     for (InstanceProperty<?> property : this.getProperties()) {
       Object value = property.getValue();
       if (value instanceof AbstractNode) {
-        if (nodes.contains(value)) {
-          //pass
-        } else {
+        if (!nodes.contains(value)) {
           ((AbstractNode) value).fillInDeclarationSet(rv, nodes);
         }
       } else if (value instanceof Iterable<?>) {
         for (Object item : (Iterable<?>) value) {
           if (item instanceof AbstractNode) {
-            if (nodes.contains(item)) {
-              //pass
-            } else {
+            if (!nodes.contains(item)) {
               ((AbstractNode) item).fillInDeclarationSet(rv, nodes);
             }
           }
@@ -380,27 +340,19 @@ public abstract class AbstractNode extends Element implements Node {
     for (InstanceProperty<?> property : this.getProperties()) {
       if (property instanceof DeclarationProperty) {
         DeclarationProperty<? extends AbstractDeclaration> declarationProperty = (DeclarationProperty<? extends AbstractDeclaration>) property;
-        if (declarationProperty.isReference()) {
-          //pass
-        } else {
+        if (!declarationProperty.isReference()) {
           rv.remove(declarationProperty.getValue());
         }
       }
       Object value = property.getValue();
       if (value instanceof AbstractNode) {
-        if (nodes.contains(value)) {
-          //pass
-        } else {
+        if (!nodes.contains(value)) {
           ((AbstractNode) value).removeDeclarationsThatNeedToBeCopied(rv, nodes);
         }
       } else if (value instanceof Iterable<?>) {
         for (Object item : (Iterable<?>) value) {
-          if (item instanceof AbstractNode) {
-            if (nodes.contains(item)) {
-              //pass
-            } else {
-              ((AbstractNode) item).removeDeclarationsThatNeedToBeCopied(rv, nodes);
-            }
+          if (item instanceof AbstractNode && !nodes.contains(item)) {
+            ((AbstractNode) item).removeDeclarationsThatNeedToBeCopied(rv, nodes);
           }
         }
       }
@@ -411,17 +363,6 @@ public abstract class AbstractNode extends Element implements Node {
   public Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied(Set<AbstractDeclaration> rv) {
     return removeDeclarationsThatNeedToBeCopied(rv, new HashSet<AbstractNode>());
   }
-
-  //  protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-  //    rv.append( this.getClass().getSimpleName() );
-  //    return rv;
-  //  }
-  //
-  //  public final String getRepr( java.util.Locale locale ) {
-  //    StringBuilder sb = new StringBuilder();
-  //    this.appendRepr( sb, locale );
-  //    return sb.toString();
-  //  }
 
   public static void safeAppendRepr(AstLocalizer localizer, Node node) {
     if (node instanceof AbstractNode) {
