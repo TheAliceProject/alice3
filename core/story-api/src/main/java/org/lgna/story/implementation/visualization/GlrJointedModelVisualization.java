@@ -54,6 +54,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ReferenceFrame;
@@ -239,17 +240,21 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
 
   @Override
   public void pick(PickContext pc, PickParameters pickParameters) {
-    this.pushOffset(pc.gl);
-    JointedModelImp implementation = this.owner.getImplementation();
-    pc.gl.glPushName(-1); // visual
-    try {
-      pc.gl.glPushName(1); // isFrontFacing
+    synchronized (Scene.renderLock) {
+      this.pushOffset(pc.gl);
+      JointedModelImp implementation = this.owner.getImplementation();
+      pc.gl.glPushName(-1); // visual
       try {
-        pc.gl.glPushName(-1); // geometry
+        pc.gl.glPushName(1); // isFrontFacing
         try {
-          pc.gl.glPushName(-1); // subElement
+          pc.gl.glPushName(-1); // geometry
           try {
-            implementation.treeWalk(new PickWalkObserver(pc, implementation, pickParameters));
+            pc.gl.glPushName(-1); // subElement
+            try {
+              implementation.treeWalk(new PickWalkObserver(pc, implementation, pickParameters));
+            } finally {
+              pc.gl.glPopName();
+            }
           } finally {
             pc.gl.glPopName();
           }
@@ -259,10 +264,8 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
       } finally {
         pc.gl.glPopName();
       }
-    } finally {
-      pc.gl.glPopName();
+      this.popOffset(pc.gl);
     }
-    this.popOffset(pc.gl);
   }
 
   @Override

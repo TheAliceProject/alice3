@@ -519,5 +519,5 @@ public abstract class Model extends Geometry {
   protected Composite sgParent;
   protected Visual sgAssociatedVisual;
 
-  protected static final Object renderLock = new Object();
+  public static final Object renderLock = Scene.renderLock;
 }

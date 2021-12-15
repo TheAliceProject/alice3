@@ -53,6 +53,8 @@ import edu.cmu.cs.dennisc.property.InstanceProperty;
  * @author Dennis Cosgrove
  */
 public class Scene extends Composite {
+  public static final Object renderLock = new Object();
+
   @Override
   public AffineMatrix4x4 getAbsoluteTransformation(AffineMatrix4x4 rv) {
     rv.setIdentity();

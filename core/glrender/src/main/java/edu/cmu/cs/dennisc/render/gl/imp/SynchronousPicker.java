@@ -62,6 +62,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 import java.awt.Rectangle;
@@ -126,7 +127,9 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
         this.glOffscreenDrawable = OffscreenDrawable.createInstance(new OffscreenDrawable.DisplayCallback() {
           @Override
           public void display(GL2 gl) {
-            sharedActualPicker.performPick(gl);
+            synchronized (Scene.renderLock) {
+              sharedActualPicker.performPick(gl);
+            }
           }
         }, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1);
       }

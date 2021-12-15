@@ -61,6 +61,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
@@ -342,48 +343,50 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   @Override
   public void pick(PickContext pc, PickParameters pickParameters) {
-    if (this.owner.isPickable.getValue() && isActuallyShowing() && (isEthereal() == false)) {
-      boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
+    synchronized (Scene.renderLock) {
+      if (this.owner.isPickable.getValue() && isActuallyShowing() && (isEthereal() == false)) {
+        boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 
-      if (isSubElementActuallyRequired) {
-        //pass
-      } else {
-        ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
-        if (pickDetails != null) {
-          isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
+        if (isSubElementActuallyRequired) {
+          //pass
         } else {
-          Logger.severe(this);
+          ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
+          if (pickDetails != null) {
+            isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
+          } else {
+            Logger.severe(this);
+          }
         }
-      }
 
-      if (this.isScaleIdentity) {
-        //pass
-      } else {
-        pc.gl.glPushMatrix();
-        pc.incrementScaledCount();
-        pc.gl.glMultMatrixd(this.scaleBuffer);
-      }
+        if (this.isScaleIdentity) {
+          //pass
+        } else {
+          pc.gl.glPushMatrix();
+          pc.incrementScaledCount();
+          pc.gl.glMultMatrixd(this.scaleBuffer);
+        }
 
-      pc.gl.glPushName(pc.getPickNameForVisualAdapter(this));
-      pc.gl.glEnable(GL_CULL_FACE);
-      if (this.glrBackFacingAppearance != null) {
-        pc.gl.glCullFace(GL_FRONT);
-        pc.gl.glPushName(0);
-        this.pickGeometry(pc, isSubElementActuallyRequired);
+        pc.gl.glPushName(pc.getPickNameForVisualAdapter(this));
+        pc.gl.glEnable(GL_CULL_FACE);
+        if (this.glrBackFacingAppearance != null) {
+          pc.gl.glCullFace(GL_FRONT);
+          pc.gl.glPushName(0);
+          this.pickGeometry(pc, isSubElementActuallyRequired);
+          pc.gl.glPopName();
+        }
+        if (this.glrFrontFacingAppearance != null) {
+          pc.gl.glCullFace(GL_BACK);
+          pc.gl.glPushName(1);
+          this.pickGeometry(pc, isSubElementActuallyRequired);
+          pc.gl.glPopName();
+        }
         pc.gl.glPopName();
-      }
-      if (this.glrFrontFacingAppearance != null) {
-        pc.gl.glCullFace(GL_BACK);
-        pc.gl.glPushName(1);
-        this.pickGeometry(pc, isSubElementActuallyRequired);
-        pc.gl.glPopName();
-      }
-      pc.gl.glPopName();
-      if (this.isScaleIdentity) {
-        //pass
-      } else {
-        pc.decrementScaledCount();
-        pc.gl.glPopMatrix();
+        if (this.isScaleIdentity) {
+          //pass
+        } else {
+          pc.decrementScaledCount();
+          pc.gl.glPopMatrix();
+        }
       }
     }
   }
