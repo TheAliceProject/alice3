@@ -1026,8 +1026,9 @@
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
-      <postInstallScript>cat /opt/alice3/alice3.desktop /opt/alice3/platform/linux/alice3.desktop.partial &gt; /usr/share/applications/alice3.desktop</postInstallScript>
-      <preUninstallScript>rm /usr/share/applications/alice3.desktop</preUninstallScript>
+      <postInstallScript>cat "/opt/alice3/${compiler:sys.fullName}.desktop" "/opt/alice3/platform/linux/alice3.desktop.partial" &gt; "/usr/share/applications/${compiler:sys.fullName}.desktop"
+ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortName}"</postInstallScript>
+      <preUninstallScript>rm "/usr/share/applications/${compiler:sys.fullName}.desktop"</preUninstallScript>
     </linuxDeb>
     <unixArchive name="Unix Archive" id="1295" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
