@@ -55,17 +55,29 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
- * Texture is defined by glTexCoord2f, which uses two value to crop the original picture
+ * Texture is defined by glTexCoord2f, which uses two values to crop the original picture
+ * Points for each side are assigned clockwise and starts from bottom-right corner
  */
 public class GlrBox extends GlrShape<Box> {
   private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
     //todo: revist vertex ordering
-    //xMin face
-    //c.gl.glColor3d( 1,1,1 );
     int id = 0;
+    float[][] leftTexCoord = {{.75f, 0.66f}, {0.75f, 0.33f}, {0.5f, 0.33f}, {0.5f, 0.66f}};
+    double[][] leftVertex = {{this.xMin, this.yMin, this.zMax}, {this.xMin, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMin}, {this.xMin, this.yMin, this.zMin}};
+    Map<String, float[][]> texCoordMap = new HashMap<>();
+    texCoordMap.put("left", leftTexCoord);
+    Map<String, double[][]> vertexMap = new HashMap<>();
+    vertexMap.put("left", leftVertex);
 
+    // xMin face
+    // c.gl.glColor3d( 1,1,1 );
+    float[][] leftSideTex = texCoordMap.get("left");
+    double[][] leftSideVertex = vertexMap.get("left");
     c.gl.glBegin(GL_QUADS);
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
@@ -73,26 +85,12 @@ public class GlrBox extends GlrShape<Box> {
     if (isLightingEnabled) {
       c.gl.glNormal3d(-1, 0, 0);
     }
-
-    if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.75f, .66f);
+    for (int i = 0; i < leftSideTex.length; i++) {
+      if (isTexturingEnabled) {
+        c.gl.glTexCoord2f(leftSideTex[i][0], leftSideTex[i][1]);
+      }
+      c.gl.glVertex3d(leftSideVertex[i][0], leftSideVertex[i][1], leftSideVertex[i][2]);
     }
-    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
-
-    if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.75f, .33f);
-    }
-    c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
-
-    if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, .33f);
-    }
-    c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
-
-    if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, .66f);
-    }
-    c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
     //xMax face
     //c.gl.glColor3d( 1,0,0 );
@@ -186,23 +184,24 @@ public class GlrBox extends GlrShape<Box> {
     if (isLightingEnabled) {
       c.gl.glNormal3d(0, 0, -1);
     }
+
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(1.0f, .33f);
+      c.gl.glTexCoord2f(0.5f, .33f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.75f, .33f);
+      c.gl.glTexCoord2f(0.25f, .33f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.75f, .66f);
+      c.gl.glTexCoord2f(0.25f, .66f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(1.0f, .66f);
+      c.gl.glTexCoord2f(0.5f, .66f);
     }
     c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
@@ -215,22 +214,25 @@ public class GlrBox extends GlrShape<Box> {
       c.gl.glNormal3d(0, 0, 1);
     }
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.25f, .66f);
-    }
-    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
-
-    if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.5f, .66f);
+      c.gl.glTexCoord2f(1.0f, .33f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
+//    c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.5f, .33f);
+      c.gl.glTexCoord2f(0.75f, .33f);
+    }
+    c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
+//    c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
+
+    if (isTexturingEnabled) {
+      c.gl.glTexCoord2f(0.75f, .66f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
+//    c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.25f, .33f);
+      c.gl.glTexCoord2f(1.0f, .66f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
