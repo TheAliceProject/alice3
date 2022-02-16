@@ -57,6 +57,7 @@ import edu.cmu.cs.dennisc.scenegraph.Box;
 
 /**
  * @author Dennis Cosgrove
+ * Texture is defined by glTexCoord2f, which uses two value to crop the original picture
  */
 public class GlrBox extends GlrShape<Box> {
   private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
@@ -74,22 +75,22 @@ public class GlrBox extends GlrShape<Box> {
     }
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.25f, .66f);
+      c.gl.glTexCoord2f(.75f, .66f);
     }
     c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(.25f, .33f);
+      c.gl.glTexCoord2f(.75f, .33f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.0f, .33f);
+      c.gl.glTexCoord2f(0.5f, .33f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.0f, .66f);
+      c.gl.glTexCoord2f(0.5f, .66f);
     }
     c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
@@ -102,22 +103,22 @@ public class GlrBox extends GlrShape<Box> {
       c.gl.glNormal3d(1, 0, 0);
     }
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.75f, .66f);
+      c.gl.glTexCoord2f(0.25f, .66f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.75f, .33f);
+      c.gl.glTexCoord2f(0.25f, .33f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, .33f);
+      c.gl.glTexCoord2f(0.0f, .33f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, .66f);
+      c.gl.glTexCoord2f(0.0f, .66f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
 
@@ -130,22 +131,22 @@ public class GlrBox extends GlrShape<Box> {
       c.gl.glNormal3d(0, -1, 0);
     }
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.25f, 0.33f);
+      c.gl.glTexCoord2f(0.5f, 0.66f);
     }
     c.gl.glVertex3d(this.xMin, this.yMin, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, 0.33f);
+      c.gl.glTexCoord2f(0.25f, 0.66f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, 0.0f);
+      c.gl.glTexCoord2f(0.25f, 1.0f);
     }
     c.gl.glVertex3d(this.xMax, this.yMin, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.25f, 0.0f);
+      c.gl.glTexCoord2f(0.5f, 1.0f);
     }
     c.gl.glVertex3d(this.xMin, this.yMin, this.zMax);
 
@@ -158,22 +159,22 @@ public class GlrBox extends GlrShape<Box> {
       c.gl.glNormal3d(0, 1, 0);
     }
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, .66f);
+      c.gl.glTexCoord2f(0.25f, .33f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.25f, .66f);
+      c.gl.glTexCoord2f(0.5f, .33f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMax);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.25f, 1.0f);
+      c.gl.glTexCoord2f(0.5f, 0.0f);
     }
     c.gl.glVertex3d(this.xMax, this.yMax, this.zMin);
 
     if (isTexturingEnabled) {
-      c.gl.glTexCoord2f(0.5f, 1.0f);
+      c.gl.glTexCoord2f(0.25f, 0.0f);
     }
     c.gl.glVertex3d(this.xMin, this.yMax, this.zMin);
 
