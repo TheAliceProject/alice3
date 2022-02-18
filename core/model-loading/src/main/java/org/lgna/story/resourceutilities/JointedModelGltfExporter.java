@@ -350,6 +350,12 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     return renamedJoints.getOrDefault(jointIdentifier, jointIdentifier);
   }
 
+  public String getAliceJointIdentifier(String userJointIdentifier) {
+    return renamedJoints.entrySet().stream()
+        .filter(entry -> entry.getValue().equals(userJointIdentifier)).findFirst().map(Map.Entry::getKey)
+        .orElse(userJointIdentifier);
+  }
+
   private List<Mesh> createMeshes(BufferStructureBuilder bufferStructureBuilder, GlTF gltf, Map<String, Integer> jointNodes) {
     List<Mesh> meshes = new ArrayList<>();
 
@@ -619,7 +625,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     VertexWeights[] skinWeights = new VertexWeights[vertexCount];
     final Map<String, InverseAbsoluteTransformationWeightsPair> weightsPairMap = wi.getMap();
     for (Map.Entry<String, Integer> jointEntry : jointNodes.entrySet()) {
-      InverseAbsoluteTransformationWeightsPair iatwp = weightsPairMap.get(jointEntry.getKey());
+      InverseAbsoluteTransformationWeightsPair iatwp = weightsPairMap.get(getAliceJointIdentifier(jointEntry.getKey()));
       if (iatwp == null) {
         continue;
       }
@@ -647,7 +653,7 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     float[] matrix = new float[16];
     int index = 0;
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : entries) {
-      skin.addJoints(jointNodes.get(entry.getKey()));
+      skin.addJoints(jointNodes.get(getUserJointIdentifier(entry.getKey())));
       AffineMatrix4x4 inverseBindMatrix = entry.getValue().getInverseAbsoluteTransformation();
       inverseBindMatrix.getAsColumnMajorArray16(matrix);
       System.arraycopy(matrix, 0, matrices, index, 16);
