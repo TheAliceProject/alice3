@@ -62,172 +62,188 @@ import java.util.Map;
  * @author Dennis Cosgrove
  * Texture is defined by glTexCoord2f, which uses two values to crop the original picture
  */
+
 public class GlrBox extends GlrShape<Box> {
-  private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
-    //todo: revist vertex ordering
-    int id = 0;
-    int numberOfCorner = 4;
-    int[] leftNormal3d = {-1, 0, 0};
-    int[] rightNormal3d = {1, 0, 0};
-    int[] bottomNormal3d = {0, -1, 0};
-    int[] topNormal3d = {0, 1, 0};
-    int[] frontNormal3d = {0, 0, -1};
-    int[] backNormal3d = {0, 0, 1};
-    float[][] leftTexCoord = {{.75f, .66f}, {.75f, .33f}, {.5f, .33f}, {.5f, .66f}};
-    float[][] rightTexCoord = {{.25f, .66f}, {.25f, .33f}, {.0f, .33f}, {.0f, .66f}};
-    float[][] bottomTexCoord = {{.5f, .66f}, {.25f, .66f}, {.25f, 1.0f}, {.5f, 1.0f}};
-    float[][] topTexCoord = {{.5f, .0f}, {.25f, .0f}, {.25f, .33f}, {.5f, .33f}};
-    float[][] frontTexCoord = {{.5f, .33f}, {.25f, .33f}, {.25f, .66f}, {.5f, .66f}};
-    float[][] backTexCoord = {{.75f, .66f}, {1.0f, .66f}, {1.0f, .33f}, {.75f, .33f}};
-    double[][] leftFace = {{this.xMin, this.yMin, this.zMax}, {this.xMin, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMin}, {this.xMin, this.yMin, this.zMin}};
-    double[][] rightFace = {{this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMin, this.zMax}};
-    double[][] bottomFace = {{this.xMin, this.yMin, this.zMin}, {this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMin, this.zMax}, {this.xMin, this.yMin, this.zMax}};
-    double[][] topFace = {{this.xMin, this.yMax, this.zMax}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMax, this.zMin}, {this.xMin, this.yMax, this.zMin}};
-    double[][] frontFace = {{this.xMin, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMin, this.zMin}, {this.xMin, this.yMin, this.zMin}};
-    double[][] backFace = {{this.xMin, this.yMin, this.zMax}, {this.xMax, this.yMin, this.zMax}, {this.xMax, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMax}};
-    Map<String, int[]> normal3dMap = new HashMap<>();
-    normal3dMap.put("left", leftNormal3d);
-    normal3dMap.put("right", rightNormal3d);
-    normal3dMap.put("bottom", bottomNormal3d);
-    normal3dMap.put("top", topNormal3d);
-    normal3dMap.put("front", frontNormal3d);
-    normal3dMap.put("back", backNormal3d);
-    Map<String, float[][]> texCoordMap = new HashMap<>();
-    texCoordMap.put("left", leftTexCoord);
-    texCoordMap.put("right", rightTexCoord);
-    texCoordMap.put("bottom", bottomTexCoord);
-    texCoordMap.put("top", topTexCoord);
-    texCoordMap.put("front", frontTexCoord);
-    texCoordMap.put("back", backTexCoord);
-    Map<String, double[][]> vertexMap = new HashMap<>();
-    vertexMap.put("left", leftFace);
-    vertexMap.put("right", rightFace);
-    vertexMap.put("bottom", bottomFace);
-    vertexMap.put("top", topFace);
-    vertexMap.put("front", frontFace);
-    vertexMap.put("back", backFace);
+    private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
+        //todo: revist vertex ordering
+        int id = 0;
+        double[][] leftFace = {{this.xMin, this.yMin, this.zMax}, {this.xMin, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMin}, {this.xMin, this.yMin, this.zMin}};
+        double[][] rightFace = {{this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMin, this.zMax}};
+        double[][] bottomFace = {{this.xMin, this.yMin, this.zMin}, {this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMin, this.zMax}, {this.xMin, this.yMin, this.zMax}};
+        double[][] topFace = {{this.xMin, this.yMax, this.zMax}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMax, this.zMin}, {this.xMin, this.yMax, this.zMin}};
+        double[][] frontFace = {{this.xMin, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMin, this.zMin}, {this.xMin, this.yMin, this.zMin}};
+        double[][] backFace = {{this.xMin, this.yMin, this.zMax}, {this.xMax, this.yMin, this.zMax}, {this.xMax, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMax}};
+        normal3dMap.put("left", leftNormal3d);
+        normal3dMap.put("right", rightNormal3d);
+        normal3dMap.put("bottom", bottomNormal3d);
+        normal3dMap.put("top", topNormal3d);
+        normal3dMap.put("front", frontNormal3d);
+        normal3dMap.put("back", backNormal3d);
+        texCoordMap.put("left", leftTexCoord);
+        texCoordMap.put("right", rightTexCoord);
+        texCoordMap.put("bottom", bottomTexCoord);
+        texCoordMap.put("top", topTexCoord);
+        texCoordMap.put("front", frontTexCoord);
+        texCoordMap.put("back", backTexCoord);
+        vertexMap.put("left", leftFace);
+        vertexMap.put("right", rightFace);
+        vertexMap.put("bottom", bottomFace);
+        vertexMap.put("top", topFace);
+        vertexMap.put("front", frontFace);
+        vertexMap.put("back", backFace);
 
-    c.gl.glBegin(GL_QUADS);
+        c.gl.glBegin(GL_QUADS);
 
-    // xMin face
-    // c.gl.glColor3d( 1,1,1 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "left", normal3dMap, texCoordMap, vertexMap);
-    // xMax face
-    // c.gl.glColor3d( 1,0,0 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "right", normal3dMap, texCoordMap, vertexMap);
-    // yMin face
-    // c.gl.glColor3d( 1,1,1 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "bottom", normal3dMap, texCoordMap, vertexMap);
-    // yMax face
-    // c.gl.glColor3d( 0,1,0 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "top", normal3dMap, texCoordMap, vertexMap);
-    // zMin face
-    // c.gl.glColor3d( 1,1,1 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "front", normal3dMap, texCoordMap, vertexMap);
-    // zMax face
-    // c.gl.glColor3d( 0,0,1 );
-    DrawBox(c, id, isSubElementRequired, isLightingEnabled, isTexturingEnabled, numberOfCorner, "back", normal3dMap, texCoordMap, vertexMap);
+        // xMin face
+        // c.gl.glColor3d( 1,1,1 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "left");
+        // xMax face
+        // c.gl.glColor3d( 1,0,0 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "right");
+        // yMin face
+        // c.gl.glColor3d( 1,1,1 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "bottom");
+        // yMax face
+        // c.gl.glColor3d( 0,1,0 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "top");
+        // zMin face
+        // c.gl.glColor3d( 1,1,1 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "front");
+        // zMax face
+        // c.gl.glColor3d( 0,0,1 );
+        if (isSubElementRequired) {
+            c.gl.glLoadName(id++);
+        }
+        drawBox(c, isLightingEnabled, isTexturingEnabled, "back");
 
-    c.gl.glEnd();
-  }
-
-  private void DrawBox(Context c, int id, boolean isSubElementRequired, boolean isLightingEnabled, boolean isTexturingEnabled, int numberOfCorner, String side, Map<String, int[]> normalArr, Map<String, float[][]> texMat, Map<String, double[][]> vertexMat) {
-    int[] sideNormal3d = normalArr.get(side);
-    float[][] sideTex = texMat.get(side);
-    double[][] sideVertex = vertexMat.get(side);
-
-    if (isSubElementRequired) {
-      c.gl.glLoadName(id++);
+        c.gl.glEnd();
     }
-    if (isLightingEnabled) {
-      c.gl.glNormal3d(sideNormal3d[0], sideNormal3d[1], sideNormal3d[2]);
+
+    private void drawBox(Context c, boolean isLightingEnabled, boolean isTexturingEnabled, String side) {
+        int[] sideNormal3d = normal3dMap.get(side);
+        float[][] sideTex = texCoordMap.get(side);
+        double[][] sideVertex = vertexMap.get(side);
+
+        if (isLightingEnabled) {
+            c.gl.glNormal3d(sideNormal3d[0], sideNormal3d[1], sideNormal3d[2]);
+        }
+        for (int i = 0; i < numberOfCorner; i++) {
+            if (isTexturingEnabled) {
+                c.gl.glTexCoord2f(sideTex[i][0], sideTex[i][1]);
+            }
+            c.gl.glVertex3d(sideVertex[i][0], sideVertex[i][1], sideVertex[i][2]);
+        }
     }
-    for (int i = 0; i < numberOfCorner; i++) {
-      if (isTexturingEnabled) {
-        c.gl.glTexCoord2f(sideTex[i][0], sideTex[i][1]);
-      }
-      c.gl.glVertex3d(sideVertex[i][0], sideVertex[i][1], sideVertex[i][2]);
+
+    @Override
+    protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+        glBox(rc, true, false, rc.isTextureEnabled());
     }
-  }
 
-  @Override
-  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glBox(rc, true, false, rc.isTextureEnabled());
-  }
-
-  @Override
-  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pc.gl.glPushName(-1);
-    glBox(pc, false, isSubElementRequired, false);
-    pc.gl.glPopName();
-  }
-
-  @Override
-  public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
-    Point3 origin = new Point3(0, 0, 0);
-    Vector3 direction = new Vector3(0, 0, 0);
-    switch (subElement) {
-    case 0:
-      origin.x = this.xMin;
-      direction.x = -1;
-      break;
-    case 1:
-      origin.x = this.xMax;
-      direction.x = 1;
-      break;
-    case 2:
-      origin.y = this.yMin;
-      direction.y = -1;
-      break;
-    case 3:
-      origin.y = this.yMax;
-      direction.y = 1;
-      break;
-    case 4:
-      origin.z = this.zMin;
-      direction.z = -1;
-      break;
-    case 5:
-      origin.z = this.zMax;
-      direction.z = 1;
-      break;
-    default:
-      rv.setNaN();
-      return rv;
+    @Override
+    protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+        pc.gl.glPushName(-1);
+        glBox(pc, false, isSubElementRequired, false);
+        pc.gl.glPopName();
     }
-    GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
-    return rv;
-  }
 
-  @Override
-  protected void propertyChanged(InstanceProperty<?> property) {
-    if (property == owner.xMinimum) {
-      this.xMin = owner.xMinimum.getValue();
-      setIsGeometryChanged(true);
-    } else if (property == owner.xMaximum) {
-      this.xMax = owner.xMaximum.getValue();
-      setIsGeometryChanged(true);
-    } else if (property == owner.yMinimum) {
-      this.yMin = owner.yMinimum.getValue();
-      setIsGeometryChanged(true);
-    } else if (property == owner.yMaximum) {
-      this.yMax = owner.yMaximum.getValue();
-      setIsGeometryChanged(true);
-    } else if (property == owner.zMinimum) {
-      this.zMin = owner.zMinimum.getValue();
-      setIsGeometryChanged(true);
-    } else if (property == owner.zMaximum) {
-      this.zMax = owner.zMaximum.getValue();
-      setIsGeometryChanged(true);
-    } else {
-      super.propertyChanged(property);
+    @Override
+    public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
+        Point3 origin = new Point3(0, 0, 0);
+        Vector3 direction = new Vector3(0, 0, 0);
+        switch (subElement) {
+            case 0:
+                origin.x = this.xMin;
+                direction.x = -1;
+                break;
+            case 1:
+                origin.x = this.xMax;
+                direction.x = 1;
+                break;
+            case 2:
+                origin.y = this.yMin;
+                direction.y = -1;
+                break;
+            case 3:
+                origin.y = this.yMax;
+                direction.y = 1;
+                break;
+            case 4:
+                origin.z = this.zMin;
+                direction.z = -1;
+                break;
+            case 5:
+                origin.z = this.zMax;
+                direction.z = 1;
+                break;
+            default:
+                rv.setNaN();
+                return rv;
+        }
+        GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
+        return rv;
     }
-  }
 
-  private double xMin;
-  private double xMax;
-  private double yMin;
-  private double yMax;
-  private double zMin;
-  private double zMax;
+    @Override
+    protected void propertyChanged(InstanceProperty<?> property) {
+        if (property == owner.xMinimum) {
+            this.xMin = owner.xMinimum.getValue();
+            setIsGeometryChanged(true);
+        } else if (property == owner.xMaximum) {
+            this.xMax = owner.xMaximum.getValue();
+            setIsGeometryChanged(true);
+        } else if (property == owner.yMinimum) {
+            this.yMin = owner.yMinimum.getValue();
+            setIsGeometryChanged(true);
+        } else if (property == owner.yMaximum) {
+            this.yMax = owner.yMaximum.getValue();
+            setIsGeometryChanged(true);
+        } else if (property == owner.zMinimum) {
+            this.zMin = owner.zMinimum.getValue();
+            setIsGeometryChanged(true);
+        } else if (property == owner.zMaximum) {
+            this.zMax = owner.zMaximum.getValue();
+            setIsGeometryChanged(true);
+        } else {
+            super.propertyChanged(property);
+        }
+    }
+
+    private double xMin;
+    private double xMax;
+    private double yMin;
+    private double yMax;
+    private double zMin;
+    private double zMax;
+    private static final int numberOfCorner = 4;
+    private static final int[] leftNormal3d = {-1, 0, 0};
+    private static final int[] rightNormal3d = {1, 0, 0};
+    private static final int[] bottomNormal3d = {0, -1, 0};
+    private static final int[] topNormal3d = {0, 1, 0};
+    private static final int[] frontNormal3d = {0, 0, -1};
+    private static final int[] backNormal3d = {0, 0, 1};
+    private static final float[][] leftTexCoord = {{.75f, .66f}, {.75f, .33f}, {.5f, .33f}, {.5f, .66f}};
+    private static final float[][] rightTexCoord = {{.25f, .66f}, {.25f, .33f}, {.0f, .33f}, {.0f, .66f}};
+    private static final float[][] bottomTexCoord = {{.5f, .66f}, {.25f, .66f}, {.25f, 1.0f}, {.5f, 1.0f}};
+    private static final float[][] topTexCoord = {{.5f, .0f}, {.25f, .0f}, {.25f, .33f}, {.5f, .33f}};
+    private static final float[][] frontTexCoord = {{.5f, .33f}, {.25f, .33f}, {.25f, .66f}, {.5f, .66f}};
+    private static final float[][] backTexCoord = {{.75f, .66f}, {1.0f, .66f}, {1.0f, .33f}, {.75f, .33f}};
+    private static Map<String, int[]> normal3dMap = new HashMap<>();
+    private static Map<String, float[][]> texCoordMap = new HashMap<>();
+    private static Map<String, double[][]> vertexMap = new HashMap<>();
 }
