@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.glu.GLU;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -69,6 +70,7 @@ public class GlrSphere extends GlrShape<Sphere> {
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
     //Required for quadric shapes like spheres, discs, and cylinders
     boolean isTextureEnabled = rc.isTextureEnabled();
+    rc.glu.gluQuadricDrawStyle(rc.getQuadric(), GLU.GLU_SILHOUETTE);
     rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
     glSphere(rc);
   }
