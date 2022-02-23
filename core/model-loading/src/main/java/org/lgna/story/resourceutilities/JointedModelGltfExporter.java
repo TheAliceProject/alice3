@@ -346,11 +346,11 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     return node;
   }
 
-  public String getUserJointIdentifier(String jointIdentifier) {
+  private String getUserJointIdentifier(String jointIdentifier) {
     return renamedJoints.getOrDefault(jointIdentifier, jointIdentifier);
   }
 
-  public String getAliceJointIdentifier(String userJointIdentifier) {
+  private String getAliceJointIdentifier(String userJointIdentifier) {
     return renamedJoints.entrySet().stream()
         .filter(entry -> entry.getValue().equals(userJointIdentifier)).findFirst().map(Map.Entry::getKey)
         .orElse(userJointIdentifier);
