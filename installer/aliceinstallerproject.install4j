@@ -109,7 +109,7 @@
           <entry location="EULA_LookingGlassWalkAndTouch.txt" />
           <entry location="EULA_TheSimsTM2ArtAsset.txt" />
           <entry location="platform" />
-          <entry location="${compiler:sys.shortName}" fileType="launcher" />
+          <entry location="${compiler:sys.fullName}" fileType="launcher" />
         </include>
       </component>
       <component name="aliceStarterProjects" id="200">
@@ -120,8 +120,8 @@
     </components>
   </files>
   <launchers>
-    <launcher name="${compiler:sys.shortName}" id="24" icnsFile="installerFiles/macIcon_flat.icns">
-      <executable name="${compiler:sys.shortName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
+    <launcher name="${compiler:sys.fullName}" id="24" icnsFile="installerFiles/macIcon_flat.icns">
+      <executable name="${compiler:sys.fullName}" iconSet="true" executableDir="." stderrFile="${installer:sys.userHome}/Alice3/error.log" executableMode="gui" singleInstance="true" />
       <splashScreen show="true" width="684" height="301" bitmapFile="installerFiles/SplashScreen.png" textOverlay="true">
         <text>
           <statusLine x="86" y="262" text="Loading…" />
@@ -532,7 +532,7 @@
                 <serializedBean>
                   <property name="file">
                     <object class="java.io.File">
-                      <string>${compiler:sys.shortName}</string>
+                      <string>${compiler:sys.fullName}</string>
                     </object>
                   </property>
                   <property name="name" type="string">${compiler:sys.fullName}</property>
@@ -967,7 +967,7 @@
     </styles>
   </installerGui>
   <mediaSets>
-    <windows name="Windows 64 Offline" id="101" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice 3" downloadURL="http://www.alice.org/downloads/installerDataTest">
+    <windows name="Windows 64 Offline" id="101" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="${compiler:sys.fullName}" downloadURL="http://www.alice.org/downloads/installerDataTest">
       <exclude>
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
@@ -978,7 +978,7 @@
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice 3" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="${compiler:sys.fullName}" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -1026,8 +1026,9 @@
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
-      <postInstallScript>cat /opt/alice3/alice3.desktop /opt/alice3/platform/linux/alice3.desktop.partial &gt; /usr/share/applications/alice3.desktop</postInstallScript>
-      <preUninstallScript>rm /usr/share/applications/alice3.desktop</preUninstallScript>
+      <postInstallScript>cat "/opt/alice3/${compiler:sys.fullName}.desktop" "/opt/alice3/platform/linux/alice3.desktop.partial" &gt; "/usr/share/applications/${compiler:sys.fullName}.desktop"
+ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortName}"</postInstallScript>
+      <preUninstallScript>rm "/usr/share/applications/${compiler:sys.fullName}.desktop"</preUninstallScript>
     </linuxDeb>
     <unixArchive name="Unix Archive" id="1295" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
