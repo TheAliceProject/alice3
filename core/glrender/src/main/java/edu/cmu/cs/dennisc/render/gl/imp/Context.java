@@ -83,7 +83,6 @@ public abstract class Context {
     if (this.scaledCount == 1) {
       this.enableNormalize();
     }
-
   }
 
   public void decrementScaledCount() {
