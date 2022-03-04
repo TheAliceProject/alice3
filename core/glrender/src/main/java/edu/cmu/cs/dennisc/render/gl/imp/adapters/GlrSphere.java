@@ -67,9 +67,13 @@ public class GlrSphere extends GlrShape<Sphere> {
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    //Required for quadric shapes like spheres, discs, and cylinders
     boolean isTextureEnabled = rc.isTextureEnabled();
+    // Required for quadric shapes like spheres, discs, and cylinders
+//    rc.gl.glScalef(-1.0f, 1.0f, 1.0f);
+//    rc.gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
     rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
+//    rc.glu.gluQuadricOrientation(rc.getQuadric(), GLU.GLU_INSIDE);
+//    rc.glu.gluQuadricNormals(rc.getQuadric(), 100020);
     glSphere(rc);
   }
 
