@@ -141,9 +141,6 @@ public abstract class GlrTexture<T extends Texture> extends GlrObject<T> {
   }
 
   protected static TextureData newTextureData(GL gl, BufferedImage image, boolean isMipMapDesired) {
-//    Logger.errln(image.getPropertyNames());
-    Logger.errln(image.getClass());
-    Logger.errln(image.toString());
     image = createFlipped(image);
     TextureData rv = AWTTextureIO.newTextureData(gl.getGLProfile(), image, isMipMapDesired);
     return rv;
