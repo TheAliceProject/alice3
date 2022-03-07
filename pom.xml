@@ -118,7 +118,6 @@
 
     <module>alice-ide</module>
     <module>netbeans</module>
-<!--    TODO: revert below comment-->
     <module>installer</module>
   </modules>
 
@@ -439,7 +438,6 @@
           <artifactId>exec-maven-plugin</artifactId>
           <version>1.6.0</version>
         </plugin>
-<!--        TODO: revert below comments-->
         <plugin>
           <groupId>com.install4j</groupId>
           <artifactId>install4j-maven</artifactId>
