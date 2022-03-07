@@ -59,11 +59,14 @@ import edu.cmu.cs.dennisc.scenegraph.Torus;
  * @author Dennis Cosgrove
  */
 public class GlrTorus extends GlrShape<Torus> {
-  private void glVertex(Context context, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled) {
+  private void glVertex(Context c, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled) {
     double sinTheta = Math.sin(theta);
     double cosTheta = Math.cos(theta);
     double sinPhi = Math.sin(phi);
     double cosPhi = Math.cos(phi);
+//    double x = Math.sin(theta) * Math.sin(phi);
+//    double y = Math.cos(theta) * Math.sin(phi);
+//    double z = Math.cos(phi);
 
     double y = minorRadius * sinPhi;
     double r = majorRadius + (minorRadius * cosPhi);
@@ -78,14 +81,17 @@ public class GlrTorus extends GlrShape<Torus> {
       } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
         //todo
       }
-      context.gl.glNormal3d(i, j, k);
+      c.gl.glNormal3d(i, j, k);
     }
     if (coordinatePlane == Torus.CoordinatePlane.XY) {
       //todo
+//      c.gl.glTexCoord2d(x, y);
     } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
       //todo
+//      c.gl.glTexCoord2d(x, y);
     }
-    context.gl.glVertex3d(x, y, z);
+    c.gl.glTexCoord2d(x, y);
+    c.gl.glVertex3d(x, y, z);
   }
 
   private void glTorus(Context context, boolean isLightingEnabled) {
