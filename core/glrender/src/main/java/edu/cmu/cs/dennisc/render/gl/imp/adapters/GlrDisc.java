@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.math.FloatUtil;
+import com.jogamp.opengl.util.ImmModeSink;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -59,8 +62,9 @@ public class GlrDisc extends GlrShape<Disc> {
   //todo: add scenegraph hint
   private static final int SLICE_COUNT = 50;
   private static final int LOOP_COUNT = 1;
+  private static final float TAU = 2f * FloatUtil.PI;
 
-  private void glDisc(Context c) {
+  private void glDisc(Context c, boolean isTextureEnabled) {
     double innerRadius = owner.innerRadius.getValue();
     double outerRadius = owner.outerRadius.getValue();
     c.gl.glPushMatrix();
@@ -72,23 +76,57 @@ public class GlrDisc extends GlrShape<Disc> {
         c.gl.glRotated(90.0, 1.0, 0.0, 0.0);
       }
       if (owner.isFrontFaceVisible.getValue()) {
-        c.glu.gluDisk(c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT);
+        gluDisk(c.gl, innerRadius, outerRadius, isTextureEnabled);
       }
       if (owner.isBackFaceVisible.getValue()) {
         c.gl.glRotated(180.0, 0.0, 1.0, 0.0);
-        c.glu.gluDisk(c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT);
+        gluDisk(c.gl, innerRadius, outerRadius, isTextureEnabled);
       }
     } finally {
       c.gl.glPopMatrix();
     }
   }
 
+  private static void gluDisk(GL2 gl, double innerRadius, double outerRadius, boolean isTextureEnabled) {
+    // Use largest disk in texture
+    gluDisk(gl, innerRadius, outerRadius, isTextureEnabled, 0.5F, 0.5F, 1.0F);
+  }
+
+  // Inspired by GLUquadricImpl.drawDisk() for the limited case of GLU_OUTSIDE, GLU_FILL, and having normals.
+  // The texture application has been flipped in T so images appear forward
+  // Added the texture center and portion to select a specific part of the texture
+  static void gluDisk(GL2 gl, double innerRadius, double outerRadius, boolean isTextureEnabled, float textureCenterS, float textureCenterT, float texturePortion) {
+    gl.getGL2().glNormal3f(0.0f, 0.0f, +1.0f);
+
+    float da = TAU / GlrDisc.SLICE_COUNT;
+    float dr = (float) ((outerRadius - innerRadius) / GlrDisc.LOOP_COUNT);
+    final float dtc = (float) (2.0 * outerRadius) / texturePortion;
+    float sa, ca;
+    float r1 = (float) innerRadius;
+    for (int ring = 0; ring < GlrDisc.LOOP_COUNT; ring++) {
+      final float r2 = r1 + dr;
+      gl.getGL2().glBegin(ImmModeSink.GL_QUAD_STRIP);
+      for (var s = 0; s <= GlrDisc.SLICE_COUNT; s++) {
+        float a = s == GlrDisc.SLICE_COUNT ? 0.0f : s * da;
+        sa = (float) Math.sin(a);
+        ca = (float) Math.cos(a);
+        if (isTextureEnabled) {
+          gl.getGL2().glTexCoord2f(textureCenterS + sa * r2 / dtc, textureCenterT - ca * r2 / dtc);
+        }
+        gl.getGL2().glVertex2f(r2 * sa, r2 * ca);
+        if (isTextureEnabled) {
+          gl.getGL2().glTexCoord2f(textureCenterS + sa * r1 / dtc, textureCenterT - ca * r1 / dtc);
+        }
+        gl.getGL2().glVertex2f(r1 * sa, r1 * ca);
+      }
+      gl.getGL2().glEnd();
+      r1 = r2;
+    }
+  }
+
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    //Required for quadric shapes like spheres, discs, and cylinders
-    boolean isTextureEnabled = rc.isTextureEnabled();
-    rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
-    glDisc(rc);
+    glDisc(rc, rc.isTextureEnabled());
   }
 
   @Override
@@ -100,7 +138,7 @@ public class GlrDisc extends GlrShape<Disc> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glDisc(pc);
+    glDisc(pc, false);
     pc.gl.glPopName();
   }
 
