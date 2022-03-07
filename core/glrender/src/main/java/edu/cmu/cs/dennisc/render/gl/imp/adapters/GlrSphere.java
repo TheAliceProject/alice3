@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.util.ImmModeSink;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -61,22 +64,118 @@ public class GlrSphere extends GlrShape<Sphere> {
   private static final int STACK_COUNT = 50;
   private static final int SLICE_COUNT = 50;
 
-  private void glSphere(Context c) {
-    c.glu.gluSphere(c.getQuadric(), this.radius, SLICE_COUNT, STACK_COUNT);
+  private void glSphere(Context c, boolean textureFlag) {
+    GL2 gl = c.gl;
+    drawSphereCustomize(gl, textureFlag);
+  }
+
+  /**
+   * Customized version of drawSphere with inverting image handling
+   * @param gl
+   * @param textureFlag
+   */
+  private void drawSphereCustomize(GL2 gl, boolean textureFlag) {
+    double rho, drho, theta, dtheta;
+    double x, y, z;
+    double s, t, ds, dt;
+    int i, j, imin, imax;
+    boolean normals = true;
+    double nsign = 1.0;
+
+    drho = Math.PI / STACK_COUNT;
+    dtheta = (Math.PI * 2) / SLICE_COUNT;
+
+    if (!textureFlag) {
+      gl.glBegin(GL.GL_TRIANGLE_FAN);
+      gl.glNormal3d(0.0, 0.0, 1.0);
+      gl.glVertex3d(0.0, 0.0, nsign * radius);
+      for (j = 0; j <= SLICE_COUNT; j++) {
+        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
+        x = -Math.sin(theta) * Math.sin(drho);
+        y = Math.cos(theta) * Math.sin(drho);
+        z = nsign * Math.cos(drho);
+        if (normals) {
+          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
+        }
+        gl.glVertex3d(x * radius, y * radius, z * radius);
+      }
+      gl.glEnd();
+    }
+
+    ds = 1.0 / SLICE_COUNT;
+    dt = 1.0 / STACK_COUNT;
+    t = 0.0;
+    if (textureFlag) {
+      imin = 0;
+      imax = STACK_COUNT;
+    } else {
+      imin = 1;
+      imax = STACK_COUNT - 1;
+    }
+
+    for (i = imax; i >= imin; i--) {
+      rho = i * drho;
+      gl.glBegin(ImmModeSink.GL_QUAD_STRIP);
+      s = 1.0;
+      for (j = SLICE_COUNT; j >= 0; j--) {
+        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
+        x = Math.sin(theta) * Math.sin(rho);
+        y = Math.cos(theta) * Math.sin(rho);
+        z = nsign * Math.cos(rho);
+        if (normals) {
+          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
+        }
+        if (textureFlag) {
+          gl.glTexCoord2d(s, t);
+        }
+        gl.glVertex3d(x * radius, y * radius, z * radius);
+        x = Math.sin(theta) * Math.sin(rho + drho);
+        y = Math.cos(theta) * Math.sin(rho + drho);
+        z = nsign * Math.cos(rho + drho);
+        if (normals) {
+          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
+        }
+        if (textureFlag) {
+          gl.glTexCoord2d(s, t - dt);
+        }
+        s -= ds;
+        gl.glVertex3d(x * radius, y * radius, z * radius);
+      }
+      gl.glEnd();
+      t += dt;
+    }
+
+    if (!textureFlag) {
+      gl.glBegin(GL.GL_TRIANGLE_FAN);
+      gl.glNormal3d(0.0, 0.0, -1.0);
+      gl.glVertex3d(0.0, 0.0, -radius * nsign);
+      rho = Math.PI - drho;
+      s = 1.0;
+      for (j = SLICE_COUNT; j >= 0; j--) {
+        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
+        x = -Math.sin(theta) * Math.sin(rho);
+        y = Math.cos(theta) * Math.sin(rho);
+        z = nsign * Math.cos(rho);
+        if (normals) {
+          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
+        }
+        s -= ds;
+        gl.glVertex3d(x * radius, y * radius, z * radius);
+      }
+      gl.glEnd();
+    }
   }
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    //Required for quadric shapes like spheres, discs, and cylinders
     boolean isTextureEnabled = rc.isTextureEnabled();
     rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
-    glSphere(rc);
+    glSphere(rc, isTextureEnabled);
   }
 
   @Override
   public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
     //assuming ray unit length
-
     Point3 origin = new Point3(0, 0, 0);
     Vector3 dst = Vector3.createSubtraction(ray.accessOrigin(), origin);
     double b = Vector3.calculateDotProduct(dst, ray.accessDirection());
@@ -100,7 +199,7 @@ public class GlrSphere extends GlrShape<Sphere> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glSphere(pc);
+    glSphere(pc, true);
     pc.gl.glPopName();
   }
 
