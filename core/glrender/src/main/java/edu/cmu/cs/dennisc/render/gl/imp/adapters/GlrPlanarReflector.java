@@ -182,11 +182,14 @@ public class GlrPlanarReflector extends GlrVisual<PlanarReflector> {
 
   public void renderStencil(RenderContext rc, GlrVisual.RenderType renderType) {
     rc.gl.glPushMatrix();
-    synchronized (this) {
-      rc.gl.glMultMatrixd(accessAbsoluteTransformationAsBuffer());
+    try {
+      synchronized (this) {
+        rc.gl.glMultMatrixd(accessAbsoluteTransformationAsBuffer());
+      }
+      actuallyRender(rc, renderType);
+    } finally {
+      rc.gl.glPopMatrix();
     }
-    actuallyRender(rc, renderType);
-    rc.gl.glPopMatrix();
   }
 
   private final AffineMatrix4x4 geometryTransformation = AffineMatrix4x4.createNaN();

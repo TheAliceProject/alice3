@@ -90,21 +90,8 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
   }
 
   private boolean isEthereal() {
-    if (this.glrFrontFacingAppearance != null) {
-      if (this.glrFrontFacingAppearance.isEthereal()) {
-        //pass
-      } else {
-        return false;
-      }
-    }
-    if (this.glrBackFacingAppearance != null) {
-      if (this.glrBackFacingAppearance.isEthereal()) {
-        //pass
-      } else {
-        return false;
-      }
-    }
-    return true;
+    return (glrFrontFacingAppearance == null || glrFrontFacingAppearance.isEthereal())
+        && (glrBackFacingAppearance == null || glrBackFacingAppearance.isEthereal());
   }
 
   protected boolean isActuallyShowing() {
@@ -240,79 +227,78 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
   protected void actuallyRender(RenderContext rc, RenderType renderType) {
     assert (this.glrFrontFacingAppearance != null) || (this.glrBackFacingAppearance != null);
 
-    if (this.isScaleIdentity) {
-      //pass
-    } else {
+    if (!this.isScaleIdentity) {
       rc.gl.glPushMatrix();
       rc.gl.glMultMatrixd(this.scaleBuffer);
       rc.incrementScaledCount();
     }
-    if (this.glrFrontFacingAppearance == this.glrBackFacingAppearance) {
-      if (this.glrFrontFacingAppearance != null) {
-        this.glrFrontFacingAppearance.setPipelineState(rc, GL_FRONT_AND_BACK);
-        rc.gl.glDisable(GL_CULL_FACE);
-        if (this.silhouetteAdapter != null) {
-          this.preSilhouette(rc);
+    try {
+      if (this.glrFrontFacingAppearance == this.glrBackFacingAppearance) {
+        if (this.glrFrontFacingAppearance != null) {
+          this.glrFrontFacingAppearance.setPipelineState(rc, GL_FRONT_AND_BACK);
+          rc.gl.glDisable(GL_CULL_FACE);
+          if (this.silhouetteAdapter != null) {
+            this.preSilhouette(rc);
+          }
+          this.renderGeometry(rc, renderType);
+          if (this.silhouetteAdapter != null) {
+            this.postSilouette(rc, GL_FRONT_AND_BACK);
+          }
+          rc.gl.glEnable(GL_CULL_FACE);
+        } else {
+          //should never reach here
         }
-        this.renderGeometry(rc, renderType);
-        if (this.silhouetteAdapter != null) {
-          this.postSilouette(rc, GL_FRONT_AND_BACK);
-        }
-        rc.gl.glEnable(GL_CULL_FACE);
       } else {
-        //should never reach here
-      }
-    } else {
-      if (this.glrFrontFacingAppearance != null) {
-        rc.gl.glCullFace(GL_BACK);
-        if (this.silhouetteAdapter != null) {
-          this.preSilhouette(rc);
-        }
-        this.glrFrontFacingAppearance.setPipelineState(rc, GL_FRONT);
-        this.renderGeometry(rc, renderType);
-        if (this.silhouetteAdapter != null) {
-          this.postSilouette(rc, GL_FRONT);
-        }
+        if (this.glrFrontFacingAppearance != null) {
+          rc.gl.glCullFace(GL_BACK);
+          if (this.silhouetteAdapter != null) {
+            this.preSilhouette(rc);
+          }
+          this.glrFrontFacingAppearance.setPipelineState(rc, GL_FRONT);
+          this.renderGeometry(rc, renderType);
+          if (this.silhouetteAdapter != null) {
+            this.postSilouette(rc, GL_FRONT);
+          }
 
-      }
-      if (this.glrBackFacingAppearance != null) {
-        rc.gl.glCullFace(GL_FRONT);
-        if (this.silhouetteAdapter != null) {
-          this.preSilhouette(rc);
         }
-        this.glrBackFacingAppearance.setPipelineState(rc, GL_BACK);
-        this.renderGeometry(rc, renderType);
-        if (this.silhouetteAdapter != null) {
-          this.postSilouette(rc, GL_BACK);
+        if (this.glrBackFacingAppearance != null) {
+          rc.gl.glCullFace(GL_FRONT);
+          if (this.silhouetteAdapter != null) {
+            this.preSilhouette(rc);
+          }
+          this.glrBackFacingAppearance.setPipelineState(rc, GL_BACK);
+          this.renderGeometry(rc, renderType);
+          if (this.silhouetteAdapter != null) {
+            this.postSilouette(rc, GL_BACK);
+          }
         }
       }
-    }
-
-    if (this.isScaleIdentity) {
-      //pass
-    } else {
-      rc.decrementScaledCount();
-      rc.gl.glPopMatrix();
+    } finally {
+      if (!isScaleIdentity) {
+        rc.decrementScaledCount();
+        rc.gl.glPopMatrix();
+      }
     }
   }
 
   public void renderAlphaBlended(RenderContext rc) {
-    //System.out.println( "renderAlphaBlended: " + this );
-    if (isActuallyShowing()) {
-      rc.gl.glPushMatrix();
-      rc.gl.glMultMatrixd(accessAbsoluteTransformationAsBuffer());
-      actuallyRender(rc, RenderType.ALPHA_BLENDED);
-      rc.gl.glPopMatrix();
-    }
+    renderAlpha(rc, RenderType.ALPHA_BLENDED);
   }
 
   public void renderAllAlphaBlended(RenderContext rc) {
+    renderAlpha(rc, RenderType.ALL);
+  }
+
+  private void renderAlpha(RenderContext rc, RenderType renderType) {
     //System.out.println( "renderAlphaBlended: " + this );
     if (isActuallyShowing()) {
       rc.gl.glPushMatrix();
-      rc.gl.glMultMatrixd(accessAbsoluteTransformationAsBuffer());
-      actuallyRender(rc, RenderType.ALL);
-      rc.gl.glPopMatrix();
+      try {
+        rc.gl.glMultMatrixd(accessAbsoluteTransformationAsBuffer());
+        actuallyRender(rc, renderType);
+      } finally {
+        rc.gl.glPopMatrix();
+      }
     }
   }
 
@@ -342,48 +328,44 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   @Override
   public void pick(PickContext pc, PickParameters pickParameters) {
-    if (this.owner.isPickable.getValue() && isActuallyShowing() && (isEthereal() == false)) {
+    if (this.owner.isPickable.getValue() && isActuallyShowing() && !isEthereal()) {
       boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 
-      if (isSubElementActuallyRequired) {
-        //pass
-      } else {
+      if (!isSubElementActuallyRequired) {
         ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
         if (pickDetails != null) {
-          isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
+          isSubElementActuallyRequired = !pickDetails.isPickFunctioningCorrectly();
         } else {
           Logger.severe(this);
         }
       }
 
-      if (this.isScaleIdentity) {
-        //pass
-      } else {
+      if (!isScaleIdentity) {
         pc.gl.glPushMatrix();
         pc.incrementScaledCount();
         pc.gl.glMultMatrixd(this.scaleBuffer);
       }
-
-      pc.gl.glPushName(pc.getPickNameForVisualAdapter(this));
-      pc.gl.glEnable(GL_CULL_FACE);
-      if (this.glrBackFacingAppearance != null) {
-        pc.gl.glCullFace(GL_FRONT);
-        pc.gl.glPushName(0);
-        this.pickGeometry(pc, isSubElementActuallyRequired);
+      try {
+        pc.gl.glPushName(pc.getPickNameForVisualAdapter(this));
+        pc.gl.glEnable(GL_CULL_FACE);
+        if (this.glrBackFacingAppearance != null) {
+          pc.gl.glCullFace(GL_FRONT);
+          pc.gl.glPushName(0);
+          this.pickGeometry(pc, isSubElementActuallyRequired);
+          pc.gl.glPopName();
+        }
+        if (this.glrFrontFacingAppearance != null) {
+          pc.gl.glCullFace(GL_BACK);
+          pc.gl.glPushName(1);
+          this.pickGeometry(pc, isSubElementActuallyRequired);
+          pc.gl.glPopName();
+        }
         pc.gl.glPopName();
-      }
-      if (this.glrFrontFacingAppearance != null) {
-        pc.gl.glCullFace(GL_BACK);
-        pc.gl.glPushName(1);
-        this.pickGeometry(pc, isSubElementActuallyRequired);
-        pc.gl.glPopName();
-      }
-      pc.gl.glPopName();
-      if (this.isScaleIdentity) {
-        //pass
-      } else {
-        pc.decrementScaledCount();
-        pc.gl.glPopMatrix();
+      } finally {
+        if (!isScaleIdentity) {
+          pc.decrementScaledCount();
+          pc.gl.glPopMatrix();
+        }
       }
     }
   }

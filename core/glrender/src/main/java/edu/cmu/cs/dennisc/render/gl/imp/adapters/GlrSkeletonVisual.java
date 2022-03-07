@@ -412,8 +412,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
           //          rc.gl.glEnable( com.jogamp.opengl.GL2.GL_DEPTH_TEST );
         } finally {
           rc.gl.glEnd();
+          rc.gl.glPopMatrix();
         }
-        rc.gl.glPopMatrix();
       }
     }
     for (int i = 0; i < currentNode.getComponentCount(); i++) {
@@ -445,9 +445,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     boolean DEBUG_SKELETON = false;
     if (!DEBUG_SKELETON) {
       for (Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet()) {
-        if (renderType == RenderType.SILHOUETTE) {
-          //pass
-        } else {
+        if (renderType != RenderType.SILHOUETTE) {
           appearanceEntry.getValue().setTexturePipelineState(rc);
         }
 
@@ -755,9 +753,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       updateAppearanceToMeshControllersMap();
     } else if (property == owner.textures) {
       updateAppearanceIdToAdapterMap();
-    } else if (property == owner.baseBoundingBox) {
-      //pass
-    } else {
+    } else if (property != owner.baseBoundingBox) {
       super.propertyChanged(property);
     }
   }

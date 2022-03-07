@@ -240,7 +240,7 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
   @Override
   public void pick(PickContext pc, PickParameters pickParameters) {
     this.pushOffset(pc.gl);
-    JointedModelImp implementation = this.owner.getImplementation();
+    var implementation = this.owner.getImplementation();
     pc.gl.glPushName(-1); // visual
     try {
       pc.gl.glPushName(1); // isFrontFacing
@@ -261,8 +261,8 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
       }
     } finally {
       pc.gl.glPopName();
+      popOffset(pc.gl);
     }
-    this.popOffset(pc.gl);
   }
 
   @Override
@@ -273,56 +273,59 @@ public class GlrJointedModelVisualization extends GlrLeaf<JointedModelVisualizat
   public void renderOpaque(RenderContext rc) {
     rc.gl.glEnable(GL_LIGHTING);
     this.pushOffset(rc.gl);
-    JointedModelImp implementation = this.owner.getImplementation();
+    try {
+      var implementation = this.owner.getImplementation();
 
-    AxisAlignedBox boundingBox = implementation.getAxisAlignedMinimumBoundingBox();
-    //              boundingBox = null;
-    if (boundingBox != null) {
-      rc.gl.glDisable(GL_LIGHTING);
-      rc.gl.glDisable(GL_TEXTURE_2D);
-      rc.gl.glColor3f(1.0f, 1.0f, 1.0f);
-      Point3 min = boundingBox.getMinimum();
-      Point3 max = boundingBox.getMaximum();
+      var boundingBox = implementation.getAxisAlignedMinimumBoundingBox();
+      //              boundingBox = null;
+      if (boundingBox != null) {
+        rc.gl.glDisable(GL_LIGHTING);
+        rc.gl.glDisable(GL_TEXTURE_2D);
+        rc.gl.glColor3f(1.0f, 1.0f, 1.0f);
+        Point3 min = boundingBox.getMinimum();
+        Point3 max = boundingBox.getMaximum();
 
-      //Bottom
-      rc.gl.glBegin(GL_LINE_LOOP);
-      rc.gl.glVertex3d(min.x, min.y, min.z);
-      rc.gl.glVertex3d(min.x, min.y, max.z);
-      rc.gl.glVertex3d(max.x, min.y, max.z);
-      rc.gl.glVertex3d(max.x, min.y, min.z);
-      rc.gl.glEnd();
+        //Bottom
+        rc.gl.glBegin(GL_LINE_LOOP);
+        rc.gl.glVertex3d(min.x, min.y, min.z);
+        rc.gl.glVertex3d(min.x, min.y, max.z);
+        rc.gl.glVertex3d(max.x, min.y, max.z);
+        rc.gl.glVertex3d(max.x, min.y, min.z);
+        rc.gl.glEnd();
 
-      //Top
-      rc.gl.glBegin(GL_LINE_LOOP);
-      rc.gl.glVertex3d(min.x, max.y, min.z);
-      rc.gl.glVertex3d(min.x, max.y, max.z);
-      rc.gl.glVertex3d(max.x, max.y, max.z);
-      rc.gl.glVertex3d(max.x, max.y, min.z);
-      rc.gl.glEnd();
+        //Top
+        rc.gl.glBegin(GL_LINE_LOOP);
+        rc.gl.glVertex3d(min.x, max.y, min.z);
+        rc.gl.glVertex3d(min.x, max.y, max.z);
+        rc.gl.glVertex3d(max.x, max.y, max.z);
+        rc.gl.glVertex3d(max.x, max.y, min.z);
+        rc.gl.glEnd();
 
-      //Sides
-      rc.gl.glBegin(GL_LINES);
-      rc.gl.glVertex3d(min.x, min.y, min.z);
-      rc.gl.glVertex3d(min.x, max.y, min.z);
-      rc.gl.glEnd();
+        //Sides
+        rc.gl.glBegin(GL_LINES);
+        rc.gl.glVertex3d(min.x, min.y, min.z);
+        rc.gl.glVertex3d(min.x, max.y, min.z);
+        rc.gl.glEnd();
 
-      rc.gl.glBegin(GL_LINES);
-      rc.gl.glVertex3d(max.x, min.y, min.z);
-      rc.gl.glVertex3d(max.x, max.y, min.z);
-      rc.gl.glEnd();
+        rc.gl.glBegin(GL_LINES);
+        rc.gl.glVertex3d(max.x, min.y, min.z);
+        rc.gl.glVertex3d(max.x, max.y, min.z);
+        rc.gl.glEnd();
 
-      rc.gl.glBegin(GL_LINES);
-      rc.gl.glVertex3d(min.x, min.y, max.z);
-      rc.gl.glVertex3d(min.x, max.y, max.z);
-      rc.gl.glEnd();
+        rc.gl.glBegin(GL_LINES);
+        rc.gl.glVertex3d(min.x, min.y, max.z);
+        rc.gl.glVertex3d(min.x, max.y, max.z);
+        rc.gl.glEnd();
 
-      rc.gl.glBegin(GL_LINES);
-      rc.gl.glVertex3d(max.x, min.y, max.z);
-      rc.gl.glVertex3d(max.x, max.y, max.z);
-      rc.gl.glEnd();
+        rc.gl.glBegin(GL_LINES);
+        rc.gl.glVertex3d(max.x, min.y, max.z);
+        rc.gl.glVertex3d(max.x, max.y, max.z);
+        rc.gl.glEnd();
+      }
+
+      implementation.treeWalk(new RenderWalkObserver(rc, implementation));
+    } finally {
+      popOffset(rc.gl);
     }
-
-    implementation.treeWalk(new RenderWalkObserver(rc, implementation));
-    this.popOffset(rc.gl);
   }
 }
