@@ -79,8 +79,6 @@ public class GlrSphere extends GlrShape<Sphere> {
     double x, y, z;
     double s, t, ds, dt;
     int i, j, imin, imax;
-    boolean normals = true;
-    double nsign = 1.0;
 
     drho = Math.PI / STACK_COUNT;
     dtheta = (Math.PI * 2) / SLICE_COUNT;
@@ -88,15 +86,13 @@ public class GlrSphere extends GlrShape<Sphere> {
     if (!textureFlag) {
       gl.glBegin(GL.GL_TRIANGLE_FAN);
       gl.glNormal3d(0.0, 0.0, 1.0);
-      gl.glVertex3d(0.0, 0.0, nsign * radius);
+      gl.glVertex3d(0.0, 0.0, radius);
       for (j = 0; j <= SLICE_COUNT; j++) {
         theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
         x = -Math.sin(theta) * Math.sin(drho);
         y = Math.cos(theta) * Math.sin(drho);
-        z = nsign * Math.cos(drho);
-        if (normals) {
-          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
-        }
+        z = Math.cos(drho);
+        gl.glNormal3d(x, y, z);
         gl.glVertex3d(x * radius, y * radius, z * radius);
       }
       gl.glEnd();
@@ -144,17 +140,15 @@ public class GlrSphere extends GlrShape<Sphere> {
     if (!textureFlag) {
       gl.glBegin(GL.GL_TRIANGLE_FAN);
       gl.glNormal3d(0.0, 0.0, -1.0);
-      gl.glVertex3d(0.0, 0.0, -radius * nsign);
+      gl.glVertex3d(0.0, 0.0, -radius);
       rho = Math.PI - drho;
       s = 1.0;
       for (j = SLICE_COUNT; j >= 0; j--) {
         theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
         x = -Math.sin(theta) * Math.sin(rho);
         y = Math.cos(theta) * Math.sin(rho);
-        z = nsign * Math.cos(rho);
-        if (normals) {
-          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
-        }
+        z = Math.cos(rho);
+        gl.glNormal3d(x, y, z);
         s -= ds;
         gl.glVertex3d(x * radius, y * radius, z * radius);
       }
