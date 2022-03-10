@@ -189,7 +189,7 @@ public class GlrSphere extends GlrShape<Sphere> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glSphere(pc, true);
+    glSphere(pc, false);
     pc.gl.glPopName();
   }
 
