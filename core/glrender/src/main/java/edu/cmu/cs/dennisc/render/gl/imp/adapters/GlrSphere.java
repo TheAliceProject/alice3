@@ -120,21 +120,17 @@ public class GlrSphere extends GlrShape<Sphere> {
       for (j = SLICE_COUNT; j >= 0; j--) {
         theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
         x = Math.sin(theta) * Math.sin(rho);
-        y = Math.cos(theta) * Math.sin(rho);
-        z = nsign * Math.cos(rho);
-        if (normals) {
-          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
-        }
+        y = -Math.cos(rho);
+        z = Math.cos(theta) * Math.sin(rho);
+        gl.glNormal3d(x, y, z);
         if (textureFlag) {
           gl.glTexCoord2d(s, t);
         }
         gl.glVertex3d(x * radius, y * radius, z * radius);
         x = Math.sin(theta) * Math.sin(rho + drho);
-        y = Math.cos(theta) * Math.sin(rho + drho);
-        z = nsign * Math.cos(rho + drho);
-        if (normals) {
-          gl.glNormal3d(x * nsign, y * nsign, z * nsign);
-        }
+        y = -Math.cos(rho + drho);
+        z = Math.cos(theta) * Math.sin(rho + drho);
+        gl.glNormal3d(x, y, z);
         if (textureFlag) {
           gl.glTexCoord2d(s, t - dt);
         }
