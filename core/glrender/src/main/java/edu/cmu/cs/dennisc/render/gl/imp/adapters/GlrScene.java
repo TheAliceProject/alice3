@@ -197,9 +197,7 @@ public class GlrScene extends GlrComposite<Scene> {
       cameraPosition = cameraAdapter.getOwner().getAbsoluteTransformation().translation;
     }
 
-    if (backgroundAdapter != null) {
-      //pass
-    } else {
+    if (backgroundAdapter == null) {
       backgroundAdapter = this.backgroundAdapter;
     }
     if (backgroundAdapter != null) {
@@ -222,12 +220,15 @@ public class GlrScene extends GlrComposite<Scene> {
         rc.gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
         rc.gl.glEnable(GL_CLIP_PLANE0);
         rc.gl.glPushMatrix();
-        planarReflectorAdapter.applyReflection(rc);
-        rc.gl.glFrontFace(GL_CW);
-        setupAffectors(rc);
-        renderScene(rc);
-        rc.gl.glFrontFace(GL_CCW);
-        rc.gl.glPopMatrix();
+        try {
+          planarReflectorAdapter.applyReflection(rc);
+          rc.gl.glFrontFace(GL_CW);
+          setupAffectors(rc);
+          renderScene(rc);
+          rc.gl.glFrontFace(GL_CCW);
+        } finally {
+          rc.gl.glPopMatrix();
+        }
         rc.gl.glDisable(GL_CLIP_PLANE0);
         rc.gl.glDisable(GL_STENCIL_TEST);
         setupAffectors(rc);

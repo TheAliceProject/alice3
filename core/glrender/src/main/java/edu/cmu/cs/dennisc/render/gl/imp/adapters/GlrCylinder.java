@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.math.FloatUtil;
+import com.jogamp.opengl.util.ImmModeSink;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -61,69 +64,114 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   //todo: add scenegraph hint
   private static final int SLICE_COUNT = 50;
   private static final int STACK_COUNT = 1;
-  private static final int LOOP_COUNT = 1;
+  private static final float TAU = 2f * FloatUtil.PI;
 
-  private void glCylinder(Context c) {
+  private void glCylinder(Context c, boolean isTextureEnabled) {
     double topRadius;
     if (Double.isNaN(this.topRadius)) {
-      topRadius = this.bottomRadius;
+      topRadius = bottomRadius;
     } else {
       topRadius = this.topRadius;
     }
     c.gl.glPushMatrix();
     try {
-      if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_X) {
-        c.gl.glRotated(+90, 0, 1, 0);
-      } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Y) {
-        c.gl.glRotated(-90, 1, 0, 0);
-      } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Z) {
-        //pass
-      } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_X) {
-        c.gl.glRotated(-90, 0, 1, 0);
-      } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Y) {
-        c.gl.glRotated(+90, 1, 0, 0);
-      } else if (this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Z) {
-        c.gl.glRotated(180, 1, 0, 0);
-      } else {
-        //todo?
-        throw new RuntimeException();
+      switch (bottomToTopAxis) {
+        case POSITIVE_X -> c.gl.glRotated(-90, 0, 1, 0);
+        case POSITIVE_Y -> c.gl.glRotated(+90, 1, 0, 0);
+        case NEGATIVE_X -> c.gl.glRotated(+90, 0, 1, 0);
+        case NEGATIVE_Y -> c.gl.glRotated(-90, 1, 0, 0);
+        case POSITIVE_Z -> c.gl.glRotated(180, 0, 1, 0);
       }
 
-      double z;
-      if (this.originAlignment == Cylinder.OriginAlignment.BOTTOM) {
-        z = 0;
-      } else if (this.originAlignment == Cylinder.OriginAlignment.CENTER) {
-        z = -this.length * 0.5;
-      } else if (this.originAlignment == Cylinder.OriginAlignment.TOP) {
-        z = -this.length;
-      } else {
-        //todo?
-        throw new RuntimeException();
-      }
+      double z = switch (originAlignment) {
+        case BOTTOM -> -length;
+        case CENTER -> -length * 0.5;
+        case TOP -> 0;
+      };
       c.gl.glTranslated(0, 0, z);
 
-      c.glu.gluCylinder(c.getQuadric(), this.bottomRadius, topRadius, this.length, SLICE_COUNT, STACK_COUNT);
-      if (this.hasBottomCap && (this.bottomRadius > 0)) {
-        c.gl.glRotated(180, 1, 0, 0);
-        c.glu.gluDisk(c.getQuadric(), 0, this.bottomRadius, SLICE_COUNT, STACK_COUNT);
-        c.gl.glRotated(180, 1, 0, 0);
+      float tMin = hasTopCap ? 1.0F / 3.0F : 0F;
+      float tMax = 2.0F / 3.0F;
+
+      drawCylinder(c.gl, (float) topRadius, (float) bottomRadius, (float) length, isTextureEnabled, tMin, tMax);
+
+      float capPortion = 1.0F / 3.0F;
+      float capCenterS = 0.5F;
+      float topCapCenterT = 1.0F / 6.0F;
+      float bottomCapCenterT = 5.0F / 6.0F;
+      if (hasTopCap && (topRadius > 0)) {
+        c.gl.glRotated(180, 0, 1, 0);
+        GlrDisc.gluDisk(c.gl, 0, bottomRadius, isTextureEnabled, capCenterS, topCapCenterT, capPortion);
+        c.gl.glRotated(180, 0, 1, 0);
       }
-      if (this.hasTopCap && (topRadius > 0)) {
-        c.gl.glTranslated(0, 0, +this.length);
-        c.glu.gluDisk(c.getQuadric(), 0, topRadius, SLICE_COUNT, LOOP_COUNT);
-        c.gl.glTranslated(0, 0, -this.length);
+      if (hasBottomCap && (bottomRadius > 0)) {
+        c.gl.glTranslated(0, 0, +length);
+        c.gl.glRotated(180, 0, 0, 1);
+        GlrDisc.gluDisk(c.gl, 0, bottomRadius, isTextureEnabled, capCenterS, bottomCapCenterT, capPortion);
+        c.gl.glRotated(180, 0, 0, 1);
+        c.gl.glTranslated(0, 0, -length);
       }
     } finally {
       c.gl.glPopMatrix();
     }
   }
+  private void drawCylinder(final GL gl, final float baseRadius, final float topRadius, final float height,
+                            boolean isTextureEnabled, float textureTmin, float textureTmax) {
+    final float da = TAU / SLICE_COUNT;
+    final float dr = (topRadius - baseRadius) / STACK_COUNT;
+    final float dz = height / STACK_COUNT;
+    final float nz = (baseRadius - topRadius) / height;
+    final float ds = 1.0f / SLICE_COUNT;
+    final float dt = (textureTmax - textureTmin) / STACK_COUNT;
+
+    float t = textureTmin;
+    float z = 0.0f;
+    float r = baseRadius;
+    float x, y;
+
+    for (int j = 0; j < STACK_COUNT; j++) {
+      float s = 0.0f;
+      gl.getGL2().glBegin(ImmModeSink.GL_QUAD_STRIP);
+      for (int i = 0; i <= SLICE_COUNT; i++) {
+        if (i == SLICE_COUNT) {
+          x = (float) Math.sin(0.0f);
+          y = (float) Math.cos(0.0f);
+        } else {
+          x = (float) Math.sin((i * da));
+          y = (float) Math.cos((i * da));
+        }
+        normal3f(gl, x, y, nz);
+        if (isTextureEnabled) {
+          gl.getGL2().glTexCoord2f(s, t);
+        }
+        gl.getGL2().glVertex3f(x * r, y * r, z);
+        normal3f(gl, x, y, nz);
+        if (isTextureEnabled) {
+          gl.getGL2().glTexCoord2f(s, t + dt);
+        }
+        gl.getGL2().glVertex3f(x * (r + dr), y * (r + dr), z + dz);
+        s += ds;
+      }
+      gl.getGL2().glEnd();
+      r += dr;
+      t += dt;
+      z += dz;
+    }
+  }
+
+  private void normal3f(final GL gl, float x, float y, float z) {
+    float mag = (float) Math.sqrt(x * x + y * y + z * z);
+    if (mag > 0.00001F) {
+      x /= mag;
+      y /= mag;
+      z /= mag;
+    }
+    gl.getGL2().glNormal3f(x, y, z);
+  }
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    //Required for quadric shapes like spheres, discs, and cylinders
-    boolean isTextureEnabled = rc.isTextureEnabled();
-    rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
-    glCylinder(rc);
+    glCylinder(rc, rc.isTextureEnabled());
   }
 
   @Override
@@ -135,7 +183,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glCylinder(pc);
+    glCylinder(pc, false);
     pc.gl.glPopName();
   }
 
@@ -143,18 +191,23 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   public Point3 getIntersectionInSource(Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement) {
     double bottomValue;
     double topValue;
-    if (this.originAlignment == Cylinder.OriginAlignment.BOTTOM) {
-      bottomValue = 0;
-      topValue = this.length;
-    } else if (this.originAlignment == Cylinder.OriginAlignment.CENTER) {
-      bottomValue = -this.length * 0.5;
-      topValue = +this.length * 0.5;
-    } else if (this.originAlignment == Cylinder.OriginAlignment.TOP) {
-      bottomValue = this.length;
-      topValue = 0;
-    } else {
-      //todo?
-      throw new RuntimeException();
+    switch (originAlignment) {
+      case BOTTOM -> {
+        bottomValue = 0;
+        topValue = length;
+      }
+      case CENTER -> {
+        bottomValue = -length * 0.5;
+        topValue = +length * 0.5;
+      }
+      case TOP -> {
+        bottomValue = length;
+        topValue = 0;
+      }
+      default -> {
+        //todo?
+        throw new RuntimeException();
+      }
     }
 
     Point3 cylinderPosition = new Point3(0, 0, 0);
