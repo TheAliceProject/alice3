@@ -63,9 +63,12 @@ public abstract class GlrAdornment<A extends Adornment> extends GlrComponent<A> 
   public void renderOpaque(RenderContext rc) {
     if (glrAdornmentRoot != null) {
       rc.gl.glPushMatrix();
-      rc.gl.glMultMatrixd(accessInverseAbsoluteTransformationAsBuffer());
-      actuallyRender(rc, glrAdornmentRoot);
-      rc.gl.glPopMatrix();
+      try {
+        rc.gl.glMultMatrixd(accessInverseAbsoluteTransformationAsBuffer());
+        actuallyRender(rc, glrAdornmentRoot);
+      } finally {
+        rc.gl.glPopMatrix();
+      }
     }
   }
 

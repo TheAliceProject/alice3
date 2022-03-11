@@ -141,7 +141,6 @@ public abstract class GlrTexture<T extends Texture> extends GlrObject<T> {
   protected static TextureData newTextureData(GL gl, BufferedImage image, boolean isMipMapDesired) {
     TextureData rv = AWTTextureIO.newTextureData(gl.getGLProfile(), image, isMipMapDesired);
     return rv;
-    //return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
   }
 
   protected abstract TextureData newTextureData(GL gl, TextureData currentTexture);

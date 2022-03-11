@@ -69,13 +69,4 @@ public abstract class GlrElement<T extends Element> extends GlrObject<T> {
   protected void propertyChanged(InstanceProperty<?> property) {
     Logger.info("unhandled property:", property);
   }
-
-  @Override
-  public String toString() {
-    if (owner != null) {
-      return getClass().getName() + " " + owner.toString();
-    } else {
-      return super.toString();
-    }
-  }
 }
