@@ -54,19 +54,10 @@ import edu.cmu.cs.dennisc.scenegraph.VertexGeometry;
  */
 public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeometry<T> {
   private void updateVertices() {
-    //      edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = this.sgE;
-    //      int vertexCount = vg.getVertexCount();
-    //      if( vertexCount != this.vertices.length ) {
-    //          this.vertices = vg.getVertices();
-    //      } else {
-    //          this.vertices = vg.getVertices( this.vertices );
-    //      }
     setIsGeometryChanged(true);
     this.isAlphaBlended = false;
-    //      this.isVertexColored = false;
     for (Vertex v : owner.vertices.getValue()) {
-      if (v.diffuseColor.isNaN() == false) {
-        //this.isVertexColored = true;
+      if (!v.diffuseColor.isNaN()) {
         if (v.diffuseColor.alpha < 1.0f) {
           this.isAlphaBlended = true;
           break;
@@ -80,15 +71,11 @@ public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeo
     return this.isAlphaBlended;
   }
 
-  //    public boolean isVertexColored() {
-  //      return this.isVertexColored;
-  //    }
-
   protected Vertex accessVertexAt(int index) {
     return owner.vertices.getValue()[index];
   }
 
-  public void renderPrimative(RenderContext rc, int mode) {
+  public void renderPrimitive(RenderContext rc, int mode) {
     rc.gl.glBegin(mode);
     for (Vertex vertex : owner.vertices.getValue()) {
       rc.renderVertex(vertex);
@@ -96,7 +83,7 @@ public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeo
     rc.gl.glEnd();
   }
 
-  public void pickPrimative(PickContext pc, int mode) {
+  public void pickPrimitive(PickContext pc, int mode) {
     pc.gl.glPushName(-1);
     pc.gl.glBegin(mode);
     for (Vertex vertex : owner.vertices.getValue()) {
@@ -116,6 +103,5 @@ public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeo
     }
   }
 
-  //    private boolean isVertexColored;
   private boolean isAlphaBlended;
 }

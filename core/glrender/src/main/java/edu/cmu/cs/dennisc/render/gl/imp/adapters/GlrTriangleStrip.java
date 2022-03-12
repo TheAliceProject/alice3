@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.TriangleStrip;
 public class GlrTriangleStrip extends GlrVertexGeometry<TriangleStrip> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_TRIANGLE_STRIP);
+    renderPrimitive(rc, GL_TRIANGLE_STRIP);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_TRIANGLE_STRIP);
+    pickPrimitive(pc, GL_TRIANGLE_STRIP);
   }
 
   @Override

@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.TriangleArray;
 public class GlrTriangleArray extends GlrVertexGeometry<TriangleArray> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_TRIANGLES);
+    renderPrimitive(rc, GL_TRIANGLES);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_TRIANGLES);
+    pickPrimitive(pc, GL_TRIANGLES);
   }
 
   @Override

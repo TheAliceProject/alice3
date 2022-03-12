@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 public class GlrTriangleFan extends GlrVertexGeometry<TriangleFan> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_TRIANGLE_FAN);
+    renderPrimitive(rc, GL_TRIANGLE_FAN);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_TRIANGLE_FAN);
+    pickPrimitive(pc, GL_TRIANGLE_FAN);
   }
 
   @Override

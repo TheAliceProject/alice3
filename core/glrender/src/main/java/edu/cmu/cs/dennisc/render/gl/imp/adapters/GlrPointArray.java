@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.PointArray;
 public class GlrPointArray extends GlrVertexGeometry<PointArray> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_POINTS);
+    renderPrimitive(rc, GL_POINTS);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_POINTS);
+    pickPrimitive(pc, GL_POINTS);
   }
 
   @Override

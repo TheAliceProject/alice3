@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.QuadArray;
 public class GlrQuadArray extends GlrVertexGeometry<QuadArray> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_QUADS);
+    renderPrimitive(rc, GL_QUADS);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_QUADS);
+    pickPrimitive(pc, GL_QUADS);
   }
 
   @Override
