@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-//import static com.jogamp.opengl.GL.GL_TRIANGLE_STRIP;
-import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
-
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -56,70 +53,40 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 
+import static com.jogamp.opengl.GL2.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GlrTorus extends GlrShape<Torus> {
-//  private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, boolean isLightingEnabled) {
-//    float angleStep = 5;
-//    double deltaOutAngle = (angleStep / 180.0f) * Math.PI;
-//    double deltaIntAngle = (angleStep / 180.0f) * Math.PI;
-//    double bound  = 2 * Math.PI;
-////
-////    for (double intAngle = 0; intAngle <= bound; intAngle += deltaIntAngle) {
-////      for (double outAngle = 0; outAngle <= bound; outAngle += deltaOutAngle) {
-////        Logger.errln("here");
-////      }
-////    }
-//    for (double intAngle = 0; intAngle <= 2 * Math.PI; intAngle += deltaIntAngle) {
-//      c.gl.glBegin(GL_QUAD_STRIP);
-//      for (double outAngle = 0; outAngle <= 2 * Math.PI; outAngle += deltaOutAngle) {
-//        Vector3 pointUp = getPoint(outAngle, intAngle + deltaIntAngle, majorRadius, minorRadius);
-//        Vector3 normalUp = getPointNormal(outAngle, intAngle + deltaIntAngle, majorRadius, minorRadius);
-//        c.gl.glNormal3d(normalUp.x, normalUp.y, normalUp.z);
-//        c.gl.glTexCoord2d(outAngle, (intAngle + deltaIntAngle));
-//        c.gl.glVertex3d(pointUp.x, pointUp.y, pointUp.z);
-//
-//        Vector3 pointDown = getPoint(outAngle, intAngle, majorRadius, minorRadius);
-//        Vector3 normalDown = getPointNormal(outAngle, intAngle, majorRadius, minorRadius);
-//        c.gl.glNormal3d(normalDown.x, normalDown.y, normalDown.z);
-//        c.gl.glTexCoord2d(outAngle, intAngle);
-//        c.gl.glVertex3d(pointDown.x, pointDown.y, pointDown.z);
-//      }
-//      c.gl.glEnd();
-//    }
-////    c.gl.glEnd();
-//  }
-//
-//  private Vector3 getPoint(double outAngle, double intAngle, double outRadius, double intRadius) {
-//    return new Vector3((outRadius + intRadius * Math.cos(intAngle)) * Math.cos(outAngle), (outRadius + intRadius * Math.cos(intAngle)) * Math.sin(outAngle), intRadius * Math.sin(intRadius));
-//  }
-//
-//  private Vector3 getPointNormal(double outAngle, double intAngle, double outRadius, double inRadius) {
-//    Vector3 tangentOut = new Vector3(-Math.sin(outAngle), Math.cos(outAngle), 0);
-//    Vector3 tangentInt = new Vector3(Math.cos(outAngle) * (-Math.sin(intAngle)), Math.sin(outAngle) * (-Math.sin(intAngle)), Math.cos(intAngle));
-//
-//    Vector3 normal = getCrossProduct(tangentOut, tangentInt);
-//
-//    normal.normalize();
-//    return normal;
-//  }
-//
-//  private Vector3 getCrossProduct(Vector3 a, Vector3 b) {
-//    Vector3 result = new Vector3();
-//    result.x = a.y * b.z - a.z * b.y;
-//    result.y = a.z * b.x - a.x * b.z;
-//    result.z = a.x * b.y - a.y * b.x;
-//    return result;
-//  }
+  final double PI = Math.PI;
+  final double TAU = 2 * PI;
 
-  private void drawTorusCustomize(Context c, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled) {
-    double sinTheta = Math.sin(theta);
-    double cosTheta = Math.cos(theta);
-    double sinPhi = Math.sin(phi);
-    double cosPhi = Math.cos(phi);
+  private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings, boolean isLightingEnabled) {
 
-    double y = minorRadius * sinPhi;
+    for (int i = 0; i < nrings; i++) {
+      c.gl.glBegin(GL_QUAD_STRIP);
+      for (int j = 0; j <= nsides; j++) {
+        for (int k = 1; k >= 0; k--) {
+          double s, t, x, y, z, u, v;
+          double cosRings, sinSides, cosSides, dist;
+          s = (i + k) % nrings + 0.5;
+          t = j % (nsides + 1);
+          cosRings = Math.cos(s * TAU / nrings);
+          sinSides = Math.sin(t * TAU / nsides);
+          cosSides = Math.cos(t * TAU / nsides);
+          dist = majorRadius + minorRadius * cosRings;
+
+          x = dist * sinSides;
+          y = minorRadius * Math.sin(s * TAU / nrings);
+          z = dist * cosSides;
+          u = (i + k) / (float) nrings;
+          v = t / (float) nsides;
+
+          // TODO: fix texture and normal
+          /*
+          old normal
+          double y = minorRadius * sinPhi;
     double r = majorRadius + (minorRadius * cosPhi);
     double x = sinTheta * r;
     double z = cosTheta * r;
@@ -134,13 +101,16 @@ public class GlrTorus extends GlrShape<Torus> {
       }
       c.gl.glNormal3d(i, j, k);
     }
-    if (coordinatePlane == Torus.CoordinatePlane.XY) {
-      //todo
-    } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-      //todo
+           */
+          c.gl.glTexCoord2d(v, u);
+          if (isLightingEnabled) {
+            c.gl.glNormal3d(x, y, z);
+          }
+          c.gl.glVertex3d(x, y, z);
+        }
+      }
+      c.gl.glEnd();
     }
-    c.gl.glTexCoord2d(x, z);
-    c.gl.glVertex3d(x, y, z);
   }
 
   private void glTorus(Context context, boolean isLightingEnabled) {
@@ -148,25 +118,9 @@ public class GlrTorus extends GlrShape<Torus> {
     Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
     double majorRadius = this.owner.majorRadius.getValue();
     double minorRadius = this.owner.minorRadius.getValue();
-//    drawTorusCustomize(context, majorRadius, minorRadius, isLightingEnabled);
-////    todo: add scenegraph hint
-    final int N = 32;
-    final int M = 16;
-    double dTheta = (2 * Math.PI) / (N - 1);
-    double dPhi = (2 * Math.PI) / (M - 1);
-
-    double theta = 0;
-    for (int i = 0; i < (N - 1); i++) {
-      double phi = 0;
-      context.gl.glBegin(GL_QUAD_STRIP);
-      for (int j = 0; j < M; j++) {
-        drawTorusCustomize(context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled);
-        drawTorusCustomize(context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled);
-        phi += dPhi;
-      }
-      context.gl.glEnd();
-      theta += dTheta;
-    }
+    int sides = 32;
+    int rings = 16;
+    drawTorusCustomize(context, majorRadius, minorRadius, sides, rings, isLightingEnabled);
   }
 
   @Override
