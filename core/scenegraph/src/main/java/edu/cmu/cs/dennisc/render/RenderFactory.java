@@ -45,8 +45,6 @@ package edu.cmu.cs.dennisc.render;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,15 +52,11 @@ import java.lang.reflect.InvocationTargetException;
 public interface RenderFactory {
   ImageBuffer createImageBuffer(Color4f backgroundColor);
 
-  ImageBuffer createTransparentBackgroundImageBuffer();
-
   HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
 
   LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget(RenderCapabilities requestedCapabilities);
 
   OffscreenRenderTarget createOffscreenRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities);
-
-  ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities);
 
   void acquireRenderingLock();
 
@@ -72,17 +66,9 @@ public interface RenderFactory {
 
   void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener);
 
-  Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-  int getAutomaticDisplayCount();
-
   void incrementAutomaticDisplayCount();
 
   void decrementAutomaticDisplayCount();
 
   void invokeLater(Runnable runnable);
-
-  void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;
-
-  void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable);
 }
