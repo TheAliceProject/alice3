@@ -109,18 +109,9 @@ public abstract class Context {
     return m_quadric;
   }
 
-  protected abstract void handleGLChange();
-
-  //  private boolean isGLChanged = true;
-  //  public boolean isGLChanged() {
-  //    return this.isGLChanged;
-  //  }
   public void setGL(GL2 gl) {
-    //    this.isGLChanged = this.gl != gl;
-    //    if( this.isGLChanged ) {
     if (this.gl != gl) {
       this.gl = gl;
-      handleGLChange();
     }
   }
 }

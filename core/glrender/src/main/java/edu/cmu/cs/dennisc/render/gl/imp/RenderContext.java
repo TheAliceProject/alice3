@@ -269,12 +269,6 @@ public class RenderContext extends Context {
     }
   }
 
-  @Override
-  protected void handleGLChange() {
-    //forgetAllTextureAdapters();
-    //forgetAllGeometryAdapters();
-  }
-
   public void actuallyForgetTexturesIfNecessary() {
     final int N = this.toBeForgottenTextures.size();
     if (N > 0) {

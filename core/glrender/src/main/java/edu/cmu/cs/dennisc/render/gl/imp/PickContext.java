@@ -109,10 +109,6 @@ public class PickContext extends Context {
     sceneAdapter.pick(this, pickParameters);
   }
 
-  @Override
-  protected void handleGLChange() {
-  }
-
   private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();
   private final boolean isSynchronous;
 }
