@@ -64,22 +64,22 @@ public class GlrTorus extends GlrShape<Torus> {
 
   private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings, boolean isLightingEnabled) {
 
-    for (int i = 0; i < nrings; i++) {
+    for (int i = nrings - 1; i >= 0; i--) {
       c.gl.glBegin(GL_QUAD_STRIP);
-      for (int j = 0; j <= nsides; j++) {
+      for (int j = nsides; j >= 0; j--) {
         for (int k = 1; k >= 0; k--) {
           double s, t, x, y, z, u, v;
           double cosRings, sinSides, cosSides, dist;
           s = (i + k) % nrings + 0.5;
           t = j % (nsides + 1);
-          cosRings = Math.cos(s * TAU / nrings);
-          sinSides = Math.sin(t * TAU / nsides);
-          cosSides = Math.cos(t * TAU / nsides);
+          cosRings = Math.cos((s * TAU) / nrings);
+          sinSides = Math.sin((t * TAU) / nsides);
+          cosSides = Math.cos((t * TAU) / nsides);
           dist = majorRadius + minorRadius * cosRings;
 
           x = dist * sinSides;
-          y = minorRadius * Math.sin(s * TAU / nrings);
-          z = dist * cosSides;
+          y = minorRadius * Math.sin((s * TAU) / nrings);
+          z = -dist * cosSides;
           u = (i + k) / (float) nrings;
           v = t / (float) nsides;
 
