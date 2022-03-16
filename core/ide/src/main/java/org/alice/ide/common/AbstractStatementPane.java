@@ -43,7 +43,6 @@
 package org.alice.ide.common;
 
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.x.AstI18nFactory;
 import org.alice.ide.x.MutableAstI18nFactory;
@@ -69,16 +68,7 @@ public abstract class AbstractStatementPane extends StatementLikeSubstance {
     this.statement = statement;
     this.owner = owner;
     if (this.factory instanceof MutableAstI18nFactory) {
-      this.isEnabledListener = new PropertyListener() {
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          AbstractStatementPane.this.repaint();
-        }
-      };
+      this.isEnabledListener = e -> AbstractStatementPane.this.repaint();
     } else {
       this.isEnabledListener = null;
     }

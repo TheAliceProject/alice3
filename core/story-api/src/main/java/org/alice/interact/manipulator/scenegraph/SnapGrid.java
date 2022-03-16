@@ -224,10 +224,6 @@ public class SnapGrid extends Transformable implements PropertyListener {
     }
   }
 
-  @Override
-  public void propertyChanging(PropertyEvent e) {
-  }
-
   private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
   private final LineArray sgXLines;
   private final LineArray sgZLines;

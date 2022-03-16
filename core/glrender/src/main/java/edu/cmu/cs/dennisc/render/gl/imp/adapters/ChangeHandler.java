@@ -192,10 +192,10 @@ public class ChangeHandler {
     }
   }
 
-  private static List<Event<?>> bufferedEvents = Lists.newLinkedList();
+  private static final List<Event<?>> bufferedEvents = Lists.newLinkedList();
 
   private static int eventCount = 0;
-  private static Object renderingModeLock = new Object();
+  private static final Object renderingModeLock = new Object();
   private static int renderingModeCount;
 
   private static final ReleaseListener releaseListener = new ReleaseListener() {
@@ -208,16 +208,7 @@ public class ChangeHandler {
       handleOrBufferEvent(e);
     }
   };
-  private static final PropertyListener propertyListener = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      handleOrBufferEvent(e);
-    }
-  };
+  private static final PropertyListener propertyListener = e -> handleOrBufferEvent(e);
 
   private static final ComponentsListener componentsListener = new ComponentsListener() {
     @Override

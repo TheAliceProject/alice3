@@ -234,9 +234,4 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<View
       }
     }
   }
-
-  @Override
-  public void propertyChanging(PropertyEvent e) {
-    //Do Nothing
-  }
 }

@@ -44,7 +44,6 @@
 package org.alice.ide.declarationseditor;
 
 import edu.cmu.cs.dennisc.property.StringProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.IDE;
 import org.alice.ide.declarationseditor.components.DeclarationView;
@@ -86,16 +85,9 @@ public abstract class DeclarationComposite<D extends AbstractDeclaration, V exte
 
     StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
     if (nameProperty != null) {
-      PropertyListener nameListener = new PropertyListener() {
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          String nextName = (String) e.getValue();
-          IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState(DeclarationComposite.this).setTextForBothTrueAndFalse(nextName);
-        }
+      PropertyListener nameListener = e -> {
+        String nextName = (String) e.getValue();
+        IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState(DeclarationComposite.this).setTextForBothTrueAndFalse(nextName);
       };
       nameProperty.addPropertyListener(nameListener);
     }

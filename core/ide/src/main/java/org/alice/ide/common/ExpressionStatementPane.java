@@ -43,7 +43,6 @@
 package org.alice.ide.common;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.x.AstI18nFactory;
@@ -66,21 +65,7 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
-  private PropertyListener refreshAdapter = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          ExpressionStatementPane.this.refresh();
-        }
-      });
-    }
-  };
+  private PropertyListener refreshAdapter = e -> SwingUtilities.invokeLater(ExpressionStatementPane.this::refresh);
 
   public ExpressionStatementPane(DragModel model, AstI18nFactory factory, ExpressionStatement expressionStatement, StatementListProperty owner) {
     super(model, factory, expressionStatement, owner);

@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -489,17 +488,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       this.boundingBoxDecorator = new BoundingBoxDecorator();
       this.boundingBoxDecorator.setBox(this.getAxisAlignedMinimumBoundingBox());
 
-      this.addScaleListener(new PropertyListener() {
-
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox());
-        }
-      });
+      this.addScaleListener(e -> boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox()));
     }
     return this.boundingBoxDecorator;
   }

@@ -271,10 +271,6 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
     this.positionRelativeToObject();
   }
 
-  @Override
-  public void propertyChanging(PropertyEvent e) {
-  }
-
   protected final MovementDescription dragDescription;
   private final Color4f baseColor;
 

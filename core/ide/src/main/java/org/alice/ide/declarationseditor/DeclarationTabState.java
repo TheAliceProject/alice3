@@ -46,8 +46,6 @@ package org.alice.ide.declarationseditor;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.DefaultTheme;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec;
@@ -222,16 +220,7 @@ public class DeclarationTabState extends MutableDataTabState<DeclarationComposit
     }
     if (method instanceof UserMethod) {
       UserMethod userMethod = (UserMethod) method;
-      userMethod.name.addPropertyListener(new PropertyListener() {
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          rv.setName((String) e.getValue());
-        }
-      });
+      userMethod.name.addPropertyListener(e -> rv.setName((String) e.getValue()));
       //todo: release?
     }
     return rv;

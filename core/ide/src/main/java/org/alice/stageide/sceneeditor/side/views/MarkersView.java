@@ -45,8 +45,6 @@ package org.alice.stageide.sceneeditor.side.views;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import net.miginfocom.swing.MigLayout;
 import org.alice.ide.ThemeUtilities;
 import org.alice.ide.declarationseditor.type.FieldMenuModel;
@@ -214,16 +212,7 @@ public abstract class MarkersView extends BorderPanel {
     protected BooleanStateButton<?> createButtonForItemSelectedState(final UserField item, final BooleanState itemSelectedState) {
       itemSelectedState.setIconForBothTrueAndFalse(MarkerUtilities.getIconForMarkerField(item));
 
-      item.name.addPropertyListener(new PropertyListener() {
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          itemSelectedState.setTextForBothTrueAndFalse(item.name.getValue());
-        }
-      });
+      item.name.addPropertyListener(e -> itemSelectedState.setTextForBothTrueAndFalse(item.name.getValue()));
 
       MarkerView rv = new MarkerView(itemSelectedState);
       rv.setHorizontalAlignment(HorizontalAlignment.LEADING);

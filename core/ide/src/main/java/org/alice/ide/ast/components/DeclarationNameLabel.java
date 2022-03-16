@@ -44,7 +44,6 @@ package org.alice.ide.ast.components;
 
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.AliceFormatter;
@@ -60,20 +59,9 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class DeclarationNameLabel extends Label {
-  private AbstractDeclaration declaration;
+  private final AbstractDeclaration declaration;
 
-  private class NamePropertyAdapter implements PropertyListener {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      DeclarationNameLabel.this.updateText();
-    }
-  }
-
-  private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
+  private PropertyListener namePropertyAdapter = e -> DeclarationNameLabel.this.updateText();
 
   public DeclarationNameLabel(AbstractDeclaration declaration) {
     this.declaration = declaration;

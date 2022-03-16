@@ -65,7 +65,6 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
@@ -664,17 +663,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
     return PickHint.PickType.THREE_D_HANDLE.pickHint();
   }
 
-  private final PropertyListener scaleListener = new PropertyListener() {
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      ManipulationHandle3D.this.setScale(ManipulationHandle3D.this.getObjectScale());
-      ManipulationHandle3D.this.resizeToObject();
-      ManipulationHandle3D.this.positionRelativeToObject();
-    }
-
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
+  private final PropertyListener scaleListener = e -> {
+    ManipulationHandle3D.this.setScale(ManipulationHandle3D.this.getObjectScale());
+    ManipulationHandle3D.this.resizeToObject();
+    ManipulationHandle3D.this.positionRelativeToObject();
   };
 
   private final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
