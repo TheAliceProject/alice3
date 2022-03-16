@@ -66,10 +66,6 @@ public abstract class MarkersToolPalette<V extends MarkersView> extends SideTool
 
   private final SimplifiedListPropertyAdapter<UserField> sceneTypeFieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
     @Override
-    protected void changing(ListPropertyEvent<UserField> e) {
-    }
-
-    @Override
     protected void changed(ListPropertyEvent<UserField> e) {
       updateTitle();
     }

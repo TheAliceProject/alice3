@@ -472,10 +472,6 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
   private UserType type;
   private ListPropertyListener<UserField> fieldsListener = new SimplifiedListPropertyAdapter<UserField>() {
     @Override
-    protected void changing(ListPropertyEvent<UserField> e) {
-    }
-
-    @Override
     protected void changed(ListPropertyEvent<UserField> e) {
       InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
     }

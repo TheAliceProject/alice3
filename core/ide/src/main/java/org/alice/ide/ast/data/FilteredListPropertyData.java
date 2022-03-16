@@ -63,16 +63,8 @@ import java.util.List;
 public abstract class FilteredListPropertyData<E> extends RefreshableListData<E> {
   private final ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
     @Override
-    public void adding(AddListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void added(AddListPropertyEvent<E> e) {
       FilteredListPropertyData.this.refresh();
-    }
-
-    @Override
-    public void clearing(ClearListPropertyEvent<E> e) {
     }
 
     @Override
@@ -81,16 +73,8 @@ public abstract class FilteredListPropertyData<E> extends RefreshableListData<E>
     }
 
     @Override
-    public void removing(RemoveListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void removed(RemoveListPropertyEvent<E> e) {
       FilteredListPropertyData.this.refresh();
-    }
-
-    @Override
-    public void setting(SetListPropertyEvent<E> e) {
     }
 
     @Override

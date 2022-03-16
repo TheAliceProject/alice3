@@ -126,11 +126,9 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
     return m_listPropertyListeners;
   }
 
+  //TODO remove
   @Override
-  public void fireAdding(AddListPropertyEvent e) {
-    for (ListPropertyListener<?> l : m_listPropertyListeners) {
-      l.adding(e);
-    }
+  public void fireAdding(AddListPropertyEvent<?> e) {
   }
 
   @Override
@@ -141,10 +139,7 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
   }
 
   @Override
-  public void fireClearing(ClearListPropertyEvent e) {
-    for (ListPropertyListener<?> l : m_listPropertyListeners) {
-      l.clearing(e);
-    }
+  public void fireClearing(ClearListPropertyEvent<?> e) {
   }
 
   @Override
@@ -155,10 +150,7 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
   }
 
   @Override
-  public void fireRemoving(RemoveListPropertyEvent e) {
-    for (ListPropertyListener<?> l : m_listPropertyListeners) {
-      l.removing(e);
-    }
+  public void fireRemoving(RemoveListPropertyEvent<?> e) {
   }
 
   @Override
@@ -169,10 +161,7 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
   }
 
   @Override
-  public void fireSetting(SetListPropertyEvent e) {
-    for (ListPropertyListener<?> l : m_listPropertyListeners) {
-      l.setting(e);
-    }
+  public void fireSetting(SetListPropertyEvent<?> e) {
   }
 
   @Override
