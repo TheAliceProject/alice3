@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -53,7 +54,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 
-import static com.jogamp.opengl.GL2.*;
+import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
 
 /**
  * @author Dennis Cosgrove
@@ -63,48 +64,34 @@ public class GlrTorus extends GlrShape<Torus> {
   final double TAU = 2 * PI;
 
   private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings, boolean isLightingEnabled) {
-
     for (int i = nrings - 1; i >= 0; i--) {
       c.gl.glBegin(GL_QUAD_STRIP);
-      for (int j = nsides; j >= 0; j--) {
+      for (int j = 0; j < nsides + 1; j++) {
         for (int k = 1; k >= 0; k--) {
           double s, t, x, y, z, u, v;
-          double cosRings, sinSides, cosSides, dist;
+          double nx, ny, nz;
+          double sinRings, cosRings, sinSides, cosSides, dist;
+
           s = (i + k) % nrings + 0.5;
           t = j % (nsides + 1);
-          cosRings = Math.cos((s * TAU) / nrings);
-          sinSides = Math.sin((t * TAU) / nsides);
-          cosSides = Math.cos((t * TAU) / nsides);
+          sinRings = -Math.sin((s * TAU) / nrings);
+          cosRings = -Math.cos((s * TAU) / nrings);
+          sinSides = -Math.sin((t * TAU) / nsides);
+          cosSides = -Math.cos((t * TAU) / nsides);
           dist = majorRadius + minorRadius * cosRings;
 
           x = dist * sinSides;
-          y = minorRadius * Math.sin((s * TAU) / nrings);
+          y = minorRadius * -sinRings;
           z = -dist * cosSides;
           u = (i + k) / (float) nrings;
-          v = t / (float) nsides;
+          v = -t / (float) nsides;
+          nx = -sinSides * cosRings;
+          ny = -sinRings;
+          nz = -cosSides * cosRings;
 
-          // TODO: fix texture and normal
-          /*
-          old normal
-          double y = minorRadius * sinPhi;
-    double r = majorRadius + (minorRadius * cosPhi);
-    double x = sinTheta * r;
-    double z = cosTheta * r;
-    if (isLightingEnabled) {
-      double i = sinTheta * cosPhi;
-      double j = sinPhi;
-      double k = cosTheta * cosPhi;
-      if (coordinatePlane == Torus.CoordinatePlane.XY) {
-        //todo
-      } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-        //todo
-      }
-      c.gl.glNormal3d(i, j, k);
-    }
-           */
           c.gl.glTexCoord2d(v, u);
           if (isLightingEnabled) {
-            c.gl.glNormal3d(x, y, z);
+            normal3d(c.gl, nx, ny, nz);
           }
           c.gl.glVertex3d(x, y, z);
         }
@@ -113,9 +100,17 @@ public class GlrTorus extends GlrShape<Torus> {
     }
   }
 
-  private void glTorus(Context context, boolean isLightingEnabled) {
+  private void normal3d(final GL gl, double x, double y, double z) {
+    double mag = Math.sqrt(x * x + y * y + z * z);
+    if (mag > 0.00001F) {
+      x /= mag;
+      y /= mag;
+      z /= mag;
+    }
+    gl.getGL2().glNormal3d(x, y, z);
+  }
 
-    Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+  private void glTorus(Context context, boolean isLightingEnabled) {
     double majorRadius = this.owner.majorRadius.getValue();
     double minorRadius = this.owner.minorRadius.getValue();
     int sides = 32;
