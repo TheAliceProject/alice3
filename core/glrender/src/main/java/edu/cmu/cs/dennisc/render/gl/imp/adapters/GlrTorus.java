@@ -43,8 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
-
+import com.jogamp.opengl.GL;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -55,63 +54,68 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 
+import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GlrTorus extends GlrShape<Torus> {
-  private void glVertex(Context context, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled) {
-    double sinTheta = Math.sin(theta);
-    double cosTheta = Math.cos(theta);
-    double sinPhi = Math.sin(phi);
-    double cosPhi = Math.cos(phi);
+  final double PI = Math.PI;
+  final double TAU = 2 * PI;
 
-    double y = minorRadius * sinPhi;
-    double r = majorRadius + (minorRadius * cosPhi);
-    double x = sinTheta * r;
-    double z = cosTheta * r;
-    if (isLightingEnabled) {
-      double i = sinTheta * cosPhi;
-      double j = sinPhi;
-      double k = cosTheta * cosPhi;
-      if (coordinatePlane == Torus.CoordinatePlane.XY) {
-        //todo
-      } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-        //todo
+  private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings, boolean isLightingEnabled) {
+    for (int i = nrings - 1; i >= 0; i--) {
+      c.gl.glBegin(GL_QUAD_STRIP);
+      for (int j = 0; j < nsides + 1; j++) {
+        for (int k = 1; k >= 0; k--) {
+          double s, t, x, y, z, u, v;
+          double nx, ny, nz;
+          double sinRings, cosRings, sinSides, cosSides, dist;
+
+          s = (i + k) % nrings + 0.5;
+          t = j % (nsides + 1);
+          sinRings = -Math.sin((s * TAU) / nrings);
+          cosRings = -Math.cos((s * TAU) / nrings);
+          sinSides = -Math.sin((t * TAU) / nsides);
+          cosSides = -Math.cos((t * TAU) / nsides);
+          dist = majorRadius + minorRadius * cosRings;
+
+          x = dist * sinSides;
+          y = minorRadius * -sinRings;
+          z = -dist * cosSides;
+          u = (i + k) / (float) nrings;
+          v = -t / (float) nsides;
+          nx = -sinSides * cosRings;
+          ny = -sinRings;
+          nz = -cosSides * cosRings;
+
+          c.gl.glTexCoord2d(v, u);
+          if (isLightingEnabled) {
+            normal3d(c.gl, nx, ny, nz);
+          }
+          c.gl.glVertex3d(x, y, z);
+        }
       }
-      context.gl.glNormal3d(i, j, k);
+      c.gl.glEnd();
     }
-    if (coordinatePlane == Torus.CoordinatePlane.XY) {
-      //todo
-    } else if (coordinatePlane == Torus.CoordinatePlane.YZ) {
-      //todo
+  }
+
+  private void normal3d(final GL gl, double x, double y, double z) {
+    double mag = Math.sqrt(x * x + y * y + z * z);
+    if (mag > 0.00001F) {
+      x /= mag;
+      y /= mag;
+      z /= mag;
     }
-    context.gl.glVertex3d(x, y, z);
+    gl.getGL2().glNormal3d(x, y, z);
   }
 
   private void glTorus(Context context, boolean isLightingEnabled) {
-
-    Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
     double majorRadius = this.owner.majorRadius.getValue();
     double minorRadius = this.owner.minorRadius.getValue();
-
-    //todo: add scenegraph hint
-    final int N = 32;
-    final int M = 16;
-    double dTheta = (2 * Math.PI) / (N - 1);
-    double dPhi = (2 * Math.PI) / (M - 1);
-
-    double theta = 0;
-    for (int i = 0; i < (N - 1); i++) {
-      double phi = 0;
-      context.gl.glBegin(GL_QUAD_STRIP);
-      for (int j = 0; j < M; j++) {
-        glVertex(context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled);
-        glVertex(context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled);
-        phi += dPhi;
-      }
-      context.gl.glEnd();
-      theta += dTheta;
-    }
+    int sides = 32;
+    int rings = 16;
+    drawTorusCustomize(context, majorRadius, minorRadius, sides, rings, isLightingEnabled);
   }
 
   @Override
