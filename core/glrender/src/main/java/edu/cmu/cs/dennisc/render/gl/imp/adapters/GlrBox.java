@@ -64,7 +64,7 @@ import java.util.Map;
  */
 
 public class GlrBox extends GlrShape<Box> {
-  private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
+  private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired) {
     int id = 0;
     double[][] leftFace = {{this.xMin, this.yMin, this.zMax}, {this.xMin, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMin}, {this.xMin, this.yMin, this.zMin}};
     double[][] rightFace = {{this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMin, this.zMax}};
@@ -86,42 +86,42 @@ public class GlrBox extends GlrShape<Box> {
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "left");
+    drawBox(c, isLightingEnabled, "left");
     // xMax face
     // c.gl.glColor3d( 1,0,0 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "right");
+    drawBox(c, isLightingEnabled, "right");
     // yMin face
     // c.gl.glColor3d( 1,1,1 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "bottom");
+    drawBox(c, isLightingEnabled, "bottom");
     // yMax face
     // c.gl.glColor3d( 0,1,0 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "top");
+    drawBox(c, isLightingEnabled, "top");
     // zMin face
     // c.gl.glColor3d( 1,1,1 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "front");
+    drawBox(c, isLightingEnabled, "front");
     // zMax face
     // c.gl.glColor3d( 0,0,1 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "back");
+    drawBox(c, isLightingEnabled, "back");
 
     c.gl.glEnd();
   }
 
-  private void drawBox(Context c, boolean isLightingEnabled, boolean isTexturingEnabled, String side) {
+  private void drawBox(Context c, boolean isLightingEnabled, String side) {
     int[] sideNormal3d = normal3dMap.get(side);
     float[][] sideTex = texCoordMap.get(side);
     double[][] sideVertex = vertexMap.get(side);
@@ -130,7 +130,7 @@ public class GlrBox extends GlrShape<Box> {
       c.gl.glNormal3d(sideNormal3d[0], sideNormal3d[1], sideNormal3d[2]);
     }
     for (int i = 0; i < numberOfCorner; i++) {
-      if (isTexturingEnabled) {
+      if (c.isTextureEnabled()) {
         c.gl.glTexCoord2f(sideTex[i][0], sideTex[i][1]);
       }
       c.gl.glVertex3d(sideVertex[i][0], sideVertex[i][1], sideVertex[i][2]);
@@ -139,13 +139,13 @@ public class GlrBox extends GlrShape<Box> {
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glBox(rc, true, false, rc.isTextureEnabled());
+    glBox(rc, true, false);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
     pc.gl.glPushName(-1);
-    glBox(pc, false, isSubElementRequired, false);
+    glBox(pc, false, isSubElementRequired);
     pc.gl.glPopName();
   }
 

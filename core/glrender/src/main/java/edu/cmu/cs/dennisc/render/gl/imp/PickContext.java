@@ -89,6 +89,11 @@ public class PickContext extends Context {
   }
 
   @Override
+  public boolean isTextureEnabled() {
+    return false;
+  }
+
+  @Override
   protected void enableNormalize() {
   }
 

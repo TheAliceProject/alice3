@@ -66,7 +66,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   private static final int STACK_COUNT = 1;
   private static final float TAU = 2f * FloatUtil.PI;
 
-  private void glCylinder(Context c, boolean isTextureEnabled) {
+  private void glCylinder(Context c) {
     double topRadius;
     if (Double.isNaN(this.topRadius)) {
       topRadius = bottomRadius;
@@ -93,7 +93,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       float tMin = hasTopCap ? 1.0F / 3.0F : 0F;
       float tMax = 2.0F / 3.0F;
 
-      drawCylinder(c.gl, (float) topRadius, (float) bottomRadius, (float) length, isTextureEnabled, tMin, tMax);
+      drawCylinder(c, (float) topRadius, (float) bottomRadius, (float) length, tMin, tMax);
 
       float capPortion = 1.0F / 3.0F;
       float capCenterS = 0.5F;
@@ -101,13 +101,13 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       float bottomCapCenterT = 5.0F / 6.0F;
       if (hasTopCap && (topRadius > 0)) {
         c.gl.glRotated(180, 0, 1, 0);
-        GlrDisc.gluDisk(c.gl, 0, bottomRadius, isTextureEnabled, capCenterS, topCapCenterT, capPortion);
+        GlrDisc.gluDisk(c.gl, 0, bottomRadius, c.isTextureEnabled(), capCenterS, topCapCenterT, capPortion);
         c.gl.glRotated(180, 0, 1, 0);
       }
       if (hasBottomCap && (bottomRadius > 0)) {
         c.gl.glTranslated(0, 0, +length);
         c.gl.glRotated(180, 0, 0, 1);
-        GlrDisc.gluDisk(c.gl, 0, bottomRadius, isTextureEnabled, capCenterS, bottomCapCenterT, capPortion);
+        GlrDisc.gluDisk(c.gl, 0, bottomRadius, c.isTextureEnabled(), capCenterS, bottomCapCenterT, capPortion);
         c.gl.glRotated(180, 0, 0, 1);
         c.gl.glTranslated(0, 0, -length);
       }
@@ -115,8 +115,8 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       c.gl.glPopMatrix();
     }
   }
-  private void drawCylinder(final GL gl, final float baseRadius, final float topRadius, final float height,
-                            boolean isTextureEnabled, float textureTmin, float textureTmax) {
+  private void drawCylinder(Context c, final float baseRadius, final float topRadius, final float height,
+                            float textureTmin, float textureTmax) {
     final float da = TAU / SLICE_COUNT;
     final float dr = (topRadius - baseRadius) / STACK_COUNT;
     final float dz = height / STACK_COUNT;
@@ -131,7 +131,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
 
     for (int j = 0; j < STACK_COUNT; j++) {
       float s = 0.0f;
-      gl.getGL2().glBegin(ImmModeSink.GL_QUAD_STRIP);
+      c.gl.getGL2().glBegin(ImmModeSink.GL_QUAD_STRIP);
       for (int i = 0; i <= SLICE_COUNT; i++) {
         if (i == SLICE_COUNT) {
           x = (float) Math.sin(0.0f);
@@ -140,19 +140,19 @@ public class GlrCylinder extends GlrShape<Cylinder> {
           x = (float) Math.sin((i * da));
           y = (float) Math.cos((i * da));
         }
-        normal3f(gl, x, y, nz);
-        if (isTextureEnabled) {
-          gl.getGL2().glTexCoord2f(s, t);
+        normal3f(c.gl, x, y, nz);
+        if (c.isTextureEnabled()) {
+          c.gl.getGL2().glTexCoord2f(s, t);
         }
-        gl.getGL2().glVertex3f(x * r, y * r, z);
-        normal3f(gl, x, y, nz);
-        if (isTextureEnabled) {
-          gl.getGL2().glTexCoord2f(s, t + dt);
+        c.gl.getGL2().glVertex3f(x * r, y * r, z);
+        normal3f(c.gl, x, y, nz);
+        if (c.isTextureEnabled()) {
+          c.gl.getGL2().glTexCoord2f(s, t + dt);
         }
-        gl.getGL2().glVertex3f(x * (r + dr), y * (r + dr), z + dz);
+        c.gl.getGL2().glVertex3f(x * (r + dr), y * (r + dr), z + dz);
         s += ds;
       }
-      gl.getGL2().glEnd();
+      c.gl.getGL2().glEnd();
       r += dr;
       t += dt;
       z += dz;
@@ -171,7 +171,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glCylinder(rc, rc.isTextureEnabled());
+    glCylinder(rc);
   }
 
   @Override
@@ -183,7 +183,7 @@ public class GlrCylinder extends GlrShape<Cylinder> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glCylinder(pc, false);
+    glCylinder(pc);
     pc.gl.glPopName();
   }
 

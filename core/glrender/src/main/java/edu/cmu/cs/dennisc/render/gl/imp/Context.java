@@ -74,6 +74,8 @@ public abstract class Context {
     return this.scaledCount > 0;
   }
 
+  public abstract boolean isTextureEnabled();
+
   protected abstract void enableNormalize();
 
   protected abstract void disableNormalize();
