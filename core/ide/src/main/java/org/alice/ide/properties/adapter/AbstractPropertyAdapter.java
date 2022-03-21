@@ -51,20 +51,17 @@ import java.util.ResourceBundle;
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.virtualmachine.VirtualMachine;
 
 public abstract class AbstractPropertyAdapter<P, O> {
-  public static interface ValueChangeObserver<P> {
-    public void valueChanged(P newValue);
+  public interface ValueChangeObserver<P> {
+    void valueChanged(P newValue);
   }
 
   protected O instance;
   protected String repr;
   protected String reprKey;
-  protected P lastSetValue;
-  private boolean isExpressionSet = false;
+  private P lastSetValue;
   protected StandardExpressionState expressionState;
 
   public static String getLocalizedString(String key) {
@@ -79,12 +76,7 @@ public abstract class AbstractPropertyAdapter<P, O> {
     return key;
   }
 
-  protected String getCurrentValueLabelString() {
-    String val = getLocalizedString("currentValue");
-    return " (" + val + ")";
-  }
-
-  protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
+  private final List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<>();
 
   public AbstractPropertyAdapter(String repr, O instance, StandardExpressionState expressionState) {
     this.repr = repr;
@@ -95,8 +87,7 @@ public abstract class AbstractPropertyAdapter<P, O> {
   }
 
   public String getLocalizedRepr() {
-    String val = getLocalizedString(this.reprKey);
-    return val;
+    return getLocalizedString(this.reprKey);
   }
 
   public String getRepr() {
@@ -157,12 +148,6 @@ public abstract class AbstractPropertyAdapter<P, O> {
     this.setExpressionValue(this.getValue());
   }
 
-  public void clearListeners() {
-    synchronized (this.valueChangeObservers) {
-      this.valueChangeObservers.clear();
-    }
-  }
-
   public StandardExpressionState getExpressionState() {
     return this.expressionState;
   }
@@ -197,21 +182,8 @@ public abstract class AbstractPropertyAdapter<P, O> {
     }
   }
 
-  protected void intermediateSetValue(Object value) {
-    this.setValue((P) value);
-  }
-
-  protected Object evaluateExpression(Expression expression) {
-    VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-    Object[] values = vm.ENTRY_POINT_evaluate(null, new Expression[] {expression});
-    assert values.length == 1;
-    return values[0];
-  }
-
   protected void notifyValueObservers(P newValue) {
-    if (!isExpressionSet) {
-      this.setExpressionValue(newValue);
-    }
+    setExpressionValue(newValue);
     synchronized (this.valueChangeObservers) {
       for (ValueChangeObserver<P> observer : this.valueChangeObservers) {
         observer.valueChanged(newValue);

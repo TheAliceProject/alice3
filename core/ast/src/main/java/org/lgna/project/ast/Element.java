@@ -102,9 +102,6 @@ public abstract class Element implements InstancePropertyOwner, ReferenceableBin
 
   @Override
   public void firePropertyChanging(PropertyEvent e) {
-    for (PropertyListener propertyListener : m_propertyListeners) {
-      propertyListener.propertyChanging(e);
-    }
   }
 
   @Override

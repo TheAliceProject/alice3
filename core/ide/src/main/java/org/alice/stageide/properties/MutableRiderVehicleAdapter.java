@@ -48,7 +48,6 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
-import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
@@ -56,12 +55,10 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.project.virtualmachine.VirtualMachine;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.MutableRider;
 import org.lgna.story.SThing;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 import org.lgna.story.implementation.EntityImp;
@@ -99,29 +96,6 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
           : SetUpMethodGenerator.getExpressionOfThingInScene(value, sceneInstance);
       this.expressionState.setValueTransactionlessly(expressionValue);
     }
-  }
-
-  @Override
-  protected void intermediateSetValue(Object value) {
-    if (value instanceof UserInstance) {
-      Object instanceInJava = ((UserInstance) value).getJavaInstance();
-      if (instanceInJava instanceof SThing) {
-        value = instanceInJava;
-      }
-    }
-    if (value instanceof SThing) {
-      this.setValue((SThing) value);
-    } else {
-      Logger.severe("Trying to set vehicle expression to something other than an Entity.", value);
-    }
-  }
-
-  @Override
-  protected Object evaluateExpression(Expression expression) {
-    VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-    Object[] values = vm.ENTRY_POINT_evaluate(this.sceneInstance, new Expression[] {expression});
-    assert values.length == 1;
-    return values[0];
   }
 
   private void handleHierarchyChanged() {

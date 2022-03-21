@@ -97,9 +97,6 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 
   @Override
   public void firePropertyChanging(PropertyEvent e) {
-    for (PropertyListener propertyListener : this.propertyListeners) {
-      propertyListener.propertyChanging(e);
-    }
   }
 
   @Override

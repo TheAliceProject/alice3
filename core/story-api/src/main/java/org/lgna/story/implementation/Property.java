@@ -55,8 +55,8 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public abstract class Property<T> {
-  public static interface Listener<T> {
-    public void propertyChanged(Property<T> property, T prevValue, T nextValue);
+  public interface Listener<T> {
+    void propertyChanged();
   }
 
   public static String getPropertyNameForGetter(Method method) {
@@ -143,7 +143,7 @@ public abstract class Property<T> {
 
   protected void fireChanged(T prevValue, T nextValue) {
     for (Listener<T> listener : listeners) {
-      listener.propertyChanged(this, prevValue, nextValue);
+      listener.propertyChanged();
     }
   }
 

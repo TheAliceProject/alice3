@@ -582,12 +582,6 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     return false;
   }
 
-  //PropertyListener methods for listening to changes on skeleton transforms
-  @Override
-  public void propertyChanging(PropertyEvent e) {
-    //Do Nothing
-  }
-
   private void setListeningOnSkeleton(Composite c, boolean shouldListen) {
     if (c == null) {
       return;
