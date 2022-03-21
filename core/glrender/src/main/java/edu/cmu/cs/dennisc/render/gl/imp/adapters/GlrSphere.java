@@ -197,7 +197,7 @@ public class GlrSphere extends GlrShape<Sphere> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.radius) {
       this.radius = owner.radius.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

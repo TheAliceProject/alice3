@@ -154,11 +154,11 @@ public class GlrTorus extends GlrShape<Torus> {
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.majorRadius) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.minorRadius) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.coordinatePlane) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

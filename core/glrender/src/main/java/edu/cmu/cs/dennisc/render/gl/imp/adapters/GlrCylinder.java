@@ -313,25 +313,25 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.length) {
       this.length = owner.length.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.bottomRadius) {
       this.bottomRadius = owner.bottomRadius.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.topRadius) {
       this.topRadius = owner.topRadius.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.hasBottomCap) {
       this.hasBottomCap = owner.hasBottomCap.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.hasTopCap) {
       this.hasTopCap = owner.hasTopCap.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.originAlignment) {
       this.originAlignment = owner.originAlignment.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.bottomToTopAxis) {
       this.bottomToTopAxis = owner.bottomToTopAxis.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

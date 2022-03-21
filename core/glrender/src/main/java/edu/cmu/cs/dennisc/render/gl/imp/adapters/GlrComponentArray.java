@@ -65,7 +65,7 @@ public abstract class GlrComponentArray extends GlrVertexGeometry<ComponentArray
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.component) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
       throw new RuntimeException("todo");
     } else {
       super.propertyChanged(property);

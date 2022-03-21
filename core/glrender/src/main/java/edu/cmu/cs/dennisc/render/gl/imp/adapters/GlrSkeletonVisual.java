@@ -96,20 +96,9 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     private float[] weights;
     private boolean needsInitialization = true;
 
-    //note: no one seems to pay any attention to this. --dennisc
-    private boolean geometryIsChanged = true;
-
     public void initialize(WeightedMesh weightedMesh) {
       this.weightedMesh = weightedMesh;
       internalInitialize();
-    }
-
-    public boolean isGeometryChanged() {
-      return geometryIsChanged;
-    }
-
-    public void setIsGeometryChanged(boolean isGeometryChanged) {
-      geometryIsChanged = isGeometryChanged;
     }
 
     private void internalInitialize() {
@@ -175,7 +164,6 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         }
       }
       this.transformBuffers(weightedJointMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue());
-      setIsGeometryChanged(true);
     }
 
     private void transformBuffers(AffineMatrix4x4[] weightedVertices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc) {

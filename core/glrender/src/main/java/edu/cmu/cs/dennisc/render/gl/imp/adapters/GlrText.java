@@ -269,17 +269,17 @@ public class GlrText extends GlrGeometry<Text> {
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.text) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.font) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.depth) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.leftToRightAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.topToBottomAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.frontToBackAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

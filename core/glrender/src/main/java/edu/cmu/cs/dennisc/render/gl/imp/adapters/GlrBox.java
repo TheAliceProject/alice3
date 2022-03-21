@@ -190,22 +190,22 @@ public class GlrBox extends GlrShape<Box> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.xMinimum) {
       this.xMin = owner.xMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.xMaximum) {
       this.xMax = owner.xMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.yMinimum) {
       this.yMin = owner.yMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.yMaximum) {
       this.yMax = owner.yMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.zMinimum) {
       this.zMin = owner.zMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.zMaximum) {
       this.zMax = owner.zMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

@@ -102,20 +102,16 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
     return !isAlphaBlended();
   }
 
-  protected boolean isGeometryChanged() {
-    return this.isGeometryChanged;
-  }
-
   protected boolean isDisplayListDesired() {
     return true;
   }
 
   protected boolean isDisplayListInNeedOfRefresh(RenderContext rc) {
-    return isGeometryChanged();
+    return isGeometryChanged;
   }
 
-  protected void setIsGeometryChanged(boolean isGeometryChanged) {
-    this.isGeometryChanged = isGeometryChanged;
+  protected void markGeometryAsChanged() {
+    isGeometryChanged = true;
   }
 
   //todo: better name
@@ -128,7 +124,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
       Integer id = rc.getDisplayListID(this);
       if (id == null) {
         id = rc.generateDisplayListID(this);
-        setIsGeometryChanged(true);
+        markGeometryAsChanged();
       }
       if (isDisplayListInNeedOfRefresh(rc) || (!rc.gl.glIsList(id))) {
         rc.gl.glNewList(id, GL_COMPILE_AND_EXECUTE);
@@ -139,7 +135,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
           Logger.severe(rc.glu.gluErrorString(error), error, this);
           //throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
         }
-        setIsGeometryChanged(false);
+        isGeometryChanged = false;
       } else {
         if (rc.gl.glIsList(id)) {
           rc.gl.glEnable(GL_POLYGON_OFFSET_FILL);

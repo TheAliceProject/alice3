@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.VertexGeometry;
  */
 public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeometry<T> {
   private void updateVertices() {
-    setIsGeometryChanged(true);
+    markGeometryAsChanged();
     this.isAlphaBlended = false;
     for (Vertex v : owner.vertices.getValue()) {
       if (!v.diffuseColor.isNaN()) {
@@ -97,7 +97,7 @@ public abstract class GlrVertexGeometry<T extends VertexGeometry> extends GlrGeo
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.vertices) {
       updateVertices();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

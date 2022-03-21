@@ -121,7 +121,7 @@ public abstract class GlrIndexedPolygonArray<T extends IndexedPolygonArray> exte
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.polygonData) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

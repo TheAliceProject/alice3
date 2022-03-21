@@ -150,13 +150,13 @@ public class GlrDisc extends GlrShape<Disc> {
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.innerRadius) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.outerRadius) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.isFrontFaceVisible) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.isBackFaceVisible) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

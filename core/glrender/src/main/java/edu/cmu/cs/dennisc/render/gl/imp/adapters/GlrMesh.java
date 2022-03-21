@@ -177,16 +177,16 @@ public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.vertexBuffer) {
       this.vertexBuffer = owner.vertexBuffer.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.normalBuffer) {
       this.normalBuffer = owner.normalBuffer.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.textCoordBuffer) {
       this.textCoordBuffer = owner.textCoordBuffer.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.indexBuffer) {
       this.indexBuffer = owner.indexBuffer.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }
