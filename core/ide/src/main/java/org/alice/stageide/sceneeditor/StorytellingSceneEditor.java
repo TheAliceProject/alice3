@@ -375,6 +375,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   protected SnapGrid snapGrid;
 
+  public boolean isStartingCameraView() {
+    return mainCameraViewSelector.getModel().getListSelectionState().getValue() == View.STARTING_CAMERA_VIEW;
+  }
+
+  public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
+    openingSceneMarkerImp.setLocalTransformation(transform);
+  }
+
   public static class SceneEditorProgramImp extends ProgramImp {
     public SceneEditorProgramImp(SProgram abstraction) {
       super(abstraction, StorytellingSceneEditor.getInstance().onscreenRenderTarget);

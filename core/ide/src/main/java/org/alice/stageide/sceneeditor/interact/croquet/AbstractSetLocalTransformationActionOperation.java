@@ -75,7 +75,8 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 
   protected abstract AffineMatrix4x4 getNextLocalTransformation();
 
-  private void setLocalTransformation(AbstractTransformable sgTransformable, AffineMatrix4x4 lt) {
+  protected void setLocalTransformation(AffineMatrix4x4 lt) {
+    AbstractTransformable sgTransformable = getSGTransformable();
     if (this.getAnimator() != null) {
       PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt);
       povAnimation.setDuration(0.5);
@@ -123,17 +124,15 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
     assert nextLT.isNaN() == false;
     activity.commitAndInvokeDo(new AbstractEdit(activity) {
       @Override
-      protected final void doOrRedoInternal(boolean isDo) {
-        if (isDo && (isDoRequired() == false)) {
-          //pass
-        } else {
-          setLocalTransformation(AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), nextLT);
+      protected void doOrRedoInternal(boolean isDo) {
+        if (!isDo || isDoRequired()) {
+          setLocalTransformation(nextLT);
         }
       }
 
       @Override
-      protected final void undoInternal() {
-        setLocalTransformation(AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), prevLT);
+      protected void undoInternal() {
+        setLocalTransformation(prevLT);
       }
 
       @Override
