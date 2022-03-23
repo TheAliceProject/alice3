@@ -657,7 +657,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
         Logger.warning("Adding an undoable action for a manipulation that didn't actually change the transformation.");
       }
       if (originalTransformation == null) {
-        Logger.severe("Ending manipulation where the original transformaion is null.");
+        Logger.severe("Ending manipulation where the original transformation is null.");
       }
 
       SThing aliceThing = EntityImp.getAbstractionFromSgElement(sgManipulatedTransformable);

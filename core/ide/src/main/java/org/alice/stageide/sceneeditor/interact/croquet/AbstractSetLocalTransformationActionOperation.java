@@ -80,7 +80,6 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
     if (this.getAnimator() != null) {
       PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt);
       povAnimation.setDuration(0.5);
-      //this.animator.complete( null );
       this.getAnimator().invokeLater(povAnimation, null);
     } else {
       sgTransformable.setLocalTransformation(lt);
@@ -114,14 +113,13 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 
   @Override
   protected void perform(UserActivity activity) {
-    //    final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
     final AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
     final AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 
     assert prevLT != null;
     assert nextLT != null;
-    assert prevLT.isNaN() == false;
-    assert nextLT.isNaN() == false;
+    assert !prevLT.isNaN();
+    assert !nextLT.isNaN();
     activity.commitAndInvokeDo(new AbstractEdit(activity) {
       @Override
       protected void doOrRedoInternal(boolean isDo) {
