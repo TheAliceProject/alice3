@@ -179,13 +179,13 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
   private Point3 getMovementVectorBasedOnCamera(InputState currentInput, InputState previousInput) {
     if (this.getCamera() instanceof OrthographicCamera) {
-      return getOthographicMovementVector(currentInput, previousInput);
+      return getOrthographicMovementVector(currentInput, previousInput);
     } else {
       return getPerspectiveMovementVector(currentInput, previousInput);
     }
   }
 
-  protected Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput) {
+  protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
