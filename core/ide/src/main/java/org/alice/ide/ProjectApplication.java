@@ -379,7 +379,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
         activity.cancel(new CancelException(re));
         Dialogs.showError("Unable to Load Project", message.toString());
         setPerspective(getDocumentFrame().getNoProjectPerspective());
-        getDocumentFrame().getNewProjectOperation().fire(activity);
+        UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
+        getDocumentFrame().getNewProjectOperation().fire(newActivity);
       }
     }
     hideWaitCursor();
