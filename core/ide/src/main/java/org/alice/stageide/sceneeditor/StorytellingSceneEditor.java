@@ -439,7 +439,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (uf != null) {
         setSelectedField(uf.getDeclaringType(), uf);
       } else {
-        setSelectedField(null, null);
+        return;
       }
     }
     getPropertyPanel().setSelectedInstance(instanceFactory);
