@@ -54,12 +54,10 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.UIResource;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -80,19 +78,13 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public abstract class AwtComponentView<J extends Component> extends ScreenElement {
-  private static Map<Component, AwtComponentView<?>> map = Maps.newWeakHashMap();
+  private static final Map<Component, AwtComponentView<?>> map = Maps.newWeakHashMap();
 
   private static class InternalAwtContainerAdapter extends AwtContainerView<Container> {
-    private Container awtContainer;
+    private final Container awtContainer;
 
     public InternalAwtContainerAdapter(Container awtContainer) {
       this.awtContainer = awtContainer;
-      //this.awtParent = awtContainer.getParent();
-      if (this.awtContainer instanceof UIResource) {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtContainer.getClass(), awtContainer.hashCode() );
-      } else {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtContainer.getClass(), awtContainer.hashCode() );
-      }
     }
 
     @Override
@@ -102,16 +94,10 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   }
 
   private static class InternalAwtComponentAdapter extends AwtComponentView<Component> {
-    private Component awtComponent;
+    private final Component awtComponent;
 
     public InternalAwtComponentAdapter(Component awtComponent) {
       this.awtComponent = awtComponent;
-      //this.awtParent = awtComponent.getParent();
-      if (this.awtComponent instanceof UIResource) {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.plaf.UIResource: ", awtComponent.getClass(), awtComponent.hashCode() );
-      } else {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "creating adapter for: ", awtComponent.getClass(), awtComponent.hashCode() );
-      }
     }
 
     @Override
@@ -124,9 +110,7 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   public static AwtComponentView<?> lookup(Component awtComponent) {
     if (awtComponent != null) {
       AwtComponentView<?> rv = AwtComponentView.map.get(awtComponent);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         if (awtComponent instanceof Container) {
           Container awtContainer = (Container) awtComponent;
           rv = new InternalAwtContainerAdapter(awtContainer);
@@ -145,12 +129,7 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
     }
   }
 
-  private HierarchyListener hierarchyListener = new HierarchyListener() {
-    @Override
-    public void hierarchyChanged(HierarchyEvent e) {
-      AwtComponentView.this.handleHierarchyChanged(e);
-    }
-  };
+  private final HierarchyListener hierarchyListener = AwtComponentView.this::handleHierarchyChanged;
 
   public final Object getTreeLock() {
     return this.getAwtComponent().getTreeLock();
@@ -165,20 +144,13 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   private boolean isDisplayableState = false;
 
   private void trackDisplayability() {
-    if (this.awtComponent.isDisplayable()) {
-      if (this.isDisplayableState) {
-        //pass
-      } else {
-        this.handleDisplayable();
-        this.isDisplayableState = true;
-      }
-    } else {
-      if (this.isDisplayableState) {
-        this.handleUndisplayable();
-        this.isDisplayableState = false;
-      } else {
-        //pass
-      }
+    if (!isDisplayableState && awtComponent.isDisplayable()) {
+      this.handleDisplayable();
+      this.isDisplayableState = true;
+    }
+    if (isDisplayableState && !awtComponent.isDisplayable()) {
+      this.handleUndisplayable();
+      this.isDisplayableState = false;
     }
   }
 
@@ -190,41 +162,19 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
 
   private Container awtParent;
 
-  private void handleParentChange(Container awtParent) {
+  private void handleParentChange(Container newParent) {
     if (this.awtParent != null) {
-      AwtComponentView<?> parent = AwtComponentView.lookup(this.awtParent);
-      if (parent != null) {
-        //pass
-      } else {
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
-      }
-      this.handleRemovedFrom(parent);
-    } else {
-      assert awtParent != null;
+      this.handleRemovedFrom(AwtComponentView.lookup(this.awtParent));
     }
-    this.awtParent = awtParent;
+    this.awtParent = newParent;
     if (this.awtParent != null) {
-      AwtComponentView<?> parent = AwtComponentView.lookup(this.awtParent);
-      if (parent != null) {
-        //pass
-      } else {
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "no croquet component for parent" );
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-        //      edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.getClass().getName(), awtParent.getLayout() );
-      }
-      this.handleAddedTo(parent);
+      this.handleAddedTo(AwtComponentView.lookup(this.awtParent));
     }
   }
 
   private static boolean isWarningAlreadyPrinted = false;
 
   protected void handleHierarchyChanged(HierarchyEvent e) {
-    //assert e.getComponent() == this.awtComponent : this;
-    Component awtComponent = e.getComponent();
-    Component awtChanged = e.getChanged();
-    Container awtParent = e.getChangedParent();
     long flags = e.getChangeFlags();
     if ((flags & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
       if (e.getComponent() == this.awtComponent) {
@@ -233,26 +183,19 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
         PrintUtilities.println("handleDisplayabilityChanged:", this.awtComponent.hashCode(), this.awtComponent.isDisplayable());
       }
     }
-
-    if ((flags & HierarchyEvent.PARENT_CHANGED) != 0) {
-
-      assert awtComponent == AwtComponentView.this.getAwtComponent();
-
-      if (awtComponent == awtChanged) {
-        if (awtParent != AwtComponentView.this.awtParent) {
-          AwtComponentView.this.handleParentChange(awtParent);
-        } else {
-          if (isWarningAlreadyPrinted) {
-            //pass
-          } else {
-            //Thread.dumpStack();
-            PrintUtilities.println("investigate: hierarchyChanged seems to not be actually changing the parent");
-            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
-            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
-            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
-            //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
-            isWarningAlreadyPrinted = true;
-          }
+    if ((flags & HierarchyEvent.PARENT_CHANGED) != 0 && e.getComponent() == e.getChanged()) {
+      Container eventAwtParent = e.getChangedParent();
+      if (eventAwtParent != AwtComponentView.this.awtParent) {
+        handleParentChange(eventAwtParent);
+      } else {
+        if (!isWarningAlreadyPrinted) {
+          //Thread.dumpStack();
+          PrintUtilities.println("investigate: hierarchyChanged seems to not be actually changing the parent");
+          //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    flags:", flags );
+          //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    this:", this );
+          //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtChanged:", awtChanged.getClass().getName(), awtChanged );
+          //            edu.cmu.cs.dennisc.print.PrintUtilities.println( "    awtParent:", awtParent.hashCode(), awtParent.getClass().getName(), awtParent.getLayout() );
+          isWarningAlreadyPrinted = true;
         }
       }
     }
@@ -266,18 +209,14 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   // todo: reduce visibility to /*package-private*/
   @Override
   public final J getAwtComponent() {
-    if (this.awtComponent != null) {
-      // pass
-    } else {
+    if (this.awtComponent == null) {
       this.checkEventDispatchThread();
       this.awtComponent = this.createAwtComponent();
       this.trackDisplayability();
       this.awtComponent.addHierarchyListener(this.hierarchyListener);
       this.awtComponent.setName(this.getClass().getName());
       ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(JComponent.getDefaultLocale());
-      if (componentOrientation.isLeftToRight()) {
-        //pass
-      } else {
+      if (!componentOrientation.isLeftToRight()) {
         awtComponent.setComponentOrientation(componentOrientation);
       }
       AwtComponentView.map.put(this.awtComponent, this);
@@ -301,20 +240,14 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   }
 
   protected void checkEventDispatchThread() {
-    if (SwingUtilities.isEventDispatchThread()) {
-      //pass
-    } else {
+    if (!SwingUtilities.isEventDispatchThread()) {
       Logger.severe(Thread.currentThread(), this);
     }
   }
 
   protected void checkTreeLock() {
-    if (this.isTreeLockRequired()) {
-      if (Thread.holdsLock(this.getTreeLock())) {
-        //pass
-      } else {
-        Logger.severe("tree lock required", this);
-      }
+    if (this.isTreeLockRequired() && !Thread.holdsLock(this.getTreeLock())) {
+      Logger.severe("tree lock required", this);
     }
   }
 
@@ -328,11 +261,7 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
 
   public void setFont(Font font) {
     this.checkEventDispatchThread();
-    //  if( font != null ) {
     this.getAwtComponent().setFont(font);
-    //  } else {
-    //    throw new NullPointerException();
-    //  }
   }
 
   public final void scaleFont(float scaleFactor) {
@@ -414,13 +343,6 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
     this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
   }
 
-  //  /*package-private*/boolean isEnabled() {
-  //  return this.getAwtComponent().isEnabled();
-  //  }
-  //  /*package-private*/void setEnabled( boolean isEnabled ) {
-  //  this.getAwtComponent().setEnabled( isEnabled );
-  //  }
-
   public ComponentOrientation getComponentOrientation() {
     return this.getAwtComponent().getComponentOrientation();
   }
@@ -464,30 +386,6 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
 
   public boolean isOpaque() {
     return this.getAwtComponent().isOpaque();
-  }
-
-  public boolean getIgnoreRepaint() {
-    return this.getAwtComponent().getIgnoreRepaint();
-  }
-
-  public void setIgnoreRepaint(boolean ignoreRepaint) {
-    this.getAwtComponent().setIgnoreRepaint(ignoreRepaint);
-  }
-
-  public Cursor getCursor() {
-    return this.getAwtComponent().getCursor();
-  }
-
-  public void setCursor(Cursor cursor) {
-    this.getAwtComponent().setCursor(cursor);
-  }
-
-  public float getAlignmentX() {
-    return this.getAwtComponent().getAlignmentX();
-  }
-
-  public float getAlignmentY() {
-    return this.getAwtComponent().getAlignmentY();
   }
 
   public int getX() {

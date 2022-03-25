@@ -73,6 +73,7 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Element;
 import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.instancefactory.InstanceFactory;
@@ -737,7 +738,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener(this.snapEnabledListener);
     SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener(this.snapGridSpacingListener);
 
-    IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactorySelectionListener);
+    ProjectDocumentFrame docFrame = IDE.getActiveInstance().getDocumentFrame();
+    docFrame.getInstanceFactoryState().addAndInvokeNewSchoolValueListener(this.instanceFactorySelectionListener);
 
     this.globalDragAdapter = new GlobalDragAdapter(this);
     this.globalDragAdapter.setOnscreenRenderTarget(onscreenRenderTarget);
@@ -749,14 +751,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     this.mainCameraNavigatorWidget = new CameraNavigatorWidget(this.globalDragAdapter, CameraView.MAIN);
 
-    IDE ide = IDE.getActiveInstance();
-    this.expandButton = ide.getDocumentFrame().getSetToSetupScenePerspectiveOperation().createButton();
+    this.expandButton = docFrame.getSetToSetupScenePerspectiveOperation().createButton();
     this.expandButton.setClobberIcon(EXPAND_ICON);
     //todo: tool tip text
     //this.expandButton.getAwtComponent().setText( null );
     this.expandButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
 
-    this.contractButton = ide.getDocumentFrame().getSetToCodePerspectiveOperation().createButton();
+    this.contractButton = docFrame.getSetToCodePerspectiveOperation().createButton();
     this.contractButton.setClobberIcon(CONTRACT_ICON);
     this.contractButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
     this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
