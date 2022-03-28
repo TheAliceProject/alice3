@@ -49,19 +49,23 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class AudioResource extends Resource {
   private static Map<String, String> extensionToContentTypeMap;
+  private static final Set<String> extensions;
 
   static {
     AudioResource.extensionToContentTypeMap = new HashMap<>();
     AudioResource.extensionToContentTypeMap.put("au", "audio.basic");
     AudioResource.extensionToContentTypeMap.put("wav", "audio.x_wav");
     AudioResource.extensionToContentTypeMap.put("mp3", "audio.mpeg");
+    extensions = Collections.unmodifiableSet(extensionToContentTypeMap.keySet());
   }
 
   public static String getContentType(String path) {
@@ -71,6 +75,10 @@ public class AudioResource extends Resource {
 
   public static String getContentType(File file) {
     return getContentType(file.getName());
+  }
+
+  public static Set<String> getFileExtensions() {
+    return extensions;
   }
 
   public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {

@@ -44,34 +44,35 @@
 package org.lgna.croquet.importer;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
+import org.apache.commons.lang.StringUtils;
 import org.lgna.croquet.Application;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Importer<T> {
-  private final UUID sharingId;
   private final File initialDirectory;
   private final String initialFileText;
   private final FilenameFilter filenameFilter;
   private final Set<String> lowerCaseExtensions;
 
-  public Importer(UUID sharingId, File initialDirectory, String initialFileText, FilenameFilter filenameFilter, String... lowerCaseExtensions) {
-    this.sharingId = sharingId;
+  public Importer(File initialDirectory, FilenameFilter filenameFilter, Set<String> lowerCaseExtensions) {
     this.initialDirectory = initialDirectory;
-    this.initialFileText = initialFileText;
     this.filenameFilter = filenameFilter;
-    this.lowerCaseExtensions = Collections.unmodifiableSet(Sets.newHashSet(lowerCaseExtensions));
+    this.lowerCaseExtensions = lowerCaseExtensions;
+    this.initialFileText = SystemUtilities.isWindows() ? getInitialFileText(lowerCaseExtensions) : null;
+  }
+
+  private String getInitialFileText(Set<String> lowerCaseExtensions) {
+    return "*." + StringUtils.join(lowerCaseExtensions, ";*.");
   }
 
   protected abstract T createFromFile(File file) throws IOException;
