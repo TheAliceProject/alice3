@@ -67,10 +67,6 @@ public class ImageResource extends Resource {
     return getContentType(file.getName());
   }
 
-  public static boolean isAcceptableContentType(String contentType) {
-    return ImageResource.extensionToContentTypeMap.containsValue(contentType);
-  }
-
   public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
     return (dir, name) -> {
       File file = new File(dir, name);
@@ -79,7 +75,7 @@ public class ImageResource extends Resource {
     };
   }
 
-  private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
+  private static final Map<UUID, ImageResource> uuidToResourceMap = new HashMap<>();
 
   private static ImageResource get(UUID uuid) {
     ImageResource resource = uuidToResourceMap.get(uuid);
@@ -151,8 +147,8 @@ public class ImageResource extends Resource {
     this.height = height;
   }
 
-  private static String XML_WIDTH_ATTRIBUTE = "width";
-  private static String XML_HEIGHT_ATTRIBUTE = "height";
+  private static final String XML_WIDTH_ATTRIBUTE = "width";
+  private static final String XML_HEIGHT_ATTRIBUTE = "height";
 
   @Override
   public void encodeAttributes(Element xmlElement) {
