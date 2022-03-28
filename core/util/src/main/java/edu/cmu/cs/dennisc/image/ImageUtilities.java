@@ -44,19 +44,14 @@
 package edu.cmu.cs.dennisc.image;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
-import edu.cmu.cs.dennisc.java.awt.Painter;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
 import javax.media.jai.PlanarImage;
-import javax.swing.filechooser.FileFilter;
-import java.awt.AlphaComposite;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
@@ -75,8 +70,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import com.sun.media.jai.codec.SeekableStream;
 import com.sun.media.jai.codec.ImageDecoder;
@@ -93,104 +90,53 @@ public class ImageUtilities {
   public static final String TIFF_CODEC_NAME = "tiff";
   public static final String TGA_CODEC_NAME = "tga";
 
-  private static final String[] s_codecNames = {PNG_CODEC_NAME, JPEG_CODEC_NAME, BMP_CODEC_NAME, GIF_CODEC_NAME, TIFF_CODEC_NAME, TGA_CODEC_NAME};
-  private static final Map<String, String[]> s_codecNameToExtensionsMap;
   private static final Map<String, String> s_extensionToCodecNameMap;
+  private static final Set<String> extensions;
 
   static {
-    String[] pngExtensions = {"png"};
-    String[] jpegExtensions = {"jpeg", "jpg"};
-    String[] bmpExtensions = {"bmp"};
-    String[] gifExtensions = {"gif"};
-    String[] tiffExtensions = {"tiff", "tif"};
-    String[] tgaExtensions = {"tga"};
-    s_codecNameToExtensionsMap = Maps.newHashMap();
-    s_codecNameToExtensionsMap.put(PNG_CODEC_NAME, pngExtensions);
-    s_codecNameToExtensionsMap.put(JPEG_CODEC_NAME, jpegExtensions);
-    s_codecNameToExtensionsMap.put(BMP_CODEC_NAME, bmpExtensions);
-    s_codecNameToExtensionsMap.put(GIF_CODEC_NAME, gifExtensions);
-    s_codecNameToExtensionsMap.put(TIFF_CODEC_NAME, tiffExtensions);
-    s_codecNameToExtensionsMap.put(TGA_CODEC_NAME, tgaExtensions);
-
     s_extensionToCodecNameMap = Maps.newHashMap();
-    for (String key : s_codecNameToExtensionsMap.keySet()) {
-      String[] value = s_codecNameToExtensionsMap.get(key);
-      for (String element : value) {
-        s_extensionToCodecNameMap.put(element, key);
-      }
-    }
+    s_extensionToCodecNameMap.put("png", PNG_CODEC_NAME);
+    s_extensionToCodecNameMap.put("jpeg", JPEG_CODEC_NAME);
+    s_extensionToCodecNameMap.put("jpg", JPEG_CODEC_NAME);
+    s_extensionToCodecNameMap.put("bmp", BMP_CODEC_NAME);
+    s_extensionToCodecNameMap.put("gif", GIF_CODEC_NAME);
+    s_extensionToCodecNameMap.put("tif", TIFF_CODEC_NAME);
+    s_extensionToCodecNameMap.put("tiff", TIFF_CODEC_NAME);
+    s_extensionToCodecNameMap.put("tga", TGA_CODEC_NAME);
+    extensions = Collections.unmodifiableSet(s_extensionToCodecNameMap.keySet());
   }
 
-  public static String[] accessCodecNames() {
-    return s_codecNames;
-  }
-
-  private static FileFilter s_fileFilter = new FileFilter() {
-    @Override
-    public boolean accept(File file) {
-      return file.isDirectory() || isAcceptable(file);
-    }
-
-    @Override
-    public String getDescription() {
-      StringBuilder sb = new StringBuilder();
-      sb.append("Image (");
-      for (String key : s_codecNameToExtensionsMap.keySet()) {
-        String[] value = s_codecNameToExtensionsMap.get(key);
-        for (String element : value) {
-          sb.append("*.");
-          sb.append(element);
-          sb.append(";");
-        }
-      }
-      sb.append(")");
-      return sb.toString();
-    }
-  };
-
-  public static FileFilter accessFileFilter() {
-    return s_fileFilter;
+  public static String getContentType(String extension) {
+    String codec = getCodecNameForExtension(extension);
+    return codec != null ? "image/" + codec : null;
   }
 
   public static boolean isAcceptable(String path) {
-    String codecName = getCodecNameForExtension(FileUtilities.getExtension(path));
-    return codecName != null;
+    return getCodecNameForExtension(FileUtilities.getExtension(path)) != null;
   }
 
   public static boolean isAcceptable(File file) {
     return isAcceptable(file.getName());
   }
 
-  public static String[] getExtensionsForCodecName(String codecName) {
-    return s_codecNameToExtensionsMap.get(codecName);
+  public static String getCodecNameForExtension(String extension) {
+    return extension != null ? s_extensionToCodecNameMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
   }
 
-  public static String getCodecNameForExtension(String extension) {
-    if (extension != null) {
-      return s_extensionToCodecNameMap.get(extension.toLowerCase(Locale.ENGLISH));
-    } else {
-      return null;
-    }
+  public static Set<String> getFileExtensions() {
+    return extensions;
   }
 
   public static BufferedImage read(String path) throws IOException {
     return read(new File(path));
   }
 
-  public static BufferedImage read(String path, ImageReadParam imageReadParam) throws IOException {
-    return read(new File(path), imageReadParam);
-  }
-
   public static BufferedImage read(File file) throws IOException {
-    return read(file, null);
-  }
-
-  public static BufferedImage read(File file, ImageReadParam imageReadParam) throws IOException {
     String extension = FileUtilities.getExtension(file);
     String codecName = getCodecNameForExtension(extension);
     if (codecName != null) {
       try (FileInputStream fis = new FileInputStream(file)) {
-        return read(codecName, fis, imageReadParam);
+        return read(codecName, fis);
       } catch (RuntimeException re) {
         PrintUtilities.println(FileUtilities.getCanonicalPathIfPossible(file));
         PrintUtilities.accessPrintStream().flush();
@@ -202,23 +148,16 @@ public class ImageUtilities {
   }
 
   public static BufferedImage read(URL url) throws IOException {
-    return read(url, null);
-  }
-
-  public static BufferedImage read(URL url, ImageReadParam imageReadParam) throws IOException {
     //todo: net.URLUtilities?
     String extension = FileUtilities.getExtension(url.getPath());
     String codecName = getCodecNameForExtension(extension);
     if (codecName != null) {
       BufferedImage rv;
-      InputStream is = url.openStream();
-      try {
-        rv = read(codecName, is, imageReadParam);
+      try (InputStream is = url.openStream()) {
+        rv = read(codecName, is);
       } catch (NoClassDefFoundError ncdfe) {
         Logger.errln(url);
         rv = null;
-      } finally {
-        is.close();
       }
       return rv;
     } else {
@@ -227,24 +166,17 @@ public class ImageUtilities {
   }
 
   public static BufferedImage read(String codecName, InputStream inputStream) throws IOException {
-    return read(codecName, inputStream, null);
-  }
-
-  public static BufferedImage read(String codecName, InputStream inputStream, ImageReadParam imageReadParam) throws IOException {
     BufferedInputStream bufferedInputStream;
     if (inputStream instanceof BufferedInputStream) {
       bufferedInputStream = (BufferedInputStream) inputStream;
     } else {
       bufferedInputStream = new BufferedInputStream(inputStream);
     }
-    switch (codecName) {
-    case TGA_CODEC_NAME:
-      return TgaUtilities.readTGA(bufferedInputStream);
-    case TIFF_CODEC_NAME:
-      return readTIFF(bufferedInputStream);
-    default:
-      return ImageIO.read(bufferedInputStream);
-    }
+    return switch (codecName) {
+      case TGA_CODEC_NAME -> TgaUtilities.readTGA(bufferedInputStream);
+      case TIFF_CODEC_NAME -> readTIFF(bufferedInputStream);
+      default -> ImageIO.read(bufferedInputStream);
+    };
   }
 
   private static BufferedImage readTIFF(BufferedInputStream inputStream) throws IOException {
@@ -311,27 +243,16 @@ public class ImageUtilities {
   }
 
   public static void write(String path, Image image) throws IOException {
-    write(path, image, null);
-  }
-
-  public static void write(String path, Image image, ImageReadParam imageWriteParam) throws IOException {
-    write(new File(path), image, imageWriteParam);
+    write(new File(path), image);
   }
 
   public static void write(File file, Image image) throws IOException {
-    write(file, image, null);
-  }
-
-  public static void write(File file, Image image, ImageReadParam imageWriteParam) throws IOException {
     FileUtilities.createParentDirectoriesIfNecessary(file);
     String extension = FileUtilities.getExtension(file);
     String codecName = getCodecNameForExtension(extension);
     if (codecName != null) {
-      FileOutputStream fos = new FileOutputStream(file);
-      try {
-        write(codecName, fos, image, imageWriteParam);
-      } finally {
-        fos.close();
+      try (FileOutputStream fos = new FileOutputStream(file)) {
+        write(codecName, fos, image);
       }
     } else {
       throw new RuntimeException("Could not find codec for extension: " + extension);
@@ -339,10 +260,6 @@ public class ImageUtilities {
   }
 
   public static void write(String codecName, OutputStream outputStream, Image image) throws IOException {
-    write(codecName, outputStream, image, null);
-  }
-
-  public static void write(String codecName, OutputStream outputStream, Image image, ImageReadParam imageWriteParam) throws IOException {
     int width = ImageUtilities.getWidth(image);
     int height = ImageUtilities.getHeight(image);
 
@@ -357,13 +274,10 @@ public class ImageUtilities {
         }
       }
 
-      if (bufferedImageBGR != null) {
-        // pass
-      } else {
-        Image originalImage = image;
+      if (bufferedImageBGR == null) {
         bufferedImageBGR = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         Graphics g = image.getGraphics();
-        g.drawImage(originalImage, 0, 0, accessImageObserver());
+        g.drawImage(image, 0, 0, accessImageObserver());
         // todo: investigate - does dispose ensure the image is finished
         // drawing?
         g.dispose();
@@ -385,51 +299,17 @@ public class ImageUtilities {
     //} catch( IndexOutOfBoundsException ioobe ) {
     //todo: throw new IoException???
     //}
-
-    // if( imageEncodeParam == null ) {
-    // if( codecName.equals( PNG_CODEC_NAME ) ) {
-    // imageEncodeParam =
-    // edu.cmu.cs.dennisc.image.codec.PNGEncodeParam.getDefaultEncodeParam(
-    // renderedImage );
-    // }
-    // }
-    // java.io.BufferedOutputStream bufferedOutputStream;
-    // if( outputStream instanceof java.io.BufferedOutputStream ) {
-    // bufferedOutputStream = (java.io.BufferedOutputStream)outputStream;
-    // } else {
-    // bufferedOutputStream = new java.io.BufferedOutputStream( outputStream
-    // );
-    // }
-    //
-    // edu.cmu.cs.dennisc.image.codec.ImageEncoder imageEncoder =
-    // edu.cmu.cs.dennisc.image.codec.ImageCodec.createImageEncoder(
-    // codecName, bufferedOutputStream, imageEncodeParam );
-    // try {
-    // imageEncoder.encode( renderedImage );
-    // bufferedOutputStream.flush();
-    // } catch( java.io.IOException ioe ) {
-    // throw new RuntimeException( ioe );
-    // }
-  }
-
-  public static byte[] writeToByteArray(String codecName, Image image, ImageReadParam imageWriteParam) throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    write(codecName, baos, image, imageWriteParam);
-    return baos.toByteArray();
   }
 
   public static byte[] writeToByteArray(String codecName, Image image) throws IOException {
-    return writeToByteArray(codecName, image, null);
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    write(codecName, baos, image);
+    return baos.toByteArray();
   }
 
-  private static MediaTracker s_mediaTracker = new MediaTracker(new Panel());
+  private static final MediaTracker s_mediaTracker = new MediaTracker(new Panel());
 
-  private static ImageObserver s_imageObserver = new ImageObserver() {
-    @Override
-    public boolean imageUpdate(Image image, int infoflags, int x, int y, int width, int height) {
-      return true;
-    }
-  };
+  private static final ImageObserver s_imageObserver = (image, infoflags, x, y, width, height) -> true;
 
   public static ImageObserver accessImageObserver() {
     return s_imageObserver;
@@ -473,38 +353,10 @@ public class ImageUtilities {
   public static BufferedImage createBufferedImage(Image image, int imageType) {
     int width = getWidth(image);
     int height = getHeight(image);
-    // int type;
-    // if( isAlphaBlended ) {
-    // type = java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
-    // } else {
-    // type = java.awt.image.BufferedImage.TYPE_INT_ARGB;
-    // }
     BufferedImage bi = new BufferedImage(width, height, imageType);
     Graphics g = bi.getGraphics();
     g.drawImage(image, 0, 0, accessImageObserver());
     g.dispose();
     return bi;
-  }
-
-  public static BufferedImage createAlphaMaskedImage(Image image, Painter<Void> painter, float alpha) {
-    int width = getWidth(image);
-    int height = getHeight(image);
-    BufferedImage rv = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-    Graphics2D g2 = rv.createGraphics();
-    g2.drawImage(image, 0, 0, null);
-
-    BufferedImage alphaImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-    Graphics2D ag2 = alphaImage.createGraphics();
-    painter.paint(ag2, null, width, height);
-    ag2.dispose();
-
-    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN, alpha));
-    g2.drawImage(alphaImage, 0, 0, null);
-    g2.dispose();
-    return rv;
-  }
-
-  public static BufferedImage createAlphaMaskedImage(Image image, Painter<Void> painter) {
-    return createAlphaMaskedImage(image, painter, 1.0f);
   }
 }
