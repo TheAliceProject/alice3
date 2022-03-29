@@ -43,22 +43,21 @@
 
 package org.alice.ide.ast.importers;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.croquet.importer.Importer;
 import org.lgna.story.implementation.ImageFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ImageResourceImporter extends Importer<ImageResource> {
   private static class SingletonHolder {
-    private static ImageResourceImporter instance = new ImageResourceImporter();
+    private static final ImageResourceImporter instance = new ImageResourceImporter();
   }
 
   public static ImageResourceImporter getInstance() {
@@ -66,7 +65,7 @@ public final class ImageResourceImporter extends Importer<ImageResource> {
   }
 
   private ImageResourceImporter() {
-    super(UUID.randomUUID(), FileUtilities.getDefaultDirectory(), SystemUtilities.isWindows() ? "*.png;*.jpeg;*.jpg;*.gif;*.bmp" : null, ImageResource.createFilenameFilter(true), "png", "jpeg", "jpg", "gif", "bmp");
+    super(FileUtilities.getDefaultDirectory(), ImageResource.createFilenameFilter(true), ImageUtilities.getFileExtensions());
   }
 
   @Override

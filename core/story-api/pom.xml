@@ -92,6 +92,10 @@
       <groupId>org.alice.external</groupId>
       <artifactId>collada-schema-1-4-1</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.twelvemonkeys.imageio</groupId>
+      <artifactId>imageio-webp</artifactId>
+    </dependency>
   </dependencies>
 
 </project>
