@@ -349,6 +349,12 @@
         <version>3.0.0-M3</version>
         <scope>test</scope>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-webp -->
+      <dependency>
+        <groupId>com.twelvemonkeys.imageio</groupId>
+        <artifactId>imageio-webp</artifactId>
+        <version>3.8.2</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

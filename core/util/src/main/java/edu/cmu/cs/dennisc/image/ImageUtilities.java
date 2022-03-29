@@ -89,6 +89,7 @@ public class ImageUtilities {
   public static final String GIF_CODEC_NAME = "gif";
   public static final String TIFF_CODEC_NAME = "tiff";
   public static final String TGA_CODEC_NAME = "tga";
+  public static final String WEBP_CODEC_NAME = "webp";
 
   private static final Map<String, String> s_extensionToCodecNameMap;
   private static final Set<String> extensions;
@@ -103,6 +104,7 @@ public class ImageUtilities {
     s_extensionToCodecNameMap.put("tif", TIFF_CODEC_NAME);
     s_extensionToCodecNameMap.put("tiff", TIFF_CODEC_NAME);
     s_extensionToCodecNameMap.put("tga", TGA_CODEC_NAME);
+    s_extensionToCodecNameMap.put("webp", WEBP_CODEC_NAME);
     extensions = Collections.unmodifiableSet(s_extensionToCodecNameMap.keySet());
   }
 
