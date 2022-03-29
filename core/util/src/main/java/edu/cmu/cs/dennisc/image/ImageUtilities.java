@@ -61,6 +61,7 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Panel;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RenderedImage;
@@ -275,10 +276,12 @@ public class ImageUtilities {
 
     final int destHeight = nextPowerOfTwo(srcHeight);
     final int destWidth = nextPowerOfTwo(srcWidth);
-    int[] pixel = new int[baseImage.getColorModel().getPixelSize() / 8];
-    BufferedImage destImage = new BufferedImage(destWidth, destHeight, baseImage.getType());
+    ColorModel sourceCM = baseImage.getColorModel();
+    int pixelByteSize = sourceCM.getPixelSize() / 8;
+    pixelByteSize = pixelByteSize == 0 ? 1 : pixelByteSize;
+    int[] pixel = new int[pixelByteSize];
     final WritableRaster srcRaster = baseImage.getRaster();
-    final WritableRaster destRaster = destImage.getRaster();
+    WritableRaster destRaster = sourceCM.createCompatibleWritableRaster(destWidth, destHeight);
 
     for (int destRow = 0; destRow < destHeight; destRow++) {
       int srcRow = destRow * srcHeight / destHeight;
@@ -288,7 +291,7 @@ public class ImageUtilities {
         destRaster.setPixel(destCol, destRow, pixel);
       }
     }
-    return destImage;
+    return new BufferedImage(sourceCM, destRaster, sourceCM.isAlphaPremultiplied(), null);
   }
 
   private static int nextPowerOfTwo(int n) {
