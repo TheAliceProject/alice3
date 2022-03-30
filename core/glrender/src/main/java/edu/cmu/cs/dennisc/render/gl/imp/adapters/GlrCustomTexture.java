@@ -58,11 +58,6 @@ import java.awt.image.BufferedImage;
  * @author Dennis Cosgrove
  */
 public class GlrCustomTexture extends GlrTexture<CustomTexture> {
-  @Override
-  protected boolean isDirty() {
-    return owner.isAnimated() || super.isDirty();
-  }
-
   public Graphics2D createGraphics() {
     //    edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = this.sgE;
     //    if( this.textureRenderer != null ) {

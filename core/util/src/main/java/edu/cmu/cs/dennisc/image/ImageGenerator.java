@@ -58,8 +58,6 @@ public interface ImageGenerator {
 
   public boolean isMipMappingDesired();
 
-  public boolean isAnimated();
-
   public MipMapGenerationPolicy getMipMapGenerationPolicy();
 
   public void paint(Graphics2D g, int width, int height);

@@ -64,7 +64,4 @@ public abstract class CustomTexture extends Texture {
 
   @Override
   public abstract void paint(Graphics2D g2, int width, int height);
-
-  @Override
-  public abstract boolean isAnimated();
 }

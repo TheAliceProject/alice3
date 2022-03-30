@@ -1158,9 +1158,6 @@ import java.util.Map;
     assert referencedObject.isReferenced();
 
     Pixels pixels = referencedObject.getObject();
-    if (imageGenerator.isAnimated()) {
-      pixels.textureChanged(null);
-    }
     this.renderContext.gl.glEnable(GL_BLEND);
     this.renderContext.gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     this.renderContext.gl.glPixelTransferf(GL_ALPHA_SCALE, alpha);
