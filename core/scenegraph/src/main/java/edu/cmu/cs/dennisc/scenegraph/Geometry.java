@@ -88,6 +88,18 @@ public abstract class Geometry extends Element {
 
   public abstract void transform(AbstractMatrix4x4 trans);
 
+  public boolean isChanged() {
+    return isMarkedAsChanged;
+  }
+
+  public void markAsChanged() {
+    isMarkedAsChanged = true;
+  }
+
+  public void markAsUnchanged() {
+    isMarkedAsChanged = false;
+  }
+
   //todo: better name
   public class BoundDoubleProperty extends DoubleProperty {
     public BoundDoubleProperty(InstancePropertyOwner owner, Double value) {
@@ -155,5 +167,5 @@ public abstract class Geometry extends Element {
   private final List<BoundListener> boundListeners = Lists.newCopyOnWriteArrayList();
   private final AxisAlignedBox boundingBox = new AxisAlignedBox();
   private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
-
+  boolean isMarkedAsChanged;
 }

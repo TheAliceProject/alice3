@@ -69,6 +69,11 @@ public class SphereImp extends ShapeImp {
   }
 
   @Override
+  protected Geometry getGeometry() {
+    return sgSphere;
+  }
+
+  @Override
   protected InstanceProperty[] getScaleProperties() {
     return new InstanceProperty[] {this.sgSphere.radius};
   }

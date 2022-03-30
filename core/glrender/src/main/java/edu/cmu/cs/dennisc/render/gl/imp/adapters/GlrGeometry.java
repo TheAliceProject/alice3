@@ -107,7 +107,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
   }
 
   protected boolean isDisplayListInNeedOfRefresh(RenderContext rc) {
-    return isGeometryChanged;
+    return isGeometryChanged || owner.isChanged();
   }
 
   protected void markGeometryAsChanged() {
@@ -136,6 +136,7 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
           //throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
         }
         isGeometryChanged = false;
+        owner.markAsUnchanged();
       } else {
         if (rc.gl.glIsList(id)) {
           rc.gl.glEnable(GL_POLYGON_OFFSET_FILL);

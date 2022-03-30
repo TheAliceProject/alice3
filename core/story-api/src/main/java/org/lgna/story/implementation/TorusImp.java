@@ -73,6 +73,11 @@ public class TorusImp extends ShapeImp {
   }
 
   @Override
+  protected Geometry getGeometry() {
+    return sgTorus;
+  }
+
+  @Override
   protected InstanceProperty[] getScaleProperties() {
     return new InstanceProperty[] {this.sgTorus.majorRadius, this.sgTorus.minorRadius};
   }

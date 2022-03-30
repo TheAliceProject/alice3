@@ -115,11 +115,17 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
           TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
           if (!Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
             sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
+            textureChanged();
           }
         }
       }
     }
   };
+
+  // For subclasses that need to update the sceneGraph
+  protected void textureChanged() {
+  }
+
   public final FloatProperty opacity = new FloatProperty(ModelImp.this) {
     @Override
     public Float getValue() {
@@ -160,15 +166,6 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       rv.add(sgVisual, trans);
     }
   }
-
-  //  public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-  //    for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
-  //      if (sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)
-  //      {
-  //        ((edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)sgAppearance).diffuseColorTexture.setValue( diffuseColorTexture );
-  //      }
-  //    }
-  //  }
 
   protected abstract InstanceProperty[] getScaleProperties();
 
