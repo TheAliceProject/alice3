@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 public class GlrCylinder extends GlrShape<Cylinder> {
   //todo: add scenegraph hint
   private static final int SLICE_COUNT = 50;
-  private static final int STACK_COUNT = 1;
+  private static final int STACK_COUNT = 50;
   private static final float TAU = 2f * FloatUtil.PI;
 
   private void glCylinder(Context c) {
