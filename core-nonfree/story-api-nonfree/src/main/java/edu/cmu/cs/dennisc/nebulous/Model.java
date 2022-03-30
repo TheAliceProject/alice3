@@ -295,7 +295,7 @@ public abstract class Model extends Geometry {
             StringBuilder sb = new StringBuilder();
             sb.append("Model data will be missing some points\n\t");
             this.appendRepr(sb);
-            sb.append("\n\tMesh ") .append(meshId)
+            sb.append("\n\tMesh ").append(meshId)
               .append(" has no mapping from old vertex ")
               .append(i)
               .append(" to a new one in the export");

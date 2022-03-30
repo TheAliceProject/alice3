@@ -114,7 +114,7 @@ public class GlrBox extends GlrShape<Box> {
     // zMax face
     // c.gl.glColor3d( 0,0,1 );
     if (isSubElementRequired) {
-      c.gl.glLoadName(id++);
+      c.gl.glLoadName(id);
     }
     drawBox(c, isLightingEnabled, "back");
 
@@ -154,33 +154,34 @@ public class GlrBox extends GlrShape<Box> {
     Point3 origin = new Point3(0, 0, 0);
     Vector3 direction = new Vector3(0, 0, 0);
     switch (subElement) {
-      case 0:
+      case 0 -> {
         origin.x = this.xMin;
         direction.x = -1;
-        break;
-      case 1:
+      }
+      case 1 -> {
         origin.x = this.xMax;
         direction.x = 1;
-        break;
-      case 2:
+      }
+      case 2 -> {
         origin.y = this.yMin;
         direction.y = -1;
-        break;
-      case 3:
+      }
+      case 3 -> {
         origin.y = this.yMax;
         direction.y = 1;
-        break;
-      case 4:
+      }
+      case 4 -> {
         origin.z = this.zMin;
         direction.z = -1;
-        break;
-      case 5:
+      }
+      case 5 -> {
         origin.z = this.zMax;
         direction.z = 1;
-        break;
-      default:
+      }
+      default -> {
         rv.setNaN();
         return rv;
+      }
     }
     GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
     return rv;
@@ -232,7 +233,7 @@ public class GlrBox extends GlrShape<Box> {
   private static final float[][] backTexCoord = {{.75f, .66f}, {1.0f, .66f}, {1.0f, .33f}, {.75f, .33f}};
   private static final Map<String, int[]> normal3dMap = new HashMap<>();
   private static final Map<String, float[][]> texCoordMap = new HashMap<>();
-  private Map<String, double[][]> vertexMap = new HashMap<>();
+  private final Map<String, double[][]> vertexMap = new HashMap<>();
 
   static {
     normal3dMap.put("left", leftNormal3d);

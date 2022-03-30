@@ -440,7 +440,7 @@ public class RenderContext extends Context {
   }
 
   public Integer generateDisplayListID(GlrGeometry<? extends Geometry> geometryAdapter) {
-    Integer id = new Integer(gl.glGenLists(1));
+    Integer id = gl.glGenLists(1);
     synchronized (this.displayListMap) {
       this.displayListMap.put(geometryAdapter, id);
     }

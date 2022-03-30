@@ -54,7 +54,6 @@ import org.lgna.common.resources.ImageResource;
 import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
-import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
 import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointedModelResource;
@@ -85,7 +84,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     @Override
-    public Project readProject() throws IOException, VersionNotSupportedException {
+    public Project readProject() throws IOException {
       Manifest manifest = readManifest();
       Set<Resource> resources = readResources(manifest);
       //TODO Read manifest and content for program type
@@ -93,7 +92,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     @Override
-    public TypeResourcesPair readType() throws IOException, VersionNotSupportedException {
+    public TypeResourcesPair readType() throws IOException {
       Manifest manifest = readManifest();
       Set<Resource> resources = readResources(manifest);
       return new TypeResourcesPair(null, resources);
@@ -147,7 +146,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     JsonProjectWriter() {
     }
 
-    private TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
+    private final TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
 
     @Override
     public void writeType(OutputStream os, NamedUserType type, DataSource... dataSources) throws IOException {
@@ -193,7 +192,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
         entries.addAll(modelIo.createDataSources("models"));
         manifest.resources.add(modelIo.createModelReference("models"));
       }
-      for (DynamicResource dynamicResource: crawler.dynamicResources) {
+      for (DynamicResource<?, ?> dynamicResource: crawler.dynamicResources) {
         JsonModelIo modelIo = new JsonModelIo(dynamicResource, format);
         entries.addAll(modelIo.createDataSources("models"));
         entries.add(createEntryForResourceTypes(manifest, dynamicResource));
@@ -225,7 +224,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private Collection<? extends DataSource> createEntriesForResourceTypes(Manifest manifest, Set<JointedModelResource> resources) {
-      Set<Class> distinctResources = new HashSet<>();
+      Set<Class<?>> distinctResources = new HashSet<>();
       return resources.stream()
                       .filter(resource -> !distinctResources.contains(resource.getClass()))
                       .map(resource -> {
@@ -292,7 +291,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
-      IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
+      IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<>(ResourceExpression.class) {
         @Override
         protected boolean isAcceptable(ResourceExpression resourceExpression1) {
           return true;

@@ -182,7 +182,7 @@ public abstract class Component extends Element implements Visitable, ReferenceF
     fireHierarchyChanged();
   }
 
-  protected void setParentInHierarchy(Composite parent) {
+  private void setParentInHierarchy(Composite parent) {
     if (vehicle != null) {
       vehicle.fireChildRemoved(this);
     }

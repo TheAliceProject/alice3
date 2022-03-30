@@ -69,7 +69,7 @@ public class PickContext extends Context {
   public int getPickNameForVisualAdapter(GlrVisual<? extends Visual> visualAdapter) {
     synchronized (m_pickNameMap) {
       int name = m_pickNameMap.size();
-      m_pickNameMap.put(new Integer(name), visualAdapter);
+      m_pickNameMap.put(name, visualAdapter);
       return name;
     }
   }
