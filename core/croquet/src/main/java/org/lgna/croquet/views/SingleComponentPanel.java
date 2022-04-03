@@ -84,7 +84,8 @@ public abstract class SingleComponentPanel extends Panel {
     @Override
     public final void layoutContainer(Container parent) {
       if (parent.getComponentCount() > 0) {
-        this.layoutComponent(parent, parent.getComponent(0));
+        Component innerComponent = parent.getComponent(0);
+        this.layoutComponent(parent, innerComponent);
       }
     }
   }

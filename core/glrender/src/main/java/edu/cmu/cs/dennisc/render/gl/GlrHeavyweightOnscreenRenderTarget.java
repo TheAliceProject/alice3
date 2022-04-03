@@ -57,7 +57,6 @@ import java.awt.event.ComponentListener;
  * @author Dennis Cosgrove
  */
 class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<Component> implements HeavyweightOnscreenRenderTarget {
-  private GLCanvas m_glCanvas;
 
   /* package-private */ GlrHeavyweightOnscreenRenderTarget(GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities) {
     super(lookingGlassFactory, requestedCapabilities);
@@ -86,11 +85,6 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<Compone
   }
 
   @Override
-  public void repaint() {
-    getAwtComponent().repaint();
-  }
-
-  @Override
   public Component getAwtComponent() {
     return m_glCanvas;
   }
@@ -107,7 +101,14 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<Compone
   }
 
   @Override
+  public void repaint() {
+    getAwtComponent().repaint();
+  }
+
+  @Override
   public GLAutoDrawable getGLAutoDrawable() {
     return m_glCanvas;
   }
+
+  private GLCanvas m_glCanvas;
 }
