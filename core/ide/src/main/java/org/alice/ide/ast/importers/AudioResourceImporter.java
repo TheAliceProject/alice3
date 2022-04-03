@@ -43,7 +43,6 @@
 
 package org.alice.ide.ast.importers;
 
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
 import org.lgna.common.resources.AudioResource;
 import org.lgna.croquet.importer.Importer;
@@ -51,14 +50,13 @@ import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AudioResourceImporter extends Importer<AudioResource> {
   private static class SingletonHolder {
-    private static AudioResourceImporter instance = new AudioResourceImporter();
+    private static final AudioResourceImporter instance = new AudioResourceImporter();
   }
 
   public static AudioResourceImporter getInstance() {
@@ -66,7 +64,7 @@ public class AudioResourceImporter extends Importer<AudioResource> {
   }
 
   private AudioResourceImporter() {
-    super(UUID.randomUUID(), StoryApiDirectoryUtilities.getSoundGalleryDirectory(), SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null, AudioResource.createFilenameFilter(true), "mp3", "wav", "au");
+    super(StoryApiDirectoryUtilities.getSoundGalleryDirectory(), AudioResource.createFilenameFilter(true), AudioResource.getFileExtensions());
   }
 
   @Override

@@ -95,7 +95,7 @@ public class ManipulationEvent {
 
   @Override
   public String toString() {
-    return this.type + ":[" + this.movementDescription.toString() + "(" + this.target + ")]";
+    return type + ":[" + (movementDescription == null ? "---" : movementDescription) + "(" + target + ")]";
   }
 
   private final EventType type;

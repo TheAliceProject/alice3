@@ -53,6 +53,7 @@ import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
 import org.lgna.croquet.history.UserActivity;
@@ -361,7 +362,26 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
       uriProjectLoader = null;
       activity.cancel();
     } else {
-      updateInterface(project);
+      try {
+        updateInterface(project);
+      } catch (RuntimeException re) {
+        var message = new StringBuilder("Errors reported in " + getUri());
+        Throwable cause = re;
+        do {
+          var causeMessage = cause.getLocalizedMessage();
+          if (causeMessage != null) {
+            message.append("\n\n  ").append(causeMessage);
+          }
+          cause = cause.getCause();
+        } while (cause != null);
+        // TODO clear project remnants from system
+        uriProjectLoader = null;
+        activity.cancel(new CancelException(re));
+        Dialogs.showError("Unable to Load Project", message.toString());
+        setPerspective(getDocumentFrame().getNoProjectPerspective());
+        UserActivity newActivity = getOverallUserActivity().getLatestActivity().newChildActivity();
+        getDocumentFrame().getNewProjectOperation().fire(newActivity);
+      }
     }
     hideWaitCursor();
   }

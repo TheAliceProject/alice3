@@ -106,6 +106,7 @@ import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetStartCameraTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.CopyObjectDragManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.GetAGoodLookAtManipulator;
@@ -122,6 +123,7 @@ import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
@@ -655,24 +657,31 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
         Logger.warning("Adding an undoable action for a manipulation that didn't actually change the transformation.");
       }
       if (originalTransformation == null) {
-        Logger.severe("Ending manipulation where the original transformaion is null.");
+        Logger.severe("Ending manipulation where the original transformation is null.");
       }
 
       SThing aliceThing = EntityImp.getAbstractionFromSgElement(sgManipulatedTransformable);
-      if (aliceThing != null) {
-        AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
-        if (aliceThing instanceof SJoint) {
-          JointImp jointImp = (JointImp) EntityImp.getInstance(sgManipulatedTransformable);
-          SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
-          UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(jointedModelThing);
-          undoOperation = new PredeterminedSetLocalJointTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
-        } else {
-          UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(aliceThing);
-          undoOperation = new PredeterminedSetLocalTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
-        }
+      if (aliceThing == null) {
+        return;
+      }
+      AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
+      if (aliceThing instanceof SJoint) {
+        JointImp jointImp = (JointImp) EntityImp.getInstance(sgManipulatedTransformable);
+        SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
+        UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(jointedModelThing);
+        undoOperation = new PredeterminedSetLocalJointTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
         undoOperation.fire();
       } else {
-        //note: currently this condition can occur for manipulations of the scene editor's orthographic camera views
+        UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(aliceThing);
+        if (aliceThing instanceof SCamera) {
+          if (sceneEditor.isStartingCameraView()) {
+            undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
+            undoOperation.fire();
+          }
+        } else {
+          undoOperation = new PredeterminedSetLocalTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
+          undoOperation.fire();
+        }
       }
     }
   }

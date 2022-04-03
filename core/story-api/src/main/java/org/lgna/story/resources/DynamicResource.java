@@ -64,6 +64,9 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
 
   public DynamicResource(String modelName, String resourceName) {
     this.modelManifest = StorytellingResources.INSTANCE.getModelManifest(modelName);
+    if (modelManifest == null) {
+      throw new RuntimeException("No model found in MyGallery named \"" + modelName + "\"\n    (Expected Resource Type: " + this.getClass().getSimpleName() + ")");
+    }
     this.modelVariant = this.modelManifest.getModelVariant(resourceName);
     initialize();
   }

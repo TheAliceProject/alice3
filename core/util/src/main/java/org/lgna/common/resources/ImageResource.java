@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.common.resources;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.lgna.common.Resource;
 import org.w3c.dom.Element;
@@ -53,38 +54,17 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
 public class ImageResource extends Resource {
-  private static Map<String, String> extensionToContentTypeMap;
-
-  private static final String PNG_MIME_TYPE = "image/png";
-  private static final String JPEG_MIME_TYPE = "image/jpeg";
-  private static final String BMP_MIME_TYPE = "image/bmp";
-  private static final String GIF_MIME_TYPE = "image/gif";
-
-  static {
-    ImageResource.extensionToContentTypeMap = new HashMap<>();
-    ImageResource.extensionToContentTypeMap.put("png", PNG_MIME_TYPE);
-    ImageResource.extensionToContentTypeMap.put("jpg", JPEG_MIME_TYPE);
-    ImageResource.extensionToContentTypeMap.put("jpeg", JPEG_MIME_TYPE);
-    ImageResource.extensionToContentTypeMap.put("bmp", BMP_MIME_TYPE);
-    ImageResource.extensionToContentTypeMap.put("gif", GIF_MIME_TYPE);
-  }
 
   public static String getContentType(String path) {
-    String extension = FileUtilities.getExtension(path);
-    return extension != null ? ImageResource.extensionToContentTypeMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
+    return ImageUtilities.getContentType(FileUtilities.getExtension(path));
   }
 
   public static String getContentType(File file) {
     return getContentType(file.getName());
-  }
-
-  public static boolean isAcceptableContentType(String contentType) {
-    return ImageResource.extensionToContentTypeMap.containsValue(contentType);
   }
 
   public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
@@ -95,7 +75,7 @@ public class ImageResource extends Resource {
     };
   }
 
-  private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
+  private static final Map<UUID, ImageResource> uuidToResourceMap = new HashMap<>();
 
   private static ImageResource get(UUID uuid) {
     ImageResource resource = uuidToResourceMap.get(uuid);
@@ -167,8 +147,8 @@ public class ImageResource extends Resource {
     this.height = height;
   }
 
-  private static String XML_WIDTH_ATTRIBUTE = "width";
-  private static String XML_HEIGHT_ATTRIBUTE = "height";
+  private static final String XML_WIDTH_ATTRIBUTE = "width";
+  private static final String XML_HEIGHT_ATTRIBUTE = "height";
 
   @Override
   public void encodeAttributes(Element xmlElement) {

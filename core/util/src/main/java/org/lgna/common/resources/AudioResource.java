@@ -49,56 +49,51 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class AudioResource extends Resource {
   private static Map<String, String> extensionToContentTypeMap;
+  private static final Set<String> extensions;
 
   static {
-    AudioResource.extensionToContentTypeMap = new HashMap<String, String>();
+    AudioResource.extensionToContentTypeMap = new HashMap<>();
     AudioResource.extensionToContentTypeMap.put("au", "audio.basic");
     AudioResource.extensionToContentTypeMap.put("wav", "audio.x_wav");
     AudioResource.extensionToContentTypeMap.put("mp3", "audio.mpeg");
+    extensions = Collections.unmodifiableSet(extensionToContentTypeMap.keySet());
   }
 
   public static String getContentType(String path) {
     String extension = FileUtilities.getExtension(path);
-    String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
-    return contentType;
+    return extension != null ? AudioResource.extensionToContentTypeMap.get(extension.toLowerCase(Locale.ENGLISH)) : null;
   }
 
   public static String getContentType(File file) {
     return getContentType(file.getName());
   }
 
-  public static boolean isAcceptableContentType(String contentType) {
-    return AudioResource.extensionToContentTypeMap.containsValue(contentType);
+  public static Set<String> getFileExtensions() {
+    return extensions;
   }
 
   public static FilenameFilter createFilenameFilter(final boolean areDirectoriesAccepted) {
-    return new FilenameFilter() {
-      @Override
-      public boolean accept(File dir, String name) {
-        File file = new File(dir, name);
-        if (file.isDirectory()) {
-          return areDirectoriesAccepted;
-        } else {
-          return getContentType(name) != null;
-        }
-      }
+    return (dir, name) -> {
+      File file = new File(dir, name);
+      return file.isDirectory() && areDirectoriesAccepted
+          || !file.isDirectory() && getContentType(name) != null;
     };
   }
 
-  private static Map<UUID, AudioResource> uuidToResourceMap = new HashMap<UUID, AudioResource>();
+  private static final Map<UUID, AudioResource> uuidToResourceMap = new HashMap<>();
 
   private static AudioResource get(UUID uuid) {
     AudioResource rv = uuidToResourceMap.get(uuid);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new AudioResource(uuid);
       uuidToResourceMap.put(uuid, rv);
     }
@@ -141,7 +136,7 @@ public class AudioResource extends Resource {
     this.duration = duration;
   }
 
-  private static String XML_DURATION_ATTRIBUTE = "duration";
+  private static final String XML_DURATION_ATTRIBUTE = "duration";
 
   @Override
   public void encodeAttributes(Element xmlElement) {
