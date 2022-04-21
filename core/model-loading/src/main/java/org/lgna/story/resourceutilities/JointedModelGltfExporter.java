@@ -165,8 +165,10 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     gltf.addNodes(origin);
 
     Map<String, Integer> jointNodes = addSkeletonNodes(gltf);
-    // First node after origin will be root joint of skeleton
-    origin.addChildren(originIndex + 1);
+    if (jointNodes.size() > 0) {
+      // First node after origin will be root joint of skeleton
+      origin.addChildren(originIndex + 1);
+    }
 
     Path tempDir;
     try {
