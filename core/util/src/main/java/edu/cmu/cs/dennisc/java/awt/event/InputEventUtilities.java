@@ -67,9 +67,9 @@ public class InputEventUtilities {
 
   public static int getAcceleratorMask() {
     if (SystemUtilities.isMac()) {
-      return InputEvent.META_MASK;
+      return InputEvent.META_DOWN_MASK;
     } else {
-      return InputEvent.CTRL_MASK;
+      return InputEvent.CTRL_DOWN_MASK;
     }
   }
 
