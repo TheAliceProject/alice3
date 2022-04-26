@@ -52,7 +52,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 
 import java.util.HashMap;
@@ -138,8 +137,8 @@ public class GlrBox extends GlrShape<Box> {
   }
 
   @Override
-  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glBox(rc, false);
+  protected void shapeOnContext(Context context) {
+    glBox(context, false);
   }
 
   @Override

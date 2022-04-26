@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.math.FloatUtil;
-import com.jogamp.opengl.util.ImmModeSink;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -53,18 +50,25 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
-import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.render.gl.imp.CurveRenderer;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrCylinder extends GlrShape<Cylinder> {
+  @Override
+  protected void shapeOnContext(Context context) {
+    glCylinder(context);
+  }
+
   //todo: add scenegraph hint
-  private static final int SLICE_COUNT = 50;
-  private static final int STACK_COUNT = 50;
-  private static final float TAU = 2f * FloatUtil.PI;
+  float capPortion = 1.0F / 3.0F;
+  float capCenterS = 0.5F;
+  float topCapCenterT = 1.0F / 6.0F;
+  float bottomCapCenterT = 5.0F / 6.0F;
+  CurveRenderer.CirclePortion topCircle = new CurveRenderer.CirclePortion(capCenterS, topCapCenterT, capPortion);
+  CurveRenderer.CirclePortion bottomCircle = new CurveRenderer.CirclePortion(capCenterS, bottomCapCenterT, capPortion);
 
   private void glCylinder(Context c) {
     double topRadius;
@@ -73,118 +77,38 @@ public class GlrCylinder extends GlrShape<Cylinder> {
     } else {
       topRadius = this.topRadius;
     }
-    c.gl.glPushMatrix();
-    try {
-      switch (bottomToTopAxis) {
-        case POSITIVE_X -> c.gl.glRotated(-90, 0, 1, 0);
-        case POSITIVE_Y -> c.gl.glRotated(+90, 1, 0, 0);
-        case NEGATIVE_X -> c.gl.glRotated(+90, 0, 1, 0);
-        case NEGATIVE_Y -> c.gl.glRotated(-90, 1, 0, 0);
-        case POSITIVE_Z -> c.gl.glRotated(180, 0, 1, 0);
-      }
-
-      double z = switch (originAlignment) {
-        case BOTTOM -> -length;
-        case CENTER -> -length * 0.5;
-        case TOP -> 0;
-      };
-      c.gl.glTranslated(0, 0, z);
-
-      float tMin = hasTopCap ? 1.0F / 3.0F : 0F;
-      float tMax = 2.0F / 3.0F;
-
-      drawCylinder(c, (float) topRadius, (float) bottomRadius, (float) length, tMin, tMax);
-
-      float capPortion = 1.0F / 3.0F;
-      float capCenterS = 0.5F;
-      float topCapCenterT = 1.0F / 6.0F;
-      float bottomCapCenterT = 5.0F / 6.0F;
-      if (hasTopCap && (topRadius > 0)) {
-        c.gl.glRotated(180, 0, 1, 0);
-        GlrDisc.gluDisk(c.gl, 0, bottomRadius, c.isTextureEnabled(), capCenterS, topCapCenterT, capPortion);
-        c.gl.glRotated(180, 0, 1, 0);
-      }
-      if (hasBottomCap && (bottomRadius > 0)) {
-        c.gl.glTranslated(0, 0, +length);
-        c.gl.glRotated(180, 0, 0, 1);
-        GlrDisc.gluDisk(c.gl, 0, bottomRadius, c.isTextureEnabled(), capCenterS, bottomCapCenterT, capPortion);
-        c.gl.glRotated(180, 0, 0, 1);
-        c.gl.glTranslated(0, 0, -length);
-      }
-    } finally {
-      c.gl.glPopMatrix();
+    switch (bottomToTopAxis) {
+      case POSITIVE_X -> c.gl.glRotated(-90, 0, 1, 0);
+      case POSITIVE_Y -> c.gl.glRotated(+90, 1, 0, 0);
+      case NEGATIVE_X -> c.gl.glRotated(+90, 0, 1, 0);
+      case NEGATIVE_Y -> c.gl.glRotated(-90, 1, 0, 0);
+      case POSITIVE_Z -> c.gl.glRotated(180, 0, 1, 0);
     }
-  }
-  private void drawCylinder(Context c, final float baseRadius, final float topRadius, final float height,
-                            float textureTmin, float textureTmax) {
-    final float da = TAU / SLICE_COUNT;
-    final float dr = (topRadius - baseRadius) / STACK_COUNT;
-    final float dz = height / STACK_COUNT;
-    final float nz = (baseRadius - topRadius) / height;
-    final float ds = 1.0f / SLICE_COUNT;
-    final float dt = (textureTmax - textureTmin) / STACK_COUNT;
 
-    float t = textureTmin;
-    float z = 0.0f;
-    float r = baseRadius;
-    float x, y;
+    double z = switch (originAlignment) {
+      case BOTTOM -> -length;
+      case CENTER -> -length * 0.5;
+      case TOP -> 0;
+    };
+    c.gl.glTranslated(0, 0, z);
 
-    for (int j = 0; j < STACK_COUNT; j++) {
-      float s = 0.0f;
-      c.gl.getGL2().glBegin(ImmModeSink.GL_QUAD_STRIP);
-      for (int i = 0; i <= SLICE_COUNT; i++) {
-        if (i == SLICE_COUNT) {
-          x = (float) Math.sin(0.0f);
-          y = (float) Math.cos(0.0f);
-        } else {
-          x = (float) Math.sin((i * da));
-          y = (float) Math.cos((i * da));
-        }
-        normal3f(c.gl, x, y, nz);
-        if (c.isTextureEnabled()) {
-          c.gl.getGL2().glTexCoord2f(s, t);
-        }
-        c.gl.getGL2().glVertex3f(x * r, y * r, z);
-        normal3f(c.gl, x, y, nz);
-        if (c.isTextureEnabled()) {
-          c.gl.getGL2().glTexCoord2f(s, t + dt);
-        }
-        c.gl.getGL2().glVertex3f(x * (r + dr), y * (r + dr), z + dz);
-        s += ds;
-      }
-      c.gl.getGL2().glEnd();
-      r += dr;
-      t += dt;
-      z += dz;
+    float tMin = hasTopCap ? 1.0F / 3.0F : 0F;
+    float tMax = 2.0F / 3.0F;
+
+    c.glCylinderSide(bottomRadius, topRadius, length, tMin, tMax);
+
+    if (hasTopCap && (topRadius > 0)) {
+      c.gl.glRotated(180, 0, 1, 0);
+      c.glDisk(0, topRadius, topCircle);
+      c.gl.glRotated(180, 0, 1, 0);
     }
-  }
-
-  private void normal3f(final GL gl, float x, float y, float z) {
-    float mag = (float) Math.sqrt(x * x + y * y + z * z);
-    if (mag > 0.00001F) {
-      x /= mag;
-      y /= mag;
-      z /= mag;
+    if (hasBottomCap && (bottomRadius > 0)) {
+      c.gl.glTranslated(0, 0, +length);
+      c.gl.glRotated(180, 0, 0, 1);
+      c.glDisk(0, bottomRadius, bottomCircle);
+      c.gl.glRotated(180, 0, 0, 1);
+      c.gl.glTranslated(0, 0, -length);
     }
-    gl.getGL2().glNormal3f(x, y, z);
-  }
-
-  @Override
-  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glCylinder(rc);
-  }
-
-  @Override
-  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    int name;
-    if (isSubElementRequired) {
-      name = 0;
-    } else {
-      name = -1;
-    }
-    pc.gl.glPushName(name);
-    glCylinder(pc);
-    pc.gl.glPopName();
   }
 
   @Override
