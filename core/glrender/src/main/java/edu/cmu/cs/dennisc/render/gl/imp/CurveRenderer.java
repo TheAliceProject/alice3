@@ -14,9 +14,6 @@ public class CurveRenderer {
   private static final int RING_COUNT = 16;
   private static final float TAU = 2f * FloatUtil.PI;
 
-  public record CirclePortion(float centerS, float centerT, float portion) {
-  }
-
   /**
    * Customized version of drawSphere with inverting image handling
    */
@@ -141,12 +138,12 @@ public class CurveRenderer {
 
   // Inspired by GLUquadricImpl.drawDisk() for the limited case of GLU_OUTSIDE, GLU_FILL, and having normals.
   // The texture application has been flipped in T so images appear forward
-  public void drawDisk(Context c, double innerRadius, double outerRadius, CirclePortion textureCircle) {
+  public void drawDisk(Context c, double innerRadius, double outerRadius, float centerS, float centerT, float portion) {
     c.gl.getGL2().glNormal3f(0.0f, 0.0f, +1.0f);
 
     float da = TAU / SLICE_COUNT;
     float dr = (float) (outerRadius - innerRadius);
-    final float dtc = (float) (2.0 * outerRadius) / textureCircle.portion;
+    final float dtc = (float) (2.0 * outerRadius) / portion;
     float sa, ca;
     float r1 = (float) innerRadius;
     final float r2 = r1 + dr;
@@ -156,11 +153,11 @@ public class CurveRenderer {
       sa = (float) Math.sin(a);
       ca = (float) Math.cos(a);
       if (c.isTextureEnabled()) {
-        c.gl.getGL2().glTexCoord2f(textureCircle.centerS + sa * r2 / dtc, textureCircle.centerT - ca * r2 / dtc);
+        c.gl.getGL2().glTexCoord2f(centerS + sa * r2 / dtc, centerT - ca * r2 / dtc);
       }
       c.gl.getGL2().glVertex2f(r2 * sa, r2 * ca);
       if (c.isTextureEnabled()) {
-        c.gl.getGL2().glTexCoord2f(textureCircle.centerS + sa * r1 / dtc, textureCircle.centerT - ca * r1 / dtc);
+        c.gl.getGL2().glTexCoord2f(centerS + sa * r1 / dtc, centerT - ca * r1 / dtc);
       }
       c.gl.getGL2().glVertex2f(r1 * sa, r1 * ca);
     }

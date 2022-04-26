@@ -107,7 +107,8 @@ public class GlrRenderFactory implements RenderFactory {
     Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
     synchronized (this.toBeReleased) {
       for (Releasable releasable : this.toBeReleased) {
-        if (releasable instanceof GlrOnscreenRenderTarget<?> onscreenLookingGlass) {
+        if (releasable instanceof GlrOnscreenRenderTarget<?>) {
+          GlrOnscreenRenderTarget<?> onscreenLookingGlass = (GlrOnscreenRenderTarget<?>) releasable;
           if (onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget) {
             this.heavyweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
           } else if (onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget) {

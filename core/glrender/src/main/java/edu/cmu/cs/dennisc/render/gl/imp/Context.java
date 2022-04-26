@@ -125,8 +125,8 @@ public abstract class Context {
     curveRenderer.drawSphere(this, radius);
   }
 
-  public void glDisk(double innerRadius, double outerRadius, CurveRenderer.CirclePortion textureCircle) {
-    curveRenderer.drawDisk(this, innerRadius, outerRadius, textureCircle);
+  public void glDisk(double innerRadius, double outerRadius, float centerS, float centerT, float portion) {
+    curveRenderer.drawDisk(this, innerRadius, outerRadius, centerS, centerT, portion);
   }
 
   public void glCylinderSide(double bottomRadius, double topRadius, double length, float textureTmin, float textureTmax) {

@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
-import edu.cmu.cs.dennisc.render.gl.imp.CurveRenderer;
 import edu.cmu.cs.dennisc.scenegraph.Disc;
 
 /**
@@ -61,8 +60,6 @@ public class GlrDisc extends GlrShape<Disc> {
     glDisc(context);
   }
 
-  CurveRenderer.CirclePortion maxInscribedCircle = new CurveRenderer.CirclePortion(0.5F, 0.5F, 1.0F);
-
   private void glDisc(Context c) {
     double innerRadius = owner.innerRadius.getValue();
     double outerRadius = owner.outerRadius.getValue();
@@ -73,11 +70,11 @@ public class GlrDisc extends GlrShape<Disc> {
       c.gl.glRotated(90.0, 1.0, 0.0, 0.0);
     }
     if (owner.isFrontFaceVisible.getValue()) {
-      c.glDisk(innerRadius, outerRadius, maxInscribedCircle);
+      c.glDisk(innerRadius, outerRadius, 0.5F, 0.5F, 1.0F);
     }
     if (owner.isBackFaceVisible.getValue()) {
       c.gl.glRotated(180.0, 0.0, 1.0, 0.0);
-      c.glDisk(innerRadius, outerRadius, maxInscribedCircle);
+      c.glDisk(innerRadius, outerRadius, 0.5F, 0.5F, 1.0F);
     }
   }
 

@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
-import edu.cmu.cs.dennisc.render.gl.imp.CurveRenderer;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 
 /**
@@ -67,8 +66,6 @@ public class GlrCylinder extends GlrShape<Cylinder> {
   float capCenterS = 0.5F;
   float topCapCenterT = 1.0F / 6.0F;
   float bottomCapCenterT = 5.0F / 6.0F;
-  CurveRenderer.CirclePortion topCircle = new CurveRenderer.CirclePortion(capCenterS, topCapCenterT, capPortion);
-  CurveRenderer.CirclePortion bottomCircle = new CurveRenderer.CirclePortion(capCenterS, bottomCapCenterT, capPortion);
 
   private void glCylinder(Context c) {
     double topRadius;
@@ -99,13 +96,13 @@ public class GlrCylinder extends GlrShape<Cylinder> {
 
     if (hasTopCap && (topRadius > 0)) {
       c.gl.glRotated(180, 0, 1, 0);
-      c.glDisk(0, topRadius, topCircle);
+      c.glDisk(0, topRadius, capCenterS, topCapCenterT, capPortion);
       c.gl.glRotated(180, 0, 1, 0);
     }
     if (hasBottomCap && (bottomRadius > 0)) {
       c.gl.glTranslated(0, 0, +length);
       c.gl.glRotated(180, 0, 0, 1);
-      c.glDisk(0, bottomRadius, bottomCircle);
+      c.glDisk(0, bottomRadius, capCenterS, bottomCapCenterT, capPortion);
       c.gl.glRotated(180, 0, 0, 1);
       c.gl.glTranslated(0, 0, -length);
     }
