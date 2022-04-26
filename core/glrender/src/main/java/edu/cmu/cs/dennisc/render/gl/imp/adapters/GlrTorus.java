@@ -63,7 +63,7 @@ public class GlrTorus extends GlrShape<Torus> {
   final double PI = Math.PI;
   final double TAU = 2 * PI;
 
-  private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings, boolean isLightingEnabled) {
+  private void drawTorusCustomize(Context c, double majorRadius, double minorRadius, int nsides, int nrings) {
     for (int i = nrings - 1; i >= 0; i--) {
       c.gl.glBegin(GL_QUAD_STRIP);
       for (int j = 0; j < nsides + 1; j++) {
@@ -90,7 +90,7 @@ public class GlrTorus extends GlrShape<Torus> {
           nz = -cosSides * cosRings;
 
           c.gl.glTexCoord2d(v, u);
-          if (isLightingEnabled) {
+          if (c.isLightingEnabled()) {
             normal3d(c.gl, nx, ny, nz);
           }
           c.gl.glVertex3d(x, y, z);
@@ -110,17 +110,17 @@ public class GlrTorus extends GlrShape<Torus> {
     gl.getGL2().glNormal3d(x, y, z);
   }
 
-  private void glTorus(Context context, boolean isLightingEnabled) {
+  private void glTorus(Context context) {
     double majorRadius = this.owner.majorRadius.getValue();
     double minorRadius = this.owner.minorRadius.getValue();
     int sides = 32;
     int rings = 16;
-    drawTorusCustomize(context, majorRadius, minorRadius, sides, rings, isLightingEnabled);
+    drawTorusCustomize(context, majorRadius, minorRadius, sides, rings);
   }
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glTorus(rc, true);
+    glTorus(rc);
   }
 
   @Override
@@ -132,7 +132,7 @@ public class GlrTorus extends GlrShape<Torus> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glTorus(pc, false);
+    glTorus(pc);
     pc.gl.glPopName();
   }
 

@@ -94,6 +94,11 @@ public class PickContext extends Context {
   }
 
   @Override
+  public boolean isLightingEnabled() {
+    return false;
+  }
+
+  @Override
   protected void enableNormalize() {
   }
 

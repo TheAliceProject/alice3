@@ -76,6 +76,8 @@ public abstract class Context {
 
   public abstract boolean isTextureEnabled();
 
+  public abstract boolean isLightingEnabled();
+
   protected abstract void enableNormalize();
 
   protected abstract void disableNormalize();
