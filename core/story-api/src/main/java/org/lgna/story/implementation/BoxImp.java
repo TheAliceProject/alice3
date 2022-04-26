@@ -68,6 +68,11 @@ public class BoxImp extends ShapeImp {
   }
 
   @Override
+  protected Geometry getGeometry() {
+    return sgBox;
+  }
+
+  @Override
   protected InstanceProperty[] getScaleProperties() {
     return new InstanceProperty[] {this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum};
   }

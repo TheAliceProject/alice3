@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.components.ExpressionDropDown;
 import org.alice.ide.croquet.models.ast.FieldInitializerState;
@@ -120,16 +119,7 @@ public class FieldDeclarationPane extends LineAxisPanel {
     this.finalLabel.setText(text);
   }
 
-  private PropertyListener propertyListener = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      updateFinalLabel();
-    }
-  };
+  private PropertyListener propertyListener = e -> updateFinalLabel();
 
   @Override
   protected void handleDisplayable() {

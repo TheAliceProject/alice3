@@ -726,7 +726,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     revalidateAndRepaint();
   }
 
-  public void switchToOthographicCamera() {
+  public void switchToOrthographicCamera() {
     switchToCamera(orthographicCameraImp.getSgCamera());
     mainCameraNavigatorWidget.setToOrthographicMode();
   }

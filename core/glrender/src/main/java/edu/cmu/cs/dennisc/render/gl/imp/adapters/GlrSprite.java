@@ -74,7 +74,7 @@ public class GlrSprite extends GlrGeometry<Sprite> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.radius) {
       //todo
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

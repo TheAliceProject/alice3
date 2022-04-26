@@ -49,7 +49,6 @@ import org.alice.ide.croquet.codecs.ResourceCodec;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SingleSelectTableRowState;
-import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 
 import javax.swing.JComponent;
@@ -133,7 +132,7 @@ class ResourceTableModel extends AbstractTableModel {
   public void reload(Project project) {
     if (project != null) {
       // Calling getReferencedResources will update project with all currently used resources.
-      this.referencedResources = ProgramTypeUtilities.getReferencedResources(project);
+      this.referencedResources = project.getReferencedResources();
       this.resources = ArrayUtilities.createArray(project.getResources(), Resource.class, true);
     } else {
       this.resources = new Resource[] {};

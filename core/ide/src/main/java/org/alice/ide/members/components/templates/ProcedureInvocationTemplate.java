@@ -60,10 +60,6 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
   private AbstractMethod method;
   private ListPropertyListener<UserParameter> parameterAdapter = new SimplifiedListPropertyAdapter<UserParameter>() {
     @Override
-    protected void changing(ListPropertyEvent<UserParameter> e) {
-    }
-
-    @Override
     protected void changed(ListPropertyEvent<UserParameter> e) {
       ProcedureInvocationTemplate.this.refresh();
     }

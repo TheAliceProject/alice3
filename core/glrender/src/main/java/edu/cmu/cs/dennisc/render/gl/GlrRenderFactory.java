@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
 import edu.cmu.cs.dennisc.pattern.event.ReleaseListener;
 import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
-import edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget;
 import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
@@ -63,44 +62,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 
 import java.awt.Component;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
-
-/**
- * @author Dennis Cosgrove
- */
-class WaitingRunnable implements Runnable {
-  private Runnable runnable;
-  private Thread thread;
-  private Exception exception;
-
-  public WaitingRunnable(Runnable runnable, Thread thread) {
-    assert runnable != null;
-    assert thread != null;
-    this.runnable = runnable;
-    this.thread = thread;
-    this.exception = null;
-  }
-
-  public Exception getException() {
-    return this.exception;
-  }
-
-  @Override
-  public void run() {
-    try {
-      this.runnable.run();
-    } catch (Exception e) {
-      this.exception = e;
-    } finally {
-      synchronized (this.thread) {
-        this.thread.notifyAll();
-      }
-    }
-  }
-}
 
 /**
  * @author Dennis Cosgrove
@@ -111,7 +75,7 @@ public class GlrRenderFactory implements RenderFactory {
   }
 
   private static class SingletonHolder {
-    private static GlrRenderFactory instance = new GlrRenderFactory();
+    private static final GlrRenderFactory instance = new GlrRenderFactory();
   }
 
   public static GlrRenderFactory getInstance() {
@@ -126,32 +90,25 @@ public class GlrRenderFactory implements RenderFactory {
     return new GlrImageBuffer(backgroundColor);
   }
 
-  @Override
-  public ImageBuffer createTransparentBackgroundImageBuffer() {
-    return this.createImageBuffer(null);
-  }
-
   //todo: just force start and stop? or rename methods
   private int automaticDisplayCount = 0;
 
-  private static boolean isDisplayDesired(GlrOnscreenRenderTarget lg) {
+  private static boolean isDisplayDesired(GlrOnscreenRenderTarget<?> lg) {
     if (lg.isRenderingEnabled()) {
       Component component = lg.getAwtComponent();
-      if (component.isVisible() && component.isValid() && (component.getWidth() > 0) && (component.getHeight() > 0)) {
-        if (lg.getSgCameraCount() > 0) {
-          return true;
-        }
-      }
+      return component.isVisible() && component.isValid()
+          && component.getWidth() > 0 && component.getHeight() > 0
+          && lg.getSgCameraCount() > 0;
     }
     return false;
   }
 
-  /*package-private*/Animator.ThreadDeferenceAction step() {
+  Animator.ThreadDeferenceAction step() {
     Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
     synchronized (this.toBeReleased) {
       for (Releasable releasable : this.toBeReleased) {
-        if (releasable instanceof GlrOnscreenRenderTarget) {
-          GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget) releasable;
+        if (releasable instanceof GlrOnscreenRenderTarget<?>) {
+          GlrOnscreenRenderTarget<?> onscreenLookingGlass = (GlrOnscreenRenderTarget<?>) releasable;
           if (onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget) {
             this.heavyweightOnscreenLookingGlasses.remove(onscreenLookingGlass);
           } else if (onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget) {
@@ -173,7 +130,7 @@ public class GlrRenderFactory implements RenderFactory {
       acquireRenderingLock();
       try {
         ChangeHandler.pushRenderingMode();
-        for (GlrOnscreenRenderTarget lg : this.heavyweightOnscreenLookingGlasses) {
+        for (GlrOnscreenRenderTarget<?> lg : this.heavyweightOnscreenLookingGlasses) {
           if (isDisplayDesired(lg)) {
             //lg.getGLAutoDrawable().display();
             lg.repaint();
@@ -185,7 +142,7 @@ public class GlrRenderFactory implements RenderFactory {
           if (ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
             ChangeHandler.resetEventCount();
             //isJustCreatedOnscreenLookingGlassAccountedFor = true;
-            for (GlrOnscreenRenderTarget lg : this.lightweightOnscreenLookingGlasses) {
+            for (GlrOnscreenRenderTarget<?> lg : this.lightweightOnscreenLookingGlasses) {
               if (isDisplayDesired(lg)) {
                 //lg.getGLAutoDrawable().display();
                 lg.repaint();
@@ -200,7 +157,7 @@ public class GlrRenderFactory implements RenderFactory {
       } finally {
         releaseRenderingLock();
       }
-    } else {
+    // } else {
       //edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
     }
     GlrRenderFactory.this.handleDisplayed();
@@ -222,16 +179,9 @@ public class GlrRenderFactory implements RenderFactory {
   }
 
   @Override
-  public int getAutomaticDisplayCount() {
-    return this.automaticDisplayCount;
-  }
-
-  @Override
   public synchronized void incrementAutomaticDisplayCount() {
     this.automaticDisplayCount++;
-    if (this.animator != null) {
-      //pass
-    } else {
+    if (this.animator == null) {
       this.animator = new Animator() {
         @Override
         protected ThreadDeferenceAction step() {
@@ -273,11 +223,6 @@ public class GlrRenderFactory implements RenderFactory {
   }
 
   @Override
-  public ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
-    return new GlrImageCaptureRenderTarget(this, width, height, (GlrRenderTarget) renderTargetToShareContextWith, requestedCapabilities);
-  }
-
-  @Override
   public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
     this.automaticDisplayListeners.add(automaticDisplayListener);
   }
@@ -287,16 +232,11 @@ public class GlrRenderFactory implements RenderFactory {
     this.automaticDisplayListeners.remove(automaticDisplayListener);
   }
 
-  @Override
-  public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
-    return this.automaticDisplayListeners;
-  }
-
   private void handleDisplayed() {
     for (AutomaticDisplayListener automaticDisplayListener : this.automaticDisplayListeners) {
       automaticDisplayListener.automaticDisplayCompleted(reusableAutomaticDisplayEvent);
     }
-    while (this.runnables.isEmpty() == false) {
+    while (!this.runnables.isEmpty()) {
       Runnable runnable = this.runnables.remove();
       runnable.run();
     }
@@ -305,30 +245,6 @@ public class GlrRenderFactory implements RenderFactory {
   @Override
   public void invokeLater(Runnable runnable) {
     this.runnables.add(runnable);
-  }
-
-  @Override
-  public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-    Thread currentThread = Thread.currentThread();
-    WaitingRunnable waitingRunnable = new WaitingRunnable(runnable, currentThread);
-    synchronized (currentThread) {
-      this.runnables.add(waitingRunnable);
-      currentThread.wait();
-    }
-    if (waitingRunnable.getException() != null) {
-      throw new InvocationTargetException(waitingRunnable.getException());
-    }
-  }
-
-  @Override
-  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable) {
-    try {
-      invokeAndWait(runnable);
-    } catch (InterruptedException ie) {
-      throw new RuntimeException(ie);
-    } catch (InvocationTargetException ie) {
-      throw new RuntimeException(ie);
-    }
   }
 
   private final ReleaseListener releaseListener = new ReleaseListener() {

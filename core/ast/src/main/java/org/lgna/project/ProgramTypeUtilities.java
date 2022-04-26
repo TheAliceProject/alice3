@@ -62,16 +62,13 @@ import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
-import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserMethod;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -139,31 +136,6 @@ public class ProgramTypeUtilities {
     ArgumentListCrawler crawler = new ArgumentListCrawler();
     programType.crawl(crawler, CrawlPolicy.COMPLETE, declarationFilter);
     return crawler.getList();
-  }
-
-  public static Set<Resource> getReferencedResources(Project project) {
-    AbstractType<?, ?, ?> programType = project.getProgramType();
-    Set<Resource> resources = project.getResources();
-    IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>(ResourceExpression.class) {
-      @Override
-      protected boolean isAcceptable(ResourceExpression resourceExpression) {
-        return true;
-      }
-    };
-    programType.crawl(crawler, CrawlPolicy.COMPLETE);
-
-    Set<Resource> rv = new HashSet<Resource>();
-    for (ResourceExpression resourceExpression : crawler.getList()) {
-      Resource resource = resourceExpression.resource.getValue();
-      if (resources.contains(resource)) {
-        //pass
-      } else {
-        Logger.warning("adding missing resource", resource);
-        resources.add(resource);
-      }
-      rv.add(resource);
-    }
-    return rv;
   }
 
   public static <N extends Node> N lookupNode(Project project, final UUID id) {

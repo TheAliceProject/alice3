@@ -43,20 +43,14 @@
 package edu.cmu.cs.dennisc.render.nil;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.ImageBuffer;
-import edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget;
 import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.RenderCapabilities;
 import edu.cmu.cs.dennisc.render.RenderFactory;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -67,11 +61,6 @@ public enum NilRenderFactory implements RenderFactory {
   @Override
   public ImageBuffer createImageBuffer(Color4f backgroundColor) {
     return new NrImageBuffer(backgroundColor);
-  }
-
-  @Override
-  public ImageBuffer createTransparentBackgroundImageBuffer() {
-    return this.createImageBuffer(null);
   }
 
   @Override
@@ -90,11 +79,6 @@ public enum NilRenderFactory implements RenderFactory {
   }
 
   @Override
-  public ImageCaptureRenderTarget createImageCaptureRenderTarget(int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities) {
-    return new NrImageCaptureRenderTarget(width, height, renderTargetToShareContextWith, requestedCapabilities);
-  }
-
-  @Override
   public void acquireRenderingLock() {
   }
 
@@ -104,46 +88,21 @@ public enum NilRenderFactory implements RenderFactory {
 
   @Override
   public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
-    this.automaticDisplayListeners.add(automaticDisplayListener);
   }
 
   @Override
   public void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener) {
-    this.automaticDisplayListeners.remove(automaticDisplayListener);
-  }
-
-  @Override
-  public Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners() {
-    return Collections.unmodifiableList(this.automaticDisplayListeners);
-  }
-
-  @Override
-  public int getAutomaticDisplayCount() {
-    return this.automaticDisplayCount;
   }
 
   @Override
   public void incrementAutomaticDisplayCount() {
-    this.automaticDisplayCount++;
   }
 
   @Override
   public void decrementAutomaticDisplayCount() {
-    this.automaticDisplayCount--;
   }
 
   @Override
   public void invokeLater(Runnable runnable) {
   }
-
-  @Override
-  public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-  }
-
-  @Override
-  public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary(Runnable runnable) {
-  }
-
-  private final List<AutomaticDisplayListener> automaticDisplayListeners = Lists.newCopyOnWriteArrayList();
-  private int automaticDisplayCount;
 }

@@ -52,7 +52,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 
 import java.util.HashMap;
@@ -64,7 +63,7 @@ import java.util.Map;
  */
 
 public class GlrBox extends GlrShape<Box> {
-  private void glBox(Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled) {
+  private void glBox(Context c, boolean isSubElementRequired) {
     int id = 0;
     double[][] leftFace = {{this.xMin, this.yMin, this.zMax}, {this.xMin, this.yMax, this.zMax}, {this.xMin, this.yMax, this.zMin}, {this.xMin, this.yMin, this.zMin}};
     double[][] rightFace = {{this.xMax, this.yMin, this.zMin}, {this.xMax, this.yMax, this.zMin}, {this.xMax, this.yMax, this.zMax}, {this.xMax, this.yMin, this.zMax}};
@@ -86,51 +85,51 @@ public class GlrBox extends GlrShape<Box> {
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "left");
+    drawBox(c, "left");
     // xMax face
     // c.gl.glColor3d( 1,0,0 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "right");
+    drawBox(c, "right");
     // yMin face
     // c.gl.glColor3d( 1,1,1 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "bottom");
+    drawBox(c, "bottom");
     // yMax face
     // c.gl.glColor3d( 0,1,0 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "top");
+    drawBox(c, "top");
     // zMin face
     // c.gl.glColor3d( 1,1,1 );
     if (isSubElementRequired) {
       c.gl.glLoadName(id++);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "front");
+    drawBox(c, "front");
     // zMax face
     // c.gl.glColor3d( 0,0,1 );
     if (isSubElementRequired) {
-      c.gl.glLoadName(id++);
+      c.gl.glLoadName(id);
     }
-    drawBox(c, isLightingEnabled, isTexturingEnabled, "back");
+    drawBox(c, "back");
 
     c.gl.glEnd();
   }
 
-  private void drawBox(Context c, boolean isLightingEnabled, boolean isTexturingEnabled, String side) {
+  private void drawBox(Context c, String side) {
     int[] sideNormal3d = normal3dMap.get(side);
     float[][] sideTex = texCoordMap.get(side);
     double[][] sideVertex = vertexMap.get(side);
 
-    if (isLightingEnabled) {
+    if (c.isLightingEnabled()) {
       c.gl.glNormal3d(sideNormal3d[0], sideNormal3d[1], sideNormal3d[2]);
     }
     for (int i = 0; i < numberOfCorner; i++) {
-      if (isTexturingEnabled) {
+      if (c.isTextureEnabled()) {
         c.gl.glTexCoord2f(sideTex[i][0], sideTex[i][1]);
       }
       c.gl.glVertex3d(sideVertex[i][0], sideVertex[i][1], sideVertex[i][2]);
@@ -138,14 +137,14 @@ public class GlrBox extends GlrShape<Box> {
   }
 
   @Override
-  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glBox(rc, true, false, rc.isTextureEnabled());
+  protected void shapeOnContext(Context context) {
+    glBox(context, false);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
     pc.gl.glPushName(-1);
-    glBox(pc, false, isSubElementRequired, false);
+    glBox(pc, isSubElementRequired);
     pc.gl.glPopName();
   }
 
@@ -154,33 +153,34 @@ public class GlrBox extends GlrShape<Box> {
     Point3 origin = new Point3(0, 0, 0);
     Vector3 direction = new Vector3(0, 0, 0);
     switch (subElement) {
-      case 0:
+      case 0 -> {
         origin.x = this.xMin;
         direction.x = -1;
-        break;
-      case 1:
+      }
+      case 1 -> {
         origin.x = this.xMax;
         direction.x = 1;
-        break;
-      case 2:
+      }
+      case 2 -> {
         origin.y = this.yMin;
         direction.y = -1;
-        break;
-      case 3:
+      }
+      case 3 -> {
         origin.y = this.yMax;
         direction.y = 1;
-        break;
-      case 4:
+      }
+      case 4 -> {
         origin.z = this.zMin;
         direction.z = -1;
-        break;
-      case 5:
+      }
+      case 5 -> {
         origin.z = this.zMax;
         direction.z = 1;
-        break;
-      default:
+      }
+      default -> {
         rv.setNaN();
         return rv;
+      }
     }
     GlrGeometry.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
     return rv;
@@ -190,22 +190,22 @@ public class GlrBox extends GlrShape<Box> {
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.xMinimum) {
       this.xMin = owner.xMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.xMaximum) {
       this.xMax = owner.xMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.yMinimum) {
       this.yMin = owner.yMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.yMaximum) {
       this.yMax = owner.yMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.zMinimum) {
       this.zMin = owner.zMinimum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.zMaximum) {
       this.zMax = owner.zMaximum.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }
@@ -232,7 +232,7 @@ public class GlrBox extends GlrShape<Box> {
   private static final float[][] backTexCoord = {{.75f, .66f}, {1.0f, .66f}, {1.0f, .33f}, {.75f, .33f}};
   private static final Map<String, int[]> normal3dMap = new HashMap<>();
   private static final Map<String, float[][]> texCoordMap = new HashMap<>();
-  private Map<String, double[][]> vertexMap = new HashMap<>();
+  private final Map<String, double[][]> vertexMap = new HashMap<>();
 
   static {
     normal3dMap.put("left", leftNormal3d);

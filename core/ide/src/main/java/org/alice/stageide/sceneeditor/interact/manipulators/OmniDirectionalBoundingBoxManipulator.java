@@ -141,7 +141,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
   }
 
   @Override
-  protected Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput) {
+  protected Point3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     if (isHorizonInView()) {

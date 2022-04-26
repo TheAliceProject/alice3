@@ -203,7 +203,7 @@ public class GlrText extends GlrGeometry<Text> {
     }
   }
 
-  private void glText(Context context, boolean isLightingEnabled) {
+  private void glText(Context context) {
     Vector3 alignmentOffset = owner.getAlignmentOffset();
     double zFront = alignmentOffset.z;
     double zBack = zFront + owner.depth.getValue();
@@ -218,23 +218,16 @@ public class GlrText extends GlrGeometry<Text> {
           context.gl.glBegin(GL_QUAD_STRIP);
           Point2f prev = null;
           for (Point2f curr : outlineLine) {
-            if (prev == null) {
-              //pass
-            } else {
-              if ((curr.x == prev.x) && (curr.y == prev.y)) {
-                //pass
-                //System.err.println( "pass outline" );
-              } else {
-                if (isLightingEnabled) {
-                  double xDelta = curr.x - prev.x;
-                  double yDelta = curr.y - prev.y;
-                  double lengthSquared = (xDelta * xDelta) + (yDelta * yDelta);
-                  double length = Math.sqrt(lengthSquared);
-                  context.gl.glNormal3d(yDelta / length, xDelta / length, 0);
-                }
-                context.gl.glVertex3d(prev.x + alignmentOffset.x, prev.y + alignmentOffset.y, zFront);
-                context.gl.glVertex3d(prev.x + alignmentOffset.x, prev.y + alignmentOffset.y, zBack);
+            if (prev != null && ((curr.x != prev.x) || (curr.y != prev.y))) {
+              if (context.isLightingEnabled()) {
+                double xDelta = curr.x - prev.x;
+                double yDelta = curr.y - prev.y;
+                double lengthSquared = (xDelta * xDelta) + (yDelta * yDelta);
+                double length = Math.sqrt(lengthSquared);
+                context.gl.glNormal3d(yDelta / length, xDelta / length, 0);
               }
+              context.gl.glVertex3d(prev.x + alignmentOffset.x, prev.y + alignmentOffset.y, zFront);
+              context.gl.glVertex3d(prev.x + alignmentOffset.x, prev.y + alignmentOffset.y, zBack);
             }
             prev = curr;
           }
@@ -250,7 +243,7 @@ public class GlrText extends GlrGeometry<Text> {
 
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    glText(rc, true);
+    glText(rc);
   }
 
   @Override
@@ -262,24 +255,24 @@ public class GlrText extends GlrGeometry<Text> {
       name = -1;
     }
     pc.gl.glPushName(name);
-    glText(pc, false);
+    glText(pc);
     pc.gl.glPopName();
   }
 
   @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.text) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.font) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.depth) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.leftToRightAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.topToBottomAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.frontToBackAlignment) {
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

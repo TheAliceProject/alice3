@@ -205,35 +205,35 @@ public class GlrOldMesh extends GlrGeometry<OldMesh> {
     if (property == owner.xyzs) {
       this.xyzs = owner.xyzs.getValue();
       this.xyzBuffer = null;
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.ijks) {
       this.ijks = owner.ijks.getValue();
       this.ijkBuffer = null;
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.uvs) {
       this.uvs = owner.uvs.getValue();
       this.uvBuffer = null;
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.xyzTriangleIndices) {
       this.xyzTriangleIndices = owner.xyzTriangleIndices.getValue();
       this.triangleIndexBuffer = null;
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.ijkTriangleIndices) {
       this.ijkTriangleIndices = owner.ijkTriangleIndices.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.uvTriangleIndices) {
       this.uvTriangleIndices = owner.uvTriangleIndices.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.xyzQuadrangleIndices) {
       this.xyzQuadrangleIndices = owner.xyzQuadrangleIndices.getValue();
       this.quadrangleIndexBuffer = null;
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.ijkQuadrangleIndices) {
       this.ijkQuadrangleIndices = owner.ijkQuadrangleIndices.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else if (property == owner.uvQuadrangleIndices) {
       this.uvQuadrangleIndices = owner.uvQuadrangleIndices.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

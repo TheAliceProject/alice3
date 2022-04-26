@@ -56,6 +56,7 @@ public abstract class Context {
   public GL2 gl;
   public GLU glu;
 
+  private final CurveRenderer curveRenderer = new CurveRenderer();
   private GLUquadric m_quadric;
 
   public Context() {
@@ -63,7 +64,7 @@ public abstract class Context {
   }
 
   private int scaledCount = 0;
-  private DStack<Integer> scaledCountStack = Stacks.newStack();
+  private final DStack<Integer> scaledCountStack = Stacks.newStack();
 
   public void initialize() {
     this.scaledCount = 0;
@@ -73,6 +74,10 @@ public abstract class Context {
   public boolean isScaled() {
     return this.scaledCount > 0;
   }
+
+  public abstract boolean isTextureEnabled();
+
+  public abstract boolean isLightingEnabled();
 
   protected abstract void enableNormalize();
 
@@ -102,6 +107,7 @@ public abstract class Context {
   }
 
   //todo: synchronize?
+  @Deprecated
   public GLUquadric getQuadric() {
     if (m_quadric == null) {
       m_quadric = glu.gluNewQuadric();
@@ -109,18 +115,25 @@ public abstract class Context {
     return m_quadric;
   }
 
-  protected abstract void handleGLChange();
-
-  //  private boolean isGLChanged = true;
-  //  public boolean isGLChanged() {
-  //    return this.isGLChanged;
-  //  }
   public void setGL(GL2 gl) {
-    //    this.isGLChanged = this.gl != gl;
-    //    if( this.isGLChanged ) {
     if (this.gl != gl) {
       this.gl = gl;
-      handleGLChange();
     }
+  }
+
+  public void glSphere(double radius) {
+    curveRenderer.drawSphere(this, radius);
+  }
+
+  public void glDisk(double innerRadius, double outerRadius, float centerS, float centerT, float portion) {
+    curveRenderer.drawDisk(this, innerRadius, outerRadius, centerS, centerT, portion);
+  }
+
+  public void glCylinderSide(double bottomRadius, double topRadius, double length, float textureTmin, float textureTmax) {
+    curveRenderer.drawCylinderSide(this, bottomRadius, topRadius, length, textureTmin, textureTmax);
+  }
+
+  public void glTorus(Double majorRadius, Double minorRadius) {
+    curveRenderer.drawTorus(this, majorRadius, minorRadius);
   }
 }

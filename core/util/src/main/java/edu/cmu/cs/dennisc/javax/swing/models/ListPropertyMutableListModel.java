@@ -57,16 +57,8 @@ public class ListPropertyMutableListModel<E> extends AbstractReorderableListMode
 
   private ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
     @Override
-    public void adding(AddListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void added(AddListPropertyEvent<E> e) {
       //todo
-    }
-
-    @Override
-    public void clearing(ClearListPropertyEvent<E> e) {
     }
 
     @Override
@@ -75,16 +67,8 @@ public class ListPropertyMutableListModel<E> extends AbstractReorderableListMode
     }
 
     @Override
-    public void removing(RemoveListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void removed(RemoveListPropertyEvent<E> e) {
       //todo
-    }
-
-    @Override
-    public void setting(SetListPropertyEvent<E> e) {
     }
 
     @Override

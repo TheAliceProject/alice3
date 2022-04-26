@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.LineLoop;
 public class GlrLineLoop extends GlrVertexGeometry<LineLoop> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_LINE_LOOP);
+    renderPrimitive(rc, GL_LINE_LOOP);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_LINE_LOOP);
+    pickPrimitive(pc, GL_LINE_LOOP);
   }
 
   @Override

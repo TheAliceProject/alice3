@@ -97,9 +97,6 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 
   @Override
   public void firePropertyChanging(PropertyEvent e) {
-    for (PropertyListener propertyListener : this.propertyListeners) {
-      propertyListener.propertyChanging(e);
-    }
   }
 
   @Override
@@ -121,11 +118,9 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
     return Collections.unmodifiableCollection(this.listPropertyListeners);
   }
 
+  // TODO remove
   @Override
-  public void fireAdding(AddListPropertyEvent e) {
-    for (ListPropertyListener<?> l : this.listPropertyListeners) {
-      l.adding(e);
-    }
+  public void fireAdding(AddListPropertyEvent<?> e) {
   }
 
   @Override
@@ -136,10 +131,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
   }
 
   @Override
-  public void fireClearing(ClearListPropertyEvent e) {
-    for (ListPropertyListener<?> l : this.listPropertyListeners) {
-      l.clearing(e);
-    }
+  public void fireClearing(ClearListPropertyEvent<?> e) {
   }
 
   @Override
@@ -150,10 +142,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
   }
 
   @Override
-  public void fireRemoving(RemoveListPropertyEvent e) {
-    for (ListPropertyListener<?> l : this.listPropertyListeners) {
-      l.removing(e);
-    }
+  public void fireRemoving(RemoveListPropertyEvent<?> e) {
   }
 
   @Override
@@ -164,10 +153,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
   }
 
   @Override
-  public void fireSetting(SetListPropertyEvent e) {
-    for (ListPropertyListener<?> l : this.listPropertyListeners) {
-      l.setting(e);
-    }
+  public void fireSetting(SetListPropertyEvent<?> e) {
   }
 
   @Override

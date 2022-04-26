@@ -592,7 +592,7 @@ public class RenderTargetImp {
   private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
 
   //
-  private static Rectangle s_actualViewportBufferForReuse = new Rectangle();
+  private static final Rectangle s_actualViewportBufferForReuse = new Rectangle();
   private final GLEventListener glEventListener = new GLEventListener() {
     @Override
     public void init(GLAutoDrawable drawable) {

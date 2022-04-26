@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 
 /**
  * @author dculyba
@@ -58,16 +57,7 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 
   private void initializeListenersIfNecessary() {
     if (this.propertyListener == null) {
-      this.propertyListener = new PropertyListener() {
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          handleInternalValueChanged();
-        }
-      };
+      this.propertyListener = e -> handleInternalValueChanged();
     }
   }
 

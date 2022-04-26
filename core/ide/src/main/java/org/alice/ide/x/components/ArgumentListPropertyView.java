@@ -61,10 +61,6 @@ public abstract class ArgumentListPropertyView<N extends AbstractArgument> exten
   private final ArgumentListProperty<N> argumentListProperty;
   private ListPropertyListener<N> listPropertyAdapter = new SimplifiedListPropertyAdapter<N>() {
     @Override
-    protected void changing(ListPropertyEvent<N> e) {
-    }
-
-    @Override
     protected void changed(ListPropertyEvent<N> e) {
       ArgumentListPropertyView.this.refreshLater();
     }

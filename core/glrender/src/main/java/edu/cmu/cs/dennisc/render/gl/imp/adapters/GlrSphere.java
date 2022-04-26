@@ -43,124 +43,22 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.util.ImmModeSink;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
-import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrSphere extends GlrShape<Sphere> {
-  //todo: add scenegraph hint
-  private static final int STACK_COUNT = 50;
-  private static final int SLICE_COUNT = 50;
-
-  private void glSphere(Context c, boolean textureFlag) {
-    GL2 gl = c.gl;
-    drawSphereCustomize(gl, textureFlag);
-  }
-
-  /**
-   * Customized version of drawSphere with inverting image handling
-   * @param gl
-   * @param textureFlag
-   */
-  private void drawSphereCustomize(GL2 gl, boolean textureFlag) {
-    double rho, drho, theta, dtheta;
-    double x, y, z;
-    double s, t, ds, dt;
-    int i, j, imin, imax;
-
-    drho = Math.PI / STACK_COUNT;
-    dtheta = (Math.PI * 2) / SLICE_COUNT;
-
-    if (!textureFlag) {
-      gl.glBegin(GL.GL_TRIANGLE_FAN);
-      gl.glNormal3d(0.0, 0.0, 1.0);
-      gl.glVertex3d(0.0, 0.0, radius);
-      for (j = 0; j <= SLICE_COUNT; j++) {
-        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
-        x = -Math.sin(theta) * Math.sin(drho);
-        y = Math.cos(theta) * Math.sin(drho);
-        z = Math.cos(drho);
-        gl.glNormal3d(x, y, z);
-        gl.glVertex3d(x * radius, y * radius, z * radius);
-      }
-      gl.glEnd();
-    }
-
-    ds = 1.0 / SLICE_COUNT;
-    dt = 1.0 / STACK_COUNT;
-    t = 0.0;
-    if (textureFlag) {
-      imin = 0;
-      imax = STACK_COUNT;
-    } else {
-      imin = 1;
-      imax = STACK_COUNT - 1;
-    }
-
-    for (i = imax; i >= imin; i--) {
-      rho = i * drho;
-      gl.glBegin(ImmModeSink.GL_QUAD_STRIP);
-      s = 1.0;
-      for (j = SLICE_COUNT; j >= 0; j--) {
-        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
-        x = Math.sin(theta) * Math.sin(rho);
-        y = -Math.cos(rho);
-        z = Math.cos(theta) * Math.sin(rho);
-        gl.glNormal3d(x, y, z);
-        if (textureFlag) {
-          gl.glTexCoord2d(s, t);
-        }
-        gl.glVertex3d(x * radius, y * radius, z * radius);
-        x = Math.sin(theta) * Math.sin(rho + drho);
-        y = -Math.cos(rho + drho);
-        z = Math.cos(theta) * Math.sin(rho + drho);
-        gl.glNormal3d(x, y, z);
-        if (textureFlag) {
-          gl.glTexCoord2d(s, t - dt);
-        }
-        s -= ds;
-        gl.glVertex3d(x * radius, y * radius, z * radius);
-      }
-      gl.glEnd();
-      t += dt;
-    }
-
-    if (!textureFlag) {
-      gl.glBegin(GL.GL_TRIANGLE_FAN);
-      gl.glNormal3d(0.0, 0.0, -1.0);
-      gl.glVertex3d(0.0, 0.0, -radius);
-      rho = Math.PI - drho;
-      s = 1.0;
-      for (j = SLICE_COUNT; j >= 0; j--) {
-        theta = (j == SLICE_COUNT) ? 0.0 : j * dtheta;
-        x = -Math.sin(theta) * Math.sin(rho);
-        y = Math.cos(theta) * Math.sin(rho);
-        z = Math.cos(rho);
-        gl.glNormal3d(x, y, z);
-        s -= ds;
-        gl.glVertex3d(x * radius, y * radius, z * radius);
-      }
-      gl.glEnd();
-    }
-  }
 
   @Override
-  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    boolean isTextureEnabled = rc.isTextureEnabled();
-    rc.glu.gluQuadricTexture(rc.getQuadric(), isTextureEnabled);
-    glSphere(rc, isTextureEnabled);
+  protected void shapeOnContext(Context context) {
+    context.glSphere(radius);
   }
 
   @Override
@@ -181,23 +79,10 @@ public class GlrSphere extends GlrShape<Sphere> {
   }
 
   @Override
-  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    int name;
-    if (isSubElementRequired) {
-      name = 0;
-    } else {
-      name = -1;
-    }
-    pc.gl.glPushName(name);
-    glSphere(pc, false);
-    pc.gl.glPopName();
-  }
-
-  @Override
   protected void propertyChanged(InstanceProperty<?> property) {
     if (property == owner.radius) {
       this.radius = owner.radius.getValue();
-      setIsGeometryChanged(true);
+      markGeometryAsChanged();
     } else {
       super.propertyChanged(property);
     }

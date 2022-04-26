@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.QuadStrip;
 public class GlrQuadStrip extends GlrVertexGeometry<QuadStrip> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_QUAD_STRIP);
+    renderPrimitive(rc, GL_QUAD_STRIP);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_QUAD_STRIP);
+    pickPrimitive(pc, GL_QUAD_STRIP);
   }
 
   @Override

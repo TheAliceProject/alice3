@@ -282,7 +282,7 @@ class MatrixUtilities {
  * @author Dennis Cosgrove
  */
 public class ASG {
-  private static final int SMALL_ENOUGH_PRIMATIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT = 32;
+  private static final int SMALL_ENOUGH_PRIMITIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT = 32;
   private static final String ROOT_FILENAME = "root.xml";
   private static Set<String> s_deadProperties = null;
 
@@ -850,7 +850,7 @@ public class ASG {
             } else if (int[].class.isAssignableFrom(propertyValueClass)) {
               int[] array = (int[]) value;
               xmlProperty.setAttribute("class", "[I");
-              if (isTextAlwaysDesired || (array.length < SMALL_ENOUGH_PRIMATIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT)) {
+              if (isTextAlwaysDesired || (array.length < SMALL_ENOUGH_PRIMITIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT)) {
                 xmlProperty.setAttribute("length", Integer.toString(array.length));
                 xmlProperty.appendChild(document.createTextNode(encodeIntArray(array, false)));
               } else {
@@ -863,7 +863,7 @@ public class ASG {
             } else if (double[].class.isAssignableFrom(propertyValueClass)) {
               double[] array = (double[]) value;
               xmlProperty.setAttribute("class", "[D");
-              if (isTextAlwaysDesired || (array.length < SMALL_ENOUGH_PRIMATIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT)) {
+              if (isTextAlwaysDesired || (array.length < SMALL_ENOUGH_PRIMITIVE_ARRAY_LENGTH_TO_ENCODE_AS_TEXT)) {
                 xmlProperty.setAttribute("length", Integer.toString(array.length));
                 xmlProperty.appendChild(document.createTextNode(encodeDoubleArray(array)));
               } else {

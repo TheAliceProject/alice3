@@ -43,6 +43,7 @@
 
 package org.alice.stageide.ast.source;
 
+import org.alice.ide.IDE;
 import org.lgna.common.Resource;
 import org.lgna.croquet.ImportValueCreator;
 import org.lgna.croquet.importer.Importer;
@@ -69,6 +70,7 @@ public abstract class SourceImportValueCreator<S, R extends Resource> extends Im
 
   @Override
   protected InstanceCreation createValueFromImportedValue(R importedValue) {
+    IDE.getActiveInstance().getProject().addResource(importedValue);
     ResourceExpression resourceExpression = new ResourceExpression(this.resourceCls, importedValue);
     JavaConstructor constructor = JavaConstructor.getInstance(this.sourceCls, this.resourceCls);
     AbstractParameter parameter0 = constructor.getRequiredParameters().get(0);

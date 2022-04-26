@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Shape;
 
 /**
@@ -53,4 +56,27 @@ public abstract class GlrShape<T extends Shape> extends GlrGeometry<T> {
   public boolean isAlphaBlended() {
     return false;
   }
+
+  @Override
+  protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
+    shapeGeometryOnContext(rc);
+  }
+
+  @Override
+  protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
+    pc.gl.glPushName(isSubElementRequired ? 0 : -1);
+    shapeGeometryOnContext(pc);
+    pc.gl.glPopName();
+  }
+
+  private void shapeGeometryOnContext(Context context) {
+    context.gl.glPushMatrix();
+    try {
+      shapeOnContext(context);
+    } finally {
+      context.gl.glPopMatrix();
+    }
+  }
+
+  protected abstract void shapeOnContext(Context context);
 }

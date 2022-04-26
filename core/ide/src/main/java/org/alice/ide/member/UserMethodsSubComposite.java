@@ -68,19 +68,11 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 
   private final ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<UserMethod>() {
     @Override
-    protected void changing(ListPropertyEvent<UserMethod> e) {
-    }
-
-    @Override
     protected void changed(ListPropertyEvent<UserMethod> e) {
       getView().refreshLater();
     }
   };
   private final ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<UserField>() {
-    @Override
-    protected void changing(ListPropertyEvent<UserField> e) {
-    }
-
     @Override
     protected void changed(ListPropertyEvent<UserField> e) {
       getView().refreshLater();

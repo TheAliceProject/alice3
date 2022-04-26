@@ -269,12 +269,6 @@ public class RenderContext extends Context {
     }
   }
 
-  @Override
-  protected void handleGLChange() {
-    //forgetAllTextureAdapters();
-    //forgetAllGeometryAdapters();
-  }
-
   public void actuallyForgetTexturesIfNecessary() {
     final int N = this.toBeForgottenTextures.size();
     if (N > 0) {
@@ -446,7 +440,7 @@ public class RenderContext extends Context {
   }
 
   public Integer generateDisplayListID(GlrGeometry<? extends Geometry> geometryAdapter) {
-    Integer id = new Integer(gl.glGenLists(1));
+    Integer id = gl.glGenLists(1);
     synchronized (this.displayListMap) {
       this.displayListMap.put(geometryAdapter, id);
     }
@@ -533,6 +527,11 @@ public class RenderContext extends Context {
 
   public boolean isTextureEnabled() {
     return this.currDiffuseColorTextureAdapter != null;
+  }
+
+  @Override
+  public boolean isLightingEnabled() {
+    return true;
   }
 
   //Forget information that might be used across renders

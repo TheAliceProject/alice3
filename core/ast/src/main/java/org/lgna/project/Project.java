@@ -45,13 +45,19 @@ package org.lgna.project;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.lgna.common.Resource;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.event.ResourceEvent;
 import org.lgna.project.event.ResourceListener;
 import org.lgna.project.properties.PropertyKey;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,7 +69,7 @@ public class Project {
 
   private final NamedUserType programType;
   private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
-  private final Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = Maps.newHashMap();
+  private final Map<PropertyKey<Object>, Object> propertyMap = Maps.newHashMap();
   private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
   private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
@@ -97,10 +103,7 @@ public class Project {
   }
 
   public void addResource(Resource resource) {
-    if (this.resources.contains(resource)) {
-      //todo
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
-    } else {
+    if (!this.resources.contains(resource)) {
       this.resources.add(resource);
       if (this.resourceListeners.size() > 0) {
         ResourceEvent e = new ResourceEvent(this, resource);
@@ -125,37 +128,38 @@ public class Project {
     return this.resources;
   }
 
-  public Set<PropertyKey<Object>> getPropertyKeys() {
-    return this.propertyMap.keySet();
+  public Set<Resource> getReferencedResources() {
+    AbstractType<?, ?, ?> programType = getProgramType();
+    IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<>(ResourceExpression.class) {
+      @Override
+      protected boolean isAcceptable(ResourceExpression resourceExpression) {
+        return true;
+      }
+    };
+    programType.crawl(crawler, CrawlPolicy.COMPLETE);
+
+    Set<Resource> rv = new HashSet<>();
+    for (ResourceExpression resourceExpression : crawler.getList()) {
+      Resource resource = resourceExpression.resource.getValue();
+      if (!resources.contains(resource)) {
+        Logger.warning("adding missing resource", resource);
+        resources.add(resource);
+      }
+      rv.add(resource);
+    }
+    return rv;
   }
 
-  public <T> boolean containsValueFor(PropertyKey<T> key) {
-    return this.propertyMap.containsKey(key);
+  public Set<PropertyKey<Object>> getPropertyKeys() {
+    return this.propertyMap.keySet();
   }
 
   public <T> T getValueFor(PropertyKey<T> key) {
     return (T) this.propertyMap.get(key);
   }
 
-  public <T> void putValueFor(PropertyKey<T> key, T value) {
+  public <T> void putValueFor(PropertyKey<Object> key, T value) {
     this.propertyMap.put(key, value);
-  }
-
-  public <T> void removeValueFor(PropertyKey<T> key) {
-    this.propertyMap.remove(key);
-  }
-
-  public void addNamedUserType(NamedUserType namedUserType) {
-    if (this.namedUserTypes.contains(namedUserType)) {
-      //todo
-      //edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
-    } else {
-      this.namedUserTypes.add(namedUserType);
-    }
-  }
-
-  public void removeNamedUserType(NamedUserType namedUserType) {
-    this.namedUserTypes.remove(namedUserType);
   }
 
   public Set<NamedUserType> getNamedUserTypes() {

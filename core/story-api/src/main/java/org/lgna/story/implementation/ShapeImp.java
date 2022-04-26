@@ -44,11 +44,18 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ShapeImp extends SimpleModelImp {
+  protected abstract Geometry getGeometry();
+
+  protected void textureChanged() {
+    getGeometry().markAsChanged();
+  }
+
   @Override
   public Dimension3 getScale() {
     return new Dimension3(1, 1, 1);

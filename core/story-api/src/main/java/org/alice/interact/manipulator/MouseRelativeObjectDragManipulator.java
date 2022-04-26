@@ -141,7 +141,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
     return translationVector;
   }
 
-  private Vector3 getOthographicMovementVector(InputState currentInput, InputState previousInput) {
+  private Vector3 getOrthographicMovementVector(InputState currentInput, InputState previousInput) {
     Ray pickRay = PlaneUtilities.getRayFromPixel(this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
     Point3 pickPoint = PlaneUtilities.getPointInPlane(this.orthographicPickPlane, pickRay);
     Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
@@ -151,7 +151,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
   private Vector3 getMovementVectorBasedOnCamera(InputState currentInput, InputState previousInput) {
     if (this.getCamera() instanceof OrthographicCamera) {
-      return getOthographicMovementVector(currentInput, previousInput);
+      return getOrthographicMovementVector(currentInput, previousInput);
     } else {
       return getMouseMovementFromVector(currentInput, previousInput);
     }

@@ -54,7 +54,6 @@ import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -116,11 +115,17 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
           TexturedAppearance sgTexturedAppearance = (TexturedAppearance) sgAppearance;
           if (!Objects.equals(texture, sgTexturedAppearance.diffuseColorTexture.getValue())) {
             sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend(texture);
+            textureChanged();
           }
         }
       }
     }
   };
+
+  // For subclasses that need to update the sceneGraph
+  protected void textureChanged() {
+  }
+
   public final FloatProperty opacity = new FloatProperty(ModelImp.this) {
     @Override
     public Float getValue() {
@@ -161,15 +166,6 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       rv.add(sgVisual, trans);
     }
   }
-
-  //  public final void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
-  //    for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgAppearances() ) {
-  //      if (sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)
-  //      {
-  //        ((edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)sgAppearance).diffuseColorTexture.setValue( diffuseColorTexture );
-  //      }
-  //    }
-  //  }
 
   protected abstract InstanceProperty[] getScaleProperties();
 
@@ -489,17 +485,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
       this.boundingBoxDecorator = new BoundingBoxDecorator();
       this.boundingBoxDecorator.setBox(this.getAxisAlignedMinimumBoundingBox());
 
-      this.addScaleListener(new PropertyListener() {
-
-        @Override
-        public void propertyChanging(PropertyEvent e) {
-        }
-
-        @Override
-        public void propertyChanged(PropertyEvent e) {
-          boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox());
-        }
-      });
+      this.addScaleListener(e -> boundingBoxDecorator.setBox(getAxisAlignedMinimumBoundingBox()));
     }
     return this.boundingBoxDecorator;
   }

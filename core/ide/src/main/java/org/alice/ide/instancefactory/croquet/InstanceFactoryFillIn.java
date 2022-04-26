@@ -45,7 +45,6 @@ package org.alice.ide.instancefactory.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.IDE;
 import org.alice.ide.Theme;
@@ -55,7 +54,6 @@ import org.alice.ide.instancefactory.ThisInstanceFactory;
 import org.alice.ide.instancefactory.ThisMethodInvocationFactory;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
@@ -74,31 +72,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactory, Void> {
-  private class PropertyAdapter implements PropertyListener {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      InstanceFactoryFillIn.this.markDirty();
-    }
-  }
-
-  private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
-    @Override
-    public void valueChanged(ValueEvent<NamedUserType> e) {
-      InstanceFactoryFillIn.this.markDirty();
-    }
-  };
-  private static Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
+  private static final Map<InstanceFactory, InstanceFactoryFillIn> map = Maps.newHashMap();
 
   public static InstanceFactoryFillIn getInstance(InstanceFactory value) {
     synchronized (map) {
       InstanceFactoryFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new InstanceFactoryFillIn(value);
         map.put(value, rv);
       }
@@ -107,25 +86,22 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
   }
 
   private final InstanceFactory value;
-  private final PropertyAdapter propertyAdapter;
 
   private InstanceFactoryFillIn(InstanceFactory value) {
     super(UUID.fromString("2fce347e-f10e-4eec-8ac4-291225a5da4f"));
     this.value = value;
 
     if (this.value == ThisInstanceFactory.getInstance()) {
-      IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener(this.typeListener);
+      ValueListener<NamedUserType> typeListener = e -> InstanceFactoryFillIn.this.markDirty();
+      IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener(typeListener);
     }
 
     InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
+    PropertyListener propertyAdapter;
     if ((mutablePropertiesOfInterest != null) && (mutablePropertiesOfInterest.length > 0)) {
-      this.propertyAdapter = new PropertyAdapter();
-    } else {
-      this.propertyAdapter = null;
-    }
-    if ((mutablePropertiesOfInterest != null) && (this.propertyAdapter != null)) {
+      propertyAdapter = e -> InstanceFactoryFillIn.this.markDirty();
       for (InstanceProperty<?> property : mutablePropertiesOfInterest) {
-        property.addPropertyListener(this.propertyAdapter);
+        property.addPropertyListener(propertyAdapter);
       }
     }
   }

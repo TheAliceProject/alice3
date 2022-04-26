@@ -59,12 +59,7 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 
   private void initializeListenersIfNecessary() {
     if (this.propertyListener == null) {
-      this.propertyListener = new Listener<Float>() {
-        @Override
-        public void propertyChanged(Property<Float> property, Float prevValue, Float nextValue) {
-          handleInternalValueChanged();
-        }
-      };
+      this.propertyListener = () -> handleInternalValueChanged();
     }
   }
 

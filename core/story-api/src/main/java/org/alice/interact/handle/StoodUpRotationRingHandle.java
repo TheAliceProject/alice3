@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.interact.MovementDirection;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -124,16 +123,6 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
     notifyTransformationListeners();
   }
 
-  private final PropertyListener propertyListener = new PropertyListener() {
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      positionRelativeToObject();
-    }
-
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-
-    }
-  };
+  private final PropertyListener propertyListener = e -> positionRelativeToObject();
   private final Transformable standUpReference = new Transformable();
 }

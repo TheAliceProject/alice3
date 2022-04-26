@@ -56,13 +56,10 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 
   private void initializeListenersIfNecessary() {
     if (this.propertyListener == null) {
-      this.propertyListener = new Listener<P>() {
-        @Override
-        public void propertyChanged(Property<P> property, P prevValue, P nextValue) {
-          isPropertyUpdate = true;
-          handleInternalValueChanged();
-          isPropertyUpdate = false;
-        }
+      this.propertyListener = () -> {
+        isPropertyUpdate = true;
+        handleInternalValueChanged();
+        isPropertyUpdate = false;
       };
     }
   }
@@ -115,12 +112,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
     if (!isPropertyUpdate) {
       super.setValue(value);
       if (this.property != null) {
-        new Thread() {
-          @Override
-          public void run() {
-            AbstractImplementationPropertyAdapter.this.property.setValue(value);
-          }
-        }.start();
+        new Thread(() -> this.property.setValue(value)).start();
       }
     }
 
@@ -133,7 +125,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
     }
   }
 
-  protected void removePropertyListener(Listener<P> propertyListener) {
+  private void removePropertyListener(Listener<P> propertyListener) {
     if ((this.property != null) && isPropertyListening) {
       property.removePropertyListener(propertyListener);
       isPropertyListening = false;

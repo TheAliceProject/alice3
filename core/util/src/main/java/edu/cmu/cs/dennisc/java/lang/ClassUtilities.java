@@ -52,7 +52,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ClassUtilities {
-  private static final Map<String, Class<?>> s_primativeTypeMap;
+  private static final Map<String, Class<?>> s_primitiveTypeMap;
 
   static {
     Map<String, Class<?>> map = Maps.newHashMap();
@@ -65,7 +65,7 @@ public class ClassUtilities {
     map.put(Long.TYPE.getName(), Long.TYPE);
     map.put(Double.TYPE.getName(), Double.TYPE);
     map.put(Float.TYPE.getName(), Float.TYPE);
-    s_primativeTypeMap = Collections.unmodifiableMap(map);
+    s_primitiveTypeMap = Collections.unmodifiableMap(map);
   }
 
   public static <E> E getInstance(Object o, Class<E> cls) {
@@ -84,8 +84,8 @@ public class ClassUtilities {
     try {
       return Class.forName(className);
     } catch (ClassNotFoundException cnfe) {
-      if (s_primativeTypeMap.containsKey(className)) {
-        return s_primativeTypeMap.get(className);
+      if (s_primitiveTypeMap.containsKey(className)) {
+        return s_primitiveTypeMap.get(className);
       } else {
         throw cnfe;
       }
@@ -106,9 +106,7 @@ public class ClassUtilities {
     int i;
     for (i = 0; i < N; i++) {
       char c = packageNameAndSimpleClassNames.charAt(i);
-      if (c == '[') {
-        //pass
-      } else {
+      if (c != '[') {
         break;
       }
     }
@@ -155,14 +153,6 @@ public class ClassUtilities {
       } else {
         return cls.getSimpleName();
       }
-    } else {
-      return null;
-    }
-  }
-
-  public static String getTrimmedClassNameForInstance(Object instance) {
-    if (instance != null) {
-      return getTrimmedClassName(instance.getClass());
     } else {
       return null;
     }

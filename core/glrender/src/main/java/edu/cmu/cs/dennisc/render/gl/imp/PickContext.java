@@ -69,7 +69,7 @@ public class PickContext extends Context {
   public int getPickNameForVisualAdapter(GlrVisual<? extends Visual> visualAdapter) {
     synchronized (m_pickNameMap) {
       int name = m_pickNameMap.size();
-      m_pickNameMap.put(new Integer(name), visualAdapter);
+      m_pickNameMap.put(name, visualAdapter);
       return name;
     }
   }
@@ -86,6 +86,16 @@ public class PickContext extends Context {
     synchronized (m_pickNameMap) {
       return m_pickNameMap.get(name);
     }
+  }
+
+  @Override
+  public boolean isTextureEnabled() {
+    return false;
+  }
+
+  @Override
+  public boolean isLightingEnabled() {
+    return false;
   }
 
   @Override
@@ -107,10 +117,6 @@ public class PickContext extends Context {
     }
     m_pickNameMap.clear();
     sceneAdapter.pick(this, pickParameters);
-  }
-
-  @Override
-  protected void handleGLChange() {
   }
 
   private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();

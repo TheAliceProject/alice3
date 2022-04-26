@@ -44,7 +44,6 @@ package org.alice.ide.croquet.components;
 
 import edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.x.AstI18nFactory;
 import org.lgna.croquet.views.AwtComponentView;
@@ -61,17 +60,7 @@ public abstract class AbstractPropertyPane<P extends InstanceProperty<T>, T> ext
   private final AstI18nFactory factory;
   private final P property;
   private final int axis;
-  private final PropertyListener propertyAdapter = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      AbstractPropertyPane.this.refreshLater();
-    }
-
-  };
+  private final PropertyListener propertyAdapter = e -> AbstractPropertyPane.this.refreshLater();
 
   public AbstractPropertyPane(AstI18nFactory factory, P property, int axis) {
     assert property != null;

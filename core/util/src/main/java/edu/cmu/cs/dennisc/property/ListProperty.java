@@ -79,11 +79,6 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
 
   private void fireAdding(AddListPropertyEvent<E> e) {
     getOwner().fireAdding(e);
-    if (this.listPropertyListeners != null) {
-      for (ListPropertyListener<E> l : this.listPropertyListeners) {
-        l.adding(e);
-      }
-    }
   }
 
   private void fireAdded(AddListPropertyEvent<E> e) {
@@ -97,11 +92,6 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
 
   private void fireClearing(ClearListPropertyEvent<E> e) {
     getOwner().fireClearing(e);
-    if (this.listPropertyListeners != null) {
-      for (ListPropertyListener<E> l : this.listPropertyListeners) {
-        l.clearing(e);
-      }
-    }
   }
 
   private void fireCleared(ClearListPropertyEvent<E> e) {
@@ -115,11 +105,6 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
 
   private void fireRemoving(RemoveListPropertyEvent<E> e) {
     getOwner().fireRemoving(e);
-    if (this.listPropertyListeners != null) {
-      for (ListPropertyListener<E> l : this.listPropertyListeners) {
-        l.removing(e);
-      }
-    }
   }
 
   private void fireRemoved(RemoveListPropertyEvent<E> e) {
@@ -133,11 +118,6 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
 
   private void fireSetting(SetListPropertyEvent<E> e) {
     getOwner().fireSetting(e);
-    if (this.listPropertyListeners != null) {
-      for (ListPropertyListener<E> l : this.listPropertyListeners) {
-        l.setting(e);
-      }
-    }
   }
 
   private void fireSet(SetListPropertyEvent<E> e) {

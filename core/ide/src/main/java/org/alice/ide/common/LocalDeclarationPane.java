@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState;
@@ -85,16 +84,7 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
     this.finalLabel.setText(text);
   }
 
-  private PropertyListener propertyListener = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      updateFinalLabel();
-    }
-  };
+  private PropertyListener propertyListener = e -> updateFinalLabel();
 
   @Override
   protected void handleDisplayable() {

@@ -148,11 +148,6 @@ public class BufferedImageTexture extends Texture {
   }
 
   @Override
-  public boolean isAnimated() {
-    return false;
-  }
-
-  @Override
   public MipMapGenerationPolicy getMipMapGenerationPolicy() {
     return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
   }

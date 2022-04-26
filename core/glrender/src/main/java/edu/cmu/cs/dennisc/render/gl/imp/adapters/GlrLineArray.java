@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.LineArray;
 public class GlrLineArray extends GlrVertexGeometry<LineArray> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_LINES);
+    renderPrimitive(rc, GL_LINES);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_LINES);
+    pickPrimitive(pc, GL_LINES);
   }
 
   @Override

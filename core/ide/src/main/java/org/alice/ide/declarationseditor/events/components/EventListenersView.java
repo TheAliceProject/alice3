@@ -165,16 +165,8 @@ public class EventListenersView extends AbstractCodeDeclarationView {
 
   private final ListPropertyListener<Statement> statementsListener = new ListPropertyListener<Statement>() {
     @Override
-    public void adding(AddListPropertyEvent<Statement> e) {
-    }
-
-    @Override
     public void added(AddListPropertyEvent<Statement> e) {
       EventListenersView.this.handleStatementsChanged(true);
-    }
-
-    @Override
-    public void clearing(ClearListPropertyEvent<Statement> e) {
     }
 
     @Override
@@ -183,16 +175,8 @@ public class EventListenersView extends AbstractCodeDeclarationView {
     }
 
     @Override
-    public void removing(RemoveListPropertyEvent<Statement> e) {
-    }
-
-    @Override
     public void removed(RemoveListPropertyEvent<Statement> e) {
       EventListenersView.this.handleStatementsChanged(false);
-    }
-
-    @Override
-    public void setting(SetListPropertyEvent<Statement> e) {
     }
 
     @Override

@@ -48,8 +48,6 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -64,9 +62,7 @@ public class InstanceProperty<T> {
   }
 
   public String getName() {
-    if (this.name != null) {
-      //pass
-    } else {
+    if (this.name == null) {
       this.name = this.owner.lookupNameFor(this);
     }
     return this.name;
@@ -86,9 +82,6 @@ public class InstanceProperty<T> {
   }
 
   private void firePropertyChanging(PropertyEvent e) {
-    for (PropertyListener propertyListener : this.propertyListeners) {
-      propertyListener.propertyChanging(e);
-    }
     InstancePropertyOwner owner = this.getOwner();
     if (owner != null) {
       owner.firePropertyChanging(e);
@@ -120,49 +113,8 @@ public class InstanceProperty<T> {
     firePropertyChanged(e);
   }
 
-  protected void writeValue(ObjectOutputStream oos) throws IOException {
-    assert (this.value == null) || (this.value instanceof Serializable);
-    oos.writeObject(this.value);
-  }
-
   protected void readValue(ObjectInputStream ois) throws IOException, ClassNotFoundException {
     this.value = (T) ois.readObject();
-  }
-
-  private void writeObject(ObjectOutputStream oos) throws IOException {
-    oos.defaultWriteObject();
-    writeValue(oos);
-  }
-
-  private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-    ois.defaultReadObject();
-    readValue(ois);
-  }
-
-  protected boolean isToBeIgnored(InstanceProperty<T> other, PropertyFilter filter) {
-    return (filter != null) && filter.isToBeIgnored(this, other);
-  }
-
-  public boolean valueEquals(InstanceProperty<T> other, PropertyFilter filter) {
-    if (this.isToBeIgnored(other, filter)) {
-      return true;
-    } else {
-      T thisValue = this.getValue();
-      T otherValue = other.getValue();
-      if (thisValue != null) {
-        if (otherValue != null) {
-          return thisValue.equals(otherValue);
-        } else {
-          return false;
-        }
-      } else {
-        if (otherValue != null) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    }
   }
 
   @Override

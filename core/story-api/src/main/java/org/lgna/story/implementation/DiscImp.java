@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.Disc;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.lgna.story.SDisc;
 import org.lgna.story.implementation.eventhandling.CylinderHull;
@@ -61,13 +60,17 @@ public class DiscImp extends ShapeImp {
   public DiscImp(SDisc abstraction) {
     this.abstraction = abstraction;
     this.sgDisc.outerRadius.setValue(0.5);
-    Visual sgVisual = this.getSgVisuals()[0];
-    sgVisual.geometries.setValue(new Geometry[] {this.sgDisc});
+    this.getSgVisuals()[0].geometries.setValue(new Geometry[] {this.sgDisc});
   }
 
   @Override
   public SDisc getAbstraction() {
     return this.abstraction;
+  }
+
+  @Override
+  protected Geometry getGeometry() {
+    return sgDisc;
   }
 
   @Override

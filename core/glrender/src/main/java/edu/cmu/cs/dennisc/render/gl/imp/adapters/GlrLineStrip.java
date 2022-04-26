@@ -58,12 +58,12 @@ import edu.cmu.cs.dennisc.scenegraph.LineStrip;
 public class GlrLineStrip extends GlrVertexGeometry<LineStrip> {
   @Override
   protected void renderGeometry(RenderContext rc, GlrVisual.RenderType renderType) {
-    renderPrimative(rc, GL_LINE_STRIP);
+    renderPrimitive(rc, GL_LINE_STRIP);
   }
 
   @Override
   protected void pickGeometry(PickContext pc, boolean isSubElementRequired) {
-    pickPrimative(pc, GL_LINE_STRIP);
+    pickPrimitive(pc, GL_LINE_STRIP);
   }
 
   @Override

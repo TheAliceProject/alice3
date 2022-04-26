@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.property.ListProperty;
 import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
@@ -63,16 +62,8 @@ import java.util.List;
 public abstract class FilteredListPropertyData<E> extends RefreshableListData<E> {
   private final ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
     @Override
-    public void adding(AddListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void added(AddListPropertyEvent<E> e) {
       FilteredListPropertyData.this.refresh();
-    }
-
-    @Override
-    public void clearing(ClearListPropertyEvent<E> e) {
     }
 
     @Override
@@ -81,16 +72,8 @@ public abstract class FilteredListPropertyData<E> extends RefreshableListData<E>
     }
 
     @Override
-    public void removing(RemoveListPropertyEvent<E> e) {
-    }
-
-    @Override
     public void removed(RemoveListPropertyEvent<E> e) {
       FilteredListPropertyData.this.refresh();
-    }
-
-    @Override
-    public void setting(SetListPropertyEvent<E> e) {
     }
 
     @Override
@@ -99,16 +82,7 @@ public abstract class FilteredListPropertyData<E> extends RefreshableListData<E>
     }
   };
 
-  private final PropertyListener propertyListener = new PropertyListener() {
-    @Override
-    public void propertyChanging(PropertyEvent e) {
-    }
-
-    @Override
-    public void propertyChanged(PropertyEvent e) {
-      FilteredListPropertyData.this.refresh();
-    }
-  };
+  private final PropertyListener propertyListener = e -> FilteredListPropertyData.this.refresh();
 
   private ListProperty<E> listProperty;
 

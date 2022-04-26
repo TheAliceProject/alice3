@@ -58,6 +58,11 @@ public abstract class AbstractCylinderImp extends ShapeImp {
   }
 
   @Override
+  protected Geometry getGeometry() {
+    return sgCylinder;
+  }
+
+  @Override
   protected InstanceProperty[] getScaleProperties() {
     return new InstanceProperty[] {this.sgCylinder.length, this.sgCylinder.bottomRadius};
   }

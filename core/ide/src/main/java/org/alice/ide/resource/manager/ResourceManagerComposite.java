@@ -52,7 +52,6 @@ import org.alice.ide.resource.manager.views.ResourceManagerView;
 import org.lgna.common.Resource;
 import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.Project;
 import org.lgna.project.event.ResourceEvent;
@@ -106,16 +105,12 @@ public final class ResourceManagerComposite extends LazyOperationUnadornedDialog
     this.resourcesState.reloadTableModel(project);
     Collection<Resource> currentResources = this.resourcesState.getItems();
     for (Resource resource : this.previousResources) {
-      if (currentResources.contains(resource)) {
-        //pass
-      } else {
+      if (!currentResources.contains(resource)) {
         resource.removeNameListener(this.nameListener);
       }
     }
     for (Resource resource : currentResources) {
-      if (this.previousResources.contains(resource)) {
-        //pass
-      } else {
+      if (!this.previousResources.contains(resource)) {
         resource.addNameListener(this.nameListener);
       }
     }
@@ -190,7 +185,7 @@ public final class ResourceManagerComposite extends LazyOperationUnadornedDialog
     this.reloadContentOperation.setEnabled(isSelected);
     this.reloadContentOperation.setToolTipText(renameAndReplaceToolTipText);
 
-    this.removeResourceOperation.setEnabled(isSelected && (isReferenced == false));
+    this.removeResourceOperation.setEnabled(isSelected && !isReferenced);
     this.removeResourceOperation.setToolTipText(removeToolTipText);
   }
 
@@ -218,12 +213,7 @@ public final class ResourceManagerComposite extends LazyOperationUnadornedDialog
     }
   };
 
-  private final ValueListener<Resource> rowListener = new ValueListener<Resource>() {
-    @Override
-    public void valueChanged(ValueEvent<Resource> e) {
-      handleSelection(e.getNextValue());
-    }
-  };
+  private final ValueListener<Resource> rowListener = e -> handleSelection(e.getNextValue());
 
   private final ProjectDocumentFrame projectDocumentFrame;
   private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();

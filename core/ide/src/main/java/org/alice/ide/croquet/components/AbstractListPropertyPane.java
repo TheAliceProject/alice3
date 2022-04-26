@@ -60,16 +60,8 @@ import java.util.ArrayList;
 public abstract class AbstractListPropertyPane<P extends ListProperty<T>, T> extends AbstractPropertyPane<P, ArrayList<T>> {
   private final ListPropertyListener<T> listPropertyAdapter = new ListPropertyListener<T>() {
     @Override
-    public void adding(AddListPropertyEvent<T> e) {
-    }
-
-    @Override
     public void added(AddListPropertyEvent<T> e) {
       AbstractListPropertyPane.this.refreshLater();
-    }
-
-    @Override
-    public void clearing(ClearListPropertyEvent<T> e) {
     }
 
     @Override
@@ -78,16 +70,8 @@ public abstract class AbstractListPropertyPane<P extends ListProperty<T>, T> ext
     }
 
     @Override
-    public void removing(RemoveListPropertyEvent<T> e) {
-    }
-
-    @Override
     public void removed(RemoveListPropertyEvent<T> e) {
       AbstractListPropertyPane.this.refreshLater();
-    }
-
-    @Override
-    public void setting(SetListPropertyEvent<T> e) {
     }
 
     @Override
