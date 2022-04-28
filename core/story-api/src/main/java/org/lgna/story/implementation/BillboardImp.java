@@ -139,14 +139,6 @@ public class BillboardImp extends VisualScaleModelImp {
     }
   }
 
-  public void setFrontPaint(Paint frontPaint) {
-    TexturedPaintUtilities.setPaint(this.sgFrontFace, frontPaint);
-  }
-
-  public void setBackPaint(Paint backPaint) {
-    TexturedPaintUtilities.setPaint(this.sgBackFace, backPaint);
-  }
-
   @Override
   public Visual[] getSgVisuals() {
     return this.sgVisuals;
