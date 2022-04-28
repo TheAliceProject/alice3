@@ -10,8 +10,8 @@ import com.jogamp.opengl.util.ImmModeSink;
 public class CurveRenderer {
   private static final int STACK_COUNT = 50;
   private static final int SLICE_COUNT = 50;
-  private static final int SIDE_COUNT = 32;
-  private static final int RING_COUNT = 16;
+  private static final int SIDE_COUNT = 50;
+  private static final int RING_COUNT = 50;
   private static final float TAU = 2f * FloatUtil.PI;
 
   /**
@@ -25,7 +25,7 @@ public class CurveRenderer {
     int i, j, imin, imax;
 
     drho = Math.PI / STACK_COUNT;
-    dtheta = (Math.PI * 2) / SLICE_COUNT;
+    dtheta = TAU / SLICE_COUNT;
 
     if (!c.isTextureEnabled()) {
       gl.glBegin(GL.GL_TRIANGLE_FAN);
