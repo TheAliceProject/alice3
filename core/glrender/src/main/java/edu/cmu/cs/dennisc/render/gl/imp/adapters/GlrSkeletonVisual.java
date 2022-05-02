@@ -496,22 +496,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
   @Override
   protected boolean isActuallyShowing() {
     initializeDataIfNecessary();
-    if (super.isActuallyShowing()) {
-      return true;
-    }
-    if (this.isShowing && (appearanceIdToMeshControllersMap != null) && (appearanceIdToMeshControllersMap.size() > 0)) {
-      if (this.glrFrontFacingAppearance != null) {
-        if (this.glrFrontFacingAppearance.isActuallyShowing()) {
-          return true;
-        }
-      }
-      if (this.glrBackFacingAppearance != null) {
-        if (this.glrBackFacingAppearance.isActuallyShowing()) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return super.isActuallyShowing()
+        || isShowing && appearanceIdToMeshControllersMap.size() > 0 && isAnyFaceActuallyShowing();
   }
 
   @Override
@@ -522,27 +508,13 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
     //Check the base adapter to see if it's set to be alpha (through a sub 1 opacity setting)
     //If it's alpha, return false
-    if (this.glrFrontFacingAppearance != null) {
-      if (this.glrFrontFacingAppearance.isAllAlphaBlended()) {
-        return false;
-      }
-    }
-    if (this.glrBackFacingAppearance != null) {
-      if (this.glrBackFacingAppearance.isAllAlphaBlended()) {
-        return false;
-      }
+    if (isAllAlpha()) {
+      return false;
     }
     //Check to see if there are non-alpha textures or none "all" alpha values
     if ((appearanceIdToMeshControllersMap != null) && (appearanceIdToMeshControllersMap.size() > 0)) {
-      if (this.glrFrontFacingAppearance != null) {
-        if (!this.glrFrontFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
-      }
-      if (this.glrBackFacingAppearance != null) {
-        if (!this.glrBackFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
+      if (isAnyFaceNotAlphaBlended()) {
+        return true;
       }
       for (Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet()) {
         GlrTexturedAppearance ta = appearanceIdToAdapterMap.get(controlEntry.getKey());
@@ -554,6 +526,11 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     return false;
   }
 
+  private boolean isAnyFaceNotAlphaBlended() {
+    return glrFrontFacingAppearance != null && !glrFrontFacingAppearance.isAlphaBlended()
+        || glrBackFacingAppearance != null && !glrBackFacingAppearance.isAlphaBlended();
+  }
+
   @Override
   protected boolean isAlphaBlended() {
     initializeDataIfNecessary();
@@ -562,15 +539,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
 
     if ((appearanceIdToMeshControllersMap != null) && (appearanceIdToMeshControllersMap.size() > 0)) {
-      if (this.glrFrontFacingAppearance != null) {
-        if (this.glrFrontFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
-      }
-      if (this.glrBackFacingAppearance != null) {
-        if (this.glrBackFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
+      if (isAnyFaceAlphaBlended()) {
+        return true;
       }
       for (Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet()) {
         GlrTexturedAppearance ta = appearanceIdToAdapterMap.get(controlEntry.getKey());

@@ -94,35 +94,25 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
         && (glrBackFacingAppearance == null || glrBackFacingAppearance.isEthereal());
   }
 
+  protected boolean isAnyFaceActuallyShowing() {
+    return glrFrontFacingAppearance != null && glrFrontFacingAppearance.isActuallyShowing()
+        || glrBackFacingAppearance != null && glrBackFacingAppearance.isActuallyShowing();
+  }
+
+  protected boolean isAnyFaceAlphaBlended() {
+    return glrFrontFacingAppearance != null && glrFrontFacingAppearance.isAlphaBlended()
+        || glrBackFacingAppearance != null && glrBackFacingAppearance.isAlphaBlended();
+  }
+
   protected boolean isActuallyShowing() {
-    if (this.isShowing && (this.glrGeometries != null) && (this.glrGeometries.length > 0)) {
-      if (this.glrFrontFacingAppearance != null) {
-        if (this.glrFrontFacingAppearance.isActuallyShowing()) {
-          return true;
-        }
-      }
-      if (this.glrBackFacingAppearance != null) {
-        if (this.glrBackFacingAppearance.isActuallyShowing()) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return isShowing && glrGeometries != null && glrGeometries.length > 0 && isAnyFaceActuallyShowing();
   }
 
   protected boolean hasOpaque() {
     if ((this.glrGeometries != null) && (this.glrGeometries.length > 0)) {
-      if (this.glrFrontFacingAppearance != null) {
-        if (this.glrFrontFacingAppearance.isAlphaBlended()) {
-          return false;
-        }
+      if (isAnyFaceAlphaBlended()) {
+        return false;
       }
-      if (this.glrBackFacingAppearance != null) {
-        if (this.glrBackFacingAppearance.isAlphaBlended()) {
-          return false;
-        }
-      }
-
       synchronized (this.glrGeometries) {
         for (GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries) {
           if (geometryAdapter.hasOpaque()) {
@@ -130,23 +120,13 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
           }
         }
       }
-
     }
     return false;
   }
 
   protected boolean isAllAlpha() {
-    if (this.glrFrontFacingAppearance != null) {
-      if (this.glrFrontFacingAppearance.isAllAlphaBlended()) {
-        return true;
-      }
-    }
-    if (this.glrBackFacingAppearance != null) {
-      if (this.glrBackFacingAppearance.isAllAlphaBlended()) {
-        return true;
-      }
-    }
-    return false;
+    return glrFrontFacingAppearance != null && glrFrontFacingAppearance.isAllAlphaBlended()
+        || glrBackFacingAppearance != null && glrBackFacingAppearance.isAllAlphaBlended();
   }
 
   protected boolean isAlphaBlended() {
@@ -158,16 +138,7 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
           }
         }
       }
-      if (this.glrFrontFacingAppearance != null) {
-        if (this.glrFrontFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
-      }
-      if (this.glrBackFacingAppearance != null) {
-        if (this.glrBackFacingAppearance.isAlphaBlended()) {
-          return true;
-        }
-      }
+      return isAnyFaceAlphaBlended();
     }
     return false;
   }
@@ -304,10 +275,8 @@ public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRender
 
   @Override
   public void renderOpaque(RenderContext rc) {
-    if (isActuallyShowing()) {
-      if (hasOpaque()) {
-        actuallyRender(rc, RenderType.OPAQUE);
-      }
+    if (isActuallyShowing() && hasOpaque()) {
+      actuallyRender(rc, RenderType.OPAQUE);
     }
   }
 

@@ -61,7 +61,7 @@ public class BillboardBackPaintPropertyAdapter extends AbstractPropertyAdapter<P
   public void setValue(Paint value) {
     super.setValue(value);
     if (this.instance != null) {
-      this.instance.setBackPaint(value);
+      instance.backPaint.setValue(value);
     }
   }
 
