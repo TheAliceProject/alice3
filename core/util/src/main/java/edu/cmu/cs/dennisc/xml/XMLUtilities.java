@@ -53,10 +53,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -72,57 +69,31 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public class XMLUtilities {
-  private static DocumentBuilderFactory s_documentBuilderFactory = null;
-  private static DocumentBuilder s_documentBuilder = null;
-  private static TransformerFactory s_transformerFactory = null;
-  private static Transformer s_transformer = null;
-
-  private static DocumentBuilderFactory getDocumentBuilderFactory() {
-    if (s_documentBuilderFactory != null) {
-      //pass
-    } else {
-      s_documentBuilderFactory = DocumentBuilderFactory.newInstance();
-    }
-    return s_documentBuilderFactory;
-  }
 
   private static DocumentBuilder getDocumentBuilder() {
-    if (s_documentBuilder != null) {
-      //pass
-    } else {
-      try {
-        s_documentBuilder = getDocumentBuilderFactory().newDocumentBuilder();
-      } catch (ParserConfigurationException pce) {
-        throw new RuntimeException(pce);
-      }
+    try {
+      DocumentBuilderFactory s_documentBuilderFactory = DocumentBuilderFactory.newInstance();
+      return s_documentBuilderFactory.newDocumentBuilder();
+    } catch (ParserConfigurationException pce) {
+      throw new RuntimeException(pce);
     }
-    return s_documentBuilder;
   }
 
   public static Document createDocument() {
     return getDocumentBuilder().newDocument();
   }
 
-  private static TransformerFactory getTransformerFactory() {
-    if (s_transformerFactory != null) {
-      //pass
-    } else {
-      s_transformerFactory = TransformerFactory.newInstance();
-    }
-    return s_transformerFactory;
-  }
-
   private static Transformer getTransformer() {
-    if (s_transformer != null) {
-      //pass
-    } else {
-      try {
-        s_transformer = getTransformerFactory().newTransformer();
-      } catch (TransformerConfigurationException tce) {
-        throw new RuntimeException(tce);
-      }
+    try {
+      TransformerFactory s_transformerFactory = TransformerFactory.newInstance();
+      Transformer s_transformer = s_transformerFactory.newTransformer();
+      // for encoding surrogate character, e.g., emojis
+      s_transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+      s_transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+      return s_transformer;
+    } catch (TransformerConfigurationException tce) {
+      throw new RuntimeException(tce);
     }
-    return s_transformer;
   }
 
   public static void write(Document xmlDocument, OutputStream os) {
