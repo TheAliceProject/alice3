@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static java.awt.Font.TRUETYPE_FONT;
+
 /**
  * @author dculyba
  *
@@ -57,14 +65,27 @@ public enum TextFont implements Say.Detail, Think.Detail {
   }
 
   /* package-private */
-  static Font getValue(Object[] details, String defaultName, int style, int size) {
+  static Font getValue(Object[] details, String defaultName, int style, int size) throws IOException, FontFormatException {
     for (Object detail : details) {
       if (detail instanceof TextFont) {
         TextFont textFont = (TextFont) detail;
         return new Font(new java.awt.Font(textFont.value, style, size));
       }
     }
-    return new Font(new java.awt.Font(defaultName, style, size));
+    try {
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      String fName = "NotoColorEmoji.ttf";
+      Logger.errln("Try build a font");
+      InputStream is = TextFont.class.getResourceAsStream(fName);
+      Logger.errln(is == null);
+      java.awt.Font customFont;
+      customFont = java.awt.Font.createFont(TRUETYPE_FONT, is);
+      ge.registerFont(customFont);
+      Logger.errln("Font created");
+      return new Font(customFont);
+    } catch (Throwable t) {
+      Logger.errln("Use default font");
+      return new Font(new java.awt.Font(defaultName, style, size));
+    }
   }
-
 }

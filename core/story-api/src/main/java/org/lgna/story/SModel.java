@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
@@ -50,6 +51,9 @@ import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.annotation.PortionDetails;
 import org.lgna.story.implementation.ModelImp;
+
+import java.awt.*;
+import java.io.IOException;
 
 /**
  * @author Dennis Cosgrove
@@ -198,16 +202,17 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
   }
 
   @MethodTemplate()
-  public void say(String text, Say.Detail... details) {
+  public void say(String text, Say.Detail... details) throws IOException, FontFormatException {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(text, 0);
     double textScale = TextScale.getValue(details);
     int textSize = (int) (16 * textScale);
     int textStyle = TextStyle.getValue(details).getInternal();
+    Logger.errln(text);
     this.getImplementation().say(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).getInternal(), BubbleFillColor.getValue(details, Color.WHITE).getInternal(), BubbleOutlineColor.getValue(details, Color.WHITE).getInternal(), BubblePosition.getValue(details).getInternal());
   }
 
   @MethodTemplate()
-  public void think(String text, Think.Detail... details) {
+  public void think(String text, Think.Detail... details) throws IOException, FontFormatException {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(text, 0);
     double textScale = TextScale.getValue(details);
     int textSize = (int) (16 * textScale);
