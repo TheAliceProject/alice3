@@ -42,14 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media;
 
-import java.awt.Component;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Player {
-  public abstract void prefetch();
-
   public abstract void realize();
 
   public abstract double getDuration();
@@ -61,8 +57,4 @@ public abstract class Player {
   public abstract void playUntilStop();
 
   public abstract void stop();
-
-  public abstract Component getControlPanelComponent();
-
-  public abstract Component getVisualComponent();
 }
