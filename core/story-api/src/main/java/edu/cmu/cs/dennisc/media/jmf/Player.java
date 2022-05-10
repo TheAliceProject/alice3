@@ -42,10 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media.jmf;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
-import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
-import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import org.lgna.common.resources.AudioResource;
@@ -58,10 +54,7 @@ import javax.media.PrefetchCompleteEvent;
 import javax.media.RealizeCompleteEvent;
 import javax.media.StopEvent;
 import javax.media.Time;
-import javax.swing.JDialog;
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -267,41 +260,6 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
   public Component getVisualComponent() {
     this.realize();
     return this.player.getVisualComponent();
-  }
-
-  @Override
-  public void test(Component owner) {
-    JBorderPane content = new JBorderPane() {
-      @Override
-      public Dimension getPreferredSize() {
-        return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 320);
-      }
-    };
-
-    final JDialog dialog = JDialogUtilities.createJDialog(owner, "test", true);
-    dialog.getContentPane().add(content, BorderLayout.CENTER);
-
-    Component controlPanelComponent = this.getControlPanelComponent();
-    if (controlPanelComponent != null) {
-      content.add(controlPanelComponent, BorderLayout.SOUTH);
-    }
-    Component visualComponent = this.getVisualComponent();
-    if (visualComponent != null) {
-      content.add(visualComponent, BorderLayout.CENTER);
-    }
-    dialog.pack();
-
-    WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, owner);
-
-    new Thread() {
-      @Override
-      public void run() {
-        playUntilStop();
-        dialog.setVisible(false);
-      }
-    }.start();
-    dialog.setVisible(true);
-    this.stop();
   }
 
   public double getVolumeLevel() {

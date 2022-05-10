@@ -65,7 +65,4 @@ public abstract class Player {
   public abstract Component getControlPanelComponent();
 
   public abstract Component getVisualComponent();
-
-  //todo: remove
-  public abstract void test(Component owner);
 }
