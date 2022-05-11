@@ -199,6 +199,27 @@ public class SkeletonVisual extends Visual {
     }
   }
 
+  public void rotate(AffineMatrix4x4 rotation) {
+    if (skeleton.getValue() != null) {
+      skeleton.getValue().applyTransformation(rotation, AsSeenBy.SCENE);
+    } else {
+      // we only need to do this if there isn't a skeleton for them to follow around
+      rotateMeshes(rotation);
+    }
+  }
+
+  private void rotateMeshes(AffineMatrix4x4 rotation) {
+    for (Geometry g : geometries.getValue()) {
+      // making the same assumptions about meshes here as scaleMeshes
+      if (g instanceof Mesh) {
+        ((Mesh) g).transform(rotation);
+      }
+    }
+    for (WeightedMesh wm : weightedMeshes.getValue()) {
+      wm.transform(rotation);
+    }
+  }
+
   public void scale(Vector3 scale) {
     if (skeleton.getValue() != null) {
       skeleton.getValue().scale(scale);

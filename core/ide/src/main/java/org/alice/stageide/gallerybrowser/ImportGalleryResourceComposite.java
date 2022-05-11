@@ -6,10 +6,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.croquet.components.SuperclassPopupButton;
 import org.alice.ide.icons.Icons;
@@ -138,13 +135,6 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
       skeletonVisual.scale(new Vector3(change, change, change));
       appliedScale = newScale;
       previewComposite.updateView();
-    }
-  }
-
-  private void rotateSkeleton(AffineMatrix4x4 rotation) {
-    final Joint root = skeletonVisual.skeleton.getValue();
-    if (root != null) {
-      root.applyTransformation(rotation, AsSeenBy.SCENE);
     }
   }
 
@@ -335,9 +325,9 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
     StringState rotateModel = createStringState("rotateModel");
     BoundedDoubleState resizeModel = createBoundedDoubleState("resizeModel", new BoundedDoubleDetails().initialValue(1.0).minimum(0.01).maximum(100.0).stepSize(0.01));
 
-    private ActionOperation rotateOperation(String rotateLeft, AffineMatrix4x4 rotation) {
-      return createActionOperation(rotateLeft, (userActivity, source) -> {
-        rotateSkeleton(rotation);
+    private ActionOperation rotateOperation(String rotateDir, AffineMatrix4x4 rotation) {
+      return createActionOperation(rotateDir, (userActivity, source) -> {
+        skeletonVisual.rotate(rotation);
         return null;
       });
     }
