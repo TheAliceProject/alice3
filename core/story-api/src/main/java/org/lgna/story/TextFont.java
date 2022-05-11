@@ -66,8 +66,7 @@ public enum TextFont implements Say.Detail, Think.Detail {
     this.value = value;
   }
 
-  /* package-private */
-  static Font getValue(Object[] details, String defaultName, int style, int size) throws IOException, FontFormatException {
+  static Font getValue(Object[] details, int style, int size) throws IOException, FontFormatException {
     for (Object detail : details) {
       if (detail instanceof TextFont) {
         TextFont textFont = (TextFont) detail;
@@ -75,16 +74,16 @@ public enum TextFont implements Say.Detail, Think.Detail {
       }
     }
     try {
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
       String fName = "NotoColorEmoji.ttf";
-      Logger.errln("Try build a font");
       InputStream is = TextFont.class.getResourceAsStream(fName);
-      Font customFont = Font.createFont(TRUETYPE_FONT, is).deriveFont((float) size);
-      ge.registerFont(customFont);
-      return customFont;
+      if (is != null) {
+        Font customFont = Font.createFont(TRUETYPE_FONT, is).deriveFont((float) size);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
+        return customFont;
+      }
     } catch (Throwable t) {
       Logger.errln("Use default font");
-      return new Font(null, style, size);
     }
+    return new Font(null, style, size);
   }
 }
