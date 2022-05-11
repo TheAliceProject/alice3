@@ -112,7 +112,23 @@ public class Mesh extends Geometry {
 
   @Override
   public void transform(AbstractMatrix4x4 trans) {
-    //todo
+    DoubleBuffer buffer = vertexBuffer.getValue();
+
+    buffer.rewind();
+
+    int n = buffer.remaining();
+
+    Point3 p = Point3.createNaN();
+    for (int i = 0; i < n; i += 3) {
+      p.set(buffer.get(i), buffer.get(i + 1), buffer.get(i + 2));
+      trans.transform(p);
+
+      buffer.put(i, p.x);
+      buffer.put(i + 1, p.y);
+      buffer.put(i + 2, p.z);
+    }
+
+    vertexBuffer.setValue(buffer);
   }
 
   public Mesh createCopy() {
