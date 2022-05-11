@@ -44,12 +44,10 @@
 package org.alice.ide.resource.manager.views;
 
 import edu.cmu.cs.dennisc.media.Player;
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
 import org.alice.ide.ast.rename.components.RenamePanel;
 import org.alice.ide.resource.manager.RenameResourceComposite;
 import org.alice.imageeditor.croquet.views.ImageView;
 import org.lgna.common.Resource;
-import org.lgna.common.resources.AudioResource;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.story.implementation.ImageFactory;
@@ -89,12 +87,7 @@ public class ResourceRenamePanel extends RenamePanel {
       imageView.setImage(bufferedImage);
       awtComponent = imageView.getAwtComponent();
       constraint = BorderLayout.CENTER;
-    } else if (resource instanceof AudioResource) {
-      AudioResource audioResource = (AudioResource) resource;
-      Player player = MediaFactory.getSingleton().createPlayer(audioResource);
-      awtComponent = player.getControlPanelComponent();
-      constraint = BorderLayout.PAGE_START;
-      this.audioPlayer = player;
+   // else if (resource instanceof AudioResource) TODO restore player to this dialog when JMF is replaced - T925
     } else {
       awtComponent = null;
       constraint = null;

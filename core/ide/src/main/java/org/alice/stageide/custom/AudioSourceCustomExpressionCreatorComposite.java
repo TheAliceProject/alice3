@@ -181,7 +181,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
       double stopTime = getStopMarkerTime();
       edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
       Player player = mediaFactory.createPlayer(audioResource, volume, startTime, stopTime);
-      player.test(null);
+      new Thread(player::playUntilStop).start();
       return null;
     }
   });

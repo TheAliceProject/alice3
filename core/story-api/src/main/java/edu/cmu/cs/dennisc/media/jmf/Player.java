@@ -42,10 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media.jmf;
 
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
-import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
-import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
-import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import org.lgna.common.resources.AudioResource;
@@ -54,58 +50,20 @@ import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.GainControl;
-import javax.media.PrefetchCompleteEvent;
 import javax.media.RealizeCompleteEvent;
 import javax.media.StopEvent;
 import javax.media.Time;
-import javax.swing.JDialog;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 abstract class BarrierControllerListener implements ControllerListener {
-  private CyclicBarrier barrier = new CyclicBarrier(2);
+  private final CyclicBarrier barrier = new CyclicBarrier(2);
 
   public void await() {
     try {
       barrier.await();
-    } catch (InterruptedException ie) {
+    } catch (InterruptedException | BrokenBarrierException ie) {
       throw new RuntimeException(ie);
-    } catch (BrokenBarrierException bbe) {
-      throw new RuntimeException(bbe);
-    }
-  }
-}
-
-//class StateControllerListener extends BarrierControllerListener {
-//  private int targetState;
-//  public StateControllerListener( int targetState ) {
-//    this.targetState = targetState;
-//  }
-//  public void controllerUpdate( javax.media.ControllerEvent e ) {
-//    edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-//    if( e instanceof javax.media.TransitionEvent ) {
-//      javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
-//      int currentState = transitionEvent.getCurrentState();
-//      if( currentState >= this.targetState ) {
-//        this.await();
-//      }
-//    }
-//  }
-//  @Override
-//  public void await() {
-//    edu.cmu.cs.dennisc.print.PrintUtilities.println( "awaiting:", this.targetState );
-//    super.await();
-//  }
-//}
-
-class PrefetchControllerListener extends BarrierControllerListener {
-  @Override
-  public void controllerUpdate(ControllerEvent e) {
-    if (e instanceof PrefetchCompleteEvent) {
-      this.await();
     }
   }
 }
@@ -129,34 +87,17 @@ class StopControllerListener extends BarrierControllerListener {
   }
 }
 
-//class ScaledTimeBase implements javax.media.TimeBase {
-//  private javax.media.TimeBase originalTimeBase;
-//  private long scale;
-//  public ScaledTimeBase( javax.media.TimeBase originalTimeBase ) {
-//    this.originalTimeBase = originalTimeBase;
-//  }
-//  public long getNanoseconds() {
-//    edu.cmu.cs.dennisc.print.PrintUtilities.println( "getNanoseconds" );
-//    return this.scale * this.originalTimeBase.getNanoseconds();
-//  }
-//  public javax.media.Time getTime() {
-//    //todo?
-//    return new javax.media.Time( this.getNanoseconds() );
-//  }
-//}
-
 /**
  * @author Dennis Cosgrove
  */
 public class Player extends edu.cmu.cs.dennisc.media.Player {
-  private javax.media.Player player;
-  private double volumeLevel;
-  private double startTime;
-  private double stopTime;
-  private AudioResource audioResource;
+  private final javax.media.Player player;
+  private final double volumeLevel;
+  private final double startTime;
+  private final double stopTime;
+  private final AudioResource audioResource;
 
-  /* package private */Player(javax.media.Player player, double volumeLevel, double startTime, double stopTime, AudioResource resourceReference) {
-    //assert player.getState() >= javax.media.Controller.Realized;
+  Player(javax.media.Player player, double volumeLevel, double startTime, double stopTime, AudioResource resourceReference) {
     this.player = player;
     this.volumeLevel = volumeLevel;
     this.startTime = startTime;
@@ -177,32 +118,15 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
   }
 
   @Override
-  public void prefetch() {
-    if (this.player.getState() < Controller.Prefetched) {
-      PrefetchControllerListener controllerListener = new PrefetchControllerListener();
-      this.player.addControllerListener(controllerListener);
-      this.player.prefetch();
-      controllerListener.await();
-      this.player.removeControllerListener(controllerListener);
-    }
-  }
-
-  @Override
   public void start() {
     this.realize();
-    if (Double.isNaN(this.startTime)) {
-      //pass
-    } else {
+    if (!Double.isNaN(this.startTime)) {
       this.player.setMediaTime(new Time(this.startTime));
     }
-    if (Double.isNaN(this.stopTime)) {
-      //pass
-    } else {
+    if (!Double.isNaN(this.stopTime)) {
       this.player.setStopTime(new Time(this.stopTime));
     }
-    if (EpsilonUtilities.isWithinReasonableEpsilon(this.volumeLevel, 1.0)) {
-      //pass
-    } else {
+    if (!EpsilonUtilities.isWithinReasonableEpsilon(this.volumeLevel, 1.0)) {
       GainControl gainControl = this.player.getGainControl();
       float defaultVolumeLevel = gainControl.getLevel();
 
@@ -238,12 +162,8 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
     double rv = endSeconds - currSeconds;
 
     int state = this.player.getState();
-    if (state >= Controller.Started) {
-      //pass
-    } else {
-      if (currSeconds > (this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD)) {
-        rv = 0.0;
-      }
+    if (state < Controller.Started && currSeconds > (this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD)) {
+      rv = 0.0;
     }
     return rv;
   }
@@ -255,53 +175,6 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
     this.start();
     controllerListener.await();
     this.player.removeControllerListener(controllerListener);
-  }
-
-  @Override
-  public Component getControlPanelComponent() {
-    this.realize();
-    return this.player.getControlPanelComponent();
-  }
-
-  @Override
-  public Component getVisualComponent() {
-    this.realize();
-    return this.player.getVisualComponent();
-  }
-
-  @Override
-  public void test(Component owner) {
-    JBorderPane content = new JBorderPane() {
-      @Override
-      public Dimension getPreferredSize() {
-        return DimensionUtilities.constrainToMinimumWidth(super.getPreferredSize(), 320);
-      }
-    };
-
-    final JDialog dialog = JDialogUtilities.createJDialog(owner, "test", true);
-    dialog.getContentPane().add(content, BorderLayout.CENTER);
-
-    Component controlPanelComponent = this.getControlPanelComponent();
-    if (controlPanelComponent != null) {
-      content.add(controlPanelComponent, BorderLayout.SOUTH);
-    }
-    Component visualComponent = this.getVisualComponent();
-    if (visualComponent != null) {
-      content.add(visualComponent, BorderLayout.CENTER);
-    }
-    dialog.pack();
-
-    WindowUtilities.setLocationOnScreenToCenteredWithin(dialog, owner);
-
-    new Thread() {
-      @Override
-      public void run() {
-        playUntilStop();
-        dialog.setVisible(false);
-      }
-    }.start();
-    dialog.setVisible(true);
-    this.stop();
   }
 
   public double getVolumeLevel() {
