@@ -44,7 +44,9 @@ package org.lgna.story;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -56,7 +58,7 @@ import static java.awt.Font.TRUETYPE_FONT;
  */
 public enum TextFont implements Say.Detail, Think.Detail {
 
-  DEFAULT(null), SERIF(java.awt.Font.SERIF), SANS_SERIF(java.awt.Font.SANS_SERIF), MONOSPACED(java.awt.Font.MONOSPACED);
+  DEFAULT(null), SERIF(Font.SERIF), SANS_SERIF(Font.SANS_SERIF), MONOSPACED(Font.MONOSPACED);
 
   private final String value;
 
@@ -69,7 +71,7 @@ public enum TextFont implements Say.Detail, Think.Detail {
     for (Object detail : details) {
       if (detail instanceof TextFont) {
         TextFont textFont = (TextFont) detail;
-        return new Font(new java.awt.Font(textFont.value, style, size));
+        return new Font(textFont.value, style, size);
       }
     }
     try {
@@ -77,15 +79,12 @@ public enum TextFont implements Say.Detail, Think.Detail {
       String fName = "NotoColorEmoji.ttf";
       Logger.errln("Try build a font");
       InputStream is = TextFont.class.getResourceAsStream(fName);
-      Logger.errln(is == null);
-      java.awt.Font customFont;
-      customFont = java.awt.Font.createFont(TRUETYPE_FONT, is);
+      Font customFont = Font.createFont(TRUETYPE_FONT, is).deriveFont((float) size);
       ge.registerFont(customFont);
-      Logger.errln("Font created");
-      return new Font(customFont);
+      return customFont;
     } catch (Throwable t) {
       Logger.errln("Use default font");
-      return new Font(new java.awt.Font(defaultName, style, size));
+      return new Font(null, style, size);
     }
   }
 }
