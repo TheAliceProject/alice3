@@ -365,15 +365,13 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
         edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
         MeshPrimitive[] meshPrimitives = createMeshPrimitives(sgMesh, bufferStructureBuilder);
-        Mesh mesh = createMesh(sgMesh, meshPrimitives);
-        meshes.add(mesh);
+        addMeshes(meshes, sgMesh.getName(), meshPrimitives);
       }
     }
     for (WeightedMesh sgWM : visual.weightedMeshes.getValue()) {
       Skin skin = addSkin(sgWM, bufferStructureBuilder, gltf, jointNodes);
       MeshPrimitive[] meshPrimitives = createWeightedMeshPrimitives(sgWM, bufferStructureBuilder, jointNodes, skin);
-      Mesh mesh = createMesh(sgWM, meshPrimitives);
-      meshes.add(mesh);
+      addMeshes(meshes, sgWM.getName(), meshPrimitives);
     }
     return meshes;
   }
@@ -408,13 +406,19 @@ public class JointedModelGltfExporter implements JointedModelExporter {
     }
   }
 
-  private Mesh createMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, MeshPrimitive[] meshPrimitives) {
-    Mesh mesh = new Mesh();
-    for (MeshPrimitive primitive : meshPrimitives) {
-      mesh.addPrimitives(primitive);
-      mesh.setName(sgMesh.getName());
+  private void addMeshes(List<Mesh> meshes, String prefix, MeshPrimitive[] meshPrimitives) {
+    boolean hasMultiplePrimitives = meshPrimitives.length > 1;
+    for (int i = 0, meshPrimitivesLength = meshPrimitives.length; i < meshPrimitivesLength; i++) {
+      Mesh mesh = new Mesh();
+      mesh.addPrimitives(meshPrimitives[i]);
+      String subMeshName = prefix;
+      if (hasMultiplePrimitives) {
+        subMeshName = prefix + "_" + i;
+        meshSkinMap.put(subMeshName, meshSkinMap.get(prefix));
+      }
+      mesh.setName(subMeshName);
+      meshes.add(mesh);
     }
-    return mesh;
   }
 
   private MeshPrimitive[] createMeshPrimitives(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, BufferStructureBuilder builder) {
