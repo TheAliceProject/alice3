@@ -118,7 +118,7 @@
 
     <module>alice-ide</module>
     <module>netbeans</module>
-    <module>installer</module>
+<!--    <module>installer</module>-->
   </modules>
 
   <dependencyManagement>
@@ -233,6 +233,11 @@
         <groupId>uk.co.mmscomputing</groupId>
         <artifactId>mmsc</artifactId>
         <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.vdurmont</groupId>
+        <artifactId>emoji-java</artifactId>
+        <version>5.1.1</version>
       </dependency>
       <!-- Third Party Libraries from maven-->
       <dependency>
@@ -444,11 +449,11 @@
           <artifactId>exec-maven-plugin</artifactId>
           <version>1.6.0</version>
         </plugin>
-        <plugin>
-          <groupId>com.install4j</groupId>
-          <artifactId>install4j-maven</artifactId>
-          <version>9.0.5</version>
-        </plugin>
+<!--        <plugin>-->
+<!--          <groupId>com.install4j</groupId>-->
+<!--          <artifactId>install4j-maven</artifactId>-->
+<!--          <version>9.0.5</version>-->
+<!--        </plugin>-->
         <plugin>
           <groupId>net.nicoulaj.maven.plugins</groupId>
           <artifactId>checksum-maven-plugin</artifactId>

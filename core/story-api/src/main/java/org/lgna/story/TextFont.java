@@ -73,16 +73,17 @@ public enum TextFont implements Say.Detail, Think.Detail {
       }
     }
     try {
-      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      String fName = "NotoColorEmoji.ttf";
-      Logger.errln("Try build a font");
-      InputStream is = TextFont.class.getResourceAsStream(fName);
-      Logger.errln(is == null);
-      java.awt.Font customFont;
-      customFont = java.awt.Font.createFont(TRUETYPE_FONT, is);
-      ge.registerFont(customFont);
-      Logger.errln("Font created");
-      return new Font(customFont);
+//      String fName = "JetBrainsMono-Regular.ttf";
+//      Logger.errln("Try build a font");
+//      InputStream is = TextFont.class.getResourceAsStream(fName);
+//      Logger.errln(is == null);
+//      java.awt.Font customFont = java.awt.Font.createFont(TRUETYPE_FONT, is);
+//      customFont = customFont.deriveFont(java.awt.Font.PLAIN, 20);
+//      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//      ge.registerFont(customFont);
+//      Logger.errln("Font created");
+//      return new Font(customFont);
+      return new Font(new java.awt.Font(defaultName, style, size));
     } catch (Throwable t) {
       Logger.errln("Use default font");
       return new Font(new java.awt.Font(defaultName, style, size));

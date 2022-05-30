@@ -207,7 +207,6 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
     double textScale = TextScale.getValue(details);
     int textSize = (int) (16 * textScale);
     int textStyle = TextStyle.getValue(details).getInternal();
-    Logger.errln(text);
     this.getImplementation().say(text, Duration.getValue(details), TextFont.getValue(details, null, textStyle, textSize).getAsAWTFont(), TextColor.getValue(details, Color.BLACK).getInternal(), BubbleFillColor.getValue(details, Color.WHITE).getInternal(), BubbleOutlineColor.getValue(details, Color.WHITE).getInternal(), BubblePosition.getValue(details).getInternal());
   }
 

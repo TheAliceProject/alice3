@@ -43,24 +43,17 @@
 
 package org.lgna.story.implementation;
 
+import com.vdurmont.emoji.EmojiParser;
 import edu.cmu.cs.dennisc.animation.Animated;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Objects;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
-import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.animation.Dimension3Animation;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.RenderTarget;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Leaf;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble;
@@ -76,7 +69,7 @@ import org.lgna.story.implementation.overlay.BubbleImp;
 import org.lgna.story.implementation.overlay.SpeechBubbleImp;
 import org.lgna.story.implementation.overlay.ThoughtBubbleImp;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
@@ -400,7 +393,13 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
   }
 
   public void say(String text, double duration, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference) {
-    BubbleImp bubbleImp = new SpeechBubbleImp(this, getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference);
+    BubbleImp bubbleImp;
+    try {
+      String parsedText = EmojiParser.parseToUnicode(EmojiParser.parseToAliases("\uD83D\uDE0C \uD83D\uDE0D \uD83E\uDD70"));
+      bubbleImp = new SpeechBubbleImp(this, getSpeechBubbleOriginator(), parsedText, font, textColor, fillColor, outlineColor, positionPreference);
+    } catch (Throwable th) {
+      bubbleImp = new SpeechBubbleImp(this, getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference);
+    }
     displayBubble(bubbleImp, duration);
   }
 
