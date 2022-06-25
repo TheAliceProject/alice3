@@ -77,6 +77,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 
   protected void setLocalTransformation(AffineMatrix4x4 lt) {
     AbstractTransformable sgTransformable = getSGTransformable();
+    if (sgTransformable == null) return;
     if (this.getAnimator() != null) {
       PointOfViewAnimation povAnimation = new PointOfViewAnimation(sgTransformable, AsSeenBy.PARENT, null, lt);
       povAnimation.setDuration(0.5);
