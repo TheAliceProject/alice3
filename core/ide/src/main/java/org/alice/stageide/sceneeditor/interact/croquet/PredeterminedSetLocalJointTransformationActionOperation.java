@@ -69,8 +69,7 @@ public class PredeterminedSetLocalJointTransformationActionOperation extends Abs
   @Override
   protected AbstractTransformable getSGTransformable() {
     JointedModelImp<SJointedModel, JointedModelResource> jointedModelImp = (JointedModelImp<SJointedModel, JointedModelResource>) getEntityImp();
-//    return jointedModelImp.getJointImplementation(this.jointId).getSgComposite();
-    return null;
+    return jointedModelImp.getJointImplementation(this.jointId).getSgComposite();
   }
 
 }
