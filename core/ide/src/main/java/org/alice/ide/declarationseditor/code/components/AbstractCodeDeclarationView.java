@@ -82,11 +82,7 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
         pageEndComponent = userFunctionStatusComposite.getView();
       }
     } else {
-      if (controlFlowComponent != null) {
-        pageEndComponent = controlFlowComponent;
-      } else {
-        pageEndComponent = null;
-      }
+      pageEndComponent = controlFlowComponent;
     }
 
     if (pageEndComponent != null) {
@@ -105,31 +101,13 @@ public abstract class AbstractCodeDeclarationView extends DeclarationView {
     if (dragModel instanceof CodeDragModel) {
       CodeDragModel codeDragModel = (CodeDragModel) dragModel;
       final AbstractType<?, ?, ?> type = codeDragModel.getType();
-      if (type == JavaType.VOID_TYPE) {
-        //pass
-      } else {
-        List<ExpressionPropertyDropDownPane> list = HierarchyUtilities.findAllMatches(this, ExpressionPropertyDropDownPane.class, new Criterion<ExpressionPropertyDropDownPane>() {
-          @Override
-          public boolean accept(ExpressionPropertyDropDownPane expressionPropertyDropDownPane) {
-            AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
-            assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
-            if (expressionType.isAssignableFrom(type)) {
-              return true;
-              //            } else {
-              //              if( type.isArray() ) {
-              //                if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-              //                  return true;
-              //                } else {
-              //                  for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-              //                    if( expressionType == integerType ) {
-              //                      return true;
-              //                    }
-              //                  }
-              //                }
-              //              }
-            }
-            return false;
-          }
+      if (type != JavaType.VOID_TYPE) {
+        var list = HierarchyUtilities.findAllMatches(
+            this,
+            ExpressionPropertyDropDownPane.class,
+            (Criterion<ExpressionPropertyDropDownPane>) expressionPropertyDropDownPane -> {
+              AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+              return expressionType != null && expressionType.isAssignableFrom(type);
         });
         for (ExpressionPropertyDropDownPane pane : list) {
           out.add(pane.getDropReceptor());
