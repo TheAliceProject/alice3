@@ -66,7 +66,6 @@ public abstract class AffineAnimation extends DurationBasedAnimation {
   }
 
   public void setSubject(AbstractTransformable sgSubject) {
-    assert sgSubject != null;
     m_sgSubject = sgSubject;
   }
 
