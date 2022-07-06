@@ -110,12 +110,12 @@ import org.lgna.story.implementation.EntityImp;
   }
 
   @MethodTemplate(visibility = Visibility.PRIME_TIME)
-  public Double getDoubleFromUser(String message) {
+  public Double getDecimalNumberFromUser(String message) {
     return this.getImplementation().getDoubleFromUser(message);
   }
 
   @MethodTemplate(visibility = Visibility.PRIME_TIME)
-  public Integer getIntegerFromUser(String message) {
+  public Integer getWholeNumberFromUser(String message) {
     return this.getImplementation().getIntegerFromUser(message);
   }
 
