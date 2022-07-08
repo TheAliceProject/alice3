@@ -59,6 +59,6 @@ public class PromptUserFunctionsComposite extends NameFilteredJavaFunctionsCompo
   }
 
   private PromptUserFunctionsComposite() {
-    super(UUID.fromString("919ded0a-4c7b-476a-ae8f-81abff24f0b3"), "getBooleanFromUser", "getStringFromUser", "getDecimalNumberFromUser", "getWholeNumberFromUser");
+    super(UUID.fromString("919ded0a-4c7b-476a-ae8f-81abff24f0b3"), "getBooleanFromUser", "getStringFromUser", "getDoubleFromUser", "getIntegerFromUser");
   }
 }

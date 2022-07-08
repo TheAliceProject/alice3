@@ -758,7 +758,7 @@
         ]
       },
       {
-        "name": "getDecimalNumberFromUser",
+        "name": "getDoubleFromUser",
         "parameterClassNames": [
           "java.lang.String"
         ],
@@ -767,7 +767,7 @@
         ]
       },
       {
-        "name": "getWholeNumberFromUser",
+        "name": "getIntegerFromUser",
         "parameterClassNames": [
           "java.lang.String"
         ],
