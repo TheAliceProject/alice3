@@ -80,16 +80,6 @@ public class PersonImp extends SingleVisualModelImp {
 
   private final Map<LifeStage, Person> mapLifeStageToNebPerson = Maps.newHashMap();
 
-  private Geometry getSgGeometry() {
-    Visual sgVisual = this.getSgVisuals()[0];
-    final int N = sgVisual.getGeometryCount();
-    if (N > 0) {
-      return sgVisual.getGeometryAt(0);
-    } else {
-      return null;
-    }
-  }
-
   public void unload() {
     for (Map.Entry<LifeStage, Person> entry : this.mapLifeStageToNebPerson.entrySet()) {
       entry.getValue().synchronizedUnload();
@@ -150,10 +140,7 @@ public class PersonImp extends SingleVisualModelImp {
         Logger.severe(hair, lifeStage, gender);
       }
     }
-    Geometry sgGeometry = this.getSgGeometry();
-    if (nebPerson != sgGeometry) {
-      this.setSgGeometry(nebPerson);
-    }
+    setSgGeometry(nebPerson);
   }
 
   @Override
