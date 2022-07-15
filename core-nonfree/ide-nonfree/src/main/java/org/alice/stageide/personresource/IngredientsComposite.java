@@ -836,5 +836,6 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
       this.addListenersIfAppropriate();
     }
     this.syncPersonImpAndMaps();
+    updateCameraPointOfView();
   }
 }
