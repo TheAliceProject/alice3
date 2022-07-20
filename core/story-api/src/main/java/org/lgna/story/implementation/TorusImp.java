@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
@@ -58,7 +57,7 @@ import org.lgna.story.implementation.eventhandling.VerticalPrismCollisionHull;
  */
 public class TorusImp extends ShapeImp {
 
-  private static final double MINIMUM_VALUE = 0.01; //todo
+  private static final double MINIMUM_VALUE = 0.01;
 
   public TorusImp(STorus abstraction) {
     this.abstraction = abstraction;
@@ -84,36 +83,57 @@ public class TorusImp extends ShapeImp {
 
   @Override
   public Resizer[] getResizers() {
-    return new Resizer[] {Resizer.XZ_PLANE, Resizer.Y_AXIS};
+    return new Resizer[] {Resizer.XZ_PLANE, Resizer.Y_AXIS, Resizer.UNIFORM};
   }
 
   @Override
   public double getValueForResizer(Resizer resizer) {
-    if (resizer == Resizer.XZ_PLANE) {
-      return this.outerRadius.getValue();
-    } else if (resizer == Resizer.Y_AXIS) {
-      return this.sgTorus.minorRadius.getValue();
-    } else {
-      assert false : resizer;
-      return Double.NaN;
+    switch (resizer) {
+      case XZ_PLANE -> {
+        return sgTorus.majorRadius.getValue();
+      }
+      case Y_AXIS -> {
+        return sgTorus.minorRadius.getValue();
+      }
+      case UNIFORM -> {
+        return outerRadius.getValue();
+      }
+      default -> throw new IllegalStateException("Unexpected value: " + resizer);
     }
   }
 
   @Override
   public void setValueForResizer(Resizer resizer, double value) {
-    if (resizer == Resizer.XZ_PLANE) {
-      this.outerRadius.setValue(value);
-    } else if (resizer == Resizer.Y_AXIS) {
-      this.sgTorus.minorRadius.setValue(value);
-    } else {
-      assert false : resizer;
+    double newOuter;
+    double newInner;
+    switch (resizer) {
+      case XZ_PLANE -> {
+        double change = value - sgTorus.majorRadius.getValue();
+        newOuter = outerRadius.getValue() + change;
+        newInner = innerRadius.getValue() + change;
+
+      }
+      case Y_AXIS -> {
+        double change = value - sgTorus.minorRadius.getValue();
+        newOuter = outerRadius.getValue() + change;
+        newInner = innerRadius.getValue() - change;
+      }
+      case UNIFORM -> {
+        double factor = value / outerRadius.getValue();
+        newInner = factor * innerRadius.getValue();
+        newOuter = value;
+      }
+      default -> throw new IllegalStateException("Unexpected value: " + resizer);
     }
+    innerRadius.setValue(newInner);
+    outerRadius.setValue(newOuter);
   }
 
   @Override
   public void setSize(Dimension3 size) {
-    Logger.outln("setSize", size, this);
-    this.outerRadius.setValue(size.x * .5);
+    double newOuter = size.x * .5;
+    outerRadius.setValue(newOuter);
+    innerRadius.setValue(newOuter - size.y);
   }
 
   @Override
@@ -125,49 +145,43 @@ public class TorusImp extends ShapeImp {
   private final STorus abstraction;
   private final Torus sgTorus = new Torus();
   public final DoubleProperty innerRadius = new DoubleProperty(TorusImp.this) {
-    private double value = 0.25;
 
     @Override
     public Double getValue() {
-      return this.value;
+      return sgTorus.majorRadius.getValue() - sgTorus.minorRadius.getValue();
     }
 
     @Override
-    protected void handleSetValue(Double value) {
-      final Double outer = TorusImp.this.outerRadius.getValue();
-      this.value = value;
-      if (outer < value) {
-        outerRadius.setValue(value);
-      } else {
-        updateRadii(value, outer);
+    protected void handleSetValue(Double newInner) {
+      double oldOuter = sgTorus.majorRadius.getValue() + sgTorus.minorRadius.getValue();
+      updateRadii(newInner, Math.max(oldOuter, newInner + MINIMUM_VALUE));
+      if (oldOuter < newInner + MINIMUM_VALUE) {
+        // Value changed in updateRadii, so notify listeners
+        outerRadius.fireChanged(oldOuter, newInner + MINIMUM_VALUE);
       }
     }
   };
   public final DoubleProperty outerRadius = new DoubleProperty(TorusImp.this) {
-    private double value = 0.5;
 
     @Override
     public Double getValue() {
-      return this.value;
+      return sgTorus.majorRadius.getValue() + sgTorus.minorRadius.getValue();
     }
 
     @Override
-    protected void handleSetValue(Double value) {
-      final Double inner = TorusImp.this.innerRadius.getValue();
-      this.value = value;
-      if (inner > value) {
-        innerRadius.setValue(value);
-      } else {
-        updateRadii(inner, value);
+    protected void handleSetValue(Double newOuter) {
+      double oldInner = sgTorus.majorRadius.getValue() - sgTorus.minorRadius.getValue();
+      updateRadii(Math.min(oldInner, newOuter - MINIMUM_VALUE), newOuter);
+      if (newOuter - MINIMUM_VALUE < oldInner) {
+        // Value changed in updateRadii, so notify listeners
+        innerRadius.fireChanged(oldInner, newOuter - MINIMUM_VALUE);
       }
     }
   };
 
   private void updateRadii(double inner, double outer) {
-    double minorDiameter = Math.max(outer - inner, MINIMUM_VALUE);
-    double minorRadius = minorDiameter * 0.5;
-    double majorRadius = Math.max(outer - minorRadius, MINIMUM_VALUE);
+    double minorRadius = (outer - inner) * 0.5;
     sgTorus.minorRadius.setValue(minorRadius);
-    sgTorus.majorRadius.setValue(majorRadius);
+    sgTorus.majorRadius.setValue(outer - minorRadius);
   }
 }
