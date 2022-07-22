@@ -164,12 +164,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<View
     }
     this.activeMarker = this.getCameraMarker(view);
     if (this.activeMarker != null) {
+      stopTrackingCamera();
       setCameraToSelectedMarker();
     }
   }
 
-  private void setCameraToSelectedMarker() {
-    stopTrackingCamera();
+  public void setCameraToSelectedMarker() {
     if (this.activeMarker instanceof OrthographicCameraMarkerImp) {
       OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) this.activeMarker;
       sceneEditor.switchToOrthographicCamera();
