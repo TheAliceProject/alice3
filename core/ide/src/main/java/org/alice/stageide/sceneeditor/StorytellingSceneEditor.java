@@ -361,7 +361,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private ComboBox<View> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
   private View savedSceneEditorViewSelection = null;
-  private CameraMarkerImp currentOrthographicCamera;
 
   private ValueListener<View> mainCameraViewSelectionObserver = new ValueListener<View>() {
     @Override
@@ -431,7 +430,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private void setSelectedInstance(InstanceFactory instanceFactory) {
-    // TODO: whether camera is an ortho-cam; cam is not a view; when cam is selected and an object is selected
     Expression expression = instanceFactory != null ? instanceFactory.createExpression() : null;
     if (expression instanceof FieldAccess) {
       FieldAccess fa = (FieldAccess) expression;
@@ -512,7 +510,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     picturePlane.setHeight(6);
     this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
-//    mainCameraViewTracker.setCameraToSelectedMarker();
+    mainCameraViewTracker.setCameraToSelectedMarker();
   }
 
   @Override
@@ -769,7 +767,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     if (!orthographicCams.contains(cameraMarker.getName())) {
       return;
     }
-    currentOrthographicCamera = cameraMarker;
     StageIDE ide = StageIDE.getActiveInstance();
     InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
     UserField field = getSelectedField();
@@ -952,7 +949,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       this.globalDragAdapter.makeCameraActive(this.sceneCameraImp.getSgCamera());
 
       SceneImp sceneImp = this.getActiveSceneImplementation();
-      //sceneImp.mendSceneGraphIfNecessary();
       //Add and set up the snap grid (this needs to happen before setting the camera)
       sceneImp.getSgComposite().addComponent(this.snapGrid);
       this.snapGrid.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
