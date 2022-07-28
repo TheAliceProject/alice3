@@ -477,38 +477,33 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private void updateOrthographicCameraView(EntityImp targetImplementation) {
     double targetHeight = targetImplementation.getAxisAlignedMinimumBoundingBox().getHeight();
+    double targetWidth = targetImplementation.getAxisAlignedMinimumBoundingBox().getWidth();
+    double targetDepth = targetImplementation.getAxisAlignedMinimumBoundingBox().getDepth();
+    double defaultDistance = 10.0f;
     AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
-    ClippedZPlane picturePlane = new ClippedZPlane();
 
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.x = targetTransform.translation.x;
-    topTransform.translation.y = 10;
+    topTransform.translation.y = targetHeight != 0 ? targetHeight * 10 : defaultDistance;
     topTransform.translation.z = targetTransform.translation.z;
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
     this.topOrthoMarkerImp.setLocalTransformation(topTransform);
-    picturePlane.setCenter(0, 0);
-    picturePlane.setHeight(16);
-    this.topOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-    sideTransform.translation.x = targetTransform.translation.x + 10.0f;
-    sideTransform.translation.y = targetHeight / 2;
+    sideTransform.translation.x = targetTransform.translation.x + targetWidth * 5;
+    sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
     sideTransform.translation.z = targetTransform.translation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     this.sideOrthoMarkerImp.setLocalTransformation(sideTransform);
-    picturePlane.setHeight(6);
-    this.sideOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.x = targetTransform.translation.x;
-    frontTransform.translation.y = targetHeight / 2;
-    frontTransform.translation.z = targetTransform.translation.z - 10.0f;
+    frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
+    frontTransform.translation.z = targetTransform.translation.z - targetDepth * 5;
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     this.frontOrthoMarkerImp.setLocalTransformation(frontTransform);
-    picturePlane.setHeight(6);
-    this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     mainCameraViewTracker.setCameraToSelectedMarker();
   }
