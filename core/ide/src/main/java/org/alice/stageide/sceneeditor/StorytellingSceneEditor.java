@@ -128,20 +128,7 @@ import org.lgna.project.Project;
 import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
-import org.lgna.story.implementation.AbstractTransformableImp;
-import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.implementation.MarkerImp;
-import org.lgna.story.implementation.ModelImp;
-import org.lgna.story.implementation.ObjectMarkerImp;
-import org.lgna.story.implementation.OrthographicCameraImp;
-import org.lgna.story.implementation.OrthographicCameraMarkerImp;
-import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-import org.lgna.story.implementation.ProgramImp;
-import org.lgna.story.implementation.SceneImp;
-import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
-import org.lgna.story.implementation.TransformableImp;
+import org.lgna.story.implementation.*;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
@@ -476,20 +463,24 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private void updateOrthographicCameraView(EntityImp targetImplementation) {
-    double targetHeight = targetImplementation.getAxisAlignedMinimumBoundingBox().getHeight();
-    double targetWidth = targetImplementation.getAxisAlignedMinimumBoundingBox().getWidth();
-    double targetDepth = targetImplementation.getAxisAlignedMinimumBoundingBox().getDepth();
+    AxisAlignedBox alignedBox = targetImplementation.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
+    double targetHeight = alignedBox.getHeight();
+    double targetWidth = alignedBox.getWidth();
+    double targetDepth = alignedBox.getDepth();
     double defaultDistance = 10.0f;
     AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
+    ClippedZPlane picturePlane = new ClippedZPlane();
 
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.x = targetTransform.translation.x;
-    topTransform.translation.y = targetHeight != 0 ? targetHeight * 10 : defaultDistance;
+    topTransform.translation.y = targetHeight != 0 ? (2 * targetHeight + targetTransform.translation.y) : defaultDistance;
     topTransform.translation.z = targetTransform.translation.z;
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
     this.topOrthoMarkerImp.setLocalTransformation(topTransform);
+    picturePlane.setCenter(0, 0);
+    picturePlane.setHeight(2 * targetDepth);
 
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
     sideTransform.translation.x = targetTransform.translation.x + targetWidth * 5;
@@ -497,6 +488,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     sideTransform.translation.z = targetTransform.translation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     this.sideOrthoMarkerImp.setLocalTransformation(sideTransform);
+    picturePlane.setHeight(2 * targetHeight);
 
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.x = targetTransform.translation.x;
@@ -504,6 +496,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     frontTransform.translation.z = targetTransform.translation.z - targetDepth * 5;
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     this.frontOrthoMarkerImp.setLocalTransformation(frontTransform);
+    picturePlane.setHeight(2 * targetHeight);
 
     mainCameraViewTracker.setCameraToSelectedMarker();
   }
