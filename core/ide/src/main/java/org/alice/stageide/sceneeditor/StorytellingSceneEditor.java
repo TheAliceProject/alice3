@@ -478,25 +478,28 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
-    this.topOrthoMarkerImp.setLocalTransformation(topTransform);
+    topOrthoMarkerImp.setLocalTransformation(topTransform);
     picturePlane.setCenter(0, 0);
     picturePlane.setHeight(2 * targetDepth);
+    topOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
     sideTransform.translation.x = targetTransform.translation.x + targetWidth * 5;
     sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
     sideTransform.translation.z = targetTransform.translation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
-    this.sideOrthoMarkerImp.setLocalTransformation(sideTransform);
+    sideOrthoMarkerImp.setLocalTransformation(sideTransform);
     picturePlane.setHeight(2 * targetHeight);
+    sideOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.x = targetTransform.translation.x;
     frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
     frontTransform.translation.z = targetTransform.translation.z - targetDepth * 5;
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
-    this.frontOrthoMarkerImp.setLocalTransformation(frontTransform);
+    frontOrthoMarkerImp.setLocalTransformation(frontTransform);
     picturePlane.setHeight(2 * targetHeight);
+    frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     mainCameraViewTracker.setCameraToSelectedMarker();
   }
