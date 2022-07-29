@@ -480,25 +480,25 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     topTransform.orientation.backward.set(0, 1, 0);
     topOrthoMarkerImp.setLocalTransformation(topTransform);
     picturePlane.setCenter(0, 0);
-    picturePlane.setHeight(2 * targetDepth);
+    picturePlane.setHeight(2 * Math.max(targetDepth, targetWidth));
     topOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-    sideTransform.translation.x = targetTransform.translation.x + targetWidth * 5;
+    sideTransform.translation.x = targetTransform.translation.x + (targetWidth != 0 ? 2 * targetWidth : defaultDistance);
     sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
     sideTransform.translation.z = targetTransform.translation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     sideOrthoMarkerImp.setLocalTransformation(sideTransform);
-    picturePlane.setHeight(2 * targetHeight);
+    picturePlane.setHeight(2 * Math.max(targetDepth, targetHeight));
     sideOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.x = targetTransform.translation.x;
     frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
-    frontTransform.translation.z = targetTransform.translation.z - targetDepth * 5;
+    frontTransform.translation.z = targetTransform.translation.z - (targetDepth != 0 ? 2 * targetDepth : defaultDistance);
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     frontOrthoMarkerImp.setLocalTransformation(frontTransform);
-    picturePlane.setHeight(2 * targetHeight);
+    picturePlane.setHeight(2 * Math.max(targetHeight, targetWidth));
     frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     mainCameraViewTracker.setCameraToSelectedMarker();
