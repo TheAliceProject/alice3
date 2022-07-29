@@ -467,7 +467,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     double targetHeight = alignedBox.getHeight();
     double targetWidth = alignedBox.getWidth();
     double targetDepth = alignedBox.getDepth();
-    double defaultDistance = 10.0f;
+    double defaultDistance = 1.0f;
     AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
     ClippedZPlane picturePlane = new ClippedZPlane();
 
