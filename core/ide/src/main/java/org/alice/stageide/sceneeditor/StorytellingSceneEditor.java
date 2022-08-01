@@ -128,20 +128,7 @@ import org.lgna.project.Project;
 import org.lgna.project.ast.*;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
-import org.lgna.story.implementation.AbstractTransformableImp;
-import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.implementation.MarkerImp;
-import org.lgna.story.implementation.ModelImp;
-import org.lgna.story.implementation.ObjectMarkerImp;
-import org.lgna.story.implementation.OrthographicCameraImp;
-import org.lgna.story.implementation.OrthographicCameraMarkerImp;
-import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-import org.lgna.story.implementation.ProgramImp;
-import org.lgna.story.implementation.SceneImp;
-import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
-import org.lgna.story.implementation.TransformableImp;
+import org.lgna.story.implementation.*;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
@@ -437,6 +424,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (field instanceof UserField) {
         UserField uf = (UserField) field;
         setSelectedField(uf.getDeclaringType(), uf);
+        triggerOrthographicCameraChange(expression);
       }
     } else if (expression instanceof MethodInvocation) {
       setSelectedExpression(expression);
@@ -453,6 +441,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     getPropertyPanel().setSelectedInstance(instanceFactory);
   }
 
+  private void triggerOrthographicCameraChange(Expression selectedFieldExpression) {
+    Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(selectedFieldExpression);
+    if (instanceInJava instanceof SThing) {
+        if ((instanceInJava instanceof SCamera) || (instanceInJava instanceof SGround)) {
+          return;
+        }
+        EntityImp implementation = EmployeesOnly.getImplementation((SThing) instanceInJava);
+        updateOrthographicCameraView(implementation);
+    }
+  }
+
   public void setSelectedExpression(Expression expression) {
     if (!this.selectionIsFromMain) {
       this.selectionIsFromMain = true;
@@ -461,6 +460,48 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       }
       this.selectionIsFromMain = false;
     }
+  }
+
+  private void updateOrthographicCameraView(EntityImp targetImplementation) {
+    AxisAlignedBox alignedBox = targetImplementation.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
+    double targetHeight = alignedBox.getHeight();
+    double targetWidth = alignedBox.getWidth();
+    double targetDepth = alignedBox.getDepth();
+    double defaultDistance = 1.0f;
+    AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
+    ClippedZPlane picturePlane = new ClippedZPlane();
+
+    AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
+    topTransform.translation.x = targetTransform.translation.x;
+    topTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? 2 * targetHeight : defaultDistance);
+    topTransform.translation.z = targetTransform.translation.z;
+    topTransform.orientation.up.set(0, 0, 1);
+    topTransform.orientation.right.set(-1, 0, 0);
+    topTransform.orientation.backward.set(0, 1, 0);
+    topOrthoMarkerImp.setLocalTransformation(topTransform);
+    picturePlane.setCenter(0, 0);
+    picturePlane.setHeight(2 * Math.max(targetDepth, targetWidth));
+    topOrthoMarkerImp.setPicturePlane(picturePlane);
+
+    AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
+    sideTransform.translation.x = targetTransform.translation.x + (targetWidth != 0 ? 2 * targetWidth : defaultDistance);
+    sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
+    sideTransform.translation.z = targetTransform.translation.z;
+    sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
+    sideOrthoMarkerImp.setLocalTransformation(sideTransform);
+    picturePlane.setHeight(2 * Math.max(targetDepth, targetHeight));
+    sideOrthoMarkerImp.setPicturePlane(picturePlane);
+
+    AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
+    frontTransform.translation.x = targetTransform.translation.x;
+    frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
+    frontTransform.translation.z = targetTransform.translation.z - (targetDepth != 0 ? 2 * targetDepth : defaultDistance);
+    frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
+    frontOrthoMarkerImp.setLocalTransformation(frontTransform);
+    picturePlane.setHeight(2 * Math.max(targetHeight, targetWidth));
+    frontOrthoMarkerImp.setPicturePlane(picturePlane);
+
+    mainCameraViewTracker.setCameraToSelectedMarker();
   }
 
   @Override
@@ -712,6 +753,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private void handleMainCameraViewSelection(CameraMarkerImp cameraMarker) {
     MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(cameraMarker);
     MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(cameraMarker);
+
+    ArrayList<String> orthographicCams = new ArrayList<>(Arrays.asList("TOP", "SIDE", "FRONT"));
+    if (!orthographicCams.contains(cameraMarker.getName())) {
+      return;
+    }
+    StageIDE ide = StageIDE.getActiveInstance();
+    InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
+    UserField field = getSelectedField();
+    if (field != this.getActiveSceneField()) {
+      instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForSceneField(field));
+      triggerOrthographicCameraChange(instanceFactoryState.getValue().createExpression());
+    }
   }
 
   private void switchToCamera(AbstractCamera camera) {
@@ -887,7 +940,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       this.globalDragAdapter.makeCameraActive(this.sceneCameraImp.getSgCamera());
 
       SceneImp sceneImp = this.getActiveSceneImplementation();
-      //sceneImp.mendSceneGraphIfNecessary();
       //Add and set up the snap grid (this needs to happen before setting the camera)
       sceneImp.getSgComposite().addComponent(this.snapGrid);
       this.snapGrid.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
