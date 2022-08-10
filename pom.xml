@@ -314,11 +314,6 @@
       </dependency>
 
       <dependency>
-        <groupId>uk.co.caprica</groupId>
-        <artifactId>vlcj</artifactId>
-        <version>3.1.0</version>
-      </dependency>
-      <dependency>
         <groupId>com.miglayout</groupId>
         <artifactId>miglayout-swing</artifactId>
         <version>4.2</version>

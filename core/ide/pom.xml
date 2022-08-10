@@ -107,10 +107,6 @@
 
     <!-- External -->
     <dependency>
-      <groupId>uk.co.caprica</groupId>
-      <artifactId>vlcj</artifactId>
-    </dependency>
-    <dependency>
       <groupId>uk.co.mmscomputing</groupId>
       <artifactId>mmsc</artifactId>
     </dependency>
