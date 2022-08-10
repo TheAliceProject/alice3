@@ -22,7 +22,6 @@
     <platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
     <platform.linux-armv6hf.label>linux-armv6hf</platform.linux-armv6hf.label>
 
-    <platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
     <platform.libvlc.label>libvlc</platform.libvlc.label>
     <platform.jogl.label>jogl</platform.jogl.label>
   </properties>
