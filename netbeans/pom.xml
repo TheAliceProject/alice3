@@ -332,10 +332,6 @@
               <resources>
                 <resource>
                   <directory>${project.basedir}/../core/resources/target/distribution/platform</directory>
-                  <excludes>
-                    <exclude>**/ffmpeg/**</exclude>
-                    <exclude>**/libvlc/**</exclude>
-                  </excludes>
                 </resource>
               </resources>
             </configuration>

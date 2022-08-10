@@ -80,7 +80,7 @@
 
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.6.1.0</alice.build.version>
-    <alice.build.prerelease>-rc.2</alice.build.prerelease>
+    <alice.build.prerelease>-rc.3</alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
@@ -313,11 +313,6 @@
         <version>${openhtml.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>uk.co.caprica</groupId>
-        <artifactId>vlcj</artifactId>
-        <version>3.1.0</version>
-      </dependency>
       <dependency>
         <groupId>com.miglayout</groupId>
         <artifactId>miglayout-swing</artifactId>
