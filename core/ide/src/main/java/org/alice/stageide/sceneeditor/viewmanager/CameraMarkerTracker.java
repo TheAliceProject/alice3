@@ -179,8 +179,16 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<View
       startTrackingCamera(this.orthographicCamera, orthoMarker);
       cameraParent.notifyTransformationListeners();
     } else {
+      PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) this.activeMarker;
       sceneEditor.switchToPerspectiveCamera();
-      animateToTargetView();
+      Transformable cameraParent = (Transformable) CameraMarkerTracker.this.perspectiveCamera.getParent();
+      if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
+        animateToTargetView();
+      } else {
+        cameraParent.setTransformation(CameraMarkerTracker.this.activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), CameraMarkerTracker.this.perspectiveCamera.getRoot());
+        startTrackingCamera(this.perspectiveCamera, perspectiveMarker);
+        cameraParent.notifyTransformationListeners();
+      }
     }
   }
 
