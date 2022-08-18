@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.story.CameraMarker;
 
 /**
@@ -57,4 +58,12 @@ public abstract class CameraMarkerImp extends MarkerImp {
   public CameraMarker getAbstraction() {
     return (CameraMarker) super.getAbstraction();
   }
+
+  public void setCameraType(CameraOption cameraOption) {
+    this.cameraType = cameraOption;
+  }
+
+  public CameraOption getCameraType() { return cameraType; }
+
+  private CameraOption cameraType;
 }

@@ -44,23 +44,11 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector3f;
-import edu.cmu.cs.dennisc.scenegraph.Box;
-import edu.cmu.cs.dennisc.scenegraph.Cylinder;
+import edu.cmu.cs.dennisc.math.*;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.LineArray;
-import edu.cmu.cs.dennisc.scenegraph.QuadArray;
-import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.Vertex;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.story.PerspectiveCameraMarker;
 
 import java.util.List;
@@ -307,11 +295,11 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     }
   }
 
-  public void setCameraType(int newCameraType) {
-    this.cameraType = newCameraType;
-  }
+  @Override
+  public void setCameraType(CameraOption cameraOption) { this.cameraType = cameraOption; }
 
-  public int getCameraType() {
+  @Override
+  public CameraOption getCameraType() {
     return cameraType;
   }
 
@@ -342,7 +330,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   private SimpleAppearance sgAppearance;
   private SimpleAppearance[] sgAppearances;
   private List<Visual> sgDetailedComponents;
-  private int cameraType;
+  private CameraOption cameraType;
 
   protected boolean showDetail = false;
 }
