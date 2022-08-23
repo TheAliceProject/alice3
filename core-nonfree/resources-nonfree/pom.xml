@@ -47,7 +47,7 @@
   <parent>
     <groupId>org.alice.nonfree</groupId>
     <artifactId>core-nonfree</artifactId>
-    <version>6.1.0-SNAPSHOT</version>
+    <version>7.0.0</version>
   </parent>
 
   <name>Alice Resources nonfree</name>
