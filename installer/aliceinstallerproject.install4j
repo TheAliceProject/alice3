@@ -45,7 +45,7 @@
       <mountPoint id="23" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-7.0.0-SNAPSHOT.jar" />
+      <fileEntry mountPoint="521" file="../alice-ide/target/alice-ide-7.0.0.jar" />
       <dirEntry mountPoint="521" file="../alice-ide/target/lib" subDirectory="externalDependencies" />
       <fileEntry mountPoint="1295" file="./installerFiles/alice3.desktop.partial" />
       <dirEntry mountPoint="23" file="../core/resources/target/distribution" subDirectory="distribution" />
