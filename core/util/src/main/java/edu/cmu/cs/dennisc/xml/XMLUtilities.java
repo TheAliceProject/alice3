@@ -89,7 +89,6 @@ public class XMLUtilities {
       Transformer s_transformer = s_transformerFactory.newTransformer();
       // for encoding surrogate character, e.g., emojis
       s_transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-      s_transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
       return s_transformer;
     } catch (TransformerConfigurationException tce) {
       throw new RuntimeException(tce);
