@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
-import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.alice.stageide.sceneeditor.View;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.story.implementation.CameraMarkerImp;
@@ -68,7 +68,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 import java.util.Map;
 
-public class CameraMarkerTracker implements PropertyListener, ValueListener<CameraOption> {
+public class CameraMarkerTracker implements PropertyListener, ValueListener<View> {
   private SymmetricPerspectiveCamera perspectiveCamera = null;
   private OrthographicCamera orthographicCamera = null;
   private final Animator animator;
@@ -77,19 +77,19 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private final StorytellingSceneEditor sceneEditor;
   private CameraMarkerImp activeMarker = null;
 
-  private final Map<CameraOption, CameraMarkerImp> mapViewToMarker = Maps.newHashMap();
+  private final Map<View, CameraMarkerImp> mapViewToMarker = Maps.newHashMap();
 
   public CameraMarkerTracker(StorytellingSceneEditor sceneEditor, Animator animator) {
     this.sceneEditor = sceneEditor;
     this.animator = animator;
   }
 
-  public void mapViewToMarker(CameraOption cameraOption, CameraMarkerImp cameraMarker) {
-    this.mapViewToMarker.put(cameraOption, cameraMarker);
+  public void mapViewToMarker(View view, CameraMarkerImp cameraMarker) {
+    this.mapViewToMarker.put(view, cameraMarker);
   }
 
-  public CameraMarkerImp getCameraMarker(CameraOption cameraOption) {
-    return this.mapViewToMarker.get(cameraOption);
+  public CameraMarkerImp getCameraMarker(View view) {
+    return this.mapViewToMarker.get(view);
   }
 
   public void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
@@ -144,7 +144,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   @Override
-  public void valueChanged(ValueEvent<CameraOption> e) {
+  public void valueChanged(ValueEvent<View> e) {
     if ((this.perspectiveCamera == null) || (this.orthographicCamera == null)) {
       return;
     }
@@ -158,11 +158,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  public void startTrackingCameraView(CameraOption cameraOption) {
+  public void startTrackingCameraView(View view) {
     if ((this.perspectiveCamera == null) || (this.orthographicCamera == null)) {
       return;
     }
-    this.activeMarker = this.getCameraMarker(cameraOption);
+    this.activeMarker = this.getCameraMarker(view);
     if (this.activeMarker != null) {
       stopTrackingCamera();
       setCameraToSelectedMarker();
@@ -182,7 +182,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) this.activeMarker;
       sceneEditor.switchToPerspectiveCamera();
       Transformable cameraParent = (Transformable) CameraMarkerTracker.this.perspectiveCamera.getParent();
-      if (perspectiveMarker.getCameraType() == CameraOption.STARTING_CAMERA) {
+      if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
         animateToTargetView();
       } else {
         cameraParent.setTransformation(CameraMarkerTracker.this.activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), CameraMarkerTracker.this.perspectiveCamera.getRoot());

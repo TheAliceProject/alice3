@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.story.OrthographicCameraMarker;
 
 /**
@@ -85,16 +84,7 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
     return this.sgVisuals;
   }
 
-  @Override
-  public void setCameraType(CameraOption cameraOption) { this.cameraType = cameraOption; }
-
-  @Override
-  public CameraOption getCameraType() {
-    return cameraType;
-  }
-
   private final ClippedZPlane picturePlane = new ClippedZPlane();
   private final TexturedAppearance[] sgAppearances = {};
   private final Visual[] sgVisuals = {};
-  private CameraOption cameraType;
 }
