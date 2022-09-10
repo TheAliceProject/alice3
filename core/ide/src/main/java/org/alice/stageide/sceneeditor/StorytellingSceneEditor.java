@@ -323,9 +323,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   };
 
-  private ValueListener<View> mainCameraViewSelectionObserver = new ValueListener<View>() {
+  private ValueListener<CameraOption> mainCameraViewSelectionObserver = new ValueListener<CameraOption>() {
     @Override
-    public void valueChanged(ValueEvent<View> e) {
+    public void valueChanged(ValueEvent<CameraOption> e) {
       StorytellingSceneEditor.this.handleMainCameraViewSelection(mainCameraViewTracker.getCameraMarker(e.getNextValue()));
     }
   };
@@ -351,9 +351,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private PerspectiveCameraMarkerImp startingCameraMarkerImp;
   private PerspectiveCameraMarkerImp layoutSceneMarkerImp;
 
-  private ComboBox<View> mainCameraViewSelector;
+  private ComboBox<CameraOption> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
-  private View savedSceneEditorViewSelection = null;
+  private CameraOption savedSceneEditorViewSelection = null;
 
   public static int STARTING_CAMERA = 0;
   public static int LAYOUT_CAMERA = 1;
@@ -362,7 +362,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private final int DEFAULT_LAYOUT_CAMERA_ANGLE = 40;
 
 
-  private ImmutableDataSingleSelectListState<View> mainCameraMarkerList = ViewListSelectionState.getInstance();
+  private ImmutableDataSingleSelectListState<CameraOption> mainCameraMarkerList = ViewListSelectionState.getInstance();
 
   private boolean selectionIsFromInstanceSelector = false;
   private boolean selectionIsFromMain = false;
@@ -370,7 +370,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   protected SnapGrid snapGrid;
 
   public boolean isStartingCameraView() {
-    return mainCameraViewSelector.getModel().getListSelectionState().getValue() == View.STARTING_CAMERA_VIEW;
+    return mainCameraViewSelector.getModel().getListSelectionState().getValue() == CameraOption.STARTING_CAMERA_VIEW;
   }
 
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
@@ -578,7 +578,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.startingCameraMarkerImp.setDisplayVisuals(true);
     this.startingCameraMarkerImp.setCameraType(STARTING_CAMERA);
     MarkerUtilities.addIconForCameraImp(this.startingCameraMarkerImp, "mainCamera");
-    MarkerUtilities.setViewForCameraImp(this.startingCameraMarkerImp, View.STARTING_CAMERA_VIEW);
+    MarkerUtilities.setViewForCameraImp(this.startingCameraMarkerImp, CameraOption.STARTING_CAMERA_VIEW);
 
     PerspectiveCameraMarker layoutCameraMarker = new PerspectiveCameraMarker();
     layoutCameraMarker.setColorId(Color.LIGHT_BLUE);
@@ -586,13 +586,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.layoutSceneMarkerImp.setDisplayVisuals(true);
     this.layoutSceneMarkerImp.setCameraType(LAYOUT_CAMERA);
     MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
-    MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, View.LAYOUT_SCENE_VIEW);
+    MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, CameraOption.LAYOUT_SCENE_VIEW);
 
     this.orthographicCameraMarkerImps.clear();
     OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
     this.topOrthoMarkerImp = EmployeesOnly.getImplementation(topOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.topOrthoMarkerImp, "top");
-    MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, View.TOP);
+    MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, CameraOption.TOP);
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.y = 10;
     topTransform.translation.z = -10;
@@ -610,7 +610,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
     this.sideOrthoMarkerImp = EmployeesOnly.getImplementation(sideOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.sideOrthoMarkerImp, "side");
-    MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, View.SIDE);
+    MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, CameraOption.SIDE);
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
     sideTransform.translation.x = 10;
     sideTransform.translation.y = 1;
@@ -624,7 +624,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
     this.frontOrthoMarkerImp = EmployeesOnly.getImplementation(frontOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.frontOrthoMarkerImp, "front");
-    MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, View.FRONT);
+    MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, CameraOption.FRONT);
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.z = -10;
     frontTransform.translation.y = 1;
@@ -695,7 +695,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         this.lookingGlassPanel.setSouthComponent(null);
 
         this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getValue();
-        this.mainCameraMarkerList.setValueTransactionlessly(View.STARTING_CAMERA_VIEW);
+        this.mainCameraMarkerList.setValueTransactionlessly(CameraOption.STARTING_CAMERA_VIEW);
       }
       this.mainCameraViewSelector.setVisible(isExpanded);
     }
@@ -870,11 +870,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
     this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
     this.mainCameraViewSelector.setFontSize(15);
-    this.mainCameraViewTracker.mapViewToMarker(View.STARTING_CAMERA_VIEW, this.startingCameraMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.LAYOUT_SCENE_VIEW, this.layoutSceneMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.TOP, this.topOrthoMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.SIDE, this.sideOrthoMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.FRONT, this.frontOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.STARTING_CAMERA_VIEW, this.startingCameraMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.LAYOUT_SCENE_VIEW, this.layoutSceneMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.TOP, this.topOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.SIDE, this.sideOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.FRONT, this.frontOrthoMarkerImp);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewTracker);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewSelectionObserver);
     this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
@@ -962,8 +962,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       // Add orthographic cameras and markers
       sceneImp.getSgComposite().addComponent(this.orthographicCameraImp.getSgCamera().getParent());
       Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
-      for (View view : this.mainCameraMarkerList) {
-        CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker(view);
+      for (CameraOption cameraOption : this.mainCameraMarkerList) {
+        CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker(cameraOption);
         boolean alreadyHasIt = false;
         for (Component c : existingComponents) {
           if (c == marker.getSgComposite()) {
@@ -1073,7 +1073,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     EntityImp fieldImp = getImplementation(field);
     AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
     super.setFieldToState(field, statements);
-    if ((fieldImp == this.sceneCameraImp) && (this.mainCameraMarkerList.getValue() != View.STARTING_CAMERA_VIEW)) {
+    if ((fieldImp == this.sceneCameraImp) && (this.mainCameraMarkerList.getValue() != CameraOption.STARTING_CAMERA_VIEW)) {
       AffineMatrix4x4 revertedTransform = fieldImp.getAbsoluteTransformation();
       this.startingCameraMarkerImp.setTransformation(this.startingCameraMarkerImp.getScene(), revertedTransform);
       this.sceneCameraImp.setTransformation(this.sceneCameraImp.getScene(), originalTransform);

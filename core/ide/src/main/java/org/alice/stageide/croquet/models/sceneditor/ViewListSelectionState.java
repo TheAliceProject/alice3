@@ -43,7 +43,7 @@
 package org.alice.stageide.croquet.models.sceneditor;
 
 import org.alice.ide.ProjectApplication;
-import org.alice.stageide.sceneeditor.View;
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.croquet.EnumConstantState;
 
 import java.util.UUID;
@@ -51,7 +51,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class ViewListSelectionState extends EnumConstantState<View> {
+public class ViewListSelectionState extends EnumConstantState<CameraOption> {
   private static class SingletonHolder {
     private static ViewListSelectionState instance = new ViewListSelectionState();
   }
@@ -61,6 +61,6 @@ public class ViewListSelectionState extends EnumConstantState<View> {
   }
 
   private ViewListSelectionState() {
-    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("5ac32bb0-95ba-43b0-842d-66f824e3ef38"), 0, View.class);
+    super(ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString("5ac32bb0-95ba-43b0-842d-66f824e3ef38"), 0, CameraOption.class);
   }
 }

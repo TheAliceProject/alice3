@@ -46,6 +46,6 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public enum View {
+public enum CameraOption {
   STARTING_CAMERA_VIEW, LAYOUT_SCENE_VIEW, TOP, SIDE, FRONT
 }
