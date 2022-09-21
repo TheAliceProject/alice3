@@ -582,7 +582,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     PerspectiveCameraMarker layoutCameraMarker = new PerspectiveCameraMarker();
     layoutCameraMarker.setColorId(Color.LIGHT_BLUE);
-    this.layoutSceneMarkerImp= EmployeesOnly.getImplementation(layoutCameraMarker);
+    this.layoutSceneMarkerImp = EmployeesOnly.getImplementation(layoutCameraMarker);
     this.layoutSceneMarkerImp.setDisplayVisuals(true);
     this.layoutSceneMarkerImp.setCameraType(LAYOUT_CAMERA);
     MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
