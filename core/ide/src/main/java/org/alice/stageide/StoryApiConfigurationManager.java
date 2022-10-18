@@ -93,6 +93,8 @@ import org.alice.stageide.member.AppearanceProceduresComposite;
 import org.alice.stageide.member.AtmosphereFunctionsComposite;
 import org.alice.stageide.member.AtmosphereProceduresComposite;
 import org.alice.stageide.member.AudioProceduresComposite;
+import org.alice.stageide.member.FieldOfViewFunctionsComposite;
+import org.alice.stageide.member.FieldOfViewProceduresComposite;
 import org.alice.stageide.member.JointFunctionsComposite;
 import org.alice.stageide.member.OrientationProceduresComposite;
 import org.alice.stageide.member.PositionAndOrientationProceduresComposite;
@@ -201,9 +203,9 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/160x120/Camera.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/160x120/VRHand.png")));
 
-    this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
+    this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), FieldOfViewProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 
-    this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(AtmosphereFunctionsComposite.getInstance(), AppearanceFunctionsComposite.getInstance(), SizeFunctionsComposite.getInstance(), PromptUserFunctionsComposite.getInstance());
+    this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(AtmosphereFunctionsComposite.getInstance(), AppearanceFunctionsComposite.getInstance(), SizeFunctionsComposite.getInstance(), PromptUserFunctionsComposite.getInstance(), FieldOfViewFunctionsComposite.getInstance());
 
     this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList(AddListenerProceduresComposite.getInstance());
 

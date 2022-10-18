@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.AngleInRevolutions;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -92,4 +93,44 @@ public class SCamera extends SMovableTurnable implements MutableRider {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
     this.implementation.animateSetTransformationToAGoodVantagePointOf(entity.getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
   }
+  @MethodTemplate()
+  public void setFarClippingPlaneDistance(Number distance) {
+    getImplementation().getSgCamera().farClippingPlaneDistance.setValue(distance.doubleValue());
+  }
+
+  @MethodTemplate()
+  public Double getFarClippingPlaneDistance() {
+    return getImplementation().getSgCamera().farClippingPlaneDistance.getValue();
+  }
+
+  @MethodTemplate()
+  public void setNearClippingPlaneDistance(Number distance) {
+    getImplementation().getSgCamera().nearClippingPlaneDistance.setValue(distance.doubleValue());
+  }
+
+  @MethodTemplate()
+  public Double getNearClippingPlaneDistance() {
+    return getImplementation().getSgCamera().nearClippingPlaneDistance.getValue();
+  }
+
+  @MethodTemplate()
+  public void setHorizontalViewingAngle(Number angle) {
+    getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
+  }
+
+  @MethodTemplate()
+  public Double getHorizontalViewingAngle() {
+    return getImplementation().getSgCamera().horizontalViewingAngle.getValue().getAsRevolutions();
+  }
+
+  @MethodTemplate()
+  public void setVerticalViewingAngle(Number angle) {
+    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
+  }
+
+  @MethodTemplate()
+  public Double getVerticalViewingAngle() {
+    return getImplementation().getSgCamera().verticalViewingAngle.getValue().getAsRevolutions();
+  }
+
 }
