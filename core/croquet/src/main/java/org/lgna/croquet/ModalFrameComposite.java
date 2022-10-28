@@ -79,7 +79,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
     return text;
   }
 
-  protected void handlePreShowWindow(Frame frame) {
+  protected void handlePreShowWindow(Frame parentFrame, Frame frame) {
   }
 
   protected void handlePostHideWindow(Frame frame) {
@@ -132,7 +132,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
     frame.getAwtComponent().setContentPane(view.getAwtComponent());
 
     frame.setTitle(this.getModalFrameTitle());
-    this.handlePreShowWindow(frame);
+    this.handlePreShowWindow(documentFrame.getFrame(), frame);
     frame.setVisible(true);
 
     //    dialogOwner.handlePreShowDialog( userActivity );

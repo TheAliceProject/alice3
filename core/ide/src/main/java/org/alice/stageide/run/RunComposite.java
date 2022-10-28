@@ -91,8 +91,6 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
   private transient RunProgramContext programContext;
   public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
-  private static final int DEFAULT_WIDTH = 640;
-  private static final int DEFAULT_HEIGHT = (int) (DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO);
   private Point location = null;
   private Dimension size = null;
 
@@ -181,24 +179,21 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
   }
 
   @Override
-  protected void handlePreShowWindow(Frame frame) {
-    super.handlePreShowWindow(frame);
+  protected void handlePreShowWindow(Frame parentFrame, Frame frame) {
+    super.handlePreShowWindow(parentFrame, frame);
     this.startProgram();
     if (this.size != null) {
       frame.setSize(this.size);
     } else {
-      this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+      int startingWidth = (int) (parentFrame.getWidth() * 0.9);
+      int startingHeight = (int) (startingWidth / WIDTH_TO_HEIGHT_RATIO);
+      this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(startingWidth, startingHeight));
       frame.pack();
     }
     if (this.location != null) {
       frame.setLocation(this.location);
     } else {
-      Frame documentFrame = IDE.getActiveInstance().getDocumentFrame().getFrame();
-      if (documentFrame != null) {
-        frame.setLocationRelativeTo(documentFrame);
-      } else {
-        frame.setLocationByPlatform(true);
-      }
+      frame.setLocationRelativeTo(parentFrame);
     }
   }
 
