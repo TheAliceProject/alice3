@@ -57,7 +57,7 @@ import java.util.UUID;
 public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> implements OperationOwningComposite<V> {
   public ModalFrameComposite(UUID id, Group launchOperationGroup) {
     super(id);
-    this.imp = new LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>(this, launchOperationGroup);
+    this.imp = new LaunchOperationOwningCompositeImp<>(this, launchOperationGroup);
   }
 
   @Override
@@ -134,27 +134,6 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
     frame.setTitle(this.getModalFrameTitle());
     this.handlePreShowWindow(documentFrame.getFrame(), frame);
     frame.setVisible(true);
-
-    //    dialogOwner.handlePreShowDialog( userActivity );
-    //    //application.pushWindow( dialog );
-    //    dialog.setVisible( true );
-    //
-    //    if( isModal ) {
-    //      dialogOwner.handlePostHideDialog( userActivity );
-    //      dialog.removeWindowListener( dialogWindowListener );
-    //      dialogOwner.releaseView( userActivity, view );
-    //      dialog.getAwtComponent().dispose();
-    //    } else {
-    //      edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
-    //    }
-    //  } finally {
-    //    if( isModal ) {
-    //      //application.popWindow();
-    //      dialogOwner.handleFinally( userActivity, dialog );
-    //    } else {
-    //      edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
-    //    }
-    //  }
   }
 
   protected abstract String getName();
@@ -162,9 +141,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
   protected String getModalFrameTitle() {
     this.initializeIfNecessary();
     String rv = this.title;
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = this.getName();
       if (rv != null) {
         rv = rv.replaceAll("<[a-z]*>", "");

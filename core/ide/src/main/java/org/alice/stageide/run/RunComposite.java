@@ -73,7 +73,7 @@ import java.util.UUID;
  */
 public class RunComposite extends SimpleModalFrameComposite<RunView> {
   private static class SingletonHolder {
-    private static RunComposite instance = new RunComposite();
+    private static final RunComposite instance = new RunComposite();
   }
 
   public static RunComposite getInstance() {
