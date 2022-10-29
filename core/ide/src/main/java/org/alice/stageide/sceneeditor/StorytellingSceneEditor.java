@@ -154,7 +154,6 @@ import org.lgna.story.resources.ModelResource;
  *
  */
 public class StorytellingSceneEditor extends AbstractSceneEditor implements RenderTargetListener {
-
   private class SceneEditorDropReceptor extends AbstractDropReceptor {
     @Override
     public boolean isPotentiallyAcceptingOf(DragModel dragModel) {
@@ -324,6 +323,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   };
 
+  private ValueListener<CameraOption> mainCameraViewSelectionObserver = new ValueListener<CameraOption>() {
+    @Override
+    public void valueChanged(ValueEvent<CameraOption> e) {
+      StorytellingSceneEditor.this.handleMainCameraViewSelection(mainCameraViewTracker.getCameraMarker(e.getNextValue()));
+    }
+  };
+
   private boolean isInitialized = false;
 
   private ClockBasedAnimator animator = new ClockBasedAnimator();
@@ -342,21 +348,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private OrthographicCameraMarkerImp frontOrthoMarkerImp = null;
   private OrthographicCameraMarkerImp sideOrthoMarkerImp = null;
   private List<OrthographicCameraMarkerImp> orthographicCameraMarkerImps = new LinkedList<OrthographicCameraMarkerImp>();
-  private PerspectiveCameraMarkerImp openingSceneMarkerImp;
-  private PerspectiveCameraMarkerImp sceneViewMarkerImp;
+  private PerspectiveCameraMarkerImp startingCameraMarkerImp;
+  private PerspectiveCameraMarkerImp layoutSceneMarkerImp;
 
-  private ComboBox<View> mainCameraViewSelector;
+  private ComboBox<CameraOption> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
-  private View savedSceneEditorViewSelection = null;
+  private CameraOption savedSceneEditorViewSelection = null;
 
-  private ValueListener<View> mainCameraViewSelectionObserver = new ValueListener<View>() {
-    @Override
-    public void valueChanged(ValueEvent<View> e) {
-      StorytellingSceneEditor.this.handleMainCameraViewSelection(mainCameraViewTracker.getCameraMarker(e.getNextValue()));
-    }
-  };
+  public static int STARTING_CAMERA = 0;
+  public static int LAYOUT_CAMERA = 1;
+  private final double DEFAULT_LAYOUT_CAMERA_Y_OFFSET = 12.0;
+  private final double DEFAULT_LAYOUT_CAMERA_Z_OFFSET = 10.0;
+  private final int DEFAULT_LAYOUT_CAMERA_ANGLE = 40;
 
-  private ImmutableDataSingleSelectListState<View> mainCameraMarkerList = ViewListSelectionState.getInstance();
+
+  private ImmutableDataSingleSelectListState<CameraOption> mainCameraMarkerList = ViewListSelectionState.getInstance();
 
   private boolean selectionIsFromInstanceSelector = false;
   private boolean selectionIsFromMain = false;
@@ -364,11 +370,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   protected SnapGrid snapGrid;
 
   public boolean isStartingCameraView() {
-    return mainCameraViewSelector.getModel().getListSelectionState().getValue() == View.STARTING_CAMERA_VIEW;
+    return mainCameraViewSelector.getModel().getListSelectionState().getValue() == CameraOption.STARTING_CAMERA_VIEW;
   }
 
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
-    openingSceneMarkerImp.setLocalTransformation(transform);
+    startingCameraMarkerImp.setLocalTransformation(transform);
   }
 
   public static class SceneEditorProgramImp extends ProgramImp {
@@ -424,7 +430,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (field instanceof UserField) {
         UserField uf = (UserField) field;
         setSelectedField(uf.getDeclaringType(), uf);
-        triggerOrthographicCameraChange(expression);
+        triggerCameraChange(expression);
       }
     } else if (expression instanceof MethodInvocation) {
       setSelectedExpression(expression);
@@ -441,14 +447,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     getPropertyPanel().setSelectedInstance(instanceFactory);
   }
 
-  private void triggerOrthographicCameraChange(Expression selectedFieldExpression) {
+  private void triggerCameraChange(Expression selectedFieldExpression) {
     Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(selectedFieldExpression);
     if (instanceInJava instanceof SThing) {
-        if ((instanceInJava instanceof SCamera) || (instanceInJava instanceof SGround)) {
-          return;
-        }
-        EntityImp implementation = EmployeesOnly.getImplementation((SThing) instanceInJava);
-        updateOrthographicCameraView(implementation);
+      if ((instanceInJava instanceof SCamera) || (instanceInJava instanceof SGround)) {
+        return;
+      }
+      EntityImp implementation = EmployeesOnly.getImplementation((SThing) instanceInJava);
+      updateCameraView(implementation);
     }
   }
 
@@ -462,7 +468,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  private void updateOrthographicCameraView(EntityImp targetImplementation) {
+  private void updateCameraView(EntityImp targetImplementation) {
     AxisAlignedBox alignedBox = targetImplementation.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
     double targetHeight = alignedBox.getHeight();
     double targetWidth = alignedBox.getWidth();
@@ -471,6 +477,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
     ClippedZPlane picturePlane = new ClippedZPlane();
 
+    // Update layout camera marker
+    AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
+    layoutTransform.translation.x = targetTransform.translation.x;
+    layoutTransform.translation.y = targetTransform.translation.y + DEFAULT_LAYOUT_CAMERA_Y_OFFSET;
+    layoutTransform.translation.z = targetTransform.translation.z - DEFAULT_LAYOUT_CAMERA_Z_OFFSET;
+    layoutTransform.orientation.up.set(0, 0, 1);
+    layoutTransform.orientation.right.set(-1, 0, 0);
+    layoutTransform.orientation.backward.set(0, 1, 0);
+    layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
+    layoutSceneMarkerImp.setLocalTransformation(layoutTransform);
+
+    // Update Orthographic camera marker
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.x = targetTransform.translation.x;
     topTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? 2 * targetHeight : defaultDistance);
@@ -501,6 +519,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     picturePlane.setHeight(2 * Math.max(targetHeight, targetWidth));
     frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
+    // Update camera to the latest markers
     mainCameraViewTracker.setCameraToSelectedMarker();
   }
 
@@ -555,23 +574,25 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private void initializeCameraMarkers() {
     PerspectiveCameraMarker openingSceneMarker = new PerspectiveCameraMarker();
     openingSceneMarker.setColorId(Color.DARK_GRAY);
-    this.openingSceneMarkerImp = EmployeesOnly.getImplementation(openingSceneMarker);
-    this.openingSceneMarkerImp.setDisplayVisuals(true);
-    MarkerUtilities.addIconForCameraImp(this.openingSceneMarkerImp, "mainCamera");
-    MarkerUtilities.setViewForCameraImp(this.openingSceneMarkerImp, View.STARTING_CAMERA_VIEW);
+    this.startingCameraMarkerImp = EmployeesOnly.getImplementation(openingSceneMarker);
+    this.startingCameraMarkerImp.setDisplayVisuals(true);
+    this.startingCameraMarkerImp.setCameraType(STARTING_CAMERA);
+    MarkerUtilities.addIconForCameraImp(this.startingCameraMarkerImp, "mainCamera");
+    MarkerUtilities.setViewForCameraImp(this.startingCameraMarkerImp, CameraOption.STARTING_CAMERA_VIEW);
 
-    PerspectiveCameraMarker sceneViewMarker = new PerspectiveCameraMarker();
-    sceneViewMarker.setColorId(Color.LIGHT_BLUE);
-    this.sceneViewMarkerImp = EmployeesOnly.getImplementation(sceneViewMarker);
-    this.sceneViewMarkerImp.setDisplayVisuals(true);
-    MarkerUtilities.addIconForCameraImp(this.sceneViewMarkerImp, "sceneEditorCamera");
-    MarkerUtilities.setViewForCameraImp(this.sceneViewMarkerImp, View.LAYOUT_SCENE_VIEW);
+    PerspectiveCameraMarker layoutCameraMarker = new PerspectiveCameraMarker();
+    layoutCameraMarker.setColorId(Color.LIGHT_BLUE);
+    this.layoutSceneMarkerImp = EmployeesOnly.getImplementation(layoutCameraMarker);
+    this.layoutSceneMarkerImp.setDisplayVisuals(true);
+    this.layoutSceneMarkerImp.setCameraType(LAYOUT_CAMERA);
+    MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
+    MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, CameraOption.LAYOUT_SCENE_VIEW);
 
     this.orthographicCameraMarkerImps.clear();
     OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
     this.topOrthoMarkerImp = EmployeesOnly.getImplementation(topOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.topOrthoMarkerImp, "top");
-    MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, View.TOP);
+    MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, CameraOption.TOP);
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.y = 10;
     topTransform.translation.z = -10;
@@ -589,7 +610,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
     this.sideOrthoMarkerImp = EmployeesOnly.getImplementation(sideOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.sideOrthoMarkerImp, "side");
-    MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, View.SIDE);
+    MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, CameraOption.SIDE);
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
     sideTransform.translation.x = 10;
     sideTransform.translation.y = 1;
@@ -603,7 +624,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
     this.frontOrthoMarkerImp = EmployeesOnly.getImplementation(frontOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.frontOrthoMarkerImp, "front");
-    MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, View.FRONT);
+    MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, CameraOption.FRONT);
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.z = -10;
     frontTransform.translation.y = 1;
@@ -614,8 +635,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
     orthographicCameraMarkerImps.add(this.frontOrthoMarkerImp);
 
-    this.openingSceneMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.openingSceneMarkerImp));
-    this.sceneViewMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.sceneViewMarkerImp));
+    this.startingCameraMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.startingCameraMarkerImp));
+    this.layoutSceneMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.layoutSceneMarkerImp));
     this.topOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.topOrthoMarkerImp));
     this.sideOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.sideOrthoMarkerImp));
     this.frontOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.frontOrthoMarkerImp));
@@ -674,7 +695,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         this.lookingGlassPanel.setSouthComponent(null);
 
         this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getValue();
-        this.mainCameraMarkerList.setValueTransactionlessly(View.STARTING_CAMERA_VIEW);
+        this.mainCameraMarkerList.setValueTransactionlessly(CameraOption.STARTING_CAMERA_VIEW);
       }
       this.mainCameraViewSelector.setVisible(isExpanded);
     }
@@ -720,7 +741,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         } else {
           this.setSelectedField(field.getDeclaringType(), field);
         }
-      } else if (imp == this.openingSceneMarkerImp) {
+      } else if (imp == this.startingCameraMarkerImp) {
         this.setSelectedField(this.getActiveSceneType(), this.getFieldForInstanceInJavaVM(this.sceneCameraImp.getAbstraction()));
       }
     } else {
@@ -754,16 +775,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(cameraMarker);
     MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(cameraMarker);
 
-    ArrayList<String> orthographicCams = new ArrayList<>(Arrays.asList("TOP", "SIDE", "FRONT"));
-    if (!orthographicCams.contains(cameraMarker.getName())) {
-      return;
-    }
     StageIDE ide = StageIDE.getActiveInstance();
     InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
     UserField field = getSelectedField();
     if (field != this.getActiveSceneField()) {
       instanceFactoryState.setValueTransactionlessly(ide.getInstanceFactoryForSceneField(field));
-      triggerOrthographicCameraChange(instanceFactoryState.getValue().createExpression());
     }
   }
 
@@ -817,12 +833,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     //todo: tool tip text
     //this.expandButton.getAwtComponent().setText( null );
     this.expandButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-
     this.contractButton = docFrame.getSetToCodePerspectiveOperation().createButton();
     this.contractButton.setClobberIcon(CONTRACT_ICON);
     this.contractButton.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
     this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
-
     this.orthographicCameraImp = new OrthographicCameraImp();
     this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue(.01d);
 
@@ -853,21 +867,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
 
     this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-
     this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
     this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
     this.mainCameraViewSelector.setFontSize(15);
-    this.mainCameraViewTracker.mapViewToMarker(View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.TOP, this.topOrthoMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.SIDE, this.sideOrthoMarkerImp);
-    this.mainCameraViewTracker.mapViewToMarker(View.FRONT, this.frontOrthoMarkerImp);
-
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.STARTING_CAMERA_VIEW, this.startingCameraMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.LAYOUT_SCENE_VIEW, this.layoutSceneMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.TOP, this.topOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.SIDE, this.sideOrthoMarkerImp);
+    this.mainCameraViewTracker.mapViewToMarker(CameraOption.FRONT, this.frontOrthoMarkerImp);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewTracker);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewSelectionObserver);
-
     this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
-
     this.isInitialized = true;
   }
 
@@ -896,7 +906,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       } else if (field.getValueType().isAssignableTo(SModel.class)) {
         SModel model = this.getInstanceInJavaVMForField(field, SModel.class);
         ModelImp modelImp = EmployeesOnly.getImplementation(model);
-        //        modelImp.opacity.setValue( 0.25f );
         modelImp.showVisualization();
       }
     }
@@ -945,17 +954,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       this.snapGrid.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
       this.snapGrid.setShowing(SnapState.getInstance().shouldShowSnapGrid());
 
-      //Initialize stuff that needs a camera
+      // Initialize stuff that needs a camera
       this.setCameras(this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera());
       MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(this.sceneCameraImp);
       MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(this.sceneCameraImp);
 
-      //Add the orthographic camera to this scene
+      // Add orthographic cameras and markers
       sceneImp.getSgComposite().addComponent(this.orthographicCameraImp.getSgCamera().getParent());
-      //Add the orthographic markers
       Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
-      for (View view : this.mainCameraMarkerList) {
-        CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker(view);
+      for (CameraOption cameraOption : this.mainCameraMarkerList) {
+        CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker(cameraOption);
         boolean alreadyHasIt = false;
         for (Component c : existingComponents) {
           if (c == marker.getSgComposite()) {
@@ -969,30 +977,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       }
 
       AffineMatrix4x4 openingViewTransform = this.sceneCameraImp.getAbsoluteTransformation();
-      this.openingSceneMarkerImp.setLocalTransformation(openingViewTransform);
+      this.startingCameraMarkerImp.setLocalTransformation(openingViewTransform);
 
-      AffineMatrix4x4 sceneEditorViewTransform = new AffineMatrix4x4(openingViewTransform);
-      sceneEditorViewTransform.applyTranslationAlongYAxis(12.0);
-      sceneEditorViewTransform.applyTranslationAlongZAxis(10.0);
-      sceneEditorViewTransform.applyRotationAboutXAxis(new AngleInDegrees(-40));
-      this.sceneViewMarkerImp.setLocalTransformation(sceneEditorViewTransform);
-
+      AffineMatrix4x4 layoutTransform = new AffineMatrix4x4(openingViewTransform);
+      layoutTransform.applyTranslationAlongYAxis(DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
+      layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
+      layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
+      this.layoutSceneMarkerImp.setLocalTransformation(layoutTransform);
       this.mainCameraViewTracker.startTrackingCameraView(this.mainCameraMarkerList.getValue());
 
-      //TODO: do we need to do anything to handle marker selection on scene change?
-      //Yes, we need to clear the selection on the markers so that no marker is selected on load and so no marker selection is carried over from the previous world
       this.setSelectedCameraMarker(null);
       this.setSelectedObjectMarker(null);
-      //      MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField( null );
-      //      MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField( null );
-
-      //      SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
-      //      SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
-      //      ManagedCameraMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
-      //      ManagedObjectMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
 
       for (AbstractField field : sceneField.getValueType().getDeclaredFields()) {
-        //Turn markers on so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene. we have to manually make them visible to see them in the scene editor)
+        // Turn markers on, so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene.
+        // we have to manually make them visible to see them in the scene editor)
         if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
           MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
@@ -1006,7 +1005,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
           }
         }
       }
-
       EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(1.0);
     }
   }
@@ -1075,9 +1073,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     EntityImp fieldImp = getImplementation(field);
     AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
     super.setFieldToState(field, statements);
-    if ((fieldImp == this.sceneCameraImp) && (this.mainCameraMarkerList.getValue() != View.STARTING_CAMERA_VIEW)) {
+    if ((fieldImp == this.sceneCameraImp) && (this.mainCameraMarkerList.getValue() != CameraOption.STARTING_CAMERA_VIEW)) {
       AffineMatrix4x4 revertedTransform = fieldImp.getAbsoluteTransformation();
-      this.openingSceneMarkerImp.setTransformation(this.openingSceneMarkerImp.getScene(), revertedTransform);
+      this.startingCameraMarkerImp.setTransformation(this.startingCameraMarkerImp.getScene(), revertedTransform);
       this.sceneCameraImp.setTransformation(this.sceneCameraImp.getScene(), originalTransform);
     }
   }
@@ -1090,7 +1088,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
     AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
     if (this.sceneCameraImp.getVehicle() != null) {
-      this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+      this.sceneCameraImp.setTransformation(this.startingCameraMarkerImp);
     } else {
       Logger.severe(this.sceneCameraImp);
     }
@@ -1124,7 +1122,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public void generateCodeForSetUp(StatementListProperty bodyStatementsProperty) {
     //Set the camera to have the point of view of the opening scene marker
     AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
-    this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+    this.sceneCameraImp.setTransformation(this.startingCameraMarkerImp);
 
     AbstractField sceneField = this.getActiveSceneField();
     this.fillInAutomaticSetUpMethod(bodyStatementsProperty, true, sceneField, false);
@@ -1160,7 +1158,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     Statement stateCodeStatement = this.getCurrentStateCodeForField(fieldToCopy);
     stateCodeStatement = replaceReferencesInExpression(fieldToCopy, newField, stateCodeStatement);
 
-    //Remove the setVehicle and setTransform statements from the setup code so we can replace them with custom ones based on the fieldToCopy's vehicle and the initial transform
+    //Remove the setVehicle and setTransform statements from the setup code, so we can replace them with custom ones based on the fieldToCopy's vehicle and the initial transform
     List<BlockStatement> blockStatements = new LinkedList<BlockStatement>();
     if (stateCodeStatement instanceof BlockStatement) {
       blockStatements.add((BlockStatement) stateCodeStatement);
@@ -1400,7 +1398,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   public void displayChanged(RenderTargetDisplayChangeEvent e) {
   }
-
   // ######### End implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
 
   public void setHandleVisibilityForObject(TransformableImp imp, boolean b) {

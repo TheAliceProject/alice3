@@ -44,7 +44,7 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Color;
 
-import org.alice.stageide.sceneeditor.View;
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
@@ -58,7 +58,7 @@ import javax.swing.border.Border;
  * @author dculyba
  *
  */
-public class CameraViewCellRenderer extends ListCellRenderer<View> {
+public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
 
   private final Border separatorBelowBorder = BorderFactory.createEmptyBorder(2, 2, 8, 0);
   private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 0);
@@ -70,9 +70,9 @@ public class CameraViewCellRenderer extends ListCellRenderer<View> {
   }
 
   @Override
-  protected JLabel getListCellRendererComponent(JLabel rv, JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
-    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(view);
-    rv.setText(MarkerUtilities.getNameForView(view));
+  protected JLabel getListCellRendererComponent(JLabel rv, JList list, CameraOption cameraOption, int index, boolean isSelected, boolean cellHasFocus) {
+    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(cameraOption);
+    rv.setText(MarkerUtilities.getNameForView(cameraOption));
     if (index == 0) {
       rv.setBorder(separatorBelowBorder);
     } else {
