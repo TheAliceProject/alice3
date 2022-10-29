@@ -2588,6 +2588,62 @@
           "entity",
           "details"
         ]
+      },
+      {
+        "name": "getFarClippingPlaneDistance",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNearClippingPlaneDistance",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHorizontalViewingAngle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getVerticalViewingAngle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFarClippingPlaneDistance",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "distance"
+        ]
+      },
+      {
+        "name": "setNearClippingPlaneDistance",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "distance"
+        ]
+      },
+      {
+        "name": "setHorizontalViewingAngle",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "angle"
+        ]
+      },
+      {
+        "name": "setVerticalViewingAngle",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "angle"
+        ]
       }
     ]
   },
