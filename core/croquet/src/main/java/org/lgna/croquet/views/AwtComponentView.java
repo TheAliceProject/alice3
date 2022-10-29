@@ -371,11 +371,11 @@ public abstract class AwtComponentView<J extends Component> extends ScreenElemen
   }
 
   public boolean isShowing() {
-    return this.getAwtComponent().isShowing();
+    return awtComponent != null && this.getAwtComponent().isShowing();
   }
 
   public boolean isVisible() {
-    return this.getAwtComponent().isVisible();
+    return awtComponent != null && this.getAwtComponent().isVisible();
   }
 
   public void setVisible(boolean isVisible) {
