@@ -151,7 +151,6 @@ import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
- *
  */
 public class StorytellingSceneEditor extends AbstractSceneEditor implements RenderTargetListener {
   private class SceneEditorDropReceptor extends AbstractDropReceptor {
@@ -359,6 +358,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   public static int LAYOUT_CAMERA = 1;
   private final double DEFAULT_LAYOUT_CAMERA_Y_OFFSET = 12.0;
   private final double DEFAULT_LAYOUT_CAMERA_Z_OFFSET = 10.0;
+  private final double DEFAULT_TOP_CAMERA_Y_OFFSET = 10.0;
+  private final double DEFAULT_SIDE_CAMERA_X_OFFSET = 10.0;
+  private final double DEFAULT_FRONT_CAMERA_Z_OFFSET = 10.0;
   private final int DEFAULT_LAYOUT_CAMERA_ANGLE = 40;
 
 
@@ -468,20 +470,27 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
+  private double clampValue(double min, double max, double val) {
+    return Math.min(max, Math.max(min, val));
+  }
+
   private void updateCameraView(EntityImp targetImplementation) {
     AxisAlignedBox alignedBox = targetImplementation.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
     double targetHeight = alignedBox.getHeight();
     double targetWidth = alignedBox.getWidth();
     double targetDepth = alignedBox.getDepth();
-    double defaultDistance = 1.0f;
     AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
     ClippedZPlane picturePlane = new ClippedZPlane();
 
     // Update layout camera marker
     AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
+    double CAMERA_CLAMP_MAX = 100.0;
+    double CAMERA_CLAMP_MIN = 2.0;
+    double PICTURE_CLAMP_MAX = 100.0;
+    double PICTURE_CLAMP_MIN = 1.0;
     layoutTransform.translation.x = targetTransform.translation.x;
-    layoutTransform.translation.y = targetTransform.translation.y + DEFAULT_LAYOUT_CAMERA_Y_OFFSET;
-    layoutTransform.translation.z = targetTransform.translation.z - DEFAULT_LAYOUT_CAMERA_Z_OFFSET;
+    layoutTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? clampValue(CAMERA_CLAMP_MIN, CAMERA_CLAMP_MAX, targetHeight * DEFAULT_LAYOUT_CAMERA_Y_OFFSET) : DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
+    layoutTransform.translation.z = targetTransform.translation.z - (targetHeight != 0 ? clampValue(CAMERA_CLAMP_MIN, CAMERA_CLAMP_MAX, targetHeight * DEFAULT_LAYOUT_CAMERA_Z_OFFSET) : DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
     layoutTransform.orientation.up.set(0, 0, 1);
     layoutTransform.orientation.right.set(-1, 0, 0);
     layoutTransform.orientation.backward.set(0, 1, 0);
@@ -491,32 +500,32 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     // Update Orthographic camera marker
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.x = targetTransform.translation.x;
-    topTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? 2 * targetHeight : defaultDistance);
+    topTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? clampValue(CAMERA_CLAMP_MIN, CAMERA_CLAMP_MAX, targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
     topTransform.translation.z = targetTransform.translation.z;
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
     topOrthoMarkerImp.setLocalTransformation(topTransform);
     picturePlane.setCenter(0, 0);
-    picturePlane.setHeight(2 * Math.max(targetDepth, targetWidth));
+    picturePlane.setHeight(clampValue(PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX, 4 * Math.max(targetDepth, targetWidth)));
     topOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-    sideTransform.translation.x = targetTransform.translation.x + (targetWidth != 0 ? 2 * targetWidth : defaultDistance);
+    sideTransform.translation.x = targetTransform.translation.x + (targetWidth != 0 ? clampValue(CAMERA_CLAMP_MIN, CAMERA_CLAMP_MAX, targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET);
     sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
     sideTransform.translation.z = targetTransform.translation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     sideOrthoMarkerImp.setLocalTransformation(sideTransform);
-    picturePlane.setHeight(2 * Math.max(targetDepth, targetHeight));
+    picturePlane.setHeight(clampValue(PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX, 4 * Math.max(targetDepth, targetHeight)));
     sideOrthoMarkerImp.setPicturePlane(picturePlane);
 
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.x = targetTransform.translation.x;
     frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
-    frontTransform.translation.z = targetTransform.translation.z - (targetDepth != 0 ? 2 * targetDepth : defaultDistance);
+    frontTransform.translation.z = targetTransform.translation.z - (targetDepth != 0 ? clampValue(CAMERA_CLAMP_MIN, CAMERA_CLAMP_MAX, targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET);
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     frontOrthoMarkerImp.setLocalTransformation(frontTransform);
-    picturePlane.setHeight(2 * Math.max(targetHeight, targetWidth));
+    picturePlane.setHeight(clampValue(PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX, 4 * Math.max(targetHeight, targetWidth)));
     frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     // Update camera to the latest markers
@@ -567,8 +576,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private boolean isSelectableType(AbstractType<?, ?, ?> valueType) {
     return !valueType.isAssignableFrom(SThingMarker.class)
-        && !valueType.isAssignableFrom(SCameraMarker.class)
-        && !valueType.isAssignableFrom(SVRHand.class);
+            && !valueType.isAssignableFrom(SCameraMarker.class)
+            && !valueType.isAssignableFrom(SVRHand.class);
   }
 
   private void initializeCameraMarkers() {
@@ -785,7 +794,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private void switchToCamera(AbstractCamera camera) {
     if (onscreenRenderTarget.getSgCameraCount() != 1
-        || onscreenRenderTarget.getSgCameraAt(0) != camera) {
+            || onscreenRenderTarget.getSgCameraAt(0) != camera) {
       onscreenRenderTarget.clearSgCameras();
       onscreenRenderTarget.addSgCamera(camera);
     }
@@ -1269,7 +1278,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private boolean doesSetVehicleImplyVehicle(MethodInvocation setVehicleCall, UserField vehicle) {
     ArrayList<SimpleArgument> args = setVehicleCall.requiredArguments.getValue();
-    if (args.size() == 1  && setVehicleCall.expression.getValue() instanceof FieldAccess) {
+    if (args.size() == 1 && setVehicleCall.expression.getValue() instanceof FieldAccess) {
       Expression vehicleExpr = args.get(0).expression.getValue();
       return isDirectRider(vehicle, vehicleExpr) || isJointRider(vehicle, vehicleExpr);
     }
@@ -1294,7 +1303,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   public Statement[] getDoStatementsForRemoveField(UserField field, Map<AbstractField, Statement> riders) {
     List<Statement> doStatements = Lists.newLinkedList();
-    for (AbstractField rider: riders.keySet()) {
+    for (AbstractField rider : riders.keySet()) {
       doStatements.add(SetUpMethodGenerator.createSetVehicleSceneStatement(rider));
     }
     doStatements.add(SetUpMethodGenerator.createSetVehicleNullStatement(field));
