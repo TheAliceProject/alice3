@@ -50,6 +50,7 @@ import org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane;
 import org.alice.ide.issue.swing.views.CaughtExceptionPane;
 import org.alice.ide.issue.swing.views.CaughtGlExceptionPane;
 import org.alice.stageide.run.RunComposite;
+import org.alice.stageide.run.views.RunView;
 import org.lgna.common.LgnaRuntimeException;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.simple.SimpleApplication;
@@ -180,8 +181,9 @@ public class DefaultExceptionHandler extends ExceptionHandler {
   private Component findOwner() {
     Application<?> application = Application.getActiveInstance();
     if (application != null) {
-      if (RunComposite.getInstance().getView().isVisible()) {
-        return RunComposite.getInstance().getView().getAwtComponent();
+      RunView runView = RunComposite.getInstance().getView();
+      if (runView.isVisible()) {
+        return runView.getAwtComponent();
       } else {
         Frame frame = application.getDocumentFrame().getFrame();
         if (frame != null) {

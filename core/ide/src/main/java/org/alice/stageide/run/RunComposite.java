@@ -91,6 +91,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
   private transient RunProgramContext programContext;
   public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
+  private static final double IDE_WIDTH_TO_RUN_WIDTH_RATIO = 0.9;
   private Point location = null;
   private Dimension size = null;
 
@@ -185,7 +186,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     if (this.size != null) {
       frame.setSize(this.size);
     } else {
-      int startingWidth = (int) (parentFrame.getWidth() * 0.9);
+      int startingWidth = (int) (parentFrame.getWidth() * IDE_WIDTH_TO_RUN_WIDTH_RATIO);
       int startingHeight = (int) (startingWidth / WIDTH_TO_HEIGHT_RATIO);
       this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize(new Dimension(startingWidth, startingHeight));
       frame.pack();
