@@ -172,6 +172,10 @@ public class Encoder extends SourceCodeGenerator {
     amount.put("amount", "new Angle(revolutions: ");
     methodsWithWrappedArgs.put("roll", amount);
     methodsWithWrappedArgs.put("turn", amount);
+    Map<String, String> angle = new HashMap<>();
+    angle.put("angle", "new Angle(revolutions: ");
+    methodsWithWrappedArgs.put("setHorizontalViewingAngle", angle);
+    methodsWithWrappedArgs.put("setVerticalViewingAngle", angle);
     Map<String, String> density = new HashMap<>();
     density.put("density", "new Portion(portion: ");
     methodsWithWrappedArgs.put("setFogDensity", density);
