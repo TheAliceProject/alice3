@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.property.AngleProperty;
 
@@ -54,4 +55,22 @@ import edu.cmu.cs.dennisc.math.property.AngleProperty;
 public class SymmetricPerspectiveCamera extends AbstractPerspectiveCamera {
   public final AngleProperty verticalViewingAngle = new AngleProperty(this, new AngleInRadians(0.5), true);
   public final AngleProperty horizontalViewingAngle = new AngleProperty(this, new AngleInRadians(Double.NaN), true);
+  private AngleInRadians effectiveHorizontalViewingAngle;
+  private AngleInRadians effectiveVerticalViewingAngle;
+
+  public Angle getEffectiveHorizontalViewingAngle() {
+    return effectiveHorizontalViewingAngle;
+  }
+
+  public void setEffectiveHorizontalViewingAngle(double radians) {
+    effectiveHorizontalViewingAngle = new AngleInRadians(radians);
+  }
+
+  public Angle getEffectiveVerticalViewingAngle() {
+    return effectiveVerticalViewingAngle;
+  }
+
+  public void setEffectiveVerticalViewingAngle(double radians) {
+    effectiveVerticalViewingAngle = new AngleInRadians(radians);
+  }
 }
