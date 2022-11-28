@@ -357,7 +357,6 @@ public class AliceResourceUtilities {
       }
     }
     if (!found) {
-      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       modelName = new StringBuilder();
       for (int i = 0; i < splitName.length; i++) {
         if (splitName[i].length() > 0) {
@@ -368,7 +367,7 @@ public class AliceResourceUtilities {
           visualName = enumToCamelCase(modelName.toString());
           textureName = arrayToEnum(splitName, i + 1, splitName.length);
           if (checkVisualAndTextureName(resource, visualName, textureName)) {
-            found = true;
+            Logger.warning("Initially failed to find resource names for '" + resource + "' and '" + resourceName + "' but did find for '" + modelName + "'");
             break;
           }
         }
@@ -391,7 +390,7 @@ public class AliceResourceUtilities {
     if (resourceIdentifierToResourceNamesMap.get(identifier) != null) {
       return resourceIdentifierToResourceNamesMap.get(identifier).visualName;
     } else {
-      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
+      Logger.warning("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       return null;
     }
   }
@@ -443,11 +442,10 @@ public class AliceResourceUtilities {
 
   public static String getThumbnailResourceFileName(ModelResource resource, String resourceName) {
     String modelName = getModelNameFromClassAndResource(resource, resourceName);
-    String textureName = getTextureNameFromClassAndResource(resource, resourceName);
     if (modelName != null) {
+      String textureName = getTextureNameFromClassAndResource(resource, resourceName);
       return getThumbnailResourceFileName(modelName, textureName);
     } else {
-      Logger.severe(resource, resourceName, modelName, textureName);
       return null;
     }
   }
