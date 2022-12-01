@@ -356,7 +356,9 @@ public class SetUpMethodGenerator {
               Logger.severe("cannot create expression for: " + value);
             }
           } else {
-            Logger.warning("setter is null for: " + getter);
+            if (!"getVehicle".equals(getter.getName()) || !isThis) {
+              Logger.warning("setter is null for: " + getter);
+            }
           }
         }
         if (instance instanceof STurnable) {
