@@ -65,6 +65,10 @@ public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail, AddDe
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static Visual[] getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

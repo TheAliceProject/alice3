@@ -75,6 +75,10 @@ public enum BubblePosition implements Say.Detail, Think.Detail {
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static BubblePosition getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

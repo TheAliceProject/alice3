@@ -70,6 +70,10 @@ public enum PathStyle implements MoveTo.Detail, MoveAndOrientTo.Detail, SetPosit
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static PathStyle getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

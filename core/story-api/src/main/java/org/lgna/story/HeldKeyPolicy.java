@@ -62,6 +62,10 @@ public enum HeldKeyPolicy implements AddKeyPressListener.Detail {
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static HeldKeyPolicy getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

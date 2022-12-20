@@ -69,6 +69,10 @@ public enum TextStyle implements Say.Detail, Think.Detail {
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static TextStyle getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);
