@@ -41,11 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.member;
+
+import org.alice.ide.member.NameFilteredJavaProceduresComposite;
+
+import java.util.UUID;
 
 /**
- * @author Dennis Cosgrove
+ * @author Stephen Parry
  */
-public enum View {
-  STARTING_CAMERA_VIEW, LAYOUT_SCENE_VIEW, TOP, SIDE, FRONT
+public class FieldOfViewProceduresComposite extends NameFilteredJavaProceduresComposite {
+  private static class SingletonHolder {
+    private static FieldOfViewProceduresComposite instance = new FieldOfViewProceduresComposite();
+  }
+
+  public static FieldOfViewProceduresComposite getInstance() {
+    return SingletonHolder.instance;
+  }
+
+  private FieldOfViewProceduresComposite() {
+    super(UUID.fromString("e58b6d94-9f92-4dbf-996f-b0bafb1125cb"), "setFarClippingPlaneDistance", "setNearClippingPlaneDistance", "setHorizontalViewingAngle", "setVerticalViewingAngle");
+  }
 }

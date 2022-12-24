@@ -50,7 +50,7 @@
   <parent>
     <groupId>org.alice</groupId>
     <artifactId>core</artifactId>
-    <version>7.0.0</version>
+    <version>7.0.1-SNAPSHOT</version>
   </parent>
 
   <name>Story API</name>

@@ -40,55 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
+package org.alice.stageide.member;
 
-import org.alice.stageide.sceneeditor.CameraOption;
-import org.lgna.story.implementation.CameraMarkerImp;
+import org.alice.ide.member.NameFilteredJavaFunctionsComposite;
 
-import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.border.Border;
+import java.util.UUID;
 
 /**
- * @author dculyba
- *
+ * @author Stephen Parry
  */
-public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
-
-  private final Border separatorBelowBorder = BorderFactory.createEmptyBorder(2, 2, 8, 0);
-  private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 0);
-
-  private final CameraMarkerTracker cameraMarkerTracker;
-
-  public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
-    this.cameraMarkerTracker = cameraMarkerTracker;
+public class FieldOfViewFunctionsComposite extends NameFilteredJavaFunctionsComposite {
+  private static class SingletonHolder {
+    private static FieldOfViewFunctionsComposite instance = new FieldOfViewFunctionsComposite();
   }
 
-  @Override
-  protected JLabel getListCellRendererComponent(JLabel rv, JList list, CameraOption cameraOption, int index, boolean isSelected, boolean cellHasFocus) {
-    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(cameraOption);
-    rv.setText(MarkerUtilities.getNameForView(cameraOption));
-    if (index == 0) {
-      rv.setBorder(separatorBelowBorder);
-    } else {
-      rv.setBorder(emptyBorder);
-    }
-    if (isSelected) {
-      rv.setOpaque(true);
-      rv.setBackground(new Color(57, 105, 138));
-      rv.setForeground(Color.WHITE);
-      rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
-    } else {
-      rv.setOpaque(false);
-      rv.setForeground(Color.BLACK);
-      rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
-    }
-    return rv;
+  public static FieldOfViewFunctionsComposite getInstance() {
+    return SingletonHolder.instance;
   }
 
+  private FieldOfViewFunctionsComposite() {
+    super(UUID.fromString("2b0f42dd-ea02-4671-a050-40436addd5ea"), "getFarClippingPlaneDistance", "getNearClippingPlaneDistance", "getHorizontalViewingAngle", "getVerticalViewingAngle");
+  }
 }

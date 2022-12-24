@@ -49,6 +49,8 @@ import org.alice.ide.issue.croquet.LgnaExceptionComposite;
 import org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane;
 import org.alice.ide.issue.swing.views.CaughtExceptionPane;
 import org.alice.ide.issue.swing.views.CaughtGlExceptionPane;
+import org.alice.stageide.run.RunComposite;
+import org.alice.stageide.run.views.RunView;
 import org.lgna.common.LgnaRuntimeException;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.simple.SimpleApplication;
@@ -125,18 +127,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 
           exceptionPane.setThreadAndThrowable(thread, throwable);
 
-          Component owner;
-          Application application = Application.getActiveInstance();
-          if (application != null) {
-            Frame frame = application.getDocumentFrame().getFrame();
-            if (frame != null) {
-              owner = frame.getAwtComponent();
-            } else {
-              owner = null;
-            }
-          } else {
-            owner = null;
-          }
+          Component owner = findOwner();
 
           JDialog dialog = JDialogUtilities.createPackedJDialog(exceptionPane, owner, this.title, true, WindowConstants.DISPOSE_ON_CLOSE);
           dialog.getRootPane().setDefaultButton(exceptionPane.getSubmitButton());
@@ -185,6 +176,22 @@ public class DefaultExceptionHandler extends ExceptionHandler {
         System.exit(-1);
       }
     }
+  }
+
+  private Component findOwner() {
+    Application<?> application = Application.getActiveInstance();
+    if (application != null) {
+      RunView runView = RunComposite.getInstance().getView();
+      if (runView.isVisible()) {
+        return runView.getAwtComponent();
+      } else {
+        Frame frame = application.getDocumentFrame().getFrame();
+        if (frame != null) {
+          return frame.getAwtComponent();
+        }
+      }
+    }
+    return null;
   }
 
   public static void main(String[] args) throws Exception {

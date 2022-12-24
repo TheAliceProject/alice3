@@ -58,6 +58,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
 import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -72,6 +73,7 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -165,12 +167,23 @@ public class AliceResourceUtilities {
       BinaryDecoder decoder = new InputStreamBinaryDecoder(is);
       TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray(TexturedAppearance.class, new HashMap<Integer, ReferenceableBinaryEncodableAndDecodable>());
       for (TexturedAppearance ta : rv) {
+        correctDimensions(ta);
         ((BufferedImageTexture) ta.diffuseColorTexture.getValue()).directSetMipMappingDesired(false);
       }
       return rv;
     } catch (Exception e) {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  // Stretch images to power of two to fix rendering on certain Mac graphics configurations.
+  // The problem was observed specifically with the Baby Penguin model.
+  private static void correctDimensions(TexturedAppearance ta) {
+    Texture texture = ta.diffuseColorTexture.getValue();
+    if (texture instanceof BufferedImageTexture) {
+      BufferedImageTexture buffTexture = (BufferedImageTexture) texture;
+      buffTexture.setBufferedImage(ImageUtilities.stretchToPowersOfTwo(buffTexture.getBufferedImage()));
     }
   }
 
@@ -344,7 +357,6 @@ public class AliceResourceUtilities {
       }
     }
     if (!found) {
-      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       modelName = new StringBuilder();
       for (int i = 0; i < splitName.length; i++) {
         if (splitName[i].length() > 0) {
@@ -355,7 +367,7 @@ public class AliceResourceUtilities {
           visualName = enumToCamelCase(modelName.toString());
           textureName = arrayToEnum(splitName, i + 1, splitName.length);
           if (checkVisualAndTextureName(resource, visualName, textureName)) {
-            found = true;
+            Logger.warning("Initially failed to find resource names for '" + resource + "' and '" + resourceName + "' but did find for '" + modelName + "'");
             break;
           }
         }
@@ -378,7 +390,7 @@ public class AliceResourceUtilities {
     if (resourceIdentifierToResourceNamesMap.get(identifier) != null) {
       return resourceIdentifierToResourceNamesMap.get(identifier).visualName;
     } else {
-      Logger.severe("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
+      Logger.warning("Failed to find resource names for '" + resource + "' and '" + resourceName + "'");
       return null;
     }
   }
@@ -430,11 +442,10 @@ public class AliceResourceUtilities {
 
   public static String getThumbnailResourceFileName(ModelResource resource, String resourceName) {
     String modelName = getModelNameFromClassAndResource(resource, resourceName);
-    String textureName = getTextureNameFromClassAndResource(resource, resourceName);
     if (modelName != null) {
+      String textureName = getTextureNameFromClassAndResource(resource, resourceName);
       return getThumbnailResourceFileName(modelName, textureName);
     } else {
-      Logger.severe(resource, resourceName, modelName, textureName);
       return null;
     }
   }

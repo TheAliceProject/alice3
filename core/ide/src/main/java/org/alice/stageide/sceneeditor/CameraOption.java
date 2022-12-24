@@ -40,55 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Color;
-
-import org.alice.stageide.sceneeditor.CameraOption;
-import org.lgna.story.implementation.CameraMarkerImp;
-
-import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.border.Border;
+package org.alice.stageide.sceneeditor;
 
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
-
-  private final Border separatorBelowBorder = BorderFactory.createEmptyBorder(2, 2, 8, 0);
-  private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 0);
-
-  private final CameraMarkerTracker cameraMarkerTracker;
-
-  public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
-    this.cameraMarkerTracker = cameraMarkerTracker;
-  }
-
-  @Override
-  protected JLabel getListCellRendererComponent(JLabel rv, JList list, CameraOption cameraOption, int index, boolean isSelected, boolean cellHasFocus) {
-    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(cameraOption);
-    rv.setText(MarkerUtilities.getNameForView(cameraOption));
-    if (index == 0) {
-      rv.setBorder(separatorBelowBorder);
-    } else {
-      rv.setBorder(emptyBorder);
-    }
-    if (isSelected) {
-      rv.setOpaque(true);
-      rv.setBackground(new Color(57, 105, 138));
-      rv.setForeground(Color.WHITE);
-      rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
-    } else {
-      rv.setOpaque(false);
-      rv.setForeground(Color.BLACK);
-      rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
-    }
-    return rv;
-  }
-
+public enum CameraOption {
+  STARTING_CAMERA_VIEW, LAYOUT_SCENE_VIEW, TOP, SIDE, FRONT
 }

@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.alice.stageide.sceneeditor.View;
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.icon.ImageIconFactory;
@@ -85,7 +85,7 @@ public class MarkerUtilities {
   private static final Color[] COLORS;
 
   private static final HashMap<CameraMarker, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
-  private static final HashMap<CameraMarker, View> cameraToViewMap = Maps.newHashMap();
+  private static final HashMap<CameraMarker, CameraOption> cameraToViewMap = Maps.newHashMap();
 
   private static final HashMap<Color, ImageIcon> colorToObjectIconMap = Maps.newHashMap();
   private static final HashMap<Color, ImageIcon> colorToCameraIconMap = Maps.newHashMap();
@@ -186,21 +186,16 @@ public class MarkerUtilities {
     return "_" + colorName + ".png";
   }
 
-  public static String getNameForView(View view) {
+  public static String getNameForView(CameraOption cameraOption) {
     ResourceBundle resourceBundle = ResourceBundle.getBundle(StorytellingSceneEditor.class.getPackage().getName() + ".cameraViews");
-    if (view != null) {
-      switch (view) {
-      case STARTING_CAMERA_VIEW:
-        return resourceBundle.getString("sceneCameraView");
-      case LAYOUT_SCENE_VIEW:
-        return resourceBundle.getString("layoutPerspectiveView");
-      case TOP:
-        return resourceBundle.getString("topOrthographicView");
-      case SIDE:
-        return resourceBundle.getString("sideOrthographicView");
-      case FRONT:
-        return resourceBundle.getString("frontOrthographicView");
-      }
+    if (cameraOption != null) {
+      return switch (cameraOption) {
+        case STARTING_CAMERA_VIEW -> resourceBundle.getString("sceneCameraView");
+        case LAYOUT_SCENE_VIEW -> resourceBundle.getString("layoutPerspectiveView");
+        case TOP -> resourceBundle.getString("topOrthographicView");
+        case SIDE -> resourceBundle.getString("sideOrthographicView");
+        case FRONT -> resourceBundle.getString("frontOrthographicView");
+      };
     }
     return "";
   }
@@ -218,23 +213,23 @@ public class MarkerUtilities {
     addIconForCamera(cameraImp.getAbstraction(), iconName);
   }
 
-  public static void setViewForCameraImp(CameraMarkerImp cameraImp, View view) {
+  public static void setViewForCameraImp(CameraMarkerImp cameraImp, CameraOption cameraOption) {
     assert cameraImp != null;
-    setViewForCamera(cameraImp.getAbstraction(), view);
+    setViewForCamera(cameraImp.getAbstraction(), cameraOption);
   }
 
-  public static void setViewForCamera(CameraMarker camera, View view) {
-    cameraToViewMap.put(camera, view);
+  public static void setViewForCamera(CameraMarker camera, CameraOption cameraOption) {
+    cameraToViewMap.put(camera, cameraOption);
   }
 
-  public static View getViewForCameraImp(CameraMarkerImp cameraImp) {
+  public static CameraOption getViewForCameraImp(CameraMarkerImp cameraImp) {
     if (cameraImp != null) {
       return cameraToViewMap.get(cameraImp.getAbstraction());
     }
     return null;
   }
 
-  public static View getViewForCamera(CameraMarker camera) {
+  public static CameraOption getViewForCamera(CameraMarker camera) {
     return cameraToViewMap.get(camera);
   }
 

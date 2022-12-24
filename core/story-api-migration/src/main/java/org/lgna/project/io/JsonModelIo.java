@@ -372,7 +372,7 @@ public class JsonModelIo extends DataSourceIo {
 
   private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
     JointedModelResource modelResource = getResourceForVariant(modelVariant);
-    if (modelResource != null && !modelResource.getImplementationAndVisualFactory().isSims()) {
+    if (modelResource != null) {
       return getThumbnail(modelResource, modelVariant.name);
     }
     return null;
