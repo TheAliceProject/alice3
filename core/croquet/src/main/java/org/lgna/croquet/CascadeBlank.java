@@ -70,6 +70,7 @@ public abstract class CascadeBlank<B> {
       assert child != null;
     }
 
+    // make sure not to start with a separator and then remove any line separators with nothing between them
     ListIterator<CascadeBlankChild> listIterator = children.listIterator();
     boolean isLineSeparatorAcceptable = false;
     while (listIterator.hasNext()) {
@@ -84,16 +85,10 @@ public abstract class CascadeBlank<B> {
       }
     }
 
-    //remove separators at the end
-    //there should be a maximum of only 1 but we loop anyway
-    final int N = children.size();
-    for (int i = 0; i < N; i++) {
-      int index = N - i - 1;
-      if (isEmptySeparator(children.get(index))) {
-        children.remove(index);
-      } else {
-        break;
-      }
+    //remove separators at the end. there shouldn't be more than one, since we just removed all the duplicates.
+    final int last = children.size() - 1;
+    if (isEmptySeparator(children.get(last))) {
+      children.remove(last);
     }
 
     return ArrayUtilities.createArray(children, CascadeBlankChild.class);
