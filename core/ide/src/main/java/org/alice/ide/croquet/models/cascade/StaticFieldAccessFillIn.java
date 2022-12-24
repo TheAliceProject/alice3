@@ -61,14 +61,17 @@ import java.util.UUID;
  */
 public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAccess> {
   private static Map<AbstractField, StaticFieldAccessFillIn> map = Maps.newHashMap();
+  private final boolean isDefault;
+
 
   public static StaticFieldAccessFillIn getInstance(AbstractField value) {
+    return getInstance(value, false);
+  }
+  public static StaticFieldAccessFillIn getInstance(AbstractField value, boolean isDefault) {
     synchronized (map) {
       StaticFieldAccessFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
-        rv = new StaticFieldAccessFillIn(value);
+      if (rv == null) {
+        rv = new StaticFieldAccessFillIn(value, isDefault);
         map.put(value, rv);
       }
       return rv;
@@ -76,11 +79,11 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<Field
   }
 
   public static StaticFieldAccessFillIn getInstance(AbstractType type, String fieldName) {
-    return getInstance(type.findField(fieldName));
+    return getInstance(type.findField(fieldName), false);
   }
 
   public static StaticFieldAccessFillIn getInstance(Field fld) {
-    return getInstance(JavaField.getInstance(fld));
+    return getInstance(JavaField.getInstance(fld), false);
   }
 
   public static StaticFieldAccessFillIn getInstance(Class<?> cls, String fieldName) {
@@ -89,9 +92,11 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<Field
 
   private final FieldAccess transientValue;
 
-  private StaticFieldAccessFillIn(AbstractField field) {
+  private StaticFieldAccessFillIn(AbstractField field, boolean isDefault) {
     super(UUID.fromString("dff6296d-9651-4c0a-98a1-57cd62ea2010"));
+
     this.transientValue = this.createValue(field);
+    this.isDefault = isDefault;
   }
 
   private FieldAccess createValue(AbstractField field) {
@@ -106,5 +111,13 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<Field
   @Override
   public FieldAccess getTransientValue(ItemNode<? super FieldAccess, Void> node) {
     return this.transientValue;
+  }
+
+  @Override
+  public String getMenuItemText() {
+    if (this.isDefault) {
+      return findLocalizedText("DefaultValue");
+    }
+    return super.getMenuItemText();
   }
 }

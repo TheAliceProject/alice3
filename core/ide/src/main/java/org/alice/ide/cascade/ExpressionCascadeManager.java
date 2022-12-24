@@ -82,27 +82,12 @@ import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractEachInTogether;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractForEachLoop;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.BooleanExpressionBodyPair;
-import org.lgna.project.ast.CountLoop;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.LocalAccess;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.Node;
-import org.lgna.project.ast.NullLiteral;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserCode;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.*;
+
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -439,6 +424,7 @@ public abstract class ExpressionCascadeManager {
 
       ExpressionCascadeContext context = this.safePeekContext();
 
+      // "current value"
       Expression prevExpression = context.getPreviousExpression();
       if (isRoot && (prevExpression != null)) {
         if (type.isAssignableFrom(prevExpression.getType())) {
@@ -459,6 +445,10 @@ public abstract class ExpressionCascadeManager {
       if (type == JavaType.OBJECT_TYPE) {
         type = JavaType.STRING_TYPE;
       }
+
+      // we have a whole slew of types that we know how to filler in.
+      // (doubles, booleans, colors, listeners, outfits, hair, toddlers. if it can be filled in, there is one of these)
+      // so obviously here we just give them all a shot.
       for (ExpressionFillerInner expressionFillerInner : this.expressionFillerInners) {
         if (expressionFillerInner.isAssignableTo(type)) {
           expressionFillerInner.appendItems(items, details, isRoot, prevExpression);
@@ -480,8 +470,19 @@ public abstract class ExpressionCascadeManager {
         }
       }
       if ((enumType != null) && this.areEnumConstantsDesired(enumType)) {
+        // default value- not all types have this method but we try. This approach only works for enums, since at this
+        // point in the code we only know what the desired type of the selection has to be, not what parameter we're
+        // attempting to fill.
+        Object defaultValue = null;
+        AbstractMethod mthd = type.getDeclaredMethod("getDefaultValue");
+        if (mthd != null && mthd.isStatic()) {
+          Object[] args = {};
+          VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+          defaultValue = vm.ENTRY_POINT_invoke(null, mthd, args);
+        }
+
         items.add(CascadeLineSeparator.getInstance());
-        ConstantsOwningFillerInner.getInstance(enumType).appendItems(items, details, isRoot, prevExpression);
+        ConstantsOwningFillerInner.getInstance(enumType).appendItems(items, details, isRoot, prevExpression, defaultValue);
       }
 
       items.add(CascadeLineSeparator.getInstance());

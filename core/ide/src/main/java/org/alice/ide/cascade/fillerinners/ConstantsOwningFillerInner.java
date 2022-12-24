@@ -58,14 +58,13 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-  private static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
+  private final static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
 
   public static ConstantsOwningFillerInner getInstance(AbstractType<?, ?, ?> type) {
     synchronized (map) {
       ConstantsOwningFillerInner rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+
+      if (rv == null) {
         rv = new ConstantsOwningFillerInner(type);
         map.put(type, rv);
       }
@@ -83,12 +82,16 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 
   @Override
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression) {
+    this.appendItems(items, details, isTop, prevExpression, null);
+  }
+
+  public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression, Object defaultValue) {
     AbstractType<?, ?, ?> type = this.getType();
     for (AbstractField field : type.getDeclaredFields()) {
       if (field.isPublicAccess() && field.isStatic() && field.isFinal()) {
-        //todo: should this be identical? to?
+        boolean isDefault = defaultValue != null && field.getName().equals(defaultValue.toString());
         if (type.isAssignableFrom(field.getValueType())) {
-          items.add(StaticFieldAccessFillIn.getInstance(field));
+          items.add(StaticFieldAccessFillIn.getInstance(field, isDefault));
         }
       }
     }
