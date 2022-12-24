@@ -117,6 +117,7 @@ public abstract class ExpressionBlank extends CascadeBlank<Expression> {
   protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
     IDE ide = IDE.getActiveInstance();
     if (ide != null) {
+      // this is less of an update and more of a 'create all the things from scratch'
       ide.getExpressionCascadeManager().appendItems(children, blankNode, this.valueType, this.details);
     }
   }
