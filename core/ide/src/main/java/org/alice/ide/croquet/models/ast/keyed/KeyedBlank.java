@@ -91,7 +91,7 @@ public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
   protected void updateChildren(List<CascadeBlankChild> children, BlankNode<JavaKeyedArgument> blankNode) {
     // For clever reasons, this code has no idea what is in the scene, or what any of the methods can do.
     // For this method (e.g. move or say), find the arguments it could have (e.g. duration, text, animation style)
-    // Once we know what the options are, we can to check if it already has a value (and thus is handled elsewhere)
+    // Once we know what the options are, we can check if it already has a value (and thus is handled elsewhere)
     // or if it is part of this cascade moment we're having.
 
     AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();

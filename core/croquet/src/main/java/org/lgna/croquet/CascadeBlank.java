@@ -85,9 +85,9 @@ public abstract class CascadeBlank<B> {
       }
     }
 
-    //remove separators at the end. there shouldn't be more than one, since we just removed all the duplicates.
+    // remove separators at the end. there shouldn't be more than one, since we just removed all the duplicates.
     final int last = children.size() - 1;
-    if (isEmptySeparator(children.get(last))) {
+    if (last >= 0 && isEmptySeparator(children.get(last))) {
       children.remove(last);
     }
 

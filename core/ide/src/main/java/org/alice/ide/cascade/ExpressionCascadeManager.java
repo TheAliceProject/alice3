@@ -476,9 +476,8 @@ public abstract class ExpressionCascadeManager {
         Object defaultValue = null;
         AbstractMethod mthd = type.getDeclaredMethod("getDefaultValue");
         if (mthd != null && mthd.isStatic()) {
-          Object[] args = {};
           VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
-          defaultValue = vm.ENTRY_POINT_invoke(null, mthd, args);
+          defaultValue = vm.ENTRY_POINT_invoke(null, mthd);
         }
 
         items.add(CascadeLineSeparator.getInstance());

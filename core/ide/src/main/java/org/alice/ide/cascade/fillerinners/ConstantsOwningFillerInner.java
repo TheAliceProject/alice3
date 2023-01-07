@@ -88,11 +88,9 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
   public void appendItems(List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression, Object defaultValue) {
     AbstractType<?, ?, ?> type = this.getType();
     for (AbstractField field : type.getDeclaredFields()) {
-      if (field.isPublicAccess() && field.isStatic() && field.isFinal()) {
+      if (field.isPublicAccess() && field.isStatic() && field.isFinal() && type.isAssignableFrom(field.getValueType())) {
         boolean isDefault = defaultValue != null && field.getName().equals(defaultValue.toString());
-        if (type.isAssignableFrom(field.getValueType())) {
-          items.add(StaticFieldAccessFillIn.getInstance(field, isDefault));
-        }
+        items.add(StaticFieldAccessFillIn.getInstance(field, isDefault));
       }
     }
   }
