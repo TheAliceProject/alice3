@@ -49,6 +49,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -73,7 +74,20 @@ public abstract class AbstractMigrationManager implements MigrationManager {
     return this.currentVersion;
   }
 
-  boolean hasVersionIndependentMigrations() {
+  @Override
+  public boolean hasMigrationsFor(Version version) {
+    return hasTextMigrationsFor(version) || hasAstMigrationsFor(version) || hasVersionIndependentMigrations();
+  }
+
+  private boolean hasTextMigrationsFor(Version version) {
+    return Arrays.stream(getTextMigrations()).anyMatch(migration -> migration.isApplicable(version));
+  }
+
+  private boolean hasAstMigrationsFor(Version version) {
+    return Arrays.stream(getAstMigrations()).anyMatch(migration -> migration != null && migration.isApplicable(version));
+  }
+
+  private boolean hasVersionIndependentMigrations() {
     return versionIndependentMigrations.size() > 0;
   }
 
