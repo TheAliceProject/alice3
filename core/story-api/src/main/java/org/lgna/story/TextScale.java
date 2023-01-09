@@ -63,6 +63,9 @@ public class TextScale implements Say.Detail, Think.Detail {
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
   /* package-private */
   static double getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

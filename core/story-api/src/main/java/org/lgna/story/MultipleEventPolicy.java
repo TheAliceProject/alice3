@@ -61,6 +61,10 @@ public enum MultipleEventPolicy implements AddMouseClickOnScreenListener.Detail,
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static MultipleEventPolicy getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

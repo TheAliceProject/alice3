@@ -75,6 +75,10 @@ public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, Set
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static SetDimensionPolicy getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

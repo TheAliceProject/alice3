@@ -83,6 +83,9 @@ public class ParameterBlank extends ExpressionBlank {
 
   @Override
   protected void updateChildren(List<CascadeBlankChild> children, BlankNode<Expression> blankNode) {
+
+    // for this parameter, we figure out what type could be assigned to it. Everything after this will only care about
+    // this type, and won't care what parameter we started with.
     AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
     AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
     if (keywordFactoryType != null) {

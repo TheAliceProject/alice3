@@ -64,6 +64,10 @@ public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detai
     return defaultValue;
   }
 
+  public static Object getDefaultValue() {
+    return DEFAULT_VALUE;
+  }
+
   /* package-private */
   static boolean getValue(Object[] details) {
     return getValue(details, DEFAULT_VALUE);

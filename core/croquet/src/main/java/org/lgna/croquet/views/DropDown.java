@@ -64,6 +64,12 @@ import java.awt.geom.GeneralPath;
 /**
  * @author Dennis Cosgrove
  */
+
+/*
+ This handles the drawing of the top-level item that can become a dropdown, not the menu that dangles off.
+ See Cascades for dangling.
+*/
+
 public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
   private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
   private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
@@ -179,11 +185,14 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
       if (isActive || DropDown.this.isInactiveFeedbackDesired()) {
         if (isActive) {
           if (buttonModel.isPressed()) {
+            // active
             g2.setColor(ColorUtilities.createGray(127));
           } else {
+            // hover
             g2.setColor(ColorUtilities.createGray(220));
           }
         } else {
+          // this is the default look of the button
           g2.setColor(this.getBackground());
         }
         g2.fillRect(x, y, width, height);

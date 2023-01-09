@@ -119,8 +119,8 @@ public abstract class VirtualMachine {
     }
   }
 
-  public void ENTRY_POINT_invoke(UserInstance target, AbstractMethod method, Object... arguments) {
-    invoke(target, method, arguments);
+  public Object ENTRY_POINT_invoke(UserInstance target, AbstractMethod method, Object... arguments) {
+    return invoke(target, method, arguments);
   }
 
   private NamedUserConstructor getConstructor(NamedUserType entryPointType, Object[] arguments) {

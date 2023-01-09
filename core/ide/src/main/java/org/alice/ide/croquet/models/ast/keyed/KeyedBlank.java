@@ -44,14 +44,11 @@
 package org.alice.ide.croquet.models.ast.keyed;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ArgumentListProperty;
-import org.lgna.project.ast.JavaKeyedArgument;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -92,6 +89,11 @@ public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
 
   @Override
   protected void updateChildren(List<CascadeBlankChild> children, BlankNode<JavaKeyedArgument> blankNode) {
+    // For clever reasons, this code has no idea what is in the scene, or what any of the methods can do.
+    // For this method (e.g. move or say), find the arguments it could have (e.g. duration, text, animation style)
+    // Once we know what the options are, we can check if it already has a value (and thus is handled elsewhere)
+    // or if it is part of this cascade moment we're having.
+
     AbstractType<?, ?, ?> valueType = this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter().getValueType().getComponentType();
     AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
     if (keywordFactoryType != null) {
@@ -106,10 +108,8 @@ public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
               break;
             }
           }
-          if (isAlreadyFilledIn) {
-            //pass
-          } else {
-            children.add(JavaKeyedArgumentFillIn.getInstance(JavaMethod.getInstance(mthd)));
+          if (!isAlreadyFilledIn) {
+            children.add(JavaKeyedArgumentFillIn.getInstance(keyMethod));
           }
         }
       }
