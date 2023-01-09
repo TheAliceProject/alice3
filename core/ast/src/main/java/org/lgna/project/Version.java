@@ -46,6 +46,7 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public final class Version implements Comparable<Version> {
+  public static final Version VERSION_3_7 = new Version("3.7.0.0");
   private int[] subNumbers;
   private String prerelease;
   private String metadata;

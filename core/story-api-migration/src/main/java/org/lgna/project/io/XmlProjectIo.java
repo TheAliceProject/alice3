@@ -77,6 +77,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -188,9 +189,10 @@ public class XmlProjectIo implements ProjectIo {
 
     private static Document readXML(InputStream is, MigrationManager migrationManager, Version decodedVersion) {
       if (migrationManager.hasMigrationsFor(decodedVersion)) {
-        String modifiedText = TextFileUtilities.read(new InputStreamReader(is, StandardCharsets.UTF_8));
-        modifiedText = migrationManager.migrate(modifiedText, decodedVersion);
-        is = new ByteArrayInputStream(modifiedText.getBytes(StandardCharsets.UTF_8));
+        Charset charSet = getCharsetForVersion(decodedVersion);
+        String modifiedText =
+            migrationManager.migrate(TextFileUtilities.read(new InputStreamReader(is, charSet)), decodedVersion);
+        is = new ByteArrayInputStream(modifiedText.getBytes(charSet));
       }
       return XMLUtilities.read(is);
     }
@@ -246,6 +248,11 @@ public class XmlProjectIo implements ProjectIo {
     }
 
     private ResourceTypeHelper typeHelper;
+  }
+
+  // Encoding of project XML changed from UTF-8 to UTF-16 in 3.7.
+  private static Charset getCharsetForVersion(Version version) {
+    return (version.compareTo(Version.VERSION_3_7) < 0) ? StandardCharsets.UTF_8 : StandardCharsets.UTF_16;
   }
 
   private static class XmlProjectWriter implements ProjectWriter {
