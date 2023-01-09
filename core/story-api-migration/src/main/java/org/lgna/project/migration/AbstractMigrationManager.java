@@ -75,15 +75,12 @@ public abstract class AbstractMigrationManager implements MigrationManager {
   }
 
   @Override
-  public boolean hasMigrationsFor(Version version) {
-    return hasTextMigrationsFor(version) || hasAstMigrationsFor(version) || hasVersionIndependentMigrations();
-  }
-
-  private boolean hasTextMigrationsFor(Version version) {
+  public boolean hasTextMigrationsFor(Version version) {
     return Arrays.stream(getTextMigrations()).anyMatch(migration -> migration.isApplicable(version));
   }
 
-  private boolean hasAstMigrationsFor(Version version) {
+  @Override
+  public boolean hasAstMigrationsFor(Version version) {
     return Arrays.stream(getAstMigrations()).anyMatch(migration -> migration != null && migration.isApplicable(version));
   }
 

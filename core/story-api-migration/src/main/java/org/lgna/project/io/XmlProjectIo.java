@@ -188,7 +188,7 @@ public class XmlProjectIo implements ProjectIo {
     }
 
     private static Document readXML(InputStream is, MigrationManager migrationManager, Version decodedVersion) {
-      if (migrationManager.hasMigrationsFor(decodedVersion)) {
+      if (migrationManager.hasTextMigrationsFor(decodedVersion)) {
         Charset charSet = getCharsetForVersion(decodedVersion);
         String modifiedText =
             migrationManager.migrate(TextFileUtilities.read(new InputStreamReader(is, charSet)), decodedVersion);
@@ -212,7 +212,7 @@ public class XmlProjectIo implements ProjectIo {
     }
 
     private void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
-      if (migrationManager.hasMigrationsFor(decodedVersion)) {
+      if (migrationManager.hasAstMigrationsFor(decodedVersion)) {
         migrationManager.migrate(affectedNode, typeHelper, new HashSet<>(), decodedVersion);
       }
     }
