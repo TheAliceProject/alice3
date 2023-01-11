@@ -83,6 +83,10 @@ public class CollisionHandler extends AbstractBinaryEventHandler<Object, Collisi
     }
   }
 
+  protected void markAsChanged(SThing changedThing) {
+    hulls.remove(changedThing);
+  }
+
   @Override
   protected void checkForEvents(SThing changedThing) {
     VerticalPrismCollisionHull hull = getUpdatedHull(changedThing);

@@ -86,6 +86,10 @@ public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, Pr
     closeEnoughForListener.computeIfAbsent(b, k -> new HashMap<>());
   }
 
+  protected void markAsChanged(SThing changedThing) {
+    hulls.remove(changedThing);
+  }
+
   @Override
   protected void checkForEvents(SThing changedThing) {
     hulls.remove(changedThing);
