@@ -85,7 +85,6 @@ import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.*;
 
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 

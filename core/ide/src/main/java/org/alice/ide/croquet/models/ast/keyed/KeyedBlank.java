@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.ast.keyed;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.imp.cascade.BlankNode;
