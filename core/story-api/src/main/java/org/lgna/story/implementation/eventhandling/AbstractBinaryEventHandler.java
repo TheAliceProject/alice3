@@ -103,11 +103,14 @@ public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent, T e
     long now = System.currentTimeMillis();
     long millisSinceLastUpdate = lastCheckTimes.getOrDefault(changedThing, 0L);
     if (now - millisSinceLastUpdate < MINIMUM_MILLIS_BETWEEN_CHECKS) {
+      markAsChanged(changedThing);
       return;
     }
     lastCheckTimes.put(changedThing, now);
     checkForEvents(changedThing);
   }
+
+  protected abstract void markAsChanged(SThing changedThing);
 
   protected abstract void checkForEvents(SThing changedThing);
 

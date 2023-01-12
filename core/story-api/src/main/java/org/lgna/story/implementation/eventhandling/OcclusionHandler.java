@@ -84,6 +84,11 @@ public class OcclusionHandler extends AbstractBinaryEventHandler<Object, Occlusi
     }
   }
 
+  // No-op - OcclusionHandler checks in full each time.
+  // It does not cache any data to remove or mark as dirty.
+  protected void markAsChanged(SThing changedThing) {
+  }
+
   @Override
   protected void checkForEvents(SThing changedThing) {
     if (camera == null) {
