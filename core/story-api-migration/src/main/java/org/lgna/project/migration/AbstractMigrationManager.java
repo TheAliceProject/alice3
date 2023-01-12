@@ -42,14 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Version;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -57,8 +56,6 @@ import java.util.logging.Level;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMigrationManager implements MigrationManager {
-  private final List<Migration> versionIndependentMigrations = Lists.newCopyOnWriteArrayList();
-
   private final Version currentVersion;
 
   AbstractMigrationManager(Version currentVersion) {
@@ -73,8 +70,14 @@ public abstract class AbstractMigrationManager implements MigrationManager {
     return this.currentVersion;
   }
 
-  boolean hasVersionIndependentMigrations() {
-    return versionIndependentMigrations.size() > 0;
+  @Override
+  public boolean hasTextMigrationsFor(Version version) {
+    return Arrays.stream(getTextMigrations()).anyMatch(migration -> migration.isApplicable(version));
+  }
+
+  @Override
+  public boolean hasAstMigrationsFor(Version version) {
+    return Arrays.stream(getAstMigrations()).anyMatch(migration -> migration != null && migration.isApplicable(version));
   }
 
   @Override
@@ -103,13 +106,5 @@ public abstract class AbstractMigrationManager implements MigrationManager {
         version = astMigration.getResultVersion();
       }
     }
-  }
-
-  public void addVersionIndependentMigration(Migration migration) {
-    versionIndependentMigrations.add(migration);
-  }
-
-  public void removeVersionIndependentMigration(Migration migration) {
-    versionIndependentMigrations.remove(migration);
   }
 }

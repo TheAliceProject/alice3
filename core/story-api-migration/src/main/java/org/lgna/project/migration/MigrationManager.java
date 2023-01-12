@@ -55,7 +55,9 @@ import java.util.Set;
 public interface MigrationManager {
   String NO_REPLACEMENT = null;
 
-  boolean hasMigrationsFor(Version decodedVersion);
+  boolean hasTextMigrationsFor(Version decodedVersion);
+
+  boolean hasAstMigrationsFor(Version decodedVersion);
 
   String migrate(String source, Version version);
 
