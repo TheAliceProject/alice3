@@ -58,7 +58,7 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-  private final static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
+  private static final Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
 
   public static ConstantsOwningFillerInner getInstance(AbstractType<?, ?, ?> type) {
     synchronized (map) {
