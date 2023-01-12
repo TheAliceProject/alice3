@@ -46,6 +46,7 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public final class Version implements Comparable<Version> {
+  // With 3.7 XML encoding changed from UTF-8 to UTF-16.
   public static final Version VERSION_3_7 = new Version("3.7.0.0");
   private int[] subNumbers;
   private String prerelease;
