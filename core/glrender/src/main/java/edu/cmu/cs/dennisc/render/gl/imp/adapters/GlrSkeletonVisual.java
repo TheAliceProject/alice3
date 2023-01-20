@@ -163,31 +163,32 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
           }
         }
       }
-      this.transformBuffers(weightedJointMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue());
+      transformBuffers(weightedMesh.vertexBuffer.getValue().asReadOnlyBuffer(),
+                       weightedMesh.normalBuffer.getValue().asReadOnlyBuffer());
     }
 
-    private void transformBuffers(AffineMatrix4x4[] weightedVertices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc) {
+    private void transformBuffers(DoubleBuffer verticesSrc, FloatBuffer normalsSrc) {
       double[] vertexSrc = new double[3];
       float[] normalSrc = new float[3];
       double[] vertexDst = new double[3];
       float[] normalDst = new float[3];
-      vertices.rewind();
-      normals.rewind();
+      vertexBuffer.rewind();
+      normalBuffer.rewind();
       verticesSrc.rewind();
       normalsSrc.rewind();
 
-      for (AffineMatrix4x4 voAffineMatrice : weightedVertices) {
+      for (AffineMatrix4x4 voAffineMatrice : weightedJointMatrices) {
         vertexSrc[0] = verticesSrc.get();
         vertexSrc[1] = verticesSrc.get();
         vertexSrc[2] = verticesSrc.get();
         voAffineMatrice.transformVertex(vertexDst, 0, vertexSrc, 0);
-        vertices.put(vertexDst);
+        vertexBuffer.put(vertexDst);
 
         normalSrc[0] = normalsSrc.get();
         normalSrc[1] = normalsSrc.get();
         normalSrc[2] = normalsSrc.get();
         voAffineMatrice.transformNormal(normalDst, 0, normalSrc, 0);
-        normals.put(normalDst);
+        normalBuffer.put(normalDst);
       }
     }
 
