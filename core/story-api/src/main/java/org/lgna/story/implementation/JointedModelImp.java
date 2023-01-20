@@ -104,9 +104,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     public boolean hasJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId);
 
-    public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId);
+    JointId[] getJointArrayIds(JointedModelImp<?, R> jointedModelImplementation, JointArrayId jointArrayId);
 
-    public VisualData createVisualData();
+    VisualData<R> createVisualData();
 
     public UnitQuaternion getOriginalJointOrientation(JointId jointId);
 
@@ -508,7 +508,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return this.factory.getResource();
   }
 
-  public VisualData getVisualData() {
+  public VisualData<R> getVisualData() {
     return this.visualData;
   }
 
@@ -1005,5 +1005,5 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   private final Map<JointArrayId, JointId[]> mapArrayIdToJointIdArray = Maps.newHashMap();
   private JointArrayId[] jointArrayIds = null;
   private JointImplementationAndVisualDataFactory<R> factory;
-  private VisualData visualData;
+  private VisualData<R> visualData;
 }

@@ -66,9 +66,9 @@ import java.util.Map;
  */
 public class JointImplementationAndVisualDataFactory<R extends JointedModelResource> implements JointedModelImp.JointImplementationAndVisualDataFactory<R> {
 
-  private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
+  private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory<?>> map = Maps.newHashMap();
 
-  private static class VisualData implements JointedModelImp.VisualData {
+  private static class VisualData<R extends JointedModelResource> implements JointedModelImp.VisualData<R> {
     private TexturedAppearance[] texturedAppearances;
     private SkeletonVisual sgSkeletonVisual;
 
@@ -117,7 +117,7 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
 
   public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance(R resource) {
     synchronized (map) {
-      JointImplementationAndVisualDataFactory<R> rv = map.get(resource);
+      JointImplementationAndVisualDataFactory<R> rv = (JointImplementationAndVisualDataFactory<R>) map.get(resource);
       if (rv == null) {
         rv = new JointImplementationAndVisualDataFactory<>(resource);
         map.put(resource, rv);
@@ -138,8 +138,8 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   }
 
   @Override
-  public JointImp createJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
-    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+  public JointImp createJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData<?>) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
     if (sgSkeletonVisual != null) {
       String key = jointId.toString();
       Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
@@ -158,8 +158,8 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   }
 
   @Override
-  public boolean hasJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
-    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+  public boolean hasJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData<?>) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
     if (sgSkeletonVisual != null) {
       String key = jointId.toString();
       Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
@@ -177,8 +177,8 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   }
 
   @Override
-  public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
-    SkeletonVisual sgSkeletonVisual = ((VisualData) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
+  public JointId[] getJointArrayIds(JointedModelImp<?, R> jointedModelImplementation, JointArrayId jointArrayId) {
+    SkeletonVisual sgSkeletonVisual = ((VisualData<?>) jointedModelImplementation.getVisualData()).sgSkeletonVisual;
     if (sgSkeletonVisual != null) {
       String key = jointArrayId.getElementNamePattern();
       Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
@@ -235,7 +235,7 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   }
 
   @Override
-  public JointedModelImp.VisualData createVisualData() {
-    return new VisualData(this.resource);
+  public JointedModelImp.VisualData<R> createVisualData() {
+    return new VisualData<>(this.resource);
   }
 }
