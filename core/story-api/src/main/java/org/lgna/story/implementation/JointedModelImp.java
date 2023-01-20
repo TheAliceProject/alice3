@@ -689,9 +689,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   @Override
   protected Leaf getVisualization() {
-    if (this.visualization != null) {
-      //pass
-    } else {
+    if (this.visualization == null) {
       this.visualization = new JointedModelVisualization(this);
     }
     return this.visualization;
@@ -774,9 +772,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   private List<JointImp> updateJointsBetween(List<JointImp> rv, List<Bone.Direction> directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp) {
-    if (joint == ancestorToReach) {
-      //pass
-    } else {
+    if (joint != ancestorToReach) {
       JointId parentId = joint.getJointId().getParent();
       if (parentId != null) {
         JointImp parent = this.getJointImplementation(parentId);
