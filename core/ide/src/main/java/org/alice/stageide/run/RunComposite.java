@@ -44,6 +44,7 @@ package org.alice.stageide.run;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import org.alice.ide.IDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.alice.stageide.run.views.RunView;
@@ -161,6 +162,7 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
     } else {
       Logger.warning(this);
     }
+    AdapterFactory.forgetAllElements();
   }
 
   private class RestartAction extends AbstractAction {

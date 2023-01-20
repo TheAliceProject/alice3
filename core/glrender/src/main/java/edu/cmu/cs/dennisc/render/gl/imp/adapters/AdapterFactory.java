@@ -292,4 +292,10 @@ public class AdapterFactory {
       s_elementToAdapterMap.remove(sgElement);
     }
   }
+
+  public static void forgetAllElements() {
+    synchronized (s_elementToAdapterMap) {
+      s_elementToAdapterMap.clear();
+    }
+  }
 }
