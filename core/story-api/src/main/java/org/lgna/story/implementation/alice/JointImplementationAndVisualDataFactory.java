@@ -69,16 +69,15 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
   private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory<?>> map = Maps.newHashMap();
 
   private static class VisualData<R extends JointedModelResource> implements JointedModelImp.VisualData<R> {
-    private TexturedAppearance[] texturedAppearances;
-    private SkeletonVisual sgSkeletonVisual;
+    private final SkeletonVisual sgSkeletonVisual;
 
     VisualData(JointedModelResource resource) {
       assert resource != null;
-      this.texturedAppearances = AliceResourceUtilities.getTexturedAppearances(resource);
+      TexturedAppearance[] texturedAppearances = AliceResourceUtilities.getTexturedAppearances(resource);
       //Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
       this.sgSkeletonVisual = AliceResourceUtilities.getVisualCopy(resource);
       //Set the texture data to be the texture info specified by the resource
-      this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+      this.sgSkeletonVisual.textures.setValue(texturedAppearances);
       if (this.sgSkeletonVisual.skeleton.getValue() != null) {
         this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
       }
