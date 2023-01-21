@@ -59,8 +59,8 @@ public class PlentifulInverseAbsoluteTransformationWeightsPair extends InverseAb
   }
 
   @Override
-  public int getIndex() {
-    return this.index;
+  public int getIndex(int index) {
+    return index;
   }
 
   @Override

@@ -49,42 +49,25 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable {
   protected AffineMatrix4x4 inverseAbsoluteTransformation;
   protected float[] weights;
-  protected int index = 0;
 
   public InverseAbsoluteTransformationWeightsPair() {
   }
 
   public InverseAbsoluteTransformationWeightsPair(InverseAbsoluteTransformationWeightsPair other) {
-    index = other.index;
     inverseAbsoluteTransformation = new AffineMatrix4x4(other.inverseAbsoluteTransformation);
     weights = Arrays.copyOf(other.weights, other.weights.length);
   }
 
   public abstract void setWeights(float[] weightsIn);
 
-  public float getWeight() {
-    return this.weights[this.index];
-  }
-
-  public abstract int getIndex();
+  public abstract int getIndex(int index);
 
   public abstract InverseAbsoluteTransformationWeightsPair createCopy();
-
-  public boolean isDone() {
-    return this.index == this.weights.length;
-  }
-
-  public void advance() {
-    this.index++;
-  }
-
-  public void reset() {
-    this.index = 0;
-  }
 
   public void setInverseAbsoluteTransformation(AffineMatrix4x4 transform) {
     this.inverseAbsoluteTransformation = transform;
@@ -125,5 +108,27 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
       return iawp;
     }
     return null;
+  }
+
+  public WeightIterator getIterator() {
+    return new WeightIterator();
+  }
+
+  public class WeightIterator implements Iterator<Float> {
+    private int index = 0;
+
+    @Override
+    public boolean hasNext() {
+      return index < InverseAbsoluteTransformationWeightsPair.this.weights.length;
+    }
+
+    @Override
+    public Float next() {
+      return InverseAbsoluteTransformationWeightsPair.this.weights[this.index++];
+    }
+
+    public int getIndex() {
+      return InverseAbsoluteTransformationWeightsPair.this.getIndex(index);
+    }
   }
 }
