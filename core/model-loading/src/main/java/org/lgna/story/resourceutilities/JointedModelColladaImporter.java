@@ -691,10 +691,10 @@ public class JointedModelColladaImporter {
       System.out.println(" inverse transform = (" + t.x + ", " + t.y + ", " + t.z + "), [[" + o.right.x + ", " + o.right.y + ", " + o.right.z + "], [" + o.up.x + ", " + o.up.y + ", " + o.up.z + "], [" + o.backward.x + ", " + o.backward.y + ", " + o.backward.z + "]]");
       List<Float> weights = new ArrayList<Float>();
       List<Integer> indices = new ArrayList<Integer>();
-      while (!iatwp.isDone()) {
-        weights.add(iatwp.getWeight());
-        indices.add(iatwp.getIndex());
-        iatwp.advance();
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
+      while (weightIterator.hasNext()) {
+        indices.add(weightIterator.getIndex());
+        weights.add(weightIterator.next());
       }
       System.out.println("  weight count = " + weights.size());
       System.out.println("  weights: " + weights);

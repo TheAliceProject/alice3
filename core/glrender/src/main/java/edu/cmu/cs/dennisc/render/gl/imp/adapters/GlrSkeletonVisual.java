@@ -129,28 +129,28 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
     void process(Joint joint, AffineMatrix4x4 jointTransform) {
       InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
-      if (iatwp != null) {
-        // jointTransform * IBMi - This is the reverse of the Collada skin weighting spec which is IBMi * JMi
-        AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication(jointTransform, iatwp.getInverseAbsoluteTransformation());
-        //        System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
-        //        System.out.println( "  On Joint " + joint.jointID.getValue() );
-        //        System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
-        //        System.out.println( "  iatwp " + iatwp.hashCode() );
-        //        System.out.println( "joint transform:" );
-        //        PrintUtilities.print( oTransformation.translation, oTransformation.orientation );
-        //        System.out.println( "\ninverse transform:" );
-        //        PrintUtilities.print( iatwp.getInverseAbsoluteTransformation().translation, iatwp.getInverseAbsoluteTransformation().orientation );
-        //        System.out.println( "\ndelta:" );
-        //        PrintUtilities.print( oDelta.translation, oDelta.orientation );
-        iatwp.reset();
-        while (!iatwp.isDone()) {
-          int vertexIndex = iatwp.getIndex();
-          float weight = iatwp.getWeight();
-          AffineMatrix4x4 transform = AffineMatrix4x4.createMultiplication(oDelta, weight);
-          this.weightedJointMatrices[vertexIndex].add(transform);
-          this.weights[vertexIndex] += weight;
-          iatwp.advance();
-        }
+      if (iatwp == null) {
+        return;
+      }
+      // jointTransform * IBMi - This is the reverse of the Collada skin weighting spec which is IBMi * JMi
+      AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication(jointTransform, iatwp.getInverseAbsoluteTransformation());
+      //        System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
+      //        System.out.println( "  On Joint " + joint.jointID.getValue() );
+      //        System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
+      //        System.out.println( "  iatwp " + iatwp.hashCode() );
+      //        System.out.println( "joint transform:" );
+      //        PrintUtilities.print( oTransformation.translation, oTransformation.orientation );
+      //        System.out.println( "\ninverse transform:" );
+      //        PrintUtilities.print( iatwp.getInverseAbsoluteTransformation().translation, iatwp.getInverseAbsoluteTransformation().orientation );
+      //        System.out.println( "\ndelta:" );
+      //        PrintUtilities.print( oDelta.translation, oDelta.orientation );
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
+      while (weightIterator.hasNext()) {
+        int vertexIndex = weightIterator.getIndex();
+        float weight = weightIterator.next();
+        AffineMatrix4x4 transform = AffineMatrix4x4.createMultiplication(oDelta, weight);
+        this.weightedJointMatrices[vertexIndex].add(transform);
+        this.weights[vertexIndex] += weight;
       }
     }
 
