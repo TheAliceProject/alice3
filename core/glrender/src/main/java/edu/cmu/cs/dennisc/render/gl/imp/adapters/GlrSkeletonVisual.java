@@ -206,7 +206,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     }
   }
 
-  private static float ALPHA_TEST_THRESHOLD = .5f;
+  private static final float ALPHA_TEST_THRESHOLD = .5f;
 
   @Override
   public void initialize(SkeletonVisual element) {
@@ -316,13 +316,13 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       if (meshAdapters != null) {
         for (GlrMesh<Mesh> ma : meshAdapters) {
           pc.gl.glPushName(i++);
-          if (!((Mesh) ma.owner).cullBackfaces.getValue()) {
+          if (!ma.owner.cullBackfaces.getValue()) {
             pc.gl.glDisable(GL_CULL_FACE);
           } else {
             pc.gl.glEnable(GL_CULL_FACE);
             pc.gl.glCullFace(GL_BACK);
           }
-          if (((Mesh) ma.owner).useAlphaTest.getValue()) {
+          if (ma.owner.useAlphaTest.getValue()) {
             pc.gl.glEnable(GL_ALPHA_TEST);
             pc.gl.glAlphaFunc(GL_GREATER, ALPHA_TEST_THRESHOLD);
           } else {
@@ -343,7 +343,6 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     if (this.skeletonIsDirty) {
       this.processWeightedMesh();
     }
-    int i = 0;
     for (Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet()) {
       WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get(appearanceEntry.getKey());
       if (weightedMeshControls != null) {
@@ -465,15 +464,15 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
         GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get(appearanceEntry.getKey());
         if (meshAdapters != null) {
           for (GlrMesh<Mesh> ma : meshAdapters) {
-            boolean meshIsAlpha = textureIsAlphaBlend && !((Mesh) ma.owner).useAlphaTest.getValue();
+            boolean meshIsAlpha = textureIsAlphaBlend && !ma.owner.useAlphaTest.getValue();
             if ((meshIsAlpha && canRenderAlpha) || (!meshIsAlpha && canRenderOpaque)) {
-              if (!((Mesh) ma.owner).cullBackfaces.getValue()) {
+              if (!ma.owner.cullBackfaces.getValue()) {
                 rc.gl.glDisable(GL_CULL_FACE);
               } else {
                 rc.gl.glEnable(GL_CULL_FACE);
                 rc.gl.glCullFace(GL_BACK);
               }
-              if (((Mesh) ma.owner).useAlphaTest.getValue()) {
+              if (ma.owner.useAlphaTest.getValue()) {
                 rc.gl.glEnable(GL_ALPHA_TEST);
                 rc.gl.glAlphaFunc(GL_GREATER, ALPHA_TEST_THRESHOLD);
               } else {
@@ -512,7 +511,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       return false;
     }
     //Check to see if there are non-alpha textures or none "all" alpha values
-    if ((appearanceIdToMeshControllersMap != null) && (appearanceIdToMeshControllersMap.size() > 0)) {
+    if (appearanceIdToMeshControllersMap.size() > 0) {
       if (isAnyFaceNotAlphaBlended()) {
         return true;
       }
@@ -538,7 +537,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
       return true;
     }
 
-    if ((appearanceIdToMeshControllersMap != null) && (appearanceIdToMeshControllersMap.size() > 0)) {
+    if (appearanceIdToMeshControllersMap.size() > 0) {
       if (isAnyFaceAlphaBlended()) {
         return true;
       }
@@ -633,14 +632,14 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
   private void updateAppearanceIdToAdapterMap() {
     synchronized (appearanceIdToAdapterMap) {
-      List<GlrElement<? extends Element>> oldAdapters = new ArrayList<GlrElement<? extends Element>>();
+      List<GlrElement<? extends Element>> oldAdapters = new ArrayList<>();
       for (Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet()) {
         if (!oldAdapters.contains(appearanceEntry.getValue())) {
           oldAdapters.add(appearanceEntry.getValue());
         }
       }
       appearanceIdToAdapterMap.clear();
-      List<GlrElement<? extends Element>> newAdapters = new ArrayList<GlrElement<? extends Element>>();
+      List<GlrElement<? extends Element>> newAdapters = new ArrayList<>();
       for (TexturedAppearance ta : this.owner.textures.getValue()) {
         GlrTexturedAppearance newAdapter = AdapterFactory.getAdapterFor(ta);
         appearanceIdToAdapterMap.put(ta.textureId.getValue(), newAdapter);
@@ -678,7 +677,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
     synchronized (appearanceIdToMeshControllersMap) {
       appearanceIdToMeshControllersMap.clear();
       for (TexturedAppearance ta : this.owner.textures.getValue()) {
-        List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
+        List<WeightedMeshControl> controls = new LinkedList<>();
         for (WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue()) {
           if (weightedMesh.textureId.getValue() == ta.textureId.getValue()) {
             WeightedMeshControl control = new WeightedMeshControl();
