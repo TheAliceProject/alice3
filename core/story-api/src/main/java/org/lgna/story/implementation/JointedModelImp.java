@@ -212,10 +212,17 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     void replaceWithJoint(JointImp newJoint) {
       copyOnto(newJoint);
-      for (Component child : internalJointImp.getSgComposite().getComponents()) {
+      AbstractTransformable oldSgComposite = internalJointImp.getSgComposite();
+      AbstractTransformable newSgComposite = newJoint.getSgComposite();
+      for (Component child : oldSgComposite.getComponents()) {
         if (!(child instanceof ModelJoint)) {
           child.setParent(newJoint.getSgComposite());
         }
+      }
+      // Sims models, with regenerated joints, need to be reconnected at their root, indicated by a null parent.
+      if (newSgComposite.getParent() == null) {
+        // Without this, things riding on the Sim or its joints when the resource changes will go out of the scene graph and disappear.
+        newSgComposite.setParent(oldSgComposite.getParent());
       }
       internalJointImp = newJoint;
     }
