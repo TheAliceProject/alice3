@@ -63,6 +63,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
@@ -115,7 +116,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     boolean isSims();
   }
 
-  private static class JointImpWrapper extends JointImp {
+  private class JointImpWrapper extends JointImp {
     public JointImpWrapper(JointedModelImp<?, ?> jointedModelImp, JointImp joint) {
       super(jointedModelImp);
       this.internalJointImp = joint;
@@ -169,6 +170,11 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     @Override
     protected void copyOnto(JointImp newJoint) {
       internalJointImp.copyOnto(newJoint);
+      if (JointedModelImp.this.factory.isSims()) {
+        // Alice models reuse joints, but Sims regenerate them.
+        // Creating the adapter is the public mechanism to rebuild internal listeners and show joint changes
+        AdapterFactory.getAdapterFor(newJoint.getSgComposite());
+      }
       if (getAbstraction() != null) {
         newJoint.setAbstraction(getAbstraction());
       }
@@ -206,10 +212,17 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     void replaceWithJoint(JointImp newJoint) {
       copyOnto(newJoint);
-      for (Component child : internalJointImp.getSgComposite().getComponents()) {
+      AbstractTransformable oldSgComposite = internalJointImp.getSgComposite();
+      AbstractTransformable newSgComposite = newJoint.getSgComposite();
+      for (Component child : oldSgComposite.getComponents()) {
         if (!(child instanceof ModelJoint)) {
           child.setParent(newJoint.getSgComposite());
         }
+      }
+      // Sims models, with regenerated joints, need to be reconnected at their root, indicated by a null parent.
+      if (newSgComposite.getParent() == null) {
+        // Without this, things riding on the Sim or its joints when the resource changes will go out of the scene graph and disappear.
+        newSgComposite.setParent(oldSgComposite.getParent());
       }
       internalJointImp = newJoint;
     }
@@ -415,7 +428,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     Paint originalPaint = this.paint.getValue();
     this.visualData = this.factory.createVisualData();
 
-    if (!factory.isSims() || mapIdToJoint.isEmpty()) {
+    if (!mapIdToJoint.isEmpty()) {
       updateSkeleton();
     }
 
