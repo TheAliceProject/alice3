@@ -48,12 +48,12 @@ import edu.cmu.cs.dennisc.nebulous.Person;
 import edu.cmu.cs.dennisc.nebulous.Thing;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.sims2.PersonResource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousVisualData<M extends Model> implements JointedModelImp.VisualData {
+public class NebulousVisualData<M extends Model> implements JointedModelImp.VisualData<PersonResource> {
   private final M nebModel;
   private final Visual[] sgVisuals = new Visual[] {new Visual()};
   private final SimpleAppearance[] sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
@@ -76,7 +76,7 @@ public class NebulousVisualData<M extends Model> implements JointedModelImp.Visu
   }
 
   @Override
-  public SkeletonVisual getSgVisualForExporting(JointedModelResource resource) {
+  public SkeletonVisual getSgVisualForExporting(PersonResource resource) {
     return nebModel.createSkeletonVisualForExporting(resource);
   }
 

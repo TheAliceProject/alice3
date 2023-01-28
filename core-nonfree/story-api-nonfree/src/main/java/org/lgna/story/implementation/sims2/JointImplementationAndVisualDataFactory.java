@@ -63,7 +63,7 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory<R extends JointedModelResource> implements JointedModelImp.JointImplementationAndVisualDataFactory {
+public class JointImplementationAndVisualDataFactory<R extends JointedModelResource> implements JointedModelImp.JointImplementationAndVisualDataFactory<R> {
   private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
   public static <R extends JointedModelResource> JointImplementationAndVisualDataFactory<R> getInstance(R resource) {
@@ -77,26 +77,26 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
     }
   }
 
-  private final JointedModelResource resource;
+  private final R resource;
 
-  private JointImplementationAndVisualDataFactory(JointedModelResource resource) {
+  private JointImplementationAndVisualDataFactory(R resource) {
     this.resource = resource;
   }
 
   @Override
-  public JointedModelResource getResource() {
+  public R getResource() {
     return this.resource;
   }
 
   @Override
-  public JointImp createJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+  public JointImp createJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId) {
     assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
     Model nebModel = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getNebModel();
     return new JointImplementation(jointedModelImplementation, new NebulousJoint(nebModel, jointId));
   }
 
   @Override
-  public boolean hasJointImplementation(JointedModelImp jointedModelImplementation, JointId jointId) {
+  public boolean hasJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId) {
     assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
     Model nebModel = ((NebulousVisualData<Model>) jointedModelImplementation.getVisualData()).getNebModel();
     return nebModel.hasJoint(jointId);
@@ -104,18 +104,18 @@ public class JointImplementationAndVisualDataFactory<R extends JointedModelResou
 
   //Not supported on nebulous models
   @Override
-  public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
+  public JointId[] getJointArrayIds(JointedModelImp<?, R> jointedModelImplementation, JointArrayId jointArrayId) {
     return new JointId[0];
   }
 
   @Override
-  public JointedModelImp.VisualData createVisualData() {
+  public JointedModelImp.VisualData<R> createVisualData() {
     try {
       if (this.resource instanceof PersonResource) {
         PersonResource personResource = (PersonResource) this.resource;
-        return NebulousPersonVisualData.createInstance(personResource);
+        return (JointedModelImp.VisualData<R>) NebulousPersonVisualData.createInstance(personResource);
       } else {
-        return new NebulousVisualData<Model>(new Thing(this.resource, this.resource));
+        return (JointedModelImp.VisualData<R>) new NebulousVisualData<Model>(new Thing(this.resource, this.resource));
       }
     } catch (LicenseRejectedException lre) {
       throw new RuntimeException(lre);

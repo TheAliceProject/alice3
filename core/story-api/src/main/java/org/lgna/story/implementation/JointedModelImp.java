@@ -84,34 +84,34 @@ import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
  * @author Dennis Cosgrove
  */
 public abstract class JointedModelImp<A extends SJointedModel, R extends JointedModelResource> extends ModelImp {
-  public static interface VisualData<R extends JointedModelResource> {
-    public Visual[] getSgVisuals();
+  public interface VisualData<R extends JointedModelResource> {
+    Visual[] getSgVisuals();
 
-    public SkeletonVisual getSgVisualForExporting(R resource);
+    SkeletonVisual getSgVisualForExporting(R resource);
 
-    public SimpleAppearance[] getSgAppearances();
+    SimpleAppearance[] getSgAppearances();
 
-    public double getBoundingSphereRadius();
+    double getBoundingSphereRadius();
 
-    public void setSGParent(Composite parent);
+    void setSGParent(Composite parent);
 
-    public Composite getSGParent();
+    Composite getSGParent();
   }
 
-  public static interface JointImplementationAndVisualDataFactory<R extends JointedModelResource> {
-    public R getResource();
+  public interface JointImplementationAndVisualDataFactory<R extends JointedModelResource> {
+    R getResource();
 
-    public JointImp createJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId);
+    JointImp createJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId);
 
-    public boolean hasJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId);
+    boolean hasJointImplementation(JointedModelImp<?, R> jointedModelImplementation, JointId jointId);
 
-    public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId);
+    JointId[] getJointArrayIds(JointedModelImp<?, R> jointedModelImplementation, JointArrayId jointArrayId);
 
-    public VisualData createVisualData();
+    VisualData<R> createVisualData();
 
-    public UnitQuaternion getOriginalJointOrientation(JointId jointId);
+    UnitQuaternion getOriginalJointOrientation(JointId jointId);
 
-    public AffineMatrix4x4 getOriginalJointTransformation(JointId jointId);
+    AffineMatrix4x4 getOriginalJointTransformation(JointId jointId);
 
     boolean isSims();
   }
@@ -295,7 +295,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
     private JointImp internalJointImp;
     private JointImp jointParentWrapper;
-    private List<JointImp> jointChildrenWrapper = new ArrayList<>();
+    private final List<JointImp> jointChildrenWrapper = new ArrayList<>();
   }
 
   public JointedModelImp(A abstraction, JointImplementationAndVisualDataFactory<R> factory) {
@@ -393,7 +393,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   public JointArrayId[] getJointArrayIds() {
     if (this.jointArrayIds == null) {
       List<JointArrayId> jointArrayIdsList = ReflectionUtilities.getPublicStaticFinalInstances(this.getResource().getClass(), JointArrayId.class);
-      this.jointArrayIds = jointArrayIdsList.toArray(new JointArrayId[jointArrayIdsList.size()]);
+      this.jointArrayIds = jointArrayIdsList.toArray(new JointArrayId[0]);
     }
     return this.jointArrayIds;
   }
@@ -521,7 +521,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return this.factory.getResource();
   }
 
-  public VisualData getVisualData() {
+  public VisualData<R> getVisualData() {
     return this.visualData;
   }
 
@@ -702,9 +702,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
   @Override
   protected Leaf getVisualization() {
-    if (this.visualization != null) {
-      //pass
-    } else {
+    if (this.visualization == null) {
       this.visualization = new JointedModelVisualization(this);
     }
     return this.visualization;
@@ -732,12 +730,12 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     return rootJoints;
   }
 
-  public static interface TreeWalkObserver {
-    public void pushJoint(JointImp joint);
+  public interface TreeWalkObserver {
+    void pushJoint(JointImp joint);
 
-    public void handleBone(JointImp parent, JointImp child);
+    void handleBone(JointImp parent, JointImp child);
 
-    public void popJoint(JointImp joint);
+    void popJoint(JointImp joint);
   }
 
   private void treeWalk(JointImp parentImp, TreeWalkObserver observer) {
@@ -762,7 +760,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
     }
   }
 
-  private static enum AddOp {
+  private enum AddOp {
     PREPEND {
       @Override
       public List<JointImp> add(List<JointImp> rv, JointImp joint, List<Bone.Direction> directions, Bone.Direction direction) {
@@ -787,9 +785,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   }
 
   private List<JointImp> updateJointsBetween(List<JointImp> rv, List<Bone.Direction> directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp) {
-    if (joint == ancestorToReach) {
-      //pass
-    } else {
+    if (joint != ancestorToReach) {
       JointId parentId = joint.getJointId().getParent();
       if (parentId != null) {
         JointImp parent = this.getJointImplementation(parentId);
@@ -1018,5 +1014,5 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
   private final Map<JointArrayId, JointId[]> mapArrayIdToJointIdArray = Maps.newHashMap();
   private JointArrayId[] jointArrayIds = null;
   private JointImplementationAndVisualDataFactory<R> factory;
-  private VisualData visualData;
+  private VisualData<R> visualData;
 }
