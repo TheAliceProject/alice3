@@ -635,16 +635,15 @@ public class JointedModelGltfExporter implements JointedModelExporter {
       if (iatwp == null) {
         continue;
       }
-      iatwp.reset();
-      while (!iatwp.isDone()) {
-        int vertexIndex = iatwp.getIndex();
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
+      while (weightIterator.hasNext()) {
+        int vertexIndex = weightIterator.getIndex();
         if (skinWeights[vertexIndex] == null) {
           skinWeights[vertexIndex] = new VertexWeights();
         }
         final Integer jointIndex = jointEntry.getValue();
         int skinJointIndex = skin.getJoints().indexOf(jointIndex);
-        skinWeights[vertexIndex].addJointWeight(skinJointIndex, iatwp.getWeight());
-        iatwp.advance();
+        skinWeights[vertexIndex].addJointWeight(skinJointIndex, weightIterator.next());
       }
     }
     return skinWeights;

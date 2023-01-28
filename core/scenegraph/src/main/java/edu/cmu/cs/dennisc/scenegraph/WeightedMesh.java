@@ -76,30 +76,26 @@ public class WeightedMesh extends Mesh {
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : weightInfo.getValue().getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
       if (iatwp != null) {
-        iatwp.reset();
-        while (!iatwp.isDone()) {
-          int vertexIndex = iatwp.getIndex();
-          float weight = iatwp.getWeight();
-          weights[vertexIndex] += weight;
-          iatwp.advance();
+        InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
+        while (weightIterator.hasNext()) {
+          int vertexIndex = weightIterator.getIndex();
+          weights[vertexIndex] += weightIterator.next();
         }
       }
     }
     for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : weightInfo.getValue().getMap().entrySet()) {
       InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
       if (iatwp != null) {
-        iatwp.reset();
+        InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
         float[] newWeights = new float[nVertexCount];
-        while (!iatwp.isDone()) {
-          int vertexIndex = iatwp.getIndex();
-          float weight = iatwp.getWeight();
+        while (weightIterator.hasNext()) {
+          int vertexIndex = weightIterator.getIndex();
+          float weight = weightIterator.next();
           if (weights[vertexIndex] != 0) {
             newWeights[vertexIndex] = weight / weights[vertexIndex];
           }
-          iatwp.advance();
         }
         iatwp.setWeights(newWeights);
-        iatwp.reset();
       }
     }
   }

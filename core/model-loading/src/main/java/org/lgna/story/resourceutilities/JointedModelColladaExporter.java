@@ -533,11 +533,9 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     List<Float> weightArray = new ArrayList<Float>();
     //Iterate through the WeightInfo and add the weights in order to the weightArray
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
-      InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      iatwp.reset();
-      while (!iatwp.isDone()) {
-        weightArray.add(iatwp.getWeight());
-        iatwp.advance();
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = entry.getValue().getIterator();
+      while (weightIterator.hasNext()) {
+        weightArray.add(weightIterator.next());
       }
     }
     return weightArray;
@@ -561,10 +559,9 @@ public class JointedModelColladaExporter implements JointedModelExporter {
     //ColladaSkinWeights is an array that uses a vertex index to index to a ColladaSkinWeights
     //The ColladaSkinWeights object contains the joint indices the vertex is mapped to and the weight indices for those joints
     for (Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet()) {
-      InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-      iatwp.reset();
-      while (!iatwp.isDone()) {
-        int vertexIndex = iatwp.getIndex();
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = entry.getValue().getIterator();
+      while (weightIterator.hasNext()) {
+        int vertexIndex = weightIterator.getIndex();
         if (skinWeights[vertexIndex] == null) {
           skinWeights[vertexIndex] = new ColladaSkinWeights();
         }
@@ -572,7 +569,7 @@ public class JointedModelColladaExporter implements JointedModelExporter {
         vertexWeights.jointIndices.add(jointIndex);
         //weightIndex is the sequential count of the weights. It ends up mapping to the weight list created in createWeightList()
         vertexWeights.weightIndices.add(weightIndex++);
-        iatwp.advance();
+        weightIterator.next();
       }
       jointIndex++;
     }

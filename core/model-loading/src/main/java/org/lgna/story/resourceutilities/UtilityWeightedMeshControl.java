@@ -68,18 +68,17 @@ class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
     InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
     AxisAlignedBox box = new AxisAlignedBox();
     if (iatwp != null) {
-      iatwp.reset();
       AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
       AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
-      while (!iatwp.isDone()) {
-        int vertexIndex = iatwp.getIndex() * 3;
-        Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex + 1), this.vertexBuffer.get(vertexIndex + 2));
-        Point3 localVertex = inverseJoint.createTransformed(vertex);
-        final float weight = iatwp.getWeight();
+      InverseAbsoluteTransformationWeightsPair.WeightIterator weightIterator = iatwp.getIterator();
+      while (weightIterator.hasNext()) {
+        int vertexIndex = weightIterator.getIndex() * 3;
+        float weight = weightIterator.next();
         if (weight > WEIGHT_THRESHOLD) {
+          Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex + 1), this.vertexBuffer.get(vertexIndex + 2));
+          Point3 localVertex = inverseJoint.createTransformed(vertex);
           box.union(localVertex);
         }
-        iatwp.advance();
       }
       box.scale(projectedJoint.orientation);
     }

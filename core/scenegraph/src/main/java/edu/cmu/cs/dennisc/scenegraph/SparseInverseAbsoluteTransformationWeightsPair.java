@@ -91,8 +91,8 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
   }
 
   @Override
-  public int getIndex() {
-    return this.indices[this.index];
+  public int getIndex(int index) {
+    return this.indices[index];
   }
 
   @Override
