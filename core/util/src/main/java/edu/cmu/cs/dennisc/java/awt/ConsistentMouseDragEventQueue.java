@@ -52,6 +52,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 
 /**
@@ -60,6 +61,20 @@ import java.awt.event.MouseWheelEvent;
 public class ConsistentMouseDragEventQueue extends EventQueue {
   private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
   private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || SystemUtilities.isPropertyTrue("edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired");
+
+  private MouseListener activeDrag;
+
+  public void setActiveDrag(MouseListener dragComponent) {
+    activeDrag = dragComponent;
+  }
+
+  public void endActiveDrag() {
+    activeDrag = null;
+  }
+
+  public boolean isDragActive() {
+    return activeDrag != null;
+  }
 
   private static class SingletonHolder {
     private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
@@ -197,6 +212,14 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
       case MouseEvent.MOUSE_PRESSED:
       case MouseEvent.MOUSE_DRAGGED:
         this.lastPressOrDragModifiers = mouseEvent.getModifiers();
+        break;
+      case MouseEvent.MOUSE_RELEASED:
+        if (activeDrag != null) {
+          MouseListener dropped = activeDrag;
+          activeDrag = null;
+          dropped.mouseReleased(mouseEvent);
+          return;
+        }
         break;
       }
 

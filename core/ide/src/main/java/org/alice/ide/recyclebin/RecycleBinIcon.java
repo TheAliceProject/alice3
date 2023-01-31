@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.recyclebin;
 
+import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
 import org.alice.ide.icons.Icons;
 import org.lgna.croquet.Application;
 
@@ -84,7 +85,7 @@ public enum RecycleBinIcon implements Icon {
     Icons.TRASH_CAN_EMPTY_ICON.paintIcon(c, g, x, y);
     Paint paint;
     final int ALPHA = 15;
-    if (Application.getActiveInstance().isDragInProgress()) {
+    if (ConsistentMouseDragEventQueue.getInstance().isDragActive()) {
       paint = new Color(255, 255, 0, ALPHA);
     } else {
       //paint = new java.awt.Color( 0, 255, 0, ALPHA );

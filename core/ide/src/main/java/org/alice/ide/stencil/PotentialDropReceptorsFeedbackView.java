@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.stencil;
 
+import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.IdeDragModel;
@@ -118,7 +119,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
   }
 
   private boolean isFauxStencilDesired() {
-    return IDE.getActiveInstance().isDragInProgress();
+    return ConsistentMouseDragEventQueue.getInstance().isDragActive();
   }
 
   @Override

@@ -185,19 +185,15 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   protected void handleForwardButtonClicked(MouseEvent e) {
   }
 
-  private final void handleMouseEntered(MouseEvent e) {
-    if (Application.getActiveInstance().isDragInProgress()) {
-      //pass
-    } else {
+  private void handleMouseEntered(MouseEvent e) {
+    if (!ConsistentMouseDragEventQueue.getInstance().isDragActive()) {
       this.handleMouseQuoteEnteredUnquote();
     }
   }
 
-  private final void handleMouseExited(MouseEvent e) {
-    this.isDueQuoteExitedUnquote = Application.getActiveInstance().isDragInProgress();
-    if (this.isDueQuoteExitedUnquote) {
-      //pass
-    } else {
+  private void handleMouseExited(MouseEvent e) {
+    this.isDueQuoteExitedUnquote = ConsistentMouseDragEventQueue.getInstance().isDragActive();
+    if (!this.isDueQuoteExitedUnquote) {
       this.handleMouseQuoteExitedUnquote();
     }
   }
@@ -205,8 +201,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   private void handleLeftMouseButtonDraggedOutsideOfClickThreshold(MouseEvent e) {
     DragModel dragModel = this.getModel();
     if (dragModel != null) {
-      Application application = Application.getActiveInstance();
-      application.setDragInProgress(true);
+      ConsistentMouseDragEventQueue.getInstance().setActiveDrag(this.mouseListener);
       this.updateProxySizes();
       this.updateProxyPosition(e);
 
@@ -214,7 +209,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
       layeredPane.add(this.dragProxy, new Integer(1));
       layeredPane.setLayer(this.dragProxy, JLayeredPane.DRAG_LAYER);
 
-      final UserActivity activity = application.acquireOpenActivity().getActivityWithoutTrigger();
+      final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
       dragStep = activity.addDragStep(dragModel, DragTrigger.createUserInstance(this, leftButtonPressedEvent));
       this.dragStep.setLatestMouseEvent(e);
       this.dragStep.fireDragStarted();
@@ -283,7 +278,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
 
   private void handleMousePressed(MouseEvent e) {
     if (MouseEventUtilities.isQuoteRightUnquoteMouseButton(e)) {
-      if (Application.getActiveInstance().isDragInProgress()) {
+      if (ConsistentMouseDragEventQueue.getInstance().isDragActive()) {
         this.handleCancel(e);
       }
     } else {
@@ -325,7 +320,6 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
             this.handleLeftMouseButtonQuoteClickedUnquote(e);
           }
         } else {
-          Application.getActiveInstance().setDragInProgress(false);
           if (this.isDueQuoteExitedUnquote) {
             this.handleMouseQuoteExitedUnquote();
           }
@@ -356,7 +350,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   }
 
   public void handleCancel(EventObject e) {
-    Application.getActiveInstance().setDragInProgress(false);
+    ConsistentMouseDragEventQueue.getInstance().endActiveDrag();
     if (this.isDueQuoteExitedUnquote) {
       this.handleMouseQuoteExitedUnquote();
     }

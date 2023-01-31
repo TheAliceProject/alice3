@@ -190,18 +190,6 @@ public abstract class Application<D extends DocumentFrame> {
 
   public abstract void handleQuit(UserActivity activity);
 
-  private boolean isDragInProgress = false;
-
-  @Deprecated
-  public final synchronized boolean isDragInProgress() {
-    return this.isDragInProgress;
-  }
-
-  @Deprecated
-  public synchronized void setDragInProgress(boolean isDragInProgress) {
-    this.isDragInProgress = isDragInProgress;
-  }
-
   private void handleMenuSelectionStateChanged(ChangeEvent e) {
     MenuSelection menuSelection = new MenuSelection();
     if (menuSelection.isValid()) {
