@@ -44,7 +44,6 @@ package org.alice.ide.recyclebin;
 
 import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
 import org.alice.ide.icons.Icons;
-import org.lgna.croquet.Application;
 
 import javax.swing.Icon;
 import java.awt.Color;
