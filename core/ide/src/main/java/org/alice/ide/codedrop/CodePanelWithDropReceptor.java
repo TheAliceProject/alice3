@@ -46,7 +46,6 @@ package org.alice.ide.codedrop;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
-import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.code.EnvelopStatementsOperation;
 import org.alice.ide.ast.code.MoveStatementOperation;
@@ -105,7 +104,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author Dennis Cosgrove
@@ -116,7 +114,6 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 
     @Override
     public final boolean isPotentiallyAcceptingOf(DragModel dragModel) {
-      IDE ide = IDE.getActiveInstance();
       if (DeclarationMeta.getDeclaration() == getCode()) {
         if (dragModel instanceof AbstractStatementDragModel) {
           return true;
@@ -168,15 +165,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
         isAddEvent = false;
       }
 
-      ListIterator<StatementListPropertyView> listIterator = statementListPropertyPanes.listIterator();
-      while (listIterator.hasNext()) {
-        StatementListPropertyView view = listIterator.next();
-        if (view.isAcceptingOfAddEventListenerMethodInvocationStatements() == isAddEvent) {
-          //pass
-        } else {
-          listIterator.remove();
-        }
-      }
+      statementListPropertyPanes.removeIf(view -> view.isAcceptingOfAddEventListenerMethodInvocationStatements() != isAddEvent);
 
       StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[statementListPropertyPanes.size()];
       int i = 0;
@@ -211,8 +200,6 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
             if (rv != null) {
               if (rv.getHeight() > slpp.getHeight()) {
                 rv = slpp;
-              } else {
-                //pass
               }
             } else {
               rv = slpp;
@@ -226,7 +213,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
     @Override
     public final BlockStatementIndexPair dragUpdated(DragStep step) {
       ComponentOrientation componentOrientation = getComponentOrientation();
-      DragComponent source = step.getDragSource();
+      DragComponent<?> source = step.getDragSource();
       if (source != null) {
         MouseEvent eSource = step.getLatestMouseEvent();
         MouseEvent eAsSeenBy = source.convertMouseEvent(eSource, getAsSeenBy());
@@ -234,15 +221,11 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
         this.setCurrentUnder(nextUnder, source.getDropProxySize());
         if (this.currentUnder != null) {
           boolean isDropProxyAlreadyUpdated = false;
-          if (InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
-            //pass
-          } else {
+          if (!InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
             AwtComponentView<?> subject = source.getSubject();
             if (subject instanceof AbstractStatementPane) {
               AbstractStatementPane abstractStatementPane = (AbstractStatementPane) subject;
-              if (source instanceof StatementTemplate) {
-                //pass
-              } else {
+              if (!(source instanceof StatementTemplate)) {
                 Statement statement = abstractStatementPane.getStatement();
                 StatementListProperty prevOwner = abstractStatementPane.getOwner();
                 StatementListProperty nextOwner = this.currentUnder.getProperty();
@@ -262,9 +245,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
               }
             }
           }
-          if (isDropProxyAlreadyUpdated) {
-            //pass
-          } else {
+          if (!isDropProxyAlreadyUpdated) {
             MouseEvent eUnder = getAsSeenBy().convertMouseEvent(eAsSeenBy, this.currentUnder);
             Integer height = 0;
             Insets insets = this.currentUnder.getBorder().getBorderInsets(this.currentUnder.getAwtComponent());
@@ -313,8 +294,6 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
             }
             source.setDropProxyLocationAndShowIfNecessary(p, this.currentUnder, height, availableHeight);
           }
-        } else {
-          //          source.hideDropProxyIfNecessary();
         }
       }
       repaint();
@@ -325,9 +304,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
         MouseEvent eAsSeenBy = source.convertMouseEvent(eSource, getAsSeenBy());
         MouseEvent eUnder = getAsSeenBy().convertMouseEvent(eAsSeenBy, this.currentUnder);
         int index = this.currentUnder.calculateIndex(eUnder.getPoint());
-        BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair(blockStatement, index);
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "blockStatementIndexPair", blockStatementIndexPair );
-        return blockStatementIndexPair;
+        return new BlockStatementIndexPair(blockStatement, index);
       } else {
         return null;
       }
