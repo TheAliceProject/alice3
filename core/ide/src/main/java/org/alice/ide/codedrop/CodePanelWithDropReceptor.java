@@ -335,120 +335,96 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 
     @Override
     protected Triggerable dragDroppedPostRejectorCheck(DragStep step) {
-      Triggerable rv = null;
       final DragModel dragModel = step.getModel();
-      DragComponent dragSource = step.getDragSource();
       final MouseEvent eSource = step.getLatestMouseEvent();
       final StatementListPropertyView statementListPropertyPane = this.currentUnder;
-      if (statementListPropertyPane != null) {
-        final int index = statementListPropertyPane.calculateIndex(dragSource.convertPoint(eSource.getPoint(), statementListPropertyPane));
-        if (dragModel instanceof StatementTemplateDragModel) {
-          if (IsRecursionAllowedState.getInstance().getValue()) {
-            //pass
-          } else {
-            if (dragModel instanceof ProcedureInvocationTemplateDragModel) {
-              ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (ProcedureInvocationTemplateDragModel) dragModel;
-              AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
-              if (method == getCode()) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("<html>");
-                // TODO I18n
-                sb.append("The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.");
-                final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
-                if (IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED) {
-                  sb.append("<p><p>For more information on recursion see the Window -> Preferences menu.");
-                }
-                sb.append("</html>");
-                Dialogs.showInfo("Recursion is disabled.", sb.toString());
-                return null;
-              }
-            }
-          }
-          if (this.currentUnder != null) {
-            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-            BlockStatementIndexPair blockStatementIndexPair;
-            if (propertyOwner instanceof BlockStatement) {
-              blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
-            } else {
-              blockStatementIndexPair = null;
-            }
-            rv = dragModel.getDropOperation(step, blockStatementIndexPair);
-
-            this.pushedContext = new BlockStatementIndexPairContext(blockStatementIndexPair);
-            IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
-          }
-        } else if (dragModel == Clipboard.SINGLETON.getDragModel()) {
-          if (this.currentUnder != null) {
-            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-            if (propertyOwner instanceof BlockStatement) {
-              BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
-              boolean isCopy = InputEventUtilities.isQuoteControlUnquoteDown(eSource);
-              if (isCopy) {
-                rv = CopyFromClipboardOperation.getInstance(blockStatementIndexPair);
-              } else {
-                rv = PasteFromClipboardOperation.getInstance(blockStatementIndexPair);
-              }
-            }
-          }
-        } else if (dragModel instanceof StatementDragModel) {
-          if (this.currentUnder != null) {
-            StatementDragModel statementDragModel = (StatementDragModel) dragModel;
-            final Statement statement = statementDragModel.getStatement();
-
-            Node parent = statement.getParent();
-            if (parent instanceof BlockStatement) {
-              BlockStatement blockStatement = (BlockStatement) parent;
-              final StatementListProperty prevOwner = blockStatement.statements;
-              final StatementListProperty nextOwner = this.currentUnder.getProperty();
-              final int prevIndex = prevOwner.indexOf(statement);
-              final int nextIndex = this.currentUnder.calculateIndex(dragSource.convertPoint(eSource.getPoint(), this.currentUnder));
-
-              BlockStatement prevBlockStatement = (BlockStatement) prevOwner.getOwner();
-              BlockStatement nextBlockStatement = (BlockStatement) nextOwner.getOwner();
-              if (InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
-                IDE ide = IDE.getActiveInstance();
-                Statement copy = ide.createCopy(statement);
-                rv = new InsertCopiedStatementOperation(nextBlockStatement, nextIndex, copy);
-              } else {
-                if ((prevOwner == nextOwner) && ((prevIndex == nextIndex) || (prevIndex == (nextIndex - 1)))) {
-                  rv = null;
-                } else {
-                  boolean isMultiple = eSource.isShiftDown();
-                  BlockStatementIndexPair fromLocation = new BlockStatementIndexPair(prevBlockStatement, prevIndex);
-                  BlockStatementIndexPair toLocation = new BlockStatementIndexPair(nextBlockStatement, nextIndex);
-                  if (isMultiple && ShiftDragStatementUtilities.isCandidateForEnvelop(statementDragModel)) {
-                    rv = EnvelopStatementsOperation.getInstance(fromLocation, toLocation);
-                  } else {
-                    int count;
-                    if (isMultiple) {
-                      count = ShiftDragStatementUtilities.calculateShiftMoveCount(fromLocation, toLocation);
-                    } else {
-                      count = 1;
-                    }
-                    if (count > 0) {
-                      rv = new MoveStatementOperation(fromLocation, statement, toLocation, isMultiple);
-                    } else {
-                      rv = null;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        } else if (dragModel instanceof AbstractExpressionDragModel) {
-          if (this.currentUnder != null) {
-            InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
-            BlockStatementIndexPair blockStatementIndexPair;
-            if (propertyOwner instanceof BlockStatement) {
-              blockStatementIndexPair = new BlockStatementIndexPair((BlockStatement) propertyOwner, index);
-            } else {
-              blockStatementIndexPair = null;
-            }
-            rv = dragModel.getDropOperation(step, blockStatementIndexPair);
-          }
-        }
+      if (statementListPropertyPane == null) {
+        return null;
       }
-      return rv;
+      DropSite potentialDropSite = step.getCurrentPotentialDropSite();
+      if (!(potentialDropSite instanceof BlockStatementIndexPair)) {
+        return null;
+      }
+
+      BlockStatementIndexPair dropSite = (BlockStatementIndexPair) potentialDropSite;
+      if (dragModel instanceof StatementTemplateDragModel) {
+        if (isRecursive(dragModel)) {
+          return null;
+        }
+        this.pushedContext = new BlockStatementIndexPairContext(dropSite);
+        IDE.getActiveInstance().getExpressionCascadeManager().pushContext(this.pushedContext);
+        return dragModel.getDropOperation(step, dropSite);
+      }
+      if (dragModel == Clipboard.SINGLETON.getDragModel()) {
+        return InputEventUtilities.isQuoteControlUnquoteDown(eSource)
+            ? CopyFromClipboardOperation.getInstance(dropSite)
+            : PasteFromClipboardOperation.getInstance(dropSite);
+      }
+      if (dragModel instanceof StatementDragModel) {
+        return statementDropped((StatementDragModel) dragModel, eSource, dropSite);
+      }
+      if (dragModel instanceof AbstractExpressionDragModel) {
+        return dragModel.getDropOperation(step, dropSite);
+      }
+      return null;
+    }
+
+    private boolean isRecursive(DragModel dragModel) {
+      if (IsRecursionAllowedState.getInstance().getValue()
+          || !(dragModel instanceof ProcedureInvocationTemplateDragModel)) {
+        return false;
+      }
+      ProcedureInvocationTemplateDragModel procedureInvocationTemplateDragModel = (ProcedureInvocationTemplateDragModel) dragModel;
+      AbstractMethod method = procedureInvocationTemplateDragModel.getMethod();
+      if (method == getCode()) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        // TODO I18n
+        sb.append("The code you have just dropped would create a <strong><em>recursive</em></strong> method call.<p><p>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.");
+        final boolean IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED = true;
+        if (IS_POINTING_USER_TO_RECURSION_PREFERENCE_DESIRED) {
+          sb.append("<p><p>For more information on recursion see the Window -> Preferences menu.");
+        }
+        sb.append("</html>");
+        Dialogs.showInfo("Recursion is disabled.", sb.toString());
+        return true;
+      }
+      return false;
+    }
+
+    private Triggerable statementDropped(StatementDragModel dragModel, MouseEvent eSource, BlockStatementIndexPair toLocation) {
+      final Statement statement = dragModel.getStatement();
+      Node parent = statement.getParent();
+      if (!(parent instanceof BlockStatement)) {
+        return null;
+      }
+      BlockStatement blockStatement = (BlockStatement) parent;
+      final StatementListProperty prevOwner = blockStatement.statements;
+      final StatementListProperty nextOwner = this.currentUnder.getProperty();
+      final int prevIndex = prevOwner.indexOf(statement);
+      final int index = toLocation.getIndex();
+
+      BlockStatement prevBlockStatement = (BlockStatement) prevOwner.getOwner();
+      BlockStatement nextBlockStatement = (BlockStatement) nextOwner.getOwner();
+      if (InputEventUtilities.isQuoteControlUnquoteDown(eSource)) {
+        IDE ide = IDE.getActiveInstance();
+        Statement copy = ide.createCopy(statement);
+        return new InsertCopiedStatementOperation(nextBlockStatement, index, copy);
+      }
+
+      if ((prevOwner == nextOwner) && ((prevIndex == index) || (prevIndex == (index - 1)))) {
+        return null;
+      }
+      boolean isMultiple = eSource.isShiftDown();
+      BlockStatementIndexPair fromLocation = new BlockStatementIndexPair(prevBlockStatement, prevIndex);
+      if (isMultiple && ShiftDragStatementUtilities.isCandidateForEnvelop(dragModel)) {
+        return EnvelopStatementsOperation.getInstance(fromLocation, toLocation);
+      }
+      int count = isMultiple ? ShiftDragStatementUtilities.calculateShiftMoveCount(fromLocation, toLocation) : 1;
+      if (count > 0) {
+        return new MoveStatementOperation(fromLocation, statement, toLocation, isMultiple);
+      }
+      return null;
     }
 
     @Override
