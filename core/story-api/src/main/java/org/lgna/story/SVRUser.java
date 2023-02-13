@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2023, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,43 +41,62 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-package org.lgna.story.implementation;
+package org.lgna.story;
 
-import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.lgna.story.SCamera;
+import org.lgna.common.LgnaIllegalArgumentException;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.story.implementation.VrUserImp;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiveCamera> {
-  public SymmetricPerspectiveCameraImp(SCamera abstraction) {
-    super(new SymmetricPerspectiveCamera());
-    this.abstraction = abstraction;
+public class SVRUser extends SMovableTurnable implements MutableRider {
+  private final VrUserImp implementation = new VrUserImp("VRUser", this);
+  private final SVRHeadset headset = new SVRHeadset("VRHeadset", this);
+  private final SVRHand leftHand = new SVRHand("LeftHand", this);
+  private final SVRHand rightHand = new SVRHand("RightHand", this);
+
+  @Override
+  public void setVehicle(SThing vehicle) {
+    this.getImplementation().setVehicle(vehicle != null ? vehicle.getImplementation() : null);
+  }
+
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHand getLeftHand() {
+    return leftHand;
+  }
+
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHand getRightHand() {
+    return rightHand;
+  }
+
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHeadset getHeadset() {
+    return headset;
+  }
+
+  public static List<AbstractMethod> getDeviceMethods(AbstractType<?, ?, ?> type) {
+    return type.getDeclaredMethods().stream()
+               .filter(method -> (method.getName().endsWith("Hand") || method.getName().endsWith("Headset")))
+               .collect(Collectors.toList());
   }
 
   @Override
-  public SCamera getAbstraction() {
-    return this.abstraction;
+  VrUserImp getImplementation() {
+    return this.implementation;
   }
 
-  private static class GoodVantagePointData extends PreSetVantagePointData {
-    public GoodVantagePointData(SymmetricPerspectiveCameraImp subject, EntityImp other) {
-      super(subject, createGoodVantagePointStandIn(other));
-    }
+  @MethodTemplate()
+  public void moveAndOrientToAGoodVantagePointOf(SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
+    this.implementation.animateSetTransformationToAGoodVantagePointOf(entity.getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
   }
 
-  public static StandInImp createGoodVantagePointStandIn(EntityImp other) {
-    StandInImp standIn = other.createStandIn();
-    standIn.getSgComposite().setTranslationOnly(2, 4, -8, other.getSgReferenceFrame());
-    standIn.setOrientationOnlyToPointAt(other);
-    return standIn;
-  }
-
-  public void animateSetTransformationToAGoodVantagePointOf(EntityImp other, double duration, Style style) {
-    GoodVantagePointData data = new GoodVantagePointData(this, other);
-    this.animateVantagePoint(data, duration, style);
-  }
-
-  private final SCamera abstraction;
 }
