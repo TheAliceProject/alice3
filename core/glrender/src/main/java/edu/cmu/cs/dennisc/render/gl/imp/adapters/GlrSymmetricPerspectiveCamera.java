@@ -99,8 +99,8 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
     double fovy = getActualVerticalViewingAngle(actualViewport).getAsRadians();
     double aspect = fovx / fovy;
     double f = 1 / Math.tan(fovy / 2);
-    owner.setEffectiveHorizontalViewingAngle(fovx);
-    owner.setEffectiveVerticalViewingAngle(fovy);
+    owner.setEffectiveHorizontalViewingAngle(new AngleInRadians(fovx));
+    owner.setEffectiveVerticalViewingAngle(new AngleInRadians(fovy));
 
     rv.right.set(f / aspect, 0, 0, 0);
     rv.up.set(0, f, 0, 0);
