@@ -115,10 +115,11 @@ public class SCamera extends SMovableTurnable implements MutableRider {
 
   @MethodTemplate()
   public void setHorizontalViewingAngle(Number angle) {
-    // Clear the orthogonal value. No letterboxing and last set overrides.
-    if (angle != null) {
-      getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
+    if (angle == null) {
+      return;
     }
+    // Clear the orthogonal value. Last one set overrides and we do not letterbox.
+    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
     getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
   }
 
@@ -129,10 +130,11 @@ public class SCamera extends SMovableTurnable implements MutableRider {
 
   @MethodTemplate()
   public void setVerticalViewingAngle(Number angle) {
-    // Clear the orthogonal value. No letterboxing and last set overrides.
-    if (angle != null) {
-      getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
+    if (angle == null) {
+      return;
     }
+    // Clear the orthogonal value. Last one set overrides and we do not letterbox.
+    getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
     getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
   }
 
