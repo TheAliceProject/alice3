@@ -111,12 +111,12 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
 
         @Override
         public void mouseEntered(MouseEvent e) {
-          DragComponent.this.handleMouseEntered(e);
+          DragComponent.this.handleMouseEntered();
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-          DragComponent.this.handleMouseExited(e);
+          DragComponent.this.handleMouseExited();
         }
       };
       this.mouseMotionListener = new MouseMotionListener() {
@@ -185,19 +185,15 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   protected void handleForwardButtonClicked(MouseEvent e) {
   }
 
-  private final void handleMouseEntered(MouseEvent e) {
-    if (Application.getActiveInstance().isDragInProgress()) {
-      //pass
-    } else {
+  private void handleMouseEntered() {
+    if (!ConsistentMouseDragEventQueue.getInstance().isDragActive()) {
       this.handleMouseQuoteEnteredUnquote();
     }
   }
 
-  private final void handleMouseExited(MouseEvent e) {
-    this.isDueQuoteExitedUnquote = Application.getActiveInstance().isDragInProgress();
-    if (this.isDueQuoteExitedUnquote) {
-      //pass
-    } else {
+  private void handleMouseExited() {
+    this.isDueQuoteExitedUnquote = ConsistentMouseDragEventQueue.getInstance().isDragActive();
+    if (!this.isDueQuoteExitedUnquote) {
       this.handleMouseQuoteExitedUnquote();
     }
   }
@@ -205,16 +201,15 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   private void handleLeftMouseButtonDraggedOutsideOfClickThreshold(MouseEvent e) {
     DragModel dragModel = this.getModel();
     if (dragModel != null) {
-      Application application = Application.getActiveInstance();
-      application.setDragInProgress(true);
+      ConsistentMouseDragEventQueue.getInstance().setActiveDrag(this.mouseListener);
       this.updateProxySizes();
       this.updateProxyPosition(e);
 
       JLayeredPane layeredPane = getLayeredPane();
-      layeredPane.add(this.dragProxy, new Integer(1));
+      layeredPane.add(this.dragProxy, 1);
       layeredPane.setLayer(this.dragProxy, JLayeredPane.DRAG_LAYER);
 
-      final UserActivity activity = application.acquireOpenActivity().getActivityWithoutTrigger();
+      final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
       dragStep = activity.addDragStep(dragModel, DragTrigger.createUserInstance(this, leftButtonPressedEvent));
       this.dragStep.setLatestMouseEvent(e);
       this.dragStep.fireDragStarted();
@@ -238,10 +233,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
         ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
         if (eventQueue.isClickAndClackSupported()) {
           Component peekComponent = eventQueue.peekClickAndClackComponent();
-          Component awtComponent = this.getAwtComponent();
-          if (awtComponent == peekComponent) {
-            return true;
-          }
+          return this.getAwtComponent() == peekComponent;
         }
       }
     }
@@ -256,17 +248,12 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
         this.handleMouseDraggedOutsideOfClickThreshold(e, isClickAndClack);
       }
     }
-    if (isActuallyPotentiallyDraggable()) {
-      if (isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
-        //edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
-        if (this.isWithinClickThreshold) {
-          //pass
-        } else {
-          this.updateProxyPosition(e);
-          if (this.dragStep != null) {
-            this.dragStep.handleMouseDragged(e);
-          }
-        }
+    if (isActuallyPotentiallyDraggable()
+        && (isClickAndClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e))
+        && !this.isWithinClickThreshold) {
+      this.updateProxyPosition(e);
+      if (this.dragStep != null) {
+        this.dragStep.handleMouseDragged(e);
       }
     }
   }
@@ -283,13 +270,11 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
 
   private void handleMousePressed(MouseEvent e) {
     if (MouseEventUtilities.isQuoteRightUnquoteMouseButton(e)) {
-      if (Application.getActiveInstance().isDragInProgress()) {
+      if (ConsistentMouseDragEventQueue.getInstance().isDragActive()) {
         this.handleCancel(e);
       }
     } else {
-      if (this.isInTheMidstOfClickAndClack()) {
-        //pass
-      } else {
+      if (!this.isInTheMidstOfClickAndClack()) {
         this.isWithinClickThreshold = true;
         this.mousePressedEvent = e;
         if (MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
@@ -307,38 +292,33 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
       ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
       eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
     }
-    if (isActuallyPotentiallyDraggable()) {
-      if (isClack || MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e)) {
-        if (this.isWithinClickThreshold) {
-          if (this.isClickAndClackAppropriate()) {
-            ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
-            if (eventQueue.isClickAndClackSupported()) {
-              Component peekComponent = eventQueue.peekClickAndClackComponent();
-              Component awtComponent = this.getAwtComponent();
-              if (awtComponent == peekComponent) {
-                //pass
-              } else {
-                eventQueue.pushClickAndClackMouseFocusComponent(awtComponent);
-              }
-            }
-          } else {
-            this.handleLeftMouseButtonQuoteClickedUnquote(e);
-          }
-        } else {
-          Application.getActiveInstance().setDragInProgress(false);
-          if (this.isDueQuoteExitedUnquote) {
-            this.handleMouseQuoteExitedUnquote();
-          }
-          //        this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
-          JLayeredPane layeredPane = getLayeredPane();
-          Rectangle bounds = this.dragProxy.getBounds();
-          layeredPane.remove(this.dragProxy);
-          layeredPane.repaint(bounds);
-          if (this.dragStep != null) {
-            this.dragStep.handleMouseReleased(e);
-            this.dragStep = null;
+    if (!isActuallyPotentiallyDraggable() || (!isClack && !MouseEventUtilities.isQuoteLeftUnquoteMouseButton(e))) {
+      return;
+    }
+    if (this.isWithinClickThreshold) {
+      if (this.isClickAndClackAppropriate()) {
+        ConsistentMouseDragEventQueue eventQueue = ConsistentMouseDragEventQueue.getInstance();
+        if (eventQueue.isClickAndClackSupported()) {
+          Component peekComponent = eventQueue.peekClickAndClackComponent();
+          Component awtComponent = this.getAwtComponent();
+          if (awtComponent != peekComponent) {
+            eventQueue.pushClickAndClackMouseFocusComponent(awtComponent);
           }
         }
+      } else {
+        this.handleLeftMouseButtonQuoteClickedUnquote(e);
+      }
+    } else {
+      if (this.isDueQuoteExitedUnquote) {
+        this.handleMouseQuoteExitedUnquote();
+      }
+      JLayeredPane layeredPane = getLayeredPane();
+      Rectangle bounds = this.dragProxy.getBounds();
+      layeredPane.remove(this.dragProxy);
+      layeredPane.repaint(bounds);
+      if (this.dragStep != null) {
+        this.dragStep.handleMouseReleased(e);
+        this.dragStep = null;
       }
     }
   }
@@ -346,17 +326,13 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
   private void handleMouseClicked(MouseEvent e) {
     int button = e.getButton();
     switch (button) {
-    case 4:
-      this.handleBackButtonClicked(e);
-      break;
-    case 5:
-      this.handleForwardButtonClicked(e);
-      break;
+      case 4 -> this.handleBackButtonClicked(e);
+      case 5 -> this.handleForwardButtonClicked(e);
     }
   }
 
   public void handleCancel(EventObject e) {
-    Application.getActiveInstance().setDragInProgress(false);
+    ConsistentMouseDragEventQueue.getInstance().endActiveDrag();
     if (this.isDueQuoteExitedUnquote) {
       this.handleMouseQuoteExitedUnquote();
     }
@@ -455,10 +431,8 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
     }
 
     this.dropProxy.setLocation(p);
-    if (this.dropProxy.getParent() != null) {
-      //pass
-    } else {
-      layeredPane.add(this.dropProxy, new Integer(1));
+    if (this.dropProxy.getParent() == null) {
+      layeredPane.add(this.dropProxy, 1);
       layeredPane.setLayer(this.dropProxy, JLayeredPane.DEFAULT_LAYER);
     }
   }

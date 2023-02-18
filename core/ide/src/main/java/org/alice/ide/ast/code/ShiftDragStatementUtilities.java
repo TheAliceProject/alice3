@@ -62,7 +62,9 @@ public class ShiftDragStatementUtilities {
   }
 
   private static boolean isEqualToOrAncestor(Statement fromI, Node toBlock) {
-    if (toBlock instanceof Statement) {
+    // Walk up the toBlobk parents looking for cycle if toBlock is under fromI
+    // Nodes can be Statements or BooleanExpressionBodyPair, part of a ConditionalStatement
+    if (toBlock instanceof Statement || toBlock instanceof BooleanExpressionBodyPair) {
       if (fromI == toBlock) {
         return true;
       } else {

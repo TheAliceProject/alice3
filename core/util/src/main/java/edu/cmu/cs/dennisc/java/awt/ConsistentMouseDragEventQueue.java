@@ -52,6 +52,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 
 /**
@@ -61,8 +62,22 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
   private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
   private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || SystemUtilities.isPropertyTrue("edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired");
 
+  private MouseListener activeDrag;
+
+  public void setActiveDrag(MouseListener dragComponent) {
+    activeDrag = dragComponent;
+  }
+
+  public void endActiveDrag() {
+    activeDrag = null;
+  }
+
+  public boolean isDragActive() {
+    return activeDrag != null;
+  }
+
   private static class SingletonHolder {
-    private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
+    private static final ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
   }
 
   public static ConsistentMouseDragEventQueue getInstance() {
@@ -70,9 +85,7 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
   }
 
   public static void pushIfAppropriate() {
-    if ((IS_CLICK_AND_CLACK_DESIRED == false) && SystemUtilities.isWindows()) {
-      //pass
-    } else {
+    if (IS_CLICK_AND_CLACK_DESIRED || !SystemUtilities.isWindows()) {
       Toolkit.getDefaultToolkit().getSystemEventQueue().push(SingletonHolder.instance);
     }
   }
@@ -139,20 +152,12 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
     } else {
       component = null;
     }
-    if (component != null) {
-      //pass
-    } else {
-      if (this.stack.size() > 0) {
-        component = this.stack.peek();
-      } else {
-        component = null;
-      }
+    if (component == null && this.stack.size() > 0) {
+      component = this.stack.peek();
     }
     if (component != null) {
       Component curr = e.getComponent();
-      if (curr == component) {
-        //pass
-      } else {
+      if (curr != component) {
         e = MouseEventUtilities.convertMouseEvent(curr, e, component);
       }
     }
@@ -167,7 +172,6 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
       Component source = mouseWheelEvent.getComponent();
       int id = mouseWheelEvent.getID();
       long when = mouseWheelEvent.getWhen();
-      int modifiers = mouseWheelEvent.getModifiers();
       int x = mouseWheelEvent.getX();
       int y = mouseWheelEvent.getY();
       //1.7
@@ -182,7 +186,7 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
       //double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
 
       //note:
-      modifiers = this.lastPressOrDragModifiers;
+      int modifiers = this.lastPressOrDragModifiers;
 
       // 1.7
       //= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
@@ -194,10 +198,16 @@ public class ConsistentMouseDragEventQueue extends EventQueue {
       MouseEvent mouseEvent = (MouseEvent) e;
       int id = mouseEvent.getID();
       switch (id) {
-      case MouseEvent.MOUSE_PRESSED:
-      case MouseEvent.MOUSE_DRAGGED:
-        this.lastPressOrDragModifiers = mouseEvent.getModifiers();
-        break;
+        case MouseEvent.MOUSE_PRESSED, MouseEvent.MOUSE_DRAGGED ->
+            this.lastPressOrDragModifiers = mouseEvent.getModifiers();
+        case MouseEvent.MOUSE_RELEASED -> {
+          if (activeDrag != null) {
+            MouseListener dropped = activeDrag;
+            activeDrag = null;
+            dropped.mouseReleased(mouseEvent);
+            return;
+          }
+        }
       }
 
       if (this.stack != null) {
