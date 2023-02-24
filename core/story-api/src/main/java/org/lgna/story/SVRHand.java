@@ -50,6 +50,7 @@ public class SVRHand extends SThing {
 
   public SVRHand(String name, SMovableTurnable parent) {
     implementation = new VrHandImp(name, this, parent.getImplementation());
+    implementation.setVehicle(parent.getImplementation());
   }
 
   @Override
