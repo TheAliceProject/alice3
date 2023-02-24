@@ -115,6 +115,8 @@ public class Encoder extends SourceCodeGenerator {
     methodsMissingParameterNames.put("say", new String[] {"text"});
     methodsMissingParameterNames.put("think", new String[] {"text"});
     methodsMissingParameterNames.put("setJointedModelResource", new String[] {"resource"});
+    methodsMissingParameterNames.put("setOrientationRelativeToVehicle", new String[] {"orientation"});
+    methodsMissingParameterNames.put("setPositionRelativeToVehicle", new String[] {"position"});
     methodsMissingParameterNames.put("setVehicle", new String[] {"vehicle"});
     methodsMissingParameterNames.put("setFloorPaint", new String[] {"paint"});
     methodsMissingParameterNames.put("setWallPaint", new String[] {"paint"});
