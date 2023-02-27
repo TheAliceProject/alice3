@@ -79,16 +79,14 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 
   @Override
   public T getItemAt(int index) {
-    if (index >= 0) {
-      if (index < this.getItemCount()) {
-        return this.values.get(index);
-      } else {
-        Logger.severe(index, this.getItemCount());
-        return null;
-      }
-    } else {
-      return null;
+    int itemCount = getItemCount();
+    if (index >= 0 && index < itemCount) {
+      return this.values.get(index);
     }
+    if (itemCount > 0) {
+      Logger.severe("Invalid index for nonempty list: getItem(" + index + ") with count of " + itemCount);
+    }
+    return null;
   }
 
   @Override
