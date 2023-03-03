@@ -104,18 +104,7 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
-import org.lgna.story.implementation.BillboardImp;
-import org.lgna.story.implementation.ConeImp;
-import org.lgna.story.implementation.CylinderImp;
-import org.lgna.story.implementation.DiscImp;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.GroundImp;
-import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.implementation.ModelImp;
-import org.lgna.story.implementation.SceneImp;
-import org.lgna.story.implementation.SphereImp;
-import org.lgna.story.implementation.TextModelImp;
-import org.lgna.story.implementation.TorusImp;
+import org.lgna.story.implementation.*;
 import org.lgna.story.resources.JointedModelResource;
 
 import javax.swing.BorderFactory;
@@ -328,6 +317,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
             return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp) entityImp, ((CylinderImp) entityImp).length, state);
           } else if (entityImp instanceof ConeImp) {
             return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp) entityImp, ((ConeImp) entityImp).length, state);
+          }
+        } else if (setter.getName().equalsIgnoreCase("setScale")) {
+          if (entityImp instanceof VrUserImp) {
+            return new DoublePropertyAdapter<VrUserImp>("Scale", (VrUserImp) entityImp, ((VrUserImp) entityImp).scale, state);
           }
         } else {
           System.out.println("Unknown setter: " + setter.getName());

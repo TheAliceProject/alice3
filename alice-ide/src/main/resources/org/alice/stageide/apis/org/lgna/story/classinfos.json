@@ -2690,6 +2690,22 @@
           "entity",
           "details"
         ]
+      },
+      {
+        "name": "getScale",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setScale",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetScale$Detail;"
+        ],
+        "parameterNames": [
+          "scale",
+          "details"
+        ]
       }
     ]
   },

@@ -44,8 +44,10 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 import org.lgna.story.SVRUser;
@@ -62,16 +64,51 @@ public class VrUserImp extends TransformableImp {
     rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
   }
 
+  public void animateSetScale(double newScale, double duration, Style style) {
+    double actualDuration = adjustDurationIfNecessary(duration);
+    if (EpsilonUtilities.isWithinReasonableEpsilon(actualDuration, 0.0)) {
+      scale.setValue(newScale);
+      applyAnimation();
+    } else {
+      class ScaleAnimation extends DoubleAnimation {
+        private ScaleAnimation(double duration, Style style, double scale0, double scale1) {
+          super(duration, style, scale0, scale1);
+        }
+
+        @Override
+        protected void updateValue(Double v) {
+          scale.setValue(v);
+          applyAnimation();
+        }
+      }
+      perform(new ScaleAnimation(duration, style, scale.getValue(), newScale));
+    }
+
+  }
+
   public void animateSetTransformationToAGoodVantagePointOf(EntityImp other, double duration, Style style) {
     PreSetVantagePointData data =
         new PreSetVantagePointData(this, SymmetricPerspectiveCameraImp.createGoodVantagePointStandIn(other));
-    this.animateVantagePoint(data, duration, style);
+    animateVantagePoint(data, duration, style);
   }
 
   @Override
   public SVRUser getAbstraction() {
-    return this.abstraction;
+    return abstraction;
   }
-
   private final SVRUser abstraction;
+
+  Double userScale = 1.0;
+  public final DoubleProperty scale = new DoubleProperty(VrUserImp.this) {
+    @Override
+    public Double getValue() {
+      return VrUserImp.this.userScale;
+    }
+
+    @Override
+    protected void handleSetValue(Double value) {
+      userScale = value;
+      abstraction.getHeadset().getImplementation().setScale(value);
+    }
+  };
 }

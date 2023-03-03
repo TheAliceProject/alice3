@@ -44,6 +44,7 @@
 package org.lgna.story;
 
 import org.lgna.common.LgnaIllegalArgumentException;
+import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.AbstractMethod;
@@ -91,6 +92,19 @@ public class SVRUser extends SMovableTurnable implements MutableRider {
   @Override
   VrUserImp getImplementation() {
     return this.implementation;
+  }
+
+
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getScale() {
+    return getImplementation().scale.getValue();
+  }
+
+  @MethodTemplate()
+  public void setScale(Number scale, SetScale.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsPositive(scale, 0);
+    getImplementation().animateSetScale(scale.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
   }
 
   @MethodTemplate()

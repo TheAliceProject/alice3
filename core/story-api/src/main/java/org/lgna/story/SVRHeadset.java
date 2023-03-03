@@ -57,7 +57,7 @@ public class SVRHeadset extends SThing {
   }
 
   @Override
-  VrHeadsetImp getImplementation() {
+  public VrHeadsetImp getImplementation() {
     return implementation;
   }
 
