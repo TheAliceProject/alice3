@@ -54,7 +54,7 @@ import java.awt.LayoutManager;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
+public class DefaultRadioButtons<E> extends ItemSelectablePanel<E> {
   private static final GridBagConstraints GBC_VERTICAL;
   private static final GridBagConstraints GBC_HORIZONTAL;
 

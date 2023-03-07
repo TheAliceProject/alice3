@@ -54,12 +54,12 @@ import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ToolPaletteCoreComposite;
-import org.lgna.croquet.views.AbstractRadioButtons;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.DefaultRadioButtons;
 import org.lgna.croquet.views.FlowPanel;
 import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.ItemSelectablePanel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.MigPanel;
@@ -99,7 +99,7 @@ public class SideView extends BorderPanel {
 
     MigPanel migPanel = new MigPanel(null, "fill, insets 0, aligny top", "", "");
 
-    AbstractRadioButtons<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>(composite.getHandleStyleState(), false) {
+    ItemSelectablePanel<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>(composite.getHandleStyleState(), false) {
       @Override
       protected BooleanStateButton<?> createButtonForItemSelectedState(HandleStyle item, BooleanState itemSelectedState) {
         PushButton b = itemSelectedState.createPushButton();

@@ -65,7 +65,7 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public class List<T> extends ItemSelectable<JList, T, SingleSelectListState<T, ?>> {
+public class List<T> extends ViewController<JList, SingleSelectListState<T, ?>> {
   public enum LayoutOrientation {
     VERTICAL(JList.VERTICAL), VERTICAL_WRAP(JList.VERTICAL_WRAP), HORIZONTAL_WRAP(JList.HORIZONTAL_WRAP);
     private int internal;

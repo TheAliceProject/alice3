@@ -57,9 +57,9 @@ import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CustomRadioButtons;
 import org.lgna.croquet.views.FlowPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.ItemSelectablePanel;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.project.ast.UserField;
 
@@ -109,7 +109,7 @@ public abstract class MarkersView extends BorderPanel {
     }
   }
 
-  private class MarkerListView extends CustomRadioButtons<UserField> {
+  private class MarkerListView extends ItemSelectablePanel<UserField> {
     private class MarkerPopupButton extends PopupButton {
       private final UserField field;
 
