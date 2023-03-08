@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
-import org.alice.stageide.sceneeditor.side.views.ObjectMarkersView;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.lgna.croquet.Operation;
@@ -52,7 +51,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class ObjectMarkersToolPalette extends MarkersToolPalette<ObjectMarkersView> {
+public class ObjectMarkersToolPalette extends MarkersToolPalette {
   public ObjectMarkersToolPalette() {
     super(UUID.fromString("00796918-1721-4618-ae51-24b2e38eab05"), new ObjectMarkerFieldData());
   }
@@ -70,10 +69,5 @@ public class ObjectMarkersToolPalette extends MarkersToolPalette<ObjectMarkersVi
   @Override
   public Operation getAddOperation() {
     return AddObjectMarkerFieldComposite.getInstance().getLaunchOperation();
-  }
-
-  @Override
-  protected ObjectMarkersView createView() {
-    return new ObjectMarkersView(this);
   }
 }
