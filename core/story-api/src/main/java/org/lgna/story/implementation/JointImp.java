@@ -98,11 +98,6 @@ public abstract class JointImp extends AbstractTransformableImp {
   protected abstract void copyOnto(JointImp newJoint);
 
   @Override
-  public void applyAnimation() {
-    //TODO apply collected per frame animations
-  }
-
-  @Override
   protected void postCheckSetVehicle(EntityImp vehicle) {
     //note: do not call super
     this.setSgVehicle(vehicle != null ? vehicle.getSgComposite() : null);
