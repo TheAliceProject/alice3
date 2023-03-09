@@ -56,6 +56,7 @@ public class StoryApiDirectoryUtilities {
   private static final String MODEL_GALLERY_NAME = "application/gallery";
   private static final String SOUND_GALLERY_NAME = "application/sound-gallery";
   private static final String STARTER_PROJECTS_NAME = "application/starter-projects";
+  private static final String INTERNAL_MODELS_NAME = "application/internal-models";
 
   private StoryApiDirectoryUtilities() {
     throw new AssertionError();
@@ -131,30 +132,24 @@ public class StoryApiDirectoryUtilities {
   }
 
   public static File getSoundGalleryDirectory() {
-    try {
-      File installDirectory = getInstallDirectory();
-      if (installDirectory != null) {
-        File soundGalleryDirectory = new File(installDirectory, SOUND_GALLERY_NAME);
-        if (soundGalleryDirectory.isDirectory()) {
-          return soundGalleryDirectory;
-        } else {
-          throw new RuntimeException(); //fallback
-        }
-      } else {
-        throw new NullPointerException(); //fallback
-      }
-    } catch (Throwable t) {
-      return getFallbackDirectory();
-    }
+    return getDirectory(SOUND_GALLERY_NAME);
   }
 
   public static File getStarterProjectsDirectory() {
+    return getDirectory(STARTER_PROJECTS_NAME);
+  }
+
+  public static File getInternalModelsDirectory() {
+    return getDirectory(INTERNAL_MODELS_NAME);
+  }
+
+  private static File getDirectory(String name) {
     try {
       File installDirectory = getInstallDirectory();
       if (installDirectory != null) {
-        File starterProjectsDirectory = new File(installDirectory, STARTER_PROJECTS_NAME);
-        if (starterProjectsDirectory.isDirectory()) {
-          return starterProjectsDirectory;
+        File soundGalleryDirectory = new File(installDirectory, name);
+        if (soundGalleryDirectory.isDirectory()) {
+          return soundGalleryDirectory;
         } else {
           throw new RuntimeException();
         }
