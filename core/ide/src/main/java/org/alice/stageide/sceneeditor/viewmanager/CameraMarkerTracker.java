@@ -128,14 +128,14 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       this.doEpilogue = true;
     }
     if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
-      startTrackingCamera(CameraMarkerTracker.this.perspectiveCamera, CameraMarkerTracker.this.activeMarker);
+      startTrackingCamera(perspectiveCamera, activeMarker);
     } else {
       Transformable cameraParent = (Transformable) this.perspectiveCamera.getParent();
       this.pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
         @Override
         protected void epilogue() {
-          if (CameraMarkerTracker.this.doEpilogue) {
-            startTrackingCamera(CameraMarkerTracker.this.perspectiveCamera, CameraMarkerTracker.this.activeMarker);
+          if (doEpilogue) {
+            startTrackingCamera(perspectiveCamera, activeMarker);
           }
         }
       };
@@ -173,19 +173,19 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if (this.activeMarker instanceof OrthographicCameraMarkerImp) {
       OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) this.activeMarker;
       sceneEditor.switchToOrthographicCamera();
-      Transformable cameraParent = (Transformable) CameraMarkerTracker.this.orthographicCamera.getParent();
-      CameraMarkerTracker.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
-      cameraParent.setTransformation(CameraMarkerTracker.this.activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), CameraMarkerTracker.this.orthographicCamera.getRoot());
+      Transformable cameraParent = (Transformable) orthographicCamera.getParent();
+      orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
+      cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), orthographicCamera.getRoot());
       startTrackingCamera(this.orthographicCamera, orthoMarker);
       cameraParent.notifyTransformationListeners();
     } else {
       PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) this.activeMarker;
       sceneEditor.switchToPerspectiveCamera();
-      Transformable cameraParent = (Transformable) CameraMarkerTracker.this.perspectiveCamera.getParent();
+      Transformable cameraParent = (Transformable) perspectiveCamera.getParent();
       if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
         animateToTargetView();
       } else {
-        cameraParent.setTransformation(CameraMarkerTracker.this.activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), CameraMarkerTracker.this.perspectiveCamera.getRoot());
+        cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), perspectiveCamera.getRoot());
         startTrackingCamera(this.perspectiveCamera, perspectiveMarker);
         cameraParent.notifyTransformationListeners();
       }
