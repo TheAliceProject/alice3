@@ -479,7 +479,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private double clampPictureValue(double val) {
     final double PICTURE_CLAMP_MAX = 100.0;
     final double PICTURE_CLAMP_MIN = 1.0;
-    return clampValue(PICTURE_CLAMP_MAX, PICTURE_CLAMP_MIN, val);
+    return clampValue(PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX, val);
   }
 
   private double clampValue(double min, double max, double val) {
