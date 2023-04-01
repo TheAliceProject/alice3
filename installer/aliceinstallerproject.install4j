@@ -970,9 +970,7 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" />
     </windows>
@@ -984,8 +982,6 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle usePack200="false" bundleUrl="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" />
@@ -993,7 +989,6 @@
     <unixInstaller name="Unix Installer Offline" id="111" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_installer_${compiler:sys.version}" installDir="Alice3" downloadURL="http://www.alice.org/downloads/installerOnlineData">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
@@ -1003,8 +998,6 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
     </macosArchive>
@@ -1013,14 +1006,12 @@
         <entry location="platform/linux" />
         <entry location="platform/linux-armv6hf" />
         <entry location="platform/linux-amd64" />
-        <entry location="platform/linux-i586" />
         <entry location="platform/macosx" />
       </exclude>
     </windowsArchive>
     <linuxDeb name="Linux Deb Archive" id="1294" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
@@ -1031,7 +1022,6 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     <unixArchive name="Unix Archive" id="1295" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />
@@ -1039,7 +1029,6 @@ ln -s "/opt/alice3/${compiler:sys.fullName}" "/opt/alice3/${compiler:sys.shortNa
     <linuxRPM name="Linux RPM" id="1296" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}">
       <exclude>
         <entry location="platform/macosx" />
-        <entry location="platform/win32" />
         <entry location="platform/win64" />
       </exclude>
       <jreBundle jreBundleSource="none" />

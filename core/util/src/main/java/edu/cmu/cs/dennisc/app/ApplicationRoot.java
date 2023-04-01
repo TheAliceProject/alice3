@@ -132,14 +132,9 @@ public class ApplicationRoot {
       sb.append("armv6hf/");
       return;
     }
-    switch (bitCount) {
-    case 32:
-      sb.append("i586/");
-      break;
-    case 64:
+    if (bitCount == 64) {
       sb.append("amd64/");
-      break;
-    default:
+    } else {
       throw new RuntimeException(System.getProperty("sun.arch.data.model"));
     }
   }

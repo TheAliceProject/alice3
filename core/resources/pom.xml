@@ -114,22 +114,6 @@
                   <outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
 
-                <!-- linux-i586 -->
-                <artifactItem>
-                  <groupId>org.jogamp.jogl</groupId>
-                  <artifactId>jogl-all</artifactId>
-                  <version>${jogl.version}</version>
-                  <classifier>natives-linux-i586</classifier>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.jogamp.gluegen</groupId>
-                  <artifactId>gluegen-rt</artifactId>
-                  <version>${gluegen.version}</version>
-                  <classifier>natives-linux-i586</classifier>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
-                </artifactItem>
-
                 <!-- linux-armv6hf -->
                 <artifactItem>
                   <groupId>org.jogamp.jogl</groupId>
@@ -160,22 +144,6 @@
                   <version>${gluegen.version}</version>
                   <classifier>natives-macosx-universal</classifier>
                   <outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
-                </artifactItem>
-
-                <!-- win32 -->
-                <artifactItem>
-                  <groupId>org.jogamp.jogl</groupId>
-                  <artifactId>jogl-all</artifactId>
-                  <version>${jogl.version}</version>
-                  <classifier>natives-windows-i586</classifier>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.jogamp.gluegen</groupId>
-                  <artifactId>gluegen-rt</artifactId>
-                  <version>${gluegen.version}</version>
-                  <classifier>natives-windows-i586</classifier>
-                  <outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
                 </artifactItem>
 
                 <!-- win64 -->
