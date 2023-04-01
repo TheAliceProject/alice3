@@ -78,9 +78,7 @@ import java.awt.Dimension;
         od = null;
       }
     }
-    if (od != null) {
-      //pass
-    } else {
+    if (od == null) {
       Logger.severe(callback);
       od = new SoftwareOffscreenDrawable(callback);
       try {

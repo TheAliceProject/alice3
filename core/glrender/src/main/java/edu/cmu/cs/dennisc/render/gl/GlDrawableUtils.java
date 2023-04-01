@@ -181,13 +181,15 @@ public class GlDrawableUtils {
   public static boolean canCreateGlPixelBuffer() {
     GLProfile glProfile = GLProfile.getDefault();
     GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
-    return glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile);
+    return glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile)
+        || glDrawableFactory.canCreateFBO(glDrawableFactory.getDefaultDevice(), glProfile);
   }
 
   public static GLOffscreenAutoDrawable createGlPixelBuffer(GLCapabilities glCapabilities, GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, GLContext share) {
     GLProfile glProfile = GLProfile.getDefault();
     GLDrawableFactory glDrawableFactory = GLDrawableFactory.getFactory(glProfile);
-    if (glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile)) {
+    if (glDrawableFactory.canCreateGLPbuffer(glDrawableFactory.getDefaultDevice(), glProfile)
+        || glDrawableFactory.canCreateFBO(glDrawableFactory.getDefaultDevice(), glProfile)) {
       GLOffscreenAutoDrawable buffer = glDrawableFactory.createOffscreenAutoDrawable(glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height); //, share );
 
       // This is a work around for Linux users.
@@ -200,7 +202,7 @@ public class GlDrawableUtils {
       return buffer;
     } else {
       //      throw new RuntimeException("cannot create pbuffer");
-      Logger.warning("GLDrawableFactory.canCreateGLPbuffer() returned false. This may cause errors in rendering."
+      Logger.warning("GLDrawableFactory.canCreateGLPbuffer() and canCreateFBO() returned false. This may cause errors in rendering."
           + " From the JOGL documentation: Some older graphics cards do not have this capability, as well as some new GL"
           + " implementation, i.e. OpenGL 3 core on OSX.");
       return null;
