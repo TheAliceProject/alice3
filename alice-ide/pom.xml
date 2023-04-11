@@ -112,46 +112,18 @@
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>entry-point</id>
+            <id>alice-ide</id>
             <goals>
               <goal>java</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <!-- systemProperties and mainClass are for exec:java only. They will not work with the exec goal, exec:exec -->
+          <!-- systemProperties and mainClass are for exec:java only. They will not work with exec:exec. -->
           <systemProperties>
-            <systemProperty>
-              <key>swing.aatext</key>
-              <value>true</value>
-            </systemProperty>
             <systemProperty>
               <key>org.alice.ide.rootDirectory</key>
               <value>../core/resources/target/distribution</value>
-            </systemProperty>
-            <systemProperty>
-              <key>com.apple.mrj.application.apple.menu.about.name</key>
-              <value>Alice3</value>
-            </systemProperty>
-            <systemProperty>
-              <key>edu.cmu.cs.dennisc.java.util.logging.Logger.Level</key>
-              <value>WARNING</value>
-            </systemProperty>
-            <systemProperty>
-              <key>org.alice.ide.internalTesting</key>
-              <value>true</value>
-            </systemProperty>
-            <systemProperty>
-              <key>org.lgna.croquet.Element.isIdCheckDesired</key>
-              <value>true</value>
-            </systemProperty>
-            <systemProperty>
-              <key>jogamp.gluegen.UseTempJarCache</key>
-              <value>false</value>
-            </systemProperty>
-            <systemProperty>
-              <key>org.alice.stageide.isCrashDetectionDesired</key>
-              <value>false</value>
             </systemProperty>
           </systemProperties>
           <mainClass>org.alice.stageide.EntryPoint</mainClass>
