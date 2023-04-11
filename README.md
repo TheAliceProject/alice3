@@ -79,7 +79,7 @@ The working directory should be the root directory where you checked the Alice 3
 The VM options are:
 
     -ea
-    -splash:"./core/resources/target/distribution/application/SplashScreen.png"
+    -splash:"./installer/installerFiles/SplashScreen.png"
     -Xmx1024m
     -Dswing.aatext=true
     -Dorg.alice.ide.rootDirectory="./core/resources/target/distribution"
