@@ -33,34 +33,27 @@ To ensure the lfs files are available locally:
 
     git lfs pull 
 
-Compile and jar the Alice code.
+Compile the code, build the jars, and install them in the local mvn repository.
 
-    mvn compile
+    mvn -Dinstall4j.skip compile install
 
-or, to also build the NetBeans plugin:
+The install step will also build the NetBeans plugin in `{alice3}/netbeans/target/`
 
-    mvn -Dinstall4j.skip install
-
-And, if you want to use Install4J to build the installers:
+If you want to use Install4J to build the installers drop the skip flag:
 
         mvn install
 
-## Executing, testing, and building
+## Executing and testing
 
-After successfully compiling, you can launch the Alice IDE
+After successfully compiling and installing the Alice jars into the mvn repository, you can launch the Alice IDE
 
     cd alice-ide
-    mvn exec:java -Dentry-point
+    mvn exec:java -Dalice-ide
 
 Run unit tests
 
     cd ${alice3}
     mvn test
-
-Build the Alice installers, which  requires Install4J 7:
-
-    cd ${alice3}
-    mvn install
 
 ## IDE
 **IntelliJ IDEA** is suggested for coding/building Alice 3. There is a free community edition
@@ -86,7 +79,7 @@ The working directory should be the root directory where you checked the Alice 3
 The VM options are:
 
     -ea
-    -splash:"./core/resources/target/distribution/application/SplashScreen.png"
+    -splash:"./installer/installerFiles/SplashScreen.png"
     -Xmx1024m
     -Dswing.aatext=true
     -Dorg.alice.ide.rootDirectory="./core/resources/target/distribution"
