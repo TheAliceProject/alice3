@@ -116,9 +116,7 @@ public abstract class EventObjectTrigger<E extends EventObject> extends Trigger 
   public void showPopupMenu(PopupMenu popupMenu) {
     Point pt = this.getPoint();
     Component invoker = this.getComponent();
-    if (invoker.isShowing()) {
-      //pass
-    } else {
+    if (!invoker.isShowing()) {
       invoker = null;
     }
     PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), invoker, pt);

@@ -61,9 +61,7 @@ public class OneShotMenuModel extends PredeterminedMenuModel {
   public static OneShotMenuModel getInstance(InstanceFactory instanceFactory) {
     synchronized (map) {
       OneShotMenuModel rv = map.get(instanceFactory);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new OneShotMenuModel(instanceFactory, OneShotUtilities.createMenuItemPrepModels(instanceFactory));
         map.put(instanceFactory, rv);
       }
