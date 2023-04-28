@@ -94,7 +94,7 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
 import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.oneshot.OneShotMenuModel;
+import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget;
@@ -781,7 +781,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       }
       if (field != null) {
         InstanceFactory instanceFactory = ThisFieldAccessFactory.getInstance(field);
-        OneShotMenuModel.getInstance(instanceFactory).getPopupPrepModel().fire(InputEventTrigger.createUserActivity(clickInput.getInputEvent()));
+
+        DynamicOneShotMenuModel.getInstance().getPopupPrepModel().fire(InputEventTrigger.createUserActivity(clickInput.getInputEvent()));
       } else {
         Logger.severe(entityImp);
       }

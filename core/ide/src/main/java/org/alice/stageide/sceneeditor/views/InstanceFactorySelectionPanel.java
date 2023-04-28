@@ -57,7 +57,7 @@ import org.alice.ide.instancefactory.ThisInstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.oneshot.OneShotMenuModel;
+import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.triggers.MouseEventTrigger;
@@ -340,7 +340,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
     }
 
     protected void handleAltTriggered(MouseEvent e) {
-      OneShotMenuModel.getInstance(this.instanceFactory).getPopupPrepModel().fire(MouseEventTrigger.createUserActivity(e));
+      DynamicOneShotMenuModel.getInstance().getPopupPrepModel().fire(MouseEventTrigger.createUserActivity(e));
     }
 
     @Override
