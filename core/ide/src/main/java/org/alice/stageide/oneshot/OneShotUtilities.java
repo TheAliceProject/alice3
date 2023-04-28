@@ -44,13 +44,16 @@ package org.alice.stageide.oneshot;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.ide.ast.rename.RenameFieldComposite;
+import org.alice.ide.croquet.models.ast.CenterCameraOnOperation;
 import org.alice.ide.croquet.models.ast.DeleteFieldOperation;
 import org.alice.ide.croquet.models.ast.RevertFieldOperation;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SCamera;
+import org.lgna.story.SGround;
 import org.lgna.story.SScene;
 
 import java.util.List;
@@ -72,9 +75,7 @@ public class OneShotUtilities {
       UserField field = thisFieldAccessFactory.getField();
       models.add(RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
       //Prevent users from deleting the camera or the scene
-      if (field.getValueType().isAssignableTo(SCamera.class) || field.getValueType().isAssignableTo(SScene.class)) {
-        //pass
-      } else {
+      if (!field.getValueType().isAssignableTo(SCamera.class) && !field.getValueType().isAssignableTo(SScene.class)) {
         models.add(DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
       }
       //      if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
@@ -82,6 +83,15 @@ public class OneShotUtilities {
       //        models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
       //      }
       models.add(RevertFieldOperation.getInstance(field).getMenuItemPrepModel());
+
+      if (!StorytellingSceneEditor.getInstance().isStartingCameraView() ) {
+        if (!field.getValueType().isAssignableTo(SCamera.class) &&
+              !field.getValueType().isAssignableTo(SGround.class)) {
+          models.add(CenterCameraOnOperation.getInstance(field).getMenuItemPrepModel());
+        }
+      } else {
+        // TODO can we use the GetAGoodLookAt logic here to do something similar for the StartingCamera?
+      }
     }
     return models;
   }
