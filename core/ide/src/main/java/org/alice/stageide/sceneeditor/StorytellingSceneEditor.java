@@ -432,7 +432,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (field instanceof UserField) {
         UserField uf = (UserField) field;
         setSelectedField(uf.getDeclaringType(), uf);
-        triggerCameraChange(expression);
       }
     } else if (expression instanceof MethodInvocation) {
       setSelectedExpression(expression);
