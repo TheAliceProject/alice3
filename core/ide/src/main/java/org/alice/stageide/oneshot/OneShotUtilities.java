@@ -84,9 +84,9 @@ public class OneShotUtilities {
       //      }
       models.add(RevertFieldOperation.getInstance(field).getMenuItemPrepModel());
 
-      if (!StorytellingSceneEditor.getInstance().isStartingCameraView() ) {
-        if (!field.getValueType().isAssignableTo(SCamera.class) &&
-              !field.getValueType().isAssignableTo(SGround.class)) {
+      if (!StorytellingSceneEditor.getInstance().isStartingCameraView()) {
+        if (!field.getValueType().isAssignableTo(SCamera.class)
+              && !field.getValueType().isAssignableTo(SGround.class)) {
           models.add(CenterCameraOnOperation.getInstance(field).getMenuItemPrepModel());
         }
       } else {

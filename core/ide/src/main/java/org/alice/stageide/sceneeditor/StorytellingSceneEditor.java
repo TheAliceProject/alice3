@@ -506,7 +506,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     // Top
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.x = targetTranslation.x;
-    topTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Y_OFFSET) : DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
+    topTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
     topTransform.translation.z = targetTranslation.z;
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
