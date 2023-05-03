@@ -94,7 +94,7 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState;
 import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.oneshot.OneShotMenuModel;
+import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget;
@@ -432,7 +432,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       if (field instanceof UserField) {
         UserField uf = (UserField) field;
         setSelectedField(uf.getDeclaringType(), uf);
-        triggerCameraChange(expression);
       }
     } else if (expression instanceof MethodInvocation) {
       setSelectedExpression(expression);
@@ -447,17 +446,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       }
     }
     getPropertyPanel().setSelectedInstance(instanceFactory);
-  }
-
-  private void triggerCameraChange(Expression selectedFieldExpression) {
-    Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression(selectedFieldExpression);
-    if (instanceInJava instanceof SThing) {
-      if ((instanceInJava instanceof SCamera) || (instanceInJava instanceof SGround)) {
-        return;
-      }
-      EntityImp implementation = EmployeesOnly.getImplementation((SThing) instanceInJava);
-      updateCameraView(implementation);
-    }
   }
 
   public void setSelectedExpression(Expression expression) {
@@ -486,55 +474,66 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     return Math.min(max, Math.max(min, val));
   }
 
-  private void updateCameraView(EntityImp targetImplementation) {
-    AxisAlignedBox alignedBox = targetImplementation.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
+
+  public void centerCameraOn(UserField field) {
+    // Changes the markers for the layout camera and the 3 ortho camera views, not just whatever marker is active.
+    Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(field);
+    EntityImp target = EmployeesOnly.getImplementation((SThing) instanceInJava);
+    AxisAlignedBox alignedBox = target.getDynamicAxisAlignedMinimumBoundingBox(org.lgna.story.implementation.AsSeenBy.SCENE);
     double targetHeight = alignedBox.getHeight();
     double targetWidth = alignedBox.getWidth();
     double targetDepth = alignedBox.getDepth();
-    AffineMatrix4x4 targetTransform = targetImplementation.getAbsoluteTransformation();
-    ClippedZPlane picturePlane = new ClippedZPlane();
+    Point3 targetTranslation = alignedBox.getCenter();
 
     // Update layout camera marker
+    // TODO- it would be better if this logic took our current location into account for the least disruptive move.
     AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
-    layoutTransform.translation.x = targetTransform.translation.x;
-    layoutTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Y_OFFSET) : DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
+    layoutTransform.translation.x = targetTranslation.x;
+    layoutTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Y_OFFSET) : DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
     // targetHeight provides more accurate z offset compared to targetDepth
-    layoutTransform.translation.z = targetTransform.translation.z - (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Z_OFFSET) : DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
+    layoutTransform.translation.z = targetTranslation.z - (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Z_OFFSET) : DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
     layoutTransform.orientation.up.set(0, 0, 1);
     layoutTransform.orientation.right.set(-1, 0, 0);
     layoutTransform.orientation.backward.set(0, 1, 0);
     layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
     layoutSceneMarkerImp.setLocalTransformation(layoutTransform);
 
-    // Update Orthographic camera marker
+    // Update Orthographic camera markers
+    // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
+    // PicturePlane controls how much of the scene is in our view, aka 'zoom'
+    ClippedZPlane picturePlane = new ClippedZPlane();
+
+    // Top
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
-    topTransform.translation.x = targetTransform.translation.x;
-    topTransform.translation.y = targetTransform.translation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
-    topTransform.translation.z = targetTransform.translation.z;
+    topTransform.translation.x = targetTranslation.x;
+    topTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
+    topTransform.translation.z = targetTranslation.z;
     topTransform.orientation.up.set(0, 0, 1);
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
     topOrthoMarkerImp.setLocalTransformation(topTransform);
     picturePlane.setCenter(0, 0);
-    picturePlane.setHeight(clampPictureValue(4 * Math.max(targetDepth, targetWidth)));
+    picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetWidth)));
     topOrthoMarkerImp.setPicturePlane(picturePlane);
 
+    // Side
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
-    sideTransform.translation.x = targetTransform.translation.x + (targetWidth != 0 ? clampCameraValue(targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET);
-    sideTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
-    sideTransform.translation.z = targetTransform.translation.z;
+    sideTransform.translation.x = targetTranslation.x + (targetWidth != 0 ? clampCameraValue(targetWidth * DEFAULT_SIDE_CAMERA_X_OFFSET) : DEFAULT_SIDE_CAMERA_X_OFFSET);
+    sideTransform.translation.y = targetTranslation.y;
+    sideTransform.translation.z = targetTranslation.z;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     sideOrthoMarkerImp.setLocalTransformation(sideTransform);
-    picturePlane.setHeight(clampPictureValue(4 * Math.max(targetDepth, targetHeight)));
+    picturePlane.setHeight(clampPictureValue(Math.max(targetDepth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetHeight)));
     sideOrthoMarkerImp.setPicturePlane(picturePlane);
 
+    // Front
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
-    frontTransform.translation.x = targetTransform.translation.x;
-    frontTransform.translation.y = targetTransform.translation.y + targetHeight / 2;
-    frontTransform.translation.z = targetTransform.translation.z - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET);
+    frontTransform.translation.x = targetTranslation.x;
+    frontTransform.translation.y = targetTranslation.y;
+    frontTransform.translation.z = targetTranslation.z - (targetDepth != 0 ? clampCameraValue(targetDepth * DEFAULT_FRONT_CAMERA_Z_OFFSET) : DEFAULT_FRONT_CAMERA_Z_OFFSET);
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     frontOrthoMarkerImp.setLocalTransformation(frontTransform);
-    picturePlane.setHeight(clampPictureValue(4 * Math.max(targetHeight, targetWidth)));
+    picturePlane.setHeight(clampPictureValue(Math.max(targetWidth, RunComposite.WIDTH_TO_HEIGHT_RATIO * targetHeight)));
     frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     // Update camera to the latest markers
@@ -742,7 +741,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     markerList.setSelectedIndex(markerList.indexOf(objectMarkerField));
   }
 
-  public void setSelectedCameraMarker(UserField cameraMarkerField) {
+ private void setSelectedCameraMarker(UserField cameraMarkerField) {
     RefreshableDataSingleSelectListState<UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
     markerList.setSelectedIndex(markerList.indexOf(cameraMarkerField));
   }
@@ -782,7 +781,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       }
       if (field != null) {
         InstanceFactory instanceFactory = ThisFieldAccessFactory.getInstance(field);
-        OneShotMenuModel.getInstance(instanceFactory).getPopupPrepModel().fire(InputEventTrigger.createUserActivity(clickInput.getInputEvent()));
+
+        DynamicOneShotMenuModel.getInstance().getPopupPrepModel().fire(InputEventTrigger.createUserActivity(clickInput.getInputEvent()));
       } else {
         Logger.severe(entityImp);
       }
@@ -1008,7 +1008,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       this.setSelectedObjectMarker(null);
 
       for (AbstractField field : sceneField.getValueType().getDeclaredFields()) {
-        // Turn markers on, so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene.
+        // Turn markers on, so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't seen.
         // we have to manually make them visible to see them in the scene editor)
         if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);

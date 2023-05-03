@@ -399,6 +399,16 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 
   @Override
   public String toString() {
-    return AxisAlignedBox.class.getName() + "[minimum=" + this.minimum + ",maximum=" + this.maximum + "]";
+    return AxisAlignedBox.class.getName()
+           + "\n[minimum= " + this.minimum
+           + ",\n maximum= " + this.maximum
+           + ",\n diagonal= " + this.getDiagonal()
+           + ",\n size= " + this.getSize()
+           + ",\n volume= " + this.getVolume()
+           + ",\n center= " + this.getCenter()
+           + ",\n height= " + this.getHeight()
+           + ",\n width= " + this.getWidth()
+           + ",\n depth= " + this.getDepth()
+           + "]";
   }
 }

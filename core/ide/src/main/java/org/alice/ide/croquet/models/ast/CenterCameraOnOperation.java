@@ -1,5 +1,17 @@
+package org.alice.ide.croquet.models.ast;
+
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2023, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,84 +53,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-package org.lgna.croquet.triggers;
-
-import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
-import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.AwtComponentView;
-import org.lgna.croquet.views.PopupMenu;
-import org.lgna.croquet.views.ViewController;
-
-import java.awt.Component;
-import java.awt.Point;
-import java.util.EventObject;
-
 /**
- * @author Dennis Cosgrove
+ * @author jsmith2
+ *
  */
-public abstract class EventObjectTrigger<E extends EventObject> extends Trigger {
-  private final transient ViewController<?, ?> viewController;
-  private final transient E event;
+public class CenterCameraOnOperation extends ActionOperation {
+    private static Map<UserField, CenterCameraOnOperation> map = Maps.newHashMap();
 
-  public EventObjectTrigger(UserActivity userActivity, ViewController<?, ?> viewController, E event) {
-    super(userActivity);
-    this.viewController = viewController;
-    this.event = event;
-  }
-
-  public EventObjectTrigger(ViewController<?, ?> viewController, E event) {
-    this.viewController = viewController;
-    this.event = event;
-  }
-
-  public E getEvent() {
-    return this.event;
-  }
-
-  protected Point getPoint() {
-    return null;
-  }
-
-  @Override
-  public ViewController<?, ?> getViewController() {
-    if (this.viewController != null) {
-      return this.viewController;
-    } else {
-      Object source = this.event != null ? this.event.getSource() : null;
-      if (source instanceof Component) {
-        Component awtComponent = (Component) source;
-        AwtComponentView<?> component = AwtComponentView.lookup(awtComponent);
-        if (component instanceof ViewController) {
-          return (ViewController<?, ?>) component;
-        } else {
-          return null;
+    public static synchronized CenterCameraOnOperation getInstance(UserField field) {
+        CenterCameraOnOperation rv = map.get(field);
+        if (rv == null) {
+            rv = new CenterCameraOnOperation(field);
+            map.put(field, rv);
         }
-      } else {
-        return null;
-      }
+        return rv;
     }
-  }
 
-  protected Component getComponent() {
-    if (this.viewController != null) {
-      return this.viewController.getAwtComponent();
-    } else {
-      Object source = this.event.getSource();
-      if (source instanceof Component) {
-        return (Component) source;
-      } else {
-        return null;
-      }
-    }
-  }
+    private UserField field;
 
-  @Override
-  public void showPopupMenu(PopupMenu popupMenu) {
-    Point pt = this.getPoint();
-    Component invoker = this.getComponent();
-    if (!invoker.isShowing()) {
-      invoker = null;
+    public CenterCameraOnOperation(UserField field) {
+        super(Application.PROJECT_GROUP, UUID.fromString("84f45a6e-e17f-4d64-b4a1-8182fdc1a546"));
+        this.field = field;
     }
-    PopupMenuUtilities.showModal(popupMenu.getAwtComponent(), invoker, pt);
-  }
+
+    public UserField getField() {
+        return this.field;
+    }
+
+    @Override
+    protected void perform(UserActivity activity) {
+        StorytellingSceneEditor.getInstance().centerCameraOn(this.field);
+    }
 }

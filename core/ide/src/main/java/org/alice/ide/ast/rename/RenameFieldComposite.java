@@ -59,9 +59,7 @@ public class RenameFieldComposite extends RenameDeclarationComposite<UserField> 
   public static synchronized RenameFieldComposite getInstance(UserField field) {
     assert field != null;
     RenameFieldComposite rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RenameFieldComposite(field);
       map.put(field, rv);
     }
