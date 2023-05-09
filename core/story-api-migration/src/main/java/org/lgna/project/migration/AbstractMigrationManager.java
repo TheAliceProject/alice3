@@ -44,12 +44,14 @@ package org.lgna.project.migration;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Version;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
+import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -57,6 +59,9 @@ import java.util.logging.Level;
  */
 public abstract class AbstractMigrationManager implements MigrationManager {
   private final Version currentVersion;
+  private ResourceTypeHelper helper;
+  private final Set<NamedUserType> typeCache = new HashSet<>();
+  private final List<Runnable> finalizers = new ArrayList<>();
 
   AbstractMigrationManager(Version currentVersion) {
     this.currentVersion = currentVersion;
@@ -83,6 +88,7 @@ public abstract class AbstractMigrationManager implements MigrationManager {
   @Override
   public String migrate(String source, Version version) {
     String rv = source;
+    typeCache.clear();
     for (TextMigration textMigration : this.getTextMigrations()) {
       if (textMigration.isApplicable(version)) {
         if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
@@ -96,15 +102,51 @@ public abstract class AbstractMigrationManager implements MigrationManager {
   }
 
   @Override
-  public void migrate(Node root, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache, Version version) {
+  public void migrate(Node root, ResourceTypeHelper helper, Version version) {
+    if (!hasAstMigrationsFor(version)) {
+      return;
+    }
+    this.helper = helper;
     for (AstMigration astMigration : this.getAstMigrations()) {
       if (astMigration != null && astMigration.isApplicable(version)) {
         if (Logger.getLevel().intValue() < Level.SEVERE.intValue()) {
           Logger.outln(version, astMigration);
         }
-        astMigration.migrate(root, typeHelper, typeCache);
+        astMigration.migrate(root, this);
         version = astMigration.getResultVersion();
       }
     }
+    applyFinalizers();
+  }
+
+  private void applyFinalizers() {
+    for (Runnable finalizer : finalizers) {
+      finalizer.run();
+    }
+  }
+
+  @Override
+  public void cacheType(NamedUserType type) {
+    typeCache.add(type);
+  }
+
+  @Override
+  public AbstractType<?, ?, ?> getCachedType(String className) {
+    for (NamedUserType existingType : typeCache) {
+      if (className.equals(existingType.getName())) {
+        return existingType;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public InstanceCreation createInstanceCreation(ModelResource resourceClass) {
+    return helper.createInstanceCreation(resourceClass, typeCache);
+  }
+
+  @Override
+  public void addFinalization(Runnable finalizer) {
+    finalizers.add(finalizer);
   }
 }

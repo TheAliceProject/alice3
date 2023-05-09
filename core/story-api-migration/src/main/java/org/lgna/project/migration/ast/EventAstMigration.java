@@ -44,7 +44,6 @@ package org.lgna.project.migration.ast;
 
 import java.util.ArrayList;
 
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
@@ -73,7 +72,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
   }
 
   @Override
-  protected void migrate(MethodInvocation methodInvocation, Project projectIfApplicable) {
+  protected void migrate(MethodInvocation methodInvocation) {
     AbstractMethod method = methodInvocation.method.getValue();
     if (method instanceof JavaMethod) {
       JavaMethod javaMethod = (JavaMethod) method;

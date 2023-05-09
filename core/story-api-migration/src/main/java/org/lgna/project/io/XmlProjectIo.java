@@ -62,7 +62,6 @@ import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Node;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
@@ -202,14 +201,8 @@ public class XmlProjectIo implements ProjectIo {
 
       Document xmlDocument = readXML(entryName, ProjectMigrationManager.getInstance(), decodedProjectVersion);
       NamedUserType type = (NamedUserType) (new XmlEncoderDecoder()).decode(xmlDocument);
-      migrateNode(type, ProjectMigrationManager.getInstance(), decodedProjectVersion);
+      ProjectMigrationManager.getInstance().migrate(type, typeHelper, decodedProjectVersion);
       return type;
-    }
-
-    private void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
-      if (migrationManager.hasAstMigrationsFor(decodedVersion)) {
-        migrationManager.migrate(affectedNode, typeHelper, new HashSet<>(), decodedVersion);
-      }
     }
 
     private Set<Resource> readResources() throws IOException {

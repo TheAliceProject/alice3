@@ -43,11 +43,7 @@
 package org.lgna.project.migration;
 
 import org.lgna.project.Version;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
-import org.lgna.story.resourceutilities.ResourceTypeHelper;
-
-import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
@@ -57,5 +53,5 @@ public abstract class AstMigration extends AbstractMigration {
     super(resultVersion);
   }
 
-  public abstract void migrate(Node node, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache);
+  public abstract void migrate(Node node, MigrationManager manager);
 }
