@@ -107,6 +107,8 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.STurnable;
 import org.lgna.story.SVRHand;
+import org.lgna.story.SVRHeadset;
+import org.lgna.story.SVRUser;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
@@ -439,7 +441,7 @@ public abstract class StageIDE extends IDE {
   @Override
   public boolean isInstanceCreationAllowableFor(NamedUserType userType) {
     JavaType javaType = userType.getFirstEncounteredJavaType();
-    return false == ClassUtilities.isAssignableToAtLeastOne(javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class, SVRHand.class);
+    return !ClassUtilities.isAssignableToAtLeastOne(javaType.getClassReflectionProxy().getReification(), SScene.class, SCamera.class, SVRUser.class, SVRHand.class, SVRHeadset.class);
   }
 
   private ThumbnailGenerator thumbnailGenerator;

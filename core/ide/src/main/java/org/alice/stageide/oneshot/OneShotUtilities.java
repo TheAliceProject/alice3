@@ -55,6 +55,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SScene;
+import org.lgna.story.SVRUser;
 
 import java.util.List;
 
@@ -75,7 +76,9 @@ public class OneShotUtilities {
       UserField field = thisFieldAccessFactory.getField();
       models.add(RenameFieldComposite.getInstance(field).getLaunchOperation().getMenuItemPrepModel());
       //Prevent users from deleting the camera or the scene
-      if (!field.getValueType().isAssignableTo(SCamera.class) && !field.getValueType().isAssignableTo(SScene.class)) {
+      if (!field.getValueType().isAssignableTo(SCamera.class)
+          && !field.getValueType().isAssignableTo(SVRUser.class)
+          && !field.getValueType().isAssignableTo(SScene.class)) {
         models.add(DeleteFieldOperation.getInstance(field).getMenuItemPrepModel());
       }
       //      if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {

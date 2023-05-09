@@ -61,6 +61,7 @@ import org.lgna.story.SSun;
 import org.lgna.story.SThing;
 import org.lgna.story.SThingMarker;
 import org.lgna.story.STurnable;
+import org.lgna.story.SVRUser;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -141,7 +142,7 @@ public class PickUtilities {
       if (entity instanceof Resizable) {
         pickTypes.add(PickHint.PickType.RESIZABLE);
       }
-      if ((entity instanceof SCamera) || (entity instanceof SModel) || (entity instanceof SMarker)) {
+      if ((entity instanceof SVRUser) || (entity instanceof SCamera) || (entity instanceof SModel) || (entity instanceof SMarker)) {
         pickTypes.add(PickHint.PickType.SELECTABLE);
       }
       if (entity instanceof SMovableTurnable) {
