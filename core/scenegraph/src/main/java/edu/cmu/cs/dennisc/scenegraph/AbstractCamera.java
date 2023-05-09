@@ -93,4 +93,13 @@ public abstract class AbstractCamera extends Leaf {
       return src;
     }
   };
+
+  public AbstractTransformable getMovableParent() {
+    Composite parent = getParent();
+    // Do not move the headset, move the VRUser
+    if (parent != null && "VRHeadset.sgComposite".equals(parent.getName())) {
+      parent = parent.getParent();
+    }
+    return parent instanceof AbstractTransformable ? (AbstractTransformable) parent : null;
+  }
 }

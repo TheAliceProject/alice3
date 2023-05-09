@@ -47,7 +47,6 @@ import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -61,7 +60,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
   @Override
   public void setCamera(AbstractCamera camera) {
     this.camera = camera;
-    this.setManipulatedTransformable(this.getManipulatedTransformableFromCamera());
+    this.setManipulatedTransformable(this.camera == null ? null : camera.getMovableParent());
   }
 
   @Override
@@ -72,15 +71,6 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
   @Override
   public void setDesiredCameraView(CameraView cameraView) {
     this.desiredCameraView = cameraView;
-  }
-
-  public Transformable getManipulatedTransformableFromCamera() {
-    AbstractCamera camera = this.getCamera();
-    if ((camera != null) && (camera.getParent() instanceof Transformable)) {
-      return (Transformable) camera.getParent();
-    } else {
-      return null;
-    }
   }
 
   @Override
