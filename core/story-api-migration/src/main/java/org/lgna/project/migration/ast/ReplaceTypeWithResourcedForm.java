@@ -51,11 +51,10 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.project.migration.MigrationManager;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resourceutilities.ResourceTypeHelper;
 
 import java.util.List;
-import java.util.Set;
 
 /*
  * Used to change the use of a gallery class from one that does not take a resource argument
@@ -74,31 +73,28 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
   }
 
   @Override
-  public void migrateNode(Crawlable node, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
+  public void migrateNode(Crawlable node, MigrationManager manager) {
     if (node instanceof UserField) {
-      migrateField((UserField) node, typeHelper, typeCache);
+      migrateField((UserField) node, manager);
     }
     if (node instanceof UserLocal) {
-      migrateType(((UserLocal) node).valueType, typeCache);
+      migrateType(((UserLocal) node).valueType, manager);
     }
     if (node instanceof UserParameter) {
-      migrateType(((UserParameter) node).valueType, typeCache);
+      migrateType(((UserParameter) node).valueType, manager);
     }
   }
 
-  protected void migrateField(UserField field, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
+  protected void migrateField(UserField field, MigrationManager manager) {
     final AbstractType<?, ?, ?> oldFieldType = field.valueType.getValue();
     if (oldFieldType == null || !oldClass.equals(oldFieldType.getName()) || !constructorsTakeNoArguments(oldFieldType.getDeclaredConstructors())) {
       return;
     }
     AbstractType<?, ?, ?> superType = oldFieldType.getSuperType();
     if (superType instanceof NamedUserType) {
-      typeCache.add((NamedUserType) superType);
+      manager.cacheType((NamedUserType) superType);
     }
-    if (typeHelper == null) {
-      throw new MigrationException("Unable to migrate project without ResourceTypeHelper");
-    }
-    InstanceCreation instantiation = typeHelper.createInstanceCreation(newResource, typeCache);
+    InstanceCreation instantiation = manager.createInstanceCreation(newResource);
     field.valueType.setValue(instantiation.getType());
     field.initializer.setValue(instantiation);
   }
@@ -112,17 +108,12 @@ public class ReplaceTypeWithResourcedForm<T extends ModelResource> implements No
     return true;
   }
 
-  private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property, Set<NamedUserType> typeCache) {
+  private void migrateType(DeclarationProperty<AbstractType<?, ?, ?>> property, MigrationManager manager) {
     final AbstractType<?, ?, ?> oldLocalType = property.getValue();
     if (oldLocalType == null || !oldClass.equals(oldLocalType.getName())) {
       return;
     }
     // This relies on the typeCache being filled in when the UserField is migrated. The Project structure enforces this so far.
-    for (NamedUserType existingType : typeCache) {
-      if (newClass.equals(existingType.getName())) {
-        property.setValue(existingType);
-        return;
-      }
-    }
+    property.setValue(manager.getCachedType(newClass));
   }
 }

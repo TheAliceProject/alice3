@@ -53,9 +53,7 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.migration.AstMigration;
-import org.lgna.story.resourceutilities.ResourceTypeHelper;
-
-import java.util.Set;
+import org.lgna.project.migration.MigrationManager;
 
 /**
  * @author Dennis Cosgrove
@@ -66,7 +64,7 @@ public class RemoveGetMySceneMethodFromProgramTypeAstMigration extends AstMigrat
   }
 
   @Override
-  public void migrate(Node node, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
+  public void migrate(Node node, MigrationManager manager) {
     if (node instanceof NamedUserType) {
       NamedUserType type = (NamedUserType) node;
       UserMethod mainMethod = type.getDeclaredMethod("main", String[].class);

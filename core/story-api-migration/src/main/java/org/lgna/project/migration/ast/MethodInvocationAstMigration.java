@@ -44,16 +44,12 @@ package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
-import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
-import org.lgna.story.resourceutilities.ResourceTypeHelper;
-
-import java.util.Set;
+import org.lgna.project.migration.MigrationManager;
 
 /**
  * @author Dennis Cosgrove
@@ -64,16 +60,16 @@ import java.util.Set;
     super(resultVersion);
   }
 
-  protected abstract void migrate(MethodInvocation methodInvocation, Project projectIfApplicable);
+  protected abstract void migrate(MethodInvocation methodInvocation);
 
   @Override
-  public final void migrate(Node node, final ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
+  public final void migrate(Node node, final MigrationManager manager) {
     node.crawl(new Crawler() {
       @Override
       public void visit(Crawlable crawlable) {
         if (crawlable instanceof MethodInvocation) {
           MethodInvocation methodInvocation = (MethodInvocation) crawlable;
-          MethodInvocationAstMigration.this.migrate(methodInvocation, null);
+          MethodInvocationAstMigration.this.migrate(methodInvocation);
         }
       }
     }, CrawlPolicy.COMPLETE, null);

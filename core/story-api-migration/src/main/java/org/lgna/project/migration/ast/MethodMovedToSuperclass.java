@@ -51,11 +51,9 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.JavaMethodParameter;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.resourceutilities.ResourceTypeHelper;
+import org.lgna.project.migration.MigrationManager;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.function.Function;
 
 /*
@@ -81,7 +79,7 @@ public class MethodMovedToSuperclass implements NodeMigration {
   }
 
   @Override
-  public void migrateNode(Crawlable node, ResourceTypeHelper typeHelper, Set<NamedUserType> typeCache) {
+  public void migrateNode(Crawlable node, MigrationManager manager) {
     if (node instanceof MethodInvocation) {
       MethodInvocation invocation = (MethodInvocation) node;
       AbstractMethod method = invocation.method.getValue();
