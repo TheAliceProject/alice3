@@ -73,6 +73,7 @@ import org.lgna.story.Color;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.*;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -464,7 +465,7 @@ public class IconFactoryManager {
   public static IconFactory getIconFactoryForCameraMarker(Color color) {
     IconFactory rv = mapColorToCameraMarkerIconFactory.get(color);
     if (rv == null) {
-      ImageIcon imageIcon = MarkerUtilities.getCameraMarkIconForColor(color); //todo
+      Icon imageIcon = MarkerUtilities.getCameraMarkIconForColor(color); //todo
       rv = new ImageIconFactory(imageIcon);
       mapColorToCameraMarkerIconFactory.put(color, rv);
     }
@@ -474,7 +475,7 @@ public class IconFactoryManager {
   public static IconFactory getIconFactoryForObjectMarker(Color color) {
     IconFactory rv = mapColorToObjectMarkerIconFactory.get(color);
     if (rv == null) {
-      ImageIcon imageIcon = MarkerUtilities.getObjectMarkIconForColor(color);
+      Icon imageIcon = MarkerUtilities.getObjectMarkIconForColor(color);
       //todo
       rv = new ImageIconFactory(imageIcon);
       mapColorToObjectMarkerIconFactory.put(color, rv);

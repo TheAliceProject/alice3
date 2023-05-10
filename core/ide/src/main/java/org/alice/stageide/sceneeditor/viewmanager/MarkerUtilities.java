@@ -87,8 +87,8 @@ public class MarkerUtilities {
   private static final HashMap<CameraMarker, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
   private static final HashMap<CameraMarker, CameraOption> cameraToViewMap = Maps.newHashMap();
 
-  private static final HashMap<Color, ImageIcon> colorToObjectIconMap = Maps.newHashMap();
-  private static final HashMap<Color, ImageIcon> colorToCameraIconMap = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToObjectIconMap = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToCameraIconMap = Maps.newHashMap();
   private static Map<CameraMarker, IconFactory> mapCameraIconFactory = Maps.newHashMap();
 
   static {
@@ -251,7 +251,7 @@ public class MarkerUtilities {
     return markerIcon;
   }
 
-  private static ImageIcon loadIconForCameraMarker(Color color) {
+  private static Icon loadIconForCameraMarker(Color color) {
     URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIcon" + getIconSuffixForMarkerColor(color));
     assert markerIconURL != null;
     ImageIcon markerIcon = new ImageIcon(markerIconURL);
@@ -274,7 +274,7 @@ public class MarkerUtilities {
     return null;
   }
 
-  public static ImageIcon getIconForObjectMarker(UserField marker) {
+  public static Icon getIconForObjectMarker(UserField marker) {
     if (marker != null) {
       Color markerColor = getColorForMarkerField(marker);
       return getObjectMarkIconForColor(markerColor);
@@ -282,7 +282,7 @@ public class MarkerUtilities {
     return null;
   }
 
-  public static ImageIcon getIconForCameraMarker(UserField marker) {
+  public static Icon getIconForCameraMarker(UserField marker) {
     if (marker != null) {
       Color markerColor = getColorForMarkerField(marker);
       return getCameraMarkIconForColor(markerColor);
@@ -290,17 +290,17 @@ public class MarkerUtilities {
     return null;
   }
 
-  public static ImageIcon getCameraMarkIconForColor(Color markerColor) {
+  public static Icon getCameraMarkIconForColor(Color markerColor) {
     if (colorToCameraIconMap.containsKey(markerColor)) {
       return colorToCameraIconMap.get(markerColor);
     } else {
-      ImageIcon icon = loadIconForCameraMarker(markerColor);
+      Icon icon = loadIconForCameraMarker(markerColor);
       colorToCameraIconMap.put(markerColor, icon);
       return icon;
     }
   }
 
-  public static ImageIcon getObjectMarkIconForColor(Color markerColor) {
+  public static Icon getObjectMarkIconForColor(Color markerColor) {
     if (colorToObjectIconMap.containsKey(markerColor)) {
       return colorToObjectIconMap.get(markerColor);
     } else {
@@ -310,7 +310,7 @@ public class MarkerUtilities {
     }
   }
 
-  public static ImageIcon getIconForMarkerField(UserField markerField) {
+  public static Icon getIconForMarkerField(UserField markerField) {
     if (markerField != null) {
       if (markerField.getValueType().isAssignableTo(CameraMarker.class)) {
         return getIconForCameraMarker(markerField);

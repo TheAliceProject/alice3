@@ -42,35 +42,33 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
 /**
  * @author Dennis Cosgrove
  */
 public class TrimmedIcon extends AbstractIcon {
-  private final ImageIcon imageIcon;
+  private final Icon imageIcon;
 
-  public TrimmedIcon(ImageIcon imageIcon, Dimension size) {
+  public TrimmedIcon(Icon imageIcon, Dimension size) {
     super(size);
     this.imageIcon = imageIcon;
   }
 
-  public ImageIcon getImageIcon() {
+  public Icon getImageIcon() {
     return this.imageIcon;
   }
 
   @Override
   protected void paintIcon(Component c, Graphics2D g2) {
     if (this.imageIcon != null) {
-      Image image = this.imageIcon.getImage();
-      int imageWidth = image.getWidth(c);
-      int imageHeight = image.getHeight(c);
+      int imageWidth = imageIcon.getIconWidth();
+      int imageHeight = imageIcon.getIconHeight();
 
       int width = this.getIconWidth();
       int height = this.getIconHeight();
@@ -97,8 +95,8 @@ public class TrimmedIcon extends AbstractIcon {
         }
         g2.scale(factor, factor);
       } else {
-        dx = (width - imageWidth) / 2;
-        dy = (height - imageHeight) / 2;
+        dx = 0;
+        dy = 0;
         final boolean DEBUG = false;
         if (DEBUG) {
           g2.setPaint(Color.RED);
@@ -109,7 +107,7 @@ public class TrimmedIcon extends AbstractIcon {
       }
 
       g2.translate(dx, dy);
-      g2.drawImage(image, 0, 0, imageWidth, imageHeight, c);
+      imageIcon.paintIcon(c, g2, 0, 0);
       g2.setTransform(t);
     }
   }

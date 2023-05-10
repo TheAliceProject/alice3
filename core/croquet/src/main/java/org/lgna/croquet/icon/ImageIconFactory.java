@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -57,7 +56,7 @@ import java.net.URL;
  * @author Dennis Cosgrove
  */
 public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-  public ImageIconFactory(ImageIcon imageIcon) {
+  public ImageIconFactory(Icon imageIcon) {
     super(imageIcon);
   }
 
@@ -71,7 +70,7 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
 
   @Override
   protected Icon createIcon(Dimension size) {
-    ImageIcon imageIcon = this.getSourceImageIcon();
+    Icon imageIcon = this.getSourceImageIcon();
     if (imageIcon != null) {
       if ((imageIcon.getIconWidth() == size.width) && (imageIcon.getIconHeight() == size.height)) {
         return imageIcon;
@@ -85,7 +84,7 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
 
   @Override
   public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
-    ImageIcon imageIcon = this.getSourceImageIcon();
+    Icon imageIcon = this.getSourceImageIcon();
     if (imageIcon != null) {
       return new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight());
     } else {
