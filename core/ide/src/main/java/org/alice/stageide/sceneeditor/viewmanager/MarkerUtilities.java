@@ -331,12 +331,12 @@ public class MarkerUtilities {
     return cameraToIconMap.get(camera).getB();
   }
 
-  private static final Dimension DEFAULT_SIZE_IF_NULL = IconSize.MEDIUM.getSize();
+  public static final Dimension ICON_SIZE = IconSize.MEDIUM.getSize();
 
   public static Icon getIconForCameraMarkerImp(CameraMarkerImp camera) {
     if (camera != null) {
       IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
-      return factory.getIcon(factory.getDefaultSize(DEFAULT_SIZE_IF_NULL));
+      return factory.getIcon(ICON_SIZE);
     }
     return null;
   }
@@ -344,7 +344,7 @@ public class MarkerUtilities {
   public static Icon getHighlightedIconForCameraMarkerImp(CameraMarkerImp camera) {
     if (camera != null) {
       IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
-      return factory.getIcon(factory.getDefaultSize(DEFAULT_SIZE_IF_NULL));
+      return factory.getIcon(ICON_SIZE);
     }
     return null;
   }

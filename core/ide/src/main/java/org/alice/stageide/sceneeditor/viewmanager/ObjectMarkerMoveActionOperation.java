@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import java.awt.Dimension;
 import java.text.MessageFormat;
 import java.util.UUID;
 
@@ -71,9 +70,6 @@ import org.lgna.story.SThingMarker;
  *
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
-
-  protected static final Dimension ICON_DIMENSION = new Dimension(25, 20);
-
   private UserField markerField;
   private UserField selectedField;
 

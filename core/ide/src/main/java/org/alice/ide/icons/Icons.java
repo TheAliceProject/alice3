@@ -62,9 +62,6 @@ public class Icons {
   public static final int SMALL_HEIGHT = 24;
 
   public static final Icon EMPTY_HEIGHT_ICON_SMALL = new EmptyIcon(0, SMALL_HEIGHT);
-  public static final Icon BOOKMARK_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/256x256/bookmark.png"));
-  public static final Icon BOOKMARK_ICON_SMALL = new ScaledIcon(BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT);
-
   public static final Icon FOLDER_ICON_SMALL = IconUtilities.createImageIcon(Icons.class.getResource("images/24x24/folder.png"));
   public static final Icon FOLDER_BACK_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderBack.png"));
   public static final Icon FOLDER_FRONT_ICON_LARGE = IconUtilities.createImageIcon(Icons.class.getResource("images/160x120/folderFront.png"));

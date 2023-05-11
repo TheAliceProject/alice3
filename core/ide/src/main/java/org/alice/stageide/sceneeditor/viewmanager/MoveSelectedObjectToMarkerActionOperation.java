@@ -67,9 +67,9 @@ public class MoveSelectedObjectToMarkerActionOperation extends ObjectMarkerMoveA
   @Override
   protected void updateMoveFields(UserField markerField, UserField selectedField) {
     IconFactory selectedFieldIconFactory = IconFactoryManager.getIconFactoryForField(selectedField);
-    Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
     IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
-    Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
     this.setToMoveField(selectedField, selectedFieldIcon);
     this.setToMoveToField(markerField, markerIcon);
   }

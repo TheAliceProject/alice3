@@ -75,7 +75,7 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
       if ((imageIcon.getIconWidth() == size.width) && (imageIcon.getIconHeight() == size.height)) {
         return imageIcon;
       } else {
-        return new ScaledIcon(imageIcon, size.width, size.height);
+        return new ScaledIcon(imageIcon, size);
       }
     } else {
       return new ColorIcon(Color.RED, size.width, size.height);
