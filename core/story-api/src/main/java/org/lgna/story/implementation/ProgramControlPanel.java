@@ -75,12 +75,7 @@ public class ProgramControlPanel extends JPanel {
   public ProgramControlPanel(final ProgramImp programImp) {
     final ButtonModel buttonModel = new JToggleButton.ToggleButtonModel();
     buttonModel.setSelected(true);
-    buttonModel.addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
-        programImp.getAnimator().setSpeedFactor(buttonModel.isSelected() ? 1.0 : 0.0);
-      }
-    });
+    buttonModel.addChangeListener(e -> programImp.getAnimator().setSpeedFactor(buttonModel.isSelected() ? 1.0 : 0.0));
 
     JButton playPauseButton = new JButton();
     playPauseButton.setModel(buttonModel);

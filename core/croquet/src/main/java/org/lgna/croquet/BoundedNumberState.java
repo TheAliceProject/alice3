@@ -52,7 +52,6 @@ import org.lgna.croquet.views.Spinner;
 import javax.swing.BoundedRangeModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -115,18 +114,11 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
   }
 
   private final SwingModel<N> swingModel;
-  private final ChangeListener changeListener = new ChangeListener() {
-    //private boolean previousValueIsAdjusting = false;
-    @Override
-    public void stateChanged(ChangeEvent e) {
-      BoundedNumberState.this.handleStateChanged(e);
-    }
-  };
 
   public BoundedNumberState(Group group, UUID id, N initialValue, SwingModel<N> swingModel) {
     super(group, id, initialValue);
     this.swingModel = swingModel;
-    this.swingModel.getSpinnerModel().addChangeListener(this.changeListener);
+    this.swingModel.getSpinnerModel().addChangeListener(this::handleStateChanged);
   }
 
   @Override
