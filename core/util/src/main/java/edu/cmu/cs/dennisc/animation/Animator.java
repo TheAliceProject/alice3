@@ -71,4 +71,5 @@ public interface Animator {
   void completeFrameObservers();
 
   void completeAll(AnimationObserver animationObserver);
+  void cancelAnimation();
 }

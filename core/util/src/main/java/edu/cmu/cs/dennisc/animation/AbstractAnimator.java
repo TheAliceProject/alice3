@@ -170,6 +170,7 @@ public abstract class AbstractAnimator implements Animator {
     this.frameObservers.remove(frameObserver);
   }
 
+  @Override
   public void cancelAnimation() {
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
