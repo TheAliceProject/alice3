@@ -180,8 +180,7 @@ public abstract class AbstractAnimator implements Animator {
     }
   }
 
-  @Override
-  public void completeAnimations(AnimationObserver animationObserver) {
+  public void completeAnimations() {
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();
@@ -190,7 +189,6 @@ public abstract class AbstractAnimator implements Animator {
     }
   }
 
-  @Override
   public void completeFrameObservers() {
     if (this.frameObservers.size() > 0) {
       for (FrameObserver frameObserver : this.frameObservers) {
@@ -200,8 +198,8 @@ public abstract class AbstractAnimator implements Animator {
   }
 
   @Override
-  public void completeAll(AnimationObserver animationObserver) {
-    this.completeAnimations(animationObserver);
+  public void completeAll() {
+    this.completeAnimations();
     this.completeFrameObservers();
   }
 }
