@@ -71,8 +71,7 @@ public class MoveMarkerToActiveCameraActionOperation extends CameraMoveActionOpe
     TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
     String markerName = markerField != null ? markerField.getName() : "";
 
-    IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarker(markerField);
-    Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
+    Icon toMoveIcon = MarkerUtilities.getIconForCameraMarker(markerField);
 
     IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
     Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;

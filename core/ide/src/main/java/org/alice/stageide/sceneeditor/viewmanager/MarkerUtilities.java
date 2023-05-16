@@ -295,10 +295,10 @@ public class MarkerUtilities {
     return null;
   }
 
-  public static IconFactory getIconFactoryForCameraMarker(UserField marker) {
+  public static Icon getIconForCameraMarker(UserField marker) {
     if (marker != null) {
       Color markerColor = getColorForMarkerField(marker);
-      return IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
+      return getCameraMarkIconForColor(markerColor);
     }
     return null;
   }
@@ -362,14 +362,6 @@ public class MarkerUtilities {
   public static IconFactory getIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
     if (camera != null) {
       IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
-      return factory;
-    }
-    return null;
-  }
-
-  public static IconFactory getHighlightedIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
-    if (camera != null) {
-      IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
       return factory;
     }
     return null;
