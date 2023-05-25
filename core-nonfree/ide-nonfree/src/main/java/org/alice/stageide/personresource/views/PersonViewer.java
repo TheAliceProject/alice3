@@ -92,7 +92,7 @@ public class PersonViewer extends ModelViewer {
         PointOfViewAnimation povAnimation = new PointOfViewAnimation(this.getCamera().getSgComposite(), AsSeenBy.PARENT, null, nextPOV);
         povAnimation.setDuration(duration);
 
-        animator.completeAll(null);
+        animator.completeAll();
         animator.invokeLater(povAnimation, null);
       }
     }

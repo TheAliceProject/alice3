@@ -288,7 +288,7 @@ public abstract class ProgramImp {
   public void stopAnimator() {
     if (this.isAnimatorStarted) {
       isAnimatorStarted = false;
-      this.getAnimator().completeAll(null);
+      this.getAnimator().cancelAnimation();
       RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
       renderFactory.decrementAutomaticDisplayCount();
       renderFactory.removeAutomaticDisplayListener(this.automaticDisplayListener);
