@@ -50,7 +50,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
@@ -72,13 +71,8 @@ public class SimsBootstrapUtilities extends BootstrapUtilities {
   //groundAppearance is optional and will cause the program to generate a ground in addition to a room
   public static NamedUserType createProgramType(SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
 
-    UserField roomField = createPrivateFinalField(SRoom.class, "room");
-    roomField.managementLevel.setValue(ManagementLevel.MANAGED);
-
-    UserField groundField = groundAppearance != null ? createPrivateFinalField(SGround.class, "ground") : null;
-    if (groundField != null) {
-      groundField.managementLevel.setValue(ManagementLevel.MANAGED);
-    }
+    UserField roomField = new UserField("room", SRoom.class);
+    UserField groundField = groundAppearance != null ? new UserField("ground", SGround.class) : null;
 
     UserField[] modelFields;
     if (groundField != null) {

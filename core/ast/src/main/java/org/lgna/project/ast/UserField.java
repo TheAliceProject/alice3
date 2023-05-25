@@ -71,6 +71,17 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
     this(name, JavaType.getInstance(valueCls), initializer);
   }
 
+  public UserField(String name, AbstractType<?, ?, ?> type) {
+    this(name, type, AstUtilities.createInstanceCreation(type));
+    accessLevel.setValue(AccessLevel.PRIVATE);
+    finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
+  }
+
+  public UserField(String name, Class<?> cls) {
+    this(name, JavaType.getInstance(cls));
+    managementLevel.setValue(ManagementLevel.MANAGED);
+  }
+
   public Getter getGetter() {
     return this.getter;
   }
