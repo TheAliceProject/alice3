@@ -64,6 +64,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
 import java.util.Map;
 import java.util.UUID;
@@ -120,6 +121,8 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
 
     Icon icon = this.value.getIconFactory().getIcon(iconSize);
     JLabel label = new JLabel(icon);
+    int sidePadding = (iconSize.width - icon.getIconWidth()) / 2;
+    label.setBorder(new EmptyBorder(0, sidePadding, 0, sidePadding));
 
     expressionPane.setAlignmentY(0.5f);
     label.setAlignmentY(0.5f);
