@@ -45,7 +45,6 @@ package org.alice.stageide.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.StoryApiConfigurationManager;
@@ -201,11 +200,7 @@ public class BootstrapUtilities {
       performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new FieldAccess(field), method, new ThisExpression()));
     }
 
-    AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
-    m.applyRotationAboutYAxis(new AngleInRadians(Math.PI));
-    m.applyRotationAboutXAxis(new AngleInRadians(-Math.PI / 16.0));
-    m.applyTranslationAlongZAxis(8);
-
+    AffineMatrix4x4 m = SCamera.DEFAULT_PLACEMENT;
     UnitQuaternion quat = new UnitQuaternion(m.orientation);
     try {
       performGeneratedSetupBody.statements.add(SetUpMethodGenerator.createOrientationStatement(false, cameraField, new Orientation(quat.x, quat.y, quat.z, quat.w)));

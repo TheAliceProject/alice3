@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
@@ -58,6 +59,18 @@ import java.util.stream.Collectors;
  * @author Dennis Cosgrove
  */
 public class SVRUser extends SMovableTurnable implements MutableRider {
+  public static AffineMatrix4x4 HEADSET_PLACEMENT = AffineMatrix4x4.createIdentity();
+  public static AffineMatrix4x4 LEFT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
+  public static AffineMatrix4x4 RIGHT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
+  private static final double HAND_OFFSET = 0.1;
+  static {
+    HEADSET_PLACEMENT.translation.y = -SCamera.DEFAULT_PLACEMENT.translation.y;
+    HEADSET_PLACEMENT.orientation.setValue(SCamera.DEFAULT_PLACEMENT.orientation);
+    LEFT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
+    RIGHT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
+    LEFT_HAND_PLACEMENT.translation.x = HAND_OFFSET;
+    RIGHT_HAND_PLACEMENT.translation.x = -HAND_OFFSET;
+  }
   private final VrUserImp implementation = new VrUserImp("VRUser", this);
   private final SVRHeadset headset = new SVRHeadset("VRHeadset", this);
   private final SVRHand leftHand = new SVRHand("LeftHand", this);

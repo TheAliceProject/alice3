@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AngleInRevolutions;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
@@ -61,6 +63,12 @@ public class SCamera extends SMovableTurnable implements MutableRider {
   private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp(this);
   private final SVRHand leftHand = new SVRHand("LeftHand", this);
   private final SVRHand rightHand = new SVRHand("RightHand", this);
+  public static AffineMatrix4x4 DEFAULT_PLACEMENT = AffineMatrix4x4.createIdentity();
+  static {
+    DEFAULT_PLACEMENT.applyRotationAboutYAxis(new AngleInRadians(Math.PI));
+    DEFAULT_PLACEMENT.applyRotationAboutXAxis(new AngleInRadians(-Math.PI / 16.0));
+    DEFAULT_PLACEMENT.applyTranslationAlongZAxis(8);
+  }
 
   @Override
   public void setVehicle(SThing vehicle) {
