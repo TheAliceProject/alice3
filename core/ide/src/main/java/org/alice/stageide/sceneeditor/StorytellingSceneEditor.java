@@ -361,7 +361,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private final double DEFAULT_TOP_CAMERA_Y_OFFSET = 10.0;
   private final double DEFAULT_SIDE_CAMERA_X_OFFSET = 10.0;
   private final double DEFAULT_FRONT_CAMERA_Z_OFFSET = 10.0;
-  private final int DEFAULT_LAYOUT_CAMERA_ANGLE = 40;
+  private final int DEFAULT_LAYOUT_CAMERA_ANGLE = -40;
 
 
   private ImmutableDataSingleSelectListState<CameraOption> mainCameraMarkerList = ViewListSelectionState.getInstance();
