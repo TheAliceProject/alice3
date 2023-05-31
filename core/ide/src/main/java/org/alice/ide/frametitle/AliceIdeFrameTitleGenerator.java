@@ -57,8 +57,6 @@ public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
     StringBuilder sb = new StringBuilder();
     sb.append(IDE.getApplicationName());
     sb.append(" ");
-    sb.append(IDE.getVersionAdornment());
-    sb.append(" ");
     if (uri != null) {
       File file = UriUtilities.getFile(uri);
       if (file != null) {
