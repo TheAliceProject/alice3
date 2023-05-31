@@ -128,14 +128,14 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       doEpilogue = true;
     }
     if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
-      startTrackingCamera(perspectiveCamera, activeMarker);
+      startTrackingCamera(camera);
     } else {
       Transformable cameraParent = (Transformable) perspectiveCamera.getParent();
       pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
         @Override
         protected void epilogue() {
           if (doEpilogue) {
-            startTrackingCamera(perspectiveCamera, activeMarker);
+            startTrackingCamera(camera);
           }
         }
       };
@@ -176,7 +176,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       Transformable cameraParent = (Transformable) orthographicCamera.getParent();
       orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
       cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), orthographicCamera.getRoot());
-      startTrackingCamera(orthographicCamera, orthoMarker);
+      startTrackingCamera(orthographicCamera);
       cameraParent.notifyTransformationListeners();
     } else {
       PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) activeMarker;
@@ -186,7 +186,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         animateToTargetView();
       } else {
         cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), perspectiveCamera.getRoot());
-        startTrackingCamera(perspectiveCamera, perspectiveMarker);
+        startTrackingCamera(perspectiveCamera);
         cameraParent.notifyTransformationListeners();
       }
     }
@@ -194,12 +194,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
   //Sets the given camera to the absolute orientation of the given marker
   //Parents the given marker to the camera and then zeros out the local transform
-  private void startTrackingCamera(AbstractCamera camera, CameraMarkerImp markerToUpdate) {
-    if (this.markerToUpdate != null) {
+  private void startTrackingCamera(AbstractCamera camera) {
+    if (markerToUpdate != null && markerToUpdate != activeMarker) {
       stopTrackingCamera();
     }
-    this.markerToUpdate = markerToUpdate;
-    if (this.markerToUpdate != null) {
+    markerToUpdate = activeMarker;
+    if (markerToUpdate != null) {
       Transformable cameraParent = (Transformable) camera.getParent();
       Composite root = cameraParent.getRoot();
       if (root != null) {
