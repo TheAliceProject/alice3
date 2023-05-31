@@ -68,6 +68,10 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 import java.util.Map;
 
+// This handles the fact that we have multple cameras (perspective and orthographic) and each of those cameras
+// could be set to one of several different "markers" which can be re-positioned by outside sources (and allow us to switch
+// between views without losing our previous position, since the marker remains where we used to be)
+
 public class CameraMarkerTracker implements PropertyListener, ValueListener<CameraOption> {
   private SymmetricPerspectiveCamera perspectiveCamera = null;
   private OrthographicCamera orthographicCamera = null;
@@ -169,26 +173,30 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  public void setCameraToSelectedMarker() {
+  // we're not changing the active/selected marker, but we may have moved it
+  public void updateCameraToNewMarkerLocation() {
+    if ((perspectiveCamera == null) || (orthographicCamera == null)) {
+      return;
+    }
+
+    if (activeMarker != null && markerToUpdate != null) {
+      // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
+      // marker from the parent but we don't want anything to change the transform (which stopTracking would do)
+      markerToUpdate.getSgComposite().setParent(markerToUpdate.getSgComposite().getRoot());
+      markerToUpdate = null;
+      setCameraToSelectedMarker();
+    }
+  }
+
+  private void setCameraToSelectedMarker() {
     if (activeMarker instanceof OrthographicCameraMarkerImp) {
-      OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) activeMarker;
       sceneEditor.switchToOrthographicCamera();
-      Transformable cameraParent = (Transformable) orthographicCamera.getParent();
+      OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) activeMarker;
       orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
-      cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), orthographicCamera.getRoot());
-      startTrackingCamera(orthographicCamera);
-      cameraParent.notifyTransformationListeners();
+      animateToTargetView(orthographicCamera);
     } else {
-      PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) activeMarker;
       sceneEditor.switchToPerspectiveCamera();
-      Transformable cameraParent = (Transformable) perspectiveCamera.getParent();
-      if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
-        animateToTargetView(perspectiveCamera);
-      } else {
-        cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), perspectiveCamera.getRoot());
-        startTrackingCamera(perspectiveCamera);
-        cameraParent.notifyTransformationListeners();
-      }
+      animateToTargetView(perspectiveCamera);
     }
   }
 

@@ -546,7 +546,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     frontOrthoMarkerImp.setPicturePlane(picturePlane);
 
     // Update camera to the latest markers
-    mainCameraViewTracker.setCameraToSelectedMarker();
+    mainCameraViewTracker.updateCameraToNewMarkerLocation();
   }
 
   @Override
