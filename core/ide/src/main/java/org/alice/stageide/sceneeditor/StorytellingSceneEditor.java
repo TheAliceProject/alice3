@@ -130,14 +130,7 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.*;
 import org.lgna.story.implementation.*;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
@@ -486,16 +479,32 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     Point3 targetTranslation = alignedBox.getCenter();
 
     // Update layout camera marker
-    // TODO- it would be better if this logic took our current location into account for the least disruptive move.
+    // Attempting to find the least disruptive move, ideally a bit above of the object (because looking up through the
+    // object/ground feels bad) and far enough away that we can see most of it, but hopefully close enough that there
+    // isn't another object in between. Usually we succeed.
+
+    // Since targetTranslation is already centered in y, this is effectively height * 1.5.
+    double adjustedY = targetTranslation.y + Math.max(targetHeight, alignedBox.getDiagonal() * .5);
+    Point3 adjustedPos = new Point3(targetTranslation.x,  adjustedY, targetTranslation.z);
+
+    // if the camera is already above it, great. Otherwise we get the best results by using the same adjusted y.
+    Point3 adjustedCameraPos = layoutSceneMarkerImp.getAbsoluteTransformation().translation;
+    adjustedCameraPos.y = Math.max(adjustedCameraPos.y, adjustedY);
+
+    Vector3 direction = Vector3.createSubtraction(adjustedCameraPos, adjustedPos);
+    direction.normalize();
+    Ray ray = new Ray(adjustedPos, direction);
+    Point3 layoutCamTranslation = ray.getPointAlong(alignedBox.getDiagonal() * 1.5);
+
+    // orientation calculated from wherever our camera ended up to look at the center of the object.
+    Vector3 cameraDirection = Vector3.createSubtraction(layoutCamTranslation, targetTranslation);
+    cameraDirection.normalize();
+    ForwardAndUpGuide forwardAndUpGuide = new ForwardAndUpGuide(Vector3.createNegation(cameraDirection), null);
+    OrthogonalMatrix3x3 layoutCamOrientation = forwardAndUpGuide.createOrthogonalMatrix3x3();
+
     AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
-    layoutTransform.translation.x = targetTranslation.x;
-    layoutTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Y_OFFSET) : DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
-    // targetHeight provides more accurate z offset compared to targetDepth
-    layoutTransform.translation.z = targetTranslation.z - (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_LAYOUT_CAMERA_Z_OFFSET) : DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
-    layoutTransform.orientation.up.set(0, 0, 1);
-    layoutTransform.orientation.right.set(-1, 0, 0);
-    layoutTransform.orientation.backward.set(0, 1, 0);
-    layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
+    layoutTransform.applyTranslation(layoutCamTranslation);
+    layoutTransform.applyOrientation(layoutCamOrientation);
     layoutSceneMarkerImp.setLocalTransformation(layoutTransform);
 
     // Update Orthographic camera markers
