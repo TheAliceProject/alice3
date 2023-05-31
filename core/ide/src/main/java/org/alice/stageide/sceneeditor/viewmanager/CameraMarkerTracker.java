@@ -118,8 +118,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         && a.translation.isWithinReasonableEpsilonOf(b.translation);
   }
 
-  private void animateToTargetView() {
-    AffineMatrix4x4 currentTransform = perspectiveCamera.getAbsoluteTransformation();
+  private void animateToTargetView(AbstractCamera camera) {
+    AffineMatrix4x4 currentTransform = camera.getAbsoluteTransformation();
     AffineMatrix4x4 targetTransform = activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 
     if (pointOfViewAnimation != null) {
@@ -130,7 +130,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
       startTrackingCamera(camera);
     } else {
-      Transformable cameraParent = (Transformable) perspectiveCamera.getParent();
+      Transformable cameraParent = (Transformable) camera.getParent();
       pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
         @Override
         protected void epilogue() {
@@ -183,7 +183,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       sceneEditor.switchToPerspectiveCamera();
       Transformable cameraParent = (Transformable) perspectiveCamera.getParent();
       if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
-        animateToTargetView();
+        animateToTargetView(perspectiveCamera);
       } else {
         cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), perspectiveCamera.getRoot());
         startTrackingCamera(perspectiveCamera);
