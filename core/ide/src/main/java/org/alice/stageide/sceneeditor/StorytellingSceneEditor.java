@@ -99,6 +99,7 @@ import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget;
 import org.alice.stageide.sceneeditor.interact.GlobalDragAdapter;
+import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
@@ -458,8 +459,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   private double clampPictureValue(double val) {
-    final double PICTURE_CLAMP_MAX = 100.0;
-    final double PICTURE_CLAMP_MIN = 1.0;
+    // we intentionally allow a slightly larger max here, and the manipulator deals with it later.
+    final double PICTURE_CLAMP_MAX = 100;
+    final double PICTURE_CLAMP_MIN = OrthographicCameraDragZoomManipulator.MIN_ZOOM;
     return clampValue(val, PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX);
   }
 
