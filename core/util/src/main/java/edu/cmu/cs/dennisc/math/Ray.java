@@ -187,6 +187,14 @@ public final class Ray {
 
   @Override
   public String toString() {
-    return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";
+    StringBuilder sb = new StringBuilder();
+    sb.append("\n");
+    sb.append(this.getClass().getSimpleName());
+    sb.append(" [origin: ");
+    sb.append(this.origin);
+    sb.append(",\n\t direction: ");
+    sb.append(this.direction);
+    sb.append("]");
+    return sb.toString();
   }
 }

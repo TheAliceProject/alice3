@@ -71,7 +71,7 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
   private static final double ZOOMS_PER_SECOND = .1d;
   private static final double ZOOM_CLICK_FACTOR = 1d;
 
-  public static final double MAX_ZOOM = 30.0d;
+  public static final double MAX_ZOOM = 75.0d;
   public static final double MIN_ZOOM = .01d;
 
   public OrthographicCameraDragZoomManipulator(ImageBasedManipulationHandle2D handle) {
@@ -84,14 +84,16 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
     return picturePlane.getHeight();
   }
 
+
   public void setCameraZoom(double amount) {
     OrthographicCamera orthoCam = (OrthographicCamera) this.camera;
     ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
-    double newZoom = picturePlane.getHeight() + amount;
+    double currentZoom = picturePlane.getHeight();
+    double newZoom = currentZoom + amount;
     if (newZoom > MAX_ZOOM) {
-      newZoom = MAX_ZOOM;
+      newZoom = amount > 0 ? currentZoom : newZoom;
     } else if (newZoom < MIN_ZOOM) {
-      newZoom = MIN_ZOOM;
+      newZoom = amount < 0 ? currentZoom : newZoom;
     }
     picturePlane.setHeight(newZoom);
     orthoCam.picturePlane.setValue(picturePlane);

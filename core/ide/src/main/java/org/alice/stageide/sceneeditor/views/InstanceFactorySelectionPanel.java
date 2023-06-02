@@ -281,6 +281,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
     private final AltTriggerMouseAdapter altTriggerMouseAdapter = new AltTriggerMouseAdapter() {
       @Override
       protected void altTriggered(MouseEvent e) {
+        IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly(InternalButton.this.instanceFactory);
         InternalButton.this.handleAltTriggered(e);
       }
     };
