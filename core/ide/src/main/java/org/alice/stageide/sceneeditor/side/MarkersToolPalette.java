@@ -59,7 +59,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersToolPalette<V extends MarkersView> extends SideToolPalette<V> {
+public abstract class MarkersToolPalette extends SideToolPalette<MarkersView> {
   private final RefreshableDataSingleSelectListState<UserField> markerListState;
 
   private NamedUserType sceneType = null;
@@ -109,6 +109,11 @@ public abstract class MarkersToolPalette<V extends MarkersView> extends SideTool
   }
 
   public abstract Operation getAddOperation();
+
+  @Override
+  protected MarkersView createView() {
+    return new MarkersView(this);
+  }
 
   @Override
   protected String modifyTextIfNecessary(String text, boolean isExpanded) {

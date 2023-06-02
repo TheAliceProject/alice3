@@ -60,7 +60,7 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel<E> extends ItemSelectable<JPanel, E, SingleSelectListState<E, ?>> {
+public abstract class ItemSelectablePanel<E> extends ViewController<JPanel, SingleSelectListState<E, ?>> {
   private final Map<E, BooleanStateButton<?>> mapItemToButton = Maps.newHashMap();
 
   private E[] prevItems;

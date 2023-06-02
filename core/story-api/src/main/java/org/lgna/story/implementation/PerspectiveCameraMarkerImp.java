@@ -44,8 +44,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
@@ -69,17 +67,14 @@ import java.util.List;
  * @author dculyba
  */
 public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
-  private static final double VIEW_LINES_DEFAULT_DISPLACEMENT = 3;
   private static final double VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA = 3;
   private static final float START_ALPHA = .5f;
   private static final float END_ALPHA = 0f;
   private static final double LENGTH = .75;
+  private static final double RADIUS = LENGTH / 4;
   private static final double HEIGHT = .4;
   private static final double WIDTH = .15;
   private static final double LENS_HOOD_LENGTH = .2;
-  private static final float LINE_RED = 1;
-  private static final float LINE_GREEN = 1;
-  private static final float LINE_BLUE = 0;
   private static final float LASER_LINE_RED = 1;
   private static final float LASER_LINE_GREEN = 0;
   private static final float LASER_LINE_BLUE = 0;
@@ -95,15 +90,25 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 
   @Override
   protected void createVisuals() {
+    initialize();
+    sgVisuals = new Visual[] {createLensVisual(),
+        createCylinderVisual("Camera Cylinder 1", RADIUS),
+        createCylinderVisual("Camera Cylinder 2", RADIUS * 3),
+        createBoxVisual()};
 
-    this.sgAppearance = new SimpleAppearance();
-    this.sgAppearances = new SimpleAppearance[] {sgAppearance};
+    addLaserSightLine();
+    updateViewGeometry();
+    setDetailedViewShowing(false);
+    updateDetailIsShowing();
+  }
 
-    this.sgDetailedComponents = Lists.newLinkedList();
-    this.farClippingPlane = 100;
-    this.horizontalViewAngle = new AngleInDegrees(90);
-    this.verticalViewAngle = new AngleInDegrees(90);
+  private void initialize() {
+    sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
+    sgDetailedComponents = Lists.newLinkedList();
+    farClippingPlane = 100;
+  }
 
+  private Visual createBoxVisual() {
     Visual sgBoxVisual = new Visual();
     sgBoxVisual.setName("Camera Box Visual");
     sgBoxVisual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
@@ -111,43 +116,35 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgBox.setMinimum(new Point3(-WIDTH / 2, -HEIGHT / 2, 0));
     sgBox.setMaximum(new Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
     sgBoxVisual.geometries.setValue(new Geometry[] {sgBox});
+    sgBoxVisual.setParent(this.getSgComposite());
+    return sgBoxVisual;
+  }
 
-    final double radius = LENGTH / 4;
+  private Visual createCylinderVisual(String name, double offset) {
+    Visual visual = new Visual();
+    visual.setName(name + " Visual");
+    visual.frontFacingAppearance.setValue(getSgPaintAppearances()[0]);
+    Transformable transformable = new Transformable();
+    transformable.setName(name);
+    transformable.applyTranslation(new Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
+    visual.geometries.setValue(new Geometry[]{createFilmCylinder()});
+    visual.setParent(transformable);
+    transformable.setParent(getSgComposite());
+    return visual;
+  }
 
-    Visual sgCylinder1Visual = new Visual();
-    sgCylinder1Visual.setName("Camera Cylinder 1 Visual");
-    sgCylinder1Visual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
+  private static Cylinder createFilmCylinder() {
     Cylinder sgCylinder1 = new Cylinder();
-    sgCylinder1.topRadius.setValue(radius);
-    sgCylinder1.bottomRadius.setValue(radius);
+    sgCylinder1.topRadius.setValue(RADIUS);
+    sgCylinder1.bottomRadius.setValue(RADIUS);
     sgCylinder1.length.setValue(WIDTH);
     sgCylinder1.bottomToTopAxis.setValue(BottomToTopAxis.POSITIVE_X);
     sgCylinder1.hasTopCap.setValue(true);
     sgCylinder1.hasBottomCap.setValue(true);
-    Vector3 cylinder1Translation = new Vector3(-WIDTH / 2, (HEIGHT / 2) + radius, radius);
-    Transformable sgTransformableCylinder1 = new Transformable();
-    sgTransformableCylinder1.setName("Camera Cylinder 1");
-    sgTransformableCylinder1.applyTranslation(cylinder1Translation);
-    sgCylinder1Visual.geometries.setValue(new Geometry[] {sgCylinder1});
-    sgCylinder1Visual.setParent(sgTransformableCylinder1);
+    return sgCylinder1;
+  }
 
-    Visual sgCylinder2Visual = new Visual();
-    sgCylinder2Visual.setName("Camera Cylinder 2 Visual");
-    sgCylinder2Visual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
-    Cylinder sgCylinder2 = new Cylinder();
-    sgCylinder2.topRadius.setValue(radius);
-    sgCylinder2.bottomRadius.setValue(radius);
-    sgCylinder2.length.setValue(WIDTH);
-    sgCylinder2.bottomToTopAxis.setValue(BottomToTopAxis.POSITIVE_X);
-    sgCylinder2.hasTopCap.setValue(true);
-    sgCylinder2.hasBottomCap.setValue(true);
-    Vector3 cylinder2Translation = new Vector3(-WIDTH / 2, (HEIGHT / 2) + radius, radius * 3);
-    Transformable sgTransformableCylinder2 = new Transformable();
-    sgTransformableCylinder2.setName("Camera Cylinder 2");
-    sgTransformableCylinder2.applyTranslation(cylinder2Translation);
-    sgCylinder2Visual.geometries.setValue(new Geometry[] {sgCylinder2});
-    sgCylinder2Visual.setParent(sgTransformableCylinder2);
-
+  private Visual createLensVisual() {
     Visual sgLensVisual = new Visual();
     sgLensVisual.setName("Camera Lens Hood Visual");
     sgLensVisual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
@@ -225,55 +222,25 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 
     sgLensGeometry.vertices.setValue(sgLensVertices);
     sgLensVisual.geometries.setValue(new Geometry[] {sgLensGeometry});
+    sgLensVisual.setParent(this.getSgComposite());
+    return sgLensVisual;
+  }
 
-    //    this.sgLinesFrontFacingAppearance = new SingleAppearance();
-    //    this.sgLinesFrontFacingAppearance.diffuseColor.setValue( Color4f.YELLOW );
-    //    this.sgLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
-    //    this.sgViewLineVertices = new Vertex[8];
-    //    this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
-    //    this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-VIEW_LINES_DEFAULT_DISPLACEMENT,VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
-    //    this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
-    //    this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
-    //    this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
-    //    this.sgViewLineVertices[5] = Vertex.createXYZRGBA(VIEW_LINES_DEFAULT_DISPLACEMENT,VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
-    //    this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,LINE_RED,LINE_GREEN,LINE_BLUE,START_ALPHA);
-    //    this.sgViewLineVertices[7] = Vertex.createXYZRGBA(VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISPLACEMENT,-VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LINE_RED,LINE_GREEN,LINE_BLUE,END_ALPHA);
-    //    Visual sgViewLinesVisual = new Visual();
-    //    sgViewLinesVisual.setName("Camera View Lines Visual");
-    //    sgViewLinesVisual.frontFacingAppearance.setValue( this.sgLinesFrontFacingAppearance );
-    //    this.sgViewLines = new LineArray();
-    //    sgViewLines.vertices.setValue(this.sgViewLineVertices);
-    //    sgViewLinesVisual.geometries.setValue(new Geometry[] { this.sgViewLines } );
-    //    sgViewLinesVisual.setParent( this.getSGTransformable() );
-    //    sgDetailedComponents.add(sgViewLinesVisual);
-
-    this.sgLaserLinesFrontFacingAppearance = new SimpleAppearance();
-    this.sgLaserLinesFrontFacingAppearance.diffuseColor.setValue(Color4f.RED);
-    this.sgLaserLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
-    this.sgLaserLineVertices = new Vertex[2];
-    this.sgLaserLineVertices[0] = Vertex.createXYZRGBA(0, 0, 0, LASER_LINE_RED, LASER_LINE_GREEN, LASER_LINE_BLUE, START_ALPHA);
-    this.sgLaserLineVertices[1] = Vertex.createXYZRGBA(0, 0, -VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LASER_LINE_RED, LASER_LINE_GREEN, LASER_LINE_BLUE, END_ALPHA);
+  private void addLaserSightLine() {
+    SimpleAppearance sgLaserLinesFrontFacingAppearance = new SimpleAppearance();
+    sgLaserLinesFrontFacingAppearance.diffuseColor.setValue(Color4f.RED);
+    sgLaserLinesFrontFacingAppearance.shadingStyle.setValue(ShadingStyle.NONE);
+    sgLaserLineVertices = new Vertex[2];
+    sgLaserLineVertices[0] = Vertex.createXYZRGBA(0, 0, 0, LASER_LINE_RED, LASER_LINE_GREEN, LASER_LINE_BLUE, START_ALPHA);
+    sgLaserLineVertices[1] = Vertex.createXYZRGBA(0, 0, -VIEW_LINES_DEFAULT_DISTANCE_FROM_CAMERA, LASER_LINE_RED, LASER_LINE_GREEN, LASER_LINE_BLUE, END_ALPHA);
     Visual sgLaserLineVisual = new Visual();
     sgLaserLineVisual.setName("Camera Laser Line Visual");
-    sgLaserLineVisual.frontFacingAppearance.setValue(this.sgLaserLinesFrontFacingAppearance);
-    this.sgLaserLine = new LineArray();
-    sgLaserLine.vertices.setValue(this.sgLaserLineVertices);
-    sgLaserLineVisual.geometries.setValue(new Geometry[] {this.sgLaserLine});
-    sgLaserLineVisual.setParent(this.getSgComposite());
+    sgLaserLineVisual.frontFacingAppearance.setValue(sgLaserLinesFrontFacingAppearance);
+    sgLaserLine = new LineArray();
+    sgLaserLine.vertices.setValue(sgLaserLineVertices);
+    sgLaserLineVisual.geometries.setValue(new Geometry[] {sgLaserLine});
+    sgLaserLineVisual.setParent(getSgComposite());
     sgDetailedComponents.add(sgLaserLineVisual);
-
-    setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
-
-    sgLensVisual.setParent(this.getSgComposite());
-    sgTransformableCylinder1.setParent(this.getSgComposite());
-    sgTransformableCylinder2.setParent(this.getSgComposite());
-    sgBoxVisual.setParent(this.getSgComposite());
-
-    this.sgVisuals = new Visual[] {sgLensVisual, sgCylinder1Visual, sgCylinder2Visual, sgBoxVisual};
-
-    setDetailedViewShowing(false);
-    updateDetailIsShowing();
-
   }
 
   public void setDetailedViewShowing(boolean isShowing) {
@@ -287,17 +254,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     for (Visual v : this.sgDetailedComponents) {
       v.isShowing.setValue(this.showDetail && this.isShowing());
     }
-  }
-
-  public void setFarClippingPlane(double farClippingPlane) {
-    this.farClippingPlane = farClippingPlane;
-    updateViewGeometry();
-  }
-
-  public void setViewingAngle(Angle horizontalViewAngle, Angle verticalViewAngle) {
-    this.horizontalViewAngle.set(horizontalViewAngle);
-    this.verticalViewAngle.set(verticalViewAngle);
-    updateViewGeometry();
   }
 
   private void updateViewGeometry() {
@@ -331,15 +287,11 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   }
 
   private double farClippingPlane;
-  private Angle horizontalViewAngle;
-  private Angle verticalViewAngle;
 
   private Vertex[] sgLaserLineVertices;
   private LineArray sgLaserLine;
-  private SimpleAppearance sgLaserLinesFrontFacingAppearance;
 
   private Visual[] sgVisuals;
-  private SimpleAppearance sgAppearance;
   private SimpleAppearance[] sgAppearances;
   private List<Visual> sgDetailedComponents;
   private int cameraType;

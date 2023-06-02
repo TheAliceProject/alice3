@@ -47,7 +47,7 @@ import org.alice.stageide.personresource.data.HairColorName;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.views.BooleanStateButton;
-import org.lgna.croquet.views.CustomRadioButtons;
+import org.lgna.croquet.views.ItemSelectablePanel;
 import org.lgna.croquet.views.ToggleButton;
 
 import javax.swing.Icon;
@@ -57,7 +57,7 @@ import java.awt.LayoutManager;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameRadioButtons extends CustomRadioButtons<HairColorName> {
+public class HairColorNameRadioButtons extends ItemSelectablePanel<HairColorName> {
   public HairColorNameRadioButtons(RefreshableDataSingleSelectListState<HairColorName> model) {
     super(model);
   }

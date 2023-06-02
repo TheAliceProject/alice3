@@ -62,7 +62,6 @@ import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.IntegerLiteral;
 import org.lgna.project.ast.JavaMethod;
@@ -125,20 +124,6 @@ public class BootstrapUtilities {
     return createType(name, JavaType.getInstance(superCls));
   }
 
-  private static UserField createPrivateFinalField(AbstractType<?, ?, ?> valueType, String name) {
-    UserField rv = new UserField();
-    rv.accessLevel.setValue(AccessLevel.PRIVATE);
-    rv.finalVolatileOrNeither.setValue(FieldModifierFinalVolatileOrNeither.FINAL);
-    rv.valueType.setValue(valueType);
-    rv.name.setValue(name);
-    rv.initializer.setValue(AstUtilities.createInstanceCreation(valueType));
-    return rv;
-  }
-
-  static UserField createPrivateFinalField(Class<?> cls, String name) {
-    return createPrivateFinalField(JavaType.getInstance(cls), name);
-  }
-
   private static void addCommentIfNecessaryToMethod(UserMethod userMethod) {
     String innerComment = StoryApiSpecificAstUtilities.getInnerCommentForMethodName(userMethod.getDeclaringType(), userMethod.getName());
     if (innerComment != null) {
@@ -173,9 +158,8 @@ public class BootstrapUtilities {
   public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
 
   static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
-    UserField cameraField = createPrivateFinalField(SCamera.class, "camera");
+    UserField cameraField = new UserField("camera", SCamera.class);
     cameraField.isDeletionAllowed.setValue(false);
-    cameraField.managementLevel.setValue(ManagementLevel.MANAGED);
 
     UserMethod myFirstMethod = createProcedure(AccessLevel.PUBLIC, MY_FIRST_PROCEDURE_NAME);
 
@@ -293,7 +277,7 @@ public class BootstrapUtilities {
       addCommentIfNecessaryToMethod(method);
     }
 
-    UserField sceneField = createPrivateFinalField(sceneType, "myScene");
+    UserField sceneField = new UserField("myScene", sceneType);
     sceneActivationListener.body.getValue().statements.add(createMethodInvocationStatement(new ThisExpression(), myFirstMethod));
 
     NamedUserType rv = createType("Program", SProgram.class);
@@ -321,9 +305,7 @@ public class BootstrapUtilities {
 
   public static NamedUserType createProgramType(SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
 
-    UserField groundField = createPrivateFinalField(SGround.class, "ground");
-
-    groundField.managementLevel.setValue(ManagementLevel.MANAGED);
+    UserField groundField = new UserField("ground", SGround.class);
 
     UserField[] modelFields = {groundField};
     ArrayList<ExpressionStatement> setupStatements = new ArrayList<>();
