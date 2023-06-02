@@ -44,8 +44,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector3f;
@@ -108,8 +106,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
     sgDetailedComponents = Lists.newLinkedList();
     farClippingPlane = 100;
-    horizontalViewAngle = new AngleInDegrees(90);
-    verticalViewAngle = new AngleInDegrees(45);
   }
 
   private Visual createBoxVisual() {
@@ -260,17 +256,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     }
   }
 
-  public void setFarClippingPlane(double farClippingPlane) {
-    this.farClippingPlane = farClippingPlane;
-    updateViewGeometry();
-  }
-
-  public void setViewingAngle(Angle horizontalViewAngle, Angle verticalViewAngle) {
-    this.horizontalViewAngle.set(horizontalViewAngle);
-    this.verticalViewAngle.set(verticalViewAngle);
-    updateViewGeometry();
-  }
-
   private void updateViewGeometry() {
     if ((this.sgLaserLineVertices != null) && (this.sgLaserLine != null)) {
       this.sgLaserLineVertices[1].position.z = -this.farClippingPlane;
@@ -302,8 +287,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   }
 
   private double farClippingPlane;
-  private Angle horizontalViewAngle;
-  private Angle verticalViewAngle;
 
   private Vertex[] sgLaserLineVertices;
   private LineArray sgLaserLine;
