@@ -59,7 +59,7 @@ public interface ProjectIo {
   String PROPERTIES_ENTRY_NAME = "properties.bin";
 
   interface ProjectReader {
-    Project readProject() throws IOException, VersionNotSupportedException;
+    Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException;
 
     TypeResourcesPair readType() throws IOException, VersionNotSupportedException;
 

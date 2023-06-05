@@ -57,7 +57,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 public abstract class AbstractFileProjectLoader extends UriProjectLoader {
-  AbstractFileProjectLoader(File file) {
+
+  AbstractFileProjectLoader(File file, boolean makeVrReady) {
+    super(makeVrReady);
     this.file = file;
   }
 
@@ -76,7 +78,7 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
         return null;
       }
       reader.setResourceTypeHelper(StorytellingResourcesTreeUtils.INSTANCE);
-      return reader.readProject();
+      return reader.readProject(makeVrReady);
     } catch (VersionNotSupportedException vnse) {
       ProjectApplication.getActiveInstance().handleVersionNotSupported(file, vnse);
     } catch (IOException ioe) {

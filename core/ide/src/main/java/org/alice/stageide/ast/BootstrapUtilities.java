@@ -156,7 +156,7 @@ public class BootstrapUtilities {
   //todo
   public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
 
-  static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
+  static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, boolean makeVrReady) {
     UserField cameraField = new UserField("camera", SCamera.class);
     cameraField.isDeletionAllowed.setValue(false);
 
@@ -298,7 +298,7 @@ public class BootstrapUtilities {
     return rv;
   }
 
-  public static NamedUserType createProgramType(SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
+  public static NamedUserType createProgramType(SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity, boolean makeVrReady) {
 
     UserField groundField = new UserField("ground", SGround.class);
 
@@ -313,6 +313,6 @@ public class BootstrapUtilities {
       setupStatements.add(createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity)));
     }
 
-    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);
+    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor, makeVrReady);
   }
 }

@@ -119,8 +119,8 @@ public class IdeNonfree extends NebulousIde {
   }
 
   @Override
-  public NamedUserType createProgramType(TemplateUriState.Template template) {
-    return SimsBootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+  public NamedUserType createProgramType(TemplateUriState.Template template, boolean makeVrReady) {
+    return SimsBootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity(), makeVrReady);
   }
 
   @Override

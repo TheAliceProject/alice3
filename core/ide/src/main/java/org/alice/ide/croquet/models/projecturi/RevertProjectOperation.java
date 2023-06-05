@@ -73,7 +73,7 @@ public class RevertProjectOperation extends UriActionOperation {
     if (confirmed) {
       URI uri = application.getUri();
       if (uri != null) {
-        UriProjectLoader loader = UriProjectLoader.createInstance(uri);
+        UriProjectLoader loader = UriProjectLoader.createInstance(uri, false);
         if (loader != null) {
           application.loadProject(activity, loader);
           activity.finish();

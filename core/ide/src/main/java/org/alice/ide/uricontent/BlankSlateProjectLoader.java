@@ -56,7 +56,8 @@ import java.net.URI;
 public class BlankSlateProjectLoader extends UriProjectLoader {
   private final TemplateUriState.Template template;
 
-  public BlankSlateProjectLoader(TemplateUriState.Template template) {
+  public BlankSlateProjectLoader(TemplateUriState.Template template, boolean makeVrReady) {
+    super(makeVrReady);
     this.template = template;
   }
 
@@ -69,9 +70,9 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
   protected Project load() {
     NamedUserType programType;
     if (template.isRoom()) {
-      programType = NebulousIde.nonfree.createProgramType(this.template);
+      programType = NebulousIde.nonfree.createProgramType(this.template, makeVrReady);
     } else {
-      programType = BootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity());
+      programType = BootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity(), makeVrReady);
     }
     return new Project(programType);
   }

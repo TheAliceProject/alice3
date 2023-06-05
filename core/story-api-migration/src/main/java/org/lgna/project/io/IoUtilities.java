@@ -79,7 +79,7 @@ public abstract class IoUtilities {
   }
 
   public static Project readProject(File file) throws IOException, VersionNotSupportedException {
-    return projectReader(file).readProject();
+    return projectReader(file).readProject(false);
   }
 
   public static Project readProject(String path) throws IOException, VersionNotSupportedException {
