@@ -43,6 +43,8 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ import java.util.ResourceBundle;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
@@ -72,6 +75,7 @@ import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -252,10 +256,33 @@ public class MarkerUtilities {
   }
 
   private static Icon loadIconForCameraMarker(Color color) {
-    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIcon" + getIconSuffixForMarkerColor(color));
-    assert markerIconURL != null;
-    ImageIcon markerIcon = new ImageIcon(markerIconURL);
-    return markerIcon;
+    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIconGrayScale.png");
+    if (markerIconURL == null) {
+      return null;
+    }
+    try {
+      BufferedImage markerImage = ImageIO.read(markerIconURL);
+      applyColor(markerImage, color);
+      if ((markerImage.getWidth() == MarkerUtilities.ICON_SIZE.width) && markerImage.getHeight() == MarkerUtilities.ICON_SIZE.height) {
+        return new ImageIcon(markerImage);
+      } else {
+        return new ScaledIcon(new ImageIcon(markerImage), MarkerUtilities.ICON_SIZE);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static void applyColor(BufferedImage image, Color color) {
+    for (int y = 0; y < image.getHeight(); y++) {
+      for (int x = 0; x < image.getWidth(); x++) {
+        int rgb = image.getRGB(x, y);
+        java.awt.Color pixelColor = new java.awt.Color(rgb);
+        if ((rgb & 0xFF000000) == 0xFF000000) {
+          image.setRGB(x, y, color.applyTo(pixelColor).getRGB());
+        }
+      }
+    }
   }
 
   public static IconFactory getIconFactoryForObjectMarker(UserField marker) {
@@ -270,22 +297,6 @@ public class MarkerUtilities {
     if (marker != null) {
       Color markerColor = getColorForMarkerField(marker);
       return IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
-    }
-    return null;
-  }
-
-  public static Icon getIconForObjectMarker(UserField marker) {
-    if (marker != null) {
-      Color markerColor = getColorForMarkerField(marker);
-      return getObjectMarkIconForColor(markerColor);
-    }
-    return null;
-  }
-
-  public static Icon getIconForCameraMarker(UserField marker) {
-    if (marker != null) {
-      Color markerColor = getColorForMarkerField(marker);
-      return getCameraMarkIconForColor(markerColor);
     }
     return null;
   }
@@ -311,14 +322,14 @@ public class MarkerUtilities {
   }
 
   public static Icon getIconForMarkerField(UserField markerField) {
-    if (markerField != null) {
-      if (markerField.getValueType().isAssignableTo(CameraMarker.class)) {
-        return getIconForCameraMarker(markerField);
-      } else if (markerField.getValueType().isAssignableFrom(SThingMarker.class)) {
-        return getIconForObjectMarker(markerField);
-      }
+    if (markerField == null) {
+      return null;
     }
-    return null;
+    Color markerColor = getColorForMarkerField(markerField);
+    if (markerField.getValueType().isAssignableTo(CameraMarker.class)) {
+      return getCameraMarkIconForColor(markerColor);
+    }
+    return getObjectMarkIconForColor(markerColor);
   }
 
   private static IconFactory getIconFactoryForCameraMarker(CameraMarker camera) {

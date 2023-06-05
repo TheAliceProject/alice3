@@ -124,4 +124,14 @@ public final class Color implements Paint {
   public String rgbString() {
     return "Color(" + internal.red + "," + internal.green + "," + internal.blue + ")";
   }
+
+  public java.awt.Color applyTo(java.awt.Color color) {
+    float[] f = new float[4];
+    color.getRGBComponents(f);
+    return new java.awt.Color(
+        internal.red * f[0],
+        internal.green * f[1],
+        internal.blue * f[2],
+        f[3]);
+  }
 }
