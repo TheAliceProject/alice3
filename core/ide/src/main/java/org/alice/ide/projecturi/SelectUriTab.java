@@ -45,6 +45,7 @@ package org.alice.ide.projecturi;
 
 import org.alice.ide.projecturi.views.TabContentPanel;
 import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.views.ScrollPane;
 
@@ -57,7 +58,11 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
   public SelectUriTab(UUID migrationId) {
     super(migrationId, IsCloseable.FALSE);
   }
+  private BooleanState isWorldVrReadyState = createBooleanState("isWorldVrReady", false);
 
+  public BooleanState isWorldVrReady() {
+    return isWorldVrReadyState;
+  }
   public abstract UriProjectLoader getSelectedUri();
 
   protected abstract void refresh();
