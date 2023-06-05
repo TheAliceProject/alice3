@@ -1,0 +1,116 @@
+{
+  "parentClass": "Prop",
+  "rootJoints": [
+    "RootBone"
+  ],
+  "jointBounds": [],
+  "additionalJoints": [
+    {
+      "name": "RootBone",
+      "visibility": "COMPLETELY_HIDDEN"
+    },
+    {
+      "name": "Feet",
+      "parent": "RootBone",
+      "visibility": "PRIME_TIME"
+    },
+    {
+      "name": "Head",
+      "parent": "Feet",
+      "visibility": "PRIME_TIME"
+    },
+    {
+      "name": "LeftHand",
+      "parent": "Feet",
+      "visibility": "PRIME_TIME"
+    },
+    {
+      "name": "RightHand",
+      "parent": "Feet",
+      "visibility": "PRIME_TIME"
+    }
+  ],
+  "additionalJointArrays": [],
+  "additionalJointArrayIds": [],
+  "poses": [],
+  "boundingBox": {
+    "min": [
+      -0.4056576,
+      -0.002329945,
+      -0.39946586
+    ],
+    "max": [
+      0.3973883,
+      1.8278544,
+      0.39662036
+    ]
+  },
+  "placeOnGround": true,
+  "textureSets": [
+    {
+      "name": "VRrigNewMesh",
+      "idToResourceMap": {
+        "0": "VRrigNewMesh-textureReference"
+      }
+    }
+  ],
+  "models": [
+    {
+      "name": "VRrigNewMesh",
+      "structure": "VRrigNewMesh",
+      "textureSet": "VRrigNewMesh",
+      "icon": "VRrigNewMesh.png"
+    }
+  ],
+  "description": {
+    "name": "VRrigNewMesh",
+    "icon": "VRrigNewMesh_cls.png",
+    "tags": [],
+    "groupTags": [],
+    "themeTags": []
+  },
+  "provenance": {
+    "aliceVersion": "3.7.0.0+build.876",
+    "created": "2023-05-16T12:35:14-0700PDT",
+    "creator": "melanie"
+  },
+  "metadata": {
+    "formatVersion": "0.1",
+    "identifier": {
+      "version": "1.0"
+    }
+  },
+  "prerequisites": [],
+  "resources": [
+    {
+      "name": "VRrigNewMesh",
+      "format": "a3r",
+      "file": "vrrignewmesh.a3r",
+      "type": "skeletonMesh"
+    },
+    {
+      "name": "VRrigNewMesh-textureReference",
+      "format": "a3t",
+      "file": "vrrignewmesh.a3t",
+      "type": "aliceTexture"
+    },
+    {
+      "uuid": "d7d2b52f-74f3-445a-8688-df7e3b47ec38",
+      "height": 120.0,
+      "width": 51.0,
+      "name": "VRrigNewMesh.png",
+      "format": "image/png",
+      "file": "VRrigNewMesh.png",
+      "type": "image"
+    },
+    {
+      "uuid": "9270c705-5fd3-403a-aa99-07350c19ee0c",
+      "height": 120.0,
+      "width": 51.0,
+      "name": "VRrigNewMesh_cls.png",
+      "format": "image/png",
+      "file": "VRrigNewMesh_cls.png",
+      "type": "image"
+    }
+  ]
+}
