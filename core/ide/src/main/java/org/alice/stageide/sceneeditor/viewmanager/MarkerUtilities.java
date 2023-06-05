@@ -50,9 +50,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
@@ -91,9 +91,8 @@ public class MarkerUtilities {
   private static final HashMap<CameraMarker, Tuple2<ImageIconFactory, ImageIconFactory>> cameraToIconMap = Maps.newHashMap();
   private static final HashMap<CameraMarker, CameraOption> cameraToViewMap = Maps.newHashMap();
 
-  private static final HashMap<Color, Icon> colorToObjectIconMap = Maps.newHashMap();
-  private static final HashMap<Color, Icon> colorToCameraIconMap = Maps.newHashMap();
-  private static Map<CameraMarker, IconFactory> mapCameraIconFactory = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToObjectIcon = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToCameraIcon = Maps.newHashMap();
 
   static {
     String[] colorNameKeys = {
@@ -256,7 +255,10 @@ public class MarkerUtilities {
   }
 
   private static Icon loadIconForCameraMarker(Color color) {
-    URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIconGrayScale.png");
+    // TOD convert VR flag to parameter
+    boolean isVrActive = false;
+    URL markerIconURL = StorytellingSceneEditor.class.getResource(
+        isVrActive ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
     if (markerIconURL == null) {
       return null;
     }
@@ -302,23 +304,20 @@ public class MarkerUtilities {
   }
 
   public static Icon getCameraMarkIconForColor(Color markerColor) {
-    if (colorToCameraIconMap.containsKey(markerColor)) {
-      return colorToCameraIconMap.get(markerColor);
-    } else {
-      Icon icon = loadIconForCameraMarker(markerColor);
-      colorToCameraIconMap.put(markerColor, icon);
-      return icon;
-    }
+    return getIcon(markerColor, colorToCameraIcon, MarkerUtilities::loadIconForCameraMarker);
   }
 
   public static Icon getObjectMarkIconForColor(Color markerColor) {
-    if (colorToObjectIconMap.containsKey(markerColor)) {
-      return colorToObjectIconMap.get(markerColor);
-    } else {
-      ImageIcon icon = loadIconForObjectMarker(markerColor);
-      colorToObjectIconMap.put(markerColor, icon);
-      return icon;
+    return getIcon(markerColor, colorToObjectIcon, MarkerUtilities::loadIconForObjectMarker);
+  }
+
+  private static Icon getIcon(Color markerColor, HashMap<Color, Icon> colorsToIcons, Function<Color, Icon> creator) {
+    if (colorsToIcons.containsKey(markerColor)) {
+      return colorsToIcons.get(markerColor);
     }
+    Icon icon = creator.apply(markerColor);
+    colorsToIcons.put(markerColor, icon);
+    return icon;
   }
 
   public static Icon getIconForMarkerField(UserField markerField) {
