@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
-import org.alice.stageide.sceneeditor.side.views.CameraMarkersView;
 import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
 import org.lgna.croquet.Operation;
@@ -52,7 +51,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersToolPalette extends MarkersToolPalette<CameraMarkersView> {
+public class CameraMarkersToolPalette extends MarkersToolPalette {
   public CameraMarkersToolPalette() {
     super(UUID.fromString("0e436ae7-b89b-4c8f-b48a-e4f658e6f82f"), new CameraMarkerFieldData());
   }
@@ -70,10 +69,5 @@ public class CameraMarkersToolPalette extends MarkersToolPalette<CameraMarkersVi
   @Override
   public Operation getAddOperation() {
     return AddCameraMarkerFieldComposite.getInstance().getLaunchOperation();
-  }
-
-  @Override
-  protected CameraMarkersView createView() {
-    return new CameraMarkersView(this);
   }
 }

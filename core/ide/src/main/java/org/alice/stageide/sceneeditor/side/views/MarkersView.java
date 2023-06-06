@@ -57,9 +57,9 @@ import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CustomRadioButtons;
 import org.lgna.croquet.views.FlowPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.ItemSelectablePanel;
 import org.lgna.croquet.views.PopupButton;
 import org.lgna.project.ast.UserField;
 
@@ -79,7 +79,7 @@ import java.util.Map;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersView extends BorderPanel {
+public class MarkersView extends BorderPanel {
 
   public static final Color BACKGROUND_COLOR = new Color(173, 167, 208);
   public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB(Color.YELLOW, 1.0, 0.3, 1.0);
@@ -109,7 +109,7 @@ public abstract class MarkersView extends BorderPanel {
     }
   }
 
-  private class MarkerListView extends CustomRadioButtons<UserField> {
+  private class MarkerListView extends ItemSelectablePanel<UserField> {
     private class MarkerPopupButton extends PopupButton {
       private final UserField field;
 
@@ -244,7 +244,7 @@ public abstract class MarkersView extends BorderPanel {
     }
   };
 
-  public MarkersView(MarkersToolPalette<?> composite) {
+  public MarkersView(MarkersToolPalette composite) {
     super(composite);
     this.addPageStartComponent(new FlowPanel(FlowPanel.Alignment.LEADING, composite.getMoveToMarkerOperation().createButton(), composite.getMoveMarkerToOperation().createButton()));
     this.addCenterComponent(new MarkerListView(composite.getMarkerListState()));
@@ -254,7 +254,7 @@ public abstract class MarkersView extends BorderPanel {
 
   private void unselectMarker() {
     Logger.outln("unselectMarker");
-    MarkersToolPalette<?> composite = (MarkersToolPalette<?>) this.getComposite();
+    MarkersToolPalette composite = (MarkersToolPalette) getComposite();
     composite.getMarkerListState().clearSelection();
   }
 

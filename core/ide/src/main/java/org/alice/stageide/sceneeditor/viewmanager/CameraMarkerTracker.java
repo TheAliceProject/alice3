@@ -65,18 +65,21 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 import java.util.Map;
+
+// This handles the fact that we have multple cameras (perspective and orthographic) and each of those cameras
+// could be set to one of several different "markers" which can be re-positioned by outside sources (and allow us to switch
+// between views without losing our previous position, since the marker remains where we used to be)
 
 public class CameraMarkerTracker implements PropertyListener, ValueListener<CameraOption> {
   private SymmetricPerspectiveCamera perspectiveCamera = null;
   private OrthographicCamera orthographicCamera = null;
   private final Animator animator;
   private PointOfViewAnimation pointOfViewAnimation = null;
-  private CameraMarkerImp markerToUpdate = null;
+  private CameraMarkerImp trackedMarker = null;
   private final StorytellingSceneEditor sceneEditor;
-  private CameraMarkerImp activeMarker = null;
+  private CameraMarkerImp selectedMarker = null;
 
   private final Map<CameraOption, CameraMarkerImp> mapViewToMarker = Maps.newHashMap();
 
@@ -94,14 +97,14 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   public void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
-    if ((perspectiveCamera == null) && (markerToUpdate instanceof PerspectiveCameraMarkerImp)) {
+    if ((perspectiveCamera == null) && (trackedMarker instanceof PerspectiveCameraMarkerImp)) {
       stopTrackingCamera();
-      activeMarker = null;
+      selectedMarker = null;
     }
     this.perspectiveCamera = perspectiveCamera;
-    if ((orthographicCamera == null) && (markerToUpdate instanceof OrthographicCameraMarkerImp)) {
+    if ((orthographicCamera == null) && (trackedMarker instanceof OrthographicCameraMarkerImp)) {
       stopTrackingCamera();
-      activeMarker = null;
+      selectedMarker = null;
     }
     if (this.orthographicCamera != null) {
       this.orthographicCamera.picturePlane.removePropertyListener(this);
@@ -119,9 +122,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         && a.translation.isWithinReasonableEpsilonOf(b.translation);
   }
 
-  private void animateToTargetView() {
-    AffineMatrix4x4 currentTransform = perspectiveCamera.getAbsoluteTransformation();
-    AffineMatrix4x4 targetTransform = activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+  private void animateToTargetView(AbstractCamera camera) {
+    AffineMatrix4x4 currentTransform = camera.getAbsoluteTransformation();
+    AffineMatrix4x4 targetTransform = selectedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 
     if (pointOfViewAnimation != null) {
       doEpilogue = false;
@@ -129,14 +132,14 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       doEpilogue = true;
     }
     if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
-      startTrackingCamera(perspectiveCamera, activeMarker);
+      startTrackingCamera(camera);
     } else {
-      AbstractTransformable cameraParent = perspectiveCamera.getMovableParent();
+      AbstractTransformable cameraParent = camera.getMovableParent();
       pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
         @Override
         protected void epilogue() {
           if (doEpilogue) {
-            startTrackingCamera(perspectiveCamera, activeMarker);
+            startTrackingCamera(camera);
           }
         }
       };
@@ -149,11 +152,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if ((perspectiveCamera == null) || (orthographicCamera == null)) {
       return;
     }
-    CameraMarkerImp previousMarker = activeMarker;
-    activeMarker = getCameraMarker(e.getNextValue());
-    if (previousMarker != activeMarker) {
+    CameraMarkerImp previousMarker = selectedMarker;
+    selectedMarker = getCameraMarker(e.getNextValue());
+    if (previousMarker != selectedMarker) {
       stopTrackingCamera();
-      if (activeMarker != null) {
+      if (selectedMarker != null) {
         setCameraToSelectedMarker();
       }
     }
@@ -163,67 +166,74 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if ((perspectiveCamera == null) || (orthographicCamera == null)) {
       return;
     }
-    activeMarker = getCameraMarker(cameraOption);
-    if (activeMarker != null) {
+    selectedMarker = getCameraMarker(cameraOption);
+    if (selectedMarker != null) {
       stopTrackingCamera();
       setCameraToSelectedMarker();
     }
   }
 
-  public void setCameraToSelectedMarker() {
-    if (activeMarker instanceof OrthographicCameraMarkerImp) {
-      OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) activeMarker;
+  // we're not changing the active/selected marker, but we may have moved it
+  public void updateCameraToNewMarkerLocation() {
+    if ((perspectiveCamera == null) || (orthographicCamera == null)) {
+      return;
+    }
+
+    if (selectedMarker != null && trackedMarker != null) {
+      // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
+      // marker from the parent but we don't want anything to change the transform (which stopTracking would do)
+      trackedMarker.getSgComposite().setParent(trackedMarker.getSgComposite().getRoot());
+      trackedMarker = null;
+      setCameraToSelectedMarker();
+    }
+  }
+
+  private void setCameraToSelectedMarker() {
+    if (selectedMarker instanceof OrthographicCameraMarkerImp) {
       sceneEditor.switchToOrthographicCamera();
-      Transformable cameraParent = (Transformable) orthographicCamera.getParent();
+      OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) selectedMarker;
       orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
-      cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), orthographicCamera.getRoot());
-      startTrackingCamera(orthographicCamera, orthoMarker);
-      cameraParent.notifyTransformationListeners();
+      animateToTargetView(orthographicCamera);
     } else {
-      PerspectiveCameraMarkerImp perspectiveMarker = (PerspectiveCameraMarkerImp) activeMarker;
       sceneEditor.switchToPerspectiveCamera();
-      AbstractTransformable cameraParent = perspectiveCamera.getMovableParent();
-      if (perspectiveMarker.getCameraType() == StorytellingSceneEditor.STARTING_CAMERA) {
-        animateToTargetView();
-      } else {
-        cameraParent.setTransformation(activeMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SELF), perspectiveCamera.getRoot());
-        startTrackingCamera(perspectiveCamera, perspectiveMarker);
-        cameraParent.notifyTransformationListeners();
-      }
+      animateToTargetView(perspectiveCamera);
     }
   }
 
   //Sets the given camera to the absolute orientation of the given marker
   //Parents the given marker to the camera and then zeros out the local transform
-  private void startTrackingCamera(AbstractCamera camera, CameraMarkerImp markerToUpdate) {
-    if (this.markerToUpdate != null) {
+  private void startTrackingCamera(AbstractCamera camera) {
+    if (trackedMarker != null && trackedMarker != selectedMarker) {
       stopTrackingCamera();
     }
-    this.markerToUpdate = markerToUpdate;
-    if (this.markerToUpdate != null) {
+    trackedMarker = selectedMarker;
+    if (trackedMarker != null) {
+//    if (this.markerToUpdate != null) {
       AbstractTransformable cameraParent = camera.getMovableParent();
+//      Transformable cameraParent = (Transformable) camera.getParent();
+//    this.markerToUpdate = markerToUpdate;
       Composite root = cameraParent.getRoot();
       if (root != null) {
-        cameraParent.setTransformation(this.markerToUpdate.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
+        cameraParent.setTransformation(this.trackedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
       } else {
         Logger.severe(cameraParent);
       }
-      this.markerToUpdate.setShowing(false);
-      this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
-      this.markerToUpdate.getSgComposite().setParent(cameraParent);
-      sceneEditor.setHandleVisibilityForObject(this.markerToUpdate, false);
+      this.trackedMarker.setShowing(false);
+      this.trackedMarker.setLocalTransformation(AffineMatrix4x4.accessIdentity());
+      this.trackedMarker.getSgComposite().setParent(cameraParent);
+      sceneEditor.setHandleVisibilityForObject(this.trackedMarker, false);
     }
   }
 
   private void stopTrackingCamera() {
-    if (markerToUpdate != null) {
-      AffineMatrix4x4 previousMarkerTransform = markerToUpdate.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-      markerToUpdate.getSgComposite().setParent(markerToUpdate.getSgComposite().getRoot());
-      markerToUpdate.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
-      markerToUpdate.setShowing(true);
-      sceneEditor.setHandleVisibilityForObject(markerToUpdate, true);
+    if (trackedMarker != null) {
+      AffineMatrix4x4 previousMarkerTransform = trackedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+      trackedMarker.getSgComposite().setParent(trackedMarker.getSgComposite().getRoot());
+      trackedMarker.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
+      trackedMarker.setShowing(true);
+      sceneEditor.setHandleVisibilityForObject(trackedMarker, true);
     }
-    markerToUpdate = null;
+    trackedMarker = null;
   }
 
   private boolean doesMarkerMatchCamera(CameraMarkerImp marker, AbstractCamera camera) {
@@ -238,8 +248,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   @Override
   public void propertyChanged(PropertyEvent e) {
     if ((e.getOwner() == orthographicCamera) && (e.getTypedSource() == orthographicCamera.picturePlane)) {
-      if (doesMarkerMatchCamera(activeMarker, orthographicCamera)) {
-        ((OrthographicCameraMarkerImp) activeMarker).setPicturePlane(orthographicCamera.picturePlane.getValue());
+      if (doesMarkerMatchCamera(selectedMarker, orthographicCamera)) {
+        ((OrthographicCameraMarkerImp) selectedMarker).setPicturePlane(orthographicCamera.picturePlane.getValue());
       }
     }
   }

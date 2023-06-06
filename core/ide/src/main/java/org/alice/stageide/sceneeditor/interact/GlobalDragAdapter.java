@@ -160,10 +160,14 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
       this.addManipulationListener(selectionIndicator);
       selectionIndicator.setDragAdapterAndAddHandle(this);
 
-      //Selection manipulator
+      //Selection manipulators
       ManipulatorConditionSet selectObject = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
       selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
       this.addManipulatorConditionSet(selectObject);
+
+      ManipulatorConditionSet selectObjectRight = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
+      selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
+      this.addManipulatorConditionSet(selectObjectRight);
 
       //Ability to drag stuff in from gallery
       OmniDirectionalBoundingBoxManipulator boundingBoxManipulator = new OmniDirectionalBoundingBoxManipulator();
@@ -344,6 +348,10 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
       ManipulatorConditionSet selectObject = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
       selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
       this.addManipulatorConditionSet(selectObject);
+
+      ManipulatorConditionSet selectObjectRight = new ManipulatorConditionSet(new SelectObjectDragManipulator(this));
+      selectObject.addCondition(new MousePressCondition(MouseEvent.BUTTON3, new PickCondition(PickHint.PickType.SELECTABLE.pickHint())));
+      this.addManipulatorConditionSet(selectObjectRight);
 
       ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet(new GetAGoodLookAtManipulator());
       getAGoodLookAtObject.addCondition(new DoubleClickedObjectCondition(MouseEvent.BUTTON1, new PickCondition(PickHint.PickType.VIEWABLE.pickHint()), new ModifierMask(ModifierMask.JUST_CONTROL)));
