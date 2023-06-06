@@ -52,7 +52,6 @@ import org.alice.stageide.sceneeditor.side.MarkersToolPalette;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BooleanStateButton;
@@ -161,12 +160,7 @@ public class MarkersView extends BorderPanel {
 
     private final Map<UserField, MarkerPopupButton> mapFieldToPopupButton = Maps.newHashMap();
 
-    private final ValueListener<UserField> selectionListener = new ValueListener<UserField>() {
-      @Override
-      public void valueChanged(ValueEvent<UserField> e) {
-        MarkersView.this.repaint();
-      }
-    };
+    private final ValueListener<UserField> selectionListener = e -> MarkersView.this.repaint();
 
     public MarkerListView(RefreshableDataSingleSelectListState<UserField> model) {
       super(model);

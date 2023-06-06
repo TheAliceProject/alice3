@@ -109,6 +109,11 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
     }
   }
 
+  public void updateDisplay() {
+    updateMoveFields(markerField, cameraMarker);
+    updateBasedOnSettings();
+  }
+
   private void updateBasedOnSettings() {
     if ((this.toMoveImp != null) && (this.toMoveToImp != null)) {
       String unformattedTooltipText = this.findLocalizedText("tooltip");
@@ -140,8 +145,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
     } else {
       this.markerField = null;
     }
-    updateMoveFields(this.markerField, this.cameraMarker);
-    this.updateBasedOnSettings();
+    updateDisplay();
   }
 
   public void setCameraMarker(CameraMarkerImp cameraMarker) {
@@ -150,8 +154,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
     } else {
       this.cameraMarker = null;
     }
-    updateMoveFields(this.markerField, this.cameraMarker);
-    this.updateBasedOnSettings();
+    updateDisplay();
   }
 
   @Override
