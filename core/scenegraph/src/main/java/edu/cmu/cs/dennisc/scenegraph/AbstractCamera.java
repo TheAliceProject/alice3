@@ -94,6 +94,7 @@ public abstract class AbstractCamera extends Leaf {
     }
   };
 
+  // Unified method to reach the moving part of the camera. For SCamara, on itself, for a SVRheadset, on the SVRUser.
   public AbstractTransformable getMovableParent() {
     Composite parent = getParent();
     // Do not move the headset, move the VRUser

@@ -92,13 +92,13 @@ public class SVRHeadset extends SThing {
   }
 
   @MethodTemplate()
-  public void setVerticalViewingAngle(Number angle) {
-    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
+  public Double getVerticalViewingAngle() {
+    return getImplementation().getSgCamera().verticalViewingAngle.getValue().getAsRevolutions();
   }
 
   @MethodTemplate()
-  public Double getVerticalViewingAngle() {
-    return getImplementation().getSgCamera().verticalViewingAngle.getValue().getAsRevolutions();
+  public void setVerticalViewingAngle(Number angle) {
+    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)

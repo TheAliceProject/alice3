@@ -55,9 +55,6 @@ import org.lgna.story.implementation.VrUserImp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Dennis Cosgrove
- */
 public class SVRUser extends SMovableTurnable implements MutableRider {
   public static AffineMatrix4x4 HEADSET_PLACEMENT = AffineMatrix4x4.createIdentity();
   public static AffineMatrix4x4 LEFT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();

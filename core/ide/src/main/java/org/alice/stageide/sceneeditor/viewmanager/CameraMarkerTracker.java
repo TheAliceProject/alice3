@@ -208,10 +208,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
     trackedMarker = selectedMarker;
     if (trackedMarker != null) {
-//    if (this.markerToUpdate != null) {
       AbstractTransformable cameraParent = camera.getMovableParent();
-//      Transformable cameraParent = (Transformable) camera.getParent();
-//    this.markerToUpdate = markerToUpdate;
       Composite root = cameraParent.getRoot();
       if (root != null) {
         cameraParent.setTransformation(this.trackedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
