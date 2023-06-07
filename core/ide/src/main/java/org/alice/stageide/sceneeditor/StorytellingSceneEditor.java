@@ -147,6 +147,8 @@ import org.lgna.story.resources.ModelResource;
  * @author dculyba
  */
 public class StorytellingSceneEditor extends AbstractSceneEditor implements RenderTargetListener {
+  private boolean isVrScene;
+
   private class SceneEditorDropReceptor extends AbstractDropReceptor {
     @Override
     public boolean isPotentiallyAcceptingOf(DragModel dragModel) {
@@ -675,8 +677,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.frontOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.frontOrthoMarkerImp));
   }
 
-  private Boolean isVrActive() {
-    return false;
+  public Boolean isVrActive() {
+    return isVrScene;
   }
 
   private void clearCameras() {
@@ -979,12 +981,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         if (field.getValueType().isAssignableTo(SCamera.class)) {
           sceneCameraImp = getImplementation(field);
           movableSceneCameraImp = sceneCameraImp;
+          isVrScene = false;
           break;
         }
         if (field.getValueType().isAssignableTo(SVRUser.class)) {
           VrUserImp vrUserImp = getImplementation(field);
           sceneCameraImp = EmployeesOnly.getImplementation(vrUserImp.getAbstraction().getHeadset());
           movableSceneCameraImp = vrUserImp;
+          isVrScene = true;
           break;
         }
       }

@@ -255,10 +255,8 @@ public class MarkerUtilities {
   }
 
   private static Icon loadIconForCameraMarker(Color color) {
-    // TOD convert VR flag to parameter
-    boolean isVrActive = false;
     URL markerIconURL = StorytellingSceneEditor.class.getResource(
-        isVrActive ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
+        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
     if (markerIconURL == null) {
       return null;
     }
