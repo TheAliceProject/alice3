@@ -1,20 +1,13 @@
 package org.lgna.story.resourceutilities;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import org.junit.Test;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA;
 
-import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 
 public class ModelExportTest {
 
