@@ -605,6 +605,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.startingCameraMarkerImp = EmployeesOnly.getImplementation(openingSceneMarker);
     this.startingCameraMarkerImp.setDisplayVisuals(true);
     this.startingCameraMarkerImp.setCameraType(STARTING_CAMERA);
+    startingCameraMarkerImp.setVrActive(isVrActive());
     MarkerUtilities.addIconForCameraImp(this.startingCameraMarkerImp, "mainCamera");
     MarkerUtilities.setViewForCameraImp(this.startingCameraMarkerImp, CameraOption.STARTING_CAMERA_VIEW);
 
@@ -613,6 +614,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.layoutSceneMarkerImp = EmployeesOnly.getImplementation(layoutCameraMarker);
     this.layoutSceneMarkerImp.setDisplayVisuals(true);
     this.layoutSceneMarkerImp.setCameraType(LAYOUT_CAMERA);
+    layoutSceneMarkerImp.setVrActive(isVrActive());
     MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
     MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, CameraOption.LAYOUT_SCENE_VIEW);
 
@@ -668,6 +670,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.topOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.topOrthoMarkerImp));
     this.sideOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.sideOrthoMarkerImp));
     this.frontOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.frontOrthoMarkerImp));
+  }
+
+  private Boolean isVrActive() {
+    return false;
   }
 
   private void clearCameras() {
@@ -921,6 +927,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       if (field.getValueType().isAssignableTo(CameraMarker.class)) {
         this.setSelectedCameraMarker(field);
+        ((PerspectiveCameraMarkerImp) markerImp).setVrActive(isVrActive());
       } else if (field.getValueType().isAssignableTo(SThingMarker.class)) {
         this.setSelectedObjectMarker(field);
       }

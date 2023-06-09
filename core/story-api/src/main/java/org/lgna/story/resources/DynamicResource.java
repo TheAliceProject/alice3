@@ -77,6 +77,15 @@ public abstract class DynamicResource<I extends JointedModelImp, T extends SThin
     initialize();
   }
 
+  // Get resource for a model that is displayed, but not available for users in the gallery
+  public static DynamicResource getInternalResource(String modelName, String resourceName) {
+    ModelManifest modelManifest = StorytellingResources.INSTANCE.getInternalModelManifest(modelName);
+    if (modelManifest == null) {
+      throw new RuntimeException("No internal model found named \"" + modelName + "\"");
+    }
+    return createDynamicResource(modelManifest, modelManifest.getModelVariant(resourceName));
+  }
+
    @Override
    public String identifierFor(String resourceName) {
     return resourceName;

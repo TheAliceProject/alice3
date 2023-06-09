@@ -79,6 +79,7 @@ public enum StorytellingResources {
 
   private List<File> userGalleryResourceFiles = null;
   private List<ModelManifest> userGalleryModelManifests = null;
+  private List<ModelManifest> internalModelManifests = null;
   private List<Class<? extends ModelResource>> installedAliceClassesLoaded = null;
   private List<URLClassLoader> resourceClassLoaders;
 
@@ -435,17 +436,40 @@ public enum StorytellingResources {
       File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
       List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
       for (File modelFile : dynamicModelFiles) {
-        try {
-          String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
-          ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
-          modelManifest.setRootFile(modelFile.getParentFile());
+        ModelManifest modelManifest = manifestFor(modelFile);
+        if (modelManifest != null) {
           this.userGalleryModelManifests.add(modelManifest);
-        } catch (IOException e) {
-          Logger.warning("Error loading model data from " + modelFile);
         }
       }
     }
     return this.userGalleryModelManifests;
+  }
+
+  List<ModelManifest> findAndLoadInternalResourcesIfNecessary() {
+    if (internalModelManifests == null) {
+      internalModelManifests = new ArrayList<>();
+      File internalModelsDirectory = StoryApiDirectoryUtilities.getInternalModelsDirectory();
+      List<File> dynamicModelFiles = getDynamicModelFiles(internalModelsDirectory);
+      for (File modelFile : dynamicModelFiles) {
+        ModelManifest modelManifest = manifestFor(modelFile);
+        if (modelManifest != null) {
+          internalModelManifests.add(modelManifest);
+        }
+      }
+    }
+    return internalModelManifests;
+  }
+
+  private ModelManifest manifestFor(File modelFile) {
+    try {
+      String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+      ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+      modelManifest.setRootFile(modelFile.getParentFile());
+      return modelManifest;
+    } catch (IOException e) {
+      Logger.warning("Error loading model data from " + modelFile);
+      return null;
+    }
   }
 
   List<ModelManifest> findNewUserGalleryResources() {
@@ -454,16 +478,10 @@ public enum StorytellingResources {
       File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
       List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
       for (File modelFile : dynamicModelFiles) {
-        try {
-          String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
-          ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
-          modelManifest.setRootFile(modelFile.getParentFile());
-          if (manifestIsNew(modelManifest)) {
-            userGalleryModelManifests.add(modelManifest);
-            newModelManifests.add(modelManifest);
-          }
-        } catch (IOException e) {
-          Logger.warning("Error loading model data from " + modelFile);
+        ModelManifest modelManifest = manifestFor(modelFile);
+        if (modelManifest != null && manifestIsNew(modelManifest)) {
+          userGalleryModelManifests.add(modelManifest);
+          newModelManifests.add(modelManifest);
         }
       }
       return newModelManifests;
@@ -539,9 +557,21 @@ public enum StorytellingResources {
     return this.installedAliceClassesLoaded;
   }
 
+  // Get manifest for a model in the Alice gallery
   public ModelManifest getModelManifest(String modelName) {
     this.findAndLoadUserGalleryResourcesIfNecessary();
     for (ModelManifest modelManifest : this.userGalleryModelManifests) {
+      if (modelManifest.getName().equals(modelName)) {
+        return modelManifest;
+      }
+    }
+    return null;
+  }
+
+  // Get manifest for a model in Alice that is not available for users in the gallery
+  public ModelManifest getInternalModelManifest(String modelName) {
+    findAndLoadInternalResourcesIfNecessary();
+    for (ModelManifest modelManifest : internalModelManifests) {
       if (modelManifest.getName().equals(modelName)) {
         return modelManifest;
       }

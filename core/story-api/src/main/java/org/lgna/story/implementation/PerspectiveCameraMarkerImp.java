@@ -44,9 +44,7 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.scenegraph.Box;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
@@ -60,6 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 import org.lgna.story.PerspectiveCameraMarker;
+import org.lgna.story.resources.DynamicResource;
 
 import java.util.List;
 
@@ -91,11 +90,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   @Override
   protected void createVisuals() {
     initialize();
-    sgVisuals = new Visual[] {createLensVisual(),
-        createCylinderVisual("Camera Cylinder 1", RADIUS),
-        createCylinderVisual("Camera Cylinder 2", RADIUS * 3),
-        createBoxVisual()};
-
     addLaserSightLine();
     updateViewGeometry();
     setDetailedViewShowing(false);
@@ -106,6 +100,22 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
     sgDetailedComponents = Lists.newLinkedList();
     farClippingPlane = 100;
+    createVRVisual();
+    createCameraVisual();
+  }
+
+  private void createVRVisual() {
+    var rigResource = DynamicResource.getInternalResource("VRrigNewMesh", "VRrigNewMesh");
+    sgVrVisuals = rigResource.getImplementationAndVisualFactory().createVisualData().getSgVisuals();
+    sgVrVisuals[0].setParent(this.getSgComposite());
+    sgVrVisuals[0].frontFacingAppearance.setValue(getSgPaintAppearances()[0]);
+  }
+
+  private void createCameraVisual() {
+    sgCameraVisuals = new Visual[] {createLensVisual(),
+        createCylinderVisual("Camera Cylinder 1", RADIUS),
+        createCylinderVisual("Camera Cylinder 2", RADIUS * 3),
+        createBoxVisual()};
   }
 
   private Visual createBoxVisual() {
@@ -281,9 +291,23 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     return this.getSgPaintAppearances();
   }
 
+  public void setVrActive(Boolean isVrActive) {
+    this.isVrActive = isVrActive;
+    if (sgVrVisuals != null) {
+      for (Visual v : sgVrVisuals) {
+        v.isShowing.setValue(isVrActive && getDisplayEnabled());
+      }
+    }
+    if (sgCameraVisuals != null) {
+      for (Visual v : sgCameraVisuals) {
+        v.isShowing.setValue(!isVrActive && getDisplayEnabled());
+      }
+    }
+  }
+
   @Override
   public Visual[] getSgVisuals() {
-    return this.sgVisuals;
+    return isVrActive ? sgVrVisuals : sgCameraVisuals;
   }
 
   private double farClippingPlane;
@@ -291,7 +315,9 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   private Vertex[] sgLaserLineVertices;
   private LineArray sgLaserLine;
 
-  private Visual[] sgVisuals;
+  private boolean isVrActive;
+  private Visual[] sgVrVisuals;
+  private Visual[] sgCameraVisuals;
   private SimpleAppearance[] sgAppearances;
   private List<Visual> sgDetailedComponents;
   private int cameraType;
