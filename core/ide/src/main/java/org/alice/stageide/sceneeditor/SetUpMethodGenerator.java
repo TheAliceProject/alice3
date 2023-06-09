@@ -81,7 +81,6 @@ import org.lgna.story.Place;
 import org.lgna.story.Position;
 import org.lgna.story.Resizable;
 import org.lgna.story.SBox;
-import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SMarker;
@@ -91,6 +90,8 @@ import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.STurnable;
 import org.lgna.story.SVRHand;
+import org.lgna.story.SVRHeadset;
+import org.lgna.story.SVRUser;
 import org.lgna.story.Scale;
 import org.lgna.story.SetOrientationRelativeToVehicle;
 import org.lgna.story.SetPaint;
@@ -100,7 +101,6 @@ import org.lgna.story.Size;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.implementation.VrHandImp;
 import org.lgna.story.resources.JointId;
 
 import java.lang.reflect.Method;
@@ -277,8 +277,8 @@ public class SetUpMethodGenerator {
     if (value instanceof SJoint) {
       return getGetterExpressionForJoint((SJoint) value, sceneInstance);
     }
-    if (value instanceof SVRHand) {
-      return getGetterExpressionForHand((SVRHand) value, sceneInstance);
+    if (value instanceof SVRHand || value instanceof SVRHeadset) {
+      return getGetterExpressionForDevice(value, sceneInstance);
     }
     boolean isEntityScene = (value instanceof SScene);
     AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(value);
@@ -314,25 +314,24 @@ public class SetUpMethodGenerator {
     return null;
   }
 
-  private static Expression getGetterExpressionForHand(SVRHand hand, UserInstance sceneInstance) {
-    VrHandImp handImp = EmployeesOnly.getImplementation(hand);
-    SThing camera = handImp.getParent().getAbstraction();
-    AbstractField cameraField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(camera);
-    AbstractMethod getJointMethod = getGetterForHand(cameraField, hand, sceneInstance);
-    return new MethodInvocation(new FieldAccess(cameraField), getJointMethod);
+  private static Expression getGetterExpressionForDevice(SThing device, UserInstance sceneInstance) {
+    // The vehicle will be SCamera for hands, or SVRUser for hands/headset
+    SThing vehicle = device.getVehicle();
+    AbstractField userField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(vehicle);
+    AbstractMethod getDeviceMethod = getGetterForDevice(userField, device, sceneInstance);
+    return new MethodInvocation(new FieldAccess(userField), getDeviceMethod);
   }
 
-  private static AbstractMethod getGetterForHand(AbstractField cameraField, SVRHand hand, UserInstance sceneInstance) {
-    for (AbstractMethod method : SCamera.getHandMethods(cameraField.getValueType())) {
-      Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(cameraField), method)});
+  private static AbstractMethod getGetterForDevice(AbstractField userField, SThing device, UserInstance sceneInstance) {
+    for (AbstractMethod method : SVRUser.getDeviceMethods(userField.getValueType())) {
+      Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(sceneInstance, new Expression[] {new MethodInvocation(new FieldAccess(userField), method)});
       for (Object o : values) {
-        if (o == hand) {
+        if (o == device) {
           return method;
         }
       }
     }
     return null;
-
   }
 
   public static Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, UserInstance sceneInstance, boolean captureFullState) {
@@ -378,6 +377,34 @@ public class SetUpMethodGenerator {
               throw new RuntimeException(ccee);
             }
           }
+          if (turnable instanceof SVRUser && field != null) {
+            SVRUser vrUser = (SVRUser) turnable;
+            Position headPosition = vrUser.getHeadset().getPositionRelativeToVehicle();
+            Orientation headOrientation = vrUser.getHeadset().getOrientationRelativeToVehicle();
+            Position leftHandPosition = vrUser.getLeftHand().getPositionRelativeToVehicle();
+            Position rightHandPosition = vrUser.getRightHand().getPositionRelativeToVehicle();
+            try {
+              Expression getHeadsetExpression = getGetterExpressionForDevice(vrUser.getHeadset(), sceneInstance);
+              AbstractMethod setOrientation = AstUtilities.lookupMethod(SVRHeadset.class, "setOrientationRelativeToVehicle", Orientation.class, SetOrientationRelativeToVehicle.Detail[].class);
+              statements.add(AstUtilities.createMethodInvocationStatement(getHeadsetExpression, setOrientation,
+                  getExpressionCreator().createExpression(headOrientation)));
+              AbstractMethod setPosition = AstUtilities.lookupMethod(SVRHeadset.class, "setPositionRelativeToVehicle", Position.class, SetPositionRelativeToVehicle.Detail[].class);
+              statements.add(AstUtilities.createMethodInvocationStatement(getHeadsetExpression, setPosition,
+                  getExpressionCreator().createExpression(headPosition)));
+
+              AbstractMethod setHandPosition = AstUtilities.lookupMethod(SVRHand.class, "setPositionRelativeToVehicle", Position.class, SetPositionRelativeToVehicle.Detail[].class);
+              statements.add(AstUtilities.createMethodInvocationStatement(
+                  getGetterExpressionForDevice(vrUser.getLeftHand(), sceneInstance),
+                  setHandPosition,
+                  getExpressionCreator().createExpression(leftHandPosition)));
+              statements.add(AstUtilities.createMethodInvocationStatement(
+                  getGetterExpressionForDevice(vrUser.getRightHand(), sceneInstance),
+                  setHandPosition,
+                  getExpressionCreator().createExpression(rightHandPosition)));
+            } catch (ExpressionCreator.CannotCreateExpressionException e) {
+              throw new RuntimeException(e);
+            }
+          }
         }
         if (instance instanceof Resizable) {
           Resizable resizable = (Resizable) instance;
@@ -399,7 +426,6 @@ public class SetUpMethodGenerator {
           }
         }
         if (instance instanceof SJointedModel) {
-          JointedModelImp<?, ?> jointedModelImp = EmployeesOnly.getImplementation((SJointedModel) instance);
           List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(field.getValueType());
           for (JointedTypeInfo jointInfo : jointedTypeInfos) {
             List<Expression> jointAccessExpressions = Lists.newLinkedList();

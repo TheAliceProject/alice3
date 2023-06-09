@@ -49,11 +49,14 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  * @author Dennis Cosgrove
  */
 public final class Orientation {
-  public static final Orientation IDENTITY = new Orientation(OrthogonalMatrix3x3.createIdentity());
   private final OrthogonalMatrix3x3 internal;
 
   private Orientation(OrthogonalMatrix3x3 internal) {
     this.internal = internal;
+  }
+
+  public Orientation() {
+    this(OrthogonalMatrix3x3.createIdentity());
   }
 
   public Orientation(Number x, Number y, Number z, Number w) {

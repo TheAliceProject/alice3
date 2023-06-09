@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
@@ -56,18 +56,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SVRUser extends SMovableTurnable implements MutableRider {
-  public static AffineMatrix4x4 HEADSET_PLACEMENT = AffineMatrix4x4.createIdentity();
-  public static AffineMatrix4x4 LEFT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
-  public static AffineMatrix4x4 RIGHT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
-  private static final double HAND_OFFSET = 0.1;
+  public static final Orientation DEFAULT_ORIENTATION = new Orientation();
+  public static final Position  DEFAULT_POSITION = new Position(0, 0, SCamera.DEFAULT_POSITION.getBackward());
+  private static final double HAND_OFFSET = 0.2;
+  private static final double HAND_HEIGHT = 0.65 * SCamera.DEFAULT_POSITION.getUp();
+  public static final Position HEADSET_POSITION = new Position(0, SCamera.DEFAULT_POSITION.getUp(), 0);
+  public static final Orientation HEADSET_ORIENTATION = new Orientation();
+  public static final Position LEFT_HAND_POSITION = new Position(-HAND_OFFSET, HAND_HEIGHT, 0);
+  public static final Position RIGHT_HAND_POSITION = new Position(HAND_OFFSET, HAND_HEIGHT, 0);
   static {
-    HEADSET_PLACEMENT.translation.y = -SCamera.DEFAULT_PLACEMENT.translation.y;
-    HEADSET_PLACEMENT.orientation.setValue(SCamera.DEFAULT_PLACEMENT.orientation);
-    LEFT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
-    RIGHT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
-    LEFT_HAND_PLACEMENT.translation.x = HAND_OFFSET;
-    RIGHT_HAND_PLACEMENT.translation.x = -HAND_OFFSET;
+    OrthogonalMatrix3x3 headMatrix = HEADSET_ORIENTATION.getInternal();
+    headMatrix.applyRotationAboutXAxis(SCamera.DEFAULT_CAMERA_TILT);
+    OrthogonalMatrix3x3 baseMatrix = DEFAULT_ORIENTATION.getInternal();
+    baseMatrix.applyRotationAboutYAxis(SCamera.DEFAULT_CAMERA_FACING);
   }
+
   private final VrUserImp implementation = new VrUserImp("VRUser", this);
   private final SVRHeadset headset = new SVRHeadset("VRHeadset", this);
   private final SVRHand leftHand = new SVRHand("LeftHand", this);

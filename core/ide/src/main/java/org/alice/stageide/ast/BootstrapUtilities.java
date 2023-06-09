@@ -44,8 +44,7 @@
 package org.alice.stageide.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.alice.ide.ast.ExpressionCreator;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
@@ -82,21 +81,9 @@ import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.story.Color;
+import org.lgna.story.*;
+
 import org.lgna.story.Orientation;
-import org.lgna.story.Paint;
-import org.lgna.story.Position;
-import org.lgna.story.SCamera;
-import org.lgna.story.SGround;
-import org.lgna.story.SProgram;
-import org.lgna.story.SScene;
-import org.lgna.story.SThing;
-import org.lgna.story.SetAtmosphereColor;
-import org.lgna.story.SetFogDensity;
-import org.lgna.story.SetFromAboveLightColor;
-import org.lgna.story.SetFromBelowLightColor;
-import org.lgna.story.SetOpacity;
-import org.lgna.story.SetPaint;
 import org.lgna.story.event.SceneActivationListener;
 
 import java.util.ArrayList;
@@ -157,7 +144,9 @@ public class BootstrapUtilities {
   public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
 
   static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, boolean makeVrReady) {
-    UserField cameraField = new UserField("camera", SCamera.class);
+    String cameraFieldName = makeVrReady ? "vrUser" : "camera";
+    Class<? extends SMovableTurnable> cls = makeVrReady ? SVRUser.class : SCamera.class;
+    UserField cameraField = new UserField(cameraFieldName, cls);
     cameraField.isDeletionAllowed.setValue(false);
 
     UserMethod myFirstMethod = createProcedure(AccessLevel.PUBLIC, MY_FIRST_PROCEDURE_NAME);
@@ -184,18 +173,16 @@ public class BootstrapUtilities {
       performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new FieldAccess(field), method, new ThisExpression()));
     }
 
-    AffineMatrix4x4 m = SCamera.DEFAULT_PLACEMENT;
-    UnitQuaternion quat = new UnitQuaternion(m.orientation);
-    try {
-      performGeneratedSetupBody.statements.add(SetUpMethodGenerator.createOrientationStatement(false, cameraField, new Orientation(quat.x, quat.y, quat.z, quat.w)));
-      performGeneratedSetupBody.statements.add(SetUpMethodGenerator.createPositionStatement(false, cameraField, new Position(m.translation.x, m.translation.y, m.translation.z)));
-    } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
-      throw new RuntimeException(ccee);
+    ExpressionCreator expressionCreator = StoryApiConfigurationManager.getInstance().getExpressionCreator();
+    if (makeVrReady) {
+      addVrSetup(cameraField, performGeneratedSetupBody, expressionCreator);
+    } else {
+      addCameraSetup(cameraField, performGeneratedSetupBody);
     }
     if (atmosphereColor != null) {
       JavaMethod setAtmosphereColorMethod = JavaMethod.getInstance(SScene.class, "setAtmosphereColor", Color.class, SetAtmosphereColor.Detail[].class);
       try {
-        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
+        Expression colorExpression = expressionCreator.createExpression(atmosphereColor);
         performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setAtmosphereColorMethod, colorExpression));
       } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
         Logger.severe("This exception should not occur: " + e);
@@ -208,19 +195,19 @@ public class BootstrapUtilities {
     if (aboveLightColor != null) {
       JavaMethod setAboveLightColorMethod = JavaMethod.getInstance(SScene.class, "setFromAboveLightColor", Color.class, SetFromAboveLightColor.Detail[].class);
       try {
-        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(aboveLightColor);
+        Expression colorExpression = expressionCreator.createExpression(aboveLightColor);
         performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setAboveLightColorMethod, colorExpression));
       } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
-        Logger.severe("This exception should not occure: " + e);
+        Logger.severe("This exception should not occur: " + e);
       }
     }
     if (belowLightColor != null) {
       JavaMethod setBelowLightColorMethod = JavaMethod.getInstance(SScene.class, "setFromBelowLightColor", Color.class, SetFromBelowLightColor.Detail[].class);
       try {
-        Expression colorExpression = StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(belowLightColor);
+        Expression colorExpression = expressionCreator.createExpression(belowLightColor);
         performGeneratedSetupBody.statements.add(createMethodInvocationStatement(new ThisExpression(), setBelowLightColorMethod, colorExpression));
       } catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
-        Logger.severe("This exception should not occure: " + e);
+        Logger.severe("This exception should not occur: " + e);
       }
     }
     performGeneratedSetupBody.statements.add(setupStatements);
@@ -296,6 +283,53 @@ public class BootstrapUtilities {
     addCommentIfNecessaryToMethod(mainMethod);
 
     return rv;
+  }
+
+  private static void addCameraSetup(UserField cameraField, BlockStatement performGeneratedSetupBody) {
+    try {
+      performGeneratedSetupBody.statements.add(
+          SetUpMethodGenerator.createOrientationStatement(false, cameraField, SCamera.DEFAULT_ORIENTATION));
+      performGeneratedSetupBody.statements.add(
+          SetUpMethodGenerator.createPositionStatement(false, cameraField, SCamera.DEFAULT_POSITION));
+    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+      throw new RuntimeException(ccee);
+    }
+  }
+
+  private static void addVrSetup(UserField vrUserField, BlockStatement body, ExpressionCreator expressionCreator) {
+    try {
+      body.statements.add(
+          SetUpMethodGenerator.createOrientationStatement(false, vrUserField, SVRUser.DEFAULT_ORIENTATION));
+      body.statements.add(
+          SetUpMethodGenerator.createPositionStatement(false, vrUserField, SVRUser.DEFAULT_POSITION));
+
+      // VRHeadset
+      AbstractMethod headsetMethod = vrUserField.getValueType().findMethod("getHeadset");
+      Expression getHeadsetExpression = new MethodInvocation(new FieldAccess(vrUserField), headsetMethod);
+
+      Expression headOrientation = expressionCreator.createExpression(SVRUser.HEADSET_ORIENTATION);
+      Expression headPosition = expressionCreator.createExpression(SVRUser.HEADSET_POSITION);
+
+      AbstractMethod setOrientation = AstUtilities.lookupMethod(SVRHeadset.class, "setOrientationRelativeToVehicle", Orientation.class, SetOrientationRelativeToVehicle.Detail[].class);
+      body.statements.add(createMethodInvocationStatement(getHeadsetExpression, setOrientation, headOrientation));
+      AbstractMethod setPosition = AstUtilities.lookupMethod(SVRHeadset.class, "setPositionRelativeToVehicle", Position.class, SetPositionRelativeToVehicle.Detail[].class);
+      body.statements.add(createMethodInvocationStatement(getHeadsetExpression, setPosition, headPosition));
+
+      // VRHands
+      AbstractMethod leftHandMethod = vrUserField.getValueType().findMethod("getLeftHand");
+      Expression getLeftHandExpression = new MethodInvocation(new FieldAccess(vrUserField), leftHandMethod);
+      AbstractMethod rightHandMethod = vrUserField.getValueType().findMethod("getRightHand");
+      Expression getRightHandExpression = new MethodInvocation(new FieldAccess(vrUserField), rightHandMethod);
+
+      Expression leftHandPosition = expressionCreator.createExpression(SVRUser.LEFT_HAND_POSITION);
+      Expression rightHandPosition = expressionCreator.createExpression(SVRUser.RIGHT_HAND_POSITION);
+
+      AbstractMethod setHandPosition = AstUtilities.lookupMethod(SVRHand.class, "setPositionRelativeToVehicle", Position.class, SetPositionRelativeToVehicle.Detail[].class);
+      body.statements.add(createMethodInvocationStatement(getLeftHandExpression, setHandPosition, leftHandPosition));
+      body.statements.add(createMethodInvocationStatement(getRightHandExpression, setHandPosition, rightHandPosition));
+    } catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+      throw new RuntimeException(ccee);
+    }
   }
 
   public static NamedUserType createProgramType(SGround.SurfaceAppearance appearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity, boolean makeVrReady) {
