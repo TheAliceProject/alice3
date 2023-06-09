@@ -147,9 +147,9 @@ public class StoryApiDirectoryUtilities {
     try {
       File installDirectory = getInstallDirectory();
       if (installDirectory != null) {
-        File soundGalleryDirectory = new File(installDirectory, name);
-        if (soundGalleryDirectory.isDirectory()) {
-          return soundGalleryDirectory;
+        File resourceDirectory = new File(installDirectory, name);
+        if (resourceDirectory.isDirectory()) {
+          return resourceDirectory;
         } else {
           throw new RuntimeException();
         }
