@@ -72,10 +72,10 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
     String markerName = markerField != null ? markerField.getName() : "";
 
     IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarker(markerField);
-    Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
 
     IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
-    Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon(ObjectMarkerMoveActionOperation.ICON_DIMENSION) : null;
+    Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
 
     this.setToMoveToImp(markerImp, moveToIcon, markerName);
     this.setToMoveImp(this.getCamera(), toMoveIcon, MarkerUtilities.getNameForCameraImp(cameraMarkerImp));

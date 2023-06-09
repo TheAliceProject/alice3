@@ -43,8 +43,7 @@
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
 import javax.swing.Icon;
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
@@ -52,8 +51,8 @@ import java.awt.Graphics;
 public class ScaledIcon extends AbstractScaledIcon {
   private final Icon sourceIcon;
 
-  public ScaledIcon(Icon sourceIcon, int width, int height) {
-    super(width, height);
+  public ScaledIcon(Icon sourceIcon, Dimension size) {
+    super(size.width, size.height);
     if (sourceIcon == null) {
       System.out.println("");
     }
