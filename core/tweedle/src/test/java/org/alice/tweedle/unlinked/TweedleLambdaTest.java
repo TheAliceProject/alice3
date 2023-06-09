@@ -4,12 +4,10 @@ import org.alice.tweedle.TweedleClass;
 import org.alice.tweedle.TweedleMethod;
 import org.alice.tweedle.TweedleRequiredParameter;
 import org.alice.tweedle.TweedleStatement;
-import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleTypeReference;
 import org.alice.tweedle.ast.ExpressionStatement;
 import org.alice.tweedle.ast.LambdaExpression;
 import org.alice.tweedle.ast.MethodCallExpression;
-import org.alice.tweedle.ast.TweedleExpression;
 import org.junit.Before;
 import org.junit.Test;
 

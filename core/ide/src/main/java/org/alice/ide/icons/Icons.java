@@ -45,7 +45,6 @@ package org.alice.ide.icons;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
-import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 
 import javax.swing.Icon;
 import java.awt.Dimension;

@@ -22,7 +22,7 @@ public class ConvexPolygonTest {
   Point2 p9 = new Point2(0.0945380387160002, 0.11388972930899999);
   Point2 p10 = new Point2(-0.11895594339799986, 0.835438350387);
   Point2 p11 = new Point2(-0.0945380387160002, -0.11388972930899999);
-  
+
   @Before
   public void setUp() {
     poly = new ConvexPolygon();
@@ -30,15 +30,15 @@ public class ConvexPolygonTest {
 
   @Test
   public void includeSinglePoint() {
-    poly.includePoint(new Point2(1,1));
+    poly.includePoint(new Point2(1, 1));
     assertEquals(1, poly.getVertices().size());
   }
 
   @Test
   public void duplicatePointsShouldNotBeIncluded() {
-    poly.includePoint(new Point2(1,1));
-    poly.includePoint(new Point2(1,2));
-    poly.includePoint(new Point2(1,1));
+    poly.includePoint(new Point2(1, 1));
+    poly.includePoint(new Point2(1, 2));
+    poly.includePoint(new Point2(1, 1));
     assertEquals(2, poly.getVertices().size());
   }
 
