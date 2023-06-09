@@ -109,6 +109,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgVrVisuals = rigResource.getImplementationAndVisualFactory().createVisualData().getSgVisuals();
     sgVrVisuals[0].setParent(this.getSgComposite());
     sgVrVisuals[0].frontFacingAppearance.setValue(getSgPaintAppearances()[0]);
+    showVisuals(sgVrVisuals, false);
   }
 
   private void createCameraVisual() {
@@ -116,6 +117,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
         createCylinderVisual("Camera Cylinder 1", RADIUS),
         createCylinderVisual("Camera Cylinder 2", RADIUS * 3),
         createBoxVisual()};
+    showVisuals(sgCameraVisuals, false);
   }
 
   private Visual createBoxVisual() {
@@ -291,16 +293,16 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     return this.getSgPaintAppearances();
   }
 
-  public void setVrActive(Boolean isVrActive) {
-    this.isVrActive = isVrActive;
-    if (sgVrVisuals != null) {
-      for (Visual v : sgVrVisuals) {
-        v.isShowing.setValue(isVrActive && getDisplayEnabled());
-      }
-    }
-    if (sgCameraVisuals != null) {
-      for (Visual v : sgCameraVisuals) {
-        v.isShowing.setValue(!isVrActive && getDisplayEnabled());
+  public void setVrActive(Boolean isActive) {
+    this.isVrActive = isActive;
+    showVisuals(sgVrVisuals, isVrActive && getDisplayEnabled());
+    showVisuals(sgCameraVisuals, !isVrActive && getDisplayEnabled());
+  }
+
+  private static void showVisuals(Visual[] visuals, boolean show) {
+    if (visuals != null) {
+      for (Visual v : visuals) {
+        v.isShowing.setValue(show);
       }
     }
   }

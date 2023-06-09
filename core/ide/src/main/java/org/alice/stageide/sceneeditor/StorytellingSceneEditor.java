@@ -681,6 +681,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     return isVrScene;
   }
 
+  private void setIsVrActive(boolean isActive) {
+    isVrScene = isActive;
+    startingCameraMarkerImp.setVrActive(isVrScene);
+    layoutSceneMarkerImp.setVrActive(isVrScene);
+  }
+
   private void clearCameras() {
     this.snapGrid.stopTrackingCameras();
     if (this.onscreenRenderTarget.getSgCameraCount() > 0) {
@@ -981,14 +987,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         if (field.getValueType().isAssignableTo(SCamera.class)) {
           sceneCameraImp = getImplementation(field);
           movableSceneCameraImp = sceneCameraImp;
-          isVrScene = false;
+          setIsVrActive(false);
           break;
         }
         if (field.getValueType().isAssignableTo(SVRUser.class)) {
           VrUserImp vrUserImp = getImplementation(field);
           sceneCameraImp = EmployeesOnly.getImplementation(vrUserImp.getAbstraction().getHeadset());
           movableSceneCameraImp = vrUserImp;
-          isVrScene = true;
+          setIsVrActive(true);
           break;
         }
       }
