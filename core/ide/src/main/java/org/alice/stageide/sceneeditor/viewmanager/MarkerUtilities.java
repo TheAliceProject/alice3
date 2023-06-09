@@ -93,6 +93,7 @@ public class MarkerUtilities {
 
   private static final HashMap<Color, Icon> colorToObjectIcon = Maps.newHashMap();
   private static final HashMap<Color, Icon> colorToCameraIcon = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToVrUserIcon = Maps.newHashMap();
 
   static {
     String[] colorNameKeys = {
@@ -302,7 +303,9 @@ public class MarkerUtilities {
   }
 
   public static Icon getCameraMarkIconForColor(Color markerColor) {
-    return getIcon(markerColor, colorToCameraIcon, MarkerUtilities::loadIconForCameraMarker);
+    return getIcon(markerColor,
+        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? colorToVrUserIcon : colorToCameraIcon,
+        MarkerUtilities::loadIconForCameraMarker);
   }
 
   public static Icon getObjectMarkIconForColor(Color markerColor) {
