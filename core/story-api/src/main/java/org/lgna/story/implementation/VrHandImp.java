@@ -51,11 +51,11 @@ import org.lgna.story.SVRHand;
 
 public class VrHandImp extends TransformableImp {
 
-  public VrHandImp(String name, SVRHand abstraction, SymmetricPerspectiveCameraImp cameraImplementation) {
+  public VrHandImp(String name, SVRHand abstraction, AbstractTransformableImp parentImplementation) {
     this.abstraction = abstraction;
-    this.cameraImplementation = cameraImplementation;
+    this.parentImplementation = parentImplementation;
     setName(name);
-    setVehicle(cameraImplementation);
+    setVehicle(parentImplementation);
   }
 
   @Override
@@ -69,9 +69,9 @@ public class VrHandImp extends TransformableImp {
   }
 
   private final SVRHand abstraction;
-  private final SymmetricPerspectiveCameraImp cameraImplementation;
+  private final AbstractTransformableImp parentImplementation;
 
-  public SymmetricPerspectiveCameraImp getCameraParent() {
-    return cameraImplementation;
+  public AbstractTransformableImp getParent() {
+    return parentImplementation;
   }
 }

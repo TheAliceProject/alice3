@@ -55,6 +55,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
@@ -107,10 +108,10 @@ public class SnapGrid extends Transformable implements PropertyListener {
 
   public void addCamera(AbstractCamera camera) {
     if (!this.camerasToTrack.contains(camera)) {
-      if (camera.getParent() instanceof Transformable) {
+      AbstractTransformable cameraParent = camera.getMovableParent();
+      if (cameraParent != null) {
         this.camerasToTrack.add(camera);
-        Transformable cameraParent = (Transformable) camera.getParent();
-        cameraParent.localTransformation.addPropertyListener(this);
+        cameraParent.addPropertyListener(this);
       }
     }
   }

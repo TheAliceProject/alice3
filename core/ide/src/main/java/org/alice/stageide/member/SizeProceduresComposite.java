@@ -60,6 +60,6 @@ public class SizeProceduresComposite extends NameFilteredJavaProceduresComposite
   }
 
   private SizeProceduresComposite() {
-    super(UUID.fromString("167f609c-43cb-40e8-8d6b-2f171e4d0e98"), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "resize", "resizeWidth", "resizeHeight", "resizeDepth");
+    super(UUID.fromString("167f609c-43cb-40e8-8d6b-2f171e4d0e98"), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "setScale", "resize", "resizeWidth", "resizeHeight", "resizeDepth");
   }
 }

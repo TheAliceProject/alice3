@@ -77,11 +77,12 @@ import org.lgna.story.Key;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Paint;
 import org.lgna.story.RollDirection;
-import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SThing;
 import org.lgna.story.SVRHand;
+import org.lgna.story.SVRHeadset;
+import org.lgna.story.SVRUser;
 import org.lgna.story.Style;
 import org.lgna.story.TurnDirection;
 
@@ -153,12 +154,12 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
       List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances(expressionType);
       return new JointExpressionMenuModel(expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo);
     }
-    if (expressionType.isAssignableTo(SCamera.class)
-        && desiredType.isAssignableFrom(SVRHand.class)) {
+    if (expressionType.isAssignableTo(SVRUser.class)
+        && (desiredType.isAssignableFrom(SVRHand.class) || (desiredType.isAssignableFrom(SVRHeadset.class)))) {
       return new CascadeMenuModel<Expression>(UUID.fromString("2b2c901a-22f3-4080-8a28-3d3b81f326c8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode) {
-          for (AbstractMethod method : SCamera.getHandMethods(expressionType)) {
+          for (AbstractMethod method : SVRUser.getDeviceMethods(expressionType)) {
             blankChildren.add(JointExpressionFillIn.getInstance(expression, method));
           }
         }
@@ -170,7 +171,8 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
   @Override
   protected boolean isApplicableForPartFillIn(AbstractType<?, ?, ?> desiredType, AbstractType<?, ?, ?> expressionType) {
     return desiredType.isAssignableFrom(SJoint.class) && expressionType.isAssignableTo(SJointedModel.class)
-        || desiredType.isAssignableFrom(SVRHand.class) && expressionType.isAssignableTo(SCamera.class);
+        || desiredType.isAssignableFrom(SVRHand.class) && expressionType.isAssignableTo(SVRUser.class)
+        || desiredType.isAssignableFrom(SVRHeadset.class) && expressionType.isAssignableTo(SVRUser.class);
   }
 
   @Override

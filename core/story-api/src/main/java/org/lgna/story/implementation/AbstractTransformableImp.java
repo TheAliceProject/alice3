@@ -303,7 +303,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     private final UnitQuaternion q0;
     private final UnitQuaternion q1;
 
-    PreSetVantagePointData(SymmetricPerspectiveCameraImp subject, EntityImp other) {
+    PreSetVantagePointData(AbstractTransformableImp subject, EntityImp other) {
       super(subject);
       this.other = other;
       this.m0 = subject.getTransformation(other);

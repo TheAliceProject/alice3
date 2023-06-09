@@ -129,8 +129,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
   @Override
   public void setCamera(AbstractCamera camera) {
     this.camera = camera;
-    if ((this.camera != null) && (this.camera.getParent() instanceof AbstractTransformable)) {
-      this.setManipulatedTransformable((AbstractTransformable) this.camera.getParent());
+    if (this.camera != null) {
+      setManipulatedTransformable(this.camera.getMovableParent());
     }
   }
 

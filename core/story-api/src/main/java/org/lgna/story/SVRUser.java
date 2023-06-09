@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2023, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,31 +44,34 @@
 package org.lgna.story;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import edu.cmu.cs.dennisc.math.AngleInRevolutions;
 import org.lgna.common.LgnaIllegalArgumentException;
+import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
+import org.lgna.story.implementation.VrUserImp;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author Dennis Cosgrove
- */
-public class SCamera extends SMovableTurnable implements MutableRider {
-  private final SymmetricPerspectiveCameraImp implementation = new SymmetricPerspectiveCameraImp(this);
+public class SVRUser extends SMovableTurnable implements MutableRider {
+  public static AffineMatrix4x4 HEADSET_PLACEMENT = AffineMatrix4x4.createIdentity();
+  public static AffineMatrix4x4 LEFT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
+  public static AffineMatrix4x4 RIGHT_HAND_PLACEMENT = AffineMatrix4x4.createIdentity();
+  private static final double HAND_OFFSET = 0.1;
+  static {
+    HEADSET_PLACEMENT.translation.y = -SCamera.DEFAULT_PLACEMENT.translation.y;
+    HEADSET_PLACEMENT.orientation.setValue(SCamera.DEFAULT_PLACEMENT.orientation);
+    LEFT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
+    RIGHT_HAND_PLACEMENT.translation.y = SCamera.DEFAULT_PLACEMENT.translation.y / 2;
+    LEFT_HAND_PLACEMENT.translation.x = HAND_OFFSET;
+    RIGHT_HAND_PLACEMENT.translation.x = -HAND_OFFSET;
+  }
+  private final VrUserImp implementation = new VrUserImp("VRUser", this);
+  private final SVRHeadset headset = new SVRHeadset("VRHeadset", this);
   private final SVRHand leftHand = new SVRHand("LeftHand", this);
   private final SVRHand rightHand = new SVRHand("RightHand", this);
-  public static AffineMatrix4x4 DEFAULT_PLACEMENT = AffineMatrix4x4.createIdentity();
-  static {
-    DEFAULT_PLACEMENT.applyRotationAboutYAxis(new AngleInRadians(Math.PI));
-    DEFAULT_PLACEMENT.applyRotationAboutXAxis(new AngleInRadians(-Math.PI / 16.0));
-    DEFAULT_PLACEMENT.applyTranslationAlongZAxis(8);
-  }
 
   @Override
   public void setVehicle(SThing vehicle) {
@@ -85,70 +88,39 @@ public class SCamera extends SMovableTurnable implements MutableRider {
     return rightHand;
   }
 
-  public static List<AbstractMethod> getHandMethods(AbstractType<?, ?, ?> type) {
+  @MethodTemplate(visibility = Visibility.PRIME_TIME)
+  public SVRHeadset getHeadset() {
+    return headset;
+  }
+
+  public static List<AbstractMethod> getDeviceMethods(AbstractType<?, ?, ?> type) {
     return type.getDeclaredMethods().stream()
-               .filter(method -> method.getName().endsWith("Hand"))
+               .filter(method -> (method.getName().endsWith("Hand") || method.getName().endsWith("Headset")))
                .collect(Collectors.toList());
   }
 
   @Override
-  SymmetricPerspectiveCameraImp getImplementation() {
+  VrUserImp getImplementation() {
     return this.implementation;
+  }
+
+
+  @GetterTemplate(isPersistent = true)
+  @MethodTemplate()
+  public Double getScale() {
+    return getImplementation().scale.getValue();
+  }
+
+  @MethodTemplate()
+  public void setScale(Number scale, SetScale.Detail... details) {
+    LgnaIllegalArgumentException.checkArgumentIsPositive(scale, 0);
+    getImplementation().animateSetScale(scale.doubleValue(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
   }
 
   @MethodTemplate()
   public void moveAndOrientToAGoodVantagePointOf(SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(entity, 0);
     this.implementation.animateSetTransformationToAGoodVantagePointOf(entity.getImplementation(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
-  }
-  @MethodTemplate()
-  public void setFarClippingPlaneDistance(Number distance) {
-    getImplementation().getSgCamera().farClippingPlaneDistance.setValue(distance.doubleValue());
-  }
-
-  @MethodTemplate()
-  public Double getFarClippingPlaneDistance() {
-    return getImplementation().getSgCamera().farClippingPlaneDistance.getValue();
-  }
-
-  @MethodTemplate()
-  public void setNearClippingPlaneDistance(Number distance) {
-    getImplementation().getSgCamera().nearClippingPlaneDistance.setValue(distance.doubleValue());
-  }
-
-  @MethodTemplate()
-  public Double getNearClippingPlaneDistance() {
-    return getImplementation().getSgCamera().nearClippingPlaneDistance.getValue();
-  }
-
-  @MethodTemplate()
-  public void setHorizontalViewingAngle(Number angle) {
-    if (angle == null) {
-      return;
-    }
-    // Clear the orthogonal value. Last one set overrides and we do not letterbox.
-    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
-    getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
-  }
-
-  @MethodTemplate()
-  public Double getHorizontalViewingAngle() {
-    return getImplementation().getSgCamera().getEffectiveHorizontalViewingAngle().getAsRevolutions();
-  }
-
-  @MethodTemplate()
-  public void setVerticalViewingAngle(Number angle) {
-    if (angle == null) {
-      return;
-    }
-    // Clear the orthogonal value. Last one set overrides and we do not letterbox.
-    getImplementation().getSgCamera().horizontalViewingAngle.setValue(new AngleInRevolutions(Double.NaN));
-    getImplementation().getSgCamera().verticalViewingAngle.setValue(new AngleInRevolutions(angle.doubleValue()));
-  }
-
-  @MethodTemplate()
-  public Double getVerticalViewingAngle() {
-    return getImplementation().getSgCamera().getEffectiveVerticalViewingAngle().getAsRevolutions();
   }
 
 }

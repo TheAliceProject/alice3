@@ -126,6 +126,7 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SThing;
+import org.lgna.story.SVRUser;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.JointImp;
 
@@ -681,7 +682,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
         undoOperation.fire();
       } else {
         UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(aliceThing);
-        if (aliceThing instanceof SCamera) {
+        if (aliceThing instanceof SVRUser || aliceThing instanceof SCamera) {
           if (sceneEditor.isStartingCameraView()) {
             undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
             undoOperation.fire();

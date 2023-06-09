@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2023 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,40 +44,71 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import org.lgna.story.SCamera;
+import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.SVRUser;
 
-/**
- * @author Dennis Cosgrove
- */
-public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiveCamera> {
-  public SymmetricPerspectiveCameraImp(SCamera abstraction) {
-    super(new SymmetricPerspectiveCamera());
+public class VrUserImp extends TransformableImp {
+
+  public VrUserImp(String name, SVRUser abstraction) {
     this.abstraction = abstraction;
+    setName(name);
   }
 
   @Override
-  public SCamera getAbstraction() {
-    return this.abstraction;
+  protected void updateCumulativeBound(CumulativeBound rv, AffineMatrix4x4 trans) {
+    rv.addBoundingBox(new AxisAlignedBox(Point3.ORIGIN, Point3.ORIGIN), trans);
   }
 
-  private static class GoodVantagePointData extends PreSetVantagePointData {
-    public GoodVantagePointData(SymmetricPerspectiveCameraImp subject, EntityImp other) {
-      super(subject, createGoodVantagePointStandIn(other));
+  public void animateSetScale(double newScale, double duration, Style style) {
+    double actualDuration = adjustDurationIfNecessary(duration);
+    if (EpsilonUtilities.isWithinReasonableEpsilon(actualDuration, 0.0)) {
+      scale.setValue(newScale);
+      applyAnimation();
+    } else {
+      class ScaleAnimation extends DoubleAnimation {
+        private ScaleAnimation(double duration, Style style, double scale0, double scale1) {
+          super(duration, style, scale0, scale1);
+        }
+
+        @Override
+        protected void updateValue(Double v) {
+          scale.setValue(v);
+          applyAnimation();
+        }
+      }
+      perform(new ScaleAnimation(duration, style, scale.getValue(), newScale));
     }
-  }
 
-  public static StandInImp createGoodVantagePointStandIn(EntityImp other) {
-    StandInImp standIn = other.createStandIn();
-    standIn.getSgComposite().setTranslationOnly(2, 4, -8, other.getSgReferenceFrame());
-    standIn.setOrientationOnlyToPointAt(other);
-    return standIn;
   }
 
   public void animateSetTransformationToAGoodVantagePointOf(EntityImp other, double duration, Style style) {
-    GoodVantagePointData data = new GoodVantagePointData(this, other);
-    this.animateVantagePoint(data, duration, style);
+    PreSetVantagePointData data =
+        new PreSetVantagePointData(this, SymmetricPerspectiveCameraImp.createGoodVantagePointStandIn(other));
+    animateVantagePoint(data, duration, style);
   }
 
-  private final SCamera abstraction;
+  @Override
+  public SVRUser getAbstraction() {
+    return abstraction;
+  }
+  private final SVRUser abstraction;
+
+  Double userScale = 1.0;
+  public final DoubleProperty scale = new DoubleProperty(VrUserImp.this) {
+    @Override
+    public Double getValue() {
+      return VrUserImp.this.userScale;
+    }
+
+    @Override
+    protected void handleSetValue(Double value) {
+      userScale = value;
+      abstraction.getHeadset().getImplementation().setScale(value);
+    }
+  };
 }

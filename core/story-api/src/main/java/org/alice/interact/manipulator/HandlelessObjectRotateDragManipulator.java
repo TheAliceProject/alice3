@@ -45,7 +45,6 @@ package org.alice.interact.manipulator;
 import java.awt.Point;
 
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -93,8 +92,8 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
   @Override
   public void setCamera(AbstractCamera camera) {
     this.camera = camera;
-    if ((this.camera != null) && (this.camera.getParent() instanceof AbstractTransformable)) {
-      this.setManipulatedTransformable((AbstractTransformable) this.camera.getParent());
+    if (this.camera != null) {
+      setManipulatedTransformable(camera.getMovableParent());
     }
   }
 

@@ -316,7 +316,7 @@ public class SetUpMethodGenerator {
 
   private static Expression getGetterExpressionForHand(SVRHand hand, UserInstance sceneInstance) {
     VrHandImp handImp = EmployeesOnly.getImplementation(hand);
-    SCamera camera = handImp.getCameraParent().getAbstraction();
+    SThing camera = handImp.getParent().getAbstraction();
     AbstractField cameraField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(camera);
     AbstractMethod getJointMethod = getGetterForHand(cameraField, hand, sceneInstance);
     return new MethodInvocation(new FieldAccess(cameraField), getJointMethod);

@@ -2648,20 +2648,177 @@
     ]
   },
   {
+    "clsName": "org.lgna.story.SVRUser",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [],
+        "parameterNames": []
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.SThing"
+        ],
+        "parameterNames": [
+          "vehicle"
+        ]
+      },
+      {
+        "name": "getLeftHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getRightHand",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHeadset",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "moveAndOrientToAGoodVantagePointOf",
+        "parameterClassNames": [
+          "org.lgna.story.SThing",
+          "[Lorg.lgna.story.MoveAndOrientToAGoodVantagePointOf$Detail;"
+        ],
+        "parameterNames": [
+          "entity",
+          "details"
+        ]
+      },
+      {
+        "name": "getScale",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setScale",
+        "parameterClassNames": [
+          "java.lang.Number",
+          "[Lorg.lgna.story.SetScale$Detail;"
+        ],
+        "parameterNames": [
+          "scale",
+          "details"
+        ]
+      }
+    ]
+  },
+  {
     "clsName": "org.lgna.story.SVRHand",
     "constructorInfos": [
       {
         "parameterClassNames": [
           "java.lang.String",
-          "org.lgna.story.SCamera"
+          "org.lgna.story.SMovableTurnable"
         ],
         "parameterNames": [
           "name",
-          "camera"
+          "parent"
         ]
       }
     ],
     "methodInfos": []
+  },
+  {
+    "clsName": "org.lgna.story.SVRHeadset",
+    "constructorInfos": [
+      {
+        "parameterClassNames": [
+          "java.lang.String",
+          "org.lgna.story.SVRUser"
+        ],
+        "parameterNames": [
+          "name",
+          "parent"
+        ]
+      }
+    ],
+    "methodInfos": [
+      {
+        "name": "setOrientationRelativeToVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.Orientation",
+          "[Lorg.lgna.story.SetOrientationRelativeToVehicle$Detail;"
+        ],
+        "parameterNames": [
+          "orientation",
+          "details"
+        ]
+      },
+      {
+        "name": "setPositionRelativeToVehicle",
+        "parameterClassNames": [
+          "org.lgna.story.Position",
+          "[Lorg.lgna.story.SetPositionRelativeToVehicle$Detail;"
+        ],
+        "parameterNames": [
+          "position",
+          "details"
+        ]
+      },
+      {
+        "name": "getFarClippingPlaneDistance",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getNearClippingPlaneDistance",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getHorizontalViewingAngle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "getVerticalViewingAngle",
+        "parameterClassNames": [],
+        "parameterNames": []
+      },
+      {
+        "name": "setFarClippingPlaneDistance",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "distance"
+        ]
+      },
+      {
+        "name": "setNearClippingPlaneDistance",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "distance"
+        ]
+      },
+      {
+        "name": "setHorizontalViewingAngle",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "angle"
+        ]
+      },
+      {
+        "name": "setVerticalViewingAngle",
+        "parameterClassNames": [
+          "java.lang.Number"
+        ],
+        "parameterNames": [
+          "angle"
+        ]
+      }
+    ]
   },
   {
     "clsName": "org.lgna.story.JointedModelPoseBuilder",

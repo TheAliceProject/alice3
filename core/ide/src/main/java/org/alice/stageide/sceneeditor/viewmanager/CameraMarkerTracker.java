@@ -62,9 +62,9 @@ import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 import java.util.Map;
 
@@ -134,7 +134,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
       startTrackingCamera(camera);
     } else {
-      Transformable cameraParent = (Transformable) camera.getParent();
+      AbstractTransformable cameraParent = camera.getMovableParent();
       pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
         @Override
         protected void epilogue() {
@@ -208,7 +208,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
     trackedMarker = selectedMarker;
     if (trackedMarker != null) {
-      Transformable cameraParent = (Transformable) camera.getParent();
+      AbstractTransformable cameraParent = camera.getMovableParent();
       Composite root = cameraParent.getRoot();
       if (root != null) {
         cameraParent.setTransformation(this.trackedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);

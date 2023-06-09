@@ -48,8 +48,9 @@ import org.lgna.story.implementation.VrHandImp;
 public class SVRHand extends SThing {
   private final VrHandImp implementation;
 
-  public SVRHand(String name, SCamera camera) {
-    implementation = new VrHandImp(name, this, camera.getImplementation());
+  public SVRHand(String name, SMovableTurnable parent) {
+    implementation = new VrHandImp(name, this, parent.getImplementation());
+    implementation.setVehicle(parent.getImplementation());
   }
 
   @Override
