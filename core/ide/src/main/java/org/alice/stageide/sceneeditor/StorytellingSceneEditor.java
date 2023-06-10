@@ -685,6 +685,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     isVrScene = isActive;
     startingCameraMarkerImp.setVrActive(isVrScene);
     layoutSceneMarkerImp.setVrActive(isVrScene);
+
+    // Update menu icon
+    MarkerUtilities.addIconForCameraImp(startingCameraMarkerImp, isVrScene ? "vrHeadset" : "mainCamera");
+
+    // Update camera marker move buttons
+    MoveActiveCameraToMarkerActionOperation.getInstance().updateDisplay();
+    MoveMarkerToActiveCameraActionOperation.getInstance().updateDisplay();
   }
 
   private void clearCameras() {
