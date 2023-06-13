@@ -325,13 +325,13 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     return cameraFieldsMenuModel;
   }
 
-  private CascadeMenuModel<InstanceFactory> getVrUserFieldsMenu(UserField cameraField) {
+  private CascadeMenuModel<InstanceFactory> getVrUserFieldsMenu(UserField vrField) {
     if (vrUserFieldsMenuModel == null) {
       vrUserFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
         @Override
         protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
-          for (AbstractMethod method : SVRUser.getDeviceMethods(cameraField.getValueType())) {
-            blankChildren.add(InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(cameraField, method)));
+          for (AbstractMethod method : SVRUser.getDeviceMethods(vrField.getValueType())) {
+            blankChildren.add(InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(vrField, method)));
           }
         }
       };
