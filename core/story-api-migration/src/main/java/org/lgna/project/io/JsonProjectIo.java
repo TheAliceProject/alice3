@@ -66,8 +66,6 @@ import java.util.stream.Collectors;
 
 //TODO add migration on read - ProjectMigrationManager, MigrationManager, and DecodedVersion
 public class JsonProjectIo extends DataSourceIo implements ProjectIo {
-
-  private static final String MANIFEST_ENTRY_NAME = "manifest.json";
   private static final String TWEEDLE_EXTENSION = "twe";
   private static final String TWEEDLE_FORMAT = "tweedle";
 
@@ -171,7 +169,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     @Override
     public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
       final JsonModelIo.ExportFormat format = JsonModelIo.ExportFormat.GLTF;
-      Manifest manifest = createProjectManifest(project);
+      Manifest manifest = project.createExportManifest();
       Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
       compareResources(project.getResources(), resources);
 
@@ -246,24 +244,6 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
       manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
       return new ByteArrayDataSource(fileName, coder.encodeProcessable(resource));
-    }
-
-    private Manifest createProjectManifest(Project project) {
-      final Manifest manifest = new Manifest();
-      manifest.description.name = project.getProgramType().getName(); // probably "Program"
-      manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.name = project.getProgramType().getId().toString();
-      manifest.metadata.identifier.type = Manifest.ProjectType.World;
-      manifest.prerequisites.add(standardLibrary());
-      return manifest;
-    }
-
-    private Manifest.ProjectIdentifier standardLibrary() {
-      final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
-      libraryIdentifier.type = Manifest.ProjectType.Library;
-      libraryIdentifier.version = "0.16";
-      libraryIdentifier.name = "SceneGraphLibrary";
-      return libraryIdentifier;
     }
 
     private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {

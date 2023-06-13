@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.tweedle.file.Manifest;
 import org.lgna.common.Resource;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -88,6 +89,34 @@ public class Project {
 
   public NamedUserType getProgramType() {
     return this.programType;
+  }
+
+  public Manifest createSaveManifest() {
+    final Manifest manifest = createProjectManifest();
+    return manifest;
+  }
+
+  public Manifest createExportManifest() {
+    final Manifest manifest = createProjectManifest();
+    manifest.prerequisites.add(standardLibrary());
+    return manifest;
+  }
+
+  private Manifest createProjectManifest() {
+    final Manifest manifest = new Manifest();
+    manifest.description.name = getProgramType().getName(); // probably "Program"
+    manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+    manifest.metadata.identifier.name = getProgramType().getId().toString();
+    manifest.metadata.identifier.type = Manifest.ProjectType.World;
+    return manifest;
+  }
+
+  private Manifest.ProjectIdentifier standardLibrary() {
+    final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
+    libraryIdentifier.type = Manifest.ProjectType.Library;
+    libraryIdentifier.version = "0.16";
+    libraryIdentifier.name = "SceneGraphLibrary";
+    return libraryIdentifier;
   }
 
   public void addResourceListener(ResourceListener resourceListener) {
