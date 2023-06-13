@@ -115,7 +115,7 @@ public class XmlProjectIo implements ProjectIo {
     }
 
     @Override
-    public Project readProject() throws IOException, VersionNotSupportedException {
+    public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
       Set<Resource> resources = readResources();
 

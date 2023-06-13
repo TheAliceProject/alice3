@@ -52,8 +52,12 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class FileProjectLoader extends AbstractFileProjectLoader {
+  public FileProjectLoader(File file, boolean makeVrReady) {
+    super(file, makeVrReady);
+  }
+
   public FileProjectLoader(File file) {
-    super(file);
+    this(file, false);
   }
 
   @Override

@@ -116,38 +116,7 @@ import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.*;
-import org.lgna.story.AudioSource;
-import org.lgna.story.Color;
-import org.lgna.story.Key;
-import org.lgna.story.MoveDirection;
-import org.lgna.story.Orientation;
-import org.lgna.story.Paint;
-import org.lgna.story.Pose;
-import org.lgna.story.PoseBuilder;
-import org.lgna.story.Position;
-import org.lgna.story.RollDirection;
-import org.lgna.story.SAxes;
-import org.lgna.story.SBillboard;
-import org.lgna.story.SBox;
-import org.lgna.story.SCamera;
-import org.lgna.story.SCone;
-import org.lgna.story.SCylinder;
-import org.lgna.story.SDisc;
-import org.lgna.story.SGround;
-import org.lgna.story.SJoint;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SMarker;
-import org.lgna.story.SModel;
-import org.lgna.story.SProgram;
-import org.lgna.story.SScene;
-import org.lgna.story.SSphere;
-import org.lgna.story.STextModel;
-import org.lgna.story.SThing;
-import org.lgna.story.STorus;
-import org.lgna.story.StrikePose;
-import org.lgna.story.SVRHand;
-import org.lgna.story.TurnDirection;
-import org.lgna.story.VantagePoint;
+import org.lgna.story.*;
 import org.lgna.story.annotation.PortionDetails;
 import org.lgna.story.annotation.VolumeLevelDetails;
 import org.lgna.story.resources.*;
@@ -166,6 +135,7 @@ import java.util.UUID;
 public class StoryApiConfigurationManager extends ApiConfigurationManager {
   public static final JavaMethod SET_ACTIVE_SCENE_METHOD = JavaMethod.getInstance(SProgram.class, "setActiveScene", SScene.class);
   private CascadeMenuModel<InstanceFactory> cameraFieldsMenuModel;
+  private CascadeMenuModel<InstanceFactory> vrUserFieldsMenuModel;
 
   private static class SingletonHolder {
     private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
@@ -202,6 +172,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SJoint.class, JointIconFactory.getInstance());
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SCamera.class, new ImageIconFactory(Icons.class.getResource("images/160x120/Camera.png")));
     org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHand.class, new ImageIconFactory(Icons.class.getResource("images/256x256/LeftHand.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRHeadset.class, new ImageIconFactory(Icons.class.getResource("images/256x256/VRHeadset.png")));
+    org.alice.stageide.icons.IconFactoryManager.registerIconFactory(SVRUser.class, new ImageIconFactory(Icons.class.getResource("images/VRUser.png")));
 
     this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(TextProceduresComposite.getInstance(), AtmosphereProceduresComposite.getInstance(), SayThinkProceduresComposite.getInstance(), PositionProceduresComposite.getInstance(), OrientationProceduresComposite.getInstance(), PositionAndOrientationProceduresComposite.getInstance(), SizeProceduresComposite.getInstance(), AppearanceProceduresComposite.getInstance(), FieldOfViewProceduresComposite.getInstance(), VehicleProceduresComposite.getInstance(), AudioProceduresComposite.getInstance(), TimingProceduresComposite.getInstance());
 
@@ -333,6 +305,9 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
     if (JavaType.getInstance(SCamera.class).isAssignableFrom(type)) {
       return getCameraFieldsMenu(field);
     }
+    if (JavaType.getInstance(SVRUser.class).isAssignableFrom(type)) {
+      return getVrUserFieldsMenu(field);
+    }
     return null;
   }
 
@@ -348,6 +323,20 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
       };
     }
     return cameraFieldsMenuModel;
+  }
+
+  private CascadeMenuModel<InstanceFactory> getVrUserFieldsMenu(UserField vrField) {
+    if (vrUserFieldsMenuModel == null) {
+      vrUserFieldsMenuModel = new CascadeMenuModel<InstanceFactory>(UUID.fromString("2b2c901a-22f3-4050-8a28-331f32bb26a8")) {
+        @Override
+        protected void updateBlankChildren(List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode) {
+          for (AbstractMethod method : SVRUser.getDeviceMethods(vrField.getValueType())) {
+            blankChildren.add(InstanceFactoryFillIn.getInstance(ThisFieldAccessMethodInvocationFactory.getInstance(vrField, method)));
+          }
+        }
+      };
+    }
+    return vrUserFieldsMenuModel;
   }
 
   @Override

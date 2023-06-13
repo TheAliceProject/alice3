@@ -60,6 +60,6 @@ public abstract class ListUriTab extends SelectUriTab {
 
   @Override
   public UriProjectLoader getSelectedUri() {
-    return UriProjectLoader.createInstance(this.getListSelectionState().getValue());
+    return UriProjectLoader.createInstance(getListSelectionState().getValue(), isWorldVrReady().getValue());
   }
 }

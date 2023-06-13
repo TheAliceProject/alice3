@@ -48,8 +48,8 @@ import java.net.URI;
  * @author Dennis Cosgrove
  */
 public class StarterProjectFileLoader extends AbstractFileProjectLoader {
-  public StarterProjectFileLoader(URI uri) {
-    super(StarterProjectUtilities.toFile(uri));
+  public StarterProjectFileLoader(URI uri, boolean makeVrReady) {
+    super(StarterProjectUtilities.toFile(uri), makeVrReady);
     this.uri = uri;
   }
 

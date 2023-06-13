@@ -275,7 +275,6 @@ public class IconFactoryManager {
   private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
   private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
   private static Map<ModelStructure, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
-  private static Map<Color, IconFactory> mapColorToCameraMarkerIconFactory = Maps.newHashMap();
   private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
 
   private IconFactoryManager() {
@@ -460,16 +459,6 @@ public class IconFactoryManager {
       return getIconFactoryForType(userField.getValueType());
     }
     return EmptyIconFactory.getInstance();
-  }
-
-  public static IconFactory getIconFactoryForCameraMarker(Color color) {
-    IconFactory rv = mapColorToCameraMarkerIconFactory.get(color);
-    if (rv == null) {
-      Icon imageIcon = MarkerUtilities.getCameraMarkIconForColor(color); //todo
-      rv = new ImageIconFactory(imageIcon);
-      mapColorToCameraMarkerIconFactory.put(color, rv);
-    }
-    return rv;
   }
 
   public static IconFactory getIconFactoryForObjectMarker(Color color) {

@@ -50,7 +50,6 @@ import org.lgna.story.EmployeesOnly;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -64,13 +63,8 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
   }
 
   private void initializeTransformationListenersIfNecessary() {
-    if (this.absoluteTransformationListener == null) {
-      this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-        @Override
-        public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) {
-          MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();
-        }
-      };
+    if (absoluteTransformationListener == null) {
+      absoluteTransformationListener = event -> handleInternalValueChanged();
     }
   }
 

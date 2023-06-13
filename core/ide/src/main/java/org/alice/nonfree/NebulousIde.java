@@ -107,7 +107,7 @@ public class NebulousIde {
     return null;
   }
 
-  public NamedUserType createProgramType(TemplateUriState.Template template) {
+  public NamedUserType createProgramType(TemplateUriState.Template template, boolean makeVrReady) {
     return null;
   }
 

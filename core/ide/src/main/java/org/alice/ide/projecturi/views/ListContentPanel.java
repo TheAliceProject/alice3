@@ -44,10 +44,13 @@
 package org.alice.ide.projecturi.views;
 
 import org.alice.ide.projecturi.ListUriTab;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.List;
 import org.lgna.croquet.views.ScrollPane;
 
 import javax.swing.ListCellRenderer;
+import java.awt.GridBagConstraints;
 import java.net.URI;
 
 /**
@@ -69,6 +72,19 @@ public class ListContentPanel extends TabContentPanel {
     scrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
     scrollPane.setVerticalScrollbarPolicy(ScrollPane.VerticalScrollbarPolicy.AS_NEEDED);
     this.addCenterComponent(scrollPane);
+    BooleanState isVr = tab.isWorldVrReady();
+
+    GridBagPanel pageEndPanel = new GridBagPanel();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1.0;
+    pageEndPanel.addComponent(BoxUtilities.createVerticalSliver(4), gbc);
+    pageEndPanel.addComponent(Separator.createInstanceSeparatingTopFromBottom(), gbc);
+    pageEndPanel.addComponent(
+        new FlowPanel(FlowPanel.Alignment.CENTER, isVr.createCheckBox(), isVr.getSidekickLabel().createLabel()),
+        gbc);
+    addPageEndComponent(pageEndPanel);
   }
 
   public List<URI> getList() {

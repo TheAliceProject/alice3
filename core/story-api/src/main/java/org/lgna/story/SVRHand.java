@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.VrHandImp;
 
 public class SVRHand extends SThing {
@@ -51,6 +53,21 @@ public class SVRHand extends SThing {
   public SVRHand(String name, SMovableTurnable parent) {
     implementation = new VrHandImp(name, this, parent.getImplementation());
     implementation.setVehicle(parent.getImplementation());
+  }
+
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public Position getPositionRelativeToVehicle() {
+    return Position.createInstance(implementation.getLocalPosition());
+  }
+
+  // Based on SMovableTurnable, but not accessible and there is always a vehicle, the VRUser
+  @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+  public void setPositionRelativeToVehicle(Position position, SetPositionRelativeToVehicle.Detail... details) {
+    implementation.animatePositionOnly(implementation.getVehicle(),
+        position.getInternal(),
+        PathStyle.getValue(details).isSmooth(),
+        Duration.getValue(details),
+        AnimationStyle.getValue(details).getInternal());
   }
 
   @Override

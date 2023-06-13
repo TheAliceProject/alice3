@@ -48,7 +48,6 @@ import java.util.UUID;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
@@ -56,7 +55,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.SMovableTurnable;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
@@ -69,7 +67,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
   private UserField markerField;
   private CameraMarkerImp cameraMarker;
-  private CameraImp<SymmetricPerspectiveCamera> camera;
+  private TransformableImp camera;
 
   private TransformableImp toMoveImp;
   private TransformableImp toMoveToImp;
@@ -131,11 +129,11 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
   }
 
-  public void setCamera(CameraImp<SymmetricPerspectiveCamera> camera) {
+  public void setCamera(TransformableImp camera) {
     this.camera = camera;
   }
 
-  protected CameraImp<SymmetricPerspectiveCamera> getCamera() {
+  protected TransformableImp getCamera() {
     return this.camera;
   }
 

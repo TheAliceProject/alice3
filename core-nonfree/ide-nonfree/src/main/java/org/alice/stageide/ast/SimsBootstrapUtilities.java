@@ -69,7 +69,7 @@ import java.util.ArrayList;
  */
 public class SimsBootstrapUtilities extends BootstrapUtilities {
   //groundAppearance is optional and will cause the program to generate a ground in addition to a room
-  public static NamedUserType createProgramType(SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity) {
+  public static NamedUserType createProgramType(SGround.SurfaceAppearance groundAppearance, Paint floorAppearance, Paint wallAppearance, Paint ceilingAppearance, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor, double groundOpacity, boolean makeVrReady) {
 
     UserField roomField = new UserField("room", SRoom.class);
     UserField groundField = groundAppearance != null ? new UserField("ground", SGround.class) : null;
@@ -125,6 +125,6 @@ public class SimsBootstrapUtilities extends BootstrapUtilities {
       }
     }
 
-    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[setupStatements.size()]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);
+    return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor, makeVrReady);
   }
 }

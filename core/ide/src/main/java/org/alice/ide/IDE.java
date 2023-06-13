@@ -445,7 +445,7 @@ public abstract class IDE extends ProjectApplication {
     promptForLicenseAgreements();
     UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
     if (projectFileToLoadOnWindowOpened != null) {
-      this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened));
+      this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened, false));
       projectFileToLoadOnWindowOpened = null;
     }
     if (getUri() == null) {

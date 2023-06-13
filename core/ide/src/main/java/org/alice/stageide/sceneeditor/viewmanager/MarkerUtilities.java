@@ -93,6 +93,7 @@ public class MarkerUtilities {
 
   private static final HashMap<Color, Icon> colorToObjectIcon = Maps.newHashMap();
   private static final HashMap<Color, Icon> colorToCameraIcon = Maps.newHashMap();
+  private static final HashMap<Color, Icon> colorToVrUserIcon = Maps.newHashMap();
 
   static {
     String[] colorNameKeys = {
@@ -255,10 +256,8 @@ public class MarkerUtilities {
   }
 
   private static Icon loadIconForCameraMarker(Color color) {
-    // TOD convert VR flag to parameter
-    boolean isVrActive = false;
     URL markerIconURL = StorytellingSceneEditor.class.getResource(
-        isVrActive ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
+        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? "images/vrMarkerIconGrayScale.png" : "images/markerIconGrayScale.png");
     if (markerIconURL == null) {
       return null;
     }
@@ -295,16 +294,18 @@ public class MarkerUtilities {
     return null;
   }
 
-  public static IconFactory getIconFactoryForCameraMarker(UserField marker) {
+  public static Icon getIconForCameraMarker(UserField marker) {
     if (marker != null) {
       Color markerColor = getColorForMarkerField(marker);
-      return IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
+      return getCameraMarkIconForColor(markerColor);
     }
     return null;
   }
 
   public static Icon getCameraMarkIconForColor(Color markerColor) {
-    return getIcon(markerColor, colorToCameraIcon, MarkerUtilities::loadIconForCameraMarker);
+    return getIcon(markerColor,
+        StageIDE.getActiveInstance().getSceneEditor().isVrActive() ? colorToVrUserIcon : colorToCameraIcon,
+        MarkerUtilities::loadIconForCameraMarker);
   }
 
   public static Icon getObjectMarkIconForColor(Color markerColor) {
@@ -362,14 +363,6 @@ public class MarkerUtilities {
   public static IconFactory getIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
     if (camera != null) {
       IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
-      return factory;
-    }
-    return null;
-  }
-
-  public static IconFactory getHighlightedIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
-    if (camera != null) {
-      IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
       return factory;
     }
     return null;
