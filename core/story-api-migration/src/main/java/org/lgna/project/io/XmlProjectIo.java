@@ -258,17 +258,9 @@ public class XmlProjectIo implements ProjectIo {
   private static class XmlProjectWriter implements ProjectWriter {
 
     private static void writeVersion(ZipOutputStream zos) throws IOException {
-      ZipUtilities.write(zos, new DataSource() {
-        @Override
-        public String getName() {
-          return ProjectIo.VERSION_ENTRY_NAME;
-        }
-
-        @Override
-        public void write(OutputStream os) throws IOException {
-          os.write(ProjectVersion.getCurrentVersion().toString().getBytes());
-        }
-      });
+      ZipUtilities.write(zos,
+          new ByteArrayDataSource(ProjectIo.VERSION_ENTRY_NAME,
+                                  ProjectVersion.getCurrentVersion().toString()));
     }
 
     private static void writeXML(final Document xmlDocument, ZipOutputStream zos, final String entryName) throws IOException {

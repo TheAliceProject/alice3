@@ -49,29 +49,21 @@ import java.io.OutputStream;
  * @author Dennis Cosgrove
  */
 public class ByteArrayDataSource extends DataSource {
-  private String name;
-  private byte[] data;
+  private final String name;
+  private final byte[] data;
 
   public ByteArrayDataSource(String name, byte[] data) {
-    this.setName(name);
-    this.setData(data);
+    this.name = name;
+    this.data = data;
+  }
+
+  public ByteArrayDataSource(String name, String data) {
+    this(name, data.getBytes());
   }
 
   @Override
   public String getName() {
     return this.name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public byte[] getData() {
-    return this.data;
-  }
-
-  public void setData(byte[] data) {
-    this.data = data;
   }
 
   @Override

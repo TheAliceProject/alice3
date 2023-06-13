@@ -214,7 +214,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       if (manifest.resources.stream().noneMatch(x -> x.name.equals(typeName))) {
         final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
         manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-        return createDataSource(fileName, serializedClass(ut));
+        return new ByteArrayDataSource(fileName, serializedClass(ut));
       }
       return null;
     }
@@ -238,14 +238,14 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       String typeName = resource.getModelVariantName() + "Resource";
       final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
       manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-      return createDataSource(fileName, coder.encodeProcessable(resource));
+      return new ByteArrayDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private DataSource dataSourceForResource(Manifest manifest, JointedModelResource resource) {
       String typeName = resource.getClass().getSimpleName();
       final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
       manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-      return createDataSource(fileName, coder.encodeProcessable(resource));
+      return new ByteArrayDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private Manifest createProjectManifest(Project project) {
@@ -283,11 +283,11 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private static DataSource versionDataSource() {
-      return createDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
+      return new ByteArrayDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
     }
 
     private static DataSource manifestDataSource(Manifest manifest) {
-      return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
+      return new ByteArrayDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
     }
 
     private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {
