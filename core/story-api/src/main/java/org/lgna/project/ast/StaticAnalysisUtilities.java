@@ -106,10 +106,6 @@ public class StaticAnalysisUtilities {
     return rv;
   }
 
-  public static String getConventionalInstanceName(String text) {
-    return getConventionalIdentifierName(text, false);
-  }
-
   public static String getConventionalClassName(String text) {
     return getConventionalIdentifierName(text, true);
   }
