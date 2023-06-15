@@ -56,7 +56,6 @@ public interface ProjectIo {
 
   String METADATA_ENTRY_NAME = "metadata.json";
   String VERSION_ENTRY_NAME = "version.txt";
-  String PROPERTIES_ENTRY_NAME = "properties.bin";
 
   interface ProjectReader {
     Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException;

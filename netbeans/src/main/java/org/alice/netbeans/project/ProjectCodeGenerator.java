@@ -100,7 +100,7 @@ public class ProjectCodeGenerator {
     if (resources.isEmpty()) {
       //pass
     } else {
-      ResourcesTypeWrapper resourcesTypeWrapper = new ResourcesTypeWrapper(aliceProject);
+      ResourcesTypeWrapper resourcesTypeWrapper = new ResourcesTypeWrapper(aliceProject.getResources());
       namedUserTypes.add(resourcesTypeWrapper.getType());
 
       FileObject javaSrcDirectoryFileObject = (FileUtil.toFileObject(javaSrcDirectory));

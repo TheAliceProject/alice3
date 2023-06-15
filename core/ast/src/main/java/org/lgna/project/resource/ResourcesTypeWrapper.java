@@ -45,7 +45,6 @@ package org.lgna.project.resource;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.common.Resource;
-import org.lgna.project.Project;
 import org.lgna.project.ast.AccessLevel;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
@@ -99,8 +98,7 @@ public class ResourcesTypeWrapper {
     return fixNameIfNecessary(resource.getName());
   }
 
-  public ResourcesTypeWrapper(Project project) {
-    Set<Resource> resources = project.getResources();
+  public ResourcesTypeWrapper(Set<Resource> resources) {
     if ((resources != null) && (resources.size() > 0)) {
       this.type = new NamedUserType();
       this.type.name.setValue(getTypeName());

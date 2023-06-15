@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.io;
 
-import edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder;
-import edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder;
 import edu.cmu.cs.dennisc.java.io.InputStreamUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
@@ -66,12 +64,10 @@ import org.lgna.project.ast.Node;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
-import org.lgna.project.properties.PropertyKey;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,12 +114,8 @@ public class XmlProjectIo implements ProjectIo {
     public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
       Set<Resource> resources = readResources();
-
       Set<NamedUserType> namedUserTypes = Collections.emptySet();
-      Project project = new Project(type, namedUserTypes, resources);
-
-      readProperties(project);
-      return project;
+      return new Project(type, namedUserTypes, resources);
     }
 
     @Override
@@ -172,19 +164,6 @@ public class XmlProjectIo implements ProjectIo {
         array[i++] = b;
       }
       return new Version(new String(array));
-    }
-
-    private void readProperties(Project project) throws IOException {
-      InputStream is = container.getInputStream(PROPERTIES_ENTRY_NAME);
-      if (is != null) {
-        BufferedInputStream bis = new BufferedInputStream(is);
-        InputStreamBinaryDecoder binaryDecoder = new InputStreamBinaryDecoder(bis);
-        String version = binaryDecoder.decodeString();
-        final int N = binaryDecoder.decodeInt();
-        for (int i = 0; i < N; i++) {
-          PropertyKey.decodeIdAndValueAndPut(project, binaryDecoder, version);
-        }
-      }
     }
 
     private static Document readXML(InputStream is, MigrationManager migrationManager, Version decodedVersion) {
@@ -353,26 +332,6 @@ public class XmlProjectIo implements ProjectIo {
       writeVersion(zos);
       NamedUserType programType = project.getProgramType();
       writeType(programType, zos, PROGRAM_TYPE_ENTRY_NAME);
-      final Set<PropertyKey<Object>> propertyKeys = project.getPropertyKeys();
-      if (!propertyKeys.isEmpty()) {
-        ZipUtilities.write(zos, new DataSource() {
-          @Override
-          public String getName() {
-            return PROPERTIES_ENTRY_NAME;
-          }
-
-          @Override
-          public void write(OutputStream os) {
-            OutputStreamBinaryEncoder binaryEncoder = new OutputStreamBinaryEncoder(os);
-            binaryEncoder.encode(ProjectVersion.getCurrentVersionText());
-            binaryEncoder.encode(propertyKeys.size());
-            for (PropertyKey<Object> propertyKey : propertyKeys) {
-              propertyKey.encodeIdAndValue(project, binaryEncoder);
-            }
-            binaryEncoder.flush();
-          }
-        });
-      }
       writeDataSources(zos, dataSources);
       Set<Resource> resources = project.getResources();
 

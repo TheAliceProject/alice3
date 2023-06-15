@@ -43,7 +43,6 @@
 package org.lgna.project;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
@@ -55,11 +54,9 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.event.ResourceEvent;
 import org.lgna.project.event.ResourceListener;
-import org.lgna.project.properties.PropertyKey;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,7 +66,6 @@ public class Project {
 
   private final NamedUserType programType;
   private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
-  private final Map<PropertyKey<Object>, Object> propertyMap = Maps.newHashMap();
   private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
   private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
@@ -148,18 +144,6 @@ public class Project {
       rv.add(resource);
     }
     return rv;
-  }
-
-  public Set<PropertyKey<Object>> getPropertyKeys() {
-    return this.propertyMap.keySet();
-  }
-
-  public <T> T getValueFor(PropertyKey<T> key) {
-    return (T) this.propertyMap.get(key);
-  }
-
-  public <T> void putValueFor(PropertyKey<Object> key, T value) {
-    this.propertyMap.put(key, value);
   }
 
   public Set<NamedUserType> getNamedUserTypes() {

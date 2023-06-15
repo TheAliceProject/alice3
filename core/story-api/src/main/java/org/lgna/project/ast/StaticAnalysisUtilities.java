@@ -132,10 +132,6 @@ public class StaticAnalysisUtilities {
     return true;
   }
 
-  public static boolean isAvailableResourceName(Project project, String name) {
-    return isAvailableResourceName(project, name, null);
-  }
-
   private static boolean isAvailableFieldName(String name, UserType<?> declaringType, UserField self) {
     if (declaringType != null) {
       for (UserField field : declaringType.fields) {
