@@ -61,8 +61,4 @@ public abstract class MediaFactory {
   public Player createPlayer(AudioResource audioResource, double volume) {
     return createPlayer(audioResource, volume, DEFAULT_START_TIME);
   }
-
-  public Player createPlayer(AudioResource audioResource) {
-    return createPlayer(audioResource, DEFAULT_VOLUME);
-  }
 }

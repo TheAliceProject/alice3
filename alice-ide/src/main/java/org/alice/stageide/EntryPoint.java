@@ -63,6 +63,8 @@ import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
 
+import javafx.application.Platform;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -186,6 +188,9 @@ public class EntryPoint {
         ide.initialize(args);
         ide.getDocumentFrame().getFrame().setVisible(true);
         heapMonitor = new HeapWatchDog();
+
+        // Call this method to init javafx
+        Platform.startup(() -> { });
       }
     });
     RenderUtils.getDefaultRenderFactory();
