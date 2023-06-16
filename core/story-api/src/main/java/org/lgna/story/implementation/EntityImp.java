@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.media.Player;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import edu.cmu.cs.dennisc.media.MediaFactory;
 import edu.cmu.cs.dennisc.property.PropertyUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -364,7 +364,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
   }
 
   public void playAudio(AudioSource audioSource) {
-    edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
+    MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.javafx.MediaFactory.getSingleton();
     Player player = mediaFactory.createPlayer(audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime());
     this.perform(new MediaPlayerAnimation(player));
   }

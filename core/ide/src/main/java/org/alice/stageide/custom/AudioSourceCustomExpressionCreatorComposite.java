@@ -44,8 +44,8 @@
 package org.alice.stageide.custom;
 
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import edu.cmu.cs.dennisc.media.Player;
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import edu.cmu.cs.dennisc.media.javafx.Player;
+import edu.cmu.cs.dennisc.media.javafx.MediaFactory;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView;
 import org.lgna.common.Resource;
@@ -179,7 +179,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
       double volume = VolumeLevelUtilities.toDouble(getVolumeState().getValue());
       double startTime = getStartMarkerTime();
       double stopTime = getStopMarkerTime();
-      edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
+      MediaFactory mediaFactory = MediaFactory.getSingleton();
       Player player = mediaFactory.createPlayer(audioResource, volume, startTime, stopTime);
       new Thread(player::playUntilStop).start();
       return null;

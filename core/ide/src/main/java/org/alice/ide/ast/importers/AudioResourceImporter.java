@@ -43,7 +43,7 @@
 
 package org.alice.ide.ast.importers;
 
-import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import edu.cmu.cs.dennisc.media.javafx.MediaFactory;
 import org.lgna.common.resources.AudioResource;
 import org.lgna.croquet.importer.Importer;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
