@@ -73,7 +73,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>15</java.version>
+    <java.version>17</java.version>
 
     <jogl.version>2.4.0-rc-20210916</jogl.version>
     <gluegen.version>2.4.0-rc-20210111</gluegen.version>
@@ -354,16 +354,15 @@
         <artifactId>imageio-webp</artifactId>
         <version>3.8.2</version>
       </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>${javafx.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-media</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-  </dependencies>
 
   <build>
     <pluginManagement>

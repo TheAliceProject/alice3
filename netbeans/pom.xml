@@ -405,7 +405,7 @@
       <plugin>
         <groupId>org.apache.netbeans.utilities</groupId>
         <artifactId>nbm-maven-plugin</artifactId>
-        <version>4.6</version>
+        <version>4.8</version>
         <extensions>true</extensions>
         <configuration>
           <licenseName>Alice 3 License</licenseName>
@@ -414,6 +414,7 @@
           <brandingToken>alice3</brandingToken>
           <installerPack200Enable>true</installerPack200Enable>
           <homePageUrl>http://www.alice.org/get-alice/alice-3-with-netbeans/</homePageUrl>
+          <verifyRuntime>false</verifyRuntime>
         </configuration>
       </plugin>
 
