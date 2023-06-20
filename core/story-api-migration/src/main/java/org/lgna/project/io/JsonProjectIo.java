@@ -148,7 +148,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public void writeType(OutputStream os, NamedUserType type, DataSource... dataSources) throws IOException {
-      Manifest manifest = createTypeManifest(type);
+      TypeManifest manifest = createTypeManifest(type);
       Set<Resource> resources = getResources(type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
 
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
@@ -157,8 +157,8 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       writeDataSources(os, entries);
     }
 
-    private Manifest createTypeManifest(AbstractType<?, ?, ?> type) {
-      final Manifest manifest = new Manifest();
+    private TypeManifest createTypeManifest(AbstractType<?, ?, ?> type) {
+      final TypeManifest manifest = new TypeManifest();
       manifest.description.name = type.getName();
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
       manifest.metadata.identifier.name = type.getId().toString();
