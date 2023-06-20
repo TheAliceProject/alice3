@@ -53,6 +53,8 @@ import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 import org.alice.serialization.xml.XmlEncoderDecoder;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
+import org.alice.tweedle.file.ProjectManifest;
 import org.lgna.common.Resource;
 import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
@@ -112,10 +114,19 @@ public class XmlProjectIo implements ProjectIo {
 
     @Override
     public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
+      ProjectManifest manifest = readManifest();
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
       Set<Resource> resources = readResources();
       Set<NamedUserType> namedUserTypes = Collections.emptySet();
-      return new Project(type, namedUserTypes, resources);
+      return new Project(manifest, type, namedUserTypes, resources);
+    }
+
+    private ProjectManifest readManifest() throws IOException {
+      InputStream is = container.getInputStream(MANIFEST_ENTRY_NAME);
+      if (is == null) {
+        return null;
+      }
+      return ManifestEncoderDecoder.fromJson(readContent(is), ProjectManifest.class);
     }
 
     @Override
@@ -149,6 +160,11 @@ public class XmlProjectIo implements ProjectIo {
         throw new IOException(container.toString() + " does not contain entry " + VERSION_ENTRY_NAME);
       }
 
+      String content = readContent(is);
+      return new Version(content);
+    }
+
+    private static String readContent(InputStream is) throws IOException {
       ArrayList<Byte> buffer = new ArrayList<>(32);
       while (true) {
         int b = is.read();
@@ -163,7 +179,7 @@ public class XmlProjectIo implements ProjectIo {
       for (Byte b : buffer) {
         array[i++] = b;
       }
-      return new Version(new String(array));
+      return new String(array);
     }
 
     private static Document readXML(InputStream is, MigrationManager migrationManager, Version decodedVersion) {

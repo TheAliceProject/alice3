@@ -83,10 +83,10 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public Project readProject(boolean makeVrReady) throws IOException {
-      Manifest manifest = readManifest();
+      ProjectManifest manifest = readManifest();
       Set<Resource> resources = readResources(manifest);
       //TODO Read manifest and content for program type
-      return new Project(null, Collections.emptySet(), resources);
+      return new Project(manifest, null, Collections.emptySet(), resources);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       // Ignored for now
     }
 
-    private Manifest readManifest() {
+    private ProjectManifest readManifest() {
       return null;
     }
 

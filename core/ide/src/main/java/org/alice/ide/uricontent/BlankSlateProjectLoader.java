@@ -74,6 +74,6 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
     } else {
       programType = BootstrapUtilities.createProgramType(template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity(), makeVrReady);
     }
-    return new Project(programType);
+    return new Project(programType, makeVrReady ? Project.SceneCameraType.VRHeadset : Project.SceneCameraType.WindowCamera);
   }
 }

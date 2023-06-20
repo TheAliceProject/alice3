@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.tweedle.file.Manifest;
+import org.alice.tweedle.file.ProjectManifest;
 import org.lgna.common.Resource;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -66,6 +67,7 @@ import java.util.Set;
 public class Project {
 
   private final NamedUserType programType;
+  private final SceneCameraType sceneCameraType;
   private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
   private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
@@ -73,14 +75,20 @@ public class Project {
 
   private final Object lock = new Object();
 
-  public Project(NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
-    this(programType);
+  public Project(ProjectManifest manifest, NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
+    this.programType = programType;
     this.namedUserTypes.addAll(namedUserTypes);
     this.resources.addAll(resources);
+    this.sceneCameraType = manifest == null ? SceneCameraType.WindowCamera : manifest.projectStructure.sceneCameraType;
   }
 
-  public Project(NamedUserType programType) {
+  public Project(NamedUserType programType, SceneCameraType sceneCameraType) {
     this.programType = programType;
+    this.sceneCameraType = sceneCameraType;
+  }
+
+  public enum SceneCameraType {
+    WindowCamera, VRHeadset
   }
 
   public Object getLock() {
@@ -91,23 +99,26 @@ public class Project {
     return this.programType;
   }
 
-  public Manifest createSaveManifest() {
-    final Manifest manifest = createProjectManifest();
+  public ProjectManifest createSaveManifest() {
+    final ProjectManifest manifest = createProjectManifest();
+    manifest.metadata.fileType = "a3p";
     return manifest;
   }
 
-  public Manifest createExportManifest() {
-    final Manifest manifest = createProjectManifest();
+  public ProjectManifest createExportManifest() {
+    final ProjectManifest manifest = createProjectManifest();
+    manifest.metadata.fileType = "a3w";
     manifest.prerequisites.add(standardLibrary());
     return manifest;
   }
 
-  private Manifest createProjectManifest() {
-    final Manifest manifest = new Manifest();
+  private ProjectManifest createProjectManifest() {
+    final ProjectManifest manifest = new ProjectManifest();
     manifest.description.name = getProgramType().getName(); // probably "Program"
     manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
     manifest.metadata.identifier.name = getProgramType().getId().toString();
     manifest.metadata.identifier.type = Manifest.ProjectType.World;
+    manifest.projectStructure.sceneCameraType = sceneCameraType;
     return manifest;
   }
 
