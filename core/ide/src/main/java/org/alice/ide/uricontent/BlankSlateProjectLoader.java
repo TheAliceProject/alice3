@@ -63,7 +63,7 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
 
   @Override
   public URI getUri() {
-    return this.template.getUri();
+    return this.template.getProjectSnapshot().getUri();
   }
 
   @Override

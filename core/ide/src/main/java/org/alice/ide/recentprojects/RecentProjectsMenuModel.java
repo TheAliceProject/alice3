@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.history.UserActivity;
@@ -90,13 +91,11 @@ public class RecentProjectsMenuModel extends MenuModel {
   private void setChildren(MenuItemContainer menuItemContainer) {
     IDE ide = IDE.getActiveInstance();
     URI currentUri = ide.getUri();
-    URI[] uris = RecentProjectsListData.getInstance().toArray();
+    ProjectSnapshot[] projectSnapshots = RecentProjectsListData.getInstance().toArray();
     List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
-    for (URI uri : uris) {
-      if (Objects.equals(uri, currentUri)) {
-        //pass
-      } else {
-        models.add(OpenRecentProjectOperation.getInstance(uri).getMenuItemPrepModel());
+    for (ProjectSnapshot proj : projectSnapshots) {
+      if (!Objects.equals(proj.getUri(), currentUri)) {
+        models.add(OpenRecentProjectOperation.getInstance(proj.getUri()).getMenuItemPrepModel());
       }
     }
     if (models.size() == 0) {

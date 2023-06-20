@@ -47,13 +47,12 @@ import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SingleSelectListState;
 
-import java.net.URI;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsUriSingleSelectListState extends SingleSelectListState<URI, RecentProjectsListData> {
+public class RecentProjectsUriSingleSelectListState extends SingleSelectListState<ProjectSnapshot, RecentProjectsListData> {
   public RecentProjectsUriSingleSelectListState() {
     super(Application.APPLICATION_UI_GROUP, UUID.fromString("27771d96-8702-4536-888a-0038a39bee2b"), -1, RecentProjectsListData.getInstance());
   }

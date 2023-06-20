@@ -55,8 +55,6 @@ import java.io.OutputStream;
 public interface ProjectIo {
 
   String MANIFEST_ENTRY_NAME = "manifest.json";
-
-  String METADATA_ENTRY_NAME = "metadata.json";
   String VERSION_ENTRY_NAME = "version.txt";
 
   interface ProjectReader {

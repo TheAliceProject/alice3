@@ -43,164 +43,17 @@
 
 package org.alice.ide.projecturi.views;
 
-import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
-import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.ide.swing.SnapshotListCellRenderer;
-import org.alice.ide.uricontent.StarterProjectUtilities;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
-/**
- * @author Dennis Cosgrove
- */
-abstract class AbstractNotAvailableIcon implements Icon {
-  @Override
-  public int getIconWidth() {
-    return 160;
-  }
+
+public class ProjectSnapshotListCellRenderer extends SnapshotListCellRenderer<ProjectSnapshot> {
 
   @Override
-  public int getIconHeight() {
-    return 120;
-  }
-
-  protected abstract String getText();
-
-  @Override
-  public void paintIcon(Component c, Graphics g, int x, int y) {
-    int width = this.getIconWidth();
-    int height = this.getIconHeight();
-    g.setColor(Color.DARK_GRAY);
-    g.fillRect(x, y, width, height);
-    g.setColor(Color.LIGHT_GRAY);
-    GraphicsUtilities.drawCenteredText(g, this.getText(), x, y, width, height);
-  }
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public class ProjectSnapshotListCellRenderer extends SnapshotListCellRenderer {
-  private static final Icon SNAPSHOT_NOT_AVAILABLE_ICON = new AbstractNotAvailableIcon() {
-    @Override
-    protected String getText() {
-      return "snapshot not available";
-    }
-  };
-  private static final Icon FILE_DOES_NOT_EXIST_ICON = new AbstractNotAvailableIcon() {
-    @Override
-    protected String getText() {
-      return "snapshot does not exist";
-    }
-  };
-
-  private static final String PROJECT_LOCALIZATION_BUNDLE_NAME = "org.lgna.story.resources.ProjectNames";
-
-  private static String findLocalizedFileNameText(String key, String bundleName, Locale locale) {
-    if ((bundleName != null) && (key != null)) {
-      try {
-        ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle(bundleName, locale);
-        String rv = resourceBundle.getString(key);
-        return rv;
-      } catch (MissingResourceException mre) {
-        return null;
-      }
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  protected JLabel updateLabel(JLabel rv, Object value) {
-    URI uri = (URI) value;
-    String text;
-    Icon icon;
-    if (uri != null) {
-      if (uri.isAbsolute()) {
-        boolean isExtensionDesired;
-        if ("file".equals(uri.getScheme())) {
-          isExtensionDesired = true;
-        } else {
-          uri = StarterProjectUtilities.toFileUriFromStarterUri(uri);
-          isExtensionDesired = false;
-        }
-        File file = new File(uri);
-        text = file.getName();
-        if (isExtensionDesired) {
-          //pass
-        } else {
-          final String SUFFIX = ".a3p";
-          if (text.endsWith(SUFFIX)) {
-            text = text.substring(0, text.length() - SUFFIX.length());
-          }
-
-          //Localize the text to display
-          String localizedName = findLocalizedFileNameText(text, PROJECT_LOCALIZATION_BUNDLE_NAME, JComponent.getDefaultLocale());
-          if (localizedName != null) {
-            text = localizedName;
-          }
-        }
-        if (file.exists()) {
-          //          //todo: remove
-          //          String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
-          //          if( path != null ) {
-          //            String snapshotPath = path.substring( 0, path.length() - 3 ) + "png";
-          //            if( edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
-          //              icon = new javax.swing.ImageIcon( snapshotPath );
-          //            } else {
-          //              icon = null;
-          //            }
-          //          } else {
-          //            icon = null;
-          //          }
-          //
-          //          if( icon != null ) {
-          //            //pass
-          //          } else {
-          try {
-            ZipFile zipFile = new ZipFile(file);
-            ZipEntry zipEntry = zipFile.getEntry("thumbnail.png");
-            if (zipEntry != null) {
-              InputStream is = zipFile.getInputStream(zipEntry);
-              Image image = ImageUtilities.read(ImageUtilities.PNG_CODEC_NAME, is);
-              icon = new SnapshotIcon(image);
-            } else {
-              icon = SNAPSHOT_NOT_AVAILABLE_ICON;
-            }
-            zipFile.close();
-          } catch (Throwable t) {
-            icon = SNAPSHOT_NOT_AVAILABLE_ICON;
-          }
-          //          }
-        } else {
-          icon = FILE_DOES_NOT_EXIST_ICON;
-        }
-      } else {
-        text = uri.toString();
-        icon = FILE_DOES_NOT_EXIST_ICON;
-      }
-    } else {
-      text = null;
-      icon = FILE_DOES_NOT_EXIST_ICON;
-    }
-
-    rv.setText(text);
-    rv.setIcon(icon);
-    return rv;
+  protected void updateLabel(JLabel label, ProjectSnapshot proj) {
+    label.setText(proj.getText());
+    label.setIcon(proj.getIcon());
   }
 }

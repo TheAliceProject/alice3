@@ -44,10 +44,10 @@ package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.history.UserActivity;
 
-import java.net.URI;
 import java.util.UUID;
 
 /**
@@ -55,7 +55,7 @@ import java.util.UUID;
  */
 public class RevertProjectOperation extends UriActionOperation {
   private static class SingletonHolder {
-    private static RevertProjectOperation instance = new RevertProjectOperation();
+    private static final RevertProjectOperation instance = new RevertProjectOperation();
   }
 
   public static RevertProjectOperation getInstance() {
@@ -71,14 +71,14 @@ public class RevertProjectOperation extends UriActionOperation {
     ProjectApplication application = ProjectApplication.getActiveInstance();
     boolean confirmed = Dialogs.confirmWithWarning("Revert?", "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?");
     if (confirmed) {
-      URI uri = application.getUri();
-      if (uri != null) {
-        UriProjectLoader loader = UriProjectLoader.createInstance(uri, false);
+      ProjectSnapshot proj = new ProjectSnapshot(application.getUri());
+      if (proj.hasUri()) {
+        UriProjectLoader loader = UriProjectLoader.createInstance(proj, false);
         if (loader != null) {
           application.loadProject(activity, loader);
           activity.finish();
         } else {
-          Dialogs.showInfo("todo: revert loader == null " + uri);
+          Dialogs.showInfo("todo: revert loader == null " + proj.getUri());
           activity.cancel();
         }
       } else {

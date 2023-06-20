@@ -42,38 +42,11 @@
  *******************************************************************************/
 package org.alice.stageide.openprojectpane.components;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.projecturi.TemplatesTab;
 import org.alice.ide.projecturi.views.ListContentPanel;
-import org.alice.ide.projecturi.views.ProjectSnapshotListCellRenderer;
-import org.alice.ide.projecturi.views.SnapshotIcon;
-import org.alice.stageide.openprojectpane.models.TemplateUriState;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.ListCellRenderer;
-import java.net.URI;
 
 public class TemplatesTabContentPane extends ListContentPanel {
   public TemplatesTabContentPane(TemplatesTab composite) {
     super(composite);
-  }
-
-  @Override
-  protected ListCellRenderer createListCellRenderer() {
-    return new ProjectSnapshotListCellRenderer() {
-      @Override
-      protected JLabel updateLabel(JLabel rv, Object value) {
-        URI uri = (URI) value;
-        String textKey = uri.getFragment();
-        String text = TemplateUriState.getLocalizedName(textKey);
-        ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + textKey + ".png"));
-        Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;
-        rv.setIcon(icon);
-        rv.setText(text);
-        return rv;
-      }
-    };
   }
 }

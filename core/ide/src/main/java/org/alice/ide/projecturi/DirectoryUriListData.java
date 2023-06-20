@@ -44,41 +44,41 @@
 package org.alice.ide.projecturi;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.alice.ide.croquet.codecs.UriCodec;
+import org.alice.ide.project.codecs.ProjectSnapshotCodec;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryUriListData extends RefreshableListData<URI> {
+public final class DirectoryUriListData extends RefreshableListData<ProjectSnapshot> {
   private final File directory;
 
   public DirectoryUriListData(File directory) {
-    super(UriCodec.SINGLETON);
+    super(ProjectSnapshotCodec.SINGLETON);
     this.directory = directory;
   }
 
   @Override
-  protected List<URI> createValues() {
+  protected List<ProjectSnapshot> createValues() {
+
     if (directory != null) {
-      URI[] uris;
+      ProjectSnapshot[] snapshots;
       File[] files = IoUtilities.listProjectFiles(directory);
       final int N = files.length;
-      uris = new URI[N];
+      snapshots = new ProjectSnapshot[N];
       for (int i = 0; i < N; i++) {
         if (files[i] != null) {
-          uris[i] = files[i].toURI();
+          snapshots[i] = new ProjectSnapshot(files[i].toURI());
         } else {
-          uris[i] = null;
+          snapshots[i] = null;
         }
       }
-      return Lists.newArrayList(uris);
+      return Lists.newArrayList(snapshots);
     } else {
       return Collections.emptyList();
     }
