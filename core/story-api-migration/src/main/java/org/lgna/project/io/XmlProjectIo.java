@@ -64,7 +64,9 @@ import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
+import org.lgna.project.migration.OptionalMigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
+import org.lgna.project.migration.ast.ReplaceCameraWithVR;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -96,6 +98,8 @@ public class XmlProjectIo implements ProjectIo {
   private static final String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
   private static final String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
+  private static OptionalMigrationManager CAMERA_TO_VR = new OptionalMigrationManager(new ReplaceCameraWithVR());
+
   public static XmlProjectReader reader(ZipEntryContainer container) {
     return new XmlProjectReader(container);
   }
@@ -115,6 +119,9 @@ public class XmlProjectIo implements ProjectIo {
     public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
       ProjectManifest manifest = readManifest();
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
+      if (makeVrReady) {
+        CAMERA_TO_VR.migrate(type, typeHelper, ProjectVersion.getCurrentVersion());
+      }
       Set<Resource> resources = readResources();
       Set<NamedUserType> namedUserTypes = Collections.emptySet();
       return new Project(manifest, type, namedUserTypes, resources);
