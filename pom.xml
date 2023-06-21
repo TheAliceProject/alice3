@@ -354,15 +354,21 @@
         <artifactId>imageio-webp</artifactId>
         <version>3.8.2</version>
       </dependency>
-
-      <!-- https://mvnrepository.com/artifact/org.openjfx/javafx -->
-      <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-media</artifactId>
-        <version>${javafx.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>

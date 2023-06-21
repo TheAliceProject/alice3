@@ -96,11 +96,12 @@
       <groupId>com.twelvemonkeys.imageio</groupId>
       <artifactId>imageio-webp</artifactId>
     </dependency>
+    <!--
     <dependency>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-media</artifactId>
-      </dependency>
-
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-media</artifactId>
+    </dependency>
+    -->
   </dependencies>
 
 </project>
