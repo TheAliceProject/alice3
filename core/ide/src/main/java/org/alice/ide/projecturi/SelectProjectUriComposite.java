@@ -133,4 +133,10 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
     this.refresh();
     super.handlePreShowDialog(dialog);
   }
+
+  @Override
+  protected void refreshStatus() {
+    super.refreshStatus();
+    tabState.getValue().updateVrCheckbox();
+  }
 }

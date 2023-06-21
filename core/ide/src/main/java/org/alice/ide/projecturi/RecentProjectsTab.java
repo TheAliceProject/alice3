@@ -67,6 +67,10 @@ public class RecentProjectsTab extends ListUriTab {
   protected void refresh() {
   }
 
+  public void updateVrCheckbox() {
+    updateVrCheckbox(getListSelectionState().getValue());
+  }
+
   @Override
   protected TabContentPanel createView() {
     return new ListContentPanel(this);

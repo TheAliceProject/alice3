@@ -59,6 +59,10 @@ public class ProjectSnapshot {
     return icon;
   }
 
+  public boolean isVrProject() {
+    return VRHeadset.equals(sceneCamera);
+  }
+
   public boolean hasUri() {
     return uri != null;
   }

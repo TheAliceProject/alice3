@@ -58,7 +58,7 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
   public SelectUriTab(UUID migrationId) {
     super(migrationId, IsCloseable.FALSE);
   }
-  private BooleanState isWorldVrReadyState = createBooleanState("isWorldVrReady", false);
+  private final BooleanState isWorldVrReadyState = createBooleanState("isWorldVrReady", false);
 
   public BooleanState isWorldVrReady() {
     return isWorldVrReadyState;
@@ -71,4 +71,19 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
   protected ScrollPane createScrollPaneIfDesired() {
     return null;
   }
+
+  public void updateVrCheckbox() {
+  }
+
+  protected void updateVrCheckbox(ProjectSnapshot selected) {
+    if (isWorldVrReady().isEnabled()) {
+      lastUserVrChoice = isWorldVrReadyState.getValue();
+    }
+    isWorldVrReady().setEnabled(selected != null && !selected.isVrProject());
+    isWorldVrReady().setValueTransactionlessly(
+        selected != null && selected.isVrProject() || lastUserVrChoice);
+  }
+
+  // Track this to restore when switching from VR world, with forced check, to camera world
+  private Boolean lastUserVrChoice;
 }
