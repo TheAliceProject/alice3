@@ -77,6 +77,19 @@ public class ProjectSnapshot {
     return null;
   }
 
+  // The uri and its content define the entire object
+  @Override
+  public boolean equals(Object obj) {
+    return this == obj
+        || (obj instanceof ProjectSnapshot
+        && (uri == ((ProjectSnapshot) obj).uri || uri.equals(((ProjectSnapshot) obj).uri)));
+  }
+
+  @Override
+  public int hashCode() {
+    return uri == null ? 217 : uri.hashCode();
+  }
+
   private void initialize() {
     boolean isStarterProject = uri != null && uri.isAbsolute() && !"file".equals(uri.getScheme());
     if (uri == null) {
