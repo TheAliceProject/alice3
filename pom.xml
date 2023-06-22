@@ -360,16 +360,21 @@
   <dependencies>
     <dependency>
       <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
       <artifactId>javafx-media</artifactId>
       <version>${javafx.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
       <version>${javafx.version}</version>
       <classifier>win</classifier>
     </dependency>
-    <!--
     <dependency>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-graphics</artifactId>
