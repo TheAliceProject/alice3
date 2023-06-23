@@ -118,13 +118,16 @@ public class XmlProjectIo implements ProjectIo {
     @Override
     public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
       ProjectManifest manifest = readManifest();
+      Project.SceneCameraType cameraType =
+          manifest == null ? Project.SceneCameraType.WindowCamera : manifest.projectStructure.sceneCameraType;
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
       if (makeVrReady) {
         CAMERA_TO_VR.migrate(type, typeHelper, ProjectVersion.getCurrentVersion());
+        cameraType = Project.SceneCameraType.VRHeadset;
       }
       Set<Resource> resources = readResources();
       Set<NamedUserType> namedUserTypes = Collections.emptySet();
-      return new Project(manifest, type, namedUserTypes, resources);
+      return new Project(type, namedUserTypes, resources, cameraType);
     }
 
     private ProjectManifest readManifest() throws IOException {
