@@ -112,16 +112,18 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
     Expression expression = this.value.createTransientExpression();
     JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane(expression).getAwtComponent();
 
-    Dimension iconSize;
+    Dimension desiredIconSize;
     if ((this.value instanceof ThisMethodInvocationFactory) || (this.value instanceof ThisFieldAccessMethodInvocationFactory)) {
-      iconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
+      desiredIconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
     } else {
-      iconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
+      desiredIconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
     }
 
+    // getIcon will scale our icon to whatever dimensions we give it, but want to preserve our aspect ratio
+    Dimension iconSize = this.value.getIconFactory().getDefaultSizeForHeight(desiredIconSize.height);
     Icon icon = this.value.getIconFactory().getIcon(iconSize);
     JLabel label = new JLabel(icon);
-    int sidePadding = (iconSize.width - icon.getIconWidth()) / 2;
+    int sidePadding = (desiredIconSize.width - icon.getIconWidth()) / 2;
     label.setBorder(new EmptyBorder(0, sidePadding, 0, sidePadding));
 
     expressionPane.setAlignmentY(0.5f);
