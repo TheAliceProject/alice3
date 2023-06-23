@@ -411,7 +411,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   protected abstract BufferedImage createThumbnail() throws Throwable;
 
   public final void saveProjectTo(File file) throws IOException {
-    RecentProjectsListData.getInstance().handleSave(file);
     uriProjectLoader = new FileProjectLoader(file);
 
     //    long startTime = System.currentTimeMillis();
@@ -421,6 +420,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     //    long endTime = System.currentTimeMillis();
     //    double saveTime = ( endTime - startTime ) * .001;
     //    System.out.println( "Save time: " + saveTime );
+    RecentProjectsListData.getInstance().handleSave(file);
 
     this.updateHistoryIndexFileSync();
   }
