@@ -92,8 +92,7 @@
     <jaxb.api.version>2.2.3</jaxb.api.version>
     <install4j.version>10.0.6</install4j.version>
 
-    <javafx.version>20</javafx.version>
-    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+    <javafx.version>11</javafx.version>
   </properties>
 
   <modules>
@@ -607,14 +606,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>${javafx.maven.plugin.version}</version>
-        <configuration>
-          <mainClass>org.alice.stageide.EntryPoint</mainClass>
-        </configuration>
       </plugin>
     </plugins>
 
