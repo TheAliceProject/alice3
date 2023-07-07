@@ -63,18 +63,23 @@ import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
 
-import javafx.application.Platform;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EntryPoint {
+public class EntryPoint extends Application {
   private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
   private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
   private static HeapWatchDog heapMonitor;
 
-  public static void main(final String[] args) {
+  @Override
+  public void start(Stage primaryStage) {
+    // get the String[] args param from main()
+    final String[] args = getParameters().getRaw().toArray(new String[0]);
+
     final CrashDetector crashDetector = new CrashDetector(EntryPoint.class);
     if (crashDetector.isPreviouslyOpenedButNotSucessfullyClosed()) {
       String propertyName = "org.alice.stageide.isCrashDetectionDesired";
@@ -188,11 +193,13 @@ public class EntryPoint {
         ide.initialize(args);
         ide.getDocumentFrame().getFrame().setVisible(true);
         heapMonitor = new HeapWatchDog();
-
-        // Call this method to init javafx
-        Platform.startup(() -> { });
       }
     });
     RenderUtils.getDefaultRenderFactory();
+  }
+
+  public static void main(final String[] args) {
+    // Call this method to init javafx
+    launch(args);
   }
 }
