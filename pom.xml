@@ -75,15 +75,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
 
-    <jogl.version>2.4.0-rc-20210916</jogl.version>
-    <gluegen.version>2.4.0-rc-20210111</gluegen.version>
-
     <!--  The first digit is from Alice 3, followed by SemVer identifier: major.minor.patch  -->
     <alice.build.version>3.8.0.0</alice.build.version>
     <alice.build.prerelease>-rc.1</alice.build.prerelease>
     <!--  The build system will replace local with a build #  -->
     <alice.build.metadata>+build.local</alice.build.metadata>
 
+    <jogl.version>2.4.0-rc-20210916</jogl.version>
+    <gluegen.version>2.4.0-rc-20210111</gluegen.version>
     <netbeans.version>RELEASE125</netbeans.version>
     <guava.version>30.1.1-jre</guava.version>
     <commons.discovery.version>0.5</commons.discovery.version>
@@ -91,8 +90,7 @@
     <javax.activation.version>1.2.0</javax.activation.version>
     <jaxb.api.version>2.2.3</jaxb.api.version>
     <install4j.version>10.0.6</install4j.version>
-
-    <javafx.version>17</javafx.version>
+    <javafx.version>20</javafx.version>
   </properties>
 
   <modules>
@@ -512,7 +510,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>1.6.0</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>com.install4j</groupId>
