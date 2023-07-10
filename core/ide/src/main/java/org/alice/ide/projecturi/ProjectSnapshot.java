@@ -40,6 +40,7 @@ public class ProjectSnapshot {
     initialize();
   }
 
+  // Used for template worlds, which read the icon and text from the application and localize the text.
   public ProjectSnapshot(URI uri, String text, Icon icon) {
     this.uri = uri;
     sceneCamera = Project.SceneCameraType.WindowCamera;
