@@ -51,11 +51,8 @@ import org.lgna.project.ast.NamedUserType;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.ZipFile;
-
-import static org.lgna.project.io.ProjectIo.METADATA_ENTRY_NAME;
 
 /**
  * @author Dennis Cosgrove
@@ -122,14 +119,9 @@ public abstract class IoUtilities {
   }
 
   private static ProjectIo.ProjectReader readerForContainer(ZipEntryContainer container) throws IOException {
-    InputStream metadata = container.getInputStream(METADATA_ENTRY_NAME);
-    if (metadata == null) {
-      // Old format a3p files
-      return XmlProjectIo.reader(container);
-    } else {
-      // TODO readerForContainer(metadata);
-      return null;
-    }
+    // TODO read manifest to identify file type and use JsonProjectIo for a3w files
+    // Old format a3p files
+    return XmlProjectIo.reader(container);
   }
 
   private static ProjectIo.ProjectWriter latestReadbleWriter() {

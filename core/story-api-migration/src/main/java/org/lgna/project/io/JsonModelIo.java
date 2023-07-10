@@ -1,6 +1,7 @@
 package org.lgna.project.io;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
@@ -478,7 +479,9 @@ public class JsonModelIo extends DataSourceIo {
       modelManifest.description.icon = classIconName;
     }
     //The model manifest goes in the base model path directory
-    dataToWrite.add(createDataSource(resourcePath + "/" + getModelName() + ".json", ManifestEncoderDecoder.toJson(modelManifest)));
+    dataToWrite.add(new ByteArrayDataSource(
+        resourcePath + "/" + getModelName() + ".json",
+        ManifestEncoderDecoder.toJson(modelManifest)));
     return dataToWrite;
   }
 

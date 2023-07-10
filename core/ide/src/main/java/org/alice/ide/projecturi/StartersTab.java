@@ -43,14 +43,13 @@
 package org.alice.ide.projecturi;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.alice.ide.croquet.codecs.UriCodec;
+import org.alice.ide.project.codecs.ProjectSnapshotCodec;
 import org.alice.ide.projecturi.views.ListContentPanel;
 import org.alice.ide.uricontent.StarterProjectUtilities;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -62,14 +61,14 @@ public class StartersTab extends ListUriTab {
     super(UUID.fromString("e31ab4b2-c305-4d04-8dcc-5de8cbb6facf"));
     File starterProjectsDirectory = StoryApiDirectoryUtilities.getStarterProjectsDirectory();
     File[] files = FileUtilities.listFiles(starterProjectsDirectory, "a3p");
-    URI[] uris = new URI[files.length];
+    ProjectSnapshot[] projectSnapshots = new ProjectSnapshot[files.length];
     int i = 0;
     Arrays.sort(files);
     for (File file : files) {
-      uris[i] = StarterProjectUtilities.toUri(file);
+      projectSnapshots[i] = new ProjectSnapshot(StarterProjectUtilities.toUri(file));
       i++;
     }
-    this.listState = this.createImmutableListState("listState", URI.class, UriCodec.SINGLETON, -1, uris);
+    this.listState = this.createImmutableListState("listState", ProjectSnapshot.class, ProjectSnapshotCodec.SINGLETON, -1, projectSnapshots);
   }
 
   @Override
@@ -77,7 +76,7 @@ public class StartersTab extends ListUriTab {
   }
 
   @Override
-  public ImmutableDataSingleSelectListState<URI> getListSelectionState() {
+  public ImmutableDataSingleSelectListState<ProjectSnapshot> getListSelectionState() {
     return this.listState;
   }
 
@@ -86,5 +85,5 @@ public class StartersTab extends ListUriTab {
     return new ListContentPanel(this);
   }
 
-  private final ImmutableDataSingleSelectListState<URI> listState;
+  private final ImmutableDataSingleSelectListState<ProjectSnapshot> listState;
 }

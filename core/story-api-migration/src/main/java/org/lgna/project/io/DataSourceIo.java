@@ -42,18 +42,4 @@ abstract class DataSourceIo {
       fos.close();
     }
   }
-
-  static DataSource createDataSource(String name, String content) {
-    return new DataSource() {
-      @Override
-      public String getName() {
-        return name;
-      }
-
-      @Override
-      public void write(OutputStream os) throws IOException {
-        os.write(content.getBytes());
-      }
-    };
-  }
 }

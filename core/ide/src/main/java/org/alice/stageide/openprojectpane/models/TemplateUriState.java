@@ -51,18 +51,24 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-import org.alice.ide.croquet.codecs.UriCodec;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.project.codecs.ProjectSnapshotCodec;
+import org.alice.ide.projecturi.ProjectSnapshot;
+import org.alice.ide.projecturi.views.SnapshotIcon;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.openprojectpane.components.TemplatesTabContentPane;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.story.Color;
 import org.lgna.story.Paint;
 import org.lgna.story.SGround;
 
+import javax.swing.*;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateUriState extends ImmutableDataSingleSelectListState<URI> {
+public class TemplateUriState extends ImmutableDataSingleSelectListState<ProjectSnapshot> {
   public static final String SCHEME = "gen";
 
   public static enum Template {
@@ -76,25 +82,8 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<URI> {
 
     NORTHWEST_FOREST(SGround.SurfaceAppearance.FOREST_FLOOR, new Color(.427, .533, .51), .2), MAGIC(SGround.SurfaceAppearance.SWAMP, new Color(.0667, .118, .125), .27, Color.WHITE, new Color(.169, .231, .29), .7), GRASSY_DESERT(SGround.SurfaceAppearance.DRY_GRASS, new Color(.835, .769, .518), .13), MARS_NIGHT(SGround.SurfaceAppearance.MARS, new Color(.11, .0824, .255), 0.25, Color.WHITE, new Color(.541, .2, .0));
 
-    public static Template getSurfaceAppearance(URI uri) {
-      if (isValidUri(uri)) {
-        String fragment = uri.getFragment();
-        if (fragment != null) {
-          return Template.valueOf(fragment);
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    }
-
-    public static boolean isValidUri(URI uri) {
-      if (uri != null) {
-        return SCHEME.equals(uri.getScheme());
-      } else {
-        return false;
-      }
+    public static Template getSurfaceAppearance(ProjectSnapshot proj) {
+      return proj.getUriFragment();
     }
 
     private final SGround.SurfaceAppearance surfaceAppearance;
@@ -204,37 +193,41 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<URI> {
       return this.groundOpacity;
     }
 
-    public URI getUri() {
+    public ProjectSnapshot getProjectSnapshot() {
       try {
         //todo: investigate
         String schemeSpecificPart = null; //org.lgna.story.Ground.SurfaceAppearance.class.getName();
         String path = "/" + SGround.SurfaceAppearance.class.getName();
         String fragment = this.name();
-        return new URI(SCHEME, schemeSpecificPart, path, fragment);
+        URI uri = new URI(SCHEME, schemeSpecificPart, path, fragment);
+        String text = TemplateUriState.getLocalizedName(fragment);
+        ImageIcon imageIcon = IconUtilities.createImageIcon(TemplatesTabContentPane.class.getResource("images/" + fragment + ".png"));
+        Icon icon = imageIcon != null ? new SnapshotIcon(imageIcon.getImage()) : null;
+        return new ProjectSnapshot(uri, text, icon);
       } catch (URISyntaxException urise) {
         throw new RuntimeException(urise);
       }
     }
   }
 
-  private static URI[] createArray() {
-    List<URI> uris = new LinkedList<URI>();
+  private static ProjectSnapshot[] createArray() {
+    List<ProjectSnapshot> uris = new LinkedList<ProjectSnapshot>();
 
     for (Template template : Template.values()) {
       if (!NebulousIde.nonfree.isNonFreeEnabled() && (template == Template.ROOM)) {
         // pass
       } else {
-        uris.add(template.getUri());
+        uris.add(template.getProjectSnapshot());
       }
     }
 
-    URI[] array = new URI[uris.size()];
+    ProjectSnapshot[] array = new ProjectSnapshot[uris.size()];
     uris.toArray(array);
     return array;
   }
 
   private static class SingletonHolder {
-    private static TemplateUriState instance = new TemplateUriState();
+    private static final TemplateUriState instance = new TemplateUriState();
   }
 
   public static TemplateUriState getInstance() {
@@ -258,6 +251,6 @@ public class TemplateUriState extends ImmutableDataSingleSelectListState<URI> {
   }
 
   private TemplateUriState() {
-    super(Application.APPLICATION_UI_GROUP, UUID.fromString("53c45c6f-e14f-4a88-ae90-1942ed3f3483"), -1, UriCodec.SINGLETON, createArray());
+    super(Application.APPLICATION_UI_GROUP, UUID.fromString("53c45c6f-e14f-4a88-ae90-1942ed3f3483"), -1, ProjectSnapshotCodec.SINGLETON, createArray());
   }
 }

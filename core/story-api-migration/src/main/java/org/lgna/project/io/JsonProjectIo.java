@@ -66,8 +66,6 @@ import java.util.stream.Collectors;
 
 //TODO add migration on read - ProjectMigrationManager, MigrationManager, and DecodedVersion
 public class JsonProjectIo extends DataSourceIo implements ProjectIo {
-
-  private static final String MANIFEST_ENTRY_NAME = "manifest.json";
   private static final String TWEEDLE_EXTENSION = "twe";
   private static final String TWEEDLE_FORMAT = "tweedle";
 
@@ -85,10 +83,10 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public Project readProject(boolean makeVrReady) throws IOException {
-      Manifest manifest = readManifest();
+      ProjectManifest manifest = readManifest();
       Set<Resource> resources = readResources(manifest);
       //TODO Read manifest and content for program type
-      return new Project(null, Collections.emptySet(), resources);
+      return new Project(manifest, null, Collections.emptySet(), resources);
     }
 
     @Override
@@ -109,7 +107,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       // Ignored for now
     }
 
-    private Manifest readManifest() {
+    private ProjectManifest readManifest() {
       return null;
     }
 
@@ -150,7 +148,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
 
     @Override
     public void writeType(OutputStream os, NamedUserType type, DataSource... dataSources) throws IOException {
-      Manifest manifest = createTypeManifest(type);
+      TypeManifest manifest = createTypeManifest(type);
       Set<Resource> resources = getResources(type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY);
 
       List<DataSource> entries = collectEntries(manifest, resources, dataSources);
@@ -159,8 +157,8 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       writeDataSources(os, entries);
     }
 
-    private Manifest createTypeManifest(AbstractType<?, ?, ?> type) {
-      final Manifest manifest = new Manifest();
+    private TypeManifest createTypeManifest(AbstractType<?, ?, ?> type) {
+      final TypeManifest manifest = new TypeManifest();
       manifest.description.name = type.getName();
       manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
       manifest.metadata.identifier.name = type.getId().toString();
@@ -171,7 +169,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     @Override
     public void writeProject(OutputStream os, final Project project, DataSource... dataSources) throws IOException {
       final JsonModelIo.ExportFormat format = JsonModelIo.ExportFormat.GLTF;
-      Manifest manifest = createProjectManifest(project);
+      Manifest manifest = project.createExportManifest();
       Set<Resource> resources = getResources(project.getProgramType(), CrawlPolicy.COMPLETE);
       compareResources(project.getResources(), resources);
 
@@ -214,7 +212,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       if (manifest.resources.stream().noneMatch(x -> x.name.equals(typeName))) {
         final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
         manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-        return createDataSource(fileName, serializedClass(ut));
+        return new ByteArrayDataSource(fileName, serializedClass(ut));
       }
       return null;
     }
@@ -238,32 +236,14 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
       String typeName = resource.getModelVariantName() + "Resource";
       final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
       manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-      return createDataSource(fileName, coder.encodeProcessable(resource));
+      return new ByteArrayDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private DataSource dataSourceForResource(Manifest manifest, JointedModelResource resource) {
       String typeName = resource.getClass().getSimpleName();
       final String fileName = "src/" + typeName + '.' + TWEEDLE_EXTENSION;
       manifest.resources.add(new TypeReference(typeName, fileName, TWEEDLE_FORMAT));
-      return createDataSource(fileName, coder.encodeProcessable(resource));
-    }
-
-    private Manifest createProjectManifest(Project project) {
-      final Manifest manifest = new Manifest();
-      manifest.description.name = project.getProgramType().getName(); // probably "Program"
-      manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-      manifest.metadata.identifier.name = project.getProgramType().getId().toString();
-      manifest.metadata.identifier.type = Manifest.ProjectType.World;
-      manifest.prerequisites.add(standardLibrary());
-      return manifest;
-    }
-
-    private Manifest.ProjectIdentifier standardLibrary() {
-      final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
-      libraryIdentifier.type = Manifest.ProjectType.Library;
-      libraryIdentifier.version = "0.16";
-      libraryIdentifier.name = "SceneGraphLibrary";
-      return libraryIdentifier;
+      return new ByteArrayDataSource(fileName, coder.encodeProcessable(resource));
     }
 
     private void compareResources(Set<Resource> projectResources, Set<Resource> crawledResources) {
@@ -283,11 +263,11 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo {
     }
 
     private static DataSource versionDataSource() {
-      return createDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
+      return new ByteArrayDataSource(VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion().toString());
     }
 
     private static DataSource manifestDataSource(Manifest manifest) {
-      return createDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
+      return new ByteArrayDataSource(MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson(manifest));
     }
 
     private Set<Resource> getResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy) {

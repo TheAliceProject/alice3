@@ -106,10 +106,6 @@ public class StaticAnalysisUtilities {
     return rv;
   }
 
-  public static String getConventionalInstanceName(String text) {
-    return getConventionalIdentifierName(text, false);
-  }
-
   public static String getConventionalClassName(String text) {
     return getConventionalIdentifierName(text, true);
   }
@@ -130,10 +126,6 @@ public class StaticAnalysisUtilities {
       //todo?
     }
     return true;
-  }
-
-  public static boolean isAvailableResourceName(Project project, String name) {
-    return isAvailableResourceName(project, name, null);
   }
 
   private static boolean isAvailableFieldName(String name, UserType<?> declaringType, UserField self) {

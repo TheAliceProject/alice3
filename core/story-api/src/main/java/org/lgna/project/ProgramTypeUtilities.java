@@ -44,7 +44,6 @@
 package org.lgna.project;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import edu.cmu.cs.dennisc.pattern.Criterion;
@@ -189,22 +188,6 @@ public class ProgramTypeUtilities {
       getNode(type, root);
     }
     return root;
-  }
-
-  public static UserMethod getMainMethod(NamedUserType programType) {
-    UserMethod rv = programType.getDeclaredMethod("main", String[].class);
-    if (rv != null) {
-      if (rv.isStatic()) {
-        //pass
-      } else {
-        Logger.warning("main method is not static", rv);
-      }
-    }
-    return rv;
-  }
-
-  public static UserMethod getMainMethod(Project project) {
-    return getMainMethod(project.getProgramType());
   }
 
   public static String sanityCheckAllTypes(Project project) {

@@ -43,6 +43,7 @@
 package org.alice.ide.uricontent;
 
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
 import org.lgna.project.Project;
 
@@ -58,17 +59,18 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
     this.makeVrReady = makeVrReady;
   }
 
-  public static UriProjectLoader createInstance(URI uri, boolean isVrReady) {
-    if (uri != null) {
+  public static UriProjectLoader createInstance(ProjectSnapshot proj, boolean makeVrReady) {
+    if (proj != null) {
+      URI uri = proj.getUri();
       String scheme = uri.getScheme();
       if ("file".equalsIgnoreCase(scheme)) {
         File file = UriUtilities.getFile(uri);
-        return new FileProjectLoader(file, isVrReady);
+        return new FileProjectLoader(file, makeVrReady);
       } else if ("starterfile".equalsIgnoreCase(scheme)) {
-        return new StarterProjectFileLoader(uri, isVrReady);
-      } else if (TemplateUriState.Template.isValidUri(uri)) {
-        TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance(uri);
-        return new BlankSlateProjectLoader(template, isVrReady);
+        return new StarterProjectFileLoader(uri, makeVrReady);
+      } else if (proj.hasValidUri()) {
+        TemplateUriState.Template template = TemplateUriState.Template.getSurfaceAppearance(proj);
+        return new BlankSlateProjectLoader(template, makeVrReady);
       } else {
         return null;
       }

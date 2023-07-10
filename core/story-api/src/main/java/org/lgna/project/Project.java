@@ -43,10 +43,11 @@
 package org.lgna.project;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.tweedle.file.Manifest;
+import org.alice.tweedle.file.ProjectManifest;
 import org.lgna.common.Resource;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -55,11 +56,9 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.event.ResourceEvent;
 import org.lgna.project.event.ResourceListener;
-import org.lgna.project.properties.PropertyKey;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -68,22 +67,28 @@ import java.util.Set;
 public class Project {
 
   private final NamedUserType programType;
+  private final SceneCameraType sceneCameraType;
   private final Set<Resource> resources = Sets.newCopyOnWriteArraySet();
-  private final Map<PropertyKey<Object>, Object> propertyMap = Maps.newHashMap();
   private final Set<NamedUserType> namedUserTypes = Sets.newCopyOnWriteArraySet();
 
   private final List<ResourceListener> resourceListeners = Lists.newCopyOnWriteArrayList();
 
   private final Object lock = new Object();
 
-  public Project(NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
-    this(programType);
+  public Project(ProjectManifest manifest, NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
+    this.programType = programType;
     this.namedUserTypes.addAll(namedUserTypes);
     this.resources.addAll(resources);
+    this.sceneCameraType = manifest == null ? SceneCameraType.WindowCamera : manifest.projectStructure.sceneCameraType;
   }
 
-  public Project(NamedUserType programType) {
+  public Project(NamedUserType programType, SceneCameraType sceneCameraType) {
     this.programType = programType;
+    this.sceneCameraType = sceneCameraType;
+  }
+
+  public enum SceneCameraType {
+    WindowCamera, VRHeadset
   }
 
   public Object getLock() {
@@ -92,6 +97,37 @@ public class Project {
 
   public NamedUserType getProgramType() {
     return this.programType;
+  }
+
+  public ProjectManifest createSaveManifest() {
+    final ProjectManifest manifest = createProjectManifest();
+    manifest.metadata.fileType = "a3p";
+    return manifest;
+  }
+
+  public ProjectManifest createExportManifest() {
+    final ProjectManifest manifest = createProjectManifest();
+    manifest.metadata.fileType = "a3w";
+    manifest.prerequisites.add(standardLibrary());
+    return manifest;
+  }
+
+  private ProjectManifest createProjectManifest() {
+    final ProjectManifest manifest = new ProjectManifest();
+    manifest.description.name = getProgramType().getName(); // probably "Program"
+    manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+    manifest.metadata.identifier.name = getProgramType().getId().toString();
+    manifest.metadata.identifier.type = Manifest.ProjectType.World;
+    manifest.projectStructure.sceneCameraType = sceneCameraType;
+    return manifest;
+  }
+
+  private Manifest.ProjectIdentifier standardLibrary() {
+    final Manifest.ProjectIdentifier libraryIdentifier = new Manifest.ProjectIdentifier();
+    libraryIdentifier.type = Manifest.ProjectType.Library;
+    libraryIdentifier.version = "0.16";
+    libraryIdentifier.name = "SceneGraphLibrary";
+    return libraryIdentifier;
   }
 
   public void addResourceListener(ResourceListener resourceListener) {
@@ -148,18 +184,6 @@ public class Project {
       rv.add(resource);
     }
     return rv;
-  }
-
-  public Set<PropertyKey<Object>> getPropertyKeys() {
-    return this.propertyMap.keySet();
-  }
-
-  public <T> T getValueFor(PropertyKey<T> key) {
-    return (T) this.propertyMap.get(key);
-  }
-
-  public <T> void putValueFor(PropertyKey<Object> key, T value) {
-    this.propertyMap.put(key, value);
   }
 
   public Set<NamedUserType> getNamedUserTypes() {

@@ -44,6 +44,7 @@
 package org.alice.ide.projecturi.views;
 
 import org.alice.ide.projecturi.ListUriTab;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.views.*;
 import org.lgna.croquet.views.List;
@@ -51,13 +52,12 @@ import org.lgna.croquet.views.ScrollPane;
 
 import javax.swing.ListCellRenderer;
 import java.awt.GridBagConstraints;
-import java.net.URI;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ListContentPanel extends TabContentPanel {
-  private final List<URI> list;
+  private final List<ProjectSnapshot> list;
 
   public ListContentPanel(ListUriTab tab) {
     super(tab);
@@ -87,11 +87,11 @@ public class ListContentPanel extends TabContentPanel {
     addPageEndComponent(pageEndPanel);
   }
 
-  public List<URI> getList() {
+  public List<ProjectSnapshot> getList() {
     return this.list;
   }
 
-  protected ListCellRenderer createListCellRenderer() {
+  protected ListCellRenderer<ProjectSnapshot> createListCellRenderer() {
     return new ProjectSnapshotListCellRenderer();
   }
 }

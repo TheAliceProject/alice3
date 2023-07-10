@@ -45,13 +45,13 @@ package org.alice.ide.recentprojects;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.ide.croquet.codecs.UriCodec;
+import org.alice.ide.project.codecs.ProjectSnapshotCodec;
+import org.alice.ide.projecturi.ProjectSnapshot;
 import org.alice.ide.projecturi.RecentProjectCountState;
 import org.lgna.croquet.data.AbstractMutableListData;
 import org.lgna.croquet.preferences.PreferenceManager;
 
 import java.io.File;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -59,42 +59,42 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsListData extends AbstractMutableListData<URI> {
+public class RecentProjectsListData extends AbstractMutableListData<ProjectSnapshot> {
   private static class SingletonHolder {
-    private static RecentProjectsListData instance = new RecentProjectsListData();
+    private static final RecentProjectsListData instance = new RecentProjectsListData();
   }
 
   public static RecentProjectsListData getInstance() {
     return SingletonHolder.instance;
   }
 
-  private final List<URI> values;
+  private final List<ProjectSnapshot> values;
 
   private RecentProjectsListData() {
-    super(UriCodec.SINGLETON);
-    URI[] array = PreferenceManager.decodeListData(this.getPreferenceKey(), this.getItemCodec(), new URI[] {});
+    super(ProjectSnapshotCodec.SINGLETON);
+    ProjectSnapshot[] array = PreferenceManager.decodeListData(this.getPreferenceKey(), this.getItemCodec(), new ProjectSnapshot[] {});
 
-    List<URI> existingFileUris = Lists.newLinkedList();
-    for (URI uri : array) {
+    List<ProjectSnapshot> existingFiles = Lists.newLinkedList();
+    for (ProjectSnapshot proj : array) {
       try {
-        File file = new File(uri);
+        File file = new File(proj.getUri());
         if (file.exists()) {
-          existingFileUris.add(uri);
+          existingFiles.add(proj);
         } else {
-          Logger.errln("file does not exist for:", uri);
+          Logger.errln("file does not exist for:", proj.getUri());
         }
       } catch (Throwable t) {
-        Logger.throwable(t, uri);
+        Logger.throwable(t, proj);
         //note: do not throw
       }
     }
 
-    this.values = Lists.newCopyOnWriteArrayList(existingFileUris);
+    this.values = Lists.newCopyOnWriteArrayList(existingFiles);
     PreferenceManager.registerListData(this);
   }
 
   @Override
-  public boolean contains(URI item) {
+  public boolean contains(ProjectSnapshot item) {
     return this.values.contains(item);
   }
 
@@ -104,42 +104,42 @@ public class RecentProjectsListData extends AbstractMutableListData<URI> {
   }
 
   @Override
-  public URI getItemAt(int index) {
+  public ProjectSnapshot getItemAt(int index) {
     return this.values.get(index);
   }
 
   @Override
-  public Iterator<URI> iterator() {
+  public Iterator<ProjectSnapshot> iterator() {
     return this.values.iterator();
   }
 
   @Override
-  public void internalAddItem(int index, URI item) {
+  public void internalAddItem(int index, ProjectSnapshot item) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void internalRemoveItem(URI item) {
+  public void internalRemoveItem(ProjectSnapshot item) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void internalSetAllItems(Collection<URI> items) {
+  public void internalSetAllItems(Collection<ProjectSnapshot> items) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void internalSetItemAt(int index, URI item) {
+  public void internalSetItemAt(int index, ProjectSnapshot item) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int indexOf(URI item) {
+  public int indexOf(ProjectSnapshot item) {
     return this.values.indexOf(item);
   }
 
   @Override
-  public URI[] toArray(Class<URI> componentType) {
+  public ProjectSnapshot[] toArray(Class<ProjectSnapshot> componentType) {
     return ArrayUtilities.createArray(this.values, componentType);
   }
 
@@ -147,11 +147,11 @@ public class RecentProjectsListData extends AbstractMutableListData<URI> {
     if (file != null) {
       final int N = RecentProjectCountState.getInstance().getValue();
       if (N > 0) {
-        URI uri = file.toURI();
-        if (this.values.contains(uri)) {
-          this.values.remove(uri);
+        ProjectSnapshot proj = new ProjectSnapshot(file.toURI());
+        if (this.values.contains(proj)) {
+          this.values.remove(proj);
         }
-        this.values.add(0, uri);
+        this.values.add(0, proj);
         while (this.values.size() > N) {
           this.values.remove(this.values.size() - 1);
         }

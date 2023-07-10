@@ -3,9 +3,12 @@ package org.alice.ide;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.ProjectIo;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,7 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -33,9 +38,9 @@ class ProjectFileUtilities {
   private static final int BACKUP_MAX = 5;
   private static final int SECONDS_BETWEEN_BACKUPS = 300;
 
-  private ProjectApplication projectApp;
+  private final ProjectApplication projectApp;
 
-  private ScheduledExecutorService savingService;
+  private final ScheduledExecutorService savingService;
   private ScheduledFuture<?> saveFuture;
 
   ProjectFileUtilities(ProjectApplication app) {
@@ -57,7 +62,19 @@ class ProjectFileUtilities {
 
   private void saveCopyOfProjectTo(File file) throws IOException {
     Project project = projectApp.getUpToDateProject();
-    IoUtilities.writeProject(file, project, thumbnailDataSources());
+    IoUtilities.writeProject(file, project, thumbnailAndManifestDataSources(project));
+  }
+
+  private DataSource[] thumbnailAndManifestDataSources(Project project) {
+    List<DataSource> sources = new ArrayList<>();
+    DataSource thumbnail = thumbnailDataSource();
+    if (thumbnail != null) {
+      sources.add(thumbnail);
+    }
+    sources.add(new ByteArrayDataSource(
+        ProjectIo.MANIFEST_ENTRY_NAME,
+        ManifestEncoderDecoder.toJson(project.createSaveManifest())));
+    return sources.toArray(new DataSource[0]);
   }
 
   void exportCopyOfProjectTo(File file) throws IOException {
@@ -66,34 +83,33 @@ class ProjectFileUtilities {
   }
 
   private DataSource[] thumbnailDataSources() {
-    DataSource[] dataSources;
+    DataSource thumbnail = thumbnailDataSource();
+    return thumbnail == null ? new DataSource[]{} : new DataSource[]{thumbnail};
+  }
+
+  private DataSource thumbnailDataSource() {
     try {
       final BufferedImage thumbnailImage = projectApp.createThumbnail();
-      if (thumbnailImage == null) {
-        throw new NullPointerException();
-      } else {
-        if ((thumbnailImage.getWidth() <= 0) || (thumbnailImage.getHeight() <= 0)) {
-          throw new RuntimeException();
-        }
+      if (thumbnailImage == null
+          || thumbnailImage.getWidth() <= 0
+          || thumbnailImage.getHeight() <= 0) {
+        return null;
       }
       final byte[] data = ImageUtilities.writeToByteArray(ImageUtilities.PNG_CODEC_NAME, thumbnailImage);
-      dataSources = new DataSource[] {
-          new DataSource() {
-            @Override
-            public String getName() {
-              return "thumbnail.png";
-            }
+      return new DataSource() {
+        @Override
+        public String getName() {
+          return "thumbnail.png";
+        }
 
-            @Override
-            public void write(OutputStream os) throws IOException {
-              os.write(data);
-            }
+        @Override
+        public void write(OutputStream os) throws IOException {
+          os.write(data);
         }
       };
-    } catch (Throwable t) {
-      dataSources = new DataSource[] {};
+    } catch (Throwable ignored) {
     }
-    return dataSources;
+    return null;
   }
 
   private void backupSavedProject() throws IOException {

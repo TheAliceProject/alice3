@@ -53,11 +53,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 
-public abstract class SnapshotListCellRenderer implements ListCellRenderer {
+public abstract class SnapshotListCellRenderer<E> implements ListCellRenderer<E> {
   private final int PANEL_INSET = 4;
   private final int LABEL_INSET = 8;
-  private JPanel panel = new JPanel();
-  private JLabel label = new JLabel();
+  private final JPanel panel = new JPanel();
+  private final JLabel label = new JLabel();
 
   public SnapshotListCellRenderer() {
     this.panel.setOpaque(false);
@@ -71,10 +71,10 @@ public abstract class SnapshotListCellRenderer implements ListCellRenderer {
     this.panel.add(this.label);
   }
 
-  protected abstract JLabel updateLabel(JLabel rv, Object value);
+  protected abstract void updateLabel(JLabel label, E value);
 
   @Override
-  public final Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+  public final Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
     this.updateLabel(this.label, value);
     Color background;
     Color foreground;

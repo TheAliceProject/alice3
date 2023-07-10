@@ -45,7 +45,6 @@ package org.alice.ide.projecturi;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.SingleSelectListState;
 
-import java.net.URI;
 import java.util.UUID;
 
 /**
@@ -56,7 +55,7 @@ public abstract class ListUriTab extends SelectUriTab {
     super(migrationId);
   }
 
-  public abstract SingleSelectListState<URI, ?> getListSelectionState();
+  public abstract SingleSelectListState<ProjectSnapshot, ?> getListSelectionState();
 
   @Override
   public UriProjectLoader getSelectedUri() {
