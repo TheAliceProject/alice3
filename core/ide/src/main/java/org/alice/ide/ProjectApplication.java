@@ -167,7 +167,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public static String getVersionAdornment() {
-    return ProjectVersion.getCurrentVersion().getSimpleVersion();
+    return String.valueOf(ProjectVersion.getCurrentVersion().getAliceIdentifier());
   }
 
   @Override
