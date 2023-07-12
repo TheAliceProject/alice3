@@ -318,12 +318,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   };
 
-  private ValueListener<CameraOption> mainCameraViewSelectionObserver = new ValueListener<CameraOption>() {
-    @Override
-    public void valueChanged(ValueEvent<CameraOption> e) {
-      StorytellingSceneEditor.this.handleMainCameraViewSelection(mainCameraViewTracker.getCameraMarker(e.getNextValue()));
-    }
-  };
+  private final ValueListener<CameraOption> mainCameraViewSelectionObserver =
+      e -> StorytellingSceneEditor.this.handleMainCameraViewSelection();
 
   private boolean isInitialized = false;
 
@@ -824,10 +820,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     }
   }
 
-  private void handleMainCameraViewSelection(CameraMarkerImp cameraMarker) {
-    MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(cameraMarker);
-    MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(cameraMarker);
-
+  private void handleMainCameraViewSelection() {
     StageIDE ide = StageIDE.getActiveInstance();
     InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
     UserField field = getSelectedField();
@@ -1022,6 +1015,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(movableSceneCameraImp);
       MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(movableSceneCameraImp);
+      MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(startingCameraMarkerImp);
+      MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(startingCameraMarkerImp);
 
       // Add orthographic cameras and markers
       sceneImp.getSgComposite().addComponent(this.orthographicCameraImp.getSgCamera().getParent());
