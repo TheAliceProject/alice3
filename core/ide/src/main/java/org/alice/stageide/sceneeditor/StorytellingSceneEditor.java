@@ -1465,7 +1465,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public AffineMatrix4x4 getTransformForNewCameraMarker() {
-    return movableSceneCameraImp.getAbsoluteTransformation();
+    return startingCameraMarkerImp.getAbsoluteTransformation();
   }
 
   public AffineMatrix4x4 getTransformForNewObjectMarker() {
