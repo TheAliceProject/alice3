@@ -178,7 +178,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   // we're not changing the active/selected marker, but we may have moved it
-  public void updateCameraToNewMarkerLocation() {
+  private void updateCameraToNewMarkerLocation() {
     if ((perspectiveCamera == null) || (orthographicCamera == null) || selectedMarker == null) {
       return;
     }
@@ -241,25 +241,30 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   private void initializeCameraMarkers() {
-    PerspectiveCameraMarker openingSceneMarker = new PerspectiveCameraMarker();
-    openingSceneMarker.setColorId(Color.DARK_GRAY);
-    this.startingCameraMarkerImp = EmployeesOnly.getImplementation(openingSceneMarker);
-    this.startingCameraMarkerImp.setDisplayVisuals(true);
+    startingCameraMarkerImp =
+        newPerspectiveMarker(Color.DARK_GRAY, "mainCamera", CameraOption.STARTING_CAMERA_VIEW);
     startingCameraMarkerImp.setVrActive(sceneEditor.isVrActive());
-    MarkerUtilities.addIconForCameraImp(this.startingCameraMarkerImp, "mainCamera");
-    MarkerUtilities.setViewForCameraImp(this.startingCameraMarkerImp, CameraOption.STARTING_CAMERA_VIEW);
+    layoutSceneMarkerImp =
+        newPerspectiveMarker(Color.LIGHT_BLUE, "sceneEditorCamera", CameraOption.LAYOUT_SCENE_VIEW);
+    initializeTopCamera();
+    initializeSideCamera();
+    initializeFrontCamera();
+  }
 
-    PerspectiveCameraMarker layoutCameraMarker = new PerspectiveCameraMarker();
-    layoutCameraMarker.setColorId(Color.LIGHT_BLUE);
-    this.layoutSceneMarkerImp = EmployeesOnly.getImplementation(layoutCameraMarker);
-    this.layoutSceneMarkerImp.setDisplayVisuals(true);
-    MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
-    MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, CameraOption.LAYOUT_SCENE_VIEW);
+  private PerspectiveCameraMarkerImp newPerspectiveMarker(Color color, String iconName, CameraOption cameraOption) {
+    PerspectiveCameraMarker marker = new PerspectiveCameraMarker();
+    marker.setColorId(color);
+    PerspectiveCameraMarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+    markerImp.setDisplayVisuals(true);
+    MarkerUtilities.addIconForCameraImp(markerImp, iconName);
+    MarkerUtilities.setViewForCameraImp(markerImp, cameraOption);
+    markerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(markerImp));
+    mapViewToMarker(cameraOption, markerImp);
+    return markerImp;
+  }
 
-    OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
-    this.topOrthoMarkerImp = EmployeesOnly.getImplementation(topOrthoMarker);
-    MarkerUtilities.addIconForCameraImp(this.topOrthoMarkerImp, "top");
-    MarkerUtilities.setViewForCameraImp(this.topOrthoMarkerImp, CameraOption.TOP);
+  private void initializeTopCamera() {
+    topOrthoMarkerImp = newOrthographicMarker("top", CameraOption.TOP);
     AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
     topTransform.translation.y = 10;
     topTransform.translation.z = -10;
@@ -267,49 +272,47 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     topTransform.orientation.right.set(-1, 0, 0);
     topTransform.orientation.backward.set(0, 1, 0);
     assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-    this.topOrthoMarkerImp.setLocalTransformation(topTransform);
+    topOrthoMarkerImp.setLocalTransformation(topTransform);
     ClippedZPlane picturePlane = new ClippedZPlane();
     picturePlane.setCenter(0, 0);
     picturePlane.setHeight(16);
-    this.topOrthoMarkerImp.setPicturePlane(picturePlane);
+    topOrthoMarkerImp.setPicturePlane(picturePlane);
+  }
 
-    OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
-    this.sideOrthoMarkerImp = EmployeesOnly.getImplementation(sideOrthoMarker);
-    MarkerUtilities.addIconForCameraImp(this.sideOrthoMarkerImp, "side");
-    MarkerUtilities.setViewForCameraImp(this.sideOrthoMarkerImp, CameraOption.SIDE);
+  private void initializeSideCamera() {
+    sideOrthoMarkerImp = newOrthographicMarker("side", CameraOption.SIDE);
     AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
     sideTransform.translation.x = 10;
     sideTransform.translation.y = 1;
     sideTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()));
     assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-    this.sideOrthoMarkerImp.setLocalTransformation(sideTransform);
+    sideOrthoMarkerImp.setLocalTransformation(sideTransform);
+    ClippedZPlane picturePlane = new ClippedZPlane();
     picturePlane.setHeight(4);
-    this.sideOrthoMarkerImp.setPicturePlane(picturePlane);
+    sideOrthoMarkerImp.setPicturePlane(picturePlane);
+  }
 
-    OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
-    this.frontOrthoMarkerImp = EmployeesOnly.getImplementation(frontOrthoMarker);
-    MarkerUtilities.addIconForCameraImp(this.frontOrthoMarkerImp, "front");
-    MarkerUtilities.setViewForCameraImp(this.frontOrthoMarkerImp, CameraOption.FRONT);
+  private void initializeFrontCamera() {
+    frontOrthoMarkerImp = newOrthographicMarker("front", CameraOption.FRONT);
     AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
     frontTransform.translation.z = -10;
     frontTransform.translation.y = 1;
     frontTransform.orientation.setValue(new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()));
     assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
-    this.frontOrthoMarkerImp.setLocalTransformation(frontTransform);
+    frontOrthoMarkerImp.setLocalTransformation(frontTransform);
+    ClippedZPlane picturePlane = new ClippedZPlane();
     picturePlane.setHeight(4);
-    this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
+    frontOrthoMarkerImp.setPicturePlane(picturePlane);
+  }
 
-    this.startingCameraMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.startingCameraMarkerImp));
-    this.layoutSceneMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.layoutSceneMarkerImp));
-    this.topOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.topOrthoMarkerImp));
-    this.sideOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.sideOrthoMarkerImp));
-    this.frontOrthoMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.frontOrthoMarkerImp));
-
-    mapViewToMarker(CameraOption.STARTING_CAMERA_VIEW, startingCameraMarkerImp);
-    mapViewToMarker(CameraOption.LAYOUT_SCENE_VIEW, layoutSceneMarkerImp);
-    mapViewToMarker(CameraOption.TOP, topOrthoMarkerImp);
-    mapViewToMarker(CameraOption.SIDE, sideOrthoMarkerImp);
-    mapViewToMarker(CameraOption.FRONT, frontOrthoMarkerImp);
+  private OrthographicCameraMarkerImp newOrthographicMarker(String iconName, CameraOption cameraOption) {
+    OrthographicCameraMarker marker = new OrthographicCameraMarker();
+    OrthographicCameraMarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+    MarkerUtilities.addIconForCameraImp(markerImp, iconName);
+    MarkerUtilities.setViewForCameraImp(markerImp, cameraOption);
+    markerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(markerImp));
+    mapViewToMarker(cameraOption, markerImp);
+    return markerImp;
   }
 
   public void updateLayoutCameraForScene(TransformableImp movableSceneCameraImp) {
