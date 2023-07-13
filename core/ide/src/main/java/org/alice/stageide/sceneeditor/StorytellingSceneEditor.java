@@ -835,7 +835,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       mainCameraViewTracker.updateLayoutCameraForScene(movableSceneCameraImp);
 
       savedSceneEditorViewSelection = null;
-      this.mainCameraViewTracker.startTrackingCameraView(this.mainCameraMarkerList.getValue());
+      mainCameraViewTracker.trackStartingCameraView();
 
       this.setSelectedCameraMarker(null);
       this.setSelectedObjectMarker(null);
