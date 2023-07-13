@@ -341,7 +341,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
   private OrthographicCameraMarkerImp frontOrthoMarkerImp = null;
   private OrthographicCameraMarkerImp sideOrthoMarkerImp = null;
-  private List<OrthographicCameraMarkerImp> orthographicCameraMarkerImps = new LinkedList<OrthographicCameraMarkerImp>();
   private PerspectiveCameraMarkerImp startingCameraMarkerImp;
   private PerspectiveCameraMarkerImp layoutSceneMarkerImp;
 
@@ -619,7 +618,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     MarkerUtilities.addIconForCameraImp(this.layoutSceneMarkerImp, "sceneEditorCamera");
     MarkerUtilities.setViewForCameraImp(this.layoutSceneMarkerImp, CameraOption.LAYOUT_SCENE_VIEW);
 
-    this.orthographicCameraMarkerImps.clear();
     OrthographicCameraMarker topOrthoMarker = new OrthographicCameraMarker();
     this.topOrthoMarkerImp = EmployeesOnly.getImplementation(topOrthoMarker);
     MarkerUtilities.addIconForCameraImp(this.topOrthoMarkerImp, "top");
@@ -636,7 +634,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     picturePlane.setCenter(0, 0);
     picturePlane.setHeight(16);
     this.topOrthoMarkerImp.setPicturePlane(picturePlane);
-    orthographicCameraMarkerImps.add(this.topOrthoMarkerImp);
 
     OrthographicCameraMarker sideOrthoMarker = new OrthographicCameraMarker();
     this.sideOrthoMarkerImp = EmployeesOnly.getImplementation(sideOrthoMarker);
@@ -650,7 +647,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.sideOrthoMarkerImp.setLocalTransformation(sideTransform);
     picturePlane.setHeight(4);
     this.sideOrthoMarkerImp.setPicturePlane(picturePlane);
-    orthographicCameraMarkerImps.add(this.sideOrthoMarkerImp);
 
     OrthographicCameraMarker frontOrthoMarker = new OrthographicCameraMarker();
     this.frontOrthoMarkerImp = EmployeesOnly.getImplementation(frontOrthoMarker);
@@ -664,7 +660,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.frontOrthoMarkerImp.setLocalTransformation(frontTransform);
     picturePlane.setHeight(4);
     this.frontOrthoMarkerImp.setPicturePlane(picturePlane);
-    orthographicCameraMarkerImps.add(this.frontOrthoMarkerImp);
 
     this.startingCameraMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.startingCameraMarkerImp));
     this.layoutSceneMarkerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(this.layoutSceneMarkerImp));
