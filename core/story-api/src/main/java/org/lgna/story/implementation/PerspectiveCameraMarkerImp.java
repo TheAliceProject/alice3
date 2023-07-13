@@ -275,14 +275,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     }
   }
 
-  public void setCameraType(int newCameraType) {
-    this.cameraType = newCameraType;
-  }
-
-  public int getCameraType() {
-    return cameraType;
-  }
-
   @Override
   protected final SimpleAppearance[] getSgPaintAppearances() {
     return this.sgAppearances;
