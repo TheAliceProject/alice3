@@ -277,14 +277,14 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         doEpilogue = true;
       }
       if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
-        startTrackingCamera(getCamera());
+        startTrackingCamera();
       } else {
         AbstractTransformable cameraParent = getCamera().getMovableParent();
         pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
           @Override
           protected void epilogue() {
             if (doEpilogue) {
-              startTrackingCamera(getCamera());
+              startTrackingCamera();
             }
           }
         };
@@ -294,8 +294,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     // Sets the given camera to the absolute orientation of the given marker
     // Parents the given marker to the camera and then zeros out the local transform
-    private void startTrackingCamera(AbstractCamera camera) {
-      AbstractTransformable cameraParent = camera.getMovableParent();
+    private void startTrackingCamera() {
+      AbstractTransformable cameraParent = getCamera().getMovableParent();
       Composite root = cameraParent.getRoot();
       if (root != null) {
         cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
