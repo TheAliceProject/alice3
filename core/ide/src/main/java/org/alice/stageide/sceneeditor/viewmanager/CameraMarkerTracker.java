@@ -326,6 +326,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     public void resetForScene(AffineMatrix4x4 startingView) {
       // Ortho cameras could override to focus on the starting camera or the overall scene
+      // Default to initialize to remove any changes from previous scene editing
+      initialize();
     }
   }
 
