@@ -217,11 +217,6 @@ public class MarkerUtilities {
     addIconForCamera(cameraImp.getAbstraction(), iconName);
   }
 
-  public static void setViewForCameraImp(CameraMarkerImp cameraImp, CameraOption cameraOption) {
-    assert cameraImp != null;
-    setViewForCamera(cameraImp.getAbstraction(), cameraOption);
-  }
-
   public static void setViewForCamera(CameraMarker camera, CameraOption cameraOption) {
     cameraToViewMap.put(camera, cameraOption);
   }

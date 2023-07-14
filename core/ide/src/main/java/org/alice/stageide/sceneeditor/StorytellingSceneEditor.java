@@ -714,7 +714,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
 
     this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-    startingCameraMarkerImp = mainCameraViewTracker.startingCameraMarkerImp;
+    startingCameraMarkerImp = mainCameraViewTracker.getStartingCameraMarkerImp();
     this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
     this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
     this.mainCameraViewSelector.setFontSize(15);
@@ -832,7 +832,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         }
       }
 
-      mainCameraViewTracker.updateLayoutCameraForScene(movableSceneCameraImp);
+      mainCameraViewTracker.updateMarkersForNewScene(movableSceneCameraImp);
 
       savedSceneEditorViewSelection = null;
       mainCameraViewTracker.trackStartingCameraView();
@@ -1256,7 +1256,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public AffineMatrix4x4 getTransformForNewCameraMarker() {
-    return mainCameraViewTracker.getTransformForNewCameraMarker();
+    return startingCameraMarkerImp.getAbsoluteTransformation();
   }
 
   public AffineMatrix4x4 getTransformForNewObjectMarker() {
