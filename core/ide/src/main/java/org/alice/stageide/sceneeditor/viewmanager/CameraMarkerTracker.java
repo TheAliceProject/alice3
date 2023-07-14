@@ -46,13 +46,15 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.*;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import org.alice.ide.IDE;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget;
 import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -62,14 +64,13 @@ import org.lgna.story.implementation.*;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 import java.util.Map;
+import java.util.Objects;
 
 // This handles the fact that we have multiple cameras (perspective and orthographic) and each of those cameras
 // could be set to one of several different "markers" which can be re-positioned by outside sources (and allow us to switch
@@ -88,7 +89,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private final Animator animator;
   private PointOfViewAnimation pointOfViewAnimation = null;
   private final StorytellingSceneEditor sceneEditor;
-  private CameraMarkerImp selectedMarker = null;
+  private CameraMarkerConfiguration<?> activeMarker;
 
   private final Map<CameraOption, CameraMarkerConfiguration<?>> mapViewToMarker = Maps.newHashMap();
 
@@ -116,120 +117,25 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  private boolean doEpilogue = true;
-
-  private boolean transformsAreWithinReasonableEpsilonOfEachOther(AffineMatrix4x4 a, AffineMatrix4x4 b) {
-    return a.orientation.isWithinReasonableEpsilonOf(b.orientation)
-        && a.translation.isWithinReasonableEpsilonOf(b.translation);
-  }
-
-  private void animateToTargetView(AbstractCamera camera) {
-    AffineMatrix4x4 currentTransform = camera.getAbsoluteTransformation();
-    AffineMatrix4x4 targetTransform = selectedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-
-    if (pointOfViewAnimation != null) {
-      doEpilogue = false;
-      pointOfViewAnimation.complete(null);
-      doEpilogue = true;
-    }
-    if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
-      startTrackingCamera(camera);
-    } else {
-      AbstractTransformable cameraParent = camera.getMovableParent();
-      pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
-        @Override
-        protected void epilogue() {
-          if (doEpilogue) {
-            startTrackingCamera(camera);
-          }
-        }
-      };
-      animator.invokeLater(pointOfViewAnimation, null);
-    }
-  }
-
   @Override
   public void valueChanged(ValueEvent<CameraOption> e) {
-    if ((perspectiveCamera == null) || (orthographicCamera == null)) {
+    CameraMarkerConfiguration<?> nextMarker = mapViewToMarker.get(e.getNextValue());
+    if (perspectiveCamera == null || orthographicCamera == null || nextMarker == null || nextMarker == activeMarker) {
       return;
     }
-    CameraMarkerImp nextMarker = getCameraMarker(e.getNextValue());
-    if (nextMarker != null && nextMarker != selectedMarker) {
-      stopTrackingCamera();
-      selectedMarker = nextMarker;
-      setCameraToSelectedMarker();
+    if (activeMarker != null) {
+      activeMarker.stopTrackingCamera();
     }
+    activeMarker = nextMarker;
+    activeMarker.setCameraToSelectedMarker();
   }
 
   public void trackStartingCameraView() {
     if ((perspectiveCamera == null) || (orthographicCamera == null)) {
       return;
     }
-    selectedMarker = getCameraMarker(CameraOption.STARTING_CAMERA_VIEW);
-    setCameraToSelectedMarker();
-  }
-
-  // we're not changing the active/selected marker, but we may have moved it
-  private void updateCameraToNewMarkerLocation() {
-    if ((perspectiveCamera == null) || (orthographicCamera == null) || selectedMarker == null) {
-      return;
-    }
-
-    // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
-    // marker from the parent, but we don't want anything to change the transform (which stopTracking would do)
-    selectedMarker.getSgComposite().setParent(selectedMarker.getSgComposite().getRoot());
-    setCameraToSelectedMarker();
-  }
-
-  private void setCameraToSelectedMarker() {
-    if (selectedMarker instanceof OrthographicCameraMarkerImp) {
-      sceneEditor.switchToOrthographicCamera();
-      OrthographicCameraMarkerImp orthoMarker = (OrthographicCameraMarkerImp) selectedMarker;
-      orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()));
-      animateToTargetView(orthographicCamera);
-    } else {
-      sceneEditor.switchToPerspectiveCamera();
-      animateToTargetView(perspectiveCamera); // or vrUser for main in VR mode
-    }
-  }
-
-  //Sets the given camera to the absolute orientation of the given marker
-  //Parents the given marker to the camera and then zeros out the local transform
-  private void startTrackingCamera(AbstractCamera camera) {
-    if (selectedMarker == null) {
-      return;
-    }
-    AbstractTransformable cameraParent = camera.getMovableParent();
-    Composite root = cameraParent.getRoot();
-    if (root != null) {
-      cameraParent.setTransformation(selectedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
-    } else {
-      Logger.severe(cameraParent);
-    }
-    selectedMarker.setShowing(false);
-    selectedMarker.setLocalTransformation(AffineMatrix4x4.accessIdentity());
-    selectedMarker.getSgComposite().setParent(cameraParent);
-    sceneEditor.setHandleVisibilityForObject(selectedMarker, false);
-  }
-
-  private void stopTrackingCamera() {
-    if (selectedMarker == null) {
-      return;
-    }
-    AffineMatrix4x4 previousMarkerTransform = selectedMarker.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-    selectedMarker.getSgComposite().setParent(selectedMarker.getSgComposite().getRoot());
-    selectedMarker.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
-    selectedMarker.setShowing(true);
-    sceneEditor.setHandleVisibilityForObject(selectedMarker, true);
-  }
-
-  private boolean doesMarkerMatchCamera(CameraMarkerImp marker, AbstractCamera camera) {
-    if (camera instanceof OrthographicCamera) {
-      return marker instanceof OrthographicCameraMarkerImp;
-    } else if (camera instanceof SymmetricPerspectiveCamera) {
-      return marker instanceof PerspectiveCameraMarkerImp;
-    }
-    return false;
+    activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
+    activeMarker.setCameraToSelectedMarker();
   }
 
   private void initializeCameraMarkers() {
@@ -260,8 +166,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
       marker.centerOn(alignedBox);
     }
-    // Update camera to the latest markers
-    updateCameraToNewMarkerLocation();
+    // Update camera to the latest marker
+    activeMarker.updateCameraToNewMarkerLocation();
   }
 
   private double clampCameraValue(double val) {
@@ -285,7 +191,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     startingCamera.setVrActive(isVrScene);
   }
 
-  // Used only by PredeterminedSetStartCameraTransformationActionOperation
+  // Used during undo and redo operations when the starting camera is not active
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
     getStartingCameraMarkerImp().setLocalTransformation(transform);
   }
@@ -296,20 +202,25 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
   @Override
   public void propertyChanged(PropertyEvent e) {
-    if ((e.getOwner() == orthographicCamera) && (e.getTypedSource() == orthographicCamera.picturePlane)) {
-      if (doesMarkerMatchCamera(selectedMarker, orthographicCamera)) {
-        ((OrthographicCameraMarkerImp) selectedMarker).setPicturePlane(orthographicCamera.picturePlane.getValue());
-      }
+    InstancePropertyOwner owner = e.getOwner();
+    if (!(owner instanceof OrthographicCamera)) {
+      return;
     }
+    if (!orthographicCamera.equals(owner)) {
+      Logger.warning("Multiple Orthogonal cameras in use");
+      return;
+    }
+    if (!Objects.equals(e.getTypedSource(), orthographicCamera.picturePlane)) {
+      return;
+    }
+    activeMarker.updatePicturePlaneFromCamera();
   }
 
-  private abstract static class CameraMarkerConfiguration<T extends CameraMarkerImp> {
+  private abstract class CameraMarkerConfiguration<T extends CameraMarkerImp> {
     final T markerImp;
     final CameraOption cameraOption;
-    final CameraNavigatorWidget.CameraMode cameraMode;
-    public CameraMarkerConfiguration(CameraMarker marker, CameraOption cameraOption, CameraNavigatorWidget.CameraMode cameraMode, String iconName) {
+    public CameraMarkerConfiguration(CameraMarker marker, CameraOption cameraOption, String iconName) {
       this.cameraOption = cameraOption;
-      this.cameraMode = cameraMode;
       markerImp = EmployeesOnly.getImplementation(marker);
       MarkerUtilities.addIconForCamera(marker, iconName);
       MarkerUtilities.setViewForCamera(marker, cameraOption);
@@ -324,16 +235,107 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return markerImp;
     }
 
-    public void resetForScene(AffineMatrix4x4 startingView) {
-      // Ortho cameras could override to focus on the starting camera or the overall scene
-      // Default to initialize to remove any changes from previous scene editing
-      initialize();
+    public abstract void resetForScene(AffineMatrix4x4 startingView);
+
+    // Move marker in the scene graph to be directly under scene, not camera, while maintaining the absolute position
+    public void stopTrackingCamera() {
+      AffineMatrix4x4 previousMarkerTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+      markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
+      markerImp.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
+      markerImp.setShowing(true);
+      sceneEditor.setHandleVisibilityForObject(markerImp, true);
+    }
+
+    // We're not changing the active/selected marker, but we may have moved it
+    public void updateCameraToNewMarkerLocation() {
+      // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
+      // marker from the parent, but we don't want anything to change the transform (which stopTracking would do)
+      markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
+      setCameraToSelectedMarker();
+    }
+
+    protected void setCameraToSelectedMarker() {
+      animateToTargetView();
+    }
+
+    protected abstract AbstractCamera getCamera();
+
+    private boolean doEpilogue = true;
+
+    private boolean transformsAreWithinReasonableEpsilonOfEachOther(AffineMatrix4x4 a, AffineMatrix4x4 b) {
+      return a.orientation.isWithinReasonableEpsilonOf(b.orientation)
+          && a.translation.isWithinReasonableEpsilonOf(b.translation);
+    }
+
+    private void animateToTargetView() {
+      AffineMatrix4x4 currentTransform = getCamera().getMovableParent().getAbsoluteTransformation();
+      AffineMatrix4x4 targetTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+
+      if (pointOfViewAnimation != null) {
+        doEpilogue = false;
+        pointOfViewAnimation.complete(null);
+        doEpilogue = true;
+      }
+      if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
+        startTrackingCamera(getCamera());
+      } else {
+        AbstractTransformable cameraParent = getCamera().getMovableParent();
+        pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
+          @Override
+          protected void epilogue() {
+            if (doEpilogue) {
+              startTrackingCamera(getCamera());
+            }
+          }
+        };
+        animator.invokeLater(pointOfViewAnimation, null);
+      }
+    }
+
+    // Sets the given camera to the absolute orientation of the given marker
+    // Parents the given marker to the camera and then zeros out the local transform
+    private void startTrackingCamera(AbstractCamera camera) {
+      AbstractTransformable cameraParent = camera.getMovableParent();
+      Composite root = cameraParent.getRoot();
+      if (root != null) {
+        cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
+      } else {
+        Logger.severe(cameraParent);
+      }
+      markerImp.setShowing(false);
+      markerImp.setLocalTransformation(AffineMatrix4x4.accessIdentity());
+      markerImp.getSgComposite().setParent(cameraParent);
+      sceneEditor.setHandleVisibilityForObject(markerImp, false);
+    }
+
+    public abstract void updatePicturePlaneFromCamera();
+  }
+
+  abstract class PerspectiveCameraMarkerConfiguration extends CameraMarkerConfiguration<PerspectiveCameraMarkerImp> {
+    public PerspectiveCameraMarkerConfiguration(CameraOption cameraOption, String iconName) {
+      super(new PerspectiveCameraMarker(), cameraOption, iconName);
+    }
+
+    @Override
+    protected AbstractCamera getCamera() {
+      return perspectiveCamera;
+    }
+
+    @Override
+    protected void setCameraToSelectedMarker() {
+      sceneEditor.switchToPerspectiveCamera();
+      super.setCameraToSelectedMarker();
+    }
+
+    @Override
+    public void updatePicturePlaneFromCamera() {
+      // No change for perspective camera
     }
   }
 
-  class StartingCameraMarkerConfiguration extends CameraMarkerConfiguration<PerspectiveCameraMarkerImp> {
+  class StartingCameraMarkerConfiguration extends PerspectiveCameraMarkerConfiguration {
     public StartingCameraMarkerConfiguration() {
-      super(new PerspectiveCameraMarker(), CameraOption.STARTING_CAMERA_VIEW, CameraNavigatorWidget.CameraMode.PERSPECTIVE, "mainCamera");
+      super(CameraOption.STARTING_CAMERA_VIEW, "mainCamera");
     }
 
     @Override
@@ -360,9 +362,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  class LayoutCameraMarkerConfiguration extends CameraMarkerConfiguration<PerspectiveCameraMarkerImp> {
+  class LayoutCameraMarkerConfiguration extends PerspectiveCameraMarkerConfiguration {
     public LayoutCameraMarkerConfiguration() {
-      super(new PerspectiveCameraMarker(), CameraOption.LAYOUT_SCENE_VIEW, CameraNavigatorWidget.CameraMode.PERSPECTIVE, "sceneEditorCamera");
+      super(CameraOption.LAYOUT_SCENE_VIEW, "sceneEditorCamera");
     }
 
     @Override
@@ -414,9 +416,39 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  class TopCameraMarkerConfiguration extends CameraMarkerConfiguration<OrthographicCameraMarkerImp> {
+  abstract class OrthographicCameraMarkerConfiguration extends CameraMarkerConfiguration<OrthographicCameraMarkerImp> {
+    public OrthographicCameraMarkerConfiguration(CameraOption cameraOption, String iconName) {
+      super(new OrthographicCameraMarker(), cameraOption, iconName);
+    }
+
+    @Override
+    public void resetForScene(AffineMatrix4x4 startingView) {
+      // Ortho cameras could override to focus on the starting camera or the overall scene
+      // Default to initialize to remove any changes from previous scene editing
+      initialize();
+    }
+
+    @Override
+    protected AbstractCamera getCamera() {
+      return orthographicCamera;
+    }
+
+    @Override
+    protected void setCameraToSelectedMarker() {
+      sceneEditor.switchToOrthographicCamera();
+      orthographicCamera.picturePlane.setValue(new ClippedZPlane(markerImp.getPicturePlane()));
+      super.setCameraToSelectedMarker();
+    }
+
+    @Override
+    public void updatePicturePlaneFromCamera() {
+      markerImp.setPicturePlane(orthographicCamera.picturePlane.getValue());
+    }
+  }
+
+  class TopCameraMarkerConfiguration extends OrthographicCameraMarkerConfiguration {
     public TopCameraMarkerConfiguration() {
-      super(new OrthographicCameraMarker(), CameraOption.TOP, CameraNavigatorWidget.CameraMode.ORTHOGRAPHIC, "top");
+      super(CameraOption.TOP, "top");
     }
 
     @Override
@@ -461,9 +493,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  class SideCameraMarkerConfiguration extends CameraMarkerConfiguration<OrthographicCameraMarkerImp> {
+  class SideCameraMarkerConfiguration extends OrthographicCameraMarkerConfiguration {
     public SideCameraMarkerConfiguration() {
-      super(new OrthographicCameraMarker(), CameraOption.SIDE, CameraNavigatorWidget.CameraMode.ORTHOGRAPHIC, "side");
+      super(CameraOption.SIDE, "side");
     }
 
     @Override
@@ -501,9 +533,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
   }
 
-  class FrontCameraMarkerConfiguration extends CameraMarkerConfiguration<OrthographicCameraMarkerImp> {
+  class FrontCameraMarkerConfiguration extends OrthographicCameraMarkerConfiguration {
     public FrontCameraMarkerConfiguration() {
-      super(new OrthographicCameraMarker(), CameraOption.FRONT, CameraNavigatorWidget.CameraMode.ORTHOGRAPHIC, "front");
+      super(CameraOption.FRONT, "front");
     }
 
     @Override
