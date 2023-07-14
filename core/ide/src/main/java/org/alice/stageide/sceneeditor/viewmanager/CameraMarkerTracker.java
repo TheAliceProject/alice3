@@ -303,7 +303,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         Logger.severe(cameraParent);
       }
       markerImp.setShowing(false);
-      markerImp.setLocalTransformation(AffineMatrix4x4.accessIdentity());
+      markerImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
       markerImp.getSgComposite().setParent(cameraParent);
       sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
@@ -403,7 +403,18 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
       layoutTransform.applyTranslation(layoutCamTranslation);
       layoutTransform.applyOrientation(layoutCamOrientation);
+      adjustForVRIfNeeded(layoutTransform);
       markerImp.setLocalTransformation(layoutTransform);
+    }
+
+    private void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
+      if (!sceneEditor.isVrActive()) {
+        return;
+      }
+      AbstractCamera cam = getCamera();
+      AffineMatrix4x4 camTransform = cam.getTransformation(cam.getMovableParent());
+      camTransform.invert();
+      layoutTransform.multiply(camTransform);
     }
 
     @Override
@@ -412,6 +423,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       layoutTransform.applyTranslationAlongYAxis(DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
       layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
       layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
+      adjustForVRIfNeeded(layoutTransform);
       markerImp.setLocalTransformation(layoutTransform);
     }
   }
