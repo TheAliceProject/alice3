@@ -82,41 +82,6 @@
         </dependency>
       </dependencies>
     </profile>
-
-    <!-- Use profiles to detect the os, so that the correct javafx native library can be loaded -->
-    <profile>
-      <id>os-windows</id>
-      <activation>
-        <os>
-          <family>windows</family>
-        </os>
-      </activation>
-      <properties>
-        <javafx.os>win</javafx.os>
-      </properties>
-    </profile>
-    <profile>
-      <id>os-linux</id>
-      <activation>
-        <os>
-          <family>unix</family>
-        </os>
-      </activation>
-      <properties>
-        <javafx.os>linux</javafx.os>
-      </properties>
-    </profile>
-    <profile>
-      <id>os-mac</id>
-      <activation>
-        <os>
-          <family>mac</family>
-        </os>
-      </activation>
-      <properties>
-        <javafx.os>mac</javafx.os>
-      </properties>
-    </profile>
   </profiles>
 
   <build>
@@ -149,37 +114,19 @@
           <execution>
             <id>alice-ide</id>
             <goals>
-              <goal>exec</goal>
+              <goal>java</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <executable>java</executable>
-          <arguments>
-            <argument>--module-path</argument>
-            <argument>target/lib/javafx-base-${javafx.version}.jar:target/lib/javafx-base-${javafx.version}-${javafx.os}.jar:target/lib/javafx-graphics-${javafx.version}.jar:target/lib/javafx-graphics-${javafx.version}-${javafx.os}.jar:target/lib/javafx-media-${javafx.version}.jar:target/lib/javafx-media-${javafx.version}-${javafx.os}.jar</argument>
-            <argument>--add-modules</argument>
-            <argument>javafx.media</argument>
-            <argument>-classpath</argument>
-            <classpath />
-            <argument>-Xmx1024m</argument>
-            <argument>-Dswing.aatext=true</argument>
-            <argument>-Dcom.apple.mrj.application.apple.menu.about.name=Alice3</argument>
-            <argument>-Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING</argument>
-            <argument>-Dorg.alice.ide.internalTesting=true</argument>
-            <argument>-Dorg.lgna.croquet.Element.isIdCheckDesired=true</argument>
-            <argument>-Djogamp.gluegen.UseTempJarCache=false</argument>
-            <argument>-Dorg.alice.stageide.isCrashDetectionDesired=false</argument>
-            <argument>-Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider</argument>
-            <argument>--add-opens=java.desktop/sun.awt=ALL-UNNAMED</argument>
-            <argument>--add-opens=java.base/java.io=ALL-UNNAMED</argument>
-            <argument>--add-opens=java.base/java.time=ALL-UNNAMED</argument>
-            <argument>--add-opens=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argument>
-            <argument>-Dorg.alice.ide.rootDirectory=../core/resources/target/distribution</argument>
-            <argument>
-              org.alice.stageide.EntryPoint
-            </argument>
-          </arguments>
+          <!-- systemProperties and mainClass are for exec:java only. They will not work with exec:exec. -->
+          <systemProperties>
+            <systemProperty>
+              <key>org.alice.ide.rootDirectory</key>
+              <value>../core/resources/target/distribution</value>
+            </systemProperty>
+          </systemProperties>
+          <mainClass>org.alice.stageide.EntryPoint</mainClass>
         </configuration>
       </plugin>
     </plugins>
