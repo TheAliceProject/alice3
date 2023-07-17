@@ -1043,6 +1043,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       AffineMatrix4x4 openingViewTransform = movableSceneCameraImp.getAbsoluteTransformation();
       this.startingCameraMarkerImp.setLocalTransformation(openingViewTransform);
 
+      if (movableSceneCameraImp instanceof VrUserImp) {
+        VrUserImp vrUser = (VrUserImp) movableSceneCameraImp;
+
+        this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+
+        vrUser.scale.addPropertyListener(() -> {
+          this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+        });
+      }
+
       AffineMatrix4x4 layoutTransform = new AffineMatrix4x4(openingViewTransform);
       layoutTransform.applyTranslationAlongYAxis(DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
       layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
