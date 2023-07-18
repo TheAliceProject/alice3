@@ -337,6 +337,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private final Button runButton = IsToolBarShowing.getValue() ? null : RunComposite.getInstance().getLaunchOperation().createButton();
 
   private OrthographicCameraImp orthographicCameraImp = null;
+  private SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp();
   private PerspectiveCameraMarkerImp startingCameraMarkerImp;
 
   private ComboBox<CameraOption> mainCameraViewSelector;
@@ -502,13 +503,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     MoveMarkerToActiveCameraActionOperation.getInstance().updateDisplay();
   }
 
-  private void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
-    this.globalDragAdapter.addCameraView(CameraView.MAIN, perspectiveCamera, orthographicCamera);
-    this.globalDragAdapter.makeCameraActive(perspectiveCamera);
-    this.mainCameraViewTracker.setCameras(perspectiveCamera, orthographicCamera);
-    this.snapGrid.addCamera(perspectiveCamera);
+  private void setCameras() {
+    SymmetricPerspectiveCamera mainCamera = sceneCameraImp.getSgCamera();
+    SymmetricPerspectiveCamera layoutCamera = layoutCameraImp.getSgCamera();
+    OrthographicCamera orthographicCamera = orthographicCameraImp.getSgCamera();
+    this.globalDragAdapter.addCameraView(CameraView.MAIN, mainCamera, layoutCamera, orthographicCamera);
+    this.globalDragAdapter.makeCameraActive(mainCamera);
+    this.mainCameraViewTracker.setCameras(mainCamera, layoutCamera, orthographicCamera);
+    this.snapGrid.addCamera(mainCamera);
+    snapGrid.addCamera(layoutCamera);
     this.snapGrid.addCamera(orthographicCamera);
-    this.snapGrid.setCurrentCamera(perspectiveCamera);
+    this.snapGrid.setCurrentCamera(mainCamera);
   }
 
   private void showLookingGlassPanel() {
@@ -799,7 +804,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       assert ((this.globalDragAdapter != null) && (this.sceneCameraImp != null) && (this.orthographicCameraImp != null));
       this.globalDragAdapter.clearCameraViews();
-      this.globalDragAdapter.addCameraView(CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null);
+      this.globalDragAdapter.addCameraView(CameraView.MAIN, this.sceneCameraImp.getSgCamera());
       this.globalDragAdapter.makeCameraActive(this.sceneCameraImp.getSgCamera());
 
       SceneImp sceneImp = this.getActiveSceneImplementation();
@@ -809,7 +814,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       this.snapGrid.setShowing(SnapState.getInstance().shouldShowSnapGrid());
 
       // Initialize stuff that needs a camera
-      this.setCameras(this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera());
+      this.setCameras();
 
       MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(movableSceneCameraImp);
       MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(movableSceneCameraImp);

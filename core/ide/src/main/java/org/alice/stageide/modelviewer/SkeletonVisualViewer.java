@@ -56,7 +56,7 @@ public class SkeletonVisualViewer extends Viewer {
   protected void initialize() {
     super.initialize();
     dragAdapter.setOnscreenRenderTarget(getOnscreenRenderTarget());
-    dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, getCamera().getSgCamera(), null);
+    dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, getCamera().getSgCamera());
     dragAdapter.makeCameraActive(getCamera().getSgCamera());
   }
 

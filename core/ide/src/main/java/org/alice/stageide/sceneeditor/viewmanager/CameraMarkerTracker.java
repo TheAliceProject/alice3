@@ -84,7 +84,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private final double DEFAULT_LAYOUT_CAMERA_Z_OFFSET = 10.0;
   private final int DEFAULT_LAYOUT_CAMERA_ANGLE = -40;
   private StartingCameraMarkerConfiguration startingCamera;
-  private SymmetricPerspectiveCamera perspectiveCamera = null;
+  private SymmetricPerspectiveCamera mainCamera = null;
+  private SymmetricPerspectiveCamera layoutCamera = null;
   private OrthographicCamera orthographicCamera = null;
   private final Animator animator;
   private PointOfViewAnimation pointOfViewAnimation = null;
@@ -103,8 +104,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     return mapViewToMarker.get(cameraOption).getMarkerImp();
   }
 
-  public void setCameras(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
-    this.perspectiveCamera = perspectiveCamera;
+  public void setCameras(SymmetricPerspectiveCamera mainCamera, SymmetricPerspectiveCamera layoutCamera, OrthographicCamera orthographicCamera) {
+    this.mainCamera = mainCamera;
+    this.layoutCamera = layoutCamera;
     if (this.orthographicCamera == orthographicCamera) {
       return;
     }
@@ -120,7 +122,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   @Override
   public void valueChanged(ValueEvent<CameraOption> e) {
     CameraMarkerConfiguration<?> nextMarker = mapViewToMarker.get(e.getNextValue());
-    if (perspectiveCamera == null || orthographicCamera == null || nextMarker == null || nextMarker == activeMarker) {
+    if (isMissingAnyCameras() || nextMarker == null || nextMarker == activeMarker) {
       return;
     }
     if (activeMarker != null) {
@@ -130,8 +132,13 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     activeMarker.setCameraToSelectedMarker();
   }
 
+  private boolean isMissingAnyCameras() {
+    return mainCamera == null || layoutCamera == null || orthographicCamera == null;
+  }
+
+
   public void trackStartingCameraView() {
-    if ((perspectiveCamera == null) || (orthographicCamera == null)) {
+    if (isMissingAnyCameras()) {
       return;
     }
     activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
@@ -316,11 +323,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    protected AbstractCamera getCamera() {
-      return perspectiveCamera;
-    }
-
-    @Override
     protected void setCameraToSelectedMarker() {
       sceneEditor.switchToPerspectiveCamera();
       super.setCameraToSelectedMarker();
@@ -352,6 +354,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     @Override
     public void resetForScene(AffineMatrix4x4 startingView) {
       markerImp.setLocalTransformation(startingView);
+    }
+
+    @Override
+    protected AbstractCamera getCamera() {
+      return mainCamera;
     }
 
     public void setVrActive(boolean isVrScene) {
@@ -424,6 +431,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
       adjustForVRIfNeeded(layoutTransform);
       markerImp.setLocalTransformation(layoutTransform);
+    }
+
+    @Override
+    protected AbstractCamera getCamera() {
+      return layoutCamera;
     }
   }
 

@@ -262,7 +262,7 @@ public class EventManager {
       OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
       this.dragAdapter.setOnscreenRenderTarget(renderTarget);
-      this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
+      this.dragAdapter.addCameraView(CameraView.MAIN, camera);
       this.dragAdapter.makeCameraActive(camera);
       this.dragAdapter.setAnimator(this.scene.getProgram().getAnimator());
     } else {
