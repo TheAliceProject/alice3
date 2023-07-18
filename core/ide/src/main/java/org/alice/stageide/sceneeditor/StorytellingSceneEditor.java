@@ -710,17 +710,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     };
     this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
 
-    SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.cameraMarkerFieldSelectionListener);
-    SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
-
     this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
     startingCameraMarkerImp = mainCameraViewTracker.getStartingCameraMarkerImp();
     this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
-    this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer(this.mainCameraViewTracker));
+    this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer());
     this.mainCameraViewSelector.setFontSize(15);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewTracker);
     this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener(this.mainCameraViewSelectionObserver);
     this.lookingGlassPanel.addComponent(this.mainCameraViewSelector, Horizontal.CENTER, 0, Vertical.NORTH, 20);
+
+    SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.cameraMarkerFieldSelectionListener);
+    SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeNewSchoolValueListener(this.objectMarkerFieldSelectionListener);
+
     this.isInitialized = true;
   }
 
@@ -812,8 +813,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(movableSceneCameraImp);
       MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(movableSceneCameraImp);
-      MoveActiveCameraToMarkerActionOperation.getInstance().setCameraMarker(startingCameraMarkerImp);
-      MoveMarkerToActiveCameraActionOperation.getInstance().setCameraMarker(startingCameraMarkerImp);
 
       // Add orthographic cameras and markers
       sceneImp.getSgComposite().addComponent(this.orthographicCameraImp.getSgCamera().getParent());

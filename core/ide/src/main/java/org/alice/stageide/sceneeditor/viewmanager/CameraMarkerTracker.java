@@ -222,9 +222,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     public CameraMarkerConfiguration(CameraMarker marker, CameraOption cameraOption, String iconName) {
       this.cameraOption = cameraOption;
       markerImp = EmployeesOnly.getImplementation(marker);
-      MarkerUtilities.addIconForCamera(marker, iconName);
-      MarkerUtilities.setViewForCamera(marker, cameraOption);
-      markerImp.getAbstraction().setName(MarkerUtilities.getNameForCameraImp(markerImp));
+      MarkerUtilities.addIconForCameraOption(cameraOption, iconName);
+      markerImp.getAbstraction().setName(MarkerUtilities.getNameForCamera(cameraOption));
       initialize();
     }
 
@@ -358,7 +357,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     public void setVrActive(boolean isVrScene) {
       markerImp.setVrActive(isVrScene);
       // Update menu icon
-      MarkerUtilities.addIconForCameraImp(markerImp, isVrScene ? "vrHeadset" : "mainCamera");
+      MarkerUtilities.addIconForCameraOption(CameraOption.STARTING_CAMERA_VIEW, isVrScene ? "vrHeadset" : "mainCamera");
     }
   }
 

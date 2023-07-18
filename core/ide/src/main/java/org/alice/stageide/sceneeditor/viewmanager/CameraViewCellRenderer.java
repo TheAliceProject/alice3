@@ -45,7 +45,6 @@ package org.alice.stageide.sceneeditor.viewmanager;
 import java.awt.Color;
 
 import org.alice.stageide.sceneeditor.CameraOption;
-import org.lgna.story.implementation.CameraMarkerImp;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
@@ -63,15 +62,8 @@ public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
   private final Border separatorBelowBorder = BorderFactory.createEmptyBorder(2, 2, 8, 0);
   private final Border emptyBorder = BorderFactory.createEmptyBorder(2, 2, 2, 0);
 
-  private final CameraMarkerTracker cameraMarkerTracker;
-
-  public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
-    this.cameraMarkerTracker = cameraMarkerTracker;
-  }
-
   @Override
   protected JLabel getListCellRendererComponent(JLabel rv, JList list, CameraOption cameraOption, int index, boolean isSelected, boolean cellHasFocus) {
-    CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker(cameraOption);
     rv.setText(MarkerUtilities.getNameForView(cameraOption));
     if (index == 0) {
       rv.setBorder(separatorBelowBorder);
@@ -82,11 +74,11 @@ public class CameraViewCellRenderer extends ListCellRenderer<CameraOption> {
       rv.setOpaque(true);
       rv.setBackground(new Color(57, 105, 138));
       rv.setForeground(Color.WHITE);
-      rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
+      rv.setIcon(MarkerUtilities.getHighlightedIconForCamera(cameraOption));
     } else {
       rv.setOpaque(false);
       rv.setForeground(Color.BLACK);
-      rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
+      rv.setIcon(MarkerUtilities.getIconForCamera(cameraOption));
     }
     return rv;
   }
