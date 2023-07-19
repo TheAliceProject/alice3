@@ -127,6 +127,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
   public void setCamera(TransformableImp camera) {
     this.camera = camera;
+    updateDisplay();
   }
 
   protected TransformableImp getCamera() {
