@@ -362,6 +362,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected void initialize() {
+      markerImp.setVrActive(sceneEditor.isVrActive());
       markerImp.getAbstraction().setColorId(Color.LIGHT_BLUE);
       markerImp.setDisplayVisuals(true);
     }
