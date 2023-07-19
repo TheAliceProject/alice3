@@ -819,24 +819,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       MoveActiveCameraToMarkerActionOperation.getInstance().setCamera(movableSceneCameraImp);
       MoveMarkerToActiveCameraActionOperation.getInstance().setCamera(movableSceneCameraImp);
 
-      // Add orthographic cameras and markers
+      // Add orthographic camera, layout camera, and markers
       sceneImp.getSgComposite().addComponent(this.orthographicCameraImp.getSgCamera().getParent());
-      Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
-      for (CameraOption cameraOption : this.mainCameraMarkerList) {
-        CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker(cameraOption);
-        boolean alreadyHasIt = false;
-        for (Component c : existingComponents) {
-          if (c == marker.getSgComposite()) {
-            alreadyHasIt = true;
-            break;
-          }
-        }
-        if (!alreadyHasIt) {
-          marker.setVehicle(sceneImp);
-        }
-      }
+      sceneImp.getSgComposite().addComponent(layoutCameraImp.getSgCamera().getParent());
 
-      mainCameraViewTracker.updateMarkersForNewScene(movableSceneCameraImp);
+      mainCameraViewTracker.updateMarkersForNewScene(sceneImp, movableSceneCameraImp);
 
       savedSceneEditorViewSelection = null;
       mainCameraViewTracker.trackStartingCameraView();

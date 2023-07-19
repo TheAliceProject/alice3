@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
 import org.alice.ide.IDE;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.CameraOption;
@@ -158,10 +158,10 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     mapViewToMarker.put(cameraMarker.cameraOption, cameraMarker);
   }
 
-  public void updateMarkersForNewScene(TransformableImp startingCamera) {
+  public void updateMarkersForNewScene(SceneImp sceneImp, TransformableImp startingCamera) {
     AffineMatrix4x4 openingViewTransform = startingCamera.getAbsoluteTransformation();
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
-      marker.resetForScene(openingViewTransform);
+      marker.resetForScene(sceneImp, openingViewTransform);
     }
   }
 
@@ -241,7 +241,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return markerImp;
     }
 
-    public abstract void resetForScene(AffineMatrix4x4 startingView);
+    public abstract void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView);
 
     // Move marker in the scene graph to be directly under scene, not camera, while maintaining the absolute position
     public void stopTrackingCamera() {
@@ -352,7 +352,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    public void resetForScene(AffineMatrix4x4 startingView) {
+    public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
       markerImp.setLocalTransformation(startingView);
     }
 
@@ -424,7 +424,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    public void resetForScene(AffineMatrix4x4 startingView) {
+    public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
       AffineMatrix4x4 layoutTransform = new AffineMatrix4x4(startingView);
       layoutTransform.applyTranslationAlongYAxis(DEFAULT_LAYOUT_CAMERA_Y_OFFSET);
       layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
@@ -445,7 +445,18 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    public void resetForScene(AffineMatrix4x4 startingView) {
+    public void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView) {
+      Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
+      boolean alreadyHasIt = false;
+      for (Component c : existingComponents) {
+        if (c == markerImp.getSgComposite()) {
+          alreadyHasIt = true;
+          break;
+        }
+      }
+      if (!alreadyHasIt) {
+        markerImp.setVehicle(sceneImp);
+      }
       // Ortho cameras could override to focus on the starting camera or the overall scene
       // Default to initialize to remove any changes from previous scene editing
       initialize();
