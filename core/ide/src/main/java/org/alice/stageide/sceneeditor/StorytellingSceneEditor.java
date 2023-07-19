@@ -1059,6 +1059,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
       this.layoutSceneMarkerImp.setLocalTransformation(layoutTransform);
       savedSceneEditorViewSelection = null;
+      mainCameraViewSelector.refreshModel();
       this.mainCameraViewTracker.startTrackingCameraView(this.mainCameraMarkerList.getValue());
 
       this.setSelectedCameraMarker(null);

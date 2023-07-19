@@ -181,6 +181,11 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
     this.getAwtComponent().setMaximumRowCount(maximumRowCount);
   }
 
+  public void refreshModel() {
+    checkEventDispatchThread();
+    getAwtComponent().setModel(getModel().getListSelectionState().getSwingModel().getComboBoxModel());
+  }
+
   private class ItemInPopupTrackableShape implements TrackableShape {
     private final E item;
 
