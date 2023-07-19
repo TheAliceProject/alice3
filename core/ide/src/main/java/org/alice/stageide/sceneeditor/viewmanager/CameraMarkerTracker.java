@@ -220,6 +220,10 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       initialize();
     }
 
+    protected boolean isActive() {
+      return this.equals(activeMarker);
+    }
+
     protected abstract void initialize();
     protected abstract void centerOn(AxisAlignedBox box);
 
@@ -302,11 +306,13 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected void startTrackingCamera() {
       markerImp.getSgComposite().setParent(getCamera().getMovableParent());
       markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
+      sceneEditor.setHandleVisibilityForObject(markerImp, true);
     }
 
     // Starting and Layout markers remain on their cameras at all times
     @Override
     protected void stopTrackingCamera() {
+      sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
   }
 
@@ -391,7 +397,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       layoutTransform.applyTranslation(layoutCamTranslation);
       layoutTransform.applyOrientation(layoutCamOrientation);
       adjustForVRIfNeeded(layoutTransform);
-      markerImp.setLocalTransformation(layoutTransform);
+      if (isActive()) {
+        markerImp.setLocalTransformation(layoutTransform);
+      } else {
+        getCamera().getMovableParent().setLocalTransformation(layoutTransform);
+      }
     }
 
     @Override
@@ -417,6 +427,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
       adjustForVRIfNeeded(layoutTransform);
       getCamera().getMovableParent().setLocalTransformation(layoutTransform);
+      markerImp.getSgComposite().setParent(getCamera().getMovableParent());
+      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
     }
 
     @Override
