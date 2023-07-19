@@ -125,11 +125,13 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     if (isMissingAnyCameras() || nextMarker == null || nextMarker == activeMarker) {
       return;
     }
+    AbstractCamera previousCamera = null;
     if (activeMarker != null) {
       activeMarker.stopTrackingCamera();
+      previousCamera = activeMarker.getCamera();
     }
     activeMarker = nextMarker;
-    activeMarker.setCameraToSelectedMarker();
+    activeMarker.setCameraToSelectedMarker(previousCamera);
   }
 
   private boolean isMissingAnyCameras() {
@@ -142,7 +144,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return;
     }
     activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
-    activeMarker.setCameraToSelectedMarker();
+    activeMarker.setCameraToSelectedMarker(null);
   }
 
   private void initializeCameraMarkers() {
@@ -257,11 +259,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
       // marker from the parent, but we don't want anything to change the transform (which stopTracking would do)
       markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
-      setCameraToSelectedMarker();
+      setCameraToSelectedMarker(getCamera());
     }
 
-    protected void setCameraToSelectedMarker() {
-      animateToTargetView();
+    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
+      animateToTargetView(previousCamera);
     }
 
     protected abstract AbstractCamera getCamera();
@@ -273,20 +275,24 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
           && a.translation.isWithinReasonableEpsilonOf(b.translation);
     }
 
-    private void animateToTargetView() {
-      AffineMatrix4x4 currentTransform = getCamera().getMovableParent().getAbsoluteTransformation();
-      AffineMatrix4x4 targetTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+    private void animateToTargetView(AbstractCamera previousCamera) {
+      AbstractTransformable cameraParent = getCamera().getMovableParent();
+      AffineMatrix4x4 thisCamCurrentTransform = cameraParent.getAbsoluteTransformation();
+      AffineMatrix4x4 lastCamTransform =
+          previousCamera == null
+              ? AffineMatrix4x4.createIdentity()
+              : previousCamera.getMovableParent().getAbsoluteTransformation();
+      AffineMatrix4x4 targetTransform = getTargetTransform();
 
       if (pointOfViewAnimation != null) {
         doEpilogue = false;
         pointOfViewAnimation.complete(null);
         doEpilogue = true;
       }
-      if (transformsAreWithinReasonableEpsilonOfEachOther(currentTransform, targetTransform)) {
+      if (transformsAreWithinReasonableEpsilonOfEachOther(lastCamTransform, targetTransform)) {
         startTrackingCamera();
       } else {
-        AbstractTransformable cameraParent = getCamera().getMovableParent();
-        pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform) {
+        pointOfViewAnimation = new PointOfViewAnimation(cameraParent, AsSeenBy.SCENE, lastCamTransform, targetTransform) {
           @Override
           protected void epilogue() {
             if (doEpilogue) {
@@ -297,6 +303,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
         animator.invokeLater(pointOfViewAnimation, null);
       }
     }
+
+    protected abstract AffineMatrix4x4 getTargetTransform();
 
     // Sets the given camera to the absolute orientation of the given marker
     // Parents the given marker to the camera and then zeros out the local transform
@@ -323,14 +331,19 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    protected void setCameraToSelectedMarker() {
-      sceneEditor.switchToPerspectiveCamera();
-      super.setCameraToSelectedMarker();
+    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
+      sceneEditor.switchToPerspectiveCamera(getCamera());
+      super.setCameraToSelectedMarker(previousCamera);
     }
 
     @Override
     public void updatePicturePlaneFromCamera() {
       // No change for perspective camera
+    }
+
+    @Override
+    protected AffineMatrix4x4 getTargetTransform() {
+      return getCamera().getAbsoluteTransformation();
     }
   }
 
@@ -468,15 +481,20 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    protected void setCameraToSelectedMarker() {
+    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
       sceneEditor.switchToOrthographicCamera();
       orthographicCamera.picturePlane.setValue(new ClippedZPlane(markerImp.getPicturePlane()));
-      super.setCameraToSelectedMarker();
+      super.setCameraToSelectedMarker(previousCamera);
     }
 
     @Override
     public void updatePicturePlaneFromCamera() {
       markerImp.setPicturePlane(orthographicCamera.picturePlane.getValue());
+    }
+
+    @Override
+    protected AffineMatrix4x4 getTargetTransform() {
+      return markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
     }
   }
 

@@ -136,7 +136,6 @@ import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
 import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
@@ -654,8 +653,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     mainCameraNavigatorWidget.setToOrthographicMode();
   }
 
-  public void switchToPerspectiveCamera() {
-    switchToCamera(sceneCameraImp.getSgCamera());
+  public void switchToPerspectiveCamera(AbstractCamera sgCamera) {
+    switchToCamera(sgCamera);
     mainCameraNavigatorWidget.setToPerspectiveMode();
   }
 
