@@ -306,13 +306,13 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected void startTrackingCamera() {
       markerImp.getSgComposite().setParent(getCamera().getMovableParent());
       markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
-      sceneEditor.setHandleVisibilityForObject(markerImp, true);
+      sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
 
     // Starting and Layout markers remain on their cameras at all times
     @Override
     protected void stopTrackingCamera() {
-      sceneEditor.setHandleVisibilityForObject(markerImp, false);
+      sceneEditor.setHandleVisibilityForObject(markerImp, true);
     }
   }
 
@@ -335,7 +335,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return getCamera().getAbsoluteTransformation();
+      return getCamera().getMovableParent().getAbsoluteTransformation();
     }
 
     @Override
