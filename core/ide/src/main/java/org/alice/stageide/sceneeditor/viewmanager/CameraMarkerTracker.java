@@ -88,7 +88,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private SymmetricPerspectiveCamera layoutCamera = null;
   private OrthographicCamera orthographicCamera = null;
   private final Animator animator;
-  private PointOfViewAnimation pointOfViewAnimation = null;
   private final StorytellingSceneEditor sceneEditor;
   private CameraMarkerConfiguration<?> activeMarker;
 
@@ -224,6 +223,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private abstract class CameraMarkerConfiguration<T extends CameraMarkerImp> {
     final T markerImp;
     final CameraOption cameraOption;
+    private boolean doEpilogue = true;
+    private PointOfViewAnimation pointOfViewAnimation = null;
     public CameraMarkerConfiguration(CameraMarker marker, CameraOption cameraOption, String iconName) {
       this.cameraOption = cameraOption;
       markerImp = EmployeesOnly.getImplementation(marker);
@@ -262,9 +263,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       animateToTargetView(previousCamera);
     }
 
-    protected abstract AbstractCamera getCamera();
+    protected abstract void switchToCamera();
 
-    private boolean doEpilogue = true;
+    protected abstract AbstractCamera getCamera();
 
     private boolean transformsAreWithinReasonableEpsilonOfEachOther(AffineMatrix4x4 a, AffineMatrix4x4 b) {
       return a.orientation.isWithinReasonableEpsilonOf(b.orientation)
@@ -278,6 +279,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
               ? AffineMatrix4x4.createIdentity()
               : previousCamera.getMovableParent().getAbsoluteTransformation();
       AffineMatrix4x4 targetTransform = getTargetTransform();
+      cameraParent.setTransformation(lastCamTransform, AsSeenBy.SCENE);
+      switchToCamera();
 
       if (pointOfViewAnimation != null) {
         doEpilogue = false;
@@ -326,9 +329,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
+    protected void switchToCamera() {
       sceneEditor.switchToPerspectiveCamera(getCamera());
-      super.setCameraToSelectedMarker(previousCamera);
     }
 
     @Override
@@ -476,10 +478,9 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     }
 
     @Override
-    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
+    protected void switchToCamera() {
       sceneEditor.switchToOrthographicCamera();
       orthographicCamera.picturePlane.setValue(new ClippedZPlane(markerImp.getPicturePlane()));
-      super.setCameraToSelectedMarker(previousCamera);
     }
 
     @Override
