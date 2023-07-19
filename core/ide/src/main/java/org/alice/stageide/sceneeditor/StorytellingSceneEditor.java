@@ -823,8 +823,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
       mainCameraViewTracker.updateMarkersForNewScene(sceneImp, movableSceneCameraImp);
 
+      if (movableSceneCameraImp instanceof VrUserImp) {
+        VrUserImp vrUser = (VrUserImp) movableSceneCameraImp;
+
+        this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+
+        vrUser.scale.addPropertyListener(() -> {
+          this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+        });
+      }
+
       savedSceneEditorViewSelection = null;
       mainCameraViewTracker.trackStartingCameraView();
+      mainCameraViewSelector.refreshModel();
 
       this.setSelectedCameraMarker(null);
       this.setSelectedObjectMarker(null);
