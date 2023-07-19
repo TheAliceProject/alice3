@@ -64,10 +64,6 @@ import org.lgna.story.implementation.*;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 import java.util.Map;
 import java.util.Objects;
@@ -126,7 +122,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       previousCamera = activeMarker.getCamera();
     }
     activeMarker = nextMarker;
-    activeMarker.setCameraToSelectedMarker(previousCamera);
+    activeMarker.animateToTargetView(previousCamera);
   }
 
   private boolean isMissingAnyCameras() {
@@ -139,7 +135,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return;
     }
     activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
-    activeMarker.setCameraToSelectedMarker(null);
+    activeMarker.animateToTargetView(null);
   }
 
   private void initializeCameraMarkers() {
@@ -227,31 +223,16 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     protected abstract void initialize();
     protected abstract void centerOn(AxisAlignedBox box);
 
-    T getMarkerImp() {
-      return markerImp;
-    }
-
     public abstract void resetForScene(SceneImp sceneImp, AffineMatrix4x4 startingView);
 
-    // Move marker in the scene graph to be directly under scene, not camera, while maintaining the absolute position
-    public void stopTrackingCamera() {
-      AffineMatrix4x4 previousMarkerTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-      markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
-      markerImp.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
-      markerImp.setShowing(true);
-      sceneEditor.setHandleVisibilityForObject(markerImp, true);
-    }
+    protected abstract void stopTrackingCamera();
 
     // We're not changing the active/selected marker, but we may have moved it
-    public void updateCameraToNewMarkerLocation() {
+    protected void updateCameraToNewMarkerLocation() {
       // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
       // marker from the parent, but we don't want anything to change the transform (which stopTracking would do)
       markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
-      setCameraToSelectedMarker(getCamera());
-    }
-
-    protected void setCameraToSelectedMarker(AbstractCamera previousCamera) {
-      animateToTargetView(previousCamera);
+      animateToTargetView(getCamera());
     }
 
     protected abstract void switchToCamera();
@@ -297,19 +278,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     // Sets the given camera to the absolute orientation of the given marker
     // Parents the given marker to the camera and then zeros out the local transform
-    private void startTrackingCamera() {
-      AbstractTransformable cameraParent = getCamera().getMovableParent();
-      Composite root = cameraParent.getRoot();
-      if (root != null) {
-        cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
-      } else {
-        Logger.severe(cameraParent);
-      }
-      markerImp.setShowing(false);
-      markerImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
-      markerImp.getSgComposite().setParent(cameraParent);
-      sceneEditor.setHandleVisibilityForObject(markerImp, false);
-    }
+    protected abstract void startTrackingCamera();
 
     public abstract void updatePicturePlaneFromCamera();
   }
@@ -329,9 +298,15 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // No change for perspective camera
     }
 
+    // Starting and Layout markers directly track their cameras
+    protected void startTrackingCamera() {
+      markerImp.getSgComposite().setParent(getCamera().getMovableParent());
+      markerImp.getSgComposite().setLocalTransformation(AffineMatrix4x4.createIdentity());
+    }
+
+    // Starting and Layout markers remain on their cameras at all times
     @Override
-    protected AffineMatrix4x4 getTargetTransform() {
-      return getCamera().getAbsoluteTransformation();
+    protected void stopTrackingCamera() {
     }
   }
 
@@ -350,6 +325,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     @Override
     protected void centerOn(AxisAlignedBox box) {
       // This is for the staging cameras. The starting camera does not move.
+    }
+
+    @Override
+    protected AffineMatrix4x4 getTargetTransform() {
+      return getCamera().getAbsoluteTransformation();
     }
 
     @Override
@@ -393,7 +373,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       Point3 adjustedPos = new Point3(targetTranslation.x,  adjustedY, targetTranslation.z);
 
       // if the camera is already above it, great. Otherwise we get the best results by using the same adjusted y.
-      Point3 adjustedCameraPos = markerImp.getAbsoluteTransformation().translation;
+      Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation;
       adjustedCameraPos.y = Math.max(adjustedCameraPos.y, adjustedY);
 
       Vector3 direction = Vector3.createSubtraction(adjustedCameraPos, adjustedPos);
@@ -414,6 +394,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       markerImp.setLocalTransformation(layoutTransform);
     }
 
+    @Override
+    protected AffineMatrix4x4 getTargetTransform() {
+      return markerImp.getAbsoluteTransformation();
+    }
+
     private void adjustForVRIfNeeded(AffineMatrix4x4 layoutTransform) {
       if (!sceneEditor.isVrActive()) {
         return;
@@ -431,7 +416,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       layoutTransform.applyTranslationAlongZAxis(DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
       layoutTransform.applyRotationAboutXAxis(new AngleInDegrees(DEFAULT_LAYOUT_CAMERA_ANGLE));
       adjustForVRIfNeeded(layoutTransform);
-      markerImp.setLocalTransformation(layoutTransform);
+      getCamera().getMovableParent().setLocalTransformation(layoutTransform);
     }
 
     @Override
@@ -461,6 +446,33 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // Ortho cameras could override to focus on the starting camera or the overall scene
       // Default to initialize to remove any changes from previous scene editing
       initialize();
+    }
+
+    // Move marker in the scene graph to be directly under scene, not camera, while maintaining the absolute position
+    @Override
+    protected void stopTrackingCamera() {
+      AffineMatrix4x4 previousMarkerTransform = markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+      markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
+      markerImp.getSgComposite().setTransformation(previousMarkerTransform, AsSeenBy.SCENE);
+      markerImp.setShowing(true);
+      sceneEditor.setHandleVisibilityForObject(markerImp, true);
+    }
+
+    // Sets the given camera to the absolute orientation of the given marker
+    // Parents the given marker to the camera and then zeros out the local transform
+    @Override
+    protected void startTrackingCamera() {
+      AbstractTransformable cameraParent = getCamera().getMovableParent();
+      Composite root = cameraParent.getRoot();
+      if (root != null) {
+        cameraParent.setTransformation(markerImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE), root);
+      } else {
+        Logger.severe(cameraParent);
+      }
+      markerImp.setShowing(false);
+      markerImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+      markerImp.getSgComposite().setParent(cameraParent);
+      sceneEditor.setHandleVisibilityForObject(markerImp, false);
     }
 
     @Override
