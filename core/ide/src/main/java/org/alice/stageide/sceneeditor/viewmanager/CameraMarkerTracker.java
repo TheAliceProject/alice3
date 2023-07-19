@@ -100,10 +100,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     initializeCameraMarkers();
   }
 
-  public CameraMarkerImp getCameraMarker(CameraOption cameraOption) {
-    return mapViewToMarker.get(cameraOption).getMarkerImp();
-  }
-
   public void setCameras(SymmetricPerspectiveCamera mainCamera, SymmetricPerspectiveCamera layoutCamera, OrthographicCamera orthographicCamera) {
     this.mainCamera = mainCamera;
     this.layoutCamera = layoutCamera;
@@ -277,7 +273,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     private void animateToTargetView(AbstractCamera previousCamera) {
       AbstractTransformable cameraParent = getCamera().getMovableParent();
-      AffineMatrix4x4 thisCamCurrentTransform = cameraParent.getAbsoluteTransformation();
       AffineMatrix4x4 lastCamTransform =
           previousCamera == null
               ? AffineMatrix4x4.createIdentity()

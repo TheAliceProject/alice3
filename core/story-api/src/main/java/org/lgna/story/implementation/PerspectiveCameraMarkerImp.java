@@ -314,7 +314,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
   private Visual[] sgCameraVisuals;
   private SimpleAppearance[] sgAppearances;
   private List<Visual> sgDetailedComponents;
-  private int cameraType;
 
   protected boolean showDetail = false;
 }
