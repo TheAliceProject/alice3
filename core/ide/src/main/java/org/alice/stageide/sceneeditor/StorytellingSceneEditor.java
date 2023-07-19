@@ -355,7 +355,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
-    mainCameraViewTracker.setStartingCameraMarkerTransformation(transform);
+    movableSceneCameraImp.setLocalTransformation(transform);
   }
 
   public static class SceneEditorProgramImp extends ProgramImp {
@@ -596,8 +596,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         } else {
           this.setSelectedField(field.getDeclaringType(), field);
         }
-      } else if (imp == this.startingCameraMarkerImp) {
-        this.setSelectedField(this.getActiveSceneType(), this.getFieldForInstanceInJavaVM(movableSceneCameraImp.getAbstraction()));
+      } else if (imp instanceof PerspectiveCameraMarkerImp) {
+        setSelectedField(getActiveSceneType(), getFieldForInstanceInJavaVM(movableSceneCameraImp.getAbstraction()));
       }
     } else {
       UserField uf = getActiveSceneField();
@@ -715,7 +715,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     this.globalDragAdapter.addClickAdapter(rightClickAdapter, rightMouseAndInteractive);
 
     this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
-    startingCameraMarkerImp = mainCameraViewTracker.getStartingCameraMarkerImp();
     this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
     this.mainCameraViewSelector.setRenderer(new CameraViewCellRenderer());
     this.mainCameraViewSelector.setFontSize(15);
@@ -915,7 +914,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
     super.setFieldToState(field, statements);
     if ((fieldImp == movableSceneCameraImp) && (mainCameraMarkerList.getValue() != CameraOption.STARTING_CAMERA_VIEW)) {
-      startingCameraMarkerImp.setTransformation(startingCameraMarkerImp.getScene(), fieldImp.getAbsoluteTransformation());
       movableSceneCameraImp.setTransformation(movableSceneCameraImp.getScene(), originalTransform);
     }
   }
@@ -923,20 +921,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   public Statement getCurrentStateCodeForField(UserField field) {
     Statement rv = null;
-
     BlockStatement bs = new BlockStatement();
-
-    AffineMatrix4x4 currentCameraTransformable = movableSceneCameraImp.getLocalTransformation();
-    if (movableSceneCameraImp.getVehicle() != null) {
-      movableSceneCameraImp.setTransformation(startingCameraMarkerImp);
-    } else {
-      Logger.severe(movableSceneCameraImp);
-    }
-    this.fillInAutomaticSetUpMethod(bs.statements, false, field, true);
-    if (movableSceneCameraImp.getVehicle() != null) {
-      movableSceneCameraImp.setLocalTransformation(currentCameraTransformable);
-      movableSceneCameraImp.applyAnimation();
-    }
+    fillInAutomaticSetUpMethod(bs.statements, false, field, true);
 
     Statement setVehicleStatement = null;
     for (Statement statement : bs.statements.getValue()) {
@@ -961,23 +947,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   @Override
   public void generateCodeForSetUp(StatementListProperty bodyStatementsProperty) {
-    //Set the camera to have the point of view of the opening scene marker
-    AffineMatrix4x4 currentCameraTransformable = movableSceneCameraImp.getLocalTransformation();
-    movableSceneCameraImp.setTransformation(startingCameraMarkerImp);
-
     AbstractField sceneField = this.getActiveSceneField();
     this.fillInAutomaticSetUpMethod(bodyStatementsProperty, true, sceneField, false);
-    for (AbstractField field : this.getActiveSceneType().getDeclaredFields()) {
-      if (field instanceof UserField) {
-        UserField userField = (UserField) field;
+    for (UserField userField : this.getActiveSceneType().getDeclaredFields()) {
+      if (userField != null) {
         if (userField.getManagementLevel() == ManagementLevel.MANAGED) {
-          this.fillInAutomaticSetUpMethod(bodyStatementsProperty, false, field, false);
+          this.fillInAutomaticSetUpMethod(bodyStatementsProperty, false, userField, false);
         }
       }
     }
-
-    //Set the camera back to its original position
-    movableSceneCameraImp.setLocalTransformation(currentCameraTransformable);
   }
 
   private Statement replaceReferencesInExpression(UserField fieldToReplace, UserField replacement, Statement statement) {
@@ -1246,7 +1224,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   }
 
   public AffineMatrix4x4 getTransformForNewCameraMarker() {
-    return startingCameraMarkerImp.getAbsoluteTransformation();
+    return movableSceneCameraImp.getAbsoluteTransformation();
   }
 
   public AffineMatrix4x4 getTransformForNewObjectMarker() {

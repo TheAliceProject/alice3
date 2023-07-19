@@ -195,15 +195,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     startingCamera.setVrActive(isVrScene);
   }
 
-  // Used during undo and redo operations when the starting camera is not active
-  public void setStartingCameraMarkerTransformation(AffineMatrix4x4 transform) {
-    getStartingCameraMarkerImp().setLocalTransformation(transform);
-  }
-
-  public PerspectiveCameraMarkerImp getStartingCameraMarkerImp() {
-    return startingCamera.getMarkerImp();
-  }
-
   @Override
   public void propertyChanged(PropertyEvent e) {
     InstancePropertyOwner owner = e.getOwner();
