@@ -835,6 +835,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         if (field.getValueType() != null && field.getValueType().isAssignableTo(SMarker.class)) {
           SMarker marker = this.getInstanceInJavaVMForField(field, SMarker.class);
           MarkerImp markerImp = EmployeesOnly.getImplementation(marker);
+          if (field.getValueType().isAssignableTo(CameraMarker.class)) {
+            ((PerspectiveCameraMarkerImp) markerImp).setVrActive(isVrActive());
+          }
           markerImp.setDisplayVisuals(true);
           markerImp.setShowing(true);
         }
