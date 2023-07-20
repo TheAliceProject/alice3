@@ -79,7 +79,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private final double DEFAULT_LAYOUT_CAMERA_Y_OFFSET = 12.0;
   private final double DEFAULT_LAYOUT_CAMERA_Z_OFFSET = 10.0;
   private final int DEFAULT_LAYOUT_CAMERA_ANGLE = -40;
-  private StartingCameraMarkerConfiguration startingCamera;
+  private StartingCameraMarkerConfiguration startingCameraConfig;
   private SymmetricPerspectiveCamera mainCamera = null;
   private SymmetricPerspectiveCamera layoutCamera = null;
   private OrthographicCamera orthographicCamera = null;
@@ -139,8 +139,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   private void initializeCameraMarkers() {
-    startingCamera = new StartingCameraMarkerConfiguration();
-    addMarker(startingCamera);
+    startingCameraConfig = new StartingCameraMarkerConfiguration();
+    addMarker(startingCameraConfig);
     addMarker(new LayoutCameraMarkerConfiguration());
     addMarker(new TopCameraMarkerConfiguration());
     addMarker(new SideCameraMarkerConfiguration());
@@ -156,6 +156,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
       marker.resetForScene(sceneImp, openingViewTransform);
     }
+    startingCameraConfig.trackScale(startingCamera);
   }
 
   public void centerMarkersOn(UserField field) {
@@ -188,7 +189,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   }
 
   public void setIsVrActive(boolean isVrScene) {
-    startingCamera.setVrActive(isVrScene);
+    startingCameraConfig.setVrActive(isVrScene);
   }
 
   @Override
@@ -248,7 +249,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
           && a.translation.isWithinReasonableEpsilonOf(b.translation);
     }
 
-    private void animateToTargetView(AbstractCamera previousCamera) {
+    public void animateToTargetView(AbstractCamera previousCamera) {
       AbstractTransformable cameraParent = getCamera().getMovableParent();
       AffineMatrix4x4 lastCamTransform =
           previousCamera == null
@@ -352,6 +353,18 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       markerImp.setVrActive(isVrScene);
       // Update menu icon
       MarkerUtilities.addIconForCameraOption(CameraOption.STARTING_CAMERA_VIEW, isVrScene ? "vrHeadset" : "mainCamera");
+    }
+
+    public void trackScale(TransformableImp startingCamera) {
+      if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
+        VrUserImp vrUser = (VrUserImp) startingCamera;
+
+        markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+
+        vrUser.scale.addPropertyListener(() -> {
+          markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
+        });
+      }
     }
   }
 

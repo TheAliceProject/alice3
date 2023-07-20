@@ -337,7 +337,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 
   private OrthographicCameraImp orthographicCameraImp = null;
   private SymmetricPerspectiveCameraImp layoutCameraImp = new SymmetricPerspectiveCameraImp();
-  private PerspectiveCameraMarkerImp startingCameraMarkerImp;
 
   private ComboBox<CameraOption> mainCameraViewSelector;
   private CameraMarkerTracker mainCameraViewTracker;
@@ -822,16 +821,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
       sceneImp.getSgComposite().addComponent(layoutCameraImp.getSgCamera().getParent());
 
       mainCameraViewTracker.updateMarkersForNewScene(sceneImp, movableSceneCameraImp);
-
-      if (movableSceneCameraImp instanceof VrUserImp) {
-        VrUserImp vrUser = (VrUserImp) movableSceneCameraImp;
-
-        this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
-
-        vrUser.scale.addPropertyListener(() -> {
-          this.startingCameraMarkerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
-        });
-      }
 
       savedSceneEditorViewSelection = null;
       mainCameraViewTracker.trackStartingCameraView();
