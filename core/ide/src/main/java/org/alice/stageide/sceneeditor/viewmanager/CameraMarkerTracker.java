@@ -55,7 +55,6 @@ import org.alice.ide.IDE;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.alice.stageide.sceneeditor.interact.manipulators.OrthographicCameraDragZoomManipulator;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.ast.UserField;
