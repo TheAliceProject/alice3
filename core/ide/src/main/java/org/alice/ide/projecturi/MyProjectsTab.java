@@ -55,6 +55,10 @@ public class MyProjectsTab extends DirectoryUriListTab {
     super(UUID.fromString("c7fb9c47-f215-47dc-941e-872842ce397e"), StageIDE.getActiveInstance().getProjectsDirectory());
   }
 
+  public boolean enableVrOption() {
+    return false;
+  }
+
   public void updateVrCheckbox() {
     updateVrCheckbox(getListSelectionState().getValue());
   }

@@ -76,6 +76,12 @@ public class StartersTab extends ListUriTab {
   }
 
   @Override
+  public boolean showVrOption() {
+    // Starter worlds require a migration so this is disabled for now
+    return false;
+  }
+
+  @Override
   public ImmutableDataSingleSelectListState<ProjectSnapshot> getListSelectionState() {
     return this.listState;
   }
