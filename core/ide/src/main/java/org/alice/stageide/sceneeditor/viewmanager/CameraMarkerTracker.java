@@ -180,7 +180,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   private double clampPictureValue(double val) {
     // we intentionally allow a slightly larger max here, and the manipulator deals with it later.
     final double PICTURE_CLAMP_MAX = 100;
-    final double PICTURE_CLAMP_MIN = OrthographicCameraDragZoomManipulator.MIN_ZOOM;
+    final double PICTURE_CLAMP_MIN = 1.5;
     return clampValue(val, PICTURE_CLAMP_MIN, PICTURE_CLAMP_MAX);
   }
 
@@ -385,26 +385,34 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       // Attempting to find the least disruptive move, ideally a bit above of the object (because looking up through the
       // object/ground feels bad) and far enough away that we can see most of it, but hopefully close enough that there
       // isn't another object in between. Usually we succeed.
-      double targetHeight = box.getHeight();
-      Point3 targetTranslation = box.getCenter();
+      final double targetHeight = box.getHeight();
+      final Point3 targetTranslation = box.getCenter();
+      // some things (e.g. other cameras) don't have a diagonal.
+      double targetDiagonal = box.getDiagonal();
+      targetDiagonal = targetDiagonal > 0 ? targetDiagonal :  4;
 
       // Since targetTranslation is already centered in y, this is effectively height * 1.5.
-      double adjustedY = targetTranslation.y + Math.max(targetHeight, box.getDiagonal() * .5);
-      Point3 adjustedPos = new Point3(targetTranslation.x,  adjustedY, targetTranslation.z);
+      final double adjustedY = targetTranslation.y + Math.max(targetHeight, targetDiagonal * .5);
+      final Point3 adjustedPos = new Point3(targetTranslation.x,  adjustedY, targetTranslation.z);
 
       // if the camera is already above it, great. Otherwise we get the best results by using the same adjusted y.
       Point3 adjustedCameraPos = getCamera().getAbsoluteTransformation().translation;
       adjustedCameraPos.y = Math.max(adjustedCameraPos.y, adjustedY);
 
+
       Vector3 direction = Vector3.createSubtraction(adjustedCameraPos, adjustedPos);
+      if (direction.isZero()) {
+        direction = new Vector3(0, DEFAULT_LAYOUT_CAMERA_Y_OFFSET, DEFAULT_LAYOUT_CAMERA_Z_OFFSET);
+      }
       direction.normalize();
-      Ray ray = new Ray(adjustedPos, direction);
-      Point3 layoutCamTranslation = ray.getPointAlong(box.getDiagonal() * 1.5);
+
+      final Ray ray = new Ray(adjustedPos, direction);
+      Point3 layoutCamTranslation = ray.getPointAlong(targetDiagonal * 1.5);
 
       // orientation calculated from wherever our camera ended up to look at the center of the object.
       Vector3 cameraDirection = Vector3.createSubtraction(layoutCamTranslation, targetTranslation);
       cameraDirection.normalize();
-      ForwardAndUpGuide forwardAndUpGuide = new ForwardAndUpGuide(Vector3.createNegation(cameraDirection), null);
+      final ForwardAndUpGuide forwardAndUpGuide = new ForwardAndUpGuide(Vector3.createNegation(cameraDirection), null);
       OrthogonalMatrix3x3 layoutCamOrientation = forwardAndUpGuide.createOrthogonalMatrix3x3();
 
       AffineMatrix4x4 layoutTransform = AffineMatrix4x4.createIdentity();
