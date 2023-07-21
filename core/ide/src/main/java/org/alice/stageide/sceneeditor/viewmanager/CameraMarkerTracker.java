@@ -231,10 +231,11 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     protected abstract void stopTrackingCamera();
 
-    // We're not changing the active/selected marker, but we may have moved it
+    // We have not switched the active marker, but we may have moved it
     protected void updateCameraToNewMarkerLocation() {
-      // because the local transform of the marker has been set outside this class, we need to temporarily unhook the
-      // marker from the parent, but we don't want anything to change the transform (which stopTracking would do)
+      // The local transform of the marker has been updated while it is active. We need to temporarily unhook the
+      // marker from the parent camera without changing the marker (which stopTrackingCamera would do)
+      // The animation of the camera will reconnect them when finished.
       markerImp.getSgComposite().setParent(markerImp.getSgComposite().getRoot());
       animateToTargetView(getCamera());
     }
@@ -558,9 +559,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       double targetDepth = box.getDepth();
       Point3 targetTranslation = box.getCenter();
 
-      // Update Orthographic camera markers
       // Translation helps clip things that might be over our object, based on how large it is. (It doesn't always succeed)
-
       AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
       topTransform.translation.x = targetTranslation.x;
       topTransform.translation.y = targetTranslation.y + (targetHeight != 0 ? clampCameraValue(targetHeight * DEFAULT_TOP_CAMERA_Y_OFFSET) : DEFAULT_TOP_CAMERA_Y_OFFSET);
