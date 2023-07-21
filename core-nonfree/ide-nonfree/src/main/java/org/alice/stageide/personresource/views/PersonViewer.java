@@ -144,7 +144,7 @@ public class PersonViewer extends ModelViewer {
   protected void initialize() {
     super.initialize();
     this.dragAdapter.setOnscreenRenderTarget(this.getOnscreenRenderTarget());
-    this.dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null);
+    this.dragAdapter.addCameraView(DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera());
     this.dragAdapter.makeCameraActive(this.getCamera().getSgCamera());
   }
 }

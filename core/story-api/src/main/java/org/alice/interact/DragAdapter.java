@@ -65,7 +65,6 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Silhouette;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -113,16 +112,13 @@ public abstract class DragAdapter {
   protected final Map<HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = Maps.newHashMap();
   private final HandleManager handleManager = new HandleManager();
   private final List<SelectionListener> selectionListeners = Lists.newCopyOnWriteArrayList();
-  private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
-    @Override
-    public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) {
-      if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
-        SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
-        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
-      }
+  private final AbsoluteTransformationListener cameraTransformationListener = absoluteTransformationEvent -> {
+    if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
+      SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
+      DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
     }
   };
-  private final Map<CameraView, CameraPair> cameraMap = Maps.newHashMap();
+  private final Map<CameraView, CameraSet> cameraMap = Maps.newHashMap();
   private AbstractTransformableImp toBeSelected = null;
   private boolean hasObjectToBeSelected = false;
   private double timePrev = Double.NaN;
@@ -269,7 +265,7 @@ public abstract class DragAdapter {
   }
 
   public void makeCameraActive(AbstractCamera camera) {
-    for (Map.Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet()) {
+    for (Map.Entry<CameraView, CameraSet> cameras : this.cameraMap.entrySet()) {
       if (cameras.getValue().hasCamera(camera)) {
         cameras.getValue().setActiveCamera(camera);
       }
@@ -283,9 +279,9 @@ public abstract class DragAdapter {
 
   public AbstractCamera getActiveCamera() {
     //TODO: introduce a true sense of "active"
-    CameraPair activeCameraPair = this.cameraMap.get(CameraView.MAIN);
-    if ((activeCameraPair != null) && (activeCameraPair.getActiveCamera() != null)) {
-      return activeCameraPair.getActiveCamera();
+    CameraSet activeCameraSet = this.cameraMap.get(CameraView.MAIN);
+    if ((activeCameraSet != null) && (activeCameraSet.getActiveCamera() != null)) {
+      return activeCameraSet.getActiveCamera();
     } else {
       return null;
     }
@@ -297,7 +293,7 @@ public abstract class DragAdapter {
     if ((cameraView == CameraView.ACTIVE_VIEW) || (cameraView == CameraView.PICK_CAMERA)) {
       cameraToReturn = getActiveCamera();
     } else {
-      CameraPair cameras = this.cameraMap.get(cameraView);
+      CameraSet cameras = this.cameraMap.get(cameraView);
       if (cameras != null) {
         cameraToReturn = cameras.getActiveCamera();
       } else {
@@ -368,22 +364,26 @@ public abstract class DragAdapter {
   }
 
   public void clearCameraViews() {
-    for (CameraPair cameraPair : this.cameraMap.values()) {
-      if (cameraPair.perspectiveCamera != null) {
-        cameraPair.perspectiveCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
+    for (CameraSet cameraSet : this.cameraMap.values()) {
+      if (cameraSet.mainCamera != null) {
+        cameraSet.mainCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
       }
     }
     this.cameraMap.clear();
   }
 
-  public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
-    addCameraView(viewType, new CameraPair(perspectiveCamera, orthographicCamera));
+  public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera mainCamera) {
+    addCameraView(viewType, mainCamera, null, null);
   }
 
-  private void addCameraView(CameraView viewType, CameraPair cameras) {
-    if (cameras.perspectiveCamera != null) {
-      cameras.perspectiveCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
-      this.handleManager.updateCameraPosition(cameras.perspectiveCamera.getAbsoluteTransformation().translation);
+  public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera mainCamera, SymmetricPerspectiveCamera  layoutCamera, OrthographicCamera orthographicCamera) {
+    addCameraView(viewType, new CameraSet(mainCamera, layoutCamera, orthographicCamera));
+  }
+
+  private void addCameraView(CameraView viewType, CameraSet cameras) {
+    if (cameras.mainCamera != null) {
+      cameras.mainCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
+      this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation);
     }
     this.cameraMap.put(viewType, cameras);
   }
@@ -854,19 +854,9 @@ public abstract class DragAdapter {
     }
   }
 
-  private final AutomaticDisplayListener automaticDisplayAdapter = new AutomaticDisplayListener() {
-    @Override
-    public void automaticDisplayCompleted(AutomaticDisplayEvent e) {
-      handleAutomaticDisplayCompleted(e);
-    }
-  };
+  private final AutomaticDisplayListener automaticDisplayAdapter = this::handleAutomaticDisplayCompleted;
 
-  private final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-      handleMouseWheelMoved(e);
-    }
-  };
+  private final MouseWheelListener mouseWheelListener = this::handleMouseWheelMoved;
   private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -953,9 +943,12 @@ public abstract class DragAdapter {
     MAIN, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, ACTIVE_VIEW, PICK_CAMERA
   }
 
-  private static final class CameraPair {
-    CameraPair(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera) {
-      this.perspectiveCamera = perspectiveCamera;
+  private static final class CameraSet {
+    CameraSet(SymmetricPerspectiveCamera mainCamera,
+              SymmetricPerspectiveCamera layoutCamera,
+              OrthographicCamera orthographicCamera) {
+      this.mainCamera = mainCamera;
+      this.layoutCamera = layoutCamera;
       this.orthographicCamera = orthographicCamera;
     }
 
@@ -968,10 +961,13 @@ public abstract class DragAdapter {
     }
 
     boolean hasCamera(AbstractCamera camera) {
-      return (this.perspectiveCamera == camera) || (this.orthographicCamera == camera);
+      return mainCamera == camera
+          || layoutCamera == camera
+          || orthographicCamera == camera;
     }
 
-    private final SymmetricPerspectiveCamera perspectiveCamera;
+    private final SymmetricPerspectiveCamera mainCamera;
+    private final SymmetricPerspectiveCamera layoutCamera;
     private final OrthographicCamera orthographicCamera;
 
     private AbstractCamera activeCamera;

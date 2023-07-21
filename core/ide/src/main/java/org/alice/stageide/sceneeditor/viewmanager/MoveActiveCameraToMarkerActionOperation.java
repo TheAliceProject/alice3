@@ -44,9 +44,8 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
-import org.lgna.croquet.icon.IconFactory;
+import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
 
 import javax.swing.Icon;
@@ -55,7 +54,7 @@ import java.util.UUID;
 public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOperation {
 
   private static class SingletonHolder {
-    private static MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();
+    private static final MoveActiveCameraToMarkerActionOperation instance = new MoveActiveCameraToMarkerActionOperation();
   }
 
   public static MoveActiveCameraToMarkerActionOperation getInstance() {
@@ -67,17 +66,15 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
   }
 
   @Override
-  protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
+  protected void updateMoveFields(UserField markerField) {
     TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
     String markerName = markerField != null ? markerField.getName() : "";
 
     Icon moveToIcon = MarkerUtilities.getIconForCameraMarker(markerField);
+    Icon toMoveIcon = MarkerUtilities.getIconForCamera(CameraOption.STARTING_CAMERA_VIEW);
 
-    IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
-    Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon(MarkerUtilities.ICON_SIZE) : null;
-
-    this.setToMoveToImp(markerImp, moveToIcon, markerName);
-    this.setToMoveImp(this.getCamera(), toMoveIcon, MarkerUtilities.getNameForCameraImp(cameraMarkerImp));
+    setToMoveToImp(markerImp, moveToIcon, markerName);
+    setToMoveImp(getCamera(), toMoveIcon, MarkerUtilities.getNameForCamera(CameraOption.STARTING_CAMERA_VIEW));
   }
 
 }

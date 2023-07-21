@@ -56,6 +56,10 @@ public class SymmetricPerspectiveCameraImp extends CameraImp<SymmetricPerspectiv
     this.abstraction = abstraction;
   }
 
+  public SymmetricPerspectiveCameraImp() {
+    this(new SCamera());
+  }
+
   @Override
   public SCamera getAbstraction() {
     return this.abstraction;

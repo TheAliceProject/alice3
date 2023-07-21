@@ -55,8 +55,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.SMovableTurnable;
-import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
 
 /**
@@ -66,7 +64,6 @@ import org.lgna.story.implementation.TransformableImp;
 public abstract class CameraMoveActionOperation extends ActionOperation {
 
   private UserField markerField;
-  private CameraMarkerImp cameraMarker;
   private TransformableImp camera;
 
   private TransformableImp toMoveImp;
@@ -74,18 +71,17 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
   private String toMoveToName;
   private String toMoveName;
 
-  private MoveToImageIcon imageIcon;
+  private final MoveToImageIcon imageIcon;
 
   protected CameraMoveActionOperation(UUID id) {
     super(Application.PROJECT_GROUP, id);
     this.markerField = null;
-    this.cameraMarker = null;
     this.imageIcon = new MoveToImageIcon();
     this.setButtonIcon(imageIcon);
     this.updateBasedOnSettings();
   }
 
-  protected abstract void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp);
+  protected abstract void updateMoveFields(UserField markerField);
 
   protected void setToMoveToImp(TransformableImp toMoveTo, Icon icon, String toMoveToName) {
     this.toMoveToImp = toMoveTo;
@@ -108,7 +104,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
   }
 
   public void updateDisplay() {
-    updateMoveFields(markerField, cameraMarker);
+    updateMoveFields(markerField);
     updateBasedOnSettings();
   }
 
@@ -131,6 +127,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
   public void setCamera(TransformableImp camera) {
     this.camera = camera;
+    updateDisplay();
   }
 
   protected TransformableImp getCamera() {
@@ -142,15 +139,6 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
       this.markerField = markerField;
     } else {
       this.markerField = null;
-    }
-    updateDisplay();
-  }
-
-  public void setCameraMarker(CameraMarkerImp cameraMarker) {
-    if ((cameraMarker != null) && (cameraMarker instanceof PerspectiveCameraMarkerImp)) {
-      this.cameraMarker = cameraMarker;
-    } else {
-      this.cameraMarker = null;
     }
     updateDisplay();
   }
