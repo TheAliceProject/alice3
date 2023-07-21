@@ -106,6 +106,10 @@ public abstract class SMovableTurnable extends STurnable {
   @MethodTemplate()
   public void moveAndOrientTo(SThing target, MoveAndOrientTo.Detail... details) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(target, 0);
+
+    AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
+    sgTransformable.notifyTransformationListeners();
+
     this.getImplementation().animateTransformation(target.getImplementation(), null, PathStyle.getValue(details).isSmooth(), Duration.getValue(details), AnimationStyle.getValue(details).getInternal());
   }
 

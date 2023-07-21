@@ -45,6 +45,7 @@ package org.alice.stageide.sceneeditor.viewmanager.edits;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.EmployeesOnly;
@@ -87,8 +88,13 @@ public class MoveAndOrientToEdit extends AbstractEdit {
   protected void doOrRedoInternal(boolean isDo) {
     if ((this.toMove != null) && (this.target != null)) {
       this.transformable = EmployeesOnly.getImplementation(this.toMove);
+
+      AbstractTransformable sgTransformable = this.transformable.getSgComposite();
+      sgTransformable.notifyTransformationListeners();
+
       this.m = this.transformable.getAbsoluteTransformation();
       EntityImp targetImp = EmployeesOnly.getImplementation(this.target);
+
       AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
       this.transformable.animateTransformation(AsSeenBy.SCENE, targetTransform);
     } else {
