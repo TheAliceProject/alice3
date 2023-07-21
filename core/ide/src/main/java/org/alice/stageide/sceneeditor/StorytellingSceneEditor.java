@@ -505,13 +505,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
     SymmetricPerspectiveCamera mainCamera = sceneCameraImp.getSgCamera();
     SymmetricPerspectiveCamera layoutCamera = layoutCameraImp.getSgCamera();
     OrthographicCamera orthographicCamera = orthographicCameraImp.getSgCamera();
-    this.globalDragAdapter.addCameraView(CameraView.MAIN, mainCamera, layoutCamera, orthographicCamera);
-    this.globalDragAdapter.makeCameraActive(mainCamera);
-    this.mainCameraViewTracker.setCameras(mainCamera, layoutCamera, orthographicCamera);
-    this.snapGrid.addCamera(mainCamera);
+    globalDragAdapter.addCameraView(CameraView.MAIN, mainCamera, layoutCamera, orthographicCamera);
+    globalDragAdapter.makeCameraActive(mainCamera);
+    mainCameraViewTracker.setCameras(mainCamera, layoutCamera, orthographicCamera);
+    snapGrid.addCamera(mainCamera);
     snapGrid.addCamera(layoutCamera);
-    this.snapGrid.addCamera(orthographicCamera);
-    this.snapGrid.setCurrentCamera(mainCamera);
+    snapGrid.addCamera(orthographicCamera);
+    snapGrid.setCurrentCamera(mainCamera);
   }
 
   private void showLookingGlassPanel() {

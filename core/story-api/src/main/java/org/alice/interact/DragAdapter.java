@@ -118,7 +118,7 @@ public abstract class DragAdapter {
       DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
     }
   };
-  private final Map<CameraView, CameraPair> cameraMap = Maps.newHashMap();
+  private final Map<CameraView, CameraSet> cameraMap = Maps.newHashMap();
   private AbstractTransformableImp toBeSelected = null;
   private boolean hasObjectToBeSelected = false;
   private double timePrev = Double.NaN;
@@ -265,7 +265,7 @@ public abstract class DragAdapter {
   }
 
   public void makeCameraActive(AbstractCamera camera) {
-    for (Map.Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet()) {
+    for (Map.Entry<CameraView, CameraSet> cameras : this.cameraMap.entrySet()) {
       if (cameras.getValue().hasCamera(camera)) {
         cameras.getValue().setActiveCamera(camera);
       }
@@ -279,9 +279,9 @@ public abstract class DragAdapter {
 
   public AbstractCamera getActiveCamera() {
     //TODO: introduce a true sense of "active"
-    CameraPair activeCameraPair = this.cameraMap.get(CameraView.MAIN);
-    if ((activeCameraPair != null) && (activeCameraPair.getActiveCamera() != null)) {
-      return activeCameraPair.getActiveCamera();
+    CameraSet activeCameraSet = this.cameraMap.get(CameraView.MAIN);
+    if ((activeCameraSet != null) && (activeCameraSet.getActiveCamera() != null)) {
+      return activeCameraSet.getActiveCamera();
     } else {
       return null;
     }
@@ -293,7 +293,7 @@ public abstract class DragAdapter {
     if ((cameraView == CameraView.ACTIVE_VIEW) || (cameraView == CameraView.PICK_CAMERA)) {
       cameraToReturn = getActiveCamera();
     } else {
-      CameraPair cameras = this.cameraMap.get(cameraView);
+      CameraSet cameras = this.cameraMap.get(cameraView);
       if (cameras != null) {
         cameraToReturn = cameras.getActiveCamera();
       } else {
@@ -364,9 +364,9 @@ public abstract class DragAdapter {
   }
 
   public void clearCameraViews() {
-    for (CameraPair cameraPair : this.cameraMap.values()) {
-      if (cameraPair.mainCamera != null) {
-        cameraPair.mainCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
+    for (CameraSet cameraSet : this.cameraMap.values()) {
+      if (cameraSet.mainCamera != null) {
+        cameraSet.mainCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
       }
     }
     this.cameraMap.clear();
@@ -377,10 +377,10 @@ public abstract class DragAdapter {
   }
 
   public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera mainCamera, SymmetricPerspectiveCamera  layoutCamera, OrthographicCamera orthographicCamera) {
-    addCameraView(viewType, new CameraPair(mainCamera, layoutCamera, orthographicCamera));
+    addCameraView(viewType, new CameraSet(mainCamera, layoutCamera, orthographicCamera));
   }
 
-  private void addCameraView(CameraView viewType, CameraPair cameras) {
+  private void addCameraView(CameraView viewType, CameraSet cameras) {
     if (cameras.mainCamera != null) {
       cameras.mainCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
       this.handleManager.updateCameraPosition(cameras.mainCamera.getAbsoluteTransformation().translation);
@@ -943,10 +943,10 @@ public abstract class DragAdapter {
     MAIN, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, ACTIVE_VIEW, PICK_CAMERA
   }
 
-  private static final class CameraPair {
-    CameraPair(SymmetricPerspectiveCamera mainCamera,
-               SymmetricPerspectiveCamera layoutCamera,
-               OrthographicCamera orthographicCamera) {
+  private static final class CameraSet {
+    CameraSet(SymmetricPerspectiveCamera mainCamera,
+              SymmetricPerspectiveCamera layoutCamera,
+              OrthographicCamera orthographicCamera) {
       this.mainCamera = mainCamera;
       this.layoutCamera = layoutCamera;
       this.orthographicCamera = orthographicCamera;
