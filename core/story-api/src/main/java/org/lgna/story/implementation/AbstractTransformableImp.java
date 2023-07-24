@@ -916,6 +916,12 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
         protected void updateValue(AffineMatrix4x4 m) {
           setTransformation(target, m);
         }
+
+        @Override
+        protected void epilogue() {
+          super.epilogue();
+          getSgComposite().notifyTransformationListeners();
+        }
       });
       //      }
     }
