@@ -304,6 +304,10 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     return isVrActive ? sgVrVisuals : sgCameraVisuals;
   }
 
+  public void actAsCamera(TransformableImp camera) {
+    camera.putInstance(getSgComposite());
+  }
+
   private double farClippingPlane;
 
   private Vertex[] sgLaserLineVertices;

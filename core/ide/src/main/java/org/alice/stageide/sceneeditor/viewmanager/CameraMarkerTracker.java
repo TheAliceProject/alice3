@@ -365,6 +365,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
           markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
         });
       }
+      markerImp.actAsCamera(startingCamera);
     }
   }
 
