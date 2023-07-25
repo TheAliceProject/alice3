@@ -485,7 +485,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private boolean isSelectableType(AbstractType<?, ?, ?> valueType) {
     return !valueType.isAssignableFrom(SThingMarker.class)
             && !valueType.isAssignableFrom(SCameraMarker.class)
-            && !valueType.isAssignableFrom(SVRHand.class);
+            && !valueType.isAssignableFrom(SVRHand.class)
+            && !valueType.isAssignableFrom(SVRHeadset.class);
   }
 
   public Boolean isVrActive() {
