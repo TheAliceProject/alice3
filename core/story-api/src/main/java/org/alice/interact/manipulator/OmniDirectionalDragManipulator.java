@@ -324,7 +324,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
   }
 
   protected AbstractTransformable getInitialTransformable(InputState startInput) {
-    return startInput.getClickPickTransformable();
+    return startInput.getCurrentlySelectedObject() == null
+        ? startInput.getClickPickTransformable()
+        : startInput.getCurrentlySelectedObject();
   }
 
   protected Point3 getInitialClickPoint(InputState startInput) {
