@@ -683,10 +683,8 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
       } else {
         UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(aliceThing);
         if (aliceThing instanceof SVRUser || aliceThing instanceof SCamera) {
-          if (sceneEditor.isStartingCameraView()) {
-            undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
-            undoOperation.fire();
-          }
+          undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
+          undoOperation.fire();
         } else {
           undoOperation = new PredeterminedSetLocalTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
           undoOperation.fire();
