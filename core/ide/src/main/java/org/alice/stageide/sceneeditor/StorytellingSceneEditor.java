@@ -595,8 +595,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         } else {
           this.setSelectedField(field.getDeclaringType(), field);
         }
-      } else if (imp instanceof PerspectiveCameraMarkerImp) {
-        setSelectedField(getActiveSceneType(), getFieldForInstanceInJavaVM(movableSceneCameraImp.getAbstraction()));
+      }
+      if (imp instanceof PerspectiveCameraMarkerImp) {
+        globalDragAdapter.setSelectedImplementation((PerspectiveCameraMarkerImp) imp);
       }
     } else {
       UserField uf = getActiveSceneField();
