@@ -336,7 +336,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return getCamera().getMovableParent().getAbsoluteTransformation();
+      return markerImp.getAbsoluteTransformation();
     }
 
     @Override
