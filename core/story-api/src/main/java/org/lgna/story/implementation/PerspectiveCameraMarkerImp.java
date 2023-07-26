@@ -58,6 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 import org.lgna.story.PerspectiveCameraMarker;
+import org.lgna.story.SCamera;
 import org.lgna.story.resources.DynamicResource;
 
 import java.util.List;
@@ -289,6 +290,10 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     this.isVrActive = isActive;
     showVisuals(sgVrVisuals, isVrActive && getDisplayEnabled());
     showVisuals(sgCameraVisuals, !isVrActive && getDisplayEnabled());
+    if (isVrActive) {
+      sgLaserLineVertices[0].position.y = SCamera.DEFAULT_POSITION.getUp();
+    }
+    sgLaserLine.vertices.setValue(sgLaserLineVertices);
   }
 
   private static void showVisuals(Visual[] visuals, boolean show) {
