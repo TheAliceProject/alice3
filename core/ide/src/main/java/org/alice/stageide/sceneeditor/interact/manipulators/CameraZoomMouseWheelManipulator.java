@@ -342,17 +342,15 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   public void undoRedoEndManipulation() {
     if ((this.getCamera() != null) && (this.getCamera() instanceof OrthographicCamera)) {
       double newZoom = this.getCameraZoom();
-
-      if (newZoom == this.originalOrthographicZoomValue) {
-        Logger.warning("Adding an undoable action for a manipulation that didn't actually change the zoom.");
-      }
       Animator animator;
       if (this.dragAdapter != null) {
         animator = this.dragAdapter.getAnimator();
       } else {
         animator = null;
       }
-      PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Application.PROJECT_GROUP, false, animator, (OrthographicCamera) this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
+      PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation =
+          new PredeterminedSetOrthographicPicturePlaneActionOperation(Application.DOCUMENT_UI_GROUP, false,
+              animator, (OrthographicCamera) this.camera, this.originalOrthographicZoomValue, newZoom, getUndoRedoDescription());
       undoOperation.fire();
     } else {
       super.undoRedoEndManipulation();
