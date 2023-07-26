@@ -763,6 +763,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   protected void setActiveScene(UserField sceneField) {
     super.setActiveScene(sceneField);
+    // Restore to origin and upright
+    if (movableSceneCameraImp != null) {
+      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+    }
 
     if (sceneField != null) {
       EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(Double.POSITIVE_INFINITY);
