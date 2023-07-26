@@ -134,7 +134,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return;
     }
     activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
-    activeMarker.animateToTargetView(null);
+    activeMarker.switchToCamera();
+    activeMarker.startTrackingCamera();
   }
 
   private void initializeCameraMarkers() {
@@ -336,7 +337,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
 
     @Override
     protected AffineMatrix4x4 getTargetTransform() {
-      return getCamera().getMovableParent().getAbsoluteTransformation();
+      return markerImp.getAbsoluteTransformation();
     }
 
     @Override
@@ -365,6 +366,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
           markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
         });
       }
+      markerImp.actAsCamera(startingCamera);
     }
   }
 

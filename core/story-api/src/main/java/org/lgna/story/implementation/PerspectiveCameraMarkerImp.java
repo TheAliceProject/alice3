@@ -304,6 +304,12 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     return isVrActive ? sgVrVisuals : sgCameraVisuals;
   }
 
+  // Add the ENTITY_IMP entry to the Element's bonus data.
+  // Manipulators look for it and will then treat this marker as the camera.
+  public void actAsCamera(TransformableImp camera) {
+    camera.putInstance(getSgComposite());
+  }
+
   private double farClippingPlane;
 
   private Vertex[] sgLaserLineVertices;

@@ -485,7 +485,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   private boolean isSelectableType(AbstractType<?, ?, ?> valueType) {
     return !valueType.isAssignableFrom(SThingMarker.class)
             && !valueType.isAssignableFrom(SCameraMarker.class)
-            && !valueType.isAssignableFrom(SVRHand.class);
+            && !valueType.isAssignableFrom(SVRHand.class)
+            && !valueType.isAssignableFrom(SVRHeadset.class);
   }
 
   public Boolean isVrActive() {
@@ -595,8 +596,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
         } else {
           this.setSelectedField(field.getDeclaringType(), field);
         }
-      } else if (imp instanceof PerspectiveCameraMarkerImp) {
-        setSelectedField(getActiveSceneType(), getFieldForInstanceInJavaVM(movableSceneCameraImp.getAbstraction()));
+      }
+      if (imp instanceof PerspectiveCameraMarkerImp) {
+        globalDragAdapter.setSelectedImplementation((PerspectiveCameraMarkerImp) imp);
       }
     } else {
       UserField uf = getActiveSceneField();
@@ -761,6 +763,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
   @Override
   protected void setActiveScene(UserField sceneField) {
     super.setActiveScene(sceneField);
+    // Restore to origin and upright
+    if (movableSceneCameraImp != null) {
+      movableSceneCameraImp.setLocalTransformation(AffineMatrix4x4.createIdentity());
+    }
 
     if (sceneField != null) {
       EmployeesOnly.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor(Double.POSITIVE_INFINITY);

@@ -119,6 +119,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.Group;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
@@ -682,13 +683,12 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
         undoOperation.fire();
       } else {
         UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(aliceThing);
+        Group group = manipulatedField == null ? Application.DOCUMENT_UI_GROUP : Application.PROJECT_GROUP;
         if (aliceThing instanceof SVRUser || aliceThing instanceof SCamera) {
-          if (sceneEditor.isStartingCameraView()) {
-            undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
-            undoOperation.fire();
-          }
+          undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(group, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
+          undoOperation.fire();
         } else {
-          undoOperation = new PredeterminedSetLocalTransformationActionOperation(Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
+          undoOperation = new PredeterminedSetLocalTransformationActionOperation(group, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
           undoOperation.fire();
         }
       }
