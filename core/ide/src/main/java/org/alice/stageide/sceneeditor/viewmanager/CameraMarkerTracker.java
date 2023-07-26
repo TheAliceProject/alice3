@@ -134,7 +134,8 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       return;
     }
     activeMarker = mapViewToMarker.get(CameraOption.STARTING_CAMERA_VIEW);
-    activeMarker.animateToTargetView(null);
+    activeMarker.switchToCamera();
+    activeMarker.startTrackingCamera();
   }
 
   private void initializeCameraMarkers() {
