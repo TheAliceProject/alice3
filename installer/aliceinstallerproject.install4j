@@ -115,6 +115,11 @@
           <entry location="application/starter-projects" />
         </include>
       </component>
+      <component name="internalModels" id="1297">
+        <include>
+          <entry location="application/internal-models" />
+        </include>
+      </component>
     </components>
   </files>
   <launchers>
