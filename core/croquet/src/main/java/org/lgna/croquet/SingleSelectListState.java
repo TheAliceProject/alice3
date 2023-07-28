@@ -124,16 +124,10 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
   }
 
   private static <T> T getItemAt(ListData<T> data, int index) {
-    if (index != -1) {
-      if (index < data.getItemCount()) {
-        return data.getItemAt(index);
-      } else {
-        Logger.errln("note: index out of bounds", index, data.getItemCount(), data);
-        return null;
-      }
-    } else {
-      return null;
+    if (index != -1 && index < data.getItemCount()) {
+      return data.getItemAt(index);
     }
+    return null;
   }
 
   public SingleSelectListState(Group group, UUID id, int selectionIndex, D data) {
