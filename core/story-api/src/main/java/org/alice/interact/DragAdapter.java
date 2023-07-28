@@ -82,13 +82,7 @@ import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import org.lgna.story.implementation.AbstractTransformableImp;
-import org.lgna.story.implementation.CameraMarkerImp;
-import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.implementation.ModelImp;
-import org.lgna.story.implementation.ObjectMarkerImp;
-import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
+import org.lgna.story.implementation.*;
 
 import java.awt.Component;
 import java.awt.Point;
@@ -115,7 +109,9 @@ public abstract class DragAdapter {
   private final AbsoluteTransformationListener cameraTransformationListener = absoluteTransformationEvent -> {
     if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
-      DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+      if (getActiveCamera() == camera) {
+        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+      }
     }
   };
   private final Map<CameraView, CameraSet> cameraMap = Maps.newHashMap();
@@ -922,7 +918,7 @@ public abstract class DragAdapter {
   private Point mouseWheelStartLocation = null;
 
   public enum ObjectType {
-    JOINT, MODEL, CAMERA_MARKER, OBJECT_MARKER, UNKNOWN, ANY;
+    JOINT, MODEL, CAMERA_MARKER, OBJECT_MARKER, MAIN_CAMERA, UNKNOWN, ANY;
 
     public static ObjectType getObjectType(AbstractTransformableImp selected) {
       if (selected instanceof JointImp) {
@@ -933,6 +929,8 @@ public abstract class DragAdapter {
         return ObjectType.CAMERA_MARKER;
       } else if (selected instanceof ModelImp) {
         return ObjectType.MODEL;
+      } else if (selected instanceof CameraImp || selected instanceof VrUserImp) {
+        return ObjectType.MAIN_CAMERA;
       } else {
         return ObjectType.UNKNOWN;
       }

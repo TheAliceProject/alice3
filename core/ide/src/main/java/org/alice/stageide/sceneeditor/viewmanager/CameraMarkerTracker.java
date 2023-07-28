@@ -43,6 +43,7 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.*;
@@ -51,6 +52,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.ide.IDE;
 import org.alice.stageide.run.RunComposite;
 import org.alice.stageide.sceneeditor.CameraOption;
@@ -156,7 +158,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     for (CameraMarkerConfiguration<?> marker: mapViewToMarker.values()) {
       marker.resetForScene(sceneImp, openingViewTransform);
     }
-    startingCameraConfig.trackScale(startingCamera);
+    startingCameraConfig.intializeOnStartingCamera(startingCamera);
   }
 
   public void centerMarkersOn(UserField field) {
@@ -321,13 +323,13 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
   class StartingCameraMarkerConfiguration extends PerspectiveCameraMarkerConfiguration {
     public StartingCameraMarkerConfiguration() {
       super(CameraOption.STARTING_CAMERA_VIEW, "mainCamera");
+      markerImp.setShowing(false);
     }
 
     @Override
     protected void initialize() {
       markerImp.setVrActive(sceneEditor.isVrActive());
-      markerImp.getAbstraction().setColorId(Color.DARK_GRAY);
-      markerImp.setDisplayVisuals(true);
+      markerImp.setDisplayVisuals(false);
     }
 
     @Override
@@ -356,17 +358,38 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       MarkerUtilities.addIconForCameraOption(CameraOption.STARTING_CAMERA_VIEW, isVrScene ? "vrHeadset" : "mainCamera");
     }
 
-    public void trackScale(TransformableImp startingCamera) {
+    public void intializeOnStartingCamera(TransformableImp startingCamera) {
+      SimpleAppearance sgAppearance = new SimpleAppearance();
+      Color4f darkGrey = EmployeesOnly.getColor4f(Color.DARK_GRAY);
+      sgAppearance.diffuseColor.setValue(darkGrey);
+      Visual[] visuals;
       if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
         VrUserImp vrUser = (VrUserImp) startingCamera;
-
-        markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
-
-        vrUser.scale.addPropertyListener(() -> {
-          markerImp.setScale(new Dimension3(vrUser.scale.getValue(), vrUser.scale.getValue(), vrUser.scale.getValue()));
-        });
+        visuals = PerspectiveCameraMarkerImp.createVRVisual(sgAppearance, startingCamera.getSgComposite());
+        // Set visuals scale to match and listen for changes
+        scaleVisuals(visuals, vrUser.scale.getValue());
+        vrUser.scale.addPropertyListener(() -> scaleVisuals(visuals, vrUser.scale.getValue()));
+      } else {
+        visuals = PerspectiveCameraMarkerImp.createCameraVisuals(sgAppearance, startingCamera.getSgComposite());
       }
-      markerImp.actAsCamera(startingCamera);
+      for (Visual v : visuals) {
+        v.isShowing.setValue(true);
+      }
+    }
+
+    private void scaleVisuals(Visual[] visuals, Double scale) {
+      Matrix3x3 scaleMatrix = scaleMatrix(scale);
+      for (Visual visual : visuals) {
+        visual.scale.setValue(scaleMatrix);
+      }
+    }
+
+    private Matrix3x3 scaleMatrix(Double scale) {
+      Matrix3x3 m = Matrix3x3.createZero();
+      m.right.x = scale;
+      m.up.y = scale;
+      m.backward.z = scale;
+      return m;
     }
   }
 

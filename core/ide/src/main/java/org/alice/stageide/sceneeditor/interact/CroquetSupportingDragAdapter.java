@@ -119,6 +119,9 @@ public abstract class CroquetSupportingDragAdapter extends DragAdapter {
               break;
             }
           }
+        } else {
+          // Refresh if nothing is selected in the scene. Then it will be active when something is selected.
+          setInteractionState(currentHandleStyle);
         }
       }
     }
