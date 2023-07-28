@@ -109,7 +109,9 @@ public abstract class DragAdapter {
   private final AbsoluteTransformationListener cameraTransformationListener = absoluteTransformationEvent -> {
     if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera) {
       SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) absoluteTransformationEvent.getSource();
-      DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+      if (getActiveCamera() == camera) {
+        DragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+      }
     }
   };
   private final Map<CameraView, CameraSet> cameraMap = Maps.newHashMap();
