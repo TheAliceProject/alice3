@@ -298,7 +298,10 @@ public class InputState {
   }
 
   public void setClickPickTransformable(AbstractTransformable clickPickTransformable) {
-    if (clickPickTransformable != currentlySelectedObject) {
+    if (clickPickTransformable == this.clickPickTransformable) {
+      return;
+    }
+    if (clickPickTransformable != null && clickPickTransformable != currentlySelectedObject) {
       // Clear selected object, which may conflict with click pick and is not always updated
       currentlySelectedObject = null;
     }
