@@ -572,7 +572,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
       if (this.sceneEditor != null) {
 
-        final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER);
+        final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects(ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER, ObjectType.MAIN_CAMERA);
         final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects(ObjectType.JOINT);
         final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects(ObjectType.ANY);
 
