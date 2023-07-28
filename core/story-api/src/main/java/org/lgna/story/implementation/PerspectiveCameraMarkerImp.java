@@ -101,48 +101,49 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     sgAppearances = new SimpleAppearance[] {new SimpleAppearance()};
     sgDetailedComponents = Lists.newLinkedList();
     farClippingPlane = 100;
-    createVRVisual();
-    createCameraVisual();
-  }
-
-  private void createVRVisual() {
-    var rigResource = DynamicResource.getInternalResource("VRrigNewMesh", "VRrigNewMesh");
-    sgVrVisuals = rigResource.getImplementationAndVisualFactory().createVisualData().getSgVisuals();
-    sgVrVisuals[0].setParent(this.getSgComposite());
-    sgVrVisuals[0].frontFacingAppearance.setValue(getSgPaintAppearances()[0]);
+    sgVrVisuals = createVRVisual(getSgPaintAppearances()[0], getSgComposite());
     showVisuals(sgVrVisuals, false);
-  }
-
-  private void createCameraVisual() {
-    sgCameraVisuals = new Visual[] {createLensVisual(),
-        createCylinderVisual("Camera Cylinder 1", RADIUS),
-        createCylinderVisual("Camera Cylinder 2", RADIUS * 3),
-        createBoxVisual()};
+    sgCameraVisuals = createCameraVisuals(getSgPaintAppearances()[0], getSgComposite());
     showVisuals(sgCameraVisuals, false);
   }
 
-  private Visual createBoxVisual() {
+  public static Visual[] createVRVisual(SimpleAppearance paint, Transformable parent) {
+    var rigResource = DynamicResource.getInternalResource("VRrigNewMesh", "VRrigNewMesh");
+    Visual[] visuals = rigResource.getImplementationAndVisualFactory().createVisualData().getSgVisuals();
+    visuals[0].setParent(parent);
+    visuals[0].frontFacingAppearance.setValue(paint);
+    return visuals;
+  }
+
+  public static Visual[] createCameraVisuals(SimpleAppearance paint, Transformable parent) {
+    return new Visual[]{createLensVisual(paint, parent),
+        createCylinderVisual("Camera Cylinder 1", RADIUS, paint, parent),
+        createCylinderVisual("Camera Cylinder 2", RADIUS * 3, paint, parent),
+        createBoxVisual(paint, parent)};
+  }
+
+  private static Visual createBoxVisual(SimpleAppearance paint, Transformable parent) {
     Visual sgBoxVisual = new Visual();
     sgBoxVisual.setName("Camera Box Visual");
-    sgBoxVisual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
+    sgBoxVisual.frontFacingAppearance.setValue(paint);
     Box sgBox = new Box();
     sgBox.setMinimum(new Point3(-WIDTH / 2, -HEIGHT / 2, 0));
     sgBox.setMaximum(new Point3(WIDTH / 2, HEIGHT / 2, LENGTH));
     sgBoxVisual.geometries.setValue(new Geometry[] {sgBox});
-    sgBoxVisual.setParent(this.getSgComposite());
+    sgBoxVisual.setParent(parent);
     return sgBoxVisual;
   }
 
-  private Visual createCylinderVisual(String name, double offset) {
+  private static Visual createCylinderVisual(String name, double offset, SimpleAppearance paint, Transformable parent) {
     Visual visual = new Visual();
     visual.setName(name + " Visual");
-    visual.frontFacingAppearance.setValue(getSgPaintAppearances()[0]);
+    visual.frontFacingAppearance.setValue(paint);
     Transformable transformable = new Transformable();
     transformable.setName(name);
     transformable.applyTranslation(new Vector3(-WIDTH / 2, (HEIGHT / 2) + RADIUS, offset));
     visual.geometries.setValue(new Geometry[]{createFilmCylinder()});
     visual.setParent(transformable);
-    transformable.setParent(getSgComposite());
+    transformable.setParent(parent);
     return visual;
   }
 
@@ -157,10 +158,10 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
     return sgCylinder1;
   }
 
-  private Visual createLensVisual() {
+  private static Visual createLensVisual(SimpleAppearance paint, Transformable parent) {
     Visual sgLensVisual = new Visual();
     sgLensVisual.setName("Camera Lens Hood Visual");
-    sgLensVisual.frontFacingAppearance.setValue(this.getSgPaintAppearances()[0]);
+    sgLensVisual.frontFacingAppearance.setValue(paint);
     QuadArray sgLensGeometry = new QuadArray();
     Vertex[] sgLensVertices = new Vertex[32];
     Point3 innerTopLeft = new Point3(-WIDTH / 2, HEIGHT / 4, 0);
@@ -235,7 +236,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 
     sgLensGeometry.vertices.setValue(sgLensVertices);
     sgLensVisual.geometries.setValue(new Geometry[] {sgLensGeometry});
-    sgLensVisual.setParent(this.getSgComposite());
+    sgLensVisual.setParent(parent);
     return sgLensVisual;
   }
 
