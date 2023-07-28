@@ -106,7 +106,6 @@ import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
-import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetStartCameraTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.CopyObjectDragManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.GetAGoodLookAtManipulator;
@@ -124,10 +123,8 @@ import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.ast.UserField;
-import org.lgna.story.SCamera;
 import org.lgna.story.SJoint;
 import org.lgna.story.SThing;
-import org.lgna.story.SVRUser;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.JointImp;
 
@@ -684,13 +681,8 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
       } else {
         UserField manipulatedField = sceneEditor.getFieldForInstanceInJavaVM(aliceThing);
         Group group = manipulatedField == null ? Application.DOCUMENT_UI_GROUP : Application.PROJECT_GROUP;
-        if (aliceThing instanceof SVRUser || aliceThing instanceof SCamera) {
-          undoOperation = new PredeterminedSetStartCameraTransformationActionOperation(group, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, sceneEditor, manipulator.getUndoRedoDescription());
-          undoOperation.fire();
-        } else {
-          undoOperation = new PredeterminedSetLocalTransformationActionOperation(group, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
-          undoOperation.fire();
-        }
+        undoOperation = new PredeterminedSetLocalTransformationActionOperation(group, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription());
+        undoOperation.fire();
       }
     }
   }
