@@ -71,7 +71,7 @@ public class SVRHand extends SThing {
   }
 
   @Override
-  VrHandImp getImplementation() {
+  public VrHandImp getImplementation() {
     return implementation;
   }
 }

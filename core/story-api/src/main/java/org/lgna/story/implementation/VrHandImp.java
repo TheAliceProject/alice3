@@ -74,4 +74,10 @@ public class VrHandImp extends TransformableImp {
   public AbstractTransformableImp getParent() {
     return parentImplementation;
   }
+
+  public void scaleBy(Double scaleChange) {
+    AffineMatrix4x4 lt = getLocalTransformation();
+    lt.translation.setToMultiplication(lt.translation, scaleChange);
+    setLocalTransformation(lt);
+  }
 }
