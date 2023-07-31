@@ -93,7 +93,6 @@
     <install4j.version>10.0.6</install4j.version>
 
     <javafx.version>20</javafx.version>
-    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
   </properties>
 
   <modules>
@@ -493,7 +492,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>1.6.0</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <groupId>com.install4j</groupId>
@@ -587,14 +586,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>${javafx.maven.plugin.version}</version>
-        <configuration>
-          <mainClass>org.alice.stageide.EntryPoint</mainClass>
-        </configuration>
       </plugin>
     </plugins>
 
