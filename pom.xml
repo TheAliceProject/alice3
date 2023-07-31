@@ -323,10 +323,62 @@
         <version>4.2</version>
       </dependency>
       <dependency>
-        <groupId>javax.media</groupId>
-        <artifactId>jmf</artifactId>
-        <version>2.1.1e</version>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>win</classifier>
       </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>linux</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>mac</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>win</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>linux</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>mac</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>win</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>linux</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>${javafx.version}</version>
+        <classifier>mac</classifier>
+      </dependency>
+
       <dependency>
         <groupId>com.sun</groupId>
         <artifactId>javamp3</artifactId>
@@ -356,14 +408,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-media</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-  </dependencies>
 
   <build>
     <pluginManagement>
