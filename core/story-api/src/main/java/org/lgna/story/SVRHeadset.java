@@ -53,7 +53,6 @@ public class SVRHeadset extends SThing {
 
   public SVRHeadset(String name, SVRUser parent) {
     implementation = new VrHeadsetImp(name, this, parent.getImplementation());
-    implementation.setVehicle(parent.getImplementation());
   }
 
   @Override
