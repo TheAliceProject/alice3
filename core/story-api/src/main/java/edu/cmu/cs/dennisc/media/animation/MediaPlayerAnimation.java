@@ -91,10 +91,10 @@ public class MediaPlayerAnimation implements Animation {
 
     double timeRemaining = 0;
     if (EPIC_HACK_mediaPlayerObserver != null) {
-      if (this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player) {
-        edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player) player;
-        double startTime = Double.isNaN(jmfPlayer.getStartTime()) ? 0 : jmfPlayer.getStartTime();
-        double endTime = Double.isNaN(jmfPlayer.getStopTime()) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
+      if (this.player instanceof edu.cmu.cs.dennisc.media.javafx.Player) {
+        edu.cmu.cs.dennisc.media.javafx.Player javafxPlayer = (edu.cmu.cs.dennisc.media.javafx.Player) player;
+        double startTime = Double.isNaN(javafxPlayer.getStartTime()) ? 0 : javafxPlayer.getStartTime();
+        double endTime = Double.isNaN(javafxPlayer.getStopTime()) ? javafxPlayer.getDuration() : javafxPlayer.getStopTime();
         double totalTime = endTime - startTime;
         double timeElapsed = tCurrent - this.startTime;
         if (timeElapsed >= totalTime) {

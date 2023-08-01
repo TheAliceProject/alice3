@@ -47,6 +47,7 @@ import org.lgna.common.Resource;
 import org.w3c.dom.Element;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Collections;
@@ -57,7 +58,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class AudioResource extends Resource {
-  private static Map<String, String> extensionToContentTypeMap;
+  private static Map<String, String> extensionToContentTypeMap, contentTypeToExtensionMap;
   private static final Set<String> extensions;
 
   static {
@@ -66,6 +67,11 @@ public class AudioResource extends Resource {
     AudioResource.extensionToContentTypeMap.put("wav", "audio.x_wav");
     AudioResource.extensionToContentTypeMap.put("mp3", "audio.mpeg");
     extensions = Collections.unmodifiableSet(extensionToContentTypeMap.keySet());
+
+    AudioResource.contentTypeToExtensionMap = new HashMap<>();
+    for (Map.Entry<String, String> entry : AudioResource.extensionToContentTypeMap.entrySet()) {
+      AudioResource.contentTypeToExtensionMap.put(entry.getValue(), entry.getKey());
+    }
   }
 
   public static String getContentType(String path) {
@@ -105,6 +111,7 @@ public class AudioResource extends Resource {
   }
 
   private double duration = Double.NaN;
+  private File tempFile = null;
 
   protected AudioResource(UUID uuid) {
     super(uuid);
@@ -148,5 +155,33 @@ public class AudioResource extends Resource {
   public void decodeAttributes(Element xmlElement, byte[] data) {
     super.decodeAttributes(xmlElement, data);
     this.duration = Double.parseDouble(xmlElement.getAttribute(XML_DURATION_ATTRIBUTE));
+  }
+
+  public File getTempFile() {
+    if (tempFile == null) {
+      FileOutputStream fos = null;
+
+      try {
+        String extension = "." + AudioResource.contentTypeToExtensionMap.get(getContentType());
+
+        tempFile = File.createTempFile("VACA", extension, null);
+        tempFile.deleteOnExit();
+
+        fos = new FileOutputStream(tempFile);
+        fos.write(getData());
+      } catch (IOException e) {
+        System.out.println("Error creating temp file for AudioResource conversion: " + e.getMessage());
+      } finally {
+        if (fos != null) {
+          try {
+            fos.close();
+          } catch (IOException e) {
+            System.out.println("Error closing temp file for AudioResource conversion: " + e.getMessage());
+          }
+        }
+      }
+    }
+
+    return tempFile;
   }
 }

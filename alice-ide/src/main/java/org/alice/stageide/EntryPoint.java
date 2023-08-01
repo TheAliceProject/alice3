@@ -63,10 +63,13 @@ import java.awt.Frame;
 import java.io.File;
 import java.util.Locale;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EntryPoint {
+public class EntryPoint extends Application {
   private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
   private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
@@ -82,112 +85,115 @@ public class EntryPoint {
       }
     }
     crashDetector.open();
-
     String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
     System.out.println("version: " + text);
 
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-
-        if (PlafUtilities.isInstalledLookAndFeelNamed(NIMBUS_LOOK_AND_FEEL_NAME)) {
-          final Object macMenuBarUI;
-          if (SystemUtilities.isMac()) {
-            if (SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
-              macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
-            } else {
-              macMenuBarUI = null;
-            }
+    // Initialize Swing here to do it on the correct thread, outside of JavaFX
+    SwingUtilities.invokeLater(() -> {
+      if (PlafUtilities.isInstalledLookAndFeelNamed(NIMBUS_LOOK_AND_FEEL_NAME)) {
+        final Object macMenuBarUI;
+        if (SystemUtilities.isMac()) {
+          if (SystemUtilities.isPropertyTrue("apple.laf.useScreenMenuBar")) {
+            macMenuBarUI = UIManager.get(MENU_BAR_UI_NAME);
           } else {
             macMenuBarUI = null;
           }
-          UIManagerUtilities.setLookAndFeel(NIMBUS_LOOK_AND_FEEL_NAME);
-          if (macMenuBarUI != null) {
-            UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
-          }
+        } else {
+          macMenuBarUI = null;
         }
-
-        UIManagerUtilities.scaleFontIAppropriate();
-
-        UIManager.put("ScrollBar.width", 13);
-        UIManager.put("ScrollBar.incrementButtonGap", 0);
-        UIManager.put("ScrollBar.decrementButtonGap", 0);
-        UIManager.put("ScrollBar.thumb", ColorUtilities.createGray(140));
-
-        //java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
-        //javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
-
-        ConsistentMouseDragEventQueue.pushIfAppropriate();
-
-        final int DEFAULT_WIDTH = 1000;
-        final int DEFAULT_HEIGHT = 740;
-        int xLocation = 0;
-        int yLocation = 0;
-        int width = DEFAULT_WIDTH;
-        int height = DEFAULT_HEIGHT;
-        boolean isMaximizationDesired = true;
-        File file = null;
-        String localeString = null;
-        int index = 0;
-        if (args.length > 0) {
-          if ("null".equalsIgnoreCase(args[0])) {
-            //pass
-          } else {
-            if ("-l".equalsIgnoreCase(args[0])) {
-              index = 1;
-              if (args.length > 1) {
-                localeString = args[1];
-                index = 2;
-              }
-            }
-          }
-          if (args.length > index) {
-            file = new File(args[index]);
-          }
-          if (args.length > (index + 2)) {
-            try {
-              xLocation = Integer.parseInt(args[index + 1]);
-              yLocation = Integer.parseInt(args[index + 2]);
-              if (args.length > (index + 4)) {
-                width = Integer.parseInt(args[index + 3]);
-                height = Integer.parseInt(args[index + 4]);
-              }
-              isMaximizationDesired = false;
-            } catch (NumberFormatException nfe) {
-              xLocation = 0;
-              yLocation = 0;
-              width = DEFAULT_WIDTH;
-              height = DEFAULT_HEIGHT;
-            }
-          }
+        UIManagerUtilities.setLookAndFeel(NIMBUS_LOOK_AND_FEEL_NAME);
+        if (macMenuBarUI != null) {
+          UIManager.put(MENU_BAR_UI_NAME, macMenuBarUI);
         }
-
-        JFrame rootFrame = WindowStack.getRootFrame();
-        rootFrame.setLocation(xLocation, yLocation);
-        rootFrame.setSize(width, height);
-
-        if (isMaximizationDesired) {
-          rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
-        }
-        if (localeString != null) {
-          System.setProperty("org.alice.ide.locale", localeString);
-          String localeTest = System.getProperty("org.alice.ide.locale");
-          System.out.println(localeTest);
-        }
-
-        AliceIde ide = new AliceIde(crashDetector);
-        if (file != null) {
-          if (file.exists()) {
-            ide.setProjectFileToLoadOnWindowOpened(file);
-          } else {
-            Logger.warning("file does not exist:", file);
-          }
-        }
-        ide.initialize(args);
-        ide.getDocumentFrame().getFrame().setVisible(true);
-        heapMonitor = new HeapWatchDog();
       }
+
+      UIManagerUtilities.scaleFontIAppropriate();
+
+      UIManager.put("ScrollBar.width", 13);
+      UIManager.put("ScrollBar.incrementButtonGap", 0);
+      UIManager.put("ScrollBar.decrementButtonGap", 0);
+      UIManager.put("ScrollBar.thumb", ColorUtilities.createGray(140));
+
+      //java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
+      //javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
+
+      ConsistentMouseDragEventQueue.pushIfAppropriate();
+
+      final int DEFAULT_WIDTH = 1000;
+      final int DEFAULT_HEIGHT = 740;
+      int xLocation = 0;
+      int yLocation = 0;
+      int width = DEFAULT_WIDTH;
+      int height = DEFAULT_HEIGHT;
+      boolean isMaximizationDesired = true;
+      File file = null;
+      String localeString = null;
+      int index = 0;
+      if (args.length > 0) {
+        if ("null".equalsIgnoreCase(args[0])) {
+          //pass
+        } else {
+          if ("-l".equalsIgnoreCase(args[0])) {
+            index = 1;
+            if (args.length > 1) {
+              localeString = args[1];
+              index = 2;
+            }
+          }
+        }
+        if (args.length > index) {
+          file = new File(args[index]);
+        }
+        if (args.length > (index + 2)) {
+          try {
+            xLocation = Integer.parseInt(args[index + 1]);
+            yLocation = Integer.parseInt(args[index + 2]);
+            if (args.length > (index + 4)) {
+              width = Integer.parseInt(args[index + 3]);
+              height = Integer.parseInt(args[index + 4]);
+            }
+            isMaximizationDesired = false;
+          } catch (NumberFormatException nfe) {
+            xLocation = 0;
+            yLocation = 0;
+            width = DEFAULT_WIDTH;
+            height = DEFAULT_HEIGHT;
+          }
+        }
+      }
+
+      JFrame rootFrame = WindowStack.getRootFrame();
+      rootFrame.setLocation(xLocation, yLocation);
+      rootFrame.setSize(width, height);
+
+      if (isMaximizationDesired) {
+        rootFrame.setExtendedState(rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH);
+      }
+      if (localeString != null) {
+        System.setProperty("org.alice.ide.locale", localeString);
+        String localeTest = System.getProperty("org.alice.ide.locale");
+        System.out.println(localeTest);
+      }
+
+      AliceIde ide = new AliceIde(crashDetector);
+      if (file != null) {
+        if (file.exists()) {
+          ide.setProjectFileToLoadOnWindowOpened(file);
+        } else {
+          Logger.warning("file does not exist:", file);
+        }
+      }
+      ide.initialize(args);
+      ide.getDocumentFrame().getFrame().setVisible(true);
+      heapMonitor = new HeapWatchDog();
     });
     RenderUtils.getDefaultRenderFactory();
+
+    // Call to initialize JavaFX
+    launch(args);
+  }
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
   }
 }

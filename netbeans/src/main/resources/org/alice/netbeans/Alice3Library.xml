@@ -10,7 +10,6 @@
     <resource>nbinst:/modules/ext/org.alice.netbeans/com-sun/javamp3.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/com-sun-media/jai-codec.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/javax-media/jai-core.jar</resource>
-    <resource>nbinst:/modules/ext/org.alice.netbeans/javax-media/jmf.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-apache-commons/commons-text.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-apache-commons/commons-lang3.jar</resource>
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-jogamp-gluegen/gluegen-rt.jar</resource>
@@ -27,6 +26,10 @@
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/models-nonfree.jar</resource>
 
     <resource>nbinst:/modules/ext/org.alice.netbeans/org-alice-nonfree/story-api-nonfree.jar</resource>
+
+    <resource>nbinst:/modules/ext/org.alice.netbeans/org-openjfx/javafx-base.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/org-openjfx/javafx-graphics.jar</resource>
+    <resource>nbinst:/modules/ext/org.alice.netbeans/org-openjfx/javafx-media.jar</resource>
   </volume>
   <volume>
     <type>src</type>
