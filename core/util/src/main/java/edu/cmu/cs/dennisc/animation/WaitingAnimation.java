@@ -78,6 +78,11 @@ public class WaitingAnimation {
     return false;
   }
 
+  public void stop() {
+    m_animation.stop();
+    notifyNext();
+  }
+
   public void complete() {
     m_animation.complete(m_animationObserver);
     notifyNext();
