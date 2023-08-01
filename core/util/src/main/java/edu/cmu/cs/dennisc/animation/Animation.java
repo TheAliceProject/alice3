@@ -50,7 +50,7 @@ public interface Animation {
 
   double update(double tCurrent, AnimationObserver animationObserver);
 
-  void stop(AnimationObserver animationObserver);
+  void stop();
 
   void complete(AnimationObserver animationObserver);
 

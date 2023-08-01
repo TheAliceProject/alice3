@@ -105,8 +105,7 @@ public abstract class AbstractAnimation implements Animation {
   }
 
   @Override
-  public final synchronized void stop(AnimationObserver animationObserver) {
-    complete(animationObserver);
+  public void stop() {
   }
 
   @Override

@@ -79,7 +79,7 @@ public class WaitingAnimation {
   }
 
   public void stop() {
-    m_animation.stop(m_animationObserver);
+    m_animation.stop();
     notifyNext();
   }
 

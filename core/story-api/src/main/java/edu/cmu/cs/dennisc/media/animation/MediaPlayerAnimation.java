@@ -113,7 +113,7 @@ public class MediaPlayerAnimation implements Animation {
   }
 
   @Override
-  public void stop(AnimationObserver animationObserver) {
+  public void stop() {
     this.player.stop();
   }
 
