@@ -1,6 +1,7 @@
 package org.alice.tweedle.file;
 
 import com.google.gson.*;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -25,7 +26,12 @@ public class ManifestEncoderDecoder {
 
   public static <T extends Manifest> T fromJson(String string, Class<T> manifestClass) {
     Gson gson = new GsonBuilder().registerTypeAdapter(ResourceReference.class, new ResourceReferenceDeserializer()).registerTypeAdapter(Temporal.class, new TemporalDeserializer()).create();
-    return gson.fromJson(string, manifestClass);
+    try {
+      return gson.fromJson(string, manifestClass);
+    } catch (Throwable e) {
+      Logger.warning("Skipping over error: Unable to read manifest from save file due to \"" + e.getMessage() + "\"\n" + e.getStackTrace());
+      return null;
+    }
   }
 
   private static <O extends ResourceReference> O initializeObject(O o, JsonObject jsonObject, JsonDeserializationContext context) throws JsonParseException {
