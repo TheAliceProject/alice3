@@ -175,7 +175,7 @@ public abstract class AbstractAnimator implements Animator {
     Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
     while (iterator.hasNext()) {
       WaitingAnimation waitingAnimation = iterator.next();
-      waitingAnimation.notifyNext();
+      waitingAnimation.stop();
       iterator.remove();
     }
   }

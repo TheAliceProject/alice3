@@ -50,6 +50,8 @@ public interface Animation {
 
   double update(double tCurrent, AnimationObserver animationObserver);
 
+  void stop(AnimationObserver animationObserver);
+
   void complete(AnimationObserver animationObserver);
 
   default Animated getAnimated() {

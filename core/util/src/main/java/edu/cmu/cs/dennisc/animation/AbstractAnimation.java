@@ -105,6 +105,11 @@ public abstract class AbstractAnimation implements Animation {
   }
 
   @Override
+  public final synchronized void stop(AnimationObserver animationObserver) {
+    complete(animationObserver);
+  }
+
+  @Override
   public final synchronized void complete(AnimationObserver animationObserver) {
     //    edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
     if (m_state == State.PROLOGUE_IS_REQUIRED) {
