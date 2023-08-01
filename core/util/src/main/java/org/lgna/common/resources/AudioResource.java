@@ -169,14 +169,14 @@ public class AudioResource extends Resource {
 
         fos = new FileOutputStream(tempFile);
         fos.write(getData());
-      } catch (IOException ioe) {
-        System.out.println("Error creating temp file for AudioResource conversion");
+      } catch (IOException e) {
+        System.out.println("Error creating temp file for AudioResource conversion: " + e.getMessage());
       } finally {
         if (fos != null) {
           try {
             fos.close();
           } catch (IOException e) {
-            System.out.println("Error closing temp file for AudioResource conversion");
+            System.out.println("Error closing temp file for AudioResource conversion: " + e.getMessage());
           }
         }
       }
