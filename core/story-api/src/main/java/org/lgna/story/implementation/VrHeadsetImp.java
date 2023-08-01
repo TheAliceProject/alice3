@@ -70,11 +70,9 @@ public class VrHeadsetImp extends CameraImp<SymmetricPerspectiveCamera> {
     return parentImplementation;
   }
 
-  public void setScale(Double newScale) {
+  public void scaleBy(Double scaleChange) {
     AffineMatrix4x4 lt = getLocalTransformation();
-    lt.translation.setToMultiplication(lt.translation, newScale / scale);
+    lt.translation.setToMultiplication(lt.translation, scaleChange);
     setLocalTransformation(lt);
-    scale = newScale;
   }
-  Double scale = 1.0;
 }

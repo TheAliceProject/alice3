@@ -52,7 +52,6 @@ public class SVRHand extends SThing {
 
   public SVRHand(String name, SMovableTurnable parent) {
     implementation = new VrHandImp(name, this, parent.getImplementation());
-    implementation.setVehicle(parent.getImplementation());
   }
 
   @MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
@@ -71,7 +70,7 @@ public class SVRHand extends SThing {
   }
 
   @Override
-  VrHandImp getImplementation() {
+  public VrHandImp getImplementation() {
     return implementation;
   }
 }

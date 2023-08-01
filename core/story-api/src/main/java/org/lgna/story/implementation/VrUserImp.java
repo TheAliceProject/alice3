@@ -107,8 +107,11 @@ public class VrUserImp extends TransformableImp {
 
     @Override
     protected void handleSetValue(Double value) {
+      double scaleChange = value / userScale;
       userScale = value;
-      abstraction.getHeadset().getImplementation().setScale(value);
+      abstraction.getHeadset().getImplementation().scaleBy(scaleChange);
+      abstraction.getLeftHand().getImplementation().scaleBy(scaleChange);
+      abstraction.getRightHand().getImplementation().scaleBy(scaleChange);
     }
   };
 }
