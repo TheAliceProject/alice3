@@ -17,6 +17,9 @@ public class AudioReference extends ResourceReference {
     super(resource);
     uuid = resource.getId();
     duration = resource.getDuration();
+    if (Double.isNaN(duration)) {
+      duration = 0;
+    }
   }
 
   @Override
