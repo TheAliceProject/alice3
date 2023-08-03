@@ -58,6 +58,8 @@ public class UnitQuaternion implements Orientation, Printable {
   public double y = Double.NaN;
   public double z = Double.NaN;
   public double w = Double.NaN;
+  // Track how often non-unit matrices are observed and only log some of them.
+  private static int nonUnitLogCount;
 
   private UnitQuaternion() {
   }
@@ -274,17 +276,24 @@ public class UnitQuaternion implements Orientation, Printable {
 
   @Override
   public void setValue(OrthogonalMatrix3x3 m) {
-    //todo: convert directly
-    if (m.isWithinReasonableEpsilonOfUnitLengthSquared()) {
-      //pass
-    } else {
-      PrintUtilities.println("WARNING: UnitQuaternion set to non-unit Matrix3x3");
-      PrintUtilities.printlns(m);
-      PrintUtilities.println("right magnitude:   ", m.right.calculateMagnitude());
-      PrintUtilities.println("up magnitude:      ", m.up.calculateMagnitude());
-      PrintUtilities.println("backward magnitude:", m.backward.calculateMagnitude());
-      PrintUtilities.println();
+    if (!m.isWithinReasonableEpsilonOfUnitLengthSquared()) {
+      nonUnitLogCount++;
+      // This log entry often leads to more and can bog down Alice just from the logging.
+      // Only report with details if it has happened an even power of two times.
+      if ((nonUnitLogCount & nonUnitLogCount - 1) == 0) {
+        String countindicator = nonUnitLogCount > 2
+            ? "This has happened " + (nonUnitLogCount / 2 - 1) + " since the last warning.\n"
+            : "";
+        PrintUtilities.printlns(
+            "WARNING: UnitQuaternion set to non-unit Matrix3x3\n",
+            m,
+            "right magnitude:   " + m.right.calculateMagnitude() + "\n",
+            "up magnitude:      " + m.up.calculateMagnitude() + "\n",
+            "backward magnitude:" + m.backward.calculateMagnitude() + "\n",
+            countindicator);
+      }
     }
+    //todo: convert directly
     setValue(new AxisRotation(m));
   }
 
