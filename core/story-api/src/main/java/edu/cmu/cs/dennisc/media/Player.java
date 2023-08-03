@@ -57,4 +57,8 @@ public abstract class Player {
   public abstract void playUntilStop();
 
   public abstract void stop();
+
+  public abstract void pause();
+
+  public abstract void resume();
 }

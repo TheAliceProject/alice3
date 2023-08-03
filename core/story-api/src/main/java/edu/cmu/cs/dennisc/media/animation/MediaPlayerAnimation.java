@@ -57,6 +57,10 @@ public class MediaPlayerAnimation implements Animation {
 
   private double startTime = 0;
 
+  private double currentAnimTime = 0;
+
+  private boolean isPaused = false;
+
   private static MediaPlayerObserver EPIC_HACK_mediaPlayerObserver;
 
   public static void EPIC_HACK_setAnimationObserver(MediaPlayerObserver mediaPlayerObserver) {
@@ -71,12 +75,22 @@ public class MediaPlayerAnimation implements Animation {
   @Override
   public void reset() {
     this.isStarted = false;
+    this.isPaused = false;
   }
 
   @Override
   public double update(double tCurrent, AnimationObserver animationObserver) {
     if (this.isStarted) {
-      //pass
+      boolean isPaused = this.currentAnimTime == tCurrent;
+
+      if (isPaused && !this.isPaused) {
+        this.player.pause();
+      } else if (!isPaused && this.isPaused) {
+        this.player.resume();
+      }
+
+      this.currentAnimTime = tCurrent;
+      this.isPaused = isPaused;
     } else {
       //this.player.prefetch();
       this.isStarted = true;

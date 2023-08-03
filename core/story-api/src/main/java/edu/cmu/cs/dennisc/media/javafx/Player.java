@@ -78,6 +78,16 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
   }
 
   @Override
+  public void pause() {
+    this.player.pause();
+  }
+
+  @Override
+  public void resume() {
+    this.player.play();
+  }
+
+  @Override
   public double getDuration() {
     return this.player.getTotalDuration().toSeconds();
   }
@@ -94,7 +104,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
     double rv = end - curr;
 
     MediaPlayer.Status state = this.player.getStatus();
-    if (state != MediaPlayer.Status.PLAYING && curr > (this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD)) {
+    if (state != MediaPlayer.Status.PLAYING && state != MediaPlayer.Status.PAUSED && curr > (this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD)) {
       rv = 0.0;
     }
     return rv;

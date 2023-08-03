@@ -64,6 +64,8 @@ public abstract class AbstractAnimator implements Animator {
   private double speedFactor = 1.0;
   private double tCurrent;
 
+  private boolean isPaused = false;
+
   protected abstract void updateCurrentTime(boolean isPaused);
 
   protected final void setCurrentTime(double tCurrent) {
@@ -89,7 +91,9 @@ public abstract class AbstractAnimator implements Animator {
   public void update() {
     boolean isPaused = this.speedFactor <= 0.0;
     updateCurrentTime(isPaused);
-    if (!isPaused) {
+
+    // Run update logic once after a pause
+    if (!isPaused || !this.isPaused) {
       double tCurrent = getCurrentTime();
       if (this.waitingAnimations.size() > 0) {
         Iterator<WaitingAnimation> iterator = this.waitingAnimations.iterator();
@@ -115,6 +119,8 @@ public abstract class AbstractAnimator implements Animator {
         }
       }
     }
+
+    this.isPaused = isPaused;
   }
 
   protected WaitingAnimation createWaitingAnimation(Animation animation, AnimationObserver animationObserver, Thread currentThread) {
