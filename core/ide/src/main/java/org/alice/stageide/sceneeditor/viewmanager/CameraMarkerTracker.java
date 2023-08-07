@@ -362,13 +362,12 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       SimpleAppearance sgAppearance = new SimpleAppearance();
       Color4f darkGrey = EmployeesOnly.getColor4f(Color.DARK_GRAY);
       sgAppearance.diffuseColor.setValue(darkGrey);
-      Visual[] visuals;
       if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
         VrUserImp vrUser = (VrUserImp) startingCamera;
         visuals = PerspectiveCameraMarkerImp.createVRVisual(sgAppearance, startingCamera.getSgComposite());
         // Set visuals scale to match and listen for changes
-        scaleVisuals(visuals, vrUser.scale.getValue());
-        vrUser.scale.addPropertyListener(() -> scaleVisuals(visuals, vrUser.scale.getValue()));
+        scaleVisuals(vrUser.scale.getValue());
+        vrUser.scale.addPropertyListener(() -> scaleVisuals(vrUser.scale.getValue()));
       } else {
         visuals = PerspectiveCameraMarkerImp.createCameraVisuals(sgAppearance, startingCamera.getSgComposite());
       }
@@ -377,7 +376,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       }
     }
 
-    private void scaleVisuals(Visual[] visuals, Double scale) {
+    private void scaleVisuals(Double scale) {
       Matrix3x3 scaleMatrix = scaleMatrix(scale);
       for (Visual visual : visuals) {
         visual.scale.setValue(scaleMatrix);
@@ -391,6 +390,7 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       m.backward.z = scale;
       return m;
     }
+    Visual[] visuals;
   }
 
   class LayoutCameraMarkerConfiguration extends PerspectiveCameraMarkerConfiguration {
