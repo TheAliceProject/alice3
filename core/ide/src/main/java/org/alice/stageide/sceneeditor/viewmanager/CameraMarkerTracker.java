@@ -371,9 +371,6 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       } else {
         visuals = PerspectiveCameraMarkerImp.createCameraVisuals(sgAppearance, startingCamera.getSgComposite());
       }
-      for (Visual v : visuals) {
-        v.isShowing.setValue(true);
-      }
     }
 
     private void scaleVisuals(Double scale) {
@@ -390,6 +387,25 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       m.backward.z = scale;
       return m;
     }
+
+    @Override
+    protected void startTrackingCamera() {
+      super.startTrackingCamera();
+      // Hide visuals when camera is active
+      for (Visual v : visuals) {
+        v.isShowing.setValue(false);
+      }
+    }
+
+    @Override
+    protected void stopTrackingCamera() {
+      super.stopTrackingCamera();
+      // Show visuals when other views are active
+      for (Visual v : visuals) {
+        v.isShowing.setValue(true);
+      }
+    }
+
     Visual[] visuals;
   }
 
@@ -481,6 +497,20 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     @Override
     protected AbstractCamera getCamera() {
       return layoutCamera;
+    }
+
+    @Override
+    protected void startTrackingCamera() {
+      super.startTrackingCamera();
+      // Hide visual when camera is active
+      markerImp.setShowing(false);
+    }
+
+    @Override
+    protected void stopTrackingCamera() {
+      super.stopTrackingCamera();
+      // Show visual when other views are active
+      markerImp.setShowing(true);
     }
   }
 
