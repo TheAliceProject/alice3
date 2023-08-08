@@ -66,11 +66,12 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lgna.croquet.Application;
+import org.lgna.story.SCamera;
 
 public class CameraZoomMouseWheelManipulator extends CameraManipulator implements AnimatorDependentManipulator {
 
   private static final double CAMERA_SPEED = 10.0;
-  private static final double TARGET_LOW_HEIGHT = 2.0;
+  private static final double TARGET_LOW_HEIGHT = SCamera.DEFAULT_POSITION.getUp();
   private static final double ORTHOGRAPHIC_ZOOM_PER_WHEEL_CLICK = .2d;
 
   private static final double TARGET_LOW_DOWN_AMOUNT = .1;
