@@ -157,7 +157,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     Vector3 highUpVector = Vector3.createCrossProduct(highBackwardVector, rightVector);
     highUpVector.normalize();
     if (currentTransform.translation.y > TARGET_LOW_HEIGHT) {
-      this.originalX = Math.sqrt((currentTransform.translation.y - TARGET_LOW_HEIGHT) / COEFFICIENT);
+      this.originalX = (currentTransform.translation.y - TARGET_LOW_HEIGHT) / COEFFICIENT;
       this.inflectionPoint = Point3.createAddition(currentTransform.translation, Point3.createMultiplication(this.movementDirection, currentX));
       this.inflectionPoint.y = TARGET_LOW_HEIGHT;
       this.useUpCurve = false;
@@ -196,7 +196,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
         return TARGET_LOW_HEIGHT;
       }
     } else {
-      return (COEFFICIENT * x * x) + this.inflectionPoint.y;
+      return COEFFICIENT * x + this.inflectionPoint.y;
     }
   }
 
