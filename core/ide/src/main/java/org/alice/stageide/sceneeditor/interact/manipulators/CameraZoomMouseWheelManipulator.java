@@ -44,6 +44,7 @@
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -98,6 +99,12 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   @Override
   public CameraView getDesiredCameraView() {
     return CameraView.PICK_CAMERA;
+  }
+
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    super.setCamera(camera);
+    isVr = camera.getParent() != manipulatedTransformable;
   }
 
   private Vector3 getIdealBackwardForX(double x) {
@@ -211,6 +218,9 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private OrthogonalMatrix3x3 getOrientationTargetForX(double x) {
+    if (isVr) {
+      return this.originalTransformation.orientation;
+    }
     Vector3 targetBackward = this.getIdealBackwardForX(x);
     double lowerX = this.originalX - this.lowerInterpolationRange;
     double upperX = this.originalX + this.upperInterpolationRange;
@@ -228,9 +238,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private Point3 getNewPointForX(double x) {
-    double newY = this.getHeightForX(x);
     Point3 newPoint = Point3.createAddition(this.inflectionPoint, Point3.createMultiplication(this.movementDirection, -x));
-    newPoint.y = newY;
+    newPoint.y = isVr ? 0.0 : this.getHeightForX(x);
     return newPoint;
   }
 
@@ -269,6 +278,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
         Point3 targetPosition = getNewPointForX(this.currentX);
         OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX(this.currentX);
         AffineMatrix4x4 targetTransform = new AffineMatrix4x4(targetOrientation, targetPosition);
+        manipulatedTransformable.addBreadcrumbToScene();
         this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
       } else {
         Logger.severe("Mouse Wheel Camera Zoom: null cameraAnimation.");
@@ -375,6 +385,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   private double distanceUp = 1;
   private double distanceUpScale = distanceUp / 2.0;
   private double lateralDistanceForUp = 1;
+
+  private boolean isVr;
 
   private double currentX = 0;
   private double originalX = 0;
