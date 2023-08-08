@@ -56,7 +56,7 @@ public class DebugSphere extends Transformable {
   public DebugSphere() {
     this(Color4f.RED);
   }
-  
+
   public DebugSphere(Color4f color) {
     SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
     sgFrontFacingAppearance.diffuseColor.setValue(color);

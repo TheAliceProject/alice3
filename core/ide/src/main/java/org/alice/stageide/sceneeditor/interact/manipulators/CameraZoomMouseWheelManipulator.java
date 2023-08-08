@@ -278,7 +278,6 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
         Point3 targetPosition = getNewPointForX(this.currentX);
         OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX(this.currentX);
         AffineMatrix4x4 targetTransform = new AffineMatrix4x4(targetOrientation, targetPosition);
-        manipulatedTransformable.addBreadcrumbToScene();
         this.cameraAnimation.setTarget(new QuaternionAndTranslation(targetTransform));
       } else {
         Logger.severe("Mouse Wheel Camera Zoom: null cameraAnimation.");
