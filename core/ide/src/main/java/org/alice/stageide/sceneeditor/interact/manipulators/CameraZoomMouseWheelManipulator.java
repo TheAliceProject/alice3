@@ -44,6 +44,7 @@
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -66,11 +67,12 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.lgna.croquet.Application;
+import org.lgna.story.SCamera;
 
 public class CameraZoomMouseWheelManipulator extends CameraManipulator implements AnimatorDependentManipulator {
 
   private static final double CAMERA_SPEED = 10.0;
-  private static final double TARGET_LOW_HEIGHT = 2.0;
+  private static final double TARGET_LOW_HEIGHT = SCamera.DEFAULT_POSITION.getUp();
   private static final double ORTHOGRAPHIC_ZOOM_PER_WHEEL_CLICK = .2d;
 
   private static final double TARGET_LOW_DOWN_AMOUNT = .1;
@@ -97,6 +99,12 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   @Override
   public CameraView getDesiredCameraView() {
     return CameraView.PICK_CAMERA;
+  }
+
+  @Override
+  public void setCamera(AbstractCamera camera) {
+    super.setCamera(camera);
+    isVr = camera.getParent() != manipulatedTransformable;
   }
 
   private Vector3 getIdealBackwardForX(double x) {
@@ -157,7 +165,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
     Vector3 highUpVector = Vector3.createCrossProduct(highBackwardVector, rightVector);
     highUpVector.normalize();
     if (currentTransform.translation.y > TARGET_LOW_HEIGHT) {
-      this.originalX = Math.sqrt((currentTransform.translation.y - TARGET_LOW_HEIGHT) / COEFFICIENT);
+      this.originalX = (currentTransform.translation.y - TARGET_LOW_HEIGHT) / COEFFICIENT;
       this.inflectionPoint = Point3.createAddition(currentTransform.translation, Point3.createMultiplication(this.movementDirection, currentX));
       this.inflectionPoint.y = TARGET_LOW_HEIGHT;
       this.useUpCurve = false;
@@ -196,7 +204,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
         return TARGET_LOW_HEIGHT;
       }
     } else {
-      return (COEFFICIENT * x * x) + this.inflectionPoint.y;
+      return COEFFICIENT * x + this.inflectionPoint.y;
     }
   }
 
@@ -210,6 +218,9 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private OrthogonalMatrix3x3 getOrientationTargetForX(double x) {
+    if (isVr) {
+      return this.originalTransformation.orientation;
+    }
     Vector3 targetBackward = this.getIdealBackwardForX(x);
     double lowerX = this.originalX - this.lowerInterpolationRange;
     double upperX = this.originalX + this.upperInterpolationRange;
@@ -227,9 +238,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   }
 
   private Point3 getNewPointForX(double x) {
-    double newY = this.getHeightForX(x);
     Point3 newPoint = Point3.createAddition(this.inflectionPoint, Point3.createMultiplication(this.movementDirection, -x));
-    newPoint.y = newY;
+    newPoint.y = isVr ? 0.0 : this.getHeightForX(x);
     return newPoint;
   }
 
@@ -374,6 +384,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
   private double distanceUp = 1;
   private double distanceUpScale = distanceUp / 2.0;
   private double lateralDistanceForUp = 1;
+
+  private boolean isVr;
 
   private double currentX = 0;
   private double originalX = 0;

@@ -54,15 +54,20 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class DebugSphere extends Transformable {
   public DebugSphere() {
+    this(Color4f.RED);
+  }
+
+  public DebugSphere(Color4f color) {
     SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-    sgFrontFacingAppearance.diffuseColor.setValue(Color4f.RED);
-    sgFrontFacingAppearance.opacity.setValue(new Float(1.0));
+    sgFrontFacingAppearance.diffuseColor.setValue(color);
+    sgFrontFacingAppearance.opacity.setValue(1.0f);
 
-    this.sgPickPointSphereVisual.frontFacingAppearance.setValue(sgFrontFacingAppearance);
-    this.sgPickPointSphere.radius.setValue(.1d);
-    this.sgPickPointSphereVisual.geometries.setValue(new Geometry[] {this.sgPickPointSphere});
-    this.sgPickPointSphereVisual.setParent(this);
-
+    Visual sgSphereVisual = new Visual();
+    sgSphereVisual.frontFacingAppearance.setValue(sgFrontFacingAppearance);
+    Sphere sgSphere = new Sphere();
+    sgSphere.radius.setValue(.1d);
+    sgSphereVisual.geometries.setValue(new Geometry[] {sgSphere});
+    sgSphereVisual.setParent(this);
   }
 
   public void setLocalTranslation(Tuple3 position) {
@@ -70,7 +75,4 @@ public class DebugSphere extends Transformable {
     transform.translation.set(position);
     this.localTransformation.setValue(transform);
   }
-
-  private final Sphere sgPickPointSphere = new Sphere();
-  private final Visual sgPickPointSphereVisual = new Visual();
 }

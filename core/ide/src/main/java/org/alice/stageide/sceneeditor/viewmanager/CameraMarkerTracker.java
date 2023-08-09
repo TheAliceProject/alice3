@@ -362,22 +362,18 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       SimpleAppearance sgAppearance = new SimpleAppearance();
       Color4f darkGrey = EmployeesOnly.getColor4f(Color.DARK_GRAY);
       sgAppearance.diffuseColor.setValue(darkGrey);
-      Visual[] visuals;
       if (sceneEditor.isVrActive() && startingCamera instanceof VrUserImp) {
         VrUserImp vrUser = (VrUserImp) startingCamera;
         visuals = PerspectiveCameraMarkerImp.createVRVisual(sgAppearance, startingCamera.getSgComposite());
         // Set visuals scale to match and listen for changes
-        scaleVisuals(visuals, vrUser.scale.getValue());
-        vrUser.scale.addPropertyListener(() -> scaleVisuals(visuals, vrUser.scale.getValue()));
+        scaleVisuals(vrUser.scale.getValue());
+        vrUser.scale.addPropertyListener(() -> scaleVisuals(vrUser.scale.getValue()));
       } else {
         visuals = PerspectiveCameraMarkerImp.createCameraVisuals(sgAppearance, startingCamera.getSgComposite());
       }
-      for (Visual v : visuals) {
-        v.isShowing.setValue(true);
-      }
     }
 
-    private void scaleVisuals(Visual[] visuals, Double scale) {
+    private void scaleVisuals(Double scale) {
       Matrix3x3 scaleMatrix = scaleMatrix(scale);
       for (Visual visual : visuals) {
         visual.scale.setValue(scaleMatrix);
@@ -391,6 +387,26 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
       m.backward.z = scale;
       return m;
     }
+
+    @Override
+    protected void startTrackingCamera() {
+      super.startTrackingCamera();
+      // Hide visuals when camera is active
+      for (Visual v : visuals) {
+        v.isShowing.setValue(false);
+      }
+    }
+
+    @Override
+    protected void stopTrackingCamera() {
+      super.stopTrackingCamera();
+      // Show visuals when other views are active
+      for (Visual v : visuals) {
+        v.isShowing.setValue(true);
+      }
+    }
+
+    Visual[] visuals;
   }
 
   class LayoutCameraMarkerConfiguration extends PerspectiveCameraMarkerConfiguration {
@@ -481,6 +497,20 @@ public class CameraMarkerTracker implements PropertyListener, ValueListener<Came
     @Override
     protected AbstractCamera getCamera() {
       return layoutCamera;
+    }
+
+    @Override
+    protected void startTrackingCamera() {
+      super.startTrackingCamera();
+      // Hide visual when camera is active
+      markerImp.setShowing(false);
+    }
+
+    @Override
+    protected void stopTrackingCamera() {
+      super.stopTrackingCamera();
+      // Show visual when other views are active
+      markerImp.setShowing(true);
     }
   }
 

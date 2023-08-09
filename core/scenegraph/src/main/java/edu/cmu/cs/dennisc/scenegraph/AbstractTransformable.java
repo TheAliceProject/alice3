@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.math.Orientation;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import org.alice.interact.debug.DebugSphere;
 
 /**
  * @author Dennis Cosgrove
@@ -327,5 +328,13 @@ public abstract class AbstractTransformable extends Composite {
 
   public void applyRotationAboutArbitraryAxis(Vector3 axis, Angle angle) {
     applyRotationAboutArbitraryAxis(axis, angle, AsSeenBy.SELF);
+  }
+
+  // For debugging placement in a live scene. The sphere remains in the scene.
+  // The sphere defaults to red, but can be given a different color.
+  public void addBreadcrumbToScene() {
+    DebugSphere debugSphere = new DebugSphere();
+    getRoot().addComponent(debugSphere);
+    debugSphere.setLocalTranslation(getAbsoluteTransformation().translation);
   }
 }
