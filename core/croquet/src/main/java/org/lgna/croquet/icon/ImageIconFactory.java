@@ -83,12 +83,12 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
   }
 
   @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+  public Dimension getDefaultSize(Dimension fallbackSize) {
     Icon imageIcon = this.getSourceImageIcon();
     if (imageIcon != null) {
       return new Dimension(imageIcon.getIconWidth(), imageIcon.getIconHeight());
     } else {
-      return sizeIfResolutionIndependent;
+      return fallbackSize;
     }
   }
 }

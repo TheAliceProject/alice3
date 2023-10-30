@@ -64,11 +64,6 @@ import java.awt.Dimension;
     return new FieldIcon(this.field, this.fallbackIconFactory.getIcon(size));
   }
 
-  @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
-    return sizeIfResolutionIndependent;
-  }
-
   public void markAllIconsDirty() {
     for (Icon icon : this.getMapValues()) {
       if (icon instanceof FieldIcon) {

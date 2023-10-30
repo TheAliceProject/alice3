@@ -113,7 +113,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
   }
 
   @Override
-  public final Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+  public final Dimension getDefaultSize(Dimension fallbackSize) {
     return new Dimension(this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight());
   }
 }

@@ -55,9 +55,4 @@ public abstract class ResolutionIndependantIconFactory extends AbstractIconFacto
   public ResolutionIndependantIconFactory() {
     this(IsCachingDesired.FALSE);
   }
-
-  @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
-    return sizeIfResolutionIndependent;
-  }
 }

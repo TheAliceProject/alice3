@@ -93,6 +93,10 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    return fallbackSize;
+  }
+
   protected double getDefaultWidthToHeightAspectRatio() {
     Dimension defaultSize = this.getDefaultSize(null);
     if (defaultSize != null) {

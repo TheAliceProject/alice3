@@ -51,7 +51,7 @@ import java.awt.Dimension;
 public interface IconFactory {
   public Icon getIcon(Dimension size);
 
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent);
+  public Dimension getDefaultSize(Dimension fallbackSize);
 
   public Dimension getDefaultSizeForWidth(int width);
 
