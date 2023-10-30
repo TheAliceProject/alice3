@@ -57,6 +57,11 @@ import java.awt.Graphics;
 /**
  * @author Dennis Cosgrove
  */
+
+
+// this used by the object properties tab in the scene editor
+// this is not ideal, since we get a new icon from the factory on Every Paint.
+
 public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   SINGLTON;
 
@@ -72,9 +77,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
         org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
         rv = iconFactoryManager.getIconFactory(field, IconFactoryManager.getIconFactoryForField(field));
       }
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = IconFactoryManager.getIconFactoryForType(instanceFactory.getValueType());
       }
       return rv;
