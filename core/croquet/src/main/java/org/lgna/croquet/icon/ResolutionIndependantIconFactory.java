@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
-import java.awt.Dimension;
-
 /**
  * @author Dennis Cosgrove
  */

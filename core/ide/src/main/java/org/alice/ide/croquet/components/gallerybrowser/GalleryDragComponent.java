@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 import org.alice.ide.DefaultTheme;
+import org.alice.ide.Theme;
 import org.alice.ide.croquet.components.KnurlDragComponent;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.nonfree.NebulousIde;
@@ -63,7 +64,6 @@ import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.views.HorizontalTextPosition;
 import org.lgna.croquet.views.Label;
@@ -168,7 +168,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
     this.activeHighlightColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 2.0);
     this.activeShadowColor = ColorUtilities.scaleHSB(this.baseColor, 1.0, 1.0, 0.9);
 
-    Label label = new Label(PlusIconFactory.getInstance().getIcon(IconSize.SMALL.getSize()));
+    Label label = new Label(PlusIconFactory.getInstance().getIcon(Theme.SMALL_SQUARE_ICON_SIZE));
     label.setToolTipText(model.getTypeSummaryToolTipText());
     label.setVerticalAlignment(VerticalAlignment.BOTTOM);
     this.internalAddComponent(label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT);

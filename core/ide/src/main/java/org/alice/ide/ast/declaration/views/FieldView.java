@@ -66,7 +66,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
     super(composite);
   }
 
-  private final Label typeIconView = new Label(EmptyIconFactory.getInstance().getIcon(Theme.DEFAULT_LARGE_ICON_SIZE));
+  private final Label typeIconView = new Label(EmptyIconFactory.getInstance().getIcon(Theme.LARGE_RECT_ICON_SIZE));
 
   public FieldView(AddFieldComposite composite) {
     super(composite);
@@ -109,7 +109,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
     DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>) this.getComposite();
     UserField field = composite.getPreviewValue();
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(field);
-    this.typeIconView.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.DEFAULT_LARGE_ICON_SIZE)));
+    this.typeIconView.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.LARGE_RECT_ICON_SIZE)));
     this.typeIconView.revalidateAndRepaint();
   }
 }

@@ -48,7 +48,6 @@ import java.awt.image.BufferedImage;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;

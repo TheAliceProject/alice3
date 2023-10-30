@@ -56,12 +56,12 @@ import java.util.function.Function;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+import org.alice.ide.Theme;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.CameraOption;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.icon.ImageIconFactory;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
@@ -295,7 +295,7 @@ public class MarkerUtilities {
     return cameraToIconMap.get(camera).getB();
   }
 
-  public static final Dimension ICON_SIZE = IconSize.MEDIUM.getSize();
+  public static final Dimension ICON_SIZE = Theme.MEDIUM_SQUARE_ICON_SIZE;
 
   public static Icon getIconForCamera(CameraOption option) {
     if (option != null) {

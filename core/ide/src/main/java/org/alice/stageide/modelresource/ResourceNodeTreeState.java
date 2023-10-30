@@ -63,7 +63,7 @@ import java.util.concurrent.Callable;
 public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
 
   //todo
-  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.DEFAULT_SMALL_ICON_SIZE.height);
+  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.SMALL_RECT_ICON_SIZE.height);
 
   private static final Dimension BUTTON_ICON_SIZE = new Dimension(24, 18);
   private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, BUTTON_ICON_SIZE.height);
@@ -115,7 +115,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 
   @Override
   protected Icon getIconForNode(ResourceNode node) {
-    return this.getIconForNode(node, Theme.DEFAULT_SMALL_ICON_SIZE, EMPTY_ICON);
+    return this.getIconForNode(node, Theme.SMALL_RECT_ICON_SIZE, EMPTY_ICON);
   }
 
   @Override

@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
 
@@ -50,8 +49,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.net.URL;
 
 /**
  * @author Dennis Cosgrove

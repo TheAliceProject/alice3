@@ -114,9 +114,9 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
 
     Dimension desiredIconSize;
     if ((this.value instanceof ThisMethodInvocationFactory) || (this.value instanceof ThisFieldAccessMethodInvocationFactory)) {
-      desiredIconSize = Theme.DEFAULT_SMALLER_ICON_SIZE;
+      desiredIconSize = Theme.EXTRA_SMALL_RECT_ICON_SIZE;
     } else {
-      desiredIconSize = Theme.DEFAULT_SMALL_ICON_SIZE;
+      desiredIconSize = Theme.SMALL_RECT_ICON_SIZE;
     }
 
     // getIcon will scale our icon to whatever dimensions we give it, but want to preserve our aspect ratio

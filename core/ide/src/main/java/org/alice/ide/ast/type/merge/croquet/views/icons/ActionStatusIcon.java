@@ -47,11 +47,11 @@ import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.Theme;
 import org.alice.ide.ast.type.merge.croquet.ActionStatus;
 import org.alice.ide.ast.type.merge.croquet.MemberHub;
 import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 import org.lgna.croquet.icon.AbstractIcon;
-import org.lgna.croquet.icon.IconSize;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -76,7 +76,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class ActionStatusIcon extends AbstractIcon {
   private static final int PAD = 1;
-  private static final Dimension SIZE = IconSize.SMALL.getSize();
+  private static final Dimension SIZE = Theme.SMALL_SQUARE_ICON_SIZE;
   private static final Paint ADD_REPLACE_FILL_PAINT = new Color(0, 127, 0);
   private static final Paint ADD_REPLACE_DRAW_PAINT = Color.DARK_GRAY;
   private static final Shape ADD_SHAPE;
