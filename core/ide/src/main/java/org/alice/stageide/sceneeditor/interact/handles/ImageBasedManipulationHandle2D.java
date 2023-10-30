@@ -75,7 +75,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 
     this.setStateBasedOnManipulationStatus();
     Icon icon = this.getIcon();
-    Dimension size = IconUtilities.newDimension(icon);
+    Dimension size = new Dimension(icon.getIconWidth(), icon.getIconHeight());
     this.setSize(size);
     this.setMinimumSize(size);
     this.setPreferredSize(size);

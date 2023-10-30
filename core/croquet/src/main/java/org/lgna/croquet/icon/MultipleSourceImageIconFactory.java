@@ -61,13 +61,6 @@ public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageI
     super(defaultIndex, imageIcons);
   }
 
-  public MultipleSourceImageIconFactory(int defaultIndex, URL... resources) {
-    this(defaultIndex, IconUtilities.createImageIcons(resources));
-  }
-
-  public MultipleSourceImageIconFactory(int defaultIndex, Image... images) {
-    this(defaultIndex, IconUtilities.createImageIcons(images));
-  }
 
   @Override
   protected Icon createIcon(Dimension size) {

@@ -115,34 +115,6 @@ public class IconUtilities {
     }
   }
 
-  public static ImageIcon[] createImageIcons(URL... urls) {
-    ImageIcon[] rv = new ImageIcon[urls.length];
-    int i = 0;
-    for (URL url : urls) {
-      rv[i] = createImageIcon(url);
-      i++;
-    }
-    return rv;
-  }
-
-  public static ImageIcon[] createImageIcons(Image... images) {
-    ImageIcon[] rv = new ImageIcon[images.length];
-    int i = 0;
-    for (Image image : images) {
-      rv[i] = createImageIcon(image);
-      i++;
-    }
-    return rv;
-  }
-
-  public static boolean areSizesEqual(Icon prevIcon, Icon nextIcon) {
-    int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
-    int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
-    int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
-    int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
-    return (prevWidth == nextWidth) && (prevHeight == nextHeight);
-  }
-
   public static Icon getInformationIcon() {
     return UIManager.getIcon("OptionPane.informationIcon");
   }
@@ -157,13 +129,5 @@ public class IconUtilities {
 
   public static Icon getErrorIcon() {
     return UIManager.getIcon("OptionPane.errorIcon");
-  }
-
-  public static Dimension newDimension(Icon icon) {
-    if (icon != null) {
-      return new Dimension(icon.getIconWidth(), icon.getIconHeight());
-    } else {
-      return null;
-    }
   }
 }
