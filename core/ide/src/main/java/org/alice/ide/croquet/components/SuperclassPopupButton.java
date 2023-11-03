@@ -125,7 +125,7 @@ public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode>
     if (nextValue != null) {
       IconFactory iconFactory = nextValue.getIconFactory();
       if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
-        Dimension size = iconFactory.getTrimmedSizeForHeight(Theme.SMALL_RECT_ICON_SIZE.height);
+        Dimension size = iconFactory.getDefaultSizeForHeight(Theme.SMALL_RECT_ICON_SIZE.height);
         Icon icon = iconFactory.getIcon(size);
         if (icon != null) {
           internalAddComponent(new Label(icon));

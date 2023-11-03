@@ -83,12 +83,11 @@ public class EmptyIconFactory extends ResolutionIndependantIconFactory {
   }
 
   @Override
-  public Dimension getTrimmedSizeForWidth(int width) {
+  protected Dimension getDefaultSizeForWidth(int width) {
     return new Dimension(width, 0);
   }
-
   @Override
-  public Dimension getTrimmedSizeForHeight(int height) {
+  public Dimension getDefaultSizeForHeight(int height) {
     return new Dimension(0, height);
   }
 }

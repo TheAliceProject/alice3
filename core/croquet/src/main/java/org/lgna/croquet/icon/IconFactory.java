@@ -53,11 +53,6 @@ public interface IconFactory {
 
   public Dimension getDefaultSize(Dimension fallbackSize);
 
-  public Dimension getDefaultSizeForWidth(int width);
-
   public Dimension getDefaultSizeForHeight(int height);
 
-  public Dimension getTrimmedSizeForWidth(int width);
-
-  public Dimension getTrimmedSizeForHeight(int height);
 }

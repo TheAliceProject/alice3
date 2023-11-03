@@ -106,37 +106,17 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
-  protected double getTrimmedWidthToHeightAspectRatio() {
-    return this.getDefaultWidthToHeightAspectRatio();
-  }
-
-  protected Dimension createDimensionForWidth(int width, double widthToHeigthAspectRatio) {
-    int height = (int) Math.round(width / widthToHeigthAspectRatio);
+  protected Dimension getDefaultSizeForWidth(int width) {
+    final double aspectRatio = getDefaultWidthToHeightAspectRatio();
+    final int height = (int) Math.round(width / aspectRatio);
     return new Dimension(width, height);
   }
 
-  protected Dimension createDimensionForHeight(int height, double widthToHeigthAspectRatio) {
-    int width = (int) Math.round(height * widthToHeigthAspectRatio);
+  // I would very much like this to be protected, but I'm foiled by the IndirectCurrentAccessibleTypeIcon
+  @Override
+  public Dimension getDefaultSizeForHeight(int height) {
+    final double aspectRatio = getDefaultWidthToHeightAspectRatio();
+    final int width = (int) Math.round(height * aspectRatio);
     return new Dimension(width, height);
-  }
-
-  @Override
-  public final Dimension getDefaultSizeForWidth(int width) {
-    return this.createDimensionForWidth(width, this.getDefaultWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public final Dimension getDefaultSizeForHeight(int height) {
-    return this.createDimensionForHeight(height, this.getDefaultWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public Dimension getTrimmedSizeForWidth(int width) {
-    return this.createDimensionForWidth(width, this.getTrimmedWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public Dimension getTrimmedSizeForHeight(int height) {
-    return this.createDimensionForHeight(height, this.getTrimmedWidthToHeightAspectRatio());
   }
 }
