@@ -72,20 +72,19 @@ public class ListContentPanel extends TabContentPanel {
     scrollPane.setHorizontalScrollbarPolicy(ScrollPane.HorizontalScrollbarPolicy.NEVER);
     scrollPane.setVerticalScrollbarPolicy(ScrollPane.VerticalScrollbarPolicy.AS_NEEDED);
     this.addCenterComponent(scrollPane);
-    if (tab.showVrOption()) {
-      BooleanState isVr = tab.isWorldVrReady();
-      GridBagPanel pageEndPanel = new GridBagPanel();
-      GridBagConstraints gbc = new GridBagConstraints();
-      gbc.gridwidth = GridBagConstraints.REMAINDER;
-      gbc.fill = GridBagConstraints.HORIZONTAL;
-      gbc.weightx = 1.0;
-      pageEndPanel.addComponent(BoxUtilities.createVerticalSliver(4), gbc);
-      pageEndPanel.addComponent(Separator.createInstanceSeparatingTopFromBottom(), gbc);
-      pageEndPanel.addComponent(
-          new FlowPanel(FlowPanel.Alignment.CENTER, isVr.createCheckBox(), isVr.getSidekickLabel().createLabel()),
-          gbc);
-      addPageEndComponent(pageEndPanel);
-    }
+
+    BooleanState isVr = tab.isWorldVrReady();
+    GridBagPanel pageEndPanel = new GridBagPanel();
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridwidth = GridBagConstraints.REMAINDER;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1.0;
+    pageEndPanel.addComponent(BoxUtilities.createVerticalSliver(4), gbc);
+    pageEndPanel.addComponent(Separator.createInstanceSeparatingTopFromBottom(), gbc);
+    pageEndPanel.addComponent(
+        new FlowPanel(FlowPanel.Alignment.CENTER, isVr.createCheckBox(), isVr.getSidekickLabel().createLabel()),
+        gbc);
+    addPageEndComponent(pageEndPanel);
   }
 
   public List<ProjectSnapshot> getList() {
