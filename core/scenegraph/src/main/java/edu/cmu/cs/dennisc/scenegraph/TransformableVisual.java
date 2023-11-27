@@ -42,8 +42,10 @@
  */
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author dculyba
@@ -102,4 +104,15 @@ public class TransformableVisual extends Visual {
   }
 
   private final Transformable sgTransformable = new Transformable();
+
+  public void setTranslation(Vector3 translation) {
+    // Update value
+    AffineMatrix4x4 currentTransform = sgTransformable.localTransformation.getValue();
+    currentTransform.translation.set(translation);
+
+    // Trigger property event
+    sgTransformable.localTransformation.setValue(currentTransform);
+    // Trigger transformation event
+    fireAbsoluteTransformationChange();
+  }
 }

@@ -101,9 +101,7 @@ public class Arrow extends Transformable {
 
   private void setConeTranslation(double lengthCylinder) {
     Vector3 translation = Vector3.createMultiplication(new Vector3(lengthCylinder, lengthCylinder, lengthCylinder), this.bottomToTopAxis.accessVector());
-    AffineMatrix4x4 currentTransform = this.sgVisualCone.getTransformable().localTransformation.getValue();
-    currentTransform.translation.set(translation);
-    this.sgVisualCone.getTransformable().localTransformation.setValue(currentTransform);
+    sgVisualCone.setTranslation(translation);
   }
 
   public void resize(double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone) {
