@@ -57,6 +57,8 @@ public abstract class AbstractIconFactory implements IconFactory {
     TRUE, FALSE
   }
 
+  protected double defaultAspectRatio = 4.0 / 3.0;
+
   private final Map<Dimension, Icon> map;
 
   public AbstractIconFactory(IsCachingDesired isCachingDesired) {
@@ -97,12 +99,13 @@ public abstract class AbstractIconFactory implements IconFactory {
     return fallbackSize;
   }
 
-  protected double getDefaultWidthToHeightAspectRatio() {
+  private double getDefaultWidthToHeightAspectRatio() {
+    // getDefaultSize may be overriden, will return null if not.
     Dimension defaultSize = this.getDefaultSize(null);
     if (defaultSize != null) {
       return defaultSize.width / (double) defaultSize.height;
     } else {
-      return 4.0 / 3.0;
+      return defaultAspectRatio;
     }
   }
 

@@ -55,6 +55,8 @@ import java.awt.Dimension;
 public class ColorIconFactory extends ResolutionIndependantIconFactory {
   private final Color color;
 
+  protected double defaultAspectRatio = 1.0;
+
   public ColorIconFactory(Color color) {
     super(IsCachingDesired.FALSE);
     this.color = color;
@@ -63,10 +65,5 @@ public class ColorIconFactory extends ResolutionIndependantIconFactory {
   @Override
   protected Icon createIcon(Dimension size) {
     return new ColorIcon(this.color, size.width, size.height);
-  }
-
-  @Override
-  protected double getDefaultWidthToHeightAspectRatio() {
-    return 1.0;
   }
 }
