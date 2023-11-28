@@ -101,7 +101,7 @@ class SelectedTypeView extends BorderPanel {
     if (nextValue != null) {
       IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(nextValue);
       if (iconFactory != null) {
-        snapshotIcon = iconFactory.getIcon(iconFactory.getDefaultSize(Theme.LARGE_RECT_ICON_SIZE));
+        snapshotIcon = iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE);
       }
     }
     this.snapshotLabel.setText(snapshotText);
@@ -124,7 +124,7 @@ class SelectedTypeView extends BorderPanel {
 
 class ReturnToSceneTypeButton extends Button {
   private static Icon BACK_ICON = IconUtilities.createImageIcon(NonSceneTypeView.class.getResource("images/24/back.png"));
-  private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIcon(Theme.SMALL_RECT_ICON_SIZE), 0.5f));
+  private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIconToFit(Theme.SMALL_RECT_ICON_SIZE), 0.5f));
   private final Label typeIconLabel = new Label();
 
   public ReturnToSceneTypeButton(Operation operation) {

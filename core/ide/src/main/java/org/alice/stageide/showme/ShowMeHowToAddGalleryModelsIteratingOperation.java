@@ -66,7 +66,7 @@ public class ShowMeHowToAddGalleryModelsIteratingOperation extends StencilsItera
   @Override
   protected void localize() {
     super.localize();
-    this.setButtonIcon(ShowMeIconFactory.getInstance().getIcon(new Dimension(16, 16)));
+    this.setButtonIcon(ShowMeIconFactory.getInstance().getIconToFit(new Dimension(16, 16)));
     //this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
   }
 }

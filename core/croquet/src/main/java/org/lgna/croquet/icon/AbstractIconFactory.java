@@ -69,10 +69,6 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
-  //  protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
-  //  return this.map;
-  //  }
-
   protected Collection<Icon> getMapValues() {
     return this.map.values();
   }
@@ -80,12 +76,10 @@ public abstract class AbstractIconFactory implements IconFactory {
   protected abstract Icon createIcon(Dimension size);
 
   @Override
-  public final Icon getIcon(Dimension size) {
+  public final Icon getIconExactSize(Dimension size) {
     if (this.map != null) {
       Icon rv = this.map.get(size);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = this.createIcon(size);
         this.map.put(size, rv);
       }
@@ -95,6 +89,32 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
+  @Override
+  public final Icon getIconToFit(Dimension maxSize) {
+    // getDefaultSize may be overriden, will return null if not.
+    Dimension defaultSize = this.getDefaultSize(null);
+    if (defaultSize == null) {
+      // If there was no default aspect ratio, we can give back the max size
+      return getIconExactSize(maxSize);
+    } else {
+      final double defaultRatio = getDefaultWidthToHeightAspectRatio();
+      double requestedAspectRatio = maxSize.width / (double) maxSize.height;
+      if (requestedAspectRatio == defaultRatio) {
+        // same aspect ratio, only possibly changing the scale
+        return getIconExactSize(maxSize);
+      } else if (requestedAspectRatio > defaultRatio) {
+        // The resulting width will be smaller than requested to maintain default aspect ratio
+        final Dimension size = getDefaultSizeForHeight(maxSize.height);
+        return getIconExactSize(size);
+      } else {
+        // the resulting height will be smaller than requested to maintain default aspect ratio
+        final Dimension size = getDefaultSizeForWidth(maxSize.width);
+        return getIconExactSize(size);
+      }
+    }
+  }
+
+  // This gets overridden by the image-based icon factories.
   public Dimension getDefaultSize(Dimension fallbackSize) {
     return fallbackSize;
   }
@@ -115,9 +135,7 @@ public abstract class AbstractIconFactory implements IconFactory {
     return new Dimension(width, height);
   }
 
-  // I would very much like this to be protected, but I'm foiled by the IndirectCurrentAccessibleTypeIcon
-  @Override
-  public Dimension getDefaultSizeForHeight(int height) {
+  protected Dimension getDefaultSizeForHeight(int height) {
     final double aspectRatio = getDefaultWidthToHeightAspectRatio();
     final int width = (int) Math.round(height * aspectRatio);
     return new Dimension(width, height);

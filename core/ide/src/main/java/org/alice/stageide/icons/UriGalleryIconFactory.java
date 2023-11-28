@@ -68,7 +68,7 @@ import java.net.URI;
 
   @Override
   protected Icon createIcon(Dimension size) {
-    return new UriGalleryIcon(size, this.base.getIcon(this.baseIconSize));
+    return new UriGalleryIcon(size, this.base.getIconToFit(this.baseIconSize));
   }
 
   @Override

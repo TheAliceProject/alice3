@@ -121,7 +121,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
       UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
       if (field != null) {
         IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(field);
-        return iconFactory.getIcon(new Dimension(24, 18));
+        return iconFactory.getIconToFit(new Dimension(24, 18));
       }
     }
     return null;

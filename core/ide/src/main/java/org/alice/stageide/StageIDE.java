@@ -235,7 +235,7 @@ public abstract class StageIDE extends IDE {
           JavaField javaField = (JavaField) field;
           org.lgna.story.Color color = (org.lgna.story.Color) ReflectionUtilities.get(javaField.getFieldReflectionProxy().getReification(), null);
           Color awtColor = EmployeesOnly.getAwtColor(color);
-          return new ColorIconFactory(awtColor).getIcon(new Dimension(15, 15));
+          return new ColorIconFactory(awtColor).getIconToFit(new Dimension(15, 15));
         } catch (RuntimeException re) {
           //pass
           Logger.throwable(re, field);
@@ -247,7 +247,7 @@ public abstract class StageIDE extends IDE {
           try {
             ModelResource modelResource = (ModelResource) javaField.getFieldReflectionProxy().getReification().get(null);
             IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceInstance(modelResource);
-            return iconFactory.getIcon(new Dimension(20, 15));
+            return iconFactory.getIconToFit(new Dimension(20, 15));
           } catch (Exception e) {
             Logger.throwable(e, field);
             return null;

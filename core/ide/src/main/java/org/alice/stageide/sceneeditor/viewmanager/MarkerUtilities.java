@@ -300,7 +300,7 @@ public class MarkerUtilities {
   public static Icon getIconForCamera(CameraOption option) {
     if (option != null) {
       IconFactory factory = getIconFactoryForCamera(option);
-      return factory.getIcon(ICON_SIZE);
+      return factory.getIconToFit(ICON_SIZE);
     }
     return null;
   }
@@ -308,7 +308,7 @@ public class MarkerUtilities {
   public static Icon getHighlightedIconForCamera(CameraOption option) {
     if (option != null) {
       IconFactory factory = getHighlightedIconFactoryForCamera(option);
-      return factory.getIcon(ICON_SIZE);
+      return factory.getIconToFit(ICON_SIZE);
     }
     return null;
   }

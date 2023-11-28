@@ -107,7 +107,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
   private Icon getIconForNode(ResourceNode node, Dimension size, Icon emptyIcon) {
     if (node != null) {
       IconFactory iconFactory = node.getResourceKey().getIconFactory();
-      return iconFactory != null ? iconFactory.getIcon(size) : emptyIcon;
+      return iconFactory != null ? iconFactory.getIconToFit(size) : emptyIcon;
     } else {
       return emptyIcon;
     }

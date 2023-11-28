@@ -65,8 +65,8 @@ import java.awt.Paint;
  */
 public class FieldCellRenderer extends ListCellRenderer<UserField> {
   private static final Dimension ICON_SIZE = Theme.EXTRA_SMALL_SQUARE_ICON_SIZE;
-  private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIcon(ICON_SIZE);
-  private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIcon(ICON_SIZE);
+  private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIconToFit(ICON_SIZE);
+  private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIconToFit(ICON_SIZE);
   private static final Icon SELECTED_CHECK_ICON = new CheckIcon(ICON_SIZE) {
     @Override
     protected Paint getInnerPaint(Component c) {

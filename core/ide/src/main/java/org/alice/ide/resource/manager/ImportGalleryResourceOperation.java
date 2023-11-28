@@ -27,7 +27,7 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 
   public ImportGalleryResourceOperation() {
     super(Application.DOCUMENT_UI_GROUP, UUID.fromString("178d0562-a78b-40a2-907e-3cef46a4811d"));
-    this.setButtonIcon(new LineAxisIcon(Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIcon(new Dimension(Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight()))));
+    this.setButtonIcon(new LineAxisIcon(Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIconToFit(new Dimension(Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight()))));
   }
 
   @Override

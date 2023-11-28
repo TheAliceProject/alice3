@@ -119,9 +119,8 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
       desiredIconSize = Theme.SMALL_RECT_ICON_SIZE;
     }
 
-    // getIcon will scale our icon to whatever dimensions we give it, but want to preserve our aspect ratio
-    Dimension iconSize = this.value.getIconFactory().getDefaultSizeForHeight(desiredIconSize.height);
-    Icon icon = this.value.getIconFactory().getIcon(iconSize);
+    // we have a mix of square and rectangular icons, this adds padding to the squares.
+    Icon icon = this.value.getIconFactory().getIconToFit(desiredIconSize);
     JLabel label = new JLabel(icon);
     int sidePadding = (desiredIconSize.width - icon.getIconWidth()) / 2;
     label.setBorder(new EmptyBorder(0, sidePadding, 0, sidePadding));

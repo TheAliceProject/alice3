@@ -80,7 +80,7 @@ public abstract class MemberTabView extends MigPanel {
     AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
     if (addMethodMenuModel != null) {
       this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
-      this.popupButton.setClobberIcon(PlusIconFactory.getInstance().getIcon(new Dimension(16, 16)));
+      this.popupButton.setClobberIcon(PlusIconFactory.getInstance().getIconToFit(new Dimension(16, 16)));
       this.popupButton.tightenUpMargin(new Insets(-2, -10, -2, -8));
     } else {
       this.popupButton = null;

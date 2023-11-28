@@ -61,7 +61,7 @@ import java.awt.Dimension;
 
   @Override
   protected Icon createIcon(Dimension size) {
-    return new FieldIcon(this.field, this.fallbackIconFactory.getIcon(size));
+    return new FieldIcon(this.field, this.fallbackIconFactory.getIconToFit(size));
   }
 
   public void markAllIconsDirty() {

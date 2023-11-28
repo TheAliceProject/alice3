@@ -90,7 +90,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   public int getIconWidth() {
     IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
     if (iconFactory != null) {
-      return iconFactory.getDefaultSizeForHeight(SIZE.height).width;
+      return SIZE.width;
     } else {
       return 0;
     }
@@ -110,7 +110,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
     if (iconFactory != null) {
-      iconFactory.getIcon(iconFactory.getDefaultSizeForHeight(SIZE.height)).paintIcon(c, g, x, y);
+      iconFactory.getIconToFit(SIZE).paintIcon(c, g, x, y);
     }
   }
 }

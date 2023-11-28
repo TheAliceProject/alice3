@@ -95,9 +95,9 @@ import java.util.UUID;
               Dimension size = new Dimension(24, 18);
               IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(userField);
               if (iconFactory != null) {
-                return iconFactory.getIcon(size);
+                return iconFactory.getIconToFit(size);
               } else {
-                return EmptyIconFactory.getInstance().getIcon(size);
+                return EmptyIconFactory.getInstance().getIconToFit(size);
               }
             }
           }

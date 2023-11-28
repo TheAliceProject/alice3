@@ -67,7 +67,7 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
     this.javaValueType = javaValueType;
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(this.javaValueType);
     if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
-      this.getLaunchOperation().setButtonIcon(iconFactory.getIcon(Theme.SMALL_SQUARE_ICON_SIZE));
+      this.getLaunchOperation().setButtonIcon(iconFactory.getIconToFit(Theme.SMALL_SQUARE_ICON_SIZE));
     }
   }
 

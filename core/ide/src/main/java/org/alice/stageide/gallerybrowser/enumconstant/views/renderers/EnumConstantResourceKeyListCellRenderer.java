@@ -60,7 +60,7 @@ public class EnumConstantResourceKeyListCellRenderer extends ListCellRenderer<En
     if (value != null) {
       rv.setText(value.getLocalizedDisplayText());
       IconFactory iconFactory = value.getIconFactory();
-      rv.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.LARGE_RECT_ICON_SIZE)));
+      rv.setIcon(iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE));
       rv.setHorizontalTextPosition(SwingConstants.CENTER);
       rv.setVerticalTextPosition(SwingConstants.BOTTOM);
       rv.setHorizontalAlignment(SwingConstants.CENTER);
