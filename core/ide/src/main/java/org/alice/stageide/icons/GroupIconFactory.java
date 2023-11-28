@@ -52,6 +52,9 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
+
+// A group icon is used in the gallery to dynamically create an icon that looks like a folder of the icons inside
+
 public class GroupIconFactory extends AbstractIconFactory {
   private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
 
