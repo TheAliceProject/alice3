@@ -47,7 +47,6 @@ import org.alice.stageide.gallerybrowser.TreeOwningGalleryTab;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.lgna.croquet.SingleSelectTreeState;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.ScrollPane;
@@ -57,6 +56,7 @@ import org.lgna.croquet.views.TreePathViewController;
 
 import javax.swing.*;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Dennis Cosgrove
@@ -73,12 +73,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
     }
   }
 
-  private final ValueListener<ResourceNode> treeListener = new ValueListener<ResourceNode>() {
-    @Override
-    public void valueChanged(ValueEvent<ResourceNode> e) {
-      handleChanged(e.getPreviousValue(), e.getNextValue());
-    }
-  };
+  private final ValueListener<ResourceNode> treeListener = e -> handleChanged(e.getPreviousValue(), e.getNextValue());
 
   private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
   private final ScrollPane scrollPane;
@@ -123,17 +118,8 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
     this.mapNodeToHorizontalScrollPosition.put(prevValue, jHorizontalScrollBar.getValue());
     Integer i = this.mapNodeToHorizontalScrollPosition.get(nextValue);
     final int nextScrollPosition;
-    if (i != null) {
-      nextScrollPosition = i;
-    } else {
-      nextScrollPosition = 0;
-    }
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        jHorizontalScrollBar.setValue(nextScrollPosition);
-      }
-    });
+    nextScrollPosition = Objects.requireNonNullElse(i, 0);
+    SwingUtilities.invokeLater(() -> jHorizontalScrollBar.setValue(nextScrollPosition));
   }
 
   @Override
