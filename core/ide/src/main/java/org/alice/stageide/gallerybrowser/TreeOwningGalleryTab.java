@@ -55,7 +55,11 @@ public class TreeOwningGalleryTab extends GalleryTab {
   private final String localizationSubKey;
 
   TreeOwningGalleryTab(ResourceNodeTreeState treeState, String localizationSubKey) {
-    super(UUID.fromString("569f0663-bef4-4d07-a96a-65cd75048a2e"));
+    this(UUID.fromString("569f0663-bef4-4d07-a96a-65cd75048a2e"), treeState, localizationSubKey);
+  }
+
+  protected TreeOwningGalleryTab(UUID id, ResourceNodeTreeState treeState, String localizationSubKey) {
+    super(id);
     resourceNodeTreeSelectionState = treeState;
     this.localizationSubKey = localizationSubKey;
   }
@@ -70,7 +74,7 @@ public class TreeOwningGalleryTab extends GalleryTab {
   }
 
   @Override
-  protected final TreeOwningGalleryTabView createView() {
+  protected TreeOwningGalleryTabView createView() {
     return new TreeOwningGalleryTabView(this);
   }
 }

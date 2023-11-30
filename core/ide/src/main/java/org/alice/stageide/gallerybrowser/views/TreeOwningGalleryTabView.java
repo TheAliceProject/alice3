@@ -48,6 +48,7 @@ import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.SwingComponentView;
@@ -87,7 +88,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 
     this.scrollPane = createGalleryScrollPane(view);
 
-    BorderPanel panel = new BorderPanel.Builder().vgap(PAD).pageStart(new TreePathViewController(state, null)).center(scrollPane).build();
+    BorderPanel panel = new BorderPanel.Builder().vgap(PAD).pageStart(getPageStart(state)).center(scrollPane).build();
 
     this.addCenterComponent(panel);
 
@@ -95,6 +96,10 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
     view.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
     panel.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
     this.setBackgroundColor(GalleryView.BACKGROUND_COLOR);
+  }
+
+  protected AwtComponentView<JPanel> getPageStart(ResourceNodeTreeState state) {
+    return new TreePathViewController<>(state, null);
   }
 
   @Override
