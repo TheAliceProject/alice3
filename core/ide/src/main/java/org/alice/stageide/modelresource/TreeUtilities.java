@@ -56,11 +56,14 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
 import org.lgna.story.resourceutilities.ManifestDefinedGalleryTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
+import javax.swing.SwingUtilities;
+import java.io.File;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -76,6 +79,7 @@ public class TreeUtilities {
   private static ResourceNodeTreeState themeTreeState = new ResourceNodeTreeState(getTreeBasedOnTheme());
   private static ResourceNodeTreeState groupTreeState = new ResourceNodeTreeState(getTreeBasedOnGroup());
   private static ResourceNodeTreeState userTreeState = new ResourceNodeTreeState(getTreeBasedOnUserResources());
+  private static long lastUserTreeUpdate = 0;
   private static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> sClassListState = new SingleSelectListState<>(Application.APPLICATION_UI_GROUP, UUID.fromString("920d77ef-8da3-474a-8a2b-8ee36817b29f"), -1, getListBasedOnTopClasses());
 
   public static ResourceNodeTreeState getClassTreeState() {
@@ -96,6 +100,18 @@ public class TreeUtilities {
 
   public static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> getSClassListState() {
     return sClassListState;
+  }
+
+  public static void refreshMyGallery() {
+    File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+    if (!userGalleryDirectory.exists()) {
+      return;
+    }
+    long updated = userGalleryDirectory.lastModified();
+    if (updated > lastUserTreeUpdate) {
+      lastUserTreeUpdate = updated;
+      SwingUtilities.invokeLater(TreeUtilities::updateTreeBasedOnClassHierarchy);
+    }
   }
 
   private static ResourceNode treeBasedOnClassHierarchy;

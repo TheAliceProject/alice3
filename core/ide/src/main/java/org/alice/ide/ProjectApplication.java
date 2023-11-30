@@ -406,6 +406,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
     updateHistoryIndexFileSync();
     updateUndoRedoEnabled();
     projectFileUtilities.startAutoSaving();
+    projectFileUtilities.startPollingMyGallery();
   }
 
   protected abstract BufferedImage createThumbnail() throws Throwable;

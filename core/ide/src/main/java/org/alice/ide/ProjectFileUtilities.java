@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import org.alice.stageide.modelresource.TreeUtilities;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -37,15 +38,28 @@ class ProjectFileUtilities {
   private static final DateTimeFormatter ORDER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
   private static final int BACKUP_MAX = 5;
   private static final int SECONDS_BETWEEN_BACKUPS = 300;
+  private static final int SECONDS_BETWEEN_GALLERY_CHECKS = 5;
 
   private final ProjectApplication projectApp;
 
   private final ScheduledExecutorService savingService;
   private ScheduledFuture<?> saveFuture;
+  private ScheduledFuture<?> myGalleryPoll;
 
   ProjectFileUtilities(ProjectApplication app) {
     projectApp = app;
     savingService = Executors.newSingleThreadScheduledExecutor();
+  }
+
+  final void startPollingMyGallery() {
+    if (myGalleryPoll != null) {
+      myGalleryPoll.cancel(false);
+    }
+    myGalleryPoll = savingService.scheduleAtFixedRate(
+        TreeUtilities::refreshMyGallery,
+        SECONDS_BETWEEN_GALLERY_CHECKS,
+        SECONDS_BETWEEN_GALLERY_CHECKS,
+        TimeUnit.SECONDS);
   }
 
   final void saveProjectTo(File file) throws IOException {
