@@ -26,12 +26,14 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   AbstractType<?, ?, ?> cameraType = JavaType.getInstance(SCamera.class);
   AbstractType<?, ?, ?> vrUserType = JavaType.getInstance(SVRUser.class);
+  AbstractType<?, ?, ?> cameraMarkerType = JavaType.getInstance(SCameraMarker.class);
   InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
   private final String sCamera = SCamera.class.getSimpleName();
   private final String getHeadset = "getHeadset";
   private final String setPositionRelativeToVehicle = "setPositionRelativeToVehicle";
   private final String setOrientationRelativeToVehicle = "setOrientationRelativeToVehicle";
   private final AngleInRadians zero = new AngleInRadians(0);
+  private final double defaultHeight = 1.56;
 
   public ReplaceCameraWithVR() {
     super(ProjectVersion.getCurrentVersion());
@@ -61,7 +63,6 @@ public class ReplaceCameraWithVR extends AstMigration {
     if (node instanceof MethodInvocation) {
       migrateMethod((MethodInvocation) node, manager);
     }
-    // TODO Catch calls to setOrientation and setPosition and split across User and Headset
   }
 
   protected void migrateField(UserField field) {
@@ -87,23 +88,33 @@ public class ReplaceCameraWithVR extends AstMigration {
   }
 
   private void migrateMethod(MethodInvocation invocation, MigrationManager manager) {
-    AbstractMethod cameraMethod = invocation.method.getValue();
-    boolean isVrUserTarget = vrUserType.equals(invocation.expression.getValue().getType());
-    if (isVrUserTarget && cameraMethod.getName().equals(setPositionRelativeToVehicle)) {
+    if (isMatchingMethod(invocation, vrUserType, setPositionRelativeToVehicle)) {
       splitVrPositionStatement(invocation, manager);
     }
-    if (isVrUserTarget && cameraMethod.getName().equals(setOrientationRelativeToVehicle)) {
+    if (isMatchingMethod(invocation, cameraMarkerType, setPositionRelativeToVehicle)) {
+      lowerMarkerPosition(invocation);
+    }
+    if (isMatchingMethod(invocation, vrUserType, setOrientationRelativeToVehicle)) {
       splitVrOrientationStatement(invocation, manager);
     }
-    if (!(cameraMethod instanceof JavaMethod) || cameraMethod.getDeclaringType() != cameraType) {
+    if (isMatchingMethod(invocation, cameraMarkerType, setOrientationRelativeToVehicle)) {
+      levelMarkerOrientation(invocation);
+    }
+    AbstractMethod method = invocation.method.getValue();
+    if (!(method instanceof JavaMethod) || method.getDeclaringType() != cameraType) {
       return;
     }
-    AbstractType<?, ?, ?>[] paramTypes = getParameterTypes(cameraMethod);
-    AbstractMethod vrUserMethod = vrUserType.findMethod(cameraMethod.getName(), paramTypes);
+    AbstractType<?, ?, ?>[] paramTypes = getParameterTypes(method);
+    AbstractMethod vrUserMethod = vrUserType.findMethod(method.getName(), paramTypes);
     invocation.method.setValue(vrUserMethod);
-    replaceRequiredParamReferences(cameraMethod, vrUserMethod, invocation);
-    replaceKeyedParamReferences(cameraMethod, vrUserMethod, invocation);
-    Logger.outln(String.format("Changed from SCamera.%s to SVRUser.%s", cameraMethod.getName(), vrUserMethod.getName()));
+    replaceRequiredParamReferences(method, vrUserMethod, invocation);
+    replaceKeyedParamReferences(method, vrUserMethod, invocation);
+    Logger.outln(String.format("Changed from SCamera.%s to SVRUser.%s", method.getName(), vrUserMethod.getName()));
+  }
+
+  private boolean isMatchingMethod(MethodInvocation invocation, AbstractType<?, ?, ?> type, String methodName) {
+    return methodName.equals(invocation.method.getValue().getName())
+        && type.equals(invocation.expression.getValue().getType());
   }
 
   private void splitVrOrientationStatement(MethodInvocation setOrientationCall, MigrationManager manager) {
@@ -120,7 +131,7 @@ public class ReplaceCameraWithVR extends AstMigration {
         if (ori instanceof Orientation) {
           Orientation cameraOrientation = (Orientation) ori;
 
-          UnitQuaternion vrUserOrientation = getVrUserOrientation(cameraOrientation);
+          UnitQuaternion vrUserOrientation = getLeveledOrientation(cameraOrientation);
           replaceOrientationArgs(creation, vrUserOrientation);
 
           UnitQuaternion headsetOrientation = getHeadsetOrientation(cameraOrientation);
@@ -135,8 +146,8 @@ public class ReplaceCameraWithVR extends AstMigration {
 
   }
 
-  private UnitQuaternion getVrUserOrientation(Orientation cameraOrientation) {
-    OrthogonalMatrix3x3 matrix = EmployeesOnly.getOrthogonalMatrix3x3(cameraOrientation);
+  private UnitQuaternion getLeveledOrientation(Orientation orientation) {
+    OrthogonalMatrix3x3 matrix = EmployeesOnly.getOrthogonalMatrix3x3(orientation);
     EulerAngles angles = new EulerAngles(matrix);
 
     Angle flatPitch = new AngleInRadians(nearestPi(angles.pitch));
@@ -186,6 +197,19 @@ public class ReplaceCameraWithVR extends AstMigration {
     return AstUtilities.createMethodInvocationStatement(getHeadsetExpression, setOrientation, headOrientation);
   }
 
+  private void levelMarkerOrientation(MethodInvocation setOrientationCall) {
+    Expression orientationExp = setOrientationCall.requiredArguments.get(0).expression.getValue();
+    if (orientationExp instanceof InstanceCreation) {
+      InstanceCreation creation = (InstanceCreation) orientationExp;
+      final Object orientation = vm.createInstance(creation);
+      if (orientation instanceof Orientation) {
+        UnitQuaternion markerOrientation = getLeveledOrientation((Orientation) orientation);
+        replaceOrientationArgs(creation, markerOrientation);
+        Logger.outln("Leveled orientation of CameraMarker");
+      }
+    }
+  }
+
   private void splitVrPositionStatement(MethodInvocation invocation, MigrationManager manager) {
     // Individual ExpressionStatement holding the invocation
     Node stmt = invocation.getParent();
@@ -202,7 +226,6 @@ public class ReplaceCameraWithVR extends AstMigration {
           Position cameraPosition = (Position) pos;
 
           SimpleArgument arg = creation.requiredArguments.get(1);
-          double defaultHeight = 1.56;
           arg.expression.setValue(new DoubleLiteral(cameraPosition.getUp() - defaultHeight));
 
           AbstractMethod headsetMethod = vrUserType.findMethod(getHeadset);
@@ -216,6 +239,20 @@ public class ReplaceCameraWithVR extends AstMigration {
           manager.addFinalization(result);
           Logger.outln("Split position on SCamera between SVRUser and headset");
         }
+      }
+    }
+  }
+
+  private void lowerMarkerPosition(MethodInvocation setPositionCall) {
+    Expression positionExp = setPositionCall.requiredArguments.get(0).expression.getValue();
+    if (positionExp instanceof InstanceCreation) {
+      InstanceCreation creation = (InstanceCreation) positionExp;
+      final Object pos = vm.createInstance(creation);
+      if (pos instanceof Position) {
+        Position markerPosition = (Position) pos;
+        SimpleArgument arg = creation.requiredArguments.get(1);
+        arg.expression.setValue(new DoubleLiteral(markerPosition.getUp() - defaultHeight));
+        Logger.outln("Lowered position on CameraMarker");
       }
     }
   }
