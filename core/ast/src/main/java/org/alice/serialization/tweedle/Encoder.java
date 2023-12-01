@@ -217,6 +217,7 @@ public class Encoder extends SourceCodeGenerator {
     systemIdentifiers.add("story");
     systemIdentifiers.add("ground");
     systemIdentifiers.add("camera");
+    systemIdentifiers.add("vrUser");
   }
 
   private final Set<AbstractDeclaration> terminalNodes;
