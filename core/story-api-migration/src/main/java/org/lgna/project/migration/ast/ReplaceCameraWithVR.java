@@ -75,6 +75,9 @@ public class ReplaceCameraWithVR extends AstMigration {
       InstanceCreation instantiation = new InstanceCreation(vrUserType.getDeclaredConstructor());
       field.initializer.setValue(instantiation);
     }
+    if ("camera".equals(field.getName())) {
+      field.name.setValue("vrUser");
+    }
     Logger.outln(String.format("Migrated field `%s` type from SCamera to SVRUser", field.getName()));
   }
 
