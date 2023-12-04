@@ -172,6 +172,10 @@ public class SystemUtilities {
     return SystemUtilities.platform == Platform.WINDOWS;
   }
 
+  public static String getScriptExtension() {
+    return isWindows() ? "bat" : "sh";
+  }
+
   public static Integer getBitCount() {
     String bitCountText = System.getProperty("sun.arch.data.model");
     if (bitCountText != null) {
