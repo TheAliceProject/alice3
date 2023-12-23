@@ -85,7 +85,7 @@ public class ResourceMenuModel extends CascadeMenuModel<ResourceNode> {
   @Override
   public Icon getMenuItemIcon(ItemNode<? super ResourceNode, ResourceNode> node) {
     IconFactory iconFactory = this.resourceNode.getIconFactory();
-    return iconFactory != null ? iconFactory.getIconToFit(Theme.SMALL_RECT_ICON_SIZE) : null;
+    return iconFactory != null ? iconFactory.getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE) : null;
   }
 
 }

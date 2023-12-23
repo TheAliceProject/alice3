@@ -63,11 +63,9 @@ import java.util.concurrent.Callable;
 public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
 
   //todo
-  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.SMALL_RECT_ICON_SIZE.height);
+  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.MEDIUM_RECT_ICON_SIZE.height);
 
-  private static final Dimension BUTTON_ICON_SIZE = new Dimension(24, 18);
-  private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, BUTTON_ICON_SIZE.height);
-  //
+  private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, Theme.EXTRA_SMALL_RECT_ICON_SIZE.height);
 
   private final ResourceNode root;
 
@@ -88,7 +86,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
       return rv;
     }
     if (resourceNode.isBreadcrumbButtonIconDesired()) {
-      rv.setButtonIcon(this.getIconForNode(resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON));
+      rv.setButtonIcon(this.getIconForNode(resourceNode, Theme.EXTRA_SMALL_RECT_ICON_SIZE, EMPTY_BUTTON_ICON));
     }
     return rv;
   }
@@ -115,7 +113,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 
   @Override
   protected Icon getIconForNode(ResourceNode node) {
-    return this.getIconForNode(node, Theme.SMALL_RECT_ICON_SIZE, EMPTY_ICON);
+    return this.getIconForNode(node, Theme.MEDIUM_RECT_ICON_SIZE, EMPTY_ICON);
   }
 
   @Override

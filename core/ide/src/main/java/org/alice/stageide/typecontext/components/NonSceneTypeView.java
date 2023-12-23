@@ -124,7 +124,7 @@ class SelectedTypeView extends BorderPanel {
 
 class ReturnToSceneTypeButton extends Button {
   private static Icon BACK_ICON = IconUtilities.createImageIcon(NonSceneTypeView.class.getResource("images/24/back.png"));
-  private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIconToFit(Theme.SMALL_RECT_ICON_SIZE), 0.5f));
+  private final Label thumbnailLabel = new Label(new AlphaIcon(SceneIconFactory.getInstance().getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE), 0.5f));
   private final Label typeIconLabel = new Label();
 
   public ReturnToSceneTypeButton(Operation operation) {

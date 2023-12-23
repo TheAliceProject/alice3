@@ -117,7 +117,7 @@ public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<Insta
       IconFactory iconFactory = nextValue.getIconFactory();
       if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
 
-        Icon icon = iconFactory.getIconToFit(Theme.SMALL_RECT_ICON_SIZE);
+        Icon icon = iconFactory.getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE);
         if (icon != null) {
           this.internalAddComponent(new Label(icon));
         }

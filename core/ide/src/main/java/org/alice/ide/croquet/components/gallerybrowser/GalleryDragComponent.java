@@ -202,8 +202,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
         if (ModelResource.class.isAssignableFrom(modelResourceInterface)) {
           IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceCls((Class<ModelResource>) modelResourceInterface);
           if (iconFactory != null) {
-            final Dimension SUPER_CLASS_ICON_SIZE = new Dimension(32, 24);
-            Icon icon = iconFactory.getIconToFit(SUPER_CLASS_ICON_SIZE);
+            Icon icon = iconFactory.getIconToFit(Theme.SMALL_RECT_ICON_SIZE);
             SuperclassIconLabel superclsLabel = new SuperclassIconLabel(modelResourceInterface);
             superclsLabel.getAwtComponent().setIcon(icon);
             this.internalAddComponent(superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT);

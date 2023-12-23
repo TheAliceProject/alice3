@@ -44,6 +44,7 @@ package org.alice.ide.member.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.Theme;
 import org.alice.ide.member.AddMethodMenuModel;
 import org.alice.ide.member.FunctionsOfReturnTypeSubComposite;
 import org.alice.ide.member.MemberTabComposite;
@@ -80,7 +81,7 @@ public abstract class MemberTabView extends MigPanel {
     AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
     if (addMethodMenuModel != null) {
       this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
-      this.popupButton.setClobberIcon(PlusIconFactory.getInstance().getIconToFit(new Dimension(16, 16)));
+      this.popupButton.setClobberIcon(PlusIconFactory.getInstance().getIconToFit(Theme.EXTRA_SMALL_SQUARE_ICON_SIZE));
       this.popupButton.tightenUpMargin(new Insets(-2, -10, -2, -8));
     } else {
       this.popupButton = null;

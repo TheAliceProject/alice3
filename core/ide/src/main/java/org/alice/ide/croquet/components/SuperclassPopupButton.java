@@ -56,7 +56,6 @@ import org.lgna.croquet.views.FauxComboBoxPopupButton;
 import org.lgna.croquet.views.Label;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode> implements ValueListener<ResourceNode> {
   private final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> listState;
@@ -125,7 +124,7 @@ public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode>
     if (nextValue != null) {
       IconFactory iconFactory = nextValue.getIconFactory();
       if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
-        Icon icon = iconFactory.getIconToFit(Theme.SMALL_RECT_ICON_SIZE);
+        Icon icon = iconFactory.getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE);
         if (icon != null) {
           internalAddComponent(new Label(icon));
         }

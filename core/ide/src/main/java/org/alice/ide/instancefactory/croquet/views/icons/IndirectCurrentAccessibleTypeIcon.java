@@ -43,6 +43,7 @@
 package org.alice.ide.instancefactory.croquet.views.icons;
 
 import org.alice.ide.IDE;
+import org.alice.ide.Theme;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.icons.IconFactoryManager;
@@ -59,13 +60,13 @@ import java.awt.Graphics;
  */
 
 
-// this used by the object properties tab in the scene editor
+// this is used by the object properties tab in the scene editor
 // this is not ideal, since we get a new icon from the factory on Every Paint.
 
 public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   SINGLTON;
 
-  private static final Dimension SIZE = new Dimension(32, 24);
+  private static final Dimension SIZE = Theme.SMALL_RECT_ICON_SIZE;
 
   private IconFactory getCurrentAccessibleTypeIconFactory() {
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();

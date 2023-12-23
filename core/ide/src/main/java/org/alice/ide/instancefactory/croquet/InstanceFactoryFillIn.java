@@ -114,9 +114,9 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
 
     Dimension desiredIconSize;
     if ((this.value instanceof ThisMethodInvocationFactory) || (this.value instanceof ThisFieldAccessMethodInvocationFactory)) {
-      desiredIconSize = Theme.EXTRA_SMALL_RECT_ICON_SIZE;
-    } else {
       desiredIconSize = Theme.SMALL_RECT_ICON_SIZE;
+    } else {
+      desiredIconSize = Theme.MEDIUM_RECT_ICON_SIZE;
     }
 
     // we have a mix of square and rectangular icons, this adds padding to the squares.

@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import org.alice.ide.Theme;
 import org.alice.stageide.icons.ShowMeIconFactory;
 
 import java.awt.Dimension;
@@ -66,7 +67,7 @@ public class ShowMeHowToAddGalleryModelsIteratingOperation extends StencilsItera
   @Override
   protected void localize() {
     super.localize();
-    this.setButtonIcon(ShowMeIconFactory.getInstance().getIconToFit(new Dimension(16, 16)));
+    this.setButtonIcon(ShowMeIconFactory.getInstance().getIconToFit(Theme.EXTRA_SMALL_SQUARE_ICON_SIZE));
     //this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
   }
 }
