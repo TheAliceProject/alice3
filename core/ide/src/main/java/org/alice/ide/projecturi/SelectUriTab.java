@@ -64,14 +64,6 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
     return isWorldVrReadyState;
   }
 
-  public boolean showVrOption() {
-    return true;
-  }
-
-  public boolean enableVrOption() {
-    return true;
-  }
-
   public abstract UriProjectLoader getSelectedUri();
 
   protected abstract void refresh();
@@ -85,13 +77,10 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
   }
 
   protected void updateVrCheckbox(ProjectSnapshot selected) {
-    if (!showVrOption()) {
-      return;
-    }
     if (isWorldVrReady().isEnabled()) {
       lastUserVrChoice = isWorldVrReadyState.getValue();
     }
-    isWorldVrReady().setEnabled(enableVrOption() && selected != null && !selected.isVrProject());
+    isWorldVrReady().setEnabled(selected != null && !selected.isVrProject());
     isWorldVrReady().setValueTransactionlessly(
         selected != null && selected.isVrProject() || lastUserVrChoice);
   }

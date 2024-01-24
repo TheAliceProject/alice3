@@ -62,10 +62,11 @@ import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Node;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
+import org.lgna.project.migration.OptionalMigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
+import org.lgna.project.migration.ast.ReplaceCameraWithVR;
 import org.lgna.story.resourceutilities.ResourceTypeHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -97,6 +98,8 @@ public class XmlProjectIo implements ProjectIo {
   private static final String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
   private static final String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
+  private static OptionalMigrationManager CAMERA_TO_VR = new OptionalMigrationManager(new ReplaceCameraWithVR());
+
   public static XmlProjectReader reader(ZipEntryContainer container) {
     return new XmlProjectReader(container);
   }
@@ -115,10 +118,16 @@ public class XmlProjectIo implements ProjectIo {
     @Override
     public Project readProject(boolean makeVrReady) throws IOException, VersionNotSupportedException {
       ProjectManifest manifest = readManifest();
+      Project.SceneCameraType cameraType =
+          manifest == null ? Project.SceneCameraType.WindowCamera : manifest.projectStructure.sceneCameraType;
       NamedUserType type = readType(PROGRAM_TYPE_ENTRY_NAME);
+      if (makeVrReady) {
+        CAMERA_TO_VR.migrate(type, typeHelper, ProjectVersion.getCurrentVersion());
+        cameraType = Project.SceneCameraType.VRHeadset;
+      }
       Set<Resource> resources = readResources();
       Set<NamedUserType> namedUserTypes = Collections.emptySet();
-      return new Project(manifest, type, namedUserTypes, resources);
+      return new Project(type, namedUserTypes, resources, cameraType);
     }
 
     private ProjectManifest readManifest() throws IOException {
@@ -202,14 +211,8 @@ public class XmlProjectIo implements ProjectIo {
 
       Document xmlDocument = readXML(entryName, ProjectMigrationManager.getInstance(), decodedProjectVersion);
       NamedUserType type = (NamedUserType) (new XmlEncoderDecoder()).decode(xmlDocument);
-      migrateNode(type, ProjectMigrationManager.getInstance(), decodedProjectVersion);
+      ProjectMigrationManager.getInstance().migrate(type, typeHelper, decodedProjectVersion);
       return type;
-    }
-
-    private void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
-      if (migrationManager.hasAstMigrationsFor(decodedVersion)) {
-        migrationManager.migrate(affectedNode, typeHelper, new HashSet<>(), decodedVersion);
-      }
     }
 
     private Set<Resource> readResources() throws IOException {

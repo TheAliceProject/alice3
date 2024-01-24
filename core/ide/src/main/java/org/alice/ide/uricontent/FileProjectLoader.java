@@ -62,7 +62,13 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
 
   @Override
   public URI getUri() {
-    return this.getFile().toURI();
+    if (makeVrReady) {
+      // Rename migrated worlds so they do not overwrite existing files
+      String source = getFile().getAbsolutePath();
+      return new File(source.substring(0, source.length() - 4) + " VR" + source.substring(source.length() - 4)).toURI();
+    } else {
+      return getFile().toURI();
+    }
   }
 
   public static void main(String[] args) throws Exception {

@@ -59,6 +59,8 @@ public abstract class ListUriTab extends SelectUriTab {
 
   @Override
   public UriProjectLoader getSelectedUri() {
-    return UriProjectLoader.createInstance(getListSelectionState().getValue(), isWorldVrReady().getValue());
+    // Only flag to make VR ready if world is not yet VR
+    return UriProjectLoader.createInstance(getListSelectionState().getValue(),
+        isWorldVrReady().isEnabled() && isWorldVrReady().getValue());
   }
 }

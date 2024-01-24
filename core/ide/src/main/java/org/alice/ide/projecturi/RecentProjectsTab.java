@@ -67,11 +67,6 @@ public class RecentProjectsTab extends ListUriTab {
   protected void refresh() {
   }
 
-  @Override
-  public boolean enableVrOption() {
-    return false;
-  }
-
   public void updateVrCheckbox() {
     updateVrCheckbox(getListSelectionState().getValue());
   }

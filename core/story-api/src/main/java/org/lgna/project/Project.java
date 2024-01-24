@@ -75,11 +75,11 @@ public class Project {
 
   private final Object lock = new Object();
 
-  public Project(ProjectManifest manifest, NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources) {
+  public Project(NamedUserType programType, Set<NamedUserType> namedUserTypes, Set<Resource> resources, SceneCameraType sceneCameraType) {
     this.programType = programType;
     this.namedUserTypes.addAll(namedUserTypes);
     this.resources.addAll(resources);
-    this.sceneCameraType = manifest == null ? SceneCameraType.WindowCamera : manifest.projectStructure.sceneCameraType;
+    this.sceneCameraType = sceneCameraType;
   }
 
   public Project(NamedUserType programType, SceneCameraType sceneCameraType) {
