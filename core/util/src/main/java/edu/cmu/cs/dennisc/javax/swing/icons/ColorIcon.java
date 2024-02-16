@@ -50,7 +50,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 
 public class ColorIcon implements Icon {
-  public static final int DEFAULT_SIZE = 15;
+  public static final int DEFAULT_SIZE = 16;
   private Color fillColor;
   private Color outlineColor;
   private int width;
