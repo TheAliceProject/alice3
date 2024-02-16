@@ -57,7 +57,7 @@ public abstract class AbstractIconFactory implements IconFactory {
     TRUE, FALSE
   }
 
-  protected double defaultAspectRatio = 4.0 / 3.0;
+  private final double defaultAspectRatio = 4.0 / 3.0;
 
   private final Map<Dimension, Icon> map;
 
@@ -94,23 +94,23 @@ public abstract class AbstractIconFactory implements IconFactory {
     // getDefaultSize may be overriden, will return null if not.
     Dimension defaultSize = this.getDefaultSize(null);
     if (defaultSize == null) {
-      // If there was no default aspect ratio, we can give back the max size
+      // If there was no default size, we can give back the max size
       return getIconExactSize(maxSize);
+    }
+
+    final double defaultRatio = getDefaultWidthToHeightAspectRatio();
+    double requestedAspectRatio = maxSize.width / (double) maxSize.height;
+    if (requestedAspectRatio == defaultRatio) {
+      // same aspect ratio, only possibly changing the scale
+      return getIconExactSize(maxSize);
+    } else if (requestedAspectRatio > defaultRatio) {
+      // The resulting width will be smaller than requested to maintain default aspect ratio
+      final Dimension size = getDefaultSizeForHeight(maxSize.height);
+      return getIconExactSize(size);
     } else {
-      final double defaultRatio = getDefaultWidthToHeightAspectRatio();
-      double requestedAspectRatio = maxSize.width / (double) maxSize.height;
-      if (requestedAspectRatio == defaultRatio) {
-        // same aspect ratio, only possibly changing the scale
-        return getIconExactSize(maxSize);
-      } else if (requestedAspectRatio > defaultRatio) {
-        // The resulting width will be smaller than requested to maintain default aspect ratio
-        final Dimension size = getDefaultSizeForHeight(maxSize.height);
-        return getIconExactSize(size);
-      } else {
-        // the resulting height will be smaller than requested to maintain default aspect ratio
-        final Dimension size = getDefaultSizeForWidth(maxSize.width);
-        return getIconExactSize(size);
-      }
+      // the resulting height will be smaller than requested to maintain default aspect ratio
+      final Dimension size = getDefaultSizeForWidth(maxSize.width);
+      return getIconExactSize(size);
     }
   }
 
