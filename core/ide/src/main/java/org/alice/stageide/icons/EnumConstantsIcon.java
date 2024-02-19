@@ -70,11 +70,11 @@ public class EnumConstantsIcon extends AbstractIcon {
       int subHeight = Math.max(size.height - totalOffset, size.height / 2);
       Dimension subSize = new Dimension(subWidth, subHeight);
       for (int i = 0; i < N; i++) {
-        this.icons[N - i - 1] = iconFactories.get(i).getIcon(subSize);
+        this.icons[N - i - 1] = iconFactories.get(i).getIconToFit(subSize);
       }
     } else {
       this.icons = new Icon[1];
-      this.icons[0] = iconFactories.get(0).getIcon(size);
+      this.icons[0] = iconFactories.get(0).getIconToFit(size);
     }
   }
 

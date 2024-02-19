@@ -49,15 +49,13 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 public interface IconFactory {
-  public Icon getIcon(Dimension size);
 
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent);
+  // the icon may be trimmed or scaled to the desired size, while preserving
+  // the default aspect ratio, if it has one (Icon Factories that don't explicitly
+  // care about the aspect ratio make 4:3 width:height icons)
+  public Icon getIconToFit(Dimension maxSize);
 
-  public Dimension getDefaultSizeForWidth(int width);
+  // returns an icon of precisely this size (images might be scaled/skewed)
+  public Icon getIconExactSize(Dimension size);
 
-  public Dimension getDefaultSizeForHeight(int height);
-
-  public Dimension getTrimmedSizeForWidth(int width);
-
-  public Dimension getTrimmedSizeForHeight(int height);
 }

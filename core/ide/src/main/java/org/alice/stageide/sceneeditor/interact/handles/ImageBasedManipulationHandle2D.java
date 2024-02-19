@@ -48,7 +48,6 @@ import java.awt.image.BufferedImage;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleRenderState;
 import org.alice.interact.handle.ManipulationHandle2D;
@@ -75,7 +74,7 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 
     this.setStateBasedOnManipulationStatus();
     Icon icon = this.getIcon();
-    Dimension size = IconUtilities.newDimension(icon);
+    Dimension size = new Dimension(icon.getIconWidth(), icon.getIconHeight());
     this.setSize(size);
     this.setMinimumSize(size);
     this.setPreferredSize(size);

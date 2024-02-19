@@ -57,6 +57,8 @@ public abstract class AbstractIconFactory implements IconFactory {
     TRUE, FALSE
   }
 
+  private final double defaultAspectRatio = 4.0 / 3.0;
+
   private final Map<Dimension, Icon> map;
 
   public AbstractIconFactory(IsCachingDesired isCachingDesired) {
@@ -67,10 +69,6 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
-  //  protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
-  //  return this.map;
-  //  }
-
   protected Collection<Icon> getMapValues() {
     return this.map.values();
   }
@@ -78,12 +76,10 @@ public abstract class AbstractIconFactory implements IconFactory {
   protected abstract Icon createIcon(Dimension size);
 
   @Override
-  public final Icon getIcon(Dimension size) {
+  public final Icon getIconExactSize(Dimension size) {
     if (this.map != null) {
       Icon rv = this.map.get(size);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = this.createIcon(size);
         this.map.put(size, rv);
       }
@@ -93,46 +89,55 @@ public abstract class AbstractIconFactory implements IconFactory {
     }
   }
 
-  protected double getDefaultWidthToHeightAspectRatio() {
+  @Override
+  public final Icon getIconToFit(Dimension maxSize) {
+    // getDefaultSize may be overriden, will return null if not.
+    Dimension defaultSize = this.getDefaultSize(null);
+    if (defaultSize == null) {
+      // If there was no default size, we can give back the max size
+      return getIconExactSize(maxSize);
+    }
+
+    final double defaultRatio = getDefaultWidthToHeightAspectRatio();
+    double requestedAspectRatio = maxSize.width / (double) maxSize.height;
+    if (requestedAspectRatio == defaultRatio) {
+      // same aspect ratio, only possibly changing the scale
+      return getIconExactSize(maxSize);
+    } else if (requestedAspectRatio > defaultRatio) {
+      // The resulting width will be smaller than requested to maintain default aspect ratio
+      final Dimension size = getDefaultSizeForHeight(maxSize.height);
+      return getIconExactSize(size);
+    } else {
+      // the resulting height will be smaller than requested to maintain default aspect ratio
+      final Dimension size = getDefaultSizeForWidth(maxSize.width);
+      return getIconExactSize(size);
+    }
+  }
+
+  // This gets overridden by the image-based icon factories.
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    return fallbackSize;
+  }
+
+  private double getDefaultWidthToHeightAspectRatio() {
+    // getDefaultSize may be overriden, will return null if not.
     Dimension defaultSize = this.getDefaultSize(null);
     if (defaultSize != null) {
       return defaultSize.width / (double) defaultSize.height;
     } else {
-      return 4.0 / 3.0;
+      return defaultAspectRatio;
     }
   }
 
-  protected double getTrimmedWidthToHeightAspectRatio() {
-    return this.getDefaultWidthToHeightAspectRatio();
-  }
-
-  protected Dimension createDimensionForWidth(int width, double widthToHeigthAspectRatio) {
-    int height = (int) Math.round(width / widthToHeigthAspectRatio);
+  protected Dimension getDefaultSizeForWidth(int width) {
+    final double aspectRatio = getDefaultWidthToHeightAspectRatio();
+    final int height = (int) Math.round(width / aspectRatio);
     return new Dimension(width, height);
   }
 
-  protected Dimension createDimensionForHeight(int height, double widthToHeigthAspectRatio) {
-    int width = (int) Math.round(height * widthToHeigthAspectRatio);
+  protected Dimension getDefaultSizeForHeight(int height) {
+    final double aspectRatio = getDefaultWidthToHeightAspectRatio();
+    final int width = (int) Math.round(height * aspectRatio);
     return new Dimension(width, height);
-  }
-
-  @Override
-  public final Dimension getDefaultSizeForWidth(int width) {
-    return this.createDimensionForWidth(width, this.getDefaultWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public final Dimension getDefaultSizeForHeight(int height) {
-    return this.createDimensionForHeight(height, this.getDefaultWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public Dimension getTrimmedSizeForWidth(int width) {
-    return this.createDimensionForWidth(width, this.getTrimmedWidthToHeightAspectRatio());
-  }
-
-  @Override
-  public Dimension getTrimmedSizeForHeight(int height) {
-    return this.createDimensionForHeight(height, this.getTrimmedWidthToHeightAspectRatio());
   }
 }

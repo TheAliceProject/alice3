@@ -63,11 +63,9 @@ import java.util.concurrent.Callable;
 public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
 
   //todo
-  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.DEFAULT_SMALL_ICON_SIZE.height);
+  private static final Icon EMPTY_ICON = new EmptyIcon(0, Theme.MEDIUM_RECT_ICON_SIZE.height);
 
-  private static final Dimension BUTTON_ICON_SIZE = new Dimension(24, 18);
-  private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, BUTTON_ICON_SIZE.height);
-  //
+  private static final Icon EMPTY_BUTTON_ICON = new EmptyIcon(0, Theme.EXTRA_SMALL_RECT_ICON_SIZE.height);
 
   private final ResourceNode root;
 
@@ -88,7 +86,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
       return rv;
     }
     if (resourceNode.isBreadcrumbButtonIconDesired()) {
-      rv.setButtonIcon(this.getIconForNode(resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON));
+      rv.setButtonIcon(this.getIconForNode(resourceNode, Theme.EXTRA_SMALL_RECT_ICON_SIZE, EMPTY_BUTTON_ICON));
     }
     return rv;
   }
@@ -107,7 +105,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
   private Icon getIconForNode(ResourceNode node, Dimension size, Icon emptyIcon) {
     if (node != null) {
       IconFactory iconFactory = node.getResourceKey().getIconFactory();
-      return iconFactory != null ? iconFactory.getIcon(size) : emptyIcon;
+      return iconFactory != null ? iconFactory.getIconToFit(size) : emptyIcon;
     } else {
       return emptyIcon;
     }
@@ -115,7 +113,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 
   @Override
   protected Icon getIconForNode(ResourceNode node) {
-    return this.getIconForNode(node, Theme.DEFAULT_SMALL_ICON_SIZE, EMPTY_ICON);
+    return this.getIconForNode(node, Theme.MEDIUM_RECT_ICON_SIZE, EMPTY_ICON);
   }
 
   @Override

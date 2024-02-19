@@ -43,6 +43,7 @@
 package org.alice.ide.instancefactory.croquet.views.icons;
 
 import org.alice.ide.IDE;
+import org.alice.ide.Theme;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.stageide.icons.IconFactoryManager;
@@ -57,10 +58,15 @@ import java.awt.Graphics;
 /**
  * @author Dennis Cosgrove
  */
+
+
+// this is used by the object properties tab in the scene editor
+// this is not ideal, since we get a new icon from the factory on Every Paint.
+
 public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   SINGLTON;
 
-  private static final Dimension SIZE = new Dimension(32, 24);
+  private static final Dimension SIZE = Theme.SMALL_RECT_ICON_SIZE;
 
   private IconFactory getCurrentAccessibleTypeIconFactory() {
     InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
@@ -72,9 +78,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
         org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager = IDE.getActiveInstance().getDocumentFrame().getIconFactoryManager();
         rv = iconFactoryManager.getIconFactory(field, IconFactoryManager.getIconFactoryForField(field));
       }
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = IconFactoryManager.getIconFactoryForType(instanceFactory.getValueType());
       }
       return rv;
@@ -87,7 +91,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   public int getIconWidth() {
     IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
     if (iconFactory != null) {
-      return iconFactory.getDefaultSizeForHeight(SIZE.height).width;
+      return SIZE.width;
     } else {
       return 0;
     }
@@ -107,7 +111,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements Icon {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
     if (iconFactory != null) {
-      iconFactory.getIcon(iconFactory.getDefaultSizeForHeight(SIZE.height)).paintIcon(c, g, x, y);
+      iconFactory.getIconToFit(SIZE).paintIcon(c, g, x, y);
     }
   }
 }

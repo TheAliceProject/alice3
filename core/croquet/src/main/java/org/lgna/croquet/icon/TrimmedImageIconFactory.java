@@ -75,7 +75,7 @@ public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactor
   }
 
   @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
+  public Dimension getDefaultSize(Dimension fallbackSize) {
     return this.defaultSize;
   }
 }

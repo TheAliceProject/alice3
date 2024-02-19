@@ -54,9 +54,15 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public interface Theme {
-  public static final Dimension DEFAULT_SMALLER_ICON_SIZE = new Dimension(32, 24);
-  public static final Dimension DEFAULT_SMALL_ICON_SIZE = new Dimension(40, 30);
-  public static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension(120, 90);
+  public static final Dimension EXTRA_SMALL_RECT_ICON_SIZE = new Dimension(24, 18);
+  public static final Dimension SMALL_RECT_ICON_SIZE = new Dimension(32, 24);
+  public static final Dimension MEDIUM_RECT_ICON_SIZE = new Dimension(40, 30);
+  public static final Dimension LARGE_RECT_ICON_SIZE = new Dimension(120, 90);
+
+  public static final Dimension EXTRA_SMALL_SQUARE_ICON_SIZE = new Dimension(16, 16);
+  public static final Dimension SMALL_SQUARE_ICON_SIZE = new Dimension(22, 22);
+  public static final Dimension MEDIUM_SQUARE_ICON_SIZE = new Dimension(32, 32);
+  public static final Dimension LARGE_SQUARE_ICON_SIZE = new Dimension(90, 90);
 
   public Color getTypeColor();
 

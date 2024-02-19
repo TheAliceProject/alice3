@@ -43,6 +43,7 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.Theme;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
@@ -55,7 +56,6 @@ import org.lgna.project.ast.UserField;
 import org.lgna.story.SThing;
 
 import javax.swing.Icon;
-import java.awt.Dimension;
 import java.util.UUID;
 
 /**
@@ -92,12 +92,11 @@ import java.util.UUID;
           AbstractType<?, ?, ?> type = userField.getValueType();
           if (type != null) {
             if (type.isAssignableTo(SThing.class)) {
-              Dimension size = new Dimension(24, 18);
               IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(userField);
               if (iconFactory != null) {
-                return iconFactory.getIcon(size);
+                return iconFactory.getIconToFit(Theme.EXTRA_SMALL_RECT_ICON_SIZE);
               } else {
-                return EmptyIconFactory.getInstance().getIcon(size);
+                return EmptyIconFactory.getInstance().getIconToFit(Theme.EXTRA_SMALL_RECT_ICON_SIZE);
               }
             }
           }

@@ -76,7 +76,7 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
   public ImportTypeIteratingOperation(NamedUserType dstType) {
     super(Application.PROJECT_GROUP, UUID.fromString("bae897e2-63cb-481a-8ff6-41c99052a026"));
     this.dstType = dstType;
-    this.setButtonIcon(new LineAxisIcon(Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIcon(new Dimension(Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight()))));
+    this.setButtonIcon(new LineAxisIcon(Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIconToFit(new Dimension(Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight()))));
   }
 
   @Override

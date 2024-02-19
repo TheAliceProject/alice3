@@ -88,7 +88,7 @@ public class ThisInstanceIconFactory extends ResolutionIndependantIconFactory {
         if (type != null) {
           IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(type);
           if (iconFactory != null) {
-            Icon typeIcon = iconFactory.getIcon(size);
+            Icon typeIcon = iconFactory.getIconToFit(size);
             if (typeIcon != null) {
               typeIcon.paintIcon(c, g, x, y);
             }

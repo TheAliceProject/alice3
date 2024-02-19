@@ -66,7 +66,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
     super(composite);
   }
 
-  private final Label typeIconView = new Label(EmptyIconFactory.getInstance().getIcon(Theme.DEFAULT_LARGE_ICON_SIZE));
+  private final Label typeIconView = new Label(EmptyIconFactory.getInstance().getIconToFit(Theme.LARGE_RECT_ICON_SIZE));
 
   public FieldView(AddFieldComposite composite) {
     super(composite);
@@ -99,7 +99,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
   //    super.handleValueTypeChanged( nextType );
   //
   //    org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
-  //    this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+  //    this.typeIconView.setIcon( iconFactory.getIconToFit(org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
   //    this.typeIconView.revalidateAndRepaint();
   //  }
 
@@ -109,7 +109,7 @@ public abstract class FieldView extends DeclarationView<UserField> {
     DeclarationLikeSubstanceComposite<UserField> composite = (DeclarationLikeSubstanceComposite<UserField>) this.getComposite();
     UserField field = composite.getPreviewValue();
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(field);
-    this.typeIconView.setIcon(iconFactory.getIcon(iconFactory.getDefaultSize(Theme.DEFAULT_LARGE_ICON_SIZE)));
+    this.typeIconView.setIcon(iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE));
     this.typeIconView.revalidateAndRepaint();
   }
 }

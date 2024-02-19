@@ -65,7 +65,6 @@ import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JLabel;
-import java.awt.Dimension;
 
 /**
  * @author Dennis Cosgrove
@@ -117,9 +116,8 @@ public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<Insta
     if (nextValue != null) {
       IconFactory iconFactory = nextValue.getIconFactory();
       if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
-        final boolean IS_TRIMMED_ICON_DESIRED = true;
-        Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight(Theme.DEFAULT_SMALL_ICON_SIZE.height) : Theme.DEFAULT_SMALL_ICON_SIZE;
-        Icon icon = iconFactory.getIcon(size);
+
+        Icon icon = iconFactory.getIconToFit(Theme.MEDIUM_RECT_ICON_SIZE);
         if (icon != null) {
           this.internalAddComponent(new Label(icon));
         }

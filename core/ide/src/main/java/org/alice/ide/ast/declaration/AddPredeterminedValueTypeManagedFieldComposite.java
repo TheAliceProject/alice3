@@ -42,11 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import org.alice.ide.Theme;
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -67,7 +67,7 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
     this.javaValueType = javaValueType;
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForType(this.javaValueType);
     if ((iconFactory != null) && (iconFactory != EmptyIconFactory.getInstance())) {
-      this.getLaunchOperation().setButtonIcon(iconFactory.getIcon(IconSize.SMALL.getSize()));
+      this.getLaunchOperation().setButtonIcon(iconFactory.getIconToFit(Theme.SMALL_SQUARE_ICON_SIZE));
     }
   }
 

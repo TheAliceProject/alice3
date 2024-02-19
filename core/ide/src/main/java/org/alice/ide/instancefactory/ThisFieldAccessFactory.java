@@ -118,9 +118,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
   @Override
   public IconFactory getIconFactory() {
     IconFactory fallbackIconFactory = IconFactoryManager.getIconFactoryForField(this.field);
-    if ((fallbackIconFactory != null) && (fallbackIconFactory != EmptyIconFactory.getInstance())) {
-      //pass;
-    } else {
+    if (fallbackIconFactory == null || (fallbackIconFactory == EmptyIconFactory.getInstance())) {
       fallbackIconFactory = super.getIconFactory();
     }
 

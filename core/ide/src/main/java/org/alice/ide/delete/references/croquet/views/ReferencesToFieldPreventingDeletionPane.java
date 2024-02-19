@@ -59,7 +59,7 @@ import org.lgna.croquet.views.BorderPanel;
 public class ReferencesToFieldPreventingDeletionPane extends BorderPanel {
   public ReferencesToFieldPreventingDeletionPane(ReferencesToFieldPreventingDeletionDialog composite) {
     IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(composite.getField());
-    Icon icon = iconFactory.getIcon(Theme.DEFAULT_LARGE_ICON_SIZE);
+    Icon icon = iconFactory.getIconToFit(Theme.LARGE_RECT_ICON_SIZE);
     if (icon instanceof TrimmedIcon) {
       TrimmedIcon trimmedIcon = (TrimmedIcon) icon;
       icon = trimmedIcon.getImageIcon();

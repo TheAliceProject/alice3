@@ -70,7 +70,7 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
   protected void localize() {
     super.localize();
     int size = UIManagerUtilities.getDefaultFontSize() + 4;
-    this.getLaunchOperation().setSmallIcon(PlusIconFactory.getInstance().getIcon(new Dimension(size, size)));
+    this.getLaunchOperation().setSmallIcon(PlusIconFactory.getInstance().getIconToFit(new Dimension(size, size)));
   }
 
   @Override

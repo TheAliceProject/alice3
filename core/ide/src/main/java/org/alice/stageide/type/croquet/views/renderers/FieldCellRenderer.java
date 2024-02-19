@@ -43,12 +43,13 @@
 package org.alice.stageide.type.croquet.views.renderers;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.Theme;
 import org.alice.ide.icons.CheckIcon;
 import org.alice.ide.icons.CheckIconFactory;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.icon.EmptyIconFactory;
-import org.lgna.croquet.icon.IconSize;
+
 import org.lgna.project.ast.UserField;
 
 import javax.swing.Icon;
@@ -63,9 +64,9 @@ import java.awt.Paint;
  * @author Dennis Cosgrove
  */
 public class FieldCellRenderer extends ListCellRenderer<UserField> {
-  private static final Dimension ICON_SIZE = IconSize.EXTRA_SMALL.getSize();
-  private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIcon(ICON_SIZE);
-  private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIcon(ICON_SIZE);
+  private static final Dimension ICON_SIZE = Theme.EXTRA_SMALL_SQUARE_ICON_SIZE;
+  private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIconToFit(ICON_SIZE);
+  private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIconToFit(ICON_SIZE);
   private static final Icon SELECTED_CHECK_ICON = new CheckIcon(ICON_SIZE) {
     @Override
     protected Paint getInnerPaint(Component c) {

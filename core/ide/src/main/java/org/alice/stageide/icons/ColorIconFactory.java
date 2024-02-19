@@ -43,6 +43,7 @@
 package org.alice.stageide.icons;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import org.alice.ide.Theme;
 import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
 
 import javax.swing.Icon;
@@ -54,19 +55,19 @@ import java.awt.Dimension;
  */
 public class ColorIconFactory extends ResolutionIndependantIconFactory {
   private final Color color;
+  private final Dimension defaultSize = Theme.EXTRA_SMALL_SQUARE_ICON_SIZE;
 
   public ColorIconFactory(Color color) {
     super(IsCachingDesired.FALSE);
     this.color = color;
   }
 
-  @Override
-  protected Icon createIcon(Dimension size) {
-    return new ColorIcon(this.color, size.width, size.height);
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    return this.defaultSize;
   }
 
   @Override
-  protected double getDefaultWidthToHeightAspectRatio() {
-    return 1.0;
+  protected Icon createIcon(Dimension size) {
+    return new ColorIcon(this.color, size.width, size.height);
   }
 }

@@ -64,9 +64,4 @@ public class ThemeIconFactory extends AbstractIconFactory {
     return new ThemeIcon(size, this.key);
   }
 
-  @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
-    //todo
-    return sizeIfResolutionIndependent;
-  }
 }

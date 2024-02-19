@@ -44,6 +44,7 @@
 package org.alice.stageide.properties;
 
 import org.alice.ide.IDE;
+import org.alice.ide.Theme;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.icons.IconFactoryManager;
@@ -121,7 +122,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
       UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
       if (field != null) {
         IconFactory iconFactory = IconFactoryManager.getIconFactoryForField(field);
-        return iconFactory.getIcon(new Dimension(24, 18));
+        return iconFactory.getIconToFit(Theme.EXTRA_SMALL_RECT_ICON_SIZE);
       }
     }
     return null;

@@ -43,6 +43,7 @@
 package org.lgna.croquet.icon;
 
 import javax.swing.Icon;
+import java.awt.*;
 
 /**
  * @author Dennis Cosgrove
@@ -60,7 +61,7 @@ public abstract class AbstractSingleSourceImageIconFactory extends AbstractIconF
   }
 
   @Override
-  protected double getTrimmedWidthToHeightAspectRatio() {
-    return this.sourceImageIcon.getIconWidth() / (double) this.sourceImageIcon.getIconHeight();
+  public Dimension getDefaultSize(Dimension fallbackSize) {
+    return new Dimension(this.sourceImageIcon.getIconWidth(), this.sourceImageIcon.getIconHeight());
   }
 }

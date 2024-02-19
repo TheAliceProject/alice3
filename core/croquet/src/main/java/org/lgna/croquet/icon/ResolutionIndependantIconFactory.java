@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
-import java.awt.Dimension;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,10 +52,5 @@ public abstract class ResolutionIndependantIconFactory extends AbstractIconFacto
 
   public ResolutionIndependantIconFactory() {
     this(IsCachingDesired.FALSE);
-  }
-
-  @Override
-  public Dimension getDefaultSize(Dimension sizeIfResolutionIndependent) {
-    return sizeIfResolutionIndependent;
   }
 }
