@@ -60,9 +60,7 @@ public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
   public static synchronized LocalArrayLengthFillIn getInstance(UserLocal local) {
     assert local != null;
     LocalArrayLengthFillIn rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalArrayLengthFillIn(local);
       map.put(local, rv);
     }

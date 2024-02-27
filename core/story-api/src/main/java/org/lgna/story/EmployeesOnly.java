@@ -173,9 +173,7 @@ public class EmployeesOnly {
     } else if (paint instanceof ImagePaint) {
       ImagePaint imagePaint = (ImagePaint) paint;
       BufferedImageTexture rv = mapImagePaintToTexture.get(imagePaint);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new BufferedImageTexture();
         try {
           rv.setBufferedImage(ImageIO.read(imagePaint.getResource()));

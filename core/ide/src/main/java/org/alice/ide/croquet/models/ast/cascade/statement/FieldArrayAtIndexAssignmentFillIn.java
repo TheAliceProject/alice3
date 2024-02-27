@@ -68,9 +68,7 @@ public final class FieldArrayAtIndexAssignmentFillIn extends ExpressionFillInWit
 
   public static synchronized FieldArrayAtIndexAssignmentFillIn getInstance(UserField field) {
     FieldArrayAtIndexAssignmentFillIn rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FieldArrayAtIndexAssignmentFillIn(field);
       map.put(field, rv);
     }

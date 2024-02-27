@@ -87,9 +87,7 @@ public class JavaField extends AbstractField {
     this.fieldReflectionProxy = fieldReflectionProxy;
     final boolean IS_CHECK_REIFICATION_DESIRED = false;
     if (IS_CHECK_REIFICATION_DESIRED) {
-      if (this.fieldReflectionProxy.getReification() != null) {
-        //pass
-      } else {
+      if (this.fieldReflectionProxy.getReification() == null) {
         Logger.severe(this.fieldReflectionProxy);
       }
     }

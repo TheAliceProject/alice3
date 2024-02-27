@@ -61,9 +61,7 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 
   public static synchronized ProcedureInvocationInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
     ProcedureInvocationInsertCascade rv = mapToMap.get(blockStatementIndexPair, method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ProcedureInvocationInsertCascade(blockStatementIndexPair, method);
       mapToMap.put(blockStatementIndexPair, method, rv);
     }

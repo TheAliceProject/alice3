@@ -60,9 +60,7 @@ public class ConstructorState extends FilteredMemberState<NamedUserConstructor> 
 
   public static synchronized ConstructorState getInstance(NamedUserType type) {
     ConstructorState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ConstructorState(type);
       map.put(type, rv);
     }

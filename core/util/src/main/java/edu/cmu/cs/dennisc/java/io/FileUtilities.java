@@ -108,9 +108,7 @@ public class FileUtilities {
   }
 
   public static File getDefaultDirectory() {
-    if (s_defaultDirectory != null) {
-      //pass
-    } else {
+    if (s_defaultDirectory == null) {
       FileSystemView fileSystemView = FileSystemView.getFileSystemView();
       s_defaultDirectory = fileSystemView.getDefaultDirectory();
     }
@@ -301,9 +299,7 @@ public class FileUtilities {
 
   public static File[] listFiles(File root, FileFilter fileFilter) {
     File[] rv = root.listFiles(fileFilter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new File[0];
     }
     return rv;

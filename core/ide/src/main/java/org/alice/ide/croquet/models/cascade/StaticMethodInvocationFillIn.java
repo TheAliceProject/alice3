@@ -69,9 +69,7 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
   public static StaticMethodInvocationFillIn getInstance(AbstractMethod method) {
     synchronized (map) {
       StaticMethodInvocationFillIn rv = map.get(method);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
         //note: assuming static methods are in java, which therefore do not change their signatures
         rv = new StaticMethodInvocationFillIn(method, MethodUtilities.createParameterBlanks(method));

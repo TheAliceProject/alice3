@@ -57,9 +57,7 @@ public class FunctionsComposite extends MethodsComposite {
 
   public static synchronized FunctionsComposite getInstance(NamedUserType type) {
     FunctionsComposite rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FunctionsComposite(type);
       map.put(type, rv);
     }

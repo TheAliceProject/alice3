@@ -302,9 +302,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
   }
 
   public synchronized InternalMenuModel<T> getMenuModel() {
-    if (this.menuModel != null) {
-      //pass
-    } else {
+    if (this.menuModel == null) {
       this.menuModel = new InternalMenuModel<T>(this);
     }
     return this.menuModel;

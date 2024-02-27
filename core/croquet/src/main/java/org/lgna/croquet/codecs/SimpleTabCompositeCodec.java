@@ -59,9 +59,7 @@ public class SimpleTabCompositeCodec<C extends SimpleTabComposite<?>> implements
 
   public static synchronized <T extends SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance(Class<T> cls) {
     SimpleTabCompositeCodec<?> rv = map.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new SimpleTabCompositeCodec<T>(cls);
     }
     return (SimpleTabCompositeCodec<T>) rv;

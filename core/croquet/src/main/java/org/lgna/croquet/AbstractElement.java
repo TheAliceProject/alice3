@@ -199,9 +199,7 @@ public abstract class AbstractElement implements Element {
     }
     Class<? extends Element> clsUsedForLocalization = this.getClassUsedForLocalization();
     String rv = findLocalizedText(clsUsedForLocalization, actualSubKey);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       this.handleNullLocalizedText(clsUsedForLocalization, actualSubKey);
     }
     return rv;

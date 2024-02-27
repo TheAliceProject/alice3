@@ -69,9 +69,7 @@ public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArg
   public static JavaKeyedArgumentFillIn getInstance(JavaMethod value) {
     synchronized (map) {
       JavaKeyedArgumentFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new JavaKeyedArgumentFillIn(value, MethodUtilities.createParameterBlanks(value));
         map.put(value, rv);
       }

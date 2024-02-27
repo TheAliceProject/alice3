@@ -67,9 +67,7 @@ public class UnderscoreFieldAccessAstMigration extends FieldAccessAstMigration {
       JavaField javaField = (JavaField) field;
       FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
       Field reification = fieldReflectionProxy.getReification();
-      if (reification != null) {
-        //pass
-      } else {
+      if (reification == null) {
         JavaType declaringType = javaField.getDeclaringType();
         Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
         if (declaringCls != null) {

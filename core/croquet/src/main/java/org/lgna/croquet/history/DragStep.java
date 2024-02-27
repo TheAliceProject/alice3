@@ -111,9 +111,7 @@ public class DragStep extends PrepStep<DragModel> {
   }
 
   private DropReceptorInfo[] getPotentialDropReceptorInfos() {
-    if (this.potentialDropReceptorInfos != null) {
-      //pass
-    } else {
+    if (this.potentialDropReceptorInfos == null) {
       DragModel dragModel = this.getModel();
       List<? extends DropReceptor> potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
       this.potentialDropReceptorInfos = new DropReceptorInfo[potentialDropReceptors.size()];
@@ -187,9 +185,7 @@ public class DragStep extends PrepStep<DragModel> {
 
   private DropReceptor getDropReceptorUnder(MouseEvent e) {
     DropReceptor rv = getDropReceptorUnder(e.getX(), e.getY());
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       if (this.getDragSource().getDragProxy() != null) {
         Rectangle dragBounds = this.getDragSource().getDragProxy().getBounds();
         dragBounds = SwingUtilities.convertRectangle(this.getDragSource().getDragProxy().getParent(), dragBounds, this.getDragSource().getAwtComponent());

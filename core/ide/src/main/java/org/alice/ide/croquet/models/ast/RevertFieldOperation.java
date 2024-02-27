@@ -61,9 +61,7 @@ public class RevertFieldOperation extends ActionOperation {
 
   public static synchronized RevertFieldOperation getInstance(UserField field) {
     RevertFieldOperation rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RevertFieldOperation(field);
       map.put(field, rv);
     }

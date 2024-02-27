@@ -59,9 +59,7 @@ public class RenameTypeComposite extends RenameDeclarationComposite<NamedUserTyp
   public static synchronized RenameTypeComposite getInstance(NamedUserType type) {
     assert type != null;
     RenameTypeComposite rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RenameTypeComposite(type);
       map.put(type, rv);
     }

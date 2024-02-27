@@ -514,9 +514,7 @@ public class RenderTargetImp {
     //this.lookingGlass.commitAnyPendingChanges();
     //todo?
     GL2 gl = drawable.getGL().getGL2();
-    if (this.renderContext.gl != null) {
-      //pass
-    } else {
+    if (this.renderContext.gl == null) {
       initialize(drawable);
       Logger.outln("note: initialize necessary from display");
     }

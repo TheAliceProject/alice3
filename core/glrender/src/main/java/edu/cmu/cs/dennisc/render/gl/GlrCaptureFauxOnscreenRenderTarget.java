@@ -149,9 +149,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
   }
 
   public void captureImage(Observer observer) {
-    if (this.image != null) {
-      //pass
-    } else {
+    if (this.image == null) {
       this.image = this.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
     }
     this.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically(this.image, this.atIsUpSideDown);

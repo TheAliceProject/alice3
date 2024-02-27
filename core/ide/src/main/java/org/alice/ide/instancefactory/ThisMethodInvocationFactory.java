@@ -61,9 +61,7 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
     assert method != null;
     if (method.getRequiredParameters().size() == 0) {
       ThisMethodInvocationFactory rv = map.get(method);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ThisMethodInvocationFactory(method);
         map.put(method, rv);
       }

@@ -62,9 +62,7 @@ public class IoLoggingHandler extends java.util.logging.Handler {
   private static IoLoggingHandler ioLoggingHandler;
 
   public static void initialize() {
-    if (ioLoggingHandler != null) {
-      //pass
-    } else {
+    if (ioLoggingHandler == null) {
       ioLoggingHandler = new IoLoggingHandler();
       ioLoggingHandler.setFormatter(new ConsoleFormatter());
     }

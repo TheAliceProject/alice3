@@ -72,9 +72,7 @@ public abstract class JHtmlView extends JEditorPane {
     final String IMAGE_CACHE_PROPERTY_NAME = "imageCache";
     Document document = this.getDocument();
     Dictionary<URL, Image> imageCache = (Dictionary<URL, Image>) document.getProperty(IMAGE_CACHE_PROPERTY_NAME);
-    if (imageCache != null) {
-      //pass
-    } else {
+    if (imageCache == null) {
       imageCache = new Hashtable<URL, Image>();
       document.putProperty(IMAGE_CACHE_PROPERTY_NAME, imageCache);
     }

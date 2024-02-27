@@ -58,9 +58,7 @@ public class SingletonCodec<T> implements ItemCodec<T> {
 
   public static synchronized <T> SingletonCodec<T> getInstance(Class<T> cls) {
     SingletonCodec<?> rv = map.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new SingletonCodec<T>(cls);
     }
     return (SingletonCodec<T>) rv;

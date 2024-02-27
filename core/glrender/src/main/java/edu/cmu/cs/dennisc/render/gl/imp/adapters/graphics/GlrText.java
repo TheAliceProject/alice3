@@ -82,9 +82,7 @@ public abstract class GlrText<T extends Text> extends GlrGraphic<T> {
       g2.remember(font);
       this.rememberedFont = font;
     }
-    if (this.multilineText != null) {
-      //pass
-    } else {
+    if (this.multilineText == null) {
       this.multilineText = new MultilineText(text);
     }
     this.render(g2, renderTarget, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth(actualViewport));

@@ -87,9 +87,7 @@ public class BoundingBoxDecorator extends Visual {
   @Override
   public void setName(String name) {
     super.setName(name);
-    if (name != null) {
-      //pass
-    } else {
+    if (name == null) {
       name = "null";
     }
     this.sgFrontAppearance.setName(name + ".sgFrontAppearance");

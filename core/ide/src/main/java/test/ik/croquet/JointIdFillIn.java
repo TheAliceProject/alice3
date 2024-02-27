@@ -61,9 +61,7 @@ public class JointIdFillIn extends ImmutableCascadeFillIn<JointId, Void> {
 
   public static synchronized JointIdFillIn getInstance(JointId jointId) {
     JointIdFillIn rv = map.get(jointId);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new JointIdFillIn(jointId);
       map.put(jointId, rv);
     }

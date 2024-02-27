@@ -62,9 +62,7 @@ public class CutToClipboardOperation extends ActionOperation {
   public static synchronized CutToClipboardOperation getInstance(Statement node) {
     assert node != null;
     CutToClipboardOperation rv = map.get(node);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new CutToClipboardOperation(node);
       map.put(node, rv);
     }

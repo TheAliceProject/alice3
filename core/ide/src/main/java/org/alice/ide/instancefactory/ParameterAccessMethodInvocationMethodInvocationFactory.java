@@ -60,9 +60,7 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
   public static synchronized ParameterAccessMethodInvocationMethodInvocationFactory getInstance(UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod) {
     assert parameter != null;
     ParameterAccessMethodInvocationMethodInvocationFactory rv = mapToMapToMap.get(parameter, innerMethod, outerMethod);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterAccessMethodInvocationMethodInvocationFactory(parameter, innerMethod, outerMethod);
       mapToMapToMap.put(parameter, innerMethod, outerMethod, rv);
     }

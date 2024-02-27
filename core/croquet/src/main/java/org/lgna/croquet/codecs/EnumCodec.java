@@ -109,9 +109,7 @@ public class EnumCodec<T extends Enum<T>> implements ItemCodec<T> {
   @Override
   public final void appendRepresentation(StringBuilder sb, T value) {
     if (value != null) {
-      if (this.mapValueToLocalization != null) {
-        //pass
-      } else {
+      if (this.mapValueToLocalization == null) {
         this.mapValueToLocalization = Maps.newHashMap();
         String bundleName = this.valueCls.getPackage().getName() + ".croquet";
         try {
@@ -134,9 +132,7 @@ public class EnumCodec<T extends Enum<T>> implements ItemCodec<T> {
         }
       }
       String text = this.mapValueToLocalization.get(value);
-      if (text != null) {
-        //pass
-      } else {
+      if (text == null) {
         text = value.toString();
       }
       sb.append(text);

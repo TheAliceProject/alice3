@@ -57,9 +57,7 @@ public class ThemeUtilities {
     if (ide != null) {
       return ide.getTheme();
     } else {
-      if (fallbackTheme != null) {
-        //pass
-      } else {
+      if (fallbackTheme == null) {
         fallbackTheme = new DefaultTheme();
       }
       return fallbackTheme;

@@ -63,9 +63,7 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
   public static synchronized LocalAccessFactory getInstance(UserLocal local) {
     assert local != null;
     LocalAccessFactory rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalAccessFactory(local);
       map.put(local, rv);
     }

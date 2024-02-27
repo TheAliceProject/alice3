@@ -329,9 +329,7 @@ public abstract class AbstractSceneEditor extends BorderPanel {
   }
 
   public final VirtualMachine getVirtualMachine() {
-    if (this.vm != null) {
-      //pass
-    } else {
+    if (this.vm == null) {
       this.vm = IDE.getActiveInstance().createRegisteredVirtualMachineForSceneEditor();
     }
     return this.vm;

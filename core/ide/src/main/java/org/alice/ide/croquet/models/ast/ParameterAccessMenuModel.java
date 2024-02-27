@@ -58,9 +58,7 @@ public class ParameterAccessMenuModel extends PredeterminedMenuModel {
 
   public static synchronized ParameterAccessMenuModel getInstance(UserParameter parameter) {
     ParameterAccessMenuModel rv = map.get(parameter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterAccessMenuModel(parameter);
       map.put(parameter, rv);
     }

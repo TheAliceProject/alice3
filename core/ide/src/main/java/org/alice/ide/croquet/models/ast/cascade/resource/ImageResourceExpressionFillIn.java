@@ -58,9 +58,7 @@ public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<Imag
   public static synchronized ImageResourceExpressionFillIn getInstance(ImageResource resource) {
     assert resource != null;
     ImageResourceExpressionFillIn rv = map.get(resource);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ImageResourceExpressionFillIn(resource);
       map.put(resource, rv);
     }

@@ -196,9 +196,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
   protected String getDialogTitle() {
     this.initializeIfNecessary();
     String rv = this.title;
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = this.getDefaultTitleText();
       if (rv != null) {
         rv = rv.replaceAll("<[a-z]*>", "");

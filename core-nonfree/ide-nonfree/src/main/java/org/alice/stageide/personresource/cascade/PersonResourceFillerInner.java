@@ -81,9 +81,7 @@ public abstract class PersonResourceFillerInner extends ExpressionFillerInner {
         }
       }
     }
-    if (fillIn != null) {
-      //pass
-    } else {
+    if (fillIn == null) {
       fillIn = PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter(this.lifeStage).getFillIn();
     }
     items.add(fillIn);

@@ -67,9 +67,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
 
   public static synchronized DeleteMethodOperation getInstance(UserMethod method, UserType<?> declaringType) {
     DeleteMethodOperation rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DeleteMethodOperation(method, declaringType);
       map.put(method, rv);
     }

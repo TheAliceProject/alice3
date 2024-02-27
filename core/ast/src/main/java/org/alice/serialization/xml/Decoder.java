@@ -351,9 +351,7 @@ class Decoder {
     } else {
       int key = getUniqueKey(xmlElement);
       rv = map.get(key);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         if (EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.containsKey(key)) {
           int leafTypeKey = EPIC_HACK_mapArrayTypeKeyToLeafTypeKey.get(key);
           AbstractDeclaration leafDeclaration = map.get(leafTypeKey);

@@ -81,9 +81,7 @@ public abstract class PreferenceStringState extends StringState {
   private static String getInitialValue(String preferenceKey, String defaultInitialValue, byte[] encryptionKey) {
     Preferences userPreferences = PreferenceManager.getUserPreferences();
     if (userPreferences != null) {
-      if (defaultInitialValue != null) {
-        //pass
-      } else {
+      if (defaultInitialValue == null) {
         defaultInitialValue = NULL_VALUE;
       }
       String rv = userPreferences.get(preferenceKey, defaultInitialValue);
@@ -113,9 +111,7 @@ public abstract class PreferenceStringState extends StringState {
     for (PreferenceStringState state : instances) {
       String key = state.getPreferenceKey();
       String value = state.getValue();
-      if (value != null) {
-        //pass
-      } else {
+      if (value == null) {
         value = NULL_VALUE;
       }
       String possiblyEncryptedValue;

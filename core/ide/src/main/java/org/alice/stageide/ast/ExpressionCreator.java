@@ -136,9 +136,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
         break;
       }
     }
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       JavaConstructor constructor = JavaConstructor.getInstance(cls, Number.class, Number.class, Number.class);
       rv = AstUtilities.createInstanceCreation(constructor, this.createDoubleExpression(color.getRed(), MILLI_DECIMAL_PLACES), this.createDoubleExpression(color.getGreen(), MILLI_DECIMAL_PLACES), this.createDoubleExpression(color.getBlue(), MILLI_DECIMAL_PLACES));
     }

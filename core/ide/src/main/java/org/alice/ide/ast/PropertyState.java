@@ -84,9 +84,7 @@ public abstract class PropertyState extends StandardExpressionState {
 
   public Expression getValueOrNullLiteral() {
     Expression rv = this.getValue();
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new NullLiteral();
     }
     return rv;

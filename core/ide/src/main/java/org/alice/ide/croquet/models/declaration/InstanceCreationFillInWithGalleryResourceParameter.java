@@ -60,9 +60,7 @@ public final class InstanceCreationFillInWithGalleryResourceParameter extends Ab
 
   public static synchronized InstanceCreationFillInWithGalleryResourceParameter getInstance(AbstractConstructor constructor) {
     InstanceCreationFillInWithGalleryResourceParameter rv = map.get(constructor);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
       GalleryResourceBlank[] blanks = new GalleryResourceBlank[parameters.size()];
       int i = 0;

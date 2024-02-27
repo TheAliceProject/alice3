@@ -813,9 +813,7 @@ public class AliceResourceUtilities {
       return className;
     } else {
       String localizedText = findLocalizedText(getClassNameLocalizationBundleName(), packageName + "." + className, locale);
-      if (localizedText != null) {
-        //pass
-      } else {
+      if (localizedText == null) {
         localizedText = className;
       }
       return localizedText;

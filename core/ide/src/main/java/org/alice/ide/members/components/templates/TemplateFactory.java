@@ -69,9 +69,7 @@ public class TemplateFactory {
 
   public static DragComponent getProcedureInvocationTemplate(AbstractMethod method) {
     DragComponent rv = mapMethodToProcedureInvocationTemplate.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ProcedureInvocationTemplate(method);
       mapMethodToProcedureInvocationTemplate.put(method, rv);
     }
@@ -80,9 +78,7 @@ public class TemplateFactory {
 
   public static DragComponent getFunctionInvocationTemplate(AbstractMethod method) {
     DragComponent rv = mapMethodToFunctionInvocationTemplate.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FunctionInvocationTemplate(method);
       mapMethodToFunctionInvocationTemplate.put(method, rv);
     }

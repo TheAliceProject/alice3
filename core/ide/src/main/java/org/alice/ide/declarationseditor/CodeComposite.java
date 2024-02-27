@@ -68,9 +68,7 @@ public class CodeComposite extends DeclarationComposite<AbstractCode, AbstractCo
   public static synchronized CodeComposite getInstance(AbstractCode code) {
     if (code != null) {
       CodeComposite rv = map.get(code);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new CodeComposite(code);
         map.put(code, rv);
       }

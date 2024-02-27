@@ -78,9 +78,7 @@ public class ControlFlowComposite extends SimpleComposite<ControlFlowPanel> {
 
   public static synchronized ControlFlowComposite getInstance(AbstractCode code) {
     ControlFlowComposite rv = map.get(code);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ControlFlowComposite(code);
       map.put(code, rv);
     }

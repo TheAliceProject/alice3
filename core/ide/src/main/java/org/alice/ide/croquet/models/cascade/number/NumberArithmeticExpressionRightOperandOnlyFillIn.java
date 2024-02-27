@@ -59,9 +59,7 @@ public class NumberArithmeticExpressionRightOperandOnlyFillIn extends Arithmetic
   public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
     synchronized (map) {
       NumberArithmeticExpressionRightOperandOnlyFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new NumberArithmeticExpressionRightOperandOnlyFillIn(operator);
         map.put(operator, rv);
       }

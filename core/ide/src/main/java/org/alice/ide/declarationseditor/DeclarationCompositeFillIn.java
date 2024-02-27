@@ -63,9 +63,7 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 
   public static synchronized DeclarationCompositeFillIn getInstance(DeclarationComposite declarationComposite) {
     DeclarationCompositeFillIn rv = map.get(declarationComposite);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DeclarationCompositeFillIn(declarationComposite);
       map.put(declarationComposite, rv);
     }

@@ -57,9 +57,7 @@ public class DecimalPointOperation extends NumberPadOperation {
 
   public static synchronized DecimalPointOperation getInstance(NumberModel<?> model) {
     DecimalPointOperation rv = map.get(model);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DecimalPointOperation(model);
       map.put(model, rv);
     }

@@ -59,9 +59,7 @@ public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends Arithm
   public static NumberArithmeticExpressionLeftAndRightOperandsFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
     synchronized (map) {
       NumberArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new NumberArithmeticExpressionLeftAndRightOperandsFillIn(operator);
         map.put(operator, rv);
       }

@@ -101,9 +101,7 @@ public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<
 
   public final Annotation[][] getParameterAnnotations() {
     Annotation[][] rv = this.getReifiedParameterAnnotations();
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new Annotation[this.parameterClassReflectionProxies.length][];
     }
     return rv;

@@ -71,9 +71,7 @@ public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
     //todo
     synchronized (mapToMap) {
       ThisFieldAccessJointedTypeMenuModel rv = mapToMap.get(value, index);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ThisFieldAccessJointedTypeMenuModel(value, jointedTypeInfos, index);
         mapToMap.put(value, index, rv);
       }

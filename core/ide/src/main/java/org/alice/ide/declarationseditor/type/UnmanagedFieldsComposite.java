@@ -57,9 +57,7 @@ public class UnmanagedFieldsComposite extends FieldsComposite {
 
   public static synchronized UnmanagedFieldsComposite getInstance(NamedUserType type) {
     UnmanagedFieldsComposite rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new UnmanagedFieldsComposite(type);
       map.put(type, rv);
     }

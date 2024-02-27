@@ -200,9 +200,7 @@ public abstract class IDE extends ProjectApplication {
   }
 
   public final Theme getTheme() {
-    if (this.theme != null) {
-      //pass
-    } else {
+    if (this.theme == null) {
       this.theme = this.createTheme();
     }
     return this.theme;

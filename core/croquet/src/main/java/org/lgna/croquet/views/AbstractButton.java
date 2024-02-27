@@ -141,9 +141,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
   }
 
   /* package-private */void setSwingButtonModel(ButtonModel model) {
-    if (model != null) {
-      //pass
-    } else {
+    if (model == null) {
       model = MODEL_FOR_NULL;
     }
     if (model != this.getAwtComponent().getModel()) {

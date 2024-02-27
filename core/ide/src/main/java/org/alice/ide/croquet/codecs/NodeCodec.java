@@ -64,9 +64,7 @@ public class NodeCodec<T extends Node> implements ItemCodec<T> {
 
   public static synchronized <T extends Node> NodeCodec<T> getInstance(Class<T> cls) {
     NodeCodec<?> rv = map.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new NodeCodec<T>(cls);
     }
     return (NodeCodec<T>) rv;

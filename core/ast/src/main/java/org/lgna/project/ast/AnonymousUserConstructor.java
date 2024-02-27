@@ -59,15 +59,11 @@ public class AnonymousUserConstructor extends UserConstructor {
 
   public static AnonymousUserConstructor get(AnonymousUserType type) {
     if (type != null) {
-      if (s_map != null) {
-        //pass
-      } else {
+      if (s_map == null) {
         s_map = new HashMap<AnonymousUserType, AnonymousUserConstructor>();
       }
       AnonymousUserConstructor rv = s_map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new AnonymousUserConstructor(type);
       }
       return rv;

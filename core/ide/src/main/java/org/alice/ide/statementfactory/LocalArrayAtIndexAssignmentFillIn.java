@@ -67,9 +67,7 @@ public class LocalArrayAtIndexAssignmentFillIn extends ExpressionFillInWithExpre
 
   public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance(UserLocal local) {
     LocalArrayAtIndexAssignmentFillIn rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalArrayAtIndexAssignmentFillIn(local);
       map.put(local, rv);
     }

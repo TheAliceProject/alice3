@@ -61,9 +61,7 @@ public class MethodHeaderMenuModel extends StaticMenuModel {
 
   public static synchronized MethodHeaderMenuModel getInstance(UserMethod method) {
     MethodHeaderMenuModel rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new MethodHeaderMenuModel(method);
       map.put(method, rv);
     }

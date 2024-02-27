@@ -62,9 +62,7 @@ public class ProceduresCascade extends ImmutableCascade<MethodInvocationEditFact
   public static ProceduresCascade getInstance(InstanceFactory instanceFactory) {
     synchronized (map) {
       ProceduresCascade rv = map.get(instanceFactory);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ProceduresCascade(instanceFactory);
         map.put(instanceFactory, rv);
       }

@@ -58,9 +58,7 @@ public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 
   public static synchronized ManagedCameraMarkerFieldState getInstance(NamedUserType type) {
     ManagedCameraMarkerFieldState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ManagedCameraMarkerFieldState(type);
       map.put(type, rv);
     }

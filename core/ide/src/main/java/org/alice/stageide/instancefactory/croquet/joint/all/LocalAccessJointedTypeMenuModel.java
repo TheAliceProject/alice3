@@ -70,9 +70,7 @@ public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
     //todo
     synchronized (mapToMap) {
       LocalAccessJointedTypeMenuModel rv = mapToMap.get(value, index);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new LocalAccessJointedTypeMenuModel(value, jointedTypeInfos, index);
         mapToMap.put(value, index, rv);
       }

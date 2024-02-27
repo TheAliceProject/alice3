@@ -114,9 +114,7 @@ public abstract class IngredientListCellRenderer<E> extends ListCellRenderer<E> 
   public static Icon getIconForPath(int width, int height, String path) {
     URL urlForIcon = getURLForPath(path);
     Icon rv = map.get(urlForIcon);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new UrlAsynchronousIcon(width, height, urlForIcon);
       map.put(urlForIcon, rv);
     }

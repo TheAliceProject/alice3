@@ -86,9 +86,7 @@ public class TypeMenu extends MenuModel {
 
   static {
     Font defaultFont = UIManager.getFont("defaultFont");
-    if (defaultFont != null) {
-      //pass
-    } else {
+    if (defaultFont == null) {
       defaultFont = new Font("SansSerif", Font.PLAIN, 12);
     }
     TYPE_FONT = defaultFont.deriveFont(18.0f);
@@ -99,9 +97,7 @@ public class TypeMenu extends MenuModel {
 
   public static synchronized TypeMenu getInstance(NamedUserType type) {
     TypeMenu rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new TypeMenu(type);
       map.put(type, rv);
     }

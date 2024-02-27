@@ -124,9 +124,7 @@ public class FieldIcon extends AsynchronousIcon {
 
   @Override
   protected synchronized Icon getResult(boolean isPaint) {
-    if (this.imageIcon != null) {
-      //pass
-    } else {
+    if (this.imageIcon == null) {
       if (!USE_DYNAMICALLY_RENDERED_ICONS) {
         BufferedImage newIconImage = new BufferedImage(this.getIconWidthFallback(), this.getIconHeightFallback(), BufferedImage.TYPE_4BYTE_ABGR);
         Icon iconForImage = this.fallbackIcon;

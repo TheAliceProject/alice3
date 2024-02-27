@@ -100,9 +100,7 @@ public abstract class PanelWithPreview extends BorderPanel {
   protected abstract SwingComponentView<?> createMainComponent();
 
   private void initializeIfNecessary() {
-    if (this.previewPanel != null) {
-      //pass
-    } else {
+    if (this.previewPanel == null) {
       this.addCenterComponent(this.createMainComponent());
 
       if (this.isPreviewDesired()) {

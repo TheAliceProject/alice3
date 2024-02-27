@@ -59,9 +59,7 @@ public class ConvertDoTogetherToDoInOrderOperation extends ConvertStatementWithB
 
   public static synchronized ConvertDoTogetherToDoInOrderOperation getInstance(DoTogether doTogether) {
     ConvertDoTogetherToDoInOrderOperation rv = map.get(doTogether);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ConvertDoTogetherToDoInOrderOperation(doTogether);
       map.put(doTogether, rv);
     }

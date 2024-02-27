@@ -59,9 +59,7 @@ public class UserArrayType extends AbstractType {
 
   public static UserArrayType getInstance(UserType<?> leafType, int dimensionCount) {
     UserArrayType rv = s_map.get(leafType, dimensionCount);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new UserArrayType(leafType, dimensionCount);
       s_map.put(leafType, dimensionCount, rv);
     }

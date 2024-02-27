@@ -61,9 +61,7 @@ public class PropertyOfNodeCodec<T extends InstanceProperty<?>> implements ItemC
 
   public static synchronized <T extends InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance(Class<T> cls) {
     PropertyOfNodeCodec<?> rv = map.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new PropertyOfNodeCodec<T>(cls);
     }
     return (PropertyOfNodeCodec<T>) rv;

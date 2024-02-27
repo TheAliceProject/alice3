@@ -60,9 +60,7 @@ public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
   public static synchronized ThisFieldArrayLengthFillIn getInstance(AbstractField field) {
     assert field != null;
     ThisFieldArrayLengthFillIn rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ThisFieldArrayLengthFillIn(field);
       map.put(field, rv);
     }

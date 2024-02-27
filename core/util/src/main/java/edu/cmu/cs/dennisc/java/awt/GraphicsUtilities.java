@@ -76,9 +76,7 @@ public class GraphicsUtilities {
   private static BufferedImage s_bufferedImage = null;
 
   public static Graphics getGraphics() {
-    if (s_bufferedImage != null) {
-      //pass
-    } else {
+    if (s_bufferedImage == null) {
       s_bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
     }
     return s_bufferedImage.getGraphics();

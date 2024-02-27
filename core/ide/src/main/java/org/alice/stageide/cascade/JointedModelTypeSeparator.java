@@ -61,9 +61,7 @@ public class JointedModelTypeSeparator extends CascadeLabelSeparator {
   public static synchronized JointedModelTypeSeparator getInstance(AbstractType<?, ?, ?> type) {
     assert type != null;
     JointedModelTypeSeparator rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new JointedModelTypeSeparator(type);
       map.put(type, rv);
     }

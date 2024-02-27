@@ -63,9 +63,7 @@ public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
     Map<BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
     assert blockStatementIndexPair != null;
     CountLoopInsertCascade rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new CountLoopInsertCascade(blockStatementIndexPair, isEnveloping);
       map.put(blockStatementIndexPair, rv);
     }

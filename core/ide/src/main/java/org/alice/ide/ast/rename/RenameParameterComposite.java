@@ -59,9 +59,7 @@ public class RenameParameterComposite extends RenameDeclarationComposite<UserPar
   public static synchronized RenameParameterComposite getInstance(UserParameter parameter) {
     assert parameter != null;
     RenameParameterComposite rv = map.get(parameter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RenameParameterComposite(parameter);
       map.put(parameter, rv);
     }

@@ -125,9 +125,7 @@ public class ModelBuilder {
 
   public static ModelBuilder getInstance(File file) {
     ModelBuilder rv = map.get(file);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ModelBuilder();
       try {
         Map<Integer, Geometry> mapIdToGeometry = Maps.newHashMap();

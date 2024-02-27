@@ -58,9 +58,7 @@ public class ManagedFieldState extends AbstractManagedFieldState {
 
   public static synchronized ManagedFieldState getInstance(NamedUserType type) {
     ManagedFieldState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ManagedFieldState(type);
       map.put(type, rv);
     }

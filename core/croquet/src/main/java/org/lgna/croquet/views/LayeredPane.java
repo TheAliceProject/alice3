@@ -67,9 +67,7 @@ public final class LayeredPane extends SwingComponentView<JLayeredPane> {
   public Layer getLayer(Integer id) {
     synchronized (this.mapIdToLayer) {
       Layer rv = this.mapIdToLayer.get(id);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new Layer(this, id);
         this.mapIdToLayer.put(id, rv);
       }

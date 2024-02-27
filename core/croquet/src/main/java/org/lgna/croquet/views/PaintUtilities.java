@@ -57,9 +57,7 @@ public class PaintUtilities {
   private static Paint disabledTexturePaint = null;
 
   public static Paint getDisabledTexturePaint() {
-    if (PaintUtilities.disabledTexturePaint != null) {
-      //pass
-    } else {
+    if (PaintUtilities.disabledTexturePaint == null) {
       int width = 8;
       int height = 8;
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -79,9 +77,7 @@ public class PaintUtilities {
   private static TexturePaint copyTexturePaint = null;
 
   public static TexturePaint getCopyTexturePaint() {
-    if (PaintUtilities.copyTexturePaint != null) {
-      //pass
-    } else {
+    if (PaintUtilities.copyTexturePaint == null) {
       int width = 8;
       int height = 8;
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

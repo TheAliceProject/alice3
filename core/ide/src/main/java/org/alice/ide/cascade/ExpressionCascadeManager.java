@@ -272,9 +272,7 @@ public abstract class ExpressionCascadeManager {
       } else {
         expressionFillIn = null;
       }
-      if (expressionFillIn != null) {
-        //pass
-      } else {
+      if (expressionFillIn == null) {
         boolean isLeadingIconDesired = true;
         expressionFillIn = new SimpleExpressionFillIn<Expression>(expression, isLeadingIconDesired);
       }

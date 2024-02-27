@@ -249,9 +249,7 @@ public class POVRayUtilities {
     if (sgRoot instanceof Scene) {
       Scene sgScene = (Scene) sgRoot;
       Background background = sgCamera.background.getValue();
-      if (background != null) {
-        //pass
-      } else {
+      if (background == null) {
         background = sgScene.background.getValue();
       }
       exportBackground(pw, background);

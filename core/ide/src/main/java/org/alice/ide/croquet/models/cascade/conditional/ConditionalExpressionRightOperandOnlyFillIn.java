@@ -64,9 +64,7 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends PreviousExpress
   public static ConditionalExpressionRightOperandOnlyFillIn getInstance(ConditionalInfixExpression.Operator operator) {
     synchronized (map) {
       ConditionalExpressionRightOperandOnlyFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ConditionalExpressionRightOperandOnlyFillIn(operator);
         map.put(operator, rv);
       }

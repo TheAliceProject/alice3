@@ -92,9 +92,7 @@ public class ProjectHistoryManager {
     UndoHistory rv;
     if (group != null) {
       rv = this.map.get(group);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new UndoHistory(group);
         this.map.put(group, rv);
       }

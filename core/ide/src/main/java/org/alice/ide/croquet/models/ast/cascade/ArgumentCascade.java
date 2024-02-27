@@ -56,9 +56,7 @@ public class ArgumentCascade extends AbstractArgumentCascade {
 
   public static synchronized ArgumentCascade getInstance(SimpleArgument argument) {
     ArgumentCascade rv = map.get(argument);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ArgumentCascade(argument);
       map.put(argument, rv);
     }

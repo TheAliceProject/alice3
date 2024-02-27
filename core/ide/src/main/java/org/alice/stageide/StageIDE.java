@@ -448,9 +448,7 @@ public abstract class StageIDE extends IDE {
 
   @Override
   protected BufferedImage createThumbnail() throws Throwable {
-    if (thumbnailGenerator != null) {
-      //pass
-    } else {
+    if (thumbnailGenerator == null) {
       thumbnailGenerator = new ThumbnailGenerator(AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT);
     }
     return this.thumbnailGenerator.createThumbnail();

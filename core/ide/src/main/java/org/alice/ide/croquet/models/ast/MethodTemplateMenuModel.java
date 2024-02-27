@@ -60,9 +60,7 @@ public class MethodTemplateMenuModel extends PredeterminedMenuModel {
 
   public static synchronized MethodTemplateMenuModel getInstance(UserMethod method) {
     MethodTemplateMenuModel rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new MethodTemplateMenuModel(method);
       map.put(method, rv);
     }

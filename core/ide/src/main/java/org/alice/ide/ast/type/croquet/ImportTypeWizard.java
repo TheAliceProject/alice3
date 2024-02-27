@@ -117,9 +117,7 @@ public class ImportTypeWizard extends SimpleOperationWizardDialogCoreComposite {
     Set<Resource> importedResources = typeResourcesPair.getResources();
     NamedUserType srcType = importedRootType;
     NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes(srcType);
-    if (dstType != null) {
-      //pass
-    } else {
+    if (dstType == null) {
       dstType = new NamedUserType();
       dstType.name.setValue(importedRootType.getName());
     }

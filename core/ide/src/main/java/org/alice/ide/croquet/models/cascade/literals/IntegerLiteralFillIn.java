@@ -60,9 +60,7 @@ public class IntegerLiteralFillIn extends ExpressionFillInWithoutBlanks<IntegerL
   public static IntegerLiteralFillIn getInstance(int value) {
     synchronized (map) {
       IntegerLiteralFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new IntegerLiteralFillIn(value);
         map.put(value, rv);
       }

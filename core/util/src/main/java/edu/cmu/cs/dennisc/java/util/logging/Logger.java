@@ -68,13 +68,9 @@ public class Logger {
         break;
       }
     }
-    if (level != null) {
-      //pass
-    } else {
+    if (level == null) {
       level = Level.parse(levelText);
-      if (level != null) {
-        //pass
-      } else {
+      if (level == null) {
         level = Level.SEVERE;
       }
     }

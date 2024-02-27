@@ -84,9 +84,7 @@ public class AnimationUtilities {
 
     @Override
     public final void actionPerformed(ActionEvent e) {
-      if (t0 != null) {
-        //pass
-      } else {
+      if (t0 == null) {
         t0 = e.getWhen();
       }
       long tDelta = e.getWhen() - t0;

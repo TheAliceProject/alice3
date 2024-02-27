@@ -231,9 +231,7 @@ public enum OneShotSorter implements MemberSorter {
 
   private static double getValue(AbstractMember method) {
     Double rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = 0.0;
     }
     return rv;

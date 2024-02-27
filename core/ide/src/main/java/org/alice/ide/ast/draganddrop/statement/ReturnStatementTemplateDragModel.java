@@ -64,9 +64,7 @@ public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel
 
   public static synchronized ReturnStatementTemplateDragModel getInstance(UserMethod method) {
     ReturnStatementTemplateDragModel rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ReturnStatementTemplateDragModel(method);
       map.put(method, rv);
     }

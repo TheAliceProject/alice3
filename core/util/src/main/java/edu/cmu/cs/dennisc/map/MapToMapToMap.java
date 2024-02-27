@@ -67,9 +67,7 @@ public class MapToMapToMap<A, B, C, E> {
 
   public void put(A a, B b, C c, E value) {
     Map<C, E> innerMap = m_outerMapToMap.get(a, b);
-    if (innerMap != null) {
-      //pass
-    } else {
+    if (innerMap == null) {
       innerMap = new HashMap<C, E>();
       m_outerMapToMap.put(a, b, innerMap);
     }

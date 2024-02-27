@@ -70,9 +70,7 @@ public class ParameterAccessJointedTypeMenuModel extends JointedTypeMenuModel {
     //todo
     synchronized (mapToMap) {
       ParameterAccessJointedTypeMenuModel rv = mapToMap.get(value, index);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ParameterAccessJointedTypeMenuModel(value, jointedTypeInfos, index);
         mapToMap.put(value, index, rv);
       }

@@ -178,30 +178,22 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
   protected void localize() {
     super.localize();
     String commitText = this.findLocalizedText("commit");
-    if (commitText != null) {
-      //pass
-    } else {
+    if (commitText == null) {
       Locale locale = JComboBox.getDefaultLocale();
       String commitUiKey = this.getCommitUiKey();
       if (commitUiKey != null) {
         commitText = UIManager.getString(commitUiKey, locale);
       }
-      if (commitText != null) {
-        //pass
-      } else {
+      if (commitText == null) {
         commitText = this.getDefaultCommitText();
       }
     }
     this.getCommitOperation().setName(commitText);
     String cancelText = this.findLocalizedText("cancel");
-    if (cancelText != null) {
-      //pass
-    } else {
+    if (cancelText == null) {
       Locale locale = JComboBox.getDefaultLocale();
       cancelText = UIManager.getString("OptionPane.cancelButtonText", locale);
-      if (cancelText != null) {
-        //pass
-      } else {
+      if (cancelText == null) {
         cancelText = "Cancel";
       }
     }

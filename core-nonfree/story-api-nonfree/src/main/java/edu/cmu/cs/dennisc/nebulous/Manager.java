@@ -95,9 +95,7 @@ public class Manager {
   }
 
   private static List<File> getPendingBundles() {
-    if (s_pendingBundles != null) {
-      //pass
-    } else {
+    if (s_pendingBundles == null) {
       s_pendingBundles = new LinkedList<File>();
     }
     return s_pendingBundles;

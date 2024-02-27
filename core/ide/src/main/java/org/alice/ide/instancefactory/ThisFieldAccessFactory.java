@@ -66,9 +66,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
   public static synchronized ThisFieldAccessFactory getInstance(UserField field) {
     assert field != null;
     ThisFieldAccessFactory rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ThisFieldAccessFactory(field);
       map.put(field, rv);
     }

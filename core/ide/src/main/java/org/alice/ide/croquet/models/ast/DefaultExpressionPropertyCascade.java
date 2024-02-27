@@ -62,9 +62,7 @@ public class DefaultExpressionPropertyCascade extends ExpressionPropertyCascade 
   private static Map<ExpressionProperty, DefaultExpressionPropertyCascade> inheritGroupMap = Maps.newHashMap();
 
   private static AbstractType<?, ?, ?> getDesiredType(ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredType) {
-    if (desiredType != null) {
-      //pass
-    } else {
+    if (desiredType == null) {
       desiredType = expressionProperty.getExpressionType();
     }
     return desiredType;
@@ -81,9 +79,7 @@ public class DefaultExpressionPropertyCascade extends ExpressionPropertyCascade 
       throw new RuntimeException(group.toString());
     }
     DefaultExpressionPropertyCascade rv = map.get(expressionProperty);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DefaultExpressionPropertyCascade(group, expressionProperty, desiredType);
       map.put(expressionProperty, rv);
     }

@@ -65,9 +65,7 @@ public final class FieldAssignmentFillIn extends ExpressionFillInWithExpressionB
 
   public static synchronized FieldAssignmentFillIn getInstance(UserField field) {
     FieldAssignmentFillIn rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FieldAssignmentFillIn(field);
       map.put(field, rv);
     }

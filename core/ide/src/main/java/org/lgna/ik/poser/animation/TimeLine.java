@@ -338,9 +338,7 @@ public class TimeLine {
   }
 
   private Pose<?> getInitPoseIfNecessary(KeyFrameData key1, KeyFrameData key2) {
-    if (key1 != null) {
-      //pass
-    } else {
+    if (key1 == null) {
       return initialPose;
     }
     List<JointIdTransformationPair> jtPairs = Lists.newArrayList();

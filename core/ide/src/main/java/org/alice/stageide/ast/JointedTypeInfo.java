@@ -64,9 +64,7 @@ public class JointedTypeInfo {
   public static JointedTypeInfo getDeclarationInstance(AbstractType<?, ?, ?> type) {
     if (JOINTED_MODEL_TYPE.isAssignableFrom(type)) {
       JointedTypeInfo rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new JointedTypeInfo(type);
         JointedTypeInfo.map.put(type, rv);
       }

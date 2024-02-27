@@ -65,9 +65,7 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
   public static synchronized FunctionsOfReturnTypeSubComposite getInstance(AbstractType<?, ?, ?> type) {
     if (type != null) {
       FunctionsOfReturnTypeSubComposite rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new FunctionsOfReturnTypeSubComposite(type);
         map.put(type, rv);
       }

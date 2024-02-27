@@ -81,9 +81,7 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<SceneObjectProp
       } else {
         repr = null;
       }
-      if (repr != null) {
-        //pass
-      } else {
+      if (repr == null) {
         repr = "";
       }
       text = text.replace("</selection/>", repr);

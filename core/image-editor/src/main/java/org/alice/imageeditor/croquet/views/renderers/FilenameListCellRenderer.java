@@ -54,9 +54,7 @@ import java.awt.Color;
 public class FilenameListCellRenderer extends ListCellRenderer<String> {
   @Override
   protected JLabel getListCellRendererComponent(JLabel rv, JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
-    if (value != null) {
-      //pass
-    } else {
+    if (value == null) {
       rv.setText("working");
       rv.setBackground(Color.WHITE);
       rv.setForeground(Color.GRAY);

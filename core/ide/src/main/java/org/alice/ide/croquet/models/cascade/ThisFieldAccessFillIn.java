@@ -59,9 +59,7 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAc
   public static ThisFieldAccessFillIn getInstance(AbstractField value) {
     synchronized (map) {
       ThisFieldAccessFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ThisFieldAccessFillIn(value);
         map.put(value, rv);
       }

@@ -252,16 +252,12 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   private static TypeNode build(AbstractType<?, ?, ?> type, Map<AbstractType<?, ?, ?>, TypeNode> map) {
     assert type != null;
     TypeNode typeNode = map.get(type);
-    if (typeNode != null) {
-      //pass
-    } else {
+    if (typeNode == null) {
       typeNode = new TypeNode(type);
       map.put(type, typeNode);
       AbstractType<?, ?, ?> superType = type.getSuperType();
       TypeNode superTypeNode = map.get(superType);
-      if (superTypeNode != null) {
-        //pass
-      } else {
+      if (superTypeNode == null) {
         superTypeNode = build(superType, map);
       }
       superTypeNode.add(typeNode);

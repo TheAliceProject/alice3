@@ -74,9 +74,7 @@ public abstract class AbstractIsFrameShowingState extends BooleanState {
   private String getFrameTitle() {
     this.initializeIfNecessary();
     String rv = this.title;
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = this.getTrueText();
       if (rv != null) {
         rv = rv.replaceAll("<[a-z]*>", "");
@@ -110,9 +108,7 @@ public abstract class AbstractIsFrameShowingState extends BooleanState {
   }
 
   private Frame getOwnerFrameView_createIfNecessary() {
-    if (this.ownerFrameView != null) {
-      //pass
-    } else {
+    if (this.ownerFrameView == null) {
       FrameComposite<?> frameComposite = this.getFrameComposite();
       this.ownerFrameView = new Frame();
       this.ownerFrameView.getContentPane().addCenterComponent(frameComposite.getRootComponent());

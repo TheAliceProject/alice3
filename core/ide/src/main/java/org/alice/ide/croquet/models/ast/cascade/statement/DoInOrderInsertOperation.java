@@ -62,9 +62,7 @@ public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
     Map<BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
     assert blockStatementIndexPair != null;
     DoInOrderInsertOperation rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DoInOrderInsertOperation(blockStatementIndexPair, isEnveloping);
       map.put(blockStatementIndexPair, rv);
     }
