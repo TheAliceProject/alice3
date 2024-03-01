@@ -53,7 +53,6 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
@@ -78,11 +77,6 @@ public class FileSystemTab extends SelectUriTab {
 
   public FileSystemTab() {
     super(UUID.fromString("b1698424-1f0e-4499-852a-da627fa9e789"));
-  }
-
-  @Override
-  protected ScrollPane createScrollPaneIfDesired() {
-    return null;
   }
 
   public StringState getPathState() {
