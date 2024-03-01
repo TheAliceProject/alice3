@@ -55,5 +55,6 @@ public class FileSystemPane extends TabContentPanel {
     BorderPanel pane = new BorderPanel.Builder().hgap(4).lineStart(composite.getPathState().getSidekickLabel().createLabel()).center(composite.getPathState().createTextField()).lineEnd(composite.getBrowseOperation().createButton()).build();
 
     this.addPageStartComponent(pane);
+    addVrCheck(composite);
   }
 }
