@@ -63,6 +63,7 @@ import java.util.UUID;
  */
 public class FileSystemTab extends SelectUriTab {
   private final StringState pathState = this.createStringState("pathState");
+  private ProjectSnapshot snapshot;
   private final Operation browseOperation = this.createActionOperation("browseOperation", new Action() {
     @Override
     public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
@@ -89,13 +90,16 @@ public class FileSystemTab extends SelectUriTab {
 
   @Override
   public UriProjectLoader getSelectedUri() {
-    String path = this.pathState.getValue();
-    File file = new File(path);
-    if (file.exists()) {
-      return new FileProjectLoader(file);
-    } else {
-      return null;
-    }
+    File file = new File(pathState.getValue());
+    snapshot = file.exists()
+        ? new ProjectSnapshot(new FileProjectLoader(file).getUri())
+        : null;
+    return super.getSelectedUri();
+  }
+
+  @Override
+  protected ProjectSnapshot getSnapshot() {
+    return snapshot;
   }
 
   @Override

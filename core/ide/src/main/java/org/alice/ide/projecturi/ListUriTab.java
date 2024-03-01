@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
-import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.SingleSelectListState;
 
 import java.util.UUID;
@@ -58,9 +57,7 @@ public abstract class ListUriTab extends SelectUriTab {
   public abstract SingleSelectListState<ProjectSnapshot, ?> getListSelectionState();
 
   @Override
-  public UriProjectLoader getSelectedUri() {
-    // Only flag to make VR ready if world is not yet VR
-    return UriProjectLoader.createInstance(getListSelectionState().getValue(),
-        isWorldVrReady().isEnabled() && isWorldVrReady().getValue());
+  protected ProjectSnapshot getSnapshot() {
+    return getListSelectionState().getValue();
   }
 }
