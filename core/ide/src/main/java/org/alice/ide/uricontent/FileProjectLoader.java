@@ -62,13 +62,23 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
 
   @Override
   public URI getUri() {
+    return getSaveFile().toURI();
+  }
+
+  private File getSaveFile() {
     if (makeVrReady) {
       // Rename migrated worlds so they do not overwrite existing files
       String source = getFile().getAbsolutePath();
-      return new File(source.substring(0, source.length() - 4) + " VR" + source.substring(source.length() - 4)).toURI();
+      return new File(source.substring(0, source.length() - 4) + " VR" + source.substring(source.length() - 4));
     } else {
-      return getFile().toURI();
+      return getFile();
     }
+  }
+
+  @Override
+  // If true the project expects to be saved but has not yet.
+  public boolean shouldBeSaved() {
+    return !getSaveFile().exists();
   }
 
   public static void main(String[] args) throws Exception {

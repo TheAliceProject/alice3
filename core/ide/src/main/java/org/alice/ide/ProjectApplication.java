@@ -211,6 +211,9 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
   public boolean isProjectUpToDateWithFile() {
     UndoHistory history = this.getProjectHistory();
+    if (uriProjectLoader != null && uriProjectLoader.shouldBeSaved()) {
+      return false;
+    }
     if (history == null) {
       return true;
     } else {
