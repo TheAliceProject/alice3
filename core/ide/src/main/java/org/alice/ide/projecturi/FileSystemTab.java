@@ -94,6 +94,9 @@ public class FileSystemTab extends SelectUriTab {
     snapshot = file.exists()
         ? new ProjectSnapshot(new FileProjectLoader(file).getUri())
         : null;
+    if (peekView() != null) {
+      ((FileSystemPane) peekView()).setThumbnail(snapshot == null ? null : snapshot.getThumbnail());
+    }
     return super.getSelectedUri();
   }
 
