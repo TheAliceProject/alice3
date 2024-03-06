@@ -45,7 +45,6 @@ package org.alice.stageide.showme;
 import org.alice.ide.Theme;
 import org.alice.stageide.icons.ShowMeIconFactory;
 
-import java.awt.Dimension;
 import java.util.UUID;
 
 /**

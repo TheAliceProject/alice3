@@ -65,7 +65,6 @@ import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 import org.lgna.story.implementation.EntityImp;
 
 import javax.swing.Icon;
-import java.awt.Dimension;
 
 public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, MutableRider> {
 

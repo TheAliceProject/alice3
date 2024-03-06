@@ -118,7 +118,6 @@ import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;

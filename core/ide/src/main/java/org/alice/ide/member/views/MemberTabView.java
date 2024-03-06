@@ -63,7 +63,6 @@ import org.lgna.croquet.views.ToolPaletteTitle;
 import org.lgna.croquet.views.ToolPaletteView;
 import org.lgna.project.ast.Member;
 
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.util.Map;
 
