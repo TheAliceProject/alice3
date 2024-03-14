@@ -74,6 +74,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.SineCosineCache;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.render.joglrenderer.NonCachingTextRenderer;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.CustomTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
@@ -1022,7 +1023,7 @@ import java.util.Map;
         disposeTextRendererSafely();
       }
       if (this.textRenderer == null) {
-        this.textRenderer = new TextRenderer(font);
+        this.textRenderer = new NonCachingTextRenderer(font);
       }
       return this.textRenderer;
     }

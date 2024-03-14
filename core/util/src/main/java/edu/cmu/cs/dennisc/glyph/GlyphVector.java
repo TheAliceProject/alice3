@@ -53,6 +53,7 @@ import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.text.Bidi;
 import java.util.List;
 
 /**
@@ -77,12 +78,19 @@ public class GlyphVector {
   }
 
   private java.awt.font.GlyphVector getGlyphVector() {
-    if (this.glyphVector == null) {
-      //this.glyphVector = this.font.layoutGlyphVector( s_frc, this.text.toCharArray(), 0, this.text.length(), java.awt.Font.LAYOUT_LEFT_TO_RIGHT );
-      this.glyphVector = this.font.createGlyphVector(s_frc, this.text);
+    if (glyphVector == null) {
+      // This handles uniform text but will still do unexpected things when mixing LTR and RTL texts
+      // TODO Better handle mixed LTR and RTL texts here (and perhaps backport any fix to Alice 2)
+      if (Bidi.requiresBidi(text.toCharArray(), 0, text.length())
+          && new Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft()) {
+        glyphVector = font.layoutGlyphVector(s_frc, text.toCharArray(), 0, text.length(), Font.LAYOUT_RIGHT_TO_LEFT);
+      } else {
+        glyphVector = font.createGlyphVector(s_frc, text);
+      }
     }
-    return this.glyphVector;
+    return glyphVector;
   }
+
 
   public Shape getFacesShape() {
     if (this.facesShape == null) {
@@ -223,8 +231,8 @@ public class GlyphVector {
     }
   }
 
-  private static FontRenderContext s_frc = new FontRenderContext(null, false, true);
-  private static Stroke s_stroke = new BasicStroke(0);
+  private static final FontRenderContext s_frc = new FontRenderContext(null, false, true);
+  private static final Stroke s_stroke = new BasicStroke(0);
 
   private String text;
   private Font font;
