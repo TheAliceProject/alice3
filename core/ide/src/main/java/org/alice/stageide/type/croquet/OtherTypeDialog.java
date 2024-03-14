@@ -85,9 +85,9 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel, AbstractType> {
+public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel, AbstractType<?, ?, ?>> {
   private static class SingletonHolder {
-    private static OtherTypeDialog instance = new OtherTypeDialog();
+    private static final OtherTypeDialog instance = new OtherTypeDialog();
   }
 
   public static OtherTypeDialog getInstance() {
@@ -116,7 +116,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 
   private final InitializingIfAbsentMap<JavaType, ValueCreator<AbstractType<?, ?, ?>>> mapTypeToValueCreator = Maps.newInitializingIfAbsentHashMap();
 
-  private final Map<AbstractType<?, ?, ?>, TypeNode> map = Maps.newHashMap();
+  private final Map<AbstractType<?, ?, ?>, TypeNode> typeNodeMap = Maps.newHashMap();
 
   private final TypeTreeState typeTreeState = new TypeTreeState();
   private final StringValue descriptionText = new HtmlStringValue(UUID.fromString("5417d9ee-bbe5-457b-aa63-1e5d0958ae1f")) {
@@ -149,22 +149,19 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   private JavaType rootFilterType;
 
   private boolean isInTheMidstOfLowestCommonAncestorSetting;
-  private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
-    @Override
-    public void valueChanged(ValueEvent<TypeNode> e) {
-      TypeNode nextValue = e.getNextValue();
-      handleTypeChange(nextValue != null ? nextValue.getType() : null);
-    }
+  private final ValueListener<TypeNode> typeListener = e -> {
+    TypeNode nextValue = e.getNextValue();
+    handleTypeChange(nextValue != null ? nextValue.getType() : null);
   };
 
-  private final ValueListener<List<UserField>> sceneFieldListener = new ValueListener<List<UserField>>() {
+  private final ValueListener<List<UserField>> sceneFieldListener = new ValueListener<>() {
     @Override
     public void valueChanged(ValueEvent<List<UserField>> e) {
       List<UserField> fields = e.getNextValue();
       TypeNode sharedNode = null;
-      if (fields.size() > 0) {
+      if (!fields.isEmpty()) {
         for (UserField field : fields) {
-          TypeNode typeNode = map.get(field.getValueType());
+          TypeNode typeNode = typeNodeMap.get(field.getValueType());
           if (sharedNode != null) {
             sharedNode = (TypeNode) sharedNode.getSharedAncestor(typeNode);
           } else {
@@ -186,12 +183,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(JavaType rootType) {
-    return this.mapTypeToValueCreator.getInitializingIfAbsent(rootType, new InitializingIfAbsentMap.Initializer<JavaType, ValueCreator<AbstractType<?, ?, ?>>>() {
-      @Override
-      public ValueCreator<AbstractType<?, ?, ?>> initialize(JavaType key) {
-        return new ValueCreatorForRootFilterType(key);
-      }
-    });
+    return this.mapTypeToValueCreator.getInitializingIfAbsent(rootType, ValueCreatorForRootFilterType::new);
   }
 
   public ValueCreator<AbstractType<?, ?, ?>> getValueCreator(Class<? extends SThing> rootCls) {
@@ -207,7 +199,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
     return 600;
   }
 
-  public TabState getTabState() {
+  public TabState<?, ?> getTabState() {
     return this.tabState;
   }
 
@@ -224,7 +216,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   @Override
-  protected AbstractType createValue() {
+  protected AbstractType<?, ?, ?> createValue() {
     TypeNode typeNode = this.typeTreeState.getValue();
     if (typeNode != null) {
       return typeNode.getType();
@@ -249,17 +241,14 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
     }
   }
 
-  private static TypeNode build(AbstractType<?, ?, ?> type, Map<AbstractType<?, ?, ?>, TypeNode> map) {
+  private TypeNode build(AbstractType<?, ?, ?> type) {
     assert type != null;
-    TypeNode typeNode = map.get(type);
+    TypeNode typeNode = typeNodeMap.get(type);
     if (typeNode == null) {
       typeNode = new TypeNode(type);
-      map.put(type, typeNode);
+      typeNodeMap.put(type, typeNode);
       AbstractType<?, ?, ?> superType = type.getSuperType();
-      TypeNode superTypeNode = map.get(superType);
-      if (superTypeNode == null) {
-        superTypeNode = build(superType, map);
-      }
+      TypeNode superTypeNode = build(superType);
       superTypeNode.add(typeNode);
     }
     return typeNode;
@@ -269,14 +258,14 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   public void handlePreActivation() {
     Project project = ProjectStack.peekProject();
     Iterable<NamedUserType> types = project.getNamedUserTypes();
-    map.clear();
+    typeNodeMap.clear();
 
     JavaType rootType = JavaType.getInstance(SThing.class);
     TypeNode rootNode = new TypeNode(rootType);
-    map.put(rootType, rootNode);
+    typeNodeMap.put(rootType, rootNode);
     for (NamedUserType type : types) {
       if (this.rootFilterType.isAssignableFrom(type)) {
-        build(type, map);
+        build(type);
       }
     }
     this.sceneFieldListData.refresh();
@@ -288,8 +277,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
         UserField field = this.sceneFieldListData.getItemAt(i);
         AbstractType<?, ?, ?> valueType = field.getValueType();
         if (valueType instanceof JavaType) {
-          JavaType javaValueType = (JavaType) valueType;
-          build(javaValueType, map);
+          build(valueType);
         }
       }
     }
@@ -366,9 +354,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
         }
       }
     }
-    if (isFirst) {
-      //pass
-    } else {
+    if (!isFirst) {
       sb.append("</ul>");
     }
     isFirst = true;
@@ -386,9 +372,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
         }
       }
     }
-    if (isFirst) {
-      //pass
-    } else {
+    if (!isFirst) {
       sb.append("</ul>");
     }
 
@@ -405,9 +389,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
         sb.append("</li>");
       }
     }
-    if (isFirst) {
-      //pass
-    } else {
+    if (!isFirst) {
       sb.append("</ul>");
     }
 
@@ -432,9 +414,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
     ListData<UserField> data = sceneFieldsState.getData();
 
     this.getView().repaint();
-    if (this.isInTheMidstOfLowestCommonAncestorSetting) {
-      //
-    } else {
+    if (!this.isInTheMidstOfLowestCommonAncestorSetting) {
       List<UserField> fields = Lists.newLinkedList();
       if (type != null) {
         synchronized (data) {
@@ -452,7 +432,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
   }
 
   public TypeNode getTypeNodeFor(AbstractType<?, ?, ?> nextValue) {
-    return nextValue != null ? map.get(nextValue) : null;
+    return nextValue != null ? typeNodeMap.get(nextValue) : null;
   }
 
   public static void main(String[] args) throws Exception {
