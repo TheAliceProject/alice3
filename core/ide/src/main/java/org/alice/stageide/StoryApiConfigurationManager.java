@@ -460,6 +460,11 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
     rv.add(JavaType.getInstance(SJoint.class));
     rv.add(null);
+    if (StageIDE.getActiveInstance().getSceneEditor().isVrActive()) {
+      rv.add(JavaType.getInstance(SVRHand.class));
+      rv.add(JavaType.getInstance(SVRHeadset.class));
+      rv.add(null);
+    }
     //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
     //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
     //    rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
