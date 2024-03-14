@@ -44,16 +44,31 @@
 package org.alice.ide.projecturi.views;
 
 import org.alice.ide.projecturi.FileSystemTab;
+import org.alice.imageeditor.croquet.views.ImageView;
 import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.MigPanel;
+
+import java.awt.Image;
 
 /**
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
+  private final ImageView thumb;
   public FileSystemPane(FileSystemTab composite) {
     super(composite);
     BorderPanel pane = new BorderPanel.Builder().hgap(4).lineStart(composite.getPathState().getSidekickLabel().createLabel()).center(composite.getPathState().createTextField()).lineEnd(composite.getBrowseOperation().createButton()).build();
+    addPageStartComponent(pane);
 
-    this.addPageStartComponent(pane);
+    thumb = new ImageView();
+    MigPanel previewPane = new MigPanel(composite);
+    previewPane.addComponent(thumb, "dock center, grow");
+    addCenterComponent(previewPane);
+
+    addVrCheck(composite);
+  }
+
+  public void setThumbnail(Image image) {
+    thumb.setImage(image);
   }
 }

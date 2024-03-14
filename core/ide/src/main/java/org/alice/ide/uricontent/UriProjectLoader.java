@@ -78,4 +78,10 @@ public abstract class UriProjectLoader extends UriContentLoader<Project> {
       return null;
     }
   }
+
+  // If true the project expects to be saved but has not yet.
+  // Defaults to false.
+  public boolean shouldBeSaved() {
+    return false;
+  }
 }

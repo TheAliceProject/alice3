@@ -64,7 +64,13 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
     return isWorldVrReadyState;
   }
 
-  public abstract UriProjectLoader getSelectedUri();
+  public UriProjectLoader getSelectedUri() {
+    // Only flag to make VR ready if world is not yet VR
+    return UriProjectLoader.createInstance(getSnapshot(),
+        isWorldVrReady().isEnabled() && isWorldVrReady().getValue());
+  }
+
+  protected abstract ProjectSnapshot getSnapshot();
 
   protected abstract void refresh();
 
@@ -74,12 +80,10 @@ public abstract class SelectUriTab extends SimpleTabComposite<TabContentPanel> {
   }
 
   public void updateVrCheckbox() {
-  }
-
-  protected void updateVrCheckbox(ProjectSnapshot selected) {
     if (isWorldVrReady().isEnabled()) {
       lastUserVrChoice = isWorldVrReadyState.getValue();
     }
+    ProjectSnapshot selected = getSnapshot();
     isWorldVrReady().setEnabled(selected != null && !selected.isVrProject());
     isWorldVrReady().setValueTransactionlessly(
         selected != null && selected.isVrProject() || lastUserVrChoice);

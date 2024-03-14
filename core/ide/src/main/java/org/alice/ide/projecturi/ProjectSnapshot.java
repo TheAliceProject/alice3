@@ -34,6 +34,7 @@ public class ProjectSnapshot {
   Project.SceneCameraType sceneCamera;
   String text;
   Icon icon = FILE_DOES_NOT_EXIST_ICON;
+  Image thumbnail = null;
 
   public ProjectSnapshot(URI uri) {
     this.uri = uri;
@@ -58,6 +59,10 @@ public class ProjectSnapshot {
 
   public Icon getIcon() {
     return icon;
+  }
+
+  public Image getThumbnail() {
+    return thumbnail;
   }
 
   public boolean isVrProject() {
@@ -124,7 +129,7 @@ public class ProjectSnapshot {
     try {
       ZipFile zipFile = new ZipFile(file);
       readManifest(zipFile);
-      icon = readThumbnail(zipFile);
+      readThumbnail(zipFile);
       zipFile.close();
     } catch (Throwable t) {
       icon = SNAPSHOT_NOT_AVAILABLE_ICON;
@@ -144,14 +149,15 @@ public class ProjectSnapshot {
 
   }
 
-  private Icon readThumbnail(ZipFile zipFile) throws IOException {
+  private void readThumbnail(ZipFile zipFile) throws IOException {
     ZipEntry zipEntry = zipFile.getEntry("thumbnail.png");
     if (zipEntry != null) {
       InputStream is = zipFile.getInputStream(zipEntry);
-      Image image = ImageUtilities.read(ImageUtilities.PNG_CODEC_NAME, is);
-      return new SnapshotIcon(image);
+      thumbnail = ImageUtilities.read(ImageUtilities.PNG_CODEC_NAME, is);
+      icon =  new SnapshotIcon(thumbnail);
     } else {
-      return SNAPSHOT_NOT_AVAILABLE_ICON;
+      thumbnail = null;
+      icon = SNAPSHOT_NOT_AVAILABLE_ICON;
     }
   }
   private static final String PROJECT_LOCALIZATION_BUNDLE_NAME = "org.lgna.story.resources.ProjectNames";

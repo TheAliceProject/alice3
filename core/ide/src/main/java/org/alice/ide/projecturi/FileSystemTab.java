@@ -53,7 +53,6 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
@@ -64,6 +63,7 @@ import java.util.UUID;
  */
 public class FileSystemTab extends SelectUriTab {
   private final StringState pathState = this.createStringState("pathState");
+  private ProjectSnapshot snapshot;
   private final Operation browseOperation = this.createActionOperation("browseOperation", new Action() {
     @Override
     public Edit perform(UserActivity userActivity, InternalActionOperation source) throws CancelException {
@@ -80,11 +80,6 @@ public class FileSystemTab extends SelectUriTab {
     super(UUID.fromString("b1698424-1f0e-4499-852a-da627fa9e789"));
   }
 
-  @Override
-  protected ScrollPane createScrollPaneIfDesired() {
-    return null;
-  }
-
   public StringState getPathState() {
     return this.pathState;
   }
@@ -95,13 +90,19 @@ public class FileSystemTab extends SelectUriTab {
 
   @Override
   public UriProjectLoader getSelectedUri() {
-    String path = this.pathState.getValue();
-    File file = new File(path);
-    if (file.exists()) {
-      return new FileProjectLoader(file);
-    } else {
-      return null;
+    File file = new File(pathState.getValue());
+    snapshot = file.exists()
+        ? new ProjectSnapshot(new FileProjectLoader(file).getUri())
+        : null;
+    if (peekView() != null) {
+      ((FileSystemPane) peekView()).setThumbnail(snapshot == null ? null : snapshot.getThumbnail());
     }
+    return super.getSelectedUri();
+  }
+
+  @Override
+  protected ProjectSnapshot getSnapshot() {
+    return snapshot;
   }
 
   @Override
