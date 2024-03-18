@@ -64,10 +64,6 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
     this.method = method;
   }
 
-  public AbstractMethod getMethod() {
-    return this.method;
-  }
-
   @Override
   protected Expression createExpression(Expression... expressions) {
     return AstUtilities.createMethodInvocation(IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions);

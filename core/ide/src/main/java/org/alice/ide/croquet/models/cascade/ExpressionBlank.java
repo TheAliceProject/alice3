@@ -77,10 +77,6 @@ public abstract class ExpressionBlank extends CascadeBlank<Expression> {
     return getBlankForType(JavaType.getInstance(cls), details);
   }
 
-  public static <T> ExpressionBlank getBlankForType(Class<T> cls) {
-    return getBlankForType(cls, null);
-  }
-
   public static ExpressionBlank[] createBlanks(AbstractType<?, ?, ?>... types) {
     ExpressionBlank[] rv = new ExpressionBlank[types.length];
     for (int i = 0; i < rv.length; i++) {
