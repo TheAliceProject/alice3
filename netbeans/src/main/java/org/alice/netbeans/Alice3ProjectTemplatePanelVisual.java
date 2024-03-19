@@ -55,12 +55,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
 import org.openide.filesystems.FileUtil;
 
-public class Alice3ProjectTemplatePanelVisual extends JPanel implements DocumentListener {
+public class Alice3ProjectTemplatePanelVisual extends JPanel {
 
   private static final boolean IS_AUTOMATIC_FILL_IN_ALICE_PROJECT_DESIRED = "C:\\Users\\dennisc".contentEquals(System.getProperty("user.home"));
   public static final String PROP_PROJECT_NAME = "projectName";
@@ -72,9 +73,10 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
     initComponents();
     this.panel = panel;
     // Register listener on the textFields to make the automatic updates
-    projectNameTextField.getDocument().addDocumentListener(this);
-    projectLocationTextField.getDocument().addDocumentListener(this);
-    aliceWorldLocationTextField.getDocument().addDocumentListener(this);
+    DocumentListener listener = new UnifiedDocumentListener(this::updateTexts);
+    projectNameTextField.getDocument().addDocumentListener(listener);
+    projectLocationTextField.getDocument().addDocumentListener(listener);
+    aliceWorldLocationTextField.getDocument().addDocumentListener(listener);
   }
 
   public String getProjectName() {
@@ -139,12 +141,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
     org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.text"));
     browseButton.setActionCommand(browseCommand);
-    browseButton.addActionListener(new java.awt.event.ActionListener() {
-      @Override
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        browseButtonActionPerformed(evt);
-      }
-    });
+    browseButton.addActionListener(this::browseButtonActionPerformed);
 
     createdFolderLabel.setLabelFor(createdFolderTextField);
     org.openide.awt.Mnemonics.setLocalizedText(createdFolderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.createdFolderLabel.text"));
@@ -159,12 +156,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
     org.openide.awt.Mnemonics.setLocalizedText(aliceWorldBrowseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.text"));
     aliceWorldBrowseButton.setActionCommand(browseCommand);
-    aliceWorldBrowseButton.addActionListener(new java.awt.event.ActionListener() {
-      @Override
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        aliceWorldBrowseButtonActionPerformed(evt);
-      }
-    });
+    aliceWorldBrowseButton.addActionListener(this::aliceWorldBrowseButtonActionPerformed);
 
     fromAliceHeaderLabel.setFont(new java.awt.Font("Tahoma", 1, 14));
     org.openide.awt.Mnemonics.setLocalizedText(fromAliceHeaderLabel, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.fromAliceHeaderLabel.text"));
@@ -380,31 +372,6 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
     // nothing to validate
   }
 
-  // Implementation of DocumentListener --------------------------------------
-  @Override
-  public void changedUpdate(DocumentEvent e) {
-    updateTexts(e);
-    if (this.projectNameTextField.getDocument() == e.getDocument()) {
-      firePropertyChange(PROP_PROJECT_NAME, null, this.projectNameTextField.getText());
-    }
-  }
-
-  @Override
-  public void insertUpdate(DocumentEvent e) {
-    updateTexts(e);
-    if (this.projectNameTextField.getDocument() == e.getDocument()) {
-      firePropertyChange(PROP_PROJECT_NAME, null, this.projectNameTextField.getText());
-    }
-  }
-
-  @Override
-  public void removeUpdate(DocumentEvent e) {
-    updateTexts(e);
-    if (this.projectNameTextField.getDocument() == e.getDocument()) {
-      firePropertyChange(PROP_PROJECT_NAME, null, this.projectNameTextField.getText());
-    }
-  }
-
   /**
    * Handles changes in the Project name and project directory,
    */
@@ -424,6 +391,9 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 
     }
     panel.fireChangeEvent(); // Notify that the panel changed
+    if (this.projectNameTextField.getDocument() == e.getDocument()) {
+      firePropertyChange(PROP_PROJECT_NAME, null, this.projectNameTextField.getText());
+    }
   }
 
   File checkedDestinationFolder;

@@ -44,25 +44,37 @@ package edu.cmu.cs.dennisc.javax.swing.event;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.function.Consumer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimplifiedDocumentAdapter implements DocumentListener {
-  protected abstract void updated(DocumentEvent e);
+public class UnifiedDocumentListener implements DocumentListener {
+  private final Consumer<DocumentEvent> update;
 
+  public UnifiedDocumentListener(Consumer<DocumentEvent> update) {
+    this.update = update;
+  }
+
+  public UnifiedDocumentListener(Runnable update) {
+    this.update = (x -> update.run());
+  }
   @Override
   public void changedUpdate(DocumentEvent e) {
-    this.updated(e);
+    update(e);
+  }
+
+  protected void update(DocumentEvent e) {
+    update.accept(e);
   }
 
   @Override
   public void insertUpdate(DocumentEvent e) {
-    this.updated(e);
+    update(e);
   }
 
   @Override
   public void removeUpdate(DocumentEvent e) {
-    this.updated(e);
+    update(e);
   }
 }

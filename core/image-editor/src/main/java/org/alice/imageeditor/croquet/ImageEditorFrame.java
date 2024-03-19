@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.imageeditor.croquet.views.ImageEditorPane;
 import org.lgna.croquet.Application;
@@ -249,22 +250,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
     }
   };
 
-  private final DocumentListener editorListener = new DocumentListener() {
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-      handleEditorChanged(e);
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-      handleEditorChanged(e);
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-      handleEditorChanged(e);
-    }
-  };
+  private final DocumentListener editorListener = new UnifiedDocumentListener(this::handleEditorChanged);
 
   //todo
   private final JComboBox jComboBox = new JComboBox(this.filenameComboBoxModel);

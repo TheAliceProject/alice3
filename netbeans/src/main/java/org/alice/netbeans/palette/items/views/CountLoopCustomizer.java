@@ -45,10 +45,9 @@ package org.alice.netbeans.palette.items.views;
 
 import java.awt.Color;
 import java.awt.Dialog;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 
@@ -66,23 +65,7 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
     initComponents();
 
-    this.variableNameTextField.getDocument().addDocumentListener(new DocumentListener() {
-
-      @Override
-      public void insertUpdate(DocumentEvent arg0) {
-        evaluateInput();
-      }
-
-      @Override
-      public void removeUpdate(DocumentEvent arg0) {
-        evaluateInput();
-      }
-
-      @Override
-      public void changedUpdate(DocumentEvent arg0) {
-        evaluateInput();
-      }
-    });
+    this.variableNameTextField.getDocument().addDocumentListener(new UnifiedDocumentListener(this::evaluateInput));
   }
 
   public boolean showDialog() {

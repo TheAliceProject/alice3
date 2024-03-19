@@ -44,16 +44,13 @@
 package org.alice.ide.properties.uicontroller;
 
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
-import edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
 
 public class DoubleTextField extends JTextField {
   private static final NumberFormat CENTI_FORMAT = new DecimalFormat("0.00");
@@ -62,19 +59,11 @@ public class DoubleTextField extends JTextField {
 
   public DoubleTextField(int columns) {
     super(columns);
-    this.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        markValueSet();
-      }
-    });
-    this.getDocument().addDocumentListener(new SimplifiedDocumentAdapter() {
-      @Override
-      protected void updated(DocumentEvent e) {
+    this.addActionListener(e -> markValueSet());
+    this.getDocument().addDocumentListener(new UnifiedDocumentListener(() -> {
         markValueTemporary();
         DoubleTextField.this.isDirty = true;
-      }
-    });
+    }));
   }
 
   public boolean isValueValid() {
