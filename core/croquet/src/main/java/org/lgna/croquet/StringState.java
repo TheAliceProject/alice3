@@ -45,7 +45,7 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.event.PausableDocumentListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.triggers.DocumentEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
@@ -68,50 +68,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-  private final class DocumentListener implements javax.swing.event.DocumentListener {
-    private void handleUpdate(DocumentEvent e) {
-      if (this.ignoreCount == 0) {
-        try {
-          javax.swing.text.Document document = e.getDocument();
-          String nextValue = document.getText(0, document.getLength());
-          StringState.this.changeValueFromSwing(nextValue, DocumentEventTrigger.createUserInstance(e).getUserActivity());
-        } catch (BadLocationException ble) {
-          throw new RuntimeException(ble);
-        }
-      } else {
-        if (this.ignoreCount < 0) {
-          Logger.severe(StringState.this);
-        }
-      }
-    }
-
-    private int ignoreCount = 0;
-
-    public void pushIgnore() {
-      this.ignoreCount++;
-    }
-
-    public void popIgnore() {
-      this.ignoreCount--;
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-      this.handleUpdate(e);
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-      this.handleUpdate(e);
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-      this.handleUpdate(e);
-    }
-  }
-
-  private final DocumentListener documentListener = new DocumentListener();
+  private final PausableDocumentListener listener = new PausableDocumentListener(this::handleUpdate);
 
   public static class SwingModel {
     private final List<TextComponent<?>> textComponents = Lists.newCopyOnWriteArrayList();
@@ -145,7 +102,7 @@ public abstract class StringState extends State<String> {
     } catch (BadLocationException ble) {
       throw new RuntimeException(ble);
     }
-    this.swingModel.document.addDocumentListener(this.documentListener);
+    this.swingModel.document.addDocumentListener(listener);
   }
 
   @Override
@@ -191,14 +148,24 @@ public abstract class StringState extends State<String> {
 
   @Override
   protected void setSwingValue(String nextValue) {
-    this.documentListener.pushIgnore();
+    listener.pause();
     try {
       this.swingModel.document.remove(0, this.swingModel.document.getLength());
       this.swingModel.document.insertString(0, nextValue, null);
     } catch (BadLocationException ble) {
       throw new RuntimeException(ble);
     } finally {
-      this.documentListener.popIgnore();
+      listener.resume();
+    }
+  }
+
+  private void handleUpdate(DocumentEvent e) {
+    try {
+      javax.swing.text.Document document = e.getDocument();
+      String nextValue = document.getText(0, document.getLength());
+      StringState.this.changeValueFromSwing(nextValue, DocumentEventTrigger.createUserInstance(e).getUserActivity());
+    } catch (BadLocationException ble) {
+      throw new RuntimeException(ble);
     }
   }
 

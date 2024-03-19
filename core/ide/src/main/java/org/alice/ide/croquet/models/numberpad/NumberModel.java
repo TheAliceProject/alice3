@@ -42,7 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.javax.swing.event.PausableDocumentListener;
 import org.lgna.croquet.Group;
+import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.history.EmptyPrepStep;
 import org.lgna.croquet.triggers.DocumentEventTrigger;
@@ -50,7 +52,6 @@ import org.lgna.project.ast.Expression;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import javax.swing.text.PlainDocument;
@@ -64,58 +65,28 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
 
   private final PlainDocument document = new PlainDocument();
   private final JTextField textField = new JTextField();
-
-  private static final class NumberDocumentListener implements DocumentListener {
-    private int ignoreCount;
-
-    void pushIgnore() {
-      this.ignoreCount++;
-    }
-
-    void popIgnore() {
-      this.ignoreCount--;
-    }
-
-    private void update(DocumentEvent e) {
-      if (this.ignoreCount == 0) {
-        PrepStep step = new EmptyPrepStep(DocumentEventTrigger.createUserInstance(e), "Key pressed");
-        step.getUserActivity().finish();
-      }
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-      this.update(e);
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-      this.update(e);
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-      this.update(e);
-    }
-  }
-
-  private final NumberDocumentListener documentListener = new NumberDocumentListener();
+  private final PausableDocumentListener listener = new PausableDocumentListener(this::update);
 
   public NumberModel(Group group, UUID id) {
     this.textField.setDocument(this.document);
-    this.document.addDocumentListener(this.documentListener);
+    this.document.addDocumentListener(listener);
   }
 
   public JTextField getTextField() {
     return this.textField;
   }
 
+  private void update(DocumentEvent e) {
+    PrepStep<PrepModel> step = new EmptyPrepStep(DocumentEventTrigger.createUserInstance(e), "Key pressed");
+    step.getUserActivity().finish();
+  }
+
   private void replaceSelection(String s) {
-    this.documentListener.pushIgnore();
+    listener.pause();
     try {
       this.textField.replaceSelection(s);
     } finally {
-      this.documentListener.popIgnore();
+      listener.resume();
     }
   }
 
@@ -128,7 +99,7 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
   }
 
   public void negate() {
-    this.documentListener.pushIgnore();
+    listener.pause();
     try {
       final int N = document.getLength();
       try {
@@ -148,12 +119,12 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
         throw new RuntimeException(ble);
       }
     } finally {
-      this.documentListener.popIgnore();
+      listener.resume();
     }
   }
 
   public void delete() {
-    this.documentListener.pushIgnore();
+    listener.pause();
     try {
       Caret caret = this.textField.getCaret();
       int dot = caret.getDot();
@@ -170,12 +141,12 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
         }
       }
     } finally {
-      this.documentListener.popIgnore();
+      listener.resume();
     }
   }
 
   public void setText(String text) {
-    this.documentListener.pushIgnore();
+    listener.pause();
     try {
       try {
         this.document.replace(0, this.document.getLength(), text, null);
@@ -183,7 +154,7 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
         throw new RuntimeException(ble);
       }
     } finally {
-      this.documentListener.popIgnore();
+      listener.resume();
     }
   }
 
