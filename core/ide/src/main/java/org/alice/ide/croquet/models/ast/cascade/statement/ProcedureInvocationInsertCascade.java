@@ -43,7 +43,6 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
-import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
@@ -57,26 +56,12 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-  private static MapToMap<BlockStatementIndexPair, AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = MapToMap.newInstance();
-
-  public static synchronized ProcedureInvocationInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
-    ProcedureInvocationInsertCascade rv = mapToMap.get(blockStatementIndexPair, method);
-    if (rv == null) {
-      rv = new ProcedureInvocationInsertCascade(blockStatementIndexPair, method);
-      mapToMap.put(blockStatementIndexPair, method, rv);
-    }
-    return rv;
-  }
 
   private final AbstractMethod method;
 
-  private ProcedureInvocationInsertCascade(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
+  public ProcedureInvocationInsertCascade(BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method) {
     super(UUID.fromString("d8ea7244-f0eb-4c3a-a9fa-a92182ed221a"), blockStatementIndexPair, MethodUtilities.createParameterBlanks(method));
     this.method = method;
-  }
-
-  public AbstractMethod getMethod() {
-    return this.method;
   }
 
   @Override

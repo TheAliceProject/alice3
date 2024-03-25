@@ -79,10 +79,12 @@ import org.lgna.project.ast.ExpressionStatement;
   }
 
   protected void refresh() {
-    this.removeAllComponents();
-    Expression incompleteExpression = this.createIncompleteExpression();
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
-    this.addComponent(TemplateAstI18nFactory.getInstance().createExpressionPane(incompleteExpression));
+    synchronized (this.getTreeLock()) {
+      this.removeAllComponents();
+      Expression incompleteExpression = this.createIncompleteExpression();
+      this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
+      this.addComponent(TemplateAstI18nFactory.getInstance().createExpressionPane(incompleteExpression));
+    }
   }
 
   //  @Override

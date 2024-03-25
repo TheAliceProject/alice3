@@ -78,10 +78,12 @@ public abstract class ExpressionTemplate extends ExpressionCreatorPane {
   }
 
   protected void refresh() {
-    this.removeAllComponents();
-    Expression incompleteExpression = this.createIncompleteExpression();
-    this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
-    this.addComponent(TemplateAstI18nFactory.getInstance().createComponent(incompleteExpression));
+    synchronized (this.getTreeLock()) {
+      this.removeAllComponents();
+      Expression incompleteExpression = this.createIncompleteExpression();
+      this.setBackgroundColor(ThemeUtilities.getActiveTheme().getColorFor(incompleteExpression));
+      this.addComponent(TemplateAstI18nFactory.getInstance().createComponent(incompleteExpression));
+    }
   }
 
   //  @Override

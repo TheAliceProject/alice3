@@ -96,6 +96,6 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 
   @Override
   public Triggerable getDropOperation(DragStep step, BlockStatementIndexPair blockStatementIndexPair) {
-    return ProcedureInvocationInsertCascade.getInstance(blockStatementIndexPair, this.method);
+    return new ProcedureInvocationInsertCascade(blockStatementIndexPair, this.method);
   }
 }
