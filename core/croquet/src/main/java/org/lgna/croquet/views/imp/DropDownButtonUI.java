@@ -95,9 +95,7 @@ public class DropDownButtonUI extends BasicButtonUI {
       //pass
     } else {
       if (this.button.isEnabled()) {
-        if (this.dispatchState != null) {
-          //pass
-        } else {
+        if (this.dispatchState == null) {
           buttonModel.setRollover(true);
         }
       }

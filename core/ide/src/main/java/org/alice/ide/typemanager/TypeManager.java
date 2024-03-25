@@ -115,9 +115,7 @@ public class TypeManager {
           argumentExpressionI = argumentExpressions[i];
         } else {
           String parameterName = javaParameterI.getName(); //todo?
-          if (parameterName != null) {
-            //pass
-          } else {
+          if (parameterName == null) {
             parameterName = "p" + i;
           }
           AbstractType<?, ?, ?> parameterTypeI;

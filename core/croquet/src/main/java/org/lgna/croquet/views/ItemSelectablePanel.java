@@ -187,9 +187,7 @@ public abstract class ItemSelectablePanel<E> extends ViewController<JPanel, Sing
             E item = data.getItemAt(i);
             if (item != null) {
               BooleanStateButton<?> button = this.mapItemToButton.get(item);
-              if (button != null) {
-                //pass
-              } else {
+              if (button == null) {
                 button = this.createButtonForItemSelectedState(item, this.getModel().getItemSelectedState(item));
                 this.mapItemToButton.put(item, button);
               }

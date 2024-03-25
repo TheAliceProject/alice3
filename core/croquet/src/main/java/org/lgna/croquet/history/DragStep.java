@@ -192,9 +192,7 @@ public class DragStep extends PrepStep<DragModel> {
         int x = dragBounds.x;
         int y = dragBounds.y + (dragBounds.height / 2);
         rv = getDropReceptorUnder(x, y);
-        if (rv != null) {
-          //pass
-        } else {
+        if (rv == null) {
           rv = getDropReceptorUnder(dragBounds);
         }
       }

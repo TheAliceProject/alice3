@@ -117,18 +117,14 @@ public class GlrOldMesh extends GlrGeometry<OldMesh> {
       }
     } else {
       if (mode == GL_TRIANGLES) {
-        if (this.triangleIndexBuffer != null) {
-          //pass
-        } else {
+        if (this.triangleIndexBuffer == null) {
           this.triangleIndexBuffer = BufferUtilities.createDirectShortBuffer(this.xyzTriangleIndices);
         }
         this.triangleIndexBuffer.rewind();
 
         gl.glDrawElements(mode, this.xyzTriangleIndices.length / 3, GL_SHORT, this.triangleIndexBuffer);
       } else if (mode == GL_QUADS) {
-        if (this.quadrangleIndexBuffer != null) {
-          //pass
-        } else {
+        if (this.quadrangleIndexBuffer == null) {
           this.quadrangleIndexBuffer = BufferUtilities.createDirectShortBuffer(this.xyzQuadrangleIndices);
           this.quadrangleIndexBuffer.rewind();
         }

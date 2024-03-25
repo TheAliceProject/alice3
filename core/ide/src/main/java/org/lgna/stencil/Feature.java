@@ -319,9 +319,7 @@ public abstract class Feature {
               }
             }
           }
-          if (actualConnection != null) {
-            //pass
-          } else {
+          if (actualConnection == null) {
             if (y >= 32) {
               actualConnection = Feature.Connection.NORTH;
             } else {

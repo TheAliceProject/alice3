@@ -103,9 +103,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
     javax.swing.AbstractButton jButton = this.getAwtComponent();
     if ("javax.swing.plaf.synth.SynthButtonUI".equals(jButton.getUI().getClass().getName())) {
       if (this.uiDefaultsName != null) {
-        if (margin != null) {
-          //pass
-        } else {
+        if (margin == null) {
           int right;
           String text = jButton.getText();
           final int PAD = 4;

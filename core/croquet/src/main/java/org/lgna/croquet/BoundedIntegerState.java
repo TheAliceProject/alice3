@@ -128,24 +128,16 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 
       @Override
       public void setAll(Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting) {
-        if (value != null) {
-          //pass
-        } else {
+        if (value == null) {
           value = this.boundedRangeModel.getValue();
         }
-        if (extent != null) {
-          //pass
-        } else {
+        if (extent == null) {
           extent = this.boundedRangeModel.getExtent();
         }
-        if (minimum != null) {
-          //pass
-        } else {
+        if (minimum == null) {
           minimum = this.boundedRangeModel.getMinimum();
         }
-        if (maximum != null) {
-          //pass
-        } else {
+        if (maximum == null) {
           maximum = this.boundedRangeModel.getMaximum();
         }
         this.boundedRangeModel.setRangeProperties(value, extent, minimum, maximum, isAdjusting);

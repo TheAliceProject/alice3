@@ -232,9 +232,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
             worker = null;
           }
         }
-        if (worker != null) {
-          //pass
-        } else {
+        if (worker == null) {
           if (file.isDirectory()) {
             worker = new FilenameListWorker(filenameComboBoxModel, file);
             filenameComboBoxModel.prologue();
