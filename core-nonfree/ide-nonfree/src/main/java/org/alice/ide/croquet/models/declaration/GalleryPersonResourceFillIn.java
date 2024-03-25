@@ -63,9 +63,7 @@ public class GalleryPersonResourceFillIn extends ExpressionFillInWithoutBlanks<E
 
   public static synchronized GalleryPersonResourceFillIn getInstance(AbstractType<?, ?, ?> type) {
     GalleryPersonResourceFillIn rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new GalleryPersonResourceFillIn(type);
       map.put(type, rv);
     }

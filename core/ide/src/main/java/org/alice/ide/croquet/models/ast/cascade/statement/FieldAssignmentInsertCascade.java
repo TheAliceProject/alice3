@@ -61,9 +61,7 @@ public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 
   public static synchronized FieldAssignmentInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
     FieldAssignmentInsertCascade rv = mapToMap.get(blockStatementIndexPair, field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FieldAssignmentInsertCascade(blockStatementIndexPair, field);
       mapToMap.put(blockStatementIndexPair, field, rv);
     }

@@ -60,9 +60,7 @@ public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
   public static synchronized ParameterArrayLengthFillIn getInstance(UserParameter parameter) {
     assert parameter != null;
     ParameterArrayLengthFillIn rv = map.get(parameter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterArrayLengthFillIn(parameter);
       map.put(parameter, rv);
     }

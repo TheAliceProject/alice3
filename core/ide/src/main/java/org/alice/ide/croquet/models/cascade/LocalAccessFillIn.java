@@ -59,9 +59,7 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<LocalAccess
   public static LocalAccessFillIn getInstance(UserLocal value) {
     synchronized (map) {
       LocalAccessFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new LocalAccessFillIn(value);
         map.put(value, rv);
       }

@@ -76,9 +76,7 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
   public static synchronized ReturnStatementInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair) {
     assert blockStatementIndexPair != null;
     ReturnStatementInsertCascade rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ReturnStatementInsertCascade(blockStatementIndexPair);
       map.put(blockStatementIndexPair, rv);
     }

@@ -59,9 +59,7 @@ public class PreviousExpressionItselfFillIn extends PreviousExpressionBasedFillI
   public static PreviousExpressionItselfFillIn getInstance(AbstractType<?, ?, ?> type) {
     synchronized (map) {
       PreviousExpressionItselfFillIn rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new PreviousExpressionItselfFillIn(type);
         map.put(type, rv);
       }

@@ -69,9 +69,7 @@ public class KeywordMenuModel extends CascadeMenuModel<Expression> {
   public static KeywordMenuModel getInstance(AbstractMethod value) {
     synchronized (map) {
       KeywordMenuModel rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new KeywordMenuModel(value);
         map.put(value, rv);
       }

@@ -117,9 +117,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 
   @Override
   public void display() {
-    if (this.drawableHelper != null) {
-      //pass
-    } else {
+    if (this.drawableHelper == null) {
       this.drawableHelper = new GLDrawableHelper();
     }
     if ((this.glDrawable != null) && (this.glContext != null) && (this.displayAdapter != null) && (this.initAdapter != null)) {
@@ -127,24 +125,16 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
       this.drawableHelper.invokeGL(this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter);
     } else {
       StringBuilder sb = new StringBuilder();
-      if (this.glDrawable != null) {
-        //pass
-      } else {
+      if (this.glDrawable == null) {
         sb.append("glDrawable is null;");
       }
-      if (this.glContext != null) {
-        //pass
-      } else {
+      if (this.glContext == null) {
         sb.append("glContext is null;");
       }
-      if (this.displayAdapter != null) {
-        //pass
-      } else {
+      if (this.displayAdapter == null) {
         sb.append("displayAdapter is null;");
       }
-      if (this.initAdapter != null) {
-        //pass
-      } else {
+      if (this.initAdapter == null) {
         sb.append("initAdapter is null;");
       }
       throw new GLException(sb.toString());

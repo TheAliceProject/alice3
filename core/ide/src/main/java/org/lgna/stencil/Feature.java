@@ -335,9 +335,7 @@ public abstract class Feature {
         }
       }
     }
-    if (actualConnection != null) {
-      //pass
-    } else {
+    if (actualConnection == null) {
       actualConnection = Feature.Connection.SOUTH;
     }
     return actualConnection;

@@ -62,9 +62,7 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
   public static synchronized CommentInsertOperation getInstance(BlockStatementIndexPair blockStatementIndexPair) {
     assert blockStatementIndexPair != null;
     CommentInsertOperation rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new CommentInsertOperation(blockStatementIndexPair);
       map.put(blockStatementIndexPair, rv);
     }

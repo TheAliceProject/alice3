@@ -58,9 +58,7 @@ public final class MethodNameSeparator extends CascadeLabelSeparator {
   public static synchronized MethodNameSeparator getInstance(AbstractMethod method) {
     assert method != null;
     MethodNameSeparator rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new MethodNameSeparator(method);
       map.put(method, rv);
     }

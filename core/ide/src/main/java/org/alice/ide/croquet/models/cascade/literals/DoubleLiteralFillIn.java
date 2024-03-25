@@ -57,9 +57,7 @@ public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
   public static DoubleLiteralFillIn getInstance(double value) {
     synchronized (map) {
       DoubleLiteralFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new DoubleLiteralFillIn(value);
         map.put(value, rv);
       }

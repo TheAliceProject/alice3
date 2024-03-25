@@ -69,9 +69,7 @@ public final class ParameterAccessMethodInvocationJointedTypeMenuModel extends J
     //todo
     synchronized (mapToMapToMap) {
       ParameterAccessMethodInvocationJointedTypeMenuModel rv = mapToMapToMap.get(parameter, method, index);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ParameterAccessMethodInvocationJointedTypeMenuModel(parameter, method, jointedTypeInfos, index);
         mapToMapToMap.put(parameter, method, index, rv);
       }

@@ -57,9 +57,7 @@ public class MouseFocusEventQueue extends EventQueue {
   private static MouseFocusEventQueue singleton;
 
   public static MouseFocusEventQueue getSingleton() {
-    if (singleton != null) {
-      //pass
-    } else {
+    if (singleton == null) {
       singleton = new MouseFocusEventQueue();
     }
     return singleton;

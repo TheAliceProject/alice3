@@ -235,9 +235,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
     Composite sgVehicle = this.getSgVehicle();
     if (sgVehicle != null) {
       EntityImp rv = getInstance(sgVehicle);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         //this does happen when the vehicle is the ROOT bone of a biped
         //ROOT apparently has no scenegraph counterpart.
         //ROOT won't be the child of any joint. however it could be the child of something else in the scene.

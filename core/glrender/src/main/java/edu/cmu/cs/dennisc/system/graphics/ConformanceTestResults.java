@@ -264,9 +264,7 @@ public enum ConformanceTestResults {
   private AsynchronousPickDetails asynchronousPickDetails;
 
   private void updateSharedDetailsfNecessary(GL gl) {
-    if (this.sharedDetails != null) {
-      //pass
-    } else {
+    if (this.sharedDetails == null) {
       this.sharedDetails = new SharedDetails(gl);
     }
   }
@@ -277,18 +275,14 @@ public enum ConformanceTestResults {
 
   public void updateSynchronousPickInformationIfNecessary(GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated) {
     this.updateSharedDetailsfNecessary(gl);
-    if (this.synchronousPickDetails != null) {
-      //pass
-    } else {
+    if (this.synchronousPickDetails == null) {
       this.synchronousPickDetails = new SynchronousPickDetails(gl, isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated);
     }
   }
 
   public void updateAsynchronousPickInformationIfNecessary(GL2 gl) {
     this.updateSharedDetailsfNecessary(gl);
-    if (this.asynchronousPickDetails != null) {
-      //pass
-    } else {
+    if (this.asynchronousPickDetails == null) {
       this.asynchronousPickDetails = new AsynchronousPickDetails(gl);
     }
   }

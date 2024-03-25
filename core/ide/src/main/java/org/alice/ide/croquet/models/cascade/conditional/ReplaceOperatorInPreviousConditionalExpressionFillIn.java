@@ -60,9 +60,7 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends Previo
   public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance(ConditionalInfixExpression.Operator operator) {
     synchronized (map) {
       ReplaceOperatorInPreviousConditionalExpressionFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ReplaceOperatorInPreviousConditionalExpressionFillIn(operator);
         map.put(operator, rv);
       }

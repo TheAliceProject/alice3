@@ -66,9 +66,7 @@ public class TypeFillIn extends ImmutableCascadeFillIn<AbstractType<?, ?, ?>, Vo
 
   public static synchronized TypeFillIn getInstance(AbstractType<?, ?, ?> type) {
     TypeFillIn rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new TypeFillIn(type);
       map.put(type, rv);
     }

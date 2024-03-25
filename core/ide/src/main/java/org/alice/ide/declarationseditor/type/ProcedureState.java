@@ -58,9 +58,7 @@ public class ProcedureState extends MethodState {
 
   public static synchronized ProcedureState getInstance(NamedUserType type) {
     ProcedureState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ProcedureState(type);
       map.put(type, rv);
     }

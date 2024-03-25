@@ -63,9 +63,7 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
   public static synchronized ParameterAccessFactory getInstance(UserParameter parameter) {
     assert parameter != null;
     ParameterAccessFactory rv = map.get(parameter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterAccessFactory(parameter);
       map.put(parameter, rv);
     }

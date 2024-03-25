@@ -144,21 +144,15 @@ public class GlrOldMesh extends GlrGeometry<OldMesh> {
       glDraw(gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices);
       glDraw(gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices);
     } else {
-      if (this.xyzBuffer != null) {
-        //pass
-      } else {
+      if (this.xyzBuffer == null) {
         this.xyzBuffer = BufferUtilities.createDirectDoubleBuffer(xyzs);
       }
       this.xyzBuffer.rewind();
-      if (this.ijkBuffer != null) {
-        //pass
-      } else {
+      if (this.ijkBuffer == null) {
         this.ijkBuffer = BufferUtilities.createDirectFloatBuffer(ijks);
       }
       this.ijkBuffer.rewind();
-      if (this.uvBuffer != null) {
-        //pass
-      } else {
+      if (this.uvBuffer == null) {
         this.uvBuffer = BufferUtilities.createDirectFloatBuffer(uvs);
       }
       this.uvBuffer.rewind();

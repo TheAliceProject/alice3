@@ -61,9 +61,7 @@ public class ShowJointedModelJointAxesState extends BooleanState {
   public static ShowJointedModelJointAxesState getInstance(AbstractField value) {
     synchronized (map) {
       ShowJointedModelJointAxesState rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ShowJointedModelJointAxesState(value);
         map.put(value, rv);
       }

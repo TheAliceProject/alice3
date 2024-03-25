@@ -421,36 +421,32 @@ public abstract class AstI18nFactory extends I18nFactory {
       }
     } else {
       rv = null;
-      if (rv != null) {
-        //pass
-      } else {
-        if (property instanceof NodeProperty<?>) {
-          if (property instanceof ExpressionProperty) {
-            rv = this.createExpressionPropertyPane((ExpressionProperty) property);
+      if (property instanceof NodeProperty<?>) {
+        if (property instanceof ExpressionProperty) {
+          rv = this.createExpressionPropertyPane((ExpressionProperty) property);
+        } else {
+          rv = this.createGenericNodePropertyPane((NodeProperty<?>) property);
+        }
+      } else if (property instanceof ResourceProperty) {
+        rv = this.createResourcePropertyPane((ResourceProperty) property);
+      } else if (property instanceof ListProperty<?>) {
+        if (property instanceof NodeListProperty<?>) {
+          if (property instanceof StatementListProperty) {
+            rv = this.createStatementListPropertyPane((StatementListProperty) property);
+          } else if (property instanceof SimpleArgumentListProperty) {
+            rv = this.createSimpleArgumentListPropertyPane((SimpleArgumentListProperty) property);
+          } else if (property instanceof KeyedArgumentListProperty) {
+            rv = this.createKeyedArgumentListPropertyPane((KeyedArgumentListProperty) property);
+          } else if (property instanceof ExpressionListProperty) {
+            rv = this.createExpressionListPropertyPane((ExpressionListProperty) property);
           } else {
-            rv = this.createGenericNodePropertyPane((NodeProperty<?>) property);
-          }
-        } else if (property instanceof ResourceProperty) {
-          rv = this.createResourcePropertyPane((ResourceProperty) property);
-        } else if (property instanceof ListProperty<?>) {
-          if (property instanceof NodeListProperty<?>) {
-            if (property instanceof StatementListProperty) {
-              rv = this.createStatementListPropertyPane((StatementListProperty) property);
-            } else if (property instanceof SimpleArgumentListProperty) {
-              rv = this.createSimpleArgumentListPropertyPane((SimpleArgumentListProperty) property);
-            } else if (property instanceof KeyedArgumentListProperty) {
-              rv = this.createKeyedArgumentListPropertyPane((KeyedArgumentListProperty) property);
-            } else if (property instanceof ExpressionListProperty) {
-              rv = this.createExpressionListPropertyPane((ExpressionListProperty) property);
-            } else {
-              rv = this.createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
-            }
-          } else {
-            rv = this.createGenericListPropertyPane((ListProperty<Object>) property);
+            rv = this.createGenericNodeListPropertyPane((NodeListProperty<AbstractNode>) property);
           }
         } else {
-          rv = this.createGenericInstancePropertyPane(property);
+          rv = this.createGenericListPropertyPane((ListProperty<Object>) property);
         }
+      } else {
+        rv = this.createGenericInstancePropertyPane(property);
       }
     }
     assert rv != null : property;

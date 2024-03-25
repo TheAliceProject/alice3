@@ -121,9 +121,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   private Map<String, byte[]> getFilenameToExtractedData() {
-    if (this.mapFilenameToExtractedData != null) {
-      //pass
-    } else {
+    if (this.mapFilenameToExtractedData == null) {
       try {
         this.mapFilenameToExtractedData = ZipUtilities.extract(new File(this.uri));
       } catch (IOException ioe) {
@@ -134,9 +132,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   private TypeSummary getTypeSummary() {
-    if (this.typeSummary != null) {
-      //pass
-    } else {
+    if (this.typeSummary == null) {
       Map<String, byte[]> mapFilenameToExtractedData = this.getFilenameToExtractedData();
       byte[] data = mapFilenameToExtractedData.get(TypeSummaryDataSource.FILENAME);
       if (data != null) {
@@ -152,9 +148,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   public InstanceCreatorKey getResourceKey() {
-    if (this.resourceKey != null) {
-      //pass
-    } else {
+    if (this.resourceKey == null) {
       try {
         TypeSummary typeSummary = this.getTypeSummary();
         if (typeSummary != null) {
@@ -186,9 +180,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
   }
 
   private Class<?> getThingCls() {
-    if (this.thingCls != null) {
-      //pass
-    } else {
+    if (this.thingCls == null) {
       try {
         TypeSummary typeSummary = this.getTypeSummary();
         if (typeSummary != null) {
@@ -394,9 +386,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
 
   @Override
   public IconFactory getIconFactory() {
-    if (this.iconFactory != null) {
-      //pass
-    } else {
+    if (this.iconFactory == null) {
       IconFactory base;
       ResourceKey resourceKey = this.getResourceKey();
       if (resourceKey != null) {

@@ -71,9 +71,7 @@ public class TypeComposite extends DeclarationComposite<NamedUserType, TypeDecla
   public static synchronized TypeComposite getInstance(NamedUserType type) {
     if (type != null) {
       TypeComposite rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new TypeComposite(type);
         map.put(type, rv);
       }

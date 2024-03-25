@@ -58,9 +58,7 @@ public class FunctionState extends MethodState {
 
   public static synchronized FunctionState getInstance(NamedUserType type) {
     FunctionState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FunctionState(type);
       map.put(type, rv);
     }

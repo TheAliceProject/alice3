@@ -511,9 +511,7 @@ public class AstUtilities {
     parametersProperty.add(index, userParameter);
     for (SimpleArgumentListProperty argumentListProperty : argumentListProperties) {
       SimpleArgument argument = map.get(argumentListProperty);
-      if (argument != null) {
-        //pass
-      } else {
+      if (argument == null) {
         Logger.todo("argument == null");
         argument = new SimpleArgument(userParameter, new NullLiteral());
       }

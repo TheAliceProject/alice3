@@ -114,9 +114,7 @@ class Pixels implements TextureListener {
   }
 
   private BufferedImage getBufferedImage() {
-    if (m_bufferedImage != null) {
-      //pass
-    } else {
+    if (m_bufferedImage == null) {
       m_writableRaster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE, getWidth(), getHeight(), 4, null);
       m_bufferedImage = new BufferedImage(RGBA_COLOR_MODEL, m_writableRaster, false, null);
     }
@@ -124,9 +122,7 @@ class Pixels implements TextureListener {
   }
 
   public ByteBuffer getRGBA() {
-    if (m_data != null) {
-      //pass
-    } else {
+    if (m_data == null) {
       BufferedImage bufferedImage = getBufferedImage();
       if (bufferedImage != null) {
         java.awt.Graphics2D g = bufferedImage.createGraphics();

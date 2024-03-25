@@ -62,9 +62,7 @@ public class GalleryResourceMenu extends CascadeMenuModel<Expression> {
 
   public static synchronized GalleryResourceMenu getInstance(AbstractType<?, ?, ?> type) {
     GalleryResourceMenu rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new GalleryResourceMenu(type);
       map.put(type, rv);
     }

@@ -59,9 +59,7 @@ public class ManagedFieldsComposite extends FieldsComposite {
   public static synchronized ManagedFieldsComposite getInstance(NamedUserType type) {
     if (IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields(type)) {
       ManagedFieldsComposite rv = map.get(type);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ManagedFieldsComposite(type);
         map.put(type, rv);
       }

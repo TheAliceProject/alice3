@@ -58,9 +58,7 @@ public class LocalMenuModel extends PredeterminedMenuModel {
 
   public static synchronized LocalMenuModel getInstance(UserLocal local) {
     LocalMenuModel rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalMenuModel(local);
       map.put(local, rv);
     }

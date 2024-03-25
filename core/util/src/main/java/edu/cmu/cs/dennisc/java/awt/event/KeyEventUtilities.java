@@ -79,9 +79,7 @@ public class KeyEventUtilities {
       default:
         rv = original;
       }
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         switch (keyCode) {
         case KeyEvent.VK_CONTROL:
           keyCode = KeyEvent.VK_ALT;

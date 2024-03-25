@@ -99,36 +99,28 @@ public class BooleanStateImp {
   }
 
   public synchronized Operation getSetToTrueOperation() {
-    if (this.trueOperation != null) {
-      //pass
-    } else {
+    if (this.trueOperation == null) {
       this.trueOperation = new BooleanStateSetToValueOperation(this.state, true);
     }
     return this.trueOperation;
   }
 
   public synchronized Operation getSetToFalseOperation() {
-    if (this.falseOperation != null) {
-      //pass
-    } else {
+    if (this.falseOperation == null) {
       this.falseOperation = new BooleanStateSetToValueOperation(this.state, false);
     }
     return this.falseOperation;
   }
 
   public synchronized BooleanStateMenuModel getMenuModel() {
-    if (this.menuModel != null) {
-      //pass
-    } else {
+    if (this.menuModel == null) {
       this.menuModel = new BooleanStateMenuModel(this.state);
     }
     return this.menuModel;
   }
 
   public synchronized BooleanStateMenuItemPrepModel getMenuItemPrepModel() {
-    if (this.menuPrepModel != null) {
-      //pass
-    } else {
+    if (this.menuPrepModel == null) {
       this.menuPrepModel = new BooleanStateMenuItemPrepModel(this.state);
     }
     return this.menuPrepModel;

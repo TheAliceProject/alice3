@@ -58,9 +58,7 @@ public class AudioResourceExpressionFillIn extends ResourceExpressionFillIn<Audi
   public static synchronized AudioResourceExpressionFillIn getInstance(AudioResource resource) {
     assert resource != null;
     AudioResourceExpressionFillIn rv = map.get(resource);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new AudioResourceExpressionFillIn(resource);
       map.put(resource, rv);
     }

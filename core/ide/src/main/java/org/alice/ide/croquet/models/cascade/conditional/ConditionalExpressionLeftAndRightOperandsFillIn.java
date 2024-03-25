@@ -63,9 +63,7 @@ public class ConditionalExpressionLeftAndRightOperandsFillIn extends ExpressionF
   public static ConditionalExpressionLeftAndRightOperandsFillIn getInstance(ConditionalInfixExpression.Operator operator) {
     synchronized (map) {
       ConditionalExpressionLeftAndRightOperandsFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ConditionalExpressionLeftAndRightOperandsFillIn(operator);
         map.put(operator, rv);
       }

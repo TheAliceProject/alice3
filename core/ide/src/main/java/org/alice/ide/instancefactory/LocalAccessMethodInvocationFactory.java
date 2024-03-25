@@ -60,9 +60,7 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
   public static synchronized LocalAccessMethodInvocationFactory getInstance(UserLocal local, AbstractMethod method) {
     assert local != null;
     LocalAccessMethodInvocationFactory rv = mapToMap.get(local, method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalAccessMethodInvocationFactory(local, method);
       mapToMap.put(local, method, rv);
     }

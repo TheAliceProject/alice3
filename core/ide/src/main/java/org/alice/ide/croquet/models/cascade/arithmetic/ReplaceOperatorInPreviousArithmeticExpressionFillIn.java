@@ -60,9 +60,7 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends Previou
   public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance(ArithmeticInfixExpression.Operator operator) {
     synchronized (map) {
       ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get(operator);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ReplaceOperatorInPreviousArithmeticExpressionFillIn(operator);
         map.put(operator, rv);
       }

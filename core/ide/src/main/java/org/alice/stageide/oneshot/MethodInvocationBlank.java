@@ -84,9 +84,7 @@ public class MethodInvocationBlank extends CascadeBlank<MethodInvocationEditFact
   public static MethodInvocationBlank getInstance(InstanceFactory value) {
     synchronized (map) {
       MethodInvocationBlank rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new MethodInvocationBlank(value);
         map.put(value, rv);
       }

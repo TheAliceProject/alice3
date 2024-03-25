@@ -216,9 +216,7 @@ public abstract class I18nFactory {
       } else {
         value = null;
       }
-      if (value != null) {
-        //pass
-      } else {
+      if (value == null) {
         Class<?> cls = owner.getClass();
         value = formatter.getTemplateText(cls);
       }

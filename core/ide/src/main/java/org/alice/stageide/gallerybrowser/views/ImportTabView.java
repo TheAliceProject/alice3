@@ -69,9 +69,7 @@ public class ImportTabView extends GalleryTabView {
 
   public synchronized GalleryDragComponent getGalleryDragComponent(URI uri) {
     GalleryDragComponent rv = this.mapUriToDragComponent.get(uri);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       UriGalleryDragModel dragModel = UriGalleryDragModel.getInstance(uri);
       rv = new GalleryDragComponent(dragModel);
       this.mapUriToDragComponent.put(uri, rv);

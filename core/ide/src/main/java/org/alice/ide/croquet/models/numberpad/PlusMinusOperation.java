@@ -57,9 +57,7 @@ public class PlusMinusOperation extends NumberPadOperation {
 
   public static synchronized PlusMinusOperation getInstance(NumberModel<?> model) {
     PlusMinusOperation rv = map.get(model);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new PlusMinusOperation(model);
       map.put(model, rv);
     }

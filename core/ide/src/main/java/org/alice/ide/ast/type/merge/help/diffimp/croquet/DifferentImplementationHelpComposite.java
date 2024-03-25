@@ -140,9 +140,7 @@ public abstract class DifferentImplementationHelpComposite<M extends Member> ext
     Status rv = super.getStatusPreRejectorCheck();
     if (rv == IS_GOOD_TO_GO_STATUS) {
       DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
-      if (topLevelChoice != null) {
-        //pass
-      } else {
+      if (topLevelChoice == null) {
         rv = this.noTopLevelError;
       }
     }

@@ -59,9 +59,7 @@ public class ConstructorsComposite extends MembersComposite<NamedUserConstructor
 
   public static synchronized ConstructorsComposite getInstance(NamedUserType type) {
     ConstructorsComposite rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ConstructorsComposite(type);
       map.put(type, rv);
     }

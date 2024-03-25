@@ -76,9 +76,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
   private String labelText;
 
   private String getLabelText() {
-    if (this.labelText != null) {
-      //pass
-    } else {
+    if (this.labelText == null) {
       Class<?> cls;
       DragModel model = this.getModel();
       if (model instanceof ExpressionStatementTemplateDragModel) {
@@ -93,9 +91,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
   }
 
   private SwingComponentView<?> getIncompleteStatementPane() {
-    if (this.incompleteStatementPane != null) {
-      //pass
-    } else {
+    if (this.incompleteStatementPane == null) {
       this.incompleteStatementPane = TemplateAstI18nFactory.getInstance().createStatementPane(this.incompleteStatement);
     }
     return this.incompleteStatementPane;
@@ -126,9 +122,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
 
   @Override
   protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
-    if (this.toolTip != null) {
-      //pass
-    } else {
+    if (this.toolTip == null) {
       this.toolTip = new JToolTip(this.getIncompleteStatementPane().getAwtComponent());
     }
     return this.toolTip;
@@ -137,9 +131,7 @@ public class MiniControlFlowStatementTemplate extends StatementTemplate {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.label != null) {
-      //pass
-    } else {
+    if (this.label == null) {
       this.label = new Label(this.getLabelText());
       if (Comment.class.isAssignableFrom(this.getStatementCls())) {
         this.label.setForegroundColor(ThemeUtilities.getActiveTheme().getCommentForegroundColor());

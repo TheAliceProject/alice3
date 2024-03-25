@@ -67,9 +67,7 @@ public class EULAUtilities {
   public static void promptUserToAcceptEULAIfNecessary(Class<?> preferencesCls, String preferencesKey, String title, String license, String name) throws LicenseRejectedException {
     Preferences userPreferences = Preferences.userNodeForPackage(preferencesCls);
     if (SystemUtilities.isPropertyTrue("org.alice.clearAllPreferences")) {
-      if (alreadyClearedPreferences != null) {
-        //pass
-      } else {
+      if (alreadyClearedPreferences == null) {
         alreadyClearedPreferences = Lists.newLinkedList();
       }
       if (alreadyClearedPreferences.contains(preferencesCls)) {

@@ -73,9 +73,7 @@ public abstract class ArrayLengthFillIn extends ExpressionFillInWithoutBlanks<Ar
 
   @Override
   public ArrayLength getTransientValue(ItemNode<? super ArrayLength, Void> node) {
-    if (this.transientValue != null) {
-      //pass
-    } else {
+    if (this.transientValue == null) {
       this.transientValue = this.createValue();
     }
     return this.transientValue;

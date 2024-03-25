@@ -64,9 +64,7 @@ public class ListProperty<E> extends InstanceProperty<ArrayList<E>> implements I
   }
 
   public void addListPropertyListener(ListPropertyListener<E> l) {
-    if (this.listPropertyListeners != null) {
-      //pass
-    } else {
+    if (this.listPropertyListeners == null) {
       this.listPropertyListeners = Lists.newCopyOnWriteArrayList();
     }
     this.listPropertyListeners.add(l);

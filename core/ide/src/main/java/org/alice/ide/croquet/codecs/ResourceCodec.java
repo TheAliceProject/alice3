@@ -62,9 +62,7 @@ public class ResourceCodec<R extends Resource> implements ItemCodec<R> {
 
   public static synchronized <R extends Resource> ResourceCodec<R> getInstance(Class<R> cls) {
     ResourceCodec<?> rv = map.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ResourceCodec<R>(cls);
     }
     return (ResourceCodec<R>) rv;

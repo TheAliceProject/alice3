@@ -59,9 +59,7 @@ public class GalleryDragComponentCache {
   public synchronized GalleryDragComponent getGalleryDragComponent(ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller) {
     ResourceKey resourceKey = resourceNode.getResourceKey();
     GalleryDragComponent rv = this.map.get(resourceKey);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new GalleryDragComponent(resourceNode, controller);
       this.map.put(resourceKey, rv);
     }

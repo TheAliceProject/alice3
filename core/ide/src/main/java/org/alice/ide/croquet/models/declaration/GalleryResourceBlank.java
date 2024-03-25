@@ -62,9 +62,7 @@ public class GalleryResourceBlank extends CascadeBlank<Expression> {
   public static GalleryResourceBlank getInstance(AbstractType<?, ?, ?> value) {
     synchronized (map) {
       GalleryResourceBlank rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new GalleryResourceBlank(value);
         map.put(value, rv);
       }

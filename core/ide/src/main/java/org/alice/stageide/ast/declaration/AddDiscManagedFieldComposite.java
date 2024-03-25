@@ -81,9 +81,7 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
 
   @Override
   protected AffineMatrix4x4 updateInitialTransformIfNecessary(AffineMatrix4x4 initialTransform) {
-    if (initialTransform != null) {
-      //pass
-    } else {
+    if (initialTransform == null) {
       initialTransform = new AffineMatrix4x4();
     }
     initialTransform.translation.y += 0.01;

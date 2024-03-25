@@ -63,9 +63,7 @@ public class WhileLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
     Map<BlockStatementIndexPair, WhileLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
     assert blockStatementIndexPair != null;
     WhileLoopInsertCascade rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new WhileLoopInsertCascade(blockStatementIndexPair, isEnveloping);
       map.put(blockStatementIndexPair, rv);
     }

@@ -59,9 +59,7 @@ public class RenameLocalComposite extends RenameDeclarationComposite<UserLocal> 
   public static synchronized RenameLocalComposite getInstance(UserLocal local) {
     assert local != null;
     RenameLocalComposite rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RenameLocalComposite(local);
       map.put(local, rv);
     }

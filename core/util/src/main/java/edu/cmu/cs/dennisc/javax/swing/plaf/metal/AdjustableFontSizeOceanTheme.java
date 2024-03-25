@@ -100,9 +100,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getControlTextFont() {
-    if (this.controlTextFont != null) {
-      //pass
-    } else {
+    if (this.controlTextFont == null) {
       this.controlTextFont = this.createDeltaFontIfNecessary(super.getControlTextFont());
     }
     return this.controlTextFont;
@@ -110,9 +108,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getMenuTextFont() {
-    if (this.menuTextFont != null) {
-      //pass
-    } else {
+    if (this.menuTextFont == null) {
       this.menuTextFont = this.createDeltaFontIfNecessary(super.getMenuTextFont());
     }
     return this.menuTextFont;
@@ -120,9 +116,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getSubTextFont() {
-    if (this.subTextFont != null) {
-      //pass
-    } else {
+    if (this.subTextFont == null) {
       this.subTextFont = this.createDeltaFontIfNecessary(super.getSubTextFont());
     }
     return this.subTextFont;
@@ -130,9 +124,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getSystemTextFont() {
-    if (this.systemTextFont != null) {
-      //pass
-    } else {
+    if (this.systemTextFont == null) {
       this.systemTextFont = this.createDeltaFontIfNecessary(super.getSystemTextFont());
     }
     return this.systemTextFont;
@@ -140,9 +132,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getUserTextFont() {
-    if (this.userTextFont != null) {
-      //pass
-    } else {
+    if (this.userTextFont == null) {
       this.userTextFont = this.createDeltaFontIfNecessary(super.getUserTextFont());
     }
     return this.userTextFont;
@@ -150,9 +140,7 @@ public class AdjustableFontSizeOceanTheme extends OceanTheme {
 
   @Override
   public FontUIResource getWindowTitleFont() {
-    if (this.windowTitleTextFont != null) {
-      //pass
-    } else {
+    if (this.windowTitleTextFont == null) {
       this.windowTitleTextFont = this.createDeltaFontIfNecessary(super.getWindowTitleFont());
     }
     return this.windowTitleTextFont;

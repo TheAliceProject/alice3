@@ -133,9 +133,7 @@ public class DeclarationNameLabel extends Label {
     } else {
       text = null;
     }
-    if (text != null) {
-      //pass
-    } else {
+    if (text == null) {
       text = this.getTextForNullName();
     }
     if (text.length() > 0) {

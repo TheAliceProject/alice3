@@ -62,9 +62,7 @@ public class GalleryResourceFieldFillIn extends ExpressionFillInWithoutBlanks<Ex
 
   public static synchronized GalleryResourceFieldFillIn getInstance(AbstractField field) {
     GalleryResourceFieldFillIn rv = map.get(field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new GalleryResourceFieldFillIn(field);
       map.put(field, rv);
     }

@@ -55,9 +55,7 @@ public final class Group {
 
   public static synchronized Group getInstance(UUID id) {
     Group rv = map.get(id);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new Group(id);
       map.put(id, rv);
     }

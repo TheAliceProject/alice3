@@ -64,9 +64,7 @@ public abstract class FormPanel extends MigPanel {
   @Override
   protected void handleDisplayable() {
     super.handleDisplayable();
-    if (this.rows != null) {
-      //pass
-    } else {
+    if (this.rows == null) {
       this.rows = Lists.newLinkedList();
       this.appendRows(this.rows);
       for (FormRow row : rows) {

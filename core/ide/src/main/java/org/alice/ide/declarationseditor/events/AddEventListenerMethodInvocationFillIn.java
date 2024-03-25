@@ -57,9 +57,7 @@ public class AddEventListenerMethodInvocationFillIn extends MethodInvocationFill
 
   public static synchronized AddEventListenerMethodInvocationFillIn getInstance(AbstractMethod method) {
     AddEventListenerMethodInvocationFillIn rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new AddEventListenerMethodInvocationFillIn(method);
       map.put(method, rv);
     }

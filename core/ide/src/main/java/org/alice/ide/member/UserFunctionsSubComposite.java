@@ -61,9 +61,7 @@ public class UserFunctionsSubComposite extends UserMethodsSubComposite {
   public static synchronized UserFunctionsSubComposite getInstance(NamedUserType type) {
     assert type != null;
     UserFunctionsSubComposite rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new UserFunctionsSubComposite(type);
       map.put(type, rv);
     }

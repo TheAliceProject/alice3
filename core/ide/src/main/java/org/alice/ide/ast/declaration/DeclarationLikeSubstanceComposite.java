@@ -376,9 +376,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
   public Expression getInitializer() {
     if (this.initializerState != null) {
       Expression rv = this.initializerState.getValue();
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new NullLiteral();
       }
       return rv;

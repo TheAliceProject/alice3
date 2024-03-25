@@ -62,9 +62,7 @@ public class DoTogetherInsertOperation extends TemplateStatementInsertOperation 
     Map<BlockStatementIndexPair, DoTogetherInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
     assert blockStatementIndexPair != null;
     DoTogetherInsertOperation rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DoTogetherInsertOperation(blockStatementIndexPair, isEnveloping);
       map.put(blockStatementIndexPair, rv);
     }

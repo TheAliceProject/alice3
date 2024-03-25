@@ -69,9 +69,7 @@ public class StrikePoseMethodInvocationFillIn extends ImmutableCascadeFillIn<Met
 
   public static StrikePoseMethodInvocationFillIn getInstance(InstanceFactory instanceFactory, JavaMethod method, List<SimpleArgument> arguments) {
     StrikePoseMethodInvocationFillIn rv = mapToMapToMap.get(instanceFactory, method, arguments);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new StrikePoseMethodInvocationFillIn(instanceFactory, method, arguments);
       mapToMapToMap.put(instanceFactory, method, arguments, rv);
     }

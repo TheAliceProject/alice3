@@ -65,9 +65,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 
   public static synchronized ProcedureInvocationTemplateDragModel getInstance(AbstractMethod method) {
     ProcedureInvocationTemplateDragModel rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ProcedureInvocationTemplateDragModel(method);
       map.put(method, rv);
     }

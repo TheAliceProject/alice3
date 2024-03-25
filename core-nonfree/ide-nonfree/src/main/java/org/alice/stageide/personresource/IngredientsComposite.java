@@ -294,9 +294,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
     SimpleTabComposite nextValue = this.bodyHeadHairTabState.getValue();
     PersonViewer personViewer = PersonResourceComposite.getInstance().getPreviewComposite().getView();
     LifeStage lifeStage = lifeStageState.getValue();
-    if (lifeStage != null) {
-      //pass
-    } else {
+    if (lifeStage == null) {
       lifeStage = LifeStage.ADULT;
     }
     if ((nextValue == this.bodyTab) || (nextValue == this.topAndBottomTab)) {
@@ -665,9 +663,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
   private void updateOutfit(LifeStage lifeStage, Gender gender, Outfit outfit) {
     TopAndBottomOutfit<? extends TopPiece, ? extends BottomPiece> topAndBottomOutfit = null;
     FullBodyOutfit fullBodyOutfit = null;
-    if (outfit != null) {
-      //pass
-    } else {
+    if (outfit == null) {
       PersonResource previousPersonResource = this.mapToMap.get(lifeStage, gender);
       if (previousPersonResource != null) {
         outfit = previousPersonResource.getOutfit();

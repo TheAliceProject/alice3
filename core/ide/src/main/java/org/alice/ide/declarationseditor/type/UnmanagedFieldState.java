@@ -58,9 +58,7 @@ public class UnmanagedFieldState extends FieldState {
 
   public static synchronized UnmanagedFieldState getInstance(NamedUserType type) {
     UnmanagedFieldState rv = map.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new UnmanagedFieldState(type);
       map.put(type, rv);
     }

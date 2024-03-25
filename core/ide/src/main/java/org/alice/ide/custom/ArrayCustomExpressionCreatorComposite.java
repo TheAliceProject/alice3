@@ -77,9 +77,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
   public static ArrayCustomExpressionCreatorComposite getInstance(AbstractType<?, ?, ?> arrayType) {
     synchronized (map) {
       ArrayCustomExpressionCreatorComposite rv = map.get(arrayType);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ArrayCustomExpressionCreatorComposite(arrayType);
         map.put(arrayType, rv);
       }

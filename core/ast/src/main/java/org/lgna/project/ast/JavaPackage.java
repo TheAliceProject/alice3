@@ -58,9 +58,7 @@ public class JavaPackage extends AbstractPackage {
   public static JavaPackage getInstance(PackageReflectionProxy packageReflectionProxy) {
     if (packageReflectionProxy != null) {
       JavaPackage rv = s_map.get(packageReflectionProxy);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new JavaPackage(packageReflectionProxy);
         s_map.put(packageReflectionProxy, rv);
       }

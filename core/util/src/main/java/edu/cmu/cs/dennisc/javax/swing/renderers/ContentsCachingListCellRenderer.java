@@ -69,9 +69,7 @@ public abstract class ContentsCachingListCellRenderer<E> extends JLineAxisPane i
 
   private Component getComponent(E e) {
     Component rv = this.map.get(e);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = createComponent(e);
       this.map.put(e, rv);
     }

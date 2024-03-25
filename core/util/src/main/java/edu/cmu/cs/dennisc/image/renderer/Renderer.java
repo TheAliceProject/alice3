@@ -58,9 +58,7 @@ public abstract class Renderer {
         m_bufferedImage = null;
       }
     }
-    if (m_bufferedImage != null) {
-      //pass
-    } else {
+    if (m_bufferedImage == null) {
       m_bufferedImage = gc.createCompatibleImage(width, height, transparency);
     }
   }

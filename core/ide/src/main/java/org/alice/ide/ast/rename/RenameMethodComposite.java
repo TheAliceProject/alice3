@@ -58,9 +58,7 @@ public class RenameMethodComposite extends RenameDeclarationComposite<UserMethod
   public static synchronized RenameMethodComposite getInstance(UserMethod method) {
     assert method != null;
     RenameMethodComposite rv = map.get(method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new RenameMethodComposite(method);
       map.put(method, rv);
     }

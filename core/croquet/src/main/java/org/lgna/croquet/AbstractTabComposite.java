@@ -78,9 +78,7 @@ public abstract class AbstractTabComposite<V extends CompositeView<?, ?>> extend
 
   @Override
   public void appendUserRepr(StringBuilder userRepr) {
-    if (this.titleText != null) {
-      //pass
-    } else {
+    if (this.titleText == null) {
       this.initializeIfNecessary();
     }
     userRepr.append(this.titleText);

@@ -63,9 +63,7 @@ public class ConditionalStatementInsertCascade extends PotentiallyEnvelopingStat
     Map<BlockStatementIndexPair, ConditionalStatementInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
     assert blockStatementIndexPair != null;
     ConditionalStatementInsertCascade rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ConditionalStatementInsertCascade(blockStatementIndexPair, isEnveloping);
       map.put(blockStatementIndexPair, rv);
     }

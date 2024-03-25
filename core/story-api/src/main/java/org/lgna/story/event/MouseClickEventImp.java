@@ -88,9 +88,7 @@ public class MouseClickEventImp {
   }
 
   private Rectangle getActualViewport() {
-    if (this.viewport != null) {
-      //pass
-    } else {
+    if (this.viewport == null) {
       OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
       //todo: search through cameras for the one that contains mouse point, or default to [0] if outside
       AbstractCamera sgCamera = rt.getSgCameraAt(0);

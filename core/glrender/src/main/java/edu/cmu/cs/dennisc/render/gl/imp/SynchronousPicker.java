@@ -120,9 +120,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
     private OffscreenDrawable glOffscreenDrawable;
 
     private synchronized OffscreenDrawable getOffscreenDrawable() {
-      if (this.glOffscreenDrawable != null) {
-        //pass
-      } else {
+      if (this.glOffscreenDrawable == null) {
         this.glOffscreenDrawable = OffscreenDrawable.createInstance(new OffscreenDrawable.DisplayCallback() {
           @Override
           public void display(GL2 gl) {

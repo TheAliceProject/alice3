@@ -166,9 +166,7 @@ public class ProgramTypeUtilities {
 
   private static DefaultNode<NamedUserType> getNode(NamedUserType type, DefaultNode<NamedUserType> root) {
     DefaultNode<NamedUserType> rv = root.get(type);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = DefaultNode.createSafeInstance(type, NamedUserType.class);
       AbstractType<?, ?, ?> superType = type.getSuperType();
       if (superType instanceof NamedUserType) {

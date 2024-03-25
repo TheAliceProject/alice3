@@ -94,9 +94,7 @@ public class DebugOverlay implements RenderTargetListener {
   private BufferedImage cache;
 
   private void drawOverlay(RenderTargetRenderEvent e) {
-    if (cache != null) {
-      //pass
-    } else {
+    if (cache == null) {
       cache = getImage(e);
     }
     e.getGraphics2D().drawImage(cache, 0, 0, null);

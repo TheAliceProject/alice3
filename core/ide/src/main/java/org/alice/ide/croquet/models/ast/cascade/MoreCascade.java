@@ -68,9 +68,7 @@ public class MoreCascade extends ImmutableCascade<Expression> {
 
   public static synchronized MoreCascade getInstance(MethodInvocation methodInvocation) {
     MoreCascade rv = map.get(methodInvocation);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new MoreCascade(methodInvocation);
       map.put(methodInvocation, rv);
     }

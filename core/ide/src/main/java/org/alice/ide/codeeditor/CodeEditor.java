@@ -109,9 +109,7 @@ public class CodeEditor extends CodePanelWithDropReceptor {
       }
     }
 
-    if (statementListComponent != null) {
-      //pass
-    } else {
+    if (statementListComponent == null) {
       statementListComponent = this.rootStatementListPropertyPane;
     }
 

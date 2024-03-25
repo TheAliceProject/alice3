@@ -387,9 +387,7 @@ public class BeveledShapeForType extends BeveledShape {
           rv = new BeveledShapeForType(basePath, highlighPath, null, shadowPath, x1, y0, y1);
         }
       }
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         //java.awt.Shape base = new java.awt.geom.Rectangle2D.Float( x0, y0, width, height );
         GeneralPath basePath = new GeneralPath();
         basePath.moveTo(x1, y0);

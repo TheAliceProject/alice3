@@ -117,9 +117,7 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
     } else {
       rv = null;
     }
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new JDialog(isModal);
     }
     return rv;

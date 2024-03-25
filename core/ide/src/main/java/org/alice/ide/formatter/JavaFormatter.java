@@ -153,9 +153,7 @@ public class JavaFormatter extends Formatter {
   @Override
   public String getTemplateText(Class<?> cls) {
     String rv = templateMap.get(cls);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = super.getTemplateText(cls);
     }
     return rv;
@@ -176,9 +174,7 @@ public class JavaFormatter extends Formatter {
     } else {
       rv = null;
     }
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = super.getInfixExpressionText(infixExpression);
     }
     return rv;

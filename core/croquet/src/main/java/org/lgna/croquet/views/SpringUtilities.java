@@ -70,9 +70,7 @@ public class SpringUtilities {
 
   public static AwtComponentView<?>[] createRow(AwtComponentView<?>... rv) {
     for (int i = 0; i < rv.length; i++) {
-      if (rv[i] != null) {
-        //pass
-      } else {
+      if (rv[i] == null) {
         AwtComponentView<?> box = BoxUtilities.createRigidArea(0, 0);
         //      box.setBackground( java.awt.Color.BLUE );
         //      if( box instanceof javax.swing.JComponent ) {

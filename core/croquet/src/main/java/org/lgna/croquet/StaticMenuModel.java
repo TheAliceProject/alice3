@@ -62,9 +62,7 @@ public abstract class StaticMenuModel extends MenuModel {
   protected abstract StandardMenuItemPrepModel[] createModels();
 
   private StandardMenuItemPrepModel[] getModels() {
-    if (this.models != null) {
-      //pass
-    } else {
+    if (this.models == null) {
       this.models = this.createModels();
       assert this.models != null : this;
     }

@@ -65,9 +65,7 @@ public class StatementDragModel extends AbstractStatementDragModel {
       return null;
     } else {
       StatementDragModel rv = map.get(statement);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new StatementDragModel(statement);
         map.put(statement, rv);
       }

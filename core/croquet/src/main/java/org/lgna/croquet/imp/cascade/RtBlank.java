@@ -139,9 +139,7 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
   }
 
   protected ItemChildrenAndComboOffsetsPair getItemChildrenAndComboOffsets() {
-    if (this.itemChildrenAndComboOffsetsPair != null) {
-      //pass
-    } else {
+    if (this.itemChildrenAndComboOffsetsPair == null) {
       List<Integer> comboOffsets = Lists.newLinkedList();
       List<RtItem> baseRtItems = Lists.newLinkedList();
       for (CascadeBlankChild blankChild : this.getElement().getFilteredChildren(this.getNode())) {

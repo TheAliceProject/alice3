@@ -365,9 +365,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
 
     private InternalButton getButtonFor(InstanceFactory instanceFactory) {
       InternalButton rv = map.get(instanceFactory);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new InternalButton(instanceFactory);
         map.put(instanceFactory, rv);
       }

@@ -65,9 +65,7 @@ public class LocalAssignmentFillIn extends ExpressionFillInWithExpressionBlanks<
 
   public static synchronized LocalAssignmentFillIn getInstance(UserLocal local) {
     LocalAssignmentFillIn rv = map.get(local);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new LocalAssignmentFillIn(local);
       map.put(local, rv);
     }

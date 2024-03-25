@@ -59,9 +59,7 @@ public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<Paramet
   public static ParameterAccessFillIn getInstance(UserParameter value) {
     synchronized (map) {
       ParameterAccessFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new ParameterAccessFillIn(value);
         map.put(value, rv);
       }

@@ -59,9 +59,7 @@ public class FieldArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 
   public static synchronized FieldArrayAtIndexAssignmentInsertCascade getInstance(BlockStatementIndexPair blockStatementIndexPair, AbstractField field) {
     FieldArrayAtIndexAssignmentInsertCascade rv = mapToMap.get(blockStatementIndexPair, field);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new FieldArrayAtIndexAssignmentInsertCascade(blockStatementIndexPair, field);
       mapToMap.put(blockStatementIndexPair, field, rv);
     }

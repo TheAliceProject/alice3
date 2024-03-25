@@ -64,9 +64,7 @@ public final class ThisExpression extends Expression {
   @Override
   public AbstractType<?, ?, ?> getType() {
     AbstractType<?, ?, ?> rv = this.getFirstAncestorAssignableTo(AbstractType.class);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = this.typeForNoAncestorTypeCondition;
     }
     return rv;

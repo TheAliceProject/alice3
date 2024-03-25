@@ -59,9 +59,7 @@ public class InstanceFactoryLabelSeparatorModel extends LabelMenuSeparatorModel 
   public static InstanceFactoryLabelSeparatorModel getInstance(InstanceFactory value) {
     synchronized (map) {
       InstanceFactoryLabelSeparatorModel rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new InstanceFactoryLabelSeparatorModel(value);
         map.put(value, rv);
       }

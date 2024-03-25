@@ -62,9 +62,7 @@ public class KeyedMoreCascade extends ImmutableCascade<JavaKeyedArgument> {
 
   public static synchronized KeyedMoreCascade getInstance(ArgumentOwner argumentOwner) {
     KeyedMoreCascade rv = map.get(argumentOwner);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new KeyedMoreCascade(argumentOwner);
       map.put(argumentOwner, rv);
     }

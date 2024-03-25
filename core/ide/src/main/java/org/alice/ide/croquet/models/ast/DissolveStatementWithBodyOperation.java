@@ -62,9 +62,7 @@ public class DissolveStatementWithBodyOperation extends ActionOperation {
 
   public static synchronized DissolveStatementWithBodyOperation getInstance(AbstractStatementWithBody statementWithBody) {
     DissolveStatementWithBodyOperation rv = map.get(statementWithBody);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new DissolveStatementWithBodyOperation(statementWithBody);
       map.put(statementWithBody, rv);
     }

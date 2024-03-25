@@ -89,9 +89,7 @@ public abstract class JProxy extends JPanel {
 
   public Dimension getProxySize() {
     Component subject = this.getSubject().getAwtComponent();
-    if (subject.getParent() != null) {
-      //pass
-    } else {
+    if (subject.getParent() == null) {
       ComponentUtilities.doLayoutTree(subject);
       ComponentUtilities.setSizeToPreferredSizeTree(subject);
     }

@@ -67,9 +67,7 @@ public abstract class AnimationProcedureDialog extends SimpleOperationInputDialo
     if (animatorComposite.getControlComposite().isEmpty()) {
       return empty;
     }
-    if (validator != null) {
-      //pass
-    } else {
+    if (validator == null) {
       this.validator = new MethodNameValidator(animatorComposite.getDeclaringType());
     }
     String candidate = animatorComposite.getControlComposite().getNameState().getValue();

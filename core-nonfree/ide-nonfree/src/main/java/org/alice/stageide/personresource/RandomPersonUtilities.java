@@ -94,9 +94,7 @@ public class RandomPersonUtilities {
   }
 
   public static PersonResource createRandomResource(LifeStage lifeStage) {
-    if (lifeStage != null) {
-      //pass
-    } else {
+    if (lifeStage == null) {
       LifeStage[] potentialLifeStages = {LifeStage.ELDER, LifeStage.ADULT, LifeStage.TEEN, LifeStage.CHILD, LifeStage.TODDLER};
       lifeStage = RandomUtilities.getRandomValueFrom(potentialLifeStages);
     }

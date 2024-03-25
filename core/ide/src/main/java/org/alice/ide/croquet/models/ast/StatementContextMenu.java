@@ -85,9 +85,7 @@ public class StatementContextMenu extends MenuModel {
 
   public static synchronized StatementContextMenu getInstance(Statement statement) {
     StatementContextMenu rv = map.get(statement);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new StatementContextMenu(statement);
       map.put(statement, rv);
     }

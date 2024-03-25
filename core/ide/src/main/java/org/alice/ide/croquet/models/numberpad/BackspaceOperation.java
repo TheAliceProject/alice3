@@ -56,9 +56,7 @@ public class BackspaceOperation extends NumberPadOperation {
 
   public static synchronized BackspaceOperation getInstance(NumberModel<?> model) {
     BackspaceOperation rv = map.get(model);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new BackspaceOperation(model);
       map.put(model, rv);
     }

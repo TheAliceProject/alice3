@@ -64,9 +64,7 @@ public class ComponentManager {
   public static Queue<SwingComponentView<?>> getComponents(Model model) {
     synchronized (map) {
       Queue<SwingComponentView<?>> rv = map.get(model);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = Queues.newConcurrentLinkedQueue();
         map.put(model, rv);
       }

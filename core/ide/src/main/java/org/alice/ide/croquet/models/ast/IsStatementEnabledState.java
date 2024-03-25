@@ -61,9 +61,7 @@ public class IsStatementEnabledState extends BooleanState {
 
   public static synchronized IsStatementEnabledState getInstance(Statement statement) {
     IsStatementEnabledState rv = map.get(statement);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new IsStatementEnabledState(statement);
       map.put(statement, rv);
     }

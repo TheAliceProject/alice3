@@ -233,9 +233,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   }
 
   public MetaState<NamedUserType> getTypeMetaState() {
-    if (this.typeMetaState != null) {
-      //pass
-    } else {
+    if (this.typeMetaState == null) {
       DeclarationTabState declarationTabState = this.declarationsEditorComposite.getTabState();
       this.typeMetaState = new StateTrackingMetaState<NamedUserType, DeclarationComposite<?, ?>>(declarationTabState) {
         @Override
@@ -271,9 +269,7 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
   private static final Integer HIGHLIGHT_STENCIL_LAYER = JLayeredPane.POPUP_LAYER - 2;
 
   public IdeHighlightStencil getHighlightStencil() {
-    if (this.highlightStencil != null) {
-      //pass
-    } else {
+    if (this.highlightStencil == null) {
       this.highlightStencil = new IdeHighlightStencil(this.getFrame(), HIGHLIGHT_STENCIL_LAYER);
     }
     return this.highlightStencil;

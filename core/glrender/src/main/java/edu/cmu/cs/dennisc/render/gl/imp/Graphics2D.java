@@ -1056,9 +1056,7 @@ import java.util.Map;
   @Override
   public void remember(Font font) {
     ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get(font);
-    if (referencedObject != null) {
-      //pass
-    } else {
+    if (referencedObject == null) {
       referencedObject = this.forgottenFontToTextRendererMap.get(font);
       if (referencedObject != null) {
         this.forgottenFontToTextRendererMap.remove(font);
@@ -1119,9 +1117,7 @@ import java.util.Map;
   public void remember(ImageGenerator imageGenerator) {
     assert imageGenerator != null;
     ReferencedObject<Pixels> referencedObject = this.activeImageGeneratorToPixelsMap.get(imageGenerator);
-    if (referencedObject != null) {
-      //pass
-    } else {
+    if (referencedObject == null) {
       referencedObject = this.forgottenImageGeneratorToPixelsMap.get(imageGenerator);
       if (referencedObject != null) {
         this.forgottenImageGeneratorToPixelsMap.remove(imageGenerator);
@@ -1249,9 +1245,7 @@ import java.util.Map;
   @Override
   public void remember(Image image) {
     ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get(image);
-    if (imageGenerator != null) {
-      //pass
-    } else {
+    if (imageGenerator == null) {
       if (image instanceof BufferedImage) {
         BufferedImage bufferedImage = (BufferedImage) image;
         BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();

@@ -64,9 +64,7 @@ public class CopyToClipboardOperation extends ActionOperation {
   public static synchronized CopyToClipboardOperation getInstance(Statement node) {
     assert node != null;
     CopyToClipboardOperation rv = map.get(node);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new CopyToClipboardOperation(node);
       map.put(node, rv);
     }

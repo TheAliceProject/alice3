@@ -62,9 +62,7 @@ public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
 
   public static synchronized KeyedBlank getInstance(ArgumentListProperty<JavaKeyedArgument> argumentListProperty) {
     KeyedBlank rv = map.get(argumentListProperty);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new KeyedBlank(argumentListProperty);
       map.put(argumentListProperty, rv);
     }

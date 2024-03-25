@@ -59,9 +59,7 @@ public final class EnvelopStatementsOperation extends ActionOperation {
 
   public static synchronized EnvelopStatementsOperation getInstance(BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation) {
     EnvelopStatementsOperation rv = map.get(fromLocation, toLocation);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new EnvelopStatementsOperation(fromLocation, toLocation);
       map.put(fromLocation, toLocation, rv);
     }

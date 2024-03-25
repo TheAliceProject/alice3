@@ -67,9 +67,7 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
   @Override
   public List<AnonymousUserConstructor> getDeclaredConstructors() {
     //todo?
-    if (this.constructors != null) {
-      //pass
-    } else {
+    if (this.constructors == null) {
       this.constructors = Lists.newArrayList();
       this.constructors.add(AnonymousUserConstructor.get(this));
     }

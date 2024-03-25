@@ -65,9 +65,7 @@ public class SceneEditorUpdatingArgumentCascade extends AbstractArgumentCascade 
 
   public static synchronized SceneEditorUpdatingArgumentCascade getInstance(SimpleArgument argument) {
     SceneEditorUpdatingArgumentCascade rv = map.get(argument);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new SceneEditorUpdatingArgumentCascade(argument);
       map.put(argument, rv);
     }

@@ -105,9 +105,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
   }
 
   protected JComponent getMenuProxy(ItemNode<? super F, B> node) {
-    if (this.menuProxy != null) {
-      //pass
-    } else {
+    if (this.menuProxy == null) {
       this.menuProxy = this.createMenuItemIconProxy(node);
     }
     return this.menuProxy;
@@ -136,9 +134,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
       this.icon = null;
       this.menuProxy = null;
     }
-    if (this.icon != null) {
-      //pass
-    } else {
+    if (this.icon == null) {
       JComponent component = this.getMenuProxy(node);
       if (component != null) {
         final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;

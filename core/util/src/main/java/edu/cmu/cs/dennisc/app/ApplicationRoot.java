@@ -57,9 +57,7 @@ public class ApplicationRoot {
   private static File rootDirectory;
 
   public static void initializeIfNecessary() {
-    if (rootDirectory != null) {
-      //pass
-    } else {
+    if (rootDirectory == null) {
       String rootDirectoryPath = System.getProperty(DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY);
       //todo: fallback to System.getProperty( "user.dir" ) ???
       if (rootDirectoryPath != null) {

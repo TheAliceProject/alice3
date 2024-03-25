@@ -63,9 +63,7 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
   public static synchronized CopyFromClipboardOperation getInstance(BlockStatementIndexPair blockStatementIndexPair) {
     assert blockStatementIndexPair != null;
     CopyFromClipboardOperation rv = map.get(blockStatementIndexPair);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new CopyFromClipboardOperation(blockStatementIndexPair);
       map.put(blockStatementIndexPair, rv);
     }

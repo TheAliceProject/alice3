@@ -60,9 +60,7 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
   public static synchronized ParameterAccessMethodInvocationFactory getInstance(UserParameter parameter, AbstractMethod method) {
     assert parameter != null;
     ParameterAccessMethodInvocationFactory rv = mapToMap.get(parameter, method);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterAccessMethodInvocationFactory(parameter, method);
       mapToMap.put(parameter, method, rv);
     }

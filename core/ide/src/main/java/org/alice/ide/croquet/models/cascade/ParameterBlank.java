@@ -65,9 +65,7 @@ public class ParameterBlank extends ExpressionBlank {
   public static synchronized ParameterBlank getInstance(AbstractParameter parameter) {
     assert parameter != null;
     ParameterBlank rv = map.get(parameter);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ParameterBlank(parameter);
       map.put(parameter, rv);
     }

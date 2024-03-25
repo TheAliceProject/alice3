@@ -61,9 +61,7 @@ public class ThisOperation extends ProjectExpressionPropertyOperation {
   public static synchronized ThisOperation getInstance(ExpressionProperty expressionProperty) {
     assert expressionProperty != null;
     ThisOperation rv = map.get(expressionProperty);
-    if (rv != null) {
-      //pass
-    } else {
+    if (rv == null) {
       rv = new ThisOperation(expressionProperty);
       map.put(expressionProperty, rv);
     }

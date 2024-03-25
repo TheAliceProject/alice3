@@ -314,9 +314,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
   private DStack<JButton> defaultJButtonStack;
 
   public void pushDefaultButton(Button button) {
-    if (this.defaultJButtonStack != null) {
-      //pass
-    } else {
+    if (this.defaultJButtonStack == null) {
       this.defaultJButtonStack = Stacks.newStack();
     }
     this.defaultJButtonStack.push(this.getJRootPane().getDefaultButton());

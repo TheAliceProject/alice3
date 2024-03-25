@@ -60,9 +60,7 @@ public class StringLiteralFillIn extends ExpressionFillInWithoutBlanks<StringLit
   public static StringLiteralFillIn getInstance(String value) {
     synchronized (map) {
       StringLiteralFillIn rv = map.get(value);
-      if (rv != null) {
-        //pass
-      } else {
+      if (rv == null) {
         rv = new StringLiteralFillIn(value);
         map.put(value, rv);
       }
