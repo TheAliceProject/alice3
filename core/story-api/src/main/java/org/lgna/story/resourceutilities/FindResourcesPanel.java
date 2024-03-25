@@ -45,6 +45,7 @@ package org.lgna.story.resourceutilities;
 import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -58,8 +59,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -274,24 +273,7 @@ public class FindResourcesPanel extends JPanel {
     this.textDescription.setOpaque(false);
     this.textDescription.setBackground(new Color(1, 1, 1, 0));
     this.installDirectoryField.setText(startingDir.getAbsolutePath());
-    this.installDirectoryField.getDocument().addDocumentListener(new DocumentListener() {
-
-      @Override
-      public void insertUpdate(DocumentEvent e) {
-        doUpdate();
-      }
-
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        doUpdate();
-      }
-
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        doUpdate();
-      }
-
-    });
+    this.installDirectoryField.getDocument().addDocumentListener(new UnifiedDocumentListener(this::doUpdate));
     this.doUpdate();
     this.setLayout(new GridBagLayout());
 

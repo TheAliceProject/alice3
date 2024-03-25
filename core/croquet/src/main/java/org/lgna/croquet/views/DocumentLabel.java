@@ -43,9 +43,9 @@
 package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
 import javax.swing.JLabel;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -85,22 +85,7 @@ public class DocumentLabel extends AbstractLabel {
     }
   }
 
-  private final DocumentListener documentListener = new DocumentListener() {
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-      handleDocumentChanged();
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-      handleDocumentChanged();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-      handleDocumentChanged();
-    }
-  };
+  private final DocumentListener documentListener = new UnifiedDocumentListener(this::handleDocumentChanged);
 
   public DocumentLabel(Document document, float fontScalar, TextAttribute<?>... textAttributes) {
     this.document = document;

@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 import org.alice.ide.IDE;
 import org.alice.ide.ThemeUtilities;
 import org.alice.ide.common.AbstractStatementPane;
@@ -57,8 +58,6 @@ import org.lgna.project.ast.StatementListProperty;
 
 import javax.swing.BorderFactory;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -81,22 +80,7 @@ class CommentLine extends JSuggestiveTextArea {
     String localizedSuggestion = ResourceBundleUtilities.getStringForKey("commentHint", "org.alice.ide.codeeditor.CodeEditor");
     this.setTextForBlankCondition(localizedSuggestion);
     this.comment = comment;
-    this.getDocument().addDocumentListener(new DocumentListener() {
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        CommentLine.this.handleUpdate();
-      }
-
-      @Override
-      public void insertUpdate(DocumentEvent e) {
-        CommentLine.this.handleUpdate();
-      }
-
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        CommentLine.this.handleUpdate();
-      }
-    });
+    this.getDocument().addDocumentListener(new UnifiedDocumentListener(this::handleUpdate));
     this.setBackground(ThemeUtilities.getActiveTheme().getColorFor(Comment.class));
     this.setForeground(ThemeUtilities.getActiveTheme().getCommentForegroundColor());
     //this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );

@@ -42,11 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
+
 import javax.swing.AbstractListModel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,22 +95,7 @@ public class JFilterListCombo extends JPanel {
 
   public JFilterListCombo() {
     m_list.setModel(m_model);
-    m_filter.getDocument().addDocumentListener(new DocumentListener() {
-      @Override
-      public void changedUpdate(DocumentEvent e) {
-        JFilterListCombo.this.handleFilterChange(e);
-      }
-
-      @Override
-      public void insertUpdate(DocumentEvent e) {
-        JFilterListCombo.this.handleFilterChange(e);
-      }
-
-      @Override
-      public void removeUpdate(DocumentEvent e) {
-        JFilterListCombo.this.handleFilterChange(e);
-      }
-    });
+    m_filter.getDocument().addDocumentListener(new UnifiedDocumentListener(this::handleFilterChange));
 
     setLayout(new BorderLayout());
     add(m_filter, BorderLayout.NORTH);

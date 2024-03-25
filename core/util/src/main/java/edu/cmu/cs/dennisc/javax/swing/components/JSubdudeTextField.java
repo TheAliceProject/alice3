@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
 import edu.cmu.cs.dennisc.java.util.Arrays;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.event.UnifiedDocumentListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -55,7 +56,6 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -227,29 +227,13 @@ public class JSubdudeTextField extends JSuggestiveTextField {
     }
   };
 
-  private final DocumentListener documentListener = new DocumentListener() {
-    private void update() {
-      Container parent = getParent();
-      if (parent instanceof JComponent) {
-        ((JComponent) parent).revalidate();
-        parent.repaint();
-      }
+  private final DocumentListener documentListener = new UnifiedDocumentListener(() -> {
+    Container parent = getParent();
+    if (parent instanceof JComponent) {
+      parent.revalidate();
+      parent.repaint();
     }
+  });
 
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-      this.update();
-    }
-
-    @Override
-    public void insertUpdate(DocumentEvent e) {
-      this.update();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-      this.update();
-    }
-  };
   private final ButtonModel buttonModel = new DefaultButtonModel();
 }
