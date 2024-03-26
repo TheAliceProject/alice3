@@ -45,6 +45,7 @@ package org.lgna.croquet.importer;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.croquet.Application;
@@ -84,10 +85,11 @@ public abstract class Importer<T> {
       if ((extension != null) && this.lowerCaseExtensions.contains(extension.toLowerCase(Locale.ENGLISH))) {
         try {
           return this.createFromFile(file);
-        } catch (IOException ioe) {
-          ioe.printStackTrace();
+        } catch (Exception e) {
           //TODO I18n
-          Dialogs.showError("Exception Thrown", "Unable to import: " + file.getAbsolutePath());
+          String message = "Unable to import: " + file.getAbsolutePath() + "\n\n" + e.getMessage();
+          Logger.warning(message, e.getStackTrace());
+          Dialogs.showError("Exception Thrown", message);
           return null;
         }
       } else {

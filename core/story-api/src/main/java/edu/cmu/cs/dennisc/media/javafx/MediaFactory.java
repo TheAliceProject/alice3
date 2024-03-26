@@ -69,7 +69,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 
       return new MediaPlayer(new Media(source));
     } catch (MalformedURLException | NullPointerException | MediaException ex) {
-      throw new RuntimeException(audioResource.toString(), ex);
+      throw new RuntimeException(ex.getMessage() + "\n" + audioResource, ex);
     }
   }
 
