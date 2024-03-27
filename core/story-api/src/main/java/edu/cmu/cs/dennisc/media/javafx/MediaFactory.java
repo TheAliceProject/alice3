@@ -28,22 +28,11 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
   public AudioResource createAudioResource(File file) throws IOException {
     String contentType = AudioResource.getContentType(file);
     if (contentType != null) {
-      final AudioResource rv = new AudioResource(file, contentType);
-      Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-          Player player = new Player(createJavaFXPlayer(rv), 1.0, 0.0, Double.NaN, rv);
-          player.realize();
-          rv.setDuration(player.getDuration());
-        }
-      };
-      final boolean USE_THREAD_JUST_TO_BE_SORT_OF_SAFE = true;
-      if (USE_THREAD_JUST_TO_BE_SORT_OF_SAFE) {
-        new Thread(runnable).start();
-      } else {
-        runnable.run();
-      }
-      return rv;
+      final AudioResource audio = new AudioResource(file, contentType);
+      Player player = new Player(createJavaFXPlayer(audio), 1.0, 0.0, Double.NaN, audio);
+      player.realize();
+      audio.setDuration(player.getDuration());
+      return audio;
     } else {
       throw new RuntimeException("content type not found for " + file);
     }
@@ -80,7 +69,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 
       return new MediaPlayer(new Media(source));
     } catch (MalformedURLException | NullPointerException | MediaException ex) {
-      throw new RuntimeException(audioResource.toString(), ex);
+      throw new RuntimeException(ex.getMessage() + "\n" + audioResource, ex);
     }
   }
 
