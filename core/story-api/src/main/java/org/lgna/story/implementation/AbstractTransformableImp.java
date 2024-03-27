@@ -931,7 +931,7 @@ public abstract class AbstractTransformableImp extends EntityImp implements Anim
     this.animateTransformation(target, offset, DEFAULT_IS_SMOOTH, DEFAULT_DURATION, DEFAULT_STYLE);
   }
 
-  public double getDistanceTo(AbstractTransformableImp other) {
+  public double getDistanceTo(EntityImp other) {
     Point3 translation = this.getSgComposite().getTranslation(other.getSgComposite());
     return translation.calculateMagnitude();
   }

@@ -477,7 +477,7 @@
       {
         "name": "getDistanceTo",
         "parameterClassNames": [
-          "org.lgna.story.STurnable",
+          "org.lgna.story.SThing",
           "[Lorg.lgna.story.GetDistanceTo$Detail;"
         ],
         "parameterNames": [
