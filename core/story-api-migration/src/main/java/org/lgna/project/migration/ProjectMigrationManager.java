@@ -5858,7 +5858,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
       new TextMigration(new Version("3.4.0.0"),
           "<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickEvent\"/><parameters/></method>",
           "<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickOnObjectEvent\"/><parameters/></method>"
-          )
+          ),
+
+      new TextMigration(new Version("3.9.0.0"),
+          "<method isVarArgs=\"true\" name=\"getDistanceTo\"><declaringClass name=\"org.lgna.story.STurnable\"/><parameters><type name=\"org.lgna.story.STurnable\"/>",
+          "<method isVarArgs=\"true\" name=\"getDistanceTo\"><declaringClass name=\"org.lgna.story.STurnable\"/><parameters><type name=\"org.lgna.story.SThing\"/>"
+      )
 
       //      , EventAstMigration.getTextMigration()
   };
