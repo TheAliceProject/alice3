@@ -57,42 +57,31 @@ public class HierarchyUtilities {
 
   public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
+  private static boolean checkAcceptance(AwtComponentView<?> component, Criterion<?>... criterions) {
+    boolean isAcceptedByAll = true;
+    if (criterions != null) {
+      for (Criterion criterion : criterions) {
+        if (!criterion.accept(component)) {
+          isAcceptedByAll = false;
+          break;
+        }
+      }
+    }
+    return isAcceptedByAll;
+  }
+
   private static <E extends AwtComponentView<?>> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
     E rv = null;
-    boolean isAcceptedByAll;
-    if (isComponentACandidate) {
-      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
-        isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-      } else {
-        isAcceptedByAll = false;
-      }
-    } else {
-      isAcceptedByAll = false;
-    }
-    if (isAcceptedByAll) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
       rv = (E) component;
     } else {
-      if (isChildACandidate) {
-        if (component instanceof AwtContainerView<?>) {
-          AwtContainerView<?> container = (AwtContainerView<?>) component;
-          for (AwtComponentView<?> componentI : container.getComponents()) {
-            rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions);
-            if (rv != null) {
-              break;
-            }
+      if (isChildACandidate && component instanceof AwtContainerView<?>) {
+        AwtContainerView<?> container = (AwtContainerView<?>) component;
+        for (AwtComponentView<?> componentI : container.getComponents()) {
+          rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions);
+          if (rv != null) {
+            break;
           }
         }
       }
@@ -103,25 +92,8 @@ public class HierarchyUtilities {
   private static <E extends AwtComponentView<?>> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
 
-    if (isComponentACandidate) {
-      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
-        boolean isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-        if (isAcceptedByAll) {
-          list.add((E) component);
-        }
-      }
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+      list.add((E) component);
     }
 
     if (isChildACandidate) {
@@ -189,24 +161,7 @@ public class HierarchyUtilities {
     }
     while (c != null) {
       boolean isAcceptedByAll;
-      if ((cls == null) || cls.isAssignableFrom(c.getClass())) {
-        isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-      } else {
-        isAcceptedByAll = false;
-      }
-      if (isAcceptedByAll) {
+      if ((cls == null || cls.isAssignableFrom(c.getClass())) && checkAcceptance(component, criterions)) {
         return (E) c;
       }
       c = c.getParent();

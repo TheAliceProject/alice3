@@ -74,6 +74,19 @@ public class ComponentUtilities {
     component.setBackground(Color.GREEN);
   }
 
+  private static boolean checkAcceptance(Component component, Criterion<?>... criterions ) {
+    boolean isAcceptedByAll = true;
+    if (criterions != null) {
+      for (Criterion criterion : criterions) {
+        if (!criterion.accept(component)) {
+          isAcceptedByAll = false;
+          break;
+        }
+      }
+    }
+    return isAcceptedByAll;
+  }
+
   private static Point getLocation(Point rv, Component c, Component ancestor) {
     assert c != null;
     if (c == ancestor) {
@@ -122,28 +135,7 @@ public class ComponentUtilities {
     assert component != null;
     E rv = null;
     boolean isAcceptedByAll;
-    if (isComponentACandidate) {
-      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
-        isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-      } else {
-        isAcceptedByAll = false;
-      }
-    } else {
-      isAcceptedByAll = false;
-    }
-    if (isAcceptedByAll) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
       rv = (E) component;
     } else {
       if (isChildACandidate) {
@@ -163,32 +155,13 @@ public class ComponentUtilities {
   private static <E extends Component> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
 
-    if (isComponentACandidate) {
-      if ((cls == null) || cls.isAssignableFrom(component.getClass())) {
-        boolean isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-        if (isAcceptedByAll) {
-          list.add((E) component);
-        }
-      }
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+      list.add((E) component);
     }
 
-    if (isChildACandidate) {
-      if (component instanceof Container) {
-        for (Component componentI : ((Container) component).getComponents()) {
-          updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
-        }
+    if (isChildACandidate && component instanceof Container) {
+      for (Component componentI : ((Container) component).getComponents()) {
+        updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
       }
     }
   }
@@ -247,25 +220,7 @@ public class ComponentUtilities {
       c = component.getParent();
     }
     while (c != null) {
-      boolean isAcceptedByAll;
-      if ((cls == null) || cls.isAssignableFrom(c.getClass())) {
-        isAcceptedByAll = true;
-        if (criterions == null) {
-          //pass
-        } else {
-          for (Criterion criterion : criterions) {
-            if (criterion.accept(component)) {
-              //pass
-            } else {
-              isAcceptedByAll = false;
-              break;
-            }
-          }
-        }
-      } else {
-        isAcceptedByAll = false;
-      }
-      if (isAcceptedByAll) {
+      if ((cls == null || cls.isAssignableFrom(c.getClass())) && checkAcceptance(component, criterions)) {
         return (E) c;
       }
       c = c.getParent();
