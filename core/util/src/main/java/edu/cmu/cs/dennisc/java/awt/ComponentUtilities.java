@@ -74,7 +74,7 @@ public class ComponentUtilities {
     component.setBackground(Color.GREEN);
   }
 
-  private static boolean checkAcceptance(Component component, Criterion<?>... criterions ) {
+  private static boolean checkAcceptance(Component component, Criterion<?>... criterions) {
     boolean isAcceptedByAll = true;
     if (criterions != null) {
       for (Criterion criterion : criterions) {
