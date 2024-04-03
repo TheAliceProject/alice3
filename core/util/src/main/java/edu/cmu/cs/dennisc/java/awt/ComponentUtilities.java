@@ -74,17 +74,15 @@ public class ComponentUtilities {
     component.setBackground(Color.GREEN);
   }
 
-  private static boolean checkAcceptance(Component component, Criterion<?>... criterions) {
-    boolean isAcceptedByAll = true;
+  private static boolean isAcceptedByAll(Component component, Criterion<?>... criterions) {
     if (criterions != null) {
       for (Criterion criterion : criterions) {
         if (!criterion.accept(component)) {
-          isAcceptedByAll = false;
-          break;
+          return false;
         }
       }
     }
-    return isAcceptedByAll;
+    return true;
   }
 
   private static Point getLocation(Point rv, Component c, Component ancestor) {
@@ -135,7 +133,7 @@ public class ComponentUtilities {
     assert component != null;
     E rv = null;
     boolean isAcceptedByAll;
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
       rv = (E) component;
     } else {
       if (isChildACandidate) {
@@ -155,7 +153,7 @@ public class ComponentUtilities {
   private static <E extends Component> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
 
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
       list.add((E) component);
     }
 
@@ -220,7 +218,7 @@ public class ComponentUtilities {
       c = component.getParent();
     }
     while (c != null) {
-      if ((cls == null || cls.isAssignableFrom(c.getClass())) && checkAcceptance(component, criterions)) {
+      if ((cls == null || cls.isAssignableFrom(c.getClass())) && isAcceptedByAll(component, criterions)) {
         return (E) c;
       }
       c = c.getParent();

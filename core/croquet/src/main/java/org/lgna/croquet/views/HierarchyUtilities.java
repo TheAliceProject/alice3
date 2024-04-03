@@ -57,23 +57,21 @@ public class HierarchyUtilities {
 
   public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-  private static boolean checkAcceptance(AwtComponentView<?> component, Criterion<?>... criterions) {
-    boolean isAcceptedByAll = true;
+  private static boolean isAcceptedByAll(AwtComponentView<?> component, Criterion<?>... criterions) {
     if (criterions != null) {
       for (Criterion criterion : criterions) {
         if (!criterion.accept(component)) {
-          isAcceptedByAll = false;
-          break;
+          return false;
         }
       }
     }
-    return isAcceptedByAll;
+    return true;
   }
 
   private static <E extends AwtComponentView<?>> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
     E rv = null;
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
       rv = (E) component;
     } else {
       if (isChildACandidate && component instanceof AwtContainerView<?>) {
@@ -92,7 +90,7 @@ public class HierarchyUtilities {
   private static <E extends AwtComponentView<?>> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
 
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && checkAcceptance(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
       list.add((E) component);
     }
 
@@ -161,7 +159,7 @@ public class HierarchyUtilities {
     }
     while (c != null) {
       boolean isAcceptedByAll;
-      if ((cls == null || cls.isAssignableFrom(c.getClass())) && checkAcceptance(component, criterions)) {
+      if ((cls == null || cls.isAssignableFrom(c.getClass())) && isAcceptedByAll(component, criterions)) {
         return (E) c;
       }
       c = c.getParent();
