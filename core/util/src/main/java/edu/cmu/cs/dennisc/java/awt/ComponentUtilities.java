@@ -47,14 +47,11 @@ import edu.cmu.cs.dennisc.pattern.HowMuch;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.LinkedList;
@@ -132,14 +129,14 @@ public class ComponentUtilities {
   private static <E extends Component> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criterions) {
     assert component != null;
     E rv = null;
-    boolean isAcceptedByAll;
     if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
       rv = (E) component;
     } else {
       if (isChildACandidate) {
         if (component instanceof Container) {
           for (Component componentI : ((Container) component).getComponents()) {
-            rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions);
+            rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
+                    componentI, cls, criterions);
             if (rv != null) {
               break;
             }
@@ -159,55 +156,27 @@ public class ComponentUtilities {
 
     if (isChildACandidate && component instanceof Container) {
       for (Component componentI : ((Container) component).getComponents()) {
-        updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
+        updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
+                list, componentI, cls, criterions);
       }
     }
   }
 
-  private static <E extends Component> E getFirstToAccept(HowMuch candidateMask, Component component, Class<E> cls, Criterion<?>... criterions) {
-    return getFirstToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions);
-  }
-
-  private static <E extends Component> void updateAllToAccept(HowMuch candidateMask, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
-    updateAllToAccept(candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions);
-  }
-
-  public static <E extends Component> E findFirstMatch(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
-    return ComponentUtilities.getFirstToAccept(howMuch, component, cls, criterions);
-  }
-
-  public static <E extends Component> E findFirstMatch(Component component, Class<E> cls, Criterion<?>... criterions) {
-    return findFirstMatch(component, DEFAULT_HOW_MUCH, cls, criterions);
-  }
-
   public static <E extends Component> E findFirstMatch(Component component, Class<E> cls) {
-    return findFirstMatch(component, cls, (Criterion<?>[]) null);
-  }
-
-  public static Component findFirstMatch(Component component, Criterion<?>... criterions) {
-    return findFirstMatch(component, null, criterions);
+    return getFirstToAccept(DEFAULT_HOW_MUCH.isComponentACandidate(), DEFAULT_HOW_MUCH.isChildACandidate(), DEFAULT_HOW_MUCH.isGrandchildAndBeyondACandidate(),
+            component, cls, (Criterion<?>[]) null);
   }
 
   public static <E extends Component> List<E> findAllMatches(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
     List<E> list = new LinkedList<E>();
-    ComponentUtilities.updateAllToAccept(howMuch, list, component, cls, criterions);
+    updateAllToAccept(howMuch.isComponentACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate(),
+            list, component, cls, criterions);
+
     return list;
   }
 
-  public static <E extends Component> List<E> findAllMatches(Component component, Class<E> cls, Criterion<?>... criterions) {
-    return findAllMatches(component, DEFAULT_HOW_MUCH, cls, criterions);
-  }
-
   public static <E extends Component> List<E> findAllMatches(Component component, Class<E> cls) {
-    return findAllMatches(component, cls, (Criterion<?>[]) null);
-  }
-
-  public static List<Component> findAllMatches(Component component, Criterion<?>... criterions) {
-    return findAllMatches(component, null, criterions);
-  }
-
-  public static List<Component> findAllMatches(Component component) {
-    return findAllMatches(component, null, (Criterion<?>[]) null);
+    return findAllMatches(component, DEFAULT_HOW_MUCH, cls, (Criterion<?>[]) null);
   }
 
   public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions) {
@@ -228,10 +197,6 @@ public class ComponentUtilities {
 
   public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls) {
     return findFirstAncestor(component, isComponentIncludedInSearch, cls, (Criterion<?>[]) null);
-  }
-
-  public static Component findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Criterion<?>... criterions) {
-    return findFirstAncestor(component, isComponentIncludedInSearch, null, criterions);
   }
 
   public static void doLayoutTree(Component c) {
@@ -288,15 +253,6 @@ public class ComponentUtilities {
     }
   }
 
-  public static Frame getRootFrame(Component c) {
-    Component root = SwingUtilities.getRoot(c);
-    if (root instanceof Frame) {
-      return (Frame) root;
-    } else {
-      return null;
-    }
-  }
-
   public static JFrame getRootJFrame(Component c) {
     Component root = SwingUtilities.getRoot(c);
     if (root instanceof JFrame) {
@@ -306,21 +262,4 @@ public class ComponentUtilities {
     }
   }
 
-  public static Dialog getRootDialog(Component c) {
-    Component root = SwingUtilities.getRoot(c);
-    if (root instanceof Dialog) {
-      return (Dialog) root;
-    } else {
-      return null;
-    }
-  }
-
-  public static JDialog getRootJDialog(Component c) {
-    Component root = SwingUtilities.getRoot(c);
-    if (root instanceof JDialog) {
-      return (JDialog) root;
-    } else {
-      return null;
-    }
-  }
 }
