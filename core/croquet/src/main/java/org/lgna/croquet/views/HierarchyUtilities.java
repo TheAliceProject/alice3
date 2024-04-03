@@ -57,9 +57,9 @@ public class HierarchyUtilities {
 
   public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-  private static boolean isAcceptedByAll(AwtComponentView<?> component, Criterion<?>... criterions) {
-    if (criterions != null) {
-      for (Criterion criterion : criterions) {
+  private static boolean isAcceptedByAll(AwtComponentView<?> component, Criterion<?>... criteria) {
+    if (criteria != null) {
+      for (Criterion criterion : criteria) {
         if (!criterion.accept(component)) {
           return false;
         }
@@ -68,10 +68,10 @@ public class HierarchyUtilities {
     return true;
   }
 
-  private static <E extends AwtComponentView<?>> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+  private static <E extends AwtComponentView<?>> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, AwtComponentView<?> component, Class<E> cls, Criterion<?>... criteria) {
     assert component != null;
 
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criteria)) {
       list.add((E) component);
     }
 
@@ -79,15 +79,15 @@ public class HierarchyUtilities {
       if (component instanceof AwtContainerView<?>) {
         AwtContainerView<?> container = (AwtContainerView<?>) component;
         for (AwtComponentView<?> componentI : container.getComponents()) {
-          updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions);
+          updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criteria);
         }
       }
     }
   }
 
-  public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches(AwtComponentView<?> component, Class<E> cls, Criterion<?>... criterions) {
+  public static <E extends AwtComponentView<?>> java.util.List<E> findAllMatches(AwtComponentView<?> component, Class<E> cls, Criterion<?>... criteria) {
     java.util.List<E> list = new LinkedList<E>();
-    HierarchyUtilities.updateAllToAccept(DEFAULT_HOW_MUCH.isComponentACandidate(), DEFAULT_HOW_MUCH.isChildACandidate(), DEFAULT_HOW_MUCH.isGrandchildAndBeyondACandidate(), list, component, cls, criterions);
+    HierarchyUtilities.updateAllToAccept(DEFAULT_HOW_MUCH.isComponentACandidate(), DEFAULT_HOW_MUCH.isChildACandidate(), DEFAULT_HOW_MUCH.isGrandchildAndBeyondACandidate(), list, component, cls, criteria);
     return list;
   }
 

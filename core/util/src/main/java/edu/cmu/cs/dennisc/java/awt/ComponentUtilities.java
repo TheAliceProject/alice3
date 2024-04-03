@@ -71,9 +71,9 @@ public class ComponentUtilities {
     component.setBackground(Color.GREEN);
   }
 
-  private static boolean isAcceptedByAll(Component component, Criterion<?>... criterions) {
-    if (criterions != null) {
-      for (Criterion criterion : criterions) {
+  private static boolean isAcceptedByAll(Component component, Criterion<?>... criteria) {
+    if (criteria != null) {
+      for (Criterion criterion : criteria) {
         if (!criterion.accept(component)) {
           return false;
         }
@@ -126,17 +126,17 @@ public class ComponentUtilities {
 
   public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.COMPONENT_AND_DESCENDANTS;
 
-  private static <E extends Component> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criterions) {
+  private static <E extends Component> E getFirstToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component component, Class<E> cls, Criterion<?>... criteria) {
     assert component != null;
     E rv = null;
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criteria)) {
       rv = (E) component;
     } else {
       if (isChildACandidate) {
         if (component instanceof Container) {
           for (Component componentI : ((Container) component).getComponents()) {
             rv = getFirstToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
-                    componentI, cls, criterions);
+                    componentI, cls, criteria);
             if (rv != null) {
               break;
             }
@@ -147,17 +147,17 @@ public class ComponentUtilities {
     return rv;
   }
 
-  private static <E extends Component> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criterions) {
+  private static <E extends Component> void updateAllToAccept(boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, List<E> list, Component component, Class<E> cls, Criterion<?>... criteria) {
     assert component != null;
 
-    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criterions)) {
+    if (isComponentACandidate && (cls == null || cls.isAssignableFrom(component.getClass())) && isAcceptedByAll(component, criteria)) {
       list.add((E) component);
     }
 
     if (isChildACandidate && component instanceof Container) {
       for (Component componentI : ((Container) component).getComponents()) {
         updateAllToAccept(isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate,
-                list, componentI, cls, criterions);
+                list, componentI, cls, criteria);
       }
     }
   }
@@ -167,10 +167,10 @@ public class ComponentUtilities {
             component, cls, (Criterion<?>[]) null);
   }
 
-  public static <E extends Component> List<E> findAllMatches(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criterions) {
+  public static <E extends Component> List<E> findAllMatches(Component component, HowMuch howMuch, Class<E> cls, Criterion<?>... criteria) {
     List<E> list = new LinkedList<E>();
     updateAllToAccept(howMuch.isComponentACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate(),
-            list, component, cls, criterions);
+            list, component, cls, criteria);
 
     return list;
   }
@@ -179,7 +179,7 @@ public class ComponentUtilities {
     return findAllMatches(component, DEFAULT_HOW_MUCH, cls, (Criterion<?>[]) null);
   }
 
-  public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criterions) {
+  public static <E extends Component> E findFirstAncestor(Component component, boolean isComponentIncludedInSearch, Class<E> cls, Criterion<?>... criteria) {
     Component c;
     if (isComponentIncludedInSearch) {
       c = component;
@@ -187,7 +187,7 @@ public class ComponentUtilities {
       c = component.getParent();
     }
     while (c != null) {
-      if ((cls == null || cls.isAssignableFrom(c.getClass())) && isAcceptedByAll(component, criterions)) {
+      if ((cls == null || cls.isAssignableFrom(c.getClass())) && isAcceptedByAll(component, criteria)) {
         return (E) c;
       }
       c = c.getParent();
