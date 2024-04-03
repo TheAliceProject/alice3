@@ -130,7 +130,7 @@ public abstract class STurnable extends SThing {
   }
 
   @MethodTemplate(visibility = Visibility.PRIME_TIME)
-  public Double getDistanceTo(STurnable other, GetDistanceTo.Detail... details) {
+  public Double getDistanceTo(SThing other, GetDistanceTo.Detail... details) {
     LgnaIllegalArgumentException.checkArgumentIsNotNull(other, 0);
     return this.getImplementation().getDistanceTo(LgnaIllegalArgumentException.checkArgumentIsNotNull(other, 0).getImplementation());
   }
