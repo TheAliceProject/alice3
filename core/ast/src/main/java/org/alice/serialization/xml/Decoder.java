@@ -304,9 +304,7 @@ class Decoder {
         } else {
           if (index == REQUIRED_N) {
             rv = constructorDeclaredInJava.getVariableLengthParameter();
-            if (rv != null) {
-              //pass;
-            } else {
+            if (rv == null) {
               rv = constructorDeclaredInJava.getKeyedParameter();
             }
           } else {
@@ -326,9 +324,7 @@ class Decoder {
         } else {
           if (index == REQUIRED_N) {
             rv = methodDeclaredInJava.getVariableLengthParameter();
-            if (rv != null) {
-              //pass;
-            } else {
+            if (rv == null) {
               rv = methodDeclaredInJava.getKeyedParameter();
             }
           } else {
