@@ -188,40 +188,31 @@ public class FindContentManager {
 
   private List<SearchResult> sortByRelevance(String[] terms, List<SearchResult> searchResults) {
     List<SearchResult> unsortedList = Lists.newArrayList(searchResults);
-    List<SearchResult> rv = Lists.newArrayList();
     Map<SearchResult, Double> scoreMap = Maps.newHashMap();
     for (SearchResult obj : unsortedList) {
-      scoreMap.put(obj, score(obj, terms[0]));
+      scoreMap.put(obj, score(obj, terms));
     }
-    //n^2 sort O:-)
-    while (!unsortedList.isEmpty()) {
-      double max = Double.NEGATIVE_INFINITY;
-      SearchResult maxObj = null;
-      for (SearchResult o : unsortedList) {
-        if (scoreMap.get(o) > max) {
-          max = scoreMap.get(o);
-          maxObj = o;
-        }
-      }
-      assert maxObj != null : unsortedList.size();
-      rv.add(unsortedList.remove(unsortedList.indexOf(maxObj)));
-    }
-    return rv;
+    unsortedList.sort(Comparator.comparing(scoreMap::get));
+    return unsortedList;
   }
 
-  private Double score(SearchResult obj, String string) {
-    double rv = 0;
-    if (obj.getName().equals(string)) {
-      rv += 2;
+  // Produce a zero or negative score.
+  // Hitting more criteria means a lower number, so it sorts to the front of the list.
+  private Double score(SearchResult obj, String[]terms) {
+    double score = 0;
+    for (String term : terms) {
+      if (obj.getName().equals(term)) {
+        score -= 2;
+      }
+      if (obj.getName().contains(term)) {
+        score -= 1;
+      }
+      if (obj.getName().toLowerCase().startsWith(term)) {
+        score -= 1;
+      }
     }
-    if (obj.getName().contains(string)) {
-      rv += 1;
-    }
-    if (obj.getName().toLowerCase().startsWith(string.toLowerCase())) {
-      rv += 1;
-    }
-    rv += obj.getReferences().size() / 10.0;
-    return rv;
+    score -= obj.getReferences().size() / 10.0;
+    return score;
   }
 
   public void refresh(UserType sceneType, List<Criterion> criteria) {
