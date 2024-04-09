@@ -186,7 +186,7 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
   }
 
   protected List<SearchResult> setSearchResults() {
-    return manager.getResultsForString(searchState.getValue());
+    return manager.getSearchResults(getSearchTerms());
   }
 
   @Override
@@ -221,6 +221,13 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
 
   public StringState getSearchState() {
     return this.searchState;
+  }
+
+  public String[] getSearchTerms() {
+    // Split into terms by spaces or any non word characters.
+    // Search for each term then AND the results together.
+    // Case will be ignored when searching, but is considered when weighting and ordering.
+    return searchState.getValue().replaceAll("\\W|_", " ").split("\\s+");
   }
 
   public RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
