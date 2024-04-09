@@ -105,9 +105,7 @@ public class FindContentManager {
   }
 
   private void tunnelSuper(AbstractType parent) {
-    if ((parent != null) && !superTypeList.contains(parent)) {
-      //pass
-    } else {
+    if ((parent == null) || superTypeList.contains(parent)) {
       return;
     }
     superTypeList.add(parent);
@@ -220,8 +218,4 @@ public class FindContentManager {
     superTypeList.clear();
     initialize(sceneType, criteria);
   }
-
-  //  public boolean isInitialized() {
-  //    return sceneType != null;
-  //  }
 }
