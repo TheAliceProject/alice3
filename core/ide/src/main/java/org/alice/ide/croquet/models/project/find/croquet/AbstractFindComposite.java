@@ -82,6 +82,11 @@ import org.lgna.project.ast.UserType;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 
 /**
+ * Search for code elements that match all terms in the search string.
+ * User input is split into terms along spaces and any non-alphanumeric characters.
+ * Case is ignored when searching, but considered when weighting matches and ordering results.
+ * Logic is similar to SearchGalleryWorker and should seem the same to users.
+ * TODO Collapse this class and its only subclass, FindComposite.
  * @author Matt May
  */
 public abstract class AbstractFindComposite extends FrameCompositeWithInternalIsShowingState<FindView> {

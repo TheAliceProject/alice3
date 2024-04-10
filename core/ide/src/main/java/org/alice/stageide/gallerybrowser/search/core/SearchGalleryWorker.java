@@ -52,6 +52,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Search for Gallery items that match all terms in the search string.
+ * User input is split into terms along spaces and any non-alphanumeric characters.
+ * Case is ignored when searching.
+ * Logic is similar to (Abstract)FindComposite and should seem the same to users.
  * @author Dennis Cosgrove
  */
 public class SearchGalleryWorker extends WorkerWithProgress<List<ResourceNode>, ResourceNode> {
