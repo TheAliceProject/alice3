@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
 import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ast.CenterCameraOnOperation;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.ThisInstanceFactory;
@@ -58,6 +59,7 @@ import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.triggers.MouseEventTrigger;
@@ -70,6 +72,7 @@ import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.SGround;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -93,6 +96,7 @@ import java.awt.LayoutManager2;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
@@ -333,6 +337,18 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
         }
       };
       rv.setOpaque(false);
+      rv.addMouseListener(new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+          if (e.getClickCount() > 1) {
+            if (!StorytellingSceneEditor.getInstance().isStartingCameraView()) {
+              UserField field = StorytellingSceneEditor.getInstance().getSelectedField();
+              if (!field.getValueType().isAssignableTo(SGround.class) && field != StorytellingSceneEditor.getInstance().getActiveSceneField()) {
+                CenterCameraOnOperation.getInstance(field).fire(MouseEventTrigger.createUserActivity(e));
+              }
+            }
+          }
+        }
+      });
 
       rv.setLayout(new BoxLayout(rv, BoxLayout.LINE_AXIS));
       Expression expression = this.instanceFactory.createTransientExpression();
